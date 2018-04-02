@@ -1,0 +1,50 @@
+
+<div>
+    <enjoy-menu></enjoy-menu>
+    <nav-bar  index1="3" index2=""></nav-bar>
+    <div class="main_content">
+        <div class="mum" ng-show="mum">
+            <div class="m-load2">
+                <div class="line">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="circlebg"></div>
+            </div>
+        </div>
+        <div class="content_box">
+            <div class="product_content_left">
+                <a class="btn_back" ng-click="back()">返回</a>
+            </div>
+            <div class="product_content_right">
+                <div class="rightCenter">
+                    <div class="table_lis">
+                        <table class="table  text-center  ">
+                            <tr id="product_lis_title">
+                                <th class="text-center">昵称</th>
+                                <th class="text-center">手机号</th>
+                                <th class="text-center">订单编号</th>
+                                <th class="text-center">时间</th>
+                                <th class="text-center">价格</th>
+                                <th class="text-center">状态</th>
+                            </tr>
+                            <tr ng-repeat="item in monthlyPar">
+                                <td>{{item.nickName}}</td>
+                                <td>{{item.mobile}}</td>
+                                <td>{{item.orderId}}</td>
+                                <td>{{item.payDate|date:"yyyy-MM-dd HH:MM:ss "}}</td>
+                                <td>{{item.amount}}</td>
+                                <td>{{item.status}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                   <!-- <input type="button" value="审核通过" class="submit_btn" ng-click="submit()">-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

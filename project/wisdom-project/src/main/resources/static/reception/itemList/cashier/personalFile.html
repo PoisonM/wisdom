@@ -1,0 +1,28 @@
+<div class="personalFile-box clearfix">
+    <div class="personalFile-top" ng-include="'itemList/cashier/basicInfo.html'"></div>
+    <div class="personalFile-tab">
+        <span ng-click="tabclick(0)" ng-class="select=='0'?'select':''">疗程卡</span>
+        <span ng-click="tabclick(1)" ng-class="select=='1'?'select':''">套卡</span>
+        <span ng-click="tabclick(2)" ng-class="select=='2'?'select':''">充值卡</span>
+        <span ng-click="tabclick(3)" ng-class="select=='3'?'select':''">单次</span>
+        <span ng-click="tabclick(4)" ng-class="select=='4'?'select':''">产品</span>
+        <span ng-click="tabclick(5)" ng-class="select=='5'?'select':''">优惠券</span>
+    </div>
+    <div class="personalFile-content">
+        <div class="treatment">
+            <div class="treatmentCard clearfix">
+                <div class="treatmentCardTop clearfix">
+                    <span class="treatmentCardTopName">美白护理</span>
+                    <span class="treatmentCardTopPrice">金额:￥2980.00</span>
+                    <span class="treatmentCardTopUsed">10</span>
+                    <span class="treatmentCardTopTotal">/10</span>
+                    <button>划卡</button>
+                </div>
+                <div class="treatmentCardBottom">
+                    <span>备注:</span>
+                    <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

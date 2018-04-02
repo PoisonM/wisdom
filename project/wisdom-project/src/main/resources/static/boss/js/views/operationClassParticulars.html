@@ -1,0 +1,96 @@
+  <div>
+    <enjoy-menu></enjoy-menu>
+    <nav-bar></nav-bar>
+    <div class="main_content">
+         <div class="content_box">
+
+             <div class="product_content_right">
+                 <div class="rightCenter">
+                     <div class="uploading_product_name">
+                         <label for="class_name">
+                             课程名称:
+                         </label>
+                         <input type="text" id="class_name" class="product_search"  ng-model="param.className">
+                     </div>
+
+                     <div id="list_viewPic"></div>
+                     <div class="name_row blank">
+                         <label>宣传图:</label>
+                         <input type="file" id="publicity"  />
+                         <img ng-src="{{hintPic1}}" class="hintPic" ng-show="hintPic1!=''?true:false">
+
+                     </div>
+                     <div id="publicityPic"></div>
+
+
+
+                     <div class="name_row blank">
+                         <label for="particulars_view">详情图:</label>
+                         <input type="file" id="particulars_view" multiple/>
+                         <img ng-src="{{hintPic2}}" class="hintPic" ng-show="hintPic2!=''?true:false">
+                     </div>
+                     <div id="particulars_viewPic"></div>
+                     <div class="name_row blank">
+                         <label for="introduction" style="vertical-align: top">添加描述:</label>
+                         <textarea cols="42" rows="7" id="introduction"  ng-model="param.introduce"> </textarea>
+                     </div>
+
+
+                     <div class="table_lis">
+
+                         <div class="titleClassBox classLis">
+                             <div >
+                                 <p class="titleClass">
+                                        <span class="train FMess" ng-click="classShow($index,2,2)">
+
+                                            <input type="text" ng-model="rainingList.trainingProductName">
+                                        </span>
+                                     <span class="FMess"></span>
+                                     <span class="FMess  ">
+                                         <input type="text" ng-model="rainingList.trainingProductType">
+                                     </span>
+                                 </p>
+                                 <ul  class="classLis"  ng-show="tabArray[2].productFlag[$index]">
+                                     <li ng-repeat="(index1,item1) in rainingList.listCourse" ng-click="func();$event.stopPropagation();">
+                                         <p class="bigClass" ng-click="classShow($index,3,15)"><input type="text" ng-model="item1.name"></p>
+                                         <ul ng-show="tabArray[3].productFlag[$index]" class="smallClass">
+                                             <li ng-repeat="(index2,item2) in item1.list" class="knobble" >
+                                                 <div>
+                                                     <p><input type="text" ng-model="item2.name"></p>
+
+                                                     <div class="classMess">
+                                                         <p class=""><label >时长：</label><input type="text" ng-model="item2.duration"></p>
+                                                         <div>
+                                                             <p class="name_row blank" style="margin-left:-240px">
+                                                             <label>上传视频:</label>
+                                                                 <input ng-file-select="onFileSelect($files,index1,index2)" type="file" accept=".csv" class="product_search wav">
+                                                                 <input type="button" ng-click="uploadFile(index1,index2)" value="上传到阿里云" style="padding: 5px 10px;border-radius: 4px;color:white;" class="{{frame[index1][index2].blueBgLight}}">
+                                                                 <img ng-src="{{frame[index1][index2].hintPic}}" class="hintPic" ng-show="frame[index1][index2].hintPic!=''?true:false">
+                                                             </p>
+
+                                                            <p style="margin-left:-130px"><label >路径：</label><input type="text" value="{{item2.url}}" id="classUrl"></div></p>
+                                                     </div>
+                                                 </div>
+
+                                             </li>
+                                         </ul>
+                                     </li>
+                                 </ul>
+                             </div>
+                         </div>
+
+
+                         <!--<div page-tool></div>-->
+                     </div>
+
+
+
+
+                     <input type="button" value="保存" class="submit_btn" ng-click="saveClass()">
+                 </div>
+            </div>
+             <div class="product_content_left">
+             </div>
+         </div>
+     </div>
+  </div>

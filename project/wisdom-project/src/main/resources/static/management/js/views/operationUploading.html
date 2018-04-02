@@ -1,0 +1,82 @@
+
+  <div>
+    <nav-bar index1="4" index2="42"></nav-bar>
+    <div class="main_content">
+        <enjoy-menu></enjoy-menu>
+         <div class="content_box">
+             <div class="product_content_right">
+                 <div class="rightCenter">
+                     <div class="uploading_product_name">
+                         <label for="class_name">
+                             课程名称:
+                         </label>
+                         <input type="text" id="class_name" class="product_search"  ng-model="productDTO.productName">
+                     </div>
+                     <div class="uploading_product_name">
+                         <label for="class_section">
+                             课程章节:
+                         </label>
+                         <input type="text" id="class_section" class="product_search" ng-model="productDTO.productDetail.listCourse[0].name">
+                     </div>
+                     <div class="uploading_product_name">
+                         <label for="class_minutia">
+                             课程小节:
+                         </label>
+                         <input type="text" id="class_minutia" class="product_search" ng-model="productDTO.productDetail.listCourse[0].list[0].name">
+                     </div>
+                     <div class="uploading_product_name">
+                     <label for="duration">
+                         课时:
+                     </label>
+                     <input type="text" id="duration" class="product_search" ng-model="productDTO.productDetail.listCourse[0].list[0].duration">
+                 </div>
+                     <div class="name_row blank">
+                         <label >上传视频:</label>
+                         <input ng-file-select="onFileSelect($files)" type="file" accept=".csv" class="product_search wav">
+                         <input type="button" ng-click="uploadFile()" value="上传" style="padding: 5px 10px;border-radius: 4px;color:white;" class="{{blueBgLight}} ">
+                         <img ng-src="{{hintPic}}" class="hintPic" ng-show="hintPic!=''?true:false">
+                     </div>
+                     <div class="name_row blank">
+                         <label >宣传图:</label>
+                         <input type="file" id="publicity"  />
+                         <img ng-src="{{hintPic1}}" class="hintPic" ng-show="hintPic1!=''?true:false">
+                     </div>
+                     <div id="publicityPic"></div>
+                     <div class="uploading_product_name">
+                         <label for="price">价格:</label>
+                         <input type="number" id="price" ng-model="productDTO.price" class="product_search"/>
+                     </div>
+                     <div class="uploading_product_name">
+                         <label for="secondType">类型:</label>
+                         <input type="text" id="secondType" ng-model="productDTO.secondType" class="product_search" />
+                     </div>
+                     <div class="uploading_product_name">
+                         <label for="status">状态:</label>
+                         <select id="status" class="selectWidth">
+                             <option value="1">上架</option>
+                             <option value="0">下架</option>
+                         </select>
+                     </div>
+                     <div class="name_row blank">
+                         <label for="introduction" style="vertical-align: top">添加描述:</label>
+                         <textarea cols="42" rows="7" id="introduction"  ng-model="productDTO.description"> </textarea>
+                     </div>
+                     <div class="name_row blank">
+                         <label for="particulars_view">详情图:</label>
+                         <input type="file" id="particulars_view" multiple/>
+                         <img ng-src="{{hintPic2}}" class="hintPic" ng-show="hintPic2!=''?true:false">
+                     </div>
+                     <div id="particulars_viewPic"></div>
+                     <div class="save saveOperation">
+                         <input type="button" value="保存" class="save_btn"  ng-click="submit()" >
+                         <p style="color:red;text-align: center;margin-top:20px;" ng-show="mess">请检查信息</p>
+                     </div>
+
+                 </div>
+             </div>
+             <div class="product_content_left">
+
+             </div>
+         </div>
+     </div>
+  </div>

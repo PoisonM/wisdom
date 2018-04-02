@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.business.mapper.product.ProductMapper">
+
+	<resultMap id="ProductResultMap" type="com.wisdom.common.dto.product.ProductDTO" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="name" property="productName" jdbcType="VARCHAR" />
+		<result column="product_id" property="productId" jdbcType="VARCHAR" />
+		<result column="brand" property="brand" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="TIMESTAMP" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="first_url" property="firstUrl" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="second_type" property="secondType" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="BusinessOrderResultMap" type="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+		<result column="order_id" property="businessOrderId" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="VARCHAR" />
+		<result column="user_order_address_id" property="userOrderAddressId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Product_List">
+		p.id,p.name,p.product_id,p.brand,p.type,p.description,p.first_url,p.price,p.status,p.create_date,p.second_type
+	</sql>
+
+	<select id="getBusinessProductInfo"
+			resultMap="ProductResultMap">
+		select * from
+		business_product
+		where
+		1=1
+		AND
+		<!--<if test="type != null and type != ''">-->
+			<!--type=#{type}-->
+		<!--</if>-->
+		<!--AND-->
+		<if test="productId != null and productId != ''">
+			product_id=#{productId}
+		</if>
+	</select>
+
+	<select id="findOfflineProductList"
+			resultMap="ProductResultMap"
+			parameterType="com.wisdom.common.dto.system.PageParamDTO">
+		select * from
+		business_product
+		where
+		type='offline' AND  status = '1'
+		ORDER BY
+		create_date DESC
+		limit #{pageNo},#{pageSize}
+	</select>
+
+	<select id="findSpecialOfflineProductList"
+			resultMap="ProductResultMap"
+			parameterType="com.wisdom.common.dto.system.PageParamDTO">
+		select * from
+		business_product
+		where
+		type='special' AND  status = '1'
+		ORDER BY
+		create_date DESC
+		limit #{pageNo},#{pageSize}
+	</select>
+
+	<select id="findTrainingProductList"
+			resultMap="ProductResultMap"
+			parameterType="com.wisdom.common.dto.system.PageParamDTO">
+		select * from
+		business_product
+		where
+		type='training' AND  status = '1'
+		AND
+		<if test="price!=0.00">
+			price <![CDATA[ > 0.00]]>
+		</if>
+		<if test="price==0.00">
+			price <![CDATA[ = 0.00]]>
+		</if>
+		ORDER BY
+		create_date DESC
+		limit #{pageNo},#{pageSize}
+	</select>
+
+	<!--查询所有商品-->
+	<select id="queryAllProducts" resultMap="ProductResultMap"
+			resultType="com.wisdom.common.persistence.Page">
+		select
+		<include refid="Base_Product_List"/>
+		FROM business_product p
+		WHERE p.type = 'offline'
+		ORDER BY create_date DESC
+	</select>
+
+	<!--条件查询商品Count-->
+	<select id="queryProductsCountByParameters" resultType="java.lang.Integer">
+		SELECT
+		count(1)
+		FROM business_product p
+		WHERE 1=1
+		<if test="requestData.productName != null and requestData.productName != ''">
+			AND p.name = #{requestData.productName}
+		</if>
+		<if test="requestData.productId != null and requestData.productId != ''">
+			AND p.product_id = #{requestData.productId}
+		</if>
+		<if test="requestData.type != null and requestData.type != ''">
+			AND p.type = #{requestData.type}
+		</if>
+		<if test="requestData.brand != null and requestData.brand != ''">
+			AND p.brand = #{requestData.brand}
+		</if>
+		<if test="requestData.status != null and requestData.status != ''">
+			AND p.status = #{requestData.status}
+		</if>
+	</select>
+
+	<!--条件查询商品-->
+	<select id="queryProductsByParameters" resultMap="ProductResultMap">
+		SELECT
+		<include refid="Base_Product_List"/>
+		FROM business_product p
+		WHERE 1=1
+		<if test="requestData.productName != null and requestData.productName != ''">
+			AND p.name LIKE "%${requestData.productName}%"
+		</if>
+		<if test="requestData.productId != null and requestData.productId != ''">
+			AND p.product_id = #{requestData.productId}
+		</if>
+		<if test="requestData.price != null and requestData.price != ''">
+			AND p.price = ${requestData.price}
+		</if>
+		<if test="requestData.type != null and requestData.type != ''">
+			AND p.type = #{requestData.type}
+		</if>
+		<if test="requestData.brand != null and requestData.brand != ''">
+			AND p.brand = #{requestData.brand}
+		</if>
+		<if test="requestData.status != null and requestData.status != ''">
+			AND p.status = #{requestData.status}
+		</if>
+		ORDER BY p.create_date DESC
+		<if test='isExportExcel != "Y"'>
+			limit #{pageStartNo},#{pageSize}
+		</if>
+	</select>
+
+	<!--根据id查询商品-->
+	<select id="findProductById" resultMap="ProductResultMap">
+		select
+		<include refid="Base_Product_List"/>
+		FROM business_product p
+		WHERE p.product_id = #{id}
+	</select>
+
+	<!--编辑商品 -->
+	<update id="updateProductByParameters">
+		UPDATE business_product
+		SET
+		<if test="productName != ''and productName != null">
+			name=#{productName}
+		</if>
+		<if test="brand != ''and brand != null">
+			,brand=#{brand}
+		</if>
+		<if test="description != ''and description != null">
+			,description=#{description}
+		</if>
+		<if test="firstUrl != ''and firstUrl != null">
+			,first_url=#{firstUrl}
+		</if>
+		<if test="price != ''and price != null">
+			,price=#{price}
+		</if>
+		<if test="status != ''and status != null">
+			,status=#{status}
+		</if>
+		<if test="secondType != ''and secondType != null">
+			,second_type=#{secondType}
+		</if>
+		WHERE 1=1
+		AND product_id = #{productId}
+	</update>
+
+	<!--编辑商品-上架-->
+	<update id="putAwayProductById">
+		UPDATE business_product p
+		SET p.status= 1
+		WHERE p.id = #{id}
+	</update>
+
+	<!--编辑商品-下架-->
+	<update id="delProductById">
+		UPDATE business_product p
+		SET p.status= 0
+		WHERE p.id = #{id}
+	</update>
+
+	<!--新增商品-->
+	<insert id="addOfflineProduct">
+		INSERT INTO business_product(
+		id,
+		name,
+		product_id,
+		brand,
+		type,
+		description,
+		first_url,
+		price,
+		status,
+		create_date,
+		second_type
+		) VALUES (
+		#{id},
+		#{productName},
+		#{productId},
+		#{brand},
+		#{type},
+		#{description},
+		#{firstUrl},
+		#{price},
+		#{status},
+		#{createDate},
+		#{secondType}
+		)
+	</insert>
+	
+</mapper>

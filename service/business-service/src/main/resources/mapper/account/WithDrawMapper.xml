@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.business.mapper.account.WithDrawMapper">
+
+    <!--提现表-->
+    <resultMap id="WithDrawResultMap" type="com.wisdom.common.dto.account.WithDrawRecordDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="user_openid" property="userOpenId" jdbcType="VARCHAR" />
+        <result column="user_account_id" property="userAccountId" jdbcType="VARCHAR" />
+        <result column="withdraw_id" property="withdrawId" jdbcType="VARCHAR" />
+        <result column="money_amount" property="moneyAmount" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="TIMESTAMP" />
+        <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+        <result column="update_date" property="updateDate" jdbcType="VARCHAR" />
+
+        <result column="nickname" property="nickName" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--bussiness_order-->
+    <resultMap id="BusinessOrderResultMap" type="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="order_id" property="businessOrderId" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+        <result column="update_date" property="updateDate" jdbcType="VARCHAR" />
+        <result column="user_order_address_id" property="userOrderAddressId" jdbcType="VARCHAR" />
+        <!--sys_user-->
+        <result column="nickname" property="nickName" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
+        <!--以下为pay_record-->
+        <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--sys_user-->
+    <resultMap id="UserInfoResultMap" type="com.wisdom.common.dto.system.UserInfoDTO" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="TIMESTAMP" />
+        <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="TINYINT" />
+        <result column="user_openid" property="userOpenid" jdbcType="TIMESTAMP" />
+        <result column="parent_user_id" property="parentUserId" jdbcType="VARCHAR" />
+        <result column="weixin_attention_status" property="weixinAttentionStatus" jdbcType="VARCHAR" />
+        <result column="photo" property="photo" jdbcType="VARCHAR" />
+        <result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+        <result column="login_date" property="loginDate" jdbcType="TIMESTAMP" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <sql id="Base_WithDraw_list">
+        w.id,w.sys_user_id,w.user_openid,w.user_account_id,w.money_amount,w.status,w.withdraw_id,w.create_date,w.update_date
+    </sql>
+
+    <!--查询所有提现信息-->
+    <select id="queryAllWithdraw"
+            resultMap="WithDrawResultMap"
+            resultType="com.wisdom.common.persistence.Page">
+        SELECT
+        <include refid="Base_WithDraw_list"/>,u.nickname,u.user_type,u.identify_number,u.mobile
+        FROM withdraw_record w,sys_user u
+        WHERE w.sys_user_id = u.id
+        ORDER BY w.create_date DESC
+    </select>
+
+    <select id="getWithdrawInfoByPage"
+            resultMap="WithDrawResultMap">
+        SELECT
+        *
+        FROM withdraw_record
+        WHERE
+        sys_user_id=#{userId}
+        ORDER BY update_date DESC
+        limit #{pageNo},#{pageSize}
+    </select>
+
+    <!--修改提现状态-->
+    <update id="updateWithdrawById" >
+        UPDATE withdraw_record
+        SET
+        <if test="status != ''and status != null">
+            status=#{status}
+        </if>
+        WHERE 1=1
+        AND id = #{withdrawId}
+    </update>
+
+    <!--根据条件查询提现信息-->
+    <select id="queryWithdrawsByParameters" resultMap="WithDrawResultMap">
+        SELECT
+        <include refid="Base_WithDraw_list"/>,u.nickname,u.user_type,u.identify_number,u.mobile
+        FROM withdraw_record w,sys_user u
+        WHERE 1=1 AND w.sys_user_id = u.id
+        <if test='timeType == "1" '>
+            AND w.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test='timeType == "2" '>
+            AND w.update_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="param != null and param != ''">
+            AND (u.identify_number = #{param} OR u.mobile=#{param})
+        </if>
+        ORDER BY w.create_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+
+    <!--根据条件查询提现信息count-->
+    <select id="queryWithdrawsCountByParameters" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM withdraw_record w,sys_user u
+        WHERE 1=1 AND w.sys_user_id = u.id
+        <if test='timeType == "1" '>
+            AND w.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test='timeType == "2" '>
+            AND w.update_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="param != null and param != ''">
+            AND (u.identify_number = #{param} OR u.mobile=#{param})
+        </if>
+    </select>
+
+    <!-- 创建账户信息 -->
+    <insert id="addWithDrawRecord">
+        INSERT INTO withdraw_record(
+        id,
+        sys_user_id,
+        user_openid,
+        user_account_id,
+        money_amount,
+        status,
+        create_date,
+        update_date,
+        withdraw_id
+        ) VALUES (
+        #{id},
+        #{sysUserId},
+        #{userOpenId},
+        #{userAccountId},
+        #{moneyAmount},
+        #{status},
+        #{createDate},
+        #{updateDate},
+        #{withdrawId}
+        )
+    </insert>
+
+    <!--根据条件查询提现信息-->
+    <select id="getWithdrawDetail" resultMap="WithDrawResultMap">
+        SELECT
+        *
+        FROM withdraw_record
+        WHERE
+        withdraw_id=#{withDrawId}
+    </select>
+
+</mapper>

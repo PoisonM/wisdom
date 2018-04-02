@@ -1,0 +1,55 @@
+<ion-view style="background: #f2f5f9">
+    <style type="text/css">
+        .grey{background: #F8F8F8}
+    </style>
+    <ion-content>
+        <div class="list" ng-repeat="item in param.unPaidOrder"    style="margin-top:0.14rem">
+            <div class="item" style="padding:0px">
+                <ion-checkbox style="border-color:transparent" ng-checked="item.addressChecked" ng-click="chooseAddress(item)">
+                    <span style="font-size: 0.3rem;color: #333333">{{item.senderAddress}}</span>
+                </ion-checkbox>
+            </div>
+            <div class="item item-avatar"
+                 ng-repeat="item2 in item.orderList"
+                 style="min-height:2.5rem">
+                <img ng-src="{{item2.productFirstUrl}}"
+                     style="width: 1.5rem;height: 2.0rem;border-radius: 0; margin-left: 0.5rem; min-height: 2rem; min-width: 2rem;"
+                     ui-sref="offlineProductDetail({productId:item2.productId})">
+                <h2 style="margin-left:1.5rem" ui-sref="offlineProductDetail({productId:item2.productId})">{{item2.productName}}</h2>
+                <p style="margin-left:1.55rem;color: #b2b2b2;" ui-sref="offlineProductDetail({productId:item2.productId})">{{item2.productSpec}}</p>
+                <input type="checkbox" style="height:0.3rem;width: 0.3rem;margin-left:-60px" ng-checked="item2.orderChecked" ng-click="chooseOrder(item2)"/>
+                <br>
+                <p class="item-note">
+                    <ion class="ion ion-ios-minus-outline" style="font-size:25px;margin-right: 0.1rem" ng-click="minusProductNum(item2)" class="grey"></ion>
+                    <span style="font-size:0.4rem">{{item2.productNum}}</span>
+                    <ion class="ion ion-ios-plus-outline" style="font-size:25px;margin-left: 0.1rem" ng-click="addProductNum(item2)"></ion>
+                    <span style="display: inline-block"><img src="images/delete.png" style="width: 16px;height: 18px;margin-left: 0.3rem;margin-top: 0.5rem" ng-click="delete(item2)"></span>
+                </p>
+                <br>
+                <p style="margin-left:1.55rem;font-size:0.4rem;color: red">￥{{item2.productPrice}}</p>
+            </div>
+        </div>
+        <!--购物车内无商品时显现的-->
+        <div class="cartNull"   style="margin: 0 auto;width: 3rem;height: 4rem;margin-top: 3rem">
+            <img src="images/cartNull.png" style="width: 2.56rem;height: 2rem;margin: auto">
+            <p style="margin-top: 0.68rem;color: #333333">哎呦，购物车空空如也~</p>
+            <p style="color: #fe4343;font-size: 0.3rem;margin-top: 0.2rem;text-align: center" ui-sref="shopHome">随便逛逛</p>
+        </div>
+        <br/><br/><br/><br/>
+    </ion-content>
+    <div class="tabs" style="background: white;padding-top: 0px" ng-if="param.unPaidOrder.length!=0">
+        <a class="tab-item" style="background:#f8f8f8" ng-click="selectAllOrder()">
+            <input type="checkbox" ng-checked="param.selectAll" style="margin-left:-40px;">
+            <span style="margin-left:-30px;position: absolute;margin-top: -2px;width: 100px;z-index: 999;">全选</span>
+        </a>
+        <a class="tab-item" style="background:#f8f8f8;color:#444;font-size:0.3rem;">
+            <p style="position:absolute;margin-top:-0.2rem;margin-left:0.2rem;font-size: 0.28rem;color: #333333">
+                合计：<span style="color: #ff4a59;font-size: 0.32rem">￥{{param.totalPayPrice}}</span>
+            </p>
+            <p style="position:absolute;margin-top:0.2rem;margin-left: 1.5rem;font-size: 0.24rem;color: #aaaaaa">免运费</p>
+        </a>
+        <a class="tab-item" style="background: #ff4a59;color: #fefefe;font-size:0.36rem" ng-click="goPay()" id="greyBox">
+            结算
+        </a>
+    </div>
+</ion-view>

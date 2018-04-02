@@ -1,0 +1,119 @@
+.basicInfo-box {}
+
+.basicInfo-box .headPortrait-box {
+    height: 75px;
+    width: 75px;
+    margin: -15px 0 0 15px;
+    background: #F5F5F5;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.basicInfo-box .headPortrait-box .headPortrait {
+    height: 60px;
+    width: 60px;
+    margin: 7px;
+    border-radius: 50%;
+    background: #666;
+    overflow: hidden;
+}
+
+.basicInfo-box .headPortrait-box .headPortrait img {
+    width: 100%;
+    height: 100%;
+}
+
+.basicInfo-box .basicInfo-content {
+    margin-left: 21px;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-first {
+    margin-top: 12px;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-first .basicInfoName {
+    font-family: PingFangSC-Regular;
+    font-size: 18px;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-first .accountRecords {
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #FF6666;
+    letter-spacing: 0;
+    margin: 3px 0 0 15px;
+    display: block;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-first .accountRecords b {
+    font-family: PingFangSC-Ultralight;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-second {
+    margin-top: 8px;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-second span {
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #999999;
+    letter-spacing: 0;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-third {
+    margin-top: 8px;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-third span {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #FF6666;
+    letter-spacing: 0;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-third .totalOwed {
+    margin-left: 80px;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-third span b {
+    font-family: PingFangSC-Semibold;
+    font-size: 20px;
+    color: #FF6666;
+    letter-spacing: 0.5px;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-fourth {
+    margin: 13px 0 0 -80px;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-fourth .beautician {
+    margin-left: 10px;
+}
+
+.basicInfo-box .basicInfo-content .basicInfo-content-fourth span {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #999999;
+    letter-spacing: 0;
+}
+
+.basicInfo-box .basicInfo-right {
+    float: right;
+    width: 107px;
+    margin: 7px 14px 0 0;
+}
+
+.basicInfo-box .basicInfo-right button {
+    background: #FF6666;
+    border-radius: 4px;
+    width: 107px;
+    height: 30px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FCFCFC;
+    letter-spacing: 0.4px;
+    margin-top: 10px;
+    border: none;
+}

@@ -1,0 +1,71 @@
+<!--划卡-->
+
+<div class="scratchCard width1348H1012" >
+    <div class="PopupwindowTitle colorWhite bgff6666">
+        <p class="cancel " >
+            <span class="marginLeft20">取消</span>
+        </p>
+        <p class="centerBtn ">
+            关联员工
+        </p>
+        <p class="scheduling ">
+            <span class="true">添加更多</span>
+        </p>
+    </div>
+    <div class="content">
+        <div class="productMess paddingLeft50">
+            <div class="space-between waterGuangZhen ">
+                <p>
+                    <span class=" color333FS38" >年卡</span>
+                    <span class="yearCard w66h32 btnActive marginLeft16 FS24">年卡</span>
+                </p>
+                <img srimagess/bt_shut%20down%20b.png" class="rightContent downPic cha">
+
+            </div>
+            <div class="money color999FS32 colorFF6666FS34 space-between">
+                <p class="W33">金额 <span class="num">￥99.00</span></p>
+                <p class="color333FS38 W33 center" >已划 <span class="colorFF6666FS38">2</span></p>
+                <p class="W33"></p>
+
+            </div>
+            <p class="discountNum color999FS32">
+                有效期2018-01-01至2019-01-01
+            </p>
+        </div>
+        <ul class="height100Num color333FS34 ">
+            <li class="space-between paddingLeft30">
+                <p >划卡数量</p>
+                <p class="rightContent">
+                    <button class="reduction">-</button>
+                    <input type="text" value="1">
+                    <button class="addBtn">+</button>
+                </p>
+            </li>
+            <li class="space-between paddingLeft30">
+                <span >关联员工</span>
+                <a class="rightContent">李丽<img src="images/bt_more.png" class="morePic marginLeft20"></a>
+            </li>
+        </ul>
+        <div class="note">
+            <label class="color333FS34">备注</label>
+            <textarea></textarea>
+            <p>
+                <button class="nextStepBtn rightMgain60">下一步</button>
+            </p>
+        </div>
+    </div>
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+                };
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+    </script>
+</div>

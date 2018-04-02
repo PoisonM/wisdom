@@ -1,0 +1,85 @@
+<div>
+
+    <nav-bar index1="5" index2="51"></nav-bar>
+    <div class="main_content">
+        <enjoy-menu></enjoy-menu>
+        <div class="content_box">
+            <div class="mum" ng-show="mum">
+                <div class="m-load2">
+                    <div class="line">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="circlebg"></div>
+                </div>
+            </div>
+            <div class="product_content_right">
+                <div class="rightCenter">
+                    <div class="product_lis meunLis1">
+                            <button ng-click="bgChangeAndSearch('')" ng-class="{'active':status==''}">全部</button>
+                            <button ng-click="bgChangeAndSearch('business-A')" ng-class="{'active':status=='business-A'}">A级</button>
+                            <button ng-click="bgChangeAndSearch('business-B')" ng-class="{'active':status=='business-B'}">B级</button>
+                            <button ng-click="bgChangeAndSearch('business-C')" ng-class="{'active':status=='business-C'}">普通</button>
+                    </div>
+                    <div class="product_eara">
+                        <div class="product_name">
+                            <div class="product_nameEara">
+                                <label class="bold">用户账号:</label>
+                                <input type="text" class="product_search" ng-model="phoNum">
+                            </div>
+                        </div>
+                        <div class="product_name big">
+                            <div class="ABtime">
+
+                                   <span class="bold agencyTime">时间：&nbsp&nbsp&nbsp</span>
+
+                                <input  class="time startTime laydate-icon"  id="startTime" ng-click="dataS('#startTime')" >&nbsp--&nbsp<input  class="time endTime laydate-icon " id="endTime" ng-click="dataS('#endTime')">
+                            </div>
+                        </div>
+                        <div class="product_searchEara">
+                            <input type="button" value="搜索" class="search_btn top_1" ng-click="searchAB()">
+                        </div>
+                    </div>
+                    <div class="table_lis">
+                        <!--<div >
+                            <a class="order_lis simulateBtn" ng-click="educeLis()">导出列表</a>
+                        </div>-->
+                        <table class="table  table-hover text-center  ">
+                            <thead>
+                            <tr id="product_lis_title">
+                                <th class="text-center" >昵称</th>
+                                <th class="text-center" >账号</th>
+                                <th class="text-center" >等级</th>
+                                <th class="text-center" >时间</th>
+                                <th class="text-center" >时效</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in agency">
+                                <td>{{item.nickname}}</td>
+                                <td >
+                                   {{item.mobile}}
+                                </td>
+                                <td > {{item.userType}}</td>
+                                <td >{{item.beginTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>{{item.livingPeriod}}天</td>
+                                <td><a ui-sref="agencyParticulars({id:item.id,parentUserId:item.parentUserId,pageNo:pageParamVoDTO.pageNo,mobile:pageParamVoDTO.requestData.mobile,userType:pageParamVoDTO.requestData.userType,startTime:pageParamVoDTO.startTime,endTime:pageParamVoDTO.endTime})" class="orderBtn" >详情</a></td>
+                            </tr>
+
+
+
+                            </tbody>
+                        </table>
+                        <div page-tool></div>
+                    </div>
+                </div>
+            </div>
+         </div>
+
+    </div>
+</div>

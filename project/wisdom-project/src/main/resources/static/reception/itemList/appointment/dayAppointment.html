@@ -1,0 +1,74 @@
+<div class="dayAppointment">
+    <div class="header">
+        <p class="timeArea">
+            <input  class="time  " id="orderPayStartTime"  ng-click="dataS('#orderPayStartTime')"  value="{{date}}">
+        </p>
+        <p class="centerBtn">
+            <input type="button" class="appointmentDay {{param.btnActive[0]}} " value="日预约" ng-click="appointmentChange('day')" >
+            <input type="button"  class="appointmentWeek {{param.btnActive[1]}}" value="周预约" ng-click="appointmentChange('week')">
+        </p>
+        <p class="scheduling">
+            <span>排班</span>
+        </p>
+    </div>
+    <div class="content">
+        <div class="nameLis">
+            <ul>
+                <li class="w156"></li>
+                <li>
+                    <p class="name">wang</p>
+                    <p class="fs24 mt10 mb20">
+                        <img src="images/ic_point.png" class="mr12">
+                        12
+                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
+                        <img src="images/ic_row.png" class="mr12">
+                        12
+                    </p>
+                </li>
+                <li>
+                    <p class="name">wang</p>
+                    <p class="fs24 ">
+                        <img src="images/ic_point.png" class="mr12">
+                        12
+                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
+                        <img src="images/ic_row.png" class="mr12">
+                        12
+                    </p>
+                </li>
+                <li>
+                    <p class="name">wang</p>
+                    <p class="fs24 ">
+                        <img src="images/ic_point.png" class="mr12">
+                        12
+                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
+                        <img src="images/ic_row.png" class="mr12">
+                        12
+                    </p>
+                </li>
+
+            </ul>
+        </div>
+        <div class="messLis">
+            <ul class="time">
+                <li ng-repeat="item in arrTime" style="text-align: center">{{item}}</li>
+            </ul>
+            <div class="appointmentLis">
+                <ul>
+                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
+                </ul>
+                <ul>
+                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
+                </ul>
+                <ul>
+                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
+                </ul>
+                <ul>
+                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
+                </ul>
+                <ul>
+                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

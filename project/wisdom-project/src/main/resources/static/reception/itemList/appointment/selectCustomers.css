@@ -1,0 +1,15 @@
+.selectCustomersWrap{width: 5.92rem;height: 10.70rem;background: #f5f5f5;border-radius: 0.125rem;margin: auto}
+.customerTop{height: 0.812rem;line-height: 0.812rem;}
+.customerTop ul{display: flex;flex-wrap: wrap;justify-content: space-between}
+.customerTop .people img{width: 0.3rem;height: 0.3rem}
+.pl{padding-left: 0.234rem}
+.pr{padding-right: 0.234rem}
+.pt{padding-top: 0.1rem}
+.color6666{color: #ff6666;font-size: 0.265rem}
+.fc{color: #333333;font-size:0.29rem;font-weight: 600}
+.sumbol{font-size: 0.4rem;display: inline-block;margin-right: 0.125rem}
+.customerSearch{height: 0.7rem;background: #e4e4e4;line-height: 0.7rem;position: relative;text-align: center}
+.customerSearch input{height: 0.4rem;width: 5.48rem;text-indent: 2.3rem}
+.ser_ion{position: absolute;top: 0.22rem;left:2rem;display: block;width: 0.234375rem;height: 0.234375rem;padding: 0.109375rem 0.09375rem;background: url("../../images/bt_search.png") no-repeat;background-size: 100% 100%;}
+.customerSearch ul{background: #ffffff;text-align: left;}
+.customerSearch .searchName{height: 0.781rem;border-bottom: 1px solid #e5e5e5;line-height: 0.781rem;padding-left: 0.234rem}

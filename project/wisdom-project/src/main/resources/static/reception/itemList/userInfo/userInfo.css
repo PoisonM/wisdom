@@ -1,0 +1,53 @@
+.userInfo{
+    width: 100%;
+    height: 100%;
+    padding-left: 4.96875rem;
+    position: relative;
+    font-family: PingFangSC-Regular;
+    overflow: hidden;
+}
+.userInfo .userInfo_public{
+    width: 4.96875rem;
+    height: 100%;
+    position: absolute;
+    left: 0rem;
+    top: 0rem;
+    bottom: 0rem;
+    border-right: 1px solid #B4B4B4;
+}
+
+.userInfo_public .message{
+    height: 88px;
+    width: 100%;
+    padding: 5px;
+    overflow: hidden;
+}
+.userInfo_public .message li{
+    width: 25%;
+    text-align: center;
+    float: left;
+}
+
+.userInfo_public .message li span{
+    font-size: 15px;
+    color: #888888;
+    letter-spacing: 0.4px;
+    width: 100%;
+    display: block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.userInfo_public .message li b{
+    font-size: 10px;
+    color: #888888;
+}
+.userInfo_public .message i{
+    display: inline-block;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: pink;
+    /*background: url("../../images/MX-sprite.png") no-repeat;*/
+    background-position: 20px 20px;
+}

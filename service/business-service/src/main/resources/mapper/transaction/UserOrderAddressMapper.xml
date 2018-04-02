@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.business.mapper.transaction.UserOrderAddressMapper">
+
+    <resultMap id="UserOrderAddressResultMap" type="com.wisdom.common.dto.system.UserOrderAddressDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+        <result column="province" property="province" jdbcType="VARCHAR" />
+        <result column="city" property="city" jdbcType="VARCHAR" />
+        <result column="detail_address" property="detailAddress" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getUserOrderAddress"
+            resultMap="UserOrderAddressResultMap">
+        select * from
+        user_order_address
+        where
+        1=1
+        <if test="userId != null and userId != ''">
+            AND sys_user_id=#{userId}
+        </if>
+        AND del_flag!='1'
+    </select>
+
+    <select id="getUserOrderAddressByOrderId"
+            resultMap="UserOrderAddressResultMap">
+        select uoa.* from business_order bor, user_order_address uoa
+        where bor.user_order_address_id=uoa.id
+        AND
+        1=1
+        <if test="orderId != null and orderId != ''">
+           AND bor.order_id=#{orderId}
+        </if>
+    </select>
+
+    <select id="findUserAddressById"
+            resultMap="UserOrderAddressResultMap">
+        select * from
+        user_order_address
+        where
+        id=#{addressId}
+    </select>
+
+    <update id="deleteUserAddress">
+        UPDATE user_order_address
+        SET
+        del_flag='1'
+        WHERE
+        id=#{addressId}
+    </update>
+
+    <insert id="addUserAddress"
+            parameterType="com.wisdom.common.dto.system.UserOrderAddressDTO">
+        INSERT INTO user_order_address(
+        id,sys_user_id,user_name,user_phone,province,city,detail_address,status,del_flag) values
+        (#{id},#{sysUserId},#{userName},#{userPhone},#{province},#{city},#{detailAddress},#{status},#{delFlag});
+    </insert>
+
+    <update id="updateUserAddress"
+            parameterType="com.wisdom.common.dto.system.UserOrderAddressDTO">
+        UPDATE user_order_address SET
+        sys_user_id=#{sysUserId},
+        user_name=#{userName},
+        user_phone=#{userPhone},
+        province=#{province},
+        city=#{city},
+        detail_address=#{detailAddress},
+        status=#{status}
+        WHERE id=#{id};
+    </update>
+
+
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.business.mapper.transaction.PayRecordMapper">
+
+    <resultMap id="PayRecordResultMap" type="com.wisdom.common.dto.account.PayRecordDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+        <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
+        <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="FLOAT" />
+        <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="openid" property="openid" jdbcType="VARCHAR" />
+        <result column="invoice" property="invoice" jdbcType="VARCHAR" />
+
+        <result column="nickname" property="nickName" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!-- 创建账户信息 -->
+    <insert id="insertPayRecord">
+        INSERT INTO pay_record(
+        id,
+        sys_user_id,
+        out_trade_no,
+        transaction_id,
+        order_id,
+        amount,
+        pay_type,
+        status,
+        pay_date,
+        openid,
+        invoice
+        ) VALUES (
+        #{id},
+        #{sysUserId},
+        #{outTradeNo},
+        #{transactionId},
+        #{orderId},
+        #{amount},
+        #{payType},
+        #{status},
+        #{payDate},
+        #{openid},
+        #{invoice}
+        )
+    </insert>
+
+    <select id="getUserPayRecordList" resultMap="PayRecordResultMap">
+        select * from pay_record WHERE
+        1=1
+        <if test="sysUserId!= ''and sysUserId!=null">
+            and sys_user_id=#{sysUserId}
+        </if>
+        <if test="outTradeNo!= ''and outTradeNo!=null">
+            and out_trade_no=#{outTradeNo}
+        </if>
+        <if test="transactionId!= ''and transactionId!=null">
+            and transaction_id=#{transactionId}
+        </if>
+        <if test="orderId!= ''and orderId!=null">
+            and order_id=#{orderId}
+        </if>
+        <if test="status!= ''and status!=null">
+            and status=#{status}
+        </if>
+        <if test="openid!= ''and openid!=null">
+            and openid=#{openid}
+        </if>
+        <if test="invoice!= ''and invoice!=null">
+            and invoice=#{invoice}
+        </if>
+    </select>
+
+    <update id="updatePayRecordStatus">
+        UPDATE pay_record SET
+        status=#{status}
+        WHERE
+        id = #{id}
+    </update>
+
+    <!--根据条件查询账单信息count-->
+    <select id="queryPayRecordCountByParameters" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM pay_record p,business_order o,sys_user u
+        WHERE 1=1 AND p.order_id = o.order_id AND o.sys_user_id= u.id AND p.status = '1'
+        <if test='timeType == "1" '>
+            AND p.pay_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test='timeType == "2" '>
+            AND o.update_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="param != null and param != ''">
+            AND (p.transaction_id = #{param} OR p.order_id=#{param})
+        </if>
+    </select>
+
+    <!--根据条件查询账单信息-->
+    <select id="queryPayRecordsByParameters" resultMap="PayRecordResultMap">
+        SELECT
+        p.id,p.sys_user_id,p.order_id,p.out_trade_no,p.transaction_id,p.amount,p.pay_type,p.status,p.pay_date,p.status,p.openid,p.invoice,
+        o.update_date,u.nickname,u.user_type,u.mobile,u.identify_number
+        FROM pay_record p,business_order o,sys_user u
+        WHERE 1=1 AND p.order_id = o.order_id AND o.sys_user_id= u.id AND p.status = '1'
+        <if test='timeType == "1" '>
+            AND p.pay_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test='timeType == "2" '>
+            AND o.update_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="param != null and param != ''">
+            AND (p.transaction_id = #{param} OR p.order_id=#{param})
+        </if>
+        ORDER BY p.pay_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getUserPayRecordListByDate" resultMap="PayRecordResultMap">
+        select pr.* from pay_record pr, business_order bor where
+        pr.sys_user_id=#{userId}
+        AND
+        pr.order_id=bor.order_id
+        and bor.type="offline"
+    </select>
+
+    <select id="getSellNumByProductId" resultType="string">
+        SELECT IFNULL(SUM(product_num),0)
+        from pay_record p,order_product_relation o
+        WHERE p.`status` = '1' AND o.business_order_id = p.order_id
+        AND o.business_product_id = #{productId}
+    </select>
+
+</mapper>

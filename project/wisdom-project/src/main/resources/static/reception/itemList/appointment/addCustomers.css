@@ -1,0 +1,18 @@
+.addWraps{width: 5.90rem;height:10.7rem;background: #f5f5f5;margin: auto}
+.addWraps .headers{height: 0.812rem;width:100%;line-height: 0.812rem ;text-align: center;background: #eeeeee}
+.addWraps .checks{font-size: 0.296rem;color: #ff6666;float: left}
+.addWraps .headers ul{list-style: none;display: flex;flex-wrap: wrap;justify-content: space-around;width: 100%}
+.addWraps .headers ul li{width: 33%}
+.addWraps .addCustomer{font-size: 0.296rem;color: #333333;font-weight: 600}
+.addWraps .photoBox{width: 5.90rem;height: 2.065rem;background: #ffffff; vertical-align: middle; display: table-cell;text-align: center;}
+.addWraps .photoBox img{width: 1.234rem;height: 1.234rem;}
+.addWraps .customerBox{width: 5.90rem;height: 2.343rem;background: #ffffff;margin-top:0.156rem}
+.addWraps .customerBox ul{list-style: none}
+.addWraps .customerBox ul li{height: 0.781rem;line-height: 0.781rem;border-bottom: 1px solid #e5e5e5}
+.addWraps .customerBox label{font-size:0.265rem;color: #333333;float: left;margin-left: 0.156rem}
+.addWraps .customerBox input{float: right;line-height: 0.781rem;;text-align: right;padding-right: 0.156rem ;font-size: 0.265rem}
+.addWraps .maleBox{float: right;color: #ffffff;margin-right:0.156rem }
+.addWraps .customerBox .p1{display: inline-block;background: #ff6666;width: 0.796875rem ;line-height: 0.359rem;text-align: center;border-radius: 0.1875rem;font-size:0.203125rem ;}
+.addWraps .customerBox .p1 img{width: 0.1875rem ; height: 0.203125rem;vertical-align: middle;margin-right:0.15625rem ; }
+.addWraps .customerBox img{width: 0.359rem;height: 0.4375rem;}
+.bgeee{background: #eeeeee!important;}

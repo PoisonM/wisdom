@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.business.mapper.transaction.TransactionMapper">
+
+    <resultMap id="OrderProductRelationResultMap" type="com.wisdom.common.dto.transaction.OrderProductRelationDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="business_order_id" property="businessOrderId" jdbcType="VARCHAR" />
+        <result column="business_product_id" property="businessProductId" jdbcType="VARCHAR" />
+        <result column="product_num" property="productNum" jdbcType="VARCHAR" />
+        <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="BusinessOrderResultMap" type="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="order_id" property="businessOrderId" jdbcType="VARCHAR" />
+        <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+        <result column="update_date" property="updateDate" jdbcType="VARCHAR" />
+        <result column="user_order_address_id" property="userOrderAddressId" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="pay_date" property="payDate" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="VARCHAR" />
+        <result column="user_name" property="userNameAddress" jdbcType="VARCHAR" />
+        <result column="user_phone" property="userPhoneAddress" jdbcType="VARCHAR" />
+        <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+        <result column="name" property="businessProductName" jdbcType="VARCHAR" />
+        <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
+        <result column="price" property="businessProductPrice" jdbcType="VARCHAR" />
+        <result column="product_num" property="businessProductNum" jdbcType="VARCHAR" />
+        <result column="waybill_number" property="waybillNumber" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="ExportOrderExcelMap" type="com.wisdom.common.dto.system.ExportOrderExcelDTO" >
+        <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+        <result column="product_id" property="productId" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="nickname" property="nickName" jdbcType="VARCHAR" />
+        <result column="pay_date" property="payDate" jdbcType="VARCHAR" />
+        <result column="brand" property="productBrand" jdbcType="VARCHAR" />
+        <result column="name" property="productName" jdbcType="VARCHAR" />
+        <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
+        <result column="product_num" property="productNum" jdbcType="VARCHAR" />
+        <result column="status" property="orderStatus" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+        <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="VARCHAR" />
+        <result column="invoice" property="invoice" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="OrderCopRelationResultMap" type="com.wisdom.common.dto.transaction.OrderCopRelationDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+        <result column="waybill_number" property="waybillNumber" jdbcType="VARCHAR" />
+        <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="MonthTransactionRecordMap" type="com.wisdom.common.dto.transaction.MonthTransactionRecordDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="REAL" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_BusinessOrder_list">
+        o.id,o.sys_user_id,o.order_id,o.type,o.status,o.create_date,o.update_date,o.user_order_address_id
+    </sql>
+
+    <insert id="createBusinessOrder">
+        INSERT INTO business_order(
+        id,
+        sys_user_id,
+        order_id,
+        type,
+        status,
+        create_date,
+        update_date,
+        user_order_address_id
+        ) VALUES (
+        #{id},
+        #{sysUserId},
+        #{businessOrderId},
+        #{type},
+        #{status},
+        #{createDate},
+        #{updateDate},
+        #{userOrderAddressId}
+        )
+    </insert>
+
+    <insert id="createOrderProductRelation">
+        INSERT INTO order_product_relation(
+        id,
+        business_order_id,
+        business_product_id,
+        product_num,
+        product_spec
+        ) VALUES (
+        #{id},
+        #{businessOrderId},
+        #{businessProductId},
+        #{productNum},
+        #{productSpec}
+        )
+    </insert>
+
+    <select id="getOrderProductUnPaidInBuyCart"
+            resultMap="OrderProductRelationResultMap" >
+        SELECT opr.* FROM business_order bo,order_product_relation opr
+        WHERE bo.order_id=opr.business_order_id and bo.status="3" and
+        opr.business_product_id=#{productId} and bo.sys_user_id=#{userId} and opr.product_spec=#{productSpec}
+    </select>
+
+    <!-- 更新用户 -->
+    <update id="updateOrderProductRelation">
+        UPDATE order_product_relation SET
+        id = #{id}
+        <if test="businessOrderId!= ''and businessOrderId!=null">
+            ,business_order_id=#{businessOrderId}
+        </if>
+        <if test="businessProductId!= ''and businessProductId!=null">
+            ,business_product_id=#{businessProductId}
+        </if>
+        <if test="productNum!= '' and productNum!=null">
+            ,product_num=#{productNum}
+        </if>
+        <if test="productSpec!= '' and productSpec!=null">
+            ,product_spec=#{productSpec}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="getUserAllOrderProductFromBuyCart"
+            resultMap="OrderProductRelationResultMap">
+        SELECT opr.* FROM business_order bo,order_product_relation opr
+        WHERE bo.order_id=opr.business_order_id and bo.status="3" and bo.sys_user_id=#{userId}
+    </select>
+
+    <select id="getUserUnPayOrderInBuyCart"
+            resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
+        select bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
+        opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,bpr.price businessProductPrice from
+        business_order bor, order_product_relation opr, business_product bpr
+        where
+        bor.order_id=opr.business_order_id and bor.sys_user_id=#{userId} and
+        bor.`status`="3" and opr.business_product_id=bpr.product_id
+    </select>
+
+    <select id="getBusinessOrderByOrderId"
+            resultMap="BusinessOrderResultMap">
+        select * from
+        business_order
+        where
+        1=1
+        AND
+        <if test="orderId != null and orderId != ''">
+            order_id=#{orderId}
+        </if>
+    </select>
+
+    <!-- 更新订单 -->
+    <update id="updateBusinessOrder">
+        UPDATE business_order SET
+        id = #{id}
+        <if test="sysUserId!= ''and sysUserId!=null">
+            ,sys_user_id=#{sysUserId}
+        </if>
+        <if test="businessOrderId!= ''and businessOrderId!=null">
+            ,order_id=#{businessOrderId}
+        </if>
+        <if test="type!= '' and type!=null">
+            ,type=#{type}
+        </if>
+        <if test="status!= '' and status!=null">
+            ,status=#{status}
+        </if>
+        <if test="createDate!=null">
+            ,create_date=#{createDate}
+        </if>
+        <if test="updateDate!=null">
+            ,update_date=#{updateDate}
+        </if>
+        <if test="userOrderAddressId!= '' and userOrderAddressId!=null">
+            ,user_order_address_id=#{userOrderAddressId}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="getBusinessOrderListByUserIdAndStatus"
+            resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
+        select bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
+        opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,bpr.price businessProductPrice,bor.status status,
+        bor.update_date updateDate
+        from
+        business_order bor, order_product_relation opr, business_product bpr
+        where
+        bor.order_id=opr.business_order_id and bor.sys_user_id=#{userId}
+        <if test="status!= '' and status!=null">
+            and bor.status=#{status}
+        </if>
+        <if test="status== ''or status==null">
+            and bor.status!='del'
+        </if>
+        AND
+        opr.business_product_id=bpr.product_id
+        ORDER BY
+        bor.update_date DESC
+    </select>
+
+    <select id="getTrainingBusinessOrder"
+            resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO">
+        select bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
+        opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,bpr.price businessProductPrice,bor.status status from
+        business_order bor, order_product_relation opr, business_product bpr
+        where
+        bor.order_id=opr.business_order_id and bor.sys_user_id=#{sysUserId} and
+        bpr.`type`=#{type} and opr.business_product_id=bpr.product_id and opr.business_product_id=#{businessProductId}
+    </select>
+
+    <select id="getBusinessOrderList"
+            resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
+        SELECT
+        *
+        FROM business_order o
+        WHERE
+        1=1
+        <if test="id != ''and id != null  ">
+            AND o.id=#{id}
+        </if>
+        <if test="sysUserId != ''and sysUserId != null  ">
+            AND o.sys_user_id=#{sysUserId}
+        </if>
+        <if test="businessOrderId != ''and businessOrderId != null  ">
+            AND o.order_id=#{businessOrderId}
+        </if>
+        <if test="type != ''and type != null  ">
+            AND o.type=#{type}
+        </if>
+        <if test="status != ''and status != null  ">
+            AND o.status=#{status}
+        </if>
+        <if test="createDate != ''and createDate != null  ">
+            AND o.create_date=#{createDate}
+        </if>
+        <if test="updateDate != ''and updateDate != null  ">
+            AND o.update_date=#{updateDate}
+        </if>
+        <if test="userOrderAddressId != ''and userOrderAddressId != null  ">
+            AND o.user_order_address_id=#{userOrderAddressId}
+        </if>
+    </select>
+
+    <!--条件查询订单Count-->
+    <select id="queryBusinessOrderCountByParameters" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        from business_order o
+        LEFT JOIN sys_user u on u.id = o.sys_user_id
+        LEFT JOIN pay_record p on o.order_id = p.order_id
+        LEFT JOIN (
+        select order_id,max(pay_date) pay_date
+        from pay_record
+        group by order_id
+        ) b ON p.pay_date=b.pay_date
+        WHERE 1=1 AND p.order_id=b.order_id
+        <if test="param != null and param != ''">
+            AND (u.mobile=#{param} OR u.identify_number = #{param})
+        </if>
+        <if test='timeType == "1" '>
+            AND p.pay_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test='timeType == "2" '>
+            AND o.update_date BETWEEN #{startTime} AND #{endTime} AND o.status= 4
+        </if>
+        <if test="requestData.status != '' and requestData.status != null">
+            AND o.status = #{requestData.status}
+        </if>
+    </select>
+
+    <!--条件查询订单List-->
+    <select id="queryBusinessOrderByParameters" resultMap="BusinessOrderResultMap">
+        SELECT
+        <include refid="Base_BusinessOrder_list"/>,u.nickname,u.mobile,u.identify_number,p.transaction_id,p.pay_date,p.status AS pay_status,r.waybill_number
+        from business_order o
+        LEFT JOIN sys_user u on u.id=o.sys_user_id
+        LEFT JOIN pay_record p on o.order_id = p.order_id
+        LEFT JOIN order_cop_relation r ON o.order_id=r.order_id
+        LEFT JOIN (
+        select order_id,max(pay_date) pay_date
+        from pay_record
+        group by order_id
+        ) b ON p.pay_date=b.pay_date
+        WHERE 1=1 AND p.order_id=b.order_id
+        <if test="param != null and param != ''">
+            AND (u.mobile=#{param} OR o.order_id = #{param})
+        </if>
+        <if test='timeType == "1" '>
+            AND p.pay_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test='timeType == "2" '>
+            AND o.update_date BETWEEN #{startTime} AND #{endTime} AND o.status= 4
+        </if>
+        <if test="requestData.status != '' and requestData.status != null">
+            AND o.status = #{requestData.status}
+        </if>
+        ORDER BY p.pay_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+
+    <!--查询所有订单-->
+    <select id="queryAllBusinessOrders" resultMap="BusinessOrderResultMap">
+        SELECT
+        <include refid="Base_BusinessOrder_list"/>,u.nickname,u.mobile,u.identify_number,p.transaction_id,p.pay_date,p.status AS pay_status
+        from business_order o
+        LEFT JOIN sys_user u on u.id=o.sys_user_id
+        LEFT JOIN pay_record p on o.order_id = p.order_id
+        LEFT JOIN (
+        select order_id,max(pay_date) pay_date
+        from pay_record
+        group by order_id
+        ) b ON p.pay_date=b.pay_date
+        where p.order_id=b.order_id
+        ORDER BY p.pay_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+
+    <!--查询所有订单Count-->
+    <select id="queryAllBusinessOrderCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        from business_order o
+        LEFT JOIN sys_user u on u.id=o.sys_user_id
+        LEFT JOIN pay_record p on o.order_id = p.order_id
+        LEFT JOIN (
+        select order_id,max(pay_date) pay_date
+        from pay_record
+        group by order_id
+        ) b ON p.pay_date=b.pay_date
+        where p.order_id=b.order_id
+    </select>
+
+    <select id="getBusinessOrderDetailInfoByOrderId"
+            resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO">
+        select bor.sys_user_id sysUserId,bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
+        opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,
+        bpr.price businessProductPrice,bor.status status, bor.create_date createDate from
+        business_order bor, order_product_relation opr, business_product bpr
+        where
+        bor.order_id=opr.business_order_id
+        and
+        opr.business_product_id=bpr.product_id
+        and
+        <if test="orderId != null and orderId != ''">
+            bor.order_id=#{orderId}
+        </if>
+    </select>
+
+    <insert id="recordMonthTransaction">
+        INSERT INTO month_transaction_record(
+        id,
+        transaction_id,
+        sys_user_id,
+        amount,
+        create_date,
+        update_date
+        ) VALUES (
+        #{id},
+        #{transactionId},
+        #{userId},
+        #{amount},
+        #{createDate},
+        #{updateDate}
+        )
+    </insert>
+
+    <select id="getMonthTransactionRecordByUserId"
+            resultMap="MonthTransactionRecordMap">
+        SELECT *
+        FROM
+        month_transaction_record
+        where
+        sys_user_id=#{userId}
+        AND create_date BETWEEN #{startDate} and #{endDate}
+    </select>
+
+    <!--根据id查询订单详情-->
+    <select id="queryOrderDetailsById"
+            resultMap="BusinessOrderResultMap">
+        SELECT ord.order_id,ord.update_date,ord.`status`,ord.type,usr.mobile,ord.user_order_address_id,pay.amount,MAX(pay.pay_date) AS pay_date,
+        pay.transaction_id,adr.user_name,adr.user_phone,CONCAT(province," ",city," ",detail_address) as userAddress,
+        pro.`name`,pro.price, opr.product_spec,opr.product_num
+        FROM business_order ord
+        LEFT JOIN sys_user usr ON ord.sys_user_id = usr.id
+        LEFT JOIN order_product_relation opr ON ord.order_id = opr.business_order_id
+        LEFT JOIN business_product pro ON opr.business_product_id = pro.product_id
+        LEFT JOIN pay_record pay ON ord.order_id = pay.order_id
+        LEFT JOIN user_order_address adr ON ord.user_order_address_id = adr.id
+        WHERE
+        ord.order_id = #{orderId}
+    </select>
+
+    <!--修改订单地址-->
+    <update id="updateOrderAddress"
+            parameterType="com.wisdom.common.dto.system.UserOrderAddressDTO">
+        UPDATE user_order_address SET
+        user_name=#{userName},
+        user_phone=#{userPhone},
+        province=#{province},
+        city=#{city},
+        detail_address=#{detailAddress}
+        WHERE id=#{id};
+    </update>
+
+    <select id="getBusinessOrderByUserIdAndProductId"
+            resultMap="BusinessOrderResultMap" >
+        SELECT ord.*
+        FROM
+        business_order ord,
+        order_product_relation opr,
+        sys_user su
+        WHERE
+        ord.order_id = opr.business_order_id
+        AND
+        ord.sys_user_id = su.id
+        AND
+        opr.business_product_id = #{productId}
+        AND
+        ord.sys_user_id = #{userId}
+        AND
+        ord.status!="0"
+        AND
+        ord.status!="5"
+        AND
+        ord.status!="3"
+        AND
+		ord.status!="del"
+    </select>
+
+    <!--查询导出订单Excel所需数据-->
+    <select id="selectExcelContent" resultMap="ExportOrderExcelMap">
+        select
+        ord.order_id,pro.product_id,pro.name,pro.brand,usr.id,usr.nickname,usr.mobile,pay.pay_date,pay.amount,pay.invoice,
+        opr.product_num,ord.status,opr.product_spec,ddr.user_name,ddr.user_phone,CONCAT(ddr.province," ",ddr.city," ",ddr.detail_address) as userAddress
+        FROM business_order ord,business_product pro,sys_user usr,pay_record pay,
+        order_product_relation opr,user_order_address ddr
+        WHERE ord.sys_user_id = usr.id AND ord.order_id = opr.business_order_id
+        AND opr.business_product_id = pro.product_id
+        AND ord.order_id = pay.order_id AND ord.user_order_address_id = ddr.id
+        AND pro.type = "offline" AND ord.status = "1" AND pay.status="1"
+        ORDER BY pay_date ASC
+    </select>
+
+    <!--导出订单  修改未发货订单为已发货-->
+    <update id="updateOrderByOrderId">
+        UPDATE business_order SET
+        order_id = #{businessOrderId}
+        <if test="sysUserId!= ''and sysUserId!=null">
+            ,sys_user_id=#{sysUserId}
+        </if>
+        <if test="type!= '' and type!=null">
+            ,type=#{type}
+        </if>
+        <if test="status!= '' and status!=null">
+            ,status=#{status}
+        </if>
+        <if test="createDate!=null">
+            ,create_date=#{createDate}
+        </if>
+        <if test="updateDate!=null">
+            ,update_date=#{updateDate}
+        </if>
+        <if test="userOrderAddressId!= '' and userOrderAddressId!=null">
+            ,user_order_address_id=#{userOrderAddressId}
+        </if>
+        WHERE order_id = #{businessOrderId}
+    </update>
+
+    <!--给订单绑定COP号-->
+    <insert id="insertOrderCopRelation">
+        INSERT INTO order_cop_relation(
+        id,
+        order_id,
+        waybill_number,
+        transaction_id
+        ) VALUES (
+        #{id},
+        #{orderId},
+        #{waybillNumber},
+        #{transactionId}
+        )
+    </insert>
+    <!--编辑订单绑定相应的COP号-->
+    <update id="updateOrderCopRelation">
+        UPDATE order_cop_relation o
+        SET
+        o.waybill_number=#{waybillNumber}
+        WHERE
+          o.order_id=#{orderId}
+    </update>
+    <!--查询订单绑定相应的COP号-->
+    <select id="queryOrderCopRelationById"
+            resultMap="OrderCopRelationResultMap">
+        SELECT id,order_id,waybill_number,transaction_id
+        FROM order_cop_relation
+        WHERE 1=1
+        <if test="id != null and id != ''">
+            AND  id=#{id}
+        </if>
+        <if test="orderId != null and orderId != ''">
+            AND  order_id=#{orderId}
+        </if>
+        <if test="waybillNumber != null and waybillNumber != ''">
+            AND  waybill_number=#{waybillNumber}
+        </if>
+        <if test="transactionId != null and transactionId != ''">
+            AND  transaction_id=#{transactionId}
+        </if>
+    </select>
+</mapper>

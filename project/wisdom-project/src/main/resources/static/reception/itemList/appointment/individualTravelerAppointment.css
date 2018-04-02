@@ -1,0 +1,10 @@
+.individual ul{}
+.individual ul li {width:0.594rem;float:left;}
+.individual ul li .personnelPic{width:100%;border-radius: 0.039rem;border:red solid 1px;height:0.594rem;}
+.individual ul li:after,.individual ul:after{content:'';clear: both;display: block;}
+
+
+.individual .btn{width: 1.78rem;height: 0.532rem;border: 1px solid #ff6666;outline:none}
+
+.individual .giveContent{margin-left: 0.234rem;color: #ff6666;display: inline-block}
+.individual .redPoint{width: 0.09rem;height: 0.09rem;background: #ff6666;border-radius: 100%;display: inline-block}

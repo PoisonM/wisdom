@@ -1,0 +1,20 @@
+<ion-view style="background: #f2f5f9">
+    <ion-content>
+        <div class="list">
+            <p class="item"><span style="color: #666666;font-size: 0.28rem">快递公司</span>：<span style="color: #333333;font-size: 0.3rem">韵达快递</span><br>
+                <span style="color: #666666;font-size: 0.28rem">快递单号</span>：<span style="color: #333333;font-size: 0.3rem">{{logisticCode}}</span></p>
+        </div>
+        <div style="background: white;margin-bottom: 20px">
+            <ul style="list-style: none">
+                <p ng-if="state == 3" style="font-size: 0.32rem;color: #ff4a59;padding-top: 30px;padding-left: 30px">[收货地址]{{param.orderDetailInfo.province}}</p>
+                <p ng-if="state == 2" style="font-size: 0.32rem;color: #ff4a59;padding-top: 30px;padding-left: 30px">在途中</p>
+                <p ng-if="state == 3" style="font-size: 0.32rem;color: #ff4a59;padding-top: 30px;padding-left: 30px">已签收</p>
+                <p ng-if="state == 4" style="font-size: 0.32rem;color: #ff4a59;padding-top: 30px;padding-left: 30px">问题件</p>
+                <li ng-repeat="item in dataList" style="margin-top: 30px;margin-left: 20px">
+                    <p style="font-size: 0.28rem;color: #666666">{{item.AcceptStation}}</p>
+                    <p style="font-size: 0.24rem;color: #999999">{{item.AcceptTime}}</p>
+                </li>
+            </ul>
+        </div>
+    </ion-content>
+</ion-view>

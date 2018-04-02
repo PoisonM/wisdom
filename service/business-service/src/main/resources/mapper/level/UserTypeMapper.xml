@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.business.mapper.level.UserTypeMapper">
+
+    <resultMap id="UserBusinessTypeResultMap" type="com.wisdom.common.dto.system.UserBusinessTypeDTO" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="parent_user_id" property="parentUserId" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="living_period" property="livingPeriod" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!-- 查询用户 -->
+    <select id="getUserBusinessType"
+            parameterType="com.wisdom.common.dto.system.UserBusinessTypeDTO"
+            resultMap="UserBusinessTypeResultMap">
+        SELECT * FROM user_business_type
+        where 1=1
+        <if test="id != null and id !=''">
+            and id=#{id}
+        </if>
+        <if test="parentUserId != null and parentUserId !=''">
+            and parent_user_id=#{parentUserId}
+        </if>
+        <if test="sysUserId != null and sysUserId !=''">
+            and sys_user_id=#{sysUserId}
+        </if>
+        <if test="userType != null and userType !=''">
+            and user_type=#{userType}
+        </if>
+        <if test="livingPeriod != null and livingPeriod !=''">
+            and living_period=#{livingPeriod}
+        </if>
+        <if test="createDate !=null">
+            and create_date=#{createDate}
+        </if>
+        <if test="status != null and status !=''">
+            and status=#{status}
+        </if>
+    </select>
+
+    <!-- 插入用户 -->
+    <insert id="insertUserBusinessType">
+        INSERT INTO user_business_type(
+        id,
+        parent_user_id,
+        sys_user_id,
+        user_type,
+        create_date,
+        living_period,
+        status
+        ) VALUES (
+        #{id},
+        #{parentUserId},
+        #{sysUserId},
+        #{userType},
+        #{createDate},
+        #{livingPeriod},
+        #{status}
+        )
+    </insert>
+
+    <!-- 更新用户 -->
+    <update id="updateUserBusinessType">
+        UPDATE user_business_type SET
+        id = #{id}
+        <if test="parentUserId!= ''and parentUserId!=null">
+            ,parent_user_id=#{parentUserId}
+        </if>
+        <if test="sysUserId!= ''and sysUserId!=null">
+            ,sys_user_id=#{sysUserId}
+        </if>
+        <if test="userType!= ''and userType!=null">
+            ,user_type=#{userType}
+        </if>
+        <if test="createDate!=null">
+            ,create_date=#{createDate}
+        </if>
+        <if test="livingPeriod!=null">
+            ,living_period=#{livingPeriod}
+        </if>
+        <if test="status!= ''and status!=null">
+            ,status=#{status}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,84 @@
+  <div>
+      <nav-bar  index1="3" index2=""></nav-bar>
+      <div class="main_content">
+          <enjoy-menu></enjoy-menu>
+             <div class="content_box">
+                 <div class="mum mum2" ng-show="mum">
+                     <div class="m-load2">
+                         <div class="line">
+                             <div></div>
+                             <div></div>
+                             <div></div>
+                             <div></div>
+                             <div></div>
+                             <div></div>
+                         </div>
+                         <div class="circlebg"></div>
+                     </div>
+                 </div>
+                 <div class="product_content_left">
+                     <a class="btn_back" ng-click="back()">返回</a>
+                 </div>
+                <div class="product_content_right">
+                    <div class="rightCenter">
+                        <div class="uploading_product_name">
+                            <label>订单编号：</label>{{orderParticulars.businessOrderId}}
+                        </div>
+
+                        <div class="uploading_product_name">
+                            <label>付款时间：</label>{{orderParticulars.payDate|date:'yyyy-MM-dd HH:MM:ss'}}
+                        </div>
+                        <div class="uploading_product_name" ng-if="statusFlag">
+                            <label>{{status}}</label>{{orderParticulars.updateDate|date:'yyyy-MM-dd HH:MM:ss'}}
+                        </div>
+                        <div class="uploading_product_name">
+                            <label>支付金额：</label>{{orderParticulars.amount}}
+                        </div>
+                        <form name="form1">
+                            <div class="uploading_product_name">
+                                <label>收货人：</label>
+                                <input type="text" ng-model="orderParticulars.userNameAddress"  name="userName">
+                            </div>
+                            <div class="uploading_product_name">
+                                <label>联系方式：</label>
+                                <input type="text" ng-model="orderParticulars.userPhoneAddress" >
+                            </div>
+                            <div class="uploading_product_name takeGoodsAddress">
+                                <label>收货地址：</label>
+                                <input type="text" ng-model="userAddress[0]"   class="delivery_province"> 省&nbsp&nbsp
+                                <input type="text" ng-model="userAddress[1]"  class="delivery_city"> 市&nbsp&nbsp
+                                <input type="text" ng-model="userAddress[2]"  class="delivery_particularAddress"> 详细地址
+                            </div>
+
+                        </form>
+
+                        <div class="table_lis">
+
+                            <table class="table  text-center ">
+                                <thead>
+                                <tr id="product_lis_title">
+                                    <th class="text-center" >商品名称</th>
+                                    <th class="text-center" >商品类型</th>
+                                    <th class="text-center" >商品规格</th>
+                                    <th class="text-center" >商品单价</th>
+                                    <th class="text-center" >商品数量</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{orderParticulars.businessProductName}}</td>
+                                    <td>{{orderParticulars.type}}</td>
+                                    <td>{{orderParticulars.productSpec}}</td>
+                                    <td>{{orderParticulars.businessProductPrice}}</td>
+                                    <td>{{orderParticulars.businessProductNum}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <input type="button" value="提交" class="submit_btn" ng-click="submit()">
+                    </div>
+                </div>
+             </div>
+         </div>
+  </div>

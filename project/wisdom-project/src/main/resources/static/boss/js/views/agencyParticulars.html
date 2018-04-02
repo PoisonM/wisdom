@@ -1,0 +1,116 @@
+<div>
+    <enjoy-menu></enjoy-menu>
+    <nav-bar></nav-bar>
+     <div class="main_content">
+         <div class="mum" ng-show="mum">
+             <div class="m-load2">
+                 <div class="line">
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                 </div>
+                 <div class="circlebg"></div>
+             </div>
+         </div>
+         <div class="content_box">
+             <div class="product_content_left">
+                 <a class="btn_back" ng-click="back()">返回</a>
+             </div>
+            <div class="product_content_right">
+                <div class="rightCenter">
+                    <h2>自己的信息：</h2>
+                    <div class="table_lis">
+                           <table class="table  text-center ">
+                            <thead>
+                            <tr id="product_lis_title1">
+                                <th class="text-center" >用户ID</th>
+                                <th class="text-center" >时间</th>
+                                <th class="text-center" >历史记录</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in selfMessage">
+                                <td >
+                                   {{item.sysUserId}}
+                                </td>
+                                <td > {{item.createDate|date:'yyyy-MM-dd HH:MM:ss'}}</td>
+                                <td > {{item.userType}} 级</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                   <!-- <div class="product_lis meunLis1">
+
+                            <button ng-click="bgChangeAndSearch(0)" ng-class="{'active':agencyIndex==0}">全部</button>
+                            <button ng-click="bgChangeAndSearch(1)" ng-class="{'active':agencyIndex==1}">A级</button>
+                            <button ng-click="bgChangeAndSearch(2)" ng-class="{'active':agencyIndex==2}">B级</button>
+                            <button ng-click="bgChangeAndSearch(3)" ng-class="{'active':agencyIndex==3}">普通</button>
+
+                    </div>-->
+                    <!--搜索-->
+                  <!--  <div class="product_eara">
+                        <div class="product_name">
+                            <div class="product_nameEara">
+                                <span class="product_btn user">发展的用户账号</span>
+                                <input type="text" class="product_search">
+                            </div>
+                        </div>
+                        <div class="product_name big">
+                            <div>
+                                <label class="bold" >
+                                    时间：
+                                </label>
+                                <input class="laydate-icon " id="subordinateStartTime" ng-click="dataS('#subordinateStartTime')" value="">&nbsp&#45;&#45;&nbsp<input class=" laydate-icon" id="subordinateEndTime" ng-click="dataS('#subordinateEndTime')" value="">
+                            </div>
+                        </div>
+                        <div class="product_searchEara">
+                            <input type="button" value="搜索" class="search_btn" ng-click="searchSubordinate()">
+                        </div>
+                    </div>-->
+                    <h2 class="juniorMess">下级代理信息：</h2>
+                    <div class="table_lis">
+
+                        <table class="table  text-center ">
+                            <thead>
+                            <tr id="product_lis_title" >
+                                <th class="text-center" >昵称</th>
+                                <th class="text-center" >手机号</th>
+                                <th class="text-center" >身份证号</th>
+                                <th class="text-center" >时间</th>
+                                <th class="text-center" >等级</th>
+                                <th class="text-center" >是否关注</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in juniorMessage">
+                                <td >
+                                   {{item.nickname}}
+                                </td>
+                                <td >{{item.mobile}}</td>
+                                <td >{{item.identifyNumber}}</td>
+                                <td >{{item.createDate|date:'yyyy-MM-dd HH:MM:ss'}}</td>
+                                <td >{{item.userType}} 级</td>
+                                <td>{{item.weixinAttentionStatus}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                   <!-- <div class="history">
+                        <P>历史记录：</P>
+                        <P>2015/1/30成为普通</P>
+                        <P>2015/3/30成为B级</P>
+                        <P>2015/9/30成为A级</P>
+                    </div>-->
+                    <div class="confirm_area">
+                        <input type="button" value="确定" class="confirm" ui-sref="agency">
+                    </div>
+                </div>
+
+            </div>
+         </div>
+     </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="left_nav">
+    <div class="people_list left_nav_box">
+        <div class="search">
+            <span class="ser_ion"></span>
+            <input type="text" placeholder="用户名或者手机号搜索">
+            <span class="cancel">取消</span>
+        </div>
+        <div class="list">
+            <div class="letter">A</div>
+            <ul>
+                <li ng-click="selectSty($index)" ng-class="{'select_sty':param.selectSty == $index}" ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="user_info">
+                    <div class="user_img"></div>
+                    <div class="user_mobile">
+                        <span class="name">安迪</span>
+                        <span class="mobile"><i></i>18701233453</span>
+                    </div>
+                    <div class="user_more"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div ng-if="false" class="left_nav_box"></div>
+    <!--内容部分-->
+    <div ui-view style="height: 100%"></div>
+</div>

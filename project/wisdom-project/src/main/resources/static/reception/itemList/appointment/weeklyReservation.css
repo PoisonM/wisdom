@@ -1,0 +1,15 @@
+.weekWrap{width: 100%;height: 11rem;}
+.weekHeader{width: 100%;height: 1.07rem;;line-height: 1.07rem}
+.weekHeader ul{list-style: none;text-align: center}
+.weekHeader ul li{float: left;width: 2.4rem;font-size: 0.24rem;color: #333333}
+.weekHeader ul li:nth-child(1){width: 1.23rem}
+.weekLeft{height: 9rem;width: 1.23rem;;float: left}
+.weekLeft ul{list-style: none;text-align: center}
+.weekLeft ul li{height: 1.4rem;margin-top: 0.03rem}
+.weekLeft ul li div{padding-top: 0.6rem}
+.weekLeftNumber{font-size: 0.26rem}
+.weekLeft ul li{font-size:0.17rem;color: #888888}
+.weekRight{float: left;width: 2.4rem;height: 9.18rem}
+.weekRight ul li{height: 1.53rem;border: 1px solid #e5e5e5;padding: 0.2rem;box-sizing: border-box}
+.weekRight ul li .makeHave{font-size: 0.18rem;color: #999999}
+.weekRight ul li p{font-size: 0.17rem;color: #666666}

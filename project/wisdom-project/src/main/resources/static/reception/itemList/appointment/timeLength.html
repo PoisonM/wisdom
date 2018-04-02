@@ -1,0 +1,18 @@
+<div class="br36 w758 bgf5f5f5 timeLength">
+    <div class="space-between h104  btlr btrr bgeee">
+        <P class="W33">
+            <img src="images/bt_back.png" class="ml30 mr10 backPic">
+            <span class="colff6666 fs34">新建预约</span>
+        </P>
+        <P class="fs38 color333 center W33">选择时长</P>
+        <P class="W33"></P>
+    </div>
+    <div class="bgfff ">
+        <ul>
+            <li class="h100 col333 fs32  bte5 space-between" ng-repeat="item in param.timeLength" ng-click="selectTimeLength($index)">
+                <span class="ml30"> {{item}}小时</span>
+                <img src="images/redTrue.png" class="redTrue mr30" ng-show="index==$index">
+               </li>
+        </ul>
+    </div>
+</div>

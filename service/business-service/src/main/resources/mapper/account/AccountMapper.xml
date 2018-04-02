@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.business.mapper.account.AccountMapper">
+
+    <resultMap id="UserAccountInfoResultMap" type="com.wisdom.common.dto.account.AccountDTO" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="user_openid" property="userOpenId" jdbcType="VARCHAR" />
+        <result column="balance" property="balance" jdbcType="REAL" />
+        <result column="balance_deny" property="balanceDeny" jdbcType="REAL" />
+        <result column="score" property="score" jdbcType="REAL" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+
+        <result column="nickname" property="nickName" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_list">
+        ac.id,ac.sys_user_id,ac.user_openid,ac.balance,ac.score,ac.status,ac.update_date,ac.balance_deny,
+        u.nickname,u.user_type,u.identify_number,u.mobile
+    </sql>
+
+    <!-- 查询用户信息 -->
+    <select id="getUserAccountInfoByUserId"
+            resultMap="UserAccountInfoResultMap">
+        SELECT * FROM user_account
+        where sys_user_id=#{userId}
+    </select>
+
+    <!-- 更新用户信息 -->
+    <update id="updateUserAccountInfo">
+        UPDATE user_account SET
+        id = #{id}
+        <if test="sysUserId!= ''and sysUserId!=null">
+            ,sys_user_id=#{sysUserId}
+        </if>
+        <if test="userOpenId!= ''and userOpenId!=null">
+            ,user_openid=#{userOpenId}
+        </if>
+        <if test="balance!= '' and balance!=null">
+            ,balance=#{balance}
+        </if>
+        <if test="score!= '' and score!=null">
+            ,score=#{score}
+        </if>
+        <if test="status!= '' and status!=null">
+            ,status=#{status}
+        </if>
+        <if test="balanceDeny!= '' and balanceDeny!=null">
+            ,balance_deny=#{balanceDeny}
+        </if>
+        <if test="updateDate!=null">
+            ,update_date=#{updateDate}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <!-- 创建账户信息 -->
+    <insert id="insertUserAccountInfo">
+        INSERT INTO user_account(
+        id,
+        sys_user_id,
+        user_openid,
+        balance,
+        score,
+        status,
+        balance_deny,
+        update_date
+        ) VALUES (
+        #{id},
+        #{sysUserId},
+        #{userOpenId},
+        #{balance},
+        #{score},
+        #{status},
+        #{balanceDeny},
+        #{updateDate}
+        )
+    </insert>
+
+    <!-- 查询用户信息 -->
+    <select id="getUserAccountInfo"
+            resultMap="UserAccountInfoResultMap">
+        SELECT *
+        FROM
+        user_account
+        where
+        1=1
+        <if test="sysUserId!= ''and sysUserId!=null">
+            and sys_user_id=#{sysUserId}
+        </if>
+        <if test="userOpenId!= ''and userOpenId!=null">
+            and user_openid=#{userOpenId}
+        </if>
+        <if test="status!= '' and status!=null">
+            and status=#{status}
+        </if>
+    </select>
+
+    <!--查询所有用户及用户余额-->
+    <select id="queryAllUserBalance"
+            resultMap="UserAccountInfoResultMap"
+            resultType="com.wisdom.common.persistence.Page">
+        SELECT
+        <include refid="Base_Column_list"/>
+        FROM user_account ac,sys_user u
+        WHERE ac.sys_user_id = u.id
+        ORDER BY ac.update_date DESC
+    </select>
+
+    <!--<select id="queryUserBalanceByParameters"
+            resultMap="UserAccountInfoResultMap"
+            resultType="com.wisdom.common.persistence.Page">
+        SELECT
+        <include refid="Base_Column_list"/>
+        FROM user_account ac,sys_user u
+        WHERE ac.sys_user_id = u.id
+        <if test="phoneAndIdentify != null and phoneAndIdentify != ''">
+            AND (u.identify_number = #{phoneAndIdentify} OR u.mobile=#{phoneAndIdentify})
+        </if>
+        ORDER BY ac.update_date DESC
+    </select>-->
+
+    <!--按条件查询用户及用户余额-->
+    <select id="queryUserBalanceByParameters" resultMap="UserAccountInfoResultMap">
+        SELECT
+        <include refid="Base_Column_list"/>
+        FROM user_account ac,sys_user u
+        WHERE ac.sys_user_id = u.id
+        <if test="phoneAndIdentify != null and phoneAndIdentify != ''">
+            AND (u.identify_number = #{phoneAndIdentify} OR u.mobile=#{phoneAndIdentify})
+        </if>
+        ORDER BY ac.update_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+
+    <!--按条件查询用户及用户余额Count-->
+    <select id="queryUserBalanceCountByParameters" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM user_account ac,sys_user u
+        WHERE ac.sys_user_id = u.id
+        <if test="phoneAndIdentify != null and phoneAndIdentify != ''">
+            AND (u.identify_number = #{phoneAndIdentify} OR u.mobile=#{phoneAndIdentify})
+        </if>
+    </select>
+
+</mapper>

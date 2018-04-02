@@ -1,0 +1,140 @@
+
+<div ng-click="bgAll()">
+    <nav-bar></nav-bar>
+    <div class="main_content">
+        <enjoy-menu></enjoy-menu>
+        <div class="content_box">
+            <div class="mum mum1" ng-show="mum">
+                <div class="m-load2">
+                    <div class="line">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="circlebg"></div>
+                </div>
+            </div>
+            <div class="product_content_right">
+                <div class="rightCenter">
+                    <div class="product_particulars">
+                        <div class="name_row">
+                            <label for="name">
+                                商品名称:
+                            </label>
+                            <input type="text" id="name" class="product_type uploading_product_name_search name" value="{{uploadingPar.productName}}">
+                        </div>
+                        <div class="name_row">
+
+                            <label for="brand">品牌:</label>
+                            <select id="brand" class="product_type brand uploading_product_name_search">
+                                <option>{{uploadingPar.brand}}</option>
+                            </select>
+                        </div>
+                        <div class="name_row">
+                            <label for="classify">分类:</label>
+                            <select id="classify" class="product_type types uploading_product_name_search">
+                                <option>{{uploadingPar.secondType}}</option>
+                                <option>牙膏</option>
+                                <option>洗面奶</option>
+                            </select>
+                        </div>
+                        <div class="name_row">
+                            <label for="state">状态:</label>
+                            <select id="state" class="product_type states uploading_product_name_search">
+                                <option value="1">上架</option>
+                                <option value="0">下架</option>
+                            </select>
+                        </div>
+                        <div class="uploading_product_name">
+                            <label for="price">
+                                价格:
+                            </label>
+                            <input type="text" id="price" class="uploading_product_name_search price" value="{{uploadingPar.price}}">
+                        </div>
+                        <div class="uploading_product_name">
+                            <label for="price">
+                                库存:
+                            </label>
+                            <input type="text" id="number" class="uploading_product_name_search price" ng-model="uploadingPar.productDetail.productAmount">
+                            <!--{{uploadingPar.price}}-->
+                        </div>
+                        <div class="name_row blank">
+                            <label for="introduction" style="vertical-align: top">简介:</label>
+                            <textarea cols="50" rows="7" id="introduction" style="text-indent: 2rem"; >{{uploadingPar.description}} </textarea>
+                        </div>
+                        <div class="name_row blank">
+                            <label for="list_view">宣传图:</label>
+                            <input type="file" id="publicity"  />
+                            <img ng-src="{{hintPic3}}" class="hintPic" ng-show="hintPic3!=''?true:false">
+
+                        </div>
+                        <div id="publicityPic"></div>
+                        </div><div class="name_row blank">
+                            <label for="list_view">列表图:</label>
+                            <input type="file" id="list_view" multiple />
+                            <img ng-src="{{hintPic1}}" class="hintPic" ng-show="hintPic1!=''?true:false">
+                        </div>
+                        <div id="list_viewPic"></div>
+                        <div class="name_row blank">
+                            <label for="particulars_view">详情图:</label>
+                            <input type="file" id="particulars_view" multiple/>
+                            <img ng-src="{{hintPic2}}" class="hintPic" ng-show="hintPic2!=''?true:false">
+                        </div>
+                        <div id="particulars_viewPic"></div>
+                        <div class="name_row blank typelis">
+                            <label>型号：</label>
+                            <span ng-repeat="item in uploadingPar.productDetail.spec" ng-click="delType(item,$index);$event.stopPropagation()" ng-model="colName">{{item}}</span>
+                            <button class="model_btn" ng-click="type();$event.stopPropagation()">添加型号</button>
+                        </div>
+                        <div class="add_type" ng-show="flag" ng-click="void();$event.stopPropagation()">
+                            <p><label for="col">颜色</label><input type="text" id="col" class="col"></p>
+                            <p><input type="button" value="确定" class="type_btn" ng-click="typeTrue();$event.stopPropagation()"></p>
+                        </div>
+                        <div class="add_type del_type" ng-show="flagDel" ng-click="void();$event.stopPropagation()">
+                            <p><label for="col1">颜色</label><input type="text" id="col1" class="col" ng-model="colName"></p>
+                            <p><input type="button" value="确定删除" class="typeDel_btn" ng-click="typeDelTrue(0)">
+                                <input type="button" value="确定修改" class="typeDel_btn" ng-click="typeDelTrue(1)">
+                            </p>
+                        </div>
+                     <!--   <div class="name_row">
+                            <div class="vertical_line"> </div>
+                            <label for="address1">产地:</label>
+                            <select id="address1" class="product_type addresss uploading_product_name_search">
+                                <option>北京</option>
+                                <option>深圳</option>
+                            </select>
+                        </div>-->
+                        <div class="name_row blank serve">
+                            <label>服务：</label>
+                            <p><input type="checkbox"  id="time">
+                                <label for="time">24小时发货</label></p>
+                            <P> <input type="checkbox"  id="sales_return">
+                                <label for="sales_return">7天无理由退换</label></P>
+                        </div>
+                        <div class="name_row blank">
+                            <label>包邮：</label>
+                            <P> <input type="checkbox" id="postage">
+                                <label for="postage">包邮</label></p>
+                        </div>
+                        <div class="name_row">
+                            <label for="address">发货地:</label>
+                            <select id="address" class="product_type addresss uploading_product_name_search">
+                                <option>北京地区发货</option>
+                                <option>深圳地区发货</option>
+                            </select>
+                        </div>
+                        <div class="save">
+                            <button class="save_btn" ng-click="save()">保存</button>
+                            <p style="color:red;text-align: center;margin-top:20px;" ng-show="mess">请检查信息</p>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+
+    </div>
+</div>
+

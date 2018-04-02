@@ -1,0 +1,45 @@
+<div class="modifyingWrap">
+    <!--头部-->
+  <div class="headers">
+      <ul>
+          <li class="checks">取消</li>
+          <li class="giveAppointment">修改预约</li>
+          <li class="checks">保存</li>
+      </ul>
+  </div>
+    <!--顾客 项目 时长-->
+    <div class="customerBox">
+        <ul>
+            <li><span class="boxLift">顾客</span><span class="boxRight">安迪></span></li>
+            <li><span class="boxLift">项目</span><span class="boxRight">韩国美白护肤></span></li>
+            <li><span class="boxLift">时长</span><span class="boxRight">1小时></span></li>
+        </ul>
+    </div>
+    <!--美容师 时间-->
+    <div class="cosmetology">
+        <p><span class="boxLift">美容师</span><span class="boxRight">美茹></span></p>
+        <div class="cosmetologyMinute">
+            <!--日期-->
+            <ul class="dayList">
+
+                <li ng-repeat = "item in param.dayTime" ng-click = "selectDayTime($index)" ng-class="{'bgff6666':index==$index}">{{($index == 0?"明天":item|date:'MM/dd')||($index == 1?"后天":item|date:'MM/dd')}}</li>
+            </ul>
+              <!--时间-->
+            <ul class="minuteList">
+                <li ng-repeat = "item in param.time" ng-click = "selectTime($index)"  ng-class="{'bgff9b9b':index1==$index}">{{ $index ==param.time.length-1?"":item}}</li>
+            </ul>
+        </div>
+    </div>
+    <!--备注-->
+    <div class="remarksBox">
+       <div class="remarks">备注</div>
+        <div class="contentBox">
+            <textarea  class="remarksContent" ></textarea>
+        </div>
+    </div>
+    <!--取消预约的按钮部分-->
+     <div class="cancelBox">
+         <button class="btnCancel">取消预约</button>
+     </div>
+</div>
+<div ng-view></div>

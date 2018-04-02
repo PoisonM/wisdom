@@ -1,0 +1,90 @@
+
+  <div>
+      <enjoy-menu></enjoy-menu>
+      <nav-bar index1="6" index2="64"></nav-bar>
+         <div class="main_content">
+             <div class="mum" ng-show="mum">
+                 <div class="m-load2">
+                     <div class="line">
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                     </div>
+                     <div class="circlebg"></div>
+                 </div>
+             </div>
+             <div class="content_box">
+                <div class="product_content_right">
+                    <div class="rightCenter">
+                        <div class="product_lis meunLis2">
+                            <button ng-click="bgChangeAndSearch(1,'instance')" ng-class="{'active':agencyIndex==1}">即时奖励</button>
+                            <button ng-click="bgChangeAndSearch(2,'month')" ng-class="{'active':agencyIndex==2}">月度结算</button>
+                           <!-- <button ng-click="bgChangeAndSearch(3,'recommend')" ng-class="{'active':agencyIndex==3}">同级推荐</button>-->
+                        </div>
+                        <div class="product_eara">
+                            <div class="product_name">
+                                <div class="product_nameEara">
+                                    <label class="bold">手机OR身份证:</label>
+                                    <input type="text" class="product_search" ng-model="MAccount">
+                                </div>
+                            </div>
+                            <div class="product_name big time_box">
+                                <div>
+                                    <span class="bold agencyTime">时间：&nbsp&nbsp&nbsp</span>
+
+                                    <input class="time MStart laydate-icon" id="MStart" ng-click="dataS('#MStart')" >&nbsp--&nbsp<input class="time MEnd laydate-icon" id="MEnd" ng-click="dataS('#MEnd')"  >
+                                </div>
+                            </div>
+                            <div class="product_searchEara">
+                                <input type="button" value="搜索" class="search_btn top_1" ng-click="searchMonthlyBalance()">
+                            </div>
+                        </div>
+                        <div class="table_lis" >
+                            <div >
+                                <a class="order_lis simulateBtn" ng-click="educeLis()">导出列表</a>
+                            </div>
+                            <table class="table  table-hover text-center ">
+                                <thead>
+                                <tr id="product_lis_title">
+                                    <th class="text-center" >昵称</th>
+                                    <th class="text-center" >手机号</th>
+                                    <th class="text-center" >用户等级</th>
+                                    <th class="text-center" >身份证号</th>
+                                    <th class="text-center" >提成时间</th>
+                                    <th class="text-center">提成金额</th>
+                                    <th class="text-center">类型</th>
+                                    <th class="text-center">状态</th>
+                                    <th class="text-center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in MonthlyBalanceLis">
+                                    <td >
+                                        {{item.nickName}}
+                                    </td>
+                                    <td>{{item.mobile}}</td>
+                                    <td>{{item.userType}}</td>
+                                    <td>{{item.identifyNumber}}</td>
+                                    <td>{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td>{{item.amount}}</td>
+                                    <td>{{item.incomeType}}</td>
+                                    <td>{{item.status}}</td>
+                                    <td>
+                                        <a class="orderBtn" ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId)" >详情</a>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <div page-tool></div>
+                        </div>
+                    </div>
+
+                </div>
+
+             </div>
+         </div>
+  </div>

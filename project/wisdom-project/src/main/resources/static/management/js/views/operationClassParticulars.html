@@ -1,0 +1,112 @@
+  <div>
+    <nav-bar></nav-bar>
+    <div class="main_content">
+        <enjoy-menu></enjoy-menu>
+         <div class="content_box">
+             <div class="mum" ng-show="mum">
+                 <div class="m-load2">
+                     <div class="line">
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                     </div>
+                     <div class="circlebg"></div>
+                 </div>
+             </div>
+             <div class="product_content_right">
+                 <div class="rightCenter">
+                     <div class="uploading_product_name">
+                         <label for="class_name">
+                             课程名称:
+                         </label>
+                         <input type="text" id="class_name" class="product_search"  ng-model="data.productName" style="width:50%;">
+                     </div>
+
+                     <div id="list_viewPic"></div>
+                     <div class="name_row blank">
+                         <label>宣传图:</label>
+                         <input type="file" id="publicity"  />
+                         <img ng-src="{{hintPic1}}" class="hintPic" ng-show="hintPic1!=''?true:false">
+
+                     </div>
+                     <div id="publicityPic"></div>
+                     <div class="name_row blank">
+                         <label for="particulars_view">详情图:</label>
+                         <input type="file" id="particulars_view" multiple/>
+                         <img ng-src="{{hintPic2}}" class="hintPic" ng-show="hintPic2!=''?true:false">
+                     </div>
+                     <div id="particulars_viewPic"></div>
+                     <div class="name_row blank">
+                         <label for="introduction" style="vertical-align: top">添加描述:</label>
+                         <textarea cols="42" rows="7" id="introduction"  ng-model="data.description"> </textarea>
+                     </div>
+                     <div class="table_lis" style="margin-top:60px;">
+                         <div class="titleClassBox classLis">
+                             <div >
+                                 <p class="titleClass">
+                                        <span class="train FMess" ng-click="classShow($index,2,2)">
+                                            <input type="text" ng-model="rainingList.trainingProductName" class="train" >
+                                        </span>
+                                     <span class="FMess"><input type="text" ng-model="rainingList.trainingProductType"></span>
+                                     <span class="FMess  ">
+                                          <button style="border: solid 1px #b8b8b8;padding: 0 5px;height: 30px;line-height: 30px;margin-left:55px;"  ng-click="addClass(-1);$event.stopPropagation()">添加课程</button>
+
+                                     </span>
+                                 </p>
+                                 <ul  class="classLis addClass" >
+                                     <li ng-repeat="(index1,item1) in rainingList.listCourse" ng-click="func();$event.stopPropagation();" >
+
+                                         <p class="bigClass" ><input type="text" ng-model="item1.name" ng-click="hideOrShowClass(index1)" class="{{frame[index1].outsideClass}} train"  ng-change="voidBorder(index1)">
+                                         <span style="float: right;margin-right:89px;">
+                                             <button style="border: solid 1px #b8b8b8;padding: 0 5px;height: 30px;line-height: 30px;"  ng-click="addClass(index1);$event.stopPropagation()">添加课程</button>
+                                             <button style="border: solid 1px #b8b8b8;padding: 0 5px;height: 30px;line-height: 30px;" ng-click="delClass(index1);$event.stopPropagation()">删除</button>
+                                         </span>
+                                         </p>
+                                         <ul  class="smallClass" ng-show = "frame[index1].classFlag">
+                                             <li ng-repeat="(index2,item2) in item1.list" class="knobble" >
+                                                 <div >
+                                                     <p><input type="text" ng-model="item2.name" style="width:100px" ng-click="hideOrShowSection(index1,index2)" class="{{frame[index1].outsideSection[index2]}} train" ng-change="voidBorder(index1,index2)">
+                                                         <span style="float: right;margin-right:89px;">
+                                                             <button style="border: solid 1px #b8b8b8;padding: 0 5px;height: 30px;line-height: 30px;" ng-click="addSection(index1,index2)">添加小节</button>
+                                                             <button style="border: solid 1px #b8b8b8;padding: 0 5px;height: 30px;line-height: 30px;" ng-click="delSection(index1,index2)">删除</button>
+                                                         </span>
+                                                     </p>
+                                                     <div class="classMess" ng-show = "frame[index1].sectionFlag[index2]">
+                                                         <p class=""><label >时长：</label><input type="text" ng-model="item2.duration" ng-class="frame[index1].outsideSection[index2]" style="width:100px;" ng-change="voidBorder(index1,index2)"></p>
+                                                         <p class="name_row blank wavArea" >
+                                                             <label>上传视频:</label>
+                                                                 <input ng-file-select="onFileSelect($files,index1,index2)" type="file" accept=".csv" class="product_search wav" >
+                                                                 <input type="button" ng-click="uploadFile(index1,index2)" value="上传视频" class="{{framePic[index1][index2].blueBgLight}}">
+                                                                 <img ng-src="{{framePic[index1][index2].hintPic}}" class="hintPic" ng-show="framePic[index1][index2].hintPic!=''?true:false">
+                                                             </p>
+                                                            <p ><label >路径：</label><input type="text" value="{{item2.url}}" id="classUrl" readonly="readonly" ng-class="frame[index1].outsideSection[index2]" ></div></p>
+
+                                                 </div>
+
+
+                                             </li>
+                                         </ul>
+                                     </li>
+                                 </ul>
+                             </div>
+                         </div>
+
+
+                         <!--<div page-tool></div>-->
+                     </div>
+
+
+                     <div class="save">
+                         <button class="save_btn" ng-click="saveClass()">保存</button>
+                         <p style="color:red;text-align: center;margin-top:20px;" ng-show="mess">请检查信息</p>
+                     </div>
+                 </div>
+            </div>
+             <div class="product_content_left">
+             </div>
+         </div>
+     </div>
+  </div>

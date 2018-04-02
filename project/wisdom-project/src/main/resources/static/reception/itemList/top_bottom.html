@@ -1,0 +1,46 @@
+<div ng-class="{'header_top_nor':!mainSwitch.headerBoxFlag,'header_bottom_nor':!mainSwitch.footerBoxFlag}" class="top_bottom">
+    <div ng-if="mainSwitch.headerBoxFlag" class="header">
+
+        <!--预约头部-->
+        <div ng-if="mainSwitch.headerReservationAllFlag" class="header_box">
+            <div ng-if = "mainSwitch.headerReservationFlag.headerReservationLeftFlag" class="header_reservation_left">
+
+            </div>
+            <div ng-if = "mainSwitch.headerReservationFlag.headerReservationMiddleFlag" class="header_reservation_middle">
+                <div class=header_middle_box>
+                    <div ng-click="switchType('day')" ng-class="{'tab_sty':param.tabSty == 'day'}" class="day">日预约</div>
+                    <div ng-click="switchType('week')"ng-class="{'tab_sty':param.tabSty == 'week'}" class="week">周预约</div>
+                </div>
+            </div>
+            <div ng-if = "mainSwitch.headerReservationFlag.headerReservationRightFlag" class="header_reservation_right">
+                排班
+            </div>
+        </div>
+
+        <!--收银头部-->
+        <div ng-if="mainSwitch.headerCashAllFlag" class="header_box">
+            <div class="header_cash_left">
+                档案(9010)
+                <span class="addrecord">添加档案</span>
+            </div>
+            <div  class="header_cash_right">
+                <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag" class="backone"><i></i>{{param.headerCash.backContent}}</span>
+                <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag" class="title">{{param.headerCash.title}}</span>
+                <span ng-if = "mainSwitch.headerCashAllFlag.headerCashRightFlag.rightFlag" class="save">保存</span>
+            </div>
+        </div>
+    </div>
+    <!--中心切换区域-->
+    <div ui-view style="height: 100%"></div>
+    <div ng-if = "mainSwitch.footerBoxFlag" class="footer">
+        <div class="footer_box">
+            <ul>
+                <li><span></span>预约</li>
+                <li><span></span>收银</li>
+                <li><span></span>考勤</li>
+                <li><span></span>价目表</li>
+                <li><span></span>我</li>
+            </ul>
+        </div>
+    </div>
+</div>

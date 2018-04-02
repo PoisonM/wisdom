@@ -1,0 +1,102 @@
+  <div ng-click="bgAll()">
+     <nav-bar index1="3" index2="31"></nav-bar>
+     <div class="main_content">
+         <enjoy-menu></enjoy-menu>
+         <div class="content_box">
+             <div class="mum" ng-show="mum">
+                 <div class="m-load2">
+                     <div class="line">
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                         <div></div>
+                     </div>
+                     <div class="circlebg"></div>
+                 </div>
+             </div>
+             <div class="product_content_right">
+                 <div class="rightCenter">
+                     <div class="product_lis meunLis" >
+                         <button ng-click="bgChangeAndSearch('')" ng-class="{'active':status==''}">全部订单</button>
+                         <button ng-click="bgChangeAndSearch('0')" ng-class="{'active':status=='0'}">待付款</button>
+                         <button ng-click="bgChangeAndSearch('1')" ng-class="{'active':status=='1'}">待发货</button>
+                         <button ng-click="bgChangeAndSearch('4')" ng-class="{'active':status=='4'}">待收货</button>
+                         <button ng-click="bgChangeAndSearch('2')" ng-class="{'active':status=='2'}">已完成</button>
+                     </div>
+                     <div class="product_eara">
+                         <div class="product_name">
+                             <div class="product_nameEara">
+                                 <label for="orderNums" class="bold">订单编号:</label>
+                                 <input type="text" class="product_search" id="orderNums" ng-model="orderReference">
+                             </div>
+                             <div class="product_nameEara">
+                                 <label  for="userNums" class="bold">买家账号:</label>
+                                 <input type="text" class="product_search" id="userNums"
+                                 ng-model="orderUserAccount">
+                             </div>
+
+                         </div>
+                         <div class="product_name big order">
+
+                             <div style="margin-top:54px;">
+                                 <label class="bold" >
+                                     付款时间：
+                                 </label>
+                                 <input  class="time orderPayStartTime laydate-icon" id="orderPayStartTime"  ng-click="dataS('#orderPayStartTime')" >&nbsp--&nbsp<input   class="time orderPayEndTime laydate-icon" id="orderPayEndTime"  ng-click="dataS('#orderPayEndTime')" >
+                             </div>
+                         </div>
+                         <div class="product_searchEara">
+                             <input type="button" value="搜索" class="search_btn" ng-click="searchOrder()">
+                         </div>
+                     </div>
+                     <div class="table_lis">
+                         <div >
+                             <a class="order_lis simulateBtn" ng-click="educeLis()">导出列表</a>
+                         </div>
+                         <table class="table  text-center " >
+                             <thead>
+                                 <tr id="product_lis_title">
+                                     <th class="text-center" >订单编号</th>
+                                     <th class="text-center" >交易流水号</th>
+                                     <th class="text-center" >运单号</th>
+                                     <th class="text-center">昵称</th>
+                                     <th class="text-center" >买家账号</th>
+                                     <th class="text-center" >付款时间</th>
+                                     <th class="text-center" >当前状态时间</th>
+                                     <th class="text-center" >状态</th>
+                                     <th class="text-center" style="width:16%;">操作</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 <tr ng-repeat="item in orderLis" class="pointer">
+                                     <td >{{item.businessOrderId}}</td>
+                                     <td >{{item.transactionId}}</td>
+                                     <td >{{item.waybillNumber ==null?'——':item.waybillNumber}}</td>
+                                     <td>{{item.nickName}}</td>
+                                     <td>{{item.mobile}}</td>
+                                     <td>{{item.status =='未付款'?'——':item.payDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                     <td>{{item.updateDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                     <td>{{item.status}}</td>
+                                     <td>
+                                         <a ui-sref="orderParticulars({id:item.businessOrderId,status:PageParamVoDTO.requestData.status,pageNo:PageParamVoDTO.pageNo,startTime:PageParamVoDTO.startTime,endTime:PageParamVoDTO.endTime,orderReference:orderReference,orderUserAccount:orderUserAccount})" class="orderBtn">详情</a>
+     <a  class="orderBtn" ng-click="waybillNum(item.businessOrderId,item.transactionId,item.waybillNumber);$event.stopPropagation()"  ng-show="{{item.status == '待收货'}}">{{item.waybillNumber == null?'绑定运单号':'修改运单号'}}</a>
+                                     </td>
+                             </tr>
+                             </tbody>
+                         </table>
+                         <div class="priceArea"  ng-click="viod();$event.stopPropagation()" ng-show="waybillNumFlag">
+                             <p class="deposit" style="margin-top:36px;"><label for="num">运单号：</label><input type="text" id="num"  ng-model="orderCopRelationDTO.waybillNumber"></p>
+
+                             <p class="deposit"><button  ng-click="waybillNumSave()" style="width: 80px; height: 30px;
+    background: #b4e5e2;margin-top: 26px;margin-left: 174px;color: gray;font-size: 15px;">确认</button></p>
+                         </div>
+                         <div page-tool></div>
+                     </div>
+                 </div>
+             </div>
+             <div class="product_content_left"></div>
+         </div>
+     </div>
+  </div>

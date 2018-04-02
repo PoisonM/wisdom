@@ -1,0 +1,36 @@
+/*修改预约页面的css*/
+.modifyingWrap .headers{height: 0.812rem;width:5.90rem;line-height: 0.812rem ;text-align: center;background: #eeeeee}
+.modifyingWrap{width: 5.90rem;height:10.7rem;background: #f5f5f5;margin: auto}
+.modifyingWrap .headers ul{list-style: none;display: flex;flex-wrap: wrap;justify-content: space-around;}
+.modifyingWrap .giveAppointment{font-size: 0.296rem;color: #333333;font-weight: 600}
+.modifyingWrap .checks{font-size: 0.296rem;color: #ff6666}
+.modifyingWrap .customerBox{width: 5.90rem;height: 2.343rem;background: #ffffff}
+.modifyingWrap .customerBox ul{list-style: none}
+.modifyingWrap .customerBox ul li{height: 0.781rem;line-height: 0.781rem;border-bottom: 1px solid #e5e5e5}
+.modifyingWrap .boxLift{margin-left: 0.234rem;float: left;color: #333333;font-size: 0.265rem }
+.modifyingWrap .boxRight{float: right;margin-right: 0.234rem;font-size: 0.265rem}
+/*美容师*/
+.modifyingWrap .cosmetology{width:5.90rem;background: #ffffff;margin-top:0.156rem}
+.modifyingWrap .cosmetologyMinute ul{list-style: none}
+.modifyingWrap .cosmetology p{height: 0.78rem;line-height: 0.78rem}
+.modifyingWrap .dayList{display: flex;flex-wrap: wrap;justify-content: space-around;text-align: center}
+.modifyingWrap .dayList li{width:16.6%;height: 0.765rem;line-height: 0.765rem;border: 1px solid #e5e5e5;padding: 0px;}
+.modifyingWrap .minuteList{display: flex;flex-wrap: wrap;justify-content: space-around;text-align: center}
+.modifyingWrap .minuteList li{width: 16.6%;height: 0.765rem;line-height: 0.765rem;border: 1px solid #e5e5e5;padding: 0px}
+/*备注*/
+.modifyingWrap .remarksBox{margin-top: 0.156rem;width: 5.90rem;height: 1.92rem;background: #ffffff;}
+.modifyingWrap .remarksContent{height:1.453rem;width: 4.3rem;font-size: 0.3rem;color: #333333;padding: 20px;}
+.modifyingWrap .remarks{float: left;margin-top: 0.234rem;margin-left: 0.234rem;color: #333333;font-size: 0.265rem}
+.modifyingWrap .contentBox{float: left;margin-top: 0.234rem;margin-left: 0.234rem}
+/*按钮*/
+.modifyingWrap .cancelBox{text-align: center;margin-top: 0.3125rem}
+.modifyingWrap .btnCancel{width:4.06rem;height: 0.718rem;background:#ff6666;color: #ffffff;border-radius: 0.125rem;font-size:0.281rem;border: none}
+.bgff6666{
+    background: #ff6666;
+}
+.bgff9b9b{
+    background: #ff9b9b;
+}
+
+
+

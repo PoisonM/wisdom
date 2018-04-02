@@ -1,0 +1,193 @@
+.top_bottom{
+    width: 100%;
+    height: 100%;
+    padding: 0.6875rem 0;
+    position: relative;
+}
+
+.top_bottom .header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0.6875rem;
+    line-height:0.6875rem;
+    font-family: PingFangSC-Regular, sans-serif;
+    color: #ffffff;
+    font-size: 0.265rem;
+}
+.header_top_nor{
+    padding-top: 0;
+}
+.header_bottom_nor{
+    padding-bottom: 0;
+}
+
+
+.top_bottom .header_box{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #ff6666;
+}
+.top_bottom .header .header_reservation_middle{
+    width: 100%;
+    height: 100%;
+    padding: 0 1.625rem;
+    overflow: hidden;
+}
+
+.top_bottom .header .header_reservation_middle .header_middle_box{
+    width: 3.519rem;
+    margin: 0.117rem auto;
+    height: 0.453rem;
+    border: 1px solid #ffffff;
+    border-radius: 0.117rem;
+    overflow: hidden;
+}
+.top_bottom .header .header_reservation_middle .header_middle_box div{
+    float: left;
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    line-height: 0.453rem;
+    color: #ffffff;
+    font-size: 0.2187rem;
+}
+.top_bottom .header .header_reservation_middle .header_middle_box .tab_sty{
+    color: #ff6666;
+    background-color: #ffffff;
+}
+
+.top_bottom .header .header_reservation_left , .top_bottom .header .header_reservation_right{
+    width: 1.625rem;
+    height: 100%;
+    position: absolute;
+    top:0;
+}
+.top_bottom .header .header_reservation_left{
+    left: 0;
+}
+.top_bottom .header .header_reservation_right{
+    right: 0;
+}
+.top_bottom .header .header_reservation_right{
+    text-align: right;
+    line-height: 0.6875rem;
+    color: #fff;
+    padding-right: 0.3125rem;
+    font-size: 0.265rem;
+}
+
+
+/*============隔断================*/
+.top_bottom .header_cash_left{
+    font-size: 0.28125rem;
+    float: left;
+    width: 4.96875rem;
+    border-right: 1px solid #B4B4B4;
+    text-align: center;
+    position: relative;
+}
+.top_bottom .header_cash_left .addrecord{
+    font-size: 0.25rem;
+    position: absolute;
+    left: 3.625rem;
+}
+.top_bottom .header_cash_right{
+    float: left;
+    width: 11.03125rem;
+    text-align: center;
+    font-size: 0.296875rem;
+    position: relative;
+}
+.top_bottom .header_cash_right .backone{
+    font-size: 0.265625rem;
+    /*margin-left: 0.265625rem;
+     */
+    position: absolute;
+    left: 0.265625rem;
+}
+
+.top_bottom .header_cash_right .backone i{
+    margin-right: 0.171875rem;
+}
+.top_bottom .header_cash_right i{
+    /*background: url("../images/bt_back.png") no-repeat;
+     background-size: 100% 100%;
+     display: inline-block;
+     width: 0.125rem;
+     height: 0.25rem;
+     */
+}
+
+.top_bottom .header_cash_right .save{
+    font-size: 0.265625rem;
+    position: absolute;
+    right: 0.265625rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+.top_bottom .footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0.765rem;
+    background-color: ghostwhite;
+    font-family: PingFangTC-Medium, sans-serif;
+    color: #999999;
+}
+
+.top_bottom .footer .footer_box{
+    width: 5.468rem;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0.09375rem 0;
+}
+.top_bottom .footer .footer_box ul li{
+    width: 20%;
+    height: 100%;
+    float: left;
+    text-align: center;
+    font-size: 0.156rem;
+}
+.top_bottom .footer .footer_box ul li span{
+    display: block;
+    width: 0.328rem;
+    height: 0.325rem;
+    margin: 0 auto;
+    margin-bottom: 0.04rem;
+
+}
+
+.top_bottom .footer .footer_box ul li:nth-child(1) span{
+    background: url("../images/bt_reservation_nor.png") no-repeat;
+    background-size: 100%;
+}
+.top_bottom .footer .footer_box ul li:nth-child(2) span{
+    background: url("../images/bt_cash_register_nor.png") no-repeat;
+    background-size: 100%;
+}
+.top_bottom .footer .footer_box ul li:nth-child(3) span{
+    background: url("../images/bt__attendance_nor.png") no-repeat;
+    background-size: 100%;
+}
+.top_bottom .footer .footer_box ul li:nth-child(4) span{
+    background: url("../images/bt_price_list_nor.png") no-repeat;
+    background-size: 100%;
+}
+.top_bottom .footer .footer_box ul li:nth-child(5) span{
+    background: url("../images/bt_mine_nor.png") no-repeat;
+    background-size: 100%;
+}

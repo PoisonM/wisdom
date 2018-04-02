@@ -1,0 +1,15 @@
+<ion-view style="background: #f2f5f9">
+    <ion-content>
+        <div class="list"
+             ng-repeat="item in param.trainingProduct2NeedPayList" ng-click="courseDetails(item.productId)" style="background: white;">
+                <h1 style="font-size: 16px;color: #333333;margin-left: 10px;padding-top: 10px;font-weight:700 ;">{{item.secondType}}</h1>
+                <a class="item item-thumbnail-left" style="border-color: white">
+                    <img ng-src="{{item.firstUrl}}" style="min-width: 3rem;min-height: 2rem;border-radius: 2px;padding-bottom: 5px">
+                    <p style="font-size:16px;margin-left:28%;margin-top: 6px">{{item.productName}}</p>
+                    <br><br>
+                    <p style="margin-left:28%;font-size:10px;color:#999999;margin-top: -10px">{{item.playNum}}次播放</p>
+                    <p style="margin-left:28%;font-size:16px;color:#ff4a59;">￥{{item.price}} <span style="font-size: 0.24rem;color: #666666"></span></p>
+                </a>
+        </div>
+    </ion-content>
+</ion-view>

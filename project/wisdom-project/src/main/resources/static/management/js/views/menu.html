@@ -1,0 +1,66 @@
+<div>
+
+    <nav-bar index1="7"></nav-bar>
+</div>
+<div class="main_content">
+        <enjoy-menu></enjoy-menu>
+        <div class="content_box">
+        <div class="product_content_right">
+            <div class="rightCenter">
+                <div class="menu-add">
+                    <table class="table   table-hover text-center table-bordered jurisdiction ">
+                        <thead>
+                        <tr class="product_lis_title">
+                            <th class="text-center" class="left">权限</th>
+                            <th class="text-center" class="right" >菜单</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr >
+                           <td  class="left"><span ng-click="jurisdiction(1,'运营')" ng-class="{'JruBg':jurisdictionIndex==1}">运营</span></td>
+                           <td class="right">
+                               <span><input type="checkbox" checked="checked">产品管理</span>
+                               <span><input type="checkbox" checked="checked">订单管理</span>
+                               <span><input type="checkbox" checked="checked">运营管理</span>
+                               <span><input type="checkbox" checked="checked">代理管理</span>
+                           </td>
+                        </tr>
+                        <tr>
+                            <td  class="left"><span ng-click="jurisdiction(2,'财务')" ng-class="{'JruBg':jurisdictionIndex==2}">财务</span></td>
+                            <td class="right">
+                                <span><input type="checkbox" checked="checked">订单管理</span>
+                                <span><input type="checkbox" checked="checked">代理管理</span>
+                                <span><input type="checkbox" checked="checked">财务管理</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  class="left"><span ng-click="jurisdiction(3,'超级管理')" ng-class="{'JruBg':jurisdictionIndex==3}">超级管理</span></td>
+                            <td class="right">
+                                <span><input type="checkbox" checked="checked">产品管理</span>
+                                <span><input type="checkbox" checked="checked">订单管理</span>
+                                <span><input type="checkbox" checked="checked">运营管理</span>
+                                <span><input type="checkbox" checked="checked">代理管理</span>
+                                <span><input type="checkbox" checked="checked">财务管理</span>
+                                <span><input type="checkbox" checked="checked">人员管理</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="button" value="确定" class="jurisdictionTureBtn" ng-click="jurisdictionTureBtn()">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="product_content_left">
+             <p><a class="btn_searchVoid " ui-sref="peopleAccounts">列表</a></p>
+             <p><a class="btn_searchVoid " ui-sref="peopleNewAccount">新增</a></p>
+             <p><a class="btn_searchVoid btn_active" ui-sref="menu">菜单</a></p>
+        </div>
+    </div>
+</div>
