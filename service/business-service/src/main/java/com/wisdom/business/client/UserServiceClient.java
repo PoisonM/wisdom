@@ -12,7 +12,7 @@ import java.util.List;
 @FeignClient("user-service")
 public interface UserServiceClient {
 
-    //project1
+    //project2
     @RequestMapping(value = "/getUserInfo",method=RequestMethod.POST)
     List<UserInfoDTO> getUserInfo(@RequestBody UserInfoDTO userInfoDTO);
 
