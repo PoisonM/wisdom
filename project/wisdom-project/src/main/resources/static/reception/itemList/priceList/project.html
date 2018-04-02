@@ -1,14 +1,16 @@
 <div class="projectWrap">
+    <!--导航-->
     <div class="projectHeader">
         <ul class="tab-head">
-            <li ng-repeat="items in [1,2,3,4,5,6,7,8,9,10]" class="tab-head-item">
-                1
+            <li ng-repeat="items in [1,2,3,4,5,6,7,8,9,10]" class="tab-head-item" ng-click="selection($index)" ng-class="{'selectProject':param.selection == $index}">
+                面部
             </li>
         </ul>
     </div>
+    <!--商品-->
     <div class="projectGoods">
         <ul>
-            <li ng-repeat="item in [1,2,3,4,5,6]" >
+            <li ng-repeat="item in [1,2,3,4,5,6]">
                 <div class="imgDiv">
                     <img src="images/timgs.jpg" alt="">
                 </div>
@@ -21,102 +23,4 @@
         </ul>
     </div>
 </div>
-<!--<div class="container">-->
-    <!--<div class="swiper-container swiper1">-->
-        <!--<div class="swiper-wrapper">-->
-            <!--<div class="swiper-slide selected">面部</div>-->
-            <!--<div class="swiper-slide">眼部</div>-->
-            <!--<div class="swiper-slide">SPA养生</div>-->
-            <!--<div class="swiper-slide">胸部</div>-->
-            <!--<div class="swiper-slide">减肥</div>-->
-            <!--<div class="swiper-slide">特色项目</div>-->
-            <!--<div class="swiper-slide">按摩</div>-->
-            <!--<div class="swiper-slide">腿部</div>-->
-            <!--<div class="swiper-slide">肩部</div>-->
-            <!--<div class="swiper-slide">脚后跟</div>-->
-            <!--<div class="swiper-slide">背部</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--&lt;!&ndash; swiper2 &ndash;&gt;-->
-    <!--<div class="swiper-container swiper2">-->
-        <!--<div class="swiper-wrapper">-->
-            <!--<div class="swiper-slide swiper-no-swiping">-->
-                <!--<div style="width: 100%;height: 100%;">-->
-                    <!--<div class="contents">-->
-                        <!--<ul >-->
-                            <!--<li  >-->
-                                <!--<div class="imgDiv">-->
-                                    <!--<img src="images/timgs.jpg" alt="">-->
-                                <!--</div>-->
-                                <!--<div class="textDiv">-->
-                                    <!--<p>冰光6980方案</p>-->
-                                    <!--<p>单次价格：￥200.00</p>-->
-                                    <!--<p><span class="cards">年卡</span> <span class="money">￥6980.00/6次</span></p>-->
-                                <!--</div>-->
-                            <!--</li>-->
-                            <!--<li >-->
-                                <!--<div class="imgDiv">-->
-                                    <!--<img src="images/timg.jpg" alt="">-->
-                                <!--</div>-->
-                                <!--<div class="textDiv">-->
-                                    <!--<p>冰光6980方案</p>-->
-                                    <!--<p>单次价格：￥200.00</p>-->
-                                    <!--<p><span class="cards">年卡</span> <span class="money">￥6980.00/6次</span></p>-->
-                                <!--</div>-->
-                            <!--</li>-->
-                            <!--<li >-->
-                                <!--<div class="imgDiv">-->
-                                    <!--<img src="images/timg.jpg" alt="">-->
-                                <!--</div>-->
-                                <!--<div class="textDiv">-->
-                                    <!--<p>冰光6980方案</p>-->
-                                    <!--<p>单次价格：￥200.00</p>-->
-                                    <!--<p><span class="cards">年卡</span> <span class="money">￥6980.00/6次</span></p>-->
-                                <!--</div>-->
-                            <!--</li>-->
-                            <!--<li >-->
-                                <!--<div class="imgDiv">-->
-                                    <!--<img src="images/timg.jpg" alt="">-->
-                                <!--</div>-->
-                                <!--<div class="textDiv">-->
-                                    <!--<p>冰光6980方案</p>-->
-                                    <!--<p>单次价格：￥200.00</p>-->
-                                    <!--<p><span class="cards">年卡</span> <span class="money">￥6980.00/6次</span></p>-->
-                                <!--</div>-->
-                            <!--</li>-->
-                            <!--<li >-->
-                                <!--<div class="imgDiv">-->
-                                    <!--<img src="images/timg.jpg" alt="">-->
-                                <!--</div>-->
-                                <!--<div class="textDiv">-->
-                                    <!--<p>冰光6980方案</p>-->
-                                    <!--<p>单次价格：￥200.00</p>-->
-                                    <!--<p><span class="cards">年卡</span> <span class="money">￥6980.00/6次</span></p>-->
-                                <!--</div>-->
-                            <!--</li>-->
-                            <!--<li >-->
-                                <!--<div class="imgDiv">-->
-                                    <!--<img src="images/timg.jpg" alt="">-->
-                                <!--</div>-->
-                                <!--<div class="textDiv">-->
-                                    <!--<p>冰光6980方案</p>-->
-                                    <!--<p>单次价格：￥200.00</p>-->
-                                    <!--<p><span class="cards">年卡</span> <span class="money">￥6980.00/6次</span></p>-->
-                                <!--</div>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="swiper-slide swiper-no-swiping">上面导航栏可以滑动2222</div>-->
-            <!--<div class="swiper-slide swiper-no-swiping">内容 213213123</div>-->
-            <!--<div class="swiper-slide swiper-no-swiping">内容 ressssssss</div>-->
-            <!--<div class="swiper-slide swiper-no-swiping">内容 ffffffffffff</div>-->
-            <!--<div class="swiper-slide swiper-no-swiping">内容 bbbbbbbbbbbbbbbbbvb</div>-->
-            <!--<div class="swiper-slide swiper-no-swiping">内容 bvcccccccccccbvb</div>-->
-            <!--<div class="swiper-slide swiper-no-swiping">内容 sdasdssssss</div>-->
-            <!--<div class="swiper-slide swiper-no-swiping">内容 oiouiouioiuoiuo</div>-->
-            <!--<div class="swiper-slide swiper-no-swiping">内容 m,jnkjhkhgjghjugh</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+
