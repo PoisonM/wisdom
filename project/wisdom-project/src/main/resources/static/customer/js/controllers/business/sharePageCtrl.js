@@ -45,7 +45,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
 
                 $scope.param.ctx.fillStyle = '#FFF100';
                 $scope.param.ctx.font = '60px microsoft #FFF100';
-                $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,285,562);
+                $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,278,562);
                 //二维码
                 $scope.param.ctx.drawImage($scope.param.imgs.qrCode, $scope.param.canvas.width*0.08, $scope.param.canvas.height*0.8 , $scope.param.canvas.width*0.22, calcHeight($scope.param.imgs.qrCode, $scope.param.canvas.width*0.22));
 
