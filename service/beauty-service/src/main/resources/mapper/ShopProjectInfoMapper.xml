@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.beauty.mapper.ShopProjectInfoDao">
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="project_type_one_name" jdbcType="VARCHAR" property="projectTypeOneName" />
+    <result column="project_type_two_name" jdbcType="VARCHAR" property="projectTypeTwoName" />
+    <result column="project_type_one_id" jdbcType="VARCHAR" property="projectTypeOneId" />
+    <result column="project_type_two_id" jdbcType="VARCHAR" property="projectTypeTwoId" />
+    <result column="product_type" jdbcType="CHAR" property="productType" />
+    <result column="card_type" jdbcType="CHAR" property="cardType" />
+    <result column="project_url" jdbcType="VARCHAR" property="projectUrl" />
+    <result column="project_duration" jdbcType="INTEGER" property="projectDuration" />
+    <result column="market_price" jdbcType="DECIMAL" property="marketPrice" />
+    <result column="discount_price" jdbcType="DECIMAL" property="discountPrice" />
+    <result column="max_contain_times" jdbcType="INTEGER" property="maxContainTimes" />
+    <result column="visit_date_time" jdbcType="INTEGER" property="visitDateTime" />
+    <result column="once_price" jdbcType="DECIMAL" property="oncePrice" />
+    <result column="function_intr" jdbcType="VARCHAR" property="functionIntr" />
+    <result column="is_display" jdbcType="CHAR" property="isDisplay" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, project_name, project_type_one_name, project_type_two_name, project_type_one_id, 
+    project_type_two_id, product_type, card_type, project_url, project_duration, market_price, 
+    discount_price, max_contain_times, visit_date_time, once_price, function_intr, is_display, 
+    status, create_by, create_date, update_user, update_date
+  </sql>
+  <select id="selectByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_project_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart &gt;= 0">
+      limit ${limitStart},${pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shop_project_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shop_project_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoCriteria">
+    delete from shop_project_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
+    insert into shop_project_info (id, project_name, project_type_one_name, 
+      project_type_two_name, project_type_one_id, project_type_two_id, 
+      product_type, card_type, project_url, 
+      project_duration, market_price, discount_price, 
+      max_contain_times, visit_date_time, once_price, 
+      function_intr, is_display, status, 
+      create_by, create_date, update_user, 
+      update_date)
+    values (#{id,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{projectTypeOneName,jdbcType=VARCHAR}, 
+      #{projectTypeTwoName,jdbcType=VARCHAR}, #{projectTypeOneId,jdbcType=VARCHAR}, #{projectTypeTwoId,jdbcType=VARCHAR}, 
+      #{productType,jdbcType=CHAR}, #{cardType,jdbcType=CHAR}, #{projectUrl,jdbcType=VARCHAR}, 
+      #{projectDuration,jdbcType=INTEGER}, #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
+      #{maxContainTimes,jdbcType=INTEGER}, #{visitDateTime,jdbcType=INTEGER}, #{oncePrice,jdbcType=DECIMAL}, 
+      #{functionIntr,jdbcType=VARCHAR}, #{isDisplay,jdbcType=CHAR}, #{status,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
+    insert into shop_project_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="projectTypeOneName != null">
+        project_type_one_name,
+      </if>
+      <if test="projectTypeTwoName != null">
+        project_type_two_name,
+      </if>
+      <if test="projectTypeOneId != null">
+        project_type_one_id,
+      </if>
+      <if test="projectTypeTwoId != null">
+        project_type_two_id,
+      </if>
+      <if test="productType != null">
+        product_type,
+      </if>
+      <if test="cardType != null">
+        card_type,
+      </if>
+      <if test="projectUrl != null">
+        project_url,
+      </if>
+      <if test="projectDuration != null">
+        project_duration,
+      </if>
+      <if test="marketPrice != null">
+        market_price,
+      </if>
+      <if test="discountPrice != null">
+        discount_price,
+      </if>
+      <if test="maxContainTimes != null">
+        max_contain_times,
+      </if>
+      <if test="visitDateTime != null">
+        visit_date_time,
+      </if>
+      <if test="oncePrice != null">
+        once_price,
+      </if>
+      <if test="functionIntr != null">
+        function_intr,
+      </if>
+      <if test="isDisplay != null">
+        is_display,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTypeOneName != null">
+        #{projectTypeOneName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTypeTwoName != null">
+        #{projectTypeTwoName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTypeOneId != null">
+        #{projectTypeOneId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTypeTwoId != null">
+        #{projectTypeTwoId,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        #{productType,jdbcType=CHAR},
+      </if>
+      <if test="cardType != null">
+        #{cardType,jdbcType=CHAR},
+      </if>
+      <if test="projectUrl != null">
+        #{projectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="projectDuration != null">
+        #{projectDuration,jdbcType=INTEGER},
+      </if>
+      <if test="marketPrice != null">
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPrice != null">
+        #{discountPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="maxContainTimes != null">
+        #{maxContainTimes,jdbcType=INTEGER},
+      </if>
+      <if test="visitDateTime != null">
+        #{visitDateTime,jdbcType=INTEGER},
+      </if>
+      <if test="oncePrice != null">
+        #{oncePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="functionIntr != null">
+        #{functionIntr,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null">
+        #{isDisplay,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoCriteria" resultType="java.lang.Integer">
+    select count(1) from shop_project_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCriteriaSelective" parameterType="map">
+    update shop_project_info
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectName != null">
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectTypeOneName != null">
+        project_type_one_name = #{record.projectTypeOneName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectTypeTwoName != null">
+        project_type_two_name = #{record.projectTypeTwoName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectTypeOneId != null">
+        project_type_one_id = #{record.projectTypeOneId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectTypeTwoId != null">
+        project_type_two_id = #{record.projectTypeTwoId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productType != null">
+        product_type = #{record.productType,jdbcType=CHAR},
+      </if>
+      <if test="record.cardType != null">
+        card_type = #{record.cardType,jdbcType=CHAR},
+      </if>
+      <if test="record.projectUrl != null">
+        project_url = #{record.projectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectDuration != null">
+        project_duration = #{record.projectDuration,jdbcType=INTEGER},
+      </if>
+      <if test="record.marketPrice != null">
+        market_price = #{record.marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.discountPrice != null">
+        discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.maxContainTimes != null">
+        max_contain_times = #{record.maxContainTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.visitDateTime != null">
+        visit_date_time = #{record.visitDateTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.oncePrice != null">
+        once_price = #{record.oncePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.functionIntr != null">
+        function_intr = #{record.functionIntr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDisplay != null">
+        is_display = #{record.isDisplay,jdbcType=CHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDate != null">
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCriteria" parameterType="map">
+    update shop_project_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      project_type_one_name = #{record.projectTypeOneName,jdbcType=VARCHAR},
+      project_type_two_name = #{record.projectTypeTwoName,jdbcType=VARCHAR},
+      project_type_one_id = #{record.projectTypeOneId,jdbcType=VARCHAR},
+      project_type_two_id = #{record.projectTypeTwoId,jdbcType=VARCHAR},
+      product_type = #{record.productType,jdbcType=CHAR},
+      card_type = #{record.cardType,jdbcType=CHAR},
+      project_url = #{record.projectUrl,jdbcType=VARCHAR},
+      project_duration = #{record.projectDuration,jdbcType=INTEGER},
+      market_price = #{record.marketPrice,jdbcType=DECIMAL},
+      discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      max_contain_times = #{record.maxContainTimes,jdbcType=INTEGER},
+      visit_date_time = #{record.visitDateTime,jdbcType=INTEGER},
+      once_price = #{record.oncePrice,jdbcType=DECIMAL},
+      function_intr = #{record.functionIntr,jdbcType=VARCHAR},
+      is_display = #{record.isDisplay,jdbcType=CHAR},
+      status = #{record.status,jdbcType=CHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
+    update shop_project_info
+    <set>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTypeOneName != null">
+        project_type_one_name = #{projectTypeOneName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTypeTwoName != null">
+        project_type_two_name = #{projectTypeTwoName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTypeOneId != null">
+        project_type_one_id = #{projectTypeOneId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTypeTwoId != null">
+        project_type_two_id = #{projectTypeTwoId,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        product_type = #{productType,jdbcType=CHAR},
+      </if>
+      <if test="cardType != null">
+        card_type = #{cardType,jdbcType=CHAR},
+      </if>
+      <if test="projectUrl != null">
+        project_url = #{projectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="projectDuration != null">
+        project_duration = #{projectDuration,jdbcType=INTEGER},
+      </if>
+      <if test="marketPrice != null">
+        market_price = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPrice != null">
+        discount_price = #{discountPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="maxContainTimes != null">
+        max_contain_times = #{maxContainTimes,jdbcType=INTEGER},
+      </if>
+      <if test="visitDateTime != null">
+        visit_date_time = #{visitDateTime,jdbcType=INTEGER},
+      </if>
+      <if test="oncePrice != null">
+        once_price = #{oncePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="functionIntr != null">
+        function_intr = #{functionIntr,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null">
+        is_display = #{isDisplay,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
+    update shop_project_info
+    set project_name = #{projectName,jdbcType=VARCHAR},
+      project_type_one_name = #{projectTypeOneName,jdbcType=VARCHAR},
+      project_type_two_name = #{projectTypeTwoName,jdbcType=VARCHAR},
+      project_type_one_id = #{projectTypeOneId,jdbcType=VARCHAR},
+      project_type_two_id = #{projectTypeTwoId,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=CHAR},
+      card_type = #{cardType,jdbcType=CHAR},
+      project_url = #{projectUrl,jdbcType=VARCHAR},
+      project_duration = #{projectDuration,jdbcType=INTEGER},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      discount_price = #{discountPrice,jdbcType=DECIMAL},
+      max_contain_times = #{maxContainTimes,jdbcType=INTEGER},
+      visit_date_time = #{visitDateTime,jdbcType=INTEGER},
+      once_price = #{oncePrice,jdbcType=DECIMAL},
+      function_intr = #{functionIntr,jdbcType=VARCHAR},
+      is_display = #{isDisplay,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+ 
+</mapper>

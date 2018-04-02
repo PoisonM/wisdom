@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.beauty.mapper.ShopPunchClockDao">
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="sys_clerk_id" jdbcType="VARCHAR" property="sysClerkId" />
+    <result column="sys_shop_id" jdbcType="VARCHAR" property="sysShopId" />
+    <result column="sys_clerk_name" jdbcType="VARCHAR" property="sysClerkName" />
+    <result column="sys_shop_name" jdbcType="VARCHAR" property="sysShopName" />
+    <result column="sys_boss_id" jdbcType="VARCHAR" property="sysBossId" />
+    <result column="punch_time" jdbcType="TIMESTAMP" property="punchTime" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="scheduling_date" jdbcType="TIMESTAMP" property="schedulingDate" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, sys_clerk_id, sys_shop_id, sys_clerk_name, sys_shop_name, sys_boss_id, punch_time, 
+    status, scheduling_date, create_by, create_date, update_user, update_date
+  </sql>
+  <select id="selectByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_punch_clock
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart &gt;= 0">
+      limit ${limitStart},${pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shop_punch_clock
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shop_punch_clock
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockCriteria">
+    delete from shop_punch_clock
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
+    insert into shop_punch_clock (id, sys_clerk_id, sys_shop_id, 
+      sys_clerk_name, sys_shop_name, sys_boss_id, 
+      punch_time, status, scheduling_date, 
+      create_by, create_date, update_user, 
+      update_date)
+    values (#{id,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, 
+      #{sysClerkName,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, 
+      #{punchTime,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR}, #{schedulingDate,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
+    insert into shop_punch_clock
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sysClerkId != null">
+        sys_clerk_id,
+      </if>
+      <if test="sysShopId != null">
+        sys_shop_id,
+      </if>
+      <if test="sysClerkName != null">
+        sys_clerk_name,
+      </if>
+      <if test="sysShopName != null">
+        sys_shop_name,
+      </if>
+      <if test="sysBossId != null">
+        sys_boss_id,
+      </if>
+      <if test="punchTime != null">
+        punch_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="schedulingDate != null">
+        scheduling_date,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkId != null">
+        #{sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysShopId != null">
+        #{sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkName != null">
+        #{sysClerkName,jdbcType=VARCHAR},
+      </if>
+      <if test="sysShopName != null">
+        #{sysShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBossId != null">
+        #{sysBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="punchTime != null">
+        #{punchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="schedulingDate != null">
+        #{schedulingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockCriteria" resultType="java.lang.Integer">
+    select count(1) from shop_punch_clock
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCriteriaSelective" parameterType="map">
+    update shop_punch_clock
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysClerkId != null">
+        sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysShopId != null">
+        sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysClerkName != null">
+        sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysShopName != null">
+        sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysBossId != null">
+        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.punchTime != null">
+        punch_time = #{record.punchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.schedulingDate != null">
+        scheduling_date = #{record.schedulingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDate != null">
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCriteria" parameterType="map">
+    update shop_punch_clock
+    set id = #{record.id,jdbcType=VARCHAR},
+      sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+      sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+      sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
+      sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
+      sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      punch_time = #{record.punchTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=CHAR},
+      scheduling_date = #{record.schedulingDate,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
+    update shop_punch_clock
+    <set>
+      <if test="sysClerkId != null">
+        sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysShopId != null">
+        sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkName != null">
+        sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
+      </if>
+      <if test="sysShopName != null">
+        sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBossId != null">
+        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="punchTime != null">
+        punch_time = #{punchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="schedulingDate != null">
+        scheduling_date = #{schedulingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
+    update shop_punch_clock
+    set sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
+      sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+      sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
+      sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
+      sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      punch_time = #{punchTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      scheduling_date = #{schedulingDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>
