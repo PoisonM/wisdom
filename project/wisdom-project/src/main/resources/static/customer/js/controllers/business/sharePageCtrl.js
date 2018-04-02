@@ -35,7 +35,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 $scope.param.ctx.fillStyle = '#ffffff';
                 // //字体设置 三个参数，font-weight font-size font-family
                 $scope.param.ctx.font = '30px microsoft yahei';
-                $scope.param.ctx.fillText($scope.param.weixinShareInfo.nickName, $scope.param.canvas.width/2-$scope.param.weixinShareInfo.nickName.length*30/2, $scope.param.canvas.width*0.7);
+                $scope.param.ctx.fillText($scope.param.weixinShareInfo.nickName, $scope.param.canvas.width/2-$scope.param.weixinShareInfo.nickName.length*30/2, $scope.param.canvas.width*0.8);
                 // // //说明
                 $scope.param.ctx.font = '90px microsoft  yahei';
                 $scope.param.ctx.fillText($scope.param.weixinShareInfo.balance, $scope.param.canvas.width/2-$scope.param.weixinShareInfo.balance.length*90/2,$scope.param.canvas.width*1.12);
