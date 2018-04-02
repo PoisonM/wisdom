@@ -1,0 +1,25 @@
+<div class="productWrap">
+    <!--导航-->
+    <div class="productHeader">
+        <ul class="tab-head">
+            <li ng-repeat="items in [1,2,3,4,5,6,7,8,9,10]" class="tab-head-item" ng-click="selection($index)" ng-class="{'selectProject':param.selection == $index}">
+                <span>产品</span><img src="images/check2.png">
+            </li>
+        </ul>
+    </div>
+    <!--商品-->
+    <div class="productGoods">
+        <ul>
+            <li ng-repeat="item in [1,2,3,4,5,6]">
+                <div class="imgDiv">
+                    <img src="images/timgs.jpg" alt="">
+                </div>
+                <div class="textDiv">
+                    <p class="textName bold">雪痕</p>
+                    <p class="textMoney cff6666"><span class="fs30">价格：</span><span class="fs34">298</span><span class="fs28">.00</span></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
