@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结算中心</title>
+    <base href="/customer/"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="styles/customer/reset.css">
+    <script src="js/libs/jquery/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/libs/weixin/jweixin-1.2.0.js"></script>
+    <link rel="stylesheet" href="styles/lib/ionic.min.css"/>
+    <link rel="stylesheet" href="styles/lib/ionicons.min.css"/>
+    <script src="js/libs/ionic/ionic.bundle.min.js"></script>
+    <script src="js/libs/ionic/ionic.min.js"></script>
+    <script src="js/native/orderPay.js?ver=1.6"></script>
+</head>
+<body style="background:#f8f8f8" onload="orderPayInit()">
+    <ion-view>
+        <div class="list">
+            <div class="item">
+                <div id="userAddressInfo"></div>
+            </div>
+        </div>
+        <div style="height:500px;overflow-y:auto;overflow-x:hidden">
+            <div id="needPayOrderList"></div>
+            <div class="list">
+                <p class="item">
+                    <img src="images/pay.png" style="width:1rem;height:1rem;display: inline-block">
+                    &nbsp;&nbsp;<span>微信支付</span>
+                    <i class="ion ion-checkmark-circled" style="float: right"></i>
+                </p>
+                <p class="item" style="border:transparent;background:transparent" id="invoiceBox">
+                    <input type="checkbox" id="checkbox-id" onclick="check()">
+                    <span style="font-size: 10px" >需要发票</span>
+                </p>
+            </div>
+            <br><br><br><br>
+        </div>
+        <div class="tabs" style="padding-top: 0px;">
+            <a class="tab-item" style="background: white">
+            </a>
+            <a class="tab-item" style="background:white;color:red">
+                    <span style="float:right;margin-right:0.3rem;font-size:0.9rem">
+                        <span style="color:#333333;">合计：</span>
+                        <span id="totalPrice"></span>
+                    </span>
+            </a>
+            <a id="payButton" class="tab-item" style="background:red;color:white;" onclick="confirmPay()">
+                <span>确认支付</span>
+            </a>
+        </div>
+    </ion-view>
+</body>
+</html>
