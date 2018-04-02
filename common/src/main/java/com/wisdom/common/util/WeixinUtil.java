@@ -144,10 +144,10 @@ public class WeixinUtil {
         return String.valueOf(Character.toChars(hexEmoji));
     }
 
-    public static String getOpenId(HttpSession session, HttpServletRequest request) {
-        String openId = (String) session.getAttribute(ConfigConstant.OPEN_ID);
+    public static String getCustomerOpenId(HttpSession session, HttpServletRequest request) {
+        String openId = (String) session.getAttribute(ConfigConstant.CUSTOMER_OPEN_ID);
         if (!StringUtils.isNotNull(openId)) {
-            openId = CookieUtils.getCookie(request, ConfigConstant.OPEN_ID);
+            openId = CookieUtils.getCookie(request, ConfigConstant.CUSTOMER_OPEN_ID);
         }
         return openId;
     }

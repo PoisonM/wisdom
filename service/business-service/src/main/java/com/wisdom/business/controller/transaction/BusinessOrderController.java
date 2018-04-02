@@ -119,7 +119,7 @@ public class BusinessOrderController {
         else
         {
             //先获取用户的openid
-            String openId = WeixinUtil.getOpenId(session,request);
+            String openId = WeixinUtil.getCustomerOpenId(session,request);
             BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
             if(openId==null)
             {

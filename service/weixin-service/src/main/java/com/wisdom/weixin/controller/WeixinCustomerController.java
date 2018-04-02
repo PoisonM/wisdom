@@ -118,7 +118,7 @@ public class WeixinCustomerController {
             url = ConfigConstant.CUSTOMER_WEB_URL + "myselfCenter";
         }
 
-        String openId = WeixinUtil.getOpenId(session,request);
+        String openId = WeixinUtil.getCustomerOpenId(session,request);
         if (openId==null||openId.equals("")) {
             String code = request.getParameter("code");
             String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +

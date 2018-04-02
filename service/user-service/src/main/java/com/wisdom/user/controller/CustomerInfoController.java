@@ -53,7 +53,7 @@ public class CustomerInfoController {
     @ResponseBody
     ResponseDTO<UserInfoDTO> getUserInfoByOpenId(HttpSession session, HttpServletRequest request) {
         ResponseDTO<UserInfoDTO> responseDTO = new ResponseDTO<>();
-        String openId = WeixinUtil.getOpenId(session,request);
+        String openId = WeixinUtil.getCustomerOpenId(session,request);
         List<UserInfoDTO> userInfoDTOList = new ArrayList<>();
         if(openId!=null)
         {
@@ -82,7 +82,7 @@ public class CustomerInfoController {
     @ResponseBody
     ResponseDTO<String> getUserOpenIdFromSession(HttpSession session, HttpServletRequest request) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
-        String openId = WeixinUtil.getOpenId(session,request);
+        String openId = WeixinUtil.getCustomerOpenId(session,request);
         if(openId!=null)
         {
             responseDTO.setResponseData(openId);

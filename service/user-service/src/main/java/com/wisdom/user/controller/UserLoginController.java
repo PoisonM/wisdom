@@ -38,7 +38,7 @@ public class UserLoginController {
         ResponseDTO<String> result = new ResponseDTO<>();
 
         //获取用户的基本信息 todo 需要完成注释部分的代码
-        String openid = WeixinUtil.getOpenId(session,request);
+        String openid = WeixinUtil.getCustomerOpenId(session,request);
         if(openid==null||openid.equals(""))
         {
             result.setResult(StatusConstant.FAILURE);
