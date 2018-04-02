@@ -114,7 +114,6 @@ public class AccountController {
 		{
 			accountDTO.setBankCardInfo(userBankCardInfoDTOS.get(0));
 		}
-		logger.info(userInfoDTO.getMobile()+"get bank card information==="+JSONObject.toJSONString(userBankCardInfoDTOS.get(0)));
 
 		List<Integer> OrderStatusCountList = new ArrayList<>();
 		for (OrderStatus status : OrderStatus.values()) {
