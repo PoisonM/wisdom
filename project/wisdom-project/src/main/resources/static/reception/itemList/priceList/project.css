@@ -4,10 +4,11 @@
 .projectHeader ul li{width: 1.78rem;height: 1rem;line-height: 1rem;float: left}
 .tab-head{list-style-type: none;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;;padding:0;overflow:auto;text-align: center}
 .tab-head-item{-webkit-box-flex:1;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;color:#333333;padding:0 5px;font-size: 0.3rem}
+.projectHeader ul li img{width: 0.18rem;height: 0.14rem;margin-left: 0.15rem}
 /*商品*/
 .projectGoods{background: #ffffff}
 .projectGoods ul{width: 100%;list-style: none;display: flex;flex-wrap: wrap;justify-content: space-between;}
-.projectGoods ul li{width:33.3333%;height:5.5rem;border: 1px solid #e5e5e5;box-sizing: content-box;}
+.projectGoods ul li{width:33.3333%;border: 1px solid #e5e5e5;box-sizing: content-box;}
 .projectGoods ul li img{width: 3.5rem;height:3.3rem;padding: 0.234rem}
 .imgDiv{text-align: center}
 .textDiv{margin-left: 0.234rem;}
