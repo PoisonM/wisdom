@@ -1,7 +1,7 @@
 /**
- * Created by Administrator on 2018/3/29.
+ * Created by Administrator on 2018/4/2.
  */
-PADWeb.controller("projectCtrl", function($scope, $state, $stateParams) {
+PADWeb.controller("productCtrl", function($scope, $state, $stateParams) {
     $scope.param = {
         selection:"0"
     }

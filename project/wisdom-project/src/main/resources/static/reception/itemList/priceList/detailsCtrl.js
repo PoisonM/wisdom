@@ -7,6 +7,8 @@ PADWeb.controller("detailsCtrl", function($scope, $state, $stateParams) {
     var swiper = new Swiper('.swiper-container', {
         slidesPerView: 3,
         loop: true,
+        autoplayDisableOnInteraction : false,
+        autoplay:1500,
         pagination: {
             el: '.swiper-pagination',
             clickable: true,

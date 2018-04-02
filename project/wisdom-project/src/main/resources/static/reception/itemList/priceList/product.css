@@ -1,0 +1,24 @@
+.productWrap{width: 100%;}
+/*头部*/
+.productHeader{width:14.45rem;height:1rem;background: #f5f5f5;border-bottom: 1px solid #e5e5e5;}
+.productHeader ul li{width: 1.78rem;height: 1rem;line-height: 1rem;float: left}
+.tab-head{list-style-type: none;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;;padding:0;overflow:auto;text-align: center}
+.tab-head-item{-webkit-box-flex:1;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;color:#333333;padding:0 5px;font-size: 0.3rem}
+.productHeader ul li img{width: 0.18rem;height: 0.14rem;margin-left: 0.15rem}
+/*商品*/
+.productGoods{background: #ffffff}
+.productGoods ul{width: 100%;list-style: none;display: flex;flex-wrap: wrap;justify-content: space-between;}
+.productGoods ul li{width:33.3333%;border: 1px solid #e5e5e5;box-sizing: content-box;}
+.productGoods ul li img{width: 3.5rem;height:3.3rem;padding: 0.234rem}
+.imgDiv{text-align: center}
+.textDiv{margin-left: 0.234rem;}
+.textName{font-size: 0.26rem;color: #333333;}
+.textMoney{font-size: 0.22rem;color: #333333;}
+.textDiv p{margin-top: 0.21rem}
+.bff6666{background: #ff6666}
+.cff6666{color: #ff6666}
+.fs30{font-size: 0.234rem}
+.fs34{font-size: 0.26rem}
+.fs28{font-size:0.21rem}
+.selectProject{background-color:#eaeaea;color: #ff6666}
+

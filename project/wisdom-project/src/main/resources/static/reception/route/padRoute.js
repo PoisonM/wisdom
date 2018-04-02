@@ -348,9 +348,6 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "项目",
                         files: [root + "priceList/projectCtrl.js",
                             root + "priceList/project.css",
-                            // root + "../libs/jquery-1.10.2.js",
-                            // root + "../libs/swiper-3.4.0.jquery.min.js",
-                            // root + "../styles/swiper-3.2.7.min.css",
                         ]
                     })
                 }]
@@ -363,7 +360,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "项目",
+                        name: "项目详情",
                         files: [root + "priceList/detailsCtrl.js",
                             root + "priceList/details.css",
                             root + "../libs/swiper-3.4.0.min.js",
