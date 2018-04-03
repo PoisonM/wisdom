@@ -78,6 +78,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.userInfo.todayPerformance', {
+            url: '/todayPerformance',
+            templateUrl: root + '/userInfo/todayPerformance.html',
+            controller: 'todayPerformanceCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "今日业绩",
+                        files: [
+                            root + "userInfo/todayPerformance.css",
+                            root + "userInfo/todayPerformance.js",
+                        ]
+                    })
+                }]
+            }
+        })
 
         .state('pad-web.left_nav.addRecord', {
             url: '/addRecord',
@@ -353,18 +369,33 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
-        .state('pad-web.details', {
-            url: '/details',
-            templateUrl: root + '/priceList/details.html',
-            controller: 'detailsCtrl',
+        .state('pad-web.projectDetails', {
+            url: '/projectDetails',
+            templateUrl: root + '/priceList/projectDetails.html',
+            controller: 'projectDetailsCtrl',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "项目详情",
-                        files: [root + "priceList/detailsCtrl.js",
-                            root + "priceList/details.css",
+                        files: [root + "priceList/projectDetailsCtrl.js",
+                            root + "priceList/projectDetails.css",
                             root + "../libs/swiper-3.4.0.min.js",
                             root + "../styles/swiper-3.4.0.min.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.product', {
+            url: '/product',
+            templateUrl: root + '/priceList/product.html',
+            controller: 'productCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "产品",
+                        files: [root + "priceList/productCtrl.js",
+                            root + "priceList/product.css",
                         ]
                     })
                 }]
