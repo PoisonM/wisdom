@@ -1,34 +1,23 @@
-<div class="consumption width1348" >
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel " >
-            <span class="marginLeft20">取消</span>
-        </p>
-        <p class="centerBtn ">
-            消费
-        </p>
-        <p class="scheduling ">
 
-        </p>
-    </div>
     <div class="content">
         <div class="btnsLisArea">
             <div class="btnLis" >
                 <ul>
                     <li>
                         <img src="images/bt_single.png">
-                        <a class="color333FS30">单次</a>
+                        <a class="color333FS30" ng-click=" selsectConsumption('selectSingle')">单次</a>
                     </li>
                     <li>
                         <img src="images/bt-medication%20card.png">
-                        <a class="color333FS30">疗程卡</a>
+                        <a class="color333FS30" ng-click=" selsectConsumption('selectTreatmentCard')">疗程卡</a>
                     </li>
                     <li>
                         <img src="images/bt_product.png">
-                        <a class="color333FS30">产品</a>
+                        <a class="color333FS30" ng-click=" selsectConsumption('selectProduct')">产品</a>
                     </li>
                     <li>
                         <img src="images/bt_set%20of%20cards.png">
-                        <a class="color333FS30">套卡</a>
+                        <a class="color333FS30" ng-click=" selsectConsumption('collectionCard')">套卡</a>
                     </li>
                 </ul>
             </div>
@@ -64,9 +53,9 @@
                     <li class="space-between paddingLeft30">
                         <p class="">购买数量</p>
                         <p class="rightContent">
-                            <button class="reduction">-</button>
-                            <input type="text" value="1">
-                            <button class="addBtn">+</button>
+                            <button class="reduction" ng-click = "subtractOrAdd(0)">-</button>
+                            <input type="text" placeholder="1" ng-model="param.num">
+                            <button class="addBtn" ng-click = "subtractOrAdd(1)">+</button>
                         </p>
                     </li>
                     <li class="space-between paddingLeft30 paddingLeft30">
@@ -94,9 +83,8 @@
                 <span class="colorFF6666FS34">￥99.00</span>
             </p>
             <p>
-                <button class="nextStepBtn">下一步</button>
+                <button class="nextStepBtn" ng-click="nextStepBtnConsumption()">下一步</button>
             </p>
         </div>
 
     </div>
-</div>

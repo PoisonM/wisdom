@@ -39,3 +39,8 @@
 .dayAppointment .messLis .appointmentLis { display: flex; }
 .dayAppointment .messLis .appointmentLis ul:last-child li { border-right: none; }
 .dayAppointment .messLis .appointmentLis ul li { width: 2.42188rem; height: 0.96875rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }
+
+.detailsWrap{position: absolute;}
+.consumption{position: absolute;left:100px;top:0px;}
+.selectContent{position: absolute;left:100px;top:0px;}
+.payType{position: absolute;left:100px;top:0px;}
