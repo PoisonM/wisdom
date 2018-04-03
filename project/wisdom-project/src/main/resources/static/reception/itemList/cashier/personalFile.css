@@ -48,10 +48,7 @@
     letter-spacing: 0;
 }
 
-.personalFile-box .personalFile-content .treatment {
-    width: 674px;
-    margin: 0 auto;
-}
+.personalFile-box .personalFile-content .treatment {}
 
 .personalFile-box .personalFile-content .treatment .treatmentCard {
     width: 674px;
@@ -59,6 +56,7 @@
     background: #FFFFFF;
     box-shadow: 0 2px 4px 0 rgba(228, 228, 228, 0.50);
     border-radius: 4px;
+    margin: 0 auto;
 }
 
 .personalFile-box .personalFile-content .treatment .treatmentCard .treatmentCardTop {
@@ -147,6 +145,7 @@
     background: #FFFFFF;
     border-radius: 10px;
     width: 675px;
+    margin: 0 auto;
 }
 
 .personalFile-box .personalFile-content .treatment .recorderCard .recorderCardTopName {
@@ -249,4 +248,23 @@
     height: 30px;
     border: none;
     margin: 9px 30px 0 0;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard {
+    width: 706px;
+    margin: -35px auto 0;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardTop {
+    height: 40px;
+    background: rgba(255, 102, 102, 0.20);
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardTop span {
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #FF6666;
+    letter-spacing: 0;
+    margin: 10px auto;
+    display: table;
 }
