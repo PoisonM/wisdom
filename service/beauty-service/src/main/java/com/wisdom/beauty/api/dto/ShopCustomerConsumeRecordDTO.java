@@ -42,7 +42,7 @@ public class ShopCustomerConsumeRecordDTO extends BaseEntity implements Serializ
     //消费数量
     private Integer consumeNumber;
 
-    //消费类型
+    //消费类型 0：充值  1：消费 2、还欠款 3、退款 4、划卡
     private String type;
 
     //美容院表主键
