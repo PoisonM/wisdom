@@ -379,9 +379,24 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                     return $ocLazyLoad.load({
                         name: "日预约",
                         files: [root + "appointment/dayAppointment.js",
+                            root + "appointment/laydate.css",
                             root + "appointment/laydate.js",
                             root + "appointment/dayAppointment.css",
-                            root + "appointment/laydate.css",
+                            root + "appointment/consumptionCtrl.js",
+                            root + "appointment/style.css",
+                            root + "appointment/detailsReservation.css",
+                            root + "appointment/detailsReservationCtrl.js",
+                            root + "appointment/appointmentType.css",
+                            root + "appointment/selectSingleCtrl.js",
+                            root + "appointment/search.css",
+                            root + "appointment/searchCtrl.js",
+                            root + "appointment/selectTreatmentCard.css",
+                            root + "appointment/selectSingle.css",
+                            root + "appointment/selectSingleCtrl.js",
+                            root + "appointment/selectProduct.css",
+                            root + "appointment/payType.css",
+                            root + "appointment/payTypeCtrl.js",
+
                         ]
                     })
                 }]
