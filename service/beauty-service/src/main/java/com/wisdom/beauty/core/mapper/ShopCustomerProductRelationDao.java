@@ -1,4 +1,4 @@
-package com.wisdom.beauty.mapper;
+package com.wisdom.beauty.core.mapper;
 
 import com.wisdom.beauty.api.dto.ShopCustomerProductRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopCustomerProductRelationDTO;

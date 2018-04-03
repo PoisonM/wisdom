@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wisdom.beauty.mapper.ShopUserRelationDao">
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopUserRelationDao">
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopUserRelationDTO">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="sys_shop_id" jdbcType="VARCHAR" property="sysShopId" />
