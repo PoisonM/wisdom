@@ -5,14 +5,29 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams) {
         week:[],
         btnActive:['btnActive','common'],
         day : ["09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:30","21:00","21:30","22:00","22:30","23:00","23:30","1"],
-        detailsReservation:false,
-        consumption:false,
-        selectSingle:false,
-        selectTreatmentCard:false,
-        selectProduct:false,
-        collectionCard:false,
-        consumptionNextStep:false,
-        serachContent:'',
+        detailsReservation:false,/*预约详情*/
+        consumption:false,/*消费*/
+        selectSingle:false,/*选择单次*/
+        selectTreatmentCard:false,/*消费-选择疗程卡*/
+        selectProduct:false,/*选择产品*/
+        collectionCard:false,/*选择套卡*/
+        consumptionNextStep:false,/*消费-消费-下一步*/
+        balancePrepaid:false,/*余额充值*/
+        relatedStaff:false,/*关联员工*/
+        scratchCard:false,/*划卡*/
+        scratchCardSelectTreatmentCard:false,/*划卡-选择疗程卡*/
+        giving:false,/*赠送*/
+        givingProduct:true,/*赠送-产品*/
+        givingVouchers:false,/*赠送-项目*/
+        scratchCard:false,/*赠送优惠券*/
+        ModifyAppointment:true,/*修改预约按钮*/
+        individualTravelerAppointment:true,/*散客详情*/
+        serachContent:'',/*搜索内容*/
+        givingIndex:0,/*赠送Index*/
+        detailsReservationText:"去消费",/*预约按钮详情的按钮展示*/
+       /* scratchCardText:"去划卡",/!*预约按钮详情的按钮展示*!/
+        detailsReservationBtn:false,/!*预约按钮详情的按钮展示*!/
+        scratchCardBtn:false,/!*预约按钮详情的按钮展示*!/*/
         num:1,
         data:[{
             title:'合作',
@@ -194,17 +209,36 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams) {
         });
     }*/
     //预约详情
-    $scope.detailsReservation = function(status,index,e){
+    $scope.detailsReservation = function(index1,index2,e,status){
            /* var top = (e.clientY +100)/128;
             var left = (e.clientX +100)/128;
             var screen = document.documentElement.clientWidth;*/
+           $scope.param.consumption = false;
+           $scope.param.selectSingle = false;
+           $scope.param.selectTreatmentCard = false;
+           $scope.param.selectProduct = false;
+           $scope.param.collectionCard = false;
+           $scope.param.consumptionNextStep = false;
+           $scope.param.balancePrepaid = false;
+           $scope.param.relatedStaff = false;
+           $scope.param.scratchCard = false;
+           $scope.param.giving = false;
+           $scope.param.givingProduct = false;
+           $scope.param.givingVouchers = false;
            var detailsWrap = document.getElementsByClassName("detailsWrap")[0];
            detailsWrap.style.top = (e.clientY +100)/128+"rem";
            detailsWrap.style.left = (e.clientX +100)/128+"rem";
            $scope.param.detailsReservation = true;
+            if(status == '消费'){
+                $scope.param. detailsReservationText = "去消费";
+            }else if(status == '划卡'){
+                $scope.param. detailsReservationText = "去划卡";
+            }else {
+                
+            }
            $scope.detailsReservationPic = function(){
                $scope.param.detailsReservation = false;
-           };
+           }
         detailsReservation && detailsReservation($scope)
     }
     //消费-消费
@@ -223,6 +257,20 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams) {
                 $scope.param.collectionCard = false;
             }else if(status == 'consumptionNextStep'){
                 $scope.param.consumptionNextStep = false;
+            }else if(status == 'balancePrepaid'){
+                $scope.param.balancePrepaid = false;
+                $scope.param.consumption = true;
+            }else if(status == 'scratchCard'){
+                $scope.param.scratchCard = false;
+            }else if(status == 'giving'){
+                $scope.param.giving = false;
+                $scope.param.consumption = true;
+            }else if(status == 'relatedStaff'){
+                $scope.param.relatedStaff = false;
+                $scope.param.consumption = true;
+            }else if(status == 'scratchCardSelectTreatmentCard'){
+                $scope.param.scratchCardSelectTreatmentCard = false;
+                $scope.param.scratchCard = true;
             }
         }else{
             if(status == 'selectSingle'){
@@ -235,6 +283,18 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams) {
                 $scope.param.collectionCard = false;
             }else if(status == 'consumptionNextStep'){
                 $scope.param.consumptionNextStep = false;
+            }else if(status == 'scratchCard'){
+                $scope.param.scratchCardSelectTreatmentCard = true;
+                $scope.param.scratchCard = false;
+            }else if(status == 'giving'){
+                $scope.param.giving = false;
+                $scope.param.consumption = true;
+            }else if(status == 'relatedStaff'){
+                $scope.param.relatedStaff = false;
+                $scope.param.consumption = true;
+            }else if(status == 'scratchCardSelectTreatmentCard'){
+                $scope.param.scratchCardSelectTreatmentCard = false;
+                $scope.param.scratchCard = true;
             }
         }
 
@@ -269,8 +329,8 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams) {
         $scope.param.collectionCard = false;
     }
     selectSingle && selectSingle($scope);
-
     searchConsumption && searchConsumption($scope)
+    
     /*$scope.nextStepBtnConsumption = function(){
         $scope.nextStepBtnConsumption
     }*/

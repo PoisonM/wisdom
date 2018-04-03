@@ -22,5 +22,17 @@ function consumption($scope) {
        $scope.param.consumption = false;
        $scope.param.consumptionNextStep = true;
   }
-
+  $scope.balancePrepaid = function(){
+      $scope.param.balancePrepaid = true;
+      $scope.param.consumption = false;
+  }
+  $scope.relatedStaff = function(){
+      $scope.param.relatedStaff = true;
+      $scope.param.consumption = false;
+  }
+  $scope.giving = function(){
+      $scope.param.giving = true;
+      $scope.param.consumption = false;
+  }
+    givingChange && givingChange($scope)
 }

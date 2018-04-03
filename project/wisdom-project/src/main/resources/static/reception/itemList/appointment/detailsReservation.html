@@ -2,21 +2,22 @@
     <!--内容-->
     <div class="content">
         <div class="contentTop pt30">
-          <p ><span class="redPoint ml30"></span><span class="customerName fs34">安迪</span><span class="giveContent fs32">修改预约</span></p>
+          <p ><span class="redPoint ml30"></span><span class="customerName fs34">安迪</span><span class="giveContent fs32 " ng-show="param.ModifyAppointment">修改预约</span></p>
             <p class="contentTime"><img src="images/ic_point.png" alt=""> <span class="minute fs28">10:00~11:30</span></p>
             <!--按钮-->
             <div class="btnBox">
                 <ul>
-                    <li><button class="btn1 fs32">确定预约</button></li>
-                    <li><button class="btn2 fs32">开始预约</button></li>
+                    <li><button class="btn1 fs32 " ng-click="startAppointment()" ng-class="{'startAppointmentActive':param.ModifyAppointment==false}">确定预约</button></li>
+                    <li><button class="btn2 fs32">开始服务</button></li>
                 </ul>
             </div>
         </div>
-        <div class="contentDown">
-          <p class="cardItem fs28">预约卡项</p>
-            <div class="cardBox">
-                <span class="skinCare fs28">韩国美白护肤</span>
-                <button class="goCard fs32" ng-click = "consumptionGo()">去划卡</button>
+        <div class="contentDown" >
+          <p class=" fs28 bte5 h80 bbe5"><span class="cardItem">预约卡项</span></p>
+            <div class="cardBox ">
+                <p class="skinCare fs28">韩国美白护肤</p>
+                <button class="goCard fs32" ng-click = "consumptionGo(param.detailsReservationText)">{{param.detailsReservationText}}</button>
             </div>
         </div>
+
     </div>
