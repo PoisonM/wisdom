@@ -58,6 +58,9 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams) {
             }
         }
     }
+    $scope.goProductDetails=function () {
+        $state.go("pad-web.productDetails")
+    }
     /*$scope.selectSingleDataPic =[];
      var single =[];
      for(var i=0;i<$scope.selectSingleData.length;i++){

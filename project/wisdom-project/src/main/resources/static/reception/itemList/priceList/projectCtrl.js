@@ -58,6 +58,9 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams) {
             }
         }
     }
+    $scope.goProjectDetails=function () {
+        $state.go("pad-web.projectDetails")
+    }
     /*$scope.selectSingleDataPic =[];
     var single =[];
     for(var i=0;i<$scope.selectSingleData.length;i++){
