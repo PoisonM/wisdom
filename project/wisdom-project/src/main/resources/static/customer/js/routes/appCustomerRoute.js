@@ -410,6 +410,21 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+
+                    .state('beautyAppoint', {
+                        url: '/beautyAppoint',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyAppointCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyAppointCtrl',
+                                    ['js/controllers/beauty/beautyAppointCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyAppoint.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                
+
                 $urlRouterProvider.otherwise('/shopHome')
             }])
 })
