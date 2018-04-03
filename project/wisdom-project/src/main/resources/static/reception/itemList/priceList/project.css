@@ -21,3 +21,8 @@
 .fs39{font-size: 0.3rem}
 .fs31{font-size: 0.24rem}
 .selectProject{background-color:#eaeaea;color: #ff6666}
+.projectAppear{position: absolute;z-index: 1001;left: 5rem;top: 1rem   ;background: #f5f5f5}
+.projectAppear ul{width: 100%;background: #f5f5f5;display: flex;flex-wrap: wrap;text-align: center}
+.projectAppear ul li{width: 1.8rem;height: 0.56rem;;line-height: 0.56rem}
+.projectAppear ul li{margin: 0.37rem;background:#FFFFFF;color: #333333;font-size: 0.25rem;border-radius: 0.09rem;border: 1px solid #cccccc;font-family: PingFangTC-Medium}
+.projectAppear ul li:nth-child(1){background: #FF6666;color: #FFFFFF;border: 0px}
