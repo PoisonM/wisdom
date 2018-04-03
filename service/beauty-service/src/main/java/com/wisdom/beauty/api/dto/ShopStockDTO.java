@@ -22,7 +22,7 @@ public class ShopStockDTO extends BaseEntity implements Serializable {
     private String stockStatus;
 
     //备注
-    private String desc;
+    private String detail;
 
     //库存数量
     private Integer stockNumber;
@@ -93,13 +93,7 @@ public class ShopStockDTO extends BaseEntity implements Serializable {
         this.stockStatus = stockStatus;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
+ public String getDetail() {        return detail;    }    public void setDetail(String detail) {        this.detail = detail;    }
 
     public Integer getStockNumber() {
         return stockNumber;

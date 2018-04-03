@@ -31,7 +31,7 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
     private String managerId;
 
     //备注
-    private String desc;
+    private String detail;
 
     //
     private Integer operNumber;
@@ -114,13 +114,7 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
         this.managerId = managerId;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
+ public String getDetail() {        return detail;    }    public void setDetail(String detail) {        this.detail = detail;    }
 
     public Integer getOperNumber() {
         return operNumber;

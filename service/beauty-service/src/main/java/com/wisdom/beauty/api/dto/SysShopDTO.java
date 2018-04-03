@@ -43,7 +43,7 @@ public class SysShopDTO extends BaseEntity implements Serializable {
     private String onServiceStatus;
 
     //简介
-    private String desc;
+    private String describe;
 
     //面积
     private Float area;
@@ -164,12 +164,12 @@ public class SysShopDTO extends BaseEntity implements Serializable {
         this.onServiceStatus = onServiceStatus;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescribe() {
+        return describe;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 
     public Float getArea() {
