@@ -30,9 +30,9 @@ public interface BaseDao<T,E,K> extends Serializable{
 
     int updateByCriteriaSelective(@Param("record") T entity, @Param("example") E criteria);
 
-    //int updateByCriteria(@Param("record") T entity, @Param("example") E criteria);
+    int updateByCriteria(@Param("record") T entity, @Param("example") E criteria);
 
     int updateByPrimaryKeySelective(T entity);
 
-    //int updateByPrimaryKey(T entity);
+    int updateByPrimaryKey(T entity);
 }
