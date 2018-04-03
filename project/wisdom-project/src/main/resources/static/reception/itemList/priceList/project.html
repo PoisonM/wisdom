@@ -2,8 +2,10 @@
     <!--导航-->
     <div class="projectHeader">
         <ul class="tab-head">
-            <li ng-repeat="items in [1,2,3,4,5,6,7,8,9,10]" class="tab-head-item" ng-click="selection($index);" ng-class="{'selectProject':param.selection == $index}">
-                <span>面部</span><img ng-src="{{selectSingleDataPic[$index]}}" ng-click="checkImg($index,$event);">
+            <li ng-repeat="items in selectSingleData" class="tab-head-item" >
+                <span ng-class="{'bg_box_sty' : param.selection == $index}" class="bg_box" ng-click="selection($index)">{{items.name}}</span>
+                <span
+     ng-class="{'check_img':items.status == 1,'check_img_bottom':items.status == 3,'check_img_top':items.status == 4}" class="check_img" ng-click="checkImg($index,items.status);" ></span>
             </li>
         </ul>
     </div>
@@ -23,7 +25,7 @@
         </ul>
     </div>
     <!--点击导航栏的任意商品出现相对应的弹框-->
-    <div ng-show="projectAppear" class="projectAppear" >
+    <div ng-show="param.projectAppear" class="projectAppear" >
         <ul>
             <li ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12,13,14]" >保湿</li>
         </ul>

@@ -401,6 +401,72 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.productDetails', {
+            url: '/productDetails',
+            templateUrl: root + '/priceList/productDetails.html',
+            controller: 'productDetailsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "产品详情",
+                        files: [root + "priceList/productDetailsCtrl.js",
+                            root + "priceList/productDetails.css",
+                            root + "../libs/swiper-3.4.0.min.js",
+                            root + "../styles/swiper-3.4.0.min.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.cardDetails', {
+            url: '/cardDetails',
+            templateUrl: root + '/priceList/cardDetails.html',
+            controller: 'cardDetailsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "套卡详情",
+                        files: [root + "priceList/cardDetailsCtrl.js",
+                            root + "priceList/cardDetails.css",
+                            root + "../libs/swiper-3.4.0.min.js",
+                            root + "../styles/swiper-3.4.0.min.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.rechargeableCard', {
+            url: '/rechargeableCard',
+            templateUrl: root + '/priceList/rechargeableCard.html',
+            controller: 'rechargeableCardCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值卡页面",
+                        files: [root + "priceList/rechargeableCardCtrl.js",
+                            root + "priceList/rechargeableCard.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.rechargeableDetails', {
+            url: '/rechargeableDetails',
+            templateUrl: root + '/priceList/rechargeableDetails.html',
+            controller: 'rechargeableDetailsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值卡详情",
+                        files: [root + "priceList/rechargeableDetailsCtrl.js",
+                            root + "priceList/rechargeableDetails.css",
+                            root + "../libs/swiper-3.4.0.min.js",
+                            root + "../styles/swiper-3.4.0.min.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.dayAppointment', {
             url: '/dayAppointment',
             templateUrl: root + '/appointment/dayAppointment.html',
