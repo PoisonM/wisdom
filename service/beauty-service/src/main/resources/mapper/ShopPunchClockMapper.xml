@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wisdom.beauty.core.mapper.ShopPunchClockDao">
-  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
-    <id column="id" jdbcType="VARCHAR" property="id" />
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopPunchClockMapper">
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopPunchClockDTO">
+    <id column="id" jdbcType="VARCHAR" property="id" />         
     <result column="sys_clerk_id" jdbcType="VARCHAR" property="sysClerkId" />
     <result column="sys_shop_id" jdbcType="VARCHAR" property="sysShopId" />
     <result column="sys_clerk_name" jdbcType="VARCHAR" property="sysClerkName" />
@@ -111,7 +111,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDTO">
     insert into shop_punch_clock (id, sys_clerk_id, sys_shop_id, 
       sys_clerk_name, sys_shop_name, sys_boss_id, 
       punch_time, status, scheduling_date, 
@@ -123,7 +123,7 @@
       #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDTO">
     insert into shop_punch_clock
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -280,7 +280,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDTO">
     update shop_punch_clock
     <set>
       <if test="sysClerkId != null">
@@ -322,7 +322,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDOT">
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopPunchClockDTO">
     update shop_punch_clock
     set sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},

@@ -5,5 +5,5 @@ import com.wisdom.beauty.api.dto.ShopCustomerArchivesDTO;
 import com.wisdom.common.entity.BaseDao;
 
 
-public interface ShopCustomerArchivesDao extends BaseDao<ShopCustomerArchivesDTO, ShopCustomerArchivesCriteria, String> {
+public interface ShopCustomerArchivesMapper extends BaseDao<ShopCustomerArchivesDTO, ShopCustomerArchivesCriteria, String> {
 }

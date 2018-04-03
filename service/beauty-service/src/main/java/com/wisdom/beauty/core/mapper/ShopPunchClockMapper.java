@@ -4,5 +4,5 @@ import com.wisdom.beauty.api.dto.ShopPunchClockCriteria;
 import com.wisdom.beauty.api.dto.ShopPunchClockDTO;
 import com.wisdom.common.entity.BaseDao;
 
-public interface ShopPunchClockDao extends BaseDao<ShopPunchClockDTO, ShopPunchClockCriteria, String> {
+public interface ShopPunchClockMapper extends BaseDao<ShopPunchClockDTO, ShopPunchClockCriteria, String> {
 }

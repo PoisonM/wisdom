@@ -52,7 +52,7 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
     private String status;
 
     //捎句话
-    private String desc;
+    private String detail;
 
     //
     private String createBy;
@@ -188,12 +188,12 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
         this.status = status;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public String getCreateBy() {

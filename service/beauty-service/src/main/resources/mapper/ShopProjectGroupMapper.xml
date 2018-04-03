@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wisdom.beauty.core.mapper.ShopProjectGroupDao">
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopProjectGroupMapper">
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopProjectGroupDTO">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="project_group_name" jdbcType="VARCHAR" property="projectGroupName" />
@@ -8,7 +8,7 @@
     <result column="market_price" jdbcType="DECIMAL" property="marketPrice" />
     <result column="discount_price" jdbcType="DECIMAL" property="discountPrice" />
     <result column="valid_date" jdbcType="TIMESTAMP" property="validDate" />
-    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
     <result column="status" jdbcType="CHAR" property="status" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
@@ -75,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, project_group_name, project_group_url, market_price, discount_price, valid_date, 
-    desc, status, create_by, create_date, update_user, update_date
+    detail, status, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupCriteria" resultMap="BaseResultMap">
     select
@@ -113,12 +113,12 @@
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO">
     insert into shop_project_group (id, project_group_name, project_group_url, 
       market_price, discount_price, valid_date, 
-      desc, status, create_by, 
+      detail, status, create_by,
       create_date, update_user, update_date
       )
     values (#{id,jdbcType=VARCHAR}, #{projectGroupName,jdbcType=VARCHAR}, #{projectGroupUrl,jdbcType=VARCHAR}, 
       #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, #{validDate,jdbcType=TIMESTAMP}, 
-      #{desc,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR},
       #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -143,8 +143,8 @@
       <if test="validDate != null">
         valid_date,
       </if>
-      <if test="desc != null">
-        desc,
+      <if test="detail != null">
+        detail,
       </if>
       <if test="status != null">
         status,
@@ -181,8 +181,8 @@
       <if test="validDate != null">
         #{validDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="desc != null">
-        #{desc,jdbcType=VARCHAR},
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=CHAR},
@@ -228,8 +228,8 @@
       <if test="record.validDate != null">
         valid_date = #{record.validDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.desc != null">
-        desc = #{record.desc,jdbcType=VARCHAR},
+      <if test="record.detail != null">
+        detail = #{record.detail,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=CHAR},
@@ -259,7 +259,7 @@
       market_price = #{record.marketPrice,jdbcType=DECIMAL},
       discount_price = #{record.discountPrice,jdbcType=DECIMAL},
       valid_date = #{record.validDate,jdbcType=TIMESTAMP},
-      desc = #{record.desc,jdbcType=VARCHAR},
+      detail = #{record.detail,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=CHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
@@ -287,8 +287,8 @@
       <if test="validDate != null">
         valid_date = #{validDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=CHAR},
@@ -315,7 +315,7 @@
       market_price = #{marketPrice,jdbcType=DECIMAL},
       discount_price = #{discountPrice,jdbcType=DECIMAL},
       valid_date = #{validDate,jdbcType=TIMESTAMP},
-      desc = #{desc,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
       status = #{status,jdbcType=CHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

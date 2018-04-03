@@ -4,5 +4,5 @@ import com.wisdom.beauty.api.dto.ShopProjectTypeCriteria;
 import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
 import com.wisdom.common.entity.BaseDao;
 
-public interface ShopProjectTypeDao extends BaseDao<ShopProjectTypeDTO, ShopProjectTypeCriteria, String> {
+public interface ShopProjectTypeMapper extends BaseDao<ShopProjectTypeDTO, ShopProjectTypeCriteria, String> {
 }

@@ -25,7 +25,7 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
     private Date validDate;
 
     //套卡说明
-    private String desc;
+    private String detail;
 
     //是否启用
     private String status;
@@ -92,13 +92,7 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
         this.validDate = validDate;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
+ public String getDetail() {        return detail;    }    public void setDetail(String detail) {        this.detail = detail;    }
 
     public String getStatus() {
         return status;
