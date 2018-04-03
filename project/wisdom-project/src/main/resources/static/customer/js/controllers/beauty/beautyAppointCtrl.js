@@ -5,8 +5,12 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
     ['$scope','$rootScope','$stateParams','$state',
         function ($scope,$rootScope,$stateParams,$state) {
 
-            $scope.goProtocol=function () {
-                $state.go("protocol")
+            $scope.chooseProject=function () {
+                alert("chooseProject");
+            }
+
+            $scope.chooseClerk=function () {
+                alert("chooseClerk");
             }
 
 
