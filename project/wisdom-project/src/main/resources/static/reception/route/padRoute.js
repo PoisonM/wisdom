@@ -78,6 +78,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.userInfo.todayPerformance', {
+            url: '/todayPerformance',
+            templateUrl: root + '/userInfo/todayPerformance.html',
+            controller: 'todayPerformanceCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "今日业绩",
+                        files: [
+                            root + "userInfo/todayPerformance.css",
+                            root + "userInfo/todayPerformance.js",
+                        ]
+                    })
+                }]
+            }
+        })
 
         .state('pad-web.left_nav.addRecord', {
             url: '/addRecord',

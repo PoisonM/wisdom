@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopStockBossRelationDao">
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStockBossRelationDTO">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="shop_boss_id" jdbcType="VARCHAR" property="shopBossId" />
+    <result column="shop_store_id" jdbcType="VARCHAR" property="shopStoreId" />
+    <result column="shop_stock_id" jdbcType="VARCHAR" property="shopStockId" />
+    <result column="shop_proc_id" jdbcType="VARCHAR" property="shopProcId" />
+    <result column="shop_store_name" jdbcType="VARCHAR" property="shopStoreName" />
+    <result column="shop_boss_name" jdbcType="VARCHAR" property="shopBossName" />
+    <result column="shop_proc_name" jdbcType="VARCHAR" property="shopProcName" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, shop_boss_id, shop_store_id, shop_stock_id, shop_proc_id, shop_store_name, shop_boss_name, 
+    shop_proc_name, create_by, create_date, update_user, update_date
+  </sql>
+  <select id="selectByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_stock_boss_relation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart &gt;= 0">
+      limit ${limitStart},${pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shop_stock_boss_relation
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shop_stock_boss_relation
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationCriteria">
+    delete from shop_stock_boss_relation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationDTO">
+    insert into shop_stock_boss_relation (id, shop_boss_id, shop_store_id, 
+      shop_stock_id, shop_proc_id, shop_store_name, 
+      shop_boss_name, shop_proc_name, create_by, 
+      create_date, update_user, update_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{shopBossId,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, 
+      #{shopStockId,jdbcType=VARCHAR}, #{shopProcId,jdbcType=VARCHAR}, #{shopStoreName,jdbcType=VARCHAR}, 
+      #{shopBossName,jdbcType=VARCHAR}, #{shopProcName,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationDTO">
+    insert into shop_stock_boss_relation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="shopBossId != null">
+        shop_boss_id,
+      </if>
+      <if test="shopStoreId != null">
+        shop_store_id,
+      </if>
+      <if test="shopStockId != null">
+        shop_stock_id,
+      </if>
+      <if test="shopProcId != null">
+        shop_proc_id,
+      </if>
+      <if test="shopStoreName != null">
+        shop_store_name,
+      </if>
+      <if test="shopBossName != null">
+        shop_boss_name,
+      </if>
+      <if test="shopProcName != null">
+        shop_proc_name,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="shopBossId != null">
+        #{shopBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStoreId != null">
+        #{shopStoreId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStockId != null">
+        #{shopStockId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopProcId != null">
+        #{shopProcId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStoreName != null">
+        #{shopStoreName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopBossName != null">
+        #{shopBossName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopProcName != null">
+        #{shopProcName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationCriteria" resultType="java.lang.Integer">
+    select count(1) from shop_stock_boss_relation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCriteriaSelective" parameterType="map">
+    update shop_stock_boss_relation
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopBossId != null">
+        shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopStoreId != null">
+        shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopStockId != null">
+        shop_stock_id = #{record.shopStockId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopProcId != null">
+        shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopStoreName != null">
+        shop_store_name = #{record.shopStoreName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopBossName != null">
+        shop_boss_name = #{record.shopBossName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopProcName != null">
+        shop_proc_name = #{record.shopProcName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDate != null">
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCriteria" parameterType="map">
+    update shop_stock_boss_relation
+    set id = #{record.id,jdbcType=VARCHAR},
+      shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
+      shop_stock_id = #{record.shopStockId,jdbcType=VARCHAR},
+      shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
+      shop_store_name = #{record.shopStoreName,jdbcType=VARCHAR},
+      shop_boss_name = #{record.shopBossName,jdbcType=VARCHAR},
+      shop_proc_name = #{record.shopProcName,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationDTO">
+    update shop_stock_boss_relation
+    <set>
+      <if test="shopBossId != null">
+        shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStoreId != null">
+        shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStockId != null">
+        shop_stock_id = #{shopStockId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopProcId != null">
+        shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStoreName != null">
+        shop_store_name = #{shopStoreName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopBossName != null">
+        shop_boss_name = #{shopBossName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopProcName != null">
+        shop_proc_name = #{shopProcName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationDTO">
+    update shop_stock_boss_relation
+    set shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+      shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
+      shop_stock_id = #{shopStockId,jdbcType=VARCHAR},
+      shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
+      shop_store_name = #{shopStoreName,jdbcType=VARCHAR},
+      shop_boss_name = #{shopBossName,jdbcType=VARCHAR},
+      shop_proc_name = #{shopProcName,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>
