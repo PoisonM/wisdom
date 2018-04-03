@@ -1,6 +1,7 @@
 package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.ShopCustomerProductRelationDTO;
+import com.wisdom.beauty.api.dto.ShopCustomerProjectGroupRelRelationDTO;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class ProjectController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopCustomerProductRelationDTO>> getCustomerConsumeRecord(@RequestParam String sysCustomerId,
+	ResponseDTO<List<ShopCustomerProductRelationDTO>> getCustomerCourseProjectList(@RequestParam String sysCustomerId,
 																			   @RequestParam String sysShopId,
 																			   @RequestParam String startDate,
 																			   @RequestParam String endDate) {
@@ -63,6 +64,28 @@ public class ProjectController {
 
 		return  responseDTO;
 	}
+
+	/**
+	 * 查询某个用户的套卡列表信息
+	 * @param sysCustomerId
+	 * @param sysShopId
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	@RequestMapping(value = "getCustomerProjectGroupList", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<List<ShopCustomerProjectGroupRelRelationDTO>> getCustomerProjectGroupList(@RequestParam String sysCustomerId,
+																						  @RequestParam String sysShopId,
+																						  @RequestParam String startDate,
+																						  @RequestParam String endDate) {
+		ResponseDTO<List<ShopCustomerProjectGroupRelRelationDTO>> responseDTO = new ResponseDTO<>();
+
+		return  responseDTO;
+	}
+
 
 
 
