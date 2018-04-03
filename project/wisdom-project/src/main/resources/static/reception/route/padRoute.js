@@ -94,6 +94,86 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.userInfo.rechargeRecord', {
+            url: '/rechargeRecord',
+            templateUrl: root + '/userInfo/rechargeRecord.html',
+            controller: 'rechargeRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值记录",
+                        files: [
+                            root + "userInfo/rechargeRecord.css",
+                            root + "userInfo/rechargeRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.repaymentRecord', {
+            url: '/repaymentRecord',
+            templateUrl: root + '/userInfo/repaymentRecord.html',
+            controller: 'repaymentRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "还款记录",
+                        files: [
+                            root + "userInfo/repaymentRecord.css",
+                            root + "userInfo/repaymentRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.stampCardRecord', {
+            url: '/stampCardRecord',
+            templateUrl: root + '/userInfo/stampCardRecord.html',
+            controller: 'stampCardRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "划卡记录",
+                        files: [
+                            root + "userInfo/stampCardRecord.css",
+                            root + "userInfo/stampCardRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.unclaimedAll', {
+            url: '/unclaimedAll',
+            templateUrl: root + '/userInfo/unclaimedAll.html',
+            controller: 'unclaimedAllCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "待领取汇总",
+                        files: [
+                            root + "userInfo/unclaimedAll.css",
+                            root + "userInfo/unclaimedAll.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.unclaimedAllClient', {
+            url: '/unclaimedAllClient',
+            templateUrl: root + '/userInfo/unclaimedAllClient.html',
+            controller: 'unclaimedAllClientCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "待领取汇总客户",
+                        files: [
+                            root + "userInfo/unclaimedAllClient.css",
+                            root + "userInfo/unclaimedAllClient.js",
+                        ]
+                    })
+                }]
+            }
+        })
 
         .state('pad-web.left_nav.addRecord', {
             url: '/addRecord',
