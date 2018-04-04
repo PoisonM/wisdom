@@ -31,7 +31,7 @@
 .h16{height:0.25rem;}
 .h28{height:0.21875rem;line-height:0.21875rem; }
 .h60{height: 0.468rem;line-height:0.468rem; }
-.h70{height:0.547em;;line-height: 0.547rem;;}
+.h70{line-height: 0.547rem;;}
 .h80{height:0.625rem;line-height: 0.625rem;}
 .h74{height:0.578em;;line-height: 0.578rem;;}
 .h100{height:0.781rem;;line-height: 0.781rem;;}
@@ -45,6 +45,7 @@
 .w756{width:5.91rem}
 .w758{width:5.921rem}
 .w780{width:6.09375rem}
+.w885{width:6.91rem}
 .w1344{width:10.5rem;}
 
 .center{text-align: center}
@@ -64,6 +65,7 @@
 .pb20{padding-bottom:0.156rem;}
 .pb30{padding-bottom:0.234375rem;}
 .pb60{padding-bottom:0.489rem;}
+.pt20{padding-top:0.156rem;}
 .pt30{padding-top:0.234375rem;}
 .pl30{padding-left:0.234375rem;}
 
@@ -92,12 +94,15 @@
 .backPic{width:0.117rem;height:0.273rem;}
 .morePic{width:0.117rem;height:0.211rem;}
 .singleSelsectPic, .norPic { width: 0.26563rem; height: 0.26563rem; vertical-align: middle; margin-top: -5px; }
+.closePic{width: 0.396rem;height: 0.396rem;}
 .bte5{border-bottom: solid #e5e5e5 1px;}
 .bbe5{border-top: solid #e5e5e5 1px;}
 .b{border:solid #eeeeee 1px;}
 
 .bsb{box-sizing: border-box}
 .bsc{box-sizing:content-box}
+
+
 
 .btnActive { background: #ff6666; color: #ffffff; }
 .nextStepBtn { width: 3.125rem; height: 0.71875rem; border-radius: 0.125rem; margin-right: 0.46875rem; background: #ff6666; color: #ffffff; font-size: 0.28125rem; margin-top: 0.23438rem;border:none;outline: none; }

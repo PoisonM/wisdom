@@ -8,10 +8,10 @@
      </div>
     <div class="weekLeft">
         <ul>
-            <li  ng-repeat="item in [1,2,3,4,5,6]" >
+            <li  ng-repeat="item in param.week" >
                 <div>
-                    <p class="weekLeftNumber">19 <br>
-                        <span>周五</span><span>初五</span></p>
+                    <p class="weekLeftNumber">{{item}}<br>
+                        <!--<span>周五</span><span>初五</span></p>-->
                 </div>
             </li>
         </ul>

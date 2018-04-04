@@ -11,7 +11,7 @@
             <span>排班</span>
         </p>
     </div>
-    <div class="content">
+    <div class="content" ng-show="false" >
         <div class="nameLis">
             <ul>
                 <li class="w156"></li>
@@ -48,7 +48,7 @@
 
             </ul>
         </div>
-        <div class="messLis">
+        <div class="messLis day">
             <ul class="time">
                 <li ng-repeat="item in arrTime" style="text-align: center">{{item}}</li>
             </ul>
@@ -72,6 +72,8 @@
             </div>
         </div>
     </div>
+    <!--周预约-->
+    <div ng-include="'itemList/appointment/weeklyReservation.html'" ></div>
 </div>
 <!--预约详情-->
 <div class="detailsWrap br36 bgfff " ng-show="param.detailsReservation">
@@ -267,4 +269,33 @@
     <div ng-include="'itemList/appointment/CtreatmentCard.html'" class="h1012 bblr bbrr"></div>
 </div>
 
+<!--散客详情-->
+<div class="individual w885 br36 b" ng-show="param.individualTravelerAppointment">
+    <div class="space-between h104 bgeee btrr btlr">
+        <p class="W33">
+        </p>
+        <p class="center fs38 color333 W33 bold">
+            预约详情
+        </p>
+        <p class="scheduling W33">
+            <span class="floatR mr30"><img src="images/bt_shut down.png." class="closePic mt20" ng-click="individualTravelerAppointmentClose()"></span>
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/individualTravelerAppointment.html'" class=" bblr bbrr"></div>
+</div>
+<!--修改预约-->
+<div class=" br36 modifyingAppointment" ng-show="param.modifyingAppointment">
+    <div class="space-between h104 bgeee btrr btlr">
+        <p class="W33">
+            <span class="ml30 colff6666 fs38 bold" ng-click="consumptionProjuct('modifyingAppointment',0)">取消</span>
+        </p>
+        <p class="center fs38 color333 W33 bold">
+            修改预约
+        </p>
+        <p class="scheduling W33">
+            <span class="floatR mr30 fs38 colff6666 bold" ng-click="consumptionProjuct('modifyingAppointment',1)">保存</span>
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/modifyingAppointment.html'" class="modifyingWrap bblr bbrr"></div>
 
+</div>
