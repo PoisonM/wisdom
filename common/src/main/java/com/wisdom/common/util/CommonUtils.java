@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -157,12 +158,14 @@ public class CommonUtils {
 		//根据开始时间编号计算结束时间编号
 		StringBuffer responseStr = new StringBuffer();
 		for (int i = Integer.parseInt(startNo); i < Integer.parseInt(endNo) ; i++) {
-			responseStr.append("\"");
 			responseStr.append(i);
-			responseStr.append("\",");
+			responseStr.append(",");
 		}
 
-		responseStr.deleteCharAt(responseStr.length() - 1);
+		if(responseStr.length() > 0){
+			responseStr.deleteCharAt(responseStr.length() - 1);
+		}
+
 		return responseStr.toString();
 	}
 
@@ -211,4 +214,29 @@ public class CommonUtils {
 		}
 		return false;
 	}
+
+	/**
+	 *
+	 * beanToMap:(bean转map).
+	 *
+	 * @param object
+	 * @return
+	 * @throws Exception
+	 * @since JDK 1.7
+	 * @author zhaodeliang
+	 */
+	public static HashMap<String, Object> beanToMap(Object object) throws Exception {
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		Field[] fields = null;
+		fields = object.getClass().getDeclaredFields();
+		for (Field field : fields) {
+			field.setAccessible(true);
+			String proName = field.getName();
+			Object proValue = field.get(object);
+			hashMap.put(proName, proValue);
+		}
+
+		return hashMap;
+	}
+
 }

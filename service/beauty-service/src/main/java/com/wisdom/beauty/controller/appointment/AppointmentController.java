@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "shopDayAppointmentInfoByDate", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Map<String, Object>> shopDayAppointmentInfoByDate(@RequestParam String sysShopId,
@@ -59,7 +60,7 @@ public class AppointmentController {
 		if(CommonUtils.objectIsEmpty(dtos)){
 			responseDTO.setResult(StatusConstant.FAILURE);
 			responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());
-			return null;
+			return responseDTO;
 		}
 
 		HashMap<String, Object> responseMap = new HashMap<>(32);
@@ -73,13 +74,27 @@ public class AppointmentController {
 			HashMap<String, Object> shopAppointMap = new HashMap<>(16);
 			extShopAppointServiceDTO.setSysClerkId(shopAppointServiceDTO.getSysClerkId());
 			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+
+			ArrayList<Object> objects = new ArrayList<>();
 			for(ShopAppointServiceDTO serviceDTO :shopAppointServiceDTOS){
-				shopAppointMap.put("serviceDTO",serviceDTO);
-				shopAppointMap.put("scheduling",CommonUtils.getArrayNo(DateUtils.DateToStr(serviceDTO.getAppointStartTime(),"time"),DateUtils.DateToStr(serviceDTO.getAppointEndTime(),"time")));
+				try {
+					HashMap<String, Object> hashMap = CommonUtils.beanToMap(serviceDTO);
+					String str = CommonUtils.getArrayNo(DateUtils.DateToStr(serviceDTO.getAppointStartTime(),"time"),
+							DateUtils.DateToStr(serviceDTO.getAppointEndTime(),"time"));
+					hashMap.put("scheduling",str);
+					objects.add(hashMap);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+			shopAppointMap.put("appointmentInfo",objects);
+			shopAppointMap.put("point",shopAppointServiceDTOS.size());
+
 			responseMap.put(shopAppointServiceDTO.getSysClerkName(),shopAppointMap);
 		}
 
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(responseMap);
 		return  responseDTO;
 	}
 
