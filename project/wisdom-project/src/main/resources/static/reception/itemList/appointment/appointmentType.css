@@ -11,13 +11,14 @@
 .bgeee{background: #eeeeee;}
 .bgff6666{background: #ff6666}
 .bgfff{background: #ffffff}
-
+.bgf2{background: #F2F2F2}
 .colff6666{color:#ff6666;}
 .col333{color:#333333;}
 .colfff{color:#ffffff;}
 .col666{color:#666666;}
 .col888{color:#888888;}
 .colaaa{color:#aaaaaa;}
+.col999{color:#999999}
 
 
 .fs20{font-size:0.156rem;}
@@ -28,11 +29,16 @@
 .fs38{font-size: 0.296875rem;}
 
 .h16{height:0.25rem;}
+.h28{height:0.21875rem;line-height:0.21875rem; }
+.h60{height: 0.468rem;line-height:0.468rem; }
 .h70{height:0.547em;;line-height: 0.547rem;;}
+.h80{height:0.625rem;line-height: 0.625rem;}
 .h74{height:0.578em;;line-height: 0.578rem;;}
 .h100{height:0.781rem;;line-height: 0.781rem;;}
 .h104{height:0.8125rem;;line-height: 0.8125rem;;}
 .h120{height:0.9375rem;;line-height: 0.9375rem;;}
+.h1465{height:9rem;overflow-y: scroll}
+.h1012{height: 7.85938rem;overflow-y: scroll}
 .h300{height:2.243rem;}
 .w16{width:0.25rem;}
 .w248{width:1.9375rem;}
@@ -54,6 +60,7 @@
 .br2{border-radius: 0.0156rem}
 .br8{border-radius: 0.0625rem}
 
+.pl20{padding-left:0.156rem;}
 .pb20{padding-bottom:0.156rem;}
 .pb30{padding-bottom:0.234375rem;}
 .pb60{padding-bottom:0.489rem;}
@@ -63,8 +70,11 @@
 .mt10{margin-top:0.078rem;}
 .mt12{margin-top:0.093rem;}
 .mt20{margin-top:0.156rem;}
+.mt22{margin-top:0.171875rem;}
 .mt30{margin-top:0.243rem;}
 .mt36{margin-top:0.281rem;}
+.mt40{margin-top:0.3125rem;}
+.mt44{margin-top:0.3435rem;}
 .mt56{margin-top:0.438rem;}
 .mt60{margin-top:0.489rem;}
 
@@ -81,8 +91,9 @@
 
 .backPic{width:0.117rem;height:0.273rem;}
 .morePic{width:0.117rem;height:0.211rem;}
-
+.singleSelsectPic, .norPic { width: 0.26563rem; height: 0.26563rem; vertical-align: middle; margin-top: -5px; }
 .bte5{border-bottom: solid #e5e5e5 1px;}
+.bbe5{border-top: solid #e5e5e5 1px;}
 .b{border:solid #eeeeee 1px;}
 
 .bsb{box-sizing: border-box}
@@ -96,3 +107,4 @@
 .appointmentType .point,.row{width:1.3125rem;height:1.3125rem;line-height:1.3125rem;text-align: center;border-radius: 50%;margin:0 auto;}
 .appointmentType .point{background: #ffabab;}
 .appointmentType .row{background: #d6b4ff;margin-top:0.864rem;}
+.next {height:1.5rem;}

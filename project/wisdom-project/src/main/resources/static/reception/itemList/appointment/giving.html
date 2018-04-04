@@ -1,25 +1,12 @@
 <!--选择赠送-->
-<div class="giving width1348" >
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel " >
-            <img src="images/bt_back.png">
-            <span>取消</span>
-        </p>
-        <p class="centerBtn ">
-            选择赠送
-        </p>
-        <p class="scheduling ">
-            <span class="true">确认</span>
-        </p>
-    </div>
 
     <div class="content">
         <div class="btns">
-            <button class="project ">项目</button>
-            <button class="product ">产品</button>
-            <button class="coupons btnActive">优惠券</button>
+            <button class="project " ng-click="givingChange(0)" ng-class="{'btnActive':param.givingIndex == 0}">项目</button>
+            <button class="product " ng-click="givingChange(1)" ng-class="{'btnActive':param.givingIndex == 1}">产品</button>
+            <button class="coupons " ng-click="givingChange(2)" ng-class="{'btnActive':param.givingIndex == 2}">优惠券</button>
         </div>
-        <div class="messLis">
+        <div class="messLis" ng-show="param.givingVouchers">
             <ul>
                 <li>
                     <p>金额
@@ -42,7 +29,40 @@
                 </li>
             </ul>
         </div>
-    </div>
+        <div class=" messLis" ng-show="param.givingProduct">
+            <div class="searchBox">
+                <input type="search" placeholder="请输入产品名称" >
+                <button>搜索</button>
+            </div>
+            <div class="ProdictsLis bgfff">
+                <p class="bgf2 h60 fs38 color333"><span class="ml30">面部</span></p>
+                <ul>
+                    <li class="bte5 space-between fs34 color333">
+                        <p class="W33">
+                            <img src="images/bt_Single%20election_select.png" class="norPic mr20">
+                            198迎春卡
+                        </p>
+                        <p class="W33 ml60">99.00</p>
+                        <div class="W33">
+                            <p class="floatR mr30" >赠送次数<input type="text" class="color333 fs34 br8 center"></p>
+                        </div>
+
+                    </li>
+                    <li class="bte5 space-between fs34 color333">
+                        <p class="W33">
+                            <img src="images/bt_Single%20election_select.png" class="norPic mr20">
+                            198迎春卡
+                        </p>
+                        <p class="W33 ml60">99.00</p>
+                        <div class="W33">
+                            <p class="floatR mr30" >赠送次数<input type="text" class="color333 fs34 br8 center"></p>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+
 
 
 

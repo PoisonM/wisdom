@@ -1,52 +1,9 @@
-
-<div class="selectContent">
-    <div class="selectLift">
-        <!--搜索框-->
-        <div class="searchBox">
-            <input type="text" placeholder="请输入单次名称"><span class="search">搜索</span>
-        </div>
-        <div>
-            <p class="cooperation">合作</p>
-            <div class="selectAlltype">
-                <ul>
-                    <li>全部</li>
-                    <li>整形系列</li>
-                </ul>
-            </div>
-        </div>
-
-        <p class="cooperation">面部</p>
-        <div class="selectFace">
-            <ul>
-                <li>全部</li>
-                <li>保湿</li>
-                <li>美白</li>
-                <li>补水</li>
-                <li>植萃</li>
-                <li>抗皱</li>
-            </ul>
-        </div>
-        <p class="cooperation">眼部</p>
-        <div class="selectEye">
-            <ul>
-                <li>全部</li>
-                <li>保湿</li>
-            </ul>
-        </div>
-        <p class="cooperation">SPA</p>
-        <div class="selectSpa">
-            <ul>
-                <li>全部</li>
-                <li>保湿</li>
-            </ul>
-        </div>
-    </div>
-    <div class="selectRight">
+    <div class=" selectSingle">
         <p class="wz">合作.微整系列</p>
         <ul>
-            <li><p class="ml30"><img src="images/bt_Single%20election_nor_.png" class="norPic mr20">水光针</p><p class="mr30">￥1100.00</p></li>
-            <li><p class="ml30"><img src="images/bt_Single%20election_nor_.png" class="norPic mr20">超圣刀</p><p class="mr30">￥3999.00</p></li>
+            <li ng-repeat=" item in [0,1]"><p class="ml30" ><img ng-src="{{selectSingleDataPic[$index]}}" class="norPic mr20" ng-click = "selectSingle($index)">水光针</p><p class="mr30">￥1100.00</p></li>
+
         </ul>
     </div>
-</div>
+
 

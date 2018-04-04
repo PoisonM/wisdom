@@ -1,17 +1,5 @@
 <!--划卡-->
 
-<div class="scratchCard width1348H1012" >
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel " >
-            <span class="marginLeft20">取消</span>
-        </p>
-        <p class="centerBtn ">
-            关联员工
-        </p>
-        <p class="scheduling ">
-            <span class="true">添加更多</span>
-        </p>
-    </div>
     <div class="content">
         <div class="productMess paddingLeft50">
             <div class="space-between waterGuangZhen ">
@@ -19,7 +7,7 @@
                     <span class=" color333FS38" >年卡</span>
                     <span class="yearCard w66h32 btnActive marginLeft16 FS24">年卡</span>
                 </p>
-                <img srimagess/bt_shut%20down%20b.png" class="rightContent downPic cha">
+                <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha">
 
             </div>
             <div class="money color999FS32 colorFF6666FS34 space-between">
@@ -50,22 +38,7 @@
             <label class="color333FS34">备注</label>
             <textarea></textarea>
             <p>
-                <button class="nextStepBtn rightMgain60">下一步</button>
+                <button class="nextStepBtn rightMgain60" ng-click="scratchCardNextStep()">下一步</button>
             </p>
         </div>
     </div>
-    <script>
-        (function (doc, win) {
-            var docEl = doc.documentElement,
-                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-                recalc = function () {
-                    var clientWidth = docEl.clientWidth;
-                    if (!clientWidth) return;
-                    docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
-                };
-            if (!doc.addEventListener) return;
-            win.addEventListener(resizeEvt, recalc, false);
-            doc.addEventListener('DOMContentLoaded', recalc, false);
-        })(document, window);
-    </script>
-</div>

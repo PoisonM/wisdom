@@ -94,6 +94,87 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.userInfo.rechargeRecord', {
+            url: '/rechargeRecord',
+            templateUrl: root + '/userInfo/rechargeRecord.html',
+            controller: 'rechargeRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值记录",
+                        files: [
+                            root + "userInfo/rechargeRecord.css",
+                            root + "userInfo/rechargeRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.repaymentRecord', {
+            url: '/repaymentRecord',
+            templateUrl: root + '/userInfo/repaymentRecord.html',
+            controller: 'repaymentRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "还款记录",
+                        files: [
+                            root + "userInfo/repaymentRecord.css",
+                            root + "userInfo/repaymentRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.stampCardRecord', {
+            url: '/stampCardRecord',
+            templateUrl: root + '/userInfo/stampCardRecord.html',
+            controller: 'stampCardRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "划卡记录",
+                        files: [
+                            root + "userInfo/stampCardRecord.css",
+                            root + "userInfo/stampCardRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.unclaimedAll', {
+            url: '/unclaimedAll',
+            templateUrl: root + '/userInfo/unclaimedAll.html',
+            controller: 'unclaimedAllCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "待领取汇总",
+                        files: [
+                            root + "userInfo/unclaimedAll.css",
+                            root + "userInfo/unclaimedAll.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.unclaimedAllClient', {
+            url: '/unclaimedAllClient',
+            templateUrl: root + '/userInfo/unclaimedAllClient.html',
+            controller: 'unclaimedAllClientCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "待领取汇总客户",
+                        files: [
+                            root + "userInfo/unclaimedAllClient.css",
+                            root + "userInfo/unclaimedAllClient.js",
+                        ]
+                    })
+                }]
+            }
+        })
+
 
         .state('pad-web.left_nav.addRecord', {
             url: '/addRecord',
@@ -167,7 +248,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "消费",
-                        files: [root + "appointment/consumption.js",
+                        files: [root + "appointment/consumptionCtrl.js",
                             root + "appointment/style.css",
                         ]
                     })
@@ -467,6 +548,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+
         .state('pad-web.dayAppointment', {
             url: '/dayAppointment',
             templateUrl: root + '/appointment/dayAppointment.html',
@@ -474,11 +556,30 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "日预约",
+                        name: "日预约列表",
                         files: [root + "appointment/dayAppointment.js",
+                            root + "appointment/laydate.css",
                             root + "appointment/laydate.js",
                             root + "appointment/dayAppointment.css",
-                            root + "appointment/laydate.css",
+                            root + "appointment/consumptionCtrl.js",
+                            root + "appointment/style.css",
+                            root + "appointment/detailsReservation.css",
+                            root + "appointment/detailsReservationCtrl.js",
+                            root + "appointment/appointmentType.css",
+                            root + "appointment/selectSingleCtrl.js",
+                            root + "appointment/search.css",
+                            root + "appointment/searchCtrl.js",
+                            root + "appointment/selectTreatmentCard.css",
+                            root + "appointment/selectSingle.css",
+                            root + "appointment/selectSingleCtrl.js",
+                            root + "appointment/selectProduct.css",
+                            root + "appointment/payType.css",
+                            root + "appointment/payTypeCtrl.js",
+                            root + "appointment/balancePrepaid.css",
+                            root + "appointment/givingCtrl.js",
+                            root + "appointment/scratchCardCtrl.js",
+
+
                         ]
                     })
                 }]
