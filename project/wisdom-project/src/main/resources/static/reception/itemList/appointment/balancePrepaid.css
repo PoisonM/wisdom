@@ -1,0 +1,5 @@
+.balancePrepaid ul li {
+    height:2rem;display: flex;
+}
+.balancePrepaid ul li img{vertical-align: middle}
+.balancePrepaid .VIPPic{ width:2.5625rem;height:1.5rem;}

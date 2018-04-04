@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAutoConfiguration
 @EnableEurekaServer
 public class RegistryCenterApplication {
-
+	//测试
 	public static void main(String[] args) {
 		SpringApplication.run(RegistryCenterApplication.class, args);
 	}

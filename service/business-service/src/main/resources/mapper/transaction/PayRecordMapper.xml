@@ -130,6 +130,7 @@
         AND
         pr.order_id=bor.order_id
         and bor.type="offline"
+        AND pr.pay_date BETWEEN #{startDate} and #{endDate}
     </select>
 
     <select id="getSellNumByProductId" resultType="string">

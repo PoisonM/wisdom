@@ -13,7 +13,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableDiscoveryClient
 @EnableAspectJAutoProxy
 @EnableFeignClients
-@MapperScan(basePackages = {"com.wisdom.beauty.mapper"})
+@MapperScan(basePackages = {"com.wisdom.beauty.core.mapper"})
 public class BeautyServiceApplication {
 
 	public static void main(String[] args) {
