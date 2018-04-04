@@ -7,11 +7,13 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
 
             $scope.chooseProject=function () {
                 alert("chooseProject");
+                $state.go("beautyProject");
             }
 
             $scope.chooseClerk=function () {
                 alert("chooseClerk");
+                $state.go("beautyClerk");
             }
 
 
-        }])
+}])
