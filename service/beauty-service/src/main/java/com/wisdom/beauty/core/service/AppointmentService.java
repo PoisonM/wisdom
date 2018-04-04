@@ -1,4 +1,10 @@
 package com.wisdom.beauty.core.service;
+
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+
+import java.util.List;
+
 /**
  * FileName: AppointmentService
  *
@@ -8,5 +14,10 @@ package com.wisdom.beauty.core.service;
  */
 public interface AppointmentService {
 
-
+    /**
+     * 根据时间查询查询某个店的有预约号源的美容师列表
+     * @param extShopAppointServiceDTO
+     * @return
+     */
+    List<ShopAppointServiceDTO> getShopAppointClerkInfoByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO);
 }

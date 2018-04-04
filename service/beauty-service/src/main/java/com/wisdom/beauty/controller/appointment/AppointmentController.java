@@ -35,6 +35,10 @@ public class AppointmentController {
 																		  @RequestParam String date) {
 		ResponseDTO<List<ShopAppointServiceDTO>> responseDTO = new ResponseDTO<>();
 
+		//根据时间查询当前店下有预约记录的所有美容师
+
+		//遍历美容师获取预约详情
+
 		return  responseDTO;
 	}
 
