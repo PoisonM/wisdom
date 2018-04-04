@@ -78,6 +78,103 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.userInfo.todayPerformance', {
+            url: '/todayPerformance',
+            templateUrl: root + '/userInfo/todayPerformance.html',
+            controller: 'todayPerformanceCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "今日业绩",
+                        files: [
+                            root + "userInfo/todayPerformance.css",
+                            root + "userInfo/todayPerformance.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.rechargeRecord', {
+            url: '/rechargeRecord',
+            templateUrl: root + '/userInfo/rechargeRecord.html',
+            controller: 'rechargeRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值记录",
+                        files: [
+                            root + "userInfo/rechargeRecord.css",
+                            root + "userInfo/rechargeRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.repaymentRecord', {
+            url: '/repaymentRecord',
+            templateUrl: root + '/userInfo/repaymentRecord.html',
+            controller: 'repaymentRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "还款记录",
+                        files: [
+                            root + "userInfo/repaymentRecord.css",
+                            root + "userInfo/repaymentRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.stampCardRecord', {
+            url: '/stampCardRecord',
+            templateUrl: root + '/userInfo/stampCardRecord.html',
+            controller: 'stampCardRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "划卡记录",
+                        files: [
+                            root + "userInfo/stampCardRecord.css",
+                            root + "userInfo/stampCardRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.unclaimedAll', {
+            url: '/unclaimedAll',
+            templateUrl: root + '/userInfo/unclaimedAll.html',
+            controller: 'unclaimedAllCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "待领取汇总",
+                        files: [
+                            root + "userInfo/unclaimedAll.css",
+                            root + "userInfo/unclaimedAll.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.unclaimedAllClient', {
+            url: '/unclaimedAllClient',
+            templateUrl: root + '/userInfo/unclaimedAllClient.html',
+            controller: 'unclaimedAllClientCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "待领取汇总客户",
+                        files: [
+                            root + "userInfo/unclaimedAllClient.css",
+                            root + "userInfo/unclaimedAllClient.js",
+                        ]
+                    })
+                }]
+            }
+        })
+
 
         .state('pad-web.left_nav.addRecord', {
             url: '/addRecord',
@@ -353,16 +450,97 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
-        .state('pad-web.details', {
-            url: '/details',
-            templateUrl: root + '/priceList/details.html',
-            controller: 'detailsCtrl',
+        .state('pad-web.projectDetails', {
+            url: '/projectDetails',
+            templateUrl: root + '/priceList/projectDetails.html',
+            controller: 'projectDetailsCtrl',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "项目详情",
-                        files: [root + "priceList/detailsCtrl.js",
-                            root + "priceList/details.css",
+                        files: [root + "priceList/projectDetailsCtrl.js",
+                            root + "priceList/projectDetails.css",
+                            root + "../libs/swiper-3.4.0.min.js",
+                            root + "../styles/swiper-3.4.0.min.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.product', {
+            url: '/product',
+            templateUrl: root + '/priceList/product.html',
+            controller: 'productCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "产品",
+                        files: [root + "priceList/productCtrl.js",
+                            root + "priceList/product.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.productDetails', {
+            url: '/productDetails',
+            templateUrl: root + '/priceList/productDetails.html',
+            controller: 'productDetailsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "产品详情",
+                        files: [root + "priceList/productDetailsCtrl.js",
+                            root + "priceList/productDetails.css",
+                            root + "../libs/swiper-3.4.0.min.js",
+                            root + "../styles/swiper-3.4.0.min.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.cardDetails', {
+            url: '/cardDetails',
+            templateUrl: root + '/priceList/cardDetails.html',
+            controller: 'cardDetailsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "套卡详情",
+                        files: [root + "priceList/cardDetailsCtrl.js",
+                            root + "priceList/cardDetails.css",
+                            root + "../libs/swiper-3.4.0.min.js",
+                            root + "../styles/swiper-3.4.0.min.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.rechargeableCard', {
+            url: '/rechargeableCard',
+            templateUrl: root + '/priceList/rechargeableCard.html',
+            controller: 'rechargeableCardCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值卡页面",
+                        files: [root + "priceList/rechargeableCardCtrl.js",
+                            root + "priceList/rechargeableCard.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.rechargeableDetails', {
+            url: '/rechargeableDetails',
+            templateUrl: root + '/priceList/rechargeableDetails.html',
+            controller: 'rechargeableDetailsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值卡详情",
+                        files: [root + "priceList/rechargeableDetailsCtrl.js",
+                            root + "priceList/rechargeableDetails.css",
                             root + "../libs/swiper-3.4.0.min.js",
                             root + "../styles/swiper-3.4.0.min.css",
                         ]
