@@ -548,6 +548,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+
         .state('pad-web.dayAppointment', {
             url: '/dayAppointment',
             templateUrl: root + '/appointment/dayAppointment.html',
@@ -555,7 +556,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "日预约",
+                        name: "日预约列表",
                         files: [root + "appointment/dayAppointment.js",
                             root + "appointment/laydate.css",
                             root + "appointment/laydate.js",
