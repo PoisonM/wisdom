@@ -548,7 +548,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
-
+        .state('pad-web.left_nav.cardSearch', {
+            url: '/cardSearch',
+            templateUrl: root + '/priceList/cardSearch.html',
+            controller: 'cardSearchCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "搜索页面",
+                        files: [root + "priceList/cardSearchCtrl.js",
+                            root + "priceList/cardSearch.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.dayAppointment', {
             url: '/dayAppointment',
             templateUrl: root + '/appointment/dayAppointment.html',
@@ -556,9 +570,8 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "日预约列表",
+                        name: "日预约",
                         files: [root + "appointment/dayAppointment.js",
-                            root + "appointment/laydate.css",
                             root + "appointment/laydate.js",
                             root + "appointment/dayAppointment.css",
                             root + "appointment/consumptionCtrl.js",
