@@ -139,4 +139,14 @@
         AND o.business_product_id = #{productId}
     </select>
 
+    <!--根据支付表中的TransactionId查询用户信息-->
+    <select id="queryUserInfoByTransactionId"
+            resultMap="PayRecordResultMap">
+        SELECT
+        p.id,p.sys_user_id,p.order_id,p.out_trade_no,p.transaction_id,p.amount,p.pay_type,p.status,p.pay_date,p.status,p.openid,p.invoice
+        ,u.nickname,u.user_type,u.mobile
+        FROM pay_record p,sys_user u
+        WHERE p.sys_user_id =u.id
+        AND p.transaction_id = #{transactionId}
+    </select>
 </mapper>

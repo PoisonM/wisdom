@@ -1,6 +1,7 @@
 package com.wisdom.business.service.account;
 
 import com.wisdom.business.mapper.account.IncomeMapper;
+import com.wisdom.business.mapper.transaction.PayRecordMapper;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
@@ -30,6 +31,8 @@ public class IncomeService {
 
     @Autowired
     private IncomeMapper incomeMapper;
+    @Autowired
+    private PayRecordMapper payRecordMapper;
     
     public List<IncomeRecordDTO> getUserIncomeInfoByDate(String userId, Date date) {
         List<IncomeRecordDTO> incomeRecordDTOS = incomeMapper.getUserIncomeInfoByDate(userId,date);
@@ -119,16 +122,27 @@ public class IncomeService {
         String currentPage = String.valueOf(pageParamVoDTO.getPageNo());
         String pageSize = String.valueOf(pageParamVoDTO.getPageSize());
         Page<MonthTransactionRecordDTO> page = FrontUtils.generatorPage(currentPage, pageSize);
-        Page<MonthTransactionRecordDTO> pageData = incomeMapper.queryMonthTransactionRecordByIncomeRecord(pageParamVoDTO,page);
-        for(MonthTransactionRecordDTO monthTransactionRecordDTO : pageData.getList()){
+        int count = incomeMapper.queryMonthTransactionRecordByIncomeRecordCount(pageParamVoDTO);
+//        Page<MonthTransactionRecordDTO> pageData = incomeMapper.queryMonthTransactionRecordByIncomeRecord(pageParamVoDTO,page);
+        List<MonthTransactionRecordDTO> pageData = incomeMapper.queryMonthTransactionRecordByIncomeRecord(pageParamVoDTO);
+        for(MonthTransactionRecordDTO monthTransactionRecordDTO : pageData){
             try {
+                List<PayRecordDTO> payRecordDTOS =payRecordMapper.queryUserInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
+                if(payRecordDTOS.size()>0){
+                    PayRecordDTO payRecordDTO = payRecordDTOS.get(0);
+                    monthTransactionRecordDTO.setUserId(payRecordDTO.getSysUserId());
+                    monthTransactionRecordDTO.setNickName(payRecordDTO.getNickName());
+                    monthTransactionRecordDTO.setUserType(payRecordDTO.getUserType());
+                    monthTransactionRecordDTO.setMobile(payRecordDTO.getMobile());
+                    monthTransactionRecordDTO.setIdentifyNumber(payRecordDTO.getIdentifyNumber());
+                }
                 monthTransactionRecordDTO.setNickName(URLDecoder.decode(monthTransactionRecordDTO.getNickName(),"utf-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
-        pageResult.setTotalCount((int)pageData.getCount());
-        pageResult.setResponseData(pageData.getList());
+        pageResult.setTotalCount(count);
+        pageResult.setResponseData(pageData);
         return pageResult;
     }
 
@@ -143,27 +157,28 @@ public class IncomeService {
         calendar.setTime(date);
         calendar.set(Calendar.DAY_OF_MONTH, 26);//设定日期为26号
         String endData = dateFormat.format(calendar.getTime());
-       // pageParamVoDTO.setEndTime(endData);//设定当前时间
+        pageParamVoDTO.setEndTime(null);//设定当前时间
         calendar.add(Calendar.MONTH,-1);//当前月份减一
         calendar.set(Calendar.DAY_OF_MONTH, 25);//设定日期为25号
         String startData = dateFormat.format(calendar.getTime());
 
-       // pageParamVoDTO.setStartTime(startData);
+        pageParamVoDTO.setStartTime(null);
 
         String currentPage = String.valueOf(pageParamVoDTO.getPageNo());
         String pageSize = String.valueOf(pageParamVoDTO.getPageSize());
         Page<PayRecordDTO> page = FrontUtils.generatorPage(currentPage, pageSize);
-
-        Page<PayRecordDTO> pageData = incomeMapper.queryMonthPayRecordByUserId(pageParamVoDTO,page);
-        for(PayRecordDTO payRecordDTO : pageData.getList()){
+        int count = incomeMapper.queryMonthPayRecordCountByUserId(pageParamVoDTO);
+//        Page<PayRecordDTO> pageData = incomeMapper.queryMonthPayRecordByUserId(pageParamVoDTO,page);
+        List<PayRecordDTO> pageData = incomeMapper.queryMonthPayRecordByUserId(pageParamVoDTO);
+        for(PayRecordDTO payRecordDTO : pageData){
             try {
                 payRecordDTO.setNickName(URLDecoder.decode(payRecordDTO.getNickName(),"utf-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
-        pageResult.setTotalCount((int)pageData.getCount());
-        pageResult.setResponseData(pageData.getList());
+        pageResult.setTotalCount(count);
+        pageResult.setResponseData(pageData);
         return pageResult;
     }
 

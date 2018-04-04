@@ -67,13 +67,19 @@ public interface IncomeMapper {
     List<PayRecordDTO> queryInstanceInfoByTransactionId(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
 
     //查询月结下的详情
-    Page<MonthTransactionRecordDTO> queryMonthTransactionRecordByIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO, Page<MonthTransactionRecordDTO> page);
+    //Page<MonthTransactionRecordDTO> queryMonthTransactionRecordByIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO, Page<MonthTransactionRecordDTO> page);
+    List<MonthTransactionRecordDTO> queryMonthTransactionRecordByIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
 
     //审核用户收入的金额是否可提现
     void updateIncomeRecord(IncomeRecordDTO incomeRecordDTO);
 
     //根据用户id查询这个月都消费了哪些订单
-    Page<PayRecordDTO> queryMonthPayRecordByUserId(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO, Page<PayRecordDTO> page);
+//    Page<PayRecordDTO> queryMonthPayRecordByUserId(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO, Page<PayRecordDTO> page);
+    List<PayRecordDTO> queryMonthPayRecordByUserId(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
     //查询即时奖励总额(个人)
     String selectIncomeInstanceByUserId(@Param("userId") String userId);
+    //查询月结下详情交易Count
+    int queryMonthTransactionRecordByIncomeRecordCount(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+    //根据用户id查询这个月都消费了哪些订单Count
+    int queryMonthPayRecordCountByUserId(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
 }
