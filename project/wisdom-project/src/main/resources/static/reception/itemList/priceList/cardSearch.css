@@ -1,0 +1,26 @@
+.cardSearchWrap{width: 100%}
+.cardSearchWrap .searchBox{width: 100%;background: #e5e5e5;height: 0.8rem;line-height: 0.8rem;text-align: center;position: relative}
+.cardSearchWrap .searchBox input{width: 10rem;height: 0.5rem;margin-left:0.15rem;border-radius: 0.1rem;}
+.ml20{margin-left: 0.15rem}
+.textIndent{text-indent: 0.5rem}
+.c66{color: #666666}
+.fs30{font-size: 0.234rem}
+.cardSearchWrap .searchBox img{width: 0.234rem;height: 0.234rem;position: absolute;left: 0.4rem;top: 0.27rem}
+/*商品*/
+.cardSearchGoods{background: #ffffff;}
+.cardSearchGoods ul{width: 100%;list-style: none;display: flex;flex-wrap: wrap;}
+.cardSearchGoods ul li{width:33.3333%;border: 1px solid #eeeeee;box-sizing: content-box;}
+.cardSearchGoods ul li img{width: 3.7rem;height:3.8rem;padding: 0.4rem}
+.textDiv{margin-left: 0.234rem;}
+.bff6666{background: #ff6666}
+.cff6666{color: #ff6666}
+.c88{color: #888888}
+.c33{color: #333333}
+.fs22{font-size: 0.17rem}
+.fs28{font-size:0.21rem}
+.fs34{font-size: 0.26rem}
+.fs30{font-size: 0.234rem}
+.mt20{margin-top:0.15rem}
+.mt30{margin-top: 0.234rem}
+
+

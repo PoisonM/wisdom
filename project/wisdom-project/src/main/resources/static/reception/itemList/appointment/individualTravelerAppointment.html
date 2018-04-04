@@ -1,70 +1,58 @@
-<div class="individual w756 br36 ">
-    <div class="space-between h104 bgeee btrr btlr">
-        <p >
-        </p>
-        <p class="center fs38 color333">
-            预约详情
-        </p>
-        <p class="scheduling">
-            <span class="floatR mr30"><img src="images/bt_shut down.png."></span>
-        </p>
-    </div>
-    <div class="bgfff pt30 bblr bbrr">
+
+    <div class="bgfff pt20 bblr bbrr">
         <p class="ml30  fs32 col333">当前轮班排序</p>
-        <ul class="personnelLis mt20 ">
+        <ul class="personnelLis mt10 ">
             <li class="ml30 center">
                 <div>
-                    <p class="personnelPic"><img src=""></p>
-                    <p class="mt20 col999 mt12">姓名</p>
+                    <p class="personnelPic mt10"><img src=""></p>
+                    <p class=" col999 mt12">姓名</p>
                 </div>
             </li>
             <li  class="ml30 center">
                 <div>
-                    <p class="personnelPic"><img src=""></p>
-                    <p class="mt20 col999 mt12">姓名</p>
+                    <p class="personnelPic mt10"><img src=""></p>
+                    <p class=" col999 mt12">姓名</p>
                 </div>
             </li>
             <li  class="ml30 center">
                 <div>
-                    <p class="personnelPic"><img src=""></p>
-                    <p class="mt20 col999 mt12"> 姓名</p>
+                    <p class="personnelPic mt10"><img src=""></p>
+                    <p class=" col999 mt12"> 姓名</p>
                 </div>
             </li>
         </ul>
         <div>
-            <p class=" mt30"><span class="redPoint ml30"></span><span class="fs32 color333 ml20 ">安迪</span><span class="giveContent">修改预约</span></p>
-            <div class="contentTime mt60 space-between">
+            <p class=" mt30"><span class="redPoint ml30"></span><span class="fs38 color333 ml20 ">安迪</span><span class="giveContent fs32" ng-show="param.ModifyAppointment" ng-click ="modifyingAppointmentIndivdual()">修改预约</span></p>
+            <div class="contentTime mt44 space-between">
                 <P ><img src="images/ic_point.png" alt="" class=" w16 h16 ml60"> <span class="minute fs30">10:00~11:30</span></P>
                 <p class="fs32 mr60">美容师 <span class="fs28 color333">小云</span></p>
             </div>
 
             <!--按钮-->
             <div class="pb60 bte5">
-                <p class="space-around mt60">
-                    <button class="btn br8 fs32 colaaa bgfff">确定预约</button>
-                    <button class="btn br8 fs32 btnActive">开始预约</button>
+                <p class="space-around mt44">
+                    <button class="btn br8 fs32 colff6666 bgfff" ng-click="startAppointmentIndivdual()" ng-class="{'startAppointmentActive':param.ModifyAppointment==false}">确定预约</button>
+                    <button class="btn br8 fs32 btnActive">开始服务</button>
                 </p>
             </div>
         </div>
-        <p class=" fs28 colaaa  h100 bte5">
+        <p class=" fs28 colaaa  h70 bte5">
             <span class="ml30">预约项目</span>
         </p>
         <div class="bte5">
             <p class="mt20 ml30 fs30">半永久修复</p>
             <p class="pb60 floatC">
-                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR ">去消费</button>
+                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "consumptionGo('去消费')">去消费</button>
             </p>
         </div>
-        <p class=" fs28 colaaa  h100 bte5">
+        <p class=" fs28 colaaa  h70 bte5">
             <span class="ml30">预约卡项</span>
         </p>
         <div >
             <p class="mt20 ml30 fs30">韩国美白护肤</p>
             <p class="pb30 floatC">
-                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR ">去划卡</button>
+                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "consumptionGo('去划卡')">去划卡</button>
             </p>
         </div>
     </div>
 
-
-</div>

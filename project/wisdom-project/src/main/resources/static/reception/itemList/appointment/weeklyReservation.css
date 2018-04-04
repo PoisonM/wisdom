@@ -1,4 +1,4 @@
-.weekWrap{width: 100%;height: 11rem;}
+.weekWrap{width: 100%;height: 11rem;overflow-y: scroll}
 .weekHeader{width: 100%;height: 1.07rem;;line-height: 1.07rem}
 .weekHeader ul{list-style: none;text-align: center}
 .weekHeader ul li{float: left;width: 2.4rem;font-size: 0.24rem;color: #333333}
