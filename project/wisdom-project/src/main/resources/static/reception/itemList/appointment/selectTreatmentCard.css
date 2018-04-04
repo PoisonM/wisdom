@@ -1,50 +1,18 @@
-.selectWrap{width: 10.53rem;height: 11.453rem;margin: auto;background: #f5f5f5;border-radius: 0.125rem}
-.selectHeader{height: 0.812rem;width: 10.53rem;background: #ff6666}
-.selectLift{float: left;width: 4.96rem;height: 10.64rem;}
-.selectContent{width: 100%}
-.selectLift .searchBox{width: 4.96rem;height: 0.6875rem;background: #e5e5e5;line-height: 0.6875rem}
-.selectLift .searchBox input{width: 3.96rem;height: 0.53rem;margin-left: 0.156rem;padding-left:0.156rem;font-size: 0.218rem;border-radius: 0.125rem}
-.search{margin-left: 0.156rem;font-size: 0.234rem;color: #666666}
-.cooperation{width: 4.96rem;height: 0.468rem;background: #eeeeee;line-height: 0.468rem;padding-left: 0.156rem;color: #666666;font-size: 0.21875rem ;}
-/*选择类型*/
-.selectAlltype{width: 4.96rem;height: 1.25rem;background: #ffffff}
-.selectAlltype ul{list-style: none}
-.selectAlltype ul li{height: 0.625rem;border-bottom: 1px solid #e5e5e5;line-height: 0.625rem;padding-left: 0.234rem;font-size: 0.234rem}
-.selectAlltype ul li:nth-child(1){color: #ff6666}
-/*面部*/
-.selectFace{width: 4.96rem;height:3.75rem;background: #ffffff}
-.selectFace ul{list-style: none}
-.selectFace ul li{height: 0.625rem;border-bottom: 1px solid #e5e5e5;line-height: 0.625rem;padding-left: 0.234rem;font-size: 0.234rem}
-/*眼部*/
-.selectEye{width: 4.96rem;height: 1.25rem;background: #ffffff}
-.selectEye ul{list-style: none}
-.selectEye ul li{height: 0.625rem;border-bottom: 1px solid #e5e5e5;line-height: 0.625rem;padding-left: 0.234rem;font-size: 0.234rem}
-/*SPA*/
-.selectSpa{width: 4.96rem;height: 1.25rem;background: #ffffff}
-.selectSpa ul{list-style: none}
-.selectSpa ul li{height: 0.625rem;border-bottom: 1px solid #e5e5e5;line-height: 0.625rem;padding-left: 0.234rem;font-size: 0.234rem}
 
-.wz{color: #ff6666;font-size:0.1875rem  ; height:0.46875rem ; border-bottom: 1px solid #e5e5e5;line-height:0.46875rem;padding-left:5.194rem;}
-.singleSelsectPic, .norPic { width: 0.26563rem; height: 0.26563rem; vertical-align: middle; margin-top: -5px; }
-.height120 li { height: 0.9375rem; border-bottom: solid 1px #e5e5e5; display: flex; justify-content: space-between; }
-.height120 li div { width: 50%; vertical-align: middle; padding-top: 2px; }
-.height120 li img { margin: 0 0.1875rem 0 0.15625rem; width: 0.26563rem; height: 0.26563rem;margin-top: 8px;  vertical-align: middle;}
-.height120 li .detail { display: inline-block; margin-top: 0.09375rem; }
-.height120 li .money { height: 0.9375rem;line-height: 0.635rem; }
-.height120 li .money div { float: right; margin-right: 0.2439rem; width: 0.8125rem; margin-top: 0.09375rem; }
-.height120 li .money div del { float: right; }
+.selectTreatmentCard .wz{color: #ff6666;font-size:0.1875rem  ; height:0.46875rem ; border-bottom: 1px solid #e5e5e5;line-height:0.46875rem;padding-left:5.194rem;}
+.selectTreatmentCard .singleSelsectPic, .norPic { width: 0.26563rem; height: 0.26563rem; vertical-align: middle; margin-top: -5px; }
+.selectTreatmentCard .height120 li { height: 0.9375rem; border-bottom: solid 1px #e5e5e5; display: flex; justify-content: space-between; }
+.selectTreatmentCard .height120 li div { width: 50%; vertical-align: middle; padding-top: 2px; }
+.selectTreatmentCard .height120 li img { margin: 0 0.1875rem 0 0.15625rem; width: 0.26563rem; height: 0.26563rem;margin-top: 8px;  vertical-align: middle;}
+.selectTreatmentCard .height120 li .detail { display: inline-block; margin-top: 0.09375rem; }
+.selectTreatmentCard .height120 li .money { height: 0.9375rem;line-height: 0.635rem; }
+.selectTreatmentCard .height120 li .money div { float: right; margin-right: 0.2439rem; width: 0.8125rem; margin-top: 0.09375rem; }
+.selectTreatmentCard .height120 li .money div del { float: right; }
 
-.height100Num { background: #ffffff; }
-.height100Num li { height: 0.77344rem; line-height: 0.78125rem; border-bottom: solid 1px #e5e5e5; }
-.height100Num li .reduction, .height100Num li .addBtn { width: 0.35938rem; height: 0.42188rem; border: solid 1px #cccccc; padding: 0; }
-.height100Num li .reduction { border-bottom-left-radius: 0.01563rem; border-top-left-radius: 0.01563rem; }
-.height100Num li .addBtn { border-bottom-right-radius: 0.01563rem; border-top-right-radius: 0.01563rem; margin-left: -7px; border-left: none; }
-.height100Num li input { width: 0.54688rem; border: solid 1px #cccccc; margin-left: -5px; border-left: none; text-align: center; }
-.floatR{
-    float:right;
-}
-.ml30{margin-left: 0.234rem}
-.mr30{margin-right: 0.234rem}
-.mt30{margin-top: 0.234rem}
-.pl30{padding-left: 0.234rem}
-.mr20{margin-right: 0.15625rem}
+.selectTreatmentCard .height100Num { background: #ffffff; }
+.selectTreatmentCard .height100Num li { height: 0.77344rem; line-height: 0.78125rem; border-bottom: solid 1px #e5e5e5; }
+.selectTreatmentCard .height100Num li .reduction, .height100Num li .addBtn { width: 0.35938rem; height: 0.42188rem; border: solid 1px #cccccc; padding: 0; }
+.selectTreatmentCard .height100Num li .reduction { border-bottom-left-radius: 0.01563rem; border-top-left-radius: 0.01563rem; }
+.selectTreatmentCard .selectTreatmentCard .height100Num li .addBtn { border-bottom-right-radius: 0.01563rem; border-top-right-radius: 0.01563rem; margin-left: -7px; border-left: none; }
+.selectTreatmentCard .height100Num li input { width: 0.54688rem; border: solid 1px #cccccc; margin-left: -5px; border-left: none; text-align: center; }
+

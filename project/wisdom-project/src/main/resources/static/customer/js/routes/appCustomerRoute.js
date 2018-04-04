@@ -29,11 +29,11 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addressEditCtrl',
-                                    ['js/controllers/addressEditCtrl.js?ver='+ customerVersion,
+                                    ['js/controllers/business/addressEditCtrl.js?ver='+ customerVersion,
                                         "js/libs/ydui.js?ver='+ customerVersion",
                                         "styles/ydui.css?ver='+ customerVersion",
                                     ],
-                                    'views/addressEdit.html?ver=' + customerVersion);
+                                    'views/business/addressEdit.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -44,8 +44,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addressManagementCtrl',
-                                    ['js/controllers/addressManagementCtrl.js?ver='+ customerVersion],
-                                    'views/addressManagement.html?ver=' + customerVersion);
+                                    ['js/controllers/business/addressManagementCtrl.js?ver='+ customerVersion],
+                                    'views/business/addressManagement.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -56,8 +56,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.shopHomeCtrl',
-                                    ['js/controllers/shopHomeCtrl.js?ver='+ customerVersion],
-                                    'views/shopHome.html?ver=' + customerVersion);
+                                    ['js/controllers/business/shopHomeCtrl.js?ver='+ customerVersion],
+                                    'views/business/shopHome.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -68,8 +68,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.shareHomeCtrl',
-                                    ['js/controllers/shareHomeCtrl.js?ver='+ customerVersion],
-                                    'views/shareHome.html?ver=' + customerVersion);
+                                    ['js/controllers/business/shareHomeCtrl.js?ver='+ customerVersion],
+                                    'views/business/shareHome.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -80,8 +80,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.sharePageCtrl',
-                                    ['js/controllers/sharePageCtrl.js?ver='+ customerVersion],
-                                    'views/sharePage.html?ver=' + customerVersion);
+                                    ['js/controllers/business/sharePageCtrl.js?ver='+ customerVersion],
+                                    'views/business/sharePage.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -92,8 +92,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.buyCartCtrl',
-                                    ['js/controllers/buyCartCtrl.js?ver='+ customerVersion],
-                                    'views/buyCart.html?ver=' + customerVersion);
+                                    ['js/controllers/business/buyCartCtrl.js?ver='+ customerVersion],
+                                    'views/business/buyCart.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -104,8 +104,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.loginCtrl',
-                                    ['js/controllers/loginCtrl.js?ver='+ customerVersion],
-                                    'views/login.html?ver=' + customerVersion);
+                                    ['js/controllers/business/loginCtrl.js?ver='+ customerVersion],
+                                    'views/business/login.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -116,8 +116,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.paySuccessCtrl',
-                                    ['js/controllers/paySuccessCtrl.js?ver='+ customerVersion],
-                                    'views/paySuccess.html?ver=' + customerVersion);
+                                    ['js/controllers/business/paySuccessCtrl.js?ver='+ customerVersion],
+                                    'views/business/paySuccess.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -128,8 +128,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.offlineProductDetailCtrl',
-                                    ['js/controllers/offlineProductDetailCtrl.js?ver='+ customerVersion],
-                                    'views/offlineProductDetail.html?ver=' + customerVersion);
+                                    ['js/controllers/business/offlineProductDetailCtrl.js?ver='+ customerVersion],
+                                    'views/business/offlineProductDetail.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -140,8 +140,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.trainingProductListCtrl',
-                                    ['js/controllers/trainingProductListCtrl.js?ver='+ customerVersion],
-                                    'views/trainingProductList.html?ver=' + customerVersion);
+                                    ['js/controllers/business/trainingProductListCtrl.js?ver='+ customerVersion],
+                                    'views/business/trainingProductList.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -152,8 +152,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.trainingProductLearningCtrl',
-                                    ['js/controllers/trainingProductLearningCtrl.js?ver='+ customerVersion],
-                                    'views/trainingProductLearning.html?ver=' + customerVersion);
+                                    ['js/controllers/business/trainingProductLearningCtrl.js?ver='+ customerVersion],
+                                    'views/business/trainingProductLearning.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -164,8 +164,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.withDrawCtrl',
-                                    ['js/controllers/withDrawCtrl.js?ver='+ customerVersion],
-                                    'views/withDraw.html?ver=' + customerVersion);
+                                    ['js/controllers/business/withDrawCtrl.js?ver='+ customerVersion],
+                                    'views/business/withDraw.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -177,8 +177,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.accountCtrl',
-                                    ['js/controllers/accountCtrl.js?ver='+ customerVersion],
-                                    'views/account.html?ver=' + customerVersion);
+                                    ['js/controllers/business/accountCtrl.js?ver='+ customerVersion],
+                                    'views/business/account.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -189,8 +189,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.myselfCenterCtrl',
-                                    ['js/controllers/myselfCenterCtrl.js?ver='+ customerVersion],
-                                    'views/myselfCenter.html?ver=' + customerVersion);
+                                    ['js/controllers/business/myselfCenterCtrl.js?ver='+ customerVersion],
+                                    'views/business/myselfCenter.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -201,8 +201,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.orderManagementCtrl',
-                                    ['js/controllers/orderManagementCtrl.js?ver='+ customerVersion],
-                                    'views/orderManagement.html?ver=' + customerVersion);
+                                    ['js/controllers/business/orderManagementCtrl.js?ver='+ customerVersion],
+                                    'views/business/orderManagement.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -213,8 +213,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.suggestionCtrl',
-                                    ['js/controllers/suggestionCtrl.js?ver='+ customerVersion],
-                                    'views/suggestion.html?ver=' + customerVersion);
+                                    ['js/controllers/business/suggestionCtrl.js?ver='+ customerVersion],
+                                    'views/business/suggestion.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -225,8 +225,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionListCtrl',
-                                    ['js/controllers/transactionListCtrl.js?ver='+ customerVersion],
-                                    'views/transactionList.html?ver=' + customerVersion);
+                                    ['js/controllers/business/transactionListCtrl.js?ver='+ customerVersion],
+                                    'views/business/transactionList.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -237,8 +237,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/transactionDetailCtrl.js?ver='+ customerVersion],
-                                    'views/transactionDetail.html?ver=' + customerVersion);
+                                    ['js/controllers/business/transactionDetailCtrl.js?ver='+ customerVersion],
+                                    'views/business/transactionDetail.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -249,8 +249,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/personalInformationCtrl.js?ver='+ customerVersion],
-                                    'views/personalInformation.html?ver=' + customerVersion);
+                                    ['js/controllers/business/personalInformationCtrl.js?ver='+ customerVersion],
+                                    'views/business/personalInformation.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -261,8 +261,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/aboutMineCtrl.js?ver='+ customerVersion],
-                                    'views/aboutMine.html?ver=' + customerVersion);
+                                    ['js/controllers/business/aboutMineCtrl.js?ver='+ customerVersion],
+                                    'views/business/aboutMine.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -273,8 +273,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/invoiceCtrl.js?ver='+ customerVersion],
-                                    'views/invoice.html?ver=' + customerVersion);
+                                    ['js/controllers/business/invoiceCtrl.js?ver='+ customerVersion],
+                                    'views/business/invoice.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -285,8 +285,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/supportBankCtrl.js?ver='+ customerVersion],
-                                    'views/supportBank.html?ver=' + customerVersion);
+                                    ['js/controllers/business/supportBankCtrl.js?ver='+ customerVersion],
+                                    'views/business/supportBank.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -297,8 +297,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/beansCtrl.js?ver='+ customerVersion],
-                                    'views/beans.html?ver=' + customerVersion);
+                                    ['js/controllers/business/beansCtrl.js?ver='+ customerVersion],
+                                    'views/business/beans.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -309,8 +309,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/orderDetailsCtrl.js?ver='+ customerVersion],
-                                    'views/orderDetails.html?ver=' + customerVersion);
+                                    ['js/controllers/business/orderDetailsCtrl.js?ver='+ customerVersion],
+                                    'views/business/orderDetails.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -321,8 +321,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/myTeamCtrl.js?ver='+ customerVersion],
-                                    'views/myTeam.html?ver=' + customerVersion);
+                                    ['js/controllers/business/myTeamCtrl.js?ver='+ customerVersion],
+                                    'views/business/myTeam.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -333,8 +333,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/trainingHomeCtrl.js?ver='+ customerVersion],
-                                    'views/trainingHome.html?ver=' + customerVersion);
+                                    ['js/controllers/business/trainingHomeCtrl.js?ver='+ customerVersion],
+                                    'views/business/trainingHome.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -345,8 +345,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/experienceCtrl.js?ver='+ customerVersion],
-                                    'views/experience.html?ver=' + customerVersion);
+                                    ['js/controllers/business/experienceCtrl.js?ver='+ customerVersion],
+                                    'views/business/experience.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -357,8 +357,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/drawDetailsCtrl.js?ver='+ customerVersion],
-                                    'views/drawDetails.html?ver=' + customerVersion);
+                                    ['js/controllers/business/drawDetailsCtrl.js?ver='+ customerVersion],
+                                    'views/business/drawDetails.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -369,8 +369,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/logisticDetailsCtrl.js?ver='+ customerVersion],
-                                    'views/logisticDetails.html?ver=' + customerVersion);
+                                    ['js/controllers/business/logisticDetailsCtrl.js?ver='+ customerVersion],
+                                    'views/business/logisticDetails.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -381,8 +381,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/shopActivityCtrl.js?ver='+ customerVersion],
-                                    'views/shopActivity.html?ver=' + customerVersion);
+                                    ['js/controllers/business/shopActivityCtrl.js?ver='+ customerVersion],
+                                    'views/business/shopActivity.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -393,8 +393,8 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.transactionDetailCtrl',
-                                    ['js/controllers/protocolCtrl.js?ver='+ customerVersion],
-                                    'views/protocol.html?ver=' + customerVersion);
+                                    ['js/controllers/business/protocolCtrl.js?ver='+ customerVersion],
+                                    'views/business/protocol.html?ver=' + customerVersion);
                             }
                         }
                     })
@@ -405,11 +405,26 @@ define(['appCustomer'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.specialProductListCtrl',
-                                    ['js/controllers/specialProductListCtrl.js?ver='+ customerVersion],
-                                    'views/specialProductList.html?ver=' + customerVersion);
+                                    ['js/controllers/business/specialProductListCtrl.js?ver='+ customerVersion],
+                                    'views/business/specialProductList.html?ver=' + customerVersion);
                             }
                         }
                     })
+
+                    .state('beautyAppoint', {
+                        url: '/beautyAppoint',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyAppointCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyAppointCtrl',
+                                    ['js/controllers/beauty/beautyAppointCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyAppoint.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                
+
                 $urlRouterProvider.otherwise('/shopHome')
             }])
 })

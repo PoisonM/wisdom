@@ -1,35 +1,6 @@
-.selectWrap{width: 10.53rem;height: 11.453rem;margin: auto;background: #f5f5f5;border-radius: 0.125rem}
-.selectHeader{height: 0.812rem;width: 10.53rem;background: #ff6666}
-.selectLift{float: left;width: 4.96rem;height: 10.64rem;}
-.selectContent{width: 100%}
-.selectLift .searchBox{width: 4.96rem;height: 0.6875rem;background: #e5e5e5;line-height: 0.6875rem}
-.selectLift .searchBox input{width: 3.96rem;height: 0.53rem;margin-left: 0.156rem;padding-left:0.156rem;font-size: 0.218rem;border-radius: 0.125rem}
-.search{margin-left: 0.156rem;font-size: 0.234rem;color: #666666}
-.cooperation{width: 4.96rem;height: 0.468rem;background: #eeeeee;line-height: 0.468rem;padding-left: 0.156rem;color: #666666;font-size: 0.21875rem ;}
-/*选择类型*/
-.selectAlltype{width: 4.96rem;height: 1.25rem;background: #ffffff}
-.selectAlltype ul{list-style: none}
-.selectAlltype ul li{height: 0.625rem;border-bottom: 1px solid #e5e5e5;line-height: 0.625rem;padding-left: 0.234rem;font-size: 0.234rem}
-.selectAlltype ul li:nth-child(1){color: #ff6666}
-/*面部*/
-.selectFace{width: 4.96rem;height:3.75rem;background: #ffffff}
-.selectFace ul{list-style: none}
-.selectFace ul li{height: 0.625rem;border-bottom: 1px solid #e5e5e5;line-height: 0.625rem;padding-left: 0.234rem;font-size: 0.234rem}
-/*眼部*/
-.selectEye{width: 4.96rem;height: 1.25rem;background: #ffffff}
-.selectEye ul{list-style: none}
-.selectEye ul li{height: 0.625rem;border-bottom: 1px solid #e5e5e5;line-height: 0.625rem;padding-left: 0.234rem;font-size: 0.234rem}
-/*SPA*/
-.selectSpa{width: 4.96rem;height: 1.25rem;background: #ffffff}
-.selectSpa ul{list-style: none}
-.selectSpa ul li{height: 0.625rem;border-bottom: 1px solid #e5e5e5;line-height: 0.625rem;padding-left: 0.234rem;font-size: 0.234rem}
-.selectRight{background: #ffffff;}
-.selectRight ul li{display: flex;flex-wrap: wrap;justify-content: space-between;border-bottom: 1px solid #e5e5e5;height: 0.625rem;line-height: 0.625rem;font-size: 0.234rem;
+
+.selectSingle {background: #ffffff;}
+.selectSingle  ul li{display: flex;flex-wrap: wrap;justify-content: space-between;border-bottom: 1px solid #e5e5e5;height: 0.625rem;line-height: 0.625rem;font-size: 0.234rem;
     color: #333333;}
-.wz{color: #ff6666;font-size:0.1875rem  ; height:0.46875rem ; border-bottom: 1px solid #e5e5e5;line-height:0.46875rem;padding-left:5.194rem;}
-.singleSelsectPic, .norPic { width: 0.26563rem; height: 0.26563rem; vertical-align: middle; margin-top: -5px; }
-.ml30{margin-left: 0.234rem}
-.mr30{margin-right: 0.234rem}
-.mt30{margin-top: 0.234rem}
-.pl30{padding-left: 0.234rem}
-.mr20{margin-right: 0.15625rem}
+.selectSingle .wz{color: #ff6666;font-size:0.1875rem  ; height:0.46875rem ; border-bottom: 1px solid #e5e5e5;line-height:0.46875rem;padding-left:5.194rem;}
+

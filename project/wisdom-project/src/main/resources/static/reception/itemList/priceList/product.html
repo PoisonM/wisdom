@@ -1,0 +1,33 @@
+<div class="productWrap">
+    <!--导航-->
+    <div class="productHeader">
+        <ul class="tab-head">
+            <li ng-repeat="items in selectSingleData" class="tab-head-item" >
+                <span ng-class="{'bg_box_sty' : param.selection == $index}" class="bg_box" ng-click="selection($index)">{{items.name}}</span>
+                <span
+                        ng-class="{'check_img':items.status == 1,'check_img_bottom':items.status == 3,'check_img_top':items.status == 4}" class="check_img" ng-click="checkImg($index,items.status);" ></span>
+            </li>
+        </ul>
+    </div>
+    <!--商品-->
+    <div class="productGoods">
+        <ul>
+            <li ng-repeat="item in [1,2,3,4,5,6]">
+                <div class="imgDiv">
+                    <img src="images/timgs.jpg" alt="">
+                </div>
+                <div class="textDiv">
+                    <p class="textName bold">雪痕</p>
+                    <p class="textMoney cff6666"><span class="fs30">价格：</span><span class="fs34">298</span><span class="fs28">.00</span></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--点击导航栏的任意商品出现相对应的弹框-->
+    <div ng-show="param.productAppear" class="productAppear" >
+        <ul>
+            <li ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12,13,14]" >保湿</li>
+        </ul>
+    </div>
+</div>
+

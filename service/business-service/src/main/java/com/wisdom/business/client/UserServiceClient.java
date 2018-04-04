@@ -1,6 +1,5 @@
 package com.wisdom.business.client;
 
-import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.system.UserInfoDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +12,7 @@ import java.util.List;
 @FeignClient("user-service")
 public interface UserServiceClient {
 
+    //project2
     @RequestMapping(value = "/getUserInfo",method=RequestMethod.POST)
     List<UserInfoDTO> getUserInfo(@RequestBody UserInfoDTO userInfoDTO);
 

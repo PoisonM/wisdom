@@ -54,21 +54,217 @@
             </ul>
             <div class="appointmentLis">
                 <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
+                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsReservation(1,$index,$event,'消费')">12</li>
+                </ul>
+                <ul>
+                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsReservation(2,$index,$event,'消费')">12</li>
+                </ul>
+                <ul>
+                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsReservation(3,$index,$event,'划卡')">12</li>
+                </ul>
+                <ul>
+                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsReservation(4,$index,$event,'散客')">12</li>
                 </ul>
                 <ul>
                     <li ng-repeat="item in arrTime" style="text-align: center">12</li>
                 </ul>
-                <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
-                </ul>
-                <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
-                </ul>
-                <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
-                </ul>
+
             </div>
         </div>
     </div>
 </div>
+<!--预约详情-->
+<div class="detailsWrap br36 bgfff " ng-show="param.detailsReservation">
+    <div class="header btlr btrr">
+        <p>预约详情</p>
+        <span class="close"><img src="images/bt_shut%20down.png" ng-click = "detailsReservationPic()"></span>
+    </div>
+    <!--内容-->
+    <div ng-include="'itemList/appointment/detailsReservation.html'"></div>
+</div>
+<!--消费-消费-->
+<div class="consumption w1344  bgf5f5f5 br36" ng-show="param.consumption">
+    <div class="PopupwindowTitle colorWhite bgff6666">
+        <p class="cancel " >
+            <span class="marginLeft20" ng-click = "candelConsumption()">取消</span>
+        </p>
+        <p class="centerBtn ">
+            消费
+        </p>
+        <p class="scheduling ">
+
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/consumption.html'" class="h1465"></div>
+</div>
+<!--消费-选择单次-->
+<div class=" bgf5f5f5 w1344  selectContent br36" ng-show = "param.selectSingle ">
+    <div class="PopupwindowTitle colorWhite bgff6666">
+        <p class="cancel " >
+            <img src="images/bt_back.png" ng-click ="consumptionProjuct('selectSingle',0)">
+            <span>消费</span>
+        </p>
+        <p class="centerBtn ">
+            选择单次
+        </p>
+        <p class="scheduling ">
+            <span class="true" ng-click="consumptionProjuct('selectSingle',1)">完成</span>
+        </p>
+    </div>
+    <div class="h1465">
+        <div ng-include="'itemList/appointment/search.html'"></div>
+        <div ng-include="'itemList/appointment/selectSingle.html'"></div>
+    </div>
+
+</div>
+<!--消费-选择疗程卡-->
+<div class=" bgf5f5f5 w1344  selectContent br36" ng-show = "param.selectTreatmentCard ">
+    <div class="PopupwindowTitle colorWhite bgff6666">
+        <p class="cancel" >
+            <img src="images/bt_back.png" ng-click="consumptionProjuct('selectTreatmentCard',0)">
+            <span>消费</span>
+        </p>
+        <p class="centerBtn ">
+            选择疗程卡
+        </p>
+        <p class="scheduling ">
+            <span class="true" ng-click = "consumptionProjuct('selectTreatmentCard',1)">完成</span>
+        </p>
+    </div>
+    <div class="h1465">
+        <div ng-include="'itemList/appointment/search.html'"></div>
+        <div ng-include="'itemList/appointment/selectTreatmentCard.html'"></div>
+    </div>
+
+</div>
+<!--消费-选择产品-->
+<div class=" bgf5f5f5 w1344  selectContent br36" ng-show = "param.selectProduct">
+    <div class="PopupwindowTitle colorWhite bgff6666">
+        <p class="cancel" >
+            <img src="images/bt_back.png" ng-click="consumptionProjuct('selectProduct',0)">
+            <span>消费</span>
+        </p>
+        <p class="centerBtn ">
+            选择产品
+        </p>
+        <p class="scheduling ">
+            <span class="true" ng-click="consumptionProjuct('selectProduct',1)">完成</span>
+        </p>
+    </div>
+    <div class="h1465">
+        <div ng-include="'itemList/appointment/search.html'"></div>
+        <div ng-include="'itemList/appointment/selectProduct.html'"></div>
+    </div>
+
+</div>
+<!--消费-选择套卡-->
+<div class=" bgf5f5f5 w1344  selectContent  br36" ng-show = "param.collectionCard">
+    <div class="PopupwindowTitle colorWhite bgff6666">
+        <p class="cancel" >
+            <img src="images/bt_back.png" ng-click="consumptionProjuct('collectionCard',0)">
+            <span>消费</span>
+        </p>
+        <p class="centerBtn ">
+            选择套卡
+        </p>
+        <p class="scheduling ">
+            <span class="true" ng-click="consumptionProjuct('collectionCard',1)">完成</span>
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/collectionCard.html'" class="h1465"></div>
+</div>
+<!--消费-消费-下一步（记录支付）-->
+<div class="btrr btlr bgf5f5f5 payType w1344 br36" ng-show="param.consumptionNextStep">
+    <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
+        <p class="W33 colfff " >
+            <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="consumptionProjuct('consumptionNextStep',0)">
+            <span>消费</span>
+        </p>
+        <p class="W33 center ">
+            消费
+        </p>
+        <p class="W33 ">
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/payType.html'" class="h1465 bblr bbrr"></div>
+</div>
+<!--余额充值-->
+<div class="btrr btlr bgf5f5f5 payType w1344 br36" ng-show="param.balancePrepaid" >
+    <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
+        <p class="W33 colfff " >
+            <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="consumptionProjuct('balancePrepaid',0)">
+            <span>消费</span>
+        </p>
+        <p class="W33 center ">
+
+        </p>
+        <p class="W33 ">
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/balancePrepaid.html'" class="h1465 bblr bbrr"></div>
+</div>
+<!--关联员工-->
+<div class="scratchCard w1344 bgf5f5f5 br36" ng-show="param.relatedStaff">
+    <div class="PopupwindowTitle colorWhite bgff6666">
+        <p class="cancel " >
+            <img src="images/bt_back.png"  ng-click="consumptionProjuct('relatedStaff',0)">
+            <span>消费</span>
+        </p>
+        <p class="centerBtn">
+            关联员工
+        </p>
+        <p class="scheduling ">
+            <span class="true" ng-click="consumptionProjuct('relatedStaff',1)">完成</span>
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/relatedStaff.html'" class="h1465 bblr bbrr"></div>
+</div>
+<!--选择赠送-->
+<div class="givingArea w1344  collectionCard bgf5f5f5 br36" ng-show="param.giving" >
+    <div class="PopupwindowTitle colorWhite bgff6666 ">
+        <p class="cancel " >
+            <img src="images/bt_back.png"  ng-click="consumptionProjuct('giving',0)">
+            <span>取消</span>
+        </p>
+        <p class="centerBtn ">
+            选择赠送
+        </p>
+        <p class="scheduling ">
+            <span class="true"  ng-click="consumptionProjuct('giving',1)">确认</span>
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/giving.html'"  class="h1465 bblr bbrr"></div>
+</div>
+<!--划卡-->
+<div class="scratchCard  w1344 bgf5f5f5 br36" ng-show="param.scratchCard">
+    <div class="PopupwindowTitle colorWhite bgff6666">
+        <p class="cancel " >
+            <span class="marginLeft20" ng-click="consumptionProjuct('scratchCard',0)">取消</span>
+        </p>
+        <p class="centerBtn ">
+            划卡
+        </p>
+        <p class="scheduling ">
+            <span class="true" ng-click="consumptionProjuct('scratchCard',1)">添加更多</span>
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/scratchCard.html'"  class="h1465 bblr bbrr"></div>
+</div>
+<!--划卡 选择疗程卡-->
+<div class="trueAppointment w1344 bgf5f5f5 br36" ng-show="param.scratchCardSelectTreatmentCard">
+    <div class="PopupwindowTitle colorWhite bgff6666">
+        <p class="cancel" >
+            <img src="images/bt_back.png"  ng-click="consumptionProjuct('scratchCardSelectTreatmentCard',0)">
+            <span>划卡</span>
+        </p>
+        <p class="centerBtn ">
+            选择疗程卡
+        </p>
+        <p class="scheduling ">
+            <span class="true" ng-click="consumptionProjuct('scratchCardSelectTreatmentCard',1)">完成</span>
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/CtreatmentCard.html'" class="h1012 bblr bbrr"></div>
+</div>
+
+

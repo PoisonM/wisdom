@@ -34,7 +34,7 @@ public class LoginService {
 
     private Gson gson = new Gson();
 
-    public String login(String phone, String code, String loginIP, String openId) throws Exception {
+    public String customerLogin(String phone, String code, String loginIP, String openId) throws Exception {
 
         //判断validateCode是否还有效
         Query query = new Query().addCriteria(Criteria.where("mobile").is(phone))
