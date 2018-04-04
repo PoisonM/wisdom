@@ -248,7 +248,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "消费",
-                        files: [root + "appointment/consumption.js",
+                        files: [root + "appointment/consumptionCtrl.js",
                             root + "appointment/style.css",
                         ]
                     })
@@ -575,6 +575,10 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/selectProduct.css",
                             root + "appointment/payType.css",
                             root + "appointment/payTypeCtrl.js",
+                            root + "appointment/balancePrepaid.css",
+                            root + "appointment/givingCtrl.js",
+                            root + "appointment/scratchCardCtrl.js",
+
 
                         ]
                     })

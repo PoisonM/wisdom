@@ -1,38 +1,36 @@
-function consumption($scope) {
-   $scope.subtractOrAdd = function(status){
-       if(status == 0){
-           if( $scope.param.num == 1)return;
-           $scope.param.num --;
-       }else{
-           $scope.param.num ++;
-       }
+function consumption($scope){
+    $scope.selsectConsumption = function(type){
+        if(type == "selectSingle"){
+            $scope.param.selectSingle = true;
+        }else if (type=="selectTreatmentCard"){
+            $scope.param.selectTreatmentCard = true;
+        }else if (type=="selectProduct"){
+            $scope.param.selectProduct = true;
+        }else if (type=="collectionCard"){
+            $scope.param.collectionCard = true;
+        }
+    }
+    $scope.subtractOrAdd = function(type){
+        if(type == 0){
+            if($scope.param.num == 1)return
+            $scope.param.num--
+        }else{
+            $scope.param.num++
+        }
+    }
+   $scope.balancePrepaid = function(){
+       $scope.param.balancePrepaid = true;
    }
-   $scope.selsectConsumption = function(status){
-       if(status == 'selectSingle'){
-           $scope.param.selectSingle = true;
-       }else if(status == 'selectTreatmentCard'){
-           $scope.param.selectTreatmentCard = true;
-       }else if(status == 'selectProduct'){
-           $scope.param.selectProduct = true;
-       }else if(status == 'collectionCard'){
-           $scope.param.collectionCard = true;
-       }
+   $scope.giving = function(){
+       $scope.param.giving = true;
    }
-  $scope.nextStepBtnConsumption = function(){
-       $scope.param.consumption = false;
+   $scope.relatedStaff = function(){
+       $scope.param.relatedStaff = true;
+   }
+   $scope.nextStepBtnConsumption = function(){
        $scope.param.consumptionNextStep = true;
-  }
-  $scope.balancePrepaid = function(){
-      $scope.param.balancePrepaid = true;
-      $scope.param.consumption = false;
-  }
-  $scope.relatedStaff = function(){
-      $scope.param.relatedStaff = true;
-      $scope.param.consumption = false;
-  }
-  $scope.giving = function(){
-      $scope.param.giving = true;
-      $scope.param.consumption = false;
-  }
-    givingChange && givingChange($scope)
+   }
+   givingChange && givingChange($scope);
+    payTypeCtrl && payTypeCtrl($scope);
+    scratchCard && scratchCard($scope);
 }

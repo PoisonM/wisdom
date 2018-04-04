@@ -283,6 +283,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams) {
                 $scope.param.collectionCard = false;
             }else if(status == 'consumptionNextStep'){
                 $scope.param.consumptionNextStep = false;
+                $scope.param.consumption = false;
             }else if(status == 'scratchCard'){
                 $scope.param.scratchCardSelectTreatmentCard = true;
                 $scope.param.scratchCard = false;

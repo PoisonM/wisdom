@@ -1,7 +1,8 @@
 function givingChange($scope){
+    $scope.param.givingProduct = true;
     $scope.givingChange = function(index){
         $scope.param.givingIndex = index;
-        console.log($scope.param.givingIndex)
+        console.log($scope.param.givingIndex);
         if(index == 2){
             $scope.param.givingVouchers = true;
             $scope.param.givingProduct = false;
