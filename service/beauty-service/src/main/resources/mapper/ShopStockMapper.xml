@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wisdom.beauty.core.mapper.ShopStockDao">
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopStockMapper">
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStockDTO">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="flow_no" jdbcType="VARCHAR" property="flowNo" />
     <result column="applay_user" jdbcType="VARCHAR" property="applayUser" />
     <result column="stock_status" jdbcType="CHAR" property="stockStatus" />
-    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
     <result column="stock_number" jdbcType="INTEGER" property="stockNumber" />
     <result column="shop_proc_id" jdbcType="VARCHAR" property="shopProcId" />
     <result column="shop_proc_name" jdbcType="VARCHAR" property="shopProcName" />
@@ -77,7 +77,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, flow_no, applay_user, stock_status, desc, stock_number, shop_proc_id, shop_proc_name, 
+    id, name, flow_no, applay_user, stock_status, detail, stock_number, shop_proc_id, shop_proc_name,
     product_date, stock_price, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopStockCriteria" resultMap="BaseResultMap">
@@ -115,13 +115,13 @@
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopStockDTO">
     insert into shop_stock (id, name, flow_no, 
-      applay_user, stock_status, desc, 
+      applay_user, stock_status, detail,
       stock_number, shop_proc_id, shop_proc_name, 
       product_date, stock_price, create_by, 
       create_date, update_user, update_date
       )
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{flowNo,jdbcType=VARCHAR}, 
-      #{applayUser,jdbcType=VARCHAR}, #{stockStatus,jdbcType=CHAR}, #{desc,jdbcType=VARCHAR}, 
+      #{applayUser,jdbcType=VARCHAR}, #{stockStatus,jdbcType=CHAR}, #{detail,jdbcType=VARCHAR},
       #{stockNumber,jdbcType=INTEGER}, #{shopProcId,jdbcType=VARCHAR}, #{shopProcName,jdbcType=VARCHAR}, 
       #{productDate,jdbcType=TIMESTAMP}, #{stockPrice,jdbcType=DECIMAL}, #{createBy,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
@@ -145,8 +145,8 @@
       <if test="stockStatus != null">
         stock_status,
       </if>
-      <if test="desc != null">
-        desc,
+      <if test="detail != null">
+        detail,
       </if>
       <if test="stockNumber != null">
         stock_number,
@@ -192,8 +192,8 @@
       <if test="stockStatus != null">
         #{stockStatus,jdbcType=CHAR},
       </if>
-      <if test="desc != null">
-        #{desc,jdbcType=VARCHAR},
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
       </if>
       <if test="stockNumber != null">
         #{stockNumber,jdbcType=INTEGER},
@@ -248,8 +248,8 @@
       <if test="record.stockStatus != null">
         stock_status = #{record.stockStatus,jdbcType=CHAR},
       </if>
-      <if test="record.desc != null">
-        desc = #{record.desc,jdbcType=VARCHAR},
+      <if test="record.detail != null">
+        detail = #{record.detail,jdbcType=VARCHAR},
       </if>
       <if test="record.stockNumber != null">
         stock_number = #{record.stockNumber,jdbcType=INTEGER},
@@ -290,7 +290,7 @@
       flow_no = #{record.flowNo,jdbcType=VARCHAR},
       applay_user = #{record.applayUser,jdbcType=VARCHAR},
       stock_status = #{record.stockStatus,jdbcType=CHAR},
-      desc = #{record.desc,jdbcType=VARCHAR},
+      detail = #{record.detail,jdbcType=VARCHAR},
       stock_number = #{record.stockNumber,jdbcType=INTEGER},
       shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
       shop_proc_name = #{record.shopProcName,jdbcType=VARCHAR},
@@ -319,8 +319,8 @@
       <if test="stockStatus != null">
         stock_status = #{stockStatus,jdbcType=CHAR},
       </if>
-      <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
       </if>
       <if test="stockNumber != null">
         stock_number = #{stockNumber,jdbcType=INTEGER},
@@ -358,7 +358,7 @@
       flow_no = #{flowNo,jdbcType=VARCHAR},
       applay_user = #{applayUser,jdbcType=VARCHAR},
       stock_status = #{stockStatus,jdbcType=CHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
       stock_number = #{stockNumber,jdbcType=INTEGER},
       shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
       shop_proc_name = #{shopProcName,jdbcType=VARCHAR},

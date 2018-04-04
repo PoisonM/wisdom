@@ -40,7 +40,7 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
     private String operInfo;
 
     //备注
-    private String desc;
+    private String detail;
 
     //签字url地址
     private String signUrl;
@@ -147,13 +147,7 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
         this.operInfo = operInfo;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
+ public String getDetail() {        return detail;    }    public void setDetail(String detail) {        this.detail = detail;    }
 
     public String getSignUrl() {
         return signUrl;

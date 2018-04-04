@@ -61,7 +61,7 @@ public class ShopCustomerArchivesDTO extends BaseEntity implements Serializable 
     private String channel;
 
     //
-    private String desc;
+    private String detail;
 
     //
     private String createBy;
@@ -221,12 +221,12 @@ public class ShopCustomerArchivesDTO extends BaseEntity implements Serializable 
         this.channel = channel;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public String getCreateBy() {

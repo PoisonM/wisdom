@@ -1,0 +1,16 @@
+/*商品*/
+.rechargeableGoods{background: #ffffff;}
+.rechargeableGoods ul{width: 100%;list-style: none;display: flex;flex-wrap: wrap;}
+.rechargeableGoods ul li{width:33.3333%;border: 1px solid #eeeeee;box-sizing: content-box;}
+.rechargeableGoods ul li img{width: 3.7rem;height:3.8rem;padding: 0.4rem}
+.textDiv{margin-left: 0.234rem;}
+.bff6666{background: #ff6666}
+.cff6666{color: #ff6666}
+.c88{color: #888888}
+.c33{color: #333333}
+.fs22{font-size: 0.17rem}
+.fs28{font-size:0.21rem}
+.fs34{font-size: 0.26rem}
+.fs30{font-size: 0.234rem}
+.mt20{margin-top:0.15rem}
+.mt30{margin-top: 0.234rem}

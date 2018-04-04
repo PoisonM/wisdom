@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wisdom.beauty.core.mapper.SysShopDao">
+<mapper namespace="com.wisdom.beauty.core.mapper.SysShopMapper">
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.SysShopDTO">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -14,7 +14,7 @@
     <result column="id_card_back_url" jdbcType="VARCHAR" property="idCardBackUrl" />
     <result column="open_account_license_url" jdbcType="VARCHAR" property="openAccountLicenseUrl" />
     <result column="on_service_status" jdbcType="CHAR" property="onServiceStatus" />
-    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
     <result column="area" jdbcType="REAL" property="area" />
     <result column="open_door_date" jdbcType="VARCHAR" property="openDoorDate" />
     <result column="close_door_date" jdbcType="VARCHAR" property="closeDoorDate" />
@@ -83,7 +83,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, name, shop_image_url, phone, province, city, address, business_license_url, id_card_front_url, 
-    id_card_back_url, open_account_license_url, on_service_status, desc, area, open_door_date, 
+    id_card_back_url, open_account_license_url, on_service_status, detail, area, open_door_date,
     close_door_date, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" parameterType="com.wisdom.beauty.api.dto.SysShopCriteria" resultMap="BaseResultMap">
@@ -124,14 +124,14 @@
       phone, province, city, 
       address, business_license_url, id_card_front_url, 
       id_card_back_url, open_account_license_url, on_service_status, 
-      desc, area, open_door_date, 
+      detail, area, open_door_date,
       close_door_date, create_by, create_date, 
       update_user, update_date)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{shopImageUrl,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{businessLicenseUrl,jdbcType=VARCHAR}, #{idCardFrontUrl,jdbcType=VARCHAR}, 
       #{idCardBackUrl,jdbcType=VARCHAR}, #{openAccountLicenseUrl,jdbcType=VARCHAR}, #{onServiceStatus,jdbcType=CHAR}, 
-      #{desc,jdbcType=VARCHAR}, #{area,jdbcType=REAL}, #{openDoorDate,jdbcType=VARCHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{area,jdbcType=REAL}, #{openDoorDate,jdbcType=VARCHAR},
       #{closeDoorDate,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
@@ -174,8 +174,8 @@
       <if test="onServiceStatus != null">
         on_service_status,
       </if>
-      <if test="desc != null">
-        desc,
+      <if test="detail != null">
+        detail,
       </if>
       <if test="area != null">
         area,
@@ -236,8 +236,8 @@
       <if test="onServiceStatus != null">
         #{onServiceStatus,jdbcType=CHAR},
       </if>
-      <if test="desc != null">
-        #{desc,jdbcType=VARCHAR},
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
       </if>
       <if test="area != null">
         #{area,jdbcType=REAL},
@@ -307,8 +307,8 @@
       <if test="record.onServiceStatus != null">
         on_service_status = #{record.onServiceStatus,jdbcType=CHAR},
       </if>
-      <if test="record.desc != null">
-        desc = #{record.desc,jdbcType=VARCHAR},
+      <if test="record.detail != null">
+        detail = #{record.detail,jdbcType=VARCHAR},
       </if>
       <if test="record.area != null">
         area = #{record.area,jdbcType=REAL},
@@ -350,7 +350,7 @@
       id_card_back_url = #{record.idCardBackUrl,jdbcType=VARCHAR},
       open_account_license_url = #{record.openAccountLicenseUrl,jdbcType=VARCHAR},
       on_service_status = #{record.onServiceStatus,jdbcType=CHAR},
-      desc = #{record.desc,jdbcType=VARCHAR},
+      detail = #{record.detail,jdbcType=VARCHAR},
       area = #{record.area,jdbcType=REAL},
       open_door_date = #{record.openDoorDate,jdbcType=VARCHAR},
       close_door_date = #{record.closeDoorDate,jdbcType=VARCHAR},
@@ -398,8 +398,8 @@
       <if test="onServiceStatus != null">
         on_service_status = #{onServiceStatus,jdbcType=CHAR},
       </if>
-      <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
       </if>
       <if test="area != null">
         area = #{area,jdbcType=REAL},
@@ -438,7 +438,7 @@
       id_card_back_url = #{idCardBackUrl,jdbcType=VARCHAR},
       open_account_license_url = #{openAccountLicenseUrl,jdbcType=VARCHAR},
       on_service_status = #{onServiceStatus,jdbcType=CHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
       area = #{area,jdbcType=REAL},
       open_door_date = #{openDoorDate,jdbcType=VARCHAR},
       close_door_date = #{closeDoorDate,jdbcType=VARCHAR},
