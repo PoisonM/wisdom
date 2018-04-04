@@ -1,4 +1,4 @@
-package com.wisdom.beauty.controller.cardController;
+package com.wisdom.beauty.controller.card;
 
 import com.wisdom.beauty.api.dto.ShopCustomerRechargeCardDTO;
 import com.wisdom.beauty.interceptor.LoginRequired;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 /**
- * FileName: cardController
+ * FileName: card
  *
  * @author: 赵得良
  * Date:     2018/4/3 0003 15:06
