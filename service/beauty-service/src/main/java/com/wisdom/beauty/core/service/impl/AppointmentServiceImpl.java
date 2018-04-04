@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.service.AppointmentService;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,35 @@ public class AppointmentServiceImpl implements AppointmentService{
         criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
         criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(),extShopAppointServiceDTO.getSearchEndTime());
         List<ShopAppointServiceDTO> appointServiceDTOS = extShopAppointServiceMapper.selectShopAppointClerkInfoByCriteria(shopAppointServiceCriteria);
+        return appointServiceDTOS;
+    }
+
+    /**
+     * 根据时间查询某个店下的某个美容师的预约列表
+     * @param extShopAppointServiceDTO
+     * @return
+     */
+    @Override
+    public List<ShopAppointServiceDTO> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO){
+
+        if(null == extShopAppointServiceDTO || null == extShopAppointServiceDTO.getSearchStartTime() || null == extShopAppointServiceDTO.getSearchEndTime()){
+            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空{}",extShopAppointServiceDTO);
+            return null;
+        }
+
+        ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
+        ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
+        if(StringUtils.isNotBlank(extShopAppointServiceDTO.getSysShopId())){
+            criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
+        }
+        if(StringUtils.isNotBlank(extShopAppointServiceDTO.getSysClerkId())){
+            criteria.andSysClerkIdEqualTo(extShopAppointServiceDTO.getSysClerkId());
+        }
+        if(null != extShopAppointServiceDTO.getSearchStartTime() && null != extShopAppointServiceDTO.getSearchEndTime()){
+            criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(),extShopAppointServiceDTO.getSearchEndTime());
+        }
+
+        List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
         return appointServiceDTOS;
     }
 

@@ -20,4 +20,11 @@ public interface AppointmentService {
      * @return
      */
     List<ShopAppointServiceDTO> getShopAppointClerkInfoByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO);
+
+    /**
+     * 根据时间查询某个店下的某个美容师的预约列表
+     * @param extShopAppointServiceDTO
+     * @return
+     */
+    List<ShopAppointServiceDTO> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO);
 }
