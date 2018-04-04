@@ -35,57 +35,74 @@
             </div>
         </div>
         <div class="row" style="background: white;color:black;margin-top:1px;text-align: center">
-            <div class="col" style="width:12%"><span style="color: black;
+            <div class="col" style="width:11%"><span style="color: black;
                                             line-height: 29px;
-                                            font-size: 14px;
+                                            font-size: 10px;
                                             background: white;
                                             display: inline-block;
                                             height: 30px;
                                             width: 40px;">今天</span></div>
-            <div class="col" style="width:12%"><span style="color: black;
+            <div class="col" style="width:11%"><span style="color: black;
                                             line-height: 29px;
-                                            font-size: 14px;
+                                            font-size: 10px;
                                             background: white;
                                             display: inline-block;
                                             height: 30px;
                                             width: 40px;">明天</span></div>
-            <div class="col" style="width:12%"><span style="color: black;
+            <div class="col" style="width:11%"><span style="color: black;
                                             line-height: 29px;
-                                            font-size: 14px;
+                                            font-size: 10px;
                                             background: white;
                                             display: inline-block;
                                             height: 30px;
                                             width: 40px;">后天</span></div>
-            <div class="col" style="width:12%"><span style="color: black;
+            <div class="col" style="width:11%"><span style="color: black;
                                             line-height: 29px;
-                                            font-size: 14px;
+                                            font-size: 10px;
                                             background: white;
                                             display: inline-block;
                                             height: 30px;
                                             width: 40px;">04/04</span></div>
-            <div class="col" style="width:12%"><span style="color: black;
+            <div class="col" style="width:11%"><span style="color: black;
                                             line-height: 29px;
-                                            font-size: 14px;
+                                            font-size: 10px;
                                             background: white;
                                             display: inline-block;
                                             height: 30px;
                                             width: 40px;">04/05</span></div>
             <div class="col"><span style="color: black;
                                             line-height: 29px;
-                                            font-size: 14px;
+                                            font-size: 10px;
                                             background: white;
                                             display: inline-block;
                                             height: 30px;
                                             width: 40px;">04/06</span></div>
-            <div class="col" style="width:12%"><span style="color: white;
+            <div class="col" style="width:11%"><span style="color: white;
                                             line-height: 29px;
-                                            font-size: 14px;
+                                            font-size: 10px;
                                             background: #f00;
                                             display: inline-block;
                                             height: 30px;
                                             width: 40px;
                                             border-radius: 20px 20px 20px 20px;">04/07</span></div>
         </div>
-
+        <div style="margin-top:0px;background:pink;color:transparent;font-size:1px;height:2px">123</div>
+        <div class="row" ng-repeat="item in param.timeDate"
+             style="background:white;color:black;font-size:10px;
+                      text-align:center;margin-left:40px;width:90%">
+            <div class="col" ng-repeat="item1 in item">
+                <span style="text-decoration:line-through;color: grey">{{item1}}</span>
+            </div>
+        </div>
+        <div class="row" style="background:white;color:black;width:45px;margin-top:-184px;height:184px;">
+            <div class="col">
+                <br>
+                <i class="icon ion-ios-partlysunny" style="color: pink;font-size: 20px"></i>
+                <br><br>
+                <i class="icon ion-ios-sunny" style="color: pink;font-size: 20px"></i>
+                <br><br>
+                <i class="icon ion-ios-cloudy-night" style="color: pink;font-size: 20px"></i>
+            </div>
+        </div>
     </ion-content>
 </ion-view>
