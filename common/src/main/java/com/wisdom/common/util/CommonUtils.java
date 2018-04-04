@@ -9,10 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 用户工具类
@@ -158,7 +155,7 @@ public class CommonUtils {
 		}
 
 		//根据开始时间编号计算结束时间编号
-		StringBuffer responseStr = new StringBuffer("{");
+		StringBuffer responseStr = new StringBuffer();
 		for (int i = Integer.parseInt(startNo); i < Integer.parseInt(endNo) ; i++) {
 			responseStr.append("\"");
 			responseStr.append(i);
@@ -166,11 +163,52 @@ public class CommonUtils {
 		}
 
 		responseStr.deleteCharAt(responseStr.length() - 1);
-		responseStr.append("}");
 		return responseStr.toString();
 	}
 
 	public static void main(String[] args) {
 		System.out.println(getArrayNo("01:00","10:00") );
+	}
+
+	/**
+	 * objectIsNotEmpty:(判断Object不为空). <br/>
+	 *
+	 * @return 为空返回true 不为空返回false
+	 * @since JDK 1.7
+	 * @author zhaodeliang
+	 */
+	public static boolean objectIsNotEmpty(Object obj) {
+		return !objectIsEmpty(obj);
+	}
+
+	/**
+	 * objectIsEmpty:(判断Object为空). <br/>
+	 *
+	 * @param obj
+	 * @return 为空返回true 不为空返回false
+	 * @since JDK 1.7
+	 * @author zhaodeliang
+	 */
+	public static boolean objectIsEmpty(Object obj) {
+
+		if (obj == null) {
+			return true;
+		}
+		if ("null".equals(obj)) {
+			return true;
+		}
+		if ("".equals(obj)) {
+			return true;
+		}
+		if ((obj instanceof List)) {
+			return ((List) obj).isEmpty();
+		}
+		if ((obj instanceof Map)) {
+			return ((Map) obj).isEmpty();
+		}
+		if ((obj instanceof String)) {
+			return ((String) obj).trim().equals("");
+		}
+		return false;
 	}
 }

@@ -308,7 +308,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "修改预约",
-                        files: [root + "appointment/modifyingAppointmentCtrl.js",
+                        files: [root + "appointment/modifyingAppointment.js",
                             root + "appointment/postion.css",
                         ]
                     })
@@ -428,7 +428,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "周预约",
-                        files: [root + "appointment/weeklyReservationCtrl.js",
+                        files: [root + "appointment/weeklyReservation.js",
                             root + "appointment/weeklyReservation.css",
                         ]
                     })
@@ -548,6 +548,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+
         .state('pad-web.dayAppointment', {
             url: '/dayAppointment',
             templateUrl: root + '/appointment/dayAppointment.html',
@@ -555,7 +556,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "日预约",
+                        name: "日预约列表",
                         files: [root + "appointment/dayAppointment.js",
                             root + "appointment/laydate.css",
                             root + "appointment/laydate.js",
@@ -577,12 +578,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/balancePrepaid.css",
                             root + "appointment/givingCtrl.js",
                             root + "appointment/scratchCardCtrl.js",
-                            root + "appointment/individualTravelerAppointment.css",
-                            root + "appointment/individualTravelerAppointmentCtrl.js",
-                            root + "appointment/postion.css",
-                            root + "appointment/modifyingAppointmentCtrl.js",
-                            root + "appointment/weeklyReservationCtrl.js",
-                            root + "appointment/weeklyReservation.css",
+
 
                         ]
                     })
