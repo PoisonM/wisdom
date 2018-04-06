@@ -153,11 +153,34 @@ public class AppointmentController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopAppointServiceDTO>> shopWeekAppointmentInfoByDate(@RequestParam String sysShopId,
+	ResponseDTO<Map<String, Object>> shopWeekAppointmentInfoByDate(@RequestParam String sysShopId,
 																		  @RequestParam String startDate,@RequestParam String endDate) {
 		ResponseDTO<List<ShopAppointServiceDTO>> responseDTO = new ResponseDTO<>();
 
-		return  responseDTO;
+//		String preLog = "根据时间查询某个美容店周预约列表,";
+//		long startTime = System.currentTimeMillis();
+//		logger.info(preLog+"美容店主键为={}",sysShopId);
+//
+//		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
+//		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+//		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(startDate,"datetime"));
+//		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(endDate,"datetime"));
+//		extShopAppointServiceDTO.setSysShopId(sysShopId);
+//
+//		//根据时间查询当前店下所有美容师
+//		List<SysUserClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
+//
+//		if(CommonUtils.objectIsEmpty(clerkInfo)){
+//			responseDTO.setResult(StatusConstant.FAILURE);
+//			responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());
+//			logger.info(preLog+"根据时间查询当前店下所有美容师个数为0");
+//			return responseDTO;
+//		}
+//		logger.info(preLog+"根据时间查询当前店下所有美容师个数={}",clerkInfo.size());
+
+		HashMap<String, Object> responseMap = new HashMap<>(32);
+
+		return  null;
 	}
 
 	/**
