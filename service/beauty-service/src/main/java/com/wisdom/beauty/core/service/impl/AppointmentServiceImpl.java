@@ -26,6 +26,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+
     @Autowired
     private ShopAppointServiceMapper shopAppointServiceMapper;
 

@@ -12,6 +12,9 @@ public class ShopScheduleSettingDTO extends BaseEntity implements Serializable {
     //
     private String sysBossId;
 
+    //
+    private String sysShopId;
+
     //早班，中班，晚班，全班
     private String typeName;
 
@@ -52,6 +55,14 @@ public class ShopScheduleSettingDTO extends BaseEntity implements Serializable {
 
     public void setSysBossId(String sysBossId) {
         this.sysBossId = sysBossId;
+    }
+
+    public String getSysShopId() {
+        return sysShopId;
+    }
+
+    public void setSysShopId(String sysShopId) {
+        this.sysShopId = sysShopId;
     }
 
     public String getTypeName() {

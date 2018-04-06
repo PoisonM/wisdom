@@ -1,10 +1,12 @@
 package com.wisdom.beauty.controller.appointment;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.AppointmentService;
+import com.wisdom.beauty.core.service.WorkService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.customer.SysUserClerkDTO;
@@ -44,6 +46,9 @@ public class AppointmentController {
 	@Resource
 	private UserServiceClient userServiceClient;
 
+	@Resource
+	private WorkService workService;
+
 	/**
 	 * 根据时间查询某个美容店预约列表
 	 * @param sysShopId
@@ -81,9 +86,23 @@ public class AppointmentController {
 
 		HashMap<String, Object> responseMap = new HashMap<>(32);
 
-		//todo responseMap中保存上班日期
-		responseMap.put("startTime","9:00");
-		responseMap.put("endTime","23:00");
+		//查询某个店的排班信息
+		ShopScheduleSettingDTO shopScheduleSettingDTO = new ShopScheduleSettingDTO();
+		shopScheduleSettingDTO.setSysShopId(sysShopId);
+		List<ShopScheduleSettingDTO> shopScheduleSettingInfo = workService.getShopScheduleSettingInfo(shopScheduleSettingDTO);
+		if (shopScheduleSettingInfo == null) {
+			logger.error("查询某个店的排班信息为空,美容店主键为{}","sysShopId = [" + sysShopId + "]");
+			//早晚班默认值
+			responseMap.put("startTime","9:00");
+			responseMap.put("endTime","23:00");
+		}else{
+			for (ShopScheduleSettingDTO settingDTO :shopScheduleSettingInfo) {
+				if("3".equals(settingDTO.getTypeName())){
+					responseMap.put("startTime",settingDTO.getStartTime());
+					responseMap.put("endTime",settingDTO.getEndTime());
+				}
+			}
+		}
 
 		//遍历美容师获取预约详情
 		for (SysUserClerkDTO sysUserClerkDTO : clerkInfo) {
