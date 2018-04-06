@@ -3,9 +3,11 @@ package com.wisdom.beauty.controller.appointment;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.AppointmentService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.customer.SysUserClerkDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -39,6 +41,9 @@ public class AppointmentController {
 	@Resource
 	private AppointmentService appointmentService;
 
+	@Resource
+	private UserServiceClient userServiceClient;
+
 	/**
 	 * 根据时间查询某个美容店预约列表
 	 * @param sysShopId
@@ -64,15 +69,15 @@ public class AppointmentController {
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
 
 		//根据时间查询当前店下所有美容师
-		List<ShopAppointServiceDTO> dtos = appointmentService.getShopAppointClerkInfoByCriteria(extShopAppointServiceDTO);
+		List<SysUserClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
-		if(CommonUtils.objectIsEmpty(dtos)){
+		if(CommonUtils.objectIsEmpty(clerkInfo)){
 			responseDTO.setResult(StatusConstant.FAILURE);
 			responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());
 			logger.info(preLog+"根据时间查询当前店下所有美容师个数为0");
 			return responseDTO;
 		}
-		logger.info(preLog+"根据时间查询当前店下所有美容师个数={}",dtos.size());
+		logger.info(preLog+"根据时间查询当前店下所有美容师个数={}",clerkInfo.size());
 
 		HashMap<String, Object> responseMap = new HashMap<>(32);
 
@@ -81,12 +86,12 @@ public class AppointmentController {
 		responseMap.put("endTime","23:00");
 
 		//遍历美容师获取预约详情
-		for (ShopAppointServiceDTO shopAppointServiceDTO : dtos) {
+		for (SysUserClerkDTO sysUserClerkDTO : clerkInfo) {
 
 			HashMap<String, Object> shopAppointMap = new HashMap<>(16);
 
 			//查询某个美容师的预约列表
-			extShopAppointServiceDTO.setSysClerkId(shopAppointServiceDTO.getSysClerkId());
+			extShopAppointServiceDTO.setSysClerkId(sysUserClerkDTO.getId());
 			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 
 			if(CommonUtils.objectIsEmpty(shopAppointServiceDTOS)){
@@ -109,7 +114,7 @@ public class AppointmentController {
 				shopAppointMap.put("appointmentInfo",appointInfoList);
 				shopAppointMap.put("point",shopAppointServiceDTOS.size());
 			}
-			responseMap.put(shopAppointServiceDTO.getSysClerkName(),shopAppointMap);
+			responseMap.put(sysUserClerkDTO.getUserName(),shopAppointMap);
 		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);

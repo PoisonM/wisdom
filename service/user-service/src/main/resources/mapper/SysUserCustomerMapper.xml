@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.user.mapper.SysUserCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.wisdom.common.dto.customer.SysUserCustomerDTO" >
+    <id column=" id" property="id" jdbcType="VARCHAR" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="qr_code_url" property="qrCodeUrl" jdbcType="VARCHAR" />
+    <result column="sys_customer_id" property="sysCustomerId" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="pass_word" property="passWord" jdbcType="VARCHAR" />
+    <result column="user_open_id" property="userOpenId" jdbcType="VARCHAR" />
+    <result column="weixin_attention_status" property="weixinAttentionStatus" jdbcType="CHAR" />
+    <result column="photo" property="photo" jdbcType="VARCHAR" />
+    <result column="login_date" property="loginDate" jdbcType="TIMESTAMP" />
+    <result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    " id", sys_user_id, user_phone, user_name, qr_code_url, sys_customer_id, user_type, 
+    pass_word, user_open_id, weixin_attention_status, photo, login_date, login_ip, create_by, 
+    create_date, update_user, update_date
+  </sql>
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.common.dto.customer.SysUserCustomerCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_user_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart >= 0" >
+      limit ${limitStart},${pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user_customer
+    where " id" = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_user_customer
+    where " id" = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByCriteria" parameterType="com.wisdom.common.dto.customer.SysUserCustomerCriteria" >
+    delete from sys_user_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wisdom.common.dto.customer.SysUserCustomerDTO" >
+    insert into sys_user_customer (" id", sys_user_id, user_phone, 
+      user_name, qr_code_url, sys_customer_id, 
+      user_type, pass_word, user_open_id, 
+      weixin_attention_status, photo, login_date, 
+      login_ip, create_by, create_date, 
+      update_user, update_date)
+    values (#{id,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{qrCodeUrl,jdbcType=VARCHAR}, #{sysCustomerId,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR}, #{userOpenId,jdbcType=VARCHAR}, 
+      #{weixinAttentionStatus,jdbcType=CHAR}, #{photo,jdbcType=VARCHAR}, #{loginDate,jdbcType=TIMESTAMP}, 
+      #{loginIp,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wisdom.common.dto.customer.SysUserCustomerDTO" >
+    insert into sys_user_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        " id",
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="qrCodeUrl != null" >
+        qr_code_url,
+      </if>
+      <if test="sysCustomerId != null" >
+        sys_customer_id,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="passWord != null" >
+        pass_word,
+      </if>
+      <if test="userOpenId != null" >
+        user_open_id,
+      </if>
+      <if test="weixinAttentionStatus != null" >
+        weixin_attention_status,
+      </if>
+      <if test="photo != null" >
+        photo,
+      </if>
+      <if test="loginDate != null" >
+        login_date,
+      </if>
+      <if test="loginIp != null" >
+        login_ip,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUserId != null" >
+        #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCodeUrl != null" >
+        #{qrCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCustomerId != null" >
+        #{sysCustomerId,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null" >
+        #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenId != null" >
+        #{userOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinAttentionStatus != null" >
+        #{weixinAttentionStatus,jdbcType=CHAR},
+      </if>
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDate != null" >
+        #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null" >
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCriteria" parameterType="com.wisdom.common.dto.customer.SysUserCustomerCriteria" resultType="java.lang.Integer" >
+    select count(1) from sys_user_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCriteriaSelective" parameterType="map" >
+    update sys_user_customer
+    <set >
+      <if test="record.id != null" >
+        " id" = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysUserId != null" >
+        sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPhone != null" >
+        user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qrCodeUrl != null" >
+        qr_code_url = #{record.qrCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysCustomerId != null" >
+        sys_customer_id = #{record.sysCustomerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userType != null" >
+        user_type = #{record.userType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passWord != null" >
+        pass_word = #{record.passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userOpenId != null" >
+        user_open_id = #{record.userOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weixinAttentionStatus != null" >
+        weixin_attention_status = #{record.weixinAttentionStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.photo != null" >
+        photo = #{record.photo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginDate != null" >
+        login_date = #{record.loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.loginIp != null" >
+        login_ip = #{record.loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null" >
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCriteria" parameterType="map" >
+    update sys_user_customer
+    set " id" = #{record.id,jdbcType=VARCHAR},
+      sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+      user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      qr_code_url = #{record.qrCodeUrl,jdbcType=VARCHAR},
+      sys_customer_id = #{record.sysCustomerId,jdbcType=VARCHAR},
+      user_type = #{record.userType,jdbcType=VARCHAR},
+      pass_word = #{record.passWord,jdbcType=VARCHAR},
+      user_open_id = #{record.userOpenId,jdbcType=VARCHAR},
+      weixin_attention_status = #{record.weixinAttentionStatus,jdbcType=CHAR},
+      photo = #{record.photo,jdbcType=VARCHAR},
+      login_date = #{record.loginDate,jdbcType=TIMESTAMP},
+      login_ip = #{record.loginIp,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.customer.SysUserCustomerDTO" >
+    update sys_user_customer
+    <set >
+      <if test="sysUserId != null" >
+        sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCodeUrl != null" >
+        qr_code_url = #{qrCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCustomerId != null" >
+        sys_customer_id = #{sysCustomerId,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null" >
+        pass_word = #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenId != null" >
+        user_open_id = #{userOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinAttentionStatus != null" >
+        weixin_attention_status = #{weixinAttentionStatus,jdbcType=CHAR},
+      </if>
+      <if test="photo != null" >
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDate != null" >
+        login_date = #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null" >
+        login_ip = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where " id" = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.customer.SysUserCustomerDTO" >
+    update sys_user_customer
+    set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      qr_code_url = #{qrCodeUrl,jdbcType=VARCHAR},
+      sys_customer_id = #{sysCustomerId,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=VARCHAR},
+      pass_word = #{passWord,jdbcType=VARCHAR},
+      user_open_id = #{userOpenId,jdbcType=VARCHAR},
+      weixin_attention_status = #{weixinAttentionStatus,jdbcType=CHAR},
+      photo = #{photo,jdbcType=VARCHAR},
+      login_date = #{loginDate,jdbcType=TIMESTAMP},
+      login_ip = #{loginIp,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where " id" = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

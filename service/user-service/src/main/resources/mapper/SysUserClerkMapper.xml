@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.user.mapper.SysUserClerkMapper" >
+  <resultMap id="BaseResultMap" type="com.wisdom.common.dto.customer.SysUserClerkDTO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_level" property="userLevel" jdbcType="VARCHAR" />
+    <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
+    <result column="sys_user_qq" property="sysUserQq" jdbcType="VARCHAR" />
+    <result column="user_image" property="userImage" jdbcType="VARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sys_user_id, user_name, user_level, sys_shop_id, sys_user_qq, user_image, user_address
+  </sql>
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.common.dto.customer.SysUserClerkCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_user_clerk
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart >= 0" >
+      limit ${limitStart},${pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user_clerk
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_user_clerk
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByCriteria" parameterType="com.wisdom.common.dto.customer.SysUserClerkCriteria" >
+    delete from sys_user_clerk
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wisdom.common.dto.customer.SysUserClerkDTO" >
+    insert into sys_user_clerk (id, sys_user_id, user_name, 
+      user_level, sys_shop_id, sys_user_qq, 
+      user_image, user_address)
+    values (#{id,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{userLevel,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysUserQq,jdbcType=VARCHAR}, 
+      #{userImage,jdbcType=VARCHAR}, #{userAddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wisdom.common.dto.customer.SysUserClerkDTO" >
+    insert into sys_user_clerk
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userLevel != null" >
+        user_level,
+      </if>
+      <if test="sysShopId != null" >
+        sys_shop_id,
+      </if>
+      <if test="sysUserQq != null" >
+        sys_user_qq,
+      </if>
+      <if test="userImage != null" >
+        user_image,
+      </if>
+      <if test="userAddress != null" >
+        user_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUserId != null" >
+        #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null" >
+        #{userLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="sysShopId != null" >
+        #{sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUserQq != null" >
+        #{sysUserQq,jdbcType=VARCHAR},
+      </if>
+      <if test="userImage != null" >
+        #{userImage,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null" >
+        #{userAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCriteria" parameterType="com.wisdom.common.dto.customer.SysUserClerkCriteria" resultType="java.lang.Integer" >
+    select count(1) from sys_user_clerk
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCriteriaSelective" parameterType="map" >
+    update sys_user_clerk
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysUserId != null" >
+        sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userLevel != null" >
+        user_level = #{record.userLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysShopId != null" >
+        sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysUserQq != null" >
+        sys_user_qq = #{record.sysUserQq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userImage != null" >
+        user_image = #{record.userImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAddress != null" >
+        user_address = #{record.userAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCriteria" parameterType="map" >
+    update sys_user_clerk
+    set id = #{record.id,jdbcType=VARCHAR},
+      sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      user_level = #{record.userLevel,jdbcType=VARCHAR},
+      sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+      sys_user_qq = #{record.sysUserQq,jdbcType=VARCHAR},
+      user_image = #{record.userImage,jdbcType=VARCHAR},
+      user_address = #{record.userAddress,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.customer.SysUserClerkDTO" >
+    update sys_user_clerk
+    <set >
+      <if test="sysUserId != null" >
+        sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null" >
+        user_level = #{userLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="sysShopId != null" >
+        sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUserQq != null" >
+        sys_user_qq = #{sysUserQq,jdbcType=VARCHAR},
+      </if>
+      <if test="userImage != null" >
+        user_image = #{userImage,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null" >
+        user_address = #{userAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.customer.SysUserClerkDTO" >
+    update sys_user_clerk
+    set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_level = #{userLevel,jdbcType=VARCHAR},
+      sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+      sys_user_qq = #{sysUserQq,jdbcType=VARCHAR},
+      user_image = #{userImage,jdbcType=VARCHAR},
+      user_address = #{userAddress,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
