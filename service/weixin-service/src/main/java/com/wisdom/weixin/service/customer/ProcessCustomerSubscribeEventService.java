@@ -101,6 +101,13 @@ public class ProcessCustomerSubscribeEventService {
                 {
                     userInfoDTO.setWeixinAttentionStatus("1");
                 }
+                String nickname = null;
+                try {
+                    nickname = URLEncoder.encode(userInfoDTO.getNickname(), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                userInfoDTO.setNickname(nickname);
                 //userInfoDTO.setParentUserId(parentUserInfoDTO.getId());
                 userInfoDTO.setLoginIp("");
                 userServiceClient.updateUserInfo(userInfoDTO);
@@ -241,6 +248,13 @@ public class ProcessCustomerSubscribeEventService {
             {
                 userInfoDTO = userInfoDTOList.get(0);
                 userInfoDTO.setWeixinAttentionStatus("0");
+                String nickname = null;
+                try {
+                    nickname = URLEncoder.encode(userInfoDTO.getNickname(), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                userInfoDTO.setNickname(nickname);
                 userServiceClient.updateUserInfo(userInfoDTO);
             }
 
