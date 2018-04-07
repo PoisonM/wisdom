@@ -371,9 +371,6 @@ public class JedisUtils {
 				jedis.del(key);
 			}
 			result = jedis.zadd(key, score, member);
-			if (cacheSeconds != 0) {
-				jedis.expire(key, cacheSeconds);
-			}
 			logger.debug("setSet {} = {} = {}", key, member);
 		} catch (Exception e) {
 			logger.warn("setSet {} = {}  = {}", key, member, e);
@@ -389,14 +386,11 @@ public class JedisUtils {
 	 * @param max
 	 * @return
 	 */
-	public static Set<String> zRangeByScore(String key, double min, double max) {
+	public static Set<String> zRangeByScore(String key, String min, String max) {
 		Set<String> result = null;
 		Jedis jedis = null;
 		try {
 			jedis = getResource();
-			if (jedis.exists(key)) {
-				jedis.del(key);
-			}
 			result = jedis.zrangeByScore(key, min, max);
 
 			logger.debug("setSet {} = {} = {}", key, min,max);

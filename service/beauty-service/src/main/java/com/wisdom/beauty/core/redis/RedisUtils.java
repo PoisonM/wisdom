@@ -6,6 +6,7 @@ import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
@@ -16,7 +17,8 @@ import java.util.Set;
  * Date:     2018/4/4 0004 11:03
  * Description: B端redis帮助类
  */
-public class redisUtils {
+@Service("redisUtils")
+public class RedisUtils {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -30,7 +32,7 @@ public class redisUtils {
      * @param shopAppointServiceDTO
      */
     public void saveShopAppointInfoToRedis(ShopAppointServiceDTO shopAppointServiceDTO){
-
+        logger.info("保存预约详情到redis，预约详情为{}",shopAppointServiceDTO);
         if (shopAppointServiceDTO == null || StringUtils.isBlank(shopAppointServiceDTO.getId())
                 ||StringUtils.isBlank(shopAppointServiceDTO.getSysShopId()) ||
                 StringUtils.isBlank((shopAppointServiceDTO.getSysClerkId()))) {
@@ -58,12 +60,13 @@ public class redisUtils {
 
     /**
      * 根据分数过滤与某个美容师相关的预约信息
+     * 如：ZRANGEBYSCORE shopId_clerkId (20180000000000 20190000000000
      * @param shopIdClerkId
      * @param min
      * @param max
      * @return
      */
-    public Set<String> getAppointmentIdByShopClerk(String shopIdClerkId,double min, double max ){
+    public Set<String> getAppointmentIdByShopClerk(String shopIdClerkId,String min, String max ){
         Set<String> set = JedisUtils.zRangeByScore(shopIdClerkId, min, max);
         return set;
     }
