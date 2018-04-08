@@ -421,6 +421,36 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.customerSignature', {
+            url: '/customerSignature',
+            templateUrl: root + '/appointment/customerSignature.html',
+            controller: 'customerSignatureCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "顾客签字",
+                        files: [root + "appointment/customerSignatureCtrl.js",
+                            root + "appointment/customerSignature.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.selectCoupons', {
+            url: '/selectCoupons',
+            templateUrl: root + '/appointment/selectCoupons.html',
+            controller: 'selectCouponsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "选择优惠券",
+                        files: [root + "appointment/selectCouponsCtrl.js",
+                            root + "appointment/selectCoupons.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.selectTreatmentCard', {
             url: '/selectTreatmentCard',
             templateUrl: root + '/appointment/selectTreatmentCard.html',
