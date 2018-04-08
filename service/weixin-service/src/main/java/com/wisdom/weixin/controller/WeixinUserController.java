@@ -13,7 +13,7 @@ import com.wisdom.common.util.*;
 import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
 import com.wisdom.weixin.interceptor.LoginRequired;
-import com.wisdom.weixin.service.user.WeixinCustomerCoreService;
+import com.wisdom.weixin.service.user.WeixinUserCoreService;
 import com.wisdom.weixin.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -45,7 +45,7 @@ import java.util.List;
 public class WeixinUserController {
 
     @Autowired
-    private WeixinCustomerCoreService weixinCustomerCoreService;
+    private WeixinUserCoreService weixinCustomerCoreService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
