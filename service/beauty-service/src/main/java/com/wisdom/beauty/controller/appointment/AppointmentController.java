@@ -130,7 +130,7 @@ public class AppointmentController {
 				shopAppointMap.put("appointmentInfo",appointInfoList);
 				shopAppointMap.put("point",shopAppointServiceDTOS.size());
 			}
-			responseMap.put(SysClerkDTO.getUserName(), shopAppointMap);
+			responseMap.put(SysClerkDTO.getName(), shopAppointMap);
 		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -182,7 +182,7 @@ public class AppointmentController {
                 Set<String> stringSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
                         DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate));
 
-                logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getUserName(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
+                logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getName(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
 
                 if (CommonUtils.objectIsEmpty(stringSet)) {
                     continue;
@@ -204,7 +204,7 @@ public class AppointmentController {
                 loopDate = DateUtils.dateInc(loopDate);
             }
 
-            returnMap.put(clerkDTO.getUserName(), arrayList);
+            returnMap.put(clerkDTO.getName(), arrayList);
         }
 
         responseDTO.setResult(StatusConstant.SUCCESS);
