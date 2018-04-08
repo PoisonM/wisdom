@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-@RequestMapping(value = "customer")
 public class BossInfoController {
 
 }
