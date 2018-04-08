@@ -1,7 +1,7 @@
 package com.wisdom.tinglao.service.impl;
 
 import com.wisdom.beauty.BeautyServiceApplication;
-import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopAppointService;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
@@ -50,7 +50,7 @@ public class AppointmentTest {
 
     @Test
     public void initOrderShouldReturnInitializedOrder() throws Exception {
-        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
+        ShopAppointService shopAppointServiceDTO = new ShopAppointService();
         shopAppointServiceDTO.setAppointEndTime(new Date());
         shopAppointServiceDTO.setId("242dfsfdfg34");
         shopAppointServiceMapper.insert(shopAppointServiceDTO);
@@ -64,14 +64,14 @@ public class AppointmentTest {
         extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate("2018-04-04 11:16:48","datetime"));
         extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate("2018-04-04 14:16:48","datetime"));
         extShopAppointServiceDTO.setSysShopId("sys_shop_id");
-        List<ShopAppointServiceDTO> ls = appointmentService.getShopAppointClerkInfoByCriteria(extShopAppointServiceDTO);
+        List<ShopAppointService> ls = appointmentService.getShopAppointClerkInfoByCriteria(extShopAppointServiceDTO);
         System.out.println(ls);
     }
 
     @Test
     public void saveAppointmentService() {
 
-        ShopAppointServiceDTO shopAppointServiceDTO = getShopAppointServiceDTO();
+        ShopAppointService shopAppointServiceDTO = getShopAppointServiceDTO();
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         System.out.println("测试完毕");
     }
@@ -83,14 +83,14 @@ public class AppointmentTest {
 
     @Test
     public void getShopAppointInfoFromRedis() {
-        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
+        ShopAppointService shopAppointServiceDTO = new ShopAppointService();
         shopAppointServiceDTO.setId("6951d1561c5b4cae84fd72283e52a081");
-        ShopAppointServiceDTO infoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceDTO.getId());
+        ShopAppointService infoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceDTO.getId());
         System.out.println("infoFromRedis");
     }
 
-    private ShopAppointServiceDTO getShopAppointServiceDTO() {
-        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
+    private ShopAppointService getShopAppointServiceDTO() {
+        ShopAppointService shopAppointServiceDTO = new ShopAppointService();
         shopAppointServiceDTO.setId("6951d1561c5b4cae84fd72283e52a081");
         shopAppointServiceDTO.setAppointEndTime(new Date());
         shopAppointServiceDTO.setAppointPeriod(60);
@@ -103,12 +103,12 @@ public class AppointmentTest {
         shopAppointServiceDTO.setStatus("0");
         shopAppointServiceDTO.setSysBossId(IdGen.uuid());
         shopAppointServiceDTO.setSysClerkId("8f4bbff4c1404136a521350c08e31483");
-        shopAppointServiceDTO.setSysCustomerId(IdGen.uuid());
+        shopAppointServiceDTO.setSysUserId(IdGen.uuid());
         shopAppointServiceDTO.setSysClerkName("王五");
         shopAppointServiceDTO.setUpdateUser(IdGen.uuid());
         shopAppointServiceDTO.setSysShopName("汉方美容院");
-        shopAppointServiceDTO.setSysCustomerName("张欢");
-        shopAppointServiceDTO.setSysCustomerPhone("181812839893");
+        shopAppointServiceDTO.setSysUserName("张欢");
+        shopAppointServiceDTO.setSysUserPhone("181812839893");
         shopAppointServiceDTO.setSysShopId("48940be00e634bae86006c4519263906");
         return shopAppointServiceDTO;
     }

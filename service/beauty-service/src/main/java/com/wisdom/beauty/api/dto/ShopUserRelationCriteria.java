@@ -265,73 +265,73 @@ public class ShopUserRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdIsNull() {
-            addCriterion("sys_customer_id is null");
+        public Criteria andSysUserIdIsNull() {
+            addCriterion("sys_user_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdIsNotNull() {
-            addCriterion("sys_customer_id is not null");
+        public Criteria andSysUserIdIsNotNull() {
+            addCriterion("sys_user_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdEqualTo(String value) {
-            addCriterion("sys_customer_id =", value, "sysCustomerId");
+        public Criteria andSysUserIdEqualTo(String value) {
+            addCriterion("sys_user_id =", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdNotEqualTo(String value) {
-            addCriterion("sys_customer_id <>", value, "sysCustomerId");
+        public Criteria andSysUserIdNotEqualTo(String value) {
+            addCriterion("sys_user_id <>", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdGreaterThan(String value) {
-            addCriterion("sys_customer_id >", value, "sysCustomerId");
+        public Criteria andSysUserIdGreaterThan(String value) {
+            addCriterion("sys_user_id >", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdGreaterThanOrEqualTo(String value) {
-            addCriterion("sys_customer_id >=", value, "sysCustomerId");
+        public Criteria andSysUserIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_user_id >=", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdLessThan(String value) {
-            addCriterion("sys_customer_id <", value, "sysCustomerId");
+        public Criteria andSysUserIdLessThan(String value) {
+            addCriterion("sys_user_id <", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdLessThanOrEqualTo(String value) {
-            addCriterion("sys_customer_id <=", value, "sysCustomerId");
+        public Criteria andSysUserIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_user_id <=", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdLike(String value) {
-            addCriterion("sys_customer_id like", value, "sysCustomerId");
+        public Criteria andSysUserIdLike(String value) {
+            addCriterion("sys_user_id like", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdNotLike(String value) {
-            addCriterion("sys_customer_id not like", value, "sysCustomerId");
+        public Criteria andSysUserIdNotLike(String value) {
+            addCriterion("sys_user_id not like", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdIn(List<String> values) {
-            addCriterion("sys_customer_id in", values, "sysCustomerId");
+        public Criteria andSysUserIdIn(List<String> values) {
+            addCriterion("sys_user_id in", values, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdNotIn(List<String> values) {
-            addCriterion("sys_customer_id not in", values, "sysCustomerId");
+        public Criteria andSysUserIdNotIn(List<String> values) {
+            addCriterion("sys_user_id not in", values, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdBetween(String value1, String value2) {
-            addCriterion("sys_customer_id between", value1, value2, "sysCustomerId");
+        public Criteria andSysUserIdBetween(String value1, String value2) {
+            addCriterion("sys_user_id between", value1, value2, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdNotBetween(String value1, String value2) {
-            addCriterion("sys_customer_id not between", value1, value2, "sysCustomerId");
+        public Criteria andSysUserIdNotBetween(String value1, String value2) {
+            addCriterion("sys_user_id not between", value1, value2, "sysUserId");
             return (Criteria) this;
         }
 
@@ -405,73 +405,73 @@ public class ShopUserRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameIsNull() {
-            addCriterion("sys_customer_name is null");
+        public Criteria andSysUserNameIsNull() {
+            addCriterion("sys_user_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameIsNotNull() {
-            addCriterion("sys_customer_name is not null");
+        public Criteria andSysUserNameIsNotNull() {
+            addCriterion("sys_user_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameEqualTo(String value) {
-            addCriterion("sys_customer_name =", value, "sysCustomerName");
+        public Criteria andSysUserNameEqualTo(String value) {
+            addCriterion("sys_user_name =", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameNotEqualTo(String value) {
-            addCriterion("sys_customer_name <>", value, "sysCustomerName");
+        public Criteria andSysUserNameNotEqualTo(String value) {
+            addCriterion("sys_user_name <>", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameGreaterThan(String value) {
-            addCriterion("sys_customer_name >", value, "sysCustomerName");
+        public Criteria andSysUserNameGreaterThan(String value) {
+            addCriterion("sys_user_name >", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameGreaterThanOrEqualTo(String value) {
-            addCriterion("sys_customer_name >=", value, "sysCustomerName");
+        public Criteria andSysUserNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_user_name >=", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameLessThan(String value) {
-            addCriterion("sys_customer_name <", value, "sysCustomerName");
+        public Criteria andSysUserNameLessThan(String value) {
+            addCriterion("sys_user_name <", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameLessThanOrEqualTo(String value) {
-            addCriterion("sys_customer_name <=", value, "sysCustomerName");
+        public Criteria andSysUserNameLessThanOrEqualTo(String value) {
+            addCriterion("sys_user_name <=", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameLike(String value) {
-            addCriterion("sys_customer_name like", value, "sysCustomerName");
+        public Criteria andSysUserNameLike(String value) {
+            addCriterion("sys_user_name like", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameNotLike(String value) {
-            addCriterion("sys_customer_name not like", value, "sysCustomerName");
+        public Criteria andSysUserNameNotLike(String value) {
+            addCriterion("sys_user_name not like", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameIn(List<String> values) {
-            addCriterion("sys_customer_name in", values, "sysCustomerName");
+        public Criteria andSysUserNameIn(List<String> values) {
+            addCriterion("sys_user_name in", values, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameNotIn(List<String> values) {
-            addCriterion("sys_customer_name not in", values, "sysCustomerName");
+        public Criteria andSysUserNameNotIn(List<String> values) {
+            addCriterion("sys_user_name not in", values, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameBetween(String value1, String value2) {
-            addCriterion("sys_customer_name between", value1, value2, "sysCustomerName");
+        public Criteria andSysUserNameBetween(String value1, String value2) {
+            addCriterion("sys_user_name between", value1, value2, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameNotBetween(String value1, String value2) {
-            addCriterion("sys_customer_name not between", value1, value2, "sysCustomerName");
+        public Criteria andSysUserNameNotBetween(String value1, String value2) {
+            addCriterion("sys_user_name not between", value1, value2, "sysUserName");
             return (Criteria) this;
         }
 
@@ -615,73 +615,73 @@ public class ShopUserRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoIsNull() {
-            addCriterion("customer_account_no is null");
+        public Criteria andUserAccountNoIsNull() {
+            addCriterion("user_account_no is null");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoIsNotNull() {
-            addCriterion("customer_account_no is not null");
+        public Criteria andUserAccountNoIsNotNull() {
+            addCriterion("user_account_no is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoEqualTo(String value) {
-            addCriterion("customer_account_no =", value, "customerAccountNo");
+        public Criteria andUserAccountNoEqualTo(String value) {
+            addCriterion("user_account_no =", value, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoNotEqualTo(String value) {
-            addCriterion("customer_account_no <>", value, "customerAccountNo");
+        public Criteria andUserAccountNoNotEqualTo(String value) {
+            addCriterion("user_account_no <>", value, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoGreaterThan(String value) {
-            addCriterion("customer_account_no >", value, "customerAccountNo");
+        public Criteria andUserAccountNoGreaterThan(String value) {
+            addCriterion("user_account_no >", value, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoGreaterThanOrEqualTo(String value) {
-            addCriterion("customer_account_no >=", value, "customerAccountNo");
+        public Criteria andUserAccountNoGreaterThanOrEqualTo(String value) {
+            addCriterion("user_account_no >=", value, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoLessThan(String value) {
-            addCriterion("customer_account_no <", value, "customerAccountNo");
+        public Criteria andUserAccountNoLessThan(String value) {
+            addCriterion("user_account_no <", value, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoLessThanOrEqualTo(String value) {
-            addCriterion("customer_account_no <=", value, "customerAccountNo");
+        public Criteria andUserAccountNoLessThanOrEqualTo(String value) {
+            addCriterion("user_account_no <=", value, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoLike(String value) {
-            addCriterion("customer_account_no like", value, "customerAccountNo");
+        public Criteria andUserAccountNoLike(String value) {
+            addCriterion("user_account_no like", value, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoNotLike(String value) {
-            addCriterion("customer_account_no not like", value, "customerAccountNo");
+        public Criteria andUserAccountNoNotLike(String value) {
+            addCriterion("user_account_no not like", value, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoIn(List<String> values) {
-            addCriterion("customer_account_no in", values, "customerAccountNo");
+        public Criteria andUserAccountNoIn(List<String> values) {
+            addCriterion("user_account_no in", values, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoNotIn(List<String> values) {
-            addCriterion("customer_account_no not in", values, "customerAccountNo");
+        public Criteria andUserAccountNoNotIn(List<String> values) {
+            addCriterion("user_account_no not in", values, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoBetween(String value1, String value2) {
-            addCriterion("customer_account_no between", value1, value2, "customerAccountNo");
+        public Criteria andUserAccountNoBetween(String value1, String value2) {
+            addCriterion("user_account_no between", value1, value2, "userAccountNo");
             return (Criteria) this;
         }
 
-        public Criteria andCustomerAccountNoNotBetween(String value1, String value2) {
-            addCriterion("customer_account_no not between", value1, value2, "customerAccountNo");
+        public Criteria andUserAccountNoNotBetween(String value1, String value2) {
+            addCriterion("user_account_no not between", value1, value2, "userAccountNo");
             return (Criteria) this;
         }
 

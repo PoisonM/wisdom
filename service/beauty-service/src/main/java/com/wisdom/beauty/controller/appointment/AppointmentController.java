@@ -1,6 +1,6 @@
 package com.wisdom.beauty.controller.appointment;
 
-import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopAppointService;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
@@ -10,7 +10,7 @@ import com.wisdom.beauty.core.service.AppointmentService;
 import com.wisdom.beauty.core.service.WorkService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.customer.SysUserClerkDTO;
+import com.wisdom.common.dto.customer.SysClerkDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -76,7 +76,7 @@ public class AppointmentController {
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
 
 		//根据时间查询当前店下所有美容师
-		List<SysUserClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
+		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
         if (judgeNull(responseDTO, preLog, clerkInfo)) return responseDTO;
 		logger.info(preLog+"根据时间查询当前店下所有美容师个数={}",clerkInfo.size());
@@ -102,13 +102,13 @@ public class AppointmentController {
 		}
 
 		//遍历美容师获取预约详情
-		for (SysUserClerkDTO sysUserClerkDTO : clerkInfo) {
+		for (SysClerkDTO SysClerkDTO : clerkInfo) {
 
 			HashMap<String, Object> shopAppointMap = new HashMap<>(16);
 
 			//查询某个美容师的预约列表
-			extShopAppointServiceDTO.setSysClerkId(sysUserClerkDTO.getId());
-			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+			extShopAppointServiceDTO.setSysClerkId(SysClerkDTO.getId());
+            List<ShopAppointService> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 
 			if(CommonUtils.objectIsEmpty(shopAppointServiceDTOS)){
 				logger.info(preLog+"美容师预约列表为空");
@@ -116,7 +116,7 @@ public class AppointmentController {
 				shopAppointMap.put("point",0);
 			}else{
 				ArrayList<Object> appointInfoList = new ArrayList<>();
-				for(ShopAppointServiceDTO serviceDTO :shopAppointServiceDTOS){
+                for (ShopAppointService serviceDTO : shopAppointServiceDTOS) {
 					try {
 						HashMap<String, Object> hashMap = CommonUtils.beanToMap(serviceDTO);
 						String str = CommonUtils.getArrayNo(DateUtils.DateToStr(serviceDTO.getAppointStartTime(),"time"),
@@ -130,7 +130,7 @@ public class AppointmentController {
 				shopAppointMap.put("appointmentInfo",appointInfoList);
 				shopAppointMap.put("point",shopAppointServiceDTOS.size());
 			}
-			responseMap.put(sysUserClerkDTO.getUserName(),shopAppointMap);
+			responseMap.put(SysClerkDTO.getUserName(), shopAppointMap);
 		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -162,7 +162,7 @@ public class AppointmentController {
         logger.info(preLog + "美容店主键为={}", sysShopId);
 
         //根据时间查询当前店下所有美容师
-        List<SysUserClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
+		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
         if (judgeNull(responseDTO, preLog, clerkInfo)) return responseDTO;
         logger.debug(preLog + "根据时间查询当前店下所有美容师个数为 {}", clerkInfo.size());
@@ -170,7 +170,7 @@ public class AppointmentController {
         HashMap<String, Object> returnMap = new HashMap<>(16);
 
         //遍历每个美容师
-        for (SysUserClerkDTO clerkDTO : clerkInfo) {
+		for (SysClerkDTO clerkDTO : clerkInfo) {
 
             Date loopDate = startTime;
             ArrayList<Object> arrayList = new ArrayList<>();
@@ -189,10 +189,10 @@ public class AppointmentController {
                 }
                 //遍历预约主键获取预约详细信息
                 Iterator<String> it = stringSet.iterator();
-                List<ShopAppointServiceDTO> projectList = new ArrayList<>();
+                List<ShopAppointService> projectList = new ArrayList<>();
                 while (it.hasNext()) {
                     String appointmentId = it.next();
-                    ShopAppointServiceDTO shopAppointServiceDTO = redisUtils.getShopAppointInfoFromRedis(appointmentId);
+                    ShopAppointService shopAppointServiceDTO = redisUtils.getShopAppointInfoFromRedis(appointmentId);
                     projectList.add(shopAppointServiceDTO);
                 }
                 map.put("info", projectList);
@@ -214,7 +214,7 @@ public class AppointmentController {
 		return  null;
 	}
 
-    private boolean judgeNull(ResponseDTO<Map<String, Object>> responseDTO, String preLog, List<SysUserClerkDTO> clerkInfo) {
+	private boolean judgeNull(ResponseDTO<Map<String, Object>> responseDTO, String preLog, List<SysClerkDTO> clerkInfo) {
         if (CommonUtils.objectIsEmpty(clerkInfo)) {
             responseDTO.setResult(StatusConstant.FAILURE);
             responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());
@@ -233,13 +233,13 @@ public class AppointmentController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<ShopAppointServiceDTO> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
+    ResponseDTO<ShopAppointService> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
 
         long startTime = System.currentTimeMillis();
         logger.info("获取某次预约详情传入参数={}", "shopAppointServiceId = [" + shopAppointServiceId + "]");
 
-		ResponseDTO<ShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
-        ShopAppointServiceDTO shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceId);
+        ResponseDTO<ShopAppointService> responseDTO = new ResponseDTO<>();
+        ShopAppointService shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceId);
 
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopAppointInfoFromRedis);
@@ -258,12 +258,12 @@ public class AppointmentController {
 	@LoginRequired
 	public
 	@ResponseBody
-    ResponseDTO<ShopAppointServiceDTO> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, String status) {
+    ResponseDTO<ShopAppointService> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, String status) {
         logger.info("根据预约主键修改此次预约信息传入参数={}", "shopAppointServiceId = [" + shopAppointServiceId + "], status = [" + status + "]");
         long timeMillis = System.currentTimeMillis();
-        ResponseDTO<ShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
+        ResponseDTO<ShopAppointService> responseDTO = new ResponseDTO<>();
 
-        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
+        ShopAppointService shopAppointServiceDTO = new ShopAppointService();
         shopAppointServiceDTO.setId(shopAppointServiceId);
         shopAppointServiceDTO.setStatus(status);
         int info = appointmentService.updateAppointmentInfo(shopAppointServiceDTO);

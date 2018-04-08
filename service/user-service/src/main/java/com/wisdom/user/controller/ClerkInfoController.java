@@ -3,27 +3,15 @@
  */
 package com.wisdom.user.controller;
 
-import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.customer.SysUserClerkDTO;
-import com.wisdom.common.dto.system.LoginDTO;
+import com.wisdom.common.dto.customer.SysClerkDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.ObjectUtils;
-import com.wisdom.common.util.SMSUtil;
-import com.wisdom.common.util.WeixinUtil;
-import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.ClerkInfoService;
-import com.wisdom.user.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -49,15 +37,15 @@ public class ClerkInfoController {
     @RequestMapping(value = "getClerkInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    List<SysUserClerkDTO> getClerkInfo(@RequestBody String shopId) {
+    List<SysClerkDTO> getClerkInfo(@RequestBody String shopId) {
 
         long startTime = System.currentTimeMillis();
-        ResponseDTO<List<SysUserClerkDTO>> listResponseDTO = new ResponseDTO<>();
+        ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 
         logger.info("获取店员列表信息传入参数shopId = {}",shopId );
-        SysUserClerkDTO sysUserClerkDTO = new SysUserClerkDTO();
-        sysUserClerkDTO.setSysShopId(shopId);
-        List<SysUserClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysUserClerkDTO);
+        SysClerkDTO SysClerkDTO = new SysClerkDTO();
+        SysClerkDTO.setSysShopId(shopId);
+        List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(SysClerkDTO);
         if(CommonUtils.objectIsEmpty(clerkInfo)){
             logger.info("获取的店员列表信息为空！");
              return null;

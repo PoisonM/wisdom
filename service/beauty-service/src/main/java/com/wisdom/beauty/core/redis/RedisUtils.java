@@ -1,6 +1,6 @@
 package com.wisdom.beauty.core.redis;
 
-import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopAppointService;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
@@ -31,7 +31,7 @@ public class RedisUtils {
      * 保存预约详情
      * @param shopAppointServiceDTO
      */
-    public void saveShopAppointInfoToRedis(ShopAppointServiceDTO shopAppointServiceDTO){
+    public void saveShopAppointInfoToRedis(ShopAppointService shopAppointServiceDTO) {
         logger.info("保存预约详情到redis，预约详情为{}",shopAppointServiceDTO);
         if (shopAppointServiceDTO == null || StringUtils.isBlank(shopAppointServiceDTO.getId())
                 ||StringUtils.isBlank(shopAppointServiceDTO.getSysShopId()) ||
@@ -54,9 +54,9 @@ public class RedisUtils {
      * 获取用户的预约详情
      * @param appointmentId
      */
-    public ShopAppointServiceDTO getShopAppointInfoFromRedis(String appointmentId) {
+    public ShopAppointService getShopAppointInfoFromRedis(String appointmentId) {
         logger.info("获取用户的预约详情传入参数={}", "appointmentId = [" + appointmentId + "]");
-        return (ShopAppointServiceDTO) JedisUtils.getObject(appointmentId);
+        return (ShopAppointService) JedisUtils.getObject(appointmentId);
     }
 
     /**
@@ -77,7 +77,7 @@ public class RedisUtils {
      * 更新预约详情
      * @param shopAppointServiceDTO
      */
-    public void updateShopAppointInfoToRedis(ShopAppointServiceDTO shopAppointServiceDTO){
+    public void updateShopAppointInfoToRedis(ShopAppointService shopAppointServiceDTO) {
         logger.info("更新预约详情传入参数={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
         saveShopAppointInfoToRedis(shopAppointServiceDTO);
     }

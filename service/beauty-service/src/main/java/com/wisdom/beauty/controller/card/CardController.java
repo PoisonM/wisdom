@@ -1,6 +1,6 @@
 package com.wisdom.beauty.controller.card;
 
-import com.wisdom.beauty.api.dto.ShopCustomerRechargeCardDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.springframework.stereotype.Controller;
@@ -34,11 +34,11 @@ public class CardController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopCustomerRechargeCardDTO>> getCustomerRechargeCardList(@RequestParam String sysCustomerId,
-																			   @RequestParam String sysShopId,
-																			   @RequestParam String startDate,
-																			   @RequestParam String endDate) {
-		ResponseDTO<List<ShopCustomerRechargeCardDTO>> responseDTO = new ResponseDTO<>();
+	ResponseDTO<List<ShopUserRechargeCardDTO>> getCustomerRechargeCardList(@RequestParam String sysCustomerId,
+																		   @RequestParam String sysShopId,
+																		   @RequestParam String startDate,
+																		   @RequestParam String endDate) {
+		ResponseDTO<List<ShopUserRechargeCardDTO>> responseDTO = new ResponseDTO<>();
 
 		return  responseDTO;
 	}

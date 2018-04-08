@@ -1,8 +1,7 @@
 package com.wisdom.user.controller;
 
-import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.system.UserInfoDTO;
-import com.wisdom.user.service.CustomerInfoService;
+import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 public class UserServiceController {
 
 	@Autowired
-	private CustomerInfoService customerInfoService;
+	private UserInfoService customerInfoService;
 
 	@RequestMapping(value = "/getUserInfo",method=RequestMethod.POST)
 	@ResponseBody
