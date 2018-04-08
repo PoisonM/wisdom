@@ -8,6 +8,8 @@ import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.system.UserInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
 import com.wisdom.common.util.*;
+import com.wisdom.user.mapper.SysBossMapper;
+import com.wisdom.user.mapper.SysClerkMapper;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,12 @@ public class LoginServiceImpl implements LoginService{
 
     @Autowired
     private UserInfoMapper userMapper;
+
+    @Autowired
+    private SysBossMapper sysBossMapper;
+
+    @Autowired
+    private SysClerkMapper sysClerkMapper;
 
     @Autowired
     protected MongoTemplate mongoTemplate;
@@ -165,16 +173,16 @@ public class LoginServiceImpl implements LoginService{
 
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysBossDTO sysBossDTO = new SysBossDTO();
-        userInfoDTO.setUserOpenid(openId);
-        List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
+        sysBossDTO.setUserOpenid(openId);
+        List<SysBossDTO> sysBossDTOList = sysBossMapper.getBossInfo(sysBossDTO);
         RedisLock redisLock = new RedisLock("userInfo"+loginDTO.getUserPhone());
         try {
             redisLock.lock();
 
-            if(userInfoDTOList.size()>0)
+            if(sysBossDTOList.size()>0)
             {
-                userInfoDTO = userInfoDTOList.get(0);
-                if(userInfoDTO.getMobile()==null)
+                sysBossDTO = sysBossDTOList.get(0);
+                if(sysBossDTO.getMobile()==null)
                 {
                     //用户曾经绑定过手机号，更新用户登录信息
                     userInfoDTO.setMobile(loginDTO.getUserPhone());
