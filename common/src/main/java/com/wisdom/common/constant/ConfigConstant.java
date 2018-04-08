@@ -6,7 +6,7 @@ public enum ConfigConstant {
 
 	public static final String DOMAIN_VALUE = "kpbeauty.com.cn";
 
-	public static final String USER_WEB_URL = "http://mx99test1.kpbeauty.com.cn/user#/";
+	public static final String USER_WEB_URL = "http://mx99test1.kpbeauty.com.cn/customer#/";
 
 	public static final String OFFLINE_PRODUCT_BUY_NOTIFY_URL = "http://mx99test1.kpbeauty.com.cn/business/transaction/getOfflineProductPayNotifyInfo";
 
@@ -37,7 +37,7 @@ public enum ConfigConstant {
 
 	public static final String weixinBossFlag = "bossOnlineOperation";
 
-	public static final String CUTOMER_CORPID = "wx174f02516e9f9733";//测试号
+	public static final String USER_CORPID = "wx174f02516e9f9733";//测试号
 
 	public static final String USER_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
 
@@ -45,7 +45,7 @@ public enum ConfigConstant {
 
 	public static final String BOSS_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
 
-//	public static final String CUTOMER_CORPID = "wxa62609dff1842cd8";//商用号
+//	public static final String USER_CORPID = "wxa62609dff1842cd8";//商用号
 //
 //	public static final String USER_SECRET = "e2bf27273f48715d12f16fcafca0bb75";//商用号
 

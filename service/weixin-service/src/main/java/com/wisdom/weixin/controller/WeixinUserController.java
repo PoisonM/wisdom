@@ -121,7 +121,7 @@ public class WeixinUserController {
 
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                "appid="+ ConfigConstant.CUTOMER_CORPID +
+                "appid="+ ConfigConstant.USER_CORPID +
                 "&secret=" + ConfigConstant.USER_SECRET +
                 "&code="+ code +
                 "&grant_type=authorization_code";

@@ -98,7 +98,7 @@ public class WeixinUserCoreService {
     public void updateUserWeixinToken(){
         try {
             System.out.print("用户端微信参数更新");
-            String token = WeixinUtil.getUserTokenFromTX(ConfigConstant.CUTOMER_CORPID, ConfigConstant.USER_SECRET);
+            String token = WeixinUtil.getUserTokenFromTX(ConfigConstant.USER_CORPID, ConfigConstant.USER_SECRET);
             if(StringUtils.isNotNull(token)) {
                 String ticket = WeixinUtil.getJsapiTicket(token);
                 Query query = new Query().addCriteria(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
