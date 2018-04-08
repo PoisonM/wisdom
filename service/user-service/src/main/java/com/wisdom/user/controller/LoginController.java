@@ -89,6 +89,7 @@ public class LoginController {
                                   HttpServletRequest request,
                                   HttpSession session) throws Exception {
         ResponseDTO<String> result = new ResponseDTO<>();
+        String loginResult = "";
 
         String openid = WeixinUtil.getBossOpenId(session,request);
         if((openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
@@ -97,8 +98,15 @@ public class LoginController {
             result.setErrorInfo("没有openid，请在微信公众号中注册登录");
             return result;
         }
+        else if(!(openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
+        {
+            loginResult = loginService.bossMobileLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
-        String loginResult = loginService.bossLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+        }
+        else if((openid==null||openid.equals(""))&&!loginDTO.getSource().equals("mobile"))
+        {
+            loginResult = loginService.bossWebLogin(loginDTO, request.getRemoteAddr().toString());
+        }
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
         {

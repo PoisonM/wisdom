@@ -1,6 +1,5 @@
 package com.wisdom.user.mapper;
 
-
 import com.wisdom.common.dto.customer.SysBossCriteria;
 import com.wisdom.common.dto.customer.SysBossDTO;
 import com.wisdom.common.entity.BaseDao;

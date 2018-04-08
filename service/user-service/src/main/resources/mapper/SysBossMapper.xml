@@ -4,9 +4,22 @@
   <resultMap id="BaseResultMap" type="com.wisdom.common.dto.customer.SysBossDTO">
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
-    <result column="user_image" property="userImage" jdbcType="VARCHAR" />
-    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
-    <result column="user_speciality" property="userSpeciality" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR"/>
+    <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+    <result column="password" property="password" jdbcType="VARCHAR"/>
+    <result column="email" property="email" jdbcType="VARCHAR"/>
+    <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR"/>
+    <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+    <result column="user_type" property="userType" jdbcType="VARCHAR"/>
+    <result column="user_openid" property="userOpenid" jdbcType="VARCHAR"/>
+    <result column="weixin_attention_status" property="weixinAttentionStatus" jdbcType="VARCHAR"/>
+    <result column="photo" property="photo" jdbcType="VARCHAR"/>
+    <result column="login_ip" property="loginIp" jdbcType="VARCHAR"/>
+    <result column="login_date" property="loginDate" jdbcType="TIMESTAMP"/>
+    <result column="del_flag" property="delFlag" jdbcType="CHAR"/>
+    <result column="id_front_image" property="idFrontImage" jdbcType="VARCHAR"/>
+    <result column="id_back_image" property="idBackImage" jdbcType="VARCHAR"/>
+    <result column="address" property="address" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,7 +80,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, sys_user_id, user_image, user_address, user_speciality
+    id, sys_user_id, name, nickname, password, email, identify_number, mobile, user_type,
+    user_openid, weixin_attention_status, photo, login_ip, login_date, del_flag, id_front_image,
+    id_back_image, address
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.common.dto.customer.SysBossCriteria">
@@ -104,10 +119,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
-    insert into sys_boss (id, sys_user_id, user_image, 
-      user_address, user_speciality)
-    values (#{id,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{userImage,jdbcType=VARCHAR}, 
-      #{userAddress,jdbcType=VARCHAR}, #{userSpeciality,jdbcType=VARCHAR})
+    insert into sys_boss (id, sys_user_id, name,
+    nickname, password, email,
+    identify_number, mobile, user_type,
+    user_openid, weixin_attention_status, photo,
+    login_ip, login_date, del_flag,
+    id_front_image, id_back_image, address
+    )
+    values (#{id,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+    #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+    #{identifyNumber,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR},
+    #{userOpenid,jdbcType=VARCHAR}, #{weixinAttentionStatus,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR},
+    #{loginIp,jdbcType=VARCHAR}, #{loginDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR},
+    #{idFrontImage,jdbcType=VARCHAR}, #{idBackImage,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
     insert into sys_boss
@@ -118,14 +143,53 @@
       <if test="sysUserId != null" >
         sys_user_id,
       </if>
-      <if test="userImage != null" >
-        user_image,
+      <if test="name != null">
+        name,
       </if>
-      <if test="userAddress != null" >
-        user_address,
+      <if test="nickname != null">
+        nickname,
       </if>
-      <if test="userSpeciality != null" >
-        user_speciality,
+      <if test="password != null">
+        password,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="identifyNumber != null">
+        identify_number,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="userOpenid != null">
+        user_openid,
+      </if>
+      <if test="weixinAttentionStatus != null">
+        weixin_attention_status,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="loginIp != null">
+        login_ip,
+      </if>
+      <if test="loginDate != null">
+        login_date,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="idFrontImage != null">
+        id_front_image,
+      </if>
+      <if test="idBackImage != null">
+        id_back_image,
+      </if>
+      <if test="address != null">
+        address,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -135,14 +199,53 @@
       <if test="sysUserId != null" >
         #{sysUserId,jdbcType=VARCHAR},
       </if>
-      <if test="userImage != null" >
-        #{userImage,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="userAddress != null" >
-        #{userAddress,jdbcType=VARCHAR},
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
       </if>
-      <if test="userSpeciality != null" >
-        #{userSpeciality,jdbcType=VARCHAR},
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="identifyNumber != null">
+        #{identifyNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenid != null">
+        #{userOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinAttentionStatus != null">
+        #{weixinAttentionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDate != null">
+        #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="idFrontImage != null">
+        #{idFrontImage,jdbcType=VARCHAR},
+      </if>
+      <if test="idBackImage != null">
+        #{idBackImage,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -162,14 +265,53 @@
       <if test="record.sysUserId != null" >
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       </if>
-      <if test="record.userImage != null" >
-        user_image = #{record.userImage,jdbcType=VARCHAR},
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.userAddress != null" >
-        user_address = #{record.userAddress,jdbcType=VARCHAR},
+      <if test="record.nickname != null">
+        nickname = #{record.nickname,jdbcType=VARCHAR},
       </if>
-      <if test="record.userSpeciality != null" >
-        user_speciality = #{record.userSpeciality,jdbcType=VARCHAR},
+      <if test="record.password != null">
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identifyNumber != null">
+        identify_number = #{record.identifyNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userType != null">
+        user_type = #{record.userType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userOpenid != null">
+        user_openid = #{record.userOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weixinAttentionStatus != null">
+        weixin_attention_status = #{record.weixinAttentionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photo != null">
+        photo = #{record.photo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginIp != null">
+        login_ip = #{record.loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginDate != null">
+        login_date = #{record.loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.idFrontImage != null">
+        id_front_image = #{record.idFrontImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idBackImage != null">
+        id_back_image = #{record.idBackImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -180,9 +322,22 @@
     update sys_boss
     set id = #{record.id,jdbcType=VARCHAR},
       sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
-      user_image = #{record.userImage,jdbcType=VARCHAR},
-      user_address = #{record.userAddress,jdbcType=VARCHAR},
-      user_speciality = #{record.userSpeciality,jdbcType=VARCHAR}
+    name = #{record.name,jdbcType=VARCHAR},
+    nickname = #{record.nickname,jdbcType=VARCHAR},
+    password = #{record.password,jdbcType=VARCHAR},
+    email = #{record.email,jdbcType=VARCHAR},
+    identify_number = #{record.identifyNumber,jdbcType=VARCHAR},
+    mobile = #{record.mobile,jdbcType=VARCHAR},
+    user_type = #{record.userType,jdbcType=VARCHAR},
+    user_openid = #{record.userOpenid,jdbcType=VARCHAR},
+    weixin_attention_status = #{record.weixinAttentionStatus,jdbcType=VARCHAR},
+    photo = #{record.photo,jdbcType=VARCHAR},
+    login_ip = #{record.loginIp,jdbcType=VARCHAR},
+    login_date = #{record.loginDate,jdbcType=TIMESTAMP},
+    del_flag = #{record.delFlag,jdbcType=CHAR},
+    id_front_image = #{record.idFrontImage,jdbcType=VARCHAR},
+    id_back_image = #{record.idBackImage,jdbcType=VARCHAR},
+    address = #{record.address,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -193,14 +348,53 @@
       <if test="sysUserId != null" >
         sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       </if>
-      <if test="userImage != null" >
-        user_image = #{userImage,jdbcType=VARCHAR},
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="userAddress != null" >
-        user_address = #{userAddress,jdbcType=VARCHAR},
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
       </if>
-      <if test="userSpeciality != null" >
-        user_speciality = #{userSpeciality,jdbcType=VARCHAR},
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="identifyNumber != null">
+        identify_number = #{identifyNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenid != null">
+        user_openid = #{userOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinAttentionStatus != null">
+        weixin_attention_status = #{weixinAttentionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null">
+        login_ip = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDate != null">
+        login_date = #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="idFrontImage != null">
+        id_front_image = #{idFrontImage,jdbcType=VARCHAR},
+      </if>
+      <if test="idBackImage != null">
+        id_back_image = #{idBackImage,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -208,9 +402,22 @@
   <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
     update sys_boss
     set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
-      user_image = #{userImage,jdbcType=VARCHAR},
-      user_address = #{userAddress,jdbcType=VARCHAR},
-      user_speciality = #{userSpeciality,jdbcType=VARCHAR}
+    name = #{name,jdbcType=VARCHAR},
+    nickname = #{nickname,jdbcType=VARCHAR},
+    password = #{password,jdbcType=VARCHAR},
+    email = #{email,jdbcType=VARCHAR},
+    identify_number = #{identifyNumber,jdbcType=VARCHAR},
+    mobile = #{mobile,jdbcType=VARCHAR},
+    user_type = #{userType,jdbcType=VARCHAR},
+    user_openid = #{userOpenid,jdbcType=VARCHAR},
+    weixin_attention_status = #{weixinAttentionStatus,jdbcType=VARCHAR},
+    photo = #{photo,jdbcType=VARCHAR},
+    login_ip = #{loginIp,jdbcType=VARCHAR},
+    login_date = #{loginDate,jdbcType=TIMESTAMP},
+    del_flag = #{delFlag,jdbcType=CHAR},
+    id_front_image = #{idFrontImage,jdbcType=VARCHAR},
+    id_back_image = #{idBackImage,jdbcType=VARCHAR},
+    address = #{address,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

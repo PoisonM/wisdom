@@ -11,7 +11,7 @@ import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.RedisLock;
 import com.wisdom.user.client.BusinessServiceClient;
-import com.wisdom.user.mapper.CustomerInfoMapper;
+import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -33,7 +33,7 @@ import java.util.concurrent.Executors;
 public class UserInfoServiceImpl implements UserInfoService{
 
     @Autowired
-    private CustomerInfoMapper customerInfoMapper;
+    private UserInfoMapper customerInfoMapper;
 
     @Autowired
     private BusinessServiceClient businessServiceClient;

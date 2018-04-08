@@ -19,7 +19,7 @@ import java.util.List;
  */
 @MyBatisDao
 @Repository
-public interface CustomerInfoMapper {
+public interface UserInfoMapper {
 
 	List<UserInfoDTO> getUserByInfo(UserInfoDTO userInfoDTO);
 
@@ -35,6 +35,7 @@ public interface CustomerInfoMapper {
 
 	//根据用户id查询下级代理
 	List<UserInfoDTO> queryNextUserById(@Param("sysUserId") String sysUserId);
+
 	//根据用户id查询上级代理
     List<UserInfoDTO> queryParentUserById(@Param("parentUserId") String parentUserId);
 }

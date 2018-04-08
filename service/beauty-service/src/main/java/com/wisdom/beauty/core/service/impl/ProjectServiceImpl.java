@@ -38,25 +38,30 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     /**
-     * 获取用户预约的项目
+     * 获取用户的项目信息
      *
      * @param shopUserProjectRelationDTO
      * @return
      */
     @Override
-    public List<ShopUserProjectRelationDTO> getUserAppointmentProjectList(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
+    public List<ShopUserProjectRelationDTO> getUserProjectList(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
 
         if (CommonUtils.objectIsNotEmpty(shopUserProjectRelationDTO)) {
             logger.info("获取用户预约的项目传入参数={}", "shopUserProductRelationDTO = [" + shopUserProjectRelationDTO + "]");
             return null;
         }
 
-        //根据预约主键查询用户的预约项目
         ShopUserProjectRelationCriteria shopUserProjectRelationCriteria = new ShopUserProjectRelationCriteria();
         ShopUserProjectRelationCriteria.Criteria criteria = shopUserProjectRelationCriteria.createCriteria();
 
+        //根据预约主键查询用户的预约项目
         if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getShopAppointmentId())) {
             criteria.andShopAppointmentIdEqualTo(shopUserProjectRelationDTO.getShopAppointmentId());
+        }
+
+        //查询用户的疗程卡或者是单卡信息
+        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getUseStyle())) {
+            criteria.andUseStyleEqualTo(shopUserProjectRelationDTO.getUseStyle());
         }
 
         List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserProjectRelationMapper.selectByCriteria(shopUserProjectRelationCriteria);
@@ -111,14 +116,11 @@ public class ProjectServiceImpl implements ProjectService {
         if (StringUtils.isNotBlank(shopProjectInfoDTO.getStatus())) {
             criteria.andStatusNotEqualTo(CommonCode.SUCCESS.getCode());
         }
-        //查询疗程卡用
-        if (shopProjectInfoDTO.getMaxContainTimes() > 1) {
-            criteria.andMaxContainTimesGreaterThan(1);
+
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
+            criteria.andUseStyleEqualTo(CardType.TREATMENT_CARD.getCode());
         }
-        //查询疗程卡用
-        if (StringUtils.isNotBlank(shopProjectInfoDTO.getCardType())) {
-            criteria.andCardTypeNotEqualTo(CardType.TIME_CARD.getCode());
-        }
+
         List<ShopProjectInfoDTO> dtos = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
 
         return dtos;
