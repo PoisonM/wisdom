@@ -12,15 +12,17 @@ import javax.servlet.http.HttpSession;
 @Transactional(readOnly = false)
 public interface LoginService {
 
-    String userLogin(String phone, String code, String loginIP, String openId) throws Exception;
+    String userLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception;
     
     String userLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session);
 
     String managerLogin(String userPhone, String code);
 
-    String clerkLogin(LoginDTO loginDTO, String s, String openId);
+    String bossMobileLogin(LoginDTO loginDTO, String loginIp, String openid);
 
-    String bossMobileLogin(LoginDTO loginDTO, String s, String openid);
+    String bossWebLogin(LoginDTO loginDTO, String loginIp);
 
-    String bossWebLogin(LoginDTO loginDTO, String s);
+    String ClerkMobileLogin(LoginDTO loginDTO, String loginIp, String openid);
+
+    String ClerkWebLogin(LoginDTO loginDTO, String loginIp);
 }
