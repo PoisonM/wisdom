@@ -39,7 +39,7 @@
     </resultMap>
 
     <!--sys_user-->
-    <resultMap id="UserInfoResultMap" type="com.wisdom.common.dto.system.UserInfoDTO" >
+    <resultMap id="UserInfoResultMap" type="com.wisdom.common.dto.user.UserInfoDTO" >
         <id column="id" property="id" jdbcType="VARCHAR" />
         <result column="nickname" property="nickname" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />

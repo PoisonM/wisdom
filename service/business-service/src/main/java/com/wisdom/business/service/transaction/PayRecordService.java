@@ -1,7 +1,6 @@
 package com.wisdom.business.service.transaction;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
-import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.transaction.PayRecordMapper;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
@@ -9,7 +8,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.account.PrePayInfoDTO;
 import com.wisdom.common.dto.product.InvoiceDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderListDTO;
 import com.wisdom.common.util.*;

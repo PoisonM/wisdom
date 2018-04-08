@@ -1,6 +1,6 @@
 package com.wisdom.user.service;
 
-import com.wisdom.common.dto.customer.SysClerkDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 
 import java.util.List;
 

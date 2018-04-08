@@ -1,14 +1,10 @@
 package com.wisdom.common.util;
 
 import com.wisdom.common.config.Global;
-import com.wisdom.common.dto.system.UserInfoDTO;
 import com.wisdom.common.entity.TemplateData;
 import com.wisdom.common.entity.WxTemplate;
-import com.wisdom.common.util.HttpRequestUtil;
 import net.sf.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 

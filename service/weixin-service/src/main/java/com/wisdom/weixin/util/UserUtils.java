@@ -6,7 +6,7 @@ package com.wisdom.weixin.util;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.SpringUtil;
 import com.wisdom.weixin.client.BusinessServiceClient;

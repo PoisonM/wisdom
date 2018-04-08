@@ -7,10 +7,9 @@ import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.business.mapper.level.UserTypeMapper;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.SpringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

@@ -3,7 +3,7 @@ package com.wisdom.business.service.transaction;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.transaction.UserOrderAddressMapper;
 import com.wisdom.business.util.UserUtils;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.UserOrderAddressDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

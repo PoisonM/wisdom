@@ -1,7 +1,7 @@
 package com.wisdom.weixin.service.user;
 
 import com.wisdom.common.constant.ConfigConstant;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.wexin.WeixinShareDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.ReceiveXmlEntity;
