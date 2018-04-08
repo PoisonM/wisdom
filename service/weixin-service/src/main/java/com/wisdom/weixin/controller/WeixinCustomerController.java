@@ -118,28 +118,26 @@ public class WeixinCustomerController {
             url = ConfigConstant.CUSTOMER_WEB_URL + "myselfCenter";
         }
 
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
-        if (openId==null||openId.equals("")) {
-            String code = request.getParameter("code");
-            String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                    "appid="+ ConfigConstant.CUTOMER_CORPID +
-                    "&secret=" + ConfigConstant.CUSTOMER_SECRET +
-                    "&code="+ code +
-                    "&grant_type=authorization_code";
-            WeixinUserBean weixinUserBean;
-            int countNum = 0;
-            do {
-                String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
-                weixinUserBean = JsonUtil.getObjFromJsonStr(json, WeixinUserBean.class);
-                if (countNum++ > 3) {
-                    break;
-                }
-            } while (weixinUserBean == null);
 
-            openId = weixinUserBean.getOpenid();
-            session.setAttribute(ConfigConstant.CUSTOMER_OPEN_ID, openId);
-            CookieUtils.setCookie(response, ConfigConstant.CUSTOMER_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
-        }
+        String code = request.getParameter("code");
+        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
+                "appid="+ ConfigConstant.CUTOMER_CORPID +
+                "&secret=" + ConfigConstant.CUSTOMER_SECRET +
+                "&code="+ code +
+                "&grant_type=authorization_code";
+        WeixinUserBean weixinUserBean;
+        int countNum = 0;
+        do {
+            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
+            weixinUserBean = JsonUtil.getObjFromJsonStr(json, WeixinUserBean.class);
+            if (countNum++ > 3) {
+                break;
+            }
+        } while (weixinUserBean == null);
+
+        String openId = weixinUserBean.getOpenid();
+        session.setAttribute(ConfigConstant.CUSTOMER_OPEN_ID, openId);
+        CookieUtils.setCookie(response, ConfigConstant.CUSTOMER_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
 
         return "redirect:" + url;
     }
