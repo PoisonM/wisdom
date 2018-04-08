@@ -69,7 +69,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "登录",
+                        name: "登 录",
                         files: [
                             root + "login/login.css",
                             root + "login/login.js",
