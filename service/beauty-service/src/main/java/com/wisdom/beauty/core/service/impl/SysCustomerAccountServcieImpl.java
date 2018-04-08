@@ -35,10 +35,13 @@ public class SysCustomerAccountServcieImpl implements SysUserAccountServcie {
 
     @Autowired
     private SysUserAccountMapper sysCustomerAccountMapper;
+
     @Autowired
     private ShopUserRelationService shopUserRelationService;
+
     @Autowired
     private ShopAppointmentService appointmentService;
+
     @Autowired
     private UserInfoService userInfoService;
 
@@ -50,7 +53,7 @@ public class SysCustomerAccountServcieImpl implements SysUserAccountServcie {
         }
         //查询用户信息，获取到账户的信息
         CustomerAccountResponseDto customerAccountResponseDto = new CustomerAccountResponseDto();
-        UserInfoDTO userInfoDTO=userInfoService.getUserInfoFromUserId(userId);
+        UserInfoDTO userInfoDTO = userInfoService.getUserInfoFromUserId(userId);
         if(userInfoDTO!=null){
             customerAccountResponseDto.setPhoto(userInfoDTO.getPhoto());
             customerAccountResponseDto.setUserName(userInfoDTO.getNickname());

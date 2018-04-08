@@ -24,7 +24,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping(value = "user")
+@RequestMapping(value = "customer")
 public class UserInfoController {
 
     @Autowired
