@@ -6,13 +6,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SysBossDTO extends BaseEntity implements Serializable {
-    //
+
     private String id;
 
     //user表主键
     private String sysUserId;
 
-    //
     private String name;
 
     //昵称

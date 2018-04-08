@@ -1,0 +1,26 @@
+.attendance header{height: 0.6875rem;line-height: 0.6875rem;}
+.attendance header button{background: content-box;outline: none}
+.attendance header button.lastMonth{margin-left:1.078rem;}
+.attendance header .attendanceBtn{width: 1.562rem;}
+.attendance .monthTimeLis .time{width:1.875rem;}
+.attendance .monthTimeLis{display: flex;}
+.attendance content{width:100%;overflow-x: scroll;}
+.attendance .nameLis {width:200%;height:1rem;line-height: 1rem;background: #F0F0F0;}
+.attendance .nameLis li{width:2.156rem;float: left;}
+.attendance .nameLis li:first-child{width:1.875rem;}
+.attendance .monthTimeLis{height:10rem;overflow-y: scroll;}
+.attendance .monthTimeLis .time li {height:1.125rem;border-bottom: solid 1px #E5E5E5;border-right: solid 1px #E5E5E5;padding-top: 1px;width:1.875rem;}
+.attendance .dayTime{margin-top: 0.15rem;}
+.attendance .attendanceMess{display: flex;}
+.attendance .attendanceMess li{width:2.156rem;height:1.125rem;border-bottom: solid 1px #E5E5E5;border-right: solid 1px #E5E5E5;padding-top: 1px;}
+
+.sweepYard {display: flex;padding-top: 0.312rem;}
+.W50{width:50%;}
+.todayTime{width:4.91rem;font-size: 0.468rem;color:#333333;margin:0.625rem auto 0;}
+.QrCode{width:5.468rem;height:5.468rem;border-radius: 0.281rem;
+    border:0.1875rem solid #ff6666;margin:0.468rem auto 0;}
+.codeBtn{width:5.581rem;margin:0.468rem  auto 0;padding-bottom: 2rem;}
+.codeBtn button{width:5.581rem;height:0.6875rem;outline: none;
+    border:none;border-radius: 0.156rem;}
+.brl{border-right:solid 3px #E5E5E5 }
+.codeText{font-family: PingFangSC-Regular; font-size:0.406rem;color: #333333;letter-spacing: 0.99px;width:6.75rem;margin:0 auto;}
