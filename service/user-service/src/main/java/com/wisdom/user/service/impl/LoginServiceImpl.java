@@ -3,6 +3,7 @@ package com.wisdom.user.service.impl;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.system.UserInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
 import com.wisdom.common.util.*;
@@ -134,12 +135,14 @@ public class LoginServiceImpl implements LoginService{
     }
 
     @Override
-    public String bossLogin(String userPhone, String code, String s, String openid) {
+    public String bossLogin(LoginDTO loginDTO, String s, String openid)
+    {
         return null;
     }
 
     @Override
-    public String clerkLogin(String userPhone, String code, String s, String openid) {
+    public String clerkLogin(LoginDTO loginDTO, String s, String openid)
+    {
         return null;
     }
 

@@ -10,6 +10,9 @@ public class LoginDTO {
     @JSONField(name = "userPhone")
     private String userPhone;
 
+    @JSONField(name = "source")
+    private String source;
+
     @JSONField(name = "code")
     private String code;
 
@@ -19,6 +22,14 @@ public class LoginDTO {
 
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getCode() {

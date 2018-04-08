@@ -3,6 +3,7 @@ package com.wisdom.user.service;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.system.UserInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
 import com.wisdom.common.util.*;
@@ -32,7 +33,7 @@ public interface LoginService {
 
     String managerLogin(String userPhone, String code);
 
-    String bossLogin(String userPhone, String code, String s, String openid);
+    String bossLogin(LoginDTO loginDTO, String s, String openid);
 
-    String clerkLogin(String userPhone, String code, String s, String openid);
+    String clerkLogin(LoginDTO loginDTO, String s, String openid);
 }

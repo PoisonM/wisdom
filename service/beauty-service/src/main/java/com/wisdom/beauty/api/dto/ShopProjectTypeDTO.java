@@ -10,6 +10,9 @@ public class ShopProjectTypeDTO extends BaseEntity implements Serializable {
     private String id;
 
     //
+    private String sysShopId;
+
+    //
     private String projectTypeName;
 
     //父id
@@ -38,6 +41,14 @@ public class ShopProjectTypeDTO extends BaseEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSysShopId() {
+        return sysShopId;
+    }
+
+    public void setSysShopId(String sysShopId) {
+        this.sysShopId = sysShopId;
     }
 
     public String getProjectTypeName() {

@@ -195,6 +195,76 @@ public class ShopProjectGroupCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysShopIdIsNull() {
+            addCriterion("sys_shop_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdIsNotNull() {
+            addCriterion("sys_shop_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdEqualTo(String value) {
+            addCriterion("sys_shop_id =", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotEqualTo(String value) {
+            addCriterion("sys_shop_id <>", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdGreaterThan(String value) {
+            addCriterion("sys_shop_id >", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_shop_id >=", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLessThan(String value) {
+            addCriterion("sys_shop_id <", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_shop_id <=", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLike(String value) {
+            addCriterion("sys_shop_id like", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotLike(String value) {
+            addCriterion("sys_shop_id not like", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdIn(List<String> values) {
+            addCriterion("sys_shop_id in", values, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotIn(List<String> values) {
+            addCriterion("sys_shop_id not in", values, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdBetween(String value1, String value2) {
+            addCriterion("sys_shop_id between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotBetween(String value1, String value2) {
+            addCriterion("sys_shop_id not between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectGroupNameIsNull() {
             addCriterion("project_group_name is null");
             return (Criteria) this;
@@ -526,62 +596,62 @@ public class ShopProjectGroupCriteria {
         }
 
         public Criteria andDetailEqualTo(String value) {
-            addCriterion("detail =", value, "desc");
+            addCriterion("detail =", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailNotEqualTo(String value) {
-            addCriterion("detail <>", value, "desc");
+            addCriterion("detail <>", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailGreaterThan(String value) {
-            addCriterion("detail >", value, "desc");
+            addCriterion("detail >", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailGreaterThanOrEqualTo(String value) {
-            addCriterion("detail >=", value, "desc");
+            addCriterion("detail >=", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailLessThan(String value) {
-            addCriterion("detail <", value, "desc");
+            addCriterion("detail <", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailLessThanOrEqualTo(String value) {
-            addCriterion("detail <=", value, "desc");
+            addCriterion("detail <=", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailLike(String value) {
-            addCriterion("detail like", value, "desc");
+            addCriterion("detail like", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailNotLike(String value) {
-            addCriterion("detail not like", value, "desc");
+            addCriterion("detail not like", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailIn(List<String> values) {
-            addCriterion("detail in", values, "desc");
+            addCriterion("detail in", values, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailNotIn(List<String> values) {
-            addCriterion("detail not in", values, "desc");
+            addCriterion("detail not in", values, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailBetween(String value1, String value2) {
-            addCriterion("detail between", value1, value2, "desc");
+            addCriterion("detail between", value1, value2, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailNotBetween(String value1, String value2) {
-            addCriterion("detail not between", value1, value2, "desc");
+            addCriterion("detail not between", value1, value2, "detail");
             return (Criteria) this;
         }
 

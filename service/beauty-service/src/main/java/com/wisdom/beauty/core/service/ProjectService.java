@@ -1,5 +1,6 @@
 package com.wisdom.beauty.core.service;
 
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 
 import java.util.List;
@@ -30,4 +31,10 @@ public interface ProjectService {
      */
     int updateUserCardProject(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
 
+    /**
+     * 查询某个店的项目列表信息
+     *
+     * @return
+     */
+    List<ShopProjectInfoDTO> getShopCourseProjectList(ShopProjectInfoDTO shopProjectInfoDTO);
 }

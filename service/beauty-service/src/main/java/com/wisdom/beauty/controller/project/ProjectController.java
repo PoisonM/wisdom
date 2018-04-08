@@ -1,5 +1,6 @@
 package com.wisdom.beauty.controller.project;
 
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
@@ -8,6 +9,7 @@ import com.wisdom.beauty.core.service.ProjectService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +93,38 @@ public class ProjectController {
 		responseDTO.setResult(StatusConstant.FAILURE);
 
 		logger.info("批量更改卡片信息信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		return responseDTO;
+	}
+
+	/**
+	 * 查询某个店的疗程卡列表信息
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "getShopCourseProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<List<ShopProjectInfoDTO>> getShopCourseProjectList(@RequestParam String sysShopId) {
+
+		long currentTimeMillis = System.currentTimeMillis();
+
+		logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
+		ResponseDTO<List<ShopProjectInfoDTO>> responseDTO = new ResponseDTO<>();
+
+		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
+		shopProjectInfoDTO.setSysShopId(sysShopId);
+		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
+
+		if (CommonUtils.objectIsNotEmpty(projectList)) {
+			logger.debug("查询某个店的疗程卡列表信息查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
+			return null;
+		}
+
+		responseDTO.setResponseData(projectList);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+
+		logger.info("查询某个店的疗程卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
