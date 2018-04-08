@@ -3,7 +3,7 @@ package com.wisdom.beauty.core.service.impl;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingCriteria;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.core.mapper.ShopScheduleSettingMapper;
-import com.wisdom.beauty.core.service.WorkService;
+import com.wisdom.beauty.core.service.ShopWorkService;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import java.util.List;
  * Description: 工作相关
  */
 @Service("workService")
-public class WorkServiceImpl implements WorkService{
+public class ShopWorkServiceImpl implements ShopWorkService {
 
     @Autowired
     public ShopScheduleSettingMapper shopScheduleSettingMapper;

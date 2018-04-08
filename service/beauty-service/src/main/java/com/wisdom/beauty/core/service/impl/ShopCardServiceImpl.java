@@ -20,7 +20,7 @@ import java.util.List;
  * Description: 工作相关
  */
 @Service("cardService")
-public class CardServiceImpl implements ShopCardService {
+public class ShopCardServiceImpl implements ShopCardService {
 
     @Autowired
     public ShopUserRechargeCardMapper shopUserRechargeCardMapper;

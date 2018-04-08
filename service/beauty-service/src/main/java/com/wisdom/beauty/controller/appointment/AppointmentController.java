@@ -7,10 +7,10 @@ import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
-import com.wisdom.beauty.core.service.WorkService;
+import com.wisdom.beauty.core.service.ShopWorkService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.customer.SysClerkDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -46,7 +46,7 @@ public class AppointmentController {
 	private UserServiceClient userServiceClient;
 
 	@Resource
-	private WorkService workService;
+	private ShopWorkService workService;
 
     @Resource
     private RedisUtils redisUtils;

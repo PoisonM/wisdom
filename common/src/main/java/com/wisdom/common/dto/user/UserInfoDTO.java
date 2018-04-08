@@ -1,65 +1,68 @@
-package com.wisdom.common.dto.customer;
+package com.wisdom.common.dto.user;
 
-import com.wisdom.common.entity.BaseEntity;
+import com.alibaba.fastjson.annotation.JSONField;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class SysBossDTO extends BaseEntity implements Serializable {
+public class UserInfoDTO<T> {
 
+    @JSONField(name = "id")
     private String id;
 
-    //user表主键
-    private String sysUserId;
-
-    private String name;
-
-    //昵称
+    @JSONField(name = "nickname")
     private String nickname;
 
-    //密码
+    @JSONField(name = "password")
     private String password;
 
-    //
+    @JSONField(name = "email")
     private String email;
 
     //身份证号
+    @JSONField(name = "identifyNumber")
     private String identifyNumber;
 
-    //手机号
+    @JSONField(name = "mobile")
     private String mobile;
 
-    //用户类型
+    @JSONField(name = "userType")
     private String userType;
 
-    //微信openId
+    @JSONField(name = "userOpenid")
     private String userOpenid;
 
-    //关注状态
+    @JSONField(name = "parentUserId")
+    private String parentUserId;
+
+    @JSONField(name = "weixinAttentionStatus")
     private String weixinAttentionStatus;
 
-    //照片
+    @JSONField(name = "photo")
     private String photo;
 
-    //登陆id地址
+    @JSONField(name = "loginIp")
     private String loginIp;
 
-    //登陆时间
+    @JSONField(name = "loginDate")
     private Date loginDate;
 
-    //删除标记，1表示用户是否已经剔除系统，0表示用户是系统内的正常用户
+    @JSONField(name = "createDate")
+    private Date createDate;
+
+    @JSONField(name = "beginTime")
+    private Date beginTime;
+
+    @JSONField(name = "livingPeriod")
+    private int livingPeriod;
+
+    @JSONField(name = "delFlag")
     private String delFlag;
 
-    //身份证正面
-    private String idFrontImage;
+    @JSONField(name = "extendUserType")
+    private String extendUserType;
 
-    //身份证反面
-    private String idBackImage;
-
-    //
-    private String address;
-
-    private static final long serialVersionUID = 1L;
+    @JSONField(name = "extendUserInfoDTO")
+    private T extendUserInfoDTO;
 
     public String getId() {
         return id;
@@ -67,22 +70,6 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getSysUserId() {
-        return sysUserId;
-    }
-
-    public void setSysUserId(String sysUserId) {
-        this.sysUserId = sysUserId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getNickname() {
@@ -141,6 +128,14 @@ public class SysBossDTO extends BaseEntity implements Serializable {
         this.userOpenid = userOpenid;
     }
 
+    public String getParentUserId() {
+        return parentUserId;
+    }
+
+    public void setParentUserId(String parentUserId) {
+        this.parentUserId = parentUserId;
+    }
+
     public String getWeixinAttentionStatus() {
         return weixinAttentionStatus;
     }
@@ -173,6 +168,14 @@ public class SysBossDTO extends BaseEntity implements Serializable {
         this.loginDate = loginDate;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
     public String getDelFlag() {
         return delFlag;
     }
@@ -181,27 +184,35 @@ public class SysBossDTO extends BaseEntity implements Serializable {
         this.delFlag = delFlag;
     }
 
-    public String getIdFrontImage() {
-        return idFrontImage;
+    public Date getBeginTime() {
+        return beginTime;
     }
 
-    public void setIdFrontImage(String idFrontImage) {
-        this.idFrontImage = idFrontImage;
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
     }
 
-    public String getIdBackImage() {
-        return idBackImage;
+    public int getLivingPeriod() {
+        return livingPeriod;
     }
 
-    public void setIdBackImage(String idBackImage) {
-        this.idBackImage = idBackImage;
+    public void setLivingPeriod(int livingPeriod) {
+        this.livingPeriod = livingPeriod;
     }
 
-    public String getAddress() {
-        return address;
+    public String getExtendUserType() {
+        return extendUserType;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setExtendUserType(String extendUserType) {
+        this.extendUserType = extendUserType;
+    }
+
+    public T getExtendUserInfoDTO() {
+        return extendUserInfoDTO;
+    }
+
+    public void setExtendUserInfoDTO(T extendUserInfoDTO) {
+        this.extendUserInfoDTO = extendUserInfoDTO;
     }
 }

@@ -9,7 +9,7 @@ import com.wisdom.beauty.core.mapper.SysUserAccountMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountServcie;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.user.service.UserInfoService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,10 +35,13 @@ public class SysCustomerAccountServcieImpl implements SysUserAccountServcie {
 
     @Autowired
     private SysUserAccountMapper sysCustomerAccountMapper;
+
     @Autowired
     private ShopUserRelationService shopUserRelationService;
+
     @Autowired
     private ShopAppointmentService appointmentService;
+
     @Autowired
     private UserInfoService userInfoService;
 
@@ -50,7 +53,7 @@ public class SysCustomerAccountServcieImpl implements SysUserAccountServcie {
         }
         //查询用户信息，获取到账户的信息
         CustomerAccountResponseDto customerAccountResponseDto = new CustomerAccountResponseDto();
-        UserInfoDTO userInfoDTO=userInfoService.getUserInfoFromUserId(userId);
+        UserInfoDTO userInfoDTO = userInfoService.getUserInfoFromUserId(userId);
         if(userInfoDTO!=null){
             customerAccountResponseDto.setPhoto(userInfoDTO.getPhoto());
             customerAccountResponseDto.setUserName(userInfoDTO.getNickname());

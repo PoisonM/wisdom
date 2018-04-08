@@ -1,4 +1,4 @@
-package com.wisdom.common.dto.customer;
+package com.wisdom.common.dto.user;
 
 import com.wisdom.common.entity.BaseEntity;
 
