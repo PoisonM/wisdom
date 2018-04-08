@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
@@ -119,16 +120,16 @@ public class UserLoginController {
     /**
      * 退出登录
      */
-    @RequestMapping(value = "loginOut", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "customerLoginOut", method = {RequestMethod.POST, RequestMethod.GET})
     @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<UserInfoDTO> loginOut(HttpServletRequest request) {
+    ResponseDTO<UserInfoDTO> customerLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         String logintoken = request.getHeader("logintoken");
         if(logintoken==null||logintoken.equals("")){
             logintoken=request.getSession().getAttribute("token").toString();
         }
-        String status = loginService.loginOut(logintoken);
+        String status = loginService.customerLoginOut(logintoken,request,response,session);
         ResponseDTO<UserInfoDTO> result = new ResponseDTO<>();
         result.setResult(StatusConstant.SUCCESS);
         result.setErrorInfo(status.equals(StatusConstant.LOGIN_OUT) ? "退出登录" : "保持在线");

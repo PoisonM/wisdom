@@ -24,8 +24,8 @@ define(['appCustomer'], function (app) {
             return $resource(user + 'customerLogin')
         }])
         //退出登录
-        .factory('LoginOut',['$resource',function ($resource){
-            return $resource(user + 'loginOut')
+        .factory('CustomerLoginOut',['$resource',function ($resource){
+            return $resource(user + 'customerLoginOut')
         }])
         .factory('GetUserInfo',['$resource',function ($resource){
             return $resource(customer + 'getUserInfo')
