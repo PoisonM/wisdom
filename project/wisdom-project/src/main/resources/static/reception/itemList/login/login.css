@@ -1,0 +1,62 @@
+.login{
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+.login .login_input{
+    width: 5.234375rem;
+    height: 5rem;
+    margin: 1.796875rem auto;
+}
+.login .login_input p{
+    font-size: 0.5rem;
+    font-family: PingFangSC-Medium;
+    color: #888888;
+    text-align: center;
+}
+.login .login_input .information{
+    margin-top: 1.46875rem;
+}
+.login .login_input .information li{
+    width: 5.234375rem;
+    height: 0.6875rem;
+}
+.login .login_input .information li input{
+    width: 100%;
+    height: 100%;
+    border-bottom: 0.015625rem solid #cccccc;
+    padding-left: 0.15625rem;
+}
+.login .login_input .information li input::placeholder{
+    font-size: 0.265625rem;
+    color: #666666;
+    font-family: PingFangSC-Regular;
+}
+.login .login_input .information .login_btn{
+    margin-top: 0.609375rem;
+    font-size: 0.265625rem;
+    color: #ffffff;
+    line-height: 0.6875rem;
+    border-radius: 0.0625rem;
+    font-family: PingFangSC-Medium;
+    background-color: #ff6666;
+    text-align: center;
+}
+.login .login_input .information .pos_re{
+    position: relative;
+}
+.login .login_input .information .pos_re span{
+    position: absolute;
+    display: block;
+    top: 0.109375rem;
+    right: 0.109375rem;
+    width: 0.921875rem;
+    height: 0.453125rem;
+    font-size: 0.21875rem;
+    color: #999999;
+    border: 1px solid #ccc;
+    border-radius: 0.0625rem;
+    text-align: center;
+    line-height: 0.4375rem;
+}

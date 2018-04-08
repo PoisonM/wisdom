@@ -9,6 +9,9 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
+    //
+    private String sysShopId;
+
     //套卡名称
     private String projectGroupName;
 
@@ -52,6 +55,14 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
+    public String getSysShopId() {
+        return sysShopId;
+    }
+
+    public void setSysShopId(String sysShopId) {
+        this.sysShopId = sysShopId;
+    }
+
     public String getProjectGroupName() {
         return projectGroupName;
     }
@@ -92,7 +103,13 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
         this.validDate = validDate;
     }
 
- public String getDetail() {        return detail;    }    public void setDetail(String detail) {        this.detail = detail;    }
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     public String getStatus() {
         return status;

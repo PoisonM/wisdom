@@ -9,6 +9,9 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
+    //
+    private String sysShopId;
+
     //项目名称
     private String projectName;
 
@@ -27,7 +30,10 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     //0：客装 1：院装 2：易耗品
     private String productType;
 
-    //卡类别
+    //使用方式 0：疗程 1：单次
+    private String useStyle;
+
+    //卡类别 0：次卡 1：月卡 2：季卡：3：半年卡 4：年卡
     private String cardType;
 
     //项目图片url
@@ -54,10 +60,10 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     //功能介绍
     private String functionIntr;
 
-    //是否界面展示
+    //是否界面展示 0显示 1不显示
     private String isDisplay;
 
-    //是否启用
+    //是否启用 0启用 1不启用
     private String status;
 
     //
@@ -80,6 +86,14 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSysShopId() {
+        return sysShopId;
+    }
+
+    public void setSysShopId(String sysShopId) {
+        this.sysShopId = sysShopId;
     }
 
     public String getProjectName() {
@@ -128,6 +142,14 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
 
     public void setProductType(String productType) {
         this.productType = productType;
+    }
+
+    public String getUseStyle() {
+        return useStyle;
+    }
+
+    public void setUseStyle(String useStyle) {
+        this.useStyle = useStyle;
     }
 
     public String getCardType() {

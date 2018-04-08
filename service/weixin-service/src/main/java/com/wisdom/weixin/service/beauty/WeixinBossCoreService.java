@@ -88,7 +88,7 @@ public class WeixinBossCoreService {
             textMessage.setToUserName(xmlEntity.getFromUserName());
             textMessage.setFromUserName(xmlEntity.getToUserName());
             textMessage.setCreateTime(new Date().getTime());
-            textMessage.setMsgType(MessageUtil.TRANSFER_CUSTOMER_SERVICE);
+            textMessage.setMsgType(MessageUtil.TRANSFER_USER_SERVICE);
             textMessage.setFuncFlag(0);
             respMessage = MessageUtil.textMessageToXml(textMessage);
         }

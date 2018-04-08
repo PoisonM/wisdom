@@ -6,12 +6,12 @@ package com.wisdom.common.util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.wisdom.common.config.Global;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisException;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -348,6 +348,54 @@ public class JedisUtils {
 			logger.debug("setSet {} = {}", key, value);
 		} catch (Exception e) {
 			logger.warn("setSet {} = {}", key, value, e);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
+
+	/**
+	 * 设置Set缓存
+	 * @param key
+	 * @param score
+	 * @param member
+	 * @param cacheSeconds
+	 * @return
+	 */
+	public static long zadd(String key, double score, String member ,int cacheSeconds) {
+		long result = 0;
+		Jedis jedis = null;
+		try {
+			jedis = getResource();
+			if (jedis.exists(key)) {
+				jedis.del(key);
+			}
+			result = jedis.zadd(key, score, member);
+			logger.debug("setSet {} = {} = {}", key, member);
+		} catch (Exception e) {
+			logger.warn("setSet {} = {}  = {}", key, member, e);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
+	/**
+	 * 设置Set缓存
+	 * @param key
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static Set<String> zRangeByScore(String key, String min, String max) {
+		Set<String> result = null;
+		Jedis jedis = null;
+		try {
+			jedis = getResource();
+			result = jedis.zrangeByScore(key, min, max);
+
+			logger.debug("setSet {} = {} = {}", key, min,max);
+		} catch (Exception e) {
+			logger.warn("setSet {} = {}  = {}", key, min,max);
 		} finally {
 			returnResource(jedis);
 		}

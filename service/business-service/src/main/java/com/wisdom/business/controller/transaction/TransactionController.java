@@ -203,7 +203,7 @@ public class TransactionController {
     public ResponseDTO<String> getBusinessOrderByProductId(@RequestParam String productId, HttpSession session, HttpServletRequest request) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getUserOpenId(session,request);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);
         List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
@@ -232,7 +232,7 @@ public class TransactionController {
     @ResponseBody
     public ResponseDTO<Float> getTripleMonthBonus(HttpSession session, HttpServletRequest request) {
         ResponseDTO<Float> responseDTO = new ResponseDTO<>();
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getUserOpenId(session,request);
 
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);
@@ -347,7 +347,7 @@ public class TransactionController {
             return responseDTO;
         }
 
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getUserOpenId(session,request);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);
         List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);

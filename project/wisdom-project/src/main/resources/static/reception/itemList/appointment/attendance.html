@@ -1,0 +1,55 @@
+<div class="attendance">
+    <div class="space-between bgff6666 header">
+        <p  class="timeArea W33">
+            <button ng-click="MonthChange('last')" class="lastMonth">前一月</button>
+            <span ng-model="now" class="timeNow">{{param.now|date:'yyyy-MM'}}</span>
+            <button ng-click="MonthChange('next')">后一月</button>
+        </p>
+
+        <p class="W33 center">
+            <input type="button" class="attendanceBtn btnActive" value="日预约" ng-click="appointmentChange('day')" >
+            <input type="button"  class="attendanceBtn ml-6" value="周预约" ng-click="appointmentChange('week')">
+        </p>
+        <p class="W33 ">
+
+        </p>
+    </div>
+    <div class="content" ng-show="false">
+        <div class="nameLis">
+            <ul>
+                <li  ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12]" class="fs34 col333 center">
+                    李茹
+                </li>
+            </ul>
+        </div>
+        <div class="monthTimeLis bgfff">
+            <ul class="time ">
+                <li ng-repeat="item in param.monthArr" class="center">
+                    <p class="dayTime fs34 colff6666">{{item|date:'MM月dd日'}}</p>
+                    <p class="week fs34 colff6666">{{item|date:'EEEE'}}</p>
+                </li>
+            </ul>
+            <div class="attendanceMess">
+                <div ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12]">
+                    <ul>
+                        <li ng-repeat="item in  param.monthArr" style="text-align: center" >12</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="sweepYard ">
+         <div class="W50 brl">
+             <p class="todayTime">{{param.now|date:'yyyy年MM月dd日'}} 周二</p>
+             <div class="QrCode">
+
+             </div>
+             <p class="codeBtn"><button class="fs34 colfff bgff6666">本机登录号码打卡</button></p>
+         </div>
+         <div class="W50">
+             <p class="codeText">使用唯美度商户端，扫描二维码打卡</p>
+         </div>
+    </div>
+
+</div>

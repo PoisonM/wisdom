@@ -1,7 +1,5 @@
 package com.wisdom.common.constant;
 
-import com.wisdom.common.config.Global;
-
 public enum StatusConstant {
 
 	instance;
@@ -27,5 +25,8 @@ public enum StatusConstant {
 	public static final String NO_USER_ADDRESS = "0x00011";
 
 	public static final String WEIXIN_ATTENTION_ERROR = "0x00012";
+
+
+
 
 }

@@ -7,6 +7,7 @@ import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.ExportIncomeRecordExcelDTO;
+import com.wisdom.common.dto.system.ExportMonthTransactionExcelDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
@@ -102,6 +103,33 @@ public class IncomeController {
 		page.setEndTime(CommonUtils.getEndDate(page.getEndTime()));
 		ResponseDTO<PageParamDTO<List<MonthTransactionRecordDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamDTO<List<MonthTransactionRecordDTO>> monthTransactionRecordDTOList = incomeService.queryMonthTransactionRecordByIncomeRecord(page);
+		if("Y".equals(page.getIsExportExcel())) {
+			try {
+				String[] orderHeaders = {"用户id", "用户名","用户等级", "手机号", "交易流水号","付款时间", "消费流水"};
+				ExportExcel<ExportMonthTransactionExcelDTO> ex = new ExportExcel<>();
+				List<ExportMonthTransactionExcelDTO> excelList = new ArrayList<>();
+				for (MonthTransactionRecordDTO monthTransactionRecordDTO : monthTransactionRecordDTOList.getResponseData()) {
+					ExportMonthTransactionExcelDTO exportIncomeRecordExcelDTO = new ExportMonthTransactionExcelDTO();
+					exportIncomeRecordExcelDTO.setSysUserId(monthTransactionRecordDTO.getUserId());
+					exportIncomeRecordExcelDTO.setNickName(monthTransactionRecordDTO.getNickName());
+					exportIncomeRecordExcelDTO.setMobile(monthTransactionRecordDTO.getMobile());
+					exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
+					exportIncomeRecordExcelDTO.setMonthAmount(monthTransactionRecordDTO.getAmount());
+					exportIncomeRecordExcelDTO.setPayDate(DateUtils.formatDate(monthTransactionRecordDTO.getCreateDate(),"yyyy-MM-dd HH:mm:ss"));
+					exportIncomeRecordExcelDTO.setTransactionId(monthTransactionRecordDTO.getTransactionId());
+					excelList.add(exportIncomeRecordExcelDTO);
+				}
+				ByteArrayInputStream in = ex.getWorkbookIn("月度下级消费记录EXCEL文档", orderHeaders, excelList);
+				String url = CommonUtils.orderExcelToOSS(in);
+				responseDTO.setResult(url);
+				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+				return responseDTO;
+			} catch (Exception e) {
+				e.printStackTrace();
+				responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			}
+		}
+
 		responseDTO.setResponseData(monthTransactionRecordDTOList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
@@ -178,6 +206,32 @@ public class IncomeController {
 		page.setEndTime(CommonUtils.getEndDate(page.getEndTime()));
 		ResponseDTO<PageParamDTO<List<PayRecordDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamDTO<List<PayRecordDTO>> payRecordDTOList = incomeService.queryMonthPayRecordByUserId(page);
+		if("Y".equals(page.getIsExportExcel())) {
+			try {
+				String[] orderHeaders = {"用户id", "用户名", "手机号", "交易流水号","付款时间", "消费流水"};
+				ExportExcel<ExportMonthTransactionExcelDTO> ex = new ExportExcel<>();
+				List<ExportMonthTransactionExcelDTO> excelList = new ArrayList<>();
+				for (PayRecordDTO payRecordDTO : payRecordDTOList.getResponseData()) {
+					ExportMonthTransactionExcelDTO exportIncomeRecordExcelDTO = new ExportMonthTransactionExcelDTO();
+					exportIncomeRecordExcelDTO.setSysUserId(payRecordDTO.getSysUserId());
+					exportIncomeRecordExcelDTO.setNickName(payRecordDTO.getNickName());
+					exportIncomeRecordExcelDTO.setMobile(payRecordDTO.getMobile());
+					exportIncomeRecordExcelDTO.setUserType(payRecordDTO.getUserType());
+					exportIncomeRecordExcelDTO.setMonthAmount(payRecordDTO.getAmount());
+					exportIncomeRecordExcelDTO.setPayDate(DateUtils.formatDate(payRecordDTO.getPayDate(),"yyyy-MM-dd HH:mm:ss"));
+					exportIncomeRecordExcelDTO.setTransactionId(payRecordDTO.getTransactionId());
+					excelList.add(exportIncomeRecordExcelDTO);
+				}
+				ByteArrayInputStream in = ex.getWorkbookIn("月度本人消费记录EXCEL文档", orderHeaders, excelList);
+				String url = CommonUtils.orderExcelToOSS(in);
+				responseDTO.setResult(url);
+				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+				return responseDTO;
+			} catch (Exception e) {
+				e.printStackTrace();
+				responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			}
+		}
 		responseDTO.setResponseData(payRecordDTOList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;

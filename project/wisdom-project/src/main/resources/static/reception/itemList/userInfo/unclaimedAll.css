@@ -1,0 +1,124 @@
+.unclaimedAll{
+    background-color: #ffffff;
+    overflow: hidden;
+}
+.unclaimedAll .unclaimedAll_box{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.unclaimedAll .unclaimedAll_header{
+    width: 100%;
+    overflow: hidden;
+    margin: 0.234375rem 0rem;
+}
+.unclaimedAll .unclaimedAll_header div{
+    width: 50%;
+    height: 2.71875rem;
+    float: left;
+    color: #FCFCFC;
+    text-align: center;
+}
+.unclaimedAll .unclaimedAll_header .header_left{
+    background: url("../../images/userInfo/unclaimedClientNum.png") no-repeat;
+    background-size: 100%;
+}
+.unclaimedAll .unclaimedAll_header p{
+    font-size: 0.296875rem;
+    letter-spacing: 0.0.734375rem;
+    margin-top: 0.734375rem;
+}
+.unclaimedAll .unclaimedAll_header span{
+    font-size: 0.34375rem;
+    letter-spacing: 0.0.859375rem;
+    margin-top: 0.34375rem;
+}
+.unclaimedAll .unclaimedAll_header .header_right{
+    background: url("../../images/userInfo/unclaimedNum.png") no-repeat;
+    background-size: 100%;
+}
+.unclaimedAll .unclaimedAll_search{
+    width: 100%;
+    background-color: #dddddd;
+    position: relative;
+}
+.unclaimedAll .unclaimedAll_search .sear_add{
+    position: absolute;
+    top: 0.1875rem;
+    left: 0.234375rem;
+    height: 0.3125rem;
+    width: 0.3125rem;
+    background: url("../../images/userInfo/bt_search.png") no-repeat;
+    background-size: 100%;
+}
+.unclaimedAll .unclaimedAll_search input{
+    width: 10.0625rem;
+    height: 0.53125rem;
+    margin: 0.078125rem 0.84375rem 0.078125rem 0.125rem;
+    padding-left: 0.5rem;
+    background: #FFFFFF;
+    border-radius: 0.0625rem;
+}
+.unclaimedAll .unclaimedAll_search input::placeholder{
+    font-size: 0.25rem;
+    color: #919196;
+    letter-spacing: 0.55px;
+}
+.unclaimedAll .unclaimedAll_search .cancel{
+    position: absolute;
+    top: 0.1875rem;
+    right: 0.15625rem;
+    font-size: 0.234375rem;
+    color: #A4A4A4;
+}
+.unclaimedAll .unclaimedAll_content .user_form{
+    width: 100%;
+}
+.unclaimedAll .unclaimedAll_content .user_form table{
+    text-align: left;
+    width: 100%;
+}
+.unclaimedAll .unclaimedAll_content .user_form table tr{
+    height: 0.765625rem;
+    line-height: 0.765625rem;
+    width: 100%;
+}
+.unclaimedAll .unclaimedAll_content .user_form table td{
+    width: 33.333%;
+    padding-left: 0.265625rem;
+}
+.unclaimedAll .unclaimedAll_content .user_form table thead tr{
+}
+.unclaimedAll .unclaimedAll_content .user_form table thead tr td{
+    border-right:1px solid #E5E5E5 ;
+    font-size: 0.234375rem;
+    color: #FF6666;
+    letter-spacing: 0.52px;
+}
+.unclaimedAll .unclaimedAll_content .user_form table thead tr td:last-child{
+    border-right:none;
+}
+.unclaimedAll .unclaimedAll_content .user_form table tbody tr{
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+}
+.unclaimedAll .unclaimedAll_content .user_form table tbody tr:nth-child(2n+1){
+    background-color: #FAFAFA;
+}
+.unclaimedAll .unclaimedAll_content .user_form table tbody tr td{
+    font-size: 0.234375rem;
+    color: #333333;
+}
+.unclaimedAll .unclaimedAll_content .user_form table tbody tr .go_set_pre{
+    position: relative;
+}
+.unclaimedAll .unclaimedAll_content .user_form table tbody tr .go_set_pre .go_set{
+    display: block;
+    position: absolute;
+    top: 40%;
+    right: 0.3125rem;
+    background: url(../../images/userInfo/bt_more.png) no-repeat;
+    background-size: 100%;
+    width: 0.1171875rem;
+    height: 0.2109375rem;
+}

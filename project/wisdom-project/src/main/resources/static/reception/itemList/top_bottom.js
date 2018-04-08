@@ -36,6 +36,9 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
 
         //我的头部开关
 
+        //登录头部开关
+        headerLoginFlag:false,
+
         //尾部总开关
         footerBoxFlag:true
     }

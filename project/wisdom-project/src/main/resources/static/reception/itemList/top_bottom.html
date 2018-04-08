@@ -29,7 +29,17 @@
                 <span ng-if = "mainSwitch.headerCashAllFlag.headerCashRightFlag.rightFlag" class="save">保存</span>
             </div>
         </div>
+
+
+        <!--登录头部-->
+
+        <div ng-if="mainSwitch.headerLoginFlag" class="header_box">
+            <div class="header_login">登录</div>
+        </div>
     </div>
+
+
+
     <!--中心切换区域-->
     <div ui-view style="height: 100%"></div>
     <div ng-if = "mainSwitch.footerBoxFlag" class="footer">

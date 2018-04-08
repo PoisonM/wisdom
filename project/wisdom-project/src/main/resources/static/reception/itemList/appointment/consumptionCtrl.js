@@ -33,4 +33,6 @@ function consumption($scope){
    givingChange && givingChange($scope);
     payTypeCtrl && payTypeCtrl($scope);
     scratchCard && scratchCard($scope);
+    selectSingle && selectSingle($scope);
+    searchConsumption && searchConsumption($scope)
 }

@@ -195,6 +195,76 @@ public class ShopProjectInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysShopIdIsNull() {
+            addCriterion("sys_shop_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdIsNotNull() {
+            addCriterion("sys_shop_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdEqualTo(String value) {
+            addCriterion("sys_shop_id =", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotEqualTo(String value) {
+            addCriterion("sys_shop_id <>", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdGreaterThan(String value) {
+            addCriterion("sys_shop_id >", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_shop_id >=", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLessThan(String value) {
+            addCriterion("sys_shop_id <", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_shop_id <=", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLike(String value) {
+            addCriterion("sys_shop_id like", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotLike(String value) {
+            addCriterion("sys_shop_id not like", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdIn(List<String> values) {
+            addCriterion("sys_shop_id in", values, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotIn(List<String> values) {
+            addCriterion("sys_shop_id not in", values, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdBetween(String value1, String value2) {
+            addCriterion("sys_shop_id between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotBetween(String value1, String value2) {
+            addCriterion("sys_shop_id not between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectNameIsNull() {
             addCriterion("project_name is null");
             return (Criteria) this;
@@ -612,6 +682,76 @@ public class ShopProjectInfoCriteria {
 
         public Criteria andProductTypeNotBetween(String value1, String value2) {
             addCriterion("product_type not between", value1, value2, "productType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleIsNull() {
+            addCriterion("use_style is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleIsNotNull() {
+            addCriterion("use_style is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleEqualTo(String value) {
+            addCriterion("use_style =", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleNotEqualTo(String value) {
+            addCriterion("use_style <>", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleGreaterThan(String value) {
+            addCriterion("use_style >", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleGreaterThanOrEqualTo(String value) {
+            addCriterion("use_style >=", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleLessThan(String value) {
+            addCriterion("use_style <", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleLessThanOrEqualTo(String value) {
+            addCriterion("use_style <=", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleLike(String value) {
+            addCriterion("use_style like", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleNotLike(String value) {
+            addCriterion("use_style not like", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleIn(List<String> values) {
+            addCriterion("use_style in", values, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleNotIn(List<String> values) {
+            addCriterion("use_style not in", values, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleBetween(String value1, String value2) {
+            addCriterion("use_style between", value1, value2, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleNotBetween(String value1, String value2) {
+            addCriterion("use_style not between", value1, value2, "useStyle");
             return (Criteria) this;
         }
 

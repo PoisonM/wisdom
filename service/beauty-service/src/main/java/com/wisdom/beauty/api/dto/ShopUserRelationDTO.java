@@ -13,13 +13,13 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
     private String sysShopId;
 
     //用户表主键
-    private String sysCustomerId;
+    private String sysUserId;
 
     //美容院名称
     private String sysShopName;
 
     //用户名称
-    private String sysCustomerName;
+    private String sysUserName;
 
     //老板id
     private String sysBossId;
@@ -28,7 +28,7 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
     private String status;
 
     //会员账号
-    private String customerAccountNo;
+    private String userAccountNo;
 
     //
     private String createBy;
@@ -60,12 +60,12 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.sysShopId = sysShopId;
     }
 
-    public String getSysCustomerId() {
-        return sysCustomerId;
+    public String getSysUserId() {
+        return sysUserId;
     }
 
-    public void setSysCustomerId(String sysCustomerId) {
-        this.sysCustomerId = sysCustomerId;
+    public void setSysUserId(String sysUserId) {
+        this.sysUserId = sysUserId;
     }
 
     public String getSysShopName() {
@@ -76,12 +76,12 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.sysShopName = sysShopName;
     }
 
-    public String getSysCustomerName() {
-        return sysCustomerName;
+    public String getSysUserName() {
+        return sysUserName;
     }
 
-    public void setSysCustomerName(String sysCustomerName) {
-        this.sysCustomerName = sysCustomerName;
+    public void setSysUserName(String sysUserName) {
+        this.sysUserName = sysUserName;
     }
 
     public String getSysBossId() {
@@ -100,12 +100,12 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.status = status;
     }
 
-    public String getCustomerAccountNo() {
-        return customerAccountNo;
+    public String getUserAccountNo() {
+        return userAccountNo;
     }
 
-    public void setCustomerAccountNo(String customerAccountNo) {
-        this.customerAccountNo = customerAccountNo;
+    public void setUserAccountNo(String userAccountNo) {
+        this.userAccountNo = userAccountNo;
     }
 
     public String getCreateBy() {

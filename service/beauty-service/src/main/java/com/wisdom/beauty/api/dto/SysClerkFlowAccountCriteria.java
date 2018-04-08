@@ -195,73 +195,73 @@ public class SysClerkFlowAccountCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdIsNull() {
-            addCriterion("sys_customer_id is null");
+        public Criteria andSysUserIdIsNull() {
+            addCriterion("sys_user_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdIsNotNull() {
-            addCriterion("sys_customer_id is not null");
+        public Criteria andSysUserIdIsNotNull() {
+            addCriterion("sys_user_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdEqualTo(String value) {
-            addCriterion("sys_customer_id =", value, "sysCustomerId");
+        public Criteria andSysUserIdEqualTo(String value) {
+            addCriterion("sys_user_id =", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdNotEqualTo(String value) {
-            addCriterion("sys_customer_id <>", value, "sysCustomerId");
+        public Criteria andSysUserIdNotEqualTo(String value) {
+            addCriterion("sys_user_id <>", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdGreaterThan(String value) {
-            addCriterion("sys_customer_id >", value, "sysCustomerId");
+        public Criteria andSysUserIdGreaterThan(String value) {
+            addCriterion("sys_user_id >", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdGreaterThanOrEqualTo(String value) {
-            addCriterion("sys_customer_id >=", value, "sysCustomerId");
+        public Criteria andSysUserIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_user_id >=", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdLessThan(String value) {
-            addCriterion("sys_customer_id <", value, "sysCustomerId");
+        public Criteria andSysUserIdLessThan(String value) {
+            addCriterion("sys_user_id <", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdLessThanOrEqualTo(String value) {
-            addCriterion("sys_customer_id <=", value, "sysCustomerId");
+        public Criteria andSysUserIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_user_id <=", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdLike(String value) {
-            addCriterion("sys_customer_id like", value, "sysCustomerId");
+        public Criteria andSysUserIdLike(String value) {
+            addCriterion("sys_user_id like", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdNotLike(String value) {
-            addCriterion("sys_customer_id not like", value, "sysCustomerId");
+        public Criteria andSysUserIdNotLike(String value) {
+            addCriterion("sys_user_id not like", value, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdIn(List<String> values) {
-            addCriterion("sys_customer_id in", values, "sysCustomerId");
+        public Criteria andSysUserIdIn(List<String> values) {
+            addCriterion("sys_user_id in", values, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdNotIn(List<String> values) {
-            addCriterion("sys_customer_id not in", values, "sysCustomerId");
+        public Criteria andSysUserIdNotIn(List<String> values) {
+            addCriterion("sys_user_id not in", values, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdBetween(String value1, String value2) {
-            addCriterion("sys_customer_id between", value1, value2, "sysCustomerId");
+        public Criteria andSysUserIdBetween(String value1, String value2) {
+            addCriterion("sys_user_id between", value1, value2, "sysUserId");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerIdNotBetween(String value1, String value2) {
-            addCriterion("sys_customer_id not between", value1, value2, "sysCustomerId");
+        public Criteria andSysUserIdNotBetween(String value1, String value2) {
+            addCriterion("sys_user_id not between", value1, value2, "sysUserId");
             return (Criteria) this;
         }
 
@@ -735,73 +735,73 @@ public class SysClerkFlowAccountCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameIsNull() {
-            addCriterion("sys_customer_name is null");
+        public Criteria andSysUserNameIsNull() {
+            addCriterion("sys_user_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameIsNotNull() {
-            addCriterion("sys_customer_name is not null");
+        public Criteria andSysUserNameIsNotNull() {
+            addCriterion("sys_user_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameEqualTo(String value) {
-            addCriterion("sys_customer_name =", value, "sysCustomerName");
+        public Criteria andSysUserNameEqualTo(String value) {
+            addCriterion("sys_user_name =", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameNotEqualTo(String value) {
-            addCriterion("sys_customer_name <>", value, "sysCustomerName");
+        public Criteria andSysUserNameNotEqualTo(String value) {
+            addCriterion("sys_user_name <>", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameGreaterThan(String value) {
-            addCriterion("sys_customer_name >", value, "sysCustomerName");
+        public Criteria andSysUserNameGreaterThan(String value) {
+            addCriterion("sys_user_name >", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameGreaterThanOrEqualTo(String value) {
-            addCriterion("sys_customer_name >=", value, "sysCustomerName");
+        public Criteria andSysUserNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_user_name >=", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameLessThan(String value) {
-            addCriterion("sys_customer_name <", value, "sysCustomerName");
+        public Criteria andSysUserNameLessThan(String value) {
+            addCriterion("sys_user_name <", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameLessThanOrEqualTo(String value) {
-            addCriterion("sys_customer_name <=", value, "sysCustomerName");
+        public Criteria andSysUserNameLessThanOrEqualTo(String value) {
+            addCriterion("sys_user_name <=", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameLike(String value) {
-            addCriterion("sys_customer_name like", value, "sysCustomerName");
+        public Criteria andSysUserNameLike(String value) {
+            addCriterion("sys_user_name like", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameNotLike(String value) {
-            addCriterion("sys_customer_name not like", value, "sysCustomerName");
+        public Criteria andSysUserNameNotLike(String value) {
+            addCriterion("sys_user_name not like", value, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameIn(List<String> values) {
-            addCriterion("sys_customer_name in", values, "sysCustomerName");
+        public Criteria andSysUserNameIn(List<String> values) {
+            addCriterion("sys_user_name in", values, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameNotIn(List<String> values) {
-            addCriterion("sys_customer_name not in", values, "sysCustomerName");
+        public Criteria andSysUserNameNotIn(List<String> values) {
+            addCriterion("sys_user_name not in", values, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameBetween(String value1, String value2) {
-            addCriterion("sys_customer_name between", value1, value2, "sysCustomerName");
+        public Criteria andSysUserNameBetween(String value1, String value2) {
+            addCriterion("sys_user_name between", value1, value2, "sysUserName");
             return (Criteria) this;
         }
 
-        public Criteria andSysCustomerNameNotBetween(String value1, String value2) {
-            addCriterion("sys_customer_name not between", value1, value2, "sysCustomerName");
+        public Criteria andSysUserNameNotBetween(String value1, String value2) {
+            addCriterion("sys_user_name not between", value1, value2, "sysUserName");
             return (Criteria) this;
         }
 
@@ -886,62 +886,62 @@ public class SysClerkFlowAccountCriteria {
         }
 
         public Criteria andDetailEqualTo(String value) {
-            addCriterion("detail =", value, "desc");
+            addCriterion("detail =", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailNotEqualTo(String value) {
-            addCriterion("detail <>", value, "desc");
+            addCriterion("detail <>", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailGreaterThan(String value) {
-            addCriterion("detail >", value, "desc");
+            addCriterion("detail >", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailGreaterThanOrEqualTo(String value) {
-            addCriterion("detail >=", value, "desc");
+            addCriterion("detail >=", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailLessThan(String value) {
-            addCriterion("detail <", value, "desc");
+            addCriterion("detail <", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailLessThanOrEqualTo(String value) {
-            addCriterion("detail <=", value, "desc");
+            addCriterion("detail <=", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailLike(String value) {
-            addCriterion("detail like", value, "desc");
+            addCriterion("detail like", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailNotLike(String value) {
-            addCriterion("detail not like", value, "desc");
+            addCriterion("detail not like", value, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailIn(List<String> values) {
-            addCriterion("detail in", values, "desc");
+            addCriterion("detail in", values, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailNotIn(List<String> values) {
-            addCriterion("detail not in", values, "desc");
+            addCriterion("detail not in", values, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailBetween(String value1, String value2) {
-            addCriterion("detail between", value1, value2, "desc");
+            addCriterion("detail between", value1, value2, "detail");
             return (Criteria) this;
         }
 
         public Criteria andDetailNotBetween(String value1, String value2) {
-            addCriterion("detail not between", value1, value2, "desc");
+            addCriterion("detail not between", value1, value2, "detail");
             return (Criteria) this;
         }
 

@@ -62,6 +62,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.login', {
+            url: '/login',
+            templateUrl: root + '/login/login.html',
+            controller: 'loginCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "登 录",
+                        files: [
+                            root + "login/login.css",
+                            root + "login/login.js",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.userInfo', {
             url: '/userInfo',
             templateUrl: root + '/userInfo/userInfo.html',
@@ -308,7 +324,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "修改预约",
-                        files: [root + "appointment/modifyingAppointment.js",
+                        files: [root + "appointment/modifyingAppointmentCtrl.js",
                             root + "appointment/postion.css",
                         ]
                     })
@@ -323,7 +339,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "添加顾客",
-                        files: [root + "appointment/addCustomers.js",
+                        files: [root + "appointment/addCustomersCtrl.js",
                             root + "appointment/addCustomers.css",
                         ]
                     })
@@ -398,8 +414,38 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "选择顾客",
-                        files: [root + "appointment/selectCustomers.js",
+                        files: [root + "appointment/selectCustomersCtrl.js",
                             root + "appointment/selectCustomers.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.customerSignature', {
+            url: '/customerSignature',
+            templateUrl: root + '/appointment/customerSignature.html',
+            controller: 'customerSignatureCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "顾客签字",
+                        files: [root + "appointment/customerSignatureCtrl.js",
+                            root + "appointment/customerSignature.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.selectCoupons', {
+            url: '/selectCoupons',
+            templateUrl: root + '/appointment/selectCoupons.html',
+            controller: 'selectCouponsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "选择优惠券",
+                        files: [root + "appointment/selectCouponsCtrl.js",
+                            root + "appointment/selectCoupons.css",
                         ]
                     })
                 }]
@@ -428,7 +474,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "周预约",
-                        files: [root + "appointment/weeklyReservation.js",
+                        files: [root + "appointment/weeklyReservationCtrl.js",
                             root + "appointment/weeklyReservation.css",
                         ]
                     })
@@ -548,7 +594,6 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
-
         .state('pad-web.dayAppointment', {
             url: '/dayAppointment',
             templateUrl: root + '/appointment/dayAppointment.html',
@@ -556,7 +601,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "日预约列表",
+                        name: "日预约",
                         files: [root + "appointment/dayAppointment.js",
                             root + "appointment/laydate.css",
                             root + "appointment/laydate.js",
@@ -578,6 +623,20 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/balancePrepaid.css",
                             root + "appointment/givingCtrl.js",
                             root + "appointment/scratchCardCtrl.js",
+                            root + "appointment/individualTravelerAppointment.css",
+                            root + "appointment/individualTravelerAppointmentCtrl.js",
+                            root + "appointment/postion.css",
+                            root + "appointment/modifyingAppointmentCtrl.js",
+                            root + "appointment/weeklyReservationCtrl.js",
+                            root + "appointment/weeklyReservation.css",
+                            root + "appointment/selectCustomers.css",
+                            root + "appointment/selectCustomersCtrl.js",
+                            root + "appointment/addCustomers.css",
+                            root + "appointment/addCustomersCtrl.js",
+                            root + "appointment/newProject.css",
+                            root + "appointment/newProjectCtrl.js",
+                            root + "appointment/timeLength.css",
+                            root + "appointment/timeLengthCtrl.js",
 
 
                         ]
@@ -659,6 +718,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         files: [root + "appointment/newProjectCtrl.js",
                             root + "appointment/appointmentType.css",
                             root + "appointment/newProject.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.attendance', {
+            url: '/attendance',
+            templateUrl: root + '/appointment/attendance.html',
+            controller: 'attendanceCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "新建预约-选择项目",
+                        files: [root + "appointment/attendanceCtrl.js",
+                            root + "appointment/appointmentType.css",
+                            root + "appointment/attendance.css",
                         ]
                     })
                 }]

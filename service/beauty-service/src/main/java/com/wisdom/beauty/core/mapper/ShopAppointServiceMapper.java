@@ -1,12 +1,12 @@
 package com.wisdom.beauty.core.mapper;
 
+import com.wisdom.beauty.api.dto.ShopAppointService;
 import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
-import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.common.entity.BaseDao;
 import com.wisdom.common.persistence.annotation.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
 @MyBatisDao
 @Repository
-public interface ShopAppointServiceMapper extends BaseDao<ShopAppointServiceDTO, ShopAppointServiceCriteria, String> {
+public interface ShopAppointServiceMapper extends BaseDao<ShopAppointService, ShopAppointServiceCriteria, String> {
 }

@@ -1,6 +1,6 @@
 package com.wisdom.beauty.controller.account;
 
-import com.wisdom.beauty.api.dto.ShopCustomerConsumeRecordDTO;
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.springframework.stereotype.Controller;
@@ -33,11 +33,11 @@ public class AccountController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopCustomerConsumeRecordDTO>> getCustomerConsumeRecord(@RequestParam String type,
-																				 @RequestParam String startDate,
-																			 @RequestParam String endDate,
-																			 @RequestParam String sysShopId) {
-		ResponseDTO<List<ShopCustomerConsumeRecordDTO>> responseDTO = new ResponseDTO<>();
+	ResponseDTO<List<ShopUserConsumeRecordDTO>> getCustomerConsumeRecord(@RequestParam String type,
+																		 @RequestParam String startDate,
+																		 @RequestParam String endDate,
+																		 @RequestParam String sysShopId) {
+		ResponseDTO<List<ShopUserConsumeRecordDTO>> responseDTO = new ResponseDTO<>();
 
 		return  responseDTO;
 	}
@@ -51,8 +51,8 @@ public class AccountController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<ShopCustomerConsumeRecordDTO> getCustomerConsumeRecord(@RequestParam String shopCustomerConsumeRecordId) {
-		ResponseDTO<ShopCustomerConsumeRecordDTO> responseDTO = new ResponseDTO<>();
+	ResponseDTO<ShopUserConsumeRecordDTO> getCustomerConsumeRecord(@RequestParam String shopCustomerConsumeRecordId) {
+		ResponseDTO<ShopUserConsumeRecordDTO> responseDTO = new ResponseDTO<>();
 
 		return  responseDTO;
 	}

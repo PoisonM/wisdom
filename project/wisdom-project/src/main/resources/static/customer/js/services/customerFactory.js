@@ -21,11 +21,11 @@ define(['appCustomer'], function (app) {
             return $resource(user + 'getUserValidateCode')
         }])
         .factory('UserLogin',['$resource',function ($resource){
-            return $resource(user + 'customerLogin')
+            return $resource(user + 'userLogin')
         }])
         //退出登录
-        .factory('LoginOut',['$resource',function ($resource){
-            return $resource(user + 'loginOut')
+        .factory('UserLoginOut',['$resource',function ($resource){
+            return $resource(user + 'userLoginOut')
         }])
         .factory('GetUserInfo',['$resource',function ($resource){
             return $resource(customer + 'getUserInfo')

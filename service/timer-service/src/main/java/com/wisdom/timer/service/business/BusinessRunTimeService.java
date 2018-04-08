@@ -72,8 +72,8 @@ public class BusinessRunTimeService {
                     businessServiceClient.updateBusinessOrder(businessOrder);
                     String autoReceiveProductDate = DateUtils.DateToStr(businessOrder.getUpdateDate());
 
-                    String token = WeixinUtil.getCustomerToken();
-                    String url = ConfigConstant.CUSTOMER_WEB_URL + "orderManagement/1";
+                    String token = WeixinUtil.getUserToken();
+                    String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
 
                     UserInfoDTO userInfoDTO = new UserInfoDTO();
                     userInfoDTO.setId(businessOrder.getSysUserId());
@@ -157,7 +157,7 @@ public class BusinessRunTimeService {
         Date dt1 = new Date((new Date()).getTime() - (long) ConfigConstant.AUTO_NOTIFY_PRODUCT_PAY * 24 * 60 * 60 * 1000);
         Date dt2 = new Date((new Date()).getTime() - (long) ConfigConstant.AUTO_DELETE_BUSINESS_ORDER * 24 * 60 * 60 * 1000);
 
-        String token = WeixinUtil.getCustomerToken();
+        String token = WeixinUtil.getUserToken();
 
         //查询系统中所有未支付的订单
         BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
@@ -176,7 +176,7 @@ public class BusinessRunTimeService {
                     List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
                     if(userInfoDTOList.size()>0)
                     {
-                        String url = ConfigConstant.CUSTOMER_WEB_URL + "orderManagement/0";
+                        String url = ConfigConstant.USER_WEB_URL + "orderManagement/0";
                         WeixinTemplateMessageUtil.sendOrderNotPayTemplateWXMessage(DateUtils.DateToStr(businessOrder.getCreateDate()),
                                 businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
                     }
@@ -244,9 +244,9 @@ public class BusinessRunTimeService {
             {
                 String name = URLDecoder.decode(userInfo.getNickname(),"utf-8");
                 String expDate = DateUtils.DateToStr(dt2);
-                String token = WeixinUtil.getCustomerToken();
+                String token = WeixinUtil.getUserToken();
                 String openid = userInfo.getUserOpenid();
-                String url = ConfigConstant.CUSTOMER_WEB_URL + "myselfCenter";
+                String url = ConfigConstant.USER_WEB_URL + "myselfCenter";
                 WeixinTemplateMessageUtil.sendBusinessMemberDeadlineTemplateWXMessage(name,expDate,token,url,openid);
             }
         }
@@ -258,7 +258,7 @@ public class BusinessRunTimeService {
         userInfoDTO.setUserType(businessType);
         userInfoDTO.setDelFlag("0");
         List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-        String token = WeixinUtil.getCustomerToken();
+        String token = WeixinUtil.getUserToken();
         for(UserInfoDTO userInfo:userInfoDTOList)
         {
             float returnMonthlyMoney = 0;
@@ -335,7 +335,7 @@ public class BusinessRunTimeService {
                 }
             }
 
-//            String url = ConfigConstant.CUSTOMER_WEB_URL + "orderManagement/1";
+//            String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
             WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
         }
     }
@@ -346,7 +346,7 @@ public class BusinessRunTimeService {
         userInfoDTO.setDelFlag("0");
         userInfoDTO.setUserType(ConfigConstant.businessB1);
         List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
-        String token = WeixinUtil.getCustomerToken();
+        String token = WeixinUtil.getUserToken();
         for(UserInfoDTO userInfo : userInfoDTOS)
         {
             //查询所有下一级的情况

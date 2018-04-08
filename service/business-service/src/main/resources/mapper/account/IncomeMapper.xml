@@ -48,6 +48,7 @@
 
         <result column="nickname" property="nickName" jdbcType="VARCHAR" />
         <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR" />
         <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -239,13 +240,45 @@
     </select>
 
     <!--查询月结下详情交易-->
-    <select id="queryMonthTransactionRecordByIncomeRecord"
+    <!--<select id="queryMonthTransactionRecordByIncomeRecord"
             resultMap="MonthTransactionRecordMap"
             resultType="com.wisdom.common.persistence.Page">
         SELECT
         m.*,u.nickname,u.mobile,u.identify_number,u.user_type
         FROM month_transaction_record m,sys_user u,pay_record p
         WHERE 1=1 AND m.transaction_id = p.transaction_id AND p.sys_user_id = u.id AND p.status = '1'
+        <if test="requestData.sysUserId != ''and requestData.sysUserId != null  ">
+            AND m.sys_user_id = #{requestData.sysUserId}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND m.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        ORDER BY m.create_date DESC
+    </select>-->
+    <select id="queryMonthTransactionRecordByIncomeRecord"
+            resultMap="MonthTransactionRecordMap">
+        SELECT
+        m.*
+        FROM month_transaction_record m
+        WHERE 1=1
+        <if test="requestData.sysUserId != ''and requestData.sysUserId != null  ">
+            AND m.sys_user_id = #{requestData.sysUserId}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND m.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        ORDER BY m.create_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+    <!--查询月结下详情交易Count-->
+    <select id="queryMonthTransactionRecordByIncomeRecordCount"
+            resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM month_transaction_record m
+        WHERE 1=1
         <if test="requestData.sysUserId != ''and requestData.sysUserId != null  ">
             AND m.sys_user_id = #{requestData.sysUserId}
         </if>
@@ -267,10 +300,27 @@
 
     <!--根据用户id查询这个月都消费了哪些订单-->
     <select id="queryMonthPayRecordByUserId"
-            resultMap="PayRecordResultMap"
-            resultType="com.wisdom.common.persistence.Page">
+            resultMap="PayRecordResultMap">
         SELECT
-        p.*,u.nickname,u.mobile,u.identify_number
+        p.*,u.nickname,u.mobile,u.identify_number,u.user_type
+        FROM pay_record p,sys_user u
+        WHERE 1=1 AND p.sys_user_id = u.id AND p.status = '1'
+        <if test="requestData.sysUserId != ''and requestData.sysUserId != null  ">
+            AND p.sys_user_id = #{requestData.sysUserId}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND p.pay_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        ORDER BY p.pay_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+    <!--根据用户id查询这个月都消费了哪些订单-->
+    <select id="queryMonthPayRecordCountByUserId"
+            resultType="java.lang.Integer">
+        SELECT
+        count(1)
         FROM pay_record p,sys_user u
         WHERE 1=1 AND p.sys_user_id = u.id AND p.status = '1'
         <if test="requestData.sysUserId != ''and requestData.sysUserId != null  ">

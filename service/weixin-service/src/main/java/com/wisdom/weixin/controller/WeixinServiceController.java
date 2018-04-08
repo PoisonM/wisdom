@@ -1,6 +1,6 @@
 package com.wisdom.weixin.controller;
 
-import com.wisdom.weixin.service.customer.WeixinCustomerCoreService;
+import com.wisdom.weixin.service.user.WeixinUserCoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,13 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class WeixinServiceController {
 
     @Autowired
-    private WeixinCustomerCoreService weixinCustomerCoreService;
+    private WeixinUserCoreService weixinCustomerCoreService;
 
-    @RequestMapping(value = "/updateCustomerWeixinToken",method=RequestMethod.POST)
+    @RequestMapping(value = "/updateUserWeixinToken",method=RequestMethod.POST)
     @ResponseBody
-    void updateCustomerWeixinToken()
+    void updateUserWeixinToken()
     {
-        weixinCustomerCoreService.updateCustomerWeixinToken();
+        weixinCustomerCoreService.updateUserWeixinToken();
+    }
+
+    @RequestMapping(value = "/updateBossWeixinToken",method=RequestMethod.POST)
+    @ResponseBody
+    void updateBossWeixinToken()
+    {
+        weixinCustomerCoreService.updateUserWeixinToken();
     }
 
 }

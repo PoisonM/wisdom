@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopAppointService">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="shop_project_id" property="shopProjectId" jdbcType="VARCHAR"/>
+        <result column="shop_project_name" property="shopProjectName" jdbcType="VARCHAR"/>
+        <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
+        <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
+        <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
+        <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR"/>
+        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="appoint_start_time" property="appointStartTime" jdbcType="TIMESTAMP"/>
+        <result column="appoint_end_time" property="appointEndTime" jdbcType="TIMESTAMP"/>
+        <result column="appoint_period" property="appointPeriod" jdbcType="INTEGER"/>
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
+        <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR"/>
+        <result column="sys_user_phone" property="sysUserPhone" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="detail" property="detail" jdbcType="VARCHAR"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, shop_project_id, shop_project_name, sys_shop_id, sys_shop_name, sys_clerk_id,
+        sys_clerk_name, sys_boss_id, appoint_start_time, appoint_end_time, appoint_period,
+        sys_user_id, sys_user_name, sys_user_phone, status, detail, create_by, create_date,
+        update_user, update_date
+    </sql>
+
+  <select id="selectShopAppointClerkInfoByCriteria"
+          parameterType="com.wisdom.beauty.api.dto.ShopAppointService"
+          resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shop_appoint_service
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    GROUP BY sys_clerk_id
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart &gt;= 0">
+      limit ${limitStart},${pageSize}
+    </if>
+  </select>
+
+</mapper>
