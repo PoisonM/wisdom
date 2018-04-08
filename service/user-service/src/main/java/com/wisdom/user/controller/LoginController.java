@@ -28,10 +28,10 @@ public class LoginController {
     /**
      * 用户通过微信中的H5，实现手机号绑定登录
      */
-    @RequestMapping(value = "customerLogin", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "userLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO<String> customerLogin(@RequestBody LoginDTO loginDTO,
+    ResponseDTO<String> userLogin(@RequestBody LoginDTO loginDTO,
                                       HttpServletRequest request,
                                       HttpSession session) throws Exception {
         ResponseDTO<String> result = new ResponseDTO<>();
@@ -45,7 +45,7 @@ public class LoginController {
             return result;
         }
 
-        String loginResult = loginService.customerLogin(loginDTO.getUserPhone(), loginDTO.getCode(), request.getRemoteAddr().toString(),openid);
+        String loginResult = loginService.userLogin(loginDTO.getUserPhone(), loginDTO.getCode(), request.getRemoteAddr().toString(),openid);
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
         {
@@ -118,16 +118,16 @@ public class LoginController {
     /**
      * 退出登录
      */
-    @RequestMapping(value = "customerLoginOut", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "userLoginOut", method = {RequestMethod.POST, RequestMethod.GET})
     @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<UserInfoDTO> customerLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    ResponseDTO<UserInfoDTO> userLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         String logintoken = request.getHeader("logintoken");
         if(logintoken==null||logintoken.equals("")){
             logintoken=request.getSession().getAttribute("token").toString();
         }
-        String status = loginService.customerLoginOut(logintoken,request,response,session);
+        String status = loginService.userLoginOut(logintoken,request,response,session);
         ResponseDTO<UserInfoDTO> result = new ResponseDTO<>();
         result.setResult(StatusConstant.SUCCESS);
         result.setErrorInfo(status.equals(StatusConstant.LOGIN_OUT) ? "退出登录" : "保持在线");

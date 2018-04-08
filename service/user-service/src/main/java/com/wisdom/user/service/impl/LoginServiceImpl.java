@@ -35,7 +35,7 @@ public class LoginServiceImpl implements LoginService{
 
     private Gson gson = new Gson();
 
-    public String customerLogin(String phone, String code, String loginIP, String openId) throws Exception {
+    public String userLogin(String phone, String code, String loginIP, String openId) throws Exception {
 
         //判断validateCode是否还有效
         Query query = new Query().addCriteria(Criteria.where("mobile").is(phone))
@@ -107,7 +107,7 @@ public class LoginServiceImpl implements LoginService{
         return logintoken;
     }
     
-    public String customerLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    public String userLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         String openId = WeixinUtil.getCustomerOpenId(session,request);
         JedisUtils.del(logintoken);
         session.removeAttribute(ConfigConstant.CUSTOMER_OPEN_ID);

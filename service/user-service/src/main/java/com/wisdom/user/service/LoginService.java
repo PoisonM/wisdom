@@ -26,9 +26,9 @@ import java.util.UUID;
 @Transactional(readOnly = false)
 public interface LoginService {
 
-    String customerLogin(String phone, String code, String loginIP, String openId) throws Exception;
+    String userLogin(String phone, String code, String loginIP, String openId) throws Exception;
     
-    String customerLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session);
+    String userLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session);
 
     String managerLogin(String userPhone, String code);
 
