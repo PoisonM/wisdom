@@ -141,7 +141,6 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         reCalcTotalPayPrice();
                         addButton = true;
                     })
-
                 }
             }
 

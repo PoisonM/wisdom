@@ -1,4 +1,4 @@
-package com.wisdom.user.service;
+package com.wisdom.user.service.impl;
 
 import com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
@@ -6,16 +6,15 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.system.UserInfoDTO;
-import com.wisdom.common.dto.wexin.WeixinShareDTO;
-import com.wisdom.common.dto.wexin.WeixinTokenDTO;
-import com.wisdom.common.util.*;
+import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.JedisUtils;
+import com.wisdom.common.util.RedisLock;
 import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.mapper.CustomerInfoMapper;
-import net.sf.json.JSONObject;
+import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -31,7 +30,7 @@ import java.util.concurrent.Executors;
 
 @Service
 @Transactional(readOnly = false)
-public class CustomerInfoService {
+public class UserInfoServiceImpl implements UserInfoService{
 
     @Autowired
     private CustomerInfoMapper customerInfoMapper;

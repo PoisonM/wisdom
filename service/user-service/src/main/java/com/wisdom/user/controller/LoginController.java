@@ -7,10 +7,8 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.util.SMSUtil;
 import com.wisdom.common.util.WeixinUtil;
-import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.LoginService;
-import com.wisdom.user.service.CustomerInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +20,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value = "")
-public class UserLoginController {
+public class LoginController {
 
     @Autowired
     private LoginService loginService;
