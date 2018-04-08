@@ -28,6 +28,7 @@ import java.util.List;
 public class ProjectController {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@Autowired
 	private ProjectService projectService;
 

@@ -130,12 +130,19 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 reCalcTotalPayPrice();
             }
 
+            var addButton = true;
             $scope.addProductNum = function(item){
-                AddProduct2BuyCart.get({productId:item.productId,productSpec:item.productSpec},function(data){
-                    item.productNum = (parseInt(item.productNum)+1).toString();
-                    $scope.param.totalPayPrice = 0;
-                    reCalcTotalPayPrice();
-                })
+                if(addButton)
+                {
+                    addButton = false;
+                    AddProduct2BuyCart.get({productId:item.productId,productSpec:item.productSpec,productNum:1},function(data){
+                        item.productNum = (parseInt(item.productNum)+1).toString();
+                        $scope.param.totalPayPrice = 0;
+                        reCalcTotalPayPrice();
+                        addButton = true;
+                    })
+
+                }
             }
 
             var minusButton =  true;
