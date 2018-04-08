@@ -2,14 +2,14 @@
     <!--顾客 项目 时长-->
     <div class="customerBox">
         <ul>
-            <li><span class="boxLift">顾客</span><span class="boxRight">安迪></span></li>
-            <li><span class="boxLift">项目</span><span class="boxRight">韩国美白护肤></span></li>
-            <li><span class="boxLift">时长</span><span class="boxRight">1小时></span></li>
+            <li><span class="boxLift">顾客</span><a class="boxRight">安迪<img src="images/bt_more.png" class="morePic ml20" ng-click="selectCustomersCtrl($event)"></a></li>
+            <li><span class="boxLift">项目</span><a class="boxRight">韩国美白护肤<img src="images/bt_more.png" class="morePic ml20" ng-click="selectProduct($event)"></a></li>
+            <li><span class="boxLift">时长</span><a class="boxRight">{{param.timeLengthObject.time}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectTimeLength($event)"></a></li>
         </ul>
     </div>
     <!--美容师 时间-->
     <div class="cosmetology">
-        <p><span class="boxLift">美容师</span><span class="boxRight">美茹></span></p>
+        <p><span class="boxLift">美容师</span><a class="boxRight">美如<img src="images/bt_more.png" class="morePic ml20" ng-click="selectBeautician($event)"></a></span></p>
         <div class="cosmetologyMinute">
             <!--日期-->
             <ul class="dayList">
@@ -18,7 +18,9 @@
             </ul>
               <!--时间-->
             <ul class="minuteList">
-                <li ng-repeat = "item in param.time" ng-click = "selectTime($index)"  ng-class="{'bgff9b9b':index1==$index}">{{ $index ==param.time.length-1?"":item}}</li>
+                <li ng-repeat = "item in param.time" ng-click = "selectTime($index,param.selectedTime[$index])" ng-class="{'bgff9b9b':param.selectedTime[$index]=='2'}"  >{{ $index ==param.time.length-1?"":item}}</li>
+                <!--ng-class="{'bgf5f5f5':param.selectedTime[$index]=='1'}"-->
+                <!---->
             </ul>
         </div>
     </div>

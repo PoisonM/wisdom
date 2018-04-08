@@ -22,12 +22,26 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         scratchCard:false,/*赠送优惠券*/
         ModifyAppointment:true,/*修改预约按钮*/
         individualTravelerAppointment:false,/*散客详情*/
-        modifyingAppointment:true, /*修改预约*/
+        modifyingAppointment:false, /*修改预约*/
         serachContent:'',/*搜索内容*/
         givingIndex:0,/*赠送Index*/
         AppointmentType:"散客",
         dayFlag:true,
         weekFlag:false,
+        appointmentLis:false,/*预约列表*/
+        selectCustomersWrap:false,/*选择客户*/
+        addCustomers:false,/*添加客户*/
+        newProduct:false,/*修改预约-选择项目*/
+        newProductObject:{
+            index:0,
+            titleFlag:false,
+        },
+        timeLength:false,/*修改预约-选择时长*/
+        timeLengthObject:{
+            time:''
+        },
+        /*修改预约-时长对象*/
+        selectBeautician:false,/*修改预约-选择美容师*/
         detailsReservationText:"去消费",/*预约按钮详情的按钮展示*/
        /* scratchCardText:"去划卡",/!*预约按钮详情的按钮展示*!/
         detailsReservationBtn:false,/!*预约按钮详情的按钮展示*!/
@@ -125,15 +139,19 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
     $scope.arrTime = $scope.param.day;
 
     $scope.appointmentChange = function (type) {
-        $scope.param.btnActive = ['btnActive','common'];
+        $scope.allFalse();
         if(type =="week"){
             $scope.arrTime=$scope.param.week;
             $scope.param.btnActive[0]='common';
-            $scope.param.btnActive[1]='btnActive'
+            $scope.param.btnActive[1]='btnActive';
+            $scope.param.weekFlag = true;
+            $scope.param.dayFlag = false;
         }else{
             $scope.arrTime = $scope.param.day;
             $scope.param.btnActive[0]='btnActive';
             $scope.param.btnActive[1]='common';
+            $scope.param.weekFlag = false;
+            $scope.param.dayFlag = true;
         }
     };
 
@@ -214,29 +232,33 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             $scope.$broadcast("scroll.refreshComplete");
         });
     }*/
+    $scope.allFalse = function(){
+        $scope.param.consumption = false;
+        $scope.param.selectSingle = false;
+        $scope.param.selectTreatmentCard = false;
+        $scope.param.selectProduct = false;
+        $scope.param.collectionCard = false;
+        $scope.param.consumptionNextStep = false;
+        $scope.param.balancePrepaid = false;
+        $scope.param.relatedStaff = false;
+        $scope.param.scratchCard = false;
+        $scope.param.giving = false;
+        $scope.param.givingProduct = false;
+        $scope.param.givingVouchers = false;
+        $scope.param.scratchCardSelectTreatmentCard = false;
+        $scope.param.individualTravelerAppointment = false;
+        $scope.param.detailsReservation = false;
+        $scope.param.modifyingAppointment = false;
+        $scope.param.appointmentLis = false;
+        $scope.param.selectCustomersWrap = false;
+    }
     //预约详情
-
     $scope.detailsReservation = function(index1,index2,e,status){
         $scope.param.ModifyAppointment = true;
            /* var top = (e.clientY +100)/128;
             var left = (e.clientX +100)/128;
             var screen = document.documentElement.clientWidth;*/
-           $scope.param.consumption = false;
-           $scope.param.selectSingle = false;
-           $scope.param.selectTreatmentCard = false;
-           $scope.param.selectProduct = false;
-           $scope.param.collectionCard = false;
-           $scope.param.consumptionNextStep = false;
-           $scope.param.balancePrepaid = false;
-           $scope.param.relatedStaff = false;
-           $scope.param.scratchCard = false;
-           $scope.param.giving = false;
-           $scope.param.givingProduct = false;
-           $scope.param.givingVouchers = false;
-           $scope.param.scratchCardSelectTreatmentCard = false;
-           $scope.param.individualTravelerAppointment = false;
-           $scope.param.detailsReservation = false;
-           $scope.param.modifyingAppointment = false;
+            $scope.allFalse()
             if(status == '消费'||status == '划卡'){
                 $scope.param.detailsReservation = true;
                 var detailsWrap = document.getElementsByClassName("detailsWrap")[0];
@@ -309,7 +331,25 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                 }else{
                     $scope.param.detailsReservation = true;
                 }
+            }else if(status == 'appointmentLis'){
+                $scope.param.appointmentLis = false;
+            }else if(status == 'selectCustomersWrap'){
+                $scope.param.selectCustomersWrap = false;
+                $scope.param.modifyingAppointment = true;
+            }else if(status == 'addCustomers'){
+                $scope.param.addCustomers = false;
+                $scope.param.selectCustomersWrap = true;
+            }else if(status == 'newProduct'){
+                $scope.param.newProduct = false;
+                $scope.param.modifyingAppointment = true;
+            }else if(status == 'timeLength'){
+                $scope.param.timeLength = false;
+                $scope.param.modifyingAppointment = true;
+            }else if(status == 'selectBeautician'){
+                $scope.param.selectBeautician = false;
+                $scope.param.modifyingAppointment = true;
             }
+
 
         }else{
             if(status == 'selectSingle'){
@@ -343,6 +383,12 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                 }
                 $scope.param.modifyingAppointment = false;
 
+            }else if(status == 'addCustomers'){
+                $scope.param.addCustomers = false;
+                $scope.param.selectCustomersWrap = true;
+            }else if(status == 'newProduct'){
+                $scope.param.newProduct = false;
+                $scope.param.modifyingAppointment = true;
             }
         }
 
