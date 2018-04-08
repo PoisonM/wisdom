@@ -138,6 +138,7 @@ public class CustomerInfoService {
         }
         return userInfoDTOS;
     }
+
     public UserInfoDTO getUserInfoFromRedis() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Map<String, String> tokenValue = getHeadersInfo(request);
