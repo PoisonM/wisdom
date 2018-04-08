@@ -14,38 +14,73 @@
                 </li>
                 <li>
                     <i></i>
-                    <span>12121.90</span>
+                    <span>22</span>
                     <b>人头数</b>
                 </li>
                 <li>
                     <i></i>
-                    <span>12121.90</span>
+                    <span>9</span>
                     <b>新客</b>
                 </li>
             </ul>
         </div>
-        <div class="basic"></div>
+        <div class="basic">
+            <div class="user_logo">
+                <img src="https://img3.doubanio.com/view/group_topic/l/public/p49495982.webp" alt="">
+            </div>
+            <div class="user_Information">
+                <p class="user_name">韩华</p>
+                <p class="user_mobile"><i></i>133010101012 </p>
+                <p class="user_data"><i class="bg_gray"><e class="col_pink"></e></i>资料完成度25%</p>
+            </div>
+            <div ng-click="setUserInfo()" class="go_set"></div>
+        </div>
         <div class="set">
             <ul>
-                <li>小机票设置</li>
-                <li>预约设置</li>
+                <li class="img_sty airTicket">
+                    <span></span>
+                    小机票设置
+                    <div ng-click="setUserSet()" class="go_set"></div>
+                </li>
+                <li class="img_sty appointment">
+                    <span></span>
+                    预约设置
+                    <div ng-click="setUserSet()" class="go_set"></div>
+                </li>
             </ul>
+
         </div>
         <div class="help">
             <ul>
-                <li>使用帮助</li>
-                <li>意见反馈</li>
-                <li>联系客服</li>
+                <li class="img_sty">
+                    <span></span>
+                    使用帮助
+                    <div ng-click="setUserSet()" class="go_set"></div>
+                </li>
+                <li class="img_sty">
+                    <span></span>
+                    意见反馈
+                    <div ng-click="setUserSet()" class="go_set"></div>
+                </li>
+                <li class="img_sty">
+                    <span></span>
+                    联系客服
+                    <div ng-click="setUserSet()" class="go_set"></div>
+                </li>
             </ul>
         </div>
         <div class="changePsd">
             <ul>
-                <li></li>
+                <li class="img_sty">
+                    <span></span>
+                    修改密码
+                </li>
             </ul>
         </div>
         <div class="btn">
-            <button>退出登录</button>
+            退出登录
         </div>
     </div>
-    <div ui-view></div>
+
+    <div ui-view style="height: 100%"></div>
 </div>
