@@ -1,7 +1,6 @@
 package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
-import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
@@ -130,7 +129,7 @@ public class ProjectController {
 
 
 	/**
-     * 查询某个用户的疗程卡列表信息
+     * 查询某个用户的卡片列表信息
 	 * @param sysUserId
      * @param sysShopId
      * @param cardStyle 0 查询疗程卡  1 查询单次卡
@@ -142,34 +141,24 @@ public class ProjectController {
 	@ResponseBody
     ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId,
                                                                            @RequestParam String sysShopId, @RequestParam String cardStyle) {
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
         ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
 
         ShopUserProjectRelationDTO relationDTO = new ShopUserProjectRelationDTO();
         relationDTO.setSysUserId(sysUserId);
         relationDTO.setSysShopId(sysShopId);
+        relationDTO.setUseStyle(cardStyle);
         List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
+        if (CommonUtils.objectIsNotEmpty(userProjectList)) {
+            logger.debug("查询某个用户的卡片列表信息为空, {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
+            return null;
+        }
 
-		return  responseDTO;
-	}
+        responseDTO.setResponseData(userProjectList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
 
-	/**
-     * 查询某个用户的单次卡列表信息
-	 * @param sysUserId
-     * @param sysShopId
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-	@RequestMapping(value = "getUserSingleProjectList", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
-	public
-	@ResponseBody
-	ResponseDTO<List<ShopUserProductRelationDTO>> getUserSingleProjectList(@RequestParam String sysUserId,
-																		   @RequestParam String sysShopId,
-																		   @RequestParam String startDate,
-																		   @RequestParam String endDate) {
-		ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
-
+        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return  responseDTO;
 	}
 

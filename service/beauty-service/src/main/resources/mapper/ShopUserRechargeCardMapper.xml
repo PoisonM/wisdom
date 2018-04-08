@@ -9,6 +9,9 @@
     <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
     <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+    <result column="discount" property="discount" jdbcType="REAL"/>
+    <result column="detail" property="detail" jdbcType="VARCHAR"/>
+    <result column="discount_desc" property="discountDesc" jdbcType="VARCHAR"/>
     <result column="surplus_amount" property="surplusAmount" jdbcType="DECIMAL"/>
     <result column="init_amount" property="initAmount" jdbcType="DECIMAL"/>
     <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
@@ -76,7 +79,8 @@
   </sql>
   <sql id="Base_Column_List">
     id, shop_recharge_card_id, shop_recharge_card_name, sys_user_id, sys_user_name, sys_shop_id,
-    sys_boss_id, surplus_amount, init_amount, create_by, create_date, update_user, update_date
+    sys_boss_id, discount, detail, discount_desc, surplus_amount, init_amount, create_by,
+    create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria">
@@ -115,12 +119,14 @@
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO">
     insert into shop_user_recharge_card (id, shop_recharge_card_id, shop_recharge_card_name,
     sys_user_id, sys_user_name, sys_shop_id,
-      sys_boss_id, surplus_amount, init_amount, 
+    sys_boss_id, discount, detail,
+    discount_desc, surplus_amount, init_amount,
       create_by, create_date, update_user, 
       update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopRechargeCardId,jdbcType=VARCHAR}, #{shopRechargeCardName,jdbcType=VARCHAR},
     #{sysUserId,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR},
-      #{sysBossId,jdbcType=VARCHAR}, #{surplusAmount,jdbcType=DECIMAL}, #{initAmount,jdbcType=DECIMAL}, 
+    #{sysBossId,jdbcType=VARCHAR}, #{discount,jdbcType=REAL}, #{detail,jdbcType=VARCHAR},
+    #{discountDesc,jdbcType=VARCHAR}, #{surplusAmount,jdbcType=DECIMAL}, #{initAmount,jdbcType=DECIMAL},
       #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
@@ -147,6 +153,15 @@
       </if>
       <if test="sysBossId != null">
         sys_boss_id,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="discountDesc != null">
+        discount_desc,
       </if>
       <if test="surplusAmount != null">
         surplus_amount,
@@ -188,6 +203,15 @@
       </if>
       <if test="sysBossId != null">
         #{sysBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=REAL},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="discountDesc != null">
+        #{discountDesc,jdbcType=VARCHAR},
       </if>
       <if test="surplusAmount != null">
         #{surplusAmount,jdbcType=DECIMAL},
@@ -240,6 +264,15 @@
       <if test="record.sysBossId != null">
         sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
       </if>
+      <if test="record.discount != null">
+        discount = #{record.discount,jdbcType=REAL},
+      </if>
+      <if test="record.detail != null">
+        detail = #{record.detail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.discountDesc != null">
+        discount_desc = #{record.discountDesc,jdbcType=VARCHAR},
+      </if>
       <if test="record.surplusAmount != null">
         surplus_amount = #{record.surplusAmount,jdbcType=DECIMAL},
       </if>
@@ -272,6 +305,9 @@
     sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+    discount = #{record.discount,jdbcType=REAL},
+    detail = #{record.detail,jdbcType=VARCHAR},
+    discount_desc = #{record.discountDesc,jdbcType=VARCHAR},
       surplus_amount = #{record.surplusAmount,jdbcType=DECIMAL},
       init_amount = #{record.initAmount,jdbcType=DECIMAL},
       create_by = #{record.createBy,jdbcType=VARCHAR},
@@ -303,6 +339,15 @@
       <if test="sysBossId != null">
         sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
       </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=REAL},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="discountDesc != null">
+        discount_desc = #{discountDesc,jdbcType=VARCHAR},
+      </if>
       <if test="surplusAmount != null">
         surplus_amount = #{surplusAmount,jdbcType=DECIMAL},
       </if>
@@ -332,6 +377,9 @@
     sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+    discount = #{discount,jdbcType=REAL},
+    detail = #{detail,jdbcType=VARCHAR},
+    discount_desc = #{discountDesc,jdbcType=VARCHAR},
       surplus_amount = #{surplusAmount,jdbcType=DECIMAL},
       init_amount = #{initAmount,jdbcType=DECIMAL},
       create_by = #{createBy,jdbcType=VARCHAR},
