@@ -62,6 +62,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.login', {
+            url: '/login',
+            templateUrl: root + '/login/login.html',
+            controller: 'loginCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "登录",
+                        files: [
+                            root + "login/login.css",
+                            root + "login/login.js",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.userInfo', {
             url: '/userInfo',
             templateUrl: root + '/userInfo/userInfo.html',
