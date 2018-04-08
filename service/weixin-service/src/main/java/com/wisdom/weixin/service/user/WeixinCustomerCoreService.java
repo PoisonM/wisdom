@@ -1,4 +1,4 @@
-package com.wisdom.weixin.service.customer;
+package com.wisdom.weixin.service.user;
 
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.system.UserInfoDTO;
@@ -29,16 +29,16 @@ import java.util.Date;
 public class WeixinCustomerCoreService {
 
     @Autowired
-    ProcessCustomerViewEventService processCustomerClickViewEvent;
+    ProcessUserViewEventService processCustomerClickViewEvent;
 
     @Autowired
-    ProcessCustomerScanEventService processCustomerScanEventService;
+    ProcessUserScanEventService processCustomerScanEventService;
 
     @Autowired
-    ProcessCustomerSubscribeEventService processCustomerSubscribeEventService;
+    ProcessUserSubscribeEventService processCustomerSubscribeEventService;
 
     @Autowired
-    ProcessCustomerClickEventService processCustomerClickEventService;
+    ProcessUserClickEventService processCustomerClickEventService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -88,20 +88,20 @@ public class WeixinCustomerCoreService {
             textMessage.setToUserName(xmlEntity.getFromUserName());
             textMessage.setFromUserName(xmlEntity.getToUserName());
             textMessage.setCreateTime(new Date().getTime());
-            textMessage.setMsgType(MessageUtil.TRANSFER_CUSTOMER_SERVICE);
+            textMessage.setMsgType(MessageUtil.TRANSFER_USER_SERVICE);
             textMessage.setFuncFlag(0);
             respMessage = MessageUtil.textMessageToXml(textMessage);
         }
         return respMessage;
     }
 
-    public void updateCustomerWeixinToken(){
+    public void updateUserWeixinToken(){
         try {
             System.out.print("用户端微信参数更新");
-            String token = WeixinUtil.getCustomerTokenFromTX(ConfigConstant.CUTOMER_CORPID, ConfigConstant.CUSTOMER_SECRET);
+            String token = WeixinUtil.getUserTokenFromTX(ConfigConstant.CUTOMER_CORPID, ConfigConstant.USER_SECRET);
             if(StringUtils.isNotNull(token)) {
                 String ticket = WeixinUtil.getJsapiTicket(token);
-                Query query = new Query().addCriteria(Criteria.where("weixinFlag").is(ConfigConstant.weixinCustomerFlag));
+                Query query = new Query().addCriteria(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
                 Update update = new Update();
                 update.set("token",token);
                 update.set("ticket",ticket);
@@ -140,7 +140,7 @@ public class WeixinCustomerCoreService {
      * @return
      */
     private String getUserQRCode(String info) {
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinCustomerFlag));
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
         String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;

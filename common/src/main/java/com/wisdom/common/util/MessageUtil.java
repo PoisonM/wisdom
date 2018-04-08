@@ -91,7 +91,7 @@ public class MessageUtil {
 	/**
 	 * 转发给多客服
 	 * */
-	public static final String TRANSFER_CUSTOMER_SERVICE = "transfer_customer_service";
+	public static final String TRANSFER_USER_SERVICE = "transfer_customer_service";
 
 
 	/**

@@ -1,4 +1,4 @@
-package com.wisdom.weixin.service.customer;
+package com.wisdom.weixin.service.user;
 
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
@@ -36,7 +36,7 @@ import java.util.concurrent.Executors;
  */
 @Service
 @Transactional(readOnly = false)
-public class ProcessCustomerSubscribeEventService {
+public class ProcessUserSubscribeEventService {
 
     @Autowired
     private UserServiceClient userServiceClient;
@@ -52,7 +52,7 @@ public class ProcessCustomerSubscribeEventService {
     //处理用户关注公众号事件
     public void processSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinCustomerFlag));
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
 

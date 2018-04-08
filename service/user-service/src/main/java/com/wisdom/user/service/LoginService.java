@@ -32,4 +32,7 @@ public interface LoginService {
 
     String managerLogin(String userPhone, String code);
 
+    String bossLogin(String userPhone, String code, String s, String openid);
+
+    String clerkLogin(String userPhone, String code, String s, String openid);
 }

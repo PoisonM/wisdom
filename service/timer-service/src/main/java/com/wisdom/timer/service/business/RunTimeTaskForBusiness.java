@@ -25,8 +25,8 @@ public class RunTimeTaskForBusiness {
 
     //每隔60分钟，更新一次公众号的Token
     @Scheduled(cron="0 */60 * * * ?")
-    public void updateCustomerWeixinToken(){
-        weixinServiceClient.updateCustomerWeixinToken();
+    public void updateUserWeixinToken(){
+        weixinServiceClient.updateUserWeixinToken();
     }
 
     //每隔30分钟，将payRecord表中，状态为0的订单，进行状态调整处理

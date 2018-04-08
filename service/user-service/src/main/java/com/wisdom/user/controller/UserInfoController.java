@@ -24,11 +24,11 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping(value = "customer")
+@RequestMapping(value = "user")
 public class UserInfoController {
 
     @Autowired
-    private UserInfoService customerInfoService;
+    private UserInfoService userInfoService;
 
     /**
      * 获取用户头像和手机号
@@ -39,7 +39,7 @@ public class UserInfoController {
     @ResponseBody
     ResponseDTO<UserInfoDTO> getUserInfo() {
         ResponseDTO<UserInfoDTO> responseDTO = new ResponseDTO<>();
-        UserInfoDTO userInfoDTO = customerInfoService.getUserInfoFromRedis();
+        UserInfoDTO userInfoDTO = userInfoService.getUserInfoFromRedis();
         responseDTO.setResponseData(userInfoDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
@@ -53,13 +53,13 @@ public class UserInfoController {
     @ResponseBody
     ResponseDTO<UserInfoDTO> getUserInfoByOpenId(HttpSession session, HttpServletRequest request) {
         ResponseDTO<UserInfoDTO> responseDTO = new ResponseDTO<>();
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getUserOpenId(session,request);
         List<UserInfoDTO> userInfoDTOList = new ArrayList<>();
         if(openId!=null)
         {
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setUserOpenid(openId);
-            userInfoDTOList = customerInfoService.getUserInfo(userInfoDTO);
+            userInfoDTOList = userInfoService.getUserInfo(userInfoDTO);
         }
 
         if(userInfoDTOList.size()>0)
@@ -82,7 +82,7 @@ public class UserInfoController {
     @ResponseBody
     ResponseDTO<String> getUserOpenIdFromSession(HttpSession session, HttpServletRequest request) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getUserOpenId(session,request);
         if(openId!=null)
         {
             responseDTO.setResponseData(openId);
@@ -105,7 +105,7 @@ public class UserInfoController {
     @ResponseBody
     ResponseDTO<PageParamDTO<List<UserBusinessTypeDTO>>>  queryUserBusinessById(@RequestParam String sysUserId) {
         ResponseDTO<PageParamDTO<List<UserBusinessTypeDTO>>> responseDTO = new ResponseDTO<>();
-        PageParamDTO<List<UserBusinessTypeDTO>> userBusinessTypeDTOs = customerInfoService.queryUserBusinessById(sysUserId);
+        PageParamDTO<List<UserBusinessTypeDTO>> userBusinessTypeDTOs = userInfoService.queryUserBusinessById(sysUserId);
         responseDTO.setResponseData(userBusinessTypeDTOs);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
@@ -122,7 +122,7 @@ public class UserInfoController {
     ResponseDTO<PageParamDTO<List<UserInfoDTO>>> queryNextUserById(@RequestParam String sysUserId) {
         ResponseDTO<PageParamDTO<List<UserInfoDTO>>> responseDTO = new ResponseDTO<>();
         PageParamDTO<List<UserInfoDTO>> page = new  PageParamDTO<>();
-        List<UserInfoDTO> userInfoDTOs = customerInfoService.queryNextUserById(sysUserId);
+        List<UserInfoDTO> userInfoDTOs = userInfoService.queryNextUserById(sysUserId);
         page.setResponseData(userInfoDTOs);
         responseDTO.setResponseData(page);
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -140,7 +140,7 @@ public class UserInfoController {
     ResponseDTO<List<UserInfoDTO>> queryParentUserById(@RequestParam String parentUserId) {
         ResponseDTO<List<UserInfoDTO>> responseDTO = new ResponseDTO<>();
         if("" != parentUserId && parentUserId != null ){
-            List<UserInfoDTO> userInfoDTOs = customerInfoService.queryParentUserById(parentUserId);
+            List<UserInfoDTO> userInfoDTOs = userInfoService.queryParentUserById(parentUserId);
             responseDTO.setResponseData(userInfoDTOs);
             responseDTO.setResult(StatusConstant.SUCCESS);
         }else {
@@ -162,7 +162,7 @@ public class UserInfoController {
         String startDate = "1990-01-01";//设定起始时间
         pageParamVoDTO.setStartTime("".equals(pageParamVoDTO.getStartTime()) ? startDate : pageParamVoDTO.getStartTime());
         pageParamVoDTO.setEndTime(CommonUtils.getEndDate(pageParamVoDTO.getEndTime()));
-        PageParamDTO<List<UserInfoDTO>> page = customerInfoService.queryUserInfoDTOByParameters(pageParamVoDTO);
+        PageParamDTO<List<UserInfoDTO>> page = userInfoService.queryUserInfoDTOByParameters(pageParamVoDTO);
         responseDTO.setResponseData(page);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;

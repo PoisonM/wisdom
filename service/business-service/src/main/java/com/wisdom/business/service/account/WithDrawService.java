@@ -49,7 +49,7 @@ public class WithDrawService {
         String withdrawId = withDrawRecordDTO.getWithdrawId();
         String status = withDrawRecordDTO.getStatus();
         String openid = "";
-        String token  = WeixinUtil.getCustomerToken();
+        String token  = WeixinUtil.getUserToken();
         String moneyAmount = String.valueOf(withDrawRecordDTO.getMoneyAmount());
         String time = DateUtils.getDateTime();
 

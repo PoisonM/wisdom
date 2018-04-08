@@ -25,19 +25,16 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    /**
-     * 用户通过微信中的H5，实现手机号绑定登录
-     */
     @RequestMapping(value = "userLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     ResponseDTO<String> userLogin(@RequestBody LoginDTO loginDTO,
-                                      HttpServletRequest request,
-                                      HttpSession session) throws Exception {
+                                  HttpServletRequest request,
+                                  HttpSession session) throws Exception {
         ResponseDTO<String> result = new ResponseDTO<>();
 
         //获取用户的基本信息 todo 需要完成注释部分的代码
-        String openid = WeixinUtil.getCustomerOpenId(session,request);
+        String openid = WeixinUtil.getUserOpenId(session,request);
         if(openid==null||openid.equals(""))
         {
             result.setResult(StatusConstant.FAILURE);
@@ -68,27 +65,66 @@ public class LoginController {
         }
     }
 
+    @RequestMapping(value = "userLoginOut", method = {RequestMethod.POST, RequestMethod.GET})
+    @LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> userLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        String logintoken = request.getHeader("logintoken");
+        if(logintoken==null||logintoken.equals("")){
+            logintoken = request.getSession().getAttribute("token").toString();
+        }
+        String status = loginService.userLoginOut(logintoken,request,response,session);
+        ResponseDTO<String> result = new ResponseDTO<>();
+        result.setResult(StatusConstant.SUCCESS);
+        result.setErrorInfo(status.equals(StatusConstant.LOGIN_OUT) ? "退出登录" : "保持在线");
+        return result;
+    }
+
     @RequestMapping(value = "bossLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     ResponseDTO<String> bossLogin(@RequestBody LoginDTO loginDTO,
-                                      HttpServletRequest request,
-                                      HttpSession session) throws Exception {
-        ResponseDTO<String> result = new ResponseDTO<>();
-
-        return result;
-    }
-
-    @RequestMapping(value = "receptionLogin", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    ResponseDTO<String> receptionLogin(@RequestBody LoginDTO loginDTO,
                                   HttpServletRequest request,
                                   HttpSession session) throws Exception {
         ResponseDTO<String> result = new ResponseDTO<>();
 
+        String openid = WeixinUtil.getBossOpenId(session,request);
+        if(openid==null||openid.equals(""))
+        {
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("没有openid，请在微信公众号中注册登录");
+            return result;
+        }
+
+        String loginResult = loginService.bossLogin(loginDTO.getUserPhone(), loginDTO.getCode(), request.getRemoteAddr().toString(),openid);
+
         return result;
     }
+
+    @RequestMapping(value = "clerkLogin", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<String> clerkLogin(@RequestBody LoginDTO loginDTO,
+                                  HttpServletRequest request,
+                                  HttpSession session) throws Exception {
+        ResponseDTO<String> result = new ResponseDTO<>();
+
+        String openid = WeixinUtil.getBossOpenId(session,request);
+        if(openid==null||openid.equals(""))
+        {
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("没有openid，请在微信公众号中注册登录");
+            return result;
+        }
+
+        String loginResult = loginService.clerkLogin(loginDTO.getUserPhone(), loginDTO.getCode(), request.getRemoteAddr().toString(),openid);
+
+
+        return result;
+    }
+
+
 
     @RequestMapping(value = "managerLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -113,25 +149,6 @@ public class LoginController {
             result.setResponseData(loginResult);
             return result;
         }
-    }
-
-    /**
-     * 退出登录
-     */
-    @RequestMapping(value = "userLoginOut", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
-    public
-    @ResponseBody
-    ResponseDTO<UserInfoDTO> userLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-        String logintoken = request.getHeader("logintoken");
-        if(logintoken==null||logintoken.equals("")){
-            logintoken=request.getSession().getAttribute("token").toString();
-        }
-        String status = loginService.userLoginOut(logintoken,request,response,session);
-        ResponseDTO<UserInfoDTO> result = new ResponseDTO<>();
-        result.setResult(StatusConstant.SUCCESS);
-        result.setErrorInfo(status.equals(StatusConstant.LOGIN_OUT) ? "退出登录" : "保持在线");
-        return result;
     }
 
     /**

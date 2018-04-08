@@ -54,8 +54,8 @@ public class PayFunction {
         {
             float totalMoney = 0;
             String productName = "";
-            String token = WeixinUtil.getCustomerToken();
-            String url = ConfigConstant.CUSTOMER_WEB_URL + "orderManagement/1";
+            String token = WeixinUtil.getUserToken();
+            String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
             String userId = "";
             for(PayRecordDTO payRecordDTO:payRecordDTOList)
             {
@@ -140,7 +140,7 @@ public class PayFunction {
 
     @Transactional(rollbackFor = Exception.class)
     public void updateReturnMoneyDataBase(String parentUserId, String userRuleType, String parentRuleType, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO) {
-        String token = WeixinUtil.getCustomerToken();
+        String token = WeixinUtil.getUserToken();
         try{
 
             //计算提成给上一级用户ruleType对应店的钱
