@@ -78,7 +78,6 @@ public class AppointmentController {
 		//根据时间查询当前店下所有美容师
 		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
-
 		if (judgeNull(responseDTO, preLog, clerkInfo)) return responseDTO;
 		logger.info(preLog+"根据时间查询当前店下所有美容师个数={}",clerkInfo.size());
 
@@ -98,6 +97,9 @@ public class AppointmentController {
 				if("3".equals(settingDTO.getTypeName())){
 					responseMap.put("startTime",settingDTO.getStartTime());
 					responseMap.put("endTime",settingDTO.getEndTime());
+				} else {
+					responseMap.put("startTime", "9:00");
+					responseMap.put("endTime", "23:00");
 				}
 			}
 		}
