@@ -423,6 +423,30 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    .state('beautyProjectList', {
+                        url: '/beautyProjectList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyProjectListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyProjectListCtrl',
+                                    ['js/controllers/beauty/beautyProjectListCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyProjectList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('beautyClerkList', {
+                        url: '/beautyClerkList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyClerkListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyClerkListCtrl',
+                                    ['js/controllers/beauty/beautyClerkListCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyClerkList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
                 
 
                 $urlRouterProvider.otherwise('/shopHome')
