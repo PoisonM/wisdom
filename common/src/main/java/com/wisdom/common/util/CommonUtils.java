@@ -169,10 +169,6 @@ public class CommonUtils {
 		return responseStr.toString();
 	}
 
-	public static void main(String[] args) {
-		System.out.println(getArrayNo("01:00","10:00") );
-	}
-
 	/**
 	 * objectIsNotEmpty:(判断Object不为空). <br/>
 	 *

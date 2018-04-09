@@ -11,7 +11,7 @@ import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.WithDrawRecordDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.UserBankCardInfoDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.persistence.Page;
 import com.wisdom.common.util.*;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.wisdom.beauty.controller.work;
 
-import com.wisdom.beauty.core.service.WorkService;
+import com.wisdom.beauty.core.service.ShopWorkService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.dto.beauty.ShopMemberAttendacneDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -18,7 +18,7 @@ import java.util.List;
 public class ShopMemberAttendanceController {
 
 	@Resource
-	private WorkService workService;
+	private ShopWorkService workService;
 
 	//获取门店某天的业绩
 	@RequestMapping(value = "shopMemberAttendanceAnalyzeByDate", method = {RequestMethod.POST, RequestMethod.GET})

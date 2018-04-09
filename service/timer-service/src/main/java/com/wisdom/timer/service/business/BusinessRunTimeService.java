@@ -5,7 +5,7 @@ import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.transaction.MonthlyIncomeSignalDTO;

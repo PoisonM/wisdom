@@ -1,22 +1,26 @@
 package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
-import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
-import com.wisdom.beauty.core.service.ProjectService;
+import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: ProjectController
@@ -32,7 +36,7 @@ public class ProjectController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private ProjectService projectService;
+	private ShopProjectService projectService;
 
 	/**
 	 * 查询某个用户预约项目列表信息
@@ -54,7 +58,7 @@ public class ProjectController {
 		ShopUserProjectRelationDTO ShopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
 		ShopUserProjectRelationDTO.setShopAppointmentId(appointment);
 
-		List<ShopUserProjectRelationDTO> projectList = projectService.getUserAppointmentProjectList(ShopUserProjectRelationDTO);
+        List<ShopUserProjectRelationDTO> projectList = projectService.getUserProjectList(ShopUserProjectRelationDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(projectList);
 
@@ -130,44 +134,36 @@ public class ProjectController {
 
 
 	/**
-     * 查询某个用户的疗程卡列表信息
+     * 查询某个用户的卡片列表信息
 	 * @param sysUserId
      * @param sysShopId
-     * @param startDate
-     * @param endDate
+     * @param cardStyle 0 查询疗程卡  1 查询单次卡
      * @return
      */
 	@RequestMapping(value = "getUserCourseProjectList", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopUserProductRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId,
-																		   @RequestParam String sysShopId,
-																		   @RequestParam String startDate,
-																		   @RequestParam String endDate) {
-		ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
+    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId,
+                                                                           @RequestParam String sysShopId, @RequestParam String cardStyle) {
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
+        ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
 
-		return  responseDTO;
-	}
+        ShopUserProjectRelationDTO relationDTO = new ShopUserProjectRelationDTO();
+        relationDTO.setSysUserId(sysUserId);
+        relationDTO.setSysShopId(sysShopId);
+        relationDTO.setUseStyle(cardStyle);
+        List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
+        if (CommonUtils.objectIsNotEmpty(userProjectList)) {
+            logger.debug("查询某个用户的卡片列表信息为空, {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
+            return null;
+        }
 
-	/**
-     * 查询某个用户的单次卡列表信息
-	 * @param sysUserId
-     * @param sysShopId
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-	@RequestMapping(value = "getUserSingleProjectList", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
-	public
-	@ResponseBody
-	ResponseDTO<List<ShopUserProductRelationDTO>> getUserSingleProjectList(@RequestParam String sysUserId,
-																		   @RequestParam String sysShopId,
-																		   @RequestParam String startDate,
-																		   @RequestParam String endDate) {
-		ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(userProjectList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
 
+        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return  responseDTO;
 	}
 
@@ -175,8 +171,6 @@ public class ProjectController {
 	 * 查询某个用户的套卡列表信息
 	 * @param sysUserId
 	 * @param sysShopId
-	 * @param startDate
-	 * @param endDate
 	 * @return
 	 */
 	@RequestMapping(value = "getUserProjectGroupList", method = {RequestMethod.POST, RequestMethod.GET})
@@ -184,11 +178,52 @@ public class ProjectController {
 	public
 	@ResponseBody
 	ResponseDTO<List<ShopUserProjectGroupRelRelationDTO>> getUserProjectGroupList(@RequestParam String sysUserId,
-																				  @RequestParam String sysShopId,
-																				  @RequestParam String startDate,
-																				  @RequestParam String endDate) {
+																				  @RequestParam String sysShopId) {
 		ResponseDTO<List<ShopUserProjectGroupRelRelationDTO>> responseDTO = new ResponseDTO<>();
 
+		if (StringUtils.isBlank(sysShopId) || StringUtils.isBlank(sysUserId)) {
+			logger.debug("查询某个用户的套卡列表信息传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
+			return null;
+		}
+
+		//查询用户的套卡信息
+		ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
+		List<ShopUserProjectGroupRelRelationDTO> userCollectionCardProjectList = projectService.getUserCollectionCardProjectList(shopUserProjectGroupRelRelationDTO);
+
+		Map<String, String> helperMap = new HashMap<>(16);
+
+		//套卡主键保存到helperMap中
+		if (CommonUtils.objectIsNotEmpty(userCollectionCardProjectList)) {
+			for (ShopUserProjectGroupRelRelationDTO dto : userCollectionCardProjectList) {
+				helperMap.put(dto.getShopProjectGroupId(), dto.getShopProjectGroupId());
+			}
+		}
+
+		ArrayList<Object> returnList = new ArrayList<>();
+		if (CommonUtils.objectIsNotEmpty(helperMap)) {
+			//遍历每个项目组
+			for (Map.Entry entry : helperMap.entrySet()) {
+				//套卡map
+				HashMap<Object, Object> map = new HashMap<>(6);
+				//套卡总金额
+				BigDecimal bigDecimal = new BigDecimal(0);
+				//套卡名称
+				String projectGroupName = null;
+				ArrayList<Object> arrayList = new ArrayList<>();
+				for (ShopUserProjectGroupRelRelationDTO dto : userCollectionCardProjectList) {
+					if (entry.getKey().equals(dto.getShopProjectGroupId())) {
+						arrayList.add(dto);
+						bigDecimal = bigDecimal.add(new BigDecimal(dto.getProjectInitAmount()));
+						projectGroupName = dto.getShopProjectGroupName();
+					}
+				}
+				map.put("projectList", arrayList);
+				map.put("totalAmount", bigDecimal);
+				map.put("projectGroupName", projectGroupName);
+				returnList.add(map);
+			}
+		}
+		
 		return  responseDTO;
 	}
 

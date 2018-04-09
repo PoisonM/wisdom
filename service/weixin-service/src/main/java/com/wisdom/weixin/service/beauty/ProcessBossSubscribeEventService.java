@@ -3,7 +3,7 @@ package com.wisdom.weixin.service.beauty;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.BonusFlagDTO;
 import com.wisdom.common.dto.wexin.WeixinAttentionDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;

@@ -455,6 +455,146 @@ public class ShopRechargeCardCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andDiscountDescIsNull() {
+            addCriterion("discount_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescIsNotNull() {
+            addCriterion("discount_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescEqualTo(String value) {
+            addCriterion("discount_desc =", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescNotEqualTo(String value) {
+            addCriterion("discount_desc <>", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescGreaterThan(String value) {
+            addCriterion("discount_desc >", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescGreaterThanOrEqualTo(String value) {
+            addCriterion("discount_desc >=", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescLessThan(String value) {
+            addCriterion("discount_desc <", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescLessThanOrEqualTo(String value) {
+            addCriterion("discount_desc <=", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescLike(String value) {
+            addCriterion("discount_desc like", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescNotLike(String value) {
+            addCriterion("discount_desc not like", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescIn(List<String> values) {
+            addCriterion("discount_desc in", values, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescNotIn(List<String> values) {
+            addCriterion("discount_desc not in", values, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescBetween(String value1, String value2) {
+            addCriterion("discount_desc between", value1, value2, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescNotBetween(String value1, String value2) {
+            addCriterion("discount_desc not between", value1, value2, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdIsNull() {
+            addCriterion("sys_shop_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdIsNotNull() {
+            addCriterion("sys_shop_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdEqualTo(String value) {
+            addCriterion("sys_shop_id =", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotEqualTo(String value) {
+            addCriterion("sys_shop_id <>", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdGreaterThan(String value) {
+            addCriterion("sys_shop_id >", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_shop_id >=", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLessThan(String value) {
+            addCriterion("sys_shop_id <", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_shop_id <=", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLike(String value) {
+            addCriterion("sys_shop_id like", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotLike(String value) {
+            addCriterion("sys_shop_id not like", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdIn(List<String> values) {
+            addCriterion("sys_shop_id in", values, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotIn(List<String> values) {
+            addCriterion("sys_shop_id not in", values, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdBetween(String value1, String value2) {
+            addCriterion("sys_shop_id between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotBetween(String value1, String value2) {
+            addCriterion("sys_shop_id not between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
         public Criteria andIntroduceIsNull() {
             addCriterion("introduce is null");
             return (Criteria) this;

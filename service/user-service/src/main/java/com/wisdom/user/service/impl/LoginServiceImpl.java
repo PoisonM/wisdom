@@ -3,11 +3,15 @@ package com.wisdom.user.service.impl;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.user.SysBossDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.system.LoginDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
 import com.wisdom.common.util.*;
-import com.wisdom.user.mapper.CustomerInfoMapper;
+import com.wisdom.user.mapper.SysBossMapper;
+import com.wisdom.user.mapper.SysClerkMapper;
+import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -29,35 +33,26 @@ import java.util.UUID;
 public class LoginServiceImpl implements LoginService{
 
     @Autowired
-    private CustomerInfoMapper userMapper;
+    private UserInfoMapper userMapper;
+
+    @Autowired
+    private SysBossMapper sysBossMapper;
+
+    @Autowired
+    private SysClerkMapper sysClerkMapper;
 
     @Autowired
     protected MongoTemplate mongoTemplate;
 
     private Gson gson = new Gson();
 
-    public String userLogin(String phone, String code, String loginIP, String openId) throws Exception {
+    @Override
+    public String userLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception {
 
         //判断validateCode是否还有效
-        Query query = new Query().addCriteria(Criteria.where("mobile").is(phone))
-                .addCriteria(Criteria.where("code").is(code));
-        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
-        List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
-        if(data==null)
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
-        }
-        else
-        {
-            ValidateCodeDTO validateCodeDTO = data.get(0);
-            Date dateStr = validateCodeDTO.getCreateDate();
-            long period =  (new Date()).getTime() - dateStr.getTime();
-
-            //验证码过了5分钟了
-            if(period>300000)
-            {
-                return  StatusConstant.VALIDATECODE_ERROR;
-            }
         }
 
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
@@ -65,7 +60,7 @@ public class LoginServiceImpl implements LoginService{
         userInfoDTO.setUserOpenid(openId);
         //userInfoDTO.setMobile(phone);
         List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
-        RedisLock redisLock = new RedisLock("userInfo"+phone);
+        RedisLock redisLock = new RedisLock("userInfo" + loginDTO.getUserPhone());
         try {
             redisLock.lock();
 
@@ -75,12 +70,12 @@ public class LoginServiceImpl implements LoginService{
                 if(userInfoDTO.getMobile()==null)
                 {
                     //用户曾经绑定过手机号，更新用户登录信息
-                    userInfoDTO.setMobile(phone);
+                    userInfoDTO.setMobile(loginDTO.getUserPhone());
                     userInfoDTO.setLoginDate(new Date());
                     userInfoDTO.setLoginIp(loginIP);
                     userMapper.updateUserInfo(userInfoDTO);
                 }
-                else if(userInfoDTO.getMobile().equals(phone))
+                else if(userInfoDTO.getMobile().equals(loginDTO.getUserPhone()))
                 {
                     userInfoDTO.setLoginDate(new Date());
                     userInfoDTO.setLoginIp(loginIP);
@@ -107,7 +102,8 @@ public class LoginServiceImpl implements LoginService{
         JedisUtils.set(logintoken,userInfoStr, ConfigConstant.logintokenPeriod);
         return logintoken;
     }
-    
+
+    @Override
     public String userLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         String openId = WeixinUtil.getUserOpenId(session,request);
         JedisUtils.del(logintoken);
@@ -116,6 +112,7 @@ public class LoginServiceImpl implements LoginService{
         return StatusConstant.LOGIN_OUT;
     }
 
+    @Override
     public String managerLogin(String userPhone, String code) {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setMobile(userPhone);
@@ -135,15 +132,235 @@ public class LoginServiceImpl implements LoginService{
     }
 
     @Override
-    public String bossLogin(LoginDTO loginDTO, String s, String openid)
+    public String bossMobileLogin(LoginDTO loginDTO, String loginIP, String openId)
     {
-        return null;
+        //判断validateCode是否还有效
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+
+        //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
+        SysBossDTO sysBossDTO = new SysBossDTO();
+        sysBossDTO.setUserOpenid(openId);
+        List<SysBossDTO> sysBossDTOList = sysBossMapper.getBossInfo(sysBossDTO);
+        RedisLock redisLock = new RedisLock("bossInfo"+loginDTO.getUserPhone());
+        try {
+            redisLock.lock();
+
+            if(sysBossDTOList.size()>0)
+            {
+                sysBossDTO = sysBossDTOList.get(0);
+                if(sysBossDTO.getMobile()==null)
+                {
+                    //用户曾经绑定过手机号，更新用户登录信息
+                    sysBossDTO.setMobile(loginDTO.getUserPhone());
+                    sysBossDTO.setLoginDate(new Date());
+                    sysBossDTO.setLoginIp(loginIP);
+                    sysBossMapper.updateBossInfo(sysBossDTO);
+                }
+                else if(sysBossDTO.getMobile().equals(loginDTO.getUserPhone()))
+                {
+                    sysBossDTO.setLoginDate(new Date());
+                    sysBossDTO.setLoginIp(loginIP);
+                    sysBossMapper.updateUserInfo(sysBossDTO);
+                }
+                else
+                {
+                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            redisLock.unlock();
+        }
+
+        sysBossDTO.setNickname(CommonUtils.nameDecoder(sysBossDTO.getNickname()));
+
+        //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
+        String logintoken = UUID.randomUUID().toString();
+        String bossInfoStr = gson.toJson(sysBossDTO);
+        JedisUtils.set(logintoken,bossInfoStr, ConfigConstant.logintokenPeriod);
+        return logintoken;
     }
 
     @Override
-    public String clerkLogin(LoginDTO loginDTO, String s, String openid)
+    public String bossWebLogin(LoginDTO loginDTO, String loginIP)
     {
-        return null;
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+
+        //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
+        SysBossDTO sysBossDTO = new SysBossDTO();
+        sysBossDTO.setMobile(loginDTO.getUserPhone());
+        List<SysBossDTO> sysBossDTOList = sysBossMapper.getBossInfo(sysBossDTO);
+        RedisLock redisLock = new RedisLock("bossInfo" + loginDTO.getUserPhone());
+        try {
+            redisLock.lock();
+            if(sysBossDTOList.size()>0)
+            {
+                sysBossDTO = sysBossDTOList.get(0);
+                if(sysBossDTO.getMobile()==null)
+                {
+                    //用户曾经绑定过手机号，更新用户登录信息
+                    sysBossDTO.setMobile(loginDTO.getUserPhone());
+                    sysBossDTO.setLoginDate(new Date());
+                    sysBossDTO.setLoginIp(loginIP);
+                    sysBossMapper.updateBossInfo(sysBossDTO);
+                }
+                else
+                {
+                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            redisLock.unlock();
+        }
+
+        sysBossDTO.setNickname(CommonUtils.nameDecoder(sysBossDTO.getNickname()));
+
+        //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
+        String logintoken = UUID.randomUUID().toString();
+        String bossInfoStr = gson.toJson(sysBossDTO);
+        JedisUtils.set(logintoken,bossInfoStr, ConfigConstant.logintokenPeriod);
+        return logintoken;
     }
 
+    @Override
+    public String ClerkMobileLogin(LoginDTO loginDTO, String loginIP, String openId) {
+        //判断validateCode是否还有效
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+
+        //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
+        SysClerkDTO sysClerkDTO = new SysClerkDTO();
+        sysClerkDTO.setUserOpenid(openId);
+        List<SysClerkDTO> sysClerkDTOList = sysClerkMapper.getClerkInfo(sysClerkDTO);
+        RedisLock redisLock = new RedisLock("clerkInfo" + loginDTO.getUserPhone());
+        try {
+            redisLock.lock();
+
+            if(sysClerkDTOList.size()>0)
+            {
+                sysClerkDTO = sysClerkDTOList.get(0);
+                if(sysClerkDTO.getMobile()==null)
+                {
+                    //用户曾经绑定过手机号，更新用户登录信息
+                    sysClerkDTO.setMobile(loginDTO.getUserPhone());
+                    sysClerkDTO.setLoginDate(new Date());
+                    sysClerkDTO.setLoginIp(loginIP);
+                    sysClerkMapper.updateClerkInfo(sysClerkDTO);
+                }
+                else if(sysClerkDTO.getMobile().equals(loginDTO.getUserPhone()))
+                {
+                    sysClerkDTO.setLoginDate(new Date());
+                    sysClerkDTO.setLoginIp(loginIP);
+                    sysClerkMapper.updateClerkInfo(sysClerkDTO);
+                }
+                else
+                {
+                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            redisLock.unlock();
+        }
+
+        sysClerkDTO.setNickname(CommonUtils.nameDecoder(sysClerkDTO.getNickname()));
+
+        //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
+        String logintoken = UUID.randomUUID().toString();
+        String clerkInfoStr = gson.toJson(sysClerkDTO);
+        JedisUtils.set(logintoken,clerkInfoStr, ConfigConstant.logintokenPeriod);
+        return logintoken;
+    }
+
+    @Override
+    public String ClerkWebLogin(LoginDTO loginDTO, String loginIP) {
+
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+
+        //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
+        SysClerkDTO sysClerkDTO = new SysClerkDTO();
+        sysClerkDTO.setMobile(loginDTO.getUserPhone());
+        List<SysClerkDTO> sysClerkDTOList = sysClerkMapper.getClerkInfo(sysClerkDTO);
+        RedisLock redisLock = new RedisLock("clerkInfo" + loginDTO.getUserPhone());
+        try {
+            redisLock.lock();
+            if(sysClerkDTOList.size()>0)
+            {
+                sysClerkDTO = sysClerkDTOList.get(0);
+                if(sysClerkDTO.getMobile()==null)
+                {
+                    //用户曾经绑定过手机号，更新用户登录信息
+                    sysClerkDTO.setMobile(loginDTO.getUserPhone());
+                    sysClerkDTO.setLoginDate(new Date());
+                    sysClerkDTO.setLoginIp(loginIP);
+                    sysClerkMapper.updateClerkInfo(sysClerkDTO);
+                }
+                else
+                {
+                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            redisLock.unlock();
+        }
+
+        sysClerkDTO.setNickname(CommonUtils.nameDecoder(sysClerkDTO.getNickname()));
+
+        //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
+        String logintoken = UUID.randomUUID().toString();
+        String clerkInfoStr = gson.toJson(sysClerkDTO);
+        JedisUtils.set(logintoken,clerkInfoStr, ConfigConstant.logintokenPeriod);
+        return logintoken;
+    }
+
+    private String processValidateCode(LoginDTO loginDTO)
+    {
+        //判断validateCode是否还有效
+        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()))
+                .addCriteria(Criteria.where("code").is(loginDTO.getCode()));
+        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
+        List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
+        if(data==null)
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+        else
+        {
+            ValidateCodeDTO validateCodeDTO = data.get(0);
+            Date dateStr = validateCodeDTO.getCreateDate();
+            long period =  (new Date()).getTime() - dateStr.getTime();
+
+            //验证码过了5分钟了
+            if(period>300000)
+            {
+                return  StatusConstant.VALIDATECODE_ERROR;
+            }
+        }
+        return StatusConstant.SUCCESS;
+    }
 }

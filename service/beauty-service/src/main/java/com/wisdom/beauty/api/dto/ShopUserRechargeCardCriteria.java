@@ -615,6 +615,206 @@ public class ShopUserRechargeCardCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andDiscountIsNull() {
+            addCriterion("discount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountIsNotNull() {
+            addCriterion("discount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountEqualTo(Float value) {
+            addCriterion("discount =", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountNotEqualTo(Float value) {
+            addCriterion("discount <>", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountGreaterThan(Float value) {
+            addCriterion("discount >", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountGreaterThanOrEqualTo(Float value) {
+            addCriterion("discount >=", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountLessThan(Float value) {
+            addCriterion("discount <", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountLessThanOrEqualTo(Float value) {
+            addCriterion("discount <=", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountIn(List<Float> values) {
+            addCriterion("discount in", values, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountNotIn(List<Float> values) {
+            addCriterion("discount not in", values, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountBetween(Float value1, Float value2) {
+            addCriterion("discount between", value1, value2, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountNotBetween(Float value1, Float value2) {
+            addCriterion("discount not between", value1, value2, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIsNull() {
+            addCriterion("detail is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIsNotNull() {
+            addCriterion("detail is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEqualTo(String value) {
+            addCriterion("detail =", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotEqualTo(String value) {
+            addCriterion("detail <>", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailGreaterThan(String value) {
+            addCriterion("detail >", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailGreaterThanOrEqualTo(String value) {
+            addCriterion("detail >=", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLessThan(String value) {
+            addCriterion("detail <", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLessThanOrEqualTo(String value) {
+            addCriterion("detail <=", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLike(String value) {
+            addCriterion("detail like", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotLike(String value) {
+            addCriterion("detail not like", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIn(List<String> values) {
+            addCriterion("detail in", values, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotIn(List<String> values) {
+            addCriterion("detail not in", values, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailBetween(String value1, String value2) {
+            addCriterion("detail between", value1, value2, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotBetween(String value1, String value2) {
+            addCriterion("detail not between", value1, value2, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescIsNull() {
+            addCriterion("discount_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescIsNotNull() {
+            addCriterion("discount_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescEqualTo(String value) {
+            addCriterion("discount_desc =", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescNotEqualTo(String value) {
+            addCriterion("discount_desc <>", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescGreaterThan(String value) {
+            addCriterion("discount_desc >", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescGreaterThanOrEqualTo(String value) {
+            addCriterion("discount_desc >=", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescLessThan(String value) {
+            addCriterion("discount_desc <", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescLessThanOrEqualTo(String value) {
+            addCriterion("discount_desc <=", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescLike(String value) {
+            addCriterion("discount_desc like", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescNotLike(String value) {
+            addCriterion("discount_desc not like", value, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescIn(List<String> values) {
+            addCriterion("discount_desc in", values, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescNotIn(List<String> values) {
+            addCriterion("discount_desc not in", values, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescBetween(String value1, String value2) {
+            addCriterion("discount_desc between", value1, value2, "discountDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountDescNotBetween(String value1, String value2) {
+            addCriterion("discount_desc not between", value1, value2, "discountDesc");
+            return (Criteria) this;
+        }
+
         public Criteria andSurplusAmountIsNull() {
             addCriterion("surplus_amount is null");
             return (Criteria) this;

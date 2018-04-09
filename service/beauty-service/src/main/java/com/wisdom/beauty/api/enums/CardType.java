@@ -6,7 +6,9 @@ public enum CardType {
     MONTH_CARD("1", "月卡"),
     SEASON_CARD("2", "季卡"),
     HALF_YEAR_CARD("3", "半年卡"),
-    YEAR_CARD("4", "年卡");
+    YEAR_CARD("4", "年卡"),
+    TREATMENT_CARD("0", "疗程卡"),
+    ONE_TIME_CARD("1", "单次"),;
 
     CardType(String code, String desc) {
         this.code = code;

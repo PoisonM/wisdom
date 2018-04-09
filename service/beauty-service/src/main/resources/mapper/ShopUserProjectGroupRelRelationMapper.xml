@@ -3,6 +3,8 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper">
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO">
     <result column="id" property="id" jdbcType="VARCHAR"/>
+    <result column="shop_project_group_name" property="shopProjectGroupName" jdbcType="VARCHAR"/>
+    <result column="shop_project_group_id" property="shopProjectGroupId" jdbcType="VARCHAR"/>
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
     <result column="shop_project_info_group_relation_id" property="shopProjectInfoGroupRelationId" jdbcType="VARCHAR"/>
     <result column="project_init_times" property="projectInitTimes" jdbcType="INTEGER"/>
@@ -75,9 +77,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sys_user_id, shop_project_info_group_relation_id, project_init_times, project_surplus_times, 
-    project_init_amount, project_surplus_amount, sys_shop_id, sys_boss_id, create_by, 
-    create_date, update_user, update_date
+    id, shop_project_group_name, shop_project_group_id, sys_user_id, shop_project_info_group_relation_id,
+    project_init_times, project_surplus_times, project_init_amount, project_surplus_amount,
+    sys_shop_id, sys_boss_id, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationCriteria">
@@ -104,13 +106,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO">
-    insert into shop_user_project_group_rel_relation (id, sys_user_id, shop_project_info_group_relation_id, 
+    insert into shop_user_project_group_rel_relation (id, shop_project_group_name, shop_project_group_id,
+    sys_user_id, shop_project_info_group_relation_id,
       project_init_times, project_surplus_times, 
       project_init_amount, project_surplus_amount, 
       sys_shop_id, sys_boss_id, create_by, 
       create_date, update_user, update_date
       )
-    values (#{id,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{shopProjectGroupName,jdbcType=VARCHAR}, #{shopProjectGroupId,jdbcType=VARCHAR},
+    #{sysUserId,jdbcType=VARCHAR}, #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR},
       #{projectInitTimes,jdbcType=INTEGER}, #{projectSurplusTimes,jdbcType=INTEGER}, 
       #{projectInitAmount,jdbcType=DECIMAL}, #{projectSurplusAmount,jdbcType=DECIMAL}, 
       #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
@@ -122,6 +126,12 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="shopProjectGroupName != null">
+        shop_project_group_name,
+      </if>
+      <if test="shopProjectGroupId != null">
+        shop_project_group_id,
       </if>
       <if test="sysUserId != null">
         sys_user_id,
@@ -163,6 +173,12 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="shopProjectGroupName != null">
+        #{shopProjectGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopProjectGroupId != null">
+        #{shopProjectGroupId,jdbcType=VARCHAR},
       </if>
       <if test="sysUserId != null">
         #{sysUserId,jdbcType=VARCHAR},
@@ -215,6 +231,12 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.shopProjectGroupName != null">
+        shop_project_group_name = #{record.shopProjectGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopProjectGroupId != null">
+        shop_project_group_id = #{record.shopProjectGroupId,jdbcType=VARCHAR},
+      </if>
       <if test="record.sysUserId != null">
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       </if>
@@ -259,6 +281,8 @@
   <update id="updateByCriteria" parameterType="map">
     update shop_user_project_group_rel_relation
     set id = #{record.id,jdbcType=VARCHAR},
+    shop_project_group_name = #{record.shopProjectGroupName,jdbcType=VARCHAR},
+    shop_project_group_id = #{record.shopProjectGroupId,jdbcType=VARCHAR},
     sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       shop_project_info_group_relation_id = #{record.shopProjectInfoGroupRelationId,jdbcType=VARCHAR},
       project_init_times = #{record.projectInitTimes,jdbcType=INTEGER},

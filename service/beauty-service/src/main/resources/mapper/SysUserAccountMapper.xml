@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wisdom.beauty.core.mapper.SysUserAccountMapper">
-  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.SysUserAccount">
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.SysUserAccountDTO">
     <id column="id" property="id" jdbcType="VARCHAR"/>
     <result column="sum_amount" property="sumAmount" jdbcType="DECIMAL"/>
     <result column="arrears" property="arrears" jdbcType="DECIMAL"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
     <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
     <result column="account_number" property="accountNumber" jdbcType="VARCHAR"/>
     <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sum_amount, arrears, sys_shop_id, sys_boss_id, account_number, create_by, create_date, 
-    update_user, update_date
+    id, sum_amount, arrears, sys_shop_id, sys_boss_id, sys_user_id, account_number, create_by,
+    create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.SysUserAccountCriteria">
@@ -109,17 +110,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.SysUserAccount">
-    insert into sys_user_account (id, sum_amount, arrears, 
-      sys_shop_id, sys_boss_id, account_number, 
-      create_by, create_date, update_user, 
-      update_date)
-    values (#{id,jdbcType=VARCHAR}, #{sumAmount,jdbcType=DECIMAL}, #{arrears,jdbcType=DECIMAL}, 
-      #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{accountNumber,jdbcType=VARCHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
+    insert into sys_user_account (id, sum_amount, arrears,
+    sys_shop_id, sys_boss_id, sys_user_id,
+    account_number, create_by, create_date,
+    update_user, update_date)
+    values (#{id,jdbcType=VARCHAR}, #{sumAmount,jdbcType=DECIMAL}, #{arrears,jdbcType=DECIMAL},
+    #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR},
+    #{accountNumber,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccount">
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
     insert into sys_user_account
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -136,6 +137,9 @@
       </if>
       <if test="sysBossId != null">
         sys_boss_id,
+      </if>
+      <if test="sysUserId != null">
+        sys_user_id,
       </if>
       <if test="accountNumber != null">
         account_number,
@@ -168,6 +172,9 @@
       </if>
       <if test="sysBossId != null">
         #{sysBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUserId != null">
+        #{sysUserId,jdbcType=VARCHAR},
       </if>
       <if test="accountNumber != null">
         #{accountNumber,jdbcType=VARCHAR},
@@ -211,6 +218,9 @@
       <if test="record.sysBossId != null">
         sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
       </if>
+      <if test="record.sysUserId != null">
+        sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+      </if>
       <if test="record.accountNumber != null">
         account_number = #{record.accountNumber,jdbcType=VARCHAR},
       </if>
@@ -238,6 +248,7 @@
       arrears = #{record.arrears,jdbcType=DECIMAL},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+    sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       account_number = #{record.accountNumber,jdbcType=VARCHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
@@ -247,7 +258,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccount">
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
     update sys_user_account
     <set>
       <if test="sumAmount != null">
@@ -261,6 +272,9 @@
       </if>
       <if test="sysBossId != null">
         sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUserId != null">
+        sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       </if>
       <if test="accountNumber != null">
         account_number = #{accountNumber,jdbcType=VARCHAR},
@@ -280,12 +294,13 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.SysUserAccount">
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
     update sys_user_account
     set sum_amount = #{sumAmount,jdbcType=DECIMAL},
       arrears = #{arrears,jdbcType=DECIMAL},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+    sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       account_number = #{accountNumber,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

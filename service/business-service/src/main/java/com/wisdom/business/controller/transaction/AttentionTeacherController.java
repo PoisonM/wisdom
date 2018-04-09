@@ -1,13 +1,11 @@
 package com.wisdom.business.controller.transaction;
 
-import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

@@ -1,12 +1,6 @@
 package com.wisdom.weixin.client;
 
-import com.wisdom.common.dto.account.AccountDTO;
-import com.wisdom.common.dto.account.IncomeRecordDTO;
-import com.wisdom.common.dto.account.WithDrawRecordDTO;
-import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
-import com.wisdom.common.dto.system.UserOrderAddressDTO;
-import com.wisdom.common.dto.wexin.WeixinShareDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

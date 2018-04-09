@@ -1,0 +1,12 @@
+<div class="selectCouponsWrap">
+    <ul>
+        <li ng-repeat="item in selectCouponsData" ng-click="clickMoney($index)">
+                <p class="pt22 pl12 voucher">{{item.name}}</p>
+                <p class="flR mr10 clearfix"><span class="fs13 c99">剩余</span><span class="cf66 fs13" >￥</span><span class="cf66 fs32">{{item.money}}</span></p>
+                <p class="pt22 pl12">
+                <input type="text"  class="bge5 borderR" placeholder="使用金额:{{param.appearMoney}}">
+                </p><br>
+               <p class="flR c99 mr10 fs11 clearfix ">{{item.date}}</p>
+        </li>
+    </ul>
+</div>

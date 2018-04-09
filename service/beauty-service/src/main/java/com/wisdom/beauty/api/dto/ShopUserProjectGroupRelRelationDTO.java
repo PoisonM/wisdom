@@ -9,6 +9,12 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     //
     private String id;
 
+    //套卡表名称
+    private String shopProjectGroupName;
+
+    //套卡表主键
+    private String shopProjectGroupId;
+
     //
     private String sysUserId;
 
@@ -53,6 +59,22 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getShopProjectGroupName() {
+        return shopProjectGroupName;
+    }
+
+    public void setShopProjectGroupName(String shopProjectGroupName) {
+        this.shopProjectGroupName = shopProjectGroupName;
+    }
+
+    public String getShopProjectGroupId() {
+        return shopProjectGroupId;
+    }
+
+    public void setShopProjectGroupId(String shopProjectGroupId) {
+        this.shopProjectGroupId = shopProjectGroupId;
     }
 
     public String getSysUserId() {

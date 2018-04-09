@@ -103,7 +103,7 @@ angular.module('customerGlobal',[])
                 buriedPoint:function(bar){
                     if($rootScope.userOpenId==null)
                     {
-                        $http.get('/business/system/getUserOpenIdFromSession').success(function(data) {
+                        $http.get('/user/customer/getUserOpenIdFromSession').success(function(data) {
                             $rootScope.userOpenId = data.responseData;
                             //if(data.result==Global.SUCCESS)
                             {
@@ -124,7 +124,7 @@ angular.module('customerGlobal',[])
                 twoParameters:function(bar,id){
                     if($rootScope.userOpenId==null)
                     {
-                        $http.get('/business/system/getUserOpenIdFromSession').success(function(data) {
+                        $http.get('/user/customer/getUserOpenIdFromSession').success(function(data) {
                             $rootScope.userOpenId = data.responseData;
                             if(data.result==Global.SUCCESS)
                             {

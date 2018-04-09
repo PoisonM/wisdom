@@ -339,7 +339,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "添加顾客",
-                        files: [root + "appointment/addCustomers.js",
+                        files: [root + "appointment/addCustomersCtrl.js",
                             root + "appointment/addCustomers.css",
                         ]
                     })
@@ -414,8 +414,38 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "选择顾客",
-                        files: [root + "appointment/selectCustomers.js",
+                        files: [root + "appointment/selectCustomersCtrl.js",
                             root + "appointment/selectCustomers.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.customerSignature', {
+            url: '/customerSignature',
+            templateUrl: root + '/appointment/customerSignature.html',
+            controller: 'customerSignatureCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "顾客签字",
+                        files: [root + "appointment/customerSignatureCtrl.js",
+                            root + "appointment/customerSignature.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.selectCoupons', {
+            url: '/selectCoupons',
+            templateUrl: root + '/appointment/selectCoupons.html',
+            controller: 'selectCouponsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "选择优惠券",
+                        files: [root + "appointment/selectCouponsCtrl.js",
+                            root + "appointment/selectCoupons.css",
                         ]
                     })
                 }]
@@ -599,6 +629,15 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/modifyingAppointmentCtrl.js",
                             root + "appointment/weeklyReservationCtrl.js",
                             root + "appointment/weeklyReservation.css",
+                            root + "appointment/selectCustomers.css",
+                            root + "appointment/selectCustomersCtrl.js",
+                            root + "appointment/addCustomers.css",
+                            root + "appointment/addCustomersCtrl.js",
+                            root + "appointment/newProject.css",
+                            root + "appointment/newProjectCtrl.js",
+                            root + "appointment/timeLength.css",
+                            root + "appointment/timeLengthCtrl.js",
+
 
                         ]
                     })
@@ -679,6 +718,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         files: [root + "appointment/newProjectCtrl.js",
                             root + "appointment/appointmentType.css",
                             root + "appointment/newProject.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.attendance', {
+            url: '/attendance',
+            templateUrl: root + '/attendance/attendance.html',
+            controller: 'attendanceCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "考勤",
+                        files: [root + "attendance/attendanceCtrl.js",
+                            root + "./appointment/appointmentType.css",
+                            root + "attendance/attendance.css",
                         ]
                     })
                 }]

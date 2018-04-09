@@ -10,6 +10,7 @@
     <result column="project_type_one_id" property="projectTypeOneId" jdbcType="VARCHAR"/>
     <result column="project_type_two_id" property="projectTypeTwoId" jdbcType="VARCHAR"/>
     <result column="product_type" property="productType" jdbcType="CHAR"/>
+    <result column="use_style" property="useStyle" jdbcType="CHAR"/>
     <result column="card_type" property="cardType" jdbcType="CHAR"/>
     <result column="project_url" property="projectUrl" jdbcType="VARCHAR"/>
     <result column="project_duration" property="projectDuration" jdbcType="INTEGER"/>
@@ -85,10 +86,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sys_shop_id, project_name, project_type_one_name, project_type_two_name, project_type_one_id, 
-    project_type_two_id, product_type, card_type, project_url, project_duration, market_price, 
-    discount_price, max_contain_times, visit_date_time, once_price, function_intr, is_display, 
-    status, create_by, create_date, update_user, update_date
+    id, sys_shop_id, project_name, project_type_one_name, project_type_two_name, project_type_one_id,
+    project_type_two_id, product_type, use_style, card_type, project_url, project_duration,
+    market_price, discount_price, max_contain_times, visit_date_time, once_price, function_intr,
+    is_display, status, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoCriteria">
@@ -128,21 +129,21 @@
     insert into shop_project_info (id, sys_shop_id, project_name,
     project_type_one_name, project_type_two_name,
     project_type_one_id, project_type_two_id, product_type,
-    card_type, project_url, project_duration,
-    market_price, discount_price, max_contain_times,
-    visit_date_time, once_price, function_intr,
-    is_display, status, create_by,
-    create_date, update_user, update_date
-    )
+    use_style, card_type, project_url,
+    project_duration, market_price, discount_price,
+    max_contain_times, visit_date_time, once_price,
+    function_intr, is_display, status,
+    create_by, create_date, update_user,
+    update_date)
     values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
     #{projectTypeOneName,jdbcType=VARCHAR}, #{projectTypeTwoName,jdbcType=VARCHAR},
     #{projectTypeOneId,jdbcType=VARCHAR}, #{projectTypeTwoId,jdbcType=VARCHAR}, #{productType,jdbcType=CHAR},
-    #{cardType,jdbcType=CHAR}, #{projectUrl,jdbcType=VARCHAR}, #{projectDuration,jdbcType=INTEGER},
-    #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, #{maxContainTimes,jdbcType=INTEGER},
-    #{visitDateTime,jdbcType=INTEGER}, #{oncePrice,jdbcType=DECIMAL}, #{functionIntr,jdbcType=VARCHAR},
-    #{isDisplay,jdbcType=CHAR}, #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR},
-    #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-    )
+    #{useStyle,jdbcType=CHAR}, #{cardType,jdbcType=CHAR}, #{projectUrl,jdbcType=VARCHAR},
+    #{projectDuration,jdbcType=INTEGER}, #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL},
+    #{maxContainTimes,jdbcType=INTEGER}, #{visitDateTime,jdbcType=INTEGER}, #{oncePrice,jdbcType=DECIMAL},
+    #{functionIntr,jdbcType=VARCHAR}, #{isDisplay,jdbcType=CHAR}, #{status,jdbcType=CHAR},
+    #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
+    #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
     insert into shop_project_info
@@ -170,6 +171,9 @@
       </if>
       <if test="productType != null">
         product_type,
+      </if>
+      <if test="useStyle != null">
+        use_style,
       </if>
       <if test="cardType != null">
         card_type,
@@ -241,6 +245,9 @@
       </if>
       <if test="productType != null">
         #{productType,jdbcType=CHAR},
+      </if>
+      <if test="useStyle != null">
+        #{useStyle,jdbcType=CHAR},
       </if>
       <if test="cardType != null">
         #{cardType,jdbcType=CHAR},
@@ -323,6 +330,9 @@
       <if test="record.productType != null">
         product_type = #{record.productType,jdbcType=CHAR},
       </if>
+      <if test="record.useStyle != null">
+        use_style = #{record.useStyle,jdbcType=CHAR},
+      </if>
       <if test="record.cardType != null">
         card_type = #{record.cardType,jdbcType=CHAR},
       </if>
@@ -383,6 +393,7 @@
       project_type_one_id = #{record.projectTypeOneId,jdbcType=VARCHAR},
       project_type_two_id = #{record.projectTypeTwoId,jdbcType=VARCHAR},
       product_type = #{record.productType,jdbcType=CHAR},
+    use_style = #{record.useStyle,jdbcType=CHAR},
       card_type = #{record.cardType,jdbcType=CHAR},
       project_url = #{record.projectUrl,jdbcType=VARCHAR},
       project_duration = #{record.projectDuration,jdbcType=INTEGER},
@@ -425,6 +436,9 @@
       </if>
       <if test="productType != null">
         product_type = #{productType,jdbcType=CHAR},
+      </if>
+      <if test="useStyle != null">
+        use_style = #{useStyle,jdbcType=CHAR},
       </if>
       <if test="cardType != null">
         card_type = #{cardType,jdbcType=CHAR},
@@ -483,6 +497,7 @@
       project_type_one_id = #{projectTypeOneId,jdbcType=VARCHAR},
       project_type_two_id = #{projectTypeTwoId,jdbcType=VARCHAR},
       product_type = #{productType,jdbcType=CHAR},
+    use_style = #{useStyle,jdbcType=CHAR},
       card_type = #{cardType,jdbcType=CHAR},
       project_url = #{projectUrl,jdbcType=VARCHAR},
       project_duration = #{projectDuration,jdbcType=INTEGER},

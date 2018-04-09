@@ -43,7 +43,7 @@ public class LoginController {
             return result;
         }
 
-        String loginResult = loginService.userLogin(loginDTO.getUserPhone(), loginDTO.getCode(), request.getRemoteAddr().toString(),openid);
+        String loginResult = loginService.userLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
         {
@@ -89,6 +89,7 @@ public class LoginController {
                                   HttpServletRequest request,
                                   HttpSession session) throws Exception {
         ResponseDTO<String> result = new ResponseDTO<>();
+        String loginResult = "";
 
         String openid = WeixinUtil.getBossOpenId(session,request);
         if((openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
@@ -97,8 +98,15 @@ public class LoginController {
             result.setErrorInfo("没有openid，请在微信公众号中注册登录");
             return result;
         }
+        else if(!(openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
+        {
+            loginResult = loginService.bossMobileLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
-        String loginResult = loginService.bossLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+        }
+        else if((openid==null||openid.equals(""))&&!loginDTO.getSource().equals("mobile"))
+        {
+            loginResult = loginService.bossWebLogin(loginDTO, request.getRemoteAddr().toString());
+        }
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
         {
@@ -123,6 +131,7 @@ public class LoginController {
                                   HttpServletRequest request,
                                   HttpSession session) throws Exception {
         ResponseDTO<String> result = new ResponseDTO<>();
+        String loginResult = "";
 
         String openid = WeixinUtil.getBossOpenId(session,request);
         if((openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
@@ -131,8 +140,15 @@ public class LoginController {
             result.setErrorInfo("没有openid，请在微信公众号中注册登录");
             return result;
         }
+        else if(!(openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
+        {
+            loginResult = loginService.ClerkMobileLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
-        String loginResult = loginService.clerkLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+        }
+        else if((openid==null||openid.equals(""))&&!loginDTO.getSource().equals("mobile"))
+        {
+            loginResult = loginService.ClerkWebLogin(loginDTO, request.getRemoteAddr().toString());
+        }
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
         {
@@ -148,8 +164,6 @@ public class LoginController {
             return result;
         }
     }
-
-
 
     @RequestMapping(value = "managerLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -182,11 +196,11 @@ public class LoginController {
     @RequestMapping(value = "getUserValidateCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO getUserValidateCode(@RequestBody UserInfoDTO userInfoDto) {
+    ResponseDTO getUserValidateCode(@RequestParam String mobile) {
         ResponseDTO result = new ResponseDTO<>();
         try
         {
-            SMSUtil.sendUserValidateCode(userInfoDto.getMobile());
+            SMSUtil.sendUserValidateCode(mobile);
             result.setResult(StatusConstant.SUCCESS);
         }
         catch (Exception e)

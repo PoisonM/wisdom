@@ -1,9 +1,9 @@
 package com.wisdom.tinglao.service.impl;
 
 import com.wisdom.beauty.BeautyServiceApplication;
-import com.wisdom.beauty.api.dto.ShopAppointService;
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
-import com.wisdom.beauty.core.service.AppointmentService;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ public class BeautyServiceImplTest {
     private ShopAppointServiceMapper shopAppointServiceMapper;
 
     @Resource
-    private AppointmentService appointmentService;
+    private ShopAppointmentService appointmentService;
 
     @Test
     public void initOrderShouldReturnInitializedOrder() throws Exception {
-        ShopAppointService shopAppointServiceDTO = new ShopAppointService();
+        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
         shopAppointServiceDTO.setAppointEndTime(new Date());
         shopAppointServiceDTO.setId("24234");
         shopAppointServiceMapper.insert(shopAppointServiceDTO);

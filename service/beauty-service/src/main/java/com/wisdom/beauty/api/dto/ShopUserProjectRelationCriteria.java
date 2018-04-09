@@ -335,6 +335,76 @@ public class ShopUserProjectRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andUseStyleIsNull() {
+            addCriterion("use_style is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleIsNotNull() {
+            addCriterion("use_style is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleEqualTo(String value) {
+            addCriterion("use_style =", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleNotEqualTo(String value) {
+            addCriterion("use_style <>", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleGreaterThan(String value) {
+            addCriterion("use_style >", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleGreaterThanOrEqualTo(String value) {
+            addCriterion("use_style >=", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleLessThan(String value) {
+            addCriterion("use_style <", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleLessThanOrEqualTo(String value) {
+            addCriterion("use_style <=", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleLike(String value) {
+            addCriterion("use_style like", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleNotLike(String value) {
+            addCriterion("use_style not like", value, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleIn(List<String> values) {
+            addCriterion("use_style in", values, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleNotIn(List<String> values) {
+            addCriterion("use_style not in", values, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleBetween(String value1, String value2) {
+            addCriterion("use_style between", value1, value2, "useStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseStyleNotBetween(String value1, String value2) {
+            addCriterion("use_style not between", value1, value2, "useStyle");
+            return (Criteria) this;
+        }
+
         public Criteria andSysShopIdIsNull() {
             addCriterion("sys_shop_id is null");
             return (Criteria) this;

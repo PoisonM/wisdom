@@ -4,7 +4,7 @@
 .newProject .btnLis button{height:0.562rem;width:2.797rem;outline: none;box-sizing: border-box;border:solid #ff6666 1px; color: #ff6666;
     background: #ffffff;}
 .newProject .btnLis .btnActive { background: #ff6666; color: #ffffff; }
-.newProject .ml-5{margin-left:-5px;}
+.newProject .ml-6{margin-left:-6px;}
 .newProject .btrr8{border-top-right-radius:0.0625rem; }
 .newProject .btlr8{border-top-left-radius:0.0625rem; }
 .newProject .bbrr8{border-bottom-right-radius:0.0625rem; }
