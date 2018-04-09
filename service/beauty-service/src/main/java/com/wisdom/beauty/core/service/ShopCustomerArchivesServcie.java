@@ -21,7 +21,7 @@ public interface ShopCustomerArchivesServcie {
      * @Description: 根据美容院条件查询档案数量
      * @Date:2018/4/3 16:44
      */
-    int getArchivesCount(String sysShopId);
+    int getArchivesCount(ShopUserArchivesDTO shopUserArchivesDTO);
 
     /**
      * @Author:huan

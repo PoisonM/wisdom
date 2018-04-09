@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesServcie;
 import com.wisdom.beauty.core.service.SysUserAccountService;
+import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +56,14 @@ public class ArchivesController {
         //查询数据
         List<ShopUserArchivesDTO> list=shopCustomerArchivesServcie.getArchivesList(pageParamVoDTO);
         //查询个数
-        int count=shopCustomerArchivesServcie.getArchivesCount(sysShopId);
+        int count=shopCustomerArchivesServcie.getArchivesCount(shopUserArchivesDTO);
         Map<String,Object> map=new HashMap<>(16);
         map.put("info",list);
-        map.put("count",count);
+        map.put("data",count);
 
         ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(map);
+        responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
 
@@ -81,6 +83,7 @@ public class ArchivesController {
         if(customerAccountResponseDto!=null){
             responseDTO.setResponseData(customerAccountResponseDto);
         }
+        responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
 
