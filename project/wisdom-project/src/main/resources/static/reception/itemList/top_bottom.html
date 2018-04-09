@@ -32,9 +32,25 @@
 
 
         <!--登录头部-->
-
         <div ng-if="mainSwitch.headerLoginFlag" class="header_box">
             <div class="header_login">登录</div>
+        </div>
+
+        <!--价目表头部-->
+        <div ng-if = "mainSwitch.headerPriceListAllFlag" class="header_box">
+            <div ng-if = "!mainSwitch.headerPriceListBlackFlag" class="header_price_box">
+                <span class="header_price_left"><i></i>{{param.headerPrice.backContent}}</span>
+                <div class="header_price_right">{{param.headerPrice.title}}</div>
+            </div>
+            <div ng-if = "mainSwitch.headerPriceListBlackFlag" class="header_price_box">
+                <div class="header_price_black_l">
+
+                </div>
+                <div class="header_price_black_r">
+                    <div class="black_r_title">{{param.headerPrice.blackTitle}}</div>
+                    <span class="black_r_search"><i></i>{{param.headerPrice.blackBackContent}}</span>
+                </div>
+            </div>
         </div>
     </div>
 

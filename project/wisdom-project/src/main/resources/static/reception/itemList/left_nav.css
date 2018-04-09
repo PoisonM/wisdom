@@ -6,6 +6,9 @@
     font-family: PingFangSC-Regular;
     overflow: hidden;
 }
+.left_nav_price_list{
+    padding-left: 1.546875rem;
+}
 .left_nav .left_nav_box{
     width: 4.96875rem;
     height: 100%;
@@ -108,3 +111,52 @@
     width: 0.09375rem;
     height: 0.1875rem;
 }
+
+/*--------------*/
+.left_nav .price_list{
+    width: 1.546875rem;
+    background-color: #262535;
+}
+.left_nav .price_list ul li{
+    height: 1.546875rem;
+    line-height: 1.546875rem;
+    text-align: center;
+    background-color: #262535;
+    color: #5f5e6f;
+    font-size: 0.234375rem;
+    font-family: PingFangSC-Medium;
+    position: relative;
+    padding-top: 0.3125rem;
+}
+.left_nav .price_list ul li i{
+    position: absolute;
+    top: 0.328125rem;
+    left: 0.515625rem;
+    background: url(../images/appointment_price_sprite.png) no-repeat;
+    display: inline-block;
+    width: 0.546875rem;
+    height: 0.546875rem;
+    background-size: 13.359375rem 10.609375rem;
+    background-position: -7.234375rem -0.25rem;
+}
+.left_nav .price_list ul .select_price_type{
+    background-color: #444564;
+    color: #ffffff;
+}
+.left_nav .price_list ul .select_price_type i{
+    background-position-y: -1.140625rem !important;
+}
+.left_nav .price_list ul li:nth-child(1) i{
+    background-position: -7.171875rem -0.25rem;
+}
+.left_nav .price_list ul li:nth-child(2) i{
+    background-position: -8.515625rem -0.25rem;
+}
+.left_nav .price_list ul li:nth-child(3) i{
+    background-position: -9.84375rem -0.25rem;
+}
+.left_nav .price_list ul li:nth-child(4) i{
+    background-position: -11.21875rem -0.25rem;
+}
+
+
