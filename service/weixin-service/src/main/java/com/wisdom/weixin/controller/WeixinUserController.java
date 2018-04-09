@@ -4,7 +4,7 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.wexin.WeixinConfigDTO;
 import com.wisdom.common.dto.wexin.WeixinShareDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
@@ -13,7 +13,7 @@ import com.wisdom.common.util.*;
 import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
 import com.wisdom.weixin.interceptor.LoginRequired;
-import com.wisdom.weixin.service.user.WeixinCustomerCoreService;
+import com.wisdom.weixin.service.user.WeixinUserCoreService;
 import com.wisdom.weixin.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -45,7 +45,7 @@ import java.util.List;
 public class WeixinUserController {
 
     @Autowired
-    private WeixinCustomerCoreService weixinCustomerCoreService;
+    private WeixinUserCoreService weixinCustomerCoreService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -121,7 +121,7 @@ public class WeixinUserController {
 
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                "appid="+ ConfigConstant.CUTOMER_CORPID +
+                "appid="+ ConfigConstant.USER_CORPID +
                 "&secret=" + ConfigConstant.USER_SECRET +
                 "&code="+ code +
                 "&grant_type=authorization_code";

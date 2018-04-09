@@ -1,22 +1,28 @@
-package com.wisdom.common.dto.customer;
+package com.wisdom.common.dto.user;
 
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class SysBossDTO extends BaseEntity implements Serializable {
+public class SysClerkDTO extends BaseEntity implements Serializable {
     //
     private String id;
+
+    //
+    private String sysBossId;
+
+    //
+    private String sysShopId;
 
     //user表主键
     private String sysUserId;
 
-    //
-    private String name;
-
     //昵称
     private String nickname;
+
+    //
+    private String name;
 
     //密码
     private String password;
@@ -51,12 +57,6 @@ public class SysBossDTO extends BaseEntity implements Serializable {
     //删除标记，1表示用户是否已经剔除系统，0表示用户是系统内的正常用户
     private String delFlag;
 
-    //身份证正面
-    private String idFrontImage;
-
-    //身份证反面
-    private String idBackImage;
-
     //
     private String address;
 
@@ -70,6 +70,22 @@ public class SysBossDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
+    public String getSysBossId() {
+        return sysBossId;
+    }
+
+    public void setSysBossId(String sysBossId) {
+        this.sysBossId = sysBossId;
+    }
+
+    public String getSysShopId() {
+        return sysShopId;
+    }
+
+    public void setSysShopId(String sysShopId) {
+        this.sysShopId = sysShopId;
+    }
+
     public String getSysUserId() {
         return sysUserId;
     }
@@ -78,20 +94,20 @@ public class SysBossDTO extends BaseEntity implements Serializable {
         this.sysUserId = sysUserId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getNickname() {
         return nickname;
     }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -180,22 +196,6 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
-    }
-
-    public String getIdFrontImage() {
-        return idFrontImage;
-    }
-
-    public void setIdFrontImage(String idFrontImage) {
-        this.idFrontImage = idFrontImage;
-    }
-
-    public String getIdBackImage() {
-        return idBackImage;
-    }
-
-    public void setIdBackImage(String idBackImage) {
-        this.idBackImage = idBackImage;
     }
 
     public String getAddress() {

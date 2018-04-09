@@ -2,7 +2,7 @@ package com.wisdom.beauty.controller.card;
 
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
-import com.wisdom.beauty.core.service.CardService;
+import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -31,7 +31,7 @@ import java.util.List;
 public class CardController {
 
 	@Resource
-	private CardService cardService;
+	private ShopCardService cardService;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**

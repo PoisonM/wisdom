@@ -1,66 +1,68 @@
-package com.wisdom.common.dto.customer;
+package com.wisdom.common.dto.user;
 
-import com.wisdom.common.entity.BaseEntity;
+import com.alibaba.fastjson.annotation.JSONField;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class SysClerkDTO extends BaseEntity implements Serializable {
-    //
+public class UserInfoDTO<T> {
+
+    @JSONField(name = "id")
     private String id;
 
-    //
-    private String sysBossId;
-
-    //
-    private String sysShopId;
-
-    //user表主键
-    private String sysUserId;
-
-    //昵称
+    @JSONField(name = "nickname")
     private String nickname;
 
-    //
-    private String name;
-
-    //密码
+    @JSONField(name = "password")
     private String password;
 
-    //
+    @JSONField(name = "email")
     private String email;
 
     //身份证号
+    @JSONField(name = "identifyNumber")
     private String identifyNumber;
 
-    //手机号
+    @JSONField(name = "mobile")
     private String mobile;
 
-    //用户类型
+    @JSONField(name = "userType")
     private String userType;
 
-    //微信openId
+    @JSONField(name = "userOpenid")
     private String userOpenid;
 
-    //关注状态
+    @JSONField(name = "parentUserId")
+    private String parentUserId;
+
+    @JSONField(name = "weixinAttentionStatus")
     private String weixinAttentionStatus;
 
-    //照片
+    @JSONField(name = "photo")
     private String photo;
 
-    //登陆id地址
+    @JSONField(name = "loginIp")
     private String loginIp;
 
-    //登陆时间
+    @JSONField(name = "loginDate")
     private Date loginDate;
 
-    //删除标记，1表示用户是否已经剔除系统，0表示用户是系统内的正常用户
+    @JSONField(name = "createDate")
+    private Date createDate;
+
+    @JSONField(name = "beginTime")
+    private Date beginTime;
+
+    @JSONField(name = "livingPeriod")
+    private int livingPeriod;
+
+    @JSONField(name = "delFlag")
     private String delFlag;
 
-    //
-    private String address;
+    @JSONField(name = "extendUserType")
+    private String extendUserType;
 
-    private static final long serialVersionUID = 1L;
+    @JSONField(name = "extendUserInfoDTO")
+    private T extendUserInfoDTO;
 
     public String getId() {
         return id;
@@ -70,44 +72,12 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
-    }
-
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
-    }
-
-    public String getSysShopId() {
-        return sysShopId;
-    }
-
-    public void setSysShopId(String sysShopId) {
-        this.sysShopId = sysShopId;
-    }
-
-    public String getSysUserId() {
-        return sysUserId;
-    }
-
-    public void setSysUserId(String sysUserId) {
-        this.sysUserId = sysUserId;
-    }
-
     public String getNickname() {
         return nickname;
     }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {
@@ -158,6 +128,14 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
         this.userOpenid = userOpenid;
     }
 
+    public String getParentUserId() {
+        return parentUserId;
+    }
+
+    public void setParentUserId(String parentUserId) {
+        this.parentUserId = parentUserId;
+    }
+
     public String getWeixinAttentionStatus() {
         return weixinAttentionStatus;
     }
@@ -190,6 +168,14 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
         this.loginDate = loginDate;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
     public String getDelFlag() {
         return delFlag;
     }
@@ -198,11 +184,35 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
         this.delFlag = delFlag;
     }
 
-    public String getAddress() {
-        return address;
+    public Date getBeginTime() {
+        return beginTime;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public int getLivingPeriod() {
+        return livingPeriod;
+    }
+
+    public void setLivingPeriod(int livingPeriod) {
+        this.livingPeriod = livingPeriod;
+    }
+
+    public String getExtendUserType() {
+        return extendUserType;
+    }
+
+    public void setExtendUserType(String extendUserType) {
+        this.extendUserType = extendUserType;
+    }
+
+    public T getExtendUserInfoDTO() {
+        return extendUserInfoDTO;
+    }
+
+    public void setExtendUserInfoDTO(T extendUserInfoDTO) {
+        this.extendUserInfoDTO = extendUserInfoDTO;
     }
 }

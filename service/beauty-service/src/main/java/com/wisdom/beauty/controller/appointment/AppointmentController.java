@@ -6,11 +6,11 @@ import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
-import com.wisdom.beauty.core.service.AppointmentService;
-import com.wisdom.beauty.core.service.WorkService;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.beauty.core.service.ShopWorkService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.customer.SysClerkDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -40,13 +40,13 @@ public class AppointmentController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Resource
-	private AppointmentService appointmentService;
+	private ShopAppointmentService appointmentService;
 
 	@Resource
 	private UserServiceClient userServiceClient;
 
 	@Resource
-	private WorkService workService;
+	private ShopWorkService workService;
 
     @Resource
     private RedisUtils redisUtils;
@@ -130,7 +130,7 @@ public class AppointmentController {
 				shopAppointMap.put("appointmentInfo",appointInfoList);
 				shopAppointMap.put("point",shopAppointServiceDTOS.size());
 			}
-			responseMap.put(SysClerkDTO.getUserName(), shopAppointMap);
+			responseMap.put(SysClerkDTO.getName(), shopAppointMap);
 		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -182,7 +182,7 @@ public class AppointmentController {
                 Set<String> stringSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
                         DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate));
 
-                logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getUserName(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
+                logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getName(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
 
                 if (CommonUtils.objectIsEmpty(stringSet)) {
                     continue;
@@ -204,7 +204,7 @@ public class AppointmentController {
                 loopDate = DateUtils.dateInc(loopDate);
             }
 
-            returnMap.put(clerkDTO.getUserName(), arrayList);
+            returnMap.put(clerkDTO.getName(), arrayList);
         }
 
         responseDTO.setResult(StatusConstant.SUCCESS);

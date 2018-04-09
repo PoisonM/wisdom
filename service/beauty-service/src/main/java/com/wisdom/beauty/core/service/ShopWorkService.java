@@ -11,7 +11,7 @@ import java.util.List;
  * Date:     2018/4/3 0003 15:06
  * Description: 店员相关
  */
-public interface WorkService {
+public interface ShopWorkService {
 
     /**
      * 查看某个店的上下班时间

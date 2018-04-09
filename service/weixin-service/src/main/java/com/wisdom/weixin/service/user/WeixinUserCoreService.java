@@ -1,7 +1,7 @@
 package com.wisdom.weixin.service.user;
 
 import com.wisdom.common.constant.ConfigConstant;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.wexin.WeixinShareDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.ReceiveXmlEntity;
@@ -26,19 +26,19 @@ import java.util.Date;
  */
 @Service
 @Transactional(readOnly = false)
-public class WeixinCustomerCoreService {
+public class WeixinUserCoreService {
 
     @Autowired
-    ProcessUserViewEventService processCustomerClickViewEvent;
+    ProcessUserViewEventService processUserClickViewEvent;
 
     @Autowired
-    ProcessUserScanEventService processCustomerScanEventService;
+    ProcessUserScanEventService processUserScanEventService;
 
     @Autowired
-    ProcessUserSubscribeEventService processCustomerSubscribeEventService;
+    ProcessUserSubscribeEventService processUserSubscribeEventService;
 
     @Autowired
-    ProcessUserClickEventService processCustomerClickEventService;
+    ProcessUserClickEventService processUserClickEventService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -59,27 +59,27 @@ public class WeixinCustomerCoreService {
             if(eventType.equals(MessageUtil.SCAN))
             {
                 //已关注公众号的情况下扫描
-                processCustomerScanEventService.processEvent(xmlEntity);
+                processUserScanEventService.processEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE))
             {
                 //扫描关注公众号或者搜索关注公众号都在其中
-                processCustomerSubscribeEventService.processSubscribeEvent(xmlEntity);
+                processUserSubscribeEventService.processSubscribeEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE))
             {
                 // 取消订阅
-                processCustomerSubscribeEventService.processUnSubscribeEvent(xmlEntity);
+                processUserSubscribeEventService.processUnSubscribeEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK))
             {
                 // 自定义菜单点击事件
-                respMessage = processCustomerClickEventService.processEvent(xmlEntity,request,response);
+                respMessage = processUserClickEventService.processEvent(xmlEntity,request,response);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_VIEW))
             {
                 //点击带URL菜单事件
-                processCustomerClickViewEvent.processEvent(xmlEntity);
+                processUserClickViewEvent.processEvent(xmlEntity);
             }
         }
         else
@@ -98,7 +98,7 @@ public class WeixinCustomerCoreService {
     public void updateUserWeixinToken(){
         try {
             System.out.print("用户端微信参数更新");
-            String token = WeixinUtil.getUserTokenFromTX(ConfigConstant.CUTOMER_CORPID, ConfigConstant.USER_SECRET);
+            String token = WeixinUtil.getUserTokenFromTX(ConfigConstant.USER_CORPID, ConfigConstant.USER_SECRET);
             if(StringUtils.isNotNull(token)) {
                 String ticket = WeixinUtil.getJsapiTicket(token);
                 Query query = new Query().addCriteria(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));

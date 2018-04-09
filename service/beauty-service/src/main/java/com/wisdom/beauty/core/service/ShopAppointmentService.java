@@ -12,7 +12,7 @@ import java.util.List;
  * Date:     2018/4/3 0003 15:06
  * Description: 预约相关
  */
-public interface AppointmentService {
+public interface ShopAppointmentService {
 
     /**
      * 根据时间查询查询某个店的有预约号源的美容师列表

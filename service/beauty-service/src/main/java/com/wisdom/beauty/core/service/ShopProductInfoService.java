@@ -1,6 +1,9 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
+import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+
+import java.util.List;
 
 /**
  * ClassName: ShopProductInfoService
@@ -20,5 +23,11 @@ public interface ShopProductInfoService {
      */
     ShopProductInfoDTO getShopProductInfo(String id);
 
-
+    /**
+     * 获取用户的产品信息
+     *
+     * @param shopUserProductRelationDTO
+     * @return
+     */
+    List<ShopUserProductRelationDTO> getUserProductInfoList(ShopUserProductRelationDTO shopUserProductRelationDTO);
 }

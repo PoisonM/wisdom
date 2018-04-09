@@ -5,7 +5,7 @@ import com.wisdom.beauty.api.dto.ShopAppointService;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
-import com.wisdom.beauty.core.service.AppointmentService;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.SpringUtil;
@@ -37,7 +37,7 @@ public class AppointmentTest {
     private ShopAppointServiceMapper shopAppointServiceMapper;
 
     @Resource
-    private AppointmentService appointmentService;
+    private ShopAppointmentService appointmentService;
 
     @Resource
     private RedisUtils redisUtils;

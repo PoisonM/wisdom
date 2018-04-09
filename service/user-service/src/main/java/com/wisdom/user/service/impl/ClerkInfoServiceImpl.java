@@ -1,7 +1,7 @@
 package com.wisdom.user.service.impl;
 
-import com.wisdom.common.dto.customer.SysClerkCriteria;
-import com.wisdom.common.dto.customer.SysClerkDTO;
+import com.wisdom.common.dto.user.SysClerkCriteria;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.user.mapper.SysClerkMapper;
 import com.wisdom.user.service.ClerkInfoService;

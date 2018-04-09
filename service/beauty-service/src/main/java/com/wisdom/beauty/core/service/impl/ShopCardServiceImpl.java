@@ -3,7 +3,7 @@ package com.wisdom.beauty.core.service.impl;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.core.mapper.ShopUserRechargeCardMapper;
-import com.wisdom.beauty.core.service.CardService;
+import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.List;
  * Description: 工作相关
  */
 @Service("cardService")
-public class CardServiceImpl implements CardService {
+public class ShopCardServiceImpl implements ShopCardService {
 
     @Autowired
     public ShopUserRechargeCardMapper shopUserRechargeCardMapper;

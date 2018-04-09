@@ -8,7 +8,7 @@ import com.wisdom.beauty.api.enums.CardType;
 import com.wisdom.beauty.api.enums.CommonCode;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectRelationMapper;
-import com.wisdom.beauty.core.service.ProjectService;
+import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ import java.util.List;
  * Description: 工作相关
  */
 @Service("projectService")
-public class ProjectServiceImpl implements ProjectService {
+public class ShopProjectServiceImpl implements ShopProjectService {
 
     @Autowired
     public ShopUserProjectRelationMapper shopUserProjectRelationMapper;
