@@ -4,12 +4,9 @@ package com.wisdom.beauty.controller.archives;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesServcie;
-
-
-import com.wisdom.beauty.core.service.SysUserAccountServcie;
+import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +28,7 @@ public class ArchivesController {
     @Autowired
     private ShopCustomerArchivesServcie shopCustomerArchivesServcie;
     @Autowired
-    private SysUserAccountServcie sysUserAccountServcie;
+    private SysUserAccountService sysUserAccountService;
 
 
     /**
@@ -80,7 +77,7 @@ public class ArchivesController {
     ResponseDTO<CustomerAccountResponseDto> findArchive(@PathVariable String userId) {
 
         ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
-        CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountServcie.getSysAccountListByUserId(userId);
+        CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
         if(customerAccountResponseDto!=null){
             responseDTO.setResponseData(customerAccountResponseDto);
         }

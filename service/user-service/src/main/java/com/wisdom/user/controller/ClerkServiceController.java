@@ -3,8 +3,9 @@
  */
 package com.wisdom.user.controller;
 
-import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.user.service.ClerkInfoService;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import java.util.List;
  * Description: 预约相关
  */
 @RestController
-public class ClerkInfoController {
+public class ClerkServiceController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -35,9 +36,8 @@ public class ClerkInfoController {
      * @return
      */
     @RequestMapping(value = "getClerkInfo", method = {RequestMethod.POST, RequestMethod.GET})
-    public
     @ResponseBody
-    List<SysClerkDTO> getClerkInfo(@RequestBody String shopId) {
+    List<SysClerkDTO> getClerkInfo(@RequestParam(value = "shopId") String shopId) {
 
         long startTime = System.currentTimeMillis();
         ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
@@ -48,8 +48,11 @@ public class ClerkInfoController {
         List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(SysClerkDTO);
         if(CommonUtils.objectIsEmpty(clerkInfo)){
             logger.info("获取的店员列表信息为空！");
+            listResponseDTO.setResult(StatusConstant.SUCCESS);
              return null;
         }
+        listResponseDTO.setResponseData(clerkInfo);
+        listResponseDTO.setResult(StatusConstant.SUCCESS);
 
         logger.info("获取店员列表信息耗时{}毫秒",(System.currentTimeMillis()-startTime));
         return clerkInfo;

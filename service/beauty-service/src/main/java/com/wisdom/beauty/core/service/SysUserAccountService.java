@@ -10,7 +10,7 @@ import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
  * @Date:Created in 2018/4/8 17:02
  * @since JDK 1.8
  */
-public interface SysUserAccountServcie {
+public interface SysUserAccountService {
      /**
      *@Author:huan
      *@Param:

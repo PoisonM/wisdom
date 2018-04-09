@@ -5,12 +5,12 @@ import com.wisdom.beauty.api.dto.ShopAppointService;
 import com.wisdom.beauty.api.dto.SysUserAccountCriteria;
 import com.wisdom.beauty.api.dto.SysUserAccountDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
+import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.SysUserAccountMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
-import com.wisdom.beauty.core.service.SysUserAccountServcie;
-import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.user.service.UserInfoService;
+import com.wisdom.beauty.core.service.SysUserAccountService;
+import com.wisdom.common.dto.system.UserInfoDTO;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -29,8 +30,8 @@ import java.util.List;
  * @Date:Created in 2018/4/8 11:03
  * @since JDK 1.8
  */
-@Service("sysCustomerAccountServcie")
-public class SysCustomerAccountServcieImpl implements SysUserAccountServcie {
+@Service("sysUserAccountService")
+public class SysCustomerAccountServiceImpl implements SysUserAccountService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -42,18 +43,18 @@ public class SysCustomerAccountServcieImpl implements SysUserAccountServcie {
     @Autowired
     private ShopAppointmentService appointmentService;
 
-    @Autowired
-    private UserInfoService userInfoService;
+    @Resource
+    private UserServiceClient userServiceClient;
 
     @Override
     public CustomerAccountResponseDto getSysAccountListByUserId(String userId) {
         logger.info("getSysAccountListByUserId方法传入的参数userId={}", userId);
         if (StringUtils.isBlank(userId)) {
-            throw new ServiceException("auserId为空");
+            throw new ServiceException("userId为空");
         }
         //查询用户信息，获取到账户的信息
         CustomerAccountResponseDto customerAccountResponseDto = new CustomerAccountResponseDto();
-        UserInfoDTO userInfoDTO = userInfoService.getUserInfoFromUserId(userId);
+        UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(userId);
         if(userInfoDTO!=null){
             customerAccountResponseDto.setPhoto(userInfoDTO.getPhoto());
             customerAccountResponseDto.setUserName(userInfoDTO.getNickname());

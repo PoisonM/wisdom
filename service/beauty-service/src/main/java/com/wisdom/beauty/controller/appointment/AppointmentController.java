@@ -12,6 +12,7 @@ import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.system.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.LunarUtils;
@@ -59,7 +60,7 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "shopDayAppointmentInfoByDate", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Map<String, Object>> shopDayAppointmentInfoByDate(@RequestParam String sysShopId,
@@ -74,11 +75,13 @@ public class AppointmentController {
 		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(startDate,"datetime"));
 		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(endDate,"datetime"));
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
-
+		UserInfoDTO userInfoDTO = new UserInfoDTO();
+		userServiceClient.getUserInfo(userInfoDTO);
 		//根据时间查询当前店下所有美容师
 		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
-        if (judgeNull(responseDTO, preLog, clerkInfo)) return responseDTO;
+
+		if (judgeNull(responseDTO, preLog, clerkInfo)) return responseDTO;
 		logger.info(preLog+"根据时间查询当前店下所有美容师个数={}",clerkInfo.size());
 
 		HashMap<String, Object> responseMap = new HashMap<>(32);
