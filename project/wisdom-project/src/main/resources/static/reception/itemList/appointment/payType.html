@@ -4,7 +4,7 @@
             <div class="space-between pb20">
                 <p class="leftContent fs32 col333">优惠券</p>
                 <p class="rightContent fs30 col666">当前有6个优惠券
-                   <img src="images/bt_more.png" class="morePic">
+                   <img src="images/bt_more.png" class="morePic" ng-click="selectCoupons()">
                 </p>
             </div>
         </div>
@@ -45,9 +45,9 @@
                 <li class="h100 space-between bte5 bsc">
                     <p><input type="radio" name="payType" class="ml30 mr20" id="card"> <img src="images/bt_price_list_select.png" style="width:20px;height: 20px;" class="mr20">
                         <label for="card">银行卡支付</label> </p>
-                    <p><img src="images/bt_more.png" alt="" class="morePic mr30"></p>
+                    <p><img src="images/bt_more.png" alt="" class="morePic mr30" ng-click="bank()"></p>
                 </li>
-                <li class="h100 bte5 bsc">
+                <li class="h120 bte5 bsc">
                     <p><input type="radio" name="payType" class="ml30 mr20" id="weixin"> <img src="images/bt_price_list_select.png" style="width:20px;height: 20px;" class="mr20">
                         <label for="weixin">微信支付</label> </p>
                 </li>

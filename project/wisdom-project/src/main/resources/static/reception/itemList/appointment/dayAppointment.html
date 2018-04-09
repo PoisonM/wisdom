@@ -66,7 +66,7 @@
                     <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsReservation(4,$index,$event,'散客')">12</li>
                 </ul>
                 <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center">12</li>
+                    <li ng-repeat="item in arrTime" style="text-align: center"    ng-onhold="onHold($index)">12</li>
                 </ul>
 
             </div>
@@ -74,15 +74,6 @@
     </div>
     <!--周预约-->
     <div ng-include="'itemList/appointment/weeklyReservation.html'" ng-show="param.weekFlag"></div>
-</div>
-<!--预约详情-->
-<div class="detailsWrap br36 bgfff " ng-show="param.detailsReservation">
-    <div class="header btlr btrr">
-        <p>预约详情</p>
-        <span class="close"><img src="images/bt_shut%20down.png" ng-click = "detailsReservationPic()"></span>
-    </div>
-    <!--内容-->
-    <div ng-include="'itemList/appointment/detailsReservation.html'"></div>
 </div>
 <!--消费-消费-->
 <div class="consumption w1344  bgf5f5f5 br36" ng-show="param.consumption">
@@ -189,6 +180,46 @@
         </p>
     </div>
     <div ng-include="'itemList/appointment/payType.html'" class="h1465 bblr bbrr"></div>
+</div>
+<!--优惠券-->
+<div class="btrr btlr bgf5f5f5 payType w1344 br36" ng-show="param.selectCoupons">
+    <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
+        <p class="W33 colfff " >
+            <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="consumptionProjuct('selectCoupons',0)">
+            <span>消费</span>
+        </p>
+        <p class="W33 center ">
+            优惠券
+        </p>
+        <p class="W33 ">
+        </p>
+    </div>
+    <div ng-include="'itemList/appointment/selectCoupons.html'" class="h1465 bblr bbrr"></div>
+</div>
+<!--选择银行卡-->
+<div class="btrr btlr bgf5f5f5 payType w1344 br36" ng-show="param.bank">
+    <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
+        <p class="W33 colfff " >
+            <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="consumptionProjuct('bank',0)">
+            <span>消费</span>
+        </p>
+        <p class="W33 center ">
+            银行卡
+        </p>
+        <p class="W33 ">
+        </p>
+    </div>
+    <div class=" h1465 bblr bbrr">
+        <ul class="bgfff">
+            <li class="space-between h100 bte5" ng-repeat="item in [1,2,3]">
+                <p class="fs34 col333">
+                    <img src="images/bt_Single election_nor_.png" class="norPic ml30 mr20">
+                    中国工商银行
+                </p>
+                <p class="col888 fs30 mr30">手续费：3.77元</p>
+            </li>
+        </ul>
+    </div>
 </div>
 <!--余额充值-->
 <div class="btrr btlr bgf5f5f5 payType w1344 br36" ng-show="param.balancePrepaid" >
@@ -367,3 +398,11 @@
     </div>
     <div ng-include="'itemList/appointment/timeLength.html'" class="modifyingWrap bblr bbrr"></div>
 </div>
+<!--
+
+<script type="text/ng-template" id="showMessage">
+    <span>我是sss弹窗</span>
+    <div>
+        <button ng-click="close()">关闭</button>
+    </div>
+</script>-->

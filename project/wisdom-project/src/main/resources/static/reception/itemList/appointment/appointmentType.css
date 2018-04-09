@@ -113,3 +113,4 @@
 .appointmentType .point{background: #ffabab;}
 .appointmentType .row{background: #d6b4ff;margin-top:0.864rem;}
 .next {height:1.5rem;}
+.ngdialog-close{display: none!important;}

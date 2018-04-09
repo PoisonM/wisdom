@@ -1,4 +1,4 @@
-var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize']);
+var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize',"ngTouch"]);
 
 PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterProvider",
     function($provide, $compileProvider, $controllerProvider, $filterProvider) {
@@ -10,6 +10,7 @@ PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterPr
         PADWeb.constant = $provide.constant;
     }
 ]);
+
 PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
     var root = 'itemList/';
     $stateProvider
@@ -637,8 +638,10 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/newProjectCtrl.js",
                             root + "appointment/timeLength.css",
                             root + "appointment/timeLengthCtrl.js",
-
-
+                            root + "appointment/selectCouponsCtrl.js",
+                            root + "appointment/selectCoupons.css",
+                            root + "../libs/angular-touch.js",
+                            root + "../libs/jquery-2.1.3.min.js",
                         ]
                     })
                 }]
@@ -730,7 +733,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "考勤",
+                        name: "新建预约-选择项目",
                         files: [root + "attendance/attendanceCtrl.js",
                             root + "./appointment/appointmentType.css",
                             root + "attendance/attendance.css",

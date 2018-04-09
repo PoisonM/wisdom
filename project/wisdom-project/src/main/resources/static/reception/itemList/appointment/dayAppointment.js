@@ -1,6 +1,6 @@
 PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$filter) {
     console.log("dayAppointment");
-    $scope.date = $filter("date")(Date.parse(new Date()),"yyyy-MM-dd")
+    $scope.date = $filter("date")(Date.parse(new Date()),"yyyy-MM-dd");
     $scope.param = {
         week:[],
         btnActive:['btnActive','common'],
@@ -12,6 +12,8 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         selectProduct:false,/*选择产品*/
         collectionCard:false,/*选择套卡*/
         consumptionNextStep:false,/*消费-消费-下一步*/
+        selectCoupons:false,/*消费-消费-下一步 - 优惠券*/
+        bank:false,/*消费-消费-下一步 - 银行卡*/
         balancePrepaid:false,/*余额充值*/
         relatedStaff:false,/*关联员工*/
         scratchCard:false,/*划卡*/
@@ -62,8 +64,6 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                 content:['全部','保湿']
             }],
     };
-
-
     $scope.time = function (time){
         console.log(1)
         $scope.param.week = [];
@@ -153,11 +153,6 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             $scope.param.dayFlag = true;
         }
     };
-
-
-
-
-
     $scope.mess = {
         name:["李",'王','k'],
         time:[[{
@@ -250,7 +245,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         $scope.param.modifyingAppointment = false;
         $scope.param.appointmentLis = false;
         $scope.param.selectCustomersWrap = false;
-    }
+    };
     //预约详情
     $scope.detailsReservation = function(index1,index2,e,status){
         $scope.param.ModifyAppointment = true;
@@ -292,7 +287,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                $scope.param.individualTravelerAppointment = false;
            }
 
-    }
+    };
     //消费-消费
     $scope.candelConsumption = function(){
         $scope.param.consumption = false;
@@ -347,6 +342,12 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             }else if(status == 'selectBeautician'){
                 $scope.param.selectBeautician = false;
                 $scope.param.modifyingAppointment = true;
+            }else if(status == 'selectCoupons'){
+                $scope.param.selectCoupons = false;
+                $scope.param.consumptionNextStep = true;
+            }else if(status == 'bank'){
+                $scope.param.bank = false;
+                $scope.param.consumptionNextStep = true;
             }
 
 
@@ -406,7 +407,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         $scope.treatmentCardFinish = function(){
             $scope.param.selectTreatmentCard = false;
         }
-    }
+    };
     //消费-选择产品
     $scope.candelSelectProduct = function(){
         $scope.param.selectProduct = false;
@@ -421,15 +422,24 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
     $scope.collectionCardFinish = function(){
         $scope.param.collectionCard = false;
     };
+    //银行卡
+    $scope.bank = function(){
+        $scope.param.bank = true;
+        $scope.param.consumptionNextStep = false;
+    }
     detailsReservation && detailsReservation($scope);
     individualTravelerAppointment && individualTravelerAppointment($scope);
     console.log($scope.param);
-    weeklyReservation && weeklyReservation($scope)
-    /*$scope.nextStepBtnConsumption = function(){
-        $scope.nextStepBtnConsumption
-    }*/
+    weeklyReservation && weeklyReservation($scope);
+    $scope.appointmentData = {"result":"0x00001","errorInfo":null,"responseData":{"安迪":{"appointmentInfo":[{"sysClerkName":"安迪_1","appointStartTime":1522825200000,"updateDate":1522819014000,"sysUserName":"用户名称_1","updateUser":"1","sysClerkId":"1","sysUserPhone":"18810123938","shopProjectId":"项目表主键_1","appointPeriod":60,"createBy":"1","serialVersionUID":1,"sysShopId":"3","scheduling":"30,31","shopProjectName":"项目名称_1","id":"id_1","sysUserId":"用户表主键_1","detail":"1","sysShopName":"汉方美容店_1","appointEndTime":1522828800000,"sysBossId":"老板表主键_1","status":"1","createDate":1522819008000},{"sysClerkName":"安迪_1","appointStartTime":1522828800000,"updateDate":null,"sysUserName":"用户名称_2","updateUser":null,"sysClerkId":"1","sysUserPhone":"18810123938","shopProjectId":"项目表主键_2","appointPeriod":60,"createBy":null,"serialVersionUID":1,"sysShopId":"3","scheduling":"32,33","shopProjectName":"项目名称_2","id":"id_2","sysUserId":"用户表主键_2","detail":null,"sysShopName":"汉方美容店_1","appointEndTime":1522832400000,"sysBossId":"老板表主键_1","status":null,"createDate":1522840937000},{"sysClerkName":"安迪_2","appointStartTime":1522836000000,"updateDate":null,"sysUserName":null,"updateUser":null,"sysClerkId":"1","sysUserPhone":null,"shopProjectId":"项目表主键_3","appointPeriod":null,"createBy":null,"serialVersionUID":1,"sysShopId":"3","scheduling":"","shopProjectName":"项目名称_3","id":"id_3","sysUserId":null,"detail":null,"sysShopName":"汉方美容店_1","appointEndTime":1522836000000,"sysBossId":"老板表主键_1","status":null,"createDate":1522843224000}],"point":3}}}
+    console.log( $scope.appointmentData );
 
+/*长按新建*/
+    $scope.onHold = function (num) {
+        console.log(num);
+    };
 
-})
+});
+
 
 
