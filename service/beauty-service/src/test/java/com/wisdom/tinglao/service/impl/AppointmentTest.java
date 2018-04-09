@@ -91,25 +91,25 @@ public class AppointmentTest {
 
     private ShopAppointServiceDTO getShopAppointServiceDTO() {
         ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
-        shopAppointServiceDTO.setId("6951d1561c5b4cae84fd72283e52a081");
-        shopAppointServiceDTO.setAppointEndTime(new Date());
+        shopAppointServiceDTO.setId("id_8");
+        shopAppointServiceDTO.setAppointEndTime(DateUtils.StrToDate("2018-04-08 11:00:00", "datetime"));
         shopAppointServiceDTO.setAppointPeriod(60);
         shopAppointServiceDTO.setAppointStartTime(new Date());
         shopAppointServiceDTO.setCreateBy(IdGen.uuid());
-        shopAppointServiceDTO.setCreateDate(new Date());
+        shopAppointServiceDTO.setCreateDate(DateUtils.StrToDate("2018-04-08 12:00:00", "datetime"));
         shopAppointServiceDTO.setDetail("测试");
         shopAppointServiceDTO.setShopProjectId(IdGen.uuid());
         shopAppointServiceDTO.setShopProjectName("面部保洁");
         shopAppointServiceDTO.setStatus("0");
         shopAppointServiceDTO.setSysBossId(IdGen.uuid());
-        shopAppointServiceDTO.setSysClerkId("8f4bbff4c1404136a521350c08e31483");
+        shopAppointServiceDTO.setSysClerkId("1");
         shopAppointServiceDTO.setSysUserId(IdGen.uuid());
         shopAppointServiceDTO.setSysClerkName("王五");
         shopAppointServiceDTO.setUpdateUser(IdGen.uuid());
         shopAppointServiceDTO.setSysShopName("汉方美容院");
         shopAppointServiceDTO.setSysUserName("张欢");
         shopAppointServiceDTO.setSysUserPhone("181812839893");
-        shopAppointServiceDTO.setSysShopId("48940be00e634bae86006c4519263906");
+        shopAppointServiceDTO.setSysShopId("3");
         return shopAppointServiceDTO;
     }
 

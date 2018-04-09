@@ -462,7 +462,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 		System.out.println("开始时间：" + calendar.getTime());
-		return DateToStr(calendar.getTime(), "datetime");
+        return DateToStr(calendar.getTime(), "datetimesec");
 	}
 
 	/**
@@ -476,7 +476,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		calendar.set(Calendar.SECOND, 59);
 		calendar.set(Calendar.MILLISECOND, 999);
 		System.out.println("结束时间：" + calendar.getTime());
-		return DateToStr(calendar.getTime(), "datetime");
+        return DateToStr(calendar.getTime(), "datetimesec");
 	}
 
 	/**

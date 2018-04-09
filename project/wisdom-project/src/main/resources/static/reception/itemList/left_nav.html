@@ -1,5 +1,5 @@
-<div class="left_nav">
-    <div class="people_list left_nav_box">
+<div class="left_nav" ng-class="{'left_nav_price_list':mainLeftSwitch.priceListFlag == true}">
+    <div ng-if = "mainLeftSwitch.peopleListFlag" class="left_nav_box people_list ">
         <div class="search">
             <span class="ser_ion"></span>
             <input type="text" placeholder="用户名或者手机号搜索">
@@ -19,8 +19,30 @@
             </ul>
         </div>
     </div>
+    <!--价目表部分-->
+    <div ng-if = "mainLeftSwitch.priceListFlag" class="left_nav_box price_list">
+        <div class="price_list_box">
+            <ul>
+                <li ng-click="selectPriceType('xm')" ng-class="{'select_price_type':param.priceType == 'xm'}">
+                    <i></i>
+                    项目
+                </li>
+                <li ng-click="selectPriceType('cp')" ng-class="{'select_price_type':param.priceType == 'cp'}">
+                    <i></i>
+                    产品
+                </li>
+                <li ng-click="selectPriceType('tk')" ng-class="{'select_price_type':param.priceType == 'tk'}">
+                    <i></i>
+                    套卡
+                </li>
+                <li ng-click="selectPriceType('czk')" ng-class="{'select_price_type':param.priceType == 'czk'}">
+                    <i></i>
+                    充值卡
+                </li>
+            </ul>
+        </div>
 
-    <div ng-if="false" class="left_nav_box"></div>
+    </div>
     <!--内容部分-->
     <div ui-view style="height: 100%"></div>
 </div>

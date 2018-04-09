@@ -95,7 +95,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         if (shopAppointServiceDTO == null || StringUtils.isBlank(shopAppointServiceDTO.getId())) {
             return 0;
         }
-        return shopAppointServiceMapper.updateByPrimaryKey(shopAppointServiceDTO);
+        return shopAppointServiceMapper.updateByPrimaryKeySelective(shopAppointServiceDTO);
     }
 
     @Override

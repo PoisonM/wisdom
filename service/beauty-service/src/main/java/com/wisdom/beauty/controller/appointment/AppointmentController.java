@@ -8,7 +8,6 @@ import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopWorkService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
@@ -150,7 +149,7 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "shopWeekAppointmentInfoByDate", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Map<String, Object>> shopWeekAppointmentInfoByDate(@RequestParam String sysShopId,
@@ -188,6 +187,12 @@ public class AppointmentController {
                 logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getName(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
 
                 if (CommonUtils.objectIsEmpty(stringSet)) {
+					loopDate = DateUtils.dateInc(loopDate);
+					map.put("info", "");
+					map.put("week", DateUtils.getWeek(loopDate));
+					map.put("day", DateUtils.getDay(loopDate));
+					map.put("Lunar", LunarUtils.getChinaDayString(new LunarUtils(loopDate).day));
+					arrayList.add(map);
                     continue;
                 }
                 //遍历预约主键获取预约详细信息
@@ -199,9 +204,9 @@ public class AppointmentController {
                     projectList.add(shopAppointServiceDTO);
                 }
                 map.put("info", projectList);
-                map.put("week", DateUtils.getWeek(loopDate));
-                map.put("day", DateUtils.getDay(loopDate));
-                map.put("Lunar", new LunarUtils(loopDate).day);
+				map.put("week", DateUtils.getWeek(loopDate));
+				map.put("day", DateUtils.getDay(loopDate));
+				map.put("Lunar", LunarUtils.getChinaDayString(new LunarUtils(loopDate).day));
 
                 arrayList.add(map);
                 loopDate = DateUtils.dateInc(loopDate);
@@ -233,7 +238,7 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "getAppointmentInfoById", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<ShopAppointServiceDTO> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
@@ -248,7 +253,6 @@ public class AppointmentController {
         responseDTO.setResponseData(shopAppointInfoFromRedis);
         logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - startTime));
 
-
 		return  responseDTO;
 	}
 
@@ -258,7 +262,7 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "updateAppointmentInfoById", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<ShopAppointServiceDTO> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, String status) {
@@ -271,6 +275,9 @@ public class AppointmentController {
         shopAppointServiceDTO.setStatus(status);
         int info = appointmentService.updateAppointmentInfo(shopAppointServiceDTO);
         logger.debug("根据预约主键修改此次预约信息，执行结果为{}", info);
+
+		//更新redis
+		redisUtils.updateShopAppointInfoToRedis(shopAppointServiceDTO);
 
         responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 
