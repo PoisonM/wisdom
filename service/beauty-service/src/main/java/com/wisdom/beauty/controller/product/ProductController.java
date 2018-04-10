@@ -2,20 +2,21 @@ package com.wisdom.beauty.controller.product;
 
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
+import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
+import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: productController
@@ -30,6 +31,8 @@ public class ProductController {
 
     @Resource
     private ShopProductInfoService shopProductInfoService;
+    @Autowired
+    private ShopCustomerProductRelationService shopCustomerProductRelationService;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -66,6 +69,26 @@ public class ProductController {
 
         logger.info("查询某个用户的产品列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
+    }
+
+    /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 根据产品id获取产品的详细信息
+     * @Date:2018/4/10 14:22
+     */
+    @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<ShopUserProductRelationDTO> getProduct(@PathVariable String productId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO<ShopUserProductRelationDTO> responseDTO = new ResponseDTO<>();
+        ShopUserProductRelationDTO shopUserProductRelationDTO = shopCustomerProductRelationService.getShopProductInfo(productId);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(shopUserProductRelationDTO);
+        logger.info("查询某个用户的产品列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+
     }
 
 
