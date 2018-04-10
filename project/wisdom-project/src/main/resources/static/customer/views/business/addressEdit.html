@@ -18,14 +18,11 @@
                 <i style="float:right;margin-right:30px;font-size:19px" class="ion ion-ios-arrow-right"></i>
             </label>
             <label class="item item-input">
-                <span class="input-label">详细地址</span>
-            </label>
-            <label class="item item-input">
                 <textarea style="height:100px"
-                          placeholder="请输入收货人的市区里的详细收货地址"   class="values" ng-model="param.userAddressInfo.detailAddress"></textarea>
+                          placeholder="请输入收货人详细地址，如：街道、门牌号等。"   class="values" ng-model="param.userAddressInfo.detailAddress"></textarea>
             </label>
         </div>
-        <div class="list">
+       <!-- <div class="list">
             <li class="item item-toggle">
                 设为默认地址
                 <label class="toggle toggle-balanced">
@@ -35,7 +32,7 @@
                     </div>
                 </label>
             </li>
-        </div>
+        </div>-->
         <div class="list" ng-if="param.editType=='edit'">
             <label class="item item-input" ng-click="deleteAddress()">
                 <span style="width: 100%;text-align: center;margin-left: -0.2rem">
@@ -45,6 +42,6 @@
         </div>
     </ion-content>
     <div class="bar bar-footer bar-assertive">
-        <div class="title" ng-click="saveAddress()">保存</div>
+        <div class="title" ng-click="saveAddress()">保存并使用</div>
     </div>
 </ion-view>
