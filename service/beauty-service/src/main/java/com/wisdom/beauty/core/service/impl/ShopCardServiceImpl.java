@@ -27,7 +27,12 @@ public class ShopCardServiceImpl implements ShopCardService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
+    /**
+     * 查询某个用户的充值卡列表
+     *
+     * @param shopUserRechargeCardDTO
+     * @return
+     */
     @Override
     public List<ShopUserRechargeCardDTO> getUserRechargeCardList(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
 
@@ -46,10 +51,12 @@ public class ShopCardServiceImpl implements ShopCardService {
         }
 
         if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getSysShopId())) {
-            criteria.andSysShopIdEqualTo(shopUserRechargeCardDTO.getSysBossId());
+            criteria.andSysShopIdEqualTo(shopUserRechargeCardDTO.getSysShopId());
         }
 
         List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS = shopUserRechargeCardMapper.selectByCriteria(shopUserRechargeCardCriteria);
+
+        logger.debug("查询某个用户的充值卡列表，查询结果大小为 {}", "size = [" + shopUserRechargeCardDTOS == null ? "0" : shopUserRechargeCardDTOS.size() + "]");
 
         return shopUserRechargeCardDTOS;
     }
