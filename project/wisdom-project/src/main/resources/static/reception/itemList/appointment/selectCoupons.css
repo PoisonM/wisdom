@@ -1,17 +1,17 @@
 .selectCouponsWrap{width: 100%;}
-.selectCouponsWrap ul li{width: 10rem;height: 2.5rem;background: palegoldenrod;margin: auto;margin-top: 20px}
-.pt22{padding-top: 0.3rem}
-.pl12{padding-left: 0.18rem}
-.voucher{font-family: PingFangSC-Regular;font-size: 0.234375rem;color: #FF6666;letter-spacing: 0;}
-.flL{float: left}
-.flR{float: right;}
-.mr10{margin-right: 0.15rem}
-.cf66{color: #FF6666}
-.fs13{font-size: 0.2rem}
-.fs32{font-size: 0.5rem}
-.fs11{font-size: 0.17rem}
-.c99{color: #999999}
-.bge5{background: #e5e5e5}
-.borderR{border-radius: 0.08rem}
+.selectCouponsWrap ul li{width: 10rem;height: 1.9rem;background: url("../../images/coupons.png");background-size:contain;margin: auto;margin-top: 20px;}
+.selectCouponsWrap .pt22{padding-top: 0.3rem}
+.selectCouponsWrap .pl12{padding-left: 0.18rem}
+.selectCouponsWrap .voucher{font-family: PingFangSC-Regular;font-size: 0.234375rem;color: #FF6666;letter-spacing: 0;}
+.selectCouponsWrap .flL{float: left}
+.selectCouponsWrap .flR{float: right;}
+.selectCouponsWrap .mr10{margin-right: 0.15rem}
+.selectCouponsWrap .cf66{color: #FF6666}
+.selectCouponsWrap .fs13{font-size: 0.2rem}
+.selectCouponsWrap .fs32{font-size: 0.5rem}
+.selectCouponsWrap .fs11{font-size: 0.17rem}
+.selectCouponsWrap .c99{color: #999999}
+.selectCouponsWrap .bge5{background: #e5e5e5}
+.selectCouponsWrap .borderR{border-radius: 0.08rem}
 
 

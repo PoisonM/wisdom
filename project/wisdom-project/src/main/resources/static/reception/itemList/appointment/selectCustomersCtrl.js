@@ -1,18 +1,9 @@
-function selectCustomersCtrl($scope,ngDialog){
-    /*选择顾客*/
+function selectCustomersCtrl($scope){
     $scope.selectCustomersCtrl = function(){
-        ngDialog.open({
-            template: 'selectCustomersWrap',
-            scope: $scope, //这样就可以传递参数
-            controller: ['$scope', '$interval', function($scope, $interval) {
-                $scope.close = function() {
-                    $scope.closeThisDialog();
-                };
-            }],
-            className: 'modifyingAppointment ngdialog-theme-custom'
-        });
+        $scope.param.selectCustomersWrap = true;
+        $scope.param.modifyingAppointment = false;
 
     }
-    addCustomersCtrl && addCustomersCtrl($scope,ngDialog)
+    addCustomersCtrl && addCustomersCtrl($scope)
 }
 
