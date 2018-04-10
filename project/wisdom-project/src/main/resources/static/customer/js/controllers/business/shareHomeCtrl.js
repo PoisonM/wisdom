@@ -35,7 +35,7 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
                     }
                     else{
                         var alertPopup = $ionicPopup.alert({
-                            template: '<span style="font-size: 0.3rem;color: #333333;">亲，请先升级为我们的铂金店主或者钻石店主</span>',
+                            template: '<span style="font-size: 0.3rem;color: #333333;">立做美享店主，坐拥75%返利</span>',
                             buttons: [
                                 {
                                     text: '不用啦'
@@ -44,7 +44,7 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
                                     onTap: function() {
                                         $state.go("shopHome")
                                     },
-                                    text: '成为代理',
+                                    text: '成为店主',
                                     type: 'button-calm'
                                 }
                             ]
