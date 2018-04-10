@@ -1,28 +1,29 @@
-<ion-view style="background: #f2f5f9">
-    <div class="bar bar-header" style="background:pink">
-        <h1 class="title">选择美容店内的项目</h1>
-    </div>
-    <ion-content>
+<ion-view style="background:white">
+    <br>
+    <ion-content style="margin-top:20px">
         <ion-list>
-            <ion-radio ng-model="choice" ng-value="'A'">巧克力焕肤</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'B'">冰光面部细胞护理</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'C'">巧克力焕肤</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'D'">冰光面部细胞护理</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'E'">巧克力焕肤</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'F'">冰光面部细胞护理</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'G'">巧克力焕肤</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'H'">冰光面部细胞护理</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'I'">巧克力焕肤</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'J'">冰光面部细胞护理</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'I'">巧克力焕肤</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'J'">冰光面部细胞护理</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'I'">巧克力焕肤</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'J'">冰光面部细胞护理</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'I'">巧克力焕肤</ion-radio>
-            <ion-radio ng-model="choice" ng-value="'J'">冰光面部细胞护理</ion-radio>
+            <div class="item item-divider">
+                店内项目
+            </div>
+            <ion-item ng-repeat="item in [1,2,3,4,5,6,7,8]">
+                <img style="border-radius: 79px;
+                                width: 25px;
+                                position: absolute;
+                                margin-left: 15px;
+                                margin-top: 5px;"
+                        ng-src="http://thirdwx.qlogo.cn/mmopen/HhRfwkaJkMuUzMJUhZOhicVYGMQkRGtfMo1ZotlLP6wgQaTBibYGviclPticuqrJZae8hyCVCmLibZc06dz9vLUmWmnWjqqDRk5X9/132">
+                <div style="margin-left:60px">
+                    <h style="font-weight:600;">巧克力焕肤</h>
+                    <br>
+                    <p style="margin-top:10px">30分钟</p>
+                </div>
+            </ion-item>
+            <br><br><br><br>
         </ion-list>
     </ion-content>
-    <<div class="tabs" style="background:red;color:black" ng-click="chooseProject()">
+    <<div class="tabs"
+          style="background:#e66;color:white"
+          ng-click="chooseProject()">
         <a class="tab-item" style="font-size:20px">
             确认
         </a>

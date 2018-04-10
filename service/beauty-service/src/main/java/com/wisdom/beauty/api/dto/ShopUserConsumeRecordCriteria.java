@@ -15,6 +15,9 @@ public class ShopUserConsumeRecordCriteria {
 
     protected int pageSize = -1;
 
+    protected String groupBy;
+
+
     public ShopUserConsumeRecordCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
@@ -25,6 +28,14 @@ public class ShopUserConsumeRecordCriteria {
 
     public String getOrderByClause() {
         return orderByClause;
+    }
+
+    public void setGroupBy(String groupBy) {
+        this.groupBy = groupBy;
+    }
+
+    public String getGroupBy() {
+        return groupBy;
     }
 
     public void setDistinct(boolean distinct) {
@@ -1555,6 +1566,76 @@ public class ShopUserConsumeRecordCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSignUrlIsNull() {
+            addCriterion("sign_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlIsNotNull() {
+            addCriterion("sign_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlEqualTo(String value) {
+            addCriterion("sign_url =", value, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlNotEqualTo(String value) {
+            addCriterion("sign_url <>", value, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlGreaterThan(String value) {
+            addCriterion("sign_url >", value, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("sign_url >=", value, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlLessThan(String value) {
+            addCriterion("sign_url <", value, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlLessThanOrEqualTo(String value) {
+            addCriterion("sign_url <=", value, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlLike(String value) {
+            addCriterion("sign_url like", value, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlNotLike(String value) {
+            addCriterion("sign_url not like", value, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlIn(List<String> values) {
+            addCriterion("sign_url in", values, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlNotIn(List<String> values) {
+            addCriterion("sign_url not in", values, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlBetween(String value1, String value2) {
+            addCriterion("sign_url between", value1, value2, "signUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignUrlNotBetween(String value1, String value2) {
+            addCriterion("sign_url not between", value1, value2, "signUrl");
+            return (Criteria) this;
+        }
+
         public Criteria andShopUserNameIsNull() {
             addCriterion("shop_user_name is null");
             return (Criteria) this;
@@ -1692,6 +1773,146 @@ public class ShopUserConsumeRecordCriteria {
 
         public Criteria andShopUserIdNotBetween(String value1, String value2) {
             addCriterion("shop_user_id not between", value1, value2, "shopUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoIsNull() {
+            addCriterion("consume_flow_no is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoIsNotNull() {
+            addCriterion("consume_flow_no is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoEqualTo(String value) {
+            addCriterion("consume_flow_no =", value, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoNotEqualTo(String value) {
+            addCriterion("consume_flow_no <>", value, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoGreaterThan(String value) {
+            addCriterion("consume_flow_no >", value, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoGreaterThanOrEqualTo(String value) {
+            addCriterion("consume_flow_no >=", value, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoLessThan(String value) {
+            addCriterion("consume_flow_no <", value, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoLessThanOrEqualTo(String value) {
+            addCriterion("consume_flow_no <=", value, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoLike(String value) {
+            addCriterion("consume_flow_no like", value, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoNotLike(String value) {
+            addCriterion("consume_flow_no not like", value, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoIn(List<String> values) {
+            addCriterion("consume_flow_no in", values, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoNotIn(List<String> values) {
+            addCriterion("consume_flow_no not in", values, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoBetween(String value1, String value2) {
+            addCriterion("consume_flow_no between", value1, value2, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeFlowNoNotBetween(String value1, String value2) {
+            addCriterion("consume_flow_no not between", value1, value2, "consumeFlowNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIsNull() {
+            addCriterion("detail is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIsNotNull() {
+            addCriterion("detail is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEqualTo(String value) {
+            addCriterion("detail =", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotEqualTo(String value) {
+            addCriterion("detail <>", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailGreaterThan(String value) {
+            addCriterion("detail >", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailGreaterThanOrEqualTo(String value) {
+            addCriterion("detail >=", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLessThan(String value) {
+            addCriterion("detail <", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLessThanOrEqualTo(String value) {
+            addCriterion("detail <=", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLike(String value) {
+            addCriterion("detail like", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotLike(String value) {
+            addCriterion("detail not like", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIn(List<String> values) {
+            addCriterion("detail in", values, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotIn(List<String> values) {
+            addCriterion("detail not in", values, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailBetween(String value1, String value2) {
+            addCriterion("detail between", value1, value2, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotBetween(String value1, String value2) {
+            addCriterion("detail not between", value1, value2, "detail");
             return (Criteria) this;
         }
 
