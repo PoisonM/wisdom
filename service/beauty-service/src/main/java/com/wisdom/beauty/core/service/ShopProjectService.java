@@ -1,8 +1,10 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
+import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
 
@@ -47,6 +49,38 @@ public interface ShopProjectService {
      * @return
      */
     List<ShopUserProjectGroupRelRelationDTO> getUserCollectionCardProjectList(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO);
+    /**
+    *@Author:huan
+    *@Param: sysShopId
+    *@Return:
+    *@Description: 获取一级项目列表
+    *@Date:2018/4/10 15:59
+    */
+    List<ShopProjectTypeDTO> getOneLevelProjectList(String sysShopId);
+    /**
+    *@Author:huan
+    *@Param:
+    *@Return:
+    *@Description: 获取二级项目列表
+    *@Date:2018/4/10 16:15
+    */
+    List<ShopProjectTypeDTO> getTwoLevelProjectList(ShopProjectTypeDTO shopProjectTypeDTO);
+    /**
+    *@Author:huan
+    *@Param:
+    *@Return:
+    *@Description: 获取三级项目列表
+    *@Date:2018/4/10 16:21
+    */
+    List<ShopProjectInfoDTO> getThreeLevelProjectList(PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO);
+    /**
+    *@Author:huan
+    *@Param:
+    *@Return:
+    *@Description: 获取项目的详细信息
+    *@Date:2018/4/10 16:59
+    */
+    ShopProjectInfoDTO getProjectDetail(String id);
 
 
 
