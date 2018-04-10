@@ -37,6 +37,18 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams) {
         {
             name:"背部",
             status:"1",
+        },
+        {
+            name:"手部",
+            status:"1",
+        },
+        {
+            name:"手部",
+            status:"1",
+        },
+        {
+            name:"手部",
+            status:"1",
         }
     ]
     $scope.checkImg = function (index,status) {

@@ -37,7 +37,24 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams) {
         {
             name:"背部",
             status:"1",
+        },
+        {
+            name:"手部",
+            status:"1",
+        },
+        {
+            name:"臀部",
+            status:"1",
+        },
+        {
+            name:"足部",
+            status:"1",
+        },
+        {
+            name:"指甲",
+            status:"1",
         }
+
     ]
     $scope.checkImg = function (index,status) {
         if($scope.param.childrenFlag == index){
