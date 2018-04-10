@@ -1,8 +1,18 @@
-function selectCouponsCtrl($scope){
+function selectCouponsCtrl($scope,ngDialog){
     $scope.param.appearMoney="";
     $scope.selectCoupons = function(){
-        $scope.param.selectCoupons = true;
-        $scope.param.consumptionNextStep = false;
+        $scope.ngDialog = ngDialog;
+        ngDialog.open({
+            template: 'selectCoupons',
+            scope: $scope, //这样就可以传递参数
+            controller: ['$scope', '$interval', function($scope, $interval) {
+                console.log($scope.$parent.content);
+                $scope.close = function() {
+                    $scope.closeThisDialog();
+                };
+            }],
+            className: 'payType ngdialog-theme-custom'
+        });
     }
     $scope.selectCouponsData = [
         {
