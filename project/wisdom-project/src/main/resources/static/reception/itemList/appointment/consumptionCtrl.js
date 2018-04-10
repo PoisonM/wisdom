@@ -1,55 +1,13 @@
-function consumption($scope,ngDialog){
-    $scope.ngDialog = ngDialog;
+function consumption($scope){
     $scope.selsectConsumption = function(type){
-
         if(type == "selectSingle"){
-            ngDialog.open({
-                template: 'selectSingle',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function($scope, $interval) {
-                    console.log($scope.$parent.content);
-                    $scope.close = function() {
-                        $scope.closeThisDialog();
-                    };
-                }],
-                className: 'selectContent ngdialog-theme-custom'
-            });
+            $scope.param.selectSingle = true;
         }else if (type=="selectTreatmentCard"){
-            ngDialog.open({
-                template: 'selectTreatmentCard',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function($scope, $interval) {
-                    console.log($scope.$parent.content);
-                    $scope.close = function() {
-                        $scope.closeThisDialog();
-                    };
-                }],
-                className: 'selectContent ngdialog-theme-custom'
-            });
+            $scope.param.selectTreatmentCard = true;
         }else if (type=="selectProduct"){
-            ngDialog.open({
-                template: 'selectProduct',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function($scope, $interval) {
-                    console.log($scope.$parent.content);
-                    $scope.close = function() {
-                        $scope.closeThisDialog();
-                    };
-                }],
-                className: 'selectContent ngdialog-theme-custom'
-            });
+            $scope.param.selectProduct = true;
         }else if (type=="collectionCard"){
-            ngDialog.open({
-                template: 'collectionCard',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function($scope, $interval) {
-                    console.log($scope.$parent.content);
-                    $scope.close = function() {
-                        $scope.closeThisDialog();
-                    };
-                }],
-                className: 'selectContent ngdialog-theme-custom'
-            });
+            $scope.param.collectionCard = true;
         }
     }
     $scope.subtractOrAdd = function(type){
@@ -60,11 +18,21 @@ function consumption($scope,ngDialog){
             $scope.param.num++
         }
     }
-    balancePrepaid && balancePrepaid ($scope,ngDialog)/*余额充值*/
-    givingChange && givingChange($scope,ngDialog);/*赠送*/
-    relatedStaffCtrl && relatedStaffCtrl($scope,ngDialog);/*关联员工*/
-
-    payTypeCtrl && payTypeCtrl($scope,ngDialog);/*消费-消费-下一步*/
+   $scope.balancePrepaid = function(){
+       $scope.param.balancePrepaid = true;
+   }
+   $scope.giving = function(){
+       $scope.param.giving = true;
+       $scope.param.givingProduct = true;
+   }
+   $scope.relatedStaff = function(){
+       $scope.param.relatedStaff = true;
+   }
+   $scope.nextStepBtnConsumption = function(){
+       $scope.param.consumptionNextStep = true;
+   }
+   givingChange && givingChange($scope);
+    payTypeCtrl && payTypeCtrl($scope);
     scratchCard && scratchCard($scope);
     selectSingle && selectSingle($scope);
     searchConsumption && searchConsumption($scope)

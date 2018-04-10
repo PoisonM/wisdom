@@ -1,4 +1,4 @@
-.detailsWrap{width: 5.90rem;height: 7.343rem;}
+.detailsWrap{width: 5.90rem;height: 7.343rem;margin: auto;border-radius: 0.281rem;}
 .detailsWrap .header{width: 5.9rem;height: 0.8125rem;text-align: center;line-height: 0.8125rem;color: #333333;font-size: 0.296rem;font-weight: 600;position: relative;background: #eeeeee;}
 .detailsWrap .close{position: absolute;right: 0.321rem;top: 0.1rem;}
 .detailsWrap .close img{width: 0.396rem;height: 0.396rem}
