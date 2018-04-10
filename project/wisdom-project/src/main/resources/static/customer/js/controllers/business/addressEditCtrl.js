@@ -124,7 +124,7 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                 !function () {
                     var $target = $('#J_Address');
                     $target.citySelect();
-                    console.log( $target.citySelect)
+                    console.log( $target.citySelect);
                     $target.on('click', function (event) {
                         event.stopPropagation();
                         $target.citySelect('open');

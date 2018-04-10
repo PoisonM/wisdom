@@ -69,11 +69,20 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //支付方式  0:微信 1：支付宝 2:现金
     private String payType;
 
+    //签字地址
+    private String signUrl;
+
     //用户姓名
     private String shopUserName;
 
     //用户表主键
     private String shopUserId;
+
+    //消费流水号
+    private String consumeFlowNo;
+
+    //备注
+    private String detail;
 
     //是否有效
     private String status;
@@ -260,6 +269,14 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
         this.payType = payType;
     }
 
+    public String getSignUrl() {
+        return signUrl;
+    }
+
+    public void setSignUrl(String signUrl) {
+        this.signUrl = signUrl;
+    }
+
     public String getShopUserName() {
         return shopUserName;
     }
@@ -274,6 +291,22 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
 
     public void setShopUserId(String shopUserId) {
         this.shopUserId = shopUserId;
+    }
+
+    public String getConsumeFlowNo() {
+        return consumeFlowNo;
+    }
+
+    public void setConsumeFlowNo(String consumeFlowNo) {
+        this.consumeFlowNo = consumeFlowNo;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public String getStatus() {
