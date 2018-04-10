@@ -1,9 +1,4 @@
-function scratchCard ($scope){
-    $scope.scratchCardNextStep = function(){
-        $scope.param.scratchCard = false;
-        $scope.param.detailsReservation = false;
-
-    }
-
+function scratchCard ($scope,ngDialog){
+console.log(ngDialog)
 }
 

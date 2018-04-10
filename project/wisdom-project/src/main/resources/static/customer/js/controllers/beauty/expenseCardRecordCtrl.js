@@ -5,8 +5,6 @@ angular.module('controllers',[]).controller('expenseCardRecordCtrl',
     ['$scope','$rootScope','$stateParams','$state',
         function ($scope,$rootScope,$stateParams,$state) {
 
-        $scope.chooseProject = function() {
-            $state.go("beautyAppoint");
-        }
+
 
 }])
