@@ -235,7 +235,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "预约列表",
-                        files: [root + "appointment/appointmentLis.js",
+                        files: [root + "appointment/appointmentLisController.js",
                             root + "appointment/style.css",
                         ]
                     })
