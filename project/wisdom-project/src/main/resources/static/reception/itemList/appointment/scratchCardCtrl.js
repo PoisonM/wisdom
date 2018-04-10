@@ -1,4 +1,4 @@
 function scratchCard ($scope){
-/*哎*/
+/*哎呀*/
 }
 
