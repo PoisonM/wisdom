@@ -39,9 +39,9 @@ public class UserConsumeController {
         PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-        shopUserConsumeRecordDTO.setShopUserId(shopUserId);
+        shopUserConsumeRecordDTO.setSysUserId(shopUserId);
         shopUserConsumeRecordDTO.setSysShopId(sysShopId);
-        shopUserConsumeRecordDTO.setType(type);
+        shopUserConsumeRecordDTO.setConsumeType(type);
         pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
