@@ -1,18 +1,22 @@
 package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.SysUserAccountDTO;
 import com.wisdom.beauty.api.enums.ConsumeType;
-import com.wisdom.beauty.api.enums.GoodsType;
+import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopUserConsumeRecordDTO;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
+import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +42,15 @@ public class ProjectController {
 
 	@Resource
 	private ShopProjectService projectService;
+
+	@Resource
+	private ShopUerConsumeRecordService shopUerConsumeRecordService;
+
+	@Resource
+	private SysUserAccountService sysUserAccountService;
+
+	@Resource
+	private ShopProjectService shopProjectService;
 
 
 	/**
@@ -78,61 +91,81 @@ public class ProjectController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<String> userRechargeOrConsumeOperation(@RequestBody List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS) {
+	ResponseDTO<String> userRechargeOrConsumeOperation(@RequestBody List<ExtShopUserConsumeRecordDTO> extShopUserConsumeRecordDTOS) {
 
 		long currentTimeMillis = System.currentTimeMillis();
-		logger.info("传入参数={}", "shopUserConsumeRecordDTOS = [" + shopUserConsumeRecordDTOS + "]");
+		logger.info("传入参数={}", "shopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
 
-		if (CommonUtils.objectIsNotEmpty(shopUserConsumeRecordDTOS)) {
-			logger.debug("用户充值或消费操作传入参数为空, {}", "shopUserConsumeRecordDTOS = [" + shopUserConsumeRecordDTOS + "]");
+		ResponseDTO<String> responseDTO = new ResponseDTO<>();
+
+		if (CommonUtils.objectIsNotEmpty(extShopUserConsumeRecordDTOS)) {
+			logger.debug("用户充值或消费操作传入参数为空, {}", "shopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
 			return null;
 		}
 		//遍历记录
-		for (ShopUserConsumeRecordDTO dto : shopUserConsumeRecordDTOS) {
+		for (ExtShopUserConsumeRecordDTO dto : extShopUserConsumeRecordDTOS) {
 			//虚拟商品类型
 			String goodsType = dto.getGoodsType();
 			//消费类型
 			String consumeType = dto.getConsumeType();
+			//获取用户的账户信息
+			SysUserAccountDTO sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(dto.getSysUserId());
+
 			//如果是购买动作
 			if (ConsumeType.RECHARGE.getCode().equals(consumeType)) {
-				//如果是次卡相关操作
-				if (GoodsType.TIME_CARD.getCode().equals(goodsType)) {
-
-				}
-				//如果是疗程卡相关操作
-				else if (GoodsType.TREATMENT_CARD.getCode().equals(goodsType)) {
-
+				//如果是次卡、疗程卡相关操作
+				if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType) || GoodsTypeEnum.TREATMENT_CARD.getCode().equals(goodsType)) {
+					//生成用户与项目的关系
+					ShopUserProjectRelationDTO shopUserRelationDTO = new ShopUserProjectRelationDTO();
+					BeanUtils.copyProperties(dto, shopUserRelationDTO);
+					shopProjectService.saveUserProjectRelation(shopUserRelationDTO);
 				}
 				//如果是套卡相关操作
-				else if (GoodsType.COLLECTION_CARD.getCode().equals(goodsType)) {
-
+				else if (GoodsTypeEnum.COLLECTION_CARD.getCode().equals(goodsType)) {
+					//生成用户跟套卡与项目的关系的关系
 				}
 				//如果是产品相关
-				else if (GoodsType.PRODUCT.getCode().equals(goodsType)) {
-
+				else if (GoodsTypeEnum.PRODUCT.getCode().equals(goodsType)) {
+					//生成用户跟产品的关系
 				}
+				sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().add(dto.getPrice()));
 			}
 			//如果是消费动作
 			else if (ConsumeType.CONSUME.getCode().equals(consumeType)) {
 				//如果是次卡相关操作
-				if (GoodsType.TIME_CARD.getCode().equals(goodsType)) {
+				if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType)) {
 
 				}
 				//如果是疗程卡相关操作
-				else if (GoodsType.TREATMENT_CARD.getCode().equals(goodsType)) {
+				else if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(goodsType)) {
 
 				}
 				//如果是套卡相关操作
-				else if (GoodsType.COLLECTION_CARD.getCode().equals(goodsType)) {
+				else if (GoodsTypeEnum.COLLECTION_CARD.getCode().equals(goodsType)) {
 
 				}
 				//如果是产品相关
-				else if (GoodsType.PRODUCT.getCode().equals(goodsType)) {
+				else if (GoodsTypeEnum.PRODUCT.getCode().equals(goodsType)) {
 
 				}
+				sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().subtract(dto.getPrice()));
 			}
+
+			//更新用户的账户信息
+			try {
+				sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
+			} catch (Exception e) {
+				logger.error("更新账户信息失败，失败信息为{}" + e.getMessage(), e);
+				throw new RuntimeException();
+			}
+
+			int record = shopUerConsumeRecordService.saveCustomerConsumeRecord(dto);
+			logger.debug("保存用户充值或消费操作返回结果 {}", record > 0 ? "成功" : "失败");
 		}
 
+		//保存用户的操作记录
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData("success");
 		return null;
 	}
 

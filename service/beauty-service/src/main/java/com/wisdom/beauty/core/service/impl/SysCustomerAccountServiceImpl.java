@@ -59,16 +59,7 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
             customerAccountResponseDto.setPhoto(userInfoDTO.getPhoto());
             customerAccountResponseDto.setUserName(userInfoDTO.getNickname());
         }
-        SysUserAccountCriteria criteria = new SysUserAccountCriteria();
-        SysUserAccountCriteria.Criteria c = criteria.createCriteria();
-
-        //参数
-        c.andSysUserIdEqualTo(userId);
-        List<SysUserAccountDTO> list = sysCustomerAccountMapper.selectByCriteria(criteria);
-        SysUserAccountDTO sysUserAccount = null;
-        if (CollectionUtils.isNotEmpty(list)) {
-            sysUserAccount = list.get(0);
-        }
+        SysUserAccountDTO sysUserAccount = getSysUserAccountDTO(userId);
         //获取金信息
         if (sysUserAccount != null) {
             logger.info("sysCustomerAccountMapper查询的资金信息是:arrears={},sumAmount={}", sysUserAccount.getArrears(), sysUserAccount.getSumAmount());
@@ -85,5 +76,44 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
         }
         return customerAccountResponseDto;
 
+    }
+
+    /**
+     * 获取用户的账户信息
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public SysUserAccountDTO getSysUserAccountDTO(String userId) {
+        SysUserAccountCriteria criteria = new SysUserAccountCriteria();
+        SysUserAccountCriteria.Criteria c = criteria.createCriteria();
+
+        //参数
+        c.andSysUserIdEqualTo(userId);
+        List<SysUserAccountDTO> list = sysCustomerAccountMapper.selectByCriteria(criteria);
+        SysUserAccountDTO sysUserAccount = null;
+        if (CollectionUtils.isNotEmpty(list)) {
+            sysUserAccount = list.get(0);
+        }
+        return sysUserAccount;
+    }
+
+    /**
+     * 更新用户的账户信息
+     *
+     * @param sysUserAccountDTO
+     * @return
+     */
+    @Override
+    public int updateSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO) {
+
+        logger.info("更新用户的账户信息传入参数={}", "sysUserAccountDTO = [" + sysUserAccountDTO + "]");
+
+        int sysUserAccount = sysCustomerAccountMapper.updateByPrimaryKey(sysUserAccountDTO);
+
+        logger.debug("更新用户的账户信息执行结果 {}", sysUserAccount > 0 ? "成功" : "失败");
+
+        return sysUserAccount;
     }
 }

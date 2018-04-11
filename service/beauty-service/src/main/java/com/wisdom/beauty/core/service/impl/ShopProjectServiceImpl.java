@@ -1,8 +1,8 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.enums.CardType;
-import com.wisdom.beauty.api.enums.CommonCode;
+import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectRelationMapper;
@@ -115,11 +115,11 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         }
 
 //        if (StringUtils.isNotBlank(shopProjectInfoDTO.getStatus())) { 默认查询有效的
-        criteria.andStatusEqualTo(CommonCode.SUCCESS.getCode());
+        criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 //        }
 
         if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
-            criteria.andUseStyleEqualTo(CardType.TREATMENT_CARD.getCode());
+            criteria.andUseStyleEqualTo(CardTypeEnum.TREATMENT_CARD.getCode());
         }
 
         List<ShopProjectInfoDTO> dtos = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
@@ -157,5 +157,19 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         logger.debug("查询某个用户的所有套卡项目列表的大小为, {}", CommonUtils.objectIsNotEmpty(relationDTOS) ? relationDTOS.size() : "0");
 
         return relationDTOS;
+    }
+
+    /**
+     * 保存用户与项目的关系
+     *
+     * @param shopUserRelationDTO
+     * @return
+     */
+    @Override
+    public int saveUserProjectRelation(ShopUserProjectRelationDTO shopUserRelationDTO) {
+        logger.info("保存用户与项目的关系传入参数={}", "shopUserRelationDTO = [" + shopUserRelationDTO + "]");
+        int insert = shopUserProjectRelationMapper.insert(shopUserRelationDTO);
+        logger.debug("保存用户与项目的关系执行结果 {}", insert > 0 ? "成功" : "失败");
+        return insert;
     }
 }

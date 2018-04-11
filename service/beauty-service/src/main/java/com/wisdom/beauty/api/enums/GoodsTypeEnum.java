@@ -1,11 +1,14 @@
 package com.wisdom.beauty.api.enums;
 
-public enum CommonCode {
+public enum GoodsTypeEnum {
+    //0、商品类型为次卡；1、商品类型为疗程卡 ；2、商品类型为充值卡；3、商品类型为套卡 4、商品类型为产品
+    TIME_CARD("0", "次卡"),
+    TREATMENT_CARD("1", "疗程卡"),
+    RECHARGE_CARD("2", "充值卡"),
+    COLLECTION_CARD("3", "套卡"),
+    PRODUCT("4", "产品");
 
-    SUCCESS("0", "正常"),
-    UNSUCCESS("1", "非正常");
-
-    CommonCode(String code, String desc) {
+    GoodsTypeEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }

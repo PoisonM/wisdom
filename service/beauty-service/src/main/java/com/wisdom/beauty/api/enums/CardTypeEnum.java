@@ -1,14 +1,16 @@
 package com.wisdom.beauty.api.enums;
 
-public enum GoodsType {
-    //0、商品类型为次卡；1、商品类型为疗程卡 ；2、商品类型为充值卡；3、商品类型为套卡 4、商品类型为产品
-    TIME_CARD("0", "次卡"),
-    TREATMENT_CARD("1", "疗程卡"),
-    RECHARGE_CARD("2", "充值卡"),
-    COLLECTION_CARD("3", "套卡"),
-    PRODUCT("4", "产品");
+public enum CardTypeEnum {
 
-    GoodsType(String code, String desc) {
+    TIME_CARD("0", "次卡"),
+    MONTH_CARD("1", "月卡"),
+    SEASON_CARD("2", "季卡"),
+    HALF_YEAR_CARD("3", "半年卡"),
+    YEAR_CARD("4", "年卡"),
+    TREATMENT_CARD("0", "疗程卡"),
+    ONE_TIME_CARD("1", "单次"),;
+
+    CardTypeEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }

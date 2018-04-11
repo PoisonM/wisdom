@@ -49,5 +49,5 @@ public interface ShopProjectService {
     List<ShopUserProjectGroupRelRelationDTO> getUserCollectionCardProjectList(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO);
 
 
-
+    int saveUserProjectRelation(ShopUserProjectRelationDTO shopUserRelationDTO);
 }
