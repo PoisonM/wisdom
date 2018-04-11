@@ -2,7 +2,6 @@
 /*头部*/
 .projectHeader{height:1rem;background: #f5f5f5;border-bottom: 1px solid #e5e5e5;}
 .projectHeader ul li{width: 1.78rem;height: 1rem;line-height: 1rem;float: left;position: relative}
-
 .tab-head{list-style-type: none;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;;padding:0;overflow:auto;text-align: center}
 .tab-head-item{-webkit-box-flex:1;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;color:#333333;font-size: 0.3rem;}
 .projectWrap .projectHeader ul li .bg_box{
@@ -69,3 +68,4 @@
 .projectAppear ul li{width: 1.8rem;height: 0.56rem;;line-height: 0.56rem}
 .projectAppear ul li{margin: 0.37rem;background:#FFFFFF;color: #333333;font-size: 0.25rem;border-radius: 0.09rem;border: 1px solid #cccccc;font-family: PingFangTC-Medium}
 .projectAppear ul li:nth-child(1){background: #FF6666;color: #FFFFFF;border: 0px}
+.mr20{margin-right: 0.156rem}
