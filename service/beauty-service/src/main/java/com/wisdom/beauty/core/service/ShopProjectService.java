@@ -95,4 +95,12 @@ public interface ShopProjectService {
      * @return
      */
     List<ShopProjectInfoGroupRelationDTO> getShopProjectInfoGroupRelations(ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO);
+    /**
+     *@Author:huan
+     *@Param:
+     *@Return:
+     *@Description: 根据多个项目id查询
+     *@Date:2018/4/11 17:26
+     */
+    List<ShopProjectInfoDTO> getProjectDetails(List<String> ids);
 }

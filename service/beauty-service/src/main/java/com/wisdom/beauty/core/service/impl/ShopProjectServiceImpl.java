@@ -5,8 +5,10 @@ import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,6 +165,83 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         return relationDTOS;
     }
 
+    @Override
+    public List<ShopProjectTypeDTO> getOneLevelProjectList(String sysShopId) {
+        logger.info("getOneLevelProjectList传入的参数,sysShopId={}", sysShopId);
+        if (StringUtils.isBlank(sysShopId)) {
+            return null;
+        }
+        ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
+        ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
+        criteria.andSysShopIdEqualTo(sysShopId);
+        criteria.andParentIdIsNull();
+        List<ShopProjectTypeDTO> list = shopProjectTypeMapper.selectByCriteria(shopProjectTypeCriteria);
+        return list;
+    }
+
+    @Override
+    public List<ShopProjectTypeDTO> getTwoLevelProjectList(ShopProjectTypeDTO shopProjectTypeDTO) {
+        logger.info("getTwoLevelProjectList传入的参数,id={}", shopProjectTypeDTO.getId());
+
+        if (StringUtils.isBlank(shopProjectTypeDTO.getSysShopId()) || StringUtils.isBlank(shopProjectTypeDTO.getId())) {
+            return null;
+        }
+        ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
+        ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
+        criteria.andParentIdEqualTo(shopProjectTypeDTO.getId());
+        List<ShopProjectTypeDTO> list = shopProjectTypeMapper.selectByCriteria(shopProjectTypeCriteria);
+        return list;
+    }
+
+    @Override
+    public List<ShopProjectInfoDTO> getThreeLevelProjectList(PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO) {
+        ShopProjectInfoDTO shopProjectInfoDTO = pageParamVoDTO.getRequestData();
+        logger.info("getThreeLevelProjectList传入的参数,sysShopId={},projectTypeOneId={},projectTypeTwoId={}",
+                shopProjectInfoDTO.getSysShopId(), shopProjectInfoDTO.getProjectTypeOneId(),
+                shopProjectInfoDTO.getProjectTypeTwoId());
+
+        if (StringUtils.isBlank(shopProjectInfoDTO.getSysShopId())) {
+            return null;
+        }
+
+        ShopProjectInfoCriteria shopProjectInfoCriteria = new ShopProjectInfoCriteria();
+        ShopProjectInfoCriteria.Criteria criteria = shopProjectInfoCriteria.createCriteria();
+        // 排序
+        shopProjectInfoCriteria.setOrderByClause("create_date");
+        // 分页
+        shopProjectInfoCriteria.setLimitStart(pageParamVoDTO.getPageNo());
+        shopProjectInfoCriteria.setPageSize(pageParamVoDTO.getPageSize());
+        criteria.andSysShopIdEqualTo(shopProjectInfoDTO.getSysShopId());
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectTypeOneId())) {
+            criteria.andProjectTypeOneIdEqualTo(shopProjectInfoDTO.getProjectTypeOneId());
+        }
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectTypeTwoId())) {
+            criteria.andProjectTypeTwoIdEqualTo(shopProjectInfoDTO.getProjectTypeTwoId());
+        }
+
+        List<ShopProjectInfoDTO> list = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
+        return list;
+    }
+
+    @Override
+    public ShopProjectInfoDTO getProjectDetail(String id) {
+        logger.info("getProjectDetail传入的参数,id={}", id);
+
+        if (StringUtils.isBlank(id)) {
+            return null;
+        }
+        ShopProjectInfoCriteria shopProjectInfoCriteria = new ShopProjectInfoCriteria();
+        ShopProjectInfoCriteria.Criteria criteria = shopProjectInfoCriteria.createCriteria();
+
+        criteria.andIdEqualTo(id);
+        List<ShopProjectInfoDTO> list = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
+        if (CollectionUtils.isEmpty(list)) {
+            logger.info("getProjectDetail返回的结果为空");
+            return null;
+        }
+        return list.get(0);
+    }
+
     /**
      * 保存用户与项目的关系
      *
@@ -207,6 +286,22 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
         logger.info("根据条件查询套卡与项目的关系列表查询结果为={}", dtos == null ? "" : dtos.size());
         return dtos;
+    }
+
+    @Override
+    public List<ShopProjectInfoDTO> getProjectDetails(List<String> ids) {
+        logger.info("getProjectDetail传入的参数,id={}", ids);
+
+        if (ids.size() == 0) {
+            return null;
+        }
+        ShopProjectInfoCriteria shopProjectInfoCriteria = new ShopProjectInfoCriteria();
+        ShopProjectInfoCriteria.Criteria criteria = shopProjectInfoCriteria.createCriteria();
+
+        criteria.andIdIn(ids);
+        List<ShopProjectInfoDTO> list = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
+
+        return list;
     }
 
 }
