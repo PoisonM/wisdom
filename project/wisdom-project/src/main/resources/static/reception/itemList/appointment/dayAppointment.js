@@ -1,39 +1,16 @@
-PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$filter,ngDialog) {
-    console.log("dayAppointment");
+PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$filter,ngDialog,ShopDayAppointmentInfoByDate,$http) {
+    var h = window.innerHeight/64-0.6875-0.765-1.128+'rem';
+    $scope.h = "height:"+h;
     $scope.date = $filter("date")(Date.parse(new Date()),"yyyy-MM-dd");
     $scope.param = {
         week:[],
         btnActive:['btnActive','common'],
-        day : ["09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:30","21:00","21:30","22:00","22:30","23:00","23:30"],
-        detailsReservation:false,/*预约详情*/
-        consumption:false,/*消费*/
-        selectSingle:false,/*选择单次*/
-        selectTreatmentCard:false,/*消费-选择疗程卡*/
-        selectProduct:false,/*选择产品*/
-        collectionCard:false,/*选择套卡*/
-        consumptionNextStep:false,/*消费-消费-下一步*/
-        selectCoupons:false,/*消费-消费-下一步 - 优惠券*/
-        bank:false,/*消费-消费-下一步 - 银行卡*/
-        balancePrepaid:false,/*余额充值*/
-        relatedStaff:false,/*关联员工*/
-        scratchCard:false,/*划卡*/
-        scratchCardSelectTreatmentCard:false,/*划卡-选择疗程卡*/
-        giving:false,/*赠送*/
-        givingProduct:true,/*赠送-产品*/
-        givingVouchers:false,/*赠送-项目*/
-        scratchCard:false,/*赠送优惠券*/
-        ModifyAppointment:true,/*修改预约按钮*/
-       /* individualTravelerAppointment:false,/!*散客详情*!/
-        modifyingAppointment:false, /!*修改预约*!/*/
+        day : [["09:00",'18'],["09:30","19"],["10:00","20"],["10:30","21"],["11:00","22"],["11:30","23"],["12:00","24"],["12:30","25"],["13:00","26"],["13:30","27"],["14:00","28"],["14:30","29"],["15:00","30"],["15:30","31"],["16:00","32"],["16:30","33"],["17:00","34"],["17:30","35"],["18:00","36"],["18:30","37"],["19:00","38"],["19:30","39"],["20:00","40"],["20:30","41"],["21:00","42"],["21:30","43"],["22:00","44"],["22:30","45"],["23:00","46"],["23:30","47"]],
         serachContent:'',/*搜索内容*/
         givingIndex:0,/*赠送Index*/
         AppointmentType:"散客",
         dayFlag:true,
         weekFlag:false,
-        appointmentLis:false,/*预约列表*/
-        selectCustomersWrap:false,/*选择客户*/
-        addCustomers:false,/*添加客户*/
-        newProduct:false,/*修改预约-选择项目*/
         newProductObject:{
             index:0,
             titleFlag:false,
@@ -87,6 +64,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
            $scope.param.week.push(endDate);
         }
     };
+
     $scope.date = laydate.now(0,'YYYY年MM月DD日');
     $scope.time($scope.date);
     $scope.dataS = function (id) {
@@ -182,68 +160,6 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             indexArr[i].push(indexTime)
         }
     }
-    /*$scope.allFalse = function(){
-        $scope.param.consumption = false;
-        $scope.param.selectSingle = false;
-        $scope.param.selectTreatmentCard = false;
-        $scope.param.selectProduct = false;
-        $scope.param.collectionCard = false;
-        $scope.param.consumptionNextStep = false;
-        $scope.param.balancePrepaid = false;
-        $scope.param.relatedStaff = false;
-        $scope.param.scratchCard = false;
-        $scope.param.giving = false;
-        $scope.param.givingProduct = false;
-        $scope.param.givingVouchers = false;
-        $scope.param.scratchCardSelectTreatmentCard = false;
-        $scope.param.individualTravelerAppointment = false;
-        $scope.param.detailsReservation = false;
-        $scope.param.modifyingAppointment = false;
-        $scope.param.appointmentLis = false;
-        $scope.param.selectCustomersWrap = false;
-    };*/
-    //预约详情
-   /* $scope.detailsReservation = function(index1,index2,e,status){
-        $scope.param.ModifyAppointment = true;
-           /!* var top = (e.clientY +100)/128;
-            var left = (e.clientX +100)/128;
-            var screen = document.documentElement.clientWidth;*!/
-            $scope.allFalse()
-            if(status == '消费'||status == '划卡'){
-                $scope.param.detailsReservation = true;
-                var detailsWrap = document.getElementsByClassName("detailsWrap")[0];
-                if(status == '消费'){
-                    $scope.param. detailsReservationText = "去消费";
-                }else{ $scope.param. detailsReservationText = "去划卡";}
-                if(e.clientY >337){
-                    detailsWrap.style.top = 3.5+"rem";
-                    detailsWrap.style.left = (e.clientX +100)/128+"rem";
-                }else{
-                    detailsWrap.style.top = (e.clientY +100)/128+"rem";
-                    detailsWrap.style.left = (e.clientX +100)/128+"rem";
-                }
-            }else {
-                $scope.param.individualTravelerAppointment = true;
-                var detailsWrap = document.getElementsByClassName("individual")[0];
-                if(e.clientY >100){
-                    detailsWrap.style.top = 1.5+"rem";
-                    detailsWrap.style.left = (e.clientX +100)/128+"rem";
-
-                }else{
-                    detailsWrap.style.top = (e.clientY +100)/128+"rem";
-                    detailsWrap.style.left = (e.clientX +100)/128+"rem";
-                }
-            }
-*/
-/*
-           $scope.detailsReservationPic = function(){
-               $scope.param.detailsReservation = false;
-           };
-           $scope.individualTravelerAppointmentClose = function(){
-               $scope.param.individualTravelerAppointment = false;
-           }
-
-    };*/
 
     //银行卡
     $scope.bank = function(){
@@ -263,10 +179,8 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
     }
     detailsReservation && detailsReservation($scope,ngDialog);
     individualTravelerAppointment && individualTravelerAppointment($scope,ngDialog);
-    console.log($scope.param);
     weeklyReservation && weeklyReservation($scope,ngDialog);
-    $scope.appointmentData = {"result":"0x00001","errorInfo":null,"responseData":{"安迪":{"appointmentInfo":[{"sysClerkName":"安迪_1","appointStartTime":1522825200000,"updateDate":1522819014000,"sysUserName":"用户名称_1","updateUser":"1","sysClerkId":"1","sysUserPhone":"18810123938","shopProjectId":"项目表主键_1","appointPeriod":60,"createBy":"1","serialVersionUID":1,"sysShopId":"3","scheduling":"30,31","shopProjectName":"项目名称_1","id":"id_1","sysUserId":"用户表主键_1","detail":"1","sysShopName":"汉方美容店_1","appointEndTime":1522828800000,"sysBossId":"老板表主键_1","status":"1","createDate":1522819008000},{"sysClerkName":"安迪_1","appointStartTime":1522828800000,"updateDate":null,"sysUserName":"用户名称_2","updateUser":null,"sysClerkId":"1","sysUserPhone":"18810123938","shopProjectId":"项目表主键_2","appointPeriod":60,"createBy":null,"serialVersionUID":1,"sysShopId":"3","scheduling":"32,33","shopProjectName":"项目名称_2","id":"id_2","sysUserId":"用户表主键_2","detail":null,"sysShopName":"汉方美容店_1","appointEndTime":1522832400000,"sysBossId":"老板表主键_1","status":null,"createDate":1522840937000},{"sysClerkName":"安迪_2","appointStartTime":1522836000000,"updateDate":null,"sysUserName":null,"updateUser":null,"sysClerkId":"1","sysUserPhone":null,"shopProjectId":"项目表主键_3","appointPeriod":null,"createBy":null,"serialVersionUID":1,"sysShopId":"3","scheduling":"","shopProjectName":"项目名称_3","id":"id_3","sysUserId":null,"detail":null,"sysShopName":"汉方美容店_1","appointEndTime":1522836000000,"sysBossId":"老板表主键_1","status":null,"createDate":1522843224000}],"point":3}}}
-    console.log( $scope.appointmentData );
+
 
 /*长按新建*/
     $scope.onHold = function (num) {
@@ -308,7 +222,23 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         }
 
     };
+    /*var url = "http://localhost:9051/appointmentInfo/shopDayAppointmentInfoByDate";
+    $http.get(url,{params:{ 'sysShopId':'3',
+        'startDate':'2018-00-00 00:00:00',
+        'endDate':'2019-00-00 00:00:00'}}
+    ).success(function(data){
 
+    });*/
+    ShopDayAppointmentInfoByDate.get({
+        'sysShopId':'3',
+        'startDate':'2018-00-00 00:00:00',
+        'endDate':'2019-00-00 00:00:00'
+    },function(data){
+       // ManagementUtil.checkResponseData(data,"");
+        /*if(data.result == Global.SUCCESS){
+
+        }*/
+    })
 });
 
 

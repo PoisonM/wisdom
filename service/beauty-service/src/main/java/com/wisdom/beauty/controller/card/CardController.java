@@ -1,10 +1,12 @@
 package com.wisdom.beauty.controller.card;
 
+import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.core.service.ShopCardService;
+import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -39,6 +41,8 @@ public class CardController {
     @Autowired
     private ShopRechargeCardService shopRechargeCardService;
 
+    @Autowired
+    private ShopProjectGroupService shopProjectGroupService;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -130,6 +134,35 @@ public class CardController {
         responseDTO.setResponseData(shopRechargeCardDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("查询某个充值卡信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+    /**
+    *@Author:huan
+    *@Param:
+    *@Return:
+    *@Description: 获取某个店里的套卡列表
+    *@Date:2018/4/11 15:40
+    */
+    @RequestMapping(value = "/getShopProjectGroup", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName, @RequestParam String sysShopId, int pageSize) {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        ShopProjectGroupDTO shopProjectGroupDTO = new ShopProjectGroupDTO();
+        shopProjectGroupDTO.setSysShopId(sysShopId);
+        shopProjectGroupDTO.setProjectGroupName(projectGroupName);
+
+        pageParamVoDTO.setRequestData(shopProjectGroupDTO);
+        pageParamVoDTO.setPageNo(0);
+        pageParamVoDTO.setPageSize(pageSize);
+        //查询数据
+        List<ShopProjectGroupDTO> list = shopProjectGroupService.getShopProjectGroupList(pageParamVoDTO);
+
+        ResponseDTO<List<ShopProjectGroupDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(list);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

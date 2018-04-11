@@ -27,7 +27,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "userType")
-public class CustomerTypeController {
+public class UserTypeController {
 
 	@Autowired
 	private UserServiceClient userServiceClient;
