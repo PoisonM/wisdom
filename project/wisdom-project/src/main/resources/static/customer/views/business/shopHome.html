@@ -58,13 +58,13 @@
     </style>
     <ion-content>
         <!--轮播图部分-->
-        <ion-slide-box auto-play="true" does-continue="true" slide-interval=4000>
-            <ion-slide ng-repeat="item in param.bannerList">
-                <div class="box" style="height:3.98rem;width: 7.50rem">
-                    <a ng-href="{{item.forward}}" ng-click="clickCarousel(item.id)"> <img ng-src="{{item.uri}}" style="height:3.98rem;width:7.50rem"/></a>
-                </div>
-            </ion-slide>
-        </ion-slide-box>
+        <ion-slide-box auto-play="true" does-continue="true" slide-interval=4000 show-pager="false">
+        <ion-slide ng-repeat="item in param.bannerList">
+            <div class="box" style="height:3.98rem;width: 7.50rem">
+                <a ng-href="{{item.forward}}" ng-click="clickCarousel(item.id)"> <img ng-src="{{item.uri}}" style="height:3.98rem;width:7.50rem"/></a>
+            </div>
+        </ion-slide>
+    </ion-slide-box>
         <!--商品部分-->
         <div style="margin-top: 20px;height:5.16rem;width:7.50rem" ng-repeat="item in param.productList" ng-if="item.productId==param.promoteProductId" >
             <img ng-src="{{item.firstUrl}}" ng-click="goPromoteProduct(item.productId)" style="width: 7.5rem;height: 5.30rem"/>
