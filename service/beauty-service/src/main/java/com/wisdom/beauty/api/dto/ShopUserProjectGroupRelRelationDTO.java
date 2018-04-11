@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Serializable {
@@ -28,10 +29,10 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     private Integer projectSurplusTimes;
 
     //项目初始总金额
-    private Long projectInitAmount;
+    private BigDecimal projectInitAmount;
 
     //项目剩余总金额
-    private Long projectSurplusAmount;
+    private BigDecimal projectSurplusAmount;
 
     //
     private String sysShopId;
@@ -109,19 +110,19 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
         this.projectSurplusTimes = projectSurplusTimes;
     }
 
-    public Long getProjectInitAmount() {
+    public BigDecimal getProjectInitAmount() {
         return projectInitAmount;
     }
 
-    public void setProjectInitAmount(Long projectInitAmount) {
+    public void setProjectInitAmount(BigDecimal projectInitAmount) {
         this.projectInitAmount = projectInitAmount;
     }
 
-    public Long getProjectSurplusAmount() {
+    public BigDecimal getProjectSurplusAmount() {
         return projectSurplusAmount;
     }
 
-    public void setProjectSurplusAmount(Long projectSurplusAmount) {
+    public void setProjectSurplusAmount(BigDecimal projectSurplusAmount) {
         this.projectSurplusAmount = projectSurplusAmount;
     }
 

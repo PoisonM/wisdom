@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
@@ -24,4 +25,11 @@ public interface ShopProjectGroupService {
     List<ShopProjectGroupDTO> getShopProjectGroupList(PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO);
 
 
+    /**
+     * 保存用户与套卡的关系的关系
+     *
+     * @param shopUserProjectGroupRelRelation
+     * @return
+     */
+    int saveShopUserProjectGroupRelRelation(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation);
 }

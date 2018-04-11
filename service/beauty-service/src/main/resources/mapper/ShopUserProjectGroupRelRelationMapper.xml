@@ -78,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, shop_project_group_name, shop_project_group_id, sys_user_id, shop_project_info_group_relation_id,
-    project_init_times, project_surplus_times, project_init_amount, project_surplus_amount,
+    project_init_times, project_surplus_times, project_init_amount, project_surplus_amount, 
     sys_shop_id, sys_boss_id, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"

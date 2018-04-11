@@ -3,7 +3,9 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopProjectGroupCriteria;
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
+import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +31,9 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
 
 	@Autowired
 	private ShopProjectGroupMapper shopProjectGroupMapper;
+
+    @Autowired
+    private ShopUserProjectGroupRelRelationMapper shopUserProjectGroupRelRelationMapper;
 
 	@Override
 	public List<ShopProjectGroupDTO> getShopProjectGroupList(PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO) {
@@ -56,5 +61,18 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
 
 		return shopCustomerArchiveslist;
 	}
+
+    /**
+     * 保存用户与套卡的关系的关系
+     *
+     * @param shopUserProjectGroupRelRelation
+     * @return
+     */
+    @Override
+    public int saveShopUserProjectGroupRelRelation(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation) {
+        logger.info("保存用户与套卡的关系的关系传入参数={}", "shopUserProjectGroupRelRelation = [" + shopUserProjectGroupRelRelation + "]");
+        int insert = shopUserProjectGroupRelRelationMapper.insert(shopUserProjectGroupRelRelation);
+        return insert;
+    }
 
 }

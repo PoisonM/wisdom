@@ -10,7 +10,8 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //
     private String id;
 
-    //单次卡为当前用户与项目的关系 id ,疗程卡也为当前项目跟用户的关系id,用户与套卡跟项目的关系表的关系表,产品为当前产品跟用户的关系 id ,充值卡为用户与的当前充值卡关系的id
+    //消费：单次卡为当前用户与项目的关系 id ,疗程卡也为当前项目跟用户的关系id,用户与套卡跟项目的关系表的关系表id,产品为当前产品跟用户的关系 id ,充值卡为用户与的当前充值卡关系的id
+    //充值：套卡充值特殊为套卡表主键的id
     private String flowId;
 
     //单次卡为当前项目id,疗程卡也为当前项目名称,产品为当前产品名称,充值卡为的当前充值卡名称,套卡为套卡名称
@@ -46,7 +47,7 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //店员名称
     private String sysClerkName;
 
-    //消费价格
+    //总价格
     private BigDecimal price;
 
     //消费折扣

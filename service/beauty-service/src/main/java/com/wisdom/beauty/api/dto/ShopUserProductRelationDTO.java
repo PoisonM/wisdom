@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopUserProductRelationDTO extends BaseEntity implements Serializable {
@@ -34,10 +35,10 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     private Integer surplusTimes;
 
     //初始金额
-    private Long initAmount;
+    private BigDecimal initAmount;
 
     //剩余金额
-    private Long surplusAmount;
+    private BigDecimal surplusAmount;
 
     //
     private String createBy;
@@ -125,19 +126,19 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
         this.surplusTimes = surplusTimes;
     }
 
-    public Long getInitAmount() {
+    public BigDecimal getInitAmount() {
         return initAmount;
     }
 
-    public void setInitAmount(Long initAmount) {
+    public void setInitAmount(BigDecimal initAmount) {
         this.initAmount = initAmount;
     }
 
-    public Long getSurplusAmount() {
+    public BigDecimal getSurplusAmount() {
         return surplusAmount;
     }
 
-    public void setSurplusAmount(Long surplusAmount) {
+    public void setSurplusAmount(BigDecimal surplusAmount) {
         this.surplusAmount = surplusAmount;
     }
 

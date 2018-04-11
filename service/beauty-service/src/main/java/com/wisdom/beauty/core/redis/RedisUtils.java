@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.redis;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
@@ -84,6 +85,13 @@ public class RedisUtils {
 
     public String getShopIdClerkIdKey(String shopId, String clerkId) {
         return new StringBuffer(shopId).append("_").append(clerkId).toString();
+    }
+
+    /**
+     * 查询用户的项目信息
+     */
+    public ShopProjectInfoDTO getShopProjectInfoFromRedis(String projectInfoId) {
+        return (ShopProjectInfoDTO) JedisUtils.getObject(projectInfoId);
     }
 
 }
