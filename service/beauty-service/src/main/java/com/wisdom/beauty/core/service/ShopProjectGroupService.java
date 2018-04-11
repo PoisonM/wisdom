@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
+import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
@@ -32,4 +33,12 @@ public interface ShopProjectGroupService {
      * @return
      */
     int saveShopUserProjectGroupRelRelation(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation);
+    /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 获取套卡的详细信息
+     * @Date:2018/4/11 16:57
+     */
+    ProjectInfoGroupResponseDTO getShopProjectInfoGroupRelation(ShopProjectGroupDTO shopProjectGroupDTO);
 }

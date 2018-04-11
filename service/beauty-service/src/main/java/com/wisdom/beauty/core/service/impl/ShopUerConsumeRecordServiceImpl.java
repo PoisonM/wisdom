@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -35,7 +36,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
     @Override
     public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO) {
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = pageParamVoDTO.getRequestData();
-        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},Status={}", shopUserConsumeRecordDTO.getSysShopId(), shopUserConsumeRecordDTO.getShopUserId(), shopUserConsumeRecordDTO.getStatus());
+        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},Status={}", shopUserConsumeRecordDTO.getSysShopId(), shopUserConsumeRecordDTO.getSysUserId(), shopUserConsumeRecordDTO.getStatus());
         if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysShopId()) ||
                 StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserId()) ||
                 StringUtils.isBlank(shopUserConsumeRecordDTO.getConsumeType())) {
@@ -76,7 +77,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
                 map.put(shopUserConsumeRecord.getFlowNo(), userConsumeRecordResponseDTO);
             } else {
                 UserConsumeRecordResponseDTO userConsumeRecordResponseMap = map.get(shopUserConsumeRecord.getFlowNo());
-                Long prices = shopUserConsumeRecord.getPrice() + userConsumeRecordResponseMap.getSumAmount();
+                BigDecimal prices = shopUserConsumeRecord.getPrice().add(userConsumeRecordResponseMap.getSumAmount());
                 userConsumeRecordResponseMap.setSumAmount(prices);
                 map.put(shopUserConsumeRecord.getFlowNo(), userConsumeRecordResponseMap);
             }
@@ -102,8 +103,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
         for (ShopUserConsumeRecordDTO userConsumeRecord : list) {
             userConsumeRecordResponseDTO.setCreateDate(userConsumeRecord.getCreateDate());
-            userConsumeRecordResponseDTO.setShopUserName(userConsumeRecord.getShopUserName());
-            userConsumeRecordResponseDTO.setSysShopClerkName(userConsumeRecord.getSysShopClerkName());
+            userConsumeRecordResponseDTO.setShopUserName(userConsumeRecord.getSysUserName());
+            userConsumeRecordResponseDTO.setSysShopClerkName(userConsumeRecord.getSysClerkName());
             userConsumeRecordResponseDTO.setSysShopName(userConsumeRecord.getSysShopName());
             userConsumeRecordResponseDTO.setType(userConsumeRecord.getConsumeType());
         }

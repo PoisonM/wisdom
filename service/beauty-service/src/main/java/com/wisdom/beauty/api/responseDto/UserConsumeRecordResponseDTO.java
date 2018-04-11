@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.responseDto;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.common.entity.BaseEntity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class UserConsumeRecordResponseDTO extends BaseEntity {
     //总金额
-    private Long sumAmount;
+    private BigDecimal sumAmount;
     //划卡和消费页面展示的名称
     private String title;
     //创建时间
@@ -31,13 +32,6 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     private String type;
     private List<ShopUserConsumeRecordDTO> list;
 
-    public Long getSumAmount() {
-        return sumAmount;
-    }
-
-    public void setSumAmount(Long sumAmount) {
-        this.sumAmount = sumAmount;
-    }
 
     public Date getCreateDate() {
         return createDate;
@@ -93,5 +87,13 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
 
     public void setShopUserName(String shopUserName) {
         this.shopUserName = shopUserName;
+    }
+
+    public BigDecimal getSumAmount() {
+        return sumAmount;
+    }
+
+    public void setSumAmount(BigDecimal sumAmount) {
+        this.sumAmount = sumAmount;
     }
 }

@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
+import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
@@ -143,7 +144,7 @@ public class CardController {
     *@Description: 获取某个店里的套卡列表
     *@Date:2018/4/11 15:40
     */
-    @RequestMapping(value = "/getShopProjectGroup", method = RequestMethod.GET)
+    @RequestMapping(value = "/getShopProjectGroups", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName, @RequestParam String sysShopId, int pageSize) {
         long currentTimeMillis = System.currentTimeMillis();
@@ -161,6 +162,26 @@ public class CardController {
 
         ResponseDTO<List<ShopProjectGroupDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+    /**
+     *@Author:huan
+     *@Param:
+     *@Return:
+     *@Description: 获取某个店里的具体套卡的信息
+     *@Date:2018/4/11 15:40
+     */
+    @RequestMapping(value = "/getShopProjectGroup/detail", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<ProjectInfoGroupResponseDTO> findShopProjectGroupListe(ShopProjectGroupDTO shopProjectGroupDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = shopProjectGroupService.getShopProjectInfoGroupRelation(shopProjectGroupDTO);
+
+        ResponseDTO<ProjectInfoGroupResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(projectInfoGroupResponseDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
