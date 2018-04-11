@@ -99,27 +99,7 @@
                 </div>
             </div>
         </div>
-        <div ng-if="false" class="redPacket_box">
-            <div class="redPacket">
-                <img  src="images/redPacket2.png" alt="">
-                <span class="daynum" ng-if="param.bonusLeftDay>0">第<i class="yelColor">{{param.bonusLeftDay}}</i>天</span>
-                <span ng-click="redPackerClose()" class="close"></span>
-                <span ng-click="redPackerOpen()" class="open"></span>
-            </div>
-        </div>
-        <div ng-if="true" class="redPacket_box">
-            <div class="redPacket">
-                <img  src="images/redPacket1.png" alt="">
-                <span ng-click="redPackerClose()" class="close"></span>
-                <div class="message">
-                    <span>你的宝箱里有<i class="yelColor">{{param.bonusValue}}元</i>现金
-                    </span>
-                </div>
-            </div>
-        </div>
-
-
-      <!--  <div ng-if="param.redPackerFlagOne" class="redPacket_box">
+        <div ng-if="param.redPackerFlagOne" class="redPacket_box">
             <div class="redPacket">
                 <img  src="images/redPacket2.png" alt="">
                 <span class="daynum" ng-if="param.bonusLeftDay>0">第<i class="yelColor">{{param.bonusLeftDay}}</i>天</span>
@@ -136,6 +116,6 @@
                     </span>
                 </div>
             </div>
-        </div>-->
+        </div>
     </ion-content>
 </ion-view>
