@@ -12,6 +12,7 @@
     <result column="project_init_amount" property="projectInitAmount" jdbcType="DECIMAL"/>
     <result column="project_surplus_amount" property="projectSurplusAmount" jdbcType="DECIMAL"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
+    <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
     <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
     <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
@@ -77,9 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, shop_project_group_name, shop_project_group_id, sys_user_id, shop_project_info_group_relation_id,
-    project_init_times, project_surplus_times, project_init_amount, project_surplus_amount, 
-    sys_shop_id, sys_boss_id, create_by, create_date, update_user, update_date
+    id, shop_project_group_name, shop_project_group_id, sys_user_id, shop_project_info_group_relation_id, 
+    project_init_times, project_surplus_times, project_init_amount, project_surplus_amount,
+    sys_shop_id, sys_clerk_id, sys_boss_id, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationCriteria">
@@ -109,17 +110,17 @@
     insert into shop_user_project_group_rel_relation (id, shop_project_group_name, shop_project_group_id,
     sys_user_id, shop_project_info_group_relation_id,
       project_init_times, project_surplus_times, 
-      project_init_amount, project_surplus_amount, 
-      sys_shop_id, sys_boss_id, create_by, 
-      create_date, update_user, update_date
-      )
+      project_init_amount, project_surplus_amount,
+    sys_shop_id, sys_clerk_id, sys_boss_id,
+    create_by, create_date, update_user,
+    update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopProjectGroupName,jdbcType=VARCHAR}, #{shopProjectGroupId,jdbcType=VARCHAR},
     #{sysUserId,jdbcType=VARCHAR}, #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR},
       #{projectInitTimes,jdbcType=INTEGER}, #{projectSurplusTimes,jdbcType=INTEGER}, 
-      #{projectInitAmount,jdbcType=DECIMAL}, #{projectSurplusAmount,jdbcType=DECIMAL}, 
-      #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-      )
+      #{projectInitAmount,jdbcType=DECIMAL}, #{projectSurplusAmount,jdbcType=DECIMAL},
+    #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR},
+    #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
+    #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO">
     insert into shop_user_project_group_rel_relation
@@ -153,6 +154,9 @@
       </if>
       <if test="sysShopId != null">
         sys_shop_id,
+      </if>
+      <if test="sysClerkId != null">
+        sys_clerk_id,
       </if>
       <if test="sysBossId != null">
         sys_boss_id,
@@ -200,6 +204,9 @@
       </if>
       <if test="sysShopId != null">
         #{sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkId != null">
+        #{sysClerkId,jdbcType=VARCHAR},
       </if>
       <if test="sysBossId != null">
         #{sysBossId,jdbcType=VARCHAR},
@@ -258,6 +265,9 @@
       <if test="record.sysShopId != null">
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
+      <if test="record.sysClerkId != null">
+        sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+      </if>
       <if test="record.sysBossId != null">
         sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
       </if>
@@ -290,6 +300,7 @@
       project_init_amount = #{record.projectInitAmount,jdbcType=DECIMAL},
       project_surplus_amount = #{record.projectSurplusAmount,jdbcType=DECIMAL},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+    sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},

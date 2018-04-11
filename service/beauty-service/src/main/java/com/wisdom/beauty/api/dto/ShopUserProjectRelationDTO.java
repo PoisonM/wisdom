@@ -3,17 +3,21 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopUserProjectRelationDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
-    //预约id
+    //
     private String shopAppointmentId;
 
     //用户id
     private String sysUserId;
+
+    //
+    private String sysClerkId;
 
     //使用方式 0：疗程 1：单次
     private String useStyle;
@@ -24,23 +28,35 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysShopName;
 
-    //项目主键id
+    //
     private String sysShopProjectId;
 
-    //项目名称
+    //
     private String sysShopProjectName;
 
     //项目初始金额
-    private Long sysShopProjectInitAmount;
+    private BigDecimal sysShopProjectInitAmount;
 
     //项目剩余金额
-    private Long sysShopProjectSurplusAmount;
+    private BigDecimal sysShopProjectSurplusAmount;
 
     //项目剩余次数
     private Integer sysShopProjectSurplusTimes;
 
     //项目总次数
     private Integer sysShopProjectInitTimes;
+
+    //生效日期
+    private Date effectiveDate;
+
+    //有效天数
+    private Integer effectiveDays;
+
+    //
+    private Integer invalidDays;
+
+    //1 赠送 0不赠送
+    private String isSend;
 
     //
     private String createBy;
@@ -78,6 +94,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setSysUserId(String sysUserId) {
         this.sysUserId = sysUserId;
+    }
+
+    public String getSysClerkId() {
+        return sysClerkId;
+    }
+
+    public void setSysClerkId(String sysClerkId) {
+        this.sysClerkId = sysClerkId;
     }
 
     public String getUseStyle() {
@@ -120,19 +144,19 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
         this.sysShopProjectName = sysShopProjectName;
     }
 
-    public Long getSysShopProjectInitAmount() {
+    public BigDecimal getSysShopProjectInitAmount() {
         return sysShopProjectInitAmount;
     }
 
-    public void setSysShopProjectInitAmount(Long sysShopProjectInitAmount) {
+    public void setSysShopProjectInitAmount(BigDecimal sysShopProjectInitAmount) {
         this.sysShopProjectInitAmount = sysShopProjectInitAmount;
     }
 
-    public Long getSysShopProjectSurplusAmount() {
+    public BigDecimal getSysShopProjectSurplusAmount() {
         return sysShopProjectSurplusAmount;
     }
 
-    public void setSysShopProjectSurplusAmount(Long sysShopProjectSurplusAmount) {
+    public void setSysShopProjectSurplusAmount(BigDecimal sysShopProjectSurplusAmount) {
         this.sysShopProjectSurplusAmount = sysShopProjectSurplusAmount;
     }
 
@@ -150,6 +174,38 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setSysShopProjectInitTimes(Integer sysShopProjectInitTimes) {
         this.sysShopProjectInitTimes = sysShopProjectInitTimes;
+    }
+
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    public Integer getEffectiveDays() {
+        return effectiveDays;
+    }
+
+    public void setEffectiveDays(Integer effectiveDays) {
+        this.effectiveDays = effectiveDays;
+    }
+
+    public Integer getInvalidDays() {
+        return invalidDays;
+    }
+
+    public void setInvalidDays(Integer invalidDays) {
+        this.invalidDays = invalidDays;
+    }
+
+    public String getIsSend() {
+        return isSend;
+    }
+
+    public void setIsSend(String isSend) {
+        this.isSend = isSend;
     }
 
     public String getCreateBy() {

@@ -786,6 +786,76 @@ public class ShopUserProjectGroupRelRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysClerkIdIsNull() {
+            addCriterion("sys_clerk_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIsNotNull() {
+            addCriterion("sys_clerk_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdEqualTo(String value) {
+            addCriterion("sys_clerk_id =", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotEqualTo(String value) {
+            addCriterion("sys_clerk_id <>", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdGreaterThan(String value) {
+            addCriterion("sys_clerk_id >", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_id >=", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLessThan(String value) {
+            addCriterion("sys_clerk_id <", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_id <=", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLike(String value) {
+            addCriterion("sys_clerk_id like", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotLike(String value) {
+            addCriterion("sys_clerk_id not like", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIn(List<String> values) {
+            addCriterion("sys_clerk_id in", values, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotIn(List<String> values) {
+            addCriterion("sys_clerk_id not in", values, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdBetween(String value1, String value2) {
+            addCriterion("sys_clerk_id between", value1, value2, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotBetween(String value1, String value2) {
+            addCriterion("sys_clerk_id not between", value1, value2, "sysClerkId");
+            return (Criteria) this;
+        }
+
         public Criteria andSysBossIdIsNull() {
             addCriterion("sys_boss_id is null");
             return (Criteria) this;
