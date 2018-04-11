@@ -56,4 +56,5 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
 
 		return shopCustomerArchiveslist;
 	}
+
 }

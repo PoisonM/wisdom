@@ -22,4 +22,6 @@ public interface ShopProjectGroupService {
      * @Date:2018/4/11 15:14
      */
     List<ShopProjectGroupDTO> getShopProjectGroupList(PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO);
+
+
 }

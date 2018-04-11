@@ -37,7 +37,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = pageParamVoDTO.getRequestData();
         logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},Status={}", shopUserConsumeRecordDTO.getSysShopId(), shopUserConsumeRecordDTO.getShopUserId(), shopUserConsumeRecordDTO.getStatus());
         if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysShopId()) ||
-                StringUtils.isBlank(shopUserConsumeRecordDTO.getShopUserId()) ||
+                StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserId()) ||
                 StringUtils.isBlank(shopUserConsumeRecordDTO.getConsumeType())) {
             throw new ServiceException("getShopCustomerConsumeRecordList方法传入的参数为空");
         }
@@ -52,7 +52,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         criteria.setPageSize(pageParamVoDTO.getPageSize());
 
         c.andSysShopIdEqualTo(shopUserConsumeRecordDTO.getSysShopId());
-        c.andShopUserIdEqualTo(shopUserConsumeRecordDTO.getShopUserId());
+        c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
 
         if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecordDTO.getStatus())) {
             c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getStatus());

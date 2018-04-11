@@ -9,7 +9,7 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String id;
 
-    //
+    //预约id
     private String shopAppointmentId;
 
     //用户id
@@ -24,10 +24,10 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysShopName;
 
-    //
+    //项目主键id
     private String sysShopProjectId;
 
-    //
+    //项目名称
     private String sysShopProjectName;
 
     //项目初始金额

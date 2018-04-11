@@ -1,14 +1,9 @@
 package com.wisdom.beauty.controller.project;
 
-import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
-import com.wisdom.beauty.api.dto.SysUserAccountDTO;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ConsumeType;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopUserConsumeRecordDTO;
-import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
@@ -16,19 +11,18 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.IdGen;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.wisdom.common.util.CodeGenUtil.getTransactionCodeNumber;
 
 /**
  * FileName: ProjectController
@@ -87,7 +81,7 @@ public class ProjectController {
 	/**
 	 * 用户充值或消费操作，适用范围为消费单次卡、疗程卡、套卡、产品
 	 *
-	 * @param shopUserConsumeRecordDTOS
+     * @param extShopUserConsumeRecordDTOS
 	 * @return
 	 */
 	@RequestMapping(value = "userRechargeOrConsumeOperation", method = {RequestMethod.POST, RequestMethod.GET})
@@ -105,7 +99,10 @@ public class ProjectController {
 			logger.debug("用户充值或消费操作传入参数为空, {}", "shopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
 			return null;
 		}
-		//遍历记录
+        //生成唯一的交易流水号
+        String transactionCodeNumber = getTransactionCodeNumber();
+
+        //遍历记录
 		for (ExtShopUserConsumeRecordDTO dto : extShopUserConsumeRecordDTOS) {
 			//虚拟商品类型
 			String goodsType = dto.getGoodsType();
@@ -118,14 +115,44 @@ public class ProjectController {
 			if (ConsumeType.RECHARGE.getCode().equals(consumeType)) {
 				//如果是次卡、疗程卡相关操作
 				if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType) || GoodsTypeEnum.TREATMENT_CARD.getCode().equals(goodsType)) {
-					//生成用户与项目的关系
-					ShopUserProjectRelationDTO shopUserRelationDTO = new ShopUserProjectRelationDTO();
-					BeanUtils.copyProperties(dto, shopUserRelationDTO);
+
+                    if (dto.getShopUserProjectRelationDTO() == null) {
+                        logger.error("用户充值操作用户与卡的关系为空,{}", "ShopUserProjectRelationDTO = [" + dto.getShopUserProjectRelationDTO() + "]");
+                        throw new RuntimeException();
+                    }
+                    //生成用户与项目的关系
+                    ShopUserProjectRelationDTO shopUserRelationDTO = dto.getShopUserProjectRelationDTO();
+                    shopUserRelationDTO.setCreateDate(new Date());
+                    String uuid = IdGen.uuid();
+                    shopUserRelationDTO.setId(uuid);
+                    dto.setFlowId(uuid);
 					shopProjectService.saveUserProjectRelation(shopUserRelationDTO);
 				}
 				//如果是套卡相关操作
 				else if (GoodsTypeEnum.COLLECTION_CARD.getCode().equals(goodsType)) {
-					//生成用户跟套卡与项目的关系的关系
+                    if (dto.getShopProjectGroupDTO() == null) {
+                        logger.error("用户充值操作用户与卡的关系为空,{}", "ShopUserProjectRelationDTO = [" + dto.getShopUserProjectRelationDTO() + "]");
+                        throw new RuntimeException();
+                    }
+                    ShopProjectGroupDTO shopProjectGroupDTO = dto.getShopProjectGroupDTO();
+
+                    //根据套卡id查询项目列表
+                    ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
+                    shopProjectInfoGroupRelationDTO.setShopProjectGroupId(shopProjectGroupDTO.getId());
+                    shopProjectInfoGroupRelationDTO.setSysShopId(shopProjectInfoGroupRelationDTO.getSysShopId());
+                    List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
+
+                    if (null == groupRelations) {
+                        logger.error("根据项目套卡主键查询出来的项目列表为空，{}", groupRelations);
+                        throw new RuntimeException();
+                    }
+                    //生成用户跟套卡与项目的关系的关系
+                    for (ShopProjectInfoGroupRelationDTO dt : groupRelations) {
+
+                    }
+
+
+
 				}
 				//如果是产品相关
 				else if (GoodsTypeEnum.PRODUCT.getCode().equals(goodsType)) {
@@ -162,6 +189,7 @@ public class ProjectController {
 				throw new RuntimeException();
 			}
 
+            dto.setFlowNo(transactionCodeNumber);
 			int record = shopUerConsumeRecordService.saveCustomerConsumeRecord(dto);
 			logger.debug("保存用户充值或消费操作返回结果 {}", record > 0 ? "成功" : "失败");
 		}

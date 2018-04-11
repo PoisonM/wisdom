@@ -13,7 +13,7 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //单次卡为当前用户与项目的关系 id ,疗程卡也为当前项目跟用户的关系id,用户与套卡跟项目的关系表的关系表,产品为当前产品跟用户的关系 id ,充值卡为用户与的当前充值卡关系的id
     private String flowId;
 
-    //单次卡为当前项目id,疗程卡也为当前项目名称,产品为当前产品名称,充值卡为的当前充值卡名称
+    //单次卡为当前项目id,疗程卡也为当前项目名称,产品为当前产品名称,充值卡为的当前充值卡名称,套卡为套卡名称
     private String flowName;
 
     //消费流水号

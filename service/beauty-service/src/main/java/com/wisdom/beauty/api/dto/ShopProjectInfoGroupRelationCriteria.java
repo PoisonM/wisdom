@@ -195,6 +195,76 @@ public class ShopProjectInfoGroupRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysShopIdIsNull() {
+            addCriterion("sys_shop_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdIsNotNull() {
+            addCriterion("sys_shop_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdEqualTo(String value) {
+            addCriterion("sys_shop_id =", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotEqualTo(String value) {
+            addCriterion("sys_shop_id <>", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdGreaterThan(String value) {
+            addCriterion("sys_shop_id >", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_shop_id >=", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLessThan(String value) {
+            addCriterion("sys_shop_id <", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_shop_id <=", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdLike(String value) {
+            addCriterion("sys_shop_id like", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotLike(String value) {
+            addCriterion("sys_shop_id not like", value, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdIn(List<String> values) {
+            addCriterion("sys_shop_id in", values, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotIn(List<String> values) {
+            addCriterion("sys_shop_id not in", values, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdBetween(String value1, String value2) {
+            addCriterion("sys_shop_id between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopIdNotBetween(String value1, String value2) {
+            addCriterion("sys_shop_id not between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectGroupNameIsNull() {
             addCriterion("project_group_name is null");
             return (Criteria) this;
@@ -472,66 +542,6 @@ public class ShopProjectInfoGroupRelationCriteria {
 
         public Criteria andShopProjectInfoIdNotBetween(String value1, String value2) {
             addCriterion("shop_project_info_id not between", value1, value2, "shopProjectInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberIsNull() {
-            addCriterion("shop_project_number is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberIsNotNull() {
-            addCriterion("shop_project_number is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberEqualTo(Integer value) {
-            addCriterion("shop_project_number =", value, "shopProjectNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberNotEqualTo(Integer value) {
-            addCriterion("shop_project_number <>", value, "shopProjectNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberGreaterThan(Integer value) {
-            addCriterion("shop_project_number >", value, "shopProjectNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberGreaterThanOrEqualTo(Integer value) {
-            addCriterion("shop_project_number >=", value, "shopProjectNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberLessThan(Integer value) {
-            addCriterion("shop_project_number <", value, "shopProjectNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberLessThanOrEqualTo(Integer value) {
-            addCriterion("shop_project_number <=", value, "shopProjectNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberIn(List<Integer> values) {
-            addCriterion("shop_project_number in", values, "shopProjectNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberNotIn(List<Integer> values) {
-            addCriterion("shop_project_number not in", values, "shopProjectNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberBetween(Integer value1, Integer value2) {
-            addCriterion("shop_project_number between", value1, value2, "shopProjectNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopProjectNumberNotBetween(Integer value1, Integer value2) {
-            addCriterion("shop_project_number not between", value1, value2, "shopProjectNumber");
             return (Criteria) this;
         }
 

@@ -9,6 +9,9 @@ public class ShopProjectInfoGroupRelationDTO extends BaseEntity implements Seria
     //
     private String id;
 
+    //
+    private String sysShopId;
+
     //套卡名称
     private String projectGroupName;
 
@@ -20,9 +23,6 @@ public class ShopProjectInfoGroupRelationDTO extends BaseEntity implements Seria
 
     //项目表主键
     private String shopProjectInfoId;
-
-    //项目个数
-    private Integer shopProjectNumber;
 
     //
     private String createBy;
@@ -44,6 +44,14 @@ public class ShopProjectInfoGroupRelationDTO extends BaseEntity implements Seria
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSysShopId() {
+        return sysShopId;
+    }
+
+    public void setSysShopId(String sysShopId) {
+        this.sysShopId = sysShopId;
     }
 
     public String getProjectGroupName() {
@@ -76,14 +84,6 @@ public class ShopProjectInfoGroupRelationDTO extends BaseEntity implements Seria
 
     public void setShopProjectInfoId(String shopProjectInfoId) {
         this.shopProjectInfoId = shopProjectInfoId;
-    }
-
-    public Integer getShopProjectNumber() {
-        return shopProjectNumber;
-    }
-
-    public void setShopProjectNumber(Integer shopProjectNumber) {
-        this.shopProjectNumber = shopProjectNumber;
     }
 
     public String getCreateBy() {

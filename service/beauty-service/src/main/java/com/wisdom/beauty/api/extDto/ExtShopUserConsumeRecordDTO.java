@@ -2,10 +2,7 @@ package com.wisdom.beauty.api.extDto;
 
 import com.wisdom.beauty.api.dto.*;
 
-public class ExtShopUserConsumeRecordDTO<T> extends ShopUserConsumeRecordDTO {
-
-    //虚拟商品类型
-    private String type;
+public class ExtShopUserConsumeRecordDTO extends ShopUserConsumeRecordDTO {
 
     //用户与项目关系
     private ShopUserProjectRelationDTO shopUserProjectRelationDTO;
@@ -13,19 +10,12 @@ public class ExtShopUserConsumeRecordDTO<T> extends ShopUserConsumeRecordDTO {
     //用户与产品
     private ShopUserProductRelationDTO shopUserProductRelationDTO;
 
-    //用户与套卡的关系
-    private ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO;
+    //套卡
+    private ShopProjectGroupDTO shopProjectGroupDTO;
 
     //用户与充值卡的关系
     private ShopUserRechargeCardDTO shopUserRechargeCardDTO;
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public ShopUserProjectRelationDTO getShopUserProjectRelationDTO() {
         return shopUserProjectRelationDTO;
@@ -43,12 +33,12 @@ public class ExtShopUserConsumeRecordDTO<T> extends ShopUserConsumeRecordDTO {
         this.shopUserProductRelationDTO = shopUserProductRelationDTO;
     }
 
-    public ShopUserProjectGroupRelRelationDTO getShopUserProjectGroupRelRelationDTO() {
-        return shopUserProjectGroupRelRelationDTO;
+    public ShopProjectGroupDTO getShopProjectGroupDTO() {
+        return shopProjectGroupDTO;
     }
 
-    public void setShopUserProjectGroupRelRelationDTO(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO) {
-        this.shopUserProjectGroupRelRelationDTO = shopUserProjectGroupRelRelationDTO;
+    public void setShopProjectGroupDTO(ShopProjectGroupDTO shopProjectGroupDTO) {
+        this.shopProjectGroupDTO = shopProjectGroupDTO;
     }
 
     public ShopUserRechargeCardDTO getShopUserRechargeCardDTO() {

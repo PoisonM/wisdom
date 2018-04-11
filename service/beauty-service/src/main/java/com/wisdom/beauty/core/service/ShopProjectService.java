@@ -1,9 +1,6 @@
 package com.wisdom.beauty.core.service;
 
-import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
-import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
@@ -82,6 +79,20 @@ public interface ShopProjectService {
     */
     ShopProjectInfoDTO getProjectDetail(String id);
 
-
+    /**
+     * 保存用户与项目的关系
+     *
+     * @param shopUserRelationDTO
+     * @return
+     */
     int saveUserProjectRelation(ShopUserProjectRelationDTO shopUserRelationDTO);
+
+
+    /**
+     * 根据条件查询套卡与项目的关系列表
+     *
+     * @param shopProjectInfoGroupRelationDTO
+     * @return
+     */
+    List<ShopProjectInfoGroupRelationDTO> getShopProjectInfoGroupRelations(ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO);
 }
