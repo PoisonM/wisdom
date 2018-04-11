@@ -37,6 +37,15 @@
             top: 64px;
             right: 32px;
         }
+        .redPacket .close1{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            /*background-color: #ffffff;*/
+            position: absolute;
+            top: 15px;
+            right: 32px;
+        }
         .open{
             position: absolute;
             top: 13%;
@@ -110,7 +119,7 @@
         <div ng-if="param.redPackerFlagTwo" class="redPacket_box">
             <div class="redPacket">
                 <img  src="images/redPacket1.png" alt="">
-                <span ng-click="redPackerClose()" class="close"></span>
+                <span ng-click="redPackerClose()" class="close1"></span>
                 <div class="message">
                     <span>你的宝箱里有<i class="yelColor">{{param.bonusValue}}元</i>现金
                     </span>
