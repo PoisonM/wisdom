@@ -1,17 +1,15 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
-import com.wisdom.beauty.api.dto.ShopProjectGroupCriteria;
-import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
-import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoGroupRelationMapper;
+import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -86,6 +84,50 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         int insert = shopUserProjectGroupRelRelationMapper.insert(shopUserProjectGroupRelRelation);
         return insert;
     }
+
+	/**
+	 * 根据条件查询用户与套卡与项目关系的关系表
+	 *
+	 * @param shopUserProjectGroupRelRelation
+	 * @return
+	 */
+	@Override
+	public List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation) {
+
+		if (CommonUtils.objectIsNotEmpty(shopUserProjectGroupRelRelation)) {
+			logger.error("根据条件查询用户与套卡与项目关系的关系表传入参数为空，{}", "shopUserProjectGroupRelRelation = [" + shopUserProjectGroupRelRelation + "]");
+			return null;
+		}
+
+		ShopUserProjectGroupRelRelationCriteria relationCriteria = new ShopUserProjectGroupRelRelationCriteria();
+		ShopUserProjectGroupRelRelationCriteria.Criteria criteria = relationCriteria.createCriteria();
+
+		if (StringUtils.isNotBlank(shopUserProjectGroupRelRelation.getId())) {
+			criteria.andIdEqualTo(shopUserProjectGroupRelRelation.getId());
+		}
+		List<ShopUserProjectGroupRelRelationDTO> dtos = shopUserProjectGroupRelRelationMapper.selectByCriteria(relationCriteria);
+		logger.debug("根据条件查询用户与套卡与项目关系的关系表查出来的数量为， {}", dtos != null ? dtos.size() : "0");
+		return dtos;
+	}
+
+	/**
+	 * 更新用户与套卡与项目关系的关系表
+	 *
+	 * @param shopUserProjectGroupRelRelation
+	 * @return
+	 */
+	@Override
+	public int updateShopUserProjectGroupRelRelation(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation) {
+
+		if (CommonUtils.objectIsNotEmpty(shopUserProjectGroupRelRelation)) {
+			logger.error("根据条件查询用户与套卡与项目关系的关系表传入参数为空，{}", "shopUserProjectGroupRelRelation = [" + shopUserProjectGroupRelRelation + "]");
+			return 0;
+		}
+
+		int update = shopUserProjectGroupRelRelationMapper.updateByPrimaryKey(shopUserProjectGroupRelRelation);
+
+		return update;
+	}
 
 	@Override
 	public ProjectInfoGroupResponseDTO getShopProjectInfoGroupRelation(ShopProjectGroupDTO shopProjectGroupDTO) {

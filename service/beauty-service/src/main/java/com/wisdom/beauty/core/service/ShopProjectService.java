@@ -29,7 +29,7 @@ public interface ShopProjectService {
      * @param shopUserProjectRelationDTO
      * @return
      */
-    int updateUserCardProject(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
+    int updateUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
 
     /**
      * 查询某个店的项目列表信息

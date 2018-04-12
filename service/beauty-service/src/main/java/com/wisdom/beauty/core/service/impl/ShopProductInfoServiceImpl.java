@@ -65,6 +65,10 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
             criteria.andSysUserIdEqualTo(shopUserProductRelationDTO.getSysUserId());
         }
 
+        if (StringUtils.isNotBlank(shopUserProductRelationDTO.getId())) {
+            criteria.andIdEqualTo(shopUserProductRelationDTO.getId());
+        }
+
         List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = shopUserProductRelationMapper.selectByCriteria(shopUserProductRelationCriteria);
 
         logger.debug("获取用户的产品信息大小为， {}", shopUserProductRelationDTOS != null ? shopUserProductRelationDTOS.size() : 0);

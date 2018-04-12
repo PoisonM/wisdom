@@ -17,13 +17,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * FileName: workService
+ * FileName: ShopProjectService
  *
  * @author: 赵得良
  * Date:     2018/4/3 0003 15:06
- * Description: 工作相关
+ * Description: 项目相关
  */
-@Service("projectService")
+@Service("shopProjectService")
 public class ShopProjectServiceImpl implements ShopProjectService {
 
     @Autowired
@@ -83,7 +83,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
      * @return
      */
     @Override
-    public int updateUserCardProject(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
+    public int updateUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
 
         if (shopUserProjectRelationDTO == null) {
             logger.info("更新用户与项目的关系传入参数={}", "shopUserProjectRelationDTO = [" + shopUserProjectRelationDTO + "]");
