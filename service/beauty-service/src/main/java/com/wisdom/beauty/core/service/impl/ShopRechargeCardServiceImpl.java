@@ -1,8 +1,12 @@
 package com.wisdom.beauty.core.service.impl;
 
 
+import com.wisdom.beauty.api.dto.ShopProjectProductCardRelation;
+import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopRechargeCardCriteria;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
+import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.core.mapper.ShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopRechargeCardMapper;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -29,6 +33,10 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 
     @Autowired
     private ShopRechargeCardMapper shopRechargeCardMapper;
+
+    @Autowired
+    private ShopProjectProductCardRelationMapper shopProjectProductCardRelationMapper;
+
     @Override
     public List<ShopRechargeCardDTO> getShopRechargeCardList(PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO) {
         ShopRechargeCardDTO shopRechargeCardDTO = pageParamVoDTO.getRequestData();
@@ -68,9 +76,40 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 
         criteria.andIdEqualTo(id);
         List<ShopRechargeCardDTO> list = shopRechargeCardMapper.selectByCriteria(shopRechargeCardCriteria);
-        if(CollectionUtils.isEmpty(list)){
-            return  null;
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
         }
         return list.get(0);
+    }
+
+    @Override
+    public Float getDiscount(String queryCriteria, String rechargeCardId, String type) {
+        logger.info("getDiscount传入的参数,queryCriteria={},rechargeCardId={}", queryCriteria, rechargeCardId);
+
+        if (StringUtils.isBlank(queryCriteria) || StringUtils.isBlank(rechargeCardId)) {
+            logger.info("getDiscount传入的参数方法传入的参数为空");
+            return null;
+        }
+
+        ShopProjectProductCardRelationCriteria shopProjectProductCardRelationCriteria = new ShopProjectProductCardRelationCriteria();
+        ShopProjectProductCardRelationCriteria.Criteria criteria = shopProjectProductCardRelationCriteria.createCriteria();
+
+        criteria.andShopRechargeCardIdEqualTo(rechargeCardId);
+        //如果是产品类型的
+        if (GoodsTypeEnum.PRODUCT.getCode().equals(type)) {
+            criteria.andShopProductIdEqualTo(queryCriteria);
+        } else {
+            //项目类型
+            criteria.andSysShopProjectIdEqualTo(queryCriteria);
+        }
+        List<ShopProjectProductCardRelation> list = shopProjectProductCardRelationMapper.selectByCriteria(shopProjectProductCardRelationCriteria);
+        if (CollectionUtils.isEmpty(list)) {
+            logger.info("接口shopRechargeCardMapper#selectByCriteria()查询结果为空");
+            return null;
+        }
+        ShopProjectProductCardRelation shopProjectProductCardRelation = list.get(0);
+        Float discount = shopProjectProductCardRelation.getDiscount();
+        logger.info("getDiscount接口获取到的折扣信息={}", discount);
+        return discount;
     }
 }

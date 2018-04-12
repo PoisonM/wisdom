@@ -4,6 +4,7 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class BeautyServiceImplTest {
 
     @Resource
     private ShopAppointmentService appointmentService;
+    @Autowired
+    private ShopRechargeCardService shopRechargeCardService;
 
     @Test
     public void initOrderShouldReturnInitializedOrder() throws Exception {
@@ -37,6 +40,14 @@ public class BeautyServiceImplTest {
         shopAppointServiceDTO.setId("24234");
         shopAppointServiceMapper.insert(shopAppointServiceDTO);
 
+    }
+    @Test
+    public  void  te(){
+        String a="33";
+        String b="11";
+        String c="1";
+       Float s= shopRechargeCardService.getDiscount(a,b,c);
+        System.out.print(s);
     }
 
 }
