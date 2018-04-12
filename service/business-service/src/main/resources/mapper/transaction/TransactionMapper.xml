@@ -26,7 +26,9 @@
         <result column="user_name" property="userNameAddress" jdbcType="VARCHAR" />
         <result column="user_phone" property="userPhoneAddress" jdbcType="VARCHAR" />
         <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+        <result column="product_id" property="businessProductId" jdbcType="VARCHAR" />
         <result column="name" property="businessProductName" jdbcType="VARCHAR" />
+        <result column="brand" property="productBrand" jdbcType="VARCHAR" />
         <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
         <result column="price" property="businessProductPrice" jdbcType="VARCHAR" />
         <result column="product_num" property="businessProductNum" jdbcType="VARCHAR" />
@@ -66,6 +68,16 @@
         <result column="amount" property="amount" jdbcType="REAL" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="next_user_id" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="user_type" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="next_user_type" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="parent_relation" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="user_mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="next_user_mobile" property="nextUserMobile" jdbcType="VARCHAR" />
+        <result column="user_identify_number" property="identifyNumber" jdbcType="VARCHAR" />
+        <result column="next_user_identify_number" property="nextUserIdentifyNumber" jdbcType="VARCHAR" />
+        <result column="user_nickname" property="nickName" jdbcType="VARCHAR" />
+        <result column="next_user_nickname" property="nextUserNickName" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="Base_BusinessOrder_list">
@@ -374,14 +386,34 @@
         sys_user_id,
         amount,
         create_date,
-        update_date
+        update_date,
+        next_user_id,
+        user_type,
+        next_user_type,
+        parent_relation,
+        user_mobile,
+        next_user_mobile,
+        user_identify_number,
+        next_user_identify_number,
+        user_nickname,
+        next_user_nickname
         ) VALUES (
         #{id},
         #{transactionId},
         #{userId},
         #{amount},
         #{createDate},
-        #{updateDate}
+        #{updateDate},
+        #{nextUserId},
+        #{userType},
+        #{nextUserType},
+        #{parentRelation},
+        #{mobile},
+        #{nextUserMobile},
+        #{identifyNumber},
+        #{nextUserIdentifyNumber},
+        #{nickName},
+        #{nextUserNickName}
         )
     </insert>
 
@@ -398,9 +430,11 @@
     <!--根据id查询订单详情-->
     <select id="queryOrderDetailsById"
             resultMap="BusinessOrderResultMap">
-        SELECT ord.order_id,ord.update_date,ord.`status`,ord.type,usr.mobile,ord.user_order_address_id,pay.amount,MAX(pay.pay_date) AS pay_date,
-        pay.transaction_id,adr.user_name,adr.user_phone,CONCAT(province," ",city," ",detail_address) as userAddress,
-        pro.`name`,pro.price, opr.product_spec,opr.product_num
+        SELECT ord.order_id,ord.update_date,ord.`status`,ord.type,usr.mobile,ord.user_order_address_id
+        ,pay.amount,MAX(pay.pay_date) AS pay_date,pay.transaction_id
+        ,adr.user_name,adr.user_phone,CONCAT(province," ",city," ",detail_address) as userAddress
+        ,pro.`name`,pro.price,pro.product_id,pro.brand
+        ,opr.product_spec,opr.product_num
         FROM business_order ord
         LEFT JOIN sys_user usr ON ord.sys_user_id = usr.id
         LEFT JOIN order_product_relation opr ON ord.order_id = opr.business_order_id

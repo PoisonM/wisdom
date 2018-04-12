@@ -205,19 +205,42 @@ public class ProcessUserSubscribeEventService {
 
         @Override
         public void run() {
-            List<Article> articleList = new ArrayList<>();
-            Article article = new Article();
-            article.setTitle("嗨!您终于来啦! ~\n");
-            article.setDescription(
-                    "在这里,可以边赚钱边美美哒 ~  \n" +
-                    " \n" +
-                    "点击「99课堂」，教你玩转社群营销 ~\n" +
-                    "点击「99商城」，分享即赚钱 ~\n" +
-                    "更多资讯,直接留言 ~");
-            article.setPicUrl("");
-            article.setUrl("");
-            articleList.add(article);
-            WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+
+            if(StringUtils.isNotNull(xmlEntity.getEventKey())&&xmlEntity.getEventKey().indexOf("mxForeignPurchase")!=-1)
+            {
+                String weishiyiShop = xmlEntity.getEventKey().replace("mxForeignPurchase_", "");
+                String codeArray[] = weishiyiShop.split("_");
+                String weishiyiShopId = codeArray[1];
+
+                //通过shopId查询出店铺名称
+
+                //处理境外购的流程
+                List<Article> articleList = new ArrayList<>();
+                Article article = new Article();
+                article.setTitle("嗨!您终于来啦! ~\n");
+                article.setDescription(
+                        "请点击我进入唯十一店吧");
+                article.setPicUrl("");
+                article.setUrl("www.sina.com.cn");
+                articleList.add(article);
+                WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+            }
+            else
+            {
+                List<Article> articleList = new ArrayList<>();
+                Article article = new Article();
+                article.setTitle("嗨!您终于来啦! ~\n");
+                article.setDescription(
+                        "在这里,可以边赚钱边美美哒 ~  \n" +
+                                " \n" +
+                                "点击「99课堂」，教你玩转社群营销 ~\n" +
+                                "点击「99商城」，分享即赚钱 ~\n" +
+                                "更多资讯,直接留言 ~");
+                article.setPicUrl("");
+                article.setUrl("");
+                articleList.add(article);
+                WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+            }
         }
     }
 

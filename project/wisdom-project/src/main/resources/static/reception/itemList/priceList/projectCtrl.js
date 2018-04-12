@@ -104,4 +104,5 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams) {
         $scope.param.selection = index;
         $scope.selectSingleData[index].status = 3
     }
+   
 })

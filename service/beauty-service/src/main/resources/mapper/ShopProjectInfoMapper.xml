@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
     <id column="id" property="id" jdbcType="VARCHAR"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
+    <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
     <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
     <result column="project_type_one_name" property="projectTypeOneName" jdbcType="VARCHAR"/>
     <result column="project_type_two_name" property="projectTypeTwoName" jdbcType="VARCHAR"/>
@@ -86,10 +87,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sys_shop_id, project_name, project_type_one_name, project_type_two_name, project_type_one_id,
-    project_type_two_id, product_type, use_style, card_type, project_url, project_duration,
-    market_price, discount_price, max_contain_times, visit_date_time, once_price, function_intr,
-    is_display, status, create_by, create_date, update_user, update_date
+    id, sys_shop_id, sys_boss_id, project_name, project_type_one_name, project_type_two_name,
+    project_type_one_id, project_type_two_id, product_type, use_style, card_type, project_url,
+    project_duration, market_price, discount_price, max_contain_times, visit_date_time,
+    once_price, function_intr, is_display, status, create_by, create_date, update_user,
+    update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoCriteria">
@@ -126,8 +128,8 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
-    insert into shop_project_info (id, sys_shop_id, project_name,
-    project_type_one_name, project_type_two_name,
+    insert into shop_project_info (id, sys_shop_id, sys_boss_id,
+    project_name, project_type_one_name, project_type_two_name,
     project_type_one_id, project_type_two_id, product_type,
     use_style, card_type, project_url,
     project_duration, market_price, discount_price,
@@ -135,8 +137,8 @@
     function_intr, is_display, status,
     create_by, create_date, update_user,
     update_date)
-    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
-    #{projectTypeOneName,jdbcType=VARCHAR}, #{projectTypeTwoName,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR},
+    #{projectName,jdbcType=VARCHAR}, #{projectTypeOneName,jdbcType=VARCHAR}, #{projectTypeTwoName,jdbcType=VARCHAR},
     #{projectTypeOneId,jdbcType=VARCHAR}, #{projectTypeTwoId,jdbcType=VARCHAR}, #{productType,jdbcType=CHAR},
     #{useStyle,jdbcType=CHAR}, #{cardType,jdbcType=CHAR}, #{projectUrl,jdbcType=VARCHAR},
     #{projectDuration,jdbcType=INTEGER}, #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL},
@@ -153,6 +155,9 @@
       </if>
       <if test="sysShopId != null">
         sys_shop_id,
+      </if>
+      <if test="sysBossId != null">
+        sys_boss_id,
       </if>
       <if test="projectName != null">
         project_name,
@@ -227,6 +232,9 @@
       </if>
       <if test="sysShopId != null">
         #{sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBossId != null">
+        #{sysBossId,jdbcType=VARCHAR},
       </if>
       <if test="projectName != null">
         #{projectName,jdbcType=VARCHAR},
@@ -312,6 +320,9 @@
       <if test="record.sysShopId != null">
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
+      <if test="record.sysBossId != null">
+        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      </if>
       <if test="record.projectName != null">
         project_name = #{record.projectName,jdbcType=VARCHAR},
       </if>
@@ -387,6 +398,7 @@
     update shop_project_info
     set id = #{record.id,jdbcType=VARCHAR},
     sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+    sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       project_type_one_name = #{record.projectTypeOneName,jdbcType=VARCHAR},
       project_type_two_name = #{record.projectTypeTwoName,jdbcType=VARCHAR},
@@ -418,6 +430,9 @@
     <set>
       <if test="sysShopId != null">
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBossId != null">
+        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
       </if>
       <if test="projectName != null">
         project_name = #{projectName,jdbcType=VARCHAR},
@@ -491,6 +506,7 @@
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
     update shop_project_info
     set sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+    sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
     project_name = #{projectName,jdbcType=VARCHAR},
       project_type_one_name = #{projectTypeOneName,jdbcType=VARCHAR},
       project_type_two_name = #{projectTypeTwoName,jdbcType=VARCHAR},

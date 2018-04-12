@@ -2,6 +2,8 @@ package com.wisdom.beauty.api.responseDto;
 
 import com.wisdom.common.entity.BaseEntity;
 
+import java.math.BigDecimal;
+
 /**
  * ClassName: CustomerAccountResponseDto
  *
@@ -12,10 +14,10 @@ import com.wisdom.common.entity.BaseEntity;
  */
 public class CustomerAccountResponseDto extends BaseEntity {
     //总金额
-    private Long sumAmount;
+    private BigDecimal sumAmount;
 
     //总欠款
-    private Long arrears;
+    private BigDecimal arrears;
     //用户名
     private String userName;
     //头像
@@ -25,19 +27,19 @@ public class CustomerAccountResponseDto extends BaseEntity {
     //会员状态
     private String member;
 
-    public Long getSumAmount() {
+    public BigDecimal getSumAmount() {
         return sumAmount;
     }
 
-    public void setSumAmount(Long sumAmount) {
+    public void setSumAmount(BigDecimal sumAmount) {
         this.sumAmount = sumAmount;
     }
 
-    public Long getArrears() {
+    public BigDecimal getArrears() {
         return arrears;
     }
 
-    public void setArrears(Long arrears) {
+    public void setArrears(BigDecimal arrears) {
         this.arrears = arrears;
     }
 

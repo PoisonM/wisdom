@@ -112,19 +112,6 @@
         ORDER BY ac.update_date DESC
     </select>
 
-    <!--<select id="queryUserBalanceByParameters"
-            resultMap="UserAccountInfoResultMap"
-            resultType="com.wisdom.common.persistence.Page">
-        SELECT
-        <include refid="Base_Column_list"/>
-        FROM user_account ac,sys_user u
-        WHERE ac.sys_user_id = u.id
-        <if test="phoneAndIdentify != null and phoneAndIdentify != ''">
-            AND (u.identify_number = #{phoneAndIdentify} OR u.mobile=#{phoneAndIdentify})
-        </if>
-        ORDER BY ac.update_date DESC
-    </select>-->
-
     <!--按条件查询用户及用户余额-->
     <select id="queryUserBalanceByParameters" resultMap="UserAccountInfoResultMap">
         SELECT

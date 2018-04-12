@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -332,6 +333,76 @@ public class ShopUserProjectRelationCriteria {
 
         public Criteria andSysUserIdNotBetween(String value1, String value2) {
             addCriterion("sys_user_id not between", value1, value2, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIsNull() {
+            addCriterion("sys_clerk_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIsNotNull() {
+            addCriterion("sys_clerk_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdEqualTo(String value) {
+            addCriterion("sys_clerk_id =", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotEqualTo(String value) {
+            addCriterion("sys_clerk_id <>", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdGreaterThan(String value) {
+            addCriterion("sys_clerk_id >", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_id >=", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLessThan(String value) {
+            addCriterion("sys_clerk_id <", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_id <=", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLike(String value) {
+            addCriterion("sys_clerk_id like", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotLike(String value) {
+            addCriterion("sys_clerk_id not like", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIn(List<String> values) {
+            addCriterion("sys_clerk_id in", values, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotIn(List<String> values) {
+            addCriterion("sys_clerk_id not in", values, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdBetween(String value1, String value2) {
+            addCriterion("sys_clerk_id between", value1, value2, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotBetween(String value1, String value2) {
+            addCriterion("sys_clerk_id not between", value1, value2, "sysClerkId");
             return (Criteria) this;
         }
 
@@ -695,52 +766,52 @@ public class ShopUserProjectRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountEqualTo(Long value) {
+        public Criteria andSysShopProjectInitAmountEqualTo(BigDecimal value) {
             addCriterion("sys_shop_project_init_amount =", value, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountNotEqualTo(Long value) {
+        public Criteria andSysShopProjectInitAmountNotEqualTo(BigDecimal value) {
             addCriterion("sys_shop_project_init_amount <>", value, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountGreaterThan(Long value) {
+        public Criteria andSysShopProjectInitAmountGreaterThan(BigDecimal value) {
             addCriterion("sys_shop_project_init_amount >", value, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andSysShopProjectInitAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("sys_shop_project_init_amount >=", value, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountLessThan(Long value) {
+        public Criteria andSysShopProjectInitAmountLessThan(BigDecimal value) {
             addCriterion("sys_shop_project_init_amount <", value, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountLessThanOrEqualTo(Long value) {
+        public Criteria andSysShopProjectInitAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("sys_shop_project_init_amount <=", value, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountIn(List<Long> values) {
+        public Criteria andSysShopProjectInitAmountIn(List<BigDecimal> values) {
             addCriterion("sys_shop_project_init_amount in", values, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountNotIn(List<Long> values) {
+        public Criteria andSysShopProjectInitAmountNotIn(List<BigDecimal> values) {
             addCriterion("sys_shop_project_init_amount not in", values, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountBetween(Long value1, Long value2) {
+        public Criteria andSysShopProjectInitAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("sys_shop_project_init_amount between", value1, value2, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectInitAmountNotBetween(Long value1, Long value2) {
+        public Criteria andSysShopProjectInitAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("sys_shop_project_init_amount not between", value1, value2, "sysShopProjectInitAmount");
             return (Criteria) this;
         }
@@ -755,52 +826,52 @@ public class ShopUserProjectRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountEqualTo(Long value) {
+        public Criteria andSysShopProjectSurplusAmountEqualTo(BigDecimal value) {
             addCriterion("sys_shop_project_surplus_amount =", value, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountNotEqualTo(Long value) {
+        public Criteria andSysShopProjectSurplusAmountNotEqualTo(BigDecimal value) {
             addCriterion("sys_shop_project_surplus_amount <>", value, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountGreaterThan(Long value) {
+        public Criteria andSysShopProjectSurplusAmountGreaterThan(BigDecimal value) {
             addCriterion("sys_shop_project_surplus_amount >", value, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andSysShopProjectSurplusAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("sys_shop_project_surplus_amount >=", value, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountLessThan(Long value) {
+        public Criteria andSysShopProjectSurplusAmountLessThan(BigDecimal value) {
             addCriterion("sys_shop_project_surplus_amount <", value, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountLessThanOrEqualTo(Long value) {
+        public Criteria andSysShopProjectSurplusAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("sys_shop_project_surplus_amount <=", value, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountIn(List<Long> values) {
+        public Criteria andSysShopProjectSurplusAmountIn(List<BigDecimal> values) {
             addCriterion("sys_shop_project_surplus_amount in", values, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountNotIn(List<Long> values) {
+        public Criteria andSysShopProjectSurplusAmountNotIn(List<BigDecimal> values) {
             addCriterion("sys_shop_project_surplus_amount not in", values, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountBetween(Long value1, Long value2) {
+        public Criteria andSysShopProjectSurplusAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("sys_shop_project_surplus_amount between", value1, value2, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSysShopProjectSurplusAmountNotBetween(Long value1, Long value2) {
+        public Criteria andSysShopProjectSurplusAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("sys_shop_project_surplus_amount not between", value1, value2, "sysShopProjectSurplusAmount");
             return (Criteria) this;
         }
@@ -922,6 +993,256 @@ public class ShopUserProjectRelationCriteria {
 
         public Criteria andSysShopProjectInitTimesNotBetween(Integer value1, Integer value2) {
             addCriterion("sys_shop_project_init_times not between", value1, value2, "sysShopProjectInitTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateIsNull() {
+            addCriterion("effective_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateIsNotNull() {
+            addCriterion("effective_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateEqualTo(Date value) {
+            addCriterion("effective_date =", value, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateNotEqualTo(Date value) {
+            addCriterion("effective_date <>", value, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateGreaterThan(Date value) {
+            addCriterion("effective_date >", value, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("effective_date >=", value, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateLessThan(Date value) {
+            addCriterion("effective_date <", value, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateLessThanOrEqualTo(Date value) {
+            addCriterion("effective_date <=", value, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateIn(List<Date> values) {
+            addCriterion("effective_date in", values, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateNotIn(List<Date> values) {
+            addCriterion("effective_date not in", values, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateBetween(Date value1, Date value2) {
+            addCriterion("effective_date between", value1, value2, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateNotBetween(Date value1, Date value2) {
+            addCriterion("effective_date not between", value1, value2, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysIsNull() {
+            addCriterion("effective_days is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysIsNotNull() {
+            addCriterion("effective_days is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysEqualTo(Integer value) {
+            addCriterion("effective_days =", value, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysNotEqualTo(Integer value) {
+            addCriterion("effective_days <>", value, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysGreaterThan(Integer value) {
+            addCriterion("effective_days >", value, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysGreaterThanOrEqualTo(Integer value) {
+            addCriterion("effective_days >=", value, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysLessThan(Integer value) {
+            addCriterion("effective_days <", value, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysLessThanOrEqualTo(Integer value) {
+            addCriterion("effective_days <=", value, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysIn(List<Integer> values) {
+            addCriterion("effective_days in", values, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysNotIn(List<Integer> values) {
+            addCriterion("effective_days not in", values, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysBetween(Integer value1, Integer value2) {
+            addCriterion("effective_days between", value1, value2, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDaysNotBetween(Integer value1, Integer value2) {
+            addCriterion("effective_days not between", value1, value2, "effectiveDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysIsNull() {
+            addCriterion("invalid_days is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysIsNotNull() {
+            addCriterion("invalid_days is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysEqualTo(Integer value) {
+            addCriterion("invalid_days =", value, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysNotEqualTo(Integer value) {
+            addCriterion("invalid_days <>", value, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysGreaterThan(Integer value) {
+            addCriterion("invalid_days >", value, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysGreaterThanOrEqualTo(Integer value) {
+            addCriterion("invalid_days >=", value, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysLessThan(Integer value) {
+            addCriterion("invalid_days <", value, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysLessThanOrEqualTo(Integer value) {
+            addCriterion("invalid_days <=", value, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysIn(List<Integer> values) {
+            addCriterion("invalid_days in", values, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysNotIn(List<Integer> values) {
+            addCriterion("invalid_days not in", values, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysBetween(Integer value1, Integer value2) {
+            addCriterion("invalid_days between", value1, value2, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvalidDaysNotBetween(Integer value1, Integer value2) {
+            addCriterion("invalid_days not between", value1, value2, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendIsNull() {
+            addCriterion("is_send is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendIsNotNull() {
+            addCriterion("is_send is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendEqualTo(String value) {
+            addCriterion("is_send =", value, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendNotEqualTo(String value) {
+            addCriterion("is_send <>", value, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendGreaterThan(String value) {
+            addCriterion("is_send >", value, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendGreaterThanOrEqualTo(String value) {
+            addCriterion("is_send >=", value, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendLessThan(String value) {
+            addCriterion("is_send <", value, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendLessThanOrEqualTo(String value) {
+            addCriterion("is_send <=", value, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendLike(String value) {
+            addCriterion("is_send like", value, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendNotLike(String value) {
+            addCriterion("is_send not like", value, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendIn(List<String> values) {
+            addCriterion("is_send in", values, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendNotIn(List<String> values) {
+            addCriterion("is_send not in", values, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendBetween(String value1, String value2) {
+            addCriterion("is_send between", value1, value2, "isSend");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSendNotBetween(String value1, String value2) {
+            addCriterion("is_send not between", value1, value2, "isSend");
             return (Criteria) this;
         }
 

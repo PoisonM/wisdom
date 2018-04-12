@@ -1,11 +1,12 @@
 package com.wisdom.beauty.controller.product;
 
-import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -91,5 +92,99 @@ public class ProductController {
 
     }
 
+    /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 获取一级列表
+     * @Date:2018/4/10 17:29
+     */
+    @RequestMapping(value = "/oneLevelProduct", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct(@RequestParam String sysShopId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
+        List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(sysShopId);
+        responseDTO.setResponseData(list);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * @Author:huan
+     * @Param: id是一级项目的id
+     * @Return:
+     * @Description: 获取二级列表
+     * @Date:2018/4/10 17:36
+     */
+    @RequestMapping(value = "/twoLevelProduct", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<List<ShopProductTypeDTO>> findTwoLevelProduct(@RequestParam String id) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ShopProductTypeDTO shopProductTypeDTO = new ShopProductTypeDTO();
+        shopProductTypeDTO.setId(id);
+        //查询数据
+        List<ShopProductTypeDTO> list = shopProductInfoService.getTwoLevelProductList(shopProductTypeDTO);
+
+        ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(list);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * @Author:huan
+     * @Param: id是一级项目的id
+     * @Return:
+     * @Description: 获取三级列表
+     * @Date:2018/4/10 17:36
+     */
+    @RequestMapping(value = "/threeLevelProduct", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<List<ShopProductInfoDTO>> findThreeLevelProject(@RequestParam String sysShopId, @RequestParam String projectTypeOneId,
+                                                                @RequestParam String ProjectTypeTwoId, @RequestParam int pageSize) {
+        long currentTimeMillis = System.currentTimeMillis();
+        PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
+
+        shopProductInfoDTO.setSysShopId(sysShopId);
+        shopProductInfoDTO.setProductTypeOneId(projectTypeOneId);
+        shopProductInfoDTO.setProductTypeTwoId(ProjectTypeTwoId);
+
+        pageParamVoDTO.setRequestData(shopProductInfoDTO);
+        pageParamVoDTO.setPageNo(0);
+        pageParamVoDTO.setPageSize(pageSize);
+        //查询数据
+        List<ShopProductInfoDTO> list = shopProductInfoService.getThreeLevelProductList(pageParamVoDTO);
+
+        ResponseDTO<List<ShopProductInfoDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(list);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description:
+     * @Date:2018/4/10 18:06
+     */
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<ShopProductInfoDTO> findDetailProduct(@RequestParam String id) {
+        long currentTimeMillis = System.currentTimeMillis();
+        //查询数据
+        ShopProductInfoDTO shopProductInfoDTO = shopProductInfoService.getProductDetail(id);
+
+        ResponseDTO<ShopProductInfoDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(shopProductInfoDTO);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
 
 }

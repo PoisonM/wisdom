@@ -118,7 +118,6 @@ public class WeixinUserController {
             url = ConfigConstant.USER_WEB_URL + "myselfCenter";
         }
 
-
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid="+ ConfigConstant.USER_CORPID +
@@ -133,7 +132,7 @@ public class WeixinUserController {
             if (countNum++ > 3) {
                 break;
             }
-        } while (weixinUserBean == null);
+        } while (weixinUserBean.getOpenid() == null);
 
         String openId = weixinUserBean.getOpenid();
         session.setAttribute(ConfigConstant.USER_OPEN_ID, openId);

@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -605,52 +606,52 @@ public class ShopUserProjectGroupRelRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountEqualTo(Long value) {
+        public Criteria andProjectInitAmountEqualTo(BigDecimal value) {
             addCriterion("project_init_amount =", value, "projectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountNotEqualTo(Long value) {
+        public Criteria andProjectInitAmountNotEqualTo(BigDecimal value) {
             addCriterion("project_init_amount <>", value, "projectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountGreaterThan(Long value) {
+        public Criteria andProjectInitAmountGreaterThan(BigDecimal value) {
             addCriterion("project_init_amount >", value, "projectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andProjectInitAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("project_init_amount >=", value, "projectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountLessThan(Long value) {
+        public Criteria andProjectInitAmountLessThan(BigDecimal value) {
             addCriterion("project_init_amount <", value, "projectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountLessThanOrEqualTo(Long value) {
+        public Criteria andProjectInitAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("project_init_amount <=", value, "projectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountIn(List<Long> values) {
+        public Criteria andProjectInitAmountIn(List<BigDecimal> values) {
             addCriterion("project_init_amount in", values, "projectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountNotIn(List<Long> values) {
+        public Criteria andProjectInitAmountNotIn(List<BigDecimal> values) {
             addCriterion("project_init_amount not in", values, "projectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountBetween(Long value1, Long value2) {
+        public Criteria andProjectInitAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("project_init_amount between", value1, value2, "projectInitAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectInitAmountNotBetween(Long value1, Long value2) {
+        public Criteria andProjectInitAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("project_init_amount not between", value1, value2, "projectInitAmount");
             return (Criteria) this;
         }
@@ -665,52 +666,52 @@ public class ShopUserProjectGroupRelRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountEqualTo(Long value) {
+        public Criteria andProjectSurplusAmountEqualTo(BigDecimal value) {
             addCriterion("project_surplus_amount =", value, "projectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountNotEqualTo(Long value) {
+        public Criteria andProjectSurplusAmountNotEqualTo(BigDecimal value) {
             addCriterion("project_surplus_amount <>", value, "projectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountGreaterThan(Long value) {
+        public Criteria andProjectSurplusAmountGreaterThan(BigDecimal value) {
             addCriterion("project_surplus_amount >", value, "projectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andProjectSurplusAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("project_surplus_amount >=", value, "projectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountLessThan(Long value) {
+        public Criteria andProjectSurplusAmountLessThan(BigDecimal value) {
             addCriterion("project_surplus_amount <", value, "projectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountLessThanOrEqualTo(Long value) {
+        public Criteria andProjectSurplusAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("project_surplus_amount <=", value, "projectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountIn(List<Long> values) {
+        public Criteria andProjectSurplusAmountIn(List<BigDecimal> values) {
             addCriterion("project_surplus_amount in", values, "projectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountNotIn(List<Long> values) {
+        public Criteria andProjectSurplusAmountNotIn(List<BigDecimal> values) {
             addCriterion("project_surplus_amount not in", values, "projectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountBetween(Long value1, Long value2) {
+        public Criteria andProjectSurplusAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("project_surplus_amount between", value1, value2, "projectSurplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andProjectSurplusAmountNotBetween(Long value1, Long value2) {
+        public Criteria andProjectSurplusAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("project_surplus_amount not between", value1, value2, "projectSurplusAmount");
             return (Criteria) this;
         }
@@ -782,6 +783,76 @@ public class ShopUserProjectGroupRelRelationCriteria {
 
         public Criteria andSysShopIdNotBetween(String value1, String value2) {
             addCriterion("sys_shop_id not between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIsNull() {
+            addCriterion("sys_clerk_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIsNotNull() {
+            addCriterion("sys_clerk_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdEqualTo(String value) {
+            addCriterion("sys_clerk_id =", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotEqualTo(String value) {
+            addCriterion("sys_clerk_id <>", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdGreaterThan(String value) {
+            addCriterion("sys_clerk_id >", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_id >=", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLessThan(String value) {
+            addCriterion("sys_clerk_id <", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_id <=", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLike(String value) {
+            addCriterion("sys_clerk_id like", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotLike(String value) {
+            addCriterion("sys_clerk_id not like", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIn(List<String> values) {
+            addCriterion("sys_clerk_id in", values, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotIn(List<String> values) {
+            addCriterion("sys_clerk_id not in", values, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdBetween(String value1, String value2) {
+            addCriterion("sys_clerk_id between", value1, value2, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotBetween(String value1, String value2) {
+            addCriterion("sys_clerk_id not between", value1, value2, "sysClerkId");
             return (Criteria) this;
         }
 

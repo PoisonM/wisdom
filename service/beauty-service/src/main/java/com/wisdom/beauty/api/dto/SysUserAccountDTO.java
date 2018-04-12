@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SysUserAccountDTO extends BaseEntity implements Serializable {
@@ -10,10 +11,10 @@ public class SysUserAccountDTO extends BaseEntity implements Serializable {
     private String id;
 
     //总金额
-    private Long sumAmount;
+    private BigDecimal sumAmount;
 
     //总欠款
-    private Long arrears;
+    private BigDecimal arrears;
 
     //美容店主键
     private String sysShopId;
@@ -49,19 +50,19 @@ public class SysUserAccountDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public Long getSumAmount() {
+    public BigDecimal getSumAmount() {
         return sumAmount;
     }
 
-    public void setSumAmount(Long sumAmount) {
+    public void setSumAmount(BigDecimal sumAmount) {
         this.sumAmount = sumAmount;
     }
 
-    public Long getArrears() {
+    public BigDecimal getArrears() {
         return arrears;
     }
 
-    public void setArrears(Long arrears) {
+    public void setArrears(BigDecimal arrears) {
         this.arrears = arrears;
     }
 

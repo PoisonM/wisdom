@@ -32,4 +32,12 @@ public interface ShopUerConsumeRecordService {
     *@Date:2018/4/9 19:06
     */
     UserConsumeRecordResponseDTO getShopCustomerConsumeRecord(String consumeFlowNo);
+
+    /**
+     * 保存用户消费或充值记录
+     *
+     * @param shopUserConsumeRecordDTO
+     * @return
+     */
+    int saveCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
 }

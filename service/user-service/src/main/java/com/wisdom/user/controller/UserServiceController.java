@@ -1,9 +1,13 @@
 package com.wisdom.user.controller;
 
+import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.user.service.RealNameAuthService;
 import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
@@ -11,6 +15,9 @@ public class UserServiceController {
 
 	@Autowired
 	private UserInfoService customerInfoService;
+
+	@Resource
+	private RealNameAuthService realNameAuthService;
 
 	@RequestMapping(value = "/getUserInfo",method=RequestMethod.POST)
 	@ResponseBody
@@ -42,5 +49,18 @@ public class UserServiceController {
 	@ResponseBody
 	List<UserInfoDTO> queryNextUserByUserId(@RequestParam(value = "userId") String userId) {
 		return customerInfoService.queryNextUserById(userId);
+	}
+
+	/**
+	 * 用户实名认证接口
+	 *
+	 * @param cardNo
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping(value = "/queryRealNameAuthentication", method = RequestMethod.GET)
+	@ResponseBody
+	RealNameInfoDTO queryRealNameAuthentication(@RequestParam(value = "cardNo") String cardNo, @RequestParam(value = "name") String name) {
+		return realNameAuthService.getRealNameInfoDTO(cardNo, name);
 	}
 }

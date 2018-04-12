@@ -4,4 +4,7 @@
 PADWeb.controller("rechargeableCardCtrl", function($scope, $state, $stateParams,$rootScope) {
     console.log("rechargeableCardCtrl");
     $rootScope.title="充值卡";
+    $scope.goRechargeableDetails=function () {
+        $state.go("pad-web.rechargeableDetails")
+    }
 })

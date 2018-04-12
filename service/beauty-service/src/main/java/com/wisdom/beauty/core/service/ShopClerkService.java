@@ -1,5 +1,7 @@
 package com.wisdom.beauty.core.service;
 
+import com.wisdom.beauty.api.dto.SysClerkFlowAccountDTO;
+
 /**
  * FileName: ShopClerkService
  *
@@ -10,8 +12,8 @@ package com.wisdom.beauty.core.service;
 public interface ShopClerkService {
 
     /**
-     * 查看某个点的店员列表
+     * 保存店员的流水信息
      */
-//    public List<>
+    public int saveSysClerkFlowAccountInfo(SysClerkFlowAccountDTO sysClerkFlowAccountDTO);
 
 }

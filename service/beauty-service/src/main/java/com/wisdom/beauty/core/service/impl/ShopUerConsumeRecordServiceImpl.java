@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -35,10 +36,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
     @Override
     public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO) {
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = pageParamVoDTO.getRequestData();
-        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},Status={}", shopUserConsumeRecordDTO.getSysShopId(), shopUserConsumeRecordDTO.getShopUserId(), shopUserConsumeRecordDTO.getStatus());
+        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},Status={}", shopUserConsumeRecordDTO.getSysShopId(), shopUserConsumeRecordDTO.getSysUserId(), shopUserConsumeRecordDTO.getStatus());
         if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysShopId()) ||
-                StringUtils.isBlank(shopUserConsumeRecordDTO.getShopUserId()) ||
-                StringUtils.isBlank(shopUserConsumeRecordDTO.getType())) {
+                StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserId()) ||
+                StringUtils.isBlank(shopUserConsumeRecordDTO.getConsumeType())) {
             throw new ServiceException("getShopCustomerConsumeRecordList方法传入的参数为空");
         }
         ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
@@ -52,33 +53,33 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         criteria.setPageSize(pageParamVoDTO.getPageSize());
 
         c.andSysShopIdEqualTo(shopUserConsumeRecordDTO.getSysShopId());
-        c.andShopUserIdEqualTo(shopUserConsumeRecordDTO.getShopUserId());
+        c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
 
         if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecordDTO.getStatus())) {
-            c.andTypeEqualTo(shopUserConsumeRecordDTO.getStatus());
+            c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getStatus());
         } else {
             List<String> values = new ArrayList<>();
             values.add(ConsumeTypeEnum.CONSUME.getCode());
-            c.andTypeNotIn(values);
+            c.andConsumeTypeNotIn(values);
         }
         List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
         Map<String, UserConsumeRecordResponseDTO> map = new HashMap<>(16);
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
         for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
-            if (map.get(shopUserConsumeRecord.getConsumeFlowNo()) == null) {
+            if (map.get(shopUserConsumeRecord.getFlowNo()) == null) {
                 userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
                 userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
                 if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getStatus())) {
-                    userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getShopProjectName());
+                    userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getFlowName());
                 } else {
-                    userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getType());
+                    userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getConsumeType());
                 }
-                map.put(shopUserConsumeRecord.getConsumeFlowNo(), userConsumeRecordResponseDTO);
+                map.put(shopUserConsumeRecord.getFlowNo(), userConsumeRecordResponseDTO);
             } else {
-                UserConsumeRecordResponseDTO userConsumeRecordResponseMap = map.get(shopUserConsumeRecord.getConsumeFlowNo());
-                Long prices = shopUserConsumeRecord.getPrice() + userConsumeRecordResponseMap.getSumAmount();
+                UserConsumeRecordResponseDTO userConsumeRecordResponseMap = map.get(shopUserConsumeRecord.getFlowNo());
+                BigDecimal prices = shopUserConsumeRecord.getPrice().add(userConsumeRecordResponseMap.getSumAmount());
                 userConsumeRecordResponseMap.setSumAmount(prices);
-                map.put(shopUserConsumeRecord.getConsumeFlowNo(), userConsumeRecordResponseMap);
+                map.put(shopUserConsumeRecord.getFlowNo(), userConsumeRecordResponseMap);
             }
         }
         List values = Arrays.asList(map.values().toArray());
@@ -93,7 +94,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         }
         ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
         ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
-        c.andConsumeFlowNoEqualTo(consumeFlowNo);
+        c.andFlowNoEqualTo(consumeFlowNo);
 
         List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
         if (CollectionUtils.isEmpty(list)) {
@@ -102,28 +103,31 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
         for (ShopUserConsumeRecordDTO userConsumeRecord : list) {
             userConsumeRecordResponseDTO.setCreateDate(userConsumeRecord.getCreateDate());
-            userConsumeRecordResponseDTO.setShopUserName(userConsumeRecord.getShopUserName());
-            userConsumeRecordResponseDTO.setSysShopClerkName(userConsumeRecord.getSysShopClerkName());
+            userConsumeRecordResponseDTO.setShopUserName(userConsumeRecord.getSysUserName());
+            userConsumeRecordResponseDTO.setSysShopClerkName(userConsumeRecord.getSysClerkName());
             userConsumeRecordResponseDTO.setSysShopName(userConsumeRecord.getSysShopName());
-            userConsumeRecordResponseDTO.setType(userConsumeRecord.getType());
+            userConsumeRecordResponseDTO.setType(userConsumeRecord.getConsumeType());
         }
         userConsumeRecordResponseDTO.setList(list);
         return userConsumeRecordResponseDTO;
     }
 
-    public static void main(String[] args) {
-        Map<String, UserConsumeRecordResponseDTO> map = new HashMap<>(16);
-        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
-        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO2 = new UserConsumeRecordResponseDTO();
-        userConsumeRecordResponseDTO.setSumAmount(1L);
+    /**
+     * 保存用户消费或充值记录
+     *
+     * @param shopUserConsumeRecordDTO
+     * @return
+     */
+    @Override
+    public int saveCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
 
-        userConsumeRecordResponseDTO2.setSumAmount(1L);
-        map.put("a", userConsumeRecordResponseDTO);
-        map.put("b", userConsumeRecordResponseDTO2);
+        logger.info("保存用户消费或充值记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
 
-        //ArrayList<ShopUserConsumeRecordDTO> values= map.values();
-        List list = Arrays.asList(map.values().toArray());
-        System.out.print(list);
+        int insert = shopUserConsumeRecordMapper.insert(shopUserConsumeRecordDTO);
 
+        return insert;
     }
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -205,52 +206,52 @@ public class SysUserAccountCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountEqualTo(Long value) {
+        public Criteria andSumAmountEqualTo(BigDecimal value) {
             addCriterion("sum_amount =", value, "sumAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountNotEqualTo(Long value) {
+        public Criteria andSumAmountNotEqualTo(BigDecimal value) {
             addCriterion("sum_amount <>", value, "sumAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountGreaterThan(Long value) {
+        public Criteria andSumAmountGreaterThan(BigDecimal value) {
             addCriterion("sum_amount >", value, "sumAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andSumAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("sum_amount >=", value, "sumAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountLessThan(Long value) {
+        public Criteria andSumAmountLessThan(BigDecimal value) {
             addCriterion("sum_amount <", value, "sumAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountLessThanOrEqualTo(Long value) {
+        public Criteria andSumAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("sum_amount <=", value, "sumAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountIn(List<Long> values) {
+        public Criteria andSumAmountIn(List<BigDecimal> values) {
             addCriterion("sum_amount in", values, "sumAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountNotIn(List<Long> values) {
+        public Criteria andSumAmountNotIn(List<BigDecimal> values) {
             addCriterion("sum_amount not in", values, "sumAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountBetween(Long value1, Long value2) {
+        public Criteria andSumAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("sum_amount between", value1, value2, "sumAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSumAmountNotBetween(Long value1, Long value2) {
+        public Criteria andSumAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("sum_amount not between", value1, value2, "sumAmount");
             return (Criteria) this;
         }
@@ -265,52 +266,52 @@ public class SysUserAccountCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andArrearsEqualTo(Long value) {
+        public Criteria andArrearsEqualTo(BigDecimal value) {
             addCriterion("arrears =", value, "arrears");
             return (Criteria) this;
         }
 
-        public Criteria andArrearsNotEqualTo(Long value) {
+        public Criteria andArrearsNotEqualTo(BigDecimal value) {
             addCriterion("arrears <>", value, "arrears");
             return (Criteria) this;
         }
 
-        public Criteria andArrearsGreaterThan(Long value) {
+        public Criteria andArrearsGreaterThan(BigDecimal value) {
             addCriterion("arrears >", value, "arrears");
             return (Criteria) this;
         }
 
-        public Criteria andArrearsGreaterThanOrEqualTo(Long value) {
+        public Criteria andArrearsGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("arrears >=", value, "arrears");
             return (Criteria) this;
         }
 
-        public Criteria andArrearsLessThan(Long value) {
+        public Criteria andArrearsLessThan(BigDecimal value) {
             addCriterion("arrears <", value, "arrears");
             return (Criteria) this;
         }
 
-        public Criteria andArrearsLessThanOrEqualTo(Long value) {
+        public Criteria andArrearsLessThanOrEqualTo(BigDecimal value) {
             addCriterion("arrears <=", value, "arrears");
             return (Criteria) this;
         }
 
-        public Criteria andArrearsIn(List<Long> values) {
+        public Criteria andArrearsIn(List<BigDecimal> values) {
             addCriterion("arrears in", values, "arrears");
             return (Criteria) this;
         }
 
-        public Criteria andArrearsNotIn(List<Long> values) {
+        public Criteria andArrearsNotIn(List<BigDecimal> values) {
             addCriterion("arrears not in", values, "arrears");
             return (Criteria) this;
         }
 
-        public Criteria andArrearsBetween(Long value1, Long value2) {
+        public Criteria andArrearsBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("arrears between", value1, value2, "arrears");
             return (Criteria) this;
         }
 
-        public Criteria andArrearsNotBetween(Long value1, Long value2) {
+        public Criteria andArrearsNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("arrears not between", value1, value2, "arrears");
             return (Criteria) this;
         }
