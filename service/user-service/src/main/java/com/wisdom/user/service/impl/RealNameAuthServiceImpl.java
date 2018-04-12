@@ -1,12 +1,16 @@
 package com.wisdom.user.service.impl;
 
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.wisdom.common.constant.RealNameResultEnum;
 import com.wisdom.common.dto.user.RealNameAuthHelperDTO;
 import com.wisdom.common.dto.user.RealNameInfoDTO;
+import com.wisdom.common.util.HttpUtils;
 import com.wisdom.common.util.JacksonUtil;
 import com.wisdom.user.service.RealNameAuthService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service("realNameAuthService")
 public class RealNameAuthServiceImpl implements RealNameAuthService {
@@ -82,26 +89,25 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
      * @return
      */
     public String getRealNameInfo(String idCard, String name) {
-        return "{\"data\":{\"sex\":\"男\",\"address\":\"山东省-青岛市-莱西市\",\"birthday\":\"1992-02-17\"},\"resp\":{\"code\":0,\"desc\":\"匹配\"}}";
-//        String host = "http://idcard.market.alicloudapi.com";
-//        String path = "/lianzhuo/idcard";
-//        String method = "GET";
-//        String appcode = "d44aff14ca8142efb196889d29c2896d";
-//        Map<String, String> headers = new HashMap<String, String>();
-//
-//        headers.put("Authorization", "APPCODE " + appcode);
-//        Map<String, String> querys = new HashMap<String, String>();
-//        querys.put("cardno", idCard);
-//        querys.put("name", name);
-//        try {
-//            HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
-//            String string = EntityUtils.toString(response.getEntity());
-//            logger.debug("实名认证远程查询结果为， {}" , string);
-//            return string;
-//        } catch (Exception e) {
-//            logger.error("实名认证远程查询失败，异常信息为，{}"+e.getMessage(),e);
-//            return "";
-//        }
+        String host = "http://idcard.market.alicloudapi.com";
+        String path = "/lianzhuo/idcard";
+        String method = "GET";
+        String appcode = "d44aff14ca8142efb196889d29c2896d";
+        Map<String, String> headers = new HashMap<String, String>();
+
+        headers.put("Authorization", "APPCODE " + appcode);
+        Map<String, String> querys = new HashMap<String, String>();
+        querys.put("cardno", idCard);
+        querys.put("name", name);
+        try {
+            HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
+            String string = EntityUtils.toString(response.getEntity());
+            logger.debug("实名认证远程查询结果为， {}", string);
+            return string;
+        } catch (Exception e) {
+            logger.error("实名认证远程查询失败，异常信息为，{}" + e.getMessage(), e);
+            return "";
+        }
     }
 
     private RealNameInfoDTO getRealNameInfoDTO() {
