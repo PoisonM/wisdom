@@ -1,8 +1,8 @@
 
 .weekHeader{width: 100%;height: 1.07rem;;line-height: 1.07rem}
-.weekHeader ul{list-style: none;text-align: center}
+.weekHeader ul{list-style: none;text-align: center;margin-left:1.23rem;}
 .weekHeader ul li{float: left;width: 2.4rem;font-size: 0.24rem;color: #333333}
-.weekHeader ul li:nth-child(1){width: 1.23rem}
+
 .weekLeft{width: 1.23rem;;float: left}
 .weekLeft ul{list-style: none;text-align: center}
 .weekLeft ul li{height: 1.53rem;line-height: 1.57rem;}

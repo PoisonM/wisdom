@@ -1,12 +1,12 @@
 <div class="weekWrap H100">
      <div class="weekHeader">
          <ul>
-             <li  ng-repeat="item in [1,2,3,4,5,6,7]" >
-                 李茹
+             <li  ng-repeat="(key ,val) in param.week.weekData" >
+                 {{key}}
              </li>
          </ul>
      </div>
-    <div class="content " style="height:96%;">
+    <div class="content " style="height:93%;">
         <div class="weekLeft">
             <ul>
                 <li  ng-repeat="item in param.week" >
@@ -15,17 +15,15 @@
                             <!--<span>周五</span><span>初五</span></p>-->
                     </div>
                 </li>
+
             </ul>
         </div>
 
-        <div class="weekRight  " ng-repeat="items in [1,2,3,4,5,6]">
+        <div class="weekRight " ng-repeat="(key ,val) in param.week.weekData">
             <ul>
-                <li  ng-repeat="item in [1,2,3,4,5,6,7]" ng-click="weekLis(item)">
+                <li  ng-repeat="item in val" ng-click="weekLis(item)">
                     <div>
-                        <p><span>美茹</span>&nbsp;<span>美白补水</span>&nbsp;<span>11:00</span></p>
-                        <p><span>美茹</span>&nbsp;<span>美白补水</span>&nbsp;<span>11:00</span></p>
-                        <p><span>美茹</span>&nbsp;<span>美白补水</span>&nbsp;<span>11:00</span></p>
-                        <p class="makeHave">还有一个预约...</p>
+                        <p ng-repeat="item1 in item.info"><span>{{item1.sysUserName}}</span>&nbsp;<span>{{item1.shopProjectName}}</span><span class="ml30">11:00</span></p>
                     </div>
                 </li>
             </ul>

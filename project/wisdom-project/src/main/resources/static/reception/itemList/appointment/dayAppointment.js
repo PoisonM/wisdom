@@ -24,8 +24,11 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             appointmentInfo: [],/*美容师下的预约列表*/
             point: [],/*点*/
             list:[],/*数据处理后 -- */
-
         },
+        week:{
+            weekData:''
+        },
+        details:"",/*预约详情*/
         selectBeautician: false, /*修改预约-选择美容师*/
         detailsReservationText: "去消费", /*详情按钮文字*/
         num: 1,
@@ -786,52 +789,486 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             return key
         }
     }
-console.log($scope.param)
-    $scope.$watch("scrollDirection", function(n, o) {
-        //n为当前控件的状态（值），o为当前控件的前一个状态（值）
-        if(scrollDirection == 'down'){
-            //页面向下滚动要做的事情
-            console.log(2)
-        }
-        else if(scrollDirection == 'up'){
-            //页面向上滚动要做的事情
-        }else if(scrollDirection == 'left'){
-            console.log(1)
-        }else if(scrollDirection == 'right'){
-
-        }
-    }, true);
-
-
-    var scrollAction = {x: 'undefined', y: 'undefined'}, scrollDirection;
-    function scrollFunc() {
-
-        console.log(window.pageXOffset)
-        if (typeof scrollAction.x == 'undefined') {
-            scrollAction.x = window.pageXOffset;
-            scrollAction.y = window.pageYOffset;
-        }
-        var diffX = scrollAction.x - window.pageXOffset;
-        var diffY = scrollAction.y - window.pageYOffset;
-        if (diffX < 0) {
-            // Scroll right
-            scrollDirection = 'right';
-        } else if (diffX > 0) {
-            // Scroll left
-            scrollDirection = 'left';
-        } else if (diffY < 0) {
-            // Scroll down
-            scrollDirection = 'down';
-        } else if (diffY > 0) {
-            // Scroll up
-            scrollDirection = 'up';
-        } else {
-            // First scroll event
-        }
-        scrollAction.x = window.pageXOffset;
-        scrollAction.y = window.pageYOffset;
+    /*周*/
+  var weekData = {
+      "result": "0x00001",
+      "errorInfo": null,
+      "responseData": {
+          "安迪": [{
+              "week": "星期一",
+              "Lunar": "十七",
+              "day": "02",
+              "info": ""
+          }, {
+              "week": "星期二",
+              "Lunar": "十八",
+              "day": "03",
+              "info": ""
+          }, {
+              "week": "星期三",
+              "Lunar": "十九",
+              "day": "04",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": [{
+                  "id": "id_7",
+                  "shopProjectId": "6af580ecaf6e43698f1a9fa0333aad89",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "963290b846694a21b5c3409cff0ef8a3",
+                  "appointStartTime": 1524476446488,
+                  "appointEndTime": 1522897200000,
+                  "appointPeriod": 60,
+                  "sysUserId": "bbc890bada834995ba814fdfc415e38d",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "efa9b254f8774016ac4f112854681848",
+                  "createDate": 1522900800000,
+                  "updateUser": "90329b53f9764df684ffddfb37e40667",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期六",
+              "Lunar": "廿二",
+              "day": "07",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": [{
+                  "id": "id_8",
+                  "shopProjectId": "d01ee5d5447d42a3bc3b028ff0232f99",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "d314b70d2c6c4496ac11b594aa926765",
+                  "appointStartTime": 1524476509691,
+                  "appointEndTime": 1523156400000,
+                  "appointPeriod": 60,
+                  "sysUserId": "73fa4810bb12479ab8423630a3e0aafe",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "b49c0f3cb63e46c081ef458113a2106f",
+                  "createDate": 1523160000000,
+                  "updateUser": "8184691336ee4d39b0b53edb62572681",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期二",
+              "Lunar": "廿五",
+              "day": "10",
+              "info": ""
+          }],
+          "B安迪": [{
+              "week": "星期一",
+              "Lunar": "十七",
+              "day": "02",
+              "info": ""
+          }, {
+              "week": "星期二",
+              "Lunar": "十八",
+              "day": "03",
+              "info": ""
+          }, {
+              "week": "星期三",
+              "Lunar": "十九",
+              "day": "04",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": [{
+                  "id": "id_7",
+                  "shopProjectId": "6af580ecaf6e43698f1a9fa0333aad89",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "963290b846694a21b5c3409cff0ef8a3",
+                  "appointStartTime": 1524476446488,
+                  "appointEndTime": 1522897200000,
+                  "appointPeriod": 60,
+                  "sysUserId": "bbc890bada834995ba814fdfc415e38d",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "efa9b254f8774016ac4f112854681848",
+                  "createDate": 1522900800000,
+                  "updateUser": "90329b53f9764df684ffddfb37e40667",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期六",
+              "Lunar": "廿二",
+              "day": "07",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": [{
+                  "id": "id_8",
+                  "shopProjectId": "d01ee5d5447d42a3bc3b028ff0232f99",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "d314b70d2c6c4496ac11b594aa926765",
+                  "appointStartTime": 1524476509691,
+                  "appointEndTime": 1523156400000,
+                  "appointPeriod": 60,
+                  "sysUserId": "73fa4810bb12479ab8423630a3e0aafe",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "b49c0f3cb63e46c081ef458113a2106f",
+                  "createDate": 1523160000000,
+                  "updateUser": "8184691336ee4d39b0b53edb62572681",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期二",
+              "Lunar": "廿五",
+              "day": "10",
+              "info": ""
+          }],
+          "C安迪": [{
+              "week": "星期一",
+              "Lunar": "十七",
+              "day": "02",
+              "info": ""
+          }, {
+              "week": "星期二",
+              "Lunar": "十八",
+              "day": "03",
+              "info": ""
+          }, {
+              "week": "星期三",
+              "Lunar": "十九",
+              "day": "04",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": [{
+                  "id": "id_7",
+                  "shopProjectId": "6af580ecaf6e43698f1a9fa0333aad89",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "963290b846694a21b5c3409cff0ef8a3",
+                  "appointStartTime": 1524476446488,
+                  "appointEndTime": 1522897200000,
+                  "appointPeriod": 60,
+                  "sysUserId": "bbc890bada834995ba814fdfc415e38d",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "efa9b254f8774016ac4f112854681848",
+                  "createDate": 1522900800000,
+                  "updateUser": "90329b53f9764df684ffddfb37e40667",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期六",
+              "Lunar": "廿二",
+              "day": "07",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": [{
+                  "id": "id_8",
+                  "shopProjectId": "d01ee5d5447d42a3bc3b028ff0232f99",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "d314b70d2c6c4496ac11b594aa926765",
+                  "appointStartTime": 1524476509691,
+                  "appointEndTime": 1523156400000,
+                  "appointPeriod": 60,
+                  "sysUserId": "73fa4810bb12479ab8423630a3e0aafe",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "b49c0f3cb63e46c081ef458113a2106f",
+                  "createDate": 1523160000000,
+                  "updateUser": "8184691336ee4d39b0b53edb62572681",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期二",
+              "Lunar": "廿五",
+              "day": "10",
+              "info": ""
+          }],
+          "D安迪": [{
+              "week": "星期一",
+              "Lunar": "十七",
+              "day": "02",
+              "info": ""
+          }, {
+              "week": "星期二",
+              "Lunar": "十八",
+              "day": "03",
+              "info": ""
+          }, {
+              "week": "星期三",
+              "Lunar": "十九",
+              "day": "04",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": [{
+                  "id": "id_7",
+                  "shopProjectId": "6af580ecaf6e43698f1a9fa0333aad89",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "963290b846694a21b5c3409cff0ef8a3",
+                  "appointStartTime": 1524476446488,
+                  "appointEndTime": 1522897200000,
+                  "appointPeriod": 60,
+                  "sysUserId": "bbc890bada834995ba814fdfc415e38d",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "efa9b254f8774016ac4f112854681848",
+                  "createDate": 1522900800000,
+                  "updateUser": "90329b53f9764df684ffddfb37e40667",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期六",
+              "Lunar": "廿二",
+              "day": "07",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": [{
+                  "id": "id_8",
+                  "shopProjectId": "d01ee5d5447d42a3bc3b028ff0232f99",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "d314b70d2c6c4496ac11b594aa926765",
+                  "appointStartTime": 1524476509691,
+                  "appointEndTime": 1523156400000,
+                  "appointPeriod": 60,
+                  "sysUserId": "73fa4810bb12479ab8423630a3e0aafe",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "b49c0f3cb63e46c081ef458113a2106f",
+                  "createDate": 1523160000000,
+                  "updateUser": "8184691336ee4d39b0b53edb62572681",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期二",
+              "Lunar": "廿五",
+              "day": "10",
+              "info": ""
+          }],
+          "F安迪": [{
+              "week": "星期一",
+              "Lunar": "十七",
+              "day": "02",
+              "info": ""
+          }, {
+              "week": "星期二",
+              "Lunar": "十八",
+              "day": "03",
+              "info": ""
+          }, {
+              "week": "星期三",
+              "Lunar": "十九",
+              "day": "04",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": ""
+          }, {
+              "week": "星期四",
+              "Lunar": "廿十",
+              "day": "05",
+              "info": [{
+                  "id": "id_7",
+                  "shopProjectId": "6af580ecaf6e43698f1a9fa0333aad89",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "963290b846694a21b5c3409cff0ef8a3",
+                  "appointStartTime": 1524476446488,
+                  "appointEndTime": 1522897200000,
+                  "appointPeriod": 60,
+                  "sysUserId": "bbc890bada834995ba814fdfc415e38d",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "efa9b254f8774016ac4f112854681848",
+                  "createDate": 1522900800000,
+                  "updateUser": "90329b53f9764df684ffddfb37e40667",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期六",
+              "Lunar": "廿二",
+              "day": "07",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": ""
+          }, {
+              "week": "星期日",
+              "Lunar": "廿三",
+              "day": "08",
+              "info": [{
+                  "id": "id_8",
+                  "shopProjectId": "d01ee5d5447d42a3bc3b028ff0232f99",
+                  "shopProjectName": "面部保洁",
+                  "sysShopId": "3",
+                  "sysShopName": "汉方美容院",
+                  "sysClerkId": "1",
+                  "sysClerkName": "王五",
+                  "sysBossId": "d314b70d2c6c4496ac11b594aa926765",
+                  "appointStartTime": 1524476509691,
+                  "appointEndTime": 1523156400000,
+                  "appointPeriod": 60,
+                  "sysUserId": "73fa4810bb12479ab8423630a3e0aafe",
+                  "sysUserName": "张欢",
+                  "sysUserPhone": "181812839893",
+                  "status": "0",
+                  "detail": "测试",
+                  "createBy": "b49c0f3cb63e46c081ef458113a2106f",
+                  "createDate": 1523160000000,
+                  "updateUser": "8184691336ee4d39b0b53edb62572681",
+                  "updateDate": null
+              }]
+          }, {
+              "week": "星期二",
+              "Lunar": "廿五",
+              "day": "10",
+              "info": ""
+          }]
+      }
+  }
+   $scope.param.week.weekData = weekData.responseData;
+  /*预约详情*/
+  var details = {
+    "result": "0x00001",
+        "errorInfo": null,
+        "responseData": {
+        "id": "id_7",
+            "shopProjectId": "6af580ecaf6e43698f1a9fa0333aad89",
+            "shopProjectName": "面部保洁",
+            "sysShopId": "3",
+            "sysShopName": "汉方美容院",
+            "sysClerkId": "1",
+            "sysClerkName": "王五",
+            "sysBossId": "963290b846694a21b5c3409cff0ef8a3",
+            "appointStartTime": 1524476446488,
+            "appointEndTime": 1522897200000,
+            "appointPeriod": 60,
+            "sysUserId": "bbc890bada834995ba814fdfc415e38d",
+            "sysUserName": "张欢",
+            "sysUserPhone": "181812839893",
+            "status": "0",
+            "detail": "测试",
+            "createBy": "efa9b254f8774016ac4f112854681848",
+            "createDate": 1522900800000,
+            "updateUser": "90329b53f9764df684ffddfb37e40667",
+            "updateDate": null
     }
-})
+}
+    $scope.param.week.details = details.responseData;
+    console.log(details)
+
+});
+
 
 
 

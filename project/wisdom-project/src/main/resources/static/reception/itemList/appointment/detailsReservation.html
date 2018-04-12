@@ -2,7 +2,7 @@
     <!--内容-->
     <div class="content">
         <div class="contentTop pt30">
-          <p ><span class="redPoint ml30"></span><span class="customerName fs38">安迪</span><span class="giveContent fs32 " ng-show="param.ModifyAppointment" ng-click ="modifyingAppointment()">修改预约</span></p>
+          <p ><span class="redPoint ml30"></span><span class="customerName fs38">{{param.week.details.sysUserName}}</span><span class="giveContent fs32 " ng-show="param.ModifyAppointment" ng-click ="modifyingAppointment()">修改预约</span></p>
             <p class="contentTime"><img src="images/ic_point.png" alt=""> <span class="minute fs28">10:00~11:30</span></p>
             <!--按钮-->
             <div class="btnBox">
@@ -15,7 +15,7 @@
         <div class="contentDown" >
           <p class=" fs28 bte5 h80 bbe5"><span class="cardItem">预约卡项</span></p>
             <div class="cardBox ">
-                <p class="skinCare fs28">韩国美白护肤</p>
+                <p class="skinCare fs28">{{param.week.details.shopProjectName}}</p>
                 <button class="goCard fs32" ng-click = "consumptionGo(param.detailsReservationText)">{{param.detailsReservationText}}</button>
             </div>
         </div>
