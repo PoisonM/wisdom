@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 
 import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REWARD;
@@ -94,7 +95,7 @@ public class BusinessRunTimeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void autoProcessUserAccount() {
+    public void autoProcessUserAccount() throws UnsupportedEncodingException {
 
         //查询用户消费的不可提现金额
         /*IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
@@ -111,7 +112,7 @@ public class BusinessRunTimeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void autoMonthlyIncomeCalc() {
+    public void autoMonthlyIncomeCalc() throws UnsupportedEncodingException {
 
         //加入开关量，证明本月已经完成过月度提成了，不用再次计算
         Query query = new Query(Criteria.where("year").is(DateUtils.getYear())).addCriteria(Criteria.where("month").is(DateUtils.getMonth()));
@@ -253,7 +254,7 @@ public class BusinessRunTimeService {
 
     }
 
-    public void monthlyIncomeCalc(String businessType) {
+    public void monthlyIncomeCalc(String businessType) throws UnsupportedEncodingException {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserType(businessType);
         userInfoDTO.setDelFlag("0");
@@ -337,7 +338,7 @@ public class BusinessRunTimeService {
                     incomeRecordDTO.setStatus("0");
                     incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
                     incomeRecordDTO.setNextUserIdentifyNumber("");
-                    incomeRecordDTO.setNickName(userInfo.getNickname());
+                    incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
                     incomeRecordDTO.setNextUserNickName("");
                     incomeRecordDTO.setIncomeType("month");
                     incomeRecordDTO.setMobile(userInfo.getMobile());
@@ -352,7 +353,7 @@ public class BusinessRunTimeService {
         }
     }
 
-    public void promoteUserBusinessTypeForRecommend() {
+    public void promoteUserBusinessTypeForRecommend() throws UnsupportedEncodingException {
         //根据B用户推荐20个B的逻辑，来实现用户等级提升
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setDelFlag("0");
@@ -445,7 +446,7 @@ public class BusinessRunTimeService {
                 incomeRecordDTO.setStatus("0");
                 incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
                 incomeRecordDTO.setNextUserIdentifyNumber("");
-                incomeRecordDTO.setNickName(userInfo.getNickname());
+                incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
                 incomeRecordDTO.setNextUserNickName("");
                 incomeRecordDTO.setIncomeType("recommend");
                 incomeRecordDTO.setMobile(userInfo.getMobile());
