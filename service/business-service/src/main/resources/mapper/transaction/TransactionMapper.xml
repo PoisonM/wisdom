@@ -66,6 +66,16 @@
         <result column="amount" property="amount" jdbcType="REAL" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="next_user_id" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="user_type" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="next_user_type" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="parent_relation" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="user_mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="next_user_mobile" property="nextUserMobile" jdbcType="VARCHAR" />
+        <result column="user_identify_number" property="identifyNumber" jdbcType="VARCHAR" />
+        <result column="next_user_identify_number" property="nextUserIdentifyNumber" jdbcType="VARCHAR" />
+        <result column="user_nickname" property="nickName" jdbcType="VARCHAR" />
+        <result column="next_user_nickname" property="nextUserNickName" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="Base_BusinessOrder_list">
@@ -374,14 +384,34 @@
         sys_user_id,
         amount,
         create_date,
-        update_date
+        update_date,
+        next_user_id,
+        user_type,
+        next_user_type,
+        parent_relation,
+        user_mobile,
+        next_user_mobile,
+        user_identify_number,
+        next_user_identify_number,
+        user_nickname,
+        next_user_nickname
         ) VALUES (
         #{id},
         #{transactionId},
         #{userId},
         #{amount},
         #{createDate},
-        #{updateDate}
+        #{updateDate},
+        #{nextUserId}
+        #{userType}
+        #{nextUserType}
+        #{parentRelation}
+        #{mobile}
+        #{nextUserMobile}
+        #{identifyNumber}
+        #{nextUserIdentifyNumber}
+        #{nickName}
+        #{nextUserNickName}
         )
     </insert>
 
