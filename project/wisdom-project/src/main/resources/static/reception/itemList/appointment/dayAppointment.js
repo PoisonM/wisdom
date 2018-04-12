@@ -1,103 +1,85 @@
-PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$filter,ngDialog) {
-    console.log("dayAppointment");
-    $scope.date = $filter("date")(Date.parse(new Date()),"yyyy-MM-dd");
+PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$filter,ngDialog/*ShopDayAppointmentInfoByDate,GetAppointmentInfoById*/)
+{
+
+    $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
     $scope.param = {
-        week:[],
-        btnActive:['btnActive','common'],
-        day : ["09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:30","21:00","21:30","22:00","22:30","23:00","23:30"],
-        detailsReservation:false,/*预约详情*/
-        consumption:false,/*消费*/
-        selectSingle:false,/*选择单次*/
-        selectTreatmentCard:false,/*消费-选择疗程卡*/
-        selectProduct:false,/*选择产品*/
-        collectionCard:false,/*选择套卡*/
-        consumptionNextStep:false,/*消费-消费-下一步*/
-        selectCoupons:false,/*消费-消费-下一步 - 优惠券*/
-        bank:false,/*消费-消费-下一步 - 银行卡*/
-        balancePrepaid:false,/*余额充值*/
-        relatedStaff:false,/*关联员工*/
-        scratchCard:false,/*划卡*/
-        scratchCardSelectTreatmentCard:false,/*划卡-选择疗程卡*/
-        giving:false,/*赠送*/
-        givingProduct:true,/*赠送-产品*/
-        givingVouchers:false,/*赠送-项目*/
-        scratchCard:false,/*赠送优惠券*/
-        ModifyAppointment:true,/*修改预约按钮*/
-       /* individualTravelerAppointment:false,/!*散客详情*!/
-        modifyingAppointment:false, /!*修改预约*!/*/
-        serachContent:'',/*搜索内容*/
-        givingIndex:0,/*赠送Index*/
-        AppointmentType:"散客",
-        dayFlag:true,
-        weekFlag:false,
-        appointmentLis:false,/*预约列表*/
-        selectCustomersWrap:false,/*选择客户*/
-        addCustomers:false,/*添加客户*/
-        newProduct:false,/*修改预约-选择项目*/
-        newProductObject:{
-            index:0,
-            titleFlag:false,
+        week: [],
+        btnActive: ['btnActive', 'common'],
+        code: [{"0": "00:00"}, {"1": "00:30"}, {"2": "01:00"}, {"3": "01:30"}, {"4": "02:00"}, {"5": "02:30"}, {"6": "03:00"}, {"7": "03:30"}, {"8": "04:00"}, {"9": "04:30"}, {"10": "05:00"}, {"11": "05:30"}, {"12": "06:00"}, {"13": "06:30"}, {"14": "07:00"}, {"15": "07:30"}, {"16": "08:00"}, {"17": "08:30"}, {"18": "09:00"}, {"19": "09:30"}, {"20": "10:00"}, {"21": "10:30"}, {"22": "11:00"}, {"23": "11:30"}, {"24": "12:00"}, {"25": "12:30"}, {"26": "13:00"}, {"27": "13:30"}, {"28": "14:00"}, {"29": "14:30"}, {"30": "15:00"}, {"31": "15:30"}, {"32": "16:00"}, {"33": "16:30"}, {"34": "17:00"}, {"35": "17:30"}, {"36": "18:00"}, {"37": "18:30"}, {"38": "19:00"}, {"39": "19:30"}, {"40": "20:00"}, {"41": "20:30"}, {"42": "21:00"}, {"43": "21:30"}, {"44": "22:00"}, {"45": "22:30"}, {"46": "23:00"}, {"47": "23:30"}],
+        serachContent: '', /*搜索内容*/
+        givingIndex: 0, /*赠送Index*/
+        AppointmentType: "散客",
+        dayFlag: true,
+        weekFlag: false,
+        newProductObject: {
+            index: 0,
+            titleFlag: false,
         },
-        timeLength:false,/*修改预约-选择时长*/
-        timeLengthObject:{
-            time:''
+        timeLengthObject: {/*修改预约-时长对象*/
+            time: ''
         },
-        /*修改预约-时长对象*/
-        selectBeautician:false,/*修改预约-选择美容师*/
-        detailsReservationText:"去消费",/*预约按钮详情的按钮展示*/
-       /* scratchCardText:"去划卡",/!*预约按钮详情的按钮展示*!/
-        detailsReservationBtn:false,/!*预约按钮详情的按钮展示*!/
-        scratchCardBtn:false,/!*预约按钮详情的按钮展示*!/*/
-        num:1,
-        data:[{
-            title:'合作',
-            content:['全部','整形系列']
-        },{
-            title:'面部',
-            content:['全部','保湿','美白','补水','植萃','抗皱']
+        appointmentObject: {/*日预约对象*/
+            appointmentDate: '',
+            beautician: [],/*美容师*/
+            appointmentInfo: [],/*美容师下的预约列表*/
+            point: [],/*点*/
+            list:[],/*数据处理后 -- */
+
+        },
+        selectBeautician: false, /*修改预约-选择美容师*/
+        detailsReservationText: "去消费", /*详情按钮文字*/
+        num: 1,
+        data: [{
+            title: '合作',
+            content: ['全部', '整形系列']
+        }, {
+            title: '面部',
+            content: ['全部', '保湿', '美白', '补水', '植萃', '抗皱']
         },
             {
-                title:'眼部',
-                content:['全部','保湿']
-            },{
-                title:'SPA',
-                content:['全部','保湿']
+                title: '眼部',
+                content: ['全部', '保湿']
+            }, {
+                title: 'SPA',
+                content: ['全部', '保湿']
             }],
+        day:[],/*用于寻找预约颜色的其中一个数据*/
+        day:[],/*侧边时间循环*/
     };
-    $scope.time = function (time){
+    $scope.time = function (time) {
         console.log(1)
         $scope.param.week = [];
-        var time = time.replace("年","-").replace("月","-").replace("日","");
+        var time = time.replace("年", "-").replace("月", "-").replace("日", "");
         var now = new Date(time);
-        var nowTime = now.getTime() ;
+        var nowTime = now.getTime();
         var day = now.getDay();
-        var oneDayTime = 24*60*60*1000 ;
-        var MondayTime = nowTime - (day-1)*oneDayTime ;
-        var SundayTime =  nowTime + (7-day)*oneDayTime ;
+        var oneDayTime = 24 * 60 * 60 * 1000;
+        var MondayTime = nowTime - (day - 1) * oneDayTime;
+        var SundayTime = nowTime + (7 - day) * oneDayTime;
         $scope.Monday = new Date(MondayTime).setDate(new Date(MondayTime).getDay());
-        var today,ms,thatDay, y, m, d,endDate;
+        var today, ms, thatDay, y, m, d, endDate;
         today = new Date(MondayTime).getTime();
-        for(var i=0;i<7;i++){
-            ms = today + i*24*60*60*1000;
+        for (var i = 0; i < 7; i++) {
+            ms = today + i * 24 * 60 * 60 * 1000;
             thatDay = new Date(ms);
             y = thatDay.getFullYear();
-            m = thatDay.getMonth()+1;
+            m = thatDay.getMonth() + 1;
             d = thatDay.getDate();
-            endDate = m+"月"+d+'日';
-           $scope.param.week.push(endDate);
+            endDate = m + "月" + d + '日';
+            $scope.param.week.push(endDate);
         }
     };
-    $scope.date = laydate.now(0,'YYYY年MM月DD日');
+    $scope.date = laydate.now(0, 'YYYY年MM月DD日');
     $scope.time($scope.date);
     $scope.dataS = function (id) {
         !function (id) {
             laydate({
                 elem: id,
-                skin:'danlan',
+                skin: 'danlan',
                 format: "YYYY年MM月DD日", // 分隔符可以任意定义，该例子表示只显示年月
                 festival: true, //显示节日
                 istime: false,
-                choose: function(datas){ //选择日期完毕的回调
+                choose: function (datas) { //选择日期完毕的回调
                     laydate(start);
                     laydate(end);
                     $scope.time(datas);
@@ -121,7 +103,6 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                 end.start = datas //将结束日的初始值设定为开始日
             }
         };
-
         var end = {
             elem: '#end',
             format: 'YYYY年MM月DD日',
@@ -135,171 +116,85 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         };
 
     };
-    $scope.arrTime = $scope.param.day;
-
     $scope.appointmentChange = function (type) {
-        if(type =="week"){
-            $scope.arrTime=$scope.param.week;
-            $scope.param.btnActive[0]='common';
-            $scope.param.btnActive[1]='btnActive';
+        if (type == "week") {
+            $scope.arrTime = $scope.param.week;
+            $scope.param.btnActive[0] = 'common';
+            $scope.param.btnActive[1] = 'btnActive';
             $scope.param.weekFlag = true;
             $scope.param.dayFlag = false;
-        }else{
+        } else {
             $scope.arrTime = $scope.param.day;
-            $scope.param.btnActive[0]='btnActive';
-            $scope.param.btnActive[1]='common';
+            $scope.param.btnActive[0] = 'btnActive';
+            $scope.param.btnActive[1] = 'common';
             $scope.param.weekFlag = false;
             $scope.param.dayFlag = true;
         }
     };
-    $scope.mess = {
-        name:["李",'王','k'],
-        time:[[{
-            start:"10:30",
-            end:"12:30",
-            mess:{
 
-            }
-        },{
-            start:"13:30",
-            end:"14:30",
-        }],[{
-            start:"09:30",
-            end:"12:30",
-        }]]
-    };
-    var indexArr=[];
-    var startArr=[];
-    $scope.tdLengthArr =new Array();
-    for(var i=0;i<$scope.mess.time.length;i++){
-        startArr[i] = [];
-        indexArr[i] =[];
-        for(var j=0;j<$scope.mess.time[i].length;j++){
-            var start = $scope.arrTime.indexOf($scope.mess.time[i][j].start);
-            var end = $scope.arrTime.indexOf($scope.mess.time[i][j].end);
-            var indexTime = end-start;
-            startArr[i].push(start);
-            indexArr[i].push(indexTime)
-        }
-    }
-    /*$scope.allFalse = function(){
-        $scope.param.consumption = false;
-        $scope.param.selectSingle = false;
-        $scope.param.selectTreatmentCard = false;
-        $scope.param.selectProduct = false;
-        $scope.param.collectionCard = false;
-        $scope.param.consumptionNextStep = false;
-        $scope.param.balancePrepaid = false;
-        $scope.param.relatedStaff = false;
-        $scope.param.scratchCard = false;
-        $scope.param.giving = false;
-        $scope.param.givingProduct = false;
-        $scope.param.givingVouchers = false;
-        $scope.param.scratchCardSelectTreatmentCard = false;
-        $scope.param.individualTravelerAppointment = false;
-        $scope.param.detailsReservation = false;
-        $scope.param.modifyingAppointment = false;
-        $scope.param.appointmentLis = false;
-        $scope.param.selectCustomersWrap = false;
-    };*/
-    //预约详情
-   /* $scope.detailsReservation = function(index1,index2,e,status){
-        $scope.param.ModifyAppointment = true;
-           /!* var top = (e.clientY +100)/128;
-            var left = (e.clientX +100)/128;
-            var screen = document.documentElement.clientWidth;*!/
-            $scope.allFalse()
-            if(status == '消费'||status == '划卡'){
-                $scope.param.detailsReservation = true;
-                var detailsWrap = document.getElementsByClassName("detailsWrap")[0];
-                if(status == '消费'){
-                    $scope.param. detailsReservationText = "去消费";
-                }else{ $scope.param. detailsReservationText = "去划卡";}
-                if(e.clientY >337){
-                    detailsWrap.style.top = 3.5+"rem";
-                    detailsWrap.style.left = (e.clientX +100)/128+"rem";
-                }else{
-                    detailsWrap.style.top = (e.clientY +100)/128+"rem";
-                    detailsWrap.style.left = (e.clientX +100)/128+"rem";
-                }
-            }else {
-                $scope.param.individualTravelerAppointment = true;
-                var detailsWrap = document.getElementsByClassName("individual")[0];
-                if(e.clientY >100){
-                    detailsWrap.style.top = 1.5+"rem";
-                    detailsWrap.style.left = (e.clientX +100)/128+"rem";
-
-                }else{
-                    detailsWrap.style.top = (e.clientY +100)/128+"rem";
-                    detailsWrap.style.left = (e.clientX +100)/128+"rem";
-                }
-            }
-*/
-/*
-           $scope.detailsReservationPic = function(){
-               $scope.param.detailsReservation = false;
-           };
-           $scope.individualTravelerAppointmentClose = function(){
-               $scope.param.individualTravelerAppointment = false;
-           }
-
-    };*/
 
     //银行卡
-    $scope.bank = function(){
+    $scope.bank = function () {
         $scope.ngDialog = ngDialog;
         ngDialog.open({
             template: 'bank',
             scope: $scope, //这样就可以传递参数
-            controller: ['$scope', '$interval', function($scope, $interval) {
-                $scope.close = function() {
+            controller: ['$scope', '$interval', function ($scope, $interval) {
+                $scope.close = function () {
                     $scope.closeThisDialog();
                 };
             }],
             className: 'payType ngdialog-theme-custom',
-            disableAnimation:true,
+            disableAnimation: true,
 
         });
     }
-    detailsReservation && detailsReservation($scope,ngDialog);
-    individualTravelerAppointment && individualTravelerAppointment($scope,ngDialog);
-    console.log($scope.param);
-    weeklyReservation && weeklyReservation($scope,ngDialog);
-    $scope.appointmentData = {"result":"0x00001","errorInfo":null,"responseData":{"安迪":{"appointmentInfo":[{"sysClerkName":"安迪_1","appointStartTime":1522825200000,"updateDate":1522819014000,"sysUserName":"用户名称_1","updateUser":"1","sysClerkId":"1","sysUserPhone":"18810123938","shopProjectId":"项目表主键_1","appointPeriod":60,"createBy":"1","serialVersionUID":1,"sysShopId":"3","scheduling":"30,31","shopProjectName":"项目名称_1","id":"id_1","sysUserId":"用户表主键_1","detail":"1","sysShopName":"汉方美容店_1","appointEndTime":1522828800000,"sysBossId":"老板表主键_1","status":"1","createDate":1522819008000},{"sysClerkName":"安迪_1","appointStartTime":1522828800000,"updateDate":null,"sysUserName":"用户名称_2","updateUser":null,"sysClerkId":"1","sysUserPhone":"18810123938","shopProjectId":"项目表主键_2","appointPeriod":60,"createBy":null,"serialVersionUID":1,"sysShopId":"3","scheduling":"32,33","shopProjectName":"项目名称_2","id":"id_2","sysUserId":"用户表主键_2","detail":null,"sysShopName":"汉方美容店_1","appointEndTime":1522832400000,"sysBossId":"老板表主键_1","status":null,"createDate":1522840937000},{"sysClerkName":"安迪_2","appointStartTime":1522836000000,"updateDate":null,"sysUserName":null,"updateUser":null,"sysClerkId":"1","sysUserPhone":null,"shopProjectId":"项目表主键_3","appointPeriod":null,"createBy":null,"serialVersionUID":1,"sysShopId":"3","scheduling":"","shopProjectName":"项目名称_3","id":"id_3","sysUserId":null,"detail":null,"sysShopName":"汉方美容店_1","appointEndTime":1522836000000,"sysBossId":"老板表主键_1","status":null,"createDate":1522843224000}],"point":3}}}
-    console.log( $scope.appointmentData );
+    detailsReservation && detailsReservation($scope, ngDialog);
+    individualTravelerAppointment && individualTravelerAppointment($scope, ngDialog);
+    weeklyReservation && weeklyReservation($scope, ngDialog);
 
-/*长按新建*/
+
+    /*长按新建*/
     $scope.onHold = function (num) {
         console.log(num);
     };
 
-    $scope.detailsWrap = function(index1,index2,type) {
-
-        if(type!="散客"){
+    $scope.detailsWrap = function (index1, index2, type) {
+        if(type==0)return
+        if (type != 3) {
             $scope.ngDialog = ngDialog;
             ngDialog.open({
                 template: 'detailsWrap',
                 scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function($scope, $interval) {
-                    if(type == '消费'){
-                        $scope.param. detailsReservationText = "去消费";
-                    }else{ $scope.param. detailsReservationText = "去划卡";}
-                    console.log($scope.$parent.content);
-                    $scope.close = function() {
+                controller: ['$scope', '$interval', function ($scope, $interval) {
+                    if (type == 1) {
+                        $scope.param.detailsReservationText = "去消费";
+                    } else {
+                        $scope.param.detailsReservationText = "去划卡";
+                    }
+                   /* GetAppointmentInfoById.get({
+                        shopAppointServiceId: "id_7"
+                    }, function (data) {
+                        // ManagementUtil.checkResponseData(data,"");
+                        if (data.result == Global.SUCCESS) {
+
+                        }
+                    })*/
+                    $scope.close = function () {
                         $scope.closeThisDialog();
                     };
                 }],
                 className: 'ngdialog-theme-default ngdialog-theme-custom',
 
             });
-        }else{
+        } else {
             $scope.ngDialog = ngDialog;
             ngDialog.open({
                 template: 'individual',
                 scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function($scope, $interval) {
+                controller: ['$scope', '$interval', function ($scope, $interval) {
                     console.log($scope.$parent.content);
-                    $scope.close = function() {
+                    $scope.close = function () {
                         $scope.closeThisDialog();
                     };
                 }],
@@ -308,8 +203,635 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         }
 
     };
+    var data = {
+        "result": "0x00001",
+        "errorInfo": null,
+        "responseData": {
+            "安迪": {
+                "appointmentInfo": [{
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522825200000,
+                    "updateDate": 1522819014000,
+                    "sysUserName": "王",
+                    "updateUser": "1",
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_1",
+                    "appointPeriod": 60,
+                    "createBy": "1",
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "30,31",
+                    "shopProjectName": "项目名称_1",
+                    "id": "id_1",
+                    "sysUserId": "用户表主键_1",
+                    "detail": "1",
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522828800000,
+                    "sysBossId": "老板表主键_1",
+                    "status": "1",
+                    "createDate": 1522819008000
+                }, {
+                    "sysClerkName": "安迪_2",
+                    "appointStartTime": 1522828800000,
+                    "updateDate": null,
+                    "sysUserName": "六",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_2",
+                    "appointPeriod": 60,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "32,33",
+                    "shopProjectName": "项目名称_2",
+                    "id": "id_2",
+                    "sysUserId": "用户表主键_2",
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522832400000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522840937000
+                }, {
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522836000000,
+                    "updateDate": null,
+                    "sysUserName": "新",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": null,
+                    "shopProjectId": "项目表主键_3",
+                    "appointPeriod": null,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "36,37",
+                    "shopProjectName": "项目名称_3",
+                    "id": "id_3",
+                    "sysUserId": null,
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522839600000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522843224000
+                }], "point": 3
+            },
+            "B迪": {
+                "appointmentInfo": [{
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522825200000,
+                    "updateDate": 1522819014000,
+                    "sysUserName": "用户名称_1",
+                    "updateUser": "1",
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_1",
+                    "appointPeriod": 60,
+                    "createBy": "1",
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "30,31",
+                    "shopProjectName": "项目名称_1",
+                    "id": "id_1",
+                    "sysUserId": "用户表主键_1",
+                    "detail": "1",
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522828800000,
+                    "sysBossId": "老板表主键_1",
+                    "status": "2",
+                    "createDate": 1522819008000
+                }, {
+                    "sysClerkName": "安迪_2",
+                    "appointStartTime": 1522828800000,
+                    "updateDate": null,
+                    "sysUserName": "用户名称_2",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_2",
+                    "appointPeriod": 60,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "32,33",
+                    "shopProjectName": "项目名称_2",
+                    "id": "id_2",
+                    "sysUserId": "用户表主键_2",
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522832400000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '3',
+                    "createDate": 1522840937000
+                }, {
+                    "sysClerkName": "安迪_2",
+                    "appointStartTime": 1522836000000,
+                    "updateDate": null,
+                    "sysUserName": null,
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": null,
+                    "shopProjectId": "项目表主键_3",
+                    "appointPeriod": null,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "36,37",
+                    "shopProjectName": "项目名称_3",
+                    "id": "id_3",
+                    "sysUserId": null,
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522839600000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '1',
+                    "createDate": 1522843224000
+                }], "point": 3
+            },
+            "C迪": {
+                "appointmentInfo": [{
+                    "sysClerkName": "安迪_3",
+                    "appointStartTime": 1522825200000,
+                    "updateDate": 1522819014000,
+                    "sysUserName": "用户名称_1",
+                    "updateUser": "1",
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_1",
+                    "appointPeriod": 60,
+                    "createBy": "1",
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "30,31",
+                    "shopProjectName": "项目名称_1",
+                    "id": "id_1",
+                    "sysUserId": "用户表主键_1",
+                    "detail": "1",
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522828800000,
+                    "sysBossId": "老板表主键_1",
+                    "status": "3",
+                    "createDate": 1522819008000
+                }, {
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522828800000,
+                    "updateDate": null,
+                    "sysUserName": "用户名称_2",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_2",
+                    "appointPeriod": 60,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "32,33",
+                    "shopProjectName": "项目名称_2",
+                    "id": "id_2",
+                    "sysUserId": "用户表主键_2",
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522832400000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '1',
+                    "createDate": 1522840937000
+                }, {
+                    "sysClerkName": "安迪_2",
+                    "appointStartTime": 1522836000000,
+                    "updateDate": null,
+                    "sysUserName": null,
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": null,
+                    "shopProjectId": "项目表主键_3",
+                    "appointPeriod": null,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "36,37",
+                    "shopProjectName": "项目名称_3",
+                    "id": "id_3",
+                    "sysUserId": null,
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522839600000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522843224000
+                }], "point": 3
+            },
+            "d迪": {
+                "appointmentInfo": [{
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522825200000,
+                    "updateDate": 1522819014000,
+                    "sysUserName": "王",
+                    "updateUser": "1",
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_1",
+                    "appointPeriod": 60,
+                    "createBy": "1",
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "30,31",
+                    "shopProjectName": "项目名称_1",
+                    "id": "id_1",
+                    "sysUserId": "用户表主键_1",
+                    "detail": "1",
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522828800000,
+                    "sysBossId": "老板表主键_1",
+                    "status": "1",
+                    "createDate": 1522819008000
+                }, {
+                    "sysClerkName": "安迪_2",
+                    "appointStartTime": 1522828800000,
+                    "updateDate": null,
+                    "sysUserName": "六",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_2",
+                    "appointPeriod": 60,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "32,33",
+                    "shopProjectName": "项目名称_2",
+                    "id": "id_2",
+                    "sysUserId": "用户表主键_2",
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522832400000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522840937000
+                }, {
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522836000000,
+                    "updateDate": null,
+                    "sysUserName": "新",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": null,
+                    "shopProjectId": "项目表主键_3",
+                    "appointPeriod": null,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "36,37",
+                    "shopProjectName": "项目名称_3",
+                    "id": "id_3",
+                    "sysUserId": null,
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522839600000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522843224000
+                }], "point": 3
+            },
+            "f迪": {
+                "appointmentInfo": [{
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522825200000,
+                    "updateDate": 1522819014000,
+                    "sysUserName": "王",
+                    "updateUser": "1",
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_1",
+                    "appointPeriod": 60,
+                    "createBy": "1",
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "30,31",
+                    "shopProjectName": "项目名称_1",
+                    "id": "id_1",
+                    "sysUserId": "用户表主键_1",
+                    "detail": "1",
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522828800000,
+                    "sysBossId": "老板表主键_1",
+                    "status": "1",
+                    "createDate": 1522819008000
+                }, {
+                    "sysClerkName": "安迪_2",
+                    "appointStartTime": 1522828800000,
+                    "updateDate": null,
+                    "sysUserName": "六",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_2",
+                    "appointPeriod": 60,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "32,33",
+                    "shopProjectName": "项目名称_2",
+                    "id": "id_2",
+                    "sysUserId": "用户表主键_2",
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522832400000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522840937000
+                }, {
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522836000000,
+                    "updateDate": null,
+                    "sysUserName": "新",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": null,
+                    "shopProjectId": "项目表主键_3",
+                    "appointPeriod": null,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "36,37",
+                    "shopProjectName": "项目名称_3",
+                    "id": "id_3",
+                    "sysUserId": null,
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522839600000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522843224000
+                }], "point": 3
+            },
+            "g迪": {
+                "appointmentInfo": [{
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522825200000,
+                    "updateDate": 1522819014000,
+                    "sysUserName": "王",
+                    "updateUser": "1",
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_1",
+                    "appointPeriod": 60,
+                    "createBy": "1",
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "30,31",
+                    "shopProjectName": "项目名称_1",
+                    "id": "id_1",
+                    "sysUserId": "用户表主键_1",
+                    "detail": "1",
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522828800000,
+                    "sysBossId": "老板表主键_1",
+                    "status": "1",
+                    "createDate": 1522819008000
+                }, {
+                    "sysClerkName": "安迪_2",
+                    "appointStartTime": 1522828800000,
+                    "updateDate": null,
+                    "sysUserName": "六",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_2",
+                    "appointPeriod": 60,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "32,33",
+                    "shopProjectName": "项目名称_2",
+                    "id": "id_2",
+                    "sysUserId": "用户表主键_2",
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522832400000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522840937000
+                }, {
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522836000000,
+                    "updateDate": null,
+                    "sysUserName": "新",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": null,
+                    "shopProjectId": "项目表主键_3",
+                    "appointPeriod": null,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "36,37",
+                    "shopProjectName": "项目名称_3",
+                    "id": "id_3",
+                    "sysUserId": null,
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522839600000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522843224000
+                }], "point": 3
+            },
+            "h迪": {
+                "appointmentInfo": [{
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522825200000,
+                    "updateDate": 1522819014000,
+                    "sysUserName": "王",
+                    "updateUser": "1",
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_1",
+                    "appointPeriod": 60,
+                    "createBy": "1",
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "30,31",
+                    "shopProjectName": "项目名称_1",
+                    "id": "id_1",
+                    "sysUserId": "用户表主键_1",
+                    "detail": "1",
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522828800000,
+                    "sysBossId": "老板表主键_1",
+                    "status": "1",
+                    "createDate": 1522819008000
+                }, {
+                    "sysClerkName": "安迪_2",
+                    "appointStartTime": 1522828800000,
+                    "updateDate": null,
+                    "sysUserName": "六",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": "18810123938",
+                    "shopProjectId": "项目表主键_2",
+                    "appointPeriod": 60,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "32,33",
+                    "shopProjectName": "项目名称_2",
+                    "id": "id_2",
+                    "sysUserId": "用户表主键_2",
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522832400000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522840937000
+                }, {
+                    "sysClerkName": "安迪_1",
+                    "appointStartTime": 1522836000000,
+                    "updateDate": null,
+                    "sysUserName": "新",
+                    "updateUser": null,
+                    "sysClerkId": "1",
+                    "sysUserPhone": null,
+                    "shopProjectId": "项目表主键_3",
+                    "appointPeriod": null,
+                    "createBy": null,
+                    "serialVersionUID": 1,
+                    "sysShopId": "3",
+                    "scheduling": "36,37",
+                    "shopProjectName": "项目名称_3",
+                    "id": "id_3",
+                    "sysUserId": null,
+                    "detail": null,
+                    "sysShopName": "汉方美容店_1",
+                    "appointEndTime": 1522839600000,
+                    "sysBossId": "老板表主键_1",
+                    "status": '2',
+                    "createDate": 1522843224000
+                }], "point": 3
+            },
+            "startTime": "07:00",
+            "endTime": "21:00"
+        }
+    }
 
-});
+    var memeda = data.responseData;
+    /*得到循环时间*/
+    var hourTime = [];
+    for(var i=0;i<$scope.param.code.length;i++){
+        for(key in $scope.param.code[i] ){
+            hourTime.push($scope.param.code[i][key])
+            if($scope.param.code[i][key] == memeda.startTime ){
+                var a= i;
+            }
+            if($scope.param.code[i][key] == memeda.endTime ){
+                var b= i;
+            }
+        }
+    }
+    $scope.param.days=hourTime.slice(a,b+1);
+    $scope.param.day=$scope.param.code.slice(a,b+1);
+    for (key  in memeda) {
+        if (key == 'endTime' || key == "startTime") {
+        } else {
+            $scope.param.appointmentObject.beautician.push(key);
+            $scope.param.appointmentObject.appointmentInfo.push(memeda[key].appointmentInfo);
+            $scope.param.appointmentObject.point.push(memeda[key].point);
+
+        }
+    }
+    /*处理数据*/
+    /*list:[
+    {status:[],
+     sysUserName:[],
+     shopProjectName:[]}
+    \]
+    想要的数据格式
+    根据时间编码找到对应的索引，通过索引拿到数据
+    * */
+    for(var i=0;i<$scope.param.appointmentObject.appointmentInfo.length;i++){
+        $scope.param.appointmentObject.list[i] = new Object;
+        $scope.param.appointmentObject.list[i].status = new Array;
+        $scope.param.appointmentObject.list[i].sysUserName = new Array;
+        $scope.param.appointmentObject.list[i].shopProjectName = new Array;
+        $scope.param.appointmentObject.list[i].time = new Array;
+        for (var e = 0; e < $scope.param.day.length; e++) {
+            $scope.param.appointmentObject.list[i].status[e]=0;
+            $scope.param.appointmentObject.list[i].sysUserName[e]=null;
+            $scope.param.appointmentObject.list[i].shopProjectName[e]=null;
+            $scope.param.appointmentObject.list[i].time[e]=null;
+            for(var j=0;j<$scope.param.appointmentObject.appointmentInfo[i].length;j++){
+                for (var k = 0;k < $scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",").length; k++) {
+                    if ($scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",")[k] == objTemp($scope.param.day[e])) {
+                        $scope.param.appointmentObject.list[i].sysUserName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserName;
+                        $scope.param.appointmentObject.list[i].shopProjectName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].shopProjectName;
+                        $scope.param.appointmentObject.list[i].time[e] = $scope.param.days[e];
+
+                        if($scope.param.appointmentObject.appointmentInfo[i][j].status == 1){
+                            $scope.param.appointmentObject.list[i].status[e] = 1
+                        } else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 2){
+                            $scope.param.appointmentObject.list[i].status[e] = 2
+                        }else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 3){
+                            $scope.param.appointmentObject.list[i].status[e] = 3
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function objTemp(obj) {
+        for (key  in obj) {
+            return key
+        }
+    }
+console.log($scope.param)
+    $scope.$watch("scrollDirection", function(n, o) {
+        //n为当前控件的状态（值），o为当前控件的前一个状态（值）
+        if(scrollDirection == 'down'){
+            //页面向下滚动要做的事情
+            console.log(2)
+        }
+        else if(scrollDirection == 'up'){
+            //页面向上滚动要做的事情
+        }else if(scrollDirection == 'left'){
+            console.log(1)
+        }else if(scrollDirection == 'right'){
+
+        }
+    }, true);
+
+
+    var scrollAction = {x: 'undefined', y: 'undefined'}, scrollDirection;
+    function scrollFunc() {
+
+        console.log(window.pageXOffset)
+        if (typeof scrollAction.x == 'undefined') {
+            scrollAction.x = window.pageXOffset;
+            scrollAction.y = window.pageYOffset;
+        }
+        var diffX = scrollAction.x - window.pageXOffset;
+        var diffY = scrollAction.y - window.pageYOffset;
+        if (diffX < 0) {
+            // Scroll right
+            scrollDirection = 'right';
+        } else if (diffX > 0) {
+            // Scroll left
+            scrollDirection = 'left';
+        } else if (diffY < 0) {
+            // Scroll down
+            scrollDirection = 'down';
+        } else if (diffY > 0) {
+            // Scroll up
+            scrollDirection = 'up';
+        } else {
+            // First scroll event
+        }
+        scrollAction.x = window.pageXOffset;
+        scrollAction.y = window.pageYOffset;
+    }
+})
 
 
 

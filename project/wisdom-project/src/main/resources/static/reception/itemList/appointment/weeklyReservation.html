@@ -1,4 +1,4 @@
-<div class="weekWrap">
+<div class="weekWrap H100">
      <div class="weekHeader">
          <ul>
              <li  ng-repeat="item in [1,2,3,4,5,6,7]" >
@@ -6,7 +6,7 @@
              </li>
          </ul>
      </div>
-    <div class="content">
+    <div class="content " style="height:96%;">
         <div class="weekLeft">
             <ul>
                 <li  ng-repeat="item in param.week" >
@@ -18,7 +18,7 @@
             </ul>
         </div>
 
-        <div class="weekRight" ng-repeat="items in [1,2,3,4,5,6]">
+        <div class="weekRight  " ng-repeat="items in [1,2,3,4,5,6]">
             <ul>
                 <li  ng-repeat="item in [1,2,3,4,5,6,7]" ng-click="weekLis(item)">
                     <div>
