@@ -402,15 +402,15 @@
         #{amount},
         #{createDate},
         #{updateDate},
-        #{nextUserId}
-        #{userType}
-        #{nextUserType}
-        #{parentRelation}
-        #{mobile}
-        #{nextUserMobile}
-        #{identifyNumber}
-        #{nextUserIdentifyNumber}
-        #{nickName}
+        #{nextUserId},
+        #{userType},
+        #{nextUserType},
+        #{parentRelation},
+        #{mobile},
+        #{nextUserMobile},
+        #{identifyNumber},
+        #{nextUserIdentifyNumber},
+        #{nickName},
         #{nextUserNickName}
         )
     </insert>

@@ -101,7 +101,7 @@
         #{updateDate},
         #{createDate},
         #{incomeType},
-        #{userIdentifyNumber},
+        #{identifyNumber},
         #{nextUserIdentifyNumber},
         #{nickName},
         #{nextUserNickName},

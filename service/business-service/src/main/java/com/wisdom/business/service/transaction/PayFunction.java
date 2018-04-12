@@ -19,6 +19,9 @@ import com.wisdom.common.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -319,7 +322,7 @@ public class PayFunction {
 
                 incomeRecordDTO.setId(UUID.randomUUID().toString());
                 incomeRecordDTO.setSysUserId(parentUserId);
-                incomeRecordDTO.setUserType(userRuleType);
+                incomeRecordDTO.setUserType(userInfoDTOList.get(0).getUserType());
                 incomeRecordDTO.setNextUserId(nextUserInfoDTOList.get(0).getId());
                 incomeRecordDTO.setNextUserType(nextUserInfoDTOList.get(0).getUserType());
                 incomeRecordDTO.setAmount(returnMoney);
@@ -330,8 +333,8 @@ public class PayFunction {
                 incomeRecordDTO.setStatus("0");
                 incomeRecordDTO.setIdentifyNumber(userInfoDTOList.get(0).getIdentifyNumber());
                 incomeRecordDTO.setNextUserIdentifyNumber(nextUserInfoDTOList.get(0).getIdentifyNumber());
-                incomeRecordDTO.setNickName(userInfoDTOList.get(0).getNickname());
-                incomeRecordDTO.setNextUserNickName(nextUserInfoDTOList.get(0).getNickname());
+                incomeRecordDTO.setNickName(URLEncoder.encode(userInfoDTOList.get(0).getNickname(), "utf-8"));
+                incomeRecordDTO.setNextUserNickName(URLEncoder.encode(nextUserInfoDTOList.get(0).getNickname(), "utf-8"));
                 incomeRecordDTO.setIncomeType("instance");
                 incomeRecordDTO.setMobile(userInfoDTOList.get(0).getMobile());
                 incomeRecordDTO.setNextUserMobile(nextUserInfoDTOList.get(0).getMobile());
@@ -347,7 +350,7 @@ public class PayFunction {
         }
     }
 
-    private void recordMonthTransaction(String userId, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO, float amount,String parentRelation) {
+    private void recordMonthTransaction(String userId, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO, float amount,String parentRelation) throws UnsupportedEncodingException {
 
         MonthTransactionRecordDTO monthTransactionRecordDTO = new MonthTransactionRecordDTO();
         monthTransactionRecordDTO.setId(UUID.randomUUID().toString());
@@ -373,8 +376,8 @@ public class PayFunction {
         monthTransactionRecordDTO.setNextUserMobile(nextUserInfoDTOList.get(0).getMobile());
         monthTransactionRecordDTO.setIdentifyNumber(userInfoDTOList.get(0).getIdentifyNumber());
         monthTransactionRecordDTO.setNextUserIdentifyNumber(nextUserInfoDTOList.get(0).getIdentifyNumber());
-        monthTransactionRecordDTO.setNickName(userInfoDTOList.get(0).getNickname());
-        monthTransactionRecordDTO.setNextUserNickName(nextUserInfoDTOList.get(0).getNickname());
+        monthTransactionRecordDTO.setNickName(URLEncoder.encode(userInfoDTOList.get(0).getNickname(), "utf-8"));
+        monthTransactionRecordDTO.setNextUserNickName(URLEncoder.encode(nextUserInfoDTOList.get(0).getNickname(), "utf-8"));
 
         transactionMapper.recordMonthTransaction(monthTransactionRecordDTO);
     }

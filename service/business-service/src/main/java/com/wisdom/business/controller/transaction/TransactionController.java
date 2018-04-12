@@ -30,6 +30,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -233,7 +235,7 @@ public class TransactionController {
     //获取每日红包
     @RequestMapping(value ="getTripleMonthBonus",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public ResponseDTO<Float> getTripleMonthBonus(HttpSession session, HttpServletRequest request) {
+    public ResponseDTO<Float> getTripleMonthBonus(HttpSession session, HttpServletRequest request) throws UnsupportedEncodingException {
         ResponseDTO<Float> responseDTO = new ResponseDTO<>();
         String openId = WeixinUtil.getUserOpenId(session,request);
 
@@ -323,7 +325,7 @@ public class TransactionController {
                         incomeRecordDTO.setStatus("0");
                         incomeRecordDTO.setIdentifyNumber(userInfoDTOS.get(0).getIdentifyNumber());
                         incomeRecordDTO.setNextUserIdentifyNumber("");
-                        incomeRecordDTO.setNickName(userInfoDTOS.get(0).getNickname());
+                        incomeRecordDTO.setNickName(URLEncoder.encode(userInfoDTOS.get(0).getNickname(), "utf-8"));
                         incomeRecordDTO.setNextUserNickName("");
                         incomeRecordDTO.setIncomeType("activityBonus");
                         incomeRecordDTO.setMobile(userInfoDTOS.get(0).getMobile());
