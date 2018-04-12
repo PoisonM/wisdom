@@ -1,12 +1,16 @@
 package com.wisdom.tinglao.service.impl;
 
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.wisdom.common.constant.RealNameResultEnum;
 import com.wisdom.common.dto.user.RealNameAuthHelperDTO;
 import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.util.HttpUtils;
 import com.wisdom.common.util.JacksonUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +46,7 @@ public class CommonTest {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main2(String[] args) throws Exception {
         String string = "{\"data\":{\"sex\":\"男\",\"address\":\"山东省-青岛市-莱西市\",\"birthday\":\"1992-02-17\"},\"resp\":{\"code\":0,\"desc\":\"匹配\"}}";
         RealNameAuthHelperDTO jsonToBean = (RealNameAuthHelperDTO) JacksonUtil.jsonToBean(string, RealNameAuthHelperDTO.class);
         System.out.println("string = [" + jsonToBean + "]");
@@ -56,8 +60,25 @@ public class CommonTest {
         System.out.println("realNameInfoDTO = [" + realNameInfoDTO + "]");
     }
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public static void main(String[] args) throws JsonParseException {
+        RealNameInfoDTO realNameInfoDTO = new RealNameInfoDTO();
+        String string = "{\"data\":{\"sex\":\"男\",\"address\":\"山东省-青岛市-莱西市\",\"birthday\":\"1992-02-17\"},\"resp\":{\"code\":0,\"desc\":\"匹配\"}}";
 
+        RealNameAuthHelperDTO jsonToBean = (RealNameAuthHelperDTO) JacksonUtil.jsonToBean(string, RealNameAuthHelperDTO.class);
+
+        realNameInfoDTO = new RealNameInfoDTO();
+        realNameInfoDTO.setAddress(jsonToBean.getData().getAddress());
+        realNameInfoDTO.setBirthday(jsonToBean.getData().getBirthday());
+        realNameInfoDTO.setSex(jsonToBean.getData().getSex());
+        realNameInfoDTO.setCode(jsonToBean.getResp().getCode());
+        realNameInfoDTO.setDesc(RealNameResultEnum.judgeValue(jsonToBean.getResp().getCode()).getDesc());
+        realNameInfoDTO.setIdCard("用户身份证号");
+        realNameInfoDTO.setName("用户姓名");
+        realNameInfoDTO.setResult(jsonToBean.getResp().getCode().equalsIgnoreCase(RealNameResultEnum.MATCHING.getCode()) ? "匹配" : "不匹配");
+        System.out.println("args = [" + JacksonUtil.beanToJson(realNameInfoDTO) + "]");
+    }
 
 
 

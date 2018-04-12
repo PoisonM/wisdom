@@ -74,7 +74,6 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
         realNameInfoDTO.setDesc(RealNameResultEnum.judgeValue(jsonToBean.getResp().getCode()).getDesc());
         realNameInfoDTO.setIdCard(idCard);
         realNameInfoDTO.setName(name);
-        realNameInfoDTO.setResult(jsonToBean.getResp().getCode().equalsIgnoreCase(RealNameResultEnum.MATCHING.getCode()) ? "匹配" : "不匹配");
         //远程查回来的数据保存到mongo
         mongoTemplate.save(realNameInfoDTO, "realNameInfoDTO");
         logger.info("用户实名认证接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
@@ -93,10 +92,10 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
         String path = "/lianzhuo/idcard";
         String method = "GET";
         String appcode = "d44aff14ca8142efb196889d29c2896d";
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<String, String>(6);
 
         headers.put("Authorization", "APPCODE " + appcode);
-        Map<String, String> querys = new HashMap<String, String>();
+        Map<String, String> querys = new HashMap<String, String>(6);
         querys.put("cardno", idCard);
         querys.put("name", name);
         try {
