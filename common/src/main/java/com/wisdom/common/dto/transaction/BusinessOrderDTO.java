@@ -56,9 +56,14 @@ public class BusinessOrderDTO {
     @JSONField(name = "businessProductNum")
     private int businessProductNum;
 
+
     //商品名字
     @JSONField(name = "businessProductName")
     private String businessProductName;
+
+    //商品Id
+    @JSONField(name = "productBrand")
+    private String productBrand;
 
     //商品图片url
     @JSONField(name = "businessProductFirstUrl")
@@ -324,5 +329,14 @@ public class BusinessOrderDTO {
 
     public void setWaybillNumber(String waybillNumber) {
         this.waybillNumber = waybillNumber;
+    }
+
+
+    public String getProductBrand() {
+        return productBrand;
+    }
+
+    public void setProductBrand(String productBrand) {
+        this.productBrand = productBrand;
     }
 }
