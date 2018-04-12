@@ -110,8 +110,7 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
     }
 
     private RealNameInfoDTO getRealNameInfoDTO() {
-        RealNameInfoDTO realNameInfoDTO;
-        realNameInfoDTO = new RealNameInfoDTO();
+        RealNameInfoDTO realNameInfoDTO = new RealNameInfoDTO();
         realNameInfoDTO.setCode(RealNameResultEnum.NO_RESULT.getCode());
         realNameInfoDTO.setDesc(RealNameResultEnum.NO_RESULT.getDesc());
         return realNameInfoDTO;
