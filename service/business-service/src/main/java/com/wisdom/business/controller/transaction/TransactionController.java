@@ -17,6 +17,7 @@ import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.*;
+import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.WeixinUtil;
@@ -31,6 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.util.*;
+
+import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REWARD;
 
 /**
  * 微信页面参数获取相关的控制类
@@ -301,8 +304,31 @@ public class TransactionController {
                     {
                         accountDTO = accountDTOS.get(0);
                         float balance = accountDTO.getBalance() + floatBounded;
+                        float balanceDeny = accountDTO.getBalanceDeny() + floatBounded;
                         accountDTO.setBalance(balance);
+                        accountDTO.setBalanceDeny(balanceDeny);
                         accountService.updateUserAccountInfo(accountDTO);
+
+                        IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                        incomeRecordDTO.setId(UUID.randomUUID().toString());
+                        incomeRecordDTO.setSysUserId(userInfoDTOS.get(0).getId());
+                        incomeRecordDTO.setUserType(userInfoDTOS.get(0).getUserType());
+                        incomeRecordDTO.setNextUserId("");
+                        incomeRecordDTO.setNextUserType("");
+                        incomeRecordDTO.setAmount(balance);
+                        incomeRecordDTO.setTransactionAmount(0);
+                        incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                        incomeRecordDTO.setUpdateDate(new Date());
+                        incomeRecordDTO.setCreateDate(new Date());
+                        incomeRecordDTO.setStatus("0");
+                        incomeRecordDTO.setIdentifyNumber(userInfoDTOS.get(0).getIdentifyNumber());
+                        incomeRecordDTO.setNextUserIdentifyNumber("");
+                        incomeRecordDTO.setNickName(userInfoDTOS.get(0).getNickname());
+                        incomeRecordDTO.setNextUserNickName("");
+                        incomeRecordDTO.setIncomeType("activityBonus");
+                        incomeRecordDTO.setMobile(userInfoDTOS.get(0).getMobile());
+                        incomeRecordDTO.setNextUserMobile("");
+                        incomeRecordDTO.setParentRelation("");
                     }
                     else
                     {

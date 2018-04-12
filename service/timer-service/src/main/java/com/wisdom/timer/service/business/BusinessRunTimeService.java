@@ -97,14 +97,14 @@ public class BusinessRunTimeService {
     public void autoProcessUserAccount() {
 
         //查询用户消费的不可提现金额
-        IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+        /*IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
         incomeRecordDTO.setStatus("0");
         incomeRecordDTO.setIncomeType("instance");
         List<IncomeRecordDTO> incomeRecordDTOList = businessServiceClient.getUserIncomeRecordInfo(incomeRecordDTO);
-        List<String> transactionIds = new ArrayList<>();
+        List<String> transactionIds = new ArrayList<>();*/
 
         //用户返现解冻
-        this.deFrozenUserReturnMoney(incomeRecordDTOList,transactionIds);
+        //this.deFrozenUserReturnMoney(incomeRecordDTOList,transactionIds);
 
         //同级推荐提升逻辑
         this.promoteUserBusinessTypeForRecommend();
@@ -314,16 +314,6 @@ public class BusinessRunTimeService {
                     {
                         returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
                     }
-                    IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                    incomeRecordDTO.setId(UUID.randomUUID().toString());
-                    incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                    incomeRecordDTO.setSysUserId(userInfo.getId());
-                    incomeRecordDTO.setIncomeType("month");
-                    incomeRecordDTO.setAmount(returnMonthlyMoney);
-                    incomeRecordDTO.setStatus("0");
-                    incomeRecordDTO.setCreateDate(new Date());
-                    incomeRecordDTO.setUpdateDate(new Date());
-                    businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
 
                     AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
                     float balance = accountDTO.getBalance() + returnMonthlyMoney;
@@ -332,6 +322,28 @@ public class BusinessRunTimeService {
                     accountDTO.setBalanceDeny(balanceDeny);
                     accountDTO.setUpdateDate(new Date());
                     businessServiceClient.updateUserAccountInfo(accountDTO);
+
+                    IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                    incomeRecordDTO.setId(UUID.randomUUID().toString());
+                    incomeRecordDTO.setSysUserId(userInfo.getId());
+                    incomeRecordDTO.setUserType(userInfo.getUserType());
+                    incomeRecordDTO.setNextUserId("");
+                    incomeRecordDTO.setNextUserType("");
+                    incomeRecordDTO.setAmount(returnMonthlyMoney);
+                    incomeRecordDTO.setTransactionAmount(0);
+                    incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                    incomeRecordDTO.setUpdateDate(new Date());
+                    incomeRecordDTO.setCreateDate(new Date());
+                    incomeRecordDTO.setStatus("0");
+                    incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
+                    incomeRecordDTO.setNextUserIdentifyNumber("");
+                    incomeRecordDTO.setNickName(userInfo.getNickname());
+                    incomeRecordDTO.setNextUserNickName("");
+                    incomeRecordDTO.setIncomeType("month");
+                    incomeRecordDTO.setMobile(userInfo.getMobile());
+                    incomeRecordDTO.setNextUserMobile("");
+                    incomeRecordDTO.setParentRelation("");
+                    businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
                 }
             }
 
@@ -418,6 +430,27 @@ public class BusinessRunTimeService {
                 float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
                 accountDTO.setBalance(balance);
                 businessServiceClient.updateUserAccountInfo(accountDTO);
+
+                IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                incomeRecordDTO.setId(UUID.randomUUID().toString());
+                incomeRecordDTO.setSysUserId(userInfo.getId());
+                incomeRecordDTO.setUserType(userInfo.getUserType());
+                incomeRecordDTO.setNextUserId("");
+                incomeRecordDTO.setNextUserType("");
+                incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
+                incomeRecordDTO.setTransactionAmount(0);
+                incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                incomeRecordDTO.setUpdateDate(new Date());
+                incomeRecordDTO.setCreateDate(new Date());
+                incomeRecordDTO.setStatus("0");
+                incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
+                incomeRecordDTO.setNextUserIdentifyNumber("");
+                incomeRecordDTO.setNickName(userInfo.getNickname());
+                incomeRecordDTO.setNextUserNickName("");
+                incomeRecordDTO.setIncomeType("recommend");
+                incomeRecordDTO.setMobile(userInfo.getMobile());
+                incomeRecordDTO.setNextUserMobile("");
+                incomeRecordDTO.setParentRelation("");
 
                 Calendar calendar = Calendar.getInstance();
                 Date date = new Date();

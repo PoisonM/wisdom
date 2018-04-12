@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
 
-public class UserInfoDTO<T> {
+public class UserInfoDTO {
 
     @JSONField(name = "id")
     private String id;
@@ -60,9 +60,6 @@ public class UserInfoDTO<T> {
 
     @JSONField(name = "extendUserType")
     private String extendUserType;
-
-    @JSONField(name = "extendUserInfoDTO")
-    private T extendUserInfoDTO;
 
     public String getId() {
         return id;
@@ -206,13 +203,5 @@ public class UserInfoDTO<T> {
 
     public void setExtendUserType(String extendUserType) {
         this.extendUserType = extendUserType;
-    }
-
-    public T getExtendUserInfoDTO() {
-        return extendUserInfoDTO;
-    }
-
-    public void setExtendUserInfoDTO(T extendUserInfoDTO) {
-        this.extendUserInfoDTO = extendUserInfoDTO;
     }
 }
