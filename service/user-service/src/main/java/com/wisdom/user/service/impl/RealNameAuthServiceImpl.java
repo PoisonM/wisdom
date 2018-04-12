@@ -72,6 +72,7 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
         realNameInfoDTO.setSex(jsonToBean.getData().getSex());
         realNameInfoDTO.setCode(jsonToBean.getResp().getCode());
         realNameInfoDTO.setDesc(RealNameResultEnum.judgeValue(jsonToBean.getResp().getCode()).getDesc());
+        realNameInfoDTO.setResult(RealNameResultEnum.judgeValue(jsonToBean.getResp().getCode()).getDesc());
         realNameInfoDTO.setIdCard(idCard);
         realNameInfoDTO.setName(name);
         //远程查回来的数据保存到mongo
