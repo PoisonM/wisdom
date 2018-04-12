@@ -1,6 +1,8 @@
 package com.wisdom.beauty.core.service;
 
-import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
+import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
+import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
@@ -30,6 +32,15 @@ public interface ShopProductInfoService {
      * @return
      */
     List<ShopUserProductRelationDTO> getUserProductInfoList(ShopUserProductRelationDTO shopUserProductRelationDTO);
+
+    /**
+     * 更新用户与产品的关系
+     *
+     * @param shopUserProductRelationDTO
+     * @return
+     */
+    int updateShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO);
+
     /**
      *@Author:huan
      *@Param: sysShopId

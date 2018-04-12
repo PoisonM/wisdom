@@ -3,17 +3,27 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
+    //
+    private String shopUserConsumeRecordId;
+
     //用户id
     private String sysUserId;
 
+    //用户名称
+    private String sysUserName;
+
     //美容店id
     private String sysShopId;
+
+    //美容店名称
+    private String sysShopName;
 
     //店员id
     private String sysClerkId;
@@ -25,16 +35,10 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
     private String type;
 
     //流水金额
-    private Long flowAmount;
+    private BigDecimal flowAmount;
 
     //操作时间
     private Date operDate;
-
-    //美容店名称
-    private String sysShopName;
-
-    //用户名称
-    private String sysUserName;
 
     //操作信息
     private String operInfo;
@@ -67,6 +71,14 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
+    public String getShopUserConsumeRecordId() {
+        return shopUserConsumeRecordId;
+    }
+
+    public void setShopUserConsumeRecordId(String shopUserConsumeRecordId) {
+        this.shopUserConsumeRecordId = shopUserConsumeRecordId;
+    }
+
     public String getSysUserId() {
         return sysUserId;
     }
@@ -75,12 +87,28 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
         this.sysUserId = sysUserId;
     }
 
+    public String getSysUserName() {
+        return sysUserName;
+    }
+
+    public void setSysUserName(String sysUserName) {
+        this.sysUserName = sysUserName;
+    }
+
     public String getSysShopId() {
         return sysShopId;
     }
 
     public void setSysShopId(String sysShopId) {
         this.sysShopId = sysShopId;
+    }
+
+    public String getSysShopName() {
+        return sysShopName;
+    }
+
+    public void setSysShopName(String sysShopName) {
+        this.sysShopName = sysShopName;
     }
 
     public String getSysClerkId() {
@@ -107,11 +135,11 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
         this.type = type;
     }
 
-    public Long getFlowAmount() {
+    public BigDecimal getFlowAmount() {
         return flowAmount;
     }
 
-    public void setFlowAmount(Long flowAmount) {
+    public void setFlowAmount(BigDecimal flowAmount) {
         this.flowAmount = flowAmount;
     }
 
@@ -121,22 +149,6 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
 
     public void setOperDate(Date operDate) {
         this.operDate = operDate;
-    }
-
-    public String getSysShopName() {
-        return sysShopName;
-    }
-
-    public void setSysShopName(String sysShopName) {
-        this.sysShopName = sysShopName;
-    }
-
-    public String getSysUserName() {
-        return sysUserName;
-    }
-
-    public void setSysUserName(String sysUserName) {
-        this.sysUserName = sysUserName;
     }
 
     public String getOperInfo() {

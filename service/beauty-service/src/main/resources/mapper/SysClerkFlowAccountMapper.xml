@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wisdom.user.mapper.SysClerkFlowAccountMapper">
+<mapper namespace="com.wisdom.beauty.core.mapper.SysClerkFlowAccountMapper">
     <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.SysClerkFlowAccountDTO">
         <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="shop_user_consume_record_id" property="shopUserConsumeRecordId" jdbcType="VARCHAR"/>
         <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
+        <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR"/>
         <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
+        <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
         <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
         <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="CHAR"/>
         <result column="flow_amount" property="flowAmount" jdbcType="DECIMAL"/>
         <result column="oper_date" property="operDate" jdbcType="TIMESTAMP"/>
-        <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
-        <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR"/>
         <result column="oper_info" property="operInfo" jdbcType="VARCHAR"/>
         <result column="detail" property="detail" jdbcType="VARCHAR"/>
         <result column="sign_url" property="signUrl" jdbcType="VARCHAR"/>
@@ -81,9 +82,9 @@
     </where>
   </sql>
     <sql id="Base_Column_List">
-        id, sys_user_id, sys_shop_id, sys_clerk_id, sys_boss_id, type, flow_amount, oper_date,
-        sys_shop_name, sys_user_name, oper_info, detail, sign_url, create_by, create_date,
-    update_user, update_date
+        id, shop_user_consume_record_id, sys_user_id, sys_user_name, sys_shop_id, sys_shop_name,
+        sys_clerk_id, sys_boss_id, type, flow_amount, oper_date, oper_info, detail, sign_url,
+        create_by, create_date, update_user, update_date
   </sql>
     <select id="selectByCriteria" resultMap="BaseResultMap"
             parameterType="com.wisdom.beauty.api.dto.SysClerkFlowAccountCriteria">
@@ -120,31 +121,42 @@
     </if>
   </delete>
     <insert id="insert" parameterType="com.wisdom.beauty.api.dto.SysClerkFlowAccountDTO">
-        insert into sys_clerk_flow_account (id, sys_user_id, sys_shop_id,
-      sys_clerk_id, sys_boss_id, type, 
-      flow_amount, oper_date, sys_shop_name,
-        sys_user_name, oper_info, detail,
-      sign_url, create_by, create_date, 
-      update_user, update_date)
-        values (#{id,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR},
-      #{sysClerkId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, 
-      #{flowAmount,jdbcType=DECIMAL}, #{operDate,jdbcType=TIMESTAMP}, #{sysShopName,jdbcType=VARCHAR},
-        #{sysUserName,jdbcType=VARCHAR}, #{operInfo,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR},
-      #{signUrl,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+        insert into sys_clerk_flow_account (id, shop_user_consume_record_id, sys_user_id,
+        sys_user_name, sys_shop_id, sys_shop_name,
+      sys_clerk_id, sys_boss_id, type,
+        flow_amount, oper_date, oper_info,
+        detail, sign_url, create_by,
+        create_date, update_user, update_date
+        )
+        values (#{id,jdbcType=VARCHAR}, #{shopUserConsumeRecordId,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR},
+        #{sysUserName,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR},
+      #{sysClerkId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{type,jdbcType=CHAR},
+        #{flowAmount,jdbcType=DECIMAL}, #{operDate,jdbcType=TIMESTAMP}, #{operInfo,jdbcType=VARCHAR},
+        #{detail,jdbcType=VARCHAR}, #{signUrl,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
+        #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+        )
   </insert>
     <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.SysClerkFlowAccountDTO">
     insert into sys_clerk_flow_account
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
         id,
-      </if>
+            </if>
+            <if test="shopUserConsumeRecordId != null">
+                shop_user_consume_record_id,
+            </if>
             <if test="sysUserId != null">
                 sys_user_id,
       </if>
+            <if test="sysUserName != null">
+                sys_user_name,
+            </if>
             <if test="sysShopId != null">
         sys_shop_id,
       </if>
+            <if test="sysShopName != null">
+                sys_shop_name,
+            </if>
             <if test="sysClerkId != null">
         sys_clerk_id,
       </if>
@@ -159,12 +171,6 @@
       </if>
             <if test="operDate != null">
         oper_date,
-      </if>
-            <if test="sysShopName != null">
-        sys_shop_name,
-      </if>
-            <if test="sysUserName != null">
-                sys_user_name,
       </if>
             <if test="operInfo != null">
         oper_info,
@@ -192,12 +198,21 @@
             <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
+            <if test="shopUserConsumeRecordId != null">
+                #{shopUserConsumeRecordId,jdbcType=VARCHAR},
+            </if>
             <if test="sysUserId != null">
                 #{sysUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserName != null">
+                #{sysUserName,jdbcType=VARCHAR},
       </if>
             <if test="sysShopId != null">
         #{sysShopId,jdbcType=VARCHAR},
-      </if>
+            </if>
+            <if test="sysShopName != null">
+                #{sysShopName,jdbcType=VARCHAR},
+            </if>
             <if test="sysClerkId != null">
         #{sysClerkId,jdbcType=VARCHAR},
       </if>
@@ -212,12 +227,6 @@
       </if>
             <if test="operDate != null">
         #{operDate,jdbcType=TIMESTAMP},
-      </if>
-            <if test="sysShopName != null">
-        #{sysShopName,jdbcType=VARCHAR},
-      </if>
-            <if test="sysUserName != null">
-                #{sysUserName,jdbcType=VARCHAR},
       </if>
             <if test="operInfo != null">
         #{operInfo,jdbcType=VARCHAR},
@@ -254,13 +263,22 @@
         <set>
             <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
-      </if>
+            </if>
+            <if test="record.shopUserConsumeRecordId != null">
+                shop_user_consume_record_id = #{record.shopUserConsumeRecordId,jdbcType=VARCHAR},
+            </if>
             <if test="record.sysUserId != null">
                 sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       </if>
+            <if test="record.sysUserName != null">
+                sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
+            </if>
             <if test="record.sysShopId != null">
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
-      </if>
+            </if>
+            <if test="record.sysShopName != null">
+                sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
+            </if>
             <if test="record.sysClerkId != null">
         sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       </if>
@@ -275,12 +293,6 @@
       </if>
             <if test="record.operDate != null">
         oper_date = #{record.operDate,jdbcType=TIMESTAMP},
-      </if>
-            <if test="record.sysShopName != null">
-        sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
-      </if>
-            <if test="record.sysUserName != null">
-                sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       </if>
             <if test="record.operInfo != null">
         oper_info = #{record.operInfo,jdbcType=VARCHAR},
@@ -311,15 +323,16 @@
     <update id="updateByCriteria" parameterType="map">
     update sys_clerk_flow_account
     set id = #{record.id,jdbcType=VARCHAR},
+        shop_user_consume_record_id = #{record.shopUserConsumeRecordId,jdbcType=VARCHAR},
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+        sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+        sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=CHAR},
       flow_amount = #{record.flowAmount,jdbcType=DECIMAL},
       oper_date = #{record.operDate,jdbcType=TIMESTAMP},
-      sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
-        sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       oper_info = #{record.operInfo,jdbcType=VARCHAR},
       detail = #{record.detail,jdbcType=VARCHAR},
       sign_url = #{record.signUrl,jdbcType=VARCHAR},
@@ -334,12 +347,21 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.SysClerkFlowAccountDTO">
     update sys_clerk_flow_account
         <set>
+            <if test="shopUserConsumeRecordId != null">
+                shop_user_consume_record_id = #{shopUserConsumeRecordId,jdbcType=VARCHAR},
+            </if>
             <if test="sysUserId != null">
                 sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysUserName != null">
+                sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       </if>
             <if test="sysShopId != null">
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
-      </if>
+            </if>
+            <if test="sysShopName != null">
+                sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
+            </if>
             <if test="sysClerkId != null">
         sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       </if>
@@ -354,12 +376,6 @@
       </if>
             <if test="operDate != null">
         oper_date = #{operDate,jdbcType=TIMESTAMP},
-      </if>
-            <if test="sysShopName != null">
-        sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
-      </if>
-            <if test="sysUserName != null">
-                sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       </if>
             <if test="operInfo != null">
         oper_info = #{operInfo,jdbcType=VARCHAR},
@@ -387,15 +403,16 @@
   </update>
     <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.SysClerkFlowAccountDTO">
     update sys_clerk_flow_account
-        set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+        set shop_user_consume_record_id = #{shopUserConsumeRecordId,jdbcType=VARCHAR},
+        sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+        sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+        sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
       sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
       type = #{type,jdbcType=CHAR},
       flow_amount = #{flowAmount,jdbcType=DECIMAL},
       oper_date = #{operDate,jdbcType=TIMESTAMP},
-      sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
-        sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       oper_info = #{operInfo,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},
       sign_url = #{signUrl,jdbcType=VARCHAR},
