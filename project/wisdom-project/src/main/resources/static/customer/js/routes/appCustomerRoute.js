@@ -399,7 +399,7 @@ define(['appCustomer'], function(app){
                         }
                     })
                     .state('specialProductList', {
-                        url: '/specialProductList',
+                        url: '/specialProductList/:specialShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'specialProductListCtrl',
                         resolve: {

@@ -106,7 +106,8 @@ public class WeixinUserController {
             url = ConfigConstant.USER_WEB_URL + "shopHome";
         }
         if ("specialProductList".equals(url)) {
-            url = ConfigConstant.USER_WEB_URL + "specialProductList";
+            String specialShopId = java.net.URLDecoder.decode(request.getParameter("specialShopId"), "utf-8");
+            url = ConfigConstant.USER_WEB_URL + "specialProductList/"+specialShopId;
         }
         else if ("shareHome".equals(url)) {
             url = ConfigConstant.USER_WEB_URL + "shareHome";
