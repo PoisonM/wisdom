@@ -3,10 +3,8 @@ package com.wisdom.beauty.controller.archives;
 
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
-import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesServcie;
-import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -39,8 +37,6 @@ public class ArchivesController {
     @Autowired
     private ShopCustomerArchivesServcie shopCustomerArchivesServcie;
 
-    @Autowired
-    private SysUserAccountService sysUserAccountService;
 
     @Autowired
     private UserServiceClient userServiceClient;
@@ -151,25 +147,5 @@ public class ArchivesController {
         return responseDTO;
     }
 
-    /**
-    *@Author:huan
-    *@Param:
-    *@Return:
-    *@Description: 获取用户id查询档案信息
-     *@Date:2018/4/8
-    */
-    @RequestMapping(value = "/archives/{userId}", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseDTO<CustomerAccountResponseDto> findArchive(@PathVariable String userId) {
-        long startTime = System.currentTimeMillis();
-        ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
-        CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
-        if(customerAccountResponseDto!=null){
-            responseDTO.setResponseData(customerAccountResponseDto);
-        }
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findArchive方法耗时{}毫秒",(System.currentTimeMillis()-startTime));
-        return responseDTO;
-    }
 
 }

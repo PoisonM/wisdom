@@ -60,13 +60,13 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
             customerAccountResponseDto.setUserName(userInfoDTO.getNickname());
         }
         SysUserAccountDTO sysUserAccount = getSysUserAccountDTO(userId);
-        //获取金信息
+        //获取资金信息
         if (sysUserAccount != null) {
             logger.info("sysCustomerAccountMapper查询的资金信息是:arrears={},sumAmount={}", sysUserAccount.getArrears(), sysUserAccount.getSumAmount());
             customerAccountResponseDto.setArrears(sysUserAccount.getArrears());
             customerAccountResponseDto.setSumAmount(sysUserAccount.getSumAmount());
         }
-        //获取会员
+        //获取会员绑定关系
         String state = shopUserRelationService.isMember(userId);
         customerAccountResponseDto.setMember(state);
         //获取美容师
