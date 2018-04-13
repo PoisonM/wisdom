@@ -60,7 +60,7 @@ public class ProcessUserScanEventService {
                 //处理境外购的流程
                 String weishiyiShop = xmlEntity.getEventKey().replace("mxForeignPurchase_", "");
                 String codeArray[] = weishiyiShop.split("_");
-                String specialShopId = codeArray[1];
+                String specialShopId = codeArray[0];
 
                 //通过shopId查询出店铺名称
                 Query query = new Query(Criteria.where("shopId").is(specialShopId));
@@ -72,7 +72,7 @@ public class ProcessUserScanEventService {
                 article.setTitle("嗨!您又来啦! ~\n");
                 article.setDescription(
                         "请点击我进入"+specialShopInfoDTO.getShopName()+"吧");
-                article.setPicUrl("");
+                article.setPicUrl(specialShopInfoDTO.getShopURL());
                 article.setUrl(ConfigConstant.SPECIAL_SHOP_URL+specialShopInfoDTO.getShopId());
                 articleList.add(article);
                 WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);

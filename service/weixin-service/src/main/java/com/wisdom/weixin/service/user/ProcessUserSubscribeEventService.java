@@ -223,7 +223,7 @@ public class ProcessUserSubscribeEventService {
                 article.setTitle("嗨!您终于来啦! ~\n");
                 article.setDescription(
                         "请点击我进入"+specialShopInfoDTO.getShopName()+"吧");
-                article.setPicUrl("");
+                article.setPicUrl(specialShopInfoDTO.getShopURL());
                 article.setUrl(ConfigConstant.SPECIAL_SHOP_URL+specialShopInfoDTO.getShopId());
                 articleList.add(article);
                 WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);

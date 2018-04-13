@@ -134,6 +134,13 @@ public class WeixinUserCoreService {
         return weixinShareDTO;
     }
 
+    public String getSpecialShopQRCode(String specialShopId)
+    {
+        String specialShopCode = ConfigConstant.SPECIAL_SHOP_VALUE + specialShopId + "_" + RandomNumberUtil.getFourRandom();
+        String qrCodeUrl = this.getSpecialShopQRURL(specialShopCode);
+        return qrCodeUrl;
+    }
+
     /**
      * 根据信息生成二维码
      * @param info
@@ -145,6 +152,19 @@ public class WeixinUserCoreService {
         String token = weixinTokenDTO.getToken();
         String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
         String jsonData="{\"expire_seconds\": 626400, \"action_name\": \"QR_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + info + "\"}}}";
+        String reJson= WeixinUtil.post(url, jsonData,"POST");
+        JSONObject jb=JSONObject.fromObject(reJson);
+        String qrTicket = jb.getString("ticket");
+        String QRCodeURI="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+qrTicket;
+        return QRCodeURI;
+    }
+
+    private String getSpecialShopQRURL(String info) {
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
+        WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
+        String token = weixinTokenDTO.getToken();
+        String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
+        String jsonData="{\"action_name\": \"QR_LIMIT_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + info + "\"}}}";
         String reJson= WeixinUtil.post(url, jsonData,"POST");
         JSONObject jb=JSONObject.fromObject(reJson);
         String qrTicket = jb.getString("ticket");

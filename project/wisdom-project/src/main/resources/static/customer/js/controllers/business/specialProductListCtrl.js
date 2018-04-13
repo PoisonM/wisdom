@@ -4,8 +4,6 @@ angular.module('controllers',[]).controller('specialProductListCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetBusinessProductInfo,Global,
                   GetSpecialProductList,$ionicLoading,LoginGlobal,BusinessUtil,GetSpecialShopInfo) {
 
-            $rootScope.title = "美享99特价专区";
-
             $scope.param = {
                 specialProductList : [],
                 specialShopId : $stateParams.specialShopId,
@@ -27,6 +25,7 @@ angular.module('controllers',[]).controller('specialProductListCtrl',
                 });
 
                 GetSpecialShopInfo.get({specialShopId:$scope.param.specialShopId},function(data){
+                    console.log(data);
                     if(data.result==Global.SUCCESS)
                     {
                         $scope.param.specialShopInfo = data.responseData;

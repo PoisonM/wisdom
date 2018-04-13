@@ -94,15 +94,17 @@
             </div>
         </div>
         <!--型号-->
-        <div style="border-bottom: 1px solid #e5e5e5;line-height: 1rem;padding-left: 5px">
-            <span style="color: #666666;font-size: 0.3rem;margin-left: 0.3rem;display: inline-block;font-weight: 600;float: left">型号：</span>
-            <span ng-if="param.product.productDetail.spec.length != 1" class="check"  style="color: #666666;font-size: 0.3rem;margin-left: 0.4rem;display: inline-block;height: 25px;line-height: 25px;padding: 1px; font-family: Arial Black;"  ng-repeat="item in param.product.productDetail.spec" ng-click="confirmProductSpec(item)" ng-class="{'check_type':param.checkFlag == item}">{{item}}</span>
-            <span ng-if="param.product.productDetail.spec.length == 1" class="check check_type"  style="color: #666666;font-size: 0.3rem;margin-left: 0.4rem;display: inline-block;height: 25px;line-height: 25px;padding: 1px; font-family: Arial Black;"  ng-repeat="item in param.product.productDetail.spec" >{{item}}</span>
+        <div class="item" style="border-bottom: 1px solid #e5e5e5">
+            <span style="color: #666666;font-size: 0.3rem;margin-left: 0.3rem;display: inline-block;font-weight: 600;float: left">
+                型号：
+                <span ng-if="param.product.productDetail.spec.length != 1" class="check"  style="color: #666666;font-size: 0.3rem;margin-left: 0.4rem;display: inline-block;height: 25px;line-height: 25px;padding: 1px; font-family: Arial Black;"  ng-repeat="item in param.product.productDetail.spec" ng-click="confirmProductSpec(item)" ng-class="{'check_type':param.checkFlag == item}">{{item}}</span>
+                <span ng-if="param.product.productDetail.spec.length == 1" class="check check_type"  style="color: #666666;font-size: 0.3rem;margin-left: 0.4rem;display: inline-block;height: 25px;line-height: 25px;padding: 1px; font-family: Arial Black;"  ng-repeat="item in param.product.productDetail.spec" >{{item}}</span>
+            </span>
         </div>
         <!--数量-->
-        <div style="width: 100%;height: 1rem;line-height: 1rem">
+        <div class="item" style="width:100%;height:1rem">
             <span style="color: #666666;font-size: 0.3rem;margin-left: 0.3rem;font-weight: 600">数量：</span>
-            <p class="item-note" style="margin-right: 0.4rem">
+            <p class="item-note" style="margin-right: 0.4rem;margin-top: -5px">
                 <ion class="ion ion-ios-minus-outline" style="font-size:25px;margin-right: 0.1rem" ng-click="minusProductNum()" class="grey"></ion>
                 <span style="font-size:0.4rem">{{param.productNum}}</span>
                 <ion class="ion ion-ios-plus-outline" style="font-size:25px;margin-left: 0.1rem" ng-click="addProductNum()"></ion>
