@@ -121,7 +121,7 @@ public class ArchivesController {
      * @param shopUserArchivesDTO
      * @return
      */
-    @RequestMapping(value = "/updateArchiveInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateArchiveInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<String> updateArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
@@ -137,9 +137,9 @@ public class ArchivesController {
      * @param archivesId
      * @return
      */
-    @RequestMapping(value = "/deleteArchiveInfo/{archivesId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteArchiveInfo", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<String> deleteArchiveInfo(@PathVariable String archivesId) {
+    ResponseDTO<String> deleteArchiveInfo(@RequestParam String archivesId) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         shopCustomerArchivesServcie.deleteShopUserArchivesInfo(archivesId);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
