@@ -1,16 +1,12 @@
 package com.wisdom.beauty.api.enums;
 
-/**
- * ClassName: ConsumeTypeEnum
- *
- * @Author： huan
- * @Description:
- * @Date:Created in 2018/4/8 19:09
- * @since JDK 1.8
- */
 public enum ConsumeTypeEnum {
-    CONSUME("4", "consumeRecord"),
-    CASHIER("5", "cashierRecord");
+    //0：充值  1：消费 2、还欠款 3、退款 4、划卡
+    RECHARGE("0", "充值"),
+    CONSUME("1", "消费"),
+    ARREARS("2", "还欠款"),
+    REFUND("3", "退款"),
+    PUNCH_CARD("4", "划卡"),;
 
     ConsumeTypeEnum(String code, String desc) {
         this.code = code;
