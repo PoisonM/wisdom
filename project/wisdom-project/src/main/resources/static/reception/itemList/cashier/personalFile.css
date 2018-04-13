@@ -279,7 +279,7 @@
     width: 166px;
     height: 95px;
     border-radius: 10px;
-    margin: 22px 0 0 36px;
+    margin: 22px 0 13px 36px;
 }
 
 .personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardName {
@@ -287,4 +287,27 @@
     font-size: 16px;
     color: #333333;
     letter-spacing: 0.4px;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardNote {
+    background: #FAFAFA;
+    border-radius: 0 0 4px 4px;
+    height: 34px;
+    line-height: 34px;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardNote span:first-of-type {
+    opacity: 0.66;
+    font-family: PingFangSC-Regular;
+    font-size: 11px;
+    color: #333333;
+    letter-spacing: 0;
+    margin-left: 14px;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardNote span:last-of-type {
+    font-family: PingFangSC-Regular;
+    font-size: 11px;
+    color: #999999;
+    letter-spacing: 0.77px;
 }
