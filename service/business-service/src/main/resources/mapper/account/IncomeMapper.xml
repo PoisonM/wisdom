@@ -9,7 +9,7 @@
         <result column="next_user_id" property="nextUserId" jdbcType="VARCHAR" />
         <result column="next_user_type" property="nextUserType" jdbcType="VARCHAR" />
         <result column="amount" property="amount" jdbcType="REAL" />
-        <result column="transaction_amount" property="transaction_amount" jdbcType="REAL" />
+        <result column="transaction_amount" property="transactionAmount" jdbcType="REAL" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="income_type" property="incomeType" jdbcType="VARCHAR" />

@@ -8,6 +8,7 @@ import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -51,7 +52,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         // 分页
         criteria.setLimitStart(pageParamVoDTO.getPageNo());
         criteria.setPageSize(pageParamVoDTO.getPageSize());
-
+        if(StringUtils.isNotBlank(pageParamVoDTO.getStartTime())){
+            Date currentDate= DateUtils.parseDate(pageParamVoDTO.getStartTime());
+            c.andCreateDateBetween(currentDate,currentDate);
+        }
         c.andSysShopIdEqualTo(shopUserConsumeRecordDTO.getSysShopId());
          //根据是否有店员id，设置消费类型查询参数
         String sysClerkId=shopUserConsumeRecordDTO.getSysClerkId();

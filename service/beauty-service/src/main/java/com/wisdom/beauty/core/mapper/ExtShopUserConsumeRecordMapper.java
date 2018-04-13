@@ -10,4 +10,5 @@ import java.math.BigDecimal;
 @Repository
 public interface ExtShopUserConsumeRecordMapper extends ShopUserConsumeRecordMapper {
     BigDecimal selectSumPriceByCriteria(ShopUserConsumeRecordCriteria shopUserConsumeRecordCriteria);
+    Integer selectUserConsumeNumber(ShopUserConsumeRecordCriteria shopUserConsumeRecordCriteria);
 }

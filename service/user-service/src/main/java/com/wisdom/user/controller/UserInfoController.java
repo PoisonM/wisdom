@@ -8,15 +8,18 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
+import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.user.interceptor.LoginRequired;
+import com.wisdom.user.service.RealNameAuthService;
 import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -29,6 +32,9 @@ public class UserInfoController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Resource
+    private RealNameAuthService realNameAuthService;
 
     /**
      * 获取用户头像和手机号
@@ -166,5 +172,18 @@ public class UserInfoController {
         responseDTO.setResponseData(page);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
+    }
+
+    /**
+     * 用户实名认证接口
+     *
+     * @param cardNo
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "/queryRealNameAuthentication", method = RequestMethod.GET)
+    @ResponseBody
+    RealNameInfoDTO queryRealNameAuthentication(@RequestParam(value = "cardNo") String cardNo, @RequestParam(value = "name") String name) {
+        return realNameAuthService.getRealNameInfoDTO(cardNo, name);
     }
 }

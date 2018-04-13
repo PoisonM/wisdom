@@ -14,6 +14,12 @@ public class SpecialShopInfoDTO {
     @JSONField(name = "shopName")
     private String shopName;
 
+    @JSONField(name = "shopURL")
+    private String shopURL;
+
+    @JSONField(name = "shopQRCode")
+    private String shopQRCode;
+
     public String getShopId() {
         return shopId;
     }
@@ -28,5 +34,21 @@ public class SpecialShopInfoDTO {
 
     public void setShopName(String shopName) {
         this.shopName = shopName;
+    }
+
+    public String getShopURL() {
+        return shopURL;
+    }
+
+    public void setShopURL(String shopURL) {
+        this.shopURL = shopURL;
+    }
+
+    public String getShopQRCode() {
+        return shopQRCode;
+    }
+
+    public void setShopQRCode(String shopQRCode) {
+        this.shopQRCode = shopQRCode;
     }
 }

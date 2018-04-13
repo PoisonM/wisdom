@@ -4,6 +4,7 @@ var loginttoken = window.localStorage.getItem("logintoken");
 var buyOrderAddressId = window.localStorage.getItem("buyOrderAddressId");
 var orderIds = [];
 var trainingProductId = "";
+var specialProductPayFlag = false;
 
 var GetQueryString = function(name)
 {
@@ -18,6 +19,7 @@ var orderPayInit = function(){
     var nonceStr;//随机字符串
     var signature;//得到的签名
     var appid;//得到的签名
+
     $.ajax({
         url:"/weixin/customer/getConfig",// 跳转到 action
         async:true,
@@ -344,92 +346,100 @@ var confirmPay = function(){
         }
         else if(productType=='offline'||productType=='special')
         {
-            console.log(orderIds);
-            //如果是微商城商品，则给订单补充上地址ID
-            $.ajax({
-                url:"/business/transaction/updateBusinessOrderAddress",// 跳转到 action
-                beforeSend: function(request) {
-                    request.setRequestHeader("logintoken", loginttoken);
-                },
-                async:true,
-                type:'get',
-                data:{orderIds:orderIds,orderAddressId:receiveOrderAddressId},
-                cache:false,
-                success:function(data) {
-                    if(data.result=="0x00001"){
-                        $.ajax({
-                            url:"/business/transaction/pay/"+productType,// 跳转到 action
-                            beforeSend: function(request) {
-                                request.setRequestHeader("logintoken", loginttoken);
-                            },
-                            async:true,
-                            type:'get',
-                            data:'',
-                            cache:false,
-                            success:function(data) {
-                                $('#payButton').removeAttr("disabled");
-                                if(data.result=="0x00001")
-                                {
-                                    var payResult = data.responseData;
-                                    if(payResult.agent < 5){
-                                        alert("您的微信版本低于5.0无法使用微信支付");
-                                        return;
-                                    }
-                                    else if(payResult.agent == 6)
-                                    {
-                                        alert("支付失败,请重新支付");
-                                        return;
-                                    }else if(payResult.agent == 7)
-                                    {
-                                        alert("该订单已支付,请到我的预约中进行查看");
-                                        return;
-                                    }
-
-                                    wx.chooseWXPay({
-                                        appId:payResult.appId,
-                                        timestamp:payResult.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                                        nonceStr:payResult.nonceStr,  // 支付签名随机串，不长于 32 位
-                                        package:payResult.packageData,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-                                        signType:payResult.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                                        paySign:payResult.paySign,  // 支付签名
-                                        success: function (res) {
-                                            if(res.errMsg == "chooseWXPay:ok" ) {
-                                                //支付成功后， 跳转到支付成功页
-                                                if(productType=='offline'||productType=='special')
-                                                {
-                                                    window.location.href = "#/paySuccess";
-                                                }else if(productType=='trainingProduct')
-                                                {
-                                                    window.location.href = "#/trainingProductLearning/"+trainingProductId;
-                                                }
-                                            }else{
-                                                alert("支付失败,请重新支付")
-                                            }
-                                        },
-                                        fail: function (res) {
-                                            alert(res.errMsg)
-                                        }
-                                    });
-
-                                }
-                                else
-                                {
-                                    alert("支付失败，请重新支付");
-                                }
-                            },
-                            error : function() {
-                            }
-                        });
-                    }
-                },
-                error : function() {
-                }
-            });
-
+            if(productType=='special')
+            {
+                $("#specialProductInfo").show();
+            }
+            else
+            {
+                processPay();
+            }
         }
     }
 };
 
+var processPay = function(){
+    //如果是微商城商品，则给订单补充上地址ID
+    $.ajax({
+        url:"/business/transaction/updateBusinessOrderAddress",// 跳转到 action
+        beforeSend: function(request) {
+            request.setRequestHeader("logintoken", loginttoken);
+        },
+        async:true,
+        type:'get',
+        data:{orderIds:orderIds,orderAddressId:receiveOrderAddressId},
+        cache:false,
+        success:function(data) {
+            if(data.result=="0x00001"){
+                $.ajax({
+                    url:"/business/transaction/pay/"+productType,// 跳转到 action
+                    beforeSend: function(request) {
+                        request.setRequestHeader("logintoken", loginttoken);
+                    },
+                    async:true,
+                    type:'get',
+                    data:'',
+                    cache:false,
+                    success:function(data) {
+                        $('#payButton').removeAttr("disabled");
+                        if(data.result=="0x00001")
+                        {
+                            var payResult = data.responseData;
+                            if(payResult.agent < 5){
+                                alert("您的微信版本低于5.0无法使用微信支付");
+                                return;
+                            }
+                            else if(payResult.agent == 6)
+                            {
+                                alert("支付失败,请重新支付");
+                                return;
+                            }else if(payResult.agent == 7)
+                            {
+                                alert("该订单已支付,请到我的预约中进行查看");
+                                return;
+                            }
+
+                            wx.chooseWXPay({
+                                appId:payResult.appId,
+                                timestamp:payResult.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                                nonceStr:payResult.nonceStr,  // 支付签名随机串，不长于 32 位
+                                package:payResult.packageData,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                                signType:payResult.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                                paySign:payResult.paySign,  // 支付签名
+                                success: function (res) {
+                                    if(res.errMsg == "chooseWXPay:ok" ) {
+                                        //支付成功后， 跳转到支付成功页
+                                        if(productType=='offline'||productType=='special')
+                                        {
+                                            window.location.href = "#/paySuccess";
+                                        }else if(productType=='trainingProduct')
+                                        {
+                                            window.location.href = "#/trainingProductLearning/"+trainingProductId;
+                                        }
+                                    }else{
+                                        alert("支付失败,请重新支付")
+                                    }
+                                },
+                                fail: function (res) {
+                                    alert(res.errMsg)
+                                }
+                            });
+
+                        }
+                        else
+                        {
+                            alert("支付失败，请重新支付");
+                        }
+                    },
+                    error : function() {
+                    }
+                });
+            }
+        },
+        error : function() {
+        }
+    });
+}
 
 var url=window.location.search;
 $(document).ready(function(){
@@ -438,6 +448,7 @@ $(document).ready(function(){
         $("input[type='checkbox']").prop("checked",true);
     }
 });
+
 //点击复选框跳转页面
 var check=function(){
    if($("#checkbox-id").prop("checked")){
@@ -447,4 +458,24 @@ var check=function(){
 
 var addressManagement = function(){
     window.location.href = "#/addressManagement/orderPay.do";
+}
+
+var confirmUserInfo = function(){
+    $.ajax({
+        url:"/user/customer/queryRealNameAuthentication",// 跳转到 action
+        beforeSend: function(request) {
+            request.setRequestHeader("logintoken", loginttoken);
+        },
+        async:true,
+        type:'get',
+        data:{cardNo:$('#userIdentifyNum').val(),name:$('#userName').val()},
+        cache:false,
+        success:function(data) {
+            console.log(data);
+        }
+    })
+}
+
+var cancelUserInfo = function(){
+    $('#specialProductInfo').hide();
 }

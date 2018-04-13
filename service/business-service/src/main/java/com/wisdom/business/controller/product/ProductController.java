@@ -209,7 +209,6 @@ public class ProductController {
 			e.printStackTrace();
 			responseDTO.setErrorInfo("更新用户收货地址失败");
 			responseDTO.setResult(StatusConstant.FAILURE);
-			//CodeGenUtil.getProductCodeNumber();
 		}
 		return responseDTO;
 	}
@@ -235,10 +234,10 @@ public class ProductController {
 			}
 			productDTO.getProductDetail().setProductId(productDTO.getProductId());
 			productService.addOfflineProduct(productDTO);
-			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 
 		return responseDTO;
@@ -257,10 +256,10 @@ public class ProductController {
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		try {
 			productService.putAwayProductById(id);
-			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 		return responseDTO;
 	}
@@ -278,16 +277,15 @@ public class ProductController {
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		try {
 			productService.delProductById(id);
-			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 		return responseDTO;
 	}
 
 	@RequestMapping(value = "getSpecialShopInfo", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO getSpecialShopInfo(@RequestParam String specialShopId) {
@@ -296,10 +294,10 @@ public class ProductController {
 			Query query = new Query(Criteria.where("shopId").is(specialShopId));
 			SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
 			responseDTO.setResponseData(specialShopInfoDTO);
-			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 		return responseDTO;
 	}

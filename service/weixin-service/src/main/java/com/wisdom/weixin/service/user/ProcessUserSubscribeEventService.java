@@ -83,7 +83,7 @@ public class ProcessUserSubscribeEventService {
 
             //判断用户是否是扫码微商用户的二维码关注，
             String businessParentPhone = "";
-            if(StringUtils.isNotNull(xmlEntity.getEventKey())){
+            if(StringUtils.isNotNull(xmlEntity.getEventKey())&&xmlEntity.getEventKey().indexOf("mxbusinessshare_")!=-1){
                 businessParentPhone = xmlEntity.getEventKey().replace("mxbusinessshare_", "");
                 String codeArray[] = businessParentPhone.split("_");
                 businessParentPhone = codeArray[1];
@@ -223,7 +223,7 @@ public class ProcessUserSubscribeEventService {
                 article.setTitle("嗨!您终于来啦! ~\n");
                 article.setDescription(
                         "请点击我进入"+specialShopInfoDTO.getShopName()+"吧");
-                article.setPicUrl("");
+                article.setPicUrl(specialShopInfoDTO.getShopURL());
                 article.setUrl(ConfigConstant.SPECIAL_SHOP_URL+specialShopInfoDTO.getShopId());
                 articleList.add(article);
                 WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);

@@ -110,5 +110,21 @@
             limit ${limitStart},${pageSize}
         </if>
     </select>
+    <select id="selectUserConsumeNumber" resultType="java.lang.Integer"
+            parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria">
+        select
+        COUNT(DISTINCT record.`flow_no`)
+        <include refid="Base_Column_List"/>
+        from shop_user_consume_record record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart >= 0">
+            limit ${limitStart},${pageSize}
+        </if>
+    </select>
 
 </mapper>
