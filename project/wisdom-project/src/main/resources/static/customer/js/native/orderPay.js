@@ -4,7 +4,7 @@ var loginttoken = window.localStorage.getItem("logintoken");
 var buyOrderAddressId = window.localStorage.getItem("buyOrderAddressId");
 var orderIds = [];
 var trainingProductId = "";
-var specialProductPayFlag = false;
+var specialShopId = "";
 
 var GetQueryString = function(name)
 {
@@ -61,6 +61,7 @@ var orderPayInit = function(){
     });
 
     productType = GetQueryString("productType");
+    specialShopId = GetQueryString("specialShopId");
 
     if(productType=='offline'||productType=='special')
     {
@@ -468,10 +469,18 @@ var confirmUserInfo = function(){
         },
         async:true,
         type:'get',
-        data:{cardNo:$('#userIdentifyNum').val(),name:$('#userName').val()},
+        data:{cardNo:$('#userIdentifyNum').val(),name:$('#userName').val(),orderIds:orderIds,specialShopId:specialShopId},
         cache:false,
         success:function(data) {
-            console.log(data);
+            if($('#userName').val()==data.name&&data.result=='匹配')
+            {
+                $('#specialProductInfo').hide();
+                processPay();
+            }
+            else
+            {
+                alert("跨境商品收货人的身份证号和姓名不匹配，请重新输入");
+            }
         }
     })
 }

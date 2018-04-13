@@ -24,7 +24,10 @@ public class OrderPayController {
      *
      */
     @RequestMapping(value = "customer/orderPay.do", method = {RequestMethod.POST, RequestMethod.GET})
-    public String wxPay(@RequestParam String productType, @RequestParam(required=false) String productId, Model model) {
+    public String wxPay(@RequestParam String productType,
+                        @RequestParam(required=false) String productId,
+                        @RequestParam(required=false) String specialShopId,
+                        Model model) {
 
         if(productType.equals("offline")){
             model.addAttribute("productType", productType);
@@ -32,6 +35,7 @@ public class OrderPayController {
         }
         if(productType.equals("special")){
             model.addAttribute("productType", productType);
+            model.addAttribute("specialShopId", specialShopId);
             return "native/orderPay";
         }
         else if(productType.equals("trainingProduct"))

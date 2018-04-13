@@ -23,17 +23,11 @@ public class SpecialShopBusinessOrderDTO {
     @JSONField(name = "userPhone")
     private String userPhone;
 
-    @JSONField(name = "businessOrderId")
-    private String businessOrderId;
+    @JSONField(name = "orderId")
+    private String orderId;
 
-    @JSONField(name = "transactionId")
-    private String transactionId;
-
-    @JSONField(name = "productName")
-    private String productName;
-
-    @JSONField(name = "productNum")
-    private int productNum;
+    @JSONField(name = "createDate")
+    private Date createDate;
 
     public String getShopId() {
         return shopId;
@@ -75,35 +69,19 @@ public class SpecialShopBusinessOrderDTO {
         this.userPhone = userPhone;
     }
 
-    public String getBusinessOrderId() {
-        return businessOrderId;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setBusinessOrderId(String businessOrderId) {
-        this.businessOrderId = businessOrderId;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public String getTransactionId() {
-        return transactionId;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public int getProductNum() {
-        return productNum;
-    }
-
-    public void setProductNum(int productNum) {
-        this.productNum = productNum;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }
