@@ -45,7 +45,6 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 
         if (StringUtils.isBlank(shopId) || null == startDate || null == endDate) {
             logger.error("查询美容店某个时间段的耗卡金额传入参数为空，{}", "shopId = [" + shopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
-            ;
             return null;
         }
 

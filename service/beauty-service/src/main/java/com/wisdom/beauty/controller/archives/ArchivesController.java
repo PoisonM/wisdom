@@ -2,12 +2,19 @@ package com.wisdom.beauty.controller.archives;
 
 
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
+import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesServcie;
 import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.IdGen;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +33,17 @@ import java.util.Map;
  */
 @Controller
 public class ArchivesController {
+
     @Autowired
     private ShopCustomerArchivesServcie shopCustomerArchivesServcie;
+
     @Autowired
     private SysUserAccountService sysUserAccountService;
+
+    @Autowired
+    private UserServiceClient userServiceClient;
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     /**
@@ -63,6 +77,40 @@ public class ArchivesController {
 
         ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(map);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
+
+    /**
+     * 用户档案接口
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    @RequestMapping(value = "/saveArchiveInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
+
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        shopUserArchivesDTO.setId(IdGen.uuid());
+        //查询用户
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setMobile(shopUserArchivesDTO.getPhone());
+        List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+
+        logger.debug("保存用户档案接口，查询的用户信息为，{}", "userInfoDTOS = [" + userInfoDTOS + "]");
+
+        if (CommonUtils.objectIsEmpty(userInfoDTOS)) {
+            responseDTO.setResponseData(BusinessErrorCode.NULL_PROPERTIES.getCode());
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        userInfoDTO = userInfoDTOS.get(0);
+        shopUserArchivesDTO.setSysUserId(userInfoDTO.getId());
+        shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
+        shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
+        shopCustomerArchivesServcie.saveShopUserArchivesInfo(shopUserArchivesDTO);
+        responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
