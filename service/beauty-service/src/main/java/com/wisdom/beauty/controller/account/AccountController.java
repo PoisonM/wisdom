@@ -37,9 +37,9 @@ public class AccountController {
      * @Description: 获取用户在美容院的账户信息
      * @Date:2018/4/8
      */
-    @RequestMapping(value = "/archives/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/findShopUserInfo/{userId}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<CustomerAccountResponseDto> findArchive(@PathVariable String userId) {
+    ResponseDTO<CustomerAccountResponseDto> findShopUserInfo(@PathVariable String userId) {
         long startTime = System.currentTimeMillis();
         ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
         CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
