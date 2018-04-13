@@ -16,7 +16,7 @@ public class ProcessUserViewEventService {
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
-    public void processEvent(ReceiveXmlEntity xmlEntity)
+    public void processUserClickViewEvent(ReceiveXmlEntity xmlEntity)
     {
         //开启线程，将用户的openId存入session和cookie中
         Runnable processViewThread = new ProcessViewThread(xmlEntity);

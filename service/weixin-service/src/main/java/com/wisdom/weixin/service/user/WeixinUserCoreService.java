@@ -29,7 +29,7 @@ import java.util.Date;
 public class WeixinUserCoreService {
 
     @Autowired
-    ProcessUserViewEventService processUserClickViewEvent;
+    ProcessUserViewEventService processUserClickViewEventService;
 
     @Autowired
     ProcessUserScanEventService processUserScanEventService;
@@ -59,27 +59,27 @@ public class WeixinUserCoreService {
             if(eventType.equals(MessageUtil.SCAN))
             {
                 //已关注公众号的情况下扫描
-                processUserScanEventService.processEvent(xmlEntity);
+                processUserScanEventService.processUserScanEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE))
             {
                 //扫描关注公众号或者搜索关注公众号都在其中
-                processUserSubscribeEventService.processSubscribeEvent(xmlEntity);
+                processUserSubscribeEventService.processUserSubscribeEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE))
             {
                 // 取消订阅
-                processUserSubscribeEventService.processUnSubscribeEvent(xmlEntity);
+                processUserSubscribeEventService.processUserUnSubscribeEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK))
             {
                 // 自定义菜单点击事件
-                respMessage = processUserClickEventService.processEvent(xmlEntity,request,response);
+                respMessage = processUserClickEventService.processUserClickEvent(xmlEntity,request,response);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_VIEW))
             {
                 //点击带URL菜单事件
-                processUserClickViewEvent.processEvent(xmlEntity);
+                processUserClickViewEventService.processUserClickViewEvent(xmlEntity);
             }
         }
         else

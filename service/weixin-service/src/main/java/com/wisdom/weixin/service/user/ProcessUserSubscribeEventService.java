@@ -50,7 +50,7 @@ public class ProcessUserSubscribeEventService {
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
     //处理用户关注公众号事件
-    public void processSubscribeEvent(ReceiveXmlEntity xmlEntity)
+    public void processUserSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
@@ -245,7 +245,7 @@ public class ProcessUserSubscribeEventService {
     }
 
     //处理用户取消关注公众号事件
-    public void processUnSubscribeEvent(ReceiveXmlEntity xmlEntity)
+    public void processUserUnSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
         //开启线程，处理用户的取消关注事件
         Runnable processUnSubscribeThread = new ProcessUnSubscribeThread(xmlEntity);

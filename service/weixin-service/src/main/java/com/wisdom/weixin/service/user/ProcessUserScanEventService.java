@@ -31,7 +31,7 @@ public class ProcessUserScanEventService {
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
-    public void processEvent(ReceiveXmlEntity xmlEntity)
+    public void processUserScanEvent(ReceiveXmlEntity xmlEntity)
     {
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
