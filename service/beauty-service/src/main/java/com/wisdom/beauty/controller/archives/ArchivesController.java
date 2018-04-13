@@ -157,13 +157,14 @@ public class ArchivesController {
     @RequestMapping(value = "/archives/{userId}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<CustomerAccountResponseDto> findArchive(@PathVariable String userId) {
-
+        long startTime = System.currentTimeMillis();
         ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
         CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
         if(customerAccountResponseDto!=null){
             responseDTO.setResponseData(customerAccountResponseDto);
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("findArchive方法耗时{}毫秒",(System.currentTimeMillis()-startTime));
         return responseDTO;
     }
 
