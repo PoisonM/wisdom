@@ -104,12 +104,13 @@ public class UserConsumeController {
     @RequestMapping(value = "/consume/{consumeFlowNo}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetail(@PathVariable String consumeFlowNo) {
+        long startTime = System.currentTimeMillis();
 
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecord(consumeFlowNo);
-
         ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
+        logger.info("findUserConsumeDetail方法耗时{}毫秒",(System.currentTimeMillis()-startTime));
         return responseDTO;
     }
 

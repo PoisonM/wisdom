@@ -113,7 +113,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
             userConsumeRecordResponseDTO.setSysShopName(userConsumeRecord.getSysShopName());
             userConsumeRecordResponseDTO.setType(userConsumeRecord.getConsumeType());
         }
-        userConsumeRecordResponseDTO.setShopUserConsumeRecordList(list);
+        userConsumeRecordResponseDTO.setUserConsumeRecordList(list);
         return userConsumeRecordResponseDTO;
     }
 

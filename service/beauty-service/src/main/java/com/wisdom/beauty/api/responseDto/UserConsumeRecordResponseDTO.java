@@ -30,7 +30,7 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     private String sysShopName;
     //类型
     private String type;
-    private List<ShopUserConsumeRecordDTO> shopUserConsumeRecordList;
+    private List<ShopUserConsumeRecordDTO> userConsumeRecordList;
 
 
     public Date getCreateDate() {
@@ -89,11 +89,11 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
         this.sumAmount = sumAmount;
     }
 
-    public List<ShopUserConsumeRecordDTO> getShopUserConsumeRecordList() {
-        return shopUserConsumeRecordList;
+    public List<ShopUserConsumeRecordDTO> getUserConsumeRecordList() {
+        return userConsumeRecordList;
     }
 
-    public void setShopUserConsumeRecordList(List<ShopUserConsumeRecordDTO> shopUserConsumeRecordList) {
-        this.shopUserConsumeRecordList = shopUserConsumeRecordList;
+    public void setUserConsumeRecordList(List<ShopUserConsumeRecordDTO> userConsumeRecordList) {
+        this.userConsumeRecordList = userConsumeRecordList;
     }
 }
