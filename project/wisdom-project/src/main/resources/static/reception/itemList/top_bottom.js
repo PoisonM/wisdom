@@ -37,6 +37,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
                 rightFlag:true
             },
         },
+
         //考勤头部开关
 
         //价目表头部开关
