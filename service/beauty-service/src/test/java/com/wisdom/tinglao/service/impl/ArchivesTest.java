@@ -60,22 +60,66 @@ public class ArchivesTest {
     }
 
     /**
-     * post请求
+     * 保存档案信息
      *
      * @throws Exception
      */
     @Test
     public void testSaveArchiveInfo() throws Exception {
 
+        ShopUserArchivesDTO shopUserArchivesDTO = getShopUserArchivesDTO();
+
+        String toJSONString = JSONObject.toJSONString(shopUserArchivesDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/archives/saveArchiveInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+
+    }
+
+    /**
+     * 修改档案信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testUpdateArchiveInfo() throws Exception {
+
+        ShopUserArchivesDTO shopUserArchivesDTO = getShopUserArchivesDTO();
+
+        String toJSONString = JSONObject.toJSONString(shopUserArchivesDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/archives/updateArchiveInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+
+    }
+
+    /**
+     * 构建getShopUserArchivesDTO
+     *
+     * @return
+     */
+    private ShopUserArchivesDTO getShopUserArchivesDTO() {
         String uuid = IdGen.uuid();
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-        shopUserArchivesDTO.setId(uuid);
+        shopUserArchivesDTO.setId("02bb6e2d8d0e44c5abd8690266bdc1a8");
         shopUserArchivesDTO.setPhone("18810142926");
         shopUserArchivesDTO.setSysShopId(uuid);
         shopUserArchivesDTO.setAge(12);
         shopUserArchivesDTO.setBirthday("1990-02-17");
         shopUserArchivesDTO.setBloodType("A");
-        shopUserArchivesDTO.setChannel("大众点评");
+        shopUserArchivesDTO.setChannel("美团网");
         shopUserArchivesDTO.setConstellation("狮子座");
         shopUserArchivesDTO.setDetail("这是个好用户");
         shopUserArchivesDTO.setWeight(41.1f);
@@ -84,19 +128,8 @@ public class ArchivesTest {
         shopUserArchivesDTO.setSysClerkId(uuid);
         shopUserArchivesDTO.setSex("男");
         shopUserArchivesDTO.setImageRul("www.baidu.com");
-
-        String toJSONString = JSONObject.toJSONString(shopUserArchivesDTO);
-
-        System.out.println(toJSONString);
-
-        MvcResult result = mvc.perform(post("/saveArchiveInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
-                .andExpect(status().isOk())// 模拟向testRest发送get请求
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
-                .andReturn();// 返回执行请求的结果
-
-        System.out.println(result.getResponse().getContentAsString());
-
-        System.out.println(result.getResponse().getContentAsString());
+        shopUserArchivesDTO.setHeight(179f);
+        return shopUserArchivesDTO;
     }
 
 

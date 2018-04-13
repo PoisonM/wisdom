@@ -3,13 +3,13 @@
  */
 package com.wisdom.user.controller;
 
+import com.wisdom.common.constant.RealNameResultEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -23,7 +23,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -202,7 +201,7 @@ public class UserInfoController {
 
         RealNameInfoDTO realNameInfoDTO = realNameAuthService.getRealNameInfoDTO(cardNo, name);
 
-        if(realNameInfoDTO.getResult().equals("匹配"))
+        if (RealNameResultEnum.MATCHING.getCode().equals(realNameInfoDTO.getCode()))
         {
             String orderId = orderIds.get(0);
             UserInfoDTO userInfoDTO = userInfoService.getUserInfoFromRedis();

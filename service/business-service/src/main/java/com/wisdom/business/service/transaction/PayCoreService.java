@@ -113,6 +113,11 @@ public class PayCoreService {
 
                 float expenseMoney = calculateUserExpenseMoney(instanceReturnMoneySignalDTO);
 
+                if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1))
+                {
+                    payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
+                }
+
                 handleUserLevelPromotion(userInfoDTO,expenseMoney);
 
                 handleUserLevelPromotionInSpecialActivity(userInfoDTO,expenseMoney,instanceReturnMoneySignalDTO);
@@ -128,7 +133,6 @@ public class PayCoreService {
             catch (Exception e)
             {
                 e.printStackTrace();
-                throw e;
             }
         }
     }

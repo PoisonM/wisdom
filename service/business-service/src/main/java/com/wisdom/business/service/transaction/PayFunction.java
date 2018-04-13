@@ -350,7 +350,7 @@ public class PayFunction {
         }
     }
 
-    private void recordMonthTransaction(String userId, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO, float amount,String parentRelation) throws UnsupportedEncodingException {
+    public void recordMonthTransaction(String userId, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO, float amount,String parentRelation) throws UnsupportedEncodingException {
 
         MonthTransactionRecordDTO monthTransactionRecordDTO = new MonthTransactionRecordDTO();
         monthTransactionRecordDTO.setId(UUID.randomUUID().toString());

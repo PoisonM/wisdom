@@ -26,7 +26,7 @@
 .dayAppointment .header .scheduling span { float: right; margin-right: 0.3125rem; font-size: 0.26563rem; color: #ffffff; }
 .dayAppointment .header .scheduling:after, .dayAppointment .header .timeArea:after { display: block; clear: both; content: ''; }
 .dayAppointment .nameLis ul:after { content: ''; display: block; clear: both; }
-.dayAppointment .nameLis { width: 100%; height: 0.97rem; }
+.dayAppointment .nameLis { width: 100%; height: 0.97rem;position: absolute; }
 .dayAppointment .nameLis img { display: inline-block; width: 0.25rem; height: 0.25rem; vertical-align: middle; }
 .dayAppointment .nameLis .seg { width: 0.01563rem; height: 0.23438rem; }
 /*.dayAppointment .nameLis ul { display: flex; }*/
@@ -76,4 +76,4 @@
 .H100{height:100%;}
 .overXHiddden{overflow-x: hidden;}
 .nowarp {display: flex;flex-wrap: nowrap}
-.pt04{padding-top:0.2rem;}
+.pt117rem{padding-top:1.17rem;}
