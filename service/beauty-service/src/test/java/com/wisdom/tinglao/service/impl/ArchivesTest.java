@@ -1,7 +1,9 @@
 package com.wisdom.tinglao.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
-import net.minidev.json.JSONObject;
+import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.common.util.IdGen;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,9 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,19 +43,11 @@ public class ArchivesTest {
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
-    @Test
-    public void testQ1() throws Exception {
-        Map<String, Object> map = new HashMap<>();
-        map.put("address", "合肥");
-
-        MvcResult result = mvc.perform(post("/q1?address=合肥").content(JSONObject.toJSONString(map)))
-                .andExpect(status().isOk())// 模拟向testRest发送get请求
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
-                .andReturn();// 返回执行请求的结果
-
-        System.out.println(result.getResponse().getContentAsString());
-    }
-
+    /**
+     * get请求
+     *
+     * @throws Exception
+     */
     @Test
     public void testDeleteArchiveInfo() throws Exception {
 
@@ -64,6 +55,46 @@ public class ArchivesTest {
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    /**
+     * post请求
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSaveArchiveInfo() throws Exception {
+
+        String uuid = IdGen.uuid();
+        ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setId(uuid);
+        shopUserArchivesDTO.setPhone("18810142926");
+        shopUserArchivesDTO.setSysShopId(uuid);
+        shopUserArchivesDTO.setAge(12);
+        shopUserArchivesDTO.setBirthday("1990-02-17");
+        shopUserArchivesDTO.setBloodType("A");
+        shopUserArchivesDTO.setChannel("大众点评");
+        shopUserArchivesDTO.setConstellation("狮子座");
+        shopUserArchivesDTO.setDetail("这是个好用户");
+        shopUserArchivesDTO.setWeight(41.1f);
+        shopUserArchivesDTO.setSysShopName("汉方美容院");
+        shopUserArchivesDTO.setSysClerkName("小王");
+        shopUserArchivesDTO.setSysClerkId(uuid);
+        shopUserArchivesDTO.setSex("男");
+        shopUserArchivesDTO.setImageRul("www.baidu.com");
+
+        String toJSONString = JSONObject.toJSONString(shopUserArchivesDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/saveArchiveInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
 
         System.out.println(result.getResponse().getContentAsString());
     }
