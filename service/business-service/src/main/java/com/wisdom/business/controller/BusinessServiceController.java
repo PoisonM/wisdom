@@ -139,6 +139,12 @@ public class BusinessServiceController {
 		return transactionMapper.getBusinessOrderByOrderId(orderId);
 	};
 
+	@RequestMapping(value = "/queryOrderDetailsById",method=RequestMethod.GET)
+	@ResponseBody
+	BusinessOrderDTO queryOrderDetailsById(@RequestParam String orderId){
+		return transactionMapper.queryOrderDetailsById(orderId);
+	};
+
 	@RequestMapping(value = "/updateIncomeInfo",method=RequestMethod.POST)
 	@ResponseBody
 	void updateIncomeInfo(@RequestBody IncomeRecordDTO incomeRecord){

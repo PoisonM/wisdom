@@ -127,7 +127,16 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                         $scope.showFlag(false);
                                         $scope.param.checkFlag = ""
                                         $scope.param.productNum = 1
-                                        window.location.href = "orderPay.do?productType=" + $scope.param.product.type + "&random="+Math.random();
+                                        if($scope.param.product.type=='offline')
+                                        {
+                                            window.location.href = "orderPay.do?productType=" + $scope.param.product.type + "&random="+Math.random();
+                                        }
+                                        else if($scope.param.product.type=='special')
+                                        {
+                                            window.location.href = "orderPay.do?productType=" + $scope.param.product.type
+                                                + "&specialShopId=" + $rootScope.specialShopId
+                                                + "&random="+Math.random();
+                                        }
                                     }
                                 })
                             }

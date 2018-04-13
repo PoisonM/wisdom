@@ -1,10 +1,9 @@
 package com.wisdom.user.client;
 
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
+import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,5 +12,11 @@ public interface BusinessServiceClient {
 
     @RequestMapping(value = "/getUserBusinessType",method= RequestMethod.POST)
     List<UserBusinessTypeDTO> getUserBusinessType(@RequestBody UserBusinessTypeDTO userBusinessTypeDTO);
+
+    @RequestMapping(value = "/getBusinessOrderByOrderId",method=RequestMethod.GET)
+    BusinessOrderDTO getBusinessOrderByOrderId(@RequestParam(value="orderId") String orderId);
+
+    @RequestMapping(value = "/queryOrderDetailsById",method=RequestMethod.GET)
+    BusinessOrderDTO queryOrderDetailsById(@RequestParam(value="orderId") String orderId);
 
 }
