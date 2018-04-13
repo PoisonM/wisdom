@@ -14,6 +14,9 @@ public enum ConfigConstant {
 
 	public static final String SPECIAL_PRODUCT_BUY_NOTIFY_URL = "http://mx99test1.kpbeauty.com.cn/business/transaction/getSpecialProductPayNotifyInfo";
 
+	public static final String SPECIAL_SHOP_URL = "http://mx99test1.kpbeauty.com.cn/weixin/customer/fieldwork/author?url=" +
+			"http://mx99test1.kpbeauty.com.cn/weixin/customer/getCustomerWeixinMenuId?url=specialProductList88888888";
+
 	//redis中存储的登陆后的token的有效期，目前是30天
 	public static final int logintokenPeriod = 60*60*24*30;
 
@@ -23,7 +26,7 @@ public enum ConfigConstant {
 
 	public static final String businessA1 = "business-A-1";
 
-	public static final String promote_businessB1_ProductId_No1 = "201803121718100012";
+	public static final String promote_businessB1_ProductId_No1 = "88888888888";
 
 	public static final int livingPeriodYear = 365; //一年有效期,365天
 
@@ -63,6 +66,8 @@ public enum ConfigConstant {
 
 	public static final String SHARE_CODE_VALUE = "mxbusinessshare_";
 
+	public static final String SPECIAL_SHOP_VALUE = "mxForeignPurchase_";
+
 	public static final int AUTO_CONFIRM_RECEIVE_PRODUCT_DAY = 15;
 
 	public static final int AUTO_NOTIFY_PRODUCT_PAY = 3;
@@ -91,7 +96,7 @@ public enum ConfigConstant {
 
 	public static final String PARTNER_KEY = "FDSKLJjklsjJKLJKLjkl98908789kljl";
 
-	public static final String USER_OPEN_ID = "meixiang99MX_user_openid";
+	public static final String USER_OPEN_ID = "meixiang99MXtest_user_openid";
 
-	public static final String BOSS_OPEN_ID = "meixiang99MX_boss_openid";
+	public static final String BOSS_OPEN_ID = "meixiang99MXtest_boss_openid";
 }

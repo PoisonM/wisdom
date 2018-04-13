@@ -9,6 +9,6 @@ angular.module('controllers',[]).controller('shopActivityCtrl',
 
             $scope.goBuy = function()
             {
-                $state.go("offlineProductDetail",{productId:"201803121718100012"});
+                $state.go("offlineProductDetail",{productId:"88888888888"});
             }
         }])

@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR"/>
     <result column="shop_appointment_id" property="shopAppointmentId" jdbcType="VARCHAR"/>
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
+    <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
     <result column="use_style" property="useStyle" jdbcType="CHAR"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
     <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
@@ -14,6 +15,10 @@
     <result column="sys_shop_project_surplus_amount" property="sysShopProjectSurplusAmount" jdbcType="DECIMAL"/>
     <result column="sys_shop_project_surplus_times" property="sysShopProjectSurplusTimes" jdbcType="INTEGER"/>
     <result column="sys_shop_project_init_times" property="sysShopProjectInitTimes" jdbcType="INTEGER"/>
+    <result column="effective_date" property="effectiveDate" jdbcType="TIMESTAMP"/>
+    <result column="effective_days" property="effectiveDays" jdbcType="INTEGER"/>
+    <result column="invalid_days" property="invalidDays" jdbcType="INTEGER"/>
+    <result column="is_send" property="isSend" jdbcType="CHAR"/>
     <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
     <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
@@ -78,10 +83,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, shop_appointment_id, sys_user_id, use_style, sys_shop_id, sys_shop_name, sys_shop_project_id,
-    sys_shop_project_name, sys_shop_project_init_amount, sys_shop_project_surplus_amount, 
-    sys_shop_project_surplus_times, sys_shop_project_init_times, create_by, create_date, 
-    update_user, update_date
+    id, shop_appointment_id, sys_user_id, sys_clerk_id, use_style, sys_shop_id, sys_shop_name,
+    sys_shop_project_id, sys_shop_project_name, sys_shop_project_init_amount, sys_shop_project_surplus_amount,
+    sys_shop_project_surplus_times, sys_shop_project_init_times, effective_date, effective_days,
+    invalid_days, is_send, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopUserProjectRelationCriteria">
@@ -119,17 +124,20 @@
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO">
     insert into shop_user_project_relation (id, shop_appointment_id, sys_user_id,
-    use_style, sys_shop_id, sys_shop_name,
-    sys_shop_project_id, sys_shop_project_name, sys_shop_project_init_amount,
-    sys_shop_project_surplus_amount, sys_shop_project_surplus_times,
-    sys_shop_project_init_times, create_by, create_date,
+    sys_clerk_id, use_style, sys_shop_id,
+    sys_shop_name, sys_shop_project_id, sys_shop_project_name,
+    sys_shop_project_init_amount, sys_shop_project_surplus_amount,
+    sys_shop_project_surplus_times, sys_shop_project_init_times,
+    effective_date, effective_days, invalid_days,
+    is_send, create_by, create_date,
     update_user, update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopAppointmentId,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR},
-    #{useStyle,jdbcType=CHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR},
-    #{sysShopProjectId,jdbcType=VARCHAR}, #{sysShopProjectName,jdbcType=VARCHAR},
-    #{sysShopProjectInitAmount,jdbcType=DECIMAL},
-    #{sysShopProjectSurplusAmount,jdbcType=DECIMAL}, #{sysShopProjectSurplusTimes,jdbcType=INTEGER},
-    #{sysShopProjectInitTimes,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+    #{sysClerkId,jdbcType=VARCHAR}, #{useStyle,jdbcType=CHAR}, #{sysShopId,jdbcType=VARCHAR},
+    #{sysShopName,jdbcType=VARCHAR}, #{sysShopProjectId,jdbcType=VARCHAR}, #{sysShopProjectName,jdbcType=VARCHAR},
+    #{sysShopProjectInitAmount,jdbcType=DECIMAL}, #{sysShopProjectSurplusAmount,jdbcType=DECIMAL},
+    #{sysShopProjectSurplusTimes,jdbcType=INTEGER}, #{sysShopProjectInitTimes,jdbcType=INTEGER},
+    #{effectiveDate,jdbcType=TIMESTAMP}, #{effectiveDays,jdbcType=INTEGER}, #{invalidDays,jdbcType=INTEGER},
+    #{isSend,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
     #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO">
@@ -143,6 +151,9 @@
       </if>
       <if test="sysUserId != null">
         sys_user_id,
+      </if>
+      <if test="sysClerkId != null">
+        sys_clerk_id,
       </if>
       <if test="useStyle != null">
         use_style,
@@ -171,6 +182,18 @@
       <if test="sysShopProjectInitTimes != null">
         sys_shop_project_init_times,
       </if>
+      <if test="effectiveDate != null">
+        effective_date,
+      </if>
+      <if test="effectiveDays != null">
+        effective_days,
+      </if>
+      <if test="invalidDays != null">
+        invalid_days,
+      </if>
+      <if test="isSend != null">
+        is_send,
+      </if>
       <if test="createBy != null">
         create_by,
       </if>
@@ -193,6 +216,9 @@
       </if>
       <if test="sysUserId != null">
         #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkId != null">
+        #{sysClerkId,jdbcType=VARCHAR},
       </if>
       <if test="useStyle != null">
         #{useStyle,jdbcType=CHAR},
@@ -220,6 +246,18 @@
       </if>
       <if test="sysShopProjectInitTimes != null">
         #{sysShopProjectInitTimes,jdbcType=INTEGER},
+      </if>
+      <if test="effectiveDate != null">
+        #{effectiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effectiveDays != null">
+        #{effectiveDays,jdbcType=INTEGER},
+      </if>
+      <if test="invalidDays != null">
+        #{invalidDays,jdbcType=INTEGER},
+      </if>
+      <if test="isSend != null">
+        #{isSend,jdbcType=CHAR},
       </if>
       <if test="createBy != null">
         #{createBy,jdbcType=VARCHAR},
@@ -254,6 +292,9 @@
       <if test="record.sysUserId != null">
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       </if>
+      <if test="record.sysClerkId != null">
+        sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+      </if>
       <if test="record.useStyle != null">
         use_style = #{record.useStyle,jdbcType=CHAR},
       </if>
@@ -281,6 +322,18 @@
       <if test="record.sysShopProjectInitTimes != null">
         sys_shop_project_init_times = #{record.sysShopProjectInitTimes,jdbcType=INTEGER},
       </if>
+      <if test="record.effectiveDate != null">
+        effective_date = #{record.effectiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.effectiveDays != null">
+        effective_days = #{record.effectiveDays,jdbcType=INTEGER},
+      </if>
+      <if test="record.invalidDays != null">
+        invalid_days = #{record.invalidDays,jdbcType=INTEGER},
+      </if>
+      <if test="record.isSend != null">
+        is_send = #{record.isSend,jdbcType=CHAR},
+      </if>
       <if test="record.createBy != null">
         create_by = #{record.createBy,jdbcType=VARCHAR},
       </if>
@@ -303,6 +356,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
     shop_appointment_id = #{record.shopAppointmentId,jdbcType=VARCHAR},
     sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+    sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
     use_style = #{record.useStyle,jdbcType=CHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
@@ -312,6 +366,10 @@
       sys_shop_project_surplus_amount = #{record.sysShopProjectSurplusAmount,jdbcType=DECIMAL},
       sys_shop_project_surplus_times = #{record.sysShopProjectSurplusTimes,jdbcType=INTEGER},
       sys_shop_project_init_times = #{record.sysShopProjectInitTimes,jdbcType=INTEGER},
+    effective_date = #{record.effectiveDate,jdbcType=TIMESTAMP},
+    effective_days = #{record.effectiveDays,jdbcType=INTEGER},
+    invalid_days = #{record.invalidDays,jdbcType=INTEGER},
+    is_send = #{record.isSend,jdbcType=CHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       update_user = #{record.updateUser,jdbcType=VARCHAR},
@@ -328,6 +386,9 @@
       </if>
       <if test="sysUserId != null">
         sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkId != null">
+        sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       </if>
       <if test="useStyle != null">
         use_style = #{useStyle,jdbcType=CHAR},
@@ -356,6 +417,18 @@
       <if test="sysShopProjectInitTimes != null">
         sys_shop_project_init_times = #{sysShopProjectInitTimes,jdbcType=INTEGER},
       </if>
+      <if test="effectiveDate != null">
+        effective_date = #{effectiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effectiveDays != null">
+        effective_days = #{effectiveDays,jdbcType=INTEGER},
+      </if>
+      <if test="invalidDays != null">
+        invalid_days = #{invalidDays,jdbcType=INTEGER},
+      </if>
+      <if test="isSend != null">
+        is_send = #{isSend,jdbcType=CHAR},
+      </if>
       <if test="createBy != null">
         create_by = #{createBy,jdbcType=VARCHAR},
       </if>
@@ -375,6 +448,7 @@
     update shop_user_project_relation
     set shop_appointment_id = #{shopAppointmentId,jdbcType=VARCHAR},
     sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+    sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
     use_style = #{useStyle,jdbcType=CHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
@@ -384,6 +458,10 @@
       sys_shop_project_surplus_amount = #{sysShopProjectSurplusAmount,jdbcType=DECIMAL},
       sys_shop_project_surplus_times = #{sysShopProjectSurplusTimes,jdbcType=INTEGER},
       sys_shop_project_init_times = #{sysShopProjectInitTimes,jdbcType=INTEGER},
+    effective_date = #{effectiveDate,jdbcType=TIMESTAMP},
+    effective_days = #{effectiveDays,jdbcType=INTEGER},
+    invalid_days = #{invalidDays,jdbcType=INTEGER},
+    is_send = #{isSend,jdbcType=CHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},

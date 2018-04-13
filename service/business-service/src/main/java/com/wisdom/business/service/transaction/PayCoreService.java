@@ -24,6 +24,8 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REWARD;
+
 /**
  * Created by sunxiao on 2017/6/26.
  */
@@ -111,6 +113,11 @@ public class PayCoreService {
 
                 float expenseMoney = calculateUserExpenseMoney(instanceReturnMoneySignalDTO);
 
+                if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1))
+                {
+                    payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
+                }
+
                 handleUserLevelPromotion(userInfoDTO,expenseMoney);
 
                 handleUserLevelPromotionInSpecialActivity(userInfoDTO,expenseMoney,instanceReturnMoneySignalDTO);
@@ -126,7 +133,6 @@ public class PayCoreService {
             catch (Exception e)
             {
                 e.printStackTrace();
-                throw e;
             }
         }
     }

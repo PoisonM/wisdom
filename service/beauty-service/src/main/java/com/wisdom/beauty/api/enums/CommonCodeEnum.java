@@ -1,16 +1,11 @@
 package com.wisdom.beauty.api.enums;
 
-public enum CardType {
+public enum CommonCodeEnum {
 
-    TIME_CARD("0", "次卡"),
-    MONTH_CARD("1", "月卡"),
-    SEASON_CARD("2", "季卡"),
-    HALF_YEAR_CARD("3", "半年卡"),
-    YEAR_CARD("4", "年卡"),
-    TREATMENT_CARD("0", "疗程卡"),
-    ONE_TIME_CARD("1", "单次"),;
+    SUCCESS("0", "正常"),
+    UNSUCCESS("1", "非正常");
 
-    CardType(String code, String desc) {
+    CommonCodeEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }

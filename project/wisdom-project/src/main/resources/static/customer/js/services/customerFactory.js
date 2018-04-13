@@ -174,5 +174,9 @@ define(['appCustomer'], function (app) {
             return $resource(product + 'getSpecialProductList')
         }])
 
+        .factory('GetSpecialShopInfo',['$resource',function ($resource){
+            return $resource(product + 'getSpecialShopInfo')
+        }])
+
 
 });

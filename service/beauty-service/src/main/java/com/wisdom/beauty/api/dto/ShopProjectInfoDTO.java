@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
@@ -11,6 +12,9 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
 
     //
     private String sysShopId;
+
+    //
+    private String sysBossId;
 
     //项目名称
     private String projectName;
@@ -43,10 +47,10 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     private Integer projectDuration;
 
     //市场价格
-    private Long marketPrice;
+    private BigDecimal marketPrice;
 
     //优惠价格
-    private Long discountPrice;
+    private BigDecimal discountPrice;
 
     //最多包含次数
     private Integer maxContainTimes;
@@ -55,7 +59,7 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     private Integer visitDateTime;
 
     //单次耗卡金额
-    private Long oncePrice;
+    private BigDecimal oncePrice;
 
     //功能介绍
     private String functionIntr;
@@ -94,6 +98,14 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
 
     public void setSysShopId(String sysShopId) {
         this.sysShopId = sysShopId;
+    }
+
+    public String getSysBossId() {
+        return sysBossId;
+    }
+
+    public void setSysBossId(String sysBossId) {
+        this.sysBossId = sysBossId;
     }
 
     public String getProjectName() {
@@ -176,19 +188,19 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
         this.projectDuration = projectDuration;
     }
 
-    public Long getMarketPrice() {
+    public BigDecimal getMarketPrice() {
         return marketPrice;
     }
 
-    public void setMarketPrice(Long marketPrice) {
+    public void setMarketPrice(BigDecimal marketPrice) {
         this.marketPrice = marketPrice;
     }
 
-    public Long getDiscountPrice() {
+    public BigDecimal getDiscountPrice() {
         return discountPrice;
     }
 
-    public void setDiscountPrice(Long discountPrice) {
+    public void setDiscountPrice(BigDecimal discountPrice) {
         this.discountPrice = discountPrice;
     }
 
@@ -208,11 +220,11 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
         this.visitDateTime = visitDateTime;
     }
 
-    public Long getOncePrice() {
+    public BigDecimal getOncePrice() {
         return oncePrice;
     }
 
-    public void setOncePrice(Long oncePrice) {
+    public void setOncePrice(BigDecimal oncePrice) {
         this.oncePrice = oncePrice;
     }
 

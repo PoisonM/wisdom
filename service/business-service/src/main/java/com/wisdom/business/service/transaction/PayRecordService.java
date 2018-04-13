@@ -159,6 +159,7 @@ public class PayRecordService {
                     payRecordDTO.setPayType("wx");
                     payRecordMapper.insertPayRecord(payRecordDTO);
                 }
+
                 prePayInfoDTO.setResult(StatusConstant.SUCCESS);
             }
             else

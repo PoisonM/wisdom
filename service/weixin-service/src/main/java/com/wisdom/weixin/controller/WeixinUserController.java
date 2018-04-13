@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,8 +106,10 @@ public class WeixinUserController {
         if ("shopHome".equals(url)) {
             url = ConfigConstant.USER_WEB_URL + "shopHome";
         }
-        if ("specialProductList".equals(url)) {
-            url = ConfigConstant.USER_WEB_URL + "specialProductList";
+        if (url.contains("specialProductList")) {
+            String urls[] = url.split("88888888");
+            String specialShopId = urls[1];
+            url = ConfigConstant.USER_WEB_URL + "specialProductList/" + specialShopId;
         }
         else if ("shareHome".equals(url)) {
             url = ConfigConstant.USER_WEB_URL + "shareHome";
@@ -117,7 +120,6 @@ public class WeixinUserController {
         else if ("myselfCenter".equals(url)) {
             url = ConfigConstant.USER_WEB_URL + "myselfCenter";
         }
-
 
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
@@ -133,7 +135,7 @@ public class WeixinUserController {
             if (countNum++ > 3) {
                 break;
             }
-        } while (weixinUserBean == null);
+        } while (weixinUserBean.getOpenid() == null);
 
         String openId = weixinUserBean.getOpenid();
         session.setAttribute(ConfigConstant.USER_OPEN_ID, openId);
@@ -209,6 +211,17 @@ public class WeixinUserController {
             responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setResponseData(weixinShareDTO);
         }
+        return responseDTO;
+    }
+
+    @RequestMapping(value = "getSpecialShopQRCode", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<String> getSpecialShopQRCode(@RequestParam String specialShopId) throws FileNotFoundException {
+        ResponseDTO<String> responseDTO = new ResponseDTO();
+        String specialShopQRURL = weixinCustomerCoreService.getSpecialShopQRCode(specialShopId);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(specialShopQRURL);
         return responseDTO;
     }
 

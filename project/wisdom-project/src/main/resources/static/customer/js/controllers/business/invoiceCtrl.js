@@ -49,7 +49,8 @@ angular.module('controllers',[]).controller('invoiceCtrl',
                 }
                AddInvoiceInfo.save({taxType:value,companyName:$scope.param.companyName,taxpayerNumber:$scope.param.taxpayerNumber,orderId:$stateParams.orderId},function(data) {
                  if(data.result==Global.SUCCESS){
-                  window.location.href = "orderPay.do?productType=offlineProduct&random="+Math.random()+"a";
+                     window.history.go(-1)
+                /*  window.location.href = "orderPay.do?productType=offlineProduct&random="+Math.random()+"a";*/
                 }
                })
             }

@@ -33,7 +33,7 @@ public class ProcessUserClickEventService {
 
     private static ExecutorService threadExecutorSingle = Executors.newSingleThreadExecutor();
 
-    public String processEvent(ReceiveXmlEntity xmlEntity, HttpServletRequest request, HttpServletResponse response) {
+    public String processUserClickEvent(ReceiveXmlEntity xmlEntity, HttpServletRequest request, HttpServletResponse response) {
 
         String respMessage = "";
         if("10".equals(xmlEntity.getEventKey())){

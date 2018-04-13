@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 
 import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REWARD;
@@ -94,24 +95,24 @@ public class BusinessRunTimeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void autoProcessUserAccount() {
+    public void autoProcessUserAccount() throws UnsupportedEncodingException {
 
         //查询用户消费的不可提现金额
-        IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+        /*IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
         incomeRecordDTO.setStatus("0");
         incomeRecordDTO.setIncomeType("instance");
         List<IncomeRecordDTO> incomeRecordDTOList = businessServiceClient.getUserIncomeRecordInfo(incomeRecordDTO);
-        List<String> transactionIds = new ArrayList<>();
+        List<String> transactionIds = new ArrayList<>();*/
 
         //用户返现解冻
-        this.deFrozenUserReturnMoney(incomeRecordDTOList,transactionIds);
+        //this.deFrozenUserReturnMoney(incomeRecordDTOList,transactionIds);
 
         //同级推荐提升逻辑
         this.promoteUserBusinessTypeForRecommend();
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void autoMonthlyIncomeCalc() {
+    public void autoMonthlyIncomeCalc() throws UnsupportedEncodingException {
 
         //加入开关量，证明本月已经完成过月度提成了，不用再次计算
         Query query = new Query(Criteria.where("year").is(DateUtils.getYear())).addCriteria(Criteria.where("month").is(DateUtils.getMonth()));
@@ -253,7 +254,7 @@ public class BusinessRunTimeService {
 
     }
 
-    public void monthlyIncomeCalc(String businessType) {
+    public void monthlyIncomeCalc(String businessType) throws UnsupportedEncodingException {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserType(businessType);
         userInfoDTO.setDelFlag("0");
@@ -262,6 +263,8 @@ public class BusinessRunTimeService {
         for(UserInfoDTO userInfo:userInfoDTOList)
         {
             float returnMonthlyMoney = 0;
+            float returnMonthlyMoney_A = 0;
+            float returnMonthlyMoney_B = 0;
 
             String startDate = "";
             String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"26";
@@ -286,44 +289,43 @@ public class BusinessRunTimeService {
 
             for(MonthTransactionRecordDTO monthTransactionRecordDTO:monthTransactionRecordDTOList)
             {
-                returnMonthlyMoney = returnMonthlyMoney + monthTransactionRecordDTO.getAmount();
-            }
-
-            //计算当前用户本月的消费金额
-            List<PayRecordDTO> payRecordDTOList = businessServiceClient.getUserPayRecordListByDate(userInfo.getId(),startDate,endDate);
-            float userExpenseAmount = 0;
-            for(PayRecordDTO payRecordDTO:payRecordDTOList)
-            {
-                if(payRecordDTO.getStatus().equals("1"))
+                if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessA1))
                 {
-                    userExpenseAmount = userExpenseAmount + payRecordDTO.getAmount();
+                    returnMonthlyMoney_A = returnMonthlyMoney_A + monthTransactionRecordDTO.getAmount();
+                }
+                else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessB1))
+                {
+                    returnMonthlyMoney_B = returnMonthlyMoney_B + monthTransactionRecordDTO.getAmount();
                 }
             }
 
-            if((businessType.equals(ConfigConstant.businessA1)&&userExpenseAmount>=ConfigConstant.MONTH_A_INCOME_MAX_EXPENSE)
-                    ||(businessType.equals(ConfigConstant.businessB1)&&userExpenseAmount>=ConfigConstant.MONTH_B1_INCOME_MAX_EXPENSE))
-            {
-                returnMonthlyMoney = returnMonthlyMoney + userExpenseAmount;
-                if(returnMonthlyMoney>0)
+            //计算当前用户本月的消费金额
+//            List<PayRecordDTO> payRecordDTOList = businessServiceClient.getUserPayRecordListByDate(userInfo.getId(),startDate,endDate);
+//            float userExpenseAmount = 0;
+//            for(PayRecordDTO payRecordDTO:payRecordDTOList)
+//            {
+//                if(payRecordDTO.getStatus().equals("1"))
+//                {
+//                    userExpenseAmount = userExpenseAmount + payRecordDTO.getAmount();
+//                }
+//            }
+
+//            if((businessType.equals(ConfigConstant.businessA1)&&userExpenseAmount>=ConfigConstant.MONTH_A_INCOME_MAX_EXPENSE)
+//                    ||(businessType.equals(ConfigConstant.businessB1)&&userExpenseAmount>=ConfigConstant.MONTH_B1_INCOME_MAX_EXPENSE))
+//            {
+//                returnMonthlyMoney = returnMonthlyMoney + userExpenseAmount;
+                if(returnMonthlyMoney_A>0||returnMonthlyMoney_B>0)
                 {
-                    if(businessType.equals(ConfigConstant.businessA1))
-                    {
-                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
-                    }
-                    else if(businessType.equals(ConfigConstant.businessB1))
-                    {
-                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
-                    }
-                    IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                    incomeRecordDTO.setId(UUID.randomUUID().toString());
-                    incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                    incomeRecordDTO.setSysUserId(userInfo.getId());
-                    incomeRecordDTO.setIncomeType("month");
-                    incomeRecordDTO.setAmount(returnMonthlyMoney);
-                    incomeRecordDTO.setStatus("0");
-                    incomeRecordDTO.setCreateDate(new Date());
-                    incomeRecordDTO.setUpdateDate(new Date());
-                    businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+//                    if(businessType.equals(ConfigConstant.businessA1))
+//                    {
+//                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
+//                    }
+//                    else if(businessType.equals(ConfigConstant.businessB1))
+//                    {
+//                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
+//                    }
+
+                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
 
                     AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
                     float balance = accountDTO.getBalance() + returnMonthlyMoney;
@@ -332,15 +334,37 @@ public class BusinessRunTimeService {
                     accountDTO.setBalanceDeny(balanceDeny);
                     accountDTO.setUpdateDate(new Date());
                     businessServiceClient.updateUserAccountInfo(accountDTO);
+
+                    IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                    incomeRecordDTO.setId(UUID.randomUUID().toString());
+                    incomeRecordDTO.setSysUserId(userInfo.getId());
+                    incomeRecordDTO.setUserType(userInfo.getUserType());
+                    incomeRecordDTO.setNextUserId("");
+                    incomeRecordDTO.setNextUserType("");
+                    incomeRecordDTO.setAmount(returnMonthlyMoney);
+                    incomeRecordDTO.setTransactionAmount(0);
+                    incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                    incomeRecordDTO.setUpdateDate(new Date());
+                    incomeRecordDTO.setCreateDate(new Date());
+                    incomeRecordDTO.setStatus("0");
+                    incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
+                    incomeRecordDTO.setNextUserIdentifyNumber("");
+                    incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
+                    incomeRecordDTO.setNextUserNickName("");
+                    incomeRecordDTO.setIncomeType("month");
+                    incomeRecordDTO.setMobile(userInfo.getMobile());
+                    incomeRecordDTO.setNextUserMobile("");
+                    incomeRecordDTO.setParentRelation("");
+                    businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
                 }
-            }
+//            }
 
 //            String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
             WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
         }
     }
 
-    public void promoteUserBusinessTypeForRecommend() {
+    public void promoteUserBusinessTypeForRecommend() throws UnsupportedEncodingException {
         //根据B用户推荐20个B的逻辑，来实现用户等级提升
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setDelFlag("0");
@@ -418,6 +442,27 @@ public class BusinessRunTimeService {
                 float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
                 accountDTO.setBalance(balance);
                 businessServiceClient.updateUserAccountInfo(accountDTO);
+
+                IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                incomeRecordDTO.setId(UUID.randomUUID().toString());
+                incomeRecordDTO.setSysUserId(userInfo.getId());
+                incomeRecordDTO.setUserType(userInfo.getUserType());
+                incomeRecordDTO.setNextUserId("");
+                incomeRecordDTO.setNextUserType("");
+                incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
+                incomeRecordDTO.setTransactionAmount(0);
+                incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                incomeRecordDTO.setUpdateDate(new Date());
+                incomeRecordDTO.setCreateDate(new Date());
+                incomeRecordDTO.setStatus("0");
+                incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
+                incomeRecordDTO.setNextUserIdentifyNumber("");
+                incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
+                incomeRecordDTO.setNextUserNickName("");
+                incomeRecordDTO.setIncomeType("recommend");
+                incomeRecordDTO.setMobile(userInfo.getMobile());
+                incomeRecordDTO.setNextUserMobile("");
+                incomeRecordDTO.setParentRelation("");
 
                 Calendar calendar = Calendar.getInstance();
                 Date date = new Date();

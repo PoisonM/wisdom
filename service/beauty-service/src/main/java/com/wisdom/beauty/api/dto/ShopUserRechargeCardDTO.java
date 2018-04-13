@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable {
@@ -21,6 +22,9 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
     //用户名称
     private String sysUserName;
 
+    //
+    private String sysClerkId;
+
     //美容店id
     private String sysShopId;
 
@@ -37,10 +41,10 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
     private String discountDesc;
 
     //剩余金额
-    private Long surplusAmount;
+    private BigDecimal surplusAmount;
 
     //初始金额
-    private Long initAmount;
+    private BigDecimal initAmount;
 
     //
     private String createBy;
@@ -96,6 +100,14 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
         this.sysUserName = sysUserName;
     }
 
+    public String getSysClerkId() {
+        return sysClerkId;
+    }
+
+    public void setSysClerkId(String sysClerkId) {
+        this.sysClerkId = sysClerkId;
+    }
+
     public String getSysShopId() {
         return sysShopId;
     }
@@ -136,19 +148,19 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
         this.discountDesc = discountDesc;
     }
 
-    public Long getSurplusAmount() {
+    public BigDecimal getSurplusAmount() {
         return surplusAmount;
     }
 
-    public void setSurplusAmount(Long surplusAmount) {
+    public void setSurplusAmount(BigDecimal surplusAmount) {
         this.surplusAmount = surplusAmount;
     }
 
-    public Long getInitAmount() {
+    public BigDecimal getInitAmount() {
         return initAmount;
     }
 
-    public void setInitAmount(Long initAmount) {
+    public void setInitAmount(BigDecimal initAmount) {
         this.initAmount = initAmount;
     }
 

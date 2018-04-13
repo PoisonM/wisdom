@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Serializable {
@@ -28,13 +29,16 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     private Integer projectSurplusTimes;
 
     //项目初始总金额
-    private Long projectInitAmount;
+    private BigDecimal projectInitAmount;
 
     //项目剩余总金额
-    private Long projectSurplusAmount;
+    private BigDecimal projectSurplusAmount;
 
     //
     private String sysShopId;
+
+    //
+    private String sysClerkId;
 
     //
     private String sysBossId;
@@ -109,19 +113,19 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
         this.projectSurplusTimes = projectSurplusTimes;
     }
 
-    public Long getProjectInitAmount() {
+    public BigDecimal getProjectInitAmount() {
         return projectInitAmount;
     }
 
-    public void setProjectInitAmount(Long projectInitAmount) {
+    public void setProjectInitAmount(BigDecimal projectInitAmount) {
         this.projectInitAmount = projectInitAmount;
     }
 
-    public Long getProjectSurplusAmount() {
+    public BigDecimal getProjectSurplusAmount() {
         return projectSurplusAmount;
     }
 
-    public void setProjectSurplusAmount(Long projectSurplusAmount) {
+    public void setProjectSurplusAmount(BigDecimal projectSurplusAmount) {
         this.projectSurplusAmount = projectSurplusAmount;
     }
 
@@ -131,6 +135,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setSysShopId(String sysShopId) {
         this.sysShopId = sysShopId;
+    }
+
+    public String getSysClerkId() {
+        return sysClerkId;
+    }
+
+    public void setSysClerkId(String sysClerkId) {
+        this.sysClerkId = sysClerkId;
     }
 
     public String getSysBossId() {

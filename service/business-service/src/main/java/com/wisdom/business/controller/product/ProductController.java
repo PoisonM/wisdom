@@ -1,5 +1,6 @@
 package com.wisdom.business.controller.product;
 
+import com.mongodb.Mongo;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.product.ProductService;
 import com.wisdom.business.service.product.TrainingProductService;
@@ -8,6 +9,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.product.TrainingProductDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.ExportProductExcelDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -16,6 +18,9 @@ import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +42,9 @@ public class ProductController {
 
 	@Autowired
 	private TrainingProductService trainingProductService;
+
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
 	/**
 	 * 获取某个商品的基本信息
@@ -115,13 +123,6 @@ public class ProductController {
 		responseDTO.setResponseData(page);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		return responseDTO;
-		/*ResponseDTO<PageParamVoDTO<List<ProductDTO>>> responseDTO = new ResponseDTO<>();
-
-		PageParamVoDTO<List<ProductDTO>> page = productService.queryProductsByParameters(pageParamVoDTO);
-
-		responseDTO.setResponseData(page);
-		responseDTO.setResult(StatusConstant.SUCCESS);
-		return responseDTO;*/
 	}
 
 	/**
@@ -208,7 +209,6 @@ public class ProductController {
 			e.printStackTrace();
 			responseDTO.setErrorInfo("更新用户收货地址失败");
 			responseDTO.setResult(StatusConstant.FAILURE);
-			//CodeGenUtil.getProductCodeNumber();
 		}
 		return responseDTO;
 	}
@@ -234,10 +234,10 @@ public class ProductController {
 			}
 			productDTO.getProductDetail().setProductId(productDTO.getProductId());
 			productService.addOfflineProduct(productDTO);
-			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 
 		return responseDTO;
@@ -256,10 +256,10 @@ public class ProductController {
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		try {
 			productService.putAwayProductById(id);
-			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 		return responseDTO;
 	}
@@ -277,10 +277,27 @@ public class ProductController {
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		try {
 			productService.delProductById(id);
-			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.FAILURE);
+		}
+		return responseDTO;
+	}
+
+	@RequestMapping(value = "getSpecialShopInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO getSpecialShopInfo(@RequestParam String specialShopId) {
+		ResponseDTO responseDTO = new ResponseDTO<>();
+		try {
+			Query query = new Query(Criteria.where("shopId").is(specialShopId));
+			SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
+			responseDTO.setResponseData(specialShopInfoDTO);
+			responseDTO.setResult(StatusConstant.SUCCESS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 		return responseDTO;
 	}

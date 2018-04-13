@@ -2,6 +2,7 @@ package com.wisdom.weixin.service.user;
 
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.BonusFlagDTO;
@@ -50,10 +51,10 @@ public class ProcessUserSubscribeEventService {
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
     //处理用户关注公众号事件
-    public void processSubscribeEvent(ReceiveXmlEntity xmlEntity)
+    public void processUserSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
-        WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
+        WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
 
         //开启线程，处理用户是扫描关注的用户，还是搜索关注公众号的用户
@@ -82,7 +83,7 @@ public class ProcessUserSubscribeEventService {
 
             //判断用户是否是扫码微商用户的二维码关注，
             String businessParentPhone = "";
-            if(StringUtils.isNotNull(xmlEntity.getEventKey())){
+            if(StringUtils.isNotNull(xmlEntity.getEventKey())&&xmlEntity.getEventKey().indexOf("mxbusinessshare_")!=-1){
                 businessParentPhone = xmlEntity.getEventKey().replace("mxbusinessshare_", "");
                 String codeArray[] = businessParentPhone.split("_");
                 businessParentPhone = codeArray[1];
@@ -205,24 +206,49 @@ public class ProcessUserSubscribeEventService {
 
         @Override
         public void run() {
-            List<Article> articleList = new ArrayList<>();
-            Article article = new Article();
-            article.setTitle("嗨!您终于来啦! ~\n");
-            article.setDescription(
-                    "在这里,可以边赚钱边美美哒 ~  \n" +
-                    " \n" +
-                    "点击「99课堂」，教你玩转社群营销 ~\n" +
-                    "点击「99商城」，分享即赚钱 ~\n" +
-                    "更多资讯,直接留言 ~");
-            article.setPicUrl("");
-            article.setUrl("");
-            articleList.add(article);
-            WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+
+            if(StringUtils.isNotNull(xmlEntity.getEventKey())&&xmlEntity.getEventKey().indexOf("mxForeignPurchase")!=-1)
+            {
+                String weishiyiShop = xmlEntity.getEventKey().replace("mxForeignPurchase_", "");
+                String codeArray[] = weishiyiShop.split("_");
+                String specialShopId = codeArray[1];
+
+                //通过shopId查询出店铺名称
+                Query query = new Query(Criteria.where("shopId").is(specialShopId));
+                SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
+
+                //处理境外购的流程
+                List<Article> articleList = new ArrayList<>();
+                Article article = new Article();
+                article.setTitle("嗨!您终于来啦! ~\n");
+                article.setDescription(
+                        "请点击我进入"+specialShopInfoDTO.getShopName()+"吧");
+                article.setPicUrl(specialShopInfoDTO.getShopURL());
+                article.setUrl(ConfigConstant.SPECIAL_SHOP_URL+specialShopInfoDTO.getShopId());
+                articleList.add(article);
+                WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+            }
+            else
+            {
+                List<Article> articleList = new ArrayList<>();
+                Article article = new Article();
+                article.setTitle("嗨!您终于来啦! ~\n");
+                article.setDescription(
+                        "在这里,可以边赚钱边美美哒 ~  \n" +
+                                " \n" +
+                                "点击「99课堂」，教你玩转社群营销 ~\n" +
+                                "点击「99商城」，分享即赚钱 ~\n" +
+                                "更多资讯,直接留言 ~");
+                article.setPicUrl("");
+                article.setUrl("");
+                articleList.add(article);
+                WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+            }
         }
     }
 
     //处理用户取消关注公众号事件
-    public void processUnSubscribeEvent(ReceiveXmlEntity xmlEntity)
+    public void processUserUnSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
         //开启线程，处理用户的取消关注事件
         Runnable processUnSubscribeThread = new ProcessUnSubscribeThread(xmlEntity);

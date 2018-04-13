@@ -1,4 +1,5 @@
 var IP = '';
+var appointmentInfo ="http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function ($q) {
         return {
             request: function (config) {
@@ -24,6 +25,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function ($q) {
     .factory('DriverReservationList', ['$resource', function ($resource) {
         return $resource(IP + 'list')
     }])
+    .factory('ShopDayAppointmentInfoByDate', ['$resource', function ($resource) {
+        return $resource(appointmentInfo + 'shopDayAppointmentInfoByDate')
+    }]);
+
 
     
 

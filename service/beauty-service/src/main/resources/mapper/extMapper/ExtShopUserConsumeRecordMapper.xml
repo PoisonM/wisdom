@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="flow_id" property="flowId" jdbcType="VARCHAR"/>
+        <result column="flow_name" property="flowName" jdbcType="VARCHAR"/>
+        <result column="flow_no" property="flowNo" jdbcType="VARCHAR"/>
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
+        <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR"/>
+        <result column="consume_number" property="consumeNumber" jdbcType="INTEGER"/>
+        <result column="goods_type" property="goodsType" jdbcType="CHAR"/>
+        <result column="consume_type" property="consumeType" jdbcType="CHAR"/>
+        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
+        <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
+        <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
+        <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="discount" property="discount" jdbcType="DECIMAL"/>
+        <result column="oper_date" property="operDate" jdbcType="TIMESTAMP"/>
+        <result column="pay_type" property="payType" jdbcType="CHAR"/>
+        <result column="sign_url" property="signUrl" jdbcType="VARCHAR"/>
+        <result column="detail" property="detail" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, flow_id, flow_name, flow_no, sys_user_id, sys_user_name, consume_number, goods_type,
+    consume_type, sys_boss_id, sys_shop_id, sys_shop_name, sys_clerk_id, sys_clerk_name,
+    price, discount, oper_date, pay_type, sign_url, detail, status, create_by, create_date,
+    update_user, update_date
+  </sql>
+    <select id="selectSumPriceByCriteria" resultType="java.math.BigDecimal"
+            parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria">
+        select
+        sum(price)
+        <include refid="Base_Column_List"/>
+        from shop_user_consume_record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart >= 0">
+            limit ${limitStart},${pageSize}
+        </if>
+    </select>
+    <select id="selectUserConsumeNumber" resultType="java.lang.Integer"
+            parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria">
+        select
+        COUNT(DISTINCT record.`flow_no`)
+        <include refid="Base_Column_List"/>
+        from shop_user_consume_record record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart >= 0">
+            limit ${limitStart},${pageSize}
+        </if>
+    </select>
+
+</mapper>

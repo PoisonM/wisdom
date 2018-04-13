@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,4 +33,37 @@ public interface ShopCustomerArchivesServcie {
      */
     List<ShopUserArchivesDTO> getArchivesList(PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO);
 
+    /**
+     * 查询某个店某一时间段建档的个数
+     *
+     * @param shopId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    int getShopBuildArchivesNumbers(String shopId, Date startDate, Date endDate);
+
+    /**
+     * 保存用户的建档案信息
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    int saveShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO);
+
+    /**
+     * 更新用户的档案信息
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    int updateShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO);
+
+    /**
+     * 删除用户的档案信息
+     *
+     * @param archivesId
+     * @return
+     */
+    int deleteShopUserArchivesInfo(String archivesId);
 }

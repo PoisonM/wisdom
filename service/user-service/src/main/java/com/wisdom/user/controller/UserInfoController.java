@@ -5,21 +5,29 @@ package com.wisdom.user.controller;
 
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
+import com.wisdom.common.dto.transaction.BusinessOrderDTO;
+import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.interceptor.LoginRequired;
+import com.wisdom.user.service.RealNameAuthService;
 import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,6 +37,15 @@ public class UserInfoController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private RealNameAuthService realNameAuthService;
+
+    @Autowired
+    private BusinessServiceClient businessServiceClient;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     /**
      * 获取用户头像和手机号
@@ -166,5 +183,41 @@ public class UserInfoController {
         responseDTO.setResponseData(page);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
+    }
+
+    /**
+     * 用户实名认证接口
+     *
+     * @param cardNo
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "/queryRealNameAuthentication", method = RequestMethod.GET)
+    @LoginRequired
+    @ResponseBody
+    RealNameInfoDTO queryRealNameAuthentication(@RequestParam(value = "cardNo") String cardNo,
+                                                @RequestParam(value = "name") String name,
+                                                @RequestParam(value = "specialShopId") String specialShopId,
+                                                @RequestParam("orderIds[]") List<String> orderIds) {
+
+        RealNameInfoDTO realNameInfoDTO = realNameAuthService.getRealNameInfoDTO(cardNo, name);
+
+        if(realNameInfoDTO.getResult().equals("匹配"))
+        {
+            String orderId = orderIds.get(0);
+            UserInfoDTO userInfoDTO = userInfoService.getUserInfoFromRedis();
+
+            SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO = new SpecialShopBusinessOrderDTO();
+            specialShopBusinessOrderDTO.setOrderId(orderId);
+            specialShopBusinessOrderDTO.setUserId(userInfoDTO.getId());
+            specialShopBusinessOrderDTO.setUserIdentifyNumber(cardNo);
+            specialShopBusinessOrderDTO.setUserName(name);
+            specialShopBusinessOrderDTO.setCreateDate(new Date());
+            specialShopBusinessOrderDTO.setShopId(specialShopId);
+            specialShopBusinessOrderDTO.setUserPhone(userInfoDTO.getMobile());
+            mongoTemplate.insert(specialShopBusinessOrderDTO, "specialShopBusinessOrder");
+        }
+
+        return realNameAuthService.getRealNameInfoDTO(cardNo, name);
     }
 }
