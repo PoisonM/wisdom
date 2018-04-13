@@ -58,6 +58,7 @@ public class UserConsumeController {
     private RedisUtils redisUtils;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /**
      * @Author:huan
      * @Param:
@@ -67,13 +68,20 @@ public class UserConsumeController {
      */
     @RequestMapping(value = "/consumes", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestParam String sysShopId, @RequestParam String shopUserId, @RequestParam String type, int pageSize) {
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestParam String sysShopId,
+                                                                    @RequestParam(required = false) String shopUserId,
+                                                                    @RequestParam(required = false) String sysClerkId,
+                                                                    @RequestParam String consumeType, int pageSize) {
+
+        long startTime = System.currentTimeMillis();
         PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
         shopUserConsumeRecordDTO.setSysUserId(shopUserId);
         shopUserConsumeRecordDTO.setSysShopId(sysShopId);
-        shopUserConsumeRecordDTO.setConsumeType(type);
+        shopUserConsumeRecordDTO.setSysClerkId(sysClerkId);
+        shopUserConsumeRecordDTO.setConsumeType(consumeType);
+
         pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
@@ -82,6 +90,7 @@ public class UserConsumeController {
         ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
+        logger.info("findUserConsume方法耗时{}毫秒",(System.currentTimeMillis()-startTime));
         return responseDTO;
     }
 

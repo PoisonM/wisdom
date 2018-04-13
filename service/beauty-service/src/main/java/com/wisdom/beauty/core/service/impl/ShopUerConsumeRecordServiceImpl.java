@@ -37,9 +37,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
     @Override
     public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO) {
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = pageParamVoDTO.getRequestData();
-        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},Status={}", shopUserConsumeRecordDTO.getSysShopId(), shopUserConsumeRecordDTO.getSysUserId(), shopUserConsumeRecordDTO.getStatus());
+        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},Status={}", shopUserConsumeRecordDTO.getSysShopId(), shopUserConsumeRecordDTO.getSysUserId(), shopUserConsumeRecordDTO.getConsumeType());
         if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysShopId()) ||
-                StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserId()) ||
                 StringUtils.isBlank(shopUserConsumeRecordDTO.getConsumeType())) {
             throw new ServiceException("getShopCustomerConsumeRecordList方法传入的参数为空");
         }
@@ -52,39 +51,33 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         // 分页
         criteria.setLimitStart(pageParamVoDTO.getPageNo());
         criteria.setPageSize(pageParamVoDTO.getPageSize());
-        if(StringUtils.isNotBlank(pageParamVoDTO.getStartTime())){
-            Date currentDate= DateUtils.parseDate(pageParamVoDTO.getStartTime());
-            c.andCreateDateBetween(currentDate,currentDate);
+        if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())) {
+            Date currentDate = DateUtils.parseDate(pageParamVoDTO.getStartTime());
+            c.andCreateDateBetween(currentDate, currentDate);
         }
         c.andSysShopIdEqualTo(shopUserConsumeRecordDTO.getSysShopId());
-         //根据是否有店员id，设置消费类型查询参数
-        String sysClerkId=shopUserConsumeRecordDTO.getSysClerkId();
-        if(StringUtils.isNotBlank(sysClerkId)){
-            logger.info("此时设置店员消费记录查询条件,店员sysClerkId={}",sysClerkId);
+        //设置状态值查询条件，划卡的时候传-消费的状态值，除了划卡传-充值的状态
+        c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getConsumeType());
+        //根据是否有店员id，设置消费类型查询参数
+        String sysClerkId = shopUserConsumeRecordDTO.getSysClerkId();
+        if (StringUtils.isNotBlank(sysClerkId)) {
+            logger.info("此时设置店员消费记录查询条件,店员sysClerkId={}", sysClerkId);
             c.andSysClerkIdEqualTo(sysClerkId);
-            //设置状态值查询条件，划卡的时候传-消费的状态值，除了划卡传-充值的状态
-            c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getStatus());
-        }else {
+        } else {
             c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
-            if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecordDTO.getStatus())) {
-                c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getStatus());
-            } else {
-                List<String> values = new ArrayList<>();
-                values.add(ConsumeTypeEnum.CONSUME.getCode());
-                c.andConsumeTypeNotIn(values);
-            }
         }
         List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
         Map<String, UserConsumeRecordResponseDTO> map = new HashMap<>(16);
-        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
+        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO =null;
         for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
+            userConsumeRecordResponseDTO= new UserConsumeRecordResponseDTO();
             if (map.get(shopUserConsumeRecord.getFlowNo()) == null) {
                 userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
                 userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
-                if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getStatus())) {
-                    userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getFlowName());
-                } else {
+                if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
                     userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getConsumeType());
+                } else {
+                    userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getFlowName());
                 }
                 map.put(shopUserConsumeRecord.getFlowNo(), userConsumeRecordResponseDTO);
             } else {
@@ -120,7 +113,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
             userConsumeRecordResponseDTO.setSysShopName(userConsumeRecord.getSysShopName());
             userConsumeRecordResponseDTO.setType(userConsumeRecord.getConsumeType());
         }
-        userConsumeRecordResponseDTO.setList(list);
+        userConsumeRecordResponseDTO.setShopUserConsumeRecordList(list);
         return userConsumeRecordResponseDTO;
     }
 
@@ -139,7 +132,6 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
         return insert;
     }
-
 
 
 }
