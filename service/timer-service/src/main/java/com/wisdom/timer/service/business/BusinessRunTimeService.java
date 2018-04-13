@@ -263,6 +263,8 @@ public class BusinessRunTimeService {
         for(UserInfoDTO userInfo:userInfoDTOList)
         {
             float returnMonthlyMoney = 0;
+            float returnMonthlyMoney_A = 0;
+            float returnMonthlyMoney_B = 0;
 
             String startDate = "";
             String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"26";
@@ -287,34 +289,43 @@ public class BusinessRunTimeService {
 
             for(MonthTransactionRecordDTO monthTransactionRecordDTO:monthTransactionRecordDTOList)
             {
-                returnMonthlyMoney = returnMonthlyMoney + monthTransactionRecordDTO.getAmount();
-            }
-
-            //计算当前用户本月的消费金额
-            List<PayRecordDTO> payRecordDTOList = businessServiceClient.getUserPayRecordListByDate(userInfo.getId(),startDate,endDate);
-            float userExpenseAmount = 0;
-            for(PayRecordDTO payRecordDTO:payRecordDTOList)
-            {
-                if(payRecordDTO.getStatus().equals("1"))
+                if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessA1))
                 {
-                    userExpenseAmount = userExpenseAmount + payRecordDTO.getAmount();
+                    returnMonthlyMoney_A = returnMonthlyMoney_A + monthTransactionRecordDTO.getAmount();
+                }
+                else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessB1))
+                {
+                    returnMonthlyMoney_B = returnMonthlyMoney_B + monthTransactionRecordDTO.getAmount();
                 }
             }
 
-            if((businessType.equals(ConfigConstant.businessA1)&&userExpenseAmount>=ConfigConstant.MONTH_A_INCOME_MAX_EXPENSE)
-                    ||(businessType.equals(ConfigConstant.businessB1)&&userExpenseAmount>=ConfigConstant.MONTH_B1_INCOME_MAX_EXPENSE))
-            {
-                returnMonthlyMoney = returnMonthlyMoney + userExpenseAmount;
-                if(returnMonthlyMoney>0)
+            //计算当前用户本月的消费金额
+//            List<PayRecordDTO> payRecordDTOList = businessServiceClient.getUserPayRecordListByDate(userInfo.getId(),startDate,endDate);
+//            float userExpenseAmount = 0;
+//            for(PayRecordDTO payRecordDTO:payRecordDTOList)
+//            {
+//                if(payRecordDTO.getStatus().equals("1"))
+//                {
+//                    userExpenseAmount = userExpenseAmount + payRecordDTO.getAmount();
+//                }
+//            }
+
+//            if((businessType.equals(ConfigConstant.businessA1)&&userExpenseAmount>=ConfigConstant.MONTH_A_INCOME_MAX_EXPENSE)
+//                    ||(businessType.equals(ConfigConstant.businessB1)&&userExpenseAmount>=ConfigConstant.MONTH_B1_INCOME_MAX_EXPENSE))
+//            {
+//                returnMonthlyMoney = returnMonthlyMoney + userExpenseAmount;
+                if(returnMonthlyMoney_A>0||returnMonthlyMoney_B>0)
                 {
-                    if(businessType.equals(ConfigConstant.businessA1))
-                    {
-                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
-                    }
-                    else if(businessType.equals(ConfigConstant.businessB1))
-                    {
-                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
-                    }
+//                    if(businessType.equals(ConfigConstant.businessA1))
+//                    {
+//                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
+//                    }
+//                    else if(businessType.equals(ConfigConstant.businessB1))
+//                    {
+//                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
+//                    }
+
+                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
 
                     AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
                     float balance = accountDTO.getBalance() + returnMonthlyMoney;
@@ -346,7 +357,7 @@ public class BusinessRunTimeService {
                     incomeRecordDTO.setParentRelation("");
                     businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
                 }
-            }
+//            }
 
 //            String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
             WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
