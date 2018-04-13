@@ -30,7 +30,7 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     private String sysShopName;
     //类型
     private String type;
-    private List<ShopUserConsumeRecordDTO> list;
+    private List<ShopUserConsumeRecordDTO> shopUserConsumeRecordList;
 
 
     public Date getCreateDate() {
@@ -61,14 +61,6 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
         this.type = type;
     }
 
-    public List<ShopUserConsumeRecordDTO> getList() {
-        return list;
-    }
-
-    public void setList(List<ShopUserConsumeRecordDTO> list) {
-        this.list = list;
-    }
-
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
@@ -95,5 +87,13 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
 
     public void setSumAmount(BigDecimal sumAmount) {
         this.sumAmount = sumAmount;
+    }
+
+    public List<ShopUserConsumeRecordDTO> getShopUserConsumeRecordList() {
+        return shopUserConsumeRecordList;
+    }
+
+    public void setShopUserConsumeRecordList(List<ShopUserConsumeRecordDTO> shopUserConsumeRecordList) {
+        this.shopUserConsumeRecordList = shopUserConsumeRecordList;
     }
 }
