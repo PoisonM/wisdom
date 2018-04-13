@@ -2,6 +2,7 @@ package com.wisdom.weixin.service.user;
 
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.BonusFlagDTO;
@@ -53,7 +54,7 @@ public class ProcessUserSubscribeEventService {
     public void processUserSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
-        WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
+        WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
 
         //开启线程，处理用户是扫描关注的用户，还是搜索关注公众号的用户
@@ -210,18 +211,20 @@ public class ProcessUserSubscribeEventService {
             {
                 String weishiyiShop = xmlEntity.getEventKey().replace("mxForeignPurchase_", "");
                 String codeArray[] = weishiyiShop.split("_");
-                String weishiyiShopId = codeArray[1];
+                String specialShopId = codeArray[1];
 
                 //通过shopId查询出店铺名称
+                Query query = new Query(Criteria.where("shopId").is(specialShopId));
+                SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
 
                 //处理境外购的流程
                 List<Article> articleList = new ArrayList<>();
                 Article article = new Article();
                 article.setTitle("嗨!您终于来啦! ~\n");
                 article.setDescription(
-                        "请点击我进入唯十一店吧");
+                        "请点击我进入"+specialShopInfoDTO.getShopName()+"吧");
                 article.setPicUrl("");
-                article.setUrl("www.sina.com.cn");
+                article.setUrl(ConfigConstant.SPECIAL_SHOP_URL+specialShopInfoDTO.getShopId());
                 articleList.add(article);
                 WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
             }
