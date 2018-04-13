@@ -3,6 +3,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
 
     /*------------------------------------初始化参数-----------------------------------------------*/
     $scope.param = {
+        top_bottomSelect:"yuyue",
         tabSty:'day',
         headerCash:{
             backContent:"账户明细",
@@ -36,6 +37,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
                 rightFlag:true
             },
         },
+
         //考勤头部开关
 
         //价目表头部开关
@@ -55,5 +57,8 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
     /*--------------------------------------方法-------------------------------------------------*/
     $scope.switchType = function (type) {
         $scope.param.tabSty = type
+    }
+    $scope.selectSty = function (type) {
+        $scope.param.top_bottomSelect = type
     }
 })

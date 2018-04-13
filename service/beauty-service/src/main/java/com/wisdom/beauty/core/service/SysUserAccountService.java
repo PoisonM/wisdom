@@ -36,4 +36,5 @@ public interface SysUserAccountService {
      * @return
      */
     int updateSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO);
+
 }

@@ -16,6 +16,26 @@
 </head>
 <body style="background:#f8f8f8" onload="orderPayInit()">
     <ion-view>
+        <div id="specialProductInfo" style="position:absolute;
+                                                    z-index: 10;
+                                                    background: rgb(51, 205, 95);
+                                                    margin-top: 200px;
+                                                    height: 140px;
+                                                    width: 100%;
+                                                    display: none;">
+            <div style="margin-top:10px;margin-left:15px;">
+                <p>支付购买跨境商品前请输入如下信息：</p>
+                <p>身份证号：<input id="userIdentifyNum"></p>
+                <p>用户姓名：<input id="userName"></p>
+                <div>
+                    <center>
+                        <button onclick="confirmUserInfo()" style="background:red;width:80px">确定</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button onclick="cancelUserInfo()" style="background:#fafafa;width:80px">取消</button>
+                    </center>
+                </div>
+            </div>
+        </div>
         <div class="list">
             <div class="item">
                 <div id="userAddressInfo"></div>

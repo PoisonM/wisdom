@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,7 +70,7 @@ public class ShopUserRechargeCardCriteria {
     }
 
     public void setLimitStart(int limitStart) {
-        this.limitStart=limitStart;
+        this.limitStart = limitStart;
     }
 
     public int getLimitStart() {
@@ -77,7 +78,7 @@ public class ShopUserRechargeCardCriteria {
     }
 
     public void setPageSize(int pageSize) {
-        this.pageSize=pageSize;
+        this.pageSize = pageSize;
     }
 
     public int getPageSize() {
@@ -475,6 +476,76 @@ public class ShopUserRechargeCardCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysClerkIdIsNull() {
+            addCriterion("sys_clerk_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIsNotNull() {
+            addCriterion("sys_clerk_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdEqualTo(String value) {
+            addCriterion("sys_clerk_id =", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotEqualTo(String value) {
+            addCriterion("sys_clerk_id <>", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdGreaterThan(String value) {
+            addCriterion("sys_clerk_id >", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_id >=", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLessThan(String value) {
+            addCriterion("sys_clerk_id <", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_id <=", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdLike(String value) {
+            addCriterion("sys_clerk_id like", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotLike(String value) {
+            addCriterion("sys_clerk_id not like", value, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdIn(List<String> values) {
+            addCriterion("sys_clerk_id in", values, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotIn(List<String> values) {
+            addCriterion("sys_clerk_id not in", values, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdBetween(String value1, String value2) {
+            addCriterion("sys_clerk_id between", value1, value2, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkIdNotBetween(String value1, String value2) {
+            addCriterion("sys_clerk_id not between", value1, value2, "sysClerkId");
+            return (Criteria) this;
+        }
+
         public Criteria andSysShopIdIsNull() {
             addCriterion("sys_shop_id is null");
             return (Criteria) this;
@@ -825,52 +896,52 @@ public class ShopUserRechargeCardCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountEqualTo(Long value) {
+        public Criteria andSurplusAmountEqualTo(BigDecimal value) {
             addCriterion("surplus_amount =", value, "surplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountNotEqualTo(Long value) {
+        public Criteria andSurplusAmountNotEqualTo(BigDecimal value) {
             addCriterion("surplus_amount <>", value, "surplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountGreaterThan(Long value) {
+        public Criteria andSurplusAmountGreaterThan(BigDecimal value) {
             addCriterion("surplus_amount >", value, "surplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andSurplusAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("surplus_amount >=", value, "surplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountLessThan(Long value) {
+        public Criteria andSurplusAmountLessThan(BigDecimal value) {
             addCriterion("surplus_amount <", value, "surplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountLessThanOrEqualTo(Long value) {
+        public Criteria andSurplusAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("surplus_amount <=", value, "surplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountIn(List<Long> values) {
+        public Criteria andSurplusAmountIn(List<BigDecimal> values) {
             addCriterion("surplus_amount in", values, "surplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountNotIn(List<Long> values) {
+        public Criteria andSurplusAmountNotIn(List<BigDecimal> values) {
             addCriterion("surplus_amount not in", values, "surplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountBetween(Long value1, Long value2) {
+        public Criteria andSurplusAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("surplus_amount between", value1, value2, "surplusAmount");
             return (Criteria) this;
         }
 
-        public Criteria andSurplusAmountNotBetween(Long value1, Long value2) {
+        public Criteria andSurplusAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("surplus_amount not between", value1, value2, "surplusAmount");
             return (Criteria) this;
         }
@@ -885,52 +956,52 @@ public class ShopUserRechargeCardCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountEqualTo(Long value) {
+        public Criteria andInitAmountEqualTo(BigDecimal value) {
             addCriterion("init_amount =", value, "initAmount");
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountNotEqualTo(Long value) {
+        public Criteria andInitAmountNotEqualTo(BigDecimal value) {
             addCriterion("init_amount <>", value, "initAmount");
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountGreaterThan(Long value) {
+        public Criteria andInitAmountGreaterThan(BigDecimal value) {
             addCriterion("init_amount >", value, "initAmount");
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andInitAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("init_amount >=", value, "initAmount");
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountLessThan(Long value) {
+        public Criteria andInitAmountLessThan(BigDecimal value) {
             addCriterion("init_amount <", value, "initAmount");
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountLessThanOrEqualTo(Long value) {
+        public Criteria andInitAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("init_amount <=", value, "initAmount");
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountIn(List<Long> values) {
+        public Criteria andInitAmountIn(List<BigDecimal> values) {
             addCriterion("init_amount in", values, "initAmount");
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountNotIn(List<Long> values) {
+        public Criteria andInitAmountNotIn(List<BigDecimal> values) {
             addCriterion("init_amount not in", values, "initAmount");
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountBetween(Long value1, Long value2) {
+        public Criteria andInitAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("init_amount between", value1, value2, "initAmount");
             return (Criteria) this;
         }
 
-        public Criteria andInitAmountNotBetween(Long value1, Long value2) {
+        public Criteria andInitAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("init_amount not between", value1, value2, "initAmount");
             return (Criteria) this;
         }

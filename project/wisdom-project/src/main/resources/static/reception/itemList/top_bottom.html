@@ -57,15 +57,16 @@
 
 
     <!--中心切换区域-->
+
     <div ui-view style="height: 100%"></div>
     <div ng-if = "mainSwitch.footerBoxFlag" class="footer">
         <div class="footer_box">
             <ul>
-                <li><span></span>预约</li>
-                <li><span></span>收银</li>
-                <li><span></span>考勤</li>
-                <li><span></span>价目表</li>
-                <li><span></span>我</li>
+                <li ng-click="selectSty('yuyue')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'yuyue'}"><span></span>预约</li>
+                <li ng-click="selectSty('shouyin')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'shouyin'}"><span></span>收银</li>
+                <li ng-click="selectSty('kaoqin')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'kaoqin'}"><span></span>考勤</li>
+                <li ng-click="selectSty('jiamubiao')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'jiamubiao'}"><span></span>价目表</li>
+                <li ng-click="selectSty('wo')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'wo'}"><span></span>我</li>
             </ul>
         </div>
     </div>

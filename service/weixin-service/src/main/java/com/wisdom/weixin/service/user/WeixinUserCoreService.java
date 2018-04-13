@@ -29,7 +29,7 @@ import java.util.Date;
 public class WeixinUserCoreService {
 
     @Autowired
-    ProcessUserViewEventService processUserClickViewEvent;
+    ProcessUserViewEventService processUserClickViewEventService;
 
     @Autowired
     ProcessUserScanEventService processUserScanEventService;
@@ -59,27 +59,27 @@ public class WeixinUserCoreService {
             if(eventType.equals(MessageUtil.SCAN))
             {
                 //已关注公众号的情况下扫描
-                processUserScanEventService.processEvent(xmlEntity);
+                processUserScanEventService.processUserScanEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE))
             {
                 //扫描关注公众号或者搜索关注公众号都在其中
-                processUserSubscribeEventService.processSubscribeEvent(xmlEntity);
+                processUserSubscribeEventService.processUserSubscribeEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE))
             {
                 // 取消订阅
-                processUserSubscribeEventService.processUnSubscribeEvent(xmlEntity);
+                processUserSubscribeEventService.processUserUnSubscribeEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK))
             {
                 // 自定义菜单点击事件
-                respMessage = processUserClickEventService.processEvent(xmlEntity,request,response);
+                respMessage = processUserClickEventService.processUserClickEvent(xmlEntity,request,response);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_VIEW))
             {
                 //点击带URL菜单事件
-                processUserClickViewEvent.processEvent(xmlEntity);
+                processUserClickViewEventService.processUserClickViewEvent(xmlEntity);
             }
         }
         else
@@ -134,6 +134,13 @@ public class WeixinUserCoreService {
         return weixinShareDTO;
     }
 
+    public String getSpecialShopQRCode(String specialShopId)
+    {
+        String specialShopCode = ConfigConstant.SPECIAL_SHOP_VALUE + specialShopId + "_" + RandomNumberUtil.getFourRandom();
+        String qrCodeUrl = this.getSpecialShopQRURL(specialShopCode);
+        return qrCodeUrl;
+    }
+
     /**
      * 根据信息生成二维码
      * @param info
@@ -145,6 +152,19 @@ public class WeixinUserCoreService {
         String token = weixinTokenDTO.getToken();
         String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
         String jsonData="{\"expire_seconds\": 626400, \"action_name\": \"QR_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + info + "\"}}}";
+        String reJson= WeixinUtil.post(url, jsonData,"POST");
+        JSONObject jb=JSONObject.fromObject(reJson);
+        String qrTicket = jb.getString("ticket");
+        String QRCodeURI="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+qrTicket;
+        return QRCodeURI;
+    }
+
+    private String getSpecialShopQRURL(String info) {
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
+        WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
+        String token = weixinTokenDTO.getToken();
+        String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
+        String jsonData="{\"action_name\": \"QR_LIMIT_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + info + "\"}}}";
         String reJson= WeixinUtil.post(url, jsonData,"POST");
         JSONObject jb=JSONObject.fromObject(reJson);
         String qrTicket = jb.getString("ticket");
