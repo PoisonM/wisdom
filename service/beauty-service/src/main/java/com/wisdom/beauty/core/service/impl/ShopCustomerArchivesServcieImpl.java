@@ -134,4 +134,42 @@ public class ShopCustomerArchivesServcieImpl implements ShopCustomerArchivesServ
 
         return shopUserArchivesMapper.insert(shopUserArchivesDTO);
     }
+
+    /**
+     * 更新用户的档案信息
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    @Override
+    public int updateShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO) {
+
+        logger.info("更新用户的档案信息传入参数={}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+
+        if (CommonUtils.objectIsEmpty(shopUserArchivesDTO)) {
+            logger.error("更新用户的档案信息,传入参数为空{}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+            return 0;
+        }
+
+        return shopUserArchivesMapper.updateByPrimaryKeySelective(shopUserArchivesDTO);
+    }
+
+    /**
+     * 删除用户的档案信息
+     *
+     * @param archivesId
+     * @return
+     */
+    @Override
+    public int deleteShopUserArchivesInfo(String archivesId) {
+
+        logger.info("保存用户的建档案信息传入参数={}", "archivesId = [" + archivesId + "]");
+
+        if (StringUtils.isBlank(archivesId)) {
+            logger.error("保存用户的建档案信息,传入参数为空{}", "archivesId = [" + archivesId + "]");
+            return 0;
+        }
+
+        return shopUserArchivesMapper.deleteByPrimaryKey(archivesId);
+    }
 }

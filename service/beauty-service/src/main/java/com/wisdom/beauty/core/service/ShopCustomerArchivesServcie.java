@@ -51,4 +51,19 @@ public interface ShopCustomerArchivesServcie {
      */
     int saveShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO);
 
+    /**
+     * 更新用户的档案信息
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    int updateShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO);
+
+    /**
+     * 删除用户的档案信息
+     *
+     * @param archivesId
+     * @return
+     */
+    int deleteShopUserArchivesInfo(String archivesId);
 }

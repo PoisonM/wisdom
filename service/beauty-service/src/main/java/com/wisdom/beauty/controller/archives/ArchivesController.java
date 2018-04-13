@@ -82,12 +82,12 @@ public class ArchivesController {
     }
 
     /**
-     * 用户档案接口
+     * 保存用户档案接口
      *
      * @param shopUserArchivesDTO
      * @return
      */
-    @RequestMapping(value = "/saveArchiveInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/saveArchiveInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
 
@@ -116,6 +116,38 @@ public class ArchivesController {
     }
 
     /**
+     * 更新用户档案接口
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    @RequestMapping(value = "/updateArchiveInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<String> updateArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        shopCustomerArchivesServcie.updateShopUserArchivesInfo(shopUserArchivesDTO);
+        responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
+
+    /**
+     * 删除用户档案接口
+     *
+     * @param archivesId
+     * @return
+     */
+    @RequestMapping(value = "/deleteArchiveInfo/{archivesId}", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<String> deleteArchiveInfo(@PathVariable String archivesId) {
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        shopCustomerArchivesServcie.deleteShopUserArchivesInfo(archivesId);
+        responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
+
+    /**
     *@Author:huan
     *@Param:
     *@Return:
@@ -135,13 +167,4 @@ public class ArchivesController {
         return responseDTO;
     }
 
-    //查询会员情况（有无绑定关系)
-    @RequestMapping(value = "/archives/isMember/{userId}", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseDTO<ShopUserArchivesDTO> isMember(@PathVariable String userId) {
-
-        ResponseDTO<ShopUserArchivesDTO> responseDTO = new ResponseDTO<>();
-
-        return responseDTO;
-    }
 }
