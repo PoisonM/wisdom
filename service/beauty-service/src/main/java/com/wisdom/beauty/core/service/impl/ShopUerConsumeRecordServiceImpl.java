@@ -53,14 +53,22 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         criteria.setPageSize(pageParamVoDTO.getPageSize());
 
         c.andSysShopIdEqualTo(shopUserConsumeRecordDTO.getSysShopId());
-        c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
-
-        if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecordDTO.getStatus())) {
+         //根据是否有店员id，设置消费类型查询参数
+        String sysClerkId=shopUserConsumeRecordDTO.getSysClerkId();
+        if(StringUtils.isNotBlank(sysClerkId)){
+            logger.info("此时设置店员消费记录查询条件,店员sysClerkId={}",sysClerkId);
+            c.andSysClerkIdEqualTo(sysClerkId);
+            //设置状态值查询条件，划卡的时候传-消费的状态值，除了划卡传-充值的状态
             c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getStatus());
-        } else {
-            List<String> values = new ArrayList<>();
-            values.add(ConsumeTypeEnum.CONSUME.getCode());
-            c.andConsumeTypeNotIn(values);
+        }else {
+            c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
+            if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecordDTO.getStatus())) {
+                c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getStatus());
+            } else {
+                List<String> values = new ArrayList<>();
+                values.add(ConsumeTypeEnum.CONSUME.getCode());
+                c.andConsumeTypeNotIn(values);
+            }
         }
         List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
         Map<String, UserConsumeRecordResponseDTO> map = new HashMap<>(16);
