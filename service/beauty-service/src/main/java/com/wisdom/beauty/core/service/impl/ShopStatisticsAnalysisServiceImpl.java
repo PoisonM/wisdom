@@ -4,7 +4,7 @@ import com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
-import com.wisdom.beauty.core.service.ShopArchivesService;
+import com.wisdom.beauty.core.service.ShopCustomerArchivesServcie;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ import java.util.List;
 public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysisService {
 
     @Autowired
-    private ShopArchivesService shopArchivesService;
+    private ShopCustomerArchivesServcie shopCustomerArchivesServcie;
 
     @Autowired
     private ExtShopUserConsumeRecordMapper extShopUserConsumeRecordMapper;
@@ -72,6 +72,6 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
     @Override
     public int getShopNewUserNumber(String shopId, Date startDate, Date endDate) {
         logger.info("查询新客个数传入参数={}", "shopId = [" + shopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
-        return shopArchivesService.getShopBuildArchivesNumbers(shopId, startDate, endDate);
+        return shopCustomerArchivesServcie.getShopBuildArchivesNumbers(shopId, startDate, endDate);
     }
 }
