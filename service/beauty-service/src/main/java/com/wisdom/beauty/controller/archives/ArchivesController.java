@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
+@RequestMapping(value = "archives")
 public class ArchivesController {
 
     @Autowired
@@ -109,6 +111,8 @@ public class ArchivesController {
         shopUserArchivesDTO.setSysUserId(userInfoDTO.getId());
         shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
         shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
+        shopUserArchivesDTO.setCreateDate(new Date());
+        shopUserArchivesDTO.setSysUserId(shopUserArchivesDTO.getSysClerkId());
         shopCustomerArchivesServcie.saveShopUserArchivesInfo(shopUserArchivesDTO);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -152,7 +156,7 @@ public class ArchivesController {
     *@Param:
     *@Return:
     *@Description: 获取用户id查询档案信息
-    *@Date:2018/4/8 15:11
+     *@Date:2018/4/8
     */
     @RequestMapping(value = "/archives/{userId}", method = RequestMethod.GET)
     @ResponseBody
