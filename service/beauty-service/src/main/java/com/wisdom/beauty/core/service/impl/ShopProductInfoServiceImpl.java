@@ -75,6 +75,20 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
         return shopUserProductRelationDTOS;
     }
 
+    /**
+     * 更新用户与产品的关系
+     *
+     * @param shopUserProductRelationDTO
+     * @return
+     */
+    @Override
+    public int updateShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO) {
+        logger.info("更新用户与产品的关系传入参数={}", "shopUserProductRelationDTO = [" + shopUserProductRelationDTO + "]");
+        int update = shopUserProductRelationMapper.updateByPrimaryKey(shopUserProductRelationDTO);
+        logger.debug("更新用户与产品的关系,执行结果 {}", update > 0 ? "成功" : "失败");
+        return update;
+    }
+
     @Override
     public List<ShopProductTypeDTO> getOneLevelProductList(String sysShopId) {
         logger.info("getOneLevelProjectList传入的参数,sysShopId={}", sysShopId);

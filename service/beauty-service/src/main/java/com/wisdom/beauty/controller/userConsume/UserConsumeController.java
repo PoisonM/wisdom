@@ -46,6 +46,9 @@ public class UserConsumeController {
     private ShopProjectService shopProjectService;
 
     @Resource
+    private ShopClerkService shopClerkService;
+
+    @Resource
     private ShopProductInfoService shopProductInfoService;
 
     @Resource
@@ -210,6 +213,8 @@ public class UserConsumeController {
                     logger.error("更新账户信息失败，失败信息为{}" + e.getMessage(), e);
                     throw new RuntimeException();
                 }
+                //记录店员的流水信息
+                saveSysClerkFlowAccountInfo(dto);
 
                 dto.setFlowNo(transactionCodeNumber);
                 int record = shopUerConsumeRecordService.saveCustomerConsumeRecord(dto);
@@ -310,11 +315,13 @@ public class UserConsumeController {
                     productRelationDTO.setId(dto.getFlowId());
                     productRelationDTO = shopProductInfoService.getUserProductInfoList(productRelationDTO).get(0);
                     //剩余价格=剩余价格-消费价格
-                    BigDecimal subtract = productRelationDTO.getSurplusAmount().subtract(dto.getPrice());
-                    productRelationDTO.setSurplusAmount(subtract);
+                    BigDecimal surplusAmount = productRelationDTO.getSurplusAmount().subtract(dto.getPrice());
+                    productRelationDTO.setSurplusAmount(surplusAmount);
                     //剩余次数=剩余次数-消费次数
-                    int i = productRelationDTO.getSurplusTimes() - dto.getConsumeNumber();
-                    //更新用户与项目的关系表
+                    int surplusTimes = productRelationDTO.getSurplusTimes() - dto.getConsumeNumber();
+                    productRelationDTO.setSurplusTimes(surplusTimes);
+                    //更新用户与产品的关系表
+                    shopProductInfoService.updateShopUserProductRelation(productRelationDTO);
                 }
                 //dto.getPrice()为此次交易的总价格
                 sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().subtract(dto.getPrice()));
@@ -326,6 +333,9 @@ public class UserConsumeController {
                     logger.error("更新账户信息失败，失败信息为{}" + e.getMessage(), e);
                     throw new RuntimeException();
                 }
+
+                //记录店员的流水信息
+                saveSysClerkFlowAccountInfo(dto);
 
                 dto.setFlowNo(transactionCodeNumber);
                 int record = shopUerConsumeRecordService.saveCustomerConsumeRecord(dto);
@@ -340,6 +350,31 @@ public class UserConsumeController {
         responseDTO.setResponseData("success");
         logger.info("用户充值操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
+    }
+
+    private void saveSysClerkFlowAccountInfo(ShopUserConsumeRecordDTO dto) {
+        //记录店员的流水信息
+        try {
+            SysClerkFlowAccountDTO clerkFlowAccountDTO = new SysClerkFlowAccountDTO();
+            clerkFlowAccountDTO.setCreateDate(new Date());
+            clerkFlowAccountDTO.setDetail(dto.getDetail());
+            clerkFlowAccountDTO.setFlowAmount(dto.getPrice());
+            clerkFlowAccountDTO.setOperDate(new Date());
+            clerkFlowAccountDTO.setId(IdGen.uuid());
+            clerkFlowAccountDTO.setSignUrl(dto.getSignUrl());
+            clerkFlowAccountDTO.setOperInfo(dto.getDetail());
+            clerkFlowAccountDTO.setSysBossId(dto.getSysBossId());
+            clerkFlowAccountDTO.setSysClerkId(dto.getSysClerkId());
+            clerkFlowAccountDTO.setSysShopId(dto.getSysShopId());
+            clerkFlowAccountDTO.setSysShopName(dto.getSysShopName());
+            clerkFlowAccountDTO.setSysUserId(dto.getSysUserId());
+            clerkFlowAccountDTO.setShopUserConsumeRecordId(dto.getId());
+            clerkFlowAccountDTO.setType(dto.getConsumeType());
+            shopClerkService.saveSysClerkFlowAccountInfo(clerkFlowAccountDTO);
+        } catch (Exception e) {
+            logger.error("保存店员的流水信息失败，失败信息为{}" + e.getMessage(), e);
+            throw new RuntimeException();
+        }
     }
 
 }

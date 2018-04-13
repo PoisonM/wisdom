@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -195,6 +196,76 @@ public class SysClerkFlowAccountCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andShopUserConsumeRecordIdIsNull() {
+            addCriterion("shop_user_consume_record_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdIsNotNull() {
+            addCriterion("shop_user_consume_record_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdEqualTo(String value) {
+            addCriterion("shop_user_consume_record_id =", value, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdNotEqualTo(String value) {
+            addCriterion("shop_user_consume_record_id <>", value, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdGreaterThan(String value) {
+            addCriterion("shop_user_consume_record_id >", value, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdGreaterThanOrEqualTo(String value) {
+            addCriterion("shop_user_consume_record_id >=", value, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdLessThan(String value) {
+            addCriterion("shop_user_consume_record_id <", value, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdLessThanOrEqualTo(String value) {
+            addCriterion("shop_user_consume_record_id <=", value, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdLike(String value) {
+            addCriterion("shop_user_consume_record_id like", value, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdNotLike(String value) {
+            addCriterion("shop_user_consume_record_id not like", value, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdIn(List<String> values) {
+            addCriterion("shop_user_consume_record_id in", values, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdNotIn(List<String> values) {
+            addCriterion("shop_user_consume_record_id not in", values, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdBetween(String value1, String value2) {
+            addCriterion("shop_user_consume_record_id between", value1, value2, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserConsumeRecordIdNotBetween(String value1, String value2) {
+            addCriterion("shop_user_consume_record_id not between", value1, value2, "shopUserConsumeRecordId");
+            return (Criteria) this;
+        }
+
         public Criteria andSysUserIdIsNull() {
             addCriterion("sys_user_id is null");
             return (Criteria) this;
@@ -265,6 +336,76 @@ public class SysClerkFlowAccountCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysUserNameIsNull() {
+            addCriterion("sys_user_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameIsNotNull() {
+            addCriterion("sys_user_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameEqualTo(String value) {
+            addCriterion("sys_user_name =", value, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameNotEqualTo(String value) {
+            addCriterion("sys_user_name <>", value, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameGreaterThan(String value) {
+            addCriterion("sys_user_name >", value, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_user_name >=", value, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameLessThan(String value) {
+            addCriterion("sys_user_name <", value, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameLessThanOrEqualTo(String value) {
+            addCriterion("sys_user_name <=", value, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameLike(String value) {
+            addCriterion("sys_user_name like", value, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameNotLike(String value) {
+            addCriterion("sys_user_name not like", value, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameIn(List<String> values) {
+            addCriterion("sys_user_name in", values, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameNotIn(List<String> values) {
+            addCriterion("sys_user_name not in", values, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameBetween(String value1, String value2) {
+            addCriterion("sys_user_name between", value1, value2, "sysUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserNameNotBetween(String value1, String value2) {
+            addCriterion("sys_user_name not between", value1, value2, "sysUserName");
+            return (Criteria) this;
+        }
+
         public Criteria andSysShopIdIsNull() {
             addCriterion("sys_shop_id is null");
             return (Criteria) this;
@@ -332,6 +473,76 @@ public class SysClerkFlowAccountCriteria {
 
         public Criteria andSysShopIdNotBetween(String value1, String value2) {
             addCriterion("sys_shop_id not between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameIsNull() {
+            addCriterion("sys_shop_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameIsNotNull() {
+            addCriterion("sys_shop_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameEqualTo(String value) {
+            addCriterion("sys_shop_name =", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameNotEqualTo(String value) {
+            addCriterion("sys_shop_name <>", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameGreaterThan(String value) {
+            addCriterion("sys_shop_name >", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_shop_name >=", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameLessThan(String value) {
+            addCriterion("sys_shop_name <", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameLessThanOrEqualTo(String value) {
+            addCriterion("sys_shop_name <=", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameLike(String value) {
+            addCriterion("sys_shop_name like", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameNotLike(String value) {
+            addCriterion("sys_shop_name not like", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameIn(List<String> values) {
+            addCriterion("sys_shop_name in", values, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameNotIn(List<String> values) {
+            addCriterion("sys_shop_name not in", values, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameBetween(String value1, String value2) {
+            addCriterion("sys_shop_name between", value1, value2, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameNotBetween(String value1, String value2) {
+            addCriterion("sys_shop_name not between", value1, value2, "sysShopName");
             return (Criteria) this;
         }
 
@@ -555,52 +766,52 @@ public class SysClerkFlowAccountCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountEqualTo(Long value) {
+        public Criteria andFlowAmountEqualTo(BigDecimal value) {
             addCriterion("flow_amount =", value, "flowAmount");
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountNotEqualTo(Long value) {
+        public Criteria andFlowAmountNotEqualTo(BigDecimal value) {
             addCriterion("flow_amount <>", value, "flowAmount");
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountGreaterThan(Long value) {
+        public Criteria andFlowAmountGreaterThan(BigDecimal value) {
             addCriterion("flow_amount >", value, "flowAmount");
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andFlowAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("flow_amount >=", value, "flowAmount");
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountLessThan(Long value) {
+        public Criteria andFlowAmountLessThan(BigDecimal value) {
             addCriterion("flow_amount <", value, "flowAmount");
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountLessThanOrEqualTo(Long value) {
+        public Criteria andFlowAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("flow_amount <=", value, "flowAmount");
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountIn(List<Long> values) {
+        public Criteria andFlowAmountIn(List<BigDecimal> values) {
             addCriterion("flow_amount in", values, "flowAmount");
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountNotIn(List<Long> values) {
+        public Criteria andFlowAmountNotIn(List<BigDecimal> values) {
             addCriterion("flow_amount not in", values, "flowAmount");
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountBetween(Long value1, Long value2) {
+        public Criteria andFlowAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("flow_amount between", value1, value2, "flowAmount");
             return (Criteria) this;
         }
 
-        public Criteria andFlowAmountNotBetween(Long value1, Long value2) {
+        public Criteria andFlowAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("flow_amount not between", value1, value2, "flowAmount");
             return (Criteria) this;
         }
@@ -662,146 +873,6 @@ public class SysClerkFlowAccountCriteria {
 
         public Criteria andOperDateNotBetween(Date value1, Date value2) {
             addCriterion("oper_date not between", value1, value2, "operDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameIsNull() {
-            addCriterion("sys_shop_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameIsNotNull() {
-            addCriterion("sys_shop_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameEqualTo(String value) {
-            addCriterion("sys_shop_name =", value, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameNotEqualTo(String value) {
-            addCriterion("sys_shop_name <>", value, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameGreaterThan(String value) {
-            addCriterion("sys_shop_name >", value, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameGreaterThanOrEqualTo(String value) {
-            addCriterion("sys_shop_name >=", value, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameLessThan(String value) {
-            addCriterion("sys_shop_name <", value, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameLessThanOrEqualTo(String value) {
-            addCriterion("sys_shop_name <=", value, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameLike(String value) {
-            addCriterion("sys_shop_name like", value, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameNotLike(String value) {
-            addCriterion("sys_shop_name not like", value, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameIn(List<String> values) {
-            addCriterion("sys_shop_name in", values, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameNotIn(List<String> values) {
-            addCriterion("sys_shop_name not in", values, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameBetween(String value1, String value2) {
-            addCriterion("sys_shop_name between", value1, value2, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysShopNameNotBetween(String value1, String value2) {
-            addCriterion("sys_shop_name not between", value1, value2, "sysShopName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameIsNull() {
-            addCriterion("sys_user_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameIsNotNull() {
-            addCriterion("sys_user_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameEqualTo(String value) {
-            addCriterion("sys_user_name =", value, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameNotEqualTo(String value) {
-            addCriterion("sys_user_name <>", value, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameGreaterThan(String value) {
-            addCriterion("sys_user_name >", value, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameGreaterThanOrEqualTo(String value) {
-            addCriterion("sys_user_name >=", value, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameLessThan(String value) {
-            addCriterion("sys_user_name <", value, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameLessThanOrEqualTo(String value) {
-            addCriterion("sys_user_name <=", value, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameLike(String value) {
-            addCriterion("sys_user_name like", value, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameNotLike(String value) {
-            addCriterion("sys_user_name not like", value, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameIn(List<String> values) {
-            addCriterion("sys_user_name in", values, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameNotIn(List<String> values) {
-            addCriterion("sys_user_name not in", values, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameBetween(String value1, String value2) {
-            addCriterion("sys_user_name between", value1, value2, "sysUserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSysUserNameNotBetween(String value1, String value2) {
-            addCriterion("sys_user_name not between", value1, value2, "sysUserName");
             return (Criteria) this;
         }
 

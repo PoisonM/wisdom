@@ -1,4 +1,4 @@
-<div class="dayAppointment">
+<div class="dayAppointment H100">
     <div class="header">
         <p class="timeArea">
             <input  class="time  " id="orderPayStartTime"  ng-click="dataS('#orderPayStartTime')"  value="{{date}}">
@@ -11,69 +11,93 @@
             <span>排班</span>
         </p>
     </div>
-    <div class="content" ng-show="param.dayFlag" >
-        <div class="nameLis">
-            <ul>
-                <li class="w156"></li>
-                <li>
-                    <p class="name">wang</p>
-                    <p class="fs24 mt10 mb20">
-                        <img src="images/ic_point.png" class="mr12">
-                        12
-                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
-                        <img src="images/ic_row.png" class="mr12">
-                        12
-                    </p>
-                </li>
-                <li>
-                    <p class="name">wang</p>
-                    <p class="fs24 ">
-                        <img src="images/ic_point.png" class="mr12">
-                        12
-                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
-                        <img src="images/ic_row.png" class="mr12">
-                        12
-                    </p>
-                </li>
-                <li>
-                    <p class="name">wang</p>
-                    <p class="fs24 ">
-                        <img src="images/ic_point.png" class="mr12">
-                        12
-                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
-                        <img src="images/ic_row.png" class="mr12">
-                        12
-                    </p>
-                </li>
+    <div class="content H100 mt128" ng-show="param.dayFlag" >
+        <div class="nameLis nowarp ">
+            <ul class=" ml156 messLis ">
 
+                <li ng-repeat="item in param.appointmentObject.beautician" class="bgfff" >
+                    <p class="name">{{item}}</p>
+                    <p class="fs24 mt10 mb20">
+                        <img src="images/ic_point.png" class="mr12 ">
+                        12
+                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
+                        <img src="images/ic_row.png" class="mr12">
+                        12
+                    </p>
+                </li>
             </ul>
         </div>
-        <div class="messLis day">
-            <ul class="time">
-                <li ng-repeat="item in arrTime" style="text-align: center">{{item}}</li>
+        <div class="messLis day H100 mt128 pt04">
+            <ul class="time ">
+                <li ng-repeat="item in param.days" style="text-align: center" >{{item}}</li>
             </ul>
             <div class="appointmentLis">
-                <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsWrap(1,$index,'消费')">12</li>
+                <ul class="nowarp">
+                    <li style="float:left;"ng-repeat="(index1,item) in param.appointmentObject.list">
+                        <ul >
+                            <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3}" ng-click="detailsWrap(index1,index2,item1)" >
+                            <div ng-if="item1 == item.status[$index+1]">
+                                <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3}">{{item.sysUserName[index2]}}</p>
+                                <p class="mt30" >
+                                    <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 0">
+                                    <span class="fs24">{{item.time[index2]}}</span>
+                                    <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
+                                </p>
+                            </div>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
-                <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsWrap(2,$index,'消费')">12</li>
-                </ul>
-                <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsWrap(3,$index,'划卡')">12</li>
-                </ul>
-                <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsWrap(4,$index,'散客')">12</li>
-                </ul>
-                <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center"    ng-onhold="onHold($index)">12</li>
-                </ul>
-
             </div>
+        </div>
+
+        <div class="closMessLis day  mt128" ng-show="false">
+                <div class="time">
+                    <ul >
+                        <li ng-repeat="item in param.days" style="text-align: center" >{{item}}</li>
+                    </ul>
+                </div>
+                <div class="tab-head">
+                    <div class="tab-head-item">
+                        <div class="nameLis">
+                            <ul class="tab-head ">
+                                <li ng-repeat="item in param.appointmentObject.beautician" class="tab-head-item">
+                                    <p class="name">{{item}}</p>
+                                    <p class="fs24 mt10 mb20">
+                                        <img src="images/ic_point.png" class="mr12 ">
+                                        12
+                                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
+                                        <img src="images/ic_row.png" class="mr12">
+                                        12
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="appointmentLis">
+                            <ul  >
+                                <li style="float:left;"ng-repeat="(index1,item) in param.appointmentObject.list">
+                                    <ul >
+                                        <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3}" ng-click="detailsWrap(index1,index2,item1)" >
+                                            <div ng-if="item1 == item.status[$index+1]">
+                                                <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3}">{{item.sysUserName[index2]}}</p>
+                                                <p class="mt30" >
+                                                    <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 0">
+                                                    <span class="fs24">{{item.time[index2]}}</span>
+                                                    <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
         </div>
     </div>
     <!--周预约-->
-    <div ng-include="'itemList/appointment/weeklyReservation.html'" ng-show="param.weekFlag"></div>
+    <div ng-include="'itemList/appointment/weeklyReservation.html'" ng-show="param.weekFlag " class="H100"></div>
 </div>
 <!--预约详情-->
 <script type="text/ng-template" id="detailsWrap">
