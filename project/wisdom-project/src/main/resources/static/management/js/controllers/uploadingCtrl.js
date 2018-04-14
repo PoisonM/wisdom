@@ -63,7 +63,7 @@ angular.module('controllers',[]).controller('uploadingCtrl',
 
                         AddOfflineProduct.save($scope.ProductDTO,function(data){
                             ManagementUtil.checkResponseData(data,"");
-                            if(data.errorInfo == Global.SUCCESS){
+                            if(data.result == Global.SUCCESS){
                                 $state.go("home");
                             }
                         })
