@@ -96,7 +96,7 @@ public class WeixinUserController {
     /**
      * 公众号菜单引导页 081dazSU0Zf1iU1fGISU0q5ASU0dazSd 0815XmM70lSlvH1UnyN70OwBM705XmM9
      */
-    @RequestMapping(value = "getCustomerWeixinMenuId", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "getUserWeixinMenuId", method = {RequestMethod.POST, RequestMethod.GET})
     public String getCustomerWeixinMenuId(HttpServletRequest request,
                                           HttpServletResponse response,
                                           HttpSession session) throws Exception
