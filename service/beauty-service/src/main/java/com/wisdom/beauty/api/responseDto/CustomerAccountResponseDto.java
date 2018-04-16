@@ -26,6 +26,24 @@ public class CustomerAccountResponseDto extends BaseEntity {
     private String sysClerkName;
     //会员状态
     private String member;
+    //手机
+    private String phone;
+    //电话
+    //性别
+    private String sex;
+    //生日
+    private String birthday;
+    //星座
+    private String constellation;
+    //血型
+    private String bloodType;
+    // 身高
+    private String height;
+    //体重
+    private String weight;
+    //类型
+    private String sysUserType;
+
 
     public BigDecimal getSumAmount() {
         return sumAmount;
@@ -73,5 +91,69 @@ public class CustomerAccountResponseDto extends BaseEntity {
 
     public void setMember(String member) {
         this.member = member;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getConstellation() {
+        return constellation;
+    }
+
+    public void setConstellation(String constellation) {
+        this.constellation = constellation;
+    }
+
+    public String getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(String bloodType) {
+        this.bloodType = bloodType;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getSysUserType() {
+        return sysUserType;
+    }
+
+    public void setSysUserType(String sysUserType) {
+        this.sysUserType = sysUserType;
     }
 }
