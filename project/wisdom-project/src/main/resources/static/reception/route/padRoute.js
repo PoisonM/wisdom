@@ -595,21 +595,6 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
-        .state('pad-web.left_nav.setCard', {
-            url: '/setCard',
-            templateUrl: root + '/priceList/setCard.html',
-            controller: 'setCardCtrl',
-            resolve: {
-                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                    return $ocLazyLoad.load({
-                        name: "套卡也面",
-                        files: [root + "priceList/setCardCtrl.js",
-                            root + "priceList/setCard.css",
-                        ]
-                    })
-                }]
-            }
-        })
         .state('pad-web.dayAppointment', {
             url: '/dayAppointment',
             templateUrl: root + '/appointment/dayAppointment.html',
@@ -657,8 +642,11 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/selectCoupons.css",
                             root + "appointment/balancePrepaidCtrl.js",
                             root + "appointment/relatedStaffCtrl.js",
+                            root+"appointment/dropload.css",
                             root + "../libs/angular-touch.js",
-                            root + "../libs/jquery-2.1.3.min.js",
+                            root + "../libs/dropload.js",
+                            root + "../libs/zepto.min.js",
+
                         ]
                     })
                 }]

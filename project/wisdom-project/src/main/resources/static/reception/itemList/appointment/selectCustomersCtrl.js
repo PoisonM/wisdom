@@ -1,9 +1,5 @@
-function selectCustomersCtrl($scope){
-    $scope.selectCustomersCtrl = function(){
-        $scope.param.selectCustomersWrap = true;
-        $scope.param.modifyingAppointment = false;
+function selectCustomersCtrl($scope,ngDialog){
 
-    }
-    addCustomersCtrl && addCustomersCtrl($scope)
+    addCustomersCtrl && addCustomersCtrl($scope,ngDialog)
 }
 

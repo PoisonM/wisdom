@@ -21,5 +21,14 @@ PADWeb.controller("left_navCtrl", function($scope, $state, $stateParams) {
     //价目表切换
     $scope.selectPriceType = function (type) {
         $scope.param.priceType = type
+        if(type == 'xm'){
+            $state.go("pad-web.left_nav.project");
+        }else if(type == 'cp'){
+            $state.go("pad-web.left_nav.product");
+        }else if(type == 'tk'){
+            $state.go("pad-web.left_nav.rechargeableCard");
+        }else if(type == 'czk'){
+            $state.go("pad-web.left_nav.setCard");
+        }
     }
 })

@@ -5,7 +5,7 @@
 .addWraps .headers ul li{width: 33%}
 .addWraps .addCustomer{font-size: 0.296rem;color: #333333;font-weight: 600}
 .addWraps .photoBox{width: 5.90rem;height: 2.065rem;background: #ffffff; vertical-align: middle; display: table-cell;text-align: center;}
-.addWraps .photoBox img{width: 1.234rem;height: 1.234rem;}
+.addWraps .photoBox input{width: 1.234rem;height: 1.234rem;background-image: url("../images/bt_taking%20pictures.png")}
 .addWraps .customerBox{width: 5.90rem;height: 2.343rem;background: #ffffff;margin-top:0.156rem}
 .addWraps .customerBox ul{list-style: none}
 .addWraps .customerBox ul li{height: 0.781rem;line-height: 0.781rem;border-bottom: 1px solid #e5e5e5}
