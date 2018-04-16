@@ -1,5 +1,5 @@
 function detailsReservation($scope,ngDialog){
-    $scope.consumptionGo = function(status){
+    $scope.goConsumption = function(status){
         $scope.ngDialog = ngDialog;
         if(status == "去消费"){
             ngDialog.open({
