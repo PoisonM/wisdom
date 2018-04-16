@@ -59,26 +59,33 @@ public class ShopCustomerArchivesServcieImpl implements ShopCustomerArchivesServ
     @Override
     public List<ShopUserArchivesDTO> getArchivesList(PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO) {
         logger.info("getArchivesList方法传入的参数={}", shopCustomerArchivesDTO);
-        if (StringUtils.isBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())) {
-            throw new ServiceException("SysShopId为空");
-        }
+
         ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
         ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
         ShopUserArchivesCriteria.Criteria or = criteria.createCriteria();
 
-
         // 排序
         criteria.setOrderByClause("sys_user_name");
         // 分页
-        criteria.setLimitStart(shopCustomerArchivesDTO.getPageNo());
-        criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
+        if(shopCustomerArchivesDTO.getPageNo()!=0) {
+            criteria.setLimitStart(shopCustomerArchivesDTO.getPageNo());
+        }
+        if(shopCustomerArchivesDTO.getPageSize()!=0) {
+            criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
+        }
         //参数
-        c.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())){
+            c.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        }
+        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getId())){
+            c.andIdEqualTo(shopCustomerArchivesDTO.getRequestData().getId());
+        }
         if (StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getPhone())) {
             c.andPhoneLike("%" + shopCustomerArchivesDTO.getRequestData().getPhone() + "%");
         }
-
-        or.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())){
+            or.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+         }
         if (StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysUserName())) {
             or.andSysUserNameLike("%" + shopCustomerArchivesDTO.getRequestData().getSysUserName() + "%");
         }
