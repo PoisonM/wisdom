@@ -77,7 +77,7 @@ public class ArchivesController {
         int count = shopCustomerArchivesServcie.getArchivesCount(shopUserArchivesDTO);
         Map<String, Object> map = new HashMap<>(16);
         map.put("info", list);
-        map.put("data", count);
+        map.put("count", count);
 
         ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(map);
