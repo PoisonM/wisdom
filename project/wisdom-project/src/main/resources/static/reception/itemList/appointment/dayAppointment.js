@@ -11,12 +11,17 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         AppointmentType: "散客",
         dayFlag: true,
         weekFlag: false,
+        ModifyAppointment:true,
         newProductObject: {
             index: 0,
             titleFlag: false,
         },
         timeLengthObject: {/*修改预约-时长对象*/
-            time: ''
+            time: '',
+            type:''
+        },
+        beauticianObject:{
+            userName:""
         },
         appointmentObject: {/*日预约对象*/
             appointmentDate: '',
@@ -1304,34 +1309,31 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             error(function(err) {
                 me.resetload();
             });
-           /* $http({
-                type: 'GET',
-                url: 'http://ons.me/tools/dropload/json.php?page='+page+'&size='+size,
-                success: function(data){
-                    console.log(data);
-                    var result = '';
-                    $scope.data = data.list;
-                    me.resetload();
-                    console.log(12)
-                    $timeout(function(){
-                        console.log(12)
-                        me.resetload();
-                        page = 0;
-                        me.unlock();
-                        me.noData(false);
-                    },300);
-                },
-                error: function(xhr, type){
-                    alert('Ajax error!');
-                    // 即使加载出错，也得重置
-                    me.resetload();
-                }
-            });*/
         },
-       /* loadDownFn : function(me){
+        loadDownFn : function(me){
+            console.log(1);
             page++;
             // 拼接HTML
             var result = '';
+            $http.get('http://ons.me/tools/dropload/json.php?page='+page+'&size='+size).
+            success(function(data) {
+                var arrLen = data;
+                if(arrLen > 0){
+                    $scope.data = data;
+                }else{
+                    me.lock();
+                    me.noData();
+                }
+                $timeout(function(){
+                    me.resetload();
+                    page = 0;
+                    me.unlock();
+                    me.noData(false);
+                },300);
+            }).
+            error(function(err) {
+                me.resetload();
+            });
             $.ajax({
                 type: 'GET',
                 url: 'http://ons.me/tools/dropload/json.php?page='+page+'&size='+size,
@@ -1367,7 +1369,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                     me.resetload();
                 }
             });
-        },*/
+        },
         threshold : 50
     });
 
