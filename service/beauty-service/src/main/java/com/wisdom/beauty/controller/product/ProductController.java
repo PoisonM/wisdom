@@ -81,13 +81,15 @@ public class ProductController {
      */
     @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ShopUserProductRelationDTO> getProduct(@PathVariable String productId) {
+    ResponseDTO<ShopProductInfoDTO> getProduct(@PathVariable String productId) {
         long currentTimeMillis = System.currentTimeMillis();
-        ResponseDTO<ShopUserProductRelationDTO> responseDTO = new ResponseDTO<>();
-        ShopUserProductRelationDTO shopUserProductRelationDTO = shopCustomerProductRelationService.getShopProductInfo(productId);
+        //查询数据
+        ShopProductInfoDTO shopProductInfoDTO = shopProductInfoService.getProductDetail(productId);
+
+        ResponseDTO<ShopProductInfoDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(shopProductInfoDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        responseDTO.setResponseData(shopUserProductRelationDTO);
-        logger.info("查询某个用户的产品列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("getProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
 
     }
@@ -107,7 +109,7 @@ public class ProductController {
         List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(sysShopId);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("findOneLevelProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -130,7 +132,7 @@ public class ProductController {
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("findTwoLevelProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -143,15 +145,19 @@ public class ProductController {
      */
     @RequestMapping(value = "/threeLevelProduct", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProductInfoDTO>> findThreeLevelProject(@RequestParam String sysShopId, @RequestParam String projectTypeOneId,
-                                                                @RequestParam String ProjectTypeTwoId, @RequestParam int pageSize) {
+    ResponseDTO<List<ShopProductInfoDTO>> findThreeLevelProject(@RequestParam String sysShopId,
+                                                                @RequestParam String productTypeOneId,
+                                                                @RequestParam String productTypeTwoId,
+                                                                @RequestParam(required =false) String productName,
+                                                                @RequestParam int pageSize) {
         long currentTimeMillis = System.currentTimeMillis();
         PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
 
         shopProductInfoDTO.setSysShopId(sysShopId);
-        shopProductInfoDTO.setProductTypeOneId(projectTypeOneId);
-        shopProductInfoDTO.setProductTypeTwoId(ProjectTypeTwoId);
+        shopProductInfoDTO.setProductTypeOneId(productTypeOneId);
+        shopProductInfoDTO.setProductTypeTwoId(productTypeTwoId);
+        shopProductInfoDTO.setProductName(productName);
 
         pageParamVoDTO.setRequestData(shopProductInfoDTO);
         pageParamVoDTO.setPageNo(0);
@@ -162,29 +168,9 @@ public class ProductController {
         ResponseDTO<List<ShopProductInfoDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("findThreeLevelProject方法耗时={}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
-    /**
-     * @Author:huan
-     * @Param:
-     * @Return:
-     * @Description:
-     * @Date:2018/4/10 18:06
-     */
-    @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseDTO<ShopProductInfoDTO> findDetailProduct(@RequestParam String id) {
-        long currentTimeMillis = System.currentTimeMillis();
-        //查询数据
-        ShopProductInfoDTO shopProductInfoDTO = shopProductInfoService.getProductDetail(id);
-
-        ResponseDTO<ShopProductInfoDTO> responseDTO = new ResponseDTO<>();
-        responseDTO.setResponseData(shopProductInfoDTO);
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
-        return responseDTO;
-    }
 
 }
