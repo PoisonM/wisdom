@@ -127,6 +127,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.userInfo.consumptionRecord', {
+            url: '/consumptionRecord',
+            templateUrl: root + '/userInfo/consumptionRecord.html',
+            controller: 'consumptionRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "消费记录",
+                        files: [
+                            root + "userInfo/consumptionRecord.css",
+                            root + "userInfo/consumptionRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.userInfo.repaymentRecord', {
             url: '/repaymentRecord',
             templateUrl: root + '/userInfo/repaymentRecord.html',

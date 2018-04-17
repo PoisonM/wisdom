@@ -39,6 +39,9 @@
         <if test="status != null and status !=''">
             and status=#{status}
         </if>
+        ORDER BY
+        create_date
+        DESC
     </select>
 
     <!-- 插入用户 -->

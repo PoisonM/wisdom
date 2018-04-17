@@ -48,9 +48,6 @@ public class TransactionService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Autowired
-    private UserServiceClient userServiceClient;
-
     public void updateBusinessOrderStatus(BusinessOrderDTO businessOrderDTO){
         BusinessOrderDTO businessOrderDTONew = transactionMapper.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
         businessOrderDTONew.setStatus(businessOrderDTO.getStatus());
