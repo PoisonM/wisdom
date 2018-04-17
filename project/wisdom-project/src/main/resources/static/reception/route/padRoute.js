@@ -612,6 +612,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/detailsReservation.css",
                             root + "appointment/detailsReservationCtrl.js",
                             root + "appointment/appointmentType.css",
+                            root + "appointment/appointmentTypeCtrl.js",
                             root + "appointment/selectSingleCtrl.js",
                             root + "appointment/search.css",
                             root + "appointment/searchCtrl.js",
@@ -660,7 +661,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "预约类型",
-                        files: [root + "appointment/appointmentType.js",
+                        files: [root + "appointment/appointmentTypeCtrl.js",
                             root + "appointment/appointmentType.css",
                         ]
                     })
