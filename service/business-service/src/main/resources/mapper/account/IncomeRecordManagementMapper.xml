@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.business.mapper.account.IncomeRecordManagementMapper">
+
+    <resultMap id="IncomeRecordManagementMap" type="com.wisdom.common.dto.account.IncomeRecordManagementDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="income_record_id" property="incomeRecordId" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!-- 根据日期查询用户收入记录信息 -->
+    <select id="getIncomeRecordManagement"
+            resultMap="IncomeRecordManagementMap">
+        SELECT * FROM income_record_management
+        1=1
+        <if test="id!= ''and id!=null">
+            and id=#{id}
+        </if>
+        <if test="income_record_id!= ''and sysUserId!=null">
+            and sys_user_id=#{sysUserId}
+        </if>
+        <if test="sysUserId!= ''and sysUserId!=null">
+            and sys_user_id=#{sysUserId}
+        </if>
+        <if test="userName!= ''and userName!=null">
+            and user_name=#{userName}
+        </if>
+        <if test="createDate!=null">
+            and date_format(create_date, '%Y-%m-%d') = date_format(#{createDate}, '%Y-%m-%d')
+        </if>
+        <if test="userType!= ''and userType!=null">
+            and user_type=#{userType}
+        </if>
+        <if test="status!= ''and status!=null">
+            and status=#{status}
+        </if>
+    </select>
+
+    <!-- 创建用户收入记录信息 -->
+    <insert id="insertIncomeRecordManagement">
+        INSERT INTO income_record_management(
+        id,
+        income_record_id,
+        sys_user_id,
+        user_name,
+        create_date,
+        user_type,
+        status
+        ) VALUES (
+        #{id},
+        #{incomeRecordId},
+        #{sysUserId},
+        #{userName},
+        #{createDate},
+        #{userType},
+        #{status}
+        )
+    </insert>
+
+    <!-- 更新用户收入记录状态 -->
+    <update id="updateIncomeRecordManagement">
+        UPDATE income_record_management SET
+        id = #{id}
+        <if test="income_record_id!= ''and sysUserId!=null">
+            and sys_user_id=#{sysUserId}
+        </if>
+        <if test="sysUserId!= ''and sysUserId!=null">
+            and sys_user_id=#{sysUserId}
+        </if>
+        <if test="userName!= ''and userName!=null">
+            and user_name=#{userName}
+        </if>
+        <if test="createDate!=null">
+            and date_format(create_date, '%Y-%m-%d') = date_format(#{createDate}, '%Y-%m-%d')
+        </if>
+        <if test="userType!= ''and userType!=null">
+            and user_type=#{userType}
+        </if>
+        <if test="status!= ''and status!=null">
+            and status=#{status}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

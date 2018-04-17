@@ -306,21 +306,6 @@
     </select>
 
     <!--查询月结下详情交易-->
-    <!--<select id="queryMonthTransactionRecordByIncomeRecord"
-            resultMap="MonthTransactionRecordMap"
-            resultType="com.wisdom.common.persistence.Page">
-        SELECT
-        m.*,u.nickname,u.mobile,u.identify_number,u.user_type
-        FROM month_transaction_record m,sys_user u,pay_record p
-        WHERE 1=1 AND m.transaction_id = p.transaction_id AND p.sys_user_id = u.id AND p.status = '1'
-        <if test="requestData.sysUserId != ''and requestData.sysUserId != null  ">
-            AND m.sys_user_id = #{requestData.sysUserId}
-        </if>
-        <if test="startTime != ''and startTime != null  ">
-            AND m.create_date BETWEEN #{startTime} AND #{endTime}
-        </if>
-        ORDER BY m.create_date DESC
-    </select>-->
     <select id="queryMonthTransactionRecordByIncomeRecord"
             resultMap="MonthTransactionRecordMap">
         SELECT
@@ -338,6 +323,7 @@
             limit #{pageStartNo},#{pageSize}
         </if>
     </select>
+
     <!--查询月结下详情交易Count-->
     <select id="queryMonthTransactionRecordByIncomeRecordCount"
             resultType="java.lang.Integer">
@@ -382,6 +368,7 @@
             limit #{pageStartNo},#{pageSize}
         </if>
     </select>
+
     <!--根据用户id查询这个月都消费了哪些订单-->
     <select id="queryMonthPayRecordCountByUserId"
             resultType="java.lang.Integer">
