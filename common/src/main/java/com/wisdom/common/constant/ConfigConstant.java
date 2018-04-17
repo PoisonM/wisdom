@@ -99,4 +99,8 @@ public enum ConfigConstant {
 	public static final String USER_OPEN_ID = "meixiang99MXtest_user_openid";
 
 	public static final String BOSS_OPEN_ID = "meixiang99MXtest_boss_openid";
+
+    public static final String financeMember = "finance-1";
+
+    public static final String operationMember = "operation-1";
 }
