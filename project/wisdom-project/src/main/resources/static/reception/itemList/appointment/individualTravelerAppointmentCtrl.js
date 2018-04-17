@@ -1,4 +1,4 @@
-function individualTravelerAppointment ($scope){
+function individualTravelerAppointment ($scope,ngDialog){
     $scope.startAppointmentIndivdual = function(){
         $scope.param.ModifyAppointment = false;
     };
@@ -7,6 +7,6 @@ function individualTravelerAppointment ($scope){
         $scope.param.individualTravelerAppointment = false;
         $scope.param.AppointmentType="散客"
     };
-    modifyingAppointmentPage && modifyingAppointmentPage ($scope)
+    modifyingAppointmentPage && modifyingAppointmentPage ($scope,ngDialog)
 }
 

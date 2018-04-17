@@ -3,6 +3,7 @@ package com.wisdom.timer.service.business;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
+import com.wisdom.common.dto.account.IncomeRecordManagementDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
@@ -98,14 +99,14 @@ public class BusinessRunTimeService {
     public void autoProcessUserAccount() throws UnsupportedEncodingException {
 
         //查询用户消费的不可提现金额
-        /*IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+        IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
         incomeRecordDTO.setStatus("0");
-        incomeRecordDTO.setIncomeType("instance");
+        //incomeRecordDTO.setIncomeType("instance");
         List<IncomeRecordDTO> incomeRecordDTOList = businessServiceClient.getUserIncomeRecordInfo(incomeRecordDTO);
-        List<String> transactionIds = new ArrayList<>();*/
+        List<String> transactionIds = new ArrayList<>();
 
         //用户返现解冻
-        //this.deFrozenUserReturnMoney(incomeRecordDTOList,transactionIds);
+        this.deFrozenUserReturnMoney(incomeRecordDTOList,transactionIds);
 
         //同级推荐提升逻辑
         this.promoteUserBusinessTypeForRecommend();
@@ -515,9 +516,39 @@ public class BusinessRunTimeService {
                 }
             }
 
+            //判断此记录，是否财务和运营人员，都已经审核通过
+            IncomeRecordManagementDTO incomeRecordManagementDTO = new IncomeRecordManagementDTO();
+            incomeRecordManagementDTO.setIncomeRecordId(incomeRecord.getId());
+            List<IncomeRecordManagementDTO> incomeRecordManagementDTOList = businessServiceClient.getIncomeRecordManagement(incomeRecordManagementDTO);
+            if(incomeRecordManagementDTOList.size()!=2)
+            {
+                operationFlag = false;
+                break;
+            }
+            else
+            {
+                int incomeRecordManagementNum = 0;
+                for(IncomeRecordManagementDTO incomeRecordManagement:incomeRecordManagementDTOList)
+                {
+                    if(incomeRecordManagement.getUserType().equals(ConfigConstant.financeMember))
+                    {
+                        incomeRecordManagementNum++;
+                    }
+                    if(incomeRecordManagement.getUserType().equals(ConfigConstant.operationMember))
+                    {
+                        incomeRecordManagementNum++;
+                    }
+                }
+                if(incomeRecordManagementNum!=2)
+                {
+                    operationFlag = false;
+                    break;
+                }
+            }
+
             if(operationFlag)
             {
-                //用户资金解冻和级别提升返现，和推荐奖励，的所有操作，加一把锁
+                //用户资金解冻和级别提升返现，和推荐奖励，以及月度返利的所有操作，加一把锁
                 RedisLock redisLock = new RedisLock("userReturnMoneyDeLock"+incomeRecord.getSysUserId());
                 try
                 {

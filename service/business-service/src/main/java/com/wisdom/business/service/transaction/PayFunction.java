@@ -187,7 +187,7 @@ public class PayFunction {
                         //记录月度交易流水
                         amount = expenseAmount;
                     }
-                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,ConfigConstant.businessC1);
+                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,parentRuleType);
 
                 }
                 else if(parentRuleType.equals(ConfigConstant.businessB1))
@@ -215,7 +215,7 @@ public class PayFunction {
                         amount = expenseAmount;
                     }
 
-                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,ConfigConstant.businessC1);
+                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,parentRuleType);
                 }
                 else if(parentRuleType.equals("A1B1"))
                 {
@@ -262,7 +262,7 @@ public class PayFunction {
                         //记录月度交易流水
                         amount = expenseAmount;
                     }
-                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,ConfigConstant.businessB1);
+                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,parentRuleType);
                 }
             }
 
@@ -341,7 +341,7 @@ public class PayFunction {
                 incomeRecordDTO.setParentRelation(parentRuleType);
 
                 incomeService.insertUserIncomeInfo(incomeRecordDTO);
-                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(accountDTO.getNickName(),expenseAmount+"", DateUtils.DateToStr(new Date()),token,"",accountDTO.getUserOpenId());
+                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(userInfoDTOList.get(0).getNickname(),expenseAmount+"", DateUtils.DateToStr(new Date()),token,"",accountDTO.getUserOpenId());
             }
 
         }catch (Exception e)

@@ -612,6 +612,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/detailsReservation.css",
                             root + "appointment/detailsReservationCtrl.js",
                             root + "appointment/appointmentType.css",
+                            root + "appointment/appointmentTypeCtrl.js",
                             root + "appointment/selectSingleCtrl.js",
                             root + "appointment/search.css",
                             root + "appointment/searchCtrl.js",
@@ -642,8 +643,11 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/selectCoupons.css",
                             root + "appointment/balancePrepaidCtrl.js",
                             root + "appointment/relatedStaffCtrl.js",
+                            root+"appointment/dropload.css",
                             root + "../libs/angular-touch.js",
-                            root + "../libs/jquery-2.1.3.min.js",
+                            root + "../libs/dropload.js",
+                            root + "../libs/zepto.min.js",
+
                         ]
                     })
                 }]
@@ -657,7 +661,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "预约类型",
-                        files: [root + "appointment/appointmentType.js",
+                        files: [root + "appointment/appointmentTypeCtrl.js",
                             root + "appointment/appointmentType.css",
                         ]
                     })

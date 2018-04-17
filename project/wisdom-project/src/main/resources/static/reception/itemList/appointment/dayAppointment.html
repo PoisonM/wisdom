@@ -12,7 +12,7 @@
         </p>
     </div>
     <div class="content H100 mt128" ng-show="param.dayFlag" >
-        <div class="nameLis nowarp ">
+        <div class="nameLis nowarp bgfff">
             <ul class=" ml156 messLis ">
                 <li ng-repeat="item in param.appointmentObject.beautician" class="bgfff" >
                     <p class="name">{{item}}</p>
@@ -34,10 +34,11 @@
                 <ul class="nowarp">
                     <li style="float:left;"ng-repeat="(index1,item) in param.appointmentObject.list">
                         <ul >
-                            <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3}" ng-click="detailsWrap(index1,index2,item1)" >
-                            <div ng-if="item1 == item.status[$index+1]">
-                                <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3}">{{item.sysUserName[index2]}}</p>
-                                <p class="mt30" >
+                            <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bgred':item1==4}" ng-click="detailsWrap(index1,index2,item1)" ng-onhold="onHold(index1,index2,item1)">
+                                <p ng-if="item1 == 4" class="colred fs34" style="line-height: 0.96875rem;text-align:center ">{{item.sysUserName[index2]}}</p>
+                            <div ng-if="item1 != 4">
+                                <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3}" ng-if="item1 == item.status[$index+1]">{{item.sysUserName[index2]}}</p>
+                                <p class="mt30" ng-if="item1 == item.status[$index+1]">
                                     <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 0">
                                     <span class="fs24">{{item.time[index2]}}</span>
                                     <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
@@ -49,8 +50,6 @@
                 </ul>
             </div>
         </div>
-
-
         <div class="closMessLis day  mt128" ng-show="false">
                 <div class="time">
                     <ul >
@@ -128,7 +127,7 @@
 </script>
 <!--选择顾客-->
 <script type="text/ng-template" id="selectCustomersWrap">
-    <div class="selectCustomersWrap br36 timeLength" >
+    <div class="br36 bgf5f5f5 b w758 addWraps" >
         <div class="customerTop  btrr btlr">
             <ul class="space-between btrr btlr">
                 <li class="pl W33 "><img  src="images/bt_back.png" class="backPic mr20" ng-click="close(0)"><span class="color6666">修改预约</span> </li>
@@ -141,7 +140,7 @@
 </script>
 <!--修改预约-添加客户-->
 <script type="text/ng-template" id="addCustomers">
-    <div class="addWraps br36" >
+    <div class="br36 bgf5f5f5 b w758 addWraps" >
         <div class="headers btrr btlr">
             <ul>
                 <li class="checks" ng-click="close(0)"><span class="ml30">取消</span></li>
@@ -154,9 +153,9 @@
 </script>
 <!--修改预约 - 选择项目-->
 <script type="text/ng-template" id="newProduct">
-    <div class="br36 bgf5f5f5 b w758 newProject" >
+    <div class="br36 bgf5f5f5 b w758 addWraps">
         <div class="btlr btrr bgeee space-between h104">
-            <p class="fs34 colff6666 W33"> <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(1)">修改预约</p>
+            <p class="fs34 colff6666 W33"> <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">修改预约</p>
             <p class="fs38 col333 center W33 bold">选择项目</p>
             <p class="W33"><span class="floatR mr30 fs34 colff6666" ng-click="close(1)">完成</span></p>
         </div>
@@ -165,7 +164,7 @@
 </script>
 <!--修改预约--选择时长-->
 <script type="text/ng-template" id="timeLength">
-    <div class="br36 w758 bgf5f5f5 timeLength" >
+    <div class="br36 w758 bgf5f5f5 addWraps" >
         <div class="space-between h104  btlr btrr bgeee">
             <P class="W33">
                 <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
@@ -179,7 +178,7 @@
 </script>
 <!--修改预约--选择美容师-->
 <script type="text/ng-template" id="selectBeautician">
-    <div class="br36 w758 bgf5f5f5 selectBeautician timeLength" >
+    <div class="br36 w758 bgf5f5f5 selectBeautician addWraps" >
         <div class="space-between h104  btlr btrr bgeee">
             <P class="W33">
                 <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
@@ -463,8 +462,22 @@
     </div>
 </script>
 
+
+<!--日预约--新建预约-->
+<script type="text/ng-template" id="appointmentType" >
+    <div class="appointmentType btrr btlr  br36 detailsWrap w780">
+        <div class="space-between h104 bgf5f5f5  btrr btlr">
+            <p class="W33 fs34 ml30  colff6666 bold" ng-click="close()">取消</p>
+            <p class="W33 center fs38 col333 bold">预约列表</p>
+            <p class="W33"></p>
+        </div>
+        <div ng-include="'itemList/appointment/appointmentType.html'" class=" bblr bbrr"></div>
+    </div>
+
+</script>
+
 <!--周预约--预约列表-->
-<script type="text/ng-template" id="appointmentLis">
+<script type="text/ng-template" id="appointmentLis" >
     <div class="trueAppointment appointmentLisArea" >
         <div class="PopupwindowTitle bgeeeeee">
             <p >
@@ -480,6 +493,8 @@
     </div>
 
 </script>
+
+
 
 
 

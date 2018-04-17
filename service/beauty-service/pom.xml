@@ -16,6 +16,112 @@
 	<packaging>jar</packaging>
 	<name>beauty-service</name>
 
+    <build>
+        <plugins>
+            <!-- tag::plugin[] -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.3</version>
+                <configuration>
+                    <imageName>${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+            <!-- end::plugin[] -->
+        </plugins>
+
+		<!-- 配置文件置换 -->
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+					<exclude>**/.svn/*</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>application.properties</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+    </build>
+
+	<profiles>
+		<!-- local 开发环境 -->
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<resource.delimiter>@</resource.delimiter>
+				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+				<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+				<application.beans.properties_path><![CDATA[classpath:]]></application.beans.properties_path>
+
+				<eureka.client.serviceUrl.defaultZone>http://localhost:9000/eureka/
+				</eureka.client.serviceUrl.defaultZone>
+				<resource.delimiter>@</resource.delimiter>
+				<server.port>9051</server.port>
+
+				<spring.application.name>beauty-service</spring.application.name>
+				<spring.cloud.config.uri>http://localhost:8888</spring.cloud.config.uri>
+				<server.context-path>/</server.context-path>
+				<!--mybatis配置-->
+				<mybatis.type-aliases-package>com.wisdom.beauty.core.mapper</mybatis.type-aliases-package>
+				<mybatis.mapper-locations>classpath:mapper/**/*.xml</mybatis.mapper-locations>
+				<mybatis.config-location>classpath:/mybatis-config.xml</mybatis.config-location>
+
+				<!--jdbc 配置-->
+				<spring.datasource.url>jdbc:mysql://47.100.102.37:3306/mx-beauty?true&amp;amp;characterEncoding=utf-8&amp;amp;useSSL=true&amp;amp;zeroDateTimeBehavior=convertToNull</spring.datasource.url>
+				<spring.datasource.username>root</spring.datasource.username>
+				<spring.datasource.password>root123456</spring.datasource.password>
+				<spring.datasource.druid.initial-size>1</spring.datasource.druid.initial-size>
+				<spring.datasource.druid.min-idle>1</spring.datasource.druid.min-idle>
+				<spring.datasource.druid.max-active>20</spring.datasource.druid.max-active>
+				<spring.datasource.druid.static-on-borrow>true</spring.datasource.druid.static-on-borrow>
+				<spring.datasource.druid.stat-view-servlet.allow>true</spring.datasource.druid.stat-view-servlet.allow>
+				<!--redis配置-->
+				<spring.redis.key-prefix>mx99</spring.redis.key-prefix>
+				<spring.redis.host>47.100.102.37</spring.redis.host>
+				<resource.delimiter>@</resource.delimiter>
+				<spring.redis.port>6379</spring.redis.port>
+				<spring.redis.password>123456</spring.redis.password>
+				<spring.redis.pool.max-active>400</spring.redis.pool.max-active>
+				<spring.redis.pool.max-wait>1</spring.redis.pool.max-wait>
+				<spring.redis.pool.max-idle>50</spring.redis.pool.max-idle>
+				<spring.redis.pool.min-idle>8</spring.redis.pool.min-idle>
+				<spring.redis.timeout>2000</spring.redis.timeout>
+				<spring.session.store-type>redis</spring.session.store-type>
+				<!--mongodb配置-->
+				<spring.data.mongodb.host>101.201.209.61</spring.data.mongodb.host>
+				<spring.data.mongodb.port>27017</spring.data.mongodb.port>
+				<spring.data.mongodb.database>beauty</spring.data.mongodb.database>
+
+				<!--其它配置-->
+				<spring.aop.auto>true</spring.aop.auto>
+				<multipart.maxFileSize>100Mb</multipart.maxFileSize>
+				<multipart.maxRequestSize>1000Mb</multipart.maxRequestSize>
+				<spring.http.multipart.maxFileSize>100Mb</spring.http.multipart.maxFileSize>
+				<spring.http.multipart.maxRequestSize>100</spring.http.multipart.maxRequestSize>
+				<logging.config>classpath:log4j2.xml</logging.config>
+
+			</properties>
+		</profile>
+
+	</profiles>
+
 	<dependencies>
 
 		<dependency>
@@ -45,24 +151,6 @@
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.10.19</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<version> 1.5.1.RELEASE</version>
-		</dependency>
 		<dependency>
 			<groupId>com.wisdom</groupId>
 			<artifactId>user-service</artifactId>
