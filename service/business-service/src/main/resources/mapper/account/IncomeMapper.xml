@@ -141,10 +141,10 @@
         <if test="transactionAmount!= ''and transactionAmount!=null">
             ,transaction_amount=#{transactionAmount}
         </if>
-        <if test="updateDate!= ''and updateDate!=null">
+        <if test="updateDate!=null">
             ,update_date=#{updateDate}
         </if>
-        <if test="createDate!= ''and createDate!=null">
+        <if test="createDate!=null">
             ,create_date=#{createDate}
         </if>
         <if test="incomeType!= ''and incomeType!=null">
@@ -384,5 +384,64 @@
         </if>
         ORDER BY p.pay_date DESC
     </select>
+
+    <select id="queryAllMonthTransactionRecord"
+            resultMap="MonthTransactionRecordMap">
+        SELECT
+        m.*
+        FROM month_transaction_record m
+    </select>
+
+    <update id="updateMonthTransactionRecord">
+        UPDATE month_transaction_record SET
+        id = #{id}
+        <if test="transactionId!= ''and transactionId!=null">
+            ,transaction_id=#{transactionId}
+        </if>
+        <if test="userId!= ''and userId!=null">
+            ,sys_user_id=#{userId}
+        </if>
+        <if test="amount!= ''and amount!=null">
+            ,amount=#{amount}
+        </if>
+        <if test="createDate!=null">
+            ,create_date=#{createDate}
+        </if>
+        <if test="updateDate!=null">
+            ,update_date=#{updateDate}
+        </if>
+        <if test="nextUserId!= ''and nextUserId!=null">
+            ,next_user_id=#{nextUserId}
+        </if>
+        <if test="userType!= ''and userType!=null">
+            ,user_type=#{userType}
+        </if>
+        <if test="nextUserType!= ''and nextUserType!=null">
+            ,next_user_type=#{nextUserType}
+        </if>
+        <if test="parentRelation!= ''and parentRelation!=null">
+            ,parent_relation=#{parentRelation}
+        </if>
+        <if test="mobile!= ''and mobile!=null">
+            ,user_mobile=#{mobile}
+        </if>
+        <if test="nextUserMobile!= ''and nextUserMobile!=null">
+            ,next_user_mobile=#{nextUserMobile}
+        </if>
+        <if test="identifyNumber!= ''and identifyNumber!=null">
+            ,user_identify_number=#{identifyNumber}
+        </if>
+        <if test="nextUserIdentifyNumber!= ''and nextUserIdentifyNumber!=null">
+            ,next_user_identify_number=#{nextUserIdentifyNumber}
+        </if>
+        <if test="nickName!= ''and nickName!=null">
+            ,user_nickname=#{nickName}
+        </if>
+        <if test="nextUserNickName!= ''and nextUserNickName!=null">
+            ,next_user_nickname=#{nextUserNickName}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
 
 </mapper>
