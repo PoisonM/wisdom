@@ -2,6 +2,7 @@ package com.wisdom.timer.client;
 
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
+import com.wisdom.common.dto.account.IncomeRecordManagementDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
@@ -68,4 +69,7 @@ public interface BusinessServiceClient {
 
     @RequestMapping(value = "/updateIncomeInfo",method=RequestMethod.POST)
     void updateIncomeInfo(@RequestBody IncomeRecordDTO incomeRecord);
+
+    @RequestMapping(value = "/getIncomeRecordManagement",method=RequestMethod.POST)
+    List<IncomeRecordManagementDTO> getIncomeRecordManagement(@RequestBody IncomeRecordManagementDTO incomeRecordManagementDTO);
 }
