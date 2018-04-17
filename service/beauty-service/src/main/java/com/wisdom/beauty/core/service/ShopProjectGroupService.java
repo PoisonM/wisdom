@@ -57,5 +57,13 @@ public interface ShopProjectGroupService {
      * @Description: 获取套卡的详细信息
      * @Date:2018/4/11 16:57
      */
-    ProjectInfoGroupResponseDTO getShopProjectInfoGroupRelation(ShopProjectGroupDTO shopProjectGroupDTO);
+    ProjectInfoGroupResponseDTO getShopProjectInfoGroupRelation(String id);
+    /**
+    *@Author:huan
+    *@Param:
+    *@Return:
+    *@Description: 根据ID查询套卡信息
+    *@Date:2018/4/17 11:32
+    */
+    ShopProjectGroupDTO getShopProjectGroupDTO(String id);
 }

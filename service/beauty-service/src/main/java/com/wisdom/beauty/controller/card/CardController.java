@@ -148,7 +148,8 @@ public class CardController {
      */
     @RequestMapping(value = "/getShopProjectGroups", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName, @RequestParam String sysShopId, int pageSize) {
+    ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName,
+                                                                    @RequestParam String sysShopId, int pageSize) {
         long currentTimeMillis = System.currentTimeMillis();
 
         PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -178,10 +179,10 @@ public class CardController {
      */
     @RequestMapping(value = "/getShopProjectGroup/detail", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ProjectInfoGroupResponseDTO> findShopProjectGroupListe(ShopProjectGroupDTO shopProjectGroupDTO) {
+    ResponseDTO<ProjectInfoGroupResponseDTO> findShopProjectGroupListe(@RequestParam String id) {
         long currentTimeMillis = System.currentTimeMillis();
 
-        ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = shopProjectGroupService.getShopProjectInfoGroupRelation(shopProjectGroupDTO);
+        ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = shopProjectGroupService.getShopProjectInfoGroupRelation(id);
 
         ResponseDTO<ProjectInfoGroupResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(projectInfoGroupResponseDTO);
