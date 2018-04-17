@@ -12,28 +12,27 @@
          </div>
      </div>
         <div>
-            <div >
-                <p class="fs34 color333 h70 bgeee pl30" ng-show="param.newProductObject.titleFlag">面部</p>
+            <div ng-show="param.newProductObject.titleFlag">
+                <p class="fs34 color333 h70 bgeee pl30" >面部</p>
                 <ul class="bgfff">
-                    <li class="h100 space-between bte5">
-                        <P><img src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
-                            <span class="fs30 color333">安娜</span>
+                    <li class="h100 space-between bte5" ng-repeat = "item in [0,1,2]" ng-click="selectTheProduct($index,'本店项目')">
+                        <P><img ng-src=" {{param.ModifyAppointmentObject.productIndex[$index+3]==true?'images/bt_Single%20election_select.png':'images/bt_Single%20election_nor_.png'}}" class="singleSelsectPic ml30 mr20">
+                        <span class="fs30 color333">安娜</span>
                         </P>
                         <P><span class="colff6666 fs28 mr30">剩余3次</span></P>
                     </li>
-                    <li class="h100 space-between bte5">
-                        <P><img src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
-                            <span class="fs30 color333">安娜</span>
-                        </P>
-                        <P><span class="colff6666 fs28 mr30">剩余3次</span></P>
-                    </li>
-                    <li class="h100 space-between bte5">
-                        <P><img src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
-                            <span class="fs30 color333">安娜</span>
-                        </P>
-                        <P><span class="colff6666 fs28 mr30">剩余3次</span></P>
-                    </li>
+
                 </ul>
             </div>
+            <ul ng-show="param.newProductObject.content" class="bgfff">
+                <li class="h100 space-between bte5" ng-repeat = "item in [0,1,2]" ng-click="selectTheProduct($index,'疗程')" ng-click="selectTheProduct($index,'疗程')">
+                    <P><img ng-src=" {{param.ModifyAppointmentObject.productIndex[$index]==true?'images/bt_Single%20election_select.png':'images/bt_Single%20election_nor_.png'}}" class="singleSelsectPic ml30 mr20">
+                        <span class="fs30 color333">安娜</span>
+                    </P>
+                    <P><span class="colff6666 fs28 mr30">剩余3次</span></P>
+                </li>
+
+            </ul>
         </div>
     </div>
+    <!--images/bt_Single%20election_select.png-->

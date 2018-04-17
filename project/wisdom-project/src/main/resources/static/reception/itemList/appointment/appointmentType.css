@@ -108,9 +108,9 @@
 .nextStepBtn { width: 3.125rem; height: 0.71875rem; border-radius: 0.125rem; margin-right: 0.46875rem; background: #ff6666; color: #ffffff; font-size: 0.28125rem; margin-top: 0.23438rem;border:none;outline: none; }
 .singleSelsectPic, .norPic { width: 0.26563rem; height: 0.26563rem; vertical-align: middle; margin-top: -5px; }
 .appointmentType {border: solid 1px #e1e1e1;height:7.1875rem;}
-.appointmentType .btn{padding-top:1.4375rem;padding-bottom:1.4375rem;}
-.appointmentType .point,.row{width:1.3125rem;height:1.3125rem;line-height:1.3125rem;text-align: center;border-radius: 50%;margin:0 auto;}
-.appointmentType .point{background: #ffabab;}
+.appointmentType .btn{padding-top:1.5375rem;padding-bottom:1.5375rem;}
+.appointmentType .point,.appointmentType .row{width:1.3125rem;height:1.3125rem;line-height:1.3125rem;text-align: center;border-radius: 50%;margin:0 auto;}
+.appointmentType .point{background: #ffabab;position: relative;left:50%;margin-left:-0.7rem;}
 .appointmentType .row{background: #d6b4ff;margin-top:0.864rem;}
 .next {height:1.5rem;}
 .ngdialog-close{display: none!important;}

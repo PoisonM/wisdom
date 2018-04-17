@@ -1,15 +1,19 @@
 
 function selectTimeLengthCtrl ($scope,ngDialog){
-
-
     $scope.selectTimeLengthIndex = function(index,item){
         $scope.param.timeLengthIndex = index;
 
-        if($scope.param.timeLengthObject.type =='beautician'){
-            $scope.param.timeLengthObject.userName =item;
+        if($scope.param.ModifyAppointmentObject.type =='beautician'){
+            $scope.param.ModifyAppointmentObject.beauticianName =item;
         }else{
-            $scope.param.timeLengthObject.time = item;
+            $scope.param.ModifyAppointmentObject.time = item;
+            setTimeout(function(){
+             ngDialog.close("timeLength");
+             console.log(ngDialog)
+            },600)
         }
+
+
     }
 
 }

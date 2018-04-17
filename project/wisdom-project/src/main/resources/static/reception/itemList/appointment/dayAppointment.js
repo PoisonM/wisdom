@@ -11,18 +11,26 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         AppointmentType: "散客",
         dayFlag: true,
         weekFlag: false,
-        ModifyAppointment:true,
+        ModifyAppointment:true,/*修预约改*/
+        cancellationFlag:true,/*取消预约按钮的显示隐藏*/
         newProductObject: {
             index: 0,
             titleFlag: false,
+            content:true,
         },
-        timeLengthObject: {/*修改预约-时长对象*/
-            time: '',
-            type:''
+        ModifyAppointmentObject:{
+            time:'',
+            beauticianName:"",
+            type:"",
+            customer:"",
+            productIndex:[],
+            customerIndex:"",
+            productData:[],
+            productNum:'0',
+            customerIndex:"-1"
+
         },
-        beauticianObject:{
-            userName:""
-        },
+        appointmentNew:"",
         appointmentObject: {/*日预约对象*/
             appointmentDate: '',
             beautician: [],/*美容师*/
@@ -32,6 +40,10 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         },
         week:{
             weekData:''
+        },
+        index:{
+            index1:"",
+            index2:""
         },
         details:"",/*预约详情*/
         selectBeautician: false, /*修改预约-选择美容师*/
@@ -54,8 +66,8 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         day:[],/*用于寻找预约颜色的其中一个数据*/
         day:[],/*侧边时间循环*/
     };
+    console.log($scope.param);
     $scope.time = function (time) {
-        console.log(1)
         $scope.param.week = [];
         var time = time.replace("年", "-").replace("月", "-").replace("日", "");
         var now = new Date(time);
@@ -156,20 +168,36 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             disableAnimation: true,
 
         });
-    }
+    };
     detailsReservation && detailsReservation($scope, ngDialog);
     individualTravelerAppointment && individualTravelerAppointment($scope, ngDialog);
     weeklyReservation && weeklyReservation($scope, ngDialog);
-
+    appointmentTypeCtrl && appointmentTypeCtrl($scope, ngDialog);/*新建预约*/
 
     /*长按新建*/
-    $scope.onHold = function (num) {
-        console.log(num);
-    };
-
-    $scope.detailsWrap = function (index1, index2, type) {
-        if(type==0)return
-        if (type != 3) {
+    $scope.onHold = function (index1,index2,type) {
+        if(type == 0){
+            $scope.param.index.index1 = index1;
+            $scope.param.index.index2 = index2;
+            $scope.param.appointmentObject.list[index1].status[index2] = 4;
+            $scope.param.appointmentObject.list[index1].sysUserName[index2] = "新建预约";
+            ngDialog.open({
+                template: 'appointmentType',
+                scope: $scope, //这样就可以传递参数
+                controller: ['$scope', '$interval', function ($scope, $interval) {
+                    $scope.close = function () {
+                        $scope.closeThisDialog();
+                        $scope.param.appointmentObject.list[index1].status[index2] = 0;
+                        $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
+                    };
+                }],
+                className: 'appointmentType ngdialog-theme-custom',
+            })
+    }};
+/*加载预约详情*/
+    $scope.detailsWrap = function (index1, index2, type){
+        if(type==0)return;
+        if (type == 1 || type == 2) {
             $scope.ngDialog = ngDialog;
             ngDialog.open({
                 template: 'detailsWrap',
@@ -192,10 +220,10 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                         $scope.closeThisDialog();
                     };
                 }],
-                className: 'ngdialog-theme-default ngdialog-theme-custom',
+                className: 'ngdialog-theme-default ',
 
             });
-        } else {
+        } else if(type == 3){
             $scope.ngDialog = ngDialog;
             ngDialog.open({
                 template: 'individual',
@@ -206,8 +234,21 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                         $scope.closeThisDialog();
                     };
                 }],
-                className: 'individual ngdialog-theme-custom'
+                className: 'individual '
             });
+        }else if(type==4){
+            ngDialog.open({
+                template: 'appointmentType',
+                scope: $scope, //这样就可以传递参数
+                controller: ['$scope', '$interval', function ($scope, $interval) {
+                    $scope.close = function () {
+                        $scope.closeThisDialog();
+                        $scope.param.appointmentObject.list[index1].status[index2] = 0;
+                        $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
+                    };
+                }],
+                className: 'appointmentType ',
+            })
         }
 
     };
@@ -722,7 +763,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             "startTime": "07:00",
             "endTime": "21:00"
         }
-    }
+    };
 
     var memeda = data.responseData;
     /*得到循环时间*/
