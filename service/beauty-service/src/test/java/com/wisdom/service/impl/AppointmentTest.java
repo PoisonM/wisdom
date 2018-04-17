@@ -1,4 +1,4 @@
-package com.wisdom.tinglao.service.impl;
+package com.wisdom.service.impl;
 
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;

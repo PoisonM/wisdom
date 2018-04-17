@@ -17,16 +17,16 @@
             </div>
         </div>
 
-        <!--收银头部-->
+        <!--收银头部/档案头部/我的头部-->
         <div ng-if="mainSwitch.headerCashAllFlag" class="header_box">
             <div class="header_cash_left">
-                档案(9010)
-                <span class="addrecord">添加档案</span>
+                {{param.headerCash.leftContent}}
+                <span class="addrecord">{{param.headerCash.leftAddContent}}</span>
             </div>
             <div  class="header_cash_right">
                 <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag" class="backone"><i></i>{{param.headerCash.backContent}}</span>
                 <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag" class="title">{{param.headerCash.title}}</span>
-                <span ng-if = "mainSwitch.headerCashAllFlag.headerCashRightFlag.rightFlag" class="save">保存</span>
+                <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag" class="save">{{param.headerCash.leftTip}}</span>
             </div>
         </div>
 
@@ -52,6 +52,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 

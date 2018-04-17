@@ -523,7 +523,6 @@ public class BusinessRunTimeService {
             if(incomeRecordManagementDTOList.size()!=2)
             {
                 operationFlag = false;
-                break;
             }
             else
             {
@@ -542,7 +541,6 @@ public class BusinessRunTimeService {
                 if(incomeRecordManagementNum!=2)
                 {
                     operationFlag = false;
-                    break;
                 }
             }
 

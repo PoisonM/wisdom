@@ -1,4 +1,4 @@
-package com.wisdom.tinglao.service.impl;
+package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
@@ -44,7 +44,7 @@ public class ArchivesTest {
     }
 
     /**
-     * get请求
+     * 删除档案信息
      *
      * @throws Exception
      */

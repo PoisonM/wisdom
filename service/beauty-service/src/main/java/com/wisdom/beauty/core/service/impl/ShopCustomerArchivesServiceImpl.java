@@ -4,7 +4,7 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserArchivesCriteria;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
-import com.wisdom.beauty.core.service.ShopCustomerArchivesServcie;
+import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,15 +17,15 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * ClassName: ShopCustomerArchivesServcieImpl
+ * ClassName: ShopCustomerArchivesServiceImpl
  *
  * @Author： huan
  * @Description:
  * @Date:Created in 2018/4/3 16:41
  * @since JDK 1.8
  */
-@Service("shopCustomerArchivesServcie")
-public class ShopCustomerArchivesServcieImpl implements ShopCustomerArchivesServcie {
+@Service("shopCustomerArchivesService")
+public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -169,6 +169,11 @@ public class ShopCustomerArchivesServcieImpl implements ShopCustomerArchivesServ
      */
     @Override
     public int deleteShopUserArchivesInfo(String archivesId) {
+
+        ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
+        ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
+        c.andIdEqualTo(archivesId);
+        List<ShopUserArchivesDTO> shopUserArchivesDTOS = shopUserArchivesMapper.selectByCriteria(criteria);
 
         logger.info("保存用户的建档案信息传入参数={}", "archivesId = [" + archivesId + "]");
 
