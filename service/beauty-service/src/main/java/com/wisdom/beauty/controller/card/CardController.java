@@ -127,13 +127,13 @@ public class CardController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ShopRechargeCardDTO> findRechargeCard(@PathVariable String id) {
+    ResponseDTO<ShopRechargeCardResponseDTO> findRechargeCard(@PathVariable String id) {
         long currentTimeMillis = System.currentTimeMillis();
         //查询数据
-        ShopRechargeCardDTO shopRechargeCardDTO = shopRechargeCardService.getShopRechargeCard(id);
+        ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(id);
 
-        ResponseDTO<ShopRechargeCardDTO> responseDTO = new ResponseDTO<>();
-        responseDTO.setResponseData(shopRechargeCardDTO);
+        ResponseDTO<ShopRechargeCardResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(shopRechargeCardResponseDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("查询某个充值卡信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;

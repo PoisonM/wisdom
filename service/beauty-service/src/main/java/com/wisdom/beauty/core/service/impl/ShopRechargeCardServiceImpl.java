@@ -96,7 +96,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
     }
 
     @Override
-    public ShopRechargeCardDTO getShopRechargeCard(String id) {
+    public ShopRechargeCardResponseDTO getShopRechargeCard(String id) {
         logger.info("getThreeLevelProjectList传入的参数,id={}", id);
 
         if (StringUtils.isBlank(id)) {
@@ -109,9 +109,28 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
         criteria.andIdEqualTo(id);
         List<ShopRechargeCardDTO> list = shopRechargeCardMapper.selectByCriteria(shopRechargeCardCriteria);
         if (CollectionUtils.isEmpty(list)) {
+            logger.info("shopRechargeCardMapper.selectByCriteria()方法查询结果为空");
             return null;
         }
-        return list.get(0);
+
+        ShopRechargeCardDTO shopRechargeCardDTO=list.get(0);
+        logger.info("充值卡的id={}",shopRechargeCardDTO.getId());
+        //获取折扣信息
+        List<String> ids=new ArrayList<>();
+        ids.add(shopRechargeCardDTO.getId());
+        Map<String, Map<String, Object>> map= this.getDiscount(ids);
+        Map<String, Object> discountMap=null;
+        if(map!=null) {
+            discountMap = map.get(shopRechargeCardDTO.getId());
+        }
+        ShopRechargeCardResponseDTO  shopRechargeCardResponseDTO=new ShopRechargeCardResponseDTO();
+        shopRechargeCardResponseDTO.setMap(discountMap);
+        shopRechargeCardResponseDTO.setName(shopRechargeCardDTO.getName());
+        shopRechargeCardResponseDTO.setIntroduce(shopRechargeCardDTO.getIntroduce());
+        shopRechargeCardResponseDTO.setImageUrl(shopRechargeCardDTO.getImageUrl());
+        shopRechargeCardResponseDTO.setAmount(shopRechargeCardDTO.getAmount());
+        shopRechargeCardResponseDTO.setDiscountDesc(shopRechargeCardDTO.getDiscountDesc());
+        return shopRechargeCardResponseDTO;
     }
 
     @Override
