@@ -2,14 +2,14 @@
     <!--顾客 项目 时长-->
     <div class="customerBox">
         <ul>
-            <li><span class="boxLift">顾客</span><a class="boxRight">安迪<img src="images/bt_more.png" class="morePic ml20" ng-click="selectCustomersCtrl()"></a></li>
-            <li><span class="boxLift">项目</span><a class="boxRight">韩国美白护肤<img src="images/bt_more.png" class="morePic ml20" ng-click="selectNewProduct()"></a></li>
-            <li><span class="boxLift">时长</span><a class="boxRight">{{param.timeLengthObject.time}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectTimeLength()"></a></li>
+            <li><span class="boxLift">顾客</span><a class="boxRight">{{param.ModifyAppointmentObject.customer}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectCustomersCtrl()"></a></li>
+            <li><span class="boxLift">项目</span><a class="boxRight">选择了{{param.ModifyAppointmentObject.productNum}}个项目<img src="images/bt_more.png" class="morePic ml20" ng-click="selectNewProduct()"></a></li>
+            <li><span class="boxLift">时长</span><a class="boxRight">{{param.ModifyAppointmentObject.time}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectTimeLength()"></a></li>
         </ul>
     </div>
     <!--美容师 时间-->
     <div class="cosmetology">
-        <p><span class="boxLift">美容师</span><a class="boxRight">{{param.timeLengthObject.userName}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectBeautician()"></a></span></p>
+        <p><span class="boxLift">美容师</span><a class="boxRight">{{param.ModifyAppointmentObject.beauticianName}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectBeautician()"></a></span></p>
         <div class="cosmetologyMinute">
             <!--日期-->
             <ul class="dayList">
@@ -36,8 +36,8 @@
         </div>
     </div>
     <!--取消预约的按钮部分-->
-     <div class="cancelBox pb30">
-         <button class="btnCancel">取消预约</button>
+     <div class="cancelBox pb30" ng-show="param.cancellationFlag">
+         <button class="btnCancel" ng-click="close(3)">取消预约</button>
      </div>
 </div>
 

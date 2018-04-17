@@ -58,13 +58,18 @@
 .trueScratchCard{position: fixed;left:50%;top:50%;margin-top:-4.5rem;margin-left:-5.25rem;}
 .selectCustomersWrap,.addWraps,.newProject,.timeLength,.selectBeautician{position: fixed;left:50%;top:50%;margin-top:-4.9rem;margin-left:-3rem;}
 .modifyingAppointment{position: fixed;left:50%;top:50%;margin-top:-4.9rem;margin-left:-3rem;}
-.customer{height:8rem;overflow-y: scroll;}
+.customer{height:9.2rem;overflow-y: scroll;}
 
 .bge4faff{background: #e4faff;border-color:#e4faff!important; }
 .colecb9ec{color:#1cb9ec}
 .bgffe7e7{background: #ffe7e7;border-color: #ffe7e7!important;}
 .colfd3232{color:#fd3232}
 .bgf0e3ff{background: #f0e3ff;border-color:#f0e3ff!important; }
+
+
+/*新建预约背景色*/
+.bgred{background: pink}
+.colred{color: red}
 
 
 
