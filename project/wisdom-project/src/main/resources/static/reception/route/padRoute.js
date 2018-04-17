@@ -586,9 +586,24 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "充值卡页面",
+                        name: "套卡页面",
                         files: [root + "priceList/rechargeableCardCtrl.js",
                             root + "priceList/rechargeableCard.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.setCard', {
+            url: '/setCard',
+            templateUrl: root + '/priceList/setCard.html',
+            controller: 'setCardCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值卡页面",
+                        files: [root + "priceList/setCardCtrl.js",
+                            root + "priceList/setCard.css",
                         ]
                     })
                 }]
