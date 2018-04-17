@@ -13,10 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -243,7 +240,7 @@ public class ProjectController {
         ResponseDTO<List<ShopProjectTypeDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("findTwoLevelProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -256,8 +253,11 @@ public class ProjectController {
      */
     @RequestMapping(value = "/threeLevelProject", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProjectInfoDTO>> findThreeLevelProject(@RequestParam String sysShopId, @RequestParam String projectTypeOneId,
-                                                                @RequestParam String ProjectTypeTwoId, @RequestParam int pageSize) {
+    ResponseDTO<List<ShopProjectInfoDTO>> findThreeLevelProject(@RequestParam String sysShopId,
+                                                                @RequestParam String projectTypeOneId,
+                                                                @RequestParam String ProjectTypeTwoId,
+                                                                @RequestParam(required = false) String projectName,
+                                                                @RequestParam int pageSize) {
         long currentTimeMillis = System.currentTimeMillis();
         PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
@@ -265,6 +265,7 @@ public class ProjectController {
         shopProjectInfoDTO.setSysShopId(sysShopId);
         shopProjectInfoDTO.setProjectTypeOneId(projectTypeOneId);
         shopProjectInfoDTO.setProjectTypeTwoId(ProjectTypeTwoId);
+        shopProjectInfoDTO.setProjectName(projectName);
 
         pageParamVoDTO.setRequestData(shopProjectInfoDTO);
         pageParamVoDTO.setPageNo(0);
@@ -275,7 +276,7 @@ public class ProjectController {
         ResponseDTO<List<ShopProjectInfoDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("findThreeLevelProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -283,12 +284,12 @@ public class ProjectController {
      * @Author:huan
      * @Param:
      * @Return:
-     * @Description:
+     * @Description: 获取项目的详细信息
      * @Date:2018/4/10 18:06
      */
-    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ShopProjectInfoDTO> findDetailProject(@RequestParam String id) {
+    ResponseDTO<ShopProjectInfoDTO> findDetailProject(@PathVariable String id) {
         long currentTimeMillis = System.currentTimeMillis();
         //查询数据
         ShopProjectInfoDTO shopProjectInfoDTO = projectService.getProjectDetail(id);
@@ -296,7 +297,7 @@ public class ProjectController {
         ResponseDTO<ShopProjectInfoDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(shopProjectInfoDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("findDetailProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }
