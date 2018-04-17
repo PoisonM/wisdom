@@ -163,10 +163,33 @@ public class ArchivesController {
     }
 
     /**
+     * 查询某个用户的档案信息
+     *
+     * @param sysUserId
+     * @return
+     */
+    @RequestMapping(value = "/getShopUserArchivesInfoByUserId", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<ShopUserArchivesDTO> getShopUserArchivesInfoByUserId(@RequestParam String sysUserId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("查询某个用户的档案信息传入参数={}", "sysUserId = [" + sysUserId + "]");
+
+        ResponseDTO<ShopUserArchivesDTO> responseDTO = new ResponseDTO<>();
+        ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setSysUserId(sysUserId);
+        ShopUserArchivesDTO info = shopCustomerArchivesService.getShopUserArchivesInfoByUserId(shopUserArchivesDTO);
+        responseDTO.setResponseData(info);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("删除用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
     *@Author:huan
     *@Param:
     *@Return:
-    *@Description: 获取用户id查询档案信息
+     *@Description: 查询某个用户档案信息相关数据
      *@Date:2018/4/8
     */
     @RequestMapping(value = "/findArchiveByUserId/{userId}", method = RequestMethod.GET)

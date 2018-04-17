@@ -66,4 +66,14 @@ public interface ShopCustomerArchivesService {
      * @return
      */
     int deleteShopUserArchivesInfo(String archivesId);
+
+    /**
+     * 查询某个用户的档案信息
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    ShopUserArchivesDTO getShopUserArchivesInfoByUserId(ShopUserArchivesDTO shopUserArchivesDTO);
+
+
 }

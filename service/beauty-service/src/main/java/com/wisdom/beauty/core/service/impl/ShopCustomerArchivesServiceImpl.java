@@ -170,11 +170,6 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
     @Override
     public int deleteShopUserArchivesInfo(String archivesId) {
 
-        ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
-        ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
-        c.andIdEqualTo(archivesId);
-        List<ShopUserArchivesDTO> shopUserArchivesDTOS = shopUserArchivesMapper.selectByCriteria(criteria);
-
         logger.info("保存用户的建档案信息传入参数={}", "archivesId = [" + archivesId + "]");
 
         if (StringUtils.isBlank(archivesId)) {
@@ -183,5 +178,30 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         }
 
         return shopUserArchivesMapper.deleteByPrimaryKey(archivesId);
+    }
+
+    /**
+     * 查询某个用户的档案信息
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    @Override
+    public ShopUserArchivesDTO getShopUserArchivesInfoByUserId(ShopUserArchivesDTO shopUserArchivesDTO) {
+
+        logger.info("查询某个用户的档案信息传入参数={}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+
+        ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
+        ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
+        if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysUserId())) {
+            c.andSysUserIdEqualTo(shopUserArchivesDTO.getSysUserId());
+        }
+        List<ShopUserArchivesDTO> shopUserArchivesDTOS = shopUserArchivesMapper.selectByCriteria(criteria);
+
+        if (CommonUtils.objectIsEmpty(shopUserArchivesDTOS)) {
+            return null;
+        }
+        logger.debug("查询某个用户的档案信息大小为， {}", shopUserArchivesDTOS.size());
+        return shopUserArchivesDTOS.get(0);
     }
 }
