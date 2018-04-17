@@ -1,4 +1,4 @@
-package com.wisdom.tinglao.service.impl;
+package com.wisdom.service.impl;
 
 
 import com.fasterxml.jackson.core.JsonParseException;

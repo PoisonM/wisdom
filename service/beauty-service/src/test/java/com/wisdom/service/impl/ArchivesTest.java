@@ -1,4 +1,4 @@
-package com.wisdom.tinglao.service.impl;
+package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
