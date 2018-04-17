@@ -248,7 +248,7 @@
     border-right: 1px solid #B4B4B4;
 }
 .userInfo .userInfo_public .message{
-    height: 1.375rem;
+    height: 1.453125rem;
     width: 100%;
     padding: 0.078125rem;
     overflow: hidden;
@@ -428,6 +428,7 @@
 }
 .userInfo .userInfo_public .changePsd{
     margin-bottom: 0.5625rem;
+    background-color: #ffffff;
 }
 .userInfo .userInfo_public .changePsd li{
     width: 100%;
