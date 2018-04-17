@@ -341,7 +341,7 @@ public class PayFunction {
                 incomeRecordDTO.setParentRelation(parentRuleType);
 
                 incomeService.insertUserIncomeInfo(incomeRecordDTO);
-                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(userInfoDTOList.get(0).getNickname(),expenseAmount+"", DateUtils.DateToStr(new Date()),token,"",accountDTO.getUserOpenId());
+                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(),expenseAmount+"", DateUtils.DateToStr(new Date()),token,"",accountDTO.getUserOpenId());
             }
 
         }catch (Exception e)
