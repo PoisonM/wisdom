@@ -6,14 +6,17 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         top_bottomSelect:"yuyue",
         tabSty:'day',
         headerCash:{
+            leftContent:"档案(9010)",
+            leftAddContent:"添加档案",
             backContent:"账户明细",
-            title:"详情"
+            title:"详情",
+            leftTip:"保存"
         },
         headerPrice:{
             backContent:"",
             title:"项目",
             blackBackContent:"",
-            blackTitle:"黑色项目",
+            blackTitle:"产品",
         }
     }
     //公共部分开关管理
@@ -28,7 +31,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
             headerReservationRightFlag:true,
         },
         //收银头部开关
-        headerCashAllFlag:false,
+        headerCashAllFlag:true,
         headerCashFlag:{
             headerCashLeftFlag:true,
             headerCashRightFlag:{
@@ -41,7 +44,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         //考勤头部开关
 
         //价目表头部开关
-        headerPriceListAllFlag:true,
+        headerPriceListAllFlag:false,
         headerPriceListBlackFlag:true,
         headerPriceListFlag:{
 
