@@ -44,7 +44,7 @@ public class ArchivesTest {
     }
 
     /**
-     * get请求
+     * 删除档案信息
      *
      * @throws Exception
      */

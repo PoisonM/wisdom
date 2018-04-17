@@ -48,10 +48,10 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
     //
     private String bloodType;
 
-    //
+    //高度 单位 厘米cm
     private Float height;
 
-    //
+    //单位kg
     private Float weight;
 
     //business-B-1、business-A-1、business-C-1、manager-1、business-AA

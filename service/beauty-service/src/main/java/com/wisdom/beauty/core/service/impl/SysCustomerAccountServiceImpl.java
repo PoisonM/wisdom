@@ -23,7 +23,7 @@ import java.util.List;
 
 
 /**
- * ClassName: SysCustomerAccountServcieImpl
+ * ClassName: SysCustomerAccountServiceImpl
  *
  * @Author： huan
  * @Description:
