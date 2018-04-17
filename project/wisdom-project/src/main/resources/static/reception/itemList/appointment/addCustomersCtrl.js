@@ -20,7 +20,6 @@ function addCustomersCtrl ($scope,ngDialog) {
 
             }
             var MultipartFile = new FormData();
-            MultipartFile.append("folder",ptoductType);
             for(var i=0;i<this.files.length;i++){
                 var reader = new FileReader();
                 reader.readAsDataURL(this.files[i]);
