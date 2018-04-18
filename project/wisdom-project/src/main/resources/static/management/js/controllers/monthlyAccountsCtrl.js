@@ -8,7 +8,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             $scope.MAccount = "";
             $scope.status="instance";
             $scope.agencyIndex = 1;
-            $scope.mum = true;
+            $scope.stateIndex = "allState";
+           /* $scope.mum = true;*/
             var pageTrue = true;
 
  /*日期插件*/
@@ -46,18 +47,36 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                 laydate(start);
                 laydate(end);
             };
-
-            $scope.details = function(sysUserId,createDate,incomeType,transactionId){
-                if($scope.status == "instance"){
-                     $state.go("forthwithAward",{transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status})
+           /* $scope.haha = {
+                meme:"false",
+                type:"open"
+            }*/
+            var a = 1;
+            /*点击查看按钮*/
+            $scope.details = function(sysUserId,createDate,incomeType,transactionId,index){
+                if($scope.status == "instance"||$scope.status == "recommends"){
+                 /*   if(index == $scope.haha.meme){
+                        $scope.haha.meme = "false"
+                    }else{
+                        $scope.haha.meme = index
+                    }*/
+                    for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
+                        $scope.MonthlyBalanceLis[i].states = "1"
+                    }
+                    a++;
+                    if(a%2 ==0){
+                        $scope.MonthlyBalanceLis[index].states = "2"
+                    }else if (a%2==1){
+                        $scope.MonthlyBalanceLis[index].states = "1"
+                    }
+                    /* $state.go("forthwithAward",{transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status})*/
                 }else if($scope.status=="month"){
                     $state.go("abschluss",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status})
                 }
             };
-
 /*月结  即时提现*/
             $scope.loadPageList = function(){
-                $timeout(function(){
+             /*   $timeout(function(){
                     if(window.location.hash.indexOf("true") != -1 && pageTrue == true ){
                         $scope.MAccount = $stateParams.MAccount;
                         startTime.value = $stateParams.startTime;
@@ -111,13 +130,13 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                             for(var i=0;i<$scope.MonthlyBalanceLis.length;i++){
                                 $scope.MonthlyBalanceLis[i].userType = $scope.MonthlyBalanceLis[i].userType.substring(9,10)+"级";
                             }
-                            /*  $scope.MAccount = "";
+                            /!*  $scope.MAccount = "";
                              startTime.value='';
-                             endTime.value='';*/
+                             endTime.value='';*!/
 
                         }
                     })
-                },10);
+                },10);*/
                 };
 
 /*按钮的切换*/
@@ -166,6 +185,142 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                             }
                         })
                     }
+            };
+
+            /*筛选已完成的订单*/
+            $scope.completedOrders=function () {
+                if (confirm("是否筛选已完成的订单？")) {
+                }
+            };
+            /*审核*/
+            $scope.examine=function () {
+                alert("确认无误审核通过")
             }
+
+            /*状态按钮的切换*/
+            $scope.stateBox = function(type){
+                startTime.value ="";
+                endTime.value='';
+                $scope.MAccount = "";
+                $scope.actives = 'actives';
+                $scope.stateIndex =type;
+                $scope.loadPageList();
+                $scope.choosePage(1)
+            };
+            /*假数据*/
+            $scope.MonthlyBalanceLis=[
+                {
+                    nickName:"汤艳春",
+                    mobile:"17600522543",
+                    userType:"A",
+                    commission:"20",
+                    createDate:"2018.4.17",
+                    type:"及时奖励",
+                    present:"可提现",
+                    orderType:"已完成",
+                    status:"1",
+                    states:'1',//states为1时表示点击查看，点击查看出来的商品状态为2.
+                    types:[
+                        {
+                        nickName:"汤艳春1",
+                        mobile:"17600522543"
+                       },
+                        {
+                            nickName:"陈桂红2",
+                            mobile:"17600522543"
+                        }
+                    ]
+                },
+                {
+                    nickName:"陈桂红",
+                    mobile:"17600522543",
+                    userType:"A",
+                    commission:"20",
+                    createDate:"2018.4.17",
+                    type:"及时奖励",
+                    present:"可提现",
+                    orderType:"已完成",
+                    status:"1",
+                    states:'1',
+                    types:[
+                        {
+                            nickName:"陈桂红1",
+                            mobile:"17600522543"
+                        },
+                        {
+                            nickName:"陈桂红2",
+                            mobile:"17600522543"
+                        }
+                    ]
+
+                },
+                {
+                    nickName:"苗向阳",
+                    mobile:"17600522543",
+                    userType:"A",
+                    commission:"20",
+                    createDate:"2018.4.17",
+                    type:"及时奖励",
+                    present:"可提现",
+                    orderType:"已完成",
+                    status:"1",
+                    states:'1',
+                    types:[
+                        {
+                            nickName:"苗向阳1",
+                            mobile:"17600522543"
+                        },
+                        {
+                            nickName:"苗向阳2",
+                            mobile:"17600522543"
+                        }
+                    ]
+                },
+                {
+                    nickName:"陶世文",
+                    mobile:"17600522543",
+                    userType:"A",
+                    commission:"20",
+                    createDate:"2018.4.17",
+                    type:"及时奖励",
+                    present:"可提现",
+                    orderType:"已完成",
+                    status:"1",
+                    states:'1',
+                    types:[
+                        {
+                            nickName:"陶世文1",
+                            mobile:"17600522543"
+                        },
+                        {
+                            nickName:"陶世文2",
+                            mobile:"17600522543"
+                        }
+                    ]
+                },
+                {
+                    nickName:"小明",
+                    mobile:"17600522543",
+                    userType:"A",
+                    commission:"20",
+                    createDate:"2018.4.17",
+                    type:"及时奖励",
+                    present:"可提现",
+                    orderType:"已完成",
+                    status:"1",
+                    states:'1',
+                    types:[
+                        {
+                         nickName:"小明2",
+                            mobile:"17600522543"
+                        },
+                        {
+                            nickName:"小明1",
+                            mobile:"17600522543"
+                        }
+                    ]
+                },
+
+            ]
             }]);
 

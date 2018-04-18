@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Service
@@ -174,6 +175,9 @@ public class WithDrawService {
         //公众号中的提现操作，moneyAmount为提现金额
         Float returnMoney = moneyAmount*100;
 
+        DecimalFormat decimalFormat=new DecimalFormat("");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+        String money = decimalFormat.format(returnMoney);//format 返回的是字符串
+
         //调用企业统一支付接口对用户进行退款
         SortedMap<Object,Object> parameters = new TreeMap<>();
         parameters.put("mch_appid", ConfigConstant.APP_ID);//APPid
@@ -181,7 +185,7 @@ public class WithDrawService {
         parameters.put("nonce_str", IdGen.uuid());
         parameters.put("partner_trade_no",IdGen.uuid());
         parameters.put("check_name","NO_CHECK");
-        parameters.put("amount", returnMoney.toString());//金额
+        parameters.put("amount", money);//金额
         parameters.put("desc", "提现零钱");
         parameters.put("spbill_create_ip",request.getRemoteAddr());
         parameters.put("openid", openid);
@@ -202,7 +206,7 @@ public class WithDrawService {
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
-        WeixinTemplateMessageUtil.withdrawalsSuccess2Weixin(openid,token,"",returnMoney.toString(),DateUtils.DateToStr(new Date(), "date"));
+        WeixinTemplateMessageUtil.withdrawalsSuccess2Weixin(openid,token,"",String.valueOf(moneyAmount),DateUtils.DateToStr(new Date(), "date"));
     }
 
 }
