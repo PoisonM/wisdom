@@ -4,8 +4,10 @@ import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.account.AccountMapper;
 import com.wisdom.business.mapper.account.WithDrawMapper;
 import com.wisdom.business.util.UserUtils;
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
+import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.WithDrawRecordDTO;
@@ -24,9 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = false)
@@ -172,37 +172,37 @@ public class WithDrawService {
         }
 
         //公众号中的提现操作，moneyAmount为提现金额
-//        Float returnMoney = moneyAmount*100;
-//
-//        //调用企业统一支付接口对用户进行退款
-//        SortedMap<Object,Object> parameters = new TreeMap<>();
-//        parameters.put("mch_appid", ConfigConstant.APP_ID);//APPid
-//        parameters.put("mchid", ConfigConstant.MCH_ID);
-//        parameters.put("nonce_str", IdGen.uuid());
-//        parameters.put("partner_trade_no",IdGen.uuid());
-//        parameters.put("check_name","NO_CHECK");
-//        parameters.put("amount", returnMoney.toString());//金额
-//        parameters.put("desc", "退款");
-//        parameters.put("spbill_create_ip",request.getRemoteAddr());
-//        parameters.put("openid", openid);
-//        String sign = JsApiTicketUtil.createSign("UTF-8", parameters);
-//        parameters.put("sign", sign);
-//        String requestXML = JsApiTicketUtil.getRequestXml(parameters);
-//        try{
-//            String result =HttpRequestUtil.clientCustomSSLS(ConfigConstant.TRANSFERS, requestXML);
-//            Map<String, String> returnMap = XMLUtil.doXMLParse(result);//解析微信返回的信息，以Map形式存储便于取值
-//            if(!"SUCCESS".equals(returnMap.get("result_code"))){
-//                throw new Exception();
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            throw e;
-//        }
+        Float returnMoney = moneyAmount*100;
 
-//        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinFlag));
-//        WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
-//        String token = weixinTokenDTO.getToken();
-//        BusinessMsgTemplate.withdrawalsSuccess2Weixin(openid,token,"",returnMoney.toString(),DateUtils.DateToStr(new Date(), "date"));
+        //调用企业统一支付接口对用户进行退款
+        SortedMap<Object,Object> parameters = new TreeMap<>();
+        parameters.put("mch_appid", ConfigConstant.APP_ID);//APPid
+        parameters.put("mchid", ConfigConstant.MCH_ID);
+        parameters.put("nonce_str", IdGen.uuid());
+        parameters.put("partner_trade_no",IdGen.uuid());
+        parameters.put("check_name","NO_CHECK");
+        parameters.put("amount", returnMoney.toString());//金额
+        parameters.put("desc", "提现零钱");
+        parameters.put("spbill_create_ip",request.getRemoteAddr());
+        parameters.put("openid", openid);
+        String sign = JsApiTicketUtil.createSign("UTF-8", parameters);
+        parameters.put("sign", sign);
+        String requestXML = JsApiTicketUtil.getRequestXml(parameters);
+        try{
+            String result = HttpRequestUtil.clientCustomSSLS(ConfigConstant.transfer, requestXML);
+            Map<String, String> returnMap = XMLUtil.doXMLParse(result);//解析微信返回的信息，以Map形式存储便于取值
+            if(!"SUCCESS".equals(returnMap.get("result_code"))){
+                throw new Exception();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
+        WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
+        String token = weixinTokenDTO.getToken();
+        WeixinTemplateMessageUtil.withdrawalsSuccess2Weixin(openid,token,"",returnMoney.toString(),DateUtils.DateToStr(new Date(), "date"));
     }
 
 }

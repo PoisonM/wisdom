@@ -62,6 +62,8 @@ public enum ConfigConstant {
 
 	public static final String GATE_URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
+	public static final String transfer = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+
 	public static final String SIGN_METHOD = "MD5";
 
 	public static final String SHARE_CODE_VALUE = "mxbusinessshare_";

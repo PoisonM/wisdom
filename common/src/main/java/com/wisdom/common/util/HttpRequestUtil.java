@@ -1,5 +1,6 @@
 package com.wisdom.common.util;
 
+import com.wisdom.common.constant.ConfigConstant;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -308,6 +309,57 @@ public class HttpRequestUtil {
             }
         }
         return result;
+    }
+
+    public  static String clientCustomSSLS(String url,String postDate) throws Exception {
+        KeyStore keyStore  = KeyStore.getInstance("PKCS12");
+//        String i = System.getProperty("user.dir");
+//        System.out.print(i);
+//        FileInputStream instream = new FileInputStream(new File(i+"/apiclient_cert.p12"));
+        FileInputStream instream = new FileInputStream(new File("C:\\apiclient_cert.p12"));
+        try {
+            keyStore.load(instream, ConfigConstant.MCH_ID.toCharArray());
+        } finally {
+            instream.close();
+        }
+        // Trust own CA and all self-signed certs
+        SSLContext sslcontext = SSLContexts.custom()
+                .loadKeyMaterial(keyStore,ConfigConstant.MCH_ID.toCharArray())
+                .build();
+        // Allow TLSv1 protocol only
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                sslcontext,
+                new String[] { "TLSv1" },
+                null,
+                SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+        CloseableHttpClient httpclient = HttpClients.custom()
+                .setSSLSocketFactory(sslsf)
+                .build();
+        try {
+            HttpPost httpPost = new HttpPost(url);
+            StringEntity requestEntity = new StringEntity(postDate, "utf-8");
+            requestEntity.setContentType("application/x-www-form-urlencoded");
+            httpPost.setEntity(requestEntity);
+            CloseableHttpResponse response = httpclient.execute(httpPost);
+            try {
+                HttpEntity responseEntity = response.getEntity();
+                if (responseEntity != null) {
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(responseEntity.getContent() ,"utf-8"));
+                    String text;
+                    StringBuffer sbuf = new StringBuffer();
+                    while ((text = bufferedReader.readLine()) != null) {
+                        sbuf.append(text);
+                    }
+                    return sbuf.toString();
+                }
+                EntityUtils.consume(responseEntity);
+            } finally {
+                response.close();
+            }
+        } finally {
+            httpclient.close();
+        }
+        return "";
     }
 
 }

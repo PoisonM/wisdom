@@ -22,6 +22,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +53,16 @@ public class IncomeManagementController {
 
 	@Autowired
 	private UserServiceClient userServiceClient;
+
+	@RequestMapping(value = "path", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO path() throws FileNotFoundException {
+		String i = System.getProperty("user.dir");
+		System.out.print(i);
+		FileInputStream instream = new FileInputStream(new File(i+"\\service\\business-service\\target\\classes\\application.properties"));
+		return null;
+	}
 
 	/**
 	 * 根据用户id查询这个月都消费了哪些订单
