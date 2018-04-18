@@ -61,6 +61,23 @@ public class IncomeManagementController {
 	ResponseDTO management() {
 		ResponseDTO responseDTO = new ResponseDTO();
 
+		UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
+		userBusinessTypeDTO.setUserType(ConfigConstant.businessC1);
+		List<UserBusinessTypeDTO> userBusinessTypeDTOList = userTypeMapper.getUserBusinessTypeSpecial(userBusinessTypeDTO);
+
+		for(UserBusinessTypeDTO userBusinessTypeDTO1:userBusinessTypeDTOList)
+		{
+			if(userBusinessTypeDTO1.getParentUserId().equals(""))
+			{
+				UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(userBusinessTypeDTO1.getSysUserId());
+				if(userInfoDTO.getParentUserId()!=null)
+				{
+					userBusinessTypeDTO1.setParentUserId(userInfoDTO.getParentUserId());
+					userTypeMapper.updateUserBusinessType(userBusinessTypeDTO1);
+				}
+			}
+		}
+
 		IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
 		incomeRecordDTO.setIncomeType("instance");
 		List<IncomeRecordDTO> incomeRecordDTOList = incomeService.getUserIncomeRecordInfo(incomeRecordDTO);
@@ -144,7 +161,7 @@ public class IncomeManagementController {
 				}
 				String nextUserId = payRecordDTOList.get(0).getSysUserId();
 
-				String nextUserType = getUserType(monthTransactionRecordDTO.getCreateDate(),monthTransactionRecordDTO.getUserId());
+				String nextUserType = getUserType(monthTransactionRecordDTO.getCreateDate(),nextUserId);
 
 				UserInfoDTO nextUserInfoDTO = userServiceClient.getUserInfoFromUserId(nextUserId);
 				monthTransactionRecordDTO.setNextUserId(nextUserId);
@@ -185,9 +202,8 @@ public class IncomeManagementController {
 			if(DateUtils.compareDate(createDate,userBusinessTypeDTOList.get(0).getCreateDate())==1)
 			{
 				tempType = userBusinessTypeDTOList.get(0).getUserType();
-
 			}
-			else if(DateUtils.compareDate(userBusinessTypeDTOList.get(0).getCreateDate(),createDate)==1
+			else if(DateUtils.compareDate(createDate,userBusinessTypeDTOList.get(0).getCreateDate())==0
 					&&DateUtils.compareDate(createDate,userBusinessTypeDTOList.get(1).getCreateDate())==1)
 			{
 				tempType = userBusinessTypeDTOList.get(1).getUserType();
@@ -200,7 +216,7 @@ public class IncomeManagementController {
 				tempType = userBusinessTypeDTOList.get(0).getUserType();
 
 			}
-			else if(DateUtils.compareDate(userBusinessTypeDTOList.get(0).getCreateDate(),createDate)==1
+			else if(DateUtils.compareDate(createDate,userBusinessTypeDTOList.get(0).getCreateDate())==0
 					&&DateUtils.compareDate(createDate,userBusinessTypeDTOList.get(1).getCreateDate())==1)
 			{
 				tempType = userBusinessTypeDTOList.get(1).getUserType();

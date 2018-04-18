@@ -25,4 +25,6 @@ public interface UserTypeMapper {
     void insertUserBusinessType(UserBusinessTypeDTO userBusinessTypeDTO);
 
     void updateUserBusinessType(UserBusinessTypeDTO userBusinessTypeDTO);
+
+    List<UserBusinessTypeDTO> getUserBusinessTypeSpecial(UserBusinessTypeDTO userBusinessTypeDTO);
 }
