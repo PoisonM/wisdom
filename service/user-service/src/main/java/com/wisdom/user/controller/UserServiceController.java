@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -46,5 +47,12 @@ public class UserServiceController {
 	@ResponseBody
 	List<UserInfoDTO> queryNextUserByUserId(@RequestParam(value = "userId") String userId) {
 		return customerInfoService.queryNextUserById(userId);
+	}
+	@RequestMapping(value = "/getUserInfoListFromUserId",method=RequestMethod.GET)
+	@ResponseBody
+	List<UserInfoDTO> getUserInfoFromUserId(@RequestParam String[] userIds,
+											@RequestParam(required = false) String searchFile) {
+		List<String> list= Arrays.asList(userIds);
+		return customerInfoService.getUserInfoFromUserId(list ,searchFile);
 	}
 }

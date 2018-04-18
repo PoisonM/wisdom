@@ -4,7 +4,7 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.PayTypeEnum;
-import com.wisdom.beauty.api.extDto.ExtShopUserConsumeRecordDTO;
+import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.common.util.IdGen;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,11 +50,11 @@ public class ConsumeTest {
     @Test
     public void userOneCardOperation() throws Exception {
 
-        List<ExtShopUserConsumeRecordDTO> extShopUserConsumeRecordDTOS = new ArrayList<>();
+        List<ShopUserOrderDTO> extShopUserConsumeRecordDTOS = new ArrayList<>();
         String uuid = IdGen.uuid();
 
         //构建用户消费信息
-        ExtShopUserConsumeRecordDTO consumeRecordDTO = new ExtShopUserConsumeRecordDTO();
+        ShopUserOrderDTO consumeRecordDTO = new ShopUserOrderDTO();
         consumeRecordDTO.setId(uuid);
         consumeRecordDTO.setSysUserId(uuid);
         consumeRecordDTO.setSysUserName("安迪苏瓦");
@@ -85,7 +85,7 @@ public class ConsumeTest {
         projectRelationDTO.setSysShopProjectInitAmount(new BigDecimal(5728));
         projectRelationDTO.setSysShopProjectSurplusAmount(new BigDecimal(5728));
         projectRelationDTO.setInvalidDays(3);
-        consumeRecordDTO.setShopUserProjectRelationDTO(projectRelationDTO);
+//        consumeRecordDTO.setShopUserProjectRelationDTO(projectRelationDTO);
 
         extShopUserConsumeRecordDTOS.add(consumeRecordDTO);
 
