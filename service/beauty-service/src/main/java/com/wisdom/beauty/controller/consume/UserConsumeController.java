@@ -1,4 +1,4 @@
-package com.wisdom.beauty.controller.Consume;
+package com.wisdom.beauty.controller.consume;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
