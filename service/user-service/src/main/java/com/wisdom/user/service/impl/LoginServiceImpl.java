@@ -9,6 +9,7 @@ import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
 import com.wisdom.common.util.*;
+import com.wisdom.user.mapper.ExtSysClerkMapper;
 import com.wisdom.user.mapper.SysBossMapper;
 import com.wisdom.user.mapper.SysClerkMapper;
 import com.wisdom.user.mapper.UserInfoMapper;
@@ -39,7 +40,7 @@ public class LoginServiceImpl implements LoginService{
     private SysBossMapper sysBossMapper;
 
     @Autowired
-    private SysClerkMapper sysClerkMapper;
+    private ExtSysClerkMapper extSysClerkMapper;
 
     @Autowired
     protected MongoTemplate mongoTemplate;
@@ -246,7 +247,7 @@ public class LoginServiceImpl implements LoginService{
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysClerkDTO sysClerkDTO = new SysClerkDTO();
         sysClerkDTO.setUserOpenid(openId);
-        List<SysClerkDTO> sysClerkDTOList = sysClerkMapper.getClerkInfo(sysClerkDTO);
+        List<SysClerkDTO> sysClerkDTOList = extSysClerkMapper.getClerkInfo(sysClerkDTO);
         RedisLock redisLock = new RedisLock("clerkInfo" + loginDTO.getUserPhone());
         try {
             redisLock.lock();
@@ -260,13 +261,13 @@ public class LoginServiceImpl implements LoginService{
                     sysClerkDTO.setMobile(loginDTO.getUserPhone());
                     sysClerkDTO.setLoginDate(new Date());
                     sysClerkDTO.setLoginIp(loginIP);
-                    sysClerkMapper.updateClerkInfo(sysClerkDTO);
+                    extSysClerkMapper.updateClerkInfo(sysClerkDTO);
                 }
                 else if(sysClerkDTO.getMobile().equals(loginDTO.getUserPhone()))
                 {
                     sysClerkDTO.setLoginDate(new Date());
                     sysClerkDTO.setLoginIp(loginIP);
-                    sysClerkMapper.updateClerkInfo(sysClerkDTO);
+                    extSysClerkMapper.updateClerkInfo(sysClerkDTO);
                 }
                 else
                 {
@@ -301,7 +302,7 @@ public class LoginServiceImpl implements LoginService{
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysClerkDTO sysClerkDTO = new SysClerkDTO();
         sysClerkDTO.setMobile(loginDTO.getUserPhone());
-        List<SysClerkDTO> sysClerkDTOList = sysClerkMapper.getClerkInfo(sysClerkDTO);
+        List<SysClerkDTO> sysClerkDTOList = extSysClerkMapper.getClerkInfo(sysClerkDTO);
         RedisLock redisLock = new RedisLock("clerkInfo" + loginDTO.getUserPhone());
         try {
             redisLock.lock();
@@ -314,7 +315,7 @@ public class LoginServiceImpl implements LoginService{
                     sysClerkDTO.setMobile(loginDTO.getUserPhone());
                     sysClerkDTO.setLoginDate(new Date());
                     sysClerkDTO.setLoginIp(loginIP);
-                    sysClerkMapper.updateClerkInfo(sysClerkDTO);
+                    extSysClerkMapper.updateClerkInfo(sysClerkDTO);
                 }
                 else
                 {
