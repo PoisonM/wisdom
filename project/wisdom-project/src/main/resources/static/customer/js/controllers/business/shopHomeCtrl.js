@@ -190,18 +190,22 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             }
 
 
-
+            function convertDateFromString(dateString) {
+                if (dateString) {
+                    var arr1 = dateString.split(" ");
+                    var sdate = arr1[0].split('-');
+                    var date = new Date(sdate[0], sdate[1]-1, sdate[2]);
+                    return date;
+                }
+            }
 
             FindProductById.get({
                 productId:'MXT99-02'
             },function (data) {
-                console.log("1111111111111111" + data.responseData);
-                console.log(data.responseData.productDetail.nowTime);
-                console.log(data.responseData.productDetail.soldOutTime);
                 //当前时间
-                $scope.nowTime = new Date(data.responseData.productDetail.nowTime).getTime();
+                $scope.nowTime =convertDateFromString(data.responseData.productDetail.nowTime).getTime();
                 //下架时间
-                $scope.soldOutTime = new Date( data.responseData.productDetail.soldOutTime).getTime();
+                $scope.soldOutTime = convertDateFromString( data.responseData.productDetail.soldOutTime).getTime();
                 timeInterval($scope.nowTime,$scope.soldOutTime)
             })
             function timeInterval(nowTime,soldOutTime){

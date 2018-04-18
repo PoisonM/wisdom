@@ -185,6 +185,8 @@ public class WithDrawService {
         parameters.put("nonce_str", IdGen.uuid());
         parameters.put("partner_trade_no",IdGen.uuid());
         parameters.put("check_name","NO_CHECK");
+//        parameters.put("check_name","FORCE_CHECK");
+//        parameters.put("re_user_name","陈佳科");
         parameters.put("amount", money);//金额
         parameters.put("desc", "提现零钱");
         parameters.put("spbill_create_ip",request.getRemoteAddr());
