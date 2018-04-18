@@ -85,7 +85,7 @@ public class ConsumeTest {
         projectRelationDTO.setSysShopProjectInitAmount(new BigDecimal(5728));
         projectRelationDTO.setSysShopProjectSurplusAmount(new BigDecimal(5728));
         projectRelationDTO.setInvalidDays(3);
-        consumeRecordDTO.setShopUserProjectRelationDTO(projectRelationDTO);
+//        consumeRecordDTO.setShopUserProjectRelationDTO(projectRelationDTO);
 
         extShopUserConsumeRecordDTOS.add(consumeRecordDTO);
 

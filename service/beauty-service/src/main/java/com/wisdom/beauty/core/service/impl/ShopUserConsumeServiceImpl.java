@@ -8,6 +8,7 @@ import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.util.List;
  * Date:     2018/4/3 0003 15:06
  * Description: 用户消费相关
  */
+@Service("shopUserConsumeService")
 public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());

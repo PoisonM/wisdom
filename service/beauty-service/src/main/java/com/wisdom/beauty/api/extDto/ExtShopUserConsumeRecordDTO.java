@@ -2,50 +2,52 @@ package com.wisdom.beauty.api.extDto;
 
 import com.wisdom.beauty.api.dto.*;
 
+import java.util.List;
+
 public class ExtShopUserConsumeRecordDTO extends ShopUserConsumeRecordDTO {
 
     //用户与项目关系
-    private ShopUserProjectRelationDTO shopUserProjectRelationDTO;
+    private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
 
     //用户与产品
-    private ShopUserProductRelationDTO shopUserProductRelationDTO;
+    private List<ShopUserProductRelationDTO> shopUserProductRelationDTOS;
 
     //套卡
-    private ShopProjectGroupDTO shopProjectGroupDTO;
+    private List<ShopProjectGroupDTO> shopProjectGroupDTOS;
 
     //用户与充值卡的关系
-    private ShopUserRechargeCardDTO shopUserRechargeCardDTO;
+    private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
 
 
-    public ShopUserProjectRelationDTO getShopUserProjectRelationDTO() {
-        return shopUserProjectRelationDTO;
+    public List<ShopUserProjectRelationDTO> getShopUserProjectRelationDTOS() {
+        return shopUserProjectRelationDTOS;
     }
 
-    public void setShopUserProjectRelationDTO(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
-        this.shopUserProjectRelationDTO = shopUserProjectRelationDTO;
+    public void setShopUserProjectRelationDTOS(List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS) {
+        this.shopUserProjectRelationDTOS = shopUserProjectRelationDTOS;
     }
 
-    public ShopUserProductRelationDTO getShopUserProductRelationDTO() {
-        return shopUserProductRelationDTO;
+    public List<ShopUserProductRelationDTO> getShopUserProductRelationDTOS() {
+        return shopUserProductRelationDTOS;
     }
 
-    public void setShopUserProductRelationDTO(ShopUserProductRelationDTO shopUserProductRelationDTO) {
-        this.shopUserProductRelationDTO = shopUserProductRelationDTO;
+    public void setShopUserProductRelationDTOS(List<ShopUserProductRelationDTO> shopUserProductRelationDTOS) {
+        this.shopUserProductRelationDTOS = shopUserProductRelationDTOS;
     }
 
-    public ShopProjectGroupDTO getShopProjectGroupDTO() {
-        return shopProjectGroupDTO;
+    public List<ShopProjectGroupDTO> getShopProjectGroupDTOS() {
+        return shopProjectGroupDTOS;
     }
 
-    public void setShopProjectGroupDTO(ShopProjectGroupDTO shopProjectGroupDTO) {
-        this.shopProjectGroupDTO = shopProjectGroupDTO;
+    public void setShopProjectGroupDTOS(List<ShopProjectGroupDTO> shopProjectGroupDTOS) {
+        this.shopProjectGroupDTOS = shopProjectGroupDTOS;
     }
 
-    public ShopUserRechargeCardDTO getShopUserRechargeCardDTO() {
-        return shopUserRechargeCardDTO;
+    public List<ShopUserRechargeCardDTO> getShopUserRechargeCardDTOS() {
+        return shopUserRechargeCardDTOS;
     }
 
-    public void setShopUserRechargeCardDTO(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
-        this.shopUserRechargeCardDTO = shopUserRechargeCardDTO;
+    public void setShopUserRechargeCardDTOS(List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS) {
+        this.shopUserRechargeCardDTOS = shopUserRechargeCardDTOS;
     }
 }
