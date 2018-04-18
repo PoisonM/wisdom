@@ -71,18 +71,21 @@ public class ConsumeTest {
         consumeRecordDTO.setSysShopId(uuid);
         consumeRecordDTO.setSysClerkId(uuid);
 
-
         //构建用户与项目的关系
         ShopUserProjectRelationDTO projectRelationDTO = new ShopUserProjectRelationDTO();
         projectRelationDTO.setSysShopProjectSurplusTimes(10);
         projectRelationDTO.setSysShopProjectName("黄金换肤");
+        //消费确认要提交的初始次数
         projectRelationDTO.setSysShopProjectInitTimes(10);
         projectRelationDTO.setSysShopProjectInitAmount(new BigDecimal(1411));
         projectRelationDTO.setSysClerkId(uuid);
         projectRelationDTO.setSysShopProjectId(uuid);
         projectRelationDTO.setSysShopName(consumeRecordDTO.getSysShopName());
         projectRelationDTO.setIsSend("1");//1 赠送 0不赠送
-
+        projectRelationDTO.setSysShopProjectInitAmount(new BigDecimal(5728));
+        projectRelationDTO.setSysShopProjectSurplusAmount(new BigDecimal(5728));
+        projectRelationDTO.setInvalidDays(3);
+        consumeRecordDTO.setShopUserProjectRelationDTO(projectRelationDTO);
 
         extShopUserConsumeRecordDTOS.add(consumeRecordDTO);
 
