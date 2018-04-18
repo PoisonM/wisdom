@@ -73,8 +73,7 @@ public class UserConsumeController {
     @RequestMapping(value = "/consumes", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestParam String sysShopId,
-                                                                    @RequestParam(required = false) String shopUserId,
-                                                                    @RequestParam(required = false) String sysClerkId,
+                                                                    @RequestParam String shopUserId,
                                                                     @RequestParam String consumeType, int pageSize) {
 
         long startTime = System.currentTimeMillis();
@@ -83,7 +82,6 @@ public class UserConsumeController {
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
         shopUserConsumeRecordDTO.setSysUserId(shopUserId);
         shopUserConsumeRecordDTO.setSysShopId(sysShopId);
-        shopUserConsumeRecordDTO.setSysClerkId(sysClerkId);
         shopUserConsumeRecordDTO.setConsumeType(consumeType);
 
         pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
