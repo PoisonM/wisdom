@@ -177,6 +177,10 @@ define(['appCustomer'], function (app) {
         .factory('GetSpecialShopInfo',['$resource',function ($resource){
             return $resource(product + 'getSpecialShopInfo')
         }])
+        //
+        .factory('FindProductById',['$resource',function ($resource){
+            return $resource(product + 'findProductById');
+        }])
 
 
 });
