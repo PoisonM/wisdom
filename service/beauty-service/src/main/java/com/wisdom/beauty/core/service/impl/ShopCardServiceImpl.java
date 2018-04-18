@@ -54,10 +54,31 @@ public class ShopCardServiceImpl implements ShopCardService {
             criteria.andSysShopIdEqualTo(shopUserRechargeCardDTO.getSysShopId());
         }
 
+        if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getId())) {
+            criteria.andIdEqualTo(shopUserRechargeCardDTO.getId());
+        }
+
         List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS = shopUserRechargeCardMapper.selectByCriteria(shopUserRechargeCardCriteria);
 
         logger.debug("查询某个用户的充值卡列表，查询结果大小为 {}", "size = [" + shopUserRechargeCardDTOS == null ? "0" : shopUserRechargeCardDTOS.size() + "]");
 
         return shopUserRechargeCardDTOS;
+    }
+
+    /**
+     * 更新用户充值卡信息
+     *
+     * @param shopUserRechargeCardDTO
+     * @return
+     */
+    @Override
+    public int updateUserRechargeCard(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+
+        logger.info("更新用户充值卡信息传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+        if (StringUtils.isBlank(shopUserRechargeCardDTO.getId())) {
+            logger.error("更新用户充值卡信息，主键为空，{}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+            return 0;
+        }
+        return shopUserRechargeCardMapper.updateByPrimaryKeySelective(shopUserRechargeCardDTO);
     }
 }
