@@ -198,9 +198,9 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 console.log(data.responseData.productDetail.nowTime);
                 console.log(data.responseData.productDetail.soldOutTime);
                 //当前时间
-                $scope.nowTime = new Date(data.responseData.productDetail.nowTime).getTime()
+                $scope.nowTime = new Date(data.responseData.productDetail.nowTime).getTime();
                 //下架时间
-                $scope.soldOutTime = new Date( data.responseData.productDetail.soldOutTime).getTime()
+                $scope.soldOutTime = new Date( data.responseData.productDetail.soldOutTime).getTime();
                 timeInterval($scope.nowTime,$scope.soldOutTime)
             })
             function timeInterval(nowTime,soldOutTime){
@@ -209,14 +209,14 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                         return
                     } else {
                         nowTime += 1000;
-                        var limit = (soldOutTime - nowTime) / 1000
-                        var resultD = parseInt(limit / (24 * 60 * 60))
-                        var resultH = parseInt(limit / (60 * 60) % 24)
-                        var resultM = parseInt(limit / 60 % 60) + resultH * 60
-                        var resultS = parseInt(limit % 60)
-                        $scope.param.timeContent = resultD
+                        var limit = (soldOutTime - nowTime) / 1000;
+                        var resultD = parseInt(limit / (24 * 60 * 60));
+                        var resultH = parseInt(limit / (60 * 60) % 24);
+                        var resultM = parseInt(limit / 60 % 60) + resultH * 60;
+                        var resultS = parseInt(limit % 60);
+                        $scope.param.timeContent = resultD;
                         if(limit <= 0){
-                            $scope.param.timeContent = 0
+                            $scope.param.timeContent = 0;
                             clearInterval(timer)
                         }
                     }
