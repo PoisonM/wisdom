@@ -195,6 +195,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             FindProductById.get({
                 productId:'MXT99-02'
             },function (data) {
+                console.log("1111111111111111" + data.responseData);
                 console.log(data.responseData.productDetail.nowTime);
                 console.log(data.responseData.productDetail.soldOutTime);
                 //当前时间
