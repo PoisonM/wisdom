@@ -84,8 +84,9 @@
                 <!--<div style="width:2rem;height: 1rem;color: #333333;margin-bottom: 30px;position: absolute;top:20px;left:50%;margin-left:-1rem;text-align: center;font-size: 16px">{{item.name}}元专区</div>-->
                 <!--<div class="col col-50"  ng-repeat="item2 in item.data">-->
                 <div ng-repeat="item2 in item.data" style="margin-top: 20px;">
-                    <div  ng-click="enterDetails(item2.productId)" ng-if="item2.productId!=param.promoteProductId">
+                    <div  ng-click="enterDetails(item2.productId)" ng-if="item2.productId!=param.promoteProductId" style="position: relative">
                         <img class="full-image" ng-src="{{item2.firstUrl}}">
+                        <div ng-if="item2.productId=='MXT99-02'" style="position: absolute;top: 13px;right: 15px;font-size: 14px;color:#f05a24 ;font-family: 微软雅黑" id="timeResult">特惠价结束仅剩 <span style="font-size: 18px;color: #333333">{{param.timeContent}}</span>天</div>
                         <!--<h1 style="font-size:0.26rem;font-weight: bold;color: #333333;">{{item2.productName}}</h1>-->
                         <!--<p style="font-size:0.24rem;color: #666666">-->
                         <!--{{item2.description}}-->
@@ -107,6 +108,7 @@
                 </div>
             </div>
         </div>
+        <!---->
         <div ng-if="param.redPackerFlagOne" class="redPacket_box">
             <div class="redPacket">
                 <img  src="images/redPacket2.png" alt="">
@@ -125,5 +127,6 @@
                 </div>
             </div>
         </div>
+
     </ion-content>
 </ion-view>
