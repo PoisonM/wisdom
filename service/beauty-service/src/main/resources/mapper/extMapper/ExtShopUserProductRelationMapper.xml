@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopUserProductRelationMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopUserProductRelationDTO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="shop_product_name" property="shopProductName" jdbcType="VARCHAR"/>
+        <result column="shop_product_id" property="shopProductId" jdbcType="VARCHAR"/>
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
+        <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
+        <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
+        <result column="wait_receive_number" property="waitReceiveNumber" jdbcType="INTEGER"/>
+        <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
+        <result column="init_times" property="initTimes" jdbcType="INTEGER"/>
+        <result column="surplus_times" property="surplusTimes" jdbcType="INTEGER"/>
+        <result column="init_amount" property="initAmount" jdbcType="DECIMAL"/>
+        <result column="surplus_amount" property="surplusAmount" jdbcType="DECIMAL"/>
+        <result column="is_send" property="isSend" jdbcType="CHAR"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, shop_product_name, shop_product_id, sys_user_id, sys_shop_id, sys_clerk_id, wait_receive_number,
+        sys_shop_name, init_times, surplus_times, init_amount, surplus_amount, is_send, create_by,
+        create_date, update_user, update_date
+    </sql>
+    <!--查询用户未领取数量-->
+    <select id="getWaitReceiveNumber" resultType="com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO" parameterType="java.lang.String">
+        SELECT SUM(s.`wait_receive_number`) waitReceiveNumber,sys_user_id sysUserId FROM shop_user_product_relation s WHERE  sys_clerk_id=#{sysClerkId} GROUP BY sys_user_id;
+    </select>
+</mapper>

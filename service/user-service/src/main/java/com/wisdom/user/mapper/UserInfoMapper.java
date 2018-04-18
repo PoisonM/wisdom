@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户DAO接口
@@ -38,4 +39,6 @@ public interface UserInfoMapper {
 
 	//根据用户id查询上级代理
     List<UserInfoDTO> queryParentUserById(@Param("parentUserId") String parentUserId);
+	//更加多个id查询用户信息集合
+    List<UserInfoDTO> getUserByInfoList(Map<String,Object> userIdMap);
 }

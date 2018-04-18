@@ -3,6 +3,8 @@ package com.wisdom.beauty.controller.mine;
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
+import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: MineController
@@ -30,6 +33,9 @@ public class MineController {
 
     @Autowired
     private ShopUerConsumeRecordService shopUerConsumeRecordService;
+
+    @Autowired
+    private ShopCustomerProductRelationService shopCustomerProductRelationService;
 
     /**
      * @Author:huan
@@ -64,6 +70,19 @@ public class MineController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
         logger.info("findMineConsume方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+    @RequestMapping(value = "/getProductRecord", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Map<String,Object>> getProductRecord(@RequestParam String sysClerkId,
+                                                     @RequestParam(required = false) String searchFile) {
+
+        long startTime = System.currentTimeMillis();
+        Map<String,Object> map=shopCustomerProductRelationService.getShopUserProductRelations(sysClerkId,searchFile);
+        ResponseDTO<Map<String,Object>>  responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(map);
+        logger.info("getProductRecord方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 }

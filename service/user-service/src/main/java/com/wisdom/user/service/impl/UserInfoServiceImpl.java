@@ -152,6 +152,15 @@ public class UserInfoServiceImpl implements UserInfoService{
         return userInfoDTO;
     }
 
+    @Override
+    public List<UserInfoDTO> getUserInfoFromUserId(List<String> sysUserIds,String searchFile) {
+        Map<String,Object> map=new HashMap<>(16);
+        map.put("list",sysUserIds);
+        map.put("searchFile",searchFile);
+        List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfoList(map);
+        return  userInfoDTOS;
+    }
+
     private class processUserInfoSynchronize extends Thread {
 
         private String logintoken;
