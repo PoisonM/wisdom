@@ -21,4 +21,11 @@ public interface ShopCardService {
      */
     List<ShopUserRechargeCardDTO> getUserRechargeCardList(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
 
+    /**
+     * 更新用户充值卡信息
+     *
+     * @param shopUserRechargeCardDTO
+     * @return
+     */
+    int updateUserRechargeCard(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
 }

@@ -30,6 +30,35 @@ public class OfflineProductDTO {
     @JSONField(name = "productAmount")
     private int productAmount;
 
+    /**
+     * 下架时间
+     */
+    @JSONField(name = "soldOutTime")
+    private String soldOutTime;
+
+    /**
+     * 当前时间
+     */
+    @JSONField(name = "nowTime")
+    private String nowTime;
+
+
+    public String getSoldOutTime() {
+        return soldOutTime;
+    }
+
+    public void setSoldOutTime(String soldOutTime) {
+        this.soldOutTime = soldOutTime;
+    }
+
+    public String getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(String nowTime) {
+        this.nowTime = nowTime;
+    }
+
     public String getProductId() {
         return productId;
     }

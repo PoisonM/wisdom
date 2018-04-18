@@ -1,6 +1,7 @@
-package com.wisdom.beauty.controller.userConsume;
+package com.wisdom.beauty.controller.Consume;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
@@ -46,6 +47,9 @@ public class UserConsumeController {
     private ShopProjectService shopProjectService;
 
     @Resource
+    private ShopUserConsumeService shopUserConsumeService;
+
+    @Resource
     private ShopClerkService shopClerkService;
 
     @Resource
@@ -69,8 +73,7 @@ public class UserConsumeController {
     @RequestMapping(value = "/consumes", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestParam String sysShopId,
-                                                                    @RequestParam(required = false) String shopUserId,
-                                                                    @RequestParam(required = false) String sysClerkId,
+                                                                    @RequestParam String shopUserId,
                                                                     @RequestParam String consumeType, int pageSize) {
 
         long startTime = System.currentTimeMillis();
@@ -79,7 +82,6 @@ public class UserConsumeController {
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
         shopUserConsumeRecordDTO.setSysUserId(shopUserId);
         shopUserConsumeRecordDTO.setSysShopId(sysShopId);
-        shopUserConsumeRecordDTO.setSysClerkId(sysClerkId);
         shopUserConsumeRecordDTO.setConsumeType(consumeType);
 
         pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
@@ -134,7 +136,7 @@ public class UserConsumeController {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
         if (CommonUtils.objectIsEmpty(extShopUserConsumeRecordDTOS)) {
-            logger.debug("用户充值或消费操作传入参数为空, {}", "shopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
+            logger.debug("用户充值操作传入参数为空, {}", "shopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
             return null;
         }
         //生成唯一的交易流水号
@@ -161,7 +163,21 @@ public class UserConsumeController {
                     shopUserRelationDTO.setCreateDate(new Date());
                     String uuid = IdGen.uuid();
                     shopUserRelationDTO.setId(uuid);
+                    shopUserRelationDTO.setSysShopName(dto.getSysShopName());
+                    //流水id
                     dto.setFlowId(uuid);
+                    dto.setFlowName(GoodsTypeEnum.TIME_CARD.getDesc());
+                    //如果用充值卡抵扣的话
+                    if (null != dto.getShopUserRechargeCardDTO()) {
+                        ShopUserRechargeCardDTO shopUserRechargeCardDTO = dto.getShopUserRechargeCardDTO();
+                        if (StringUtils.isBlank(shopUserRechargeCardDTO.getId())) {
+                            logger.error("用户充值操作,充值卡参数异常{}", "extShopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
+                            throw new RuntimeException();
+                        }
+                        ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+                        userConsumeRecordDTO.setFlowId(dto.getShopUserRechargeCardDTO().getId());
+                        shopUserConsumeService.userConsumeRechargeCard(userConsumeRecordDTO);
+                    }
                     shopProjectService.saveUserProjectRelation(shopUserRelationDTO);
                 }
                 //如果是套卡相关操作
@@ -204,6 +220,7 @@ public class UserConsumeController {
                         }
                     }
                     dto.setFlowId(shopProjectGroupDTO.getId());
+                    dto.setFlowName(GoodsTypeEnum.COLLECTION_CARD.getDesc());
                 }
                 //如果是产品相关
                 else if (GoodsTypeEnum.PRODUCT.getCode().equals(goodsType)) {
@@ -212,21 +229,25 @@ public class UserConsumeController {
                     String uuid = IdGen.uuid();
                     userProductRelationDTO.setId(uuid);
                     dto.setFlowId(uuid);
+                    dto.setFlowName(GoodsTypeEnum.PRODUCT.getCode());
                 }
                 //dto.getPrice()为此次交易的总价格
                 sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().add(dto.getPrice()));
 
                 //更新用户的账户信息
                 try {
+                    sysUserAccountDTO.setFlowNo(transactionCodeNumber);
                     sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
                 } catch (Exception e) {
                     logger.error("更新账户信息失败，失败信息为{}" + e.getMessage(), e);
                     throw new RuntimeException();
                 }
                 //记录店员的流水信息
-                saveSysClerkFlowAccountInfo(dto);
+                shopClerkService.saveSysClerkFlowAccountInfo(dto);
 
                 dto.setFlowNo(transactionCodeNumber);
+                dto.setOperDate(new Date());
+                dto.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
                 int record = shopUerConsumeRecordService.saveCustomerConsumeRecord(dto);
                 logger.debug("保存用户充值或消费操作返回结果 {}", record > 0 ? "成功" : "失败");
             }
@@ -345,7 +366,7 @@ public class UserConsumeController {
                 }
 
                 //记录店员的流水信息
-                saveSysClerkFlowAccountInfo(dto);
+                shopClerkService.saveSysClerkFlowAccountInfo(dto);
 
                 dto.setFlowNo(transactionCodeNumber);
                 int record = shopUerConsumeRecordService.saveCustomerConsumeRecord(dto);
@@ -362,29 +383,5 @@ public class UserConsumeController {
         return responseDTO;
     }
 
-    private void saveSysClerkFlowAccountInfo(ShopUserConsumeRecordDTO dto) {
-        //记录店员的流水信息
-        try {
-            SysClerkFlowAccountDTO clerkFlowAccountDTO = new SysClerkFlowAccountDTO();
-            clerkFlowAccountDTO.setCreateDate(new Date());
-            clerkFlowAccountDTO.setDetail(dto.getDetail());
-            clerkFlowAccountDTO.setFlowAmount(dto.getPrice());
-            clerkFlowAccountDTO.setOperDate(new Date());
-            clerkFlowAccountDTO.setId(IdGen.uuid());
-            clerkFlowAccountDTO.setSignUrl(dto.getSignUrl());
-            clerkFlowAccountDTO.setOperInfo(dto.getDetail());
-            clerkFlowAccountDTO.setSysBossId(dto.getSysBossId());
-            clerkFlowAccountDTO.setSysClerkId(dto.getSysClerkId());
-            clerkFlowAccountDTO.setSysShopId(dto.getSysShopId());
-            clerkFlowAccountDTO.setSysShopName(dto.getSysShopName());
-            clerkFlowAccountDTO.setSysUserId(dto.getSysUserId());
-            clerkFlowAccountDTO.setShopUserConsumeRecordId(dto.getId());
-            clerkFlowAccountDTO.setType(dto.getConsumeType());
-            shopClerkService.saveSysClerkFlowAccountInfo(clerkFlowAccountDTO);
-        } catch (Exception e) {
-            logger.error("保存店员的流水信息失败，失败信息为{}" + e.getMessage(), e);
-            throw new RuntimeException();
-        }
-    }
 
 }
