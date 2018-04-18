@@ -2,7 +2,7 @@ package com.wisdom.beauty.controller.consume;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
-import com.wisdom.beauty.api.extDto.ExtShopUserConsumeRecordDTO;
+import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
@@ -125,7 +125,7 @@ public class UserConsumeController {
     public
     @ResponseBody
     @Transactional
-    ResponseDTO<String> userRechargeOperation(@RequestBody List<ExtShopUserConsumeRecordDTO> extShopUserConsumeRecordDTOS) {
+    ResponseDTO<String> userRechargeOperation(@RequestBody List<ShopUserOrderDTO> extShopUserConsumeRecordDTOS) {
 
 //        long currentTimeMillis = System.currentTimeMillis();
 //        logger.info("传入参数={}", "shopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");

@@ -1,5 +1,7 @@
 package com.wisdom.beauty.core.service;
 
+import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
+
 /**
  * FileName: ShopOrderService
  *
@@ -9,5 +11,9 @@ package com.wisdom.beauty.core.service;
  */
 public interface ShopOrderService {
 
+    /**
+     * 保存用户的订单信息
+     */
+    int saveShopUserOrderInfo(ShopUserOrderDTO extShopUserConsumeRecordDTO);
 
 }

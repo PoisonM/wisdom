@@ -1,10 +1,14 @@
 package com.wisdom.beauty.api.extDto;
 
-import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
+import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.common.persistence.Order;
 
 import java.util.List;
 
-public class ExtShopUserConsumeRecordDTO extends ShopUserConsumeRecordDTO {
+public class ShopUserOrderDTO extends Order {
 
     //用户与项目关系
     private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
@@ -17,6 +21,10 @@ public class ExtShopUserConsumeRecordDTO extends ShopUserConsumeRecordDTO {
 
     //用户与充值卡的关系
     private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
+
+    public ShopUserOrderDTO(String property, Direction direction, String orderExpr) {
+        super(property, direction, orderExpr);
+    }
 
 
     public List<ShopUserProjectRelationDTO> getShopUserProjectRelationDTOS() {
