@@ -926,23 +926,18 @@ public class WeixinTemplateMessageUtil {
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue("尊敬的用户，您好！！\n"+
-				"您的提现资金" + returnMoney + "已打入您的零钱账户，请您注意查收！！");
+				"您的提现资金已打入您的零钱账户，请您注意查收！！");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue(returnMoney);
-		m.put("money", templateData);
+		templateData.setValue(returnMoney+"元");
+		m.put("keyword1", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(date);
-		m.put("date", templateData);
-
-		templateData = new TemplateData();
-		templateData.setColor("#000000");
-		templateData.setValue("");
-		m.put("remark", templateData);
+		m.put("keyword2", templateData);
 
 		t.setData(m);
 		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
