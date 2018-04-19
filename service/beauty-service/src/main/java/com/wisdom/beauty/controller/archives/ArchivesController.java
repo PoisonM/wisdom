@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -51,20 +52,20 @@ public class ArchivesController {
 
 
     /**
-    *@Author:huan
-    *@Param:
-    *@Return:
-     *@Description: 获取档案列表或某个店的用户列表
-    *@Date:2018/4/8 10:21
-    */
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 获取档案列表或某个店的用户列表
+     * @Date:2018/4/8 10:21
+     */
     @RequestMapping(value = "/findArchives", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Map<String, Object>> findArchives(@RequestParam String queryField, int pageSize) {
-        PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO =new PageParamVoDTO<> ();
+        PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 
-        ShopUserArchivesDTO shopUserArchivesDTO=new ShopUserArchivesDTO();
+        ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
         shopUserArchivesDTO.setPhone(queryField);
         shopUserArchivesDTO.setSysUserName(queryField);
@@ -76,11 +77,11 @@ public class ArchivesController {
         List<ShopUserArchivesDTO> list = shopCustomerArchivesService.getArchivesList(pageParamVoDTO);
         //查询个数
         int count = shopCustomerArchivesService.getArchivesCount(shopUserArchivesDTO);
-        Map<String,Object> map=new HashMap<>(16);
-        map.put("info",list);
-        map.put("data",count);
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("info", list);
+        map.put("data", count);
 
-        ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(map);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
@@ -189,23 +190,74 @@ public class ArchivesController {
     }
 
     /**
-    *@Author:huan
-    *@Param:
-    *@Return:
-     *@Description: 查询某个用户档案信息相关数据
-     *@Date:2018/4/8
-    */
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 查询某个用户档案信息相关数据
+     * @Date:2018/4/8
+     */
     @RequestMapping(value = "/findArchiveByUserId/{userId}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<CustomerAccountResponseDto> findArchiveByUserId(@PathVariable String userId) {
         long startTime = System.currentTimeMillis();
         ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
         CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
-        if(customerAccountResponseDto!=null){
+        if (customerAccountResponseDto != null) {
             responseDTO.setResponseData(customerAccountResponseDto);
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findArchive方法耗时{}毫秒",(System.currentTimeMillis()-startTime));
+        logger.info("findArchive方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 获取用户id查询档案信息
+     * @Date:2018/4/8
+     */
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<CustomerAccountResponseDto> findArchive(@PathVariable String userId) {
+        long startTime = System.currentTimeMillis();
+        ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
+        CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
+        if (customerAccountResponseDto != null) {
+            responseDTO.setResponseData(customerAccountResponseDto);
+        }
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("findArchive方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 根据档案ID获取档案信息, 详细信息
+     * @Date:2018/4/13 19:29
+     */
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<ShopUserArchivesDTO> findArchiveById(@PathVariable String id) {
+        long startTime = System.currentTimeMillis();
+        PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO = new PageParamVoDTO<>();
+
+        ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setId(id);
+        pageParamVoDTO.setRequestData(shopUserArchivesDTO);
+        //查询数据
+        List<ShopUserArchivesDTO> list = shopCustomerArchivesService.getArchivesList(pageParamVoDTO);
+        ResponseDTO<ShopUserArchivesDTO> responseDTO = new ResponseDTO<>();
+
+        if (!CollectionUtils.isEmpty(list)) {
+            ShopUserArchivesDTO shopUserArchive = list.get(0);
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            responseDTO.setResponseData(shopUserArchive);
+        }
+
+        logger.info("findArchiveById方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
