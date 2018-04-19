@@ -54,8 +54,14 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
         }
         //查询用户信息，获取到账户的信息
         CustomerAccountResponseDto customerAccountResponseDto = new CustomerAccountResponseDto();
-        UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(userId);
-        if(userInfoDTO!=null){
+        UserInfoDTO userInfoDTO = null;
+        try {
+            userInfoDTO = userServiceClient.getUserInfoFromUserId(userId);
+        } catch (Exception e) {
+            logger.info("userServiceClient.getUserInfoFromUserId()方法调用失败，失败信息是:" + e.getMessage(), e);
+        }
+
+        if (userInfoDTO != null) {
             customerAccountResponseDto.setPhoto(userInfoDTO.getPhoto());
             customerAccountResponseDto.setUserName(userInfoDTO.getNickname());
         }
@@ -67,10 +73,22 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
             customerAccountResponseDto.setSumAmount(sysUserAccount.getSumAmount());
         }
         //获取会员绑定关系
-        String state = shopUserRelationService.isMember(userId);
+        String state = null;
+        try {
+            state = shopUserRelationService.isMember(userId);
+        } catch (Exception e) {
+            logger.error("shopUserRelationService.isMember()方法调用异常,异常信息是:" + e.getMessage(), e);
+        }
+
         customerAccountResponseDto.setMember(state);
         //获取美容师
-        ShopAppointServiceDTO shopAppointServiceDTO = appointmentService.getShopAppointService(userId);
+        ShopAppointServiceDTO shopAppointServiceDTO = null;
+        try {
+            shopAppointServiceDTO = appointmentService.getShopAppointService(userId);
+        } catch (Exception e) {
+            logger.info("appointmentService.getShopAppointService()方法调用异常,异常信息是:" + e.getMessage(), e);
+        }
+
         if (shopAppointServiceDTO != null) {
             customerAccountResponseDto.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
         }
