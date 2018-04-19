@@ -58,5 +58,33 @@ public class ClerkServiceController {
         return clerkInfo;
     }
 
+    /**
+     * 保存店员信息
+     *
+     * @param shopId
+     * @return
+     */
+    @RequestMapping(value = "saveClerkInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    int saveClerkInfo(@RequestParam(value = "shopId") String shopId) {
+
+        long startTime = System.currentTimeMillis();
+        ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+
+        logger.info("获取店员列表信息传入参数shopId = {}", shopId);
+        SysClerkDTO SysClerkDTO = new SysClerkDTO();
+        SysClerkDTO.setSysShopId(shopId);
+        List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(SysClerkDTO);
+        if (CommonUtils.objectIsEmpty(clerkInfo)) {
+            logger.info("获取的店员列表信息为空！");
+            listResponseDTO.setResult(StatusConstant.SUCCESS);
+            return 0;
+        }
+        listResponseDTO.setResponseData(clerkInfo);
+        listResponseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return 0;
+    }
 
 }

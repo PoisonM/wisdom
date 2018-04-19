@@ -7,9 +7,11 @@ import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
@@ -52,19 +54,20 @@ public class ArchivesController {
     *@Author:huan
     *@Param:
     *@Return:
-    *@Description:  获取档案列表
+     *@Description: 获取档案列表或某个店的用户列表
     *@Date:2018/4/8 10:21
     */
     @RequestMapping(value = "/findArchives", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String,Object>> findArchives(@RequestParam String queryField,@RequestParam String sysShopId,int pageSize ) {
+    ResponseDTO<Map<String, Object>> findArchives(@RequestParam String queryField, int pageSize) {
         PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO =new PageParamVoDTO<> ();
 
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+
         ShopUserArchivesDTO shopUserArchivesDTO=new ShopUserArchivesDTO();
-        shopUserArchivesDTO.setSysShopId(sysShopId);
+        shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
         shopUserArchivesDTO.setPhone(queryField);
         shopUserArchivesDTO.setSysUserName(queryField);
-
 
         pageParamVoDTO.setRequestData(shopUserArchivesDTO);
         pageParamVoDTO.setPageNo(0);

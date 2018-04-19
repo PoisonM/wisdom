@@ -124,7 +124,6 @@ public class UserConsumeController {
 //	@LoginRequired
     public
     @ResponseBody
-    @Transactional
     ResponseDTO<String> userRechargeOperation(@RequestBody List<ShopUserOrderDTO> extShopUserConsumeRecordDTOS) {
 
 //        long currentTimeMillis = System.currentTimeMillis();

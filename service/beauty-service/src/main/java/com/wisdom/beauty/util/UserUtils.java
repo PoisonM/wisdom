@@ -44,17 +44,30 @@ public class UserUtils {
      * @return
      */
     public static SysClerkDTO getClerkInfo() {
-        SysClerkDTO sysClerkDTO = null;
-        try {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            Map<String, String> tokenValue = getHeadersInfo(request);
-            String token = tokenValue.get("logintoken");
-            String userInfoStr = JedisUtils.get(token);
-            sysClerkDTO = (new Gson()).fromJson(userInfoStr, SysClerkDTO.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return sysClerkDTO;
+        //挡板
+        SysClerkDTO clerkDTO = new SysClerkDTO();
+        clerkDTO.setWeixinAttentionStatus("1");
+        clerkDTO.setSysUserId("3");
+        clerkDTO.setSysBossName("王老板");
+        clerkDTO.setSysBossId("sys_boss_id");
+        clerkDTO.setName("张欢");
+        clerkDTO.setId("clerkId1");
+        clerkDTO.setSysShopId("shopId");
+        clerkDTO.setNickname("张欢昵称");
+        clerkDTO.setMobile("18810142926");
+        return clerkDTO;
+
+//        SysClerkDTO sysClerkDTO = null;
+//        try {
+//            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//            Map<String, String> tokenValue = getHeadersInfo(request);
+//            String token = tokenValue.get("logintoken");
+//            String userInfoStr = JedisUtils.get(token);
+//            sysClerkDTO = (new Gson()).fromJson(userInfoStr, SysClerkDTO.class);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return sysClerkDTO;
     }
 
     /**
