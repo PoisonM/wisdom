@@ -5,9 +5,11 @@ import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -107,7 +109,6 @@ public class ProjectController {
      * 查询某个用户的卡片列表信息
      *
      * @param sysUserId
-     * @param sysShopId
      * @param cardStyle 0 查询疗程卡  1 查询单次卡
      * @return
      */
@@ -115,9 +116,10 @@ public class ProjectController {
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId,
-                                                                           @RequestParam String sysShopId, @RequestParam String cardStyle) {
+    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId, @RequestParam String cardStyle) {
         long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = clerkInfo.getSysShopId();
         logger.info("传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
         ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
 
