@@ -75,13 +75,34 @@ public class MineController {
     @RequestMapping(value = "/getProductRecord", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Map<String,Object>> getProductRecord(@RequestParam String sysClerkId,
+                                                     @RequestParam String sysShopId,
                                                      @RequestParam(required = false) String searchFile) {
 
         long startTime = System.currentTimeMillis();
-        Map<String,Object> map=shopCustomerProductRelationService.getShopUserProductRelations(sysClerkId,searchFile);
+        Map<String,Object> map=shopCustomerProductRelationService.getShopUserProductRelations(sysClerkId,sysShopId,searchFile);
         ResponseDTO<Map<String,Object>>  responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(map);
+        logger.info("getProductRecord方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+    /**
+    *@Author:huan
+    *@Param:
+    *@Return:
+    *@Description: 根据用户查询该用户待领取产品结果
+    *@Date:2018/4/19 9:46
+    */
+    @RequestMapping(value = "/getWaitReceiveDetail", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<List<UserProductRelationResponseDTO>> getProductRecord(@RequestParam String sysUserId,
+                                                                       @RequestParam String sysShopId) {
+
+        long startTime = System.currentTimeMillis();
+        List<UserProductRelationResponseDTO> list=shopCustomerProductRelationService.getShopUserProductRelationList(sysUserId,sysShopId);
+        ResponseDTO<List<UserProductRelationResponseDTO>>  responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(list);
         logger.info("getProductRecord方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }

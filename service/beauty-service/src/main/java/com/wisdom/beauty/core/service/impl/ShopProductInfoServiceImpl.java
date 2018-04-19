@@ -166,4 +166,19 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
         }
         return list.get(0);
     }
+
+    @Override
+    public List<ShopProductInfoDTO> getProductInfoList(List<String> ids) {
+        logger.info("getProductInfoList传入的参数,ids={}", ids);
+
+        if (CollectionUtils.isEmpty(ids)) {
+            return null;
+        }
+        ShopProductInfoCriteria shopProductInfoCriteria = new ShopProductInfoCriteria();
+        ShopProductInfoCriteria.Criteria criteria = shopProductInfoCriteria.createCriteria();
+
+        criteria.andIdIn(ids);
+        List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
+        return list;
+    }
 }

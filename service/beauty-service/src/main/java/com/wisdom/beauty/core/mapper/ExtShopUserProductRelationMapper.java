@@ -28,5 +28,5 @@ public interface ExtShopUserProductRelationMapper extends BaseDao<ShopUserProduc
      * @Description:  根据sysClerkId获取所有用的为领取产品的数量
      * @Date:2018/4/18 11:33
      */
-    List<UserProductRelationResponseDTO> getWaitReceiveNumber(String sysClerkId);
+    List<UserProductRelationResponseDTO> getWaitReceiveNumber(@Param("sysClerkId") String sysClerkId,@Param("sysShopId") String sysShopId);
 }
