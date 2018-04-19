@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -40,9 +41,6 @@ public class ProjectController {
 	@Resource
 	private ShopProjectService projectService;
 
-
-
-
 	/**
 	 * 查询某个用户预约项目列表信息
 	 *
@@ -72,7 +70,7 @@ public class ProjectController {
 	}
 
     /**
-     * 查询某个店的疗程卡、单次卡列表信息 "0", "疗程卡"  "1", "单次")
+     * 查询某个店的疗程卡、单次卡列表信息 :"0", "疗程卡"  "1", "单次" "2","所有")
      *
      * @return
      */
@@ -80,16 +78,20 @@ public class ProjectController {
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<ShopProjectInfoDTO>> getShopCourseProjectList(@RequestParam String sysShopId, @RequestParam String useStyle) {
+    ResponseDTO<List<ShopProjectInfoDTO>> getShopCourseProjectList(@RequestParam String useStyle, @RequestParam String filterStr) {
 
         long currentTimeMillis = System.currentTimeMillis();
-
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = clerkInfo.getSysShopId();
         logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
         ResponseDTO<List<ShopProjectInfoDTO>> responseDTO = new ResponseDTO<>();
 
         ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
         shopProjectInfoDTO.setSysShopId(sysShopId);
-        shopProjectInfoDTO.setUseStyle(useStyle);
+        shopProjectInfoDTO.setProjectName(filterStr);
+        if (StringUtils.isNotBlank(useStyle) && (!CardTypeEnum.ALL.getCode().equals(useStyle))) {
+            shopProjectInfoDTO.setUseStyle(useStyle);
+        }
         List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
 
         if (CommonUtils.objectIsEmpty(projectList)) {
@@ -302,4 +304,5 @@ public class ProjectController {
         logger.info("findDetailProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
 }

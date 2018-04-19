@@ -124,6 +124,10 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 //        }
 
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
+            criteria.andProjectNameLike(shopProjectInfoDTO.getProjectName());
+        }
+
         if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
             criteria.andUseStyleEqualTo(CardTypeEnum.TREATMENT_CARD.getCode());
         }
