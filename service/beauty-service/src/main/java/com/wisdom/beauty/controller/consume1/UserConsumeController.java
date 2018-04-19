@@ -1,4 +1,4 @@
-package com.wisdom.beauty.controller.consume;
+package com.wisdom.beauty.controller.consume1;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
@@ -100,7 +100,7 @@ public class UserConsumeController {
      * @Description: 根据业务流水查询具体某个消费信息记录
      * @Date:2018/4/10 11:20
      */
-    @RequestMapping(value = "/consume/{consumeFlowNo}", method = RequestMethod.GET)
+    @RequestMapping(value = "/consume1/{consumeFlowNo}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetail(@PathVariable String consumeFlowNo) {
         long startTime = System.currentTimeMillis();
