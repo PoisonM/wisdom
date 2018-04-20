@@ -18,6 +18,9 @@ public class ShopProjectProductCardRelation extends BaseEntity implements Serial
     //项目id
     private String sysShopProjectId;
 
+    //使用方式 0：疗程 1：单次
+    private String useStyle;
+
     //折扣
     private Float discount;
 
@@ -65,6 +68,14 @@ public class ShopProjectProductCardRelation extends BaseEntity implements Serial
 
     public void setSysShopProjectId(String sysShopProjectId) {
         this.sysShopProjectId = sysShopProjectId;
+    }
+
+    public String getUseStyle() {
+        return useStyle;
+    }
+
+    public void setUseStyle(String useStyle) {
+        this.useStyle = useStyle;
     }
 
     public Float getDiscount() {

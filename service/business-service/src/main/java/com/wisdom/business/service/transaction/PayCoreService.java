@@ -62,9 +62,10 @@ public class PayCoreService {
     @Transactional(rollbackFor = Exception.class)
     public void handleProductPayNotifyInfo(PayRecordDTO payRecordDTO,String notifyType) {
 
+        RedisLock redisLock = new RedisLock("userPay" + payRecordDTO.getOutTradeNo());
+
         List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
 
-        RedisLock redisLock = new RedisLock("userPay" + payRecordDTOList.get(0).getSysUserId());
         try {
             redisLock.lock();
 

@@ -265,6 +265,76 @@ public class SysClerkCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysBossNameIsNull() {
+            addCriterion("sys_boss_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameIsNotNull() {
+            addCriterion("sys_boss_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameEqualTo(String value) {
+            addCriterion("sys_boss_name =", value, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameNotEqualTo(String value) {
+            addCriterion("sys_boss_name <>", value, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameGreaterThan(String value) {
+            addCriterion("sys_boss_name >", value, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_boss_name >=", value, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameLessThan(String value) {
+            addCriterion("sys_boss_name <", value, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameLessThanOrEqualTo(String value) {
+            addCriterion("sys_boss_name <=", value, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameLike(String value) {
+            addCriterion("sys_boss_name like", value, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameNotLike(String value) {
+            addCriterion("sys_boss_name not like", value, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameIn(List<String> values) {
+            addCriterion("sys_boss_name in", values, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameNotIn(List<String> values) {
+            addCriterion("sys_boss_name not in", values, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameBetween(String value1, String value2) {
+            addCriterion("sys_boss_name between", value1, value2, "sysBossName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossNameNotBetween(String value1, String value2) {
+            addCriterion("sys_boss_name not between", value1, value2, "sysBossName");
+            return (Criteria) this;
+        }
+
         public Criteria andSysShopIdIsNull() {
             addCriterion("sys_shop_id is null");
             return (Criteria) this;

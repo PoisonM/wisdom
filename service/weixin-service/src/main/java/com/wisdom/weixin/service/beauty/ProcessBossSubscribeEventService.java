@@ -162,7 +162,7 @@ public class ProcessBossSubscribeEventService {
                 if(userBusinessTypeDTOS.size()==0)
                 {
                     userBusinessTypeDTO.setId(UUID.randomUUID().toString());
-                    userBusinessTypeDTO.setParentUserId("");
+                    userBusinessTypeDTO.setParentUserId(parentUserInfoDTO.getId());
                     userBusinessTypeDTO.setCreateDate(new Date());
                     userBusinessTypeDTO.setUserType(ConfigConstant.businessC1);
                     userBusinessTypeDTO.setStatus("1");

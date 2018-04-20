@@ -75,11 +75,19 @@ public interface IncomeMapper {
 
     //根据用户id查询这个月都消费了哪些订单
 //    Page<PayRecordDTO> queryMonthPayRecordByUserId(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO, Page<PayRecordDTO> page);
+
     List<PayRecordDTO> queryMonthPayRecordByUserId(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+
     //查询即时奖励总额(个人)
     String selectIncomeInstanceByUserId(@Param("userId") String userId);
+
     //查询月结下详情交易Count
     int queryMonthTransactionRecordByIncomeRecordCount(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+
     //根据用户id查询这个月都消费了哪些订单Count
     int queryMonthPayRecordCountByUserId(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+
+    List<MonthTransactionRecordDTO> queryAllMonthTransactionRecord();
+
+    void updateMonthTransactionRecord(MonthTransactionRecordDTO monthTransactionRecordDTO);
 }

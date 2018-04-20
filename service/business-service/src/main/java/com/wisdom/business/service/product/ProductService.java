@@ -6,6 +6,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.persistence.Page;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.FrontUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,6 +55,7 @@ public class ProductService {
             String sellNum = payRecordService.getSellNumByProductId(productDTO.getProductId());
             Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
+            offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
             productDTO.setProductAmount(offlineProductDTO.getProductAmount());
             productDTO.setProductDetail(offlineProductDTO);
             productDTO.setSellNum(sellNum);
@@ -76,6 +79,7 @@ public class ProductService {
             String sellNum = payRecordService.getSellNumByProductId(productDTO.getProductId());
             Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
+            offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
             productDTO.setSellNum(sellNum);
             if(offlineProductDTO != null){
                 productDTO.setProductAmount(offlineProductDTO.getProductAmount());
@@ -94,6 +98,7 @@ public class ProductService {
     public ProductDTO findProductById(String productId) {
         Query query = new Query().addCriteria(Criteria.where("productId").is(productId));
         OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
+        offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
         ProductDTO productDTO = productMapper.findProductById(productId);
         productDTO.setProductDetail(offlineProductDTO);
         return productDTO;

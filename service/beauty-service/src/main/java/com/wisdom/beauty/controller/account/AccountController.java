@@ -1,13 +1,16 @@
 package com.wisdom.beauty.controller.account;
 
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
+import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
+import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.beauty.interceptor.LoginRequired;
+import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +24,32 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "accountInfo")
 public class AccountController {
+
+    @Autowired
+    private SysUserAccountService sysUserAccountService;
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 获取用户在美容院的账户信息
+     * @Date:2018/4/8
+     */
+    @RequestMapping(value = "/findShopUserInfo/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<CustomerAccountResponseDto> findShopUserInfo(@PathVariable String userId) {
+        long startTime = System.currentTimeMillis();
+        ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
+        CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
+        if (customerAccountResponseDto != null) {
+            responseDTO.setResponseData(customerAccountResponseDto);
+        }
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("findArchive方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
 
 	/**
      * 根据条件查询某个美容院某个用户的账户记录，包括收银记录和划卡记录,账户记录列表

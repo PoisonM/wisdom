@@ -16,7 +16,7 @@ public interface SysUserAccountService {
      *@Author:huan
       *@Param: userId
       *@Return: CustomerAccountResponseDto
-     *@Description: 根据用户id查询档案信息
+      *@Description: 获取用户在美容院的账户信息
      *@Date:2018/4/8 17:03
      */
      CustomerAccountResponseDto getSysAccountListByUserId(String userId);

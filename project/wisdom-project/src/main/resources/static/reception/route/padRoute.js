@@ -127,6 +127,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.userInfo.consumptionRecord', {
+            url: '/consumptionRecord',
+            templateUrl: root + '/userInfo/consumptionRecord.html',
+            controller: 'consumptionRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "消费记录",
+                        files: [
+                            root + "userInfo/consumptionRecord.css",
+                            root + "userInfo/consumptionRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.userInfo.repaymentRecord', {
             url: '/repaymentRecord',
             templateUrl: root + '/userInfo/repaymentRecord.html',
@@ -482,6 +498,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        /*project//////////////////////////////////////////////////////////////*/
         .state('pad-web.left_nav.project', {
             url: '/project',
             templateUrl: root + '/priceList/project.html',
@@ -546,6 +563,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.setCard', {
+            url: '/setCard',
+            templateUrl: root + '/priceList/setCard.html',
+            controller: 'setCardCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值卡页面",
+                        files: [root + "priceList/setCardCtrl.js",
+                            root + "priceList/setCard.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.cardDetails', {
             url: '/cardDetails',
             templateUrl: root + '/priceList/cardDetails.html',
@@ -553,7 +585,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "套卡详情",
+                        name: "充值卡详情",
                         files: [root + "priceList/cardDetailsCtrl.js",
                             root + "priceList/cardDetails.css",
                             root + "../libs/swiper-3.4.0.min.js",
@@ -570,7 +602,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "充值卡页面",
+                        name: "套卡页面",
                         files: [root + "priceList/rechargeableCardCtrl.js",
                             root + "priceList/rechargeableCard.css",
                         ]
@@ -585,7 +617,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "充值卡详情",
+                        name: "套卡详情",
                         files: [root + "priceList/rechargeableDetailsCtrl.js",
                             root + "priceList/rechargeableDetails.css",
                             root + "../libs/swiper-3.4.0.min.js",
@@ -595,6 +627,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.cardSearch', {
+            url: '/cardSearch',
+            templateUrl: root + '/priceList/cardSearch.html',
+            controller: 'vCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "套卡详情",
+                        files: [root + "priceList/cardSearchCtrl.js",
+                            root + "priceList/cardSearch.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        /*////////////////////////////////////////////////////*/
         .state('pad-web.dayAppointment', {
             url: '/dayAppointment',
             templateUrl: root + '/appointment/dayAppointment.html',

@@ -8,6 +8,7 @@ import com.wisdom.business.service.transaction.PayRecordService;
 import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
+import com.wisdom.common.dto.account.IncomeRecordManagementDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
@@ -162,6 +163,13 @@ public class BusinessServiceController {
 	String selectIncomeInstanceByUserId(@RequestParam String userId)
 	{
 		return incomeService.selectIncomeInstanceByUserId(userId);
+	}
+
+	@RequestMapping(value = "/getIncomeRecordManagement",method=RequestMethod.POST)
+	@ResponseBody
+	List<IncomeRecordManagementDTO> getIncomeRecordManagement(@RequestBody IncomeRecordManagementDTO incomeRecordManagementDTO)
+	{
+		return incomeService.getIncomeRecordManagement(incomeRecordManagementDTO);
 	}
 
 }

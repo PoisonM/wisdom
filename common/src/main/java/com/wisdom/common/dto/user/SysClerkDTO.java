@@ -13,6 +13,9 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
     private String sysBossId;
 
     //
+    private String sysBossName;
+
+    //
     private String sysShopId;
 
     //user表主键
@@ -76,6 +79,14 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
 
     public void setSysBossId(String sysBossId) {
         this.sysBossId = sysBossId;
+    }
+
+    public String getSysBossName() {
+        return sysBossName;
+    }
+
+    public void setSysBossName(String sysBossName) {
+        this.sysBossName = sysBossName;
     }
 
     public String getSysShopId() {

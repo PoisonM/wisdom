@@ -5,7 +5,7 @@ import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
-import com.wisdom.beauty.core.service.ShopCustomerArchivesServcie;
+import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -37,7 +37,7 @@ import java.util.Map;
 public class ArchivesController {
 
     @Autowired
-    private ShopCustomerArchivesServcie shopCustomerArchivesServcie;
+    private ShopCustomerArchivesService shopCustomerArchivesService;
 
     @Autowired
     private SysUserAccountService sysUserAccountService;
@@ -55,7 +55,7 @@ public class ArchivesController {
     *@Description:  获取档案列表
     *@Date:2018/4/8 10:21
     */
-    @RequestMapping(value = "/archives", method = RequestMethod.GET)
+    @RequestMapping(value = "/findArchives", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Map<String,Object>> findArchives(@RequestParam String queryField,@RequestParam String sysShopId,int pageSize ) {
         PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO =new PageParamVoDTO<> ();
@@ -70,9 +70,9 @@ public class ArchivesController {
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
         //查询数据
-        List<ShopUserArchivesDTO> list=shopCustomerArchivesServcie.getArchivesList(pageParamVoDTO);
+        List<ShopUserArchivesDTO> list = shopCustomerArchivesService.getArchivesList(pageParamVoDTO);
         //查询个数
-        int count=shopCustomerArchivesServcie.getArchivesCount(shopUserArchivesDTO);
+        int count = shopCustomerArchivesService.getArchivesCount(shopUserArchivesDTO);
         Map<String,Object> map=new HashMap<>(16);
         map.put("info",list);
         map.put("data",count);
@@ -92,6 +92,7 @@ public class ArchivesController {
     @RequestMapping(value = "/saveArchiveInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
 
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         shopUserArchivesDTO.setId(IdGen.uuid());
@@ -113,9 +114,11 @@ public class ArchivesController {
         shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
         shopUserArchivesDTO.setCreateDate(new Date());
         shopUserArchivesDTO.setSysUserId(shopUserArchivesDTO.getSysClerkId());
-        shopCustomerArchivesServcie.saveShopUserArchivesInfo(shopUserArchivesDTO);
+        shopCustomerArchivesService.saveShopUserArchivesInfo(shopUserArchivesDTO);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("保存用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -128,10 +131,14 @@ public class ArchivesController {
     @RequestMapping(value = "/updateArchiveInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<String> updateArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
-        shopCustomerArchivesServcie.updateShopUserArchivesInfo(shopUserArchivesDTO);
+        shopCustomerArchivesService.updateShopUserArchivesInfo(shopUserArchivesDTO);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("更新用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -144,10 +151,37 @@ public class ArchivesController {
     @RequestMapping(value = "/deleteArchiveInfo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<String> deleteArchiveInfo(@RequestParam String archivesId) {
+        long currentTimeMillis = System.currentTimeMillis();
+
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
-        shopCustomerArchivesServcie.deleteShopUserArchivesInfo(archivesId);
+        shopCustomerArchivesService.deleteShopUserArchivesInfo(archivesId);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("删除用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 查询某个用户的档案信息
+     *
+     * @param sysUserId
+     * @return
+     */
+    @RequestMapping(value = "/getShopUserArchivesInfoByUserId", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<ShopUserArchivesDTO> getShopUserArchivesInfoByUserId(@RequestParam String sysUserId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("查询某个用户的档案信息传入参数={}", "sysUserId = [" + sysUserId + "]");
+
+        ResponseDTO<ShopUserArchivesDTO> responseDTO = new ResponseDTO<>();
+        ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setSysUserId(sysUserId);
+        ShopUserArchivesDTO info = shopCustomerArchivesService.getShopUserArchivesInfoByUserId(shopUserArchivesDTO);
+        responseDTO.setResponseData(info);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("删除用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -155,12 +189,12 @@ public class ArchivesController {
     *@Author:huan
     *@Param:
     *@Return:
-    *@Description: 获取用户id查询档案信息
+     *@Description: 查询某个用户档案信息相关数据
      *@Date:2018/4/8
     */
-    @RequestMapping(value = "/archives/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/findArchiveByUserId/{userId}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<CustomerAccountResponseDto> findArchive(@PathVariable String userId) {
+    ResponseDTO<CustomerAccountResponseDto> findArchiveByUserId(@PathVariable String userId) {
         long startTime = System.currentTimeMillis();
         ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
         CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);

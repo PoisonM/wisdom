@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
@@ -96,7 +97,8 @@ public class CardController {
      */
     @RequestMapping(value = "/getRechargeCardList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopRechargeCardDTO>> findRechargeCardList(@RequestParam(required = false) String name, @RequestParam String sysShopId, int pageSize) {
+    ResponseDTO<List<ShopRechargeCardResponseDTO>> findRechargeCardList(@RequestParam(required = false) String name,
+                                                                @RequestParam String sysShopId, int pageSize) {
         long currentTimeMillis = System.currentTimeMillis();
 
         PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -108,9 +110,8 @@ public class CardController {
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
         //查询数据
-        List<ShopRechargeCardDTO> list = shopRechargeCardService.getShopRechargeCardList(pageParamVoDTO);
-
-        ResponseDTO<List<ShopRechargeCardDTO>> responseDTO = new ResponseDTO<>();
+        List<ShopRechargeCardResponseDTO> list = shopRechargeCardService.getShopRechargeCardList(pageParamVoDTO);
+        ResponseDTO<List<ShopRechargeCardResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("查询充值卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
@@ -126,27 +127,29 @@ public class CardController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ShopRechargeCardDTO> findRechargeCard(@PathVariable String id) {
+    ResponseDTO<ShopRechargeCardResponseDTO> findRechargeCard(@PathVariable String id) {
         long currentTimeMillis = System.currentTimeMillis();
         //查询数据
-        ShopRechargeCardDTO shopRechargeCardDTO = shopRechargeCardService.getShopRechargeCard(id);
+        ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(id);
 
-        ResponseDTO<ShopRechargeCardDTO> responseDTO = new ResponseDTO<>();
-        responseDTO.setResponseData(shopRechargeCardDTO);
+        ResponseDTO<ShopRechargeCardResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(shopRechargeCardResponseDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("查询某个充值卡信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
     /**
-    *@Author:huan
-    *@Param:
-    *@Return:
-    *@Description: 获取某个店里的套卡列表
-    *@Date:2018/4/11 15:40
-    */
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 获取某个店里的套卡列表
+     * @Date:2018/4/11 15:40
+     */
     @RequestMapping(value = "/getShopProjectGroups", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName, @RequestParam String sysShopId, int pageSize) {
+    ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName,
+                                                                    @RequestParam String sysShopId, int pageSize) {
         long currentTimeMillis = System.currentTimeMillis();
 
         PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -166,19 +169,20 @@ public class CardController {
         logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
     /**
-     *@Author:huan
-     *@Param:
-     *@Return:
-     *@Description: 获取某个店里的具体套卡的信息
-     *@Date:2018/4/11 15:40
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 获取某个店里的具体套卡的信息
+     * @Date:2018/4/11 15:40
      */
     @RequestMapping(value = "/getShopProjectGroup/detail", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ProjectInfoGroupResponseDTO> findShopProjectGroupListe(ShopProjectGroupDTO shopProjectGroupDTO) {
+    ResponseDTO<ProjectInfoGroupResponseDTO> findShopProjectGroupListe(@RequestParam String id) {
         long currentTimeMillis = System.currentTimeMillis();
 
-        ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = shopProjectGroupService.getShopProjectInfoGroupRelation(shopProjectGroupDTO);
+        ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = shopProjectGroupService.getShopProjectInfoGroupRelation(id);
 
         ResponseDTO<ProjectInfoGroupResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(projectInfoGroupResponseDTO);

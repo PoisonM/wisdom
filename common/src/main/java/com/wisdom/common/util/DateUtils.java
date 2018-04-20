@@ -491,4 +491,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		cal.add(Calendar.DATE, 1);
 		return cal.getTime();
 	}
+
+	public static int compareDate(Date date1, Date date2)
+	{
+		if (date1.after(date2)){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
 }

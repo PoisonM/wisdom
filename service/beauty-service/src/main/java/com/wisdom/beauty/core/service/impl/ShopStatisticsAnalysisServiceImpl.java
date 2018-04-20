@@ -8,7 +8,7 @@ import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.ShopCardService;
-import com.wisdom.beauty.core.service.ShopCustomerArchivesServcie;
+import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -36,7 +36,7 @@ import java.util.List;
 public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysisService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
-    private ShopCustomerArchivesServcie shopCustomerArchivesServcie;
+    private ShopCustomerArchivesService shopCustomerArchivesService;
 
     @Autowired
     private ExtShopUserConsumeRecordMapper extShopUserConsumeRecordMapper;
@@ -110,7 +110,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
     @Override
     public int getShopNewUserNumber(String shopId, Date startDate, Date endDate) {
         logger.info("查询新客个数传入参数={}", "shopId = [" + shopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
-        return shopCustomerArchivesServcie.getShopBuildArchivesNumbers(shopId, startDate, endDate);
+        return shopCustomerArchivesService.getShopBuildArchivesNumbers(shopId, startDate, endDate);
     }
 
     @Override

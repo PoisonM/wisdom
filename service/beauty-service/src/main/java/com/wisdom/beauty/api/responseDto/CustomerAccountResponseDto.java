@@ -26,6 +26,7 @@ public class CustomerAccountResponseDto extends BaseEntity {
     private String sysClerkName;
     //会员状态
     private String member;
+/*
     //手机
     private String phone;
     //电话
@@ -43,6 +44,7 @@ public class CustomerAccountResponseDto extends BaseEntity {
     private String weight;
     //类型
     private String sysUserType;
+*/
 
 
     public BigDecimal getSumAmount() {
@@ -93,7 +95,7 @@ public class CustomerAccountResponseDto extends BaseEntity {
         this.member = member;
     }
 
-    public String getPhone() {
+/*    public String getPhone() {
         return phone;
     }
 
@@ -155,5 +157,5 @@ public class CustomerAccountResponseDto extends BaseEntity {
 
     public void setSysUserType(String sysUserType) {
         this.sysUserType = sysUserType;
-    }
+    }*/
 }

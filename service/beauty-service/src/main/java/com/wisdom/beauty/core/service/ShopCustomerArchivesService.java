@@ -7,14 +7,14 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * ClassName: ShopCustomerArchivesServcie
+ * ClassName: ShopCustomerArchivesService
  *
  * @Author： huan
  * @Description: 档案相关的接口
  * @Date:Created in 2018/4/3 16:38
  * @since JDK 1.8
  */
-public interface ShopCustomerArchivesServcie {
+public interface ShopCustomerArchivesService {
     /**
      * @Author:huan
      * @Param:
@@ -66,4 +66,14 @@ public interface ShopCustomerArchivesServcie {
      * @return
      */
     int deleteShopUserArchivesInfo(String archivesId);
+
+    /**
+     * 查询某个用户的档案信息
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    ShopUserArchivesDTO getShopUserArchivesInfoByUserId(ShopUserArchivesDTO shopUserArchivesDTO);
+
+
 }

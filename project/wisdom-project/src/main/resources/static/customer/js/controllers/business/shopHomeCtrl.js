@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus',
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus) {
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById) {
             $rootScope.title = "美享99触屏版";
             $scope.param = {
                 bannerList:{},
@@ -16,7 +16,8 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 rookieProductId:"201712101718100007",
                 redPackerFlagOne:false,
                 redPackerFlagTwo:false,
-                bonusValue:""
+                bonusValue:"",
+                timeContent:""
             }
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
@@ -187,4 +188,46 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     });
                 }
             }
+
+
+            function convertDateFromString(dateString) {
+                if (dateString) {
+                    var arr1 = dateString.split(" ");
+                    var sdate = arr1[0].split('-');
+                    var date = new Date(sdate[0], sdate[1]-1, sdate[2]);
+                    return date;
+                }
+            }
+
+            FindProductById.get({
+                productId:'MXT99-02'
+            },function (data) {
+                //当前时间
+                $scope.nowTime =convertDateFromString(data.responseData.productDetail.nowTime).getTime();
+                //下架时间
+                $scope.soldOutTime = convertDateFromString( data.responseData.productDetail.soldOutTime).getTime();
+                timeInterval($scope.nowTime,$scope.soldOutTime)
+            })
+            function timeInterval(nowTime,soldOutTime){
+                var timer = setInterval(function () {
+                    if (isNaN(soldOutTime) || isNaN(nowTime)) {
+                        return
+                    } else {
+                        nowTime += 1000;
+                        var limit = (soldOutTime - nowTime) / 1000;
+                        var resultD = parseInt(limit / (24 * 60 * 60));
+                        var resultH = parseInt(limit / (60 * 60) % 24);
+                        var resultM = parseInt(limit / 60 % 60) + resultH * 60;
+                        var resultS = parseInt(limit % 60);
+                        $scope.param.timeContent = resultD;
+                        if(limit <= 0){
+                            $scope.param.timeContent = 0;
+                            clearInterval(timer)
+                        }
+                    }
+
+                }, 1000)
+            }
+
+
         }])

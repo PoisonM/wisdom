@@ -1,5 +1,6 @@
 package com.wisdom.beauty.core.service;
 
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.dto.SysClerkFlowAccountDTO;
 
 /**
@@ -10,6 +11,8 @@ import com.wisdom.beauty.api.dto.SysClerkFlowAccountDTO;
  * Description: 店员相关
  */
 public interface ShopClerkService {
+
+    void saveSysClerkFlowAccountInfo(ShopUserConsumeRecordDTO dto);
 
     /**
      * 保存店员的流水信息

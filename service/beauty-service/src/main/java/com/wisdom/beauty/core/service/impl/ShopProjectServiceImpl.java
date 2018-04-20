@@ -183,7 +183,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     public List<ShopProjectTypeDTO> getTwoLevelProjectList(ShopProjectTypeDTO shopProjectTypeDTO) {
         logger.info("getTwoLevelProjectList传入的参数,id={}", shopProjectTypeDTO.getId());
 
-        if (StringUtils.isBlank(shopProjectTypeDTO.getSysShopId()) || StringUtils.isBlank(shopProjectTypeDTO.getId())) {
+        if (StringUtils.isBlank(shopProjectTypeDTO.getId())) {
             return null;
         }
         ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
@@ -218,7 +218,9 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectTypeTwoId())) {
             criteria.andProjectTypeTwoIdEqualTo(shopProjectInfoDTO.getProjectTypeTwoId());
         }
-
+        if(StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())){
+            criteria.andProjectNameLike("%"+shopProjectInfoDTO.getProjectName()+"%");
+        }
         List<ShopProjectInfoDTO> list = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
         return list;
     }

@@ -6,6 +6,7 @@
     <result column="shop_recharge_card_id" property="shopRechargeCardId" jdbcType="VARCHAR" />
     <result column="shop_product_id" property="shopProductId" jdbcType="VARCHAR" />
     <result column="sys_shop_project_id" property="sysShopProjectId" jdbcType="VARCHAR" />
+    <result column="use_style" property="useStyle" jdbcType="CHAR" />
     <result column="discount" property="discount" jdbcType="REAL" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_recharge_card_id, shop_product_id, sys_shop_project_id, discount, create_by, 
-    create_date, update_user, update_date
+    id, shop_recharge_card_id, shop_product_id, sys_shop_project_id, use_style, discount, 
+    create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopProjectProductCardRelationCriteria" >
     select
@@ -109,13 +110,13 @@
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectProductCardRelation" >
     insert into shop_project_product_card_relation (id, shop_recharge_card_id, shop_product_id, 
-      sys_shop_project_id, discount, create_by, 
-      create_date, update_user, update_date
-      )
+      sys_shop_project_id, use_style, discount, 
+      create_by, create_date, update_user, 
+      update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopRechargeCardId,jdbcType=VARCHAR}, #{shopProductId,jdbcType=VARCHAR}, 
-      #{sysShopProjectId,jdbcType=VARCHAR}, #{discount,jdbcType=REAL}, #{createBy,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-      )
+      #{sysShopProjectId,jdbcType=VARCHAR}, #{useStyle,jdbcType=CHAR}, #{discount,jdbcType=REAL}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectProductCardRelation" >
     insert into shop_project_product_card_relation
@@ -131,6 +132,9 @@
       </if>
       <if test="sysShopProjectId != null" >
         sys_shop_project_id,
+      </if>
+      <if test="useStyle != null" >
+        use_style,
       </if>
       <if test="discount != null" >
         discount,
@@ -160,6 +164,9 @@
       </if>
       <if test="sysShopProjectId != null" >
         #{sysShopProjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="useStyle != null" >
+        #{useStyle,jdbcType=CHAR},
       </if>
       <if test="discount != null" >
         #{discount,jdbcType=REAL},
@@ -199,6 +206,9 @@
       <if test="record.sysShopProjectId != null" >
         sys_shop_project_id = #{record.sysShopProjectId,jdbcType=VARCHAR},
       </if>
+      <if test="record.useStyle != null" >
+        use_style = #{record.useStyle,jdbcType=CHAR},
+      </if>
       <if test="record.discount != null" >
         discount = #{record.discount,jdbcType=REAL},
       </if>
@@ -225,6 +235,7 @@
       shop_recharge_card_id = #{record.shopRechargeCardId,jdbcType=VARCHAR},
       shop_product_id = #{record.shopProductId,jdbcType=VARCHAR},
       sys_shop_project_id = #{record.sysShopProjectId,jdbcType=VARCHAR},
+      use_style = #{record.useStyle,jdbcType=CHAR},
       discount = #{record.discount,jdbcType=REAL},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
@@ -245,6 +256,9 @@
       </if>
       <if test="sysShopProjectId != null" >
         sys_shop_project_id = #{sysShopProjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="useStyle != null" >
+        use_style = #{useStyle,jdbcType=CHAR},
       </if>
       <if test="discount != null" >
         discount = #{discount,jdbcType=REAL},
@@ -269,6 +283,7 @@
     set shop_recharge_card_id = #{shopRechargeCardId,jdbcType=VARCHAR},
       shop_product_id = #{shopProductId,jdbcType=VARCHAR},
       sys_shop_project_id = #{sysShopProjectId,jdbcType=VARCHAR},
+      use_style = #{useStyle,jdbcType=CHAR},
       discount = #{discount,jdbcType=REAL},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

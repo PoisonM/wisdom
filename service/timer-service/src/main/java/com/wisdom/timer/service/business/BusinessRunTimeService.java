@@ -101,7 +101,6 @@ public class BusinessRunTimeService {
         //查询用户消费的不可提现金额
         IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
         incomeRecordDTO.setStatus("0");
-        //incomeRecordDTO.setIncomeType("instance");
         List<IncomeRecordDTO> incomeRecordDTOList = businessServiceClient.getUserIncomeRecordInfo(incomeRecordDTO);
         List<String> transactionIds = new ArrayList<>();
 
@@ -301,66 +300,40 @@ public class BusinessRunTimeService {
             }
 
             //计算当前用户本月的消费金额
-//            List<PayRecordDTO> payRecordDTOList = businessServiceClient.getUserPayRecordListByDate(userInfo.getId(),startDate,endDate);
-//            float userExpenseAmount = 0;
-//            for(PayRecordDTO payRecordDTO:payRecordDTOList)
-//            {
-//                if(payRecordDTO.getStatus().equals("1"))
-//                {
-//                    userExpenseAmount = userExpenseAmount + payRecordDTO.getAmount();
-//                }
-//            }
+            if(returnMonthlyMoney_A>0||returnMonthlyMoney_B>0)
+            {
+                returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
 
-//            if((businessType.equals(ConfigConstant.businessA1)&&userExpenseAmount>=ConfigConstant.MONTH_A_INCOME_MAX_EXPENSE)
-//                    ||(businessType.equals(ConfigConstant.businessB1)&&userExpenseAmount>=ConfigConstant.MONTH_B1_INCOME_MAX_EXPENSE))
-//            {
-//                returnMonthlyMoney = returnMonthlyMoney + userExpenseAmount;
-                if(returnMonthlyMoney_A>0||returnMonthlyMoney_B>0)
-                {
-//                    if(businessType.equals(ConfigConstant.businessA1))
-//                    {
-//                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
-//                    }
-//                    else if(businessType.equals(ConfigConstant.businessB1))
-//                    {
-//                        returnMonthlyMoney = returnMonthlyMoney * ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
-//                    }
+                AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
+                float balance = accountDTO.getBalance() + returnMonthlyMoney;
+                float balanceDeny = accountDTO.getBalanceDeny() + returnMonthlyMoney;
+                accountDTO.setBalance(balance);
+                accountDTO.setBalanceDeny(balanceDeny);
+                accountDTO.setUpdateDate(new Date());
+                businessServiceClient.updateUserAccountInfo(accountDTO);
 
-                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
-
-                    AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
-                    float balance = accountDTO.getBalance() + returnMonthlyMoney;
-                    float balanceDeny = accountDTO.getBalanceDeny() + returnMonthlyMoney;
-                    accountDTO.setBalance(balance);
-                    accountDTO.setBalanceDeny(balanceDeny);
-                    accountDTO.setUpdateDate(new Date());
-                    businessServiceClient.updateUserAccountInfo(accountDTO);
-
-                    IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                    incomeRecordDTO.setId(UUID.randomUUID().toString());
-                    incomeRecordDTO.setSysUserId(userInfo.getId());
-                    incomeRecordDTO.setUserType(userInfo.getUserType());
-                    incomeRecordDTO.setNextUserId("");
-                    incomeRecordDTO.setNextUserType("");
-                    incomeRecordDTO.setAmount(returnMonthlyMoney);
-                    incomeRecordDTO.setTransactionAmount(0);
-                    incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                    incomeRecordDTO.setUpdateDate(new Date());
-                    incomeRecordDTO.setCreateDate(new Date());
-                    incomeRecordDTO.setStatus("0");
-                    incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
-                    incomeRecordDTO.setNextUserIdentifyNumber("");
-                    incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
-                    incomeRecordDTO.setNextUserNickName("");
-                    incomeRecordDTO.setIncomeType("month");
-                    incomeRecordDTO.setMobile(userInfo.getMobile());
-                    incomeRecordDTO.setNextUserMobile("");
-                    incomeRecordDTO.setParentRelation("");
-                    businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
-                }
-//            }
-
-//            String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
+                IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                incomeRecordDTO.setId(UUID.randomUUID().toString());
+                incomeRecordDTO.setSysUserId(userInfo.getId());
+                incomeRecordDTO.setUserType(userInfo.getUserType());
+                incomeRecordDTO.setNextUserId("");
+                incomeRecordDTO.setNextUserType("");
+                incomeRecordDTO.setAmount(returnMonthlyMoney);
+                incomeRecordDTO.setTransactionAmount(0);
+                incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                incomeRecordDTO.setUpdateDate(new Date());
+                incomeRecordDTO.setCreateDate(new Date());
+                incomeRecordDTO.setStatus("0");
+                incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
+                incomeRecordDTO.setNextUserIdentifyNumber("");
+                incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
+                incomeRecordDTO.setNextUserNickName("");
+                incomeRecordDTO.setIncomeType("month");
+                incomeRecordDTO.setMobile(userInfo.getMobile());
+                incomeRecordDTO.setNextUserMobile("");
+                incomeRecordDTO.setParentRelation("");
+                businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+            }
             WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
         }
     }
@@ -484,6 +457,7 @@ public class BusinessRunTimeService {
             }
 
             boolean operationFlag = true;
+            boolean businessFlag = true;
 
             //判断incomeRecord记录中的这个用户的门店是不是处于冻结状态
             UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
@@ -511,7 +485,7 @@ public class BusinessRunTimeService {
                 BusinessOrderDTO businessOrderDTO = businessServiceClient.getBusinessOrderByOrderId(payRecord.getOrderId());
                 if(!businessOrderDTO.getStatus().equals("2")&&!businessOrderDTO.getStatus().equals("5"))//5代表已退货
                 {
-                    operationFlag = false;
+                    businessFlag = false;
                     break;
                 }
             }
@@ -523,7 +497,6 @@ public class BusinessRunTimeService {
             if(incomeRecordManagementDTOList.size()!=2)
             {
                 operationFlag = false;
-                break;
             }
             else
             {
@@ -542,11 +515,10 @@ public class BusinessRunTimeService {
                 if(incomeRecordManagementNum!=2)
                 {
                     operationFlag = false;
-                    break;
                 }
             }
 
-            if(operationFlag)
+            if(operationFlag&&businessFlag)
             {
                 //用户资金解冻和级别提升返现，和推荐奖励，以及月度返利的所有操作，加一把锁
                 RedisLock redisLock = new RedisLock("userReturnMoneyDeLock"+incomeRecord.getSysUserId());

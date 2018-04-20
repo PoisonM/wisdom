@@ -4,6 +4,7 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
+import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
@@ -44,8 +45,6 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         }
         ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
         ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
-        //去重
-        // criteria.setGroupBy("consume_flow_no");
         // 排序
         criteria.setOrderByClause("create_date");
         // 分页
@@ -55,22 +54,33 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
             Date currentDate = DateUtils.parseDate(pageParamVoDTO.getStartTime());
             c.andCreateDateBetween(currentDate, currentDate);
         }
+        //设置查询条件
         c.andSysShopIdEqualTo(shopUserConsumeRecordDTO.getSysShopId());
-        //设置状态值查询条件，划卡的时候传-消费的状态值，除了划卡传-充值的状态
         c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getConsumeType());
-        //根据是否有店员id，设置消费类型查询参数
+
         String sysClerkId = shopUserConsumeRecordDTO.getSysClerkId();
+        //根据是否有店员id，设置查询条件，如果费类型不是划卡则需要通过goodType来区分,如果sysClerkId不为空则需要根据goodType来区分
         if (StringUtils.isNotBlank(sysClerkId)) {
-            logger.info("此时设置店员消费记录查询条件,店员sysClerkId={}", sysClerkId);
+            logger.info("此时加入店员消费记录查询条件,店员sysClerkId={}", sysClerkId);
             c.andSysClerkIdEqualTo(sysClerkId);
+            if (!ConsumeTypeEnum.PUNCH_CARD.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())) {
+                if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())||
+                        GoodsTypeEnum.PRODUCT.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())) {
+                    //如果是充值卡或者是产品领取
+                    c.andGoodsTypeEqualTo(shopUserConsumeRecordDTO.getGoodsType());
+                } else {
+                    //如果不是充值卡，则查询非充值卡的type
+                    c.andGoodsTypeNotEqualTo(GoodsTypeEnum.RECHARGE_CARD.getCode());
+                }
+            }
         } else {
             c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
         }
         List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
         Map<String, UserConsumeRecordResponseDTO> map = new HashMap<>(16);
-        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO =null;
+        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = null;
         for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
-            userConsumeRecordResponseDTO= new UserConsumeRecordResponseDTO();
+            userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
             if (map.get(shopUserConsumeRecord.getFlowNo()) == null) {
                 userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
                 userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());

@@ -107,7 +107,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
     public List<ShopProductTypeDTO> getTwoLevelProductList(ShopProductTypeDTO shopProductTypeDTO) {
         logger.info("getTwoLevelProductList传入的参数,id={}", shopProductTypeDTO.getId());
 
-        if (StringUtils.isBlank(shopProductTypeDTO.getSysShopId()) || StringUtils.isBlank(shopProductTypeDTO.getId())) {
+        if (StringUtils.isBlank(shopProductTypeDTO.getId())) {
             return null;
         }
         ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
@@ -141,7 +141,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
         if (StringUtils.isNotBlank(shopProductInfoDTO.getProductTypeTwoId())) {
             criteria.andProductTypeTwoIdEqualTo(shopProductInfoDTO.getProductTypeTwoId());
         }
-
+        if(StringUtils.isNotBlank(shopProductInfoDTO.getProductName())){
+            criteria.andProductNameLike("%"+shopProductInfoDTO.getProductName()+"%");
+        }
         List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
         return list;
     }

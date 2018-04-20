@@ -4,6 +4,7 @@ import com.wisdom.business.mapper.product.ProductMapper;
 import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
+import com.wisdom.common.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,7 +34,7 @@ public class OfflineProductService {
 
         Query query = new Query().addCriteria(Criteria.where("productId").is(productId));
         OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
-
+        offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
         if(productDTO!=null)
         {
             productDTO.setProductDetail(offlineProductDTO);

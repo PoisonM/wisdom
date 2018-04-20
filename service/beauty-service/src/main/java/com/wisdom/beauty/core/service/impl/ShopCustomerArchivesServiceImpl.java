@@ -4,7 +4,7 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserArchivesCriteria;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
-import com.wisdom.beauty.core.service.ShopCustomerArchivesServcie;
+import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,15 +17,15 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * ClassName: ShopCustomerArchivesServcieImpl
+ * ClassName: ShopCustomerArchivesServiceImpl
  *
  * @Author： huan
  * @Description:
  * @Date:Created in 2018/4/3 16:41
  * @since JDK 1.8
  */
-@Service("shopCustomerArchivesServcie")
-public class ShopCustomerArchivesServcieImpl implements ShopCustomerArchivesServcie {
+@Service("shopCustomerArchivesService")
+public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -59,26 +59,33 @@ public class ShopCustomerArchivesServcieImpl implements ShopCustomerArchivesServ
     @Override
     public List<ShopUserArchivesDTO> getArchivesList(PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO) {
         logger.info("getArchivesList方法传入的参数={}", shopCustomerArchivesDTO);
-        if (StringUtils.isBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())) {
-            throw new ServiceException("SysShopId为空");
-        }
+
         ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
         ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
         ShopUserArchivesCriteria.Criteria or = criteria.createCriteria();
 
-
         // 排序
         criteria.setOrderByClause("sys_user_name");
         // 分页
-        criteria.setLimitStart(shopCustomerArchivesDTO.getPageNo());
-        criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
+        if(shopCustomerArchivesDTO.getPageNo()!=0) {
+            criteria.setLimitStart(shopCustomerArchivesDTO.getPageNo());
+        }
+        if(shopCustomerArchivesDTO.getPageSize()!=0) {
+            criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
+        }
         //参数
-        c.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())){
+            c.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        }
+        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getId())){
+            c.andIdEqualTo(shopCustomerArchivesDTO.getRequestData().getId());
+        }
         if (StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getPhone())) {
             c.andPhoneLike("%" + shopCustomerArchivesDTO.getRequestData().getPhone() + "%");
         }
-
-        or.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())){
+            or.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+         }
         if (StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysUserName())) {
             or.andSysUserNameLike("%" + shopCustomerArchivesDTO.getRequestData().getSysUserName() + "%");
         }
@@ -171,5 +178,30 @@ public class ShopCustomerArchivesServcieImpl implements ShopCustomerArchivesServ
         }
 
         return shopUserArchivesMapper.deleteByPrimaryKey(archivesId);
+    }
+
+    /**
+     * 查询某个用户的档案信息
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    @Override
+    public ShopUserArchivesDTO getShopUserArchivesInfoByUserId(ShopUserArchivesDTO shopUserArchivesDTO) {
+
+        logger.info("查询某个用户的档案信息传入参数={}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+
+        ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
+        ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
+        if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysUserId())) {
+            c.andSysUserIdEqualTo(shopUserArchivesDTO.getSysUserId());
+        }
+        List<ShopUserArchivesDTO> shopUserArchivesDTOS = shopUserArchivesMapper.selectByCriteria(criteria);
+
+        if (CommonUtils.objectIsEmpty(shopUserArchivesDTOS)) {
+            return null;
+        }
+        logger.debug("查询某个用户的档案信息大小为， {}", shopUserArchivesDTOS.size());
+        return shopUserArchivesDTOS.get(0);
     }
 }

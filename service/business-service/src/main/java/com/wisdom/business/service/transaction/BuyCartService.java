@@ -135,13 +135,14 @@ public class BuyCartService {
 
     @Transactional(rollbackFor = Exception.class)
     public void minusProduct2BuyCart(String productId, String productSpec) {
-        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 
-        OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,productSpec,userInfoDTO.getId());
         RedisLock redisLock = new RedisLock("OrderProductRelation");
         try
         {
             redisLock.lock();
+
+            UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+            OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,productSpec,userInfoDTO.getId());
 
             Integer productNum = orderProductRelationUnPaid.getProductNum()-1;
             orderProductRelationUnPaid.setProductNum(productNum);
