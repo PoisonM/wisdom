@@ -69,8 +69,7 @@ public class UserConsumeController {
      */
     @RequestMapping(value = "/consumes", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestParam String sysShopId,
-                                                                    @RequestParam String shopUserId,
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestParam String shopUserId,
                                                                     @RequestParam String consumeType, int pageSize) {
 
         long startTime = System.currentTimeMillis();
@@ -78,7 +77,6 @@ public class UserConsumeController {
 
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
         shopUserConsumeRecordDTO.setSysUserId(shopUserId);
-        shopUserConsumeRecordDTO.setSysShopId(sysShopId);
         shopUserConsumeRecordDTO.setConsumeType(consumeType);
 
         pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
@@ -89,7 +87,7 @@ public class UserConsumeController {
         ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
-        logger.info("findUserConsume方法耗时{}毫秒",(System.currentTimeMillis()-startTime));
+        logger.info("findUserConsume方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -109,7 +107,7 @@ public class UserConsumeController {
         ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
-        logger.info("findUserConsumeDetail方法耗时{}毫秒",(System.currentTimeMillis()-startTime));
+        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 

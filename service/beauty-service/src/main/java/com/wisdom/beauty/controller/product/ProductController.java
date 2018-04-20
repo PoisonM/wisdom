@@ -5,9 +5,11 @@ import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,10 +105,11 @@ public class ProductController {
      */
     @RequestMapping(value = "/oneLevelProduct", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct(@RequestParam String sysShopId) {
+    ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct() {
         long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
-        List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(sysShopId);
+        List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(sysClerkDTO.getSysShopId());
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("findOneLevelProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
@@ -145,16 +148,17 @@ public class ProductController {
      */
     @RequestMapping(value = "/threeLevelProduct", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProductInfoDTO>> findThreeLevelProject(@RequestParam String sysShopId,
-                                                                @RequestParam String productTypeOneId,
+    ResponseDTO<List<ShopProductInfoDTO>> findThreeLevelProject(@RequestParam String productTypeOneId,
                                                                 @RequestParam String productTypeTwoId,
-                                                                @RequestParam(required =false) String productName,
+                                                                @RequestParam(required = false) String productName,
                                                                 @RequestParam int pageSize) {
+
         long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
 
-        shopProductInfoDTO.setSysShopId(sysShopId);
+        shopProductInfoDTO.setSysShopId(sysClerkDTO.getSysShopId());
         shopProductInfoDTO.setProductTypeOneId(productTypeOneId);
         shopProductInfoDTO.setProductTypeTwoId(productTypeTwoId);
         shopProductInfoDTO.setProductName(productName);

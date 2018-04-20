@@ -74,7 +74,10 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
         if (StringUtils.isBlank(sysClerkId)) {
             throw new ServiceException("getShopUserProductRelations方法传入的参数sysClerkId为空");
         }
-        List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(sysClerkId, sysShopId);
+        Map<String,String> mapFile=new HashMap();
+        mapFile.put("sysClerkId",sysClerkId);
+        mapFile.put("sysShopId",sysShopId);
+        List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(mapFile);
         if (CollectionUtils.isEmpty(list)) {
             logger.info("getWaitReceiveNumber方法查询的结果为空");
             return null;

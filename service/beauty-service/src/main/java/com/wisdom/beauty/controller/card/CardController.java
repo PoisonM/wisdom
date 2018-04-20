@@ -10,9 +10,11 @@ import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -98,12 +100,12 @@ public class CardController {
     @RequestMapping(value = "/getRechargeCardList", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<List<ShopRechargeCardResponseDTO>> findRechargeCardList(@RequestParam(required = false) String name,
-                                                                @RequestParam String sysShopId, int pageSize) {
+                                                                                                        int pageSize) {
         long currentTimeMillis = System.currentTimeMillis();
-
+        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
-        shopRechargeCardDTO.setSysShopId(sysShopId);
+        shopRechargeCardDTO.setSysShopId(sysClerkDTO.getSysShopId());
         shopRechargeCardDTO.setName(name);
 
         pageParamVoDTO.setRequestData(shopRechargeCardDTO);
@@ -148,13 +150,13 @@ public class CardController {
      */
     @RequestMapping(value = "/getShopProjectGroups", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName,
-                                                                    @RequestParam String sysShopId, int pageSize) {
-        long currentTimeMillis = System.currentTimeMillis();
+    ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName,int pageSize) {
 
+        long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopProjectGroupDTO shopProjectGroupDTO = new ShopProjectGroupDTO();
-        shopProjectGroupDTO.setSysShopId(sysShopId);
+        shopProjectGroupDTO.setSysShopId(sysClerkDTO.getSysShopId());
         shopProjectGroupDTO.setProjectGroupName(projectGroupName);
 
         pageParamVoDTO.setRequestData(shopProjectGroupDTO);

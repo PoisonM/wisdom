@@ -50,6 +50,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         logger.info("getArchivesList方法传入的参数,sysShopId={},projectGroupName={}", shopProjectGroupDTO.getSysShopId(),
                 shopProjectGroupDTO.getProjectGroupName());
         if (StringUtils.isBlank(shopProjectGroupDTO.getSysShopId())) {
+            logger.info("getArchivesList方法传入的参数sysShopId为空");
             throw new ServiceException("SysShopId为空");
         }
         ShopProjectGroupCriteria criteria = new ShopProjectGroupCriteria();

@@ -215,10 +215,11 @@ public class ProjectController {
      */
     @RequestMapping(value = "/oneLevelProject", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProjectTypeDTO>> findOneLevelProject(@RequestParam String sysShopId) {
+    ResponseDTO<List<ShopProjectTypeDTO>> findOneLevelProject() {
         long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         ResponseDTO<List<ShopProjectTypeDTO>> responseDTO = new ResponseDTO<>();
-        List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysShopId);
+        List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysClerkDTO.getSysShopId());
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
@@ -257,16 +258,17 @@ public class ProjectController {
      */
     @RequestMapping(value = "/threeLevelProject", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProjectInfoDTO>> findThreeLevelProject(@RequestParam String sysShopId,
-                                                                @RequestParam String projectTypeOneId,
+    ResponseDTO<List<ShopProjectInfoDTO>> findThreeLevelProject(@RequestParam String projectTypeOneId,
                                                                 @RequestParam String ProjectTypeTwoId,
                                                                 @RequestParam(required = false) String projectName,
                                                                 @RequestParam int pageSize) {
+
         long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
 
-        shopProjectInfoDTO.setSysShopId(sysShopId);
+        shopProjectInfoDTO.setSysShopId(sysClerkDTO.getSysShopId());
         shopProjectInfoDTO.setProjectTypeOneId(projectTypeOneId);
         shopProjectInfoDTO.setProjectTypeTwoId(ProjectTypeTwoId);
         shopProjectInfoDTO.setProjectName(projectName);

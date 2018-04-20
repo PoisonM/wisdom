@@ -52,7 +52,7 @@ public class UserUtils {
         clerkDTO.setSysBossId("sys_boss_id");
         clerkDTO.setName("张欢");
         clerkDTO.setId("clerkId1");
-        clerkDTO.setSysShopId("101");
+        clerkDTO.setSysShopId("11");
         clerkDTO.setNickname("张欢昵称");
         clerkDTO.setMobile("18810142926");
         return clerkDTO;

@@ -8,7 +8,9 @@ import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,8 +40,12 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
     @Override
     public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO) {
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = pageParamVoDTO.getRequestData();
-        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},Status={}", shopUserConsumeRecordDTO.getSysShopId(), shopUserConsumeRecordDTO.getSysUserId(), shopUserConsumeRecordDTO.getConsumeType());
-        if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysShopId()) ||
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        if (sysClerkDTO == null) {
+            throw new ServiceException("从redis中获取sysClerkDTO对象为空");
+        }
+        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},consumeType={}", sysClerkDTO.getSysShopId(), shopUserConsumeRecordDTO.getSysUserId(), shopUserConsumeRecordDTO.getConsumeType());
+        if (StringUtils.isBlank(sysClerkDTO.getSysShopId()) ||
                 StringUtils.isBlank(shopUserConsumeRecordDTO.getConsumeType())) {
             throw new ServiceException("getShopCustomerConsumeRecordList方法传入的参数为空");
         }
@@ -55,7 +61,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
             c.andCreateDateBetween(currentDate, currentDate);
         }
         //设置查询条件
-        c.andSysShopIdEqualTo(shopUserConsumeRecordDTO.getSysShopId());
+        c.andSysShopIdEqualTo(sysClerkDTO.getSysShopId());
         c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getConsumeType());
 
         String sysClerkId = shopUserConsumeRecordDTO.getSysClerkId();
@@ -64,7 +70,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
             logger.info("此时加入店员消费记录查询条件,店员sysClerkId={}", sysClerkId);
             c.andSysClerkIdEqualTo(sysClerkId);
             if (!ConsumeTypeEnum.PUNCH_CARD.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())) {
-                if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())||
+                if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType()) ||
                         GoodsTypeEnum.PRODUCT.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())) {
                     //如果是充值卡或者是产品领取
                     c.andGoodsTypeEqualTo(shopUserConsumeRecordDTO.getGoodsType());
@@ -97,15 +103,16 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
                 map.put(shopUserConsumeRecord.getFlowNo(), userConsumeRecordResponseMap);
             }
         }
+        logger.info("getShopCustomerConsumeRecordList执行完成");
         List values = Arrays.asList(map.values().toArray());
         return values;
     }
 
     @Override
     public UserConsumeRecordResponseDTO getShopCustomerConsumeRecord(String consumeFlowNo) {
-        logger.info("getShopCustomerConsumeRecordList方法传入的参数,consumeFlowNo={}}", consumeFlowNo);
+        logger.info("getShopCustomerConsumeRecord方法传入的参数,consumeFlowNo={}}", consumeFlowNo);
         if (StringUtils.isBlank(consumeFlowNo)) {
-            throw new ServiceException("getShopCustomerConsumeRecordList方法传入的参数为空");
+            throw new ServiceException("getShopCustomerConsumeRecord方法传入的参数为空");
         }
         ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
         ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
@@ -113,6 +120,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
         List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
         if (CollectionUtils.isEmpty(list)) {
+            logger.info("getShopCustomerConsumeRecord方法获取list集合为空");
             return null;
         }
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();

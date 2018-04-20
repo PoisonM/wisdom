@@ -173,6 +173,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     public List<ShopProjectTypeDTO> getOneLevelProjectList(String sysShopId) {
         logger.info("getOneLevelProjectList传入的参数,sysShopId={}", sysShopId);
         if (StringUtils.isBlank(sysShopId)) {
+            logger.info("getOneLevelProjectList传入的参数sysShopId为空");
             return null;
         }
         ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
@@ -188,6 +189,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         logger.info("getTwoLevelProjectList传入的参数,id={}", shopProjectTypeDTO.getId());
 
         if (StringUtils.isBlank(shopProjectTypeDTO.getId())) {
+            logger.info("getTwoLevelProjectList传入的参数id为空");
             return null;
         }
         ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
@@ -205,6 +207,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
                 shopProjectInfoDTO.getProjectTypeTwoId());
 
         if (StringUtils.isBlank(shopProjectInfoDTO.getSysShopId())) {
+            logger.info("getThreeLevelProjectList传入的参数sysShopId为空");
             return null;
         }
 
@@ -222,8 +225,8 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectTypeTwoId())) {
             criteria.andProjectTypeTwoIdEqualTo(shopProjectInfoDTO.getProjectTypeTwoId());
         }
-        if(StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())){
-            criteria.andProjectNameLike("%"+shopProjectInfoDTO.getProjectName()+"%");
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
+            criteria.andProjectNameLike("%" + shopProjectInfoDTO.getProjectName() + "%");
         }
         List<ShopProjectInfoDTO> list = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
         return list;

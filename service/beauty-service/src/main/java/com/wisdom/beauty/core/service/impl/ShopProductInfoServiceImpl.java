@@ -108,6 +108,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
         logger.info("getTwoLevelProductList传入的参数,id={}", shopProductTypeDTO.getId());
 
         if (StringUtils.isBlank(shopProductTypeDTO.getId())) {
+            logger.info("getTwoLevelProductList传入的参数id为空");
             return null;
         }
         ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
@@ -124,6 +125,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
                 , shopProductInfoDTO.getProductTypeOneId(), shopProductInfoDTO.getProductTypeTwoId());
 
         if (StringUtils.isBlank(shopProductInfoDTO.getSysShopId())) {
+            logger.info("getThreeLevelProductList方法的传入的参数sysShopId为空");
             return null;
         }
 
