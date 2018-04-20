@@ -1,5 +1,7 @@
 package com.wisdom.beauty.api.responseDto;
 
+import com.wisdom.common.entity.BaseEntity;
+
 import java.util.Map;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Map;
  * @Date:Created in 2018/4/16 16:41
  * @since JDK 1.8
  */
-public class ShopRechargeCardResponseDTO {
+public class ShopRechargeCardResponseDTO extends BaseEntity {
     //充值卡主键
     private String shopRechargeCardId;
     //充值卡名称
