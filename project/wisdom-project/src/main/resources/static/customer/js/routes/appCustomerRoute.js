@@ -399,7 +399,7 @@ define(['appCustomer'], function(app){
                         }
                     })
                     .state('specialProductList', {
-                        url: '/specialProductList',
+                        url: '/specialProductList/:specialShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'specialProductListCtrl',
                         resolve: {
@@ -410,6 +410,153 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+
+                    .state('beautyAppoint', {
+                        url: '/beautyAppoint',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyAppointCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyAppointCtrl',
+                                    ['js/controllers/beauty/beautyAppointCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyAppoint.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('beautyProjectList', {
+                        url: '/beautyProjectList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyProjectListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyProjectListCtrl',
+                                    ['js/controllers/beauty/beautyProjectListCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyProjectList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('beautyClerkList', {
+                        url: '/beautyClerkList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyClerkListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyClerkListCtrl',
+                                    ['js/controllers/beauty/beautyClerkListCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyClerkList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('expenseCardRecord', {
+                        url: '/expenseCardRecord',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'expenseCardRecordCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.expenseCardRecordCtrl',
+                                    ['js/controllers/beauty/expenseCardRecordCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/expenseCardRecord.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('projectCardList', {
+                        url: '/projectCardList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'projectCardListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.projectCardListCtrl',
+                                    ['js/controllers/beauty/projectCardListCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/projectCardList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('projectCardDetail', {
+                        url: '/projectCardDetail',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'projectCardDetailCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.projectCardDetailCtrl',
+                                    ['js/controllers/beauty/projectCardDetailCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/projectCardDetail.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('beautySendMessage', {
+                        url: '/beautySendMessage',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautySendMessageCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautySendMessageCtrl',
+                                    ['js/controllers/beauty/beautySendMessageCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautySendMessage.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('beautyUserCenter', {
+                        url: '/beautyUserCenter',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyUserCenterCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyUserCenterCtrl',
+                                    ['js/controllers/beauty/beautyUserCenterCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyUserCenter.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('beautyUserQRCode', {
+                        url: '/beautyUserQRCode',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyUserQRCodeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyUserQRCodeCtrl',
+                                    ['js/controllers/beauty/beautyUserQRCodeCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyUserQRCode.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('beautyUserAppoint', {
+                        url: '/beautyUserAppoint',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyUserAppointCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyUserAppointCtrl',
+                                    ['js/controllers/beauty/beautyUserAppointCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyUserAppoint.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('beautyUserAppointDetail', {
+                        url: '/beautyUserAppointDetail',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyUserAppointDetailCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyUserAppointDetailCtrl',
+                                    ['js/controllers/beauty/beautyUserAppointDetailCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyUserAppointDetail.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('beautyShopList', {
+                        url: '/beautyShopList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyShopListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyShopListCtrl',
+                                    ['js/controllers/beauty/beautyShopListCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyShopList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                
+
                 $urlRouterProvider.otherwise('/shopHome')
             }])
 })

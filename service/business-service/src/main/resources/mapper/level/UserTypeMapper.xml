@@ -39,6 +39,9 @@
         <if test="status != null and status !=''">
             and status=#{status}
         </if>
+        ORDER BY
+        create_date
+        DESC
     </select>
 
     <!-- 插入用户 -->
@@ -88,4 +91,16 @@
         id = #{id}
     </update>
 
+    <select id="getUserBusinessTypeSpecial"
+            parameterType="com.wisdom.common.dto.system.UserBusinessTypeDTO"
+            resultMap="UserBusinessTypeResultMap">
+        select ubt.* from user_business_type ubt,sys_user sus WHERE
+        ubt.sys_user_id=sus.id
+        AND
+        ubt.user_type="business-C-1"
+        AND
+        ubt.parent_user_id=""
+        AND
+        sus.parent_user_id is not NULL
+    </select>
 </mapper>

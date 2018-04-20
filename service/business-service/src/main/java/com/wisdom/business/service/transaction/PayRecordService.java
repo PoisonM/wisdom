@@ -1,7 +1,6 @@
 package com.wisdom.business.service.transaction;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
-import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.transaction.PayRecordMapper;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
@@ -9,7 +8,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.account.PrePayInfoDTO;
 import com.wisdom.common.dto.product.InvoiceDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderListDTO;
 import com.wisdom.common.util.*;
@@ -41,61 +40,62 @@ public class PayRecordService {
     @Transactional(rollbackFor = Exception.class)
     public PrePayInfoDTO getPrepayInfo(HttpServletRequest request, HttpSession session, String productType) {
 
-        SortedMap<Object, Object> prePayInfoMap = new TreeMap<>();
-
-        prePayInfoMap.put("appid", ConfigConstant.APP_ID);
-        prePayInfoMap.put("mch_id",ConfigConstant.MCH_ID);
-        prePayInfoMap.put("device_info",ConfigConstant.DEVICE_INFO);
-        prePayInfoMap.put("nonce_str",IdGen.uuid());
-        prePayInfoMap.put("body",productType);
-        prePayInfoMap.put("attach","detail");
-        //生成的商户订单号
-        String outTradeNo = IdGen.uuid();
-        prePayInfoMap.put("out_trade_no",outTradeNo);
-        prePayInfoMap.put("fee_type",ConfigConstant.FEE_TYPE);
-
-        //获取需要支付的金额，单位(分)
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        String value = JedisUtils.get(userInfoDTO.getId()+"needPay");
-        NeedPayOrderListDTO needPayOrderListDTO = (new Gson()).fromJson(value, NeedPayOrderListDTO.class);
-        Float payPrice = 0F;
-        for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
-        {
-            payPrice = payPrice + Float.valueOf(needPayOrderDTO.getProductPrice())*Float.valueOf(needPayOrderDTO.getProductNum());
-        }
-        //prePayInfoMap.put("total_fee",(int)(payPrice*100)+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
-        prePayInfoMap.put("total_fee",1+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
-        prePayInfoMap.put("spbill_create_ip",request.getRemoteAddr());
-
-        if(productType.equals("offline"))
-        {
-            prePayInfoMap.put("notify_url",ConfigConstant.OFFLINE_PRODUCT_BUY_NOTIFY_URL);
-        }
-        else if(productType.equals("special"))
-        {
-            prePayInfoMap.put("notify_url",ConfigConstant.SPECIAL_PRODUCT_BUY_NOTIFY_URL);
-        }
-        else if(productType.equals("trainingProduct"))
-        {
-            prePayInfoMap.put("notify_url",ConfigConstant.TRAINING_PRODUCT_BUY_NOTIFY_URL);
-        }
-
-        prePayInfoMap.put("trade_type","JSAPI");
-
-        String openId = WeixinUtil.getCustomerOpenId(session, request);
-        prePayInfoMap.put("openid",openId);
-
-        //将上述参数进行签名
-        String sign = JsApiTicketUtil.createSign("UTF-8", prePayInfoMap);
-        prePayInfoMap.put("sign",sign);
-
-        String requestXML = JsApiTicketUtil.getRequestXml(prePayInfoMap);
-        String payResult = HttpRequestUtil.httpsRequest(ConfigConstant.GATE_URL, "POST", requestXML).replaceAll("200>>>>",""); //gate url是腾讯的支付URL
 
         RedisLock redisLock = new RedisLock("payRecord" + userInfoDTO.getId());
         PrePayInfoDTO prePayInfoDTO = new PrePayInfoDTO();
         try{
             redisLock.lock();
+
+            SortedMap<Object, Object> prePayInfoMap = new TreeMap<>();
+
+            prePayInfoMap.put("appid", ConfigConstant.APP_ID);
+            prePayInfoMap.put("mch_id",ConfigConstant.MCH_ID);
+            prePayInfoMap.put("device_info",ConfigConstant.DEVICE_INFO);
+            prePayInfoMap.put("nonce_str",IdGen.uuid());
+            prePayInfoMap.put("body",productType);
+            prePayInfoMap.put("attach","detail");
+            //生成的商户订单号
+            String outTradeNo = IdGen.uuid();
+            prePayInfoMap.put("out_trade_no",outTradeNo);
+            prePayInfoMap.put("fee_type",ConfigConstant.FEE_TYPE);
+
+
+            String value = JedisUtils.get(userInfoDTO.getId()+"needPay");
+            NeedPayOrderListDTO needPayOrderListDTO = (new Gson()).fromJson(value, NeedPayOrderListDTO.class);
+            Float payPrice = 0F;
+            for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
+            {
+                payPrice = payPrice + Float.valueOf(needPayOrderDTO.getProductPrice())*Float.valueOf(needPayOrderDTO.getProductNum());
+            }
+            prePayInfoMap.put("total_fee",(int)(payPrice*100)+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
+            prePayInfoMap.put("spbill_create_ip",request.getRemoteAddr());
+
+            if(productType.equals("offline"))
+            {
+                prePayInfoMap.put("notify_url",ConfigConstant.OFFLINE_PRODUCT_BUY_NOTIFY_URL);
+            }
+            else if(productType.equals("special"))
+            {
+                prePayInfoMap.put("notify_url",ConfigConstant.SPECIAL_PRODUCT_BUY_NOTIFY_URL);
+            }
+            else if(productType.equals("trainingProduct"))
+            {
+                prePayInfoMap.put("notify_url",ConfigConstant.TRAINING_PRODUCT_BUY_NOTIFY_URL);
+            }
+
+            prePayInfoMap.put("trade_type","JSAPI");
+
+            String openId = WeixinUtil.getUserOpenId(session, request);
+            prePayInfoMap.put("openid",openId);
+
+            //将上述参数进行签名
+            String sign = JsApiTicketUtil.createSign("UTF-8", prePayInfoMap);
+            prePayInfoMap.put("sign",sign);
+
+            String requestXML = JsApiTicketUtil.getRequestXml(prePayInfoMap);
+            String payResult = HttpRequestUtil.httpsRequest(ConfigConstant.GATE_URL, "POST", requestXML).replaceAll("200>>>>",""); //gate url是腾讯的支付URL
+
 
             Map<String, Object> payResultMap = XMLUtil.doXMLParse(payResult);
             if (!"FAIL".equals(payResultMap.get("return_code"))) {
@@ -160,6 +160,7 @@ public class PayRecordService {
                     payRecordDTO.setPayType("wx");
                     payRecordMapper.insertPayRecord(payRecordDTO);
                 }
+
                 prePayInfoDTO.setResult(StatusConstant.SUCCESS);
             }
             else

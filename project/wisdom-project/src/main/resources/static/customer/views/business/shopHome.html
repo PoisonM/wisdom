@@ -34,8 +34,17 @@
             border-radius: 50%;
             /*background-color: #ffffff;*/
             position: absolute;
-            top: 0px;
-            right: 10px;
+            top: 64px;
+            right: 32px;
+        }
+        .redPacket .close1{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            /*background-color: #ffffff;*/
+            position: absolute;
+            top: 15px;
+            right: 32px;
         }
         .open{
             position: absolute;
@@ -47,8 +56,9 @@
         }
         .message{
             position: absolute;
-            bottom: 140px;
+            bottom: 142px;
             padding: 0 40px;
+            font-size: 16px;
             text-align: center;
             width: 100%;
         }
@@ -58,25 +68,25 @@
     </style>
     <ion-content>
         <!--轮播图部分-->
-        <ion-slide-box auto-play="true" does-continue="true" slide-interval=4000>
-            <ion-slide ng-repeat="item in param.bannerList">
-                <div class="box" style="height:3.98rem;width: 7.50rem">
-                    <a ng-href="{{item.forward}}" ng-click="clickCarousel(item.id)"> <img ng-src="{{item.uri}}" style="height:3.98rem;width:7.50rem"/></a>
-                </div>
-            </ion-slide>
-        </ion-slide-box>
+        <ion-slide-box auto-play="true" does-continue="true" slide-interval=4000 show-pager="false">
+        <ion-slide ng-repeat="item in param.bannerList">
+            <div class="box" style="height:3.98rem;width: 7.50rem">
+                <a ng-href="{{item.forward}}" ng-click="clickCarousel(item.id)"> <img ng-src="{{item.uri}}" style="height:3.98rem;width:7.50rem"/></a>
+            </div>
+        </ion-slide>
+    </ion-slide-box>
         <!--商品部分-->
         <div style="margin-top: 20px;height:5.16rem;width:7.50rem" ng-repeat="item in param.productList" ng-if="item.productId==param.promoteProductId" >
             <img ng-src="{{item.firstUrl}}" ng-click="goPromoteProduct(item.productId)" style="width: 7.5rem;height: 5.30rem"/>
         </div>
-
         <div>
             <div  style="position: relative;" ng-repeat="item in param.product2List">
                 <!--<div style="width:2rem;height: 1rem;color: #333333;margin-bottom: 30px;position: absolute;top:20px;left:50%;margin-left:-1rem;text-align: center;font-size: 16px">{{item.name}}元专区</div>-->
                 <!--<div class="col col-50"  ng-repeat="item2 in item.data">-->
                 <div ng-repeat="item2 in item.data" style="margin-top: 20px;">
-                    <div  ng-click="enterDetails(item2.productId)" ng-if="item2.productId!=param.promoteProductId">
+                    <div  ng-click="enterDetails(item2.productId)" ng-if="item2.productId!=param.promoteProductId" style="position: relative">
                         <img class="full-image" ng-src="{{item2.firstUrl}}">
+                        <div ng-if="item2.productId=='MXT99-02'" style="position: absolute;top: 13px;right: 15px;font-size: 14px;color:#f05a24 ;font-family: 微软雅黑" id="timeResult">特惠价结束仅剩 <span style="font-size: 18px;color: #333333">{{param.timeContent}}</span>天</div>
                         <!--<h1 style="font-size:0.26rem;font-weight: bold;color: #333333;">{{item2.productName}}</h1>-->
                         <!--<p style="font-size:0.24rem;color: #666666">-->
                         <!--{{item2.description}}-->
@@ -98,6 +108,7 @@
                 </div>
             </div>
         </div>
+        <!---->
         <div ng-if="param.redPackerFlagOne" class="redPacket_box">
             <div class="redPacket">
                 <img  src="images/redPacket2.png" alt="">
@@ -109,12 +120,13 @@
         <div ng-if="param.redPackerFlagTwo" class="redPacket_box">
             <div class="redPacket">
                 <img  src="images/redPacket1.png" alt="">
-                <span ng-click="redPackerClose()" class="close"></span>
+                <span ng-click="redPackerClose()" class="close1"></span>
                 <div class="message">
                     <span>你的宝箱里有<i class="yelColor">{{param.bonusValue}}元</i>现金
                     </span>
                 </div>
             </div>
         </div>
+
     </ion-content>
 </ion-view>

@@ -1,0 +1,64 @@
+.rechargeRecord{
+}
+.rechargeRecord .rechargeRecord_header{
+    height: 0.671875rem;
+    background-color: #F2F2F2;
+    overflow: hidden;
+    border-bottom: 1px solid #aaaaaa;
+    padding-left: 0.265625rem;
+}
+.rechargeRecord .rechargeRecord_header ul li{
+    width: 33.33%;
+    height: 100%;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 0.203125rem;
+    color: #333333;
+    letter-spacing: 0;
+    padding: 0.21875rem 0rem;
+}
+.rechargeRecord .rechargeRecord_header ul li span{
+    border-right: 1px solid #aaaaaa;
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+.rechargeRecord .rechargeRecord_header ul li:last-child span{
+    border-right: none;
+}
+.rechargeRecord .rechargeRecord_content{
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+.rechargeRecord .rechargeRecord_content ul li{
+    width: 100%;
+    height: 0.71875rem;
+    line-height: 0.71875rem;
+    overflow: hidden;
+    padding-left: 0.265625rem;
+    position: relative;
+}
+.rechargeRecord .rechargeRecord_content ul li .ifo{
+    width: 100%;
+    height: 100%;
+    border-bottom: 1px solid #E5E5E5;
+}
+.rechargeRecord .rechargeRecord_content ul li .ifo span{
+    display: block;
+    float: left;
+    width: 33.333%;
+    text-align: center;
+}
+.rechargeRecord .rechargeRecord_content ul li .ifo .chesty{
+    color: #FF6666;
+}
+.rechargeRecord .rechargeRecord_content ul li .go_set {
+    position: absolute;
+    top: 40%;
+    right: 0.3125rem;
+    background: url(../../images/userInfo/bt_more.png) no-repeat;
+    background-size: 100%;
+    width: 0.1171875rem;
+    height: 0.2109375rem;
+}

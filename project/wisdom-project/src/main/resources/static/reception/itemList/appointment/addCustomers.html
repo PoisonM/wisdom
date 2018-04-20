@@ -1,26 +1,21 @@
-<div class="addWraps">
-      <div class="headers">
-          <ul>
-              <li class="checks">取消</li>
-              <li class="addCustomer">添加顾客</li>
-              <li class="checks">保存</li>
-          </ul>
-      </div>
-      <!--点击可以选择头像部分-->
-      <div class="photoBox">
-          <img src="images/bt_taking%20pictures.png" alt="">
-      </div>
-      <!--顾客信息-->
-      <div class="customerBox">
-          <ul>
-              <li><label for="">姓名</label><input type="text" placeholder="请输入顾客姓名"></li>
-              <li><label for="">性别</label>
-                  <div class="maleBox">
-                      <p class="p1"><img src="images/ic_women.png" alt=""><span>女</span></p>
-                      <p class="p1 bgeee"><img src="images/ic_men.png" alt=""><span>男</span></p>
-                  </div>
-              </li>
-              <li><label for="">电话</label><input type="text" placeholder="请输入联系方式"></li>
-          </ul>
-      </div>
-  </div>
+<div>
+    <!--点击可以选择头像部分-->
+    <div class="photoBox"  >
+        <input type="file" id="userPic" ng-click="uploadPic()">
+        <img src="images/bt_taking%20pictures.png" alt="" >
+    </div>
+    <!--顾客信息-->
+    <div class="customerBox">
+        <ul>
+            <li><label for="">姓名</label><input type="text" placeholder="请输入顾客姓名"></li>
+            <li><label for="">性别</label>
+                <div class="maleBox">
+                    <p class="p1"><img src="images/ic_women.png" alt=""><span>女</span></p>
+                    <p class="p1 bgeee"><img src="images/ic_men.png" alt=""><span>男</span></p>
+                </div>
+            </li>
+            <li><label for="">电话</label><input type="text" placeholder="请输入联系方式"></li>
+        </ul>
+    </div>
+</div>
+

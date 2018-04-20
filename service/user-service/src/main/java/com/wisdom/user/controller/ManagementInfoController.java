@@ -11,6 +11,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "customer")
 public class ManagementInfoController {
 
-
-
 }

@@ -27,16 +27,16 @@ public class WeixinUtil {
 
     private static MongoTemplate mongoTemplate = (MongoTemplate) SpringUtil.getBean(MongoTemplate.class);
 
-    public static String getCustomerTokenFromTX(String corpid, String sectet) throws IOException {
+    public static String getUserTokenFromTX(String corpid, String sectet) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + corpid + "&secret=" + sectet + "";
         String content = HttpRequestUtil.get(url);
         AccessToken token = JsonUtil.getObjFromJsonStr(content, AccessToken.class);
         return token.getaccess_token();
     }
 
-    public static String getCustomerToken()
+    public static String getUserToken()
     {
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinCustomerFlag));
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
         return token;
@@ -61,10 +61,10 @@ public class WeixinUtil {
      * @return
      * @throws IOException
      */
-    public static String getCustomerOauth2Url(String backUrl) {
+    public static String getUserOauth2Url(String backUrl) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-                ConfigConstant.CUTOMER_CORPID + "&redirect_uri=" +
+                ConfigConstant.USER_CORPID + "&redirect_uri=" +
                 backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
@@ -144,10 +144,10 @@ public class WeixinUtil {
         return String.valueOf(Character.toChars(hexEmoji));
     }
 
-    public static String getCustomerOpenId(HttpSession session, HttpServletRequest request) {
-        String openId = (String) session.getAttribute(ConfigConstant.CUSTOMER_OPEN_ID);
+    public static String getUserOpenId(HttpSession session, HttpServletRequest request) {
+        String openId = (String) session.getAttribute(ConfigConstant.USER_OPEN_ID);
         if (!StringUtils.isNotNull(openId)) {
-            openId = CookieUtils.getCookie(request, ConfigConstant.CUSTOMER_OPEN_ID);
+            openId = CookieUtils.getCookie(request, ConfigConstant.USER_OPEN_ID);
         }
         return openId;
     }
@@ -191,58 +191,29 @@ public class WeixinUtil {
         return null; // 自定义错误信息
     }
 
-    /**
-     * 上传H5医生向微信用户发送图片消息
-     * @param token 微信唯一票据
-     * @param openId 微信用户唯一标识
-     * @param content 发送内容
-     * @param msgType 发送信息类型
-     * */
-    public static void sendNoTextMsgToWeixin(String token, String openId, String content,int msgType){
-        String type = null ;
-        if(msgType == 1){
-            type = "image";
-        }else if(msgType ==2){
-            type = "voice";
-        }else{
-            type = "video";
-        }
-        String sendUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
-        String json = "{\"touser\": \""+openId+"\",\"msgtype\": \""+type+"\", \""+type+"\": {\"media_id\": \""+content+"\"}}";
-        sendNoTextToWX(sendUrl,json);
-    }
-
-    /**
-     *  向微信端发送非文字消息
-     *  @param sendUrl 发送微信地址
-     *  @param  json 发送json类型消息
-     */
-    public static String sendNoTextToWX(String sendUrl,String json){
-        URL sendWXUser;
-        String reResult = null;
+    public static String getXmlDataFromWeixin(HttpServletRequest request)
+    {
+        /** 读取接收到的xml消息 */
+        StringBuffer sb = new StringBuffer();
+        InputStream is = null;
         try {
-            sendWXUser = new URL(sendUrl);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) sendWXUser.openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
-            httpURLConnection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setDoInput(true);
-            OutputStream os = httpURLConnection.getOutputStream();
-            os.write(json.getBytes("UTF-8"));// 传入参数
-            os.flush();
-            os.close();
-            InputStream is = httpURLConnection.getInputStream();
-            int size = is.available();
-            byte[] jsonBytes = new byte[size];
-            is.read(jsonBytes);
-            reResult = new String(jsonBytes, "UTF-8");
-            System.out.println("请求返回结果:"+reResult);
-            is.close();
-        } catch (Exception e) {
+            is = request.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            String s = "";
+            while ((s = br.readLine()) != null) {
+                sb.append(s);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return reResult;
+        return sb.toString();
+    }
+
+
+    public static String getBossOpenId(HttpSession session, HttpServletRequest request) {
+
+        return null;
     }
 
     /**
@@ -266,54 +237,4 @@ public class WeixinUtil {
             e.printStackTrace();
         }
     }
-    /**
-     *  向用户发送模板消息
-     *  @author jiangzg
-     *  @version 1.0
-     *  2016年6月27日12:28:59
-     */
-    public static String sendTemplateMsgToUser(String token , String openId ,String templateId ,String content){
-        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+token;
-        String result = "failure";
-        try {
-            String json = "{\"touser\":\"" + openId + "\",\"template_id\":\""+templateId+"\",\"url\":\"\"," +
-                    "\"data\":" + "{"+content+"}}";
-            String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
-            System.out.print(json + "--" + re);
-            JSONObject jsonObject = new JSONObject(re);
-            if(re.contains("access_token is invalid")){
-                //token已经失效，重新获取新的token
-                result = "tokenIsInvalid";
-            }
-            Integer resultStatus = (Integer)jsonObject.get("errcode");
-            if(resultStatus != null && resultStatus == 0){
-                result = "messageOk";
-                System.out.println("------"+resultStatus);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static String getXmlDataFromWeixin(HttpServletRequest request)
-    {
-        /** 读取接收到的xml消息 */
-        StringBuffer sb = new StringBuffer();
-        InputStream is = null;
-        try {
-            is = request.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is, "UTF-8");
-            BufferedReader br = new BufferedReader(isr);
-            String s = "";
-            while ((s = br.readLine()) != null) {
-                sb.append(s);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
-    }
-
-
 }

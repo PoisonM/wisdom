@@ -10,7 +10,7 @@
                         <span ng-if="param.userLogin"   style="font-size: 18px;" class="money" >{{param.accountInfo.balance}}</span>
                          <img src="images/myselfCenter/open.png" style="position:absolute;top:20px;right:20px;width:21px;height: 11px;display: inline-block" ng-click="checkOpen($event)" id="open" class="open">
                         <br>
-                        <span ng-if="param.userLogin"  style="  display: inline-block">昨日收益：{{param.accountInfo.todayIncome}}</span>
+                        <span ng-if="param.userLogin"  style="margin-top:0.3rem;display: inline-block">昨日收益：{{param.accountInfo.todayIncome}}</span>
                     </span>
                     <button class="button" style="border-radius:20px;background: #FF9492;color: #FFFFFF;font-size: 13px;margin-top: -60px;"
                             ng-if="!param.userLogin" ng-click="myselfLogin()">登录查看您的收益</button>
@@ -42,7 +42,7 @@
                         <span style="height:0.3rem; line-height:0.3rem; display:block; color:#FFF; text-align:center;font-size: 10px;">{{param.accountInfo.orderStatusCountList[0]}}</span>
                     </div>
                     <img src="images/myselfCenter/bt-penging.png" style="font-size: 0.6rem;height: 0.6rem;margin-left: 0.5rem;margin-bottom: 0.2rem;margin-top: 0.2rem">
-                    <p>待付款</p>
+                    <p style="font-size: 14px">待付款</p>
                 </div>
                 <div class="col col-25" style="text-align: center;" ng-click="goOrderManagement('1')">
                     <div style="width:0.3rem;height:0.3rem;background-color:#F00;
@@ -51,7 +51,7 @@
                         <span style="height:0.3rem; line-height:0.3rem; display:block; color:#FFF; text-align:center;font-size: 10px;" >{{param.accountInfo.orderStatusCountList[1]}}</span>
                     </div>
                     <img src="images/myselfCenter/bt-received.png" style="font-size: 0.6rem;height: 0.6rem;margin-left: 0.5rem;margin-bottom: 0.2rem;margin-top: 0.2rem">
-                    <p>待发货</p>
+                    <p style="font-size: 14px">待发货</p>
                 </div>
                 <div class="col col-25" style="text-align: center;" ng-click="goOrderManagement('4')">
                     <div style="width:0.3rem;height:0.3rem;background-color:#F00;
@@ -60,11 +60,11 @@
                         <span style="height:0.3rem; line-height:0.3rem; display:block; color:#FFF; text-align:center;font-size: 10px;" >{{param.accountInfo.orderStatusCountList[2]}}</span>
                     </div>
                     <img src="images/myselfCenter/bt-delivered.png" style="font-size: 0.6rem;height: 0.6rem;margin-left: 0.5rem;margin-bottom: 0.2rem;margin-top: 0.2rem">
-                    <p>待收货</p>
+                    <p style="font-size: 14px">待收货</p>
                 </div>
                 <div class="col col-25" style="text-align: center;" ng-click="goOrderManagement('2')">
                     <img src="images/myselfCenter/bt-completed.png" style="font-size: 0.6rem;height: 0.6rem;margin-left: 0.5rem;margin-bottom: 0.2rem;margin-top: 0.2rem">
-                    <p>已完成</p>
+                    <p style="font-size: 14px">已完成</p>
                 </div>
             </div>
         </div>

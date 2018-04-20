@@ -114,13 +114,15 @@
     margin-right: 0.171875rem;
 }
 .top_bottom .header_cash_right i{
-    /*background: url("../images/bt_back.png") no-repeat;
-     background-size: 100% 100%;
-     display: inline-block;
-     width: 0.125rem;
-     height: 0.25rem;
-     */
+    background: url(../images/appointment_price_sprite.png) no-repeat;
+    display: inline-block;
+    width: 0.21875rem;
+    height: 0.328125rem;
+    background-size: 13.359375rem 10.609375rem;
+    background-position: -0.390625rem -4.375rem;
+    vertical-align: middle;
 }
+
 
 .top_bottom .header_cash_right .save{
     font-size: 0.265625rem;
@@ -128,10 +130,68 @@
     right: 0.265625rem;
 }
 
+.top_bottom .header_login{
+    width: 100%;
+    height: 100%;
+    line-height:0.6875rem;;
+    text-align: center;
+    font-size: 0.265625rem;
+    font-family: PingFangSC-Regular;
+    color: #ffffff;
+}
+/*------------*/
+.top_bottom .header_price_box{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.top_bottom .header_price_box .header_price_left{
+    position: absolute;
+    top: 0rem;
+    left: 0.234375rem;
+}
+.top_bottom .header_price_left i{
+    background: url(../images/appointment_price_sprite.png) no-repeat;
+    display: inline-block;
+    width: 0.21875rem;
+    height: 0.328125rem;
+    background-size: 13.359375rem 10.609375rem;
+    background-position: -0.390625rem -4.375rem;
+    vertical-align: middle;
+}
+.top_bottom .header_price_right{
+    width:100%;
+    height: 100%;
+    text-align: center;
+}
 
-
-
-
+.top_bottom .header_price_black_l{
+    float: left;
+    width: 1.546875rem;
+    height: 100%;
+    background-color: #262535;
+}
+.top_bottom .header_price_black_r{
+    float: left;
+    width: 14.453125rem;
+    height: 100%;
+    text-align: center;
+    position: relative;
+}
+.top_bottom .header_price_black_r .black_r_title{
+    width: 100%;
+}
+.top_bottom .header_price_black_r .black_r_search{
+    position: absolute;
+    right: 0.234375rem;
+    top: 0.15625rem;
+    background: url(../images/appointment_price_sprite.png) no-repeat;
+    display: inline-block;
+    width: 0.390625rem;
+    height: 0.390625rem;
+    background-size: 13.359375rem 10.609375rem;
+    background-position: -10.46875rem -2.375rem;
+}
 
 
 
@@ -143,7 +203,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 0.765rem;
+    height: 0.6875rem;
     background-color: ghostwhite;
     font-family: PingFangTC-Medium, sans-serif;
     color: #999999;
@@ -153,7 +213,7 @@
     width: 5.468rem;
     height: 100%;
     margin: 0 auto;
-    padding: 0.09375rem 0;
+    padding-bottom: 0.03125rem
 }
 .top_bottom .footer .footer_box ul li{
     width: 20%;
@@ -167,7 +227,7 @@
     width: 0.328rem;
     height: 0.325rem;
     margin: 0 auto;
-    margin-bottom: 0.04rem;
+    margin-top: 0.04rem;
 
 }
 
@@ -189,5 +249,27 @@
 }
 .top_bottom .footer .footer_box ul li:nth-child(5) span{
     background: url("../images/bt_mine_nor.png") no-repeat;
+    background-size: 100%;
+}
+
+
+.top_bottom .footer .footer_box ul .top_bottom_select:nth-child(1) span{
+    background: url("../images/bt_reservation_select.png") no-repeat;
+    background-size: 100%;
+}
+.top_bottom .footer .footer_box ul .top_bottom_select:nth-child(2) span{
+    background: url("../images/bt_cash_register_select.png") no-repeat;
+    background-size: 100%;
+}
+.top_bottom .footer .footer_box ul .top_bottom_select:nth-child(3) span{
+    background: url("../images/bt__attendance_select.png") no-repeat;
+    background-size: 100%;
+}
+.top_bottom .footer .footer_box ul .top_bottom_select:nth-child(4) span{
+    background: url("../images/bt_price_list_select.png") no-repeat;
+    background-size: 100%;
+}
+.top_bottom .footer .footer_box ul .top_bottom_select:nth-child(5) span{
+    background: url("../images/bt_mine_select.png") no-repeat;
     background-size: 100%;
 }

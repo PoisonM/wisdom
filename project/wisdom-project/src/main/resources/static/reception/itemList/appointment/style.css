@@ -78,7 +78,7 @@ img, a { display: inline-block; }
 
 .nextStepBtn { width: 3.125rem; height: 0.71875rem; border-radius: 0.125rem; margin-right: 0.46875rem; background: #ff6666; color: #ffffff; font-size: 0.28125rem; margin-top: 0.23438rem; }
 
-.width1348 { width: 10.87097rem; height: 11.81452rem; border-radius: 0.28125rem; background: #f5f5f5; }
+/*.width1348 { width: 10.87097rem; height: 11.81452rem; border-radius: 0.28125rem; background: #f5f5f5; }*/
 
 .width1348H1012 { width: 10.87097rem; height: 8.16129rem; border-radius: 0.28125rem; background: #f5f5f5; }
 
@@ -111,22 +111,22 @@ img, a { display: inline-block; }
 
 .LisH100 li { height: 0.78125rem; line-height: 0.78125rem; }
 
-.giving .content { background: #ffffff; padding-top: 0.15625rem; }
-.giving .content .btns { width: 9.98438rem; margin: 0 auto; border-radius: 0.0625rem; border: solid 1px #ff6666; box-sizing: border-box; }
-.giving .content .btns button { box-sizing: border-box; width: 3.32292rem; border-right: solid 1px #ff6666; height: 0.60938rem; padding: 0px; font-size: 0.25rem; color: #ff6666; }
-.giving .content .btns .btnActive { background: #ff6666; color: #ffffff; }
-.giving .content .btns .project { border-bottom-left-radius: 0.0625rem; border-top-left-radius: 0.0625rem; }
-.giving .content .btns .product { margin-left: -5px; }
-.giving .content .btns .coupons { border-bottom-right-radius: 0.0625rem; border-top-right-radius: 0.0625rem; border: none; margin-left: -4px; }
-.giving .content .messLis { padding-top: 0.15625rem; }
-.giving .content .messLis li { height: 0.78125rem; line-height: 0.78125rem; border-bottom: solid 1px #e5e5e5; font-size: 0.25rem; padding-left: 0.23438rem; color: #333333; }
-.giving .content .messLis li input { margin-left: 0.40625rem; background: border-box; }
-.giving .content .messLis li .projectStamps { margin-left: 0.54688rem; padding: 0.125rem 0.15625rem; border-radius: 0.03906rem; border: solid 1px #999999; }
-.giving .content .messLis li .vouchers { border-radius: 0.03906rem; margin-left: 0.45313rem; padding: 0.125rem 0.15625rem; border: solid 1px #999999; }
-.giving .content .messLis li .timeMore { display: flex; justify-content: space-between; }
-.giving .content .messLis li .timeMore img { margin-right: 0.23438rem; width: 0.11719rem; height: 0.21094rem; }
+.givingArea .content { background: #ffffff; padding-top: 0.15625rem; }
+.givingArea .content .btns { width: 9.98438rem; margin: 0 auto; border-radius: 0.0625rem; border: solid 1px #ff6666; box-sizing: border-box; }
+.givingArea .content .btns button { box-sizing: border-box; width: 3.32292rem; border-right: solid 1px #ff6666; height: 0.60938rem; padding: 0px; font-size: 0.25rem; color: #ff6666; }
+.givingArea .content .btns .btnActive { background: #ff6666; color: #ffffff; }
+.givingArea .content .btns .project { border-bottom-left-radius: 0.0625rem; border-top-left-radius: 0.0625rem; }
+.givingArea .content .btns .product { margin-left: -5px; }
+.givingArea .content .btns .coupons { border-bottom-right-radius: 0.0625rem; border-top-right-radius: 0.0625rem; border: none; margin-left: -4px; }
+.givingArea .content .messLis { padding-top: 0.15625rem; }
+.givingArea .content .messLis li { height: 0.78125rem; line-height: 0.78125rem; border-bottom: solid 1px #e5e5e5; font-size: 0.25rem; padding-left: 0.23438rem; color: #333333; }
+.givingArea .content .messLis li input { margin-left: 0.40625rem; background: border-box; }
+.givingArea .content .messLis li .projectStamps { margin-left: 0.54688rem; padding: 0.125rem 0.15625rem; border-radius: 0.03906rem; border: solid 1px #999999; }
+.givingArea .content .messLis li .vouchers { border-radius: 0.03906rem; margin-left: 0.45313rem; padding: 0.125rem 0.15625rem; border: solid 1px #999999; }
+.givingArea .content .messLis li .timeMore { display: flex; justify-content: space-between; }
+.givingArea .content .messLis li .timeMore img { margin-right: 0.23438rem; width: 0.11719rem; height: 0.21094rem; }
 
-.trueAppointment { width: 6.9375rem; height: 8.67188rem; border: solid 1px #e5e5e5; margin-left: 2.34375rem; border-radius: 0.28125rem; background: #f5f5f5; /*position: fixed;
+.trueAppointment { width: 6.9375rem;  border: solid 1px #e5e5e5;  border-radius: 0.28125rem; background: #f5f5f5; /*position: fixed;
 left:50%;
 top:50%;
 margin-top:px2rem(888/2);
@@ -134,13 +134,13 @@ margin-left:px2rem(1110/2);*/ }
 .trueAppointment .LisMess ul li { display: flex; justify-content: space-between; height: 0.78125rem; line-height: 0.78125rem; background: #ffffff; border-bottom: solid 1px #e5e5e5; }
 .trueAppointment .LisMess ul li img { display: inline-block; margin-left: 0.23438rem; }
 .trueAppointment .LisMess ul li .name { margin-left: 0.15625rem; font-size: 0.25rem; }
-.trueAppointment .LisMess ul li .time { float: right; margin-right: 0.23438rem; font-size: 0.1875rem; color: #888888; }
+.trueAppointment .LisMess ul li .time { float: right; margin-right: 0.23438rem; font-size: 0.21875rem; color: #888888; }
 .trueAppointment .LisMess ul li p { width: 50%; }
 
-.collectionCard .content .searchBox { height: 0.67188rem; line-height: 0.67188rem; background: #e5e5e5; }
-.collectionCard .content .searchBox input[type='search'] { width: 9.57813rem; height: 0.48438rem; text-align: center; margin-left: 0.15625rem; font-size: 0.21875rem; color: #aaaaaa; border-radius: 0.0625rem; }
-.collectionCard .content .searchBox button { font-size: 0.23438rem; color: #666666; width: 0.98438rem; text-align: center; }
-.collectionCard .content .cardLis { background: #ffffff; }
+.collectionCard  .searchBox { height: 0.67188rem; line-height: 0.67188rem; background: #e5e5e5; }
+.collectionCard  .searchBox input[type='search'] { width: 9.57813rem; height: 0.48438rem; text-align: center; margin-left: 0.15625rem; font-size: 0.21875rem; color: #aaaaaa; border-radius: 0.0625rem; }
+.collectionCard  .searchBox button { font-size: 0.23438rem; color: #666666; width: 0.68438rem; text-align: center; }
+.collectionCard  .cardLis { background: #ffffff; }
 
 .consumption .btnsLisArea { height: 1.46875rem; background: #ffffff; }
 .consumption .btnsLisArea .btnLis { width: 6.03125rem; margin: 0 auto; }
@@ -156,10 +156,12 @@ margin-left:px2rem(1110/2);*/ }
 .consumption .content .single { padding-left: 0.21875rem; height: 0.625rem; line-height: 0.625rem; }
 .consumption .content .single img { width: 0.05469rem; height: 0.21875rem; margin-right: 0.09375rem; }
 .consumption .content .giving { height: 0.78125rem; line-height: 0.78125rem; background: #ffffff; margin-top: 0.15625rem; }
-.consumption .nextStep { padding-top: 0.625rem; }
+.consumption .nextStep { padding-top: 0.625rem;height:2.5rem; }
 .consumption .nextStep div { float: right; }
 .consumption .nextStep div .allMoney { margin-left: 0.9375rem; }
 
 .scratchCard .note { margin-top: 0.15625rem; padding: 0.23438rem 0 0 0.23438rem; background: #ffffff; height: 3.78125rem; }
 .scratchCard .note label { vertical-align: top; width: 6%; }
 .scratchCard .note textarea { width: 90%; height: 2.1875rem; }
+.givingArea .ProdictsLis li {height:0.6875rem;line-height:0.6875rem; }
+.givingArea .content .messLis .ProdictsLis li input{height:0.531rem;width:1.25rem;border:1px solid #e5e5e5;}

@@ -50,7 +50,7 @@ public class JsApiTicketUtil {
         ret.setNonceStr(nonce_str);
         ret.setTimestamp(timestamp);
         ret.setSignature(signature);
-        ret.setAppid(ConfigConstant.CUTOMER_CORPID);
+        ret.setAppid(ConfigConstant.USER_CORPID);
         return ret;
     }
 

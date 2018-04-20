@@ -1,0 +1,28 @@
+.productWrap{width: 100%;}
+.swiper-container {width: 100%; height: 5rem;background: #FFFFFF}
+.swiper-slide {box-sizing: content-box!important;}
+.swiper-slide img{width:5.3rem;height:4.6rem;margin-top: 0.4rem;!important;padding-right: 0.3rem}
+.swiper-slide-next img{width: 5.6rem;height:5rem!important;margin-top: 0px;!important;}
+.swiper-slide-next {margin-right:0.3125rem;}
+.productDescribe .describeTwo{background: #FFFFFF; margin-left: 0.28rem;width:100%;position: relative}
+.c99{color: #999999}
+.c33{color: #333333}
+.fs32{font-size: 0.25rem}
+.fs36{font-size: 0.28rem}
+.cff66{color: #FF6666}
+.fs30{font-size:0.234rem}
+.p32{padding: 0.25rem}
+.mt20{margin-top: 0.156rem}
+.mt22{margin-top: 0.17rem}
+.cff66{color: #FF6666}
+.fs32{font-size: 0.25rem}
+.fs40{font-size: 0.3rem}
+.mt40{margin-top: 0.3125rem}
+.mt50{margin-top: 0.39rem}
+.mt126{margin-top: 0.98rem}
+.mt80{margin-top: 0.6rem}
+.bgff6666{background: #FF6666;}
+.fs34{font-size: 0.265rem}
+.describeCard{border-radius: 0.05rem;display: inline-block;width:0.8rem;height: 0.39rem;border-radius: 0.05rem;color: #FFFFFF;margin-left: 0.09rem;text-align: center}
+.textDestrice{position: absolute;bottom: 0.3125rem;right: 0.5rem}
+.mb50{margin-bottom: 0.5rem}

@@ -9,7 +9,7 @@ import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.*;
 import com.wisdom.common.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REWARD;
 
 /**
  * Created by sunxiao on 2017/6/26.
@@ -60,9 +62,10 @@ public class PayCoreService {
     @Transactional(rollbackFor = Exception.class)
     public void handleProductPayNotifyInfo(PayRecordDTO payRecordDTO,String notifyType) {
 
+        RedisLock redisLock = new RedisLock("userPay" + payRecordDTO.getOutTradeNo());
+
         List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
 
-        RedisLock redisLock = new RedisLock("userPay" + payRecordDTOList.get(0).getSysUserId());
         try {
             redisLock.lock();
 
@@ -111,6 +114,11 @@ public class PayCoreService {
 
                 float expenseMoney = calculateUserExpenseMoney(instanceReturnMoneySignalDTO);
 
+                if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1))
+                {
+                    payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
+                }
+
                 handleUserLevelPromotion(userInfoDTO,expenseMoney);
 
                 handleUserLevelPromotionInSpecialActivity(userInfoDTO,expenseMoney,instanceReturnMoneySignalDTO);
@@ -126,7 +134,6 @@ public class PayCoreService {
             catch (Exception e)
             {
                 e.printStackTrace();
-                throw e;
             }
         }
     }

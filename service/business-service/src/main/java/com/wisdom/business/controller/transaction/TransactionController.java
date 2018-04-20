@@ -15,8 +15,9 @@ import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.WithDrawRecordDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.*;
+import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.WeixinUtil;
@@ -29,8 +30,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.*;
+
+import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REWARD;
 
 /**
  * 微信页面参数获取相关的控制类
@@ -203,7 +208,7 @@ public class TransactionController {
     public ResponseDTO<String> getBusinessOrderByProductId(@RequestParam String productId, HttpSession session, HttpServletRequest request) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getUserOpenId(session,request);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);
         List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
@@ -230,9 +235,9 @@ public class TransactionController {
     //获取每日红包
     @RequestMapping(value ="getTripleMonthBonus",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public ResponseDTO<Float> getTripleMonthBonus(HttpSession session, HttpServletRequest request) {
+    public ResponseDTO<Float> getTripleMonthBonus(HttpSession session, HttpServletRequest request) throws UnsupportedEncodingException {
         ResponseDTO<Float> responseDTO = new ResponseDTO<>();
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getUserOpenId(session,request);
 
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);
@@ -301,8 +306,31 @@ public class TransactionController {
                     {
                         accountDTO = accountDTOS.get(0);
                         float balance = accountDTO.getBalance() + floatBounded;
+                        float balanceDeny = accountDTO.getBalanceDeny() + floatBounded;
                         accountDTO.setBalance(balance);
+                        accountDTO.setBalanceDeny(balanceDeny);
                         accountService.updateUserAccountInfo(accountDTO);
+
+                        IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                        incomeRecordDTO.setId(UUID.randomUUID().toString());
+                        incomeRecordDTO.setSysUserId(userInfoDTOS.get(0).getId());
+                        incomeRecordDTO.setUserType(userInfoDTOS.get(0).getUserType());
+                        incomeRecordDTO.setNextUserId("");
+                        incomeRecordDTO.setNextUserType("");
+                        incomeRecordDTO.setAmount(balance);
+                        incomeRecordDTO.setTransactionAmount(0);
+                        incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                        incomeRecordDTO.setUpdateDate(new Date());
+                        incomeRecordDTO.setCreateDate(new Date());
+                        incomeRecordDTO.setStatus("0");
+                        incomeRecordDTO.setIdentifyNumber(userInfoDTOS.get(0).getIdentifyNumber());
+                        incomeRecordDTO.setNextUserIdentifyNumber("");
+                        incomeRecordDTO.setNickName(URLEncoder.encode(userInfoDTOS.get(0).getNickname(), "utf-8"));
+                        incomeRecordDTO.setNextUserNickName("");
+                        incomeRecordDTO.setIncomeType("activityBonus");
+                        incomeRecordDTO.setMobile(userInfoDTOS.get(0).getMobile());
+                        incomeRecordDTO.setNextUserMobile("");
+                        incomeRecordDTO.setParentRelation("");
                     }
                     else
                     {
@@ -347,7 +375,7 @@ public class TransactionController {
             return responseDTO;
         }
 
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getUserOpenId(session,request);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);
         List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);

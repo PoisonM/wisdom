@@ -38,7 +38,7 @@ angular.module('controllers',[]).controller('addressEditCtrl',
             });
 
             $scope.saveAddress = function(){
-                $scope.param.userAddressInfo.province=$("#J_Address").val()
+                $scope.param.userAddressInfo.province=$("#J_Address").val();
                 // $scope.param.userAddressInfo.city=$("#J_Address").val().split(" ")[1];
                 if(phoneReg.test($scope.param.userAddressInfo.userPhone))
                 {
@@ -61,10 +61,12 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                             {
                                 $scope.param.userAddressInfo.status = "0";
                             }
+                            $scope.param.userAddressInfo.status = "1";
                             UpdateUserAddress.save($scope.param.userAddressInfo, function(data) {
                                 if(Global.SUCCESS==data.result)
                                 {
-                                    $state.go("addressManagement");
+                                    window.history.go(-2);
+                                   /* $state.go("addressManagement");*/
                                 }
                             })
                         }
@@ -78,10 +80,12 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                             {
                                 $scope.param.userAddressInfo.status = "0";
                             }
+                            $scope.param.userAddressInfo.status = "1";
                             AddUserAddress.save($scope.param.userAddressInfo, function(data) {
                                 if(Global.SUCCESS==data.result)
                                 {
-                                    $state.go("addressManagement");
+                                    window.history.go(-2);
+                                   /* $state.go("addressManagement");*/
                                 }
                             });
 
@@ -120,7 +124,7 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                 !function () {
                     var $target = $('#J_Address');
                     $target.citySelect();
-                    console.log( $target.citySelect)
+                    console.log( $target.citySelect);
                     $target.on('click', function (event) {
                         event.stopPropagation();
                         $target.citySelect('open');

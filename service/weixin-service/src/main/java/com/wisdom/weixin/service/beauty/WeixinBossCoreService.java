@@ -1,24 +1,15 @@
 package com.wisdom.weixin.service.beauty;
 
-import com.wisdom.common.constant.ConfigConstant;
-import com.wisdom.common.dto.system.UserInfoDTO;
-import com.wisdom.common.dto.wexin.WeixinShareDTO;
-import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.entity.TextMessage;
 import com.wisdom.common.util.*;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -88,7 +79,7 @@ public class WeixinBossCoreService {
             textMessage.setToUserName(xmlEntity.getFromUserName());
             textMessage.setFromUserName(xmlEntity.getToUserName());
             textMessage.setCreateTime(new Date().getTime());
-            textMessage.setMsgType(MessageUtil.TRANSFER_CUSTOMER_SERVICE);
+            textMessage.setMsgType(MessageUtil.TRANSFER_USER_SERVICE);
             textMessage.setFuncFlag(0);
             respMessage = MessageUtil.textMessageToXml(textMessage);
         }

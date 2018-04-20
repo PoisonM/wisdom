@@ -1,20 +1,23 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus',
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus) {
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById) {
             $rootScope.title = "美享99触屏版";
             $scope.param = {
                 bannerList:{},
-                productList:{},
-                product2List:[[]],
+                productList:{},//特殊商品
+                product2List:[[]],//普通商品
                 promoteProduct:true,
-                promoteProductId:"201803121718100012",
+                promoteProductId:"88888888888",
+                rookieProduct:true,
+                rookieProductId:"201712101718100007",
                 redPackerFlagOne:false,
                 redPackerFlagTwo:false,
-                bonusValue:""
+                bonusValue:"",
+                timeContent:""
             }
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
@@ -61,7 +64,19 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                         index++;
                     })
                     console.log( $scope.param.product2List)
+                    /**/
+                    var tempArr = []
+                    for(var i = 0; i < $scope.param.product2List.length; i++){
+                        if($scope.param.product2List[i].data[0].productId == "201712101718100007"||$scope.param.product2List[i].data[0].productId == "88888888888"){
+                        }else{
+                            tempArr.push($scope.param.product2List[i])
+                        }
+                    }
+                    $scope.param.product2List = tempArr
+                    console.log( $scope.param.product2List)
+
                 })
+
 
 
                 //判断用户是否购买过新人大礼包产品
@@ -73,6 +88,17 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     else if(data.result==Global.FAILURE)
                     {
                         $scope.param.promoteProduct = false;
+                    }
+                })
+
+                GetBusinessOrderByProductId.get({productId:$scope.param.rookieProductId},function(data){
+                    if(data.result==Global.SUCCESS)
+                    {
+                        $scope.param.rookieProduct=true;
+                    }
+                    else if(data.result==Global.FAILURE)
+                    {
+                        $scope.param.rookieProduct=false;
                     }
                 })
 
@@ -107,20 +133,35 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
             $scope.goPromoteProduct = function(item){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ADJ,item);
-                if($scope.param.promoteProduct)
+
+                if($scope.param.promoteProduct&&$scope.param.promoteProductId==item)
                 {
                     var alertPopup = $ionicPopup.alert({
                         template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">你已经购买过促销产品，不能再次购买</span>',
                         okText:'确定'
                     });
                 }
-                else
+                else if(!$scope.param.promoteProduct&&$scope.param.promoteProductId==item)
                 {
                     $state.go("offlineProductDetail",{productId:$scope.param.promoteProductId});
 
                 }
+
+                if($scope.param.rookieProduct&&$scope.param.rookieProductId==item)
+                {
+                    var alertPopup = $ionicPopup.alert({
+                        template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">你已经购买过促销产品，不能再次购买</span>',
+                        okText:'确定'
+                    });
+                }
+                else if(!$scope.param.rookieProduct&&$scope.param.rookieProductId==item)
+                {
+                    $state.go("offlineProductDetail",{productId:$scope.param.rookieProductId});
+
+                }
+
             }
-            
+
             $scope.redPackerClose = function () {
                 $scope.param.redPackerFlagOne = false;
                 $scope.param.redPackerFlagTwo = false
@@ -147,4 +188,46 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     });
                 }
             }
+
+
+            function convertDateFromString(dateString) {
+                if (dateString) {
+                    var arr1 = dateString.split(" ");
+                    var sdate = arr1[0].split('-');
+                    var date = new Date(sdate[0], sdate[1]-1, sdate[2]);
+                    return date;
+                }
+            }
+
+            FindProductById.get({
+                productId:'MXT99-02'
+            },function (data) {
+                //当前时间
+                $scope.nowTime =convertDateFromString(data.responseData.productDetail.nowTime).getTime();
+                //下架时间
+                $scope.soldOutTime = convertDateFromString( data.responseData.productDetail.soldOutTime).getTime();
+                timeInterval($scope.nowTime,$scope.soldOutTime)
+            })
+            function timeInterval(nowTime,soldOutTime){
+                var timer = setInterval(function () {
+                    if (isNaN(soldOutTime) || isNaN(nowTime)) {
+                        return
+                    } else {
+                        nowTime += 1000;
+                        var limit = (soldOutTime - nowTime) / 1000;
+                        var resultD = parseInt(limit / (24 * 60 * 60));
+                        var resultH = parseInt(limit / (60 * 60) % 24);
+                        var resultM = parseInt(limit / 60 % 60) + resultH * 60;
+                        var resultS = parseInt(limit % 60);
+                        $scope.param.timeContent = resultD;
+                        if(limit <= 0){
+                            $scope.param.timeContent = 0;
+                            clearInterval(timer)
+                        }
+                    }
+
+                }, 1000)
+            }
+
+
         }])

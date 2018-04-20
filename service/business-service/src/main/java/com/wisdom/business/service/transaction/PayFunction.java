@@ -5,14 +5,13 @@ import com.wisdom.business.mapper.level.UserTypeMapper;
 import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
-import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
@@ -20,6 +19,9 @@ import com.wisdom.common.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -54,8 +56,8 @@ public class PayFunction {
         {
             float totalMoney = 0;
             String productName = "";
-            String token = WeixinUtil.getCustomerToken();
-            String url = ConfigConstant.CUSTOMER_WEB_URL + "orderManagement/1";
+            String token = WeixinUtil.getUserToken();
+            String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
             String userId = "";
             for(PayRecordDTO payRecordDTO:payRecordDTOList)
             {
@@ -140,7 +142,7 @@ public class PayFunction {
 
     @Transactional(rollbackFor = Exception.class)
     public void updateReturnMoneyDataBase(String parentUserId, String userRuleType, String parentRuleType, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO) {
-        String token = WeixinUtil.getCustomerToken();
+        String token = WeixinUtil.getUserToken();
         try{
 
             //计算提成给上一级用户ruleType对应店的钱
@@ -163,109 +165,106 @@ public class PayFunction {
             {
                 if(parentRuleType.equals(ConfigConstant.businessA1)){
 
+                    float amount = 0;
                     if(expenseAmount>=ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)
                     {
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE*5/100 + (expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)*2/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
                     }
                     else if(expenseAmount>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&expenseAmount<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE)
                     {
                         returnMoney = ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE*10/100 + (expenseAmount-ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE)*2/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount-ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount-ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
                     }
                     else
                     {
                         returnMoney = expenseAmount * 2/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount;
                     }
+                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,parentRuleType);
 
                 }
                 else if(parentRuleType.equals(ConfigConstant.businessB1))
                 {
+                    float amount = 0;
                     if(expenseAmount>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&expenseAmount<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE)
                     {
                         returnMoney = ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE*10/100 + (expenseAmount-ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE)*10/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount-ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount-ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
                     }
                     else if(expenseAmount>=ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)
                     {
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE*5/100 + (expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)*10/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
                     }
                     else
                     {
                         returnMoney = expenseAmount * 10/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount;
                     }
+
+                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,parentRuleType);
                 }
                 else if(parentRuleType.equals("A1B1"))
                 {
+                    float amount = 0;
                     if(expenseAmount>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&expenseAmount<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE)
                     {
                         returnMoney = (expenseAmount-ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE)*2/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount-ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount-ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
                     }
                     else if(expenseAmount>=ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)
                     {
                         returnMoney = (expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)*2/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
                     }
                     else
                     {
                         returnMoney = expenseAmount * 2/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount;
                     }
+                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,"A1B1");
                 }
             }
             else if(userRuleType.equals(ConfigConstant.businessB1))
             {
                 if(parentRuleType.equals(ConfigConstant.businessA1)){
+                    float amount = 0;
                     if(expenseAmount>=ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)
                     {
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE*5/100 + (expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)*2/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount-ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
                     }
                     else
                     {
                         returnMoney = expenseAmount * 2/100;
 
                         //记录月度交易流水
-                        float amount = expenseAmount;
-                        recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount);
+                        amount = expenseAmount;
                     }
+                    recordMonthTransaction(parentUserId,instanceReturnMoneySignalDTO,amount,parentRuleType);
                 }
             }
-
 
             if(returnMoney>0)
             {
@@ -291,6 +290,13 @@ public class PayFunction {
                     accountDTO.setUpdateDate(new Date());
                     accountDTO.setBalanceDeny((float)0.00);
                     accountService.createUserAccount(accountDTO);
+
+                    float balance = accountDTO.getBalance() + returnMoney;
+                    float balanceDeny = accountDTO.getBalanceDeny() + returnMoney;
+                    accountDTO.setBalance(balance);
+                    accountDTO.setBalanceDeny(balanceDeny);
+                    accountDTO.setUpdateDate(new Date());
+                    accountService.updateUserAccountInfo(accountDTO);
                 }
                 else
                 {
@@ -303,17 +309,39 @@ public class PayFunction {
                     accountService.updateUserAccountInfo(accountDTO);
                 }
 
+
                 IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+
+                UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
+                nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
+                List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+
+                UserInfoDTO userInfoDTO = new UserInfoDTO();
+                userInfoDTO.setId(parentUserId);
+                List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+
                 incomeRecordDTO.setId(UUID.randomUUID().toString());
                 incomeRecordDTO.setSysUserId(parentUserId);
+                incomeRecordDTO.setUserType(userInfoDTOList.get(0).getUserType());
+                incomeRecordDTO.setNextUserId(nextUserInfoDTOList.get(0).getId());
+                incomeRecordDTO.setNextUserType(nextUserInfoDTOList.get(0).getUserType());
                 incomeRecordDTO.setAmount(returnMoney);
-                incomeRecordDTO.setCreateDate(new Date());
-                incomeRecordDTO.setIncomeType("instance");
-                incomeRecordDTO.setUpdateDate(new Date());
+                incomeRecordDTO.setTransactionAmount(expenseAmount);
                 incomeRecordDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
+                incomeRecordDTO.setUpdateDate(new Date());
+                incomeRecordDTO.setCreateDate(new Date());
                 incomeRecordDTO.setStatus("0");
+                incomeRecordDTO.setIdentifyNumber(userInfoDTOList.get(0).getIdentifyNumber());
+                incomeRecordDTO.setNextUserIdentifyNumber(nextUserInfoDTOList.get(0).getIdentifyNumber());
+                incomeRecordDTO.setNickName(URLEncoder.encode(userInfoDTOList.get(0).getNickname(), "utf-8"));
+                incomeRecordDTO.setNextUserNickName(URLEncoder.encode(nextUserInfoDTOList.get(0).getNickname(), "utf-8"));
+                incomeRecordDTO.setIncomeType("instance");
+                incomeRecordDTO.setMobile(userInfoDTOList.get(0).getMobile());
+                incomeRecordDTO.setNextUserMobile(nextUserInfoDTOList.get(0).getMobile());
+                incomeRecordDTO.setParentRelation(parentRuleType);
+
                 incomeService.insertUserIncomeInfo(incomeRecordDTO);
-                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(accountDTO.getNickName(),expenseAmount+"", DateUtils.DateToStr(new Date()),token,"",accountDTO.getUserOpenId());
+                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(),expenseAmount+"", DateUtils.DateToStr(new Date()),token,"",accountDTO.getUserOpenId());
             }
 
         }catch (Exception e)
@@ -322,7 +350,8 @@ public class PayFunction {
         }
     }
 
-    private void recordMonthTransaction(String userId, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO, float amount) {
+    public void recordMonthTransaction(String userId, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO, float amount,String parentRelation) throws UnsupportedEncodingException {
+
         MonthTransactionRecordDTO monthTransactionRecordDTO = new MonthTransactionRecordDTO();
         monthTransactionRecordDTO.setId(UUID.randomUUID().toString());
         monthTransactionRecordDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
@@ -330,6 +359,26 @@ public class PayFunction {
         monthTransactionRecordDTO.setUserId(userId);
         monthTransactionRecordDTO.setCreateDate(new Date());
         monthTransactionRecordDTO.setUpdateDate(new Date());
+
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
+        userInfoDTO.setId(userId);
+        nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
+
+        List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+        List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+
+        monthTransactionRecordDTO.setNextUserId(instanceReturnMoneySignalDTO.getSysUserId());
+        monthTransactionRecordDTO.setUserType(userInfoDTOList.get(0).getUserType());
+        monthTransactionRecordDTO.setNextUserType(nextUserInfoDTOList.get(0).getUserType());
+        monthTransactionRecordDTO.setParentRelation(parentRelation);
+        monthTransactionRecordDTO.setMobile(userInfoDTOList.get(0).getMobile());
+        monthTransactionRecordDTO.setNextUserMobile(nextUserInfoDTOList.get(0).getMobile());
+        monthTransactionRecordDTO.setIdentifyNumber(userInfoDTOList.get(0).getIdentifyNumber());
+        monthTransactionRecordDTO.setNextUserIdentifyNumber(nextUserInfoDTOList.get(0).getIdentifyNumber());
+        monthTransactionRecordDTO.setNickName(URLEncoder.encode(userInfoDTOList.get(0).getNickname(), "utf-8"));
+        monthTransactionRecordDTO.setNextUserNickName(URLEncoder.encode(nextUserInfoDTOList.get(0).getNickname(), "utf-8"));
+
         transactionMapper.recordMonthTransaction(monthTransactionRecordDTO);
     }
 

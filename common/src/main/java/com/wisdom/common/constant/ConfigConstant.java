@@ -6,13 +6,16 @@ public enum ConfigConstant {
 
 	public static final String DOMAIN_VALUE = "kpbeauty.com.cn";
 
-	public static final String CUSTOMER_WEB_URL = "http://mx99test1.kpbeauty.com.cn/customer#/";
+	public static final String USER_WEB_URL = "http://mx99test1.kpbeauty.com.cn/customer#/";
 
 	public static final String OFFLINE_PRODUCT_BUY_NOTIFY_URL = "http://mx99test1.kpbeauty.com.cn/business/transaction/getOfflineProductPayNotifyInfo";
 
 	public static final String TRAINING_PRODUCT_BUY_NOTIFY_URL = "http://mx99test1.kpbeauty.com.cn/business/transaction/getTrainingProductPayNotifyInfo";
 
 	public static final String SPECIAL_PRODUCT_BUY_NOTIFY_URL = "http://mx99test1.kpbeauty.com.cn/business/transaction/getSpecialProductPayNotifyInfo";
+
+	public static final String SPECIAL_SHOP_URL = "http://mx99test1.kpbeauty.com.cn/weixin/customer/fieldwork/author?url=" +
+			"http://mx99test1.kpbeauty.com.cn/weixin/customer/getCustomerWeixinMenuId?url=specialProductList88888888";
 
 	//redis中存储的登陆后的token的有效期，目前是30天
 	public static final int logintokenPeriod = 60*60*24*30;
@@ -23,7 +26,7 @@ public enum ConfigConstant {
 
 	public static final String businessA1 = "business-A-1";
 
-	public static final String promote_businessB1_ProductId_No1 = "201803121718100012";
+	public static final String promote_businessB1_ProductId_No1 = "88888888888";
 
 	public static final int livingPeriodYear = 365; //一年有效期,365天
 
@@ -33,21 +36,21 @@ public enum ConfigConstant {
 
 	public static final int livingPeriodTripleMonth_B1  = 90; //90天有效期
 
-	public static final String weixinCustomerFlag = "customerOnlineOperation";
+	public static final String weixinUserFlag = "userOnlineOperation";
 
 	public static final String weixinBossFlag = "bossOnlineOperation";
 
-	public static final String CUTOMER_CORPID = "wx174f02516e9f9733";//测试号
+	public static final String USER_CORPID = "wx174f02516e9f9733";//测试号
 
-	public static final String CUSTOMER_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
+	public static final String USER_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
 
 	public static final String BOSS_CORPID = "wx174f02516e9f9733";//测试号
 
 	public static final String BOSS_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
 
-//	public static final String CUTOMER_CORPID = "wxa62609dff1842cd8";//商用号
+//	public static final String USER_CORPID = "wxa62609dff1842cd8";//商用号
 //
-//	public static final String CUSTOMER_SECRET = "e2bf27273f48715d12f16fcafca0bb75";//商用号
+//	public static final String USER_SECRET = "e2bf27273f48715d12f16fcafca0bb75";//商用号
 
 	public static final String APP_ID = "wx174f02516e9f9733";
 
@@ -59,9 +62,13 @@ public enum ConfigConstant {
 
 	public static final String GATE_URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
+	public static final String transfer = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+
 	public static final String SIGN_METHOD = "MD5";
 
 	public static final String SHARE_CODE_VALUE = "mxbusinessshare_";
+
+	public static final String SPECIAL_SHOP_VALUE = "mxForeignPurchase_";
 
 	public static final int AUTO_CONFIRM_RECEIVE_PRODUCT_DAY = 15;
 
@@ -91,7 +98,11 @@ public enum ConfigConstant {
 
 	public static final String PARTNER_KEY = "FDSKLJjklsjJKLJKLjkl98908789kljl";
 
-	public static final String CUSTOMER_OPEN_ID = "meixiang99MX_customer_openid";
+	public static final String USER_OPEN_ID = "meixiang99MXtest_user_openid";
 
-	public static final String BOSS_OPEN_ID = "meixiang99MX_boss_openid";
+	public static final String BOSS_OPEN_ID = "meixiang99MXtest_boss_openid";
+
+    public static final String financeMember = "finance-1";
+
+    public static final String operationMember = "operation-1";
 }

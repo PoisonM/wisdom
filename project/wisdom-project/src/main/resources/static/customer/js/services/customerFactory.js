@@ -16,16 +16,14 @@ var weixin = '/weixin/customer/';
 define(['appCustomer'], function (app) {
     app
 
-        //获取用户的参加在线课堂列表
         .factory('GetUserValidateCode',['$resource',function ($resource){
             return $resource(user + 'getUserValidateCode')
         }])
         .factory('UserLogin',['$resource',function ($resource){
-            return $resource(user + 'customerLogin')
+            return $resource(user + 'userLogin')
         }])
-        //退出登录
-        .factory('LoginOut',['$resource',function ($resource){
-            return $resource(user + 'loginOut')
+        .factory('UserLoginOut',['$resource',function ($resource){
+            return $resource(user + 'userLoginOut')
         }])
         .factory('GetUserInfo',['$resource',function ($resource){
             return $resource(customer + 'getUserInfo')
@@ -174,6 +172,14 @@ define(['appCustomer'], function (app) {
         //获取用户的推广二维码
         .factory('GetSpecialProductList',['$resource',function ($resource){
             return $resource(product + 'getSpecialProductList')
+        }])
+
+        .factory('GetSpecialShopInfo',['$resource',function ($resource){
+            return $resource(product + 'getSpecialShopInfo')
+        }])
+        //
+        .factory('FindProductById',['$resource',function ($resource){
+            return $resource(product + 'findProductById');
         }])
 
 

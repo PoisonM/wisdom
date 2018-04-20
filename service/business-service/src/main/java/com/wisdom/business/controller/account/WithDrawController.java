@@ -6,6 +6,7 @@ import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.common.dto.account.*;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.util.CommonUtils;
@@ -68,7 +69,7 @@ public class WithDrawController {
 		}
 
 		try{
-			String openid = WeixinUtil.getCustomerOpenId(session,request);
+			String openid = WeixinUtil.getUserOpenId(session,request);
 			UserBankCardInfoDTO userBankCardInfoDTO = new UserBankCardInfoDTO();
 			userBankCardInfoDTO.setSysUserId(userInfoDTO.getId());
 			userBankCardInfoDTO.setUserName(userName);

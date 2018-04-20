@@ -5,7 +5,7 @@ import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.product.OfflineProductDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.UserOrderAddressDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.OrderProductRelationDTO;
@@ -135,13 +135,14 @@ public class BuyCartService {
 
     @Transactional(rollbackFor = Exception.class)
     public void minusProduct2BuyCart(String productId, String productSpec) {
-        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 
-        OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,productSpec,userInfoDTO.getId());
         RedisLock redisLock = new RedisLock("OrderProductRelation");
         try
         {
             redisLock.lock();
+
+            UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+            OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,productSpec,userInfoDTO.getId());
 
             Integer productNum = orderProductRelationUnPaid.getProductNum()-1;
             orderProductRelationUnPaid.setProductNum(productNum);

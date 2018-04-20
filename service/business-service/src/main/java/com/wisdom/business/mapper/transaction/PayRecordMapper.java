@@ -32,4 +32,6 @@ public interface PayRecordMapper {
                                                   @Param("endDate") String endDate);
 
     String getSellNumByProductId(@Param("productId") String productId);
+
+    List<PayRecordDTO> queryUserInfoByTransactionId(@Param("transactionId")String transactionId);
 }

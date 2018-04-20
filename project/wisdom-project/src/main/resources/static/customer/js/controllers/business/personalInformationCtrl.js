@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('personalInformationCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserInfo','LoginOut','Global','BusinessUtil','$ionicLoading','$ionicPopup',
-        function ($scope,$rootScope,$stateParams,$state,GetUserInfo,LoginOut,Global,BusinessUtil,$ionicLoading,$ionicPopup) {
+    ['$scope','$rootScope','$stateParams','$state','GetUserInfo','UserLoginOut','Global','BusinessUtil','$ionicLoading','$ionicPopup',
+        function ($scope,$rootScope,$stateParams,$state,GetUserInfo,UserLoginOut,Global,BusinessUtil,$ionicLoading,$ionicPopup) {
 
             $scope.param={
                 userInfo:{}
@@ -24,7 +24,7 @@ angular.module('controllers',[]).controller('personalInformationCtrl',
             // 退出登录
             $scope.exit = function(){
                 /*调取退出登录的接口，后端返回状态*/
-                LoginOut.get(function(data){
+                UserLoginOut.get(function(data){
                     if(data.result==Global.SUCCESS)
                     {
                         var alertPopup = $ionicPopup.alert({

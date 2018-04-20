@@ -3,10 +3,20 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
 
     /*------------------------------------初始化参数-----------------------------------------------*/
     $scope.param = {
+        top_bottomSelect:"yuyue",
         tabSty:'day',
         headerCash:{
+            leftContent:"档案(9010)",
+            leftAddContent:"添加档案",
             backContent:"账户明细",
-            title:"详情"
+            title:"详情",
+            leftTip:"保存"
+        },
+        headerPrice:{
+            backContent:"",
+            title:"项目",
+            blackBackContent:"",
+            blackTitle:"产品",
         }
     }
     //公共部分开关管理
@@ -30,11 +40,19 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
                 rightFlag:true
             },
         },
+
         //考勤头部开关
 
         //价目表头部开关
+        headerPriceListAllFlag:false,
+        headerPriceListBlackFlag:true,
+        headerPriceListFlag:{
 
+        },
         //我的头部开关
+
+        //登录头部开关
+        headerLoginFlag:false,
 
         //尾部总开关
         footerBoxFlag:true
@@ -42,5 +60,8 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
     /*--------------------------------------方法-------------------------------------------------*/
     $scope.switchType = function (type) {
         $scope.param.tabSty = type
+    }
+    $scope.selectSty = function (type) {
+        $scope.param.top_bottomSelect = type
     }
 })

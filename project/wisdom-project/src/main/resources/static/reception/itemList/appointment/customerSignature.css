@@ -1,0 +1,17 @@
+.signatureWrap .signatureWrapL{width: 4.96875rem;
+    background: #e5e5e5;float: left}
+.signatureWrap .signatureWrapL ul{margin-top: 0.46rem}
+.signatureWrap .signatureWrapL ul li{height: 0.93rem;line-height: 0.93rem;background: #FFFFFF;border-bottom: 1px solid #e5e5e5;}
+.signatureWrap .signatureWrapR{width: 100%;background: #FFFFFF;height: 100%;}
+.bgff6666{background: #FF6666;display: inline-block;width: 0.6rem;height: 0.3rem;line-height: 0.3rem;text-align: center;border-radius: 2px}
+.pl30{padding-left: 0.234rem}
+.mt30{padding-top: 0.234rem}
+.ml12{margin-left: 0.09rem}
+.flR{float: right}
+.mr30{margin-right: 0.234rem}
+.cffff{color: #FFFFFF;font-size: 0.203rem}
+.fs32{font-size: 0.25rem}
+.c33{color: #333333}
+.fs38{font-size:0.29rem}
+.pl5{padding-left: 5.2rem}
+.pt{padding-top: 0.234rem}

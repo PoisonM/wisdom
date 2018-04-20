@@ -95,7 +95,7 @@
 		select
 		<include refid="Base_Product_List"/>
 		FROM business_product p
-		WHERE p.type = 'offline'
+ 		WHERE p.type = 'offline'
 		ORDER BY create_date DESC
 	</select>
 

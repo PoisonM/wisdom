@@ -1,14 +1,10 @@
 package com.wisdom.common.util;
 
 import com.wisdom.common.config.Global;
-import com.wisdom.common.dto.system.UserInfoDTO;
 import com.wisdom.common.entity.TemplateData;
 import com.wisdom.common.entity.WxTemplate;
-import com.wisdom.common.util.HttpRequestUtil;
 import net.sf.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,10 +52,15 @@ public class WeixinTemplateMessageUtil {
 
     //会员升级通知--同级推荐20个模板ID
     protected static final String BUSINESS_PROMOTE_FOR_RECOMMEND = Global.getConfig("BUSINESS_PROMOTE_FOR_RECOMMEND");
-	//提现失败通知
+
+    //提现失败通知
     protected static final String WITHDRAW_FAILURE_NOTIFY = Global.getConfig("WITHDRAW_FAILURE_NOTIFY");
-	//会员升级-本人升级提醒
+
+    //会员升级-本人升级提醒
 	protected static final String BUSINESS_PROMOTE_FOR_ONESELF = Global.getConfig("BUSINESS_PROMOTE_FOR_ONESELF");
+
+	protected static final String WITHDRAW_SUCCESS_NOTIFY = Global.getConfig("WITHDRAW_SUCCESS_NOTIFY");
+
 
     /**
 	 * 订单未支付通知模板 ORDER_NOT_PAY
@@ -914,4 +915,40 @@ public class WeixinTemplateMessageUtil {
 		}
 	}
 
+    public static void withdrawalsSuccess2Weixin(String openid, String token, String s, String returnMoney, String date) {
+
+		WxTemplate t = new WxTemplate();
+		t.setTouser(openid);
+		t.setTopcolor("#000000");
+		t.setTemplate_id(WITHDRAW_SUCCESS_NOTIFY);
+		Map<String,TemplateData> m = new HashMap<>();
+
+		TemplateData templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue("尊敬的用户，您好！！\n"+
+				"您的提现资金已打入您的零钱账户，请您注意查收！！");
+		m.put("first", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(returnMoney+"元");
+		m.put("keyword1", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(date);
+		m.put("keyword2", templateData);
+
+		t.setData(m);
+		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
+				token+"","POST", JSONObject.fromObject(t).toString());
+		JSONObject jsonObject = JSONObject.fromObject(jsonobj.replaceAll("200>>>>",""));
+		if(jsonobj!=null){
+			if("0".equals(jsonObject.getString("errcode"))){
+				System.out.println("发送模板消息成功！");
+			}else{
+				System.out.println(jsonObject.getString("errcode"));
+			}
+		}
+    }
 }

@@ -1,9 +1,9 @@
-.detailsWrap{width: 5.90rem;height: 7.343rem;margin: auto;border-radius: 0.281rem;}
+.detailsWrap{width: 5.90rem;height: 7.343rem;}
 .detailsWrap .header{width: 5.9rem;height: 0.8125rem;text-align: center;line-height: 0.8125rem;color: #333333;font-size: 0.296rem;font-weight: 600;position: relative;background: #eeeeee;}
 .detailsWrap .close{position: absolute;right: 0.321rem;top: 0.1rem;}
 .detailsWrap .close img{width: 0.396rem;height: 0.396rem}
 .detailsWrap .content{background: #ffffff;width: 5.90rem;}
-.detailsWrap .contentTop{width: 5.90rem;height: 2.47rem;border-bottom: 1px solid #e5e5e5;}
+.detailsWrap .contentTop{width: 5.90rem;height: 2.47rem;}
 .detailsWrap .contentP{margin: 0.234rem}
 .detailsWrap .redPoint{width: 0.09rem;height: 0.09rem;background: #ff6666;border-radius: 100%;display: inline-block}
 .detailsWrap .customerName{margin-left: 0.15rem;display: inline-block}
@@ -12,11 +12,12 @@
 .detailsWrap .contentTime img{width: 0.25rem;height: 0.25rem;margin-left: 0.234rem;margin-top: 0.1rem}
 .detailsWrap .btnBox{width: 5.90rem;margin-top: 0.36rem;}
 .detailsWrap .btnBox ul{list-style: none;display: flex;flex-wrap: wrap;justify-content: space-around}
-.detailsWrap .btn1{width: 1.78rem;height: 0.532rem;font-size: 0.25rem;border-radius: 0.15rem;background: #ffffff;border: 1px solid #ff6666;color: #ff6666;outline:none}
+.detailsWrap .btn1{width: 1.78rem;height: 0.532rem;font-size: 0.25rem;border-radius: 0.15rem;border: 1px solid #ff6666;color: #ff6666;outline:none}
+.detailsWrap .startAppointmentActive{;border: 1px solid #999999;color: #999999}
 .detailsWrap .btn2{width: 1.78rem;height: 0.532rem;font-size: 0.25rem;border-radius: 0.15rem;background: #ff6666;border: 1px solid #ff6666;color: #ffffff;outline:none}
 .detailsWrap .cardItem{margin-left: 0.234rem;margin-top: 0.156rem;font-size: 0.218rem;color: #888888;}
-.detailsWrap .cardBox{width: 5.9rem;height: 1rem;line-height: 1rem}
+.detailsWrap .cardBox{width: 5.9rem;height: 1.7rem;line-height: 1rem}
 .detailsWrap .skinCare{font-size: 0.218rem;color: #333333;margin-left: 0.234rem;display: inline-block;float: left}
-.detailsWrap .goCard{float: right;margin-top: 0.268rem;width: 1.78rem;height: 0.532rem;font-size: 0.25rem;border-radius: 0.15rem;background: #ff6666;border: 1px solid #ff6666;color: #ffffff;margin-right: 10%;outline:none}
+.detailsWrap .goCard{float: right;margin-top: 0.768rem;width: 1.78rem;height: 0.532rem;font-size: 0.25rem;border-radius: 0.15rem;background: #ff6666;border: 1px solid #ff6666;color: #ffffff;margin-right: 10%;outline:none}
 
 

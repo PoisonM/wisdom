@@ -52,6 +52,6 @@ angular.module('controllers',[]).controller('addressManagementCtrl',
             $scope.goBackLastPage = function(addressId)
             {
                 window.localStorage.setItem("buyOrderAddressId",addressId);
-                window.location.href = "orderPay.do?productType=offlineProduct&random="+Math.random();
+                window.location.href = "orderPay.do?productType=offline&random="+Math.random();
             }
         }]);

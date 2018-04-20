@@ -11,11 +11,13 @@ import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.OrderCopRelationDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.common.util.excel.ExportExcel;
@@ -119,7 +121,7 @@ public class BusinessOrderController {
         else
         {
             //先获取用户的openid
-            String openId = WeixinUtil.getCustomerOpenId(session,request);
+            String openId = WeixinUtil.getUserOpenId(session,request);
             BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
             if(openId==null)
             {
@@ -341,25 +343,26 @@ public class BusinessOrderController {
                 ExportExcel<ExportOrderExcelDTO> ex = new ExportExcel<>();
                 List<ExportOrderExcelDTO> excelList= new ArrayList<>();
                 for (BusinessOrderDTO businessOrderDTO : page.getResponseData()) {
+                    BusinessOrderDTO businessOrderinfo = transactionService.queryOrderDetailsById(businessOrderDTO.getBusinessOrderId());
                     ExportOrderExcelDTO exportOrderExcelDTO = new ExportOrderExcelDTO();
                     exportOrderExcelDTO.setId(businessOrderDTO.getId());
                     exportOrderExcelDTO.setNickName(businessOrderDTO.getNickName());
-                    exportOrderExcelDTO.setAmount(businessOrderDTO.getAmount());
+                    exportOrderExcelDTO.setAmount(businessOrderinfo.getAmount());
                     //exportOrderExcelDTO.setCompanyName();
                     //exportOrderExcelDTO.setInvoice(businessOrderDTO.g);
                     exportOrderExcelDTO.setMobile(businessOrderDTO.getMobile());
                     exportOrderExcelDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
                     exportOrderExcelDTO.setOrderStatus(businessOrderDTO.getStatus());
-                    //exportOrderExcelDTO.setPayDate(businessOrderDTO.g);
-                    //exportOrderExcelDTO.setProductBrand(businessOrderDTO.g);
-                    exportOrderExcelDTO.setProductId(businessOrderDTO.getBusinessProductId());
-                    exportOrderExcelDTO.setProductName(businessOrderDTO.getBusinessProductName());
-                    //exportOrderExcelDTO.setProductNum(businessOrderDTO.g);
-                    exportOrderExcelDTO.setProductSpec(businessOrderDTO.getProductSpec());
+                    exportOrderExcelDTO.setPayDate(DateUtils.formatDate(businessOrderinfo.getPayDate(),"yyyy-MM-dd HH:mm:ss"));
+                    exportOrderExcelDTO.setProductBrand(businessOrderinfo.getProductBrand());
+                    exportOrderExcelDTO.setProductId(businessOrderinfo.getBusinessProductId());
+                    exportOrderExcelDTO.setProductName(businessOrderinfo.getBusinessProductName());
+                    exportOrderExcelDTO.setProductNum(businessOrderinfo.getBusinessProductNum()+"");
+                    exportOrderExcelDTO.setProductSpec(businessOrderinfo.getProductSpec());
                     //exportOrderExcelDTO.setTaxpayerNumber(businessOrderDTO.getIdentifyNumber());
-                    exportOrderExcelDTO.setUserAddress(businessOrderDTO.getUserAddress());
-                    exportOrderExcelDTO.setUserName(businessOrderDTO.getUserNameAddress());
-                    exportOrderExcelDTO.setUserPhone(businessOrderDTO.getUserPhoneAddress());
+                    exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserAddress());
+                    exportOrderExcelDTO.setUserName(businessOrderinfo.getUserNameAddress());
+                    exportOrderExcelDTO.setUserPhone(businessOrderinfo.getUserPhoneAddress());
                     excelList.add(exportOrderExcelDTO);
                 }
                 //ByteArrayInputStream in = ex.getWorkbookIn("订单EXCEL文档",orderHeaders, page.getResponseData(),"yyy-MM-dd HH:mm:ss");

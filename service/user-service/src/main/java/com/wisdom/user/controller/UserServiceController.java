@@ -1,17 +1,21 @@
 package com.wisdom.user.controller;
 
-import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
-import com.wisdom.user.service.CustomerInfoService;
+import com.wisdom.common.dto.user.RealNameInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.user.service.RealNameAuthService;
+import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
 public class UserServiceController {
 
 	@Autowired
-	private CustomerInfoService customerInfoService;
+	private UserInfoService customerInfoService;
 
 	@RequestMapping(value = "/getUserInfo",method=RequestMethod.POST)
 	@ResponseBody
@@ -43,5 +47,12 @@ public class UserServiceController {
 	@ResponseBody
 	List<UserInfoDTO> queryNextUserByUserId(@RequestParam(value = "userId") String userId) {
 		return customerInfoService.queryNextUserById(userId);
+	}
+	@RequestMapping(value = "/getUserInfoListFromUserId",method=RequestMethod.GET)
+	@ResponseBody
+	List<UserInfoDTO> getUserInfoFromUserId(@RequestParam String[] userIds,
+											@RequestParam(required = false) String searchFile) {
+		List<String> list= Arrays.asList(userIds);
+		return customerInfoService.getUserInfoFromUserId(list ,searchFile);
 	}
 }

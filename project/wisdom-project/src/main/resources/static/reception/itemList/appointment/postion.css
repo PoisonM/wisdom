@@ -1,10 +1,10 @@
 /*修改预约页面的css*/
 .modifyingWrap .headers{height: 0.812rem;width:5.90rem;line-height: 0.812rem ;text-align: center;background: #eeeeee}
-.modifyingWrap{width: 5.90rem;height:10.7rem;background: #f5f5f5;margin: auto}
+.modifyingWrap{height:9.9rem;background: #f5f5f5;margin: auto;overflow-y: scroll}
 .modifyingWrap .headers ul{list-style: none;display: flex;flex-wrap: wrap;justify-content: space-around;}
 .modifyingWrap .giveAppointment{font-size: 0.296rem;color: #333333;font-weight: 600}
 .modifyingWrap .checks{font-size: 0.296rem;color: #ff6666}
-.modifyingWrap .customerBox{width: 5.90rem;height: 2.343rem;background: #ffffff}
+.modifyingWrap .customerBox{width: 5.90rem;background: #ffffff}
 .modifyingWrap .customerBox ul{list-style: none}
 .modifyingWrap .customerBox ul li{height: 0.781rem;line-height: 0.781rem;border-bottom: 1px solid #e5e5e5}
 .modifyingWrap .boxLift{margin-left: 0.234rem;float: left;color: #333333;font-size: 0.265rem }
@@ -19,7 +19,7 @@
 .modifyingWrap .minuteList li{width: 16.6%;height: 0.765rem;line-height: 0.765rem;border: 1px solid #e5e5e5;padding: 0px}
 /*备注*/
 .modifyingWrap .remarksBox{margin-top: 0.156rem;width: 5.90rem;height: 1.92rem;background: #ffffff;}
-.modifyingWrap .remarksContent{height:1.453rem;width: 4.3rem;font-size: 0.3rem;color: #333333;padding: 20px;}
+.modifyingWrap .remarksContent{height:1.453rem;width: 4.6rem;font-size: 0.3rem;color: #333333;padding: 20px;border: solid 1px #E5E5E5; outline: none}
 .modifyingWrap .remarks{float: left;margin-top: 0.234rem;margin-left: 0.234rem;color: #333333;font-size: 0.265rem}
 .modifyingWrap .contentBox{float: left;margin-top: 0.234rem;margin-left: 0.234rem}
 /*按钮*/

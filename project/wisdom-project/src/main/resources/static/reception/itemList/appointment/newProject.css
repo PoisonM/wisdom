@@ -4,7 +4,7 @@
 .newProject .btnLis button{height:0.562rem;width:2.797rem;outline: none;box-sizing: border-box;border:solid #ff6666 1px; color: #ff6666;
     background: #ffffff;}
 .newProject .btnLis .btnActive { background: #ff6666; color: #ffffff; }
-.newProject .ml-5{margin-left:-5px;}
+.newProject .ml-6{margin-left:-6px;}
 .newProject .btrr8{border-top-right-radius:0.0625rem; }
 .newProject .btlr8{border-top-left-radius:0.0625rem; }
 .newProject .bbrr8{border-bottom-right-radius:0.0625rem; }
@@ -12,4 +12,4 @@
 .newProject .searchArea {height:0.703rem;background: #e4e4e4;}
 .newProject .search{width:5.593rem;margin:0 auto;margin-top:0.1093rem;position: relative;}
 .newProject .searchArea  input[type="search"]{width:5.593rem;height:0.484rem;margin-top:0.109rem;text-indent: 0.469rem;}
-.newProject .ser_ion{position: absolute;top: 0.22rem;left:0.156rem;display: block;width: 0.234375rem;height: 0.234375rem;padding: 0.109375rem 0.09375rem;background: url("../../images/bt_search.png") no-repeat;background-size: 100% 100%;}
+.newProject .ser_ion{position: absolute;top: 0.22rem;left:0.256rem;display: block;width: 0.234375rem;height: 0.234375rem;padding: 0.109375rem 0.09375rem;background: url("../../images/bt_search.png") no-repeat;background-size: 100% 100%;}
