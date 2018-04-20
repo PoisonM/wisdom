@@ -88,6 +88,18 @@ public class ProcessUserSubscribeEventService {
                 String codeArray[] = businessParentPhone.split("_");
                 businessParentPhone = codeArray[1];
             }
+            else if(StringUtils.isNotNull(xmlEntity.getEventKey())&&xmlEntity.getEventKey().indexOf("mxForeignPurchase")!=-1)
+            {
+                String weishiyiShop = xmlEntity.getEventKey().replace("mxForeignPurchase_", "");
+                String codeArray[] = weishiyiShop.split("_");
+                String specialShopId = codeArray[1];
+
+                //通过shopId查询出店铺名称
+                Query query = new Query(Criteria.where("shopId").is(specialShopId));
+                SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
+
+                businessParentPhone = specialShopInfoDTO.getShopBossMobile();
+            }
 
             //为关注公众号的用户创建新的或修订之前的账户
             UserInfoDTO userInfoDTO = new UserInfoDTO();
