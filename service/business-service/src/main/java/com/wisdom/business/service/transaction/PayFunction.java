@@ -5,6 +5,9 @@ import com.wisdom.business.mapper.level.UserTypeMapper;
 import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
+import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
+import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
@@ -17,6 +20,9 @@ import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +56,9 @@ public class PayFunction {
     @Autowired
     private UserTypeMapper userTypeMapper;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
     @Transactional(rollbackFor = Exception.class)
     public void processPayStatus(List<PayRecordDTO> payRecordDTOList) {
         try
@@ -80,8 +89,22 @@ public class PayFunction {
 //                transactionService.updateOfflineProductAmount(productDTO);
 
                 productName = productName + businessOrderDTO.getBusinessProductName() +
-                        "(" + businessOrderDTO.getProductSpec() + ")" + (int)businessOrderDTO.getBusinessProductNum() +"套"+";";
+                        "(" + businessOrderDTO.getProductSpec() + ")" + businessOrderDTO.getBusinessProductNum() +"套"+";";
                 userId = businessOrderDTO.getSysUserId();
+
+                //若购买的是跨境商品，告知店主，用户购买的情况
+                Query query = new Query(Criteria.where("order").is(businessOrderDTO.getBusinessOrderId()));
+                SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO = mongoTemplate.findOne(query,SpecialShopBusinessOrderDTO.class,"specialShopBusinessOrder");
+                String shopId = specialShopBusinessOrderDTO.getShopId();
+                query = new Query(Criteria.where("shopId").is(shopId));
+                SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
+                UserInfoDTO userInfoDTO = new UserInfoDTO();
+                userInfoDTO.setMobile(specialShopInfoDTO.getShopBossMobile());
+                List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+                if(userInfoDTOList.size()>0)
+                {
+                    WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(payRecordDTO.getAmount()+"元",businessOrderDTO,userInfoDTOList.get(0).getUserOpenid(),specialShopInfoDTO);
+                }
             }
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();
