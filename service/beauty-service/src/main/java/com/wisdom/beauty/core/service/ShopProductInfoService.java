@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
@@ -85,4 +86,12 @@ public interface ShopProductInfoService {
      * @Date:2018/4/18 19:30
      */
     List<ShopProductInfoDTO> getProductInfoList(List<String> ids);
+    /**
+    *@Author:huan
+    *@Param:
+    *@Return:
+    *@Description: 获取一级二级产品列表
+    *@Date:2018/4/20 11:50
+    */
+    List<ProductTypeResponseDTO>  getAllProducts(String sysShopId);
 }
