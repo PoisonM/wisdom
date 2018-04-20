@@ -7,7 +7,6 @@ import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
 import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
-import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
@@ -103,7 +102,7 @@ public class PayFunction {
                 List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
                 if(userInfoDTOList.size()>0)
                 {
-                    WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(payRecordDTO.getAmount()+"元",businessOrderDTO,userInfoDTOList.get(0).getUserOpenid(),specialShopInfoDTO);
+                    WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(token,payRecordDTO.getAmount()+"元",businessOrderDTO,userInfoDTOList.get(0).getUserOpenid(),specialShopInfoDTO);
                 }
             }
 

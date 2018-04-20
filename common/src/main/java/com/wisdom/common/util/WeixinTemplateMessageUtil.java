@@ -947,7 +947,56 @@ public class WeixinTemplateMessageUtil {
 		}
     }
 
-	public static void sendSpecialShopBossUserBuyTemplateWXMessage(String s, BusinessOrderDTO businessOrderDTO, String userOpenid, SpecialShopInfoDTO specialShopInfoDTO) {
+	public static void sendSpecialShopBossUserBuyTemplateWXMessage(String token,String amount, BusinessOrderDTO businessOrderDTO, String userOpenid, SpecialShopInfoDTO specialShopInfoDTO) {
 
+		Map<String,TemplateData> m = new HashMap<>();
+
+		WxTemplate t = new WxTemplate();
+		t.setTouser(userOpenid);
+		t.setTopcolor("#000000");
+		t.setTemplate_id(WITHDRAW_SUCCESS_NOTIFY);
+
+		TemplateData templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue("尊敬的用户，您好！！\n"+
+				"您的店铺有用户进行了一笔消费！！");
+		m.put("first", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(DateUtils.DateToStr(businessOrderDTO.getCreateDate()));
+		m.put("keyword1", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(businessOrderDTO.getBusinessProductName()+"："+businessOrderDTO.getBusinessProductNum()+"件");
+		m.put("keyword2", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(amount);
+		m.put("keyword3", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(amount);
+		m.put("keyword4", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(specialShopInfoDTO.getShopName());
+		m.put("keyword4", templateData);
+
+		t.setData(m);
+		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
+				token+"","POST", JSONObject.fromObject(t).toString());
+		JSONObject jsonObject = JSONObject.fromObject(jsonobj.replaceAll("200>>>>",""));
+		if(jsonobj!=null){
+			if("0".equals(jsonObject.getString("errcode"))){
+				System.out.println("发送模板消息成功！");
+			}else{
+				System.out.println(jsonObject.getString("errcode"));
+			}
+		}
 	}
 }
