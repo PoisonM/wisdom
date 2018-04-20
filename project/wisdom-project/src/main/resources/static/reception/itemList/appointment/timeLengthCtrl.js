@@ -9,7 +9,6 @@ function selectTimeLengthCtrl ($scope,ngDialog){
             $scope.param.ModifyAppointmentObject.time = item;
             setTimeout(function(){
              ngDialog.close("timeLength");
-             console.log(ngDialog)
             },600)
         }
 

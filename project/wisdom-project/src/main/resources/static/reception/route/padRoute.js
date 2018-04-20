@@ -645,7 +645,8 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/relatedStaffCtrl.js",
                             root+"appointment/dropload.css",
                             root + "../libs/angular-touch.js",
-                            root + "../libs/dropload.js",
+                            root + "../libs/swiper-3.4.0.min.js",
+                            /*root + "../styles/swiper-3.4.0.min.css",*/
                             root + "../libs/zepto.min.js",
 
                         ]
