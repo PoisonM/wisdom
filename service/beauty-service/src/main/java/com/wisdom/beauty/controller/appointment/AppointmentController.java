@@ -8,6 +8,7 @@ import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopWorkService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
@@ -284,5 +285,31 @@ public class AppointmentController {
         logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
         return responseDTO;
 	}
+
+    /**
+     * 获取某个店的店员列表
+     *
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "getShopClerkList", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<List<SysClerkDTO>> getShopClerkList(@RequestParam String pageNo, @RequestParam String pageSize) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("获取某个店的店员列表传入参数={}", "pageNo = [" + pageNo + "], pageSize = [" + pageSize + "]");
+
+        ResponseDTO<List<SysClerkDTO>> responseDTO = new ResponseDTO<>();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(clerkInfo.getSysShopId());
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(clerkDTOS);
+
+        logger.info("获取某个店的店员列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
 
 }

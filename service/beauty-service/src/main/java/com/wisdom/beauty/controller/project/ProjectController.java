@@ -307,4 +307,66 @@ public class ProjectController {
         return responseDTO;
     }
 
+    /**
+     * 查询某店的项目列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "getShopProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<List<Object>> getShopProjectList(@RequestParam String pageNo, @RequestParam String pageSize, @RequestParam String filterStr) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = clerkInfo.getSysShopId();
+        logger.info("查询某店的项目列表传入参数={}", "pageNo = [" + pageNo + "], pageSize = [" + pageSize + "], filterStr = [" + filterStr + "]");
+
+        ResponseDTO<List<Object>> responseDTO = new ResponseDTO<>();
+
+        ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
+        shopProjectInfoDTO.setSysShopId(sysShopId);
+        if (StringUtils.isNotBlank(filterStr)) {
+            shopProjectInfoDTO.setProjectName(filterStr);
+        }
+        List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
+        if (CommonUtils.objectIsEmpty(projectList)) {
+            logger.debug("查询某店的项目列表，个数为空");
+            return null;
+        }
+
+        //缓存一级项目map
+        HashMap<Object, Object> oneTypeMap = new HashMap<>(16);
+        for (ShopProjectInfoDTO infoDTO : projectList) {
+            oneTypeMap.put(infoDTO.getProjectTypeOneId(), infoDTO.getProjectTypeOneName());
+        }
+
+        List<Object> arrayList = new ArrayList<Object>();
+        //查询一级项目下的三级项目
+        for (Map.Entry entry : oneTypeMap.entrySet()) {
+            HashMap<Object, Object> oneMap = new HashMap<>(16);
+            ArrayList<Object> threeProjectList = new ArrayList<>();
+            for (ShopProjectInfoDTO infoDTO : projectList) {
+                if (infoDTO.getProjectTypeOneId().equals(entry.getKey())) {
+                    threeProjectList.add(infoDTO);
+                }
+            }
+            oneMap.put(entry.getValue(), threeProjectList);
+            arrayList.add(oneMap);
+        }
+
+        if (CommonUtils.objectIsEmpty(projectList)) {
+            logger.debug("查询某店的项目列表查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
+            return null;
+        }
+
+        responseDTO.setResponseData(arrayList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("查询某店的项目列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+
 }
