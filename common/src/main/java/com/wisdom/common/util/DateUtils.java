@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 /**
@@ -106,13 +107,21 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		return formatDate(new Date(), "dd");
 	}
 
+	public static String getDay(Date date) {
+		return formatDate(date, "dd");
+	}
+
 	/**
 	 * 得到当前星期字符串 格式（E）星期几
 	 */
 	public static String getWeek() {
 		return formatDate(new Date(), "E");
 	}
-	
+
+	public static String getWeek(Date date) {
+		return formatDate(date, "E");
+	}
+
 	/**
 	 * 日期型字符串转化为日期 格式
 	 * { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", 
@@ -440,5 +449,46 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			System.out.println("判断day2 - day1 : " + (day2-day1));
 			return day2-day1;
 		}
+	}
+
+	/**
+	 * 获取某一天开始时间
+	 */
+	public static String getDateStartTime(Date date) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		System.out.println("开始时间：" + calendar.getTime());
+		return DateToStr(calendar.getTime(), "datetime");
+	}
+
+	/**
+	 * 获取某一天结束时间
+	 */
+	public static String getDateEndTime(Date date) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 999);
+		System.out.println("结束时间：" + calendar.getTime());
+		return DateToStr(calendar.getTime(), "datetime");
+	}
+
+	/**
+	 * date自增一天
+	 *
+	 * @param date
+	 * @return
+	 */
+	public static Date dateInc(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, 1);
+		return cal.getTime();
 	}
 }

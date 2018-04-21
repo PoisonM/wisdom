@@ -83,4 +83,18 @@ public class AppointmentServiceImpl implements AppointmentService{
         return appointServiceDTOS;
     }
 
+    /**
+     * 更新预约信息
+     *
+     * @param shopAppointServiceDTO
+     * @return
+     */
+    @Override
+    public int updateAppointmentInfo(ShopAppointServiceDTO shopAppointServiceDTO) {
+        if (shopAppointServiceDTO == null || StringUtils.isBlank(shopAppointServiceDTO.getId())) {
+            return 0;
+        }
+        return shopAppointServiceMapper.updateByPrimaryKey(shopAppointServiceDTO);
+    }
+
 }

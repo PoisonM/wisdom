@@ -212,6 +212,9 @@ public class CommonUtils {
 		if ((obj instanceof String)) {
 			return ((String) obj).trim().equals("");
 		}
+		if ((obj instanceof Set)) {
+			return ((Set) obj).isEmpty();
+		}
 		return false;
 	}
 

@@ -27,4 +27,12 @@ public interface AppointmentService {
      * @return
      */
     List<ShopAppointServiceDTO> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO);
+
+    /**
+     * 更新预约信息
+     *
+     * @param shopAppointServiceDTO
+     * @return
+     */
+    int updateAppointmentInfo(ShopAppointServiceDTO shopAppointServiceDTO);
 }

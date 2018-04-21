@@ -52,10 +52,11 @@ public class RedisUtils {
 
     /**
      * 获取用户的预约详情
-     * @param shopAppointServiceDTO
+     * @param appointmentId
      */
-    public ShopAppointServiceDTO getShopAppointInfoFromRedis(ShopAppointServiceDTO shopAppointServiceDTO){
-        return (ShopAppointServiceDTO)JedisUtils.getObject(shopAppointServiceDTO.getId());
+    public ShopAppointServiceDTO getShopAppointInfoFromRedis(String appointmentId) {
+        logger.info("获取用户的预约详情传入参数={}", "appointmentId = [" + appointmentId + "]");
+        return (ShopAppointServiceDTO) JedisUtils.getObject(appointmentId);
     }
 
     /**
@@ -67,6 +68,7 @@ public class RedisUtils {
      * @return
      */
     public Set<String> getAppointmentIdByShopClerk(String shopIdClerkId,String min, String max ){
+        logger.info("根据分数过滤与某个美容师相关的预约信息传入参数={}", "shopIdClerkId = [" + shopIdClerkId + "], min = [" + min + "], max = [" + max + "]");
         Set<String> set = JedisUtils.zRangeByScore(shopIdClerkId, min, max);
         return set;
     }
@@ -76,7 +78,12 @@ public class RedisUtils {
      * @param shopAppointServiceDTO
      */
     public void updateShopAppointInfoToRedis(ShopAppointServiceDTO shopAppointServiceDTO){
+        logger.info("更新预约详情传入参数={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
         saveShopAppointInfoToRedis(shopAppointServiceDTO);
+    }
+
+    public String getShopIdClerkIdKey(String shopId, String clerkId) {
+        return new StringBuffer(shopId).append("_").append(clerkId).toString();
     }
 
 }
