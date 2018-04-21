@@ -134,12 +134,12 @@ public class ArchivesController {
         logger.debug("保存用户档案接口，查询的用户信息为，{}", "userInfoDTOS = [" + userInfoDTOS + "]");
 
         if (CommonUtils.objectIsEmpty(userInfoDTOS)) {
-            userInfoDTO = new UserInfoDTO();
             userInfoDTO.setId(IdGen.uuid());
             userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
             userInfoDTO.setCreateDate(new Date());
             userInfoDTO.setUserType(ConfigConstant.shopBusiness);
             userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
+            logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
             userServiceClient.insertUserInfo(userInfoDTO);
         } else {
             userInfoDTO = userInfoDTOS.get(0);
