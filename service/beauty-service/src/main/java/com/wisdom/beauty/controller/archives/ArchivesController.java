@@ -8,6 +8,7 @@ import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -133,17 +134,24 @@ public class ArchivesController {
         logger.debug("保存用户档案接口，查询的用户信息为，{}", "userInfoDTOS = [" + userInfoDTOS + "]");
 
         if (CommonUtils.objectIsEmpty(userInfoDTOS)) {
-            responseDTO.setResponseData(BusinessErrorCode.NULL_PROPERTIES.getCode());
-            responseDTO.setResult(StatusConstant.FAILURE);
-            return responseDTO;
+            userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setId(IdGen.uuid());
+            userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
+            userInfoDTO.setCreateDate(new Date());
+            userInfoDTO.setUserType(ConfigConstant.shopBusiness);
+            userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
+            userServiceClient.insertUserInfo(userInfoDTO);
+        } else {
+            userInfoDTO = userInfoDTOS.get(0);
         }
-        userInfoDTO = userInfoDTOS.get(0);
+
         shopUserArchivesDTO.setSysUserId(userInfoDTO.getId());
         shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
         shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
         shopUserArchivesDTO.setCreateDate(new Date());
         shopUserArchivesDTO.setSysUserId(shopUserArchivesDTO.getSysClerkId());
         shopCustomerArchivesService.saveShopUserArchivesInfo(shopUserArchivesDTO);
+
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
 
