@@ -51,19 +51,37 @@ public class ProjectController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCardProjectList(@RequestParam String appointmentId) {
+    ResponseDTO<HashMap<Object, Object>> getUserCardProjectList(@RequestParam String appointmentId) {
 
 		long startTime = System.currentTimeMillis();
 
 		logger.info("查询某个用户的卡片列表信息传入参数={}", "appointment = [" + appointmentId + "]");
-		ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<HashMap<Object, Object>> responseDTO = new ResponseDTO<>();
 
 		ShopUserProjectRelationDTO ShopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
 		ShopUserProjectRelationDTO.setShopAppointmentId(appointmentId);
 
         List<ShopUserProjectRelationDTO> projectList = projectService.getUserProjectList(ShopUserProjectRelationDTO);
-		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(projectList);
+        if (CommonUtils.objectIsEmpty(projectList)) {
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        //分组，需要购买的一组（预约的时候建立关系，可使用次数为0），直接划卡(可使用次数不为0)的一组
+        HashMap<Object, Object> returnMap = new HashMap<>();
+        ArrayList<Object> payList = new ArrayList<>();
+        ArrayList<Object> consumeList = new ArrayList<>();
+        for (ShopUserProjectRelationDTO dto : projectList) {
+            Integer surplusTimes = dto.getSysShopProjectSurplusTimes();
+            if (null != surplusTimes && surplusTimes > 0) {
+                payList.add(dto);
+            } else {
+                consumeList.add(dto);
+            }
+        }
+        returnMap.put("consume", payList);
+        returnMap.put("punchCard", consumeList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(returnMap);
 
 		logger.info("查询某个用户的卡片列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;

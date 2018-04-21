@@ -1,12 +1,15 @@
 package com.wisdom.beauty.controller.appointment;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopWorkService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -17,12 +20,14 @@ import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.LunarUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -46,6 +51,9 @@ public class AppointmentController {
 
 	@Resource
 	private ShopWorkService workService;
+
+	@Resource
+	private ShopProjectService shopProjectService;
 
 	@Resource
 	private RedisUtils redisUtils;
@@ -353,6 +361,42 @@ public class AppointmentController {
 		logger.debug("保存用户的预约信息执行结果， {}", info > 0 ? "成功" : "失败");
 
 		redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
+
+		//生成用户与项目的关系
+		if (StringUtils.isNotBlank(shopAppointServiceDTO.getShopProjectId())) {
+			String[] projectStr = shopAppointServiceDTO.getShopProjectId().split(";");
+			for (String project : projectStr) {
+				//先查询，如果用户与项目已经建立关系，并且没有使用完，不需要重新创建用户与项目的关系
+				ShopUserProjectRelationDTO relationDTO = new ShopUserProjectRelationDTO();
+				relationDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
+				relationDTO.setSysShopProjectId(project);
+				relationDTO.setSysShopProjectSurplusTimes(0);
+				List<ShopUserProjectRelationDTO> userProjectList = shopProjectService.getUserProjectList(relationDTO);
+				//需要重新创建用户与项目的关系
+				if (CommonUtils.objectIsEmpty(userProjectList)) {
+					relationDTO.setSysShopId(shopAppointServiceDTO.getSysShopId());
+					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
+					//根据项目主键查询项目详细信息
+					ShopProjectInfoDTO projectDetail = shopProjectService.getProjectDetail(project);
+					relationDTO.setUseStyle(projectDetail.getUseStyle());
+					relationDTO.setCreateBy(shopAppointServiceDTO.getCreateBy());
+					relationDTO.setSysShopProjectName(projectDetail.getProjectName());
+					relationDTO.setId(IdGen.uuid());
+					relationDTO.setSysShopProjectInitTimes(0);
+					relationDTO.setSysShopProjectInitAmount(new BigDecimal(0));
+					relationDTO.setSysClerkId(shopAppointServiceDTO.getSysClerkId());
+					relationDTO.setSysShopName(shopAppointServiceDTO.getSysShopName());
+					relationDTO.setSysShopProjectSurplusAmount(new BigDecimal(0));
+					relationDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
+					relationDTO.setSysShopProjectId(project);
+					relationDTO.setSysShopProjectSurplusTimes(0);
+					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
+					relationDTO.setSysShopId(projectDetail.getSysShopId());
+					int num = shopProjectService.saveUserProjectRelation(relationDTO);
+					logger.debug("建立项目与用户的关系， {}", num > 0 ? "成功" : "失败");
+				}
+			}
+		}
 
 		ResponseDTO<String> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(StatusConstant.SUCCESS);
