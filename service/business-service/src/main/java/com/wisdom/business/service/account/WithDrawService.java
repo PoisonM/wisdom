@@ -129,14 +129,14 @@ public class WithDrawService {
     public void withDrawMoneyFromAccount(float moneyAmount, HttpServletRequest request, String openid,
                                          UserBankCardInfoDTO userBankCardInfoDTO)  throws Exception{
 
-        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(userInfoDTO.getId());
-
         //生成提现记录
-        RedisLock redisLock = new RedisLock("withDrawRecordLock" + accountDTO.getId());
+        RedisLock redisLock = new RedisLock("withDrawRecordLock" + openid);
 
         try{
             redisLock.lock();
+
+            UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+            AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(userInfoDTO.getId());
 
             //扣除账户余额中的款项
             if((accountDTO.getBalance()-moneyAmount)<0)

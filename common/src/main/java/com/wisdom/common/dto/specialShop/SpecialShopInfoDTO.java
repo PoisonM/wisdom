@@ -14,6 +14,9 @@ public class SpecialShopInfoDTO {
     @JSONField(name = "shopName")
     private String shopName;
 
+    @JSONField(name = "shopBossMobile")
+    private String shopBossMobile;
+
     @JSONField(name = "shopURL")
     private String shopURL;
 
@@ -26,6 +29,14 @@ public class SpecialShopInfoDTO {
 
     public void setShopId(String shopId) {
         this.shopId = shopId;
+    }
+
+    public String getShopBossMobile() {
+        return shopBossMobile;
+    }
+
+    public void setShopBossMobile(String shopBossMobile) {
+        this.shopBossMobile = shopBossMobile;
     }
 
     public String getShopName() {

@@ -4,9 +4,9 @@
 angular.module('controllers',[]).controller('abschlussCtrl',
     ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryMonthTransactionRecordByIncomeRecord','UpdateIncomeRecordStatusById','$filter','ManagementUtil','QueryMonthPayRecordByUserId',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryMonthTransactionRecordByIncomeRecord,UpdateIncomeRecordStatusById,$filter,ManagementUtil,QueryMonthPayRecordByUserId) {
-            /*$scope.mum = true;*/
+            $scope.mum = true;
                  $scope.loadPageList = function () {
-                     /*$scope.mum = true;*/
+                     $scope.mum = true;
                      var page = {
                          pageNo:$scope.pageNo,
                          pageSize:$scope.pageSize,
@@ -36,15 +36,10 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                          });
 
                  };
-                 /*导出列表*/
-                 $scope.educeLis=function () {
-                     if (confirm("是否筛选已完成的订单？")) {
-                     }
-                 }
             $scope.detailPageList= function () {
 
 
-                /*$scope.mum = true;*/
+                $scope.mum = true;
                 var page = {
                     pageNo:$scope.pageNum,
                     pageSize:$scope.pageSize,

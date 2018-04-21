@@ -19,24 +19,19 @@
             </div>
             <div class="product_content_left">
                 <a class="btn_back" ng-click="back()">返回</a>
-                <a class="export" ng-click="educeLis()">导出列表</a>
             </div>
             <div class="product_content_right">
                 <div class="rightCenter">
                     <div class="tableBox">
-                        <h3>本人消费记录:</h3>
+                        <h3>本人月消费记录:</h3>
                         <div class="table_lis">
                             <table class="table  table-hover text-center table-bordered ">
-                                <tr id="product_lis_title1">
-                                    <th class="text-center">昵称</th>
+                                <tr id="product_lis_title">
                                     <th class="text-center">手机号</th>
-                                    <th class="text-center">当前等级</th>
-                                    <th class="text-center">订单生成等级</th>
-                                    <th class="text-center">支付金额</th>
-                                    <th class="text-center">付款时间</th>
-                                    <th class="text-center">订单状态</th>
                                     <th class="text-center">订单编号</th>
-                                    <th class="text-center">交易流水号</th>
+                                    <th class="text-center">付款时间</th>
+                                    <th class="text-center">支付金额</th>
+                                    <th class="text-center">状态</th>
                                 </tr>
                                 <tr ng-repeat=  "item in abschluss">
                                     <td>{{item.mobile}}</td>
@@ -49,20 +44,17 @@
                             <div detail-page></div>
                         </div>
                     </div>
-                    <div class="tableBox">
+                    <div class="tableBox ">
                         <h3>本人下级月消费记录:</h3>
                         <div class="table_lis">
                             <table class="table  table-hover text-center table-bordered ">
-                                <tr id="product_lis_title">
+                                <tr class="product_lis_title">
                                     <th class="text-center">昵称</th>
+                                    <th class="text-center">等级</th>
                                     <th class="text-center">手机号</th>
-                                    <th class="text-center">当前等级</th>
-                                    <th class="text-center">订单生成等级</th>
-                                    <th class="text-center">支付金额</th>
-                                    <th class="text-center">付款时间</th>
-                                    <th class="text-center">订单状态</th>
-                                    <th class="text-center">订单编号</th>
                                     <th class="text-center">交易流水号</th>
+                                    <th class="text-center">付款时间</th>
+                                    <th class="text-center">支付金额</th>
                                 </tr>
                                 <tr ng-repeat="item in monthlyPar">
                                     <td>{{item.nickName}}</td>
