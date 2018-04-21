@@ -15,6 +15,7 @@ import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
+import com.wisdom.common.util.PinYinSort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ClassName: ArchivesController
@@ -60,7 +58,11 @@ public class ArchivesController {
      */
     @RequestMapping(value = "/findArchives", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String, Object>> findArchives(@RequestParam String queryField, int pageSize) {
+    ResponseDTO<Map<String, Object>> findArchives(@RequestParam String queryField, @RequestParam int pageNo, @RequestParam int pageSize) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("获取档案列表或某个店的用户列表传入参数={}", "queryField = [" + queryField + "], pageSize = [" + pageSize + "]");
+
         PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
@@ -74,16 +76,39 @@ public class ArchivesController {
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
         //查询数据
-        List<ShopUserArchivesDTO> list = shopCustomerArchivesService.getArchivesList(pageParamVoDTO);
+        List<ShopUserArchivesDTO> shopUserArchivesDTOS = shopCustomerArchivesService.getArchivesList(pageParamVoDTO);
+
+        if (CommonUtils.objectIsEmpty(shopUserArchivesDTOS)) {
+            logger.debug("获取档案列表或某个店的用户列表查询结果为空");
+            return null;
+        }
+
+        ArrayList<Object> lastList = new ArrayList<>();
+        for (char a : PinYinSort.getSortType()) {
+            HashMap<Object, Object> hashMap = new HashMap<>(16);
+            ArrayList<Object> arrayList = new ArrayList<>();
+            for (ShopUserArchivesDTO archivesDTO : shopUserArchivesDTOS) {
+                if (a == PinYinSort.ToPinYinString(archivesDTO.getSysUserName()).charAt(0)) {
+                    arrayList.add(archivesDTO);
+                }
+            }
+            if (arrayList.size() > 0) {
+                hashMap.put(String.valueOf(a).toUpperCase(), arrayList);
+                lastList.add(hashMap);
+            }
+        }
+
         //查询个数
         int count = shopCustomerArchivesService.getArchivesCount(shopUserArchivesDTO);
         Map<String, Object> map = new HashMap<>(16);
-        map.put("info", list);
+        map.put("info", lastList);
         map.put("data", count);
 
         ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(map);
         responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("获取档案列表或某个店的用户列表,耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
