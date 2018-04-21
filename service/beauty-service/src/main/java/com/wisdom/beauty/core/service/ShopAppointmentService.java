@@ -44,4 +44,9 @@ public interface ShopAppointmentService {
      */
     ShopAppointServiceDTO getShopAppointService(String userId);
 
+    /**
+     * 保存用户的预约信息
+     */
+    int saveUserShopAppointInfo(ShopAppointServiceDTO shopAppointServiceDTO);
+
 }

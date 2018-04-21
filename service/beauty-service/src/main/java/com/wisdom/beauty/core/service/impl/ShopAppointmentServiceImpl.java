@@ -98,23 +98,46 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         return shopAppointServiceMapper.updateByPrimaryKeySelective(shopAppointServiceDTO);
     }
 
+    /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 根据用户ID查询预约信息
+     * @Date:2018/4/8 14:26
+     */
     @Override
     public ShopAppointServiceDTO getShopAppointService(String userId) {
 
-            logger.info("getShopAppointServiceDTO传入参数userId={}",userId);
-            if(StringUtils.isBlank(userId)){
-                return  null;
-            }
-            ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
-            ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
-            criteria.andSysUserIdEqualTo(userId);
-            shopAppointServiceCriteria.setOrderByClause("create_date");
+        logger.info("getShopAppointServiceDTO传入参数userId={}", userId);
+        if (StringUtils.isBlank(userId)) {
+            logger.debug(" 根据用户ID查询预约信息,{}", "userId = [" + userId + "]");
+            return null;
+        }
+        ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
+        ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
+        criteria.andSysUserIdEqualTo(userId);
+        shopAppointServiceCriteria.setOrderByClause("create_date");
         List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
         ShopAppointServiceDTO shopAppointServiceDTO = null;
-            if(CollectionUtils.isNotEmpty(appointServiceDTOS)){
-                shopAppointServiceDTO=appointServiceDTOS.get(0);
-            }
-            return shopAppointServiceDTO;
+
+        if (CollectionUtils.isNotEmpty(appointServiceDTOS)) {
+            shopAppointServiceDTO = appointServiceDTOS.get(0);
         }
+        return shopAppointServiceDTO;
+    }
+
+    /**
+     * 保存用户的预约信息
+     */
+    @Override
+    public int saveUserShopAppointInfo(ShopAppointServiceDTO shopAppointServiceDTO) {
+
+        logger.info("保存用户的预约信息传入参数={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
+
+        int insert = shopAppointServiceMapper.insertSelective(shopAppointServiceDTO);
+
+        return insert;
+    }
+
 
 }
