@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wisdom.user.mapper.SysBossMapper">
-  <resultMap id="BaseResultMap" type="com.wisdom.common.dto.customer.SysBoss">
+  <resultMap id="BaseResultMap" type="com.wisdom.common.dto.customer.SysBossDTO">
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR"/>
@@ -118,7 +118,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wisdom.common.dto.customer.SysBoss">
+  <insert id="insert" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
     insert into sys_boss (id, sys_user_id, name,
     nickname, password, email,
     identify_number, mobile, user_type,
@@ -134,7 +134,7 @@
     #{idFrontImage,jdbcType=VARCHAR}, #{idBackImage,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}
     )
   </insert>
-  <insert id="insertSelective" parameterType="com.wisdom.common.dto.customer.SysBoss">
+  <insert id="insertSelective" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
     insert into sys_boss
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -342,7 +342,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.customer.SysBoss">
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
     update sys_boss
     <set >
       <if test="sysUserId != null" >
@@ -399,7 +399,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.customer.SysBoss">
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
     update sys_boss
     set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
     name = #{name,jdbcType=VARCHAR},
