@@ -3,6 +3,7 @@
  */
 package com.wisdom.user.controller;
 
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.util.SMSUtil;
@@ -90,16 +91,29 @@ public class LoginController {
         ResponseDTO<String> result = new ResponseDTO<>();
 
         String openid = WeixinUtil.getBossOpenId(session,request);
-        if(openid==null||openid.equals(""))
+        if((openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
         {
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("没有openid，请在微信公众号中注册登录");
             return result;
         }
 
-        String loginResult = loginService.bossLogin(loginDTO.getUserPhone(), loginDTO.getCode(), request.getRemoteAddr().toString(),openid);
+        String loginResult = loginService.bossLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
-        return result;
+        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
+        {
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("验证码输入不正确");
+            return result;
+        }
+        else
+        {
+            result.setResult(StatusConstant.SUCCESS);
+            result.setErrorInfo("调用成功");
+            result.setResponseData(loginResult);
+            return result;
+        }
+
     }
 
     @RequestMapping(value = "clerkLogin", method = {RequestMethod.POST, RequestMethod.GET})
@@ -111,17 +125,28 @@ public class LoginController {
         ResponseDTO<String> result = new ResponseDTO<>();
 
         String openid = WeixinUtil.getBossOpenId(session,request);
-        if(openid==null||openid.equals(""))
+        if((openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
         {
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("没有openid，请在微信公众号中注册登录");
             return result;
         }
 
-        String loginResult = loginService.clerkLogin(loginDTO.getUserPhone(), loginDTO.getCode(), request.getRemoteAddr().toString(),openid);
+        String loginResult = loginService.clerkLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
-
-        return result;
+        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
+        {
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("验证码输入不正确");
+            return result;
+        }
+        else
+        {
+            result.setResult(StatusConstant.SUCCESS);
+            result.setErrorInfo("调用成功");
+            result.setResponseData(loginResult);
+            return result;
+        }
     }
 
 

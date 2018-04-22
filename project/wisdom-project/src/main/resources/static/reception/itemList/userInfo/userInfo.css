@@ -1,3 +1,4 @@
+/*
 .userInfo{
     width: 100%;
     height: 100%;
@@ -111,7 +112,7 @@
     margin-right: 8px;
 }
 .userInfo .userInfo_public .user_Information .user_data{
-    /*margin-bottom: 10px;*/
+    !*margin-bottom: 10px;*!
     font-size: 12px;
     color: #888888;
 }
@@ -157,7 +158,7 @@
     color: #333333;
 }
 
-/**/
+!**!
 
 .userInfo .userInfo_public .img_sty span{
     position: absolute;
@@ -227,5 +228,220 @@
     color: #ffffff;
     text-align: center;
     font-size: 17px;
+    color: #FFFFFF;
+}*/
+.userInfo{
+    width: 100%;
+    height: 100%;
+    padding-left: 4.96875rem;
+    position: relative;
+    font-family: PingFangSC-Regular;
+    overflow: hidden;
+}
+.userInfo .userInfo_public{
+    width: 4.96875rem;
+    height: 100%;
+    position: absolute;
+    left: 0rem;
+    top: 0rem;
+    bottom: 0rem;
+    border-right: 1px solid #B4B4B4;
+}
+.userInfo .userInfo_public .message{
+    height: 1.375rem;
+    width: 100%;
+    padding: 0.078125rem;
+    overflow: hidden;
+    background: #ffffff;
+    margin-bottom: 0.15625rem;
+}
+.userInfo .userInfo_public .message li{
+    width: 25%;
+    text-align: center;
+    float: left;
+}
+.userInfo .userInfo_public .message li span{
+    font-size: 0.234375rem;
+    color: #888888;
+    letter-spacing: 0.4px;
+    width: 100%;
+    display: block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.userInfo .userInfo_public .message li b{
+    font-size: 0.15625rem;
+    color: #888888;
+}
+.userInfo .userInfo_public .message i{
+    display: inline-block;
+    border-radius: 50%;
+    width: 0.625rem;
+    height: 0.625rem;
+    background: url(../../images/userInfo/userInfo_sprite.png) no-repeat;
+    background-position: -0.984375rem -2.140625rem;
+    background-size: 6.203125rem 6.203125rem;
+}
+.userInfo .userInfo_public .message li:nth-child(1) i{
+}
+.userInfo .userInfo_public .message li:nth-child(2) i{
+    background-position: -1.84375rem -2.140625rem;
+}
+.userInfo .userInfo_public .message li:nth-child(3) i{
+    background-position: -2.703125rem -2.140625rem;
+}
+.userInfo .userInfo_public .message li:nth-child(4) i{
+    background-position: -3.625rem -2.140625rem;
+}
+.userInfo .userInfo_public .basic{
+    width: 100%;
+    background-color: #ffffff;
+    padding: 0.15625rem 0.3125rem;
+    overflow: hidden;
+    margin-bottom: 0.5625rem;
+    position: relative;
+}
+.userInfo .userInfo_public .basic .user_logo , .userInfo .userInfo_public .basic .user_Information{
+    float: left;
+}
+.userInfo .userInfo_public .basic .user_logo{
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.userInfo .userInfo_public .basic .user_logo img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.userInfo .userInfo_public .user_Information{
+    margin-left: 0.15625rem;
+}
+.userInfo .userInfo_public .user_Information .user_name{
+    font-size: 0.28125rem;
+    color: #333333;
+    margin-bottom: 0.09375rem;
+}
+.userInfo .userInfo_public .user_Information .user_mobile{
+    margin-bottom: 0.09375rem;
+    font-size: 0.21875rem;
+    color: #888888;
+}
+.userInfo .userInfo_public .user_Information .user_mobile i{
+    display: inline-block;
+    width: 0.171875rem;
+    height: 0.171875rem;
+    background-color: pink;
+    margin-right: 0.125rem;
+}
+.userInfo .userInfo_public .user_Information .user_data{
+    /*margin-bottom: 0.15625rem;
+     */
+    font-size: 0.1875rem;
+    color: #888888;
+}
+.userInfo .userInfo_public .user_Information .user_data .bg_gray{
+    display: inline-block;
+    width: 1.328125rem;
+    height: 0.03125rem;
+    background-color: #AAAAAA;
+    margin-right: 0.0625rem;
+    vertical-align: middle;
+    position: relative;
+}
+.userInfo .userInfo_public .user_Information .user_data .col_pink{
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    display: inline-block;
+    width: 0.46875rem;
+    height: 0.03125rem;
+    background-color: pink;
+}
+.userInfo .userInfo_public .set{
+    width: 100%;
+    background-color: #ffffff;
+    margin-bottom: 0.5625rem;
+}
+.userInfo .userInfo_public .set ul li{
+    width: 100%;
+    height: 0.65625rem;
+    line-height: 0.65625rem;
+}
+.userInfo .userInfo_public .set ul .airTicket{
+}
+.userInfo .userInfo_public .img_sty{
+    position: relative;
+    padding-left: 0.9375rem;
+    font-size: 0.25rem;
+    color: #333333;
+}
+/**/
+.userInfo .userInfo_public .img_sty span{
+    position: absolute;
+    top: 0.09375rem;
+    left: 0.3125rem;
+    display: block;
+    width: 0.46875rem;
+    height: 0.46875rem;
+    background: url(../../images/userInfo/userInfo_sprite.png) no-repeat;
+    background-size: 6.203125rem 6.203125rem;
+    background-position: -1.765625rem -3.09375rem;
+}
+.userInfo .userInfo_public .set .img_sty:nth-child(1) span{
+    background-position: -4.046875rem -3.09375rem;
+}
+.userInfo .userInfo_public .set .img_sty:nth-child(2) span{
+    background-position: -3.28125rem -3.09375rem;
+}
+.userInfo .userInfo_public .help .img_sty:nth-child(1) span{
+    background-position: -2.53125rem -3.09375rem;
+}
+.userInfo .userInfo_public .help .img_sty:nth-child(2) span{
+    background-position: -1.765625rem -3.09375rem;
+}
+.userInfo .userInfo_public .help .img_sty:nth-child(3) span{
+    background-position: -1.015625rem -3.09375rem;
+}
+.userInfo .userInfo_public .img_sty:nth-child(6) span{
+    background-position: -1.765625rem -3.09375rem;
+}
+.userInfo .userInfo_public .go_set{
+    position: absolute;
+    top:40%;
+    right: 0.3125rem;
+    background: url("../../images/userInfo/bt_more.png") no-repeat;
+    background-size: 100%;
+    width: 0.1171875rem;
+    height: 0.2109375rem;
+}
+.userInfo .userInfo_public .help{
+    background-color: #ffffff;
+    margin-bottom: 0.5625rem;
+}
+.userInfo .userInfo_public .help li{
+    width: 100%;
+    height: 0.65625rem;
+    line-height: 0.65625rem;
+}
+.userInfo .userInfo_public .changePsd{
+    margin-bottom: 0.5625rem;
+}
+.userInfo .userInfo_public .changePsd li{
+    width: 100%;
+    height: 0.65625rem;
+    line-height: 0.65625rem;
+}
+.userInfo .userInfo_public .btn{
+    width: 4.75rem;
+    height: 0.6875rem;
+    line-height: 0.6875rem;
+    background: #FF6666;
+    border-radius: 0.0625rem;
+    color: #ffffff;
+    text-align: center;
+    font-size: 0.265625rem;
     color: #FFFFFF;
 }
