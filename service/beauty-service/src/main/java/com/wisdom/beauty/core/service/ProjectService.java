@@ -1,6 +1,6 @@
 package com.wisdom.beauty.core.service;
 
-import com.wisdom.beauty.api.dto.ShopCustomerProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 
 import java.util.List;
 
@@ -16,18 +16,18 @@ public interface ProjectService {
     /**
      * 查询某个用户预约的项目列表
      *
-     * @param shopCustomerProjectRelationDTO
+     * @param shopUserProjectRelationDTO
      * @return
      */
-    List<ShopCustomerProjectRelationDTO> getCustomerAppointmentProjectList(ShopCustomerProjectRelationDTO shopCustomerProjectRelationDTO);
+    List<ShopUserProjectRelationDTO> getUserAppointmentProjectList(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
 
 
     /**
      * 更新用户与项目的关系
      *
-     * @param shopCustomerProjectRelationDTO
+     * @param shopUserProjectRelationDTO
      * @return
      */
-    int updateCustomerCardProject(ShopCustomerProjectRelationDTO shopCustomerProjectRelationDTO);
+    int updateUserCardProject(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
 
 }

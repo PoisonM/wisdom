@@ -1,8 +1,8 @@
 package com.wisdom.beauty.controller.project;
 
-import com.wisdom.beauty.api.dto.ShopCustomerProductRelationDTO;
-import com.wisdom.beauty.api.dto.ShopCustomerProjectGroupRelRelationDTO;
-import com.wisdom.beauty.api.dto.ShopCustomerProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.core.service.ProjectService;
 import com.wisdom.beauty.interceptor.LoginRequired;
@@ -38,21 +38,21 @@ public class ProjectController {
 	 * @param appointment
 	 * @return
 	 */
-	@RequestMapping(value = "getCustomerCardProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "getUserCardProjectList", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopCustomerProjectRelationDTO>> getCustomerCardList(@RequestParam String appointment) {
+	ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCardList(@RequestParam String appointment) {
 
 		long startTime = System.currentTimeMillis();
 
 		logger.info("查询某个用户的卡片列表信息传入参数={}", "appointment = [" + appointment + "]");
-		ResponseDTO<List<ShopCustomerProjectRelationDTO>> responseDTO = new ResponseDTO<>();
+		ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
 
-		ShopCustomerProjectRelationDTO shopCustomerProjectRelationDTO = new ShopCustomerProjectRelationDTO();
-		shopCustomerProjectRelationDTO.setShopAppointmentId(appointment);
+		ShopUserProjectRelationDTO ShopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
+		ShopUserProjectRelationDTO.setShopAppointmentId(appointment);
 
-		List<ShopCustomerProjectRelationDTO> projectList = projectService.getCustomerAppointmentProjectList(shopCustomerProjectRelationDTO);
+		List<ShopUserProjectRelationDTO> projectList = projectService.getUserAppointmentProjectList(ShopUserProjectRelationDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(projectList);
 
@@ -63,29 +63,29 @@ public class ProjectController {
 	/**
 	 * 批量更改卡片信息
 	 *
-	 * @param shopCustomerProjectRelationDTOS
+	 * @param ShopUserProjectRelationDTOS
 	 * @return
 	 */
-	@RequestMapping(value = "updateCustomerCardProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "updateUserCardProjectList", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopCustomerProjectRelationDTO>> updateCustomerCardProjectList(@RequestBody List<ShopCustomerProjectRelationDTO> shopCustomerProjectRelationDTOS) {
+	ResponseDTO<List<ShopUserProjectRelationDTO>> updateUserCardProjectList(@RequestBody List<ShopUserProjectRelationDTO> ShopUserProjectRelationDTOS) {
 
 		long startTime = System.currentTimeMillis();
 
-		logger.info("批量更改卡片信息传入参数={}", "appointment = [" + shopCustomerProjectRelationDTOS + "]");
-		ResponseDTO<List<ShopCustomerProjectRelationDTO>> responseDTO = new ResponseDTO<>();
+		logger.info("批量更改卡片信息传入参数={}", "appointment = [" + ShopUserProjectRelationDTOS + "]");
+		ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
 
-		if (shopCustomerProjectRelationDTOS == null) {
+		if (ShopUserProjectRelationDTOS == null) {
 			responseDTO.setResult(StatusConstant.FAILURE);
 			responseDTO.setErrorInfo(BusinessErrorCode.ERROR_DATA_TRANS.getCode());
 			return responseDTO;
 		}
 
-		for (ShopCustomerProjectRelationDTO shopCustomerProjectRelationDTO : shopCustomerProjectRelationDTOS) {
-			int project = projectService.updateCustomerCardProject(shopCustomerProjectRelationDTO);
-			logger.info("批量更改卡片信息项目主键={}更新结果为{}", shopCustomerProjectRelationDTO.getId(), project > 0 ? "成功" : "失败");
+		for (ShopUserProjectRelationDTO ShopUserProjectRelationDTO : ShopUserProjectRelationDTOS) {
+			int project = projectService.updateUserCardProject(ShopUserProjectRelationDTO);
+			logger.info("批量更改卡片信息项目主键={}更新结果为{}", ShopUserProjectRelationDTO.getId(), project > 0 ? "成功" : "失败");
 		}
 
 		responseDTO.setResult(StatusConstant.FAILURE);
@@ -97,63 +97,63 @@ public class ProjectController {
 
 	/**
      * 查询某个用户的疗程卡列表信息
-	 * @param sysCustomerId
+	 * @param sysUserId
      * @param sysShopId
      * @param startDate
      * @param endDate
      * @return
      */
-	@RequestMapping(value = "getCustomerCourseProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "getUserCourseProjectList", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopCustomerProductRelationDTO>> getCustomerCourseProjectList(@RequestParam String sysCustomerId,
-																			   @RequestParam String sysShopId,
-																			   @RequestParam String startDate,
-																			   @RequestParam String endDate) {
-		ResponseDTO<List<ShopCustomerProductRelationDTO>> responseDTO = new ResponseDTO<>();
+	ResponseDTO<List<ShopUserProductRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId,
+																		   @RequestParam String sysShopId,
+																		   @RequestParam String startDate,
+																		   @RequestParam String endDate) {
+		ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
 
 		return  responseDTO;
 	}
 
 	/**
      * 查询某个用户的单次卡列表信息
-	 * @param sysCustomerId
+	 * @param sysUserId
      * @param sysShopId
      * @param startDate
      * @param endDate
      * @return
      */
-	@RequestMapping(value = "getCustomerSingleProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "getUserSingleProjectList", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopCustomerProductRelationDTO>> getCustomerSingleProjectList(@RequestParam String sysCustomerId,
-																			   @RequestParam String sysShopId,
-																			   @RequestParam String startDate,
-																			   @RequestParam String endDate) {
-		ResponseDTO<List<ShopCustomerProductRelationDTO>> responseDTO = new ResponseDTO<>();
+	ResponseDTO<List<ShopUserProductRelationDTO>> getUserSingleProjectList(@RequestParam String sysUserId,
+																		   @RequestParam String sysShopId,
+																		   @RequestParam String startDate,
+																		   @RequestParam String endDate) {
+		ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
 
 		return  responseDTO;
 	}
 
 	/**
 	 * 查询某个用户的套卡列表信息
-	 * @param sysCustomerId
+	 * @param sysUserId
 	 * @param sysShopId
 	 * @param startDate
 	 * @param endDate
 	 * @return
 	 */
-	@RequestMapping(value = "getCustomerProjectGroupList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "getUserProjectGroupList", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopCustomerProjectGroupRelRelationDTO>> getCustomerProjectGroupList(@RequestParam String sysCustomerId,
-																						  @RequestParam String sysShopId,
-																						  @RequestParam String startDate,
-																						  @RequestParam String endDate) {
-		ResponseDTO<List<ShopCustomerProjectGroupRelRelationDTO>> responseDTO = new ResponseDTO<>();
+	ResponseDTO<List<ShopUserProjectGroupRelRelationDTO>> getUserProjectGroupList(@RequestParam String sysUserId,
+																				  @RequestParam String sysShopId,
+																				  @RequestParam String startDate,
+																				  @RequestParam String endDate) {
+		ResponseDTO<List<ShopUserProjectGroupRelRelationDTO>> responseDTO = new ResponseDTO<>();
 
 		return  responseDTO;
 	}

@@ -103,12 +103,12 @@ public class AppointmentTest {
         shopAppointServiceDTO.setStatus("0");
         shopAppointServiceDTO.setSysBossId(IdGen.uuid());
         shopAppointServiceDTO.setSysClerkId("8f4bbff4c1404136a521350c08e31483");
-        shopAppointServiceDTO.setSysCustomerId(IdGen.uuid());
+        shopAppointServiceDTO.setSysUserId(IdGen.uuid());
         shopAppointServiceDTO.setSysClerkName("王五");
         shopAppointServiceDTO.setUpdateUser(IdGen.uuid());
         shopAppointServiceDTO.setSysShopName("汉方美容院");
-        shopAppointServiceDTO.setSysCustomerName("张欢");
-        shopAppointServiceDTO.setSysCustomerPhone("181812839893");
+        shopAppointServiceDTO.setSysUserName("张欢");
+        shopAppointServiceDTO.setSysUserPhone("181812839893");
         shopAppointServiceDTO.setSysShopId("48940be00e634bae86006c4519263906");
         return shopAppointServiceDTO;
     }

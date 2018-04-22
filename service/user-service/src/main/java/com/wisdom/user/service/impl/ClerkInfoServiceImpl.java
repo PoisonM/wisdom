@@ -1,9 +1,9 @@
 package com.wisdom.user.service.impl;
 
-import com.wisdom.common.dto.customer.SysUserClerkDTO;
-import com.wisdom.common.dto.customer.SysUserClerkCriteria;
+import com.wisdom.common.dto.customer.SysClerkCriteria;
+import com.wisdom.common.dto.customer.SysClerkDTO;
 import com.wisdom.common.util.StringUtils;
-import com.wisdom.user.mapper.SysUserClerkMapper;
+import com.wisdom.user.mapper.SysClerkMapper;
 import com.wisdom.user.service.ClerkInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,29 +18,29 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private SysUserClerkMapper sysUserClerkMapper;
+    private SysClerkMapper sysClerkMapper;
 
     /**
      * 获取店员列表
-     * @param sysUserClerk
+     * @param SysClerk
      * @return
      */
     @Override
-    public List<SysUserClerkDTO> getClerkInfo(SysUserClerkDTO sysUserClerk) {
-        SysUserClerkCriteria sysUserClerkCriteria = new SysUserClerkCriteria();
-        SysUserClerkCriteria.Criteria criteria = sysUserClerkCriteria.createCriteria();
+    public List<SysClerkDTO> getClerkInfo(SysClerkDTO SysClerk) {
+        SysClerkCriteria SysClerkCriteria = new SysClerkCriteria();
+        SysClerkCriteria.Criteria criteria = SysClerkCriteria.createCriteria();
 
-        if(null == sysUserClerk){
-            logger.error("获取某个店的店员列表传入参数为空{}", sysUserClerk);
+        if (null == SysClerk) {
+            logger.error("获取某个店的店员列表传入参数为空{}", SysClerk);
             return null;
         }
 
-        if(StringUtils.isNotBlank(sysUserClerk.getSysShopId())){
-            criteria.andSysShopIdEqualTo(sysUserClerk.getSysShopId());
+        if (StringUtils.isNotBlank(SysClerk.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(SysClerk.getSysShopId());
         }
 
-        List<SysUserClerkDTO> sysUserClerks = sysUserClerkMapper.selectByCriteria(sysUserClerkCriteria);
+        List<SysClerkDTO> SysClerks = sysClerkMapper.selectByCriteria(SysClerkCriteria);
 
-        return sysUserClerks;
+        return SysClerks;
     }
 }

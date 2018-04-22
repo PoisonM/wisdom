@@ -1,6 +1,6 @@
 package com.wisdom.beauty.controller.product;
 
-import com.wisdom.beauty.api.dto.ShopCustomerProductRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.springframework.stereotype.Controller;
@@ -34,11 +34,11 @@ public class productController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopCustomerProductRelationDTO>> getCustomerProductList(@RequestParam String sysCustomerId,
-																			   @RequestParam String sysShopId,
-																			   @RequestParam String startDate,
-																			   @RequestParam String endDate) {
-		ResponseDTO<List<ShopCustomerProductRelationDTO>> responseDTO = new ResponseDTO<>();
+	ResponseDTO<List<ShopUserProductRelationDTO>> getCustomerProductList(@RequestParam String sysCustomerId,
+																		 @RequestParam String sysShopId,
+																		 @RequestParam String startDate,
+																		 @RequestParam String endDate) {
+		ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
 
 		return  responseDTO;
 	}

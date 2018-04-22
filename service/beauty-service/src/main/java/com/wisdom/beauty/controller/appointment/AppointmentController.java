@@ -10,7 +10,7 @@ import com.wisdom.beauty.core.service.AppointmentService;
 import com.wisdom.beauty.core.service.WorkService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.customer.SysUserClerkDTO;
+import com.wisdom.common.dto.customer.SysClerkDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -76,7 +76,7 @@ public class AppointmentController {
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
 
 		//根据时间查询当前店下所有美容师
-		List<SysUserClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
+		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
         if (judgeNull(responseDTO, preLog, clerkInfo)) return responseDTO;
 		logger.info(preLog+"根据时间查询当前店下所有美容师个数={}",clerkInfo.size());
@@ -102,12 +102,12 @@ public class AppointmentController {
 		}
 
 		//遍历美容师获取预约详情
-		for (SysUserClerkDTO sysUserClerkDTO : clerkInfo) {
+		for (SysClerkDTO SysClerkDTO : clerkInfo) {
 
 			HashMap<String, Object> shopAppointMap = new HashMap<>(16);
 
 			//查询某个美容师的预约列表
-			extShopAppointServiceDTO.setSysClerkId(sysUserClerkDTO.getId());
+			extShopAppointServiceDTO.setSysClerkId(SysClerkDTO.getId());
             List<ShopAppointService> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 
 			if(CommonUtils.objectIsEmpty(shopAppointServiceDTOS)){
@@ -130,7 +130,7 @@ public class AppointmentController {
 				shopAppointMap.put("appointmentInfo",appointInfoList);
 				shopAppointMap.put("point",shopAppointServiceDTOS.size());
 			}
-			responseMap.put(sysUserClerkDTO.getUserName(),shopAppointMap);
+			responseMap.put(SysClerkDTO.getUserName(), shopAppointMap);
 		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -162,7 +162,7 @@ public class AppointmentController {
         logger.info(preLog + "美容店主键为={}", sysShopId);
 
         //根据时间查询当前店下所有美容师
-        List<SysUserClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
+		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
         if (judgeNull(responseDTO, preLog, clerkInfo)) return responseDTO;
         logger.debug(preLog + "根据时间查询当前店下所有美容师个数为 {}", clerkInfo.size());
@@ -170,7 +170,7 @@ public class AppointmentController {
         HashMap<String, Object> returnMap = new HashMap<>(16);
 
         //遍历每个美容师
-        for (SysUserClerkDTO clerkDTO : clerkInfo) {
+		for (SysClerkDTO clerkDTO : clerkInfo) {
 
             Date loopDate = startTime;
             ArrayList<Object> arrayList = new ArrayList<>();
@@ -214,7 +214,7 @@ public class AppointmentController {
 		return  null;
 	}
 
-    private boolean judgeNull(ResponseDTO<Map<String, Object>> responseDTO, String preLog, List<SysUserClerkDTO> clerkInfo) {
+	private boolean judgeNull(ResponseDTO<Map<String, Object>> responseDTO, String preLog, List<SysClerkDTO> clerkInfo) {
         if (CommonUtils.objectIsEmpty(clerkInfo)) {
             responseDTO.setResult(StatusConstant.FAILURE);
             responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());
