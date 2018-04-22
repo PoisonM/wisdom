@@ -27,6 +27,15 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
     //老板表主键
     private String sysBossId;
 
+    //
+    private Float discount;
+
+    //备注
+    private String detail;
+
+    //折扣描述
+    private String discountDesc;
+
     //剩余金额
     private Long surplusAmount;
 
@@ -101,6 +110,30 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
 
     public void setSysBossId(String sysBossId) {
         this.sysBossId = sysBossId;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getDiscountDesc() {
+        return discountDesc;
+    }
+
+    public void setDiscountDesc(String discountDesc) {
+        this.discountDesc = discountDesc;
     }
 
     public Long getSurplusAmount() {
