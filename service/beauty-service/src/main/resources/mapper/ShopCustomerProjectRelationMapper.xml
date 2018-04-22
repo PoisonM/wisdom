@@ -1,27 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopCustomerProjectRelationMapper">
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopCustomerProjectRelationDTO">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="sys_customer_id" jdbcType="VARCHAR" property="sysCustomerId" />
-    <result column="sys_shop_id" jdbcType="VARCHAR" property="sysShopId" />
-    <result column="sys_shop_name" jdbcType="VARCHAR" property="sysShopName" />
-    <result column="sys_shop_project_id" jdbcType="VARCHAR" property="sysShopProjectId" />
-    <result column="sys_shop_project_name" jdbcType="VARCHAR" property="sysShopProjectName" />
-    <result column="sys_shop_project_init_amount" jdbcType="DECIMAL" property="sysShopProjectInitAmount" />
-    <result column="sys_shop_project_surplus_amount" jdbcType="DECIMAL" property="sysShopProjectSurplusAmount" />
-    <result column="sys_shop_project_surplus_times" jdbcType="INTEGER" property="sysShopProjectSurplusTimes" />
-    <result column="sys_shop_project_init_times" jdbcType="INTEGER" property="sysShopProjectInitTimes" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <id column="id" property="id" jdbcType="VARCHAR"/>
+    <result column="shop_appointment_id" property="shopAppointmentId" jdbcType="VARCHAR"/>
+    <result column="sys_customer_id" property="sysCustomerId" jdbcType="VARCHAR"/>
+    <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
+    <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
+    <result column="sys_shop_project_id" property="sysShopProjectId" jdbcType="VARCHAR"/>
+    <result column="sys_shop_project_name" property="sysShopProjectName" jdbcType="VARCHAR"/>
+    <result column="sys_shop_project_init_amount" property="sysShopProjectInitAmount" jdbcType="DECIMAL"/>
+    <result column="sys_shop_project_surplus_amount" property="sysShopProjectSurplusAmount" jdbcType="DECIMAL"/>
+    <result column="sys_shop_project_surplus_times" property="sysShopProjectSurplusTimes" jdbcType="INTEGER"/>
+    <result column="sys_shop_project_init_times" property="sysShopProjectInitTimes" jdbcType="INTEGER"/>
+    <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
+          <trim prefix="(" suffix=")" prefixOverrides="and">
             <foreach collection="criteria.criteria" item="criterion">
               <choose>
                 <when test="criterion.noValue">
@@ -35,7 +36,7 @@
                 </when>
                 <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -50,7 +51,7 @@
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
+          <trim prefix="(" suffix=")" prefixOverrides="and">
             <foreach collection="criteria.criteria" item="criterion">
               <choose>
                 <when test="criterion.noValue">
@@ -64,7 +65,7 @@
                 </when>
                 <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -76,11 +77,13 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sys_customer_id, sys_shop_id, sys_shop_name, sys_shop_project_id, sys_shop_project_name, 
-    sys_shop_project_init_amount, sys_shop_project_surplus_amount, sys_shop_project_surplus_times, 
-    sys_shop_project_init_times, create_by, create_date, update_user, update_date
+    id, shop_appointment_id, sys_customer_id, sys_shop_id, sys_shop_name, sys_shop_project_id,
+    sys_shop_project_name, sys_shop_project_init_amount, sys_shop_project_surplus_amount,
+    sys_shop_project_surplus_times, sys_shop_project_init_times, create_by, create_date,
+    update_user, update_date
   </sql>
-  <select id="selectByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopCustomerProjectRelationCriteria" resultMap="BaseResultMap">
+  <select id="selectByCriteria" resultMap="BaseResultMap"
+          parameterType="com.wisdom.beauty.api.dto.ShopCustomerProjectRelationCriteria">
     select
     <if test="distinct">
       distinct
@@ -93,11 +96,11 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="limitStart &gt;= 0">
+    <if test="limitStart >= 0">
       limit ${limitStart},${pageSize}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
     select 
     <include refid="Base_Column_List" />
     from shop_customer_project_relation
@@ -114,24 +117,27 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopCustomerProjectRelationDTO">
-    insert into shop_customer_project_relation (id, sys_customer_id, sys_shop_id, 
-      sys_shop_name, sys_shop_project_id, sys_shop_project_name, 
-      sys_shop_project_init_amount, sys_shop_project_surplus_amount, 
-      sys_shop_project_surplus_times, sys_shop_project_init_times, 
-      create_by, create_date, update_user, 
-      update_date)
-    values (#{id,jdbcType=VARCHAR}, #{sysCustomerId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, 
-      #{sysShopName,jdbcType=VARCHAR}, #{sysShopProjectId,jdbcType=VARCHAR}, #{sysShopProjectName,jdbcType=VARCHAR}, 
-      #{sysShopProjectInitAmount,jdbcType=DECIMAL}, #{sysShopProjectSurplusAmount,jdbcType=DECIMAL}, 
-      #{sysShopProjectSurplusTimes,jdbcType=INTEGER}, #{sysShopProjectInitTimes,jdbcType=INTEGER}, 
-      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+    insert into shop_customer_project_relation (id, shop_appointment_id, sys_customer_id,
+    sys_shop_id, sys_shop_name, sys_shop_project_id,
+    sys_shop_project_name, sys_shop_project_init_amount,
+    sys_shop_project_surplus_amount, sys_shop_project_surplus_times,
+    sys_shop_project_init_times, create_by, create_date,
+    update_user, update_date)
+    values (#{id,jdbcType=VARCHAR}, #{shopAppointmentId,jdbcType=VARCHAR}, #{sysCustomerId,jdbcType=VARCHAR},
+    #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, #{sysShopProjectId,jdbcType=VARCHAR},
+    #{sysShopProjectName,jdbcType=VARCHAR}, #{sysShopProjectInitAmount,jdbcType=DECIMAL},
+    #{sysShopProjectSurplusAmount,jdbcType=DECIMAL}, #{sysShopProjectSurplusTimes,jdbcType=INTEGER},
+    #{sysShopProjectInitTimes,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopCustomerProjectRelationDTO">
     insert into shop_customer_project_relation
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="shopAppointmentId != null">
+        shop_appointment_id,
       </if>
       <if test="sysCustomerId != null">
         sys_customer_id,
@@ -177,6 +183,9 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
+      <if test="shopAppointmentId != null">
+        #{shopAppointmentId,jdbcType=VARCHAR},
+      </if>
       <if test="sysCustomerId != null">
         #{sysCustomerId,jdbcType=VARCHAR},
       </if>
@@ -218,7 +227,8 @@
       </if>
     </trim>
   </insert>
-  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopCustomerProjectRelationCriteria" resultType="java.lang.Integer">
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopCustomerProjectRelationCriteria"
+          resultType="java.lang.Integer">
     select count(1) from shop_customer_project_relation
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -229,6 +239,9 @@
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopAppointmentId != null">
+        shop_appointment_id = #{record.shopAppointmentId,jdbcType=VARCHAR},
       </if>
       <if test="record.sysCustomerId != null">
         sys_customer_id = #{record.sysCustomerId,jdbcType=VARCHAR},
@@ -277,6 +290,7 @@
   <update id="updateByCriteria" parameterType="map">
     update shop_customer_project_relation
     set id = #{record.id,jdbcType=VARCHAR},
+    shop_appointment_id = #{record.shopAppointmentId,jdbcType=VARCHAR},
       sys_customer_id = #{record.sysCustomerId,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
@@ -297,6 +311,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopCustomerProjectRelationDTO">
     update shop_customer_project_relation
     <set>
+      <if test="shopAppointmentId != null">
+        shop_appointment_id = #{shopAppointmentId,jdbcType=VARCHAR},
+      </if>
       <if test="sysCustomerId != null">
         sys_customer_id = #{sysCustomerId,jdbcType=VARCHAR},
       </if>
@@ -341,7 +358,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopCustomerProjectRelationDTO">
     update shop_customer_project_relation
-    set sys_customer_id = #{sysCustomerId,jdbcType=VARCHAR},
+    set shop_appointment_id = #{shopAppointmentId,jdbcType=VARCHAR},
+    sys_customer_id = #{sysCustomerId,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
       sys_shop_project_id = #{sysShopProjectId,jdbcType=VARCHAR},
@@ -356,5 +374,4 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  
 </mapper>

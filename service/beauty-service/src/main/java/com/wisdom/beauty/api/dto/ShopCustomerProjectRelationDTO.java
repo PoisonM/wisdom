@@ -9,6 +9,9 @@ public class ShopCustomerProjectRelationDTO extends BaseEntity implements Serial
     //
     private String id;
 
+    //
+    private String shopAppointmentId;
+
     //用户id
     private String sysCustomerId;
 
@@ -56,6 +59,14 @@ public class ShopCustomerProjectRelationDTO extends BaseEntity implements Serial
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getShopAppointmentId() {
+        return shopAppointmentId;
+    }
+
+    public void setShopAppointmentId(String shopAppointmentId) {
+        this.shopAppointmentId = shopAppointmentId;
     }
 
     public String getSysCustomerId() {

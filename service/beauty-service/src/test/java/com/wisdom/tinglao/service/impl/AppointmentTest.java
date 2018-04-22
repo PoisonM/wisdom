@@ -52,7 +52,7 @@ public class AppointmentTest {
     public void initOrderShouldReturnInitializedOrder() throws Exception {
         ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
         shopAppointServiceDTO.setAppointEndTime(new Date());
-        shopAppointServiceDTO.setId("24234");
+        shopAppointServiceDTO.setId("242dfsfdfg34");
         shopAppointServiceMapper.insert(shopAppointServiceDTO);
 
     }

@@ -35,4 +35,5 @@ public interface AppointmentService {
      * @return
      */
     int updateAppointmentInfo(ShopAppointServiceDTO shopAppointServiceDTO);
+
 }

@@ -195,6 +195,76 @@ public class ShopCustomerProjectRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andShopAppointmentIdIsNull() {
+            addCriterion("shop_appointment_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdIsNotNull() {
+            addCriterion("shop_appointment_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdEqualTo(String value) {
+            addCriterion("shop_appointment_id =", value, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdNotEqualTo(String value) {
+            addCriterion("shop_appointment_id <>", value, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdGreaterThan(String value) {
+            addCriterion("shop_appointment_id >", value, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdGreaterThanOrEqualTo(String value) {
+            addCriterion("shop_appointment_id >=", value, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdLessThan(String value) {
+            addCriterion("shop_appointment_id <", value, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdLessThanOrEqualTo(String value) {
+            addCriterion("shop_appointment_id <=", value, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdLike(String value) {
+            addCriterion("shop_appointment_id like", value, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdNotLike(String value) {
+            addCriterion("shop_appointment_id not like", value, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdIn(List<String> values) {
+            addCriterion("shop_appointment_id in", values, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdNotIn(List<String> values) {
+            addCriterion("shop_appointment_id not in", values, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdBetween(String value1, String value2) {
+            addCriterion("shop_appointment_id between", value1, value2, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopAppointmentIdNotBetween(String value1, String value2) {
+            addCriterion("shop_appointment_id not between", value1, value2, "shopAppointmentId");
+            return (Criteria) this;
+        }
+
         public Criteria andSysCustomerIdIsNull() {
             addCriterion("sys_customer_id is null");
             return (Criteria) this;
