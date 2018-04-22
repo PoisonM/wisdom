@@ -5,7 +5,7 @@ import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
-import com.wisdom.beauty.core.service.AppointmentService;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import java.util.List;
  * Description: 预约相关
  */
 @Service("appointmentService")
-public class AppointmentServiceImpl implements AppointmentService{
+public class AppointmentServiceImpl implements ShopAppointmentService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 

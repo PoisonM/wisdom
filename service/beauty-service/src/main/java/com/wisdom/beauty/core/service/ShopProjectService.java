@@ -12,7 +12,7 @@ import java.util.List;
  * Date:     2018/4/3 0003 15:06
  * Description: 店员相关
  */
-public interface ProjectService {
+public interface ShopProjectService {
 
     /**
      * 查询某个用户预约的项目列表

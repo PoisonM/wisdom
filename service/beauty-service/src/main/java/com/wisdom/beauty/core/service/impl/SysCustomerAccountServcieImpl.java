@@ -6,7 +6,7 @@ import com.wisdom.beauty.api.dto.SysUserAccountCriteria;
 import com.wisdom.beauty.api.dto.SysUserAccountDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.mapper.SysUserAccountMapper;
-import com.wisdom.beauty.core.service.AppointmentService;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountServcie;
 import com.wisdom.common.dto.system.UserInfoDTO;
@@ -38,7 +38,7 @@ public class SysCustomerAccountServcieImpl implements SysUserAccountServcie {
     @Autowired
     private ShopUserRelationService shopUserRelationService;
     @Autowired
-    private AppointmentService appointmentService;
+    private ShopAppointmentService appointmentService;
     @Autowired
     private UserInfoService userInfoService;
 

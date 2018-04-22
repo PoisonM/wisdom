@@ -6,7 +6,7 @@ import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
-import com.wisdom.beauty.core.service.AppointmentService;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.WorkService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
@@ -40,7 +40,7 @@ public class AppointmentController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Resource
-	private AppointmentService appointmentService;
+	private ShopAppointmentService appointmentService;
 
 	@Resource
 	private UserServiceClient userServiceClient;

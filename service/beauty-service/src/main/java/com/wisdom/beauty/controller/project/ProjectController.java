@@ -4,7 +4,7 @@ import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
-import com.wisdom.beauty.core.service.ProjectService;
+import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -31,7 +31,7 @@ public class ProjectController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private ProjectService projectService;
+	private ShopProjectService projectService;
 
 	/**
 	 * 查询某个用户预约项目列表信息
