@@ -10,7 +10,7 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
     private String id;
 
     //用户id
-    private String sysCustomerId;
+    private String sysUserId;
 
     //美容店id
     private String sysShopId;
@@ -34,7 +34,7 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
     private String sysShopName;
 
     //用户名称
-    private String sysCustomerName;
+    private String sysUserName;
 
     //操作信息
     private String operInfo;
@@ -67,12 +67,12 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public String getSysCustomerId() {
-        return sysCustomerId;
+    public String getSysUserId() {
+        return sysUserId;
     }
 
-    public void setSysCustomerId(String sysCustomerId) {
-        this.sysCustomerId = sysCustomerId;
+    public void setSysUserId(String sysUserId) {
+        this.sysUserId = sysUserId;
     }
 
     public String getSysShopId() {
@@ -131,12 +131,12 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
         this.sysShopName = sysShopName;
     }
 
-    public String getSysCustomerName() {
-        return sysCustomerName;
+    public String getSysUserName() {
+        return sysUserName;
     }
 
-    public void setSysCustomerName(String sysCustomerName) {
-        this.sysCustomerName = sysCustomerName;
+    public void setSysUserName(String sysUserName) {
+        this.sysUserName = sysUserName;
     }
 
     public String getOperInfo() {
@@ -147,7 +147,13 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
         this.operInfo = operInfo;
     }
 
- public String getDetail() {        return detail;    }    public void setDetail(String detail) {        this.detail = detail;    }
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     public String getSignUrl() {
         return signUrl;

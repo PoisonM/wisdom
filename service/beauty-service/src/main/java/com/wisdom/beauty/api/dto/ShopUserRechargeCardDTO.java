@@ -5,30 +5,33 @@ import com.wisdom.common.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ShopUserRelationDTO extends BaseEntity implements Serializable {
+public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
-    //美容院店表主键
-    private String sysShopId;
+    //充值卡主键
+    private String shopRechargeCardId;
 
-    //用户表主键
+    //充值卡名称
+    private String shopRechargeCardName;
+
+    //用户主键
     private String sysUserId;
-
-    //美容院名称
-    private String sysShopName;
 
     //用户名称
     private String sysUserName;
 
-    //老板id
+    //美容店id
+    private String sysShopId;
+
+    //老板表主键
     private String sysBossId;
 
-    //关系 0:绑定  1：未绑定
-    private String status;
+    //剩余金额
+    private Long surplusAmount;
 
-    //会员账号
-    private String userAccountNo;
+    //初始金额
+    private Long initAmount;
 
     //
     private String createBy;
@@ -52,12 +55,20 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public String getSysShopId() {
-        return sysShopId;
+    public String getShopRechargeCardId() {
+        return shopRechargeCardId;
     }
 
-    public void setSysShopId(String sysShopId) {
-        this.sysShopId = sysShopId;
+    public void setShopRechargeCardId(String shopRechargeCardId) {
+        this.shopRechargeCardId = shopRechargeCardId;
+    }
+
+    public String getShopRechargeCardName() {
+        return shopRechargeCardName;
+    }
+
+    public void setShopRechargeCardName(String shopRechargeCardName) {
+        this.shopRechargeCardName = shopRechargeCardName;
     }
 
     public String getSysUserId() {
@@ -68,20 +79,20 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.sysUserId = sysUserId;
     }
 
-    public String getSysShopName() {
-        return sysShopName;
-    }
-
-    public void setSysShopName(String sysShopName) {
-        this.sysShopName = sysShopName;
-    }
-
     public String getSysUserName() {
         return sysUserName;
     }
 
     public void setSysUserName(String sysUserName) {
         this.sysUserName = sysUserName;
+    }
+
+    public String getSysShopId() {
+        return sysShopId;
+    }
+
+    public void setSysShopId(String sysShopId) {
+        this.sysShopId = sysShopId;
     }
 
     public String getSysBossId() {
@@ -92,20 +103,20 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.sysBossId = sysBossId;
     }
 
-    public String getStatus() {
-        return status;
+    public Long getSurplusAmount() {
+        return surplusAmount;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setSurplusAmount(Long surplusAmount) {
+        this.surplusAmount = surplusAmount;
     }
 
-    public String getUserAccountNo() {
-        return userAccountNo;
+    public Long getInitAmount() {
+        return initAmount;
     }
 
-    public void setUserAccountNo(String userAccountNo) {
-        this.userAccountNo = userAccountNo;
+    public void setInitAmount(Long initAmount) {
+        this.initAmount = initAmount;
     }
 
     public String getCreateBy() {

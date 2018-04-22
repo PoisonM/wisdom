@@ -1,7 +1,7 @@
 package com.wisdom.tinglao.service.impl;
 
 import com.wisdom.beauty.BeautyServiceApplication;
-import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopAppointService;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.service.AppointmentService;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class BeautyServiceImplTest {
 
     @Test
     public void initOrderShouldReturnInitializedOrder() throws Exception {
-        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
+        ShopAppointService shopAppointServiceDTO = new ShopAppointService();
         shopAppointServiceDTO.setAppointEndTime(new Date());
         shopAppointServiceDTO.setId("24234");
         shopAppointServiceMapper.insert(shopAppointServiceDTO);

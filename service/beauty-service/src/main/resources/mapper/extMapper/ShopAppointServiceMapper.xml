@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper">
-  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopAppointServiceDTO">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopAppointService">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="shop_project_id" jdbcType="VARCHAR" property="shopProjectId" />
     <result column="shop_project_name" jdbcType="VARCHAR" property="shopProjectName" />
@@ -90,7 +90,7 @@
   </sql>
 
   <select id="selectShopAppointClerkInfoByCriteria"
-          parameterType="com.wisdom.beauty.api.dto.ShopAppointServiceDTO"
+          parameterType="com.wisdom.beauty.api.dto.ShopAppointService"
           resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

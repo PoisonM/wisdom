@@ -5,30 +5,24 @@ import com.wisdom.common.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ShopUserRelationDTO extends BaseEntity implements Serializable {
+public class SysUserAccount extends BaseEntity implements Serializable {
     //
     private String id;
 
-    //美容院店表主键
+    //总金额
+    private Long sumAmount;
+
+    //总欠款
+    private Long arrears;
+
+    //美容店主键
     private String sysShopId;
 
-    //用户表主键
-    private String sysUserId;
-
-    //美容院名称
-    private String sysShopName;
-
-    //用户名称
-    private String sysUserName;
-
-    //老板id
+    //boss主键
     private String sysBossId;
 
-    //关系 0:绑定  1：未绑定
-    private String status;
-
-    //会员账号
-    private String userAccountNo;
+    //账户号
+    private String accountNumber;
 
     //
     private String createBy;
@@ -52,36 +46,28 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
+    public Long getSumAmount() {
+        return sumAmount;
+    }
+
+    public void setSumAmount(Long sumAmount) {
+        this.sumAmount = sumAmount;
+    }
+
+    public Long getArrears() {
+        return arrears;
+    }
+
+    public void setArrears(Long arrears) {
+        this.arrears = arrears;
+    }
+
     public String getSysShopId() {
         return sysShopId;
     }
 
     public void setSysShopId(String sysShopId) {
         this.sysShopId = sysShopId;
-    }
-
-    public String getSysUserId() {
-        return sysUserId;
-    }
-
-    public void setSysUserId(String sysUserId) {
-        this.sysUserId = sysUserId;
-    }
-
-    public String getSysShopName() {
-        return sysShopName;
-    }
-
-    public void setSysShopName(String sysShopName) {
-        this.sysShopName = sysShopName;
-    }
-
-    public String getSysUserName() {
-        return sysUserName;
-    }
-
-    public void setSysUserName(String sysUserName) {
-        this.sysUserName = sysUserName;
     }
 
     public String getSysBossId() {
@@ -92,20 +78,12 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.sysBossId = sysBossId;
     }
 
-    public String getStatus() {
-        return status;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getUserAccountNo() {
-        return userAccountNo;
-    }
-
-    public void setUserAccountNo(String userAccountNo) {
-        this.userAccountNo = userAccountNo;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public String getCreateBy() {

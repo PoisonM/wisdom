@@ -1,10 +1,5 @@
 package com.wisdom.beauty.core.service;
 
-import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
-import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
-
-import java.util.List;
-
 /**
  * FileName: ShopClerkService
  *
