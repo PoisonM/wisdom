@@ -34,7 +34,7 @@ public class AccountController {
 	public
 	@ResponseBody
 	ResponseDTO<List<ShopCustomerConsumeRecordDTO>> getCustomerConsumeRecord(@RequestParam String type,
-																				 @RequestParam String startDate,
+																			 @RequestParam String startDate,
 																			 @RequestParam String endDate,
 																			 @RequestParam String sysShopId) {
 		ResponseDTO<List<ShopCustomerConsumeRecordDTO>> responseDTO = new ResponseDTO<>();
