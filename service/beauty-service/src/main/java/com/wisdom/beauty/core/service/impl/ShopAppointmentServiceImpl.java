@@ -23,7 +23,7 @@ import java.util.List;
  * Description: 预约相关
  */
 @Service("appointmentService")
-public class AppointmentServiceImpl implements ShopAppointmentService {
+public class ShopAppointmentServiceImpl implements ShopAppointmentService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 

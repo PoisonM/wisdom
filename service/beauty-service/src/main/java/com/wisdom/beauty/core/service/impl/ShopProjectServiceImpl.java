@@ -26,7 +26,7 @@ import java.util.List;
  * Description: 工作相关
  */
 @Service("projectService")
-public class ProjectServiceImpl implements ShopProjectService {
+public class ShopProjectServiceImpl implements ShopProjectService {
 
     @Autowired
     public ShopUserProjectRelationMapper shopUserProjectRelationMapper;
