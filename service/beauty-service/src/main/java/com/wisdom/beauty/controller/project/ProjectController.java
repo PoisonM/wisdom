@@ -54,7 +54,7 @@ public class ProjectController {
 		ShopUserProjectRelationDTO ShopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
 		ShopUserProjectRelationDTO.setShopAppointmentId(appointment);
 
-		List<ShopUserProjectRelationDTO> projectList = projectService.getUserAppointmentProjectList(ShopUserProjectRelationDTO);
+        List<ShopUserProjectRelationDTO> projectList = projectService.getUserProjectList(ShopUserProjectRelationDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(projectList);
 
@@ -133,19 +133,21 @@ public class ProjectController {
      * 查询某个用户的疗程卡列表信息
 	 * @param sysUserId
      * @param sysShopId
-     * @param startDate
-     * @param endDate
+     * @param cardStyle 0 查询疗程卡  1 查询单次卡
      * @return
      */
 	@RequestMapping(value = "getUserCourseProjectList", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopUserProductRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId,
-																		   @RequestParam String sysShopId,
-																		   @RequestParam String startDate,
-																		   @RequestParam String endDate) {
-		ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
+    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId,
+                                                                           @RequestParam String sysShopId, @RequestParam String cardStyle) {
+        ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
+
+        ShopUserProjectRelationDTO relationDTO = new ShopUserProjectRelationDTO();
+        relationDTO.setSysUserId(sysUserId);
+        relationDTO.setSysShopId(sysShopId);
+        List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
 
 		return  responseDTO;
 	}

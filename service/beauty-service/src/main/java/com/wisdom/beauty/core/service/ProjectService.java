@@ -20,7 +20,7 @@ public interface ProjectService {
      * @param shopUserProjectRelationDTO
      * @return
      */
-    List<ShopUserProjectRelationDTO> getUserAppointmentProjectList(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
+    List<ShopUserProjectRelationDTO> getUserProjectList(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
 
 
     /**
