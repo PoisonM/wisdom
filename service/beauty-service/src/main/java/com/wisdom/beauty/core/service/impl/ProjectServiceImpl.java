@@ -1,7 +1,12 @@
 package com.wisdom.beauty.core.service.impl;
 
+import com.wisdom.beauty.api.dto.ShopProjectInfoCriteria;
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.enums.CardType;
+import com.wisdom.beauty.api.enums.CommonCode;
+import com.wisdom.beauty.core.mapper.ShopProjectInfoMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectRelationMapper;
 import com.wisdom.beauty.core.service.ProjectService;
 import com.wisdom.common.util.CommonUtils;
@@ -25,6 +30,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     public ShopUserProjectRelationMapper shopUserProjectRelationMapper;
+
+    @Autowired
+    public ShopProjectInfoMapper shopProjectInfoMapper;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -56,7 +64,12 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRelationDTOS;
     }
 
-
+    /**
+     * 更新用户与项目的关系
+     *
+     * @param shopUserProjectRelationDTO
+     * @return
+     */
     @Override
     public int updateUserCardProject(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
 
@@ -72,5 +85,42 @@ public class ProjectServiceImpl implements ProjectService {
 
         int update = shopUserProjectRelationMapper.updateByPrimaryKey(shopUserProjectRelationDTO);
         return update;
+    }
+
+    /**
+     * 查询某个店的项目列表信息
+     *
+     * @return
+     */
+    @Override
+    public List<ShopProjectInfoDTO> getShopCourseProjectList(ShopProjectInfoDTO shopProjectInfoDTO) {
+
+        logger.info("查询某个店的疗程卡列表信息传入参数={}", "shopProjectInfoDTO = [" + shopProjectInfoDTO + "]");
+
+        if (shopProjectInfoDTO == null) {
+            return null;
+        }
+
+        ShopProjectInfoCriteria shopProjectInfoCriteria = new ShopProjectInfoCriteria();
+        ShopProjectInfoCriteria.Criteria criteria = shopProjectInfoCriteria.createCriteria();
+
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(shopProjectInfoDTO.getSysShopId());
+        }
+
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getStatus())) {
+            criteria.andStatusNotEqualTo(CommonCode.SUCCESS.getCode());
+        }
+        //查询疗程卡用
+        if (shopProjectInfoDTO.getMaxContainTimes() > 1) {
+            criteria.andMaxContainTimesGreaterThan(1);
+        }
+        //查询疗程卡用
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getCardType())) {
+            criteria.andCardTypeNotEqualTo(CardType.TIME_CARD.getCode());
+        }
+        List<ShopProjectInfoDTO> dtos = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
+
+        return dtos;
     }
 }

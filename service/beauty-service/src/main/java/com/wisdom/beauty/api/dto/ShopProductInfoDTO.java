@@ -9,6 +9,9 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
+    //
+    private String sysShopId;
+
     //产品名称
     private String productName;
 
@@ -92,6 +95,14 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSysShopId() {
+        return sysShopId;
+    }
+
+    public void setSysShopId(String sysShopId) {
+        this.sysShopId = sysShopId;
     }
 
     public String getProductName() {
