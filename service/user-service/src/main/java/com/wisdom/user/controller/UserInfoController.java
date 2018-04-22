@@ -12,7 +12,7 @@ import com.wisdom.common.dto.system.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.user.interceptor.LoginRequired;
-import com.wisdom.user.service.CustomerInfoService;
+import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +25,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "customer")
-public class CustomerInfoController {
+public class UserInfoController {
 
     @Autowired
-    private CustomerInfoService customerInfoService;
+    private UserInfoService customerInfoService;
 
     /**
      * 获取用户头像和手机号

@@ -7,10 +7,8 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.util.SMSUtil;
 import com.wisdom.common.util.WeixinUtil;
-import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.LoginService;
-import com.wisdom.user.service.CustomerInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +20,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value = "")
-public class UserLoginController {
+public class LoginController {
 
     @Autowired
     private LoginService loginService;
@@ -30,10 +28,10 @@ public class UserLoginController {
     /**
      * 用户通过微信中的H5，实现手机号绑定登录
      */
-    @RequestMapping(value = "customerLogin", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "userLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO<String> customerLogin(@RequestBody LoginDTO loginDTO,
+    ResponseDTO<String> userLogin(@RequestBody LoginDTO loginDTO,
                                       HttpServletRequest request,
                                       HttpSession session) throws Exception {
         ResponseDTO<String> result = new ResponseDTO<>();
@@ -47,7 +45,7 @@ public class UserLoginController {
             return result;
         }
 
-        String loginResult = loginService.customerLogin(loginDTO.getUserPhone(), loginDTO.getCode(), request.getRemoteAddr().toString(),openid);
+        String loginResult = loginService.userLogin(loginDTO.getUserPhone(), loginDTO.getCode(), request.getRemoteAddr().toString(),openid);
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
         {
@@ -120,16 +118,16 @@ public class UserLoginController {
     /**
      * 退出登录
      */
-    @RequestMapping(value = "customerLoginOut", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "userLoginOut", method = {RequestMethod.POST, RequestMethod.GET})
     @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<UserInfoDTO> customerLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    ResponseDTO<UserInfoDTO> userLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         String logintoken = request.getHeader("logintoken");
         if(logintoken==null||logintoken.equals("")){
             logintoken=request.getSession().getAttribute("token").toString();
         }
-        String status = loginService.customerLoginOut(logintoken,request,response,session);
+        String status = loginService.userLoginOut(logintoken,request,response,session);
         ResponseDTO<UserInfoDTO> result = new ResponseDTO<>();
         result.setResult(StatusConstant.SUCCESS);
         result.setErrorInfo(status.equals(StatusConstant.LOGIN_OUT) ? "退出登录" : "保持在线");
