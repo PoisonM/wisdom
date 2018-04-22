@@ -22,27 +22,27 @@ import java.util.List;
 @RequestMapping(value = "productInfo")
 public class ProductController {
 
-	/**
+    /**
      * 查询某个用户的产品列表信息
-	 * @param sysCustomerId
+     *
+     * @param sysCustomerId
      * @param sysShopId
      * @param startDate
      * @param endDate
      * @return
      */
     @RequestMapping(value = "getUserProductList", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
-	public
-	@ResponseBody
+    @LoginRequired
+    public
+    @ResponseBody
     ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysCustomerId,
                                                                      @RequestParam String sysShopId,
                                                                      @RequestParam String startDate,
                                                                      @RequestParam String endDate) {
-		ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
 
-		return  responseDTO;
-	}
-
+        return responseDTO;
+    }
 
 
 }
