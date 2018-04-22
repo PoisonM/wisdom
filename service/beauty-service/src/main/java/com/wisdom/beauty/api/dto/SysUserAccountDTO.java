@@ -5,7 +5,7 @@ import com.wisdom.common.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SysUserAccount extends BaseEntity implements Serializable {
+public class SysUserAccountDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
@@ -20,6 +20,9 @@ public class SysUserAccount extends BaseEntity implements Serializable {
 
     //boss主键
     private String sysBossId;
+
+    //用户ID
+    private String sysUserId;
 
     //账户号
     private String accountNumber;
@@ -76,6 +79,14 @@ public class SysUserAccount extends BaseEntity implements Serializable {
 
     public void setSysBossId(String sysBossId) {
         this.sysBossId = sysBossId;
+    }
+
+    public String getSysUserId() {
+        return sysUserId;
+    }
+
+    public void setSysUserId(String sysUserId) {
+        this.sysUserId = sysUserId;
     }
 
     public String getAccountNumber() {

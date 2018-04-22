@@ -455,6 +455,76 @@ public class SysUserAccountCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysUserIdIsNull() {
+            addCriterion("sys_user_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdIsNotNull() {
+            addCriterion("sys_user_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdEqualTo(String value) {
+            addCriterion("sys_user_id =", value, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdNotEqualTo(String value) {
+            addCriterion("sys_user_id <>", value, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdGreaterThan(String value) {
+            addCriterion("sys_user_id >", value, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_user_id >=", value, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdLessThan(String value) {
+            addCriterion("sys_user_id <", value, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_user_id <=", value, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdLike(String value) {
+            addCriterion("sys_user_id like", value, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdNotLike(String value) {
+            addCriterion("sys_user_id not like", value, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdIn(List<String> values) {
+            addCriterion("sys_user_id in", values, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdNotIn(List<String> values) {
+            addCriterion("sys_user_id not in", values, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdBetween(String value1, String value2) {
+            addCriterion("sys_user_id between", value1, value2, "sysUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysUserIdNotBetween(String value1, String value2) {
+            addCriterion("sys_user_id not between", value1, value2, "sysUserId");
+            return (Criteria) this;
+        }
+
         public Criteria andAccountNumberIsNull() {
             addCriterion("account_number is null");
             return (Criteria) this;

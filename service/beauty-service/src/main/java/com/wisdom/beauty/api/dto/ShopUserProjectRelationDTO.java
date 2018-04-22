@@ -15,6 +15,9 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //用户id
     private String sysUserId;
 
+    //使用方式 0：疗程 1：单次
+    private String useStyle;
+
     //美容院id
     private String sysShopId;
 
@@ -75,6 +78,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setSysUserId(String sysUserId) {
         this.sysUserId = sysUserId;
+    }
+
+    public String getUseStyle() {
+        return useStyle;
+    }
+
+    public void setUseStyle(String useStyle) {
+        this.useStyle = useStyle;
     }
 
     public String getSysShopId() {

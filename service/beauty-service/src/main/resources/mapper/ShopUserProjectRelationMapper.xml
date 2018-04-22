@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR"/>
     <result column="shop_appointment_id" property="shopAppointmentId" jdbcType="VARCHAR"/>
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
+    <result column="use_style" property="useStyle" jdbcType="CHAR"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
     <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
     <result column="sys_shop_project_id" property="sysShopProjectId" jdbcType="VARCHAR"/>
@@ -77,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, shop_appointment_id, sys_user_id, sys_shop_id, sys_shop_name, sys_shop_project_id,
-    sys_shop_project_name, sys_shop_project_init_amount, sys_shop_project_surplus_amount,
+    id, shop_appointment_id, sys_user_id, use_style, sys_shop_id, sys_shop_name, sys_shop_project_id,
+    sys_shop_project_name, sys_shop_project_init_amount, sys_shop_project_surplus_amount, 
     sys_shop_project_surplus_times, sys_shop_project_init_times, create_by, create_date, 
     update_user, update_date
   </sql>
@@ -118,14 +119,15 @@
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO">
     insert into shop_user_project_relation (id, shop_appointment_id, sys_user_id,
-    sys_shop_id, sys_shop_name, sys_shop_project_id,
-    sys_shop_project_name, sys_shop_project_init_amount,
+    use_style, sys_shop_id, sys_shop_name,
+    sys_shop_project_id, sys_shop_project_name, sys_shop_project_init_amount,
     sys_shop_project_surplus_amount, sys_shop_project_surplus_times,
     sys_shop_project_init_times, create_by, create_date,
     update_user, update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopAppointmentId,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR},
-    #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, #{sysShopProjectId,jdbcType=VARCHAR},
-    #{sysShopProjectName,jdbcType=VARCHAR}, #{sysShopProjectInitAmount,jdbcType=DECIMAL},
+    #{useStyle,jdbcType=CHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR},
+    #{sysShopProjectId,jdbcType=VARCHAR}, #{sysShopProjectName,jdbcType=VARCHAR},
+    #{sysShopProjectInitAmount,jdbcType=DECIMAL},
     #{sysShopProjectSurplusAmount,jdbcType=DECIMAL}, #{sysShopProjectSurplusTimes,jdbcType=INTEGER},
     #{sysShopProjectInitTimes,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
     #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
@@ -141,6 +143,9 @@
       </if>
       <if test="sysUserId != null">
         sys_user_id,
+      </if>
+      <if test="useStyle != null">
+        use_style,
       </if>
       <if test="sysShopId != null">
         sys_shop_id,
@@ -188,6 +193,9 @@
       </if>
       <if test="sysUserId != null">
         #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="useStyle != null">
+        #{useStyle,jdbcType=CHAR},
       </if>
       <if test="sysShopId != null">
         #{sysShopId,jdbcType=VARCHAR},
@@ -246,6 +254,9 @@
       <if test="record.sysUserId != null">
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       </if>
+      <if test="record.useStyle != null">
+        use_style = #{record.useStyle,jdbcType=CHAR},
+      </if>
       <if test="record.sysShopId != null">
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
@@ -292,6 +303,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
     shop_appointment_id = #{record.shopAppointmentId,jdbcType=VARCHAR},
     sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+    use_style = #{record.useStyle,jdbcType=CHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
       sys_shop_project_id = #{record.sysShopProjectId,jdbcType=VARCHAR},
@@ -316,6 +328,9 @@
       </if>
       <if test="sysUserId != null">
         sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="useStyle != null">
+        use_style = #{useStyle,jdbcType=CHAR},
       </if>
       <if test="sysShopId != null">
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
@@ -360,6 +375,7 @@
     update shop_user_project_relation
     set shop_appointment_id = #{shopAppointmentId,jdbcType=VARCHAR},
     sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+    use_style = #{useStyle,jdbcType=CHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
       sys_shop_project_id = #{sysShopProjectId,jdbcType=VARCHAR},
