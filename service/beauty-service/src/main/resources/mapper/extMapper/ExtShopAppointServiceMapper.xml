@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wisdom.beauty.core.mapper.ShopAppointServiceMapper">
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper">
     <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopAppointService">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="shop_project_id" property="shopProjectId" jdbcType="VARCHAR"/>
@@ -89,12 +89,6 @@
         sys_user_id, sys_user_name, sys_user_phone, status, detail, create_by, create_date,
         update_user, update_date
     </sql>
-  <sql id="Base_Column_List">
-    id, shop_project_id, shop_project_name, sys_shop_id, sys_shop_name, sys_clerk_id,
-    sys_clerk_name, sys_boss_id, appoint_start_time, appoint_end_time, appoint_period,
-    sys_customer_id, sys_customer_name, sys_customer_phone, status, detail, create_by,
-    create_date, update_user, update_date
-  </sql>
 
   <select id="selectShopAppointClerkInfoByCriteria"
           parameterType="com.wisdom.beauty.api.dto.ShopAppointService"
