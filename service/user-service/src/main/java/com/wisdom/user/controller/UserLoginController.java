@@ -34,8 +34,8 @@ public class UserLoginController {
     public
     @ResponseBody
     ResponseDTO<String> customerLogin(@RequestBody LoginDTO loginDTO,
-                                  HttpServletRequest request,
-                                  HttpSession session) throws Exception {
+                                      HttpServletRequest request,
+                                      HttpSession session) throws Exception {
         ResponseDTO<String> result = new ResponseDTO<>();
 
         //获取用户的基本信息 todo 需要完成注释部分的代码
