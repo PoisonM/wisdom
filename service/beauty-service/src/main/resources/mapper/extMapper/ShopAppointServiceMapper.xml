@@ -89,7 +89,9 @@
     create_date, update_user, update_date
   </sql>
 
-  <select id="selectShopAppointClerkInfoByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopAppointServiceDTO" resultMap="BaseResultMap">
+  <select id="selectShopAppointClerkInfoByCriteria"
+          parameterType="com.wisdom.beauty.api.dto.ShopAppointServiceDTO"
+          resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from shop_appoint_service

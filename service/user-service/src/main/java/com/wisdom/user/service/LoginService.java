@@ -5,10 +5,7 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.UserInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.JedisUtils;
-import com.wisdom.common.util.RedisLock;
-import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.common.util.*;
 import com.wisdom.user.mapper.CustomerInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -18,6 +15,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -106,8 +106,11 @@ public class LoginService {
         return logintoken;
     }
     
-    public String loginOut(String logintoken) {
+    public String customerLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        String openId = WeixinUtil.getCustomerOpenId(session,request);
         JedisUtils.del(logintoken);
+        session.removeAttribute(ConfigConstant.CUSTOMER_OPEN_ID);
+        CookieUtils.setCookie(response, ConfigConstant.CUSTOMER_OPEN_ID, openId==null?"":openId,0,ConfigConstant.DOMAIN_VALUE);
         return StatusConstant.LOGIN_OUT;
     }
 
