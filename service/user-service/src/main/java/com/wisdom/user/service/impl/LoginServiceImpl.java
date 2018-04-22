@@ -108,10 +108,10 @@ public class LoginServiceImpl implements LoginService{
     }
     
     public String userLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getUserOpenId(session,request);
         JedisUtils.del(logintoken);
-        session.removeAttribute(ConfigConstant.CUSTOMER_OPEN_ID);
-        CookieUtils.setCookie(response, ConfigConstant.CUSTOMER_OPEN_ID, openId==null?"":openId,0,ConfigConstant.DOMAIN_VALUE);
+        session.removeAttribute(ConfigConstant.USER_OPEN_ID);
+        CookieUtils.setCookie(response, ConfigConstant.USER_OPEN_ID, openId==null?"":openId,0,ConfigConstant.DOMAIN_VALUE);
         return StatusConstant.LOGIN_OUT;
     }
 
@@ -131,6 +131,16 @@ public class LoginServiceImpl implements LoginService{
         }else{
             return StatusConstant.FAILURE;
         }
+    }
+
+    @Override
+    public String bossLogin(String userPhone, String code, String s, String openid) {
+        return null;
+    }
+
+    @Override
+    public String clerkLogin(String userPhone, String code, String s, String openid) {
+        return null;
     }
 
 }

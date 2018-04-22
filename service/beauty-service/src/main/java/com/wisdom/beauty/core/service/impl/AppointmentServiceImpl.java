@@ -7,6 +7,7 @@ import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.service.AppointmentService;
 import com.wisdom.common.util.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,5 +97,24 @@ public class AppointmentServiceImpl implements AppointmentService{
         }
         return shopAppointServiceMapper.updateByPrimaryKey(shopAppointServiceDTO);
     }
+
+    @Override
+    public ShopAppointService getShopAppointService(String userId) {
+
+            logger.info("getShopAppointServiceDTO传入参数userId={}",userId);
+            if(StringUtils.isBlank(userId)){
+                return  null;
+            }
+            ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
+            ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
+            criteria.andSysUserIdEqualTo(userId);
+            shopAppointServiceCriteria.setOrderByClause("create_date");
+            List<ShopAppointService> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
+            ShopAppointService shopAppointServiceDTO=null;
+            if(CollectionUtils.isNotEmpty(appointServiceDTOS)){
+                shopAppointServiceDTO=appointServiceDTOS.get(0);
+            }
+            return shopAppointServiceDTO;
+        }
 
 }

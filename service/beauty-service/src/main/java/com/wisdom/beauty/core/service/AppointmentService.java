@@ -35,5 +35,13 @@ public interface AppointmentService {
      * @return
      */
     int updateAppointmentInfo(ShopAppointService shopAppointServiceDTO);
+    /**
+     *@Author:huan
+     *@Param:
+     *@Return:
+     *@Description: 根据用户ID查询预约信息
+     *@Date:2018/4/8 14:26
+     */
+    ShopAppointService getShopAppointService(String userId);
 
 }

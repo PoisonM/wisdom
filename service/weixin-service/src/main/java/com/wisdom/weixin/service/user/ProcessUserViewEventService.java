@@ -1,4 +1,4 @@
-package com.wisdom.weixin.service.customer;
+package com.wisdom.weixin.service.user;
 
 import com.wisdom.common.entity.ReceiveXmlEntity;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
  */
 @Service
 @Transactional(readOnly = false)
-public class ProcessCustomerViewEventService {
+public class ProcessUserViewEventService {
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 

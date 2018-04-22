@@ -7,7 +7,6 @@ import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.WeixinUserBean;
 import com.wisdom.common.util.*;
 import com.wisdom.weixin.service.beauty.WeixinBossCoreService;
-import com.wisdom.weixin.service.customer.WeixinCustomerCoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.*;
 
 /**
  * Created by chenjiake on 17/11/4.
@@ -80,7 +78,7 @@ public class WeixinBossController {
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
 
 
-        String openId = WeixinUtil.getCustomerOpenId(session,request);
+        String openId = WeixinUtil.getBossOpenId(session,request);
         if (openId==null||openId.equals("")) {
             String code = request.getParameter("code");
             String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +

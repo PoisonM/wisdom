@@ -82,7 +82,7 @@ public class PayRecordService {
 
         prePayInfoMap.put("trade_type","JSAPI");
 
-        String openId = WeixinUtil.getCustomerOpenId(session, request);
+        String openId = WeixinUtil.getUserOpenId(session, request);
         prePayInfoMap.put("openid",openId);
 
         //将上述参数进行签名

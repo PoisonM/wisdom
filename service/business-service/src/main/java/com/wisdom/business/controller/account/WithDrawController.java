@@ -68,7 +68,7 @@ public class WithDrawController {
 		}
 
 		try{
-			String openid = WeixinUtil.getCustomerOpenId(session,request);
+			String openid = WeixinUtil.getUserOpenId(session,request);
 			UserBankCardInfoDTO userBankCardInfoDTO = new UserBankCardInfoDTO();
 			userBankCardInfoDTO.setSysUserId(userInfoDTO.getId());
 			userBankCardInfoDTO.setUserName(userName);

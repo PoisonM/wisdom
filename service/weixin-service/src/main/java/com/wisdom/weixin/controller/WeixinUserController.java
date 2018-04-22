@@ -13,7 +13,7 @@ import com.wisdom.common.util.*;
 import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
 import com.wisdom.weixin.interceptor.LoginRequired;
-import com.wisdom.weixin.service.customer.WeixinCustomerCoreService;
+import com.wisdom.weixin.service.user.WeixinCustomerCoreService;
 import com.wisdom.weixin.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -42,7 +42,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "customer")
-public class WeixinCustomerController {
+public class WeixinUserController {
 
     @Autowired
     private WeixinCustomerCoreService weixinCustomerCoreService;
@@ -103,26 +103,26 @@ public class WeixinCustomerController {
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
 
         if ("shopHome".equals(url)) {
-            url = ConfigConstant.CUSTOMER_WEB_URL + "shopHome";
+            url = ConfigConstant.USER_WEB_URL + "shopHome";
         }
         if ("specialProductList".equals(url)) {
-            url = ConfigConstant.CUSTOMER_WEB_URL + "specialProductList";
+            url = ConfigConstant.USER_WEB_URL + "specialProductList";
         }
         else if ("shareHome".equals(url)) {
-            url = ConfigConstant.CUSTOMER_WEB_URL + "shareHome";
+            url = ConfigConstant.USER_WEB_URL + "shareHome";
         }
         else if ("trainingHome".equals(url)) {
-            url = ConfigConstant.CUSTOMER_WEB_URL + "trainingHome";
+            url = ConfigConstant.USER_WEB_URL + "trainingHome";
         }
         else if ("myselfCenter".equals(url)) {
-            url = ConfigConstant.CUSTOMER_WEB_URL + "myselfCenter";
+            url = ConfigConstant.USER_WEB_URL + "myselfCenter";
         }
 
 
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid="+ ConfigConstant.CUTOMER_CORPID +
-                "&secret=" + ConfigConstant.CUSTOMER_SECRET +
+                "&secret=" + ConfigConstant.USER_SECRET +
                 "&code="+ code +
                 "&grant_type=authorization_code";
         WeixinUserBean weixinUserBean;
@@ -136,8 +136,8 @@ public class WeixinCustomerController {
         } while (weixinUserBean == null);
 
         String openId = weixinUserBean.getOpenid();
-        session.setAttribute(ConfigConstant.CUSTOMER_OPEN_ID, openId);
-        CookieUtils.setCookie(response, ConfigConstant.CUSTOMER_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
+        session.setAttribute(ConfigConstant.USER_OPEN_ID, openId);
+        CookieUtils.setCookie(response, ConfigConstant.USER_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
 
         return "redirect:" + url;
     }
@@ -157,7 +157,7 @@ public class WeixinCustomerController {
     {
         ResponseDTO<WeixinConfigDTO> responseDTO = new ResponseDTO<>();
         String u = request.getParameter("url");
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinCustomerFlag));
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String ticket = weixinTokenDTO.getTicket();
         WeixinConfigDTO WeixinConfigDTO = JsApiTicketUtil.customerSign(ticket, u);
@@ -174,7 +174,7 @@ public class WeixinCustomerController {
     @RequestMapping(value = "/fieldwork/author", method = RequestMethod.GET)
     public String Oauth2API(HttpServletRequest request) {
         String backUrl = request.getParameter("url");
-        String oauth2Url = WeixinUtil.getCustomerOauth2Url(backUrl);
+        String oauth2Url = WeixinUtil.getUserOauth2Url(backUrl);
         return "redirect:" + oauth2Url;
     }
 
