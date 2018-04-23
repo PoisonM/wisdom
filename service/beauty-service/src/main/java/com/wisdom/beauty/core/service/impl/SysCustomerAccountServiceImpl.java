@@ -66,7 +66,9 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
             customerAccountResponseDto.setPhoto(userInfoDTO.getPhoto());
             customerAccountResponseDto.setUserName(userInfoDTO.getNickname());
         }
-        SysUserAccountDTO sysUserAccount = getSysUserAccountDTO(userId);
+        SysUserAccountDTO sysUserAccountDTO=new SysUserAccountDTO();
+        sysUserAccountDTO.setSysUserId(userId);
+        SysUserAccountDTO sysUserAccount = getSysUserAccountDTO(sysUserAccountDTO);
         //获取资金信息
         if (sysUserAccount != null) {
             logger.info("sysCustomerAccountMapper查询的资金信息是:arrears={},sumAmount={}", sysUserAccount.getArrears(), sysUserAccount.getSumAmount());
