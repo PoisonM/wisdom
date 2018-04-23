@@ -266,24 +266,27 @@ public class BusinessRunTimeService {
             float returnMonthlyMoney_A = 0;
             float returnMonthlyMoney_B = 0;
 
-            String startDate = "";
-            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"26";
-            if(DateUtils.getMonth().equals("01"))
-            {
-                int month = 11;
-                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-                startDate = year + "-" + month + "-26";
-            }
-            else if(DateUtils.getMonth().equals("02"))
-            {
-                int month = 12;
-                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-                startDate = year + "-" + month + "-26";
-            }
-            else{
-                int month = Integer.parseInt(DateUtils.getMonth()) - 2;
-                startDate = DateUtils.getYear() + "-" + month + "-26";
-            }
+//            String startDate = "";
+//            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"26";
+//            if(DateUtils.getMonth().equals("01"))
+//            {
+//                int month = 11;
+//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
+//                startDate = year + "-" + month + "-26";
+//            }
+//            else if(DateUtils.getMonth().equals("02"))
+//            {
+//                int month = 12;
+//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
+//                startDate = year + "-" + month + "-26";
+//            }
+//            else{
+//                int month = Integer.parseInt(DateUtils.getMonth()) - 2;
+//                startDate = DateUtils.getYear() + "-" + month + "-26";
+//            }
+
+            String startDate = "2018-03-26";
+            String endDate = "2018-04-14";
 
             List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
 
