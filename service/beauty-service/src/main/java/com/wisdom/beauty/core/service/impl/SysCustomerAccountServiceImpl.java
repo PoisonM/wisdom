@@ -10,7 +10,7 @@ import com.wisdom.beauty.core.mapper.SysUserAccountMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

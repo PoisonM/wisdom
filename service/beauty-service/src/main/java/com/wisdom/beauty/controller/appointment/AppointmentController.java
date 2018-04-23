@@ -10,9 +10,8 @@ import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopWorkService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.system.UserInfoDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.LunarUtils;
@@ -75,8 +74,7 @@ public class AppointmentController {
 		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(startDate,"datetime"));
 		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(endDate,"datetime"));
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
-		UserInfoDTO userInfoDTO = new UserInfoDTO();
-		userServiceClient.getUserInfo(userInfoDTO);
+
 		//根据时间查询当前店下所有美容师
 		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
