@@ -55,6 +55,8 @@ public class WithDrawController {
 										 HttpSession session) {
 		ResponseDTO<AccountDTO> result = new ResponseDTO<>();
 
+		int t = 0;
+
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 
 		RedisLock redisLock = new RedisLock("withDrawMoney"+userInfoDTO.getId());
