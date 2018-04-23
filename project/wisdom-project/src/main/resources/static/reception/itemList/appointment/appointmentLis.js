@@ -1,3 +1,5 @@
-PADWeb.controller("appointmentLisCtrl", function($scope, $state, $stateParams) {
-    console.log("appointmentLis")
+PADWeb.controller("appointmentTypeCtrl", function($scope, $state, $stateParams) {
+    console.log("appointmentType")
 })
+
+

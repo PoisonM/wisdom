@@ -1,7 +1,6 @@
 package com.wisdom.business.controller.account;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.constant.OrderStatus;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
@@ -13,6 +12,7 @@ import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
@@ -114,7 +114,6 @@ public class AccountController {
 		{
 			accountDTO.setBankCardInfo(userBankCardInfoDTOS.get(0));
 		}
-		logger.info(userInfoDTO.getMobile()+"get bank card information==="+JSONObject.toJSONString(userBankCardInfoDTOS.get(0)));
 
 		List<Integer> OrderStatusCountList = new ArrayList<>();
 		for (OrderStatus status : OrderStatus.values()) {

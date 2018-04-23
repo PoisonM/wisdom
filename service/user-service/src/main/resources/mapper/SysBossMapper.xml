@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wisdom.user.mapper.SysBossMapper">
-  <resultMap id="BaseResultMap" type="com.wisdom.common.dto.customer.SysBossDTO">
+  <resultMap id="BaseResultMap" type="com.wisdom.common.dto.user.SysBossDTO">
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR"/>
@@ -85,7 +85,7 @@
     id_back_image, address
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
-          parameterType="com.wisdom.common.dto.customer.SysBossCriteria">
+          parameterType="com.wisdom.common.dto.user.SysBossCriteria">
     select
     <if test="distinct" >
       distinct
@@ -112,13 +112,13 @@
     delete from sys_boss
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByCriteria" parameterType="com.wisdom.common.dto.customer.SysBossCriteria">
+  <delete id="deleteByCriteria" parameterType="com.wisdom.common.dto.user.SysBossCriteria">
     delete from sys_boss
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
+  <insert id="insert" parameterType="com.wisdom.common.dto.user.SysBossDTO">
     insert into sys_boss (id, sys_user_id, name,
     nickname, password, email,
     identify_number, mobile, user_type,
@@ -134,7 +134,7 @@
     #{idFrontImage,jdbcType=VARCHAR}, #{idBackImage,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}
     )
   </insert>
-  <insert id="insertSelective" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
+  <insert id="insertSelective" parameterType="com.wisdom.common.dto.user.SysBossDTO">
     insert into sys_boss
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -249,7 +249,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByCriteria" parameterType="com.wisdom.common.dto.customer.SysBossCriteria"
+  <select id="countByCriteria" parameterType="com.wisdom.common.dto.user.SysBossCriteria"
           resultType="java.lang.Integer">
     select count(1) from sys_boss
     <if test="_parameter != null" >
@@ -342,7 +342,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.user.SysBossDTO">
     update sys_boss
     <set >
       <if test="sysUserId != null" >
@@ -399,7 +399,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.customer.SysBossDTO">
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.user.SysBossDTO">
     update sys_boss
     set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
     name = #{name,jdbcType=VARCHAR},

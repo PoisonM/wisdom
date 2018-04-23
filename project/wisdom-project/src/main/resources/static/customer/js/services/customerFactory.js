@@ -16,14 +16,12 @@ var weixin = '/weixin/customer/';
 define(['appCustomer'], function (app) {
     app
 
-        //获取用户的参加在线课堂列表
         .factory('GetUserValidateCode',['$resource',function ($resource){
             return $resource(user + 'getUserValidateCode')
         }])
         .factory('UserLogin',['$resource',function ($resource){
             return $resource(user + 'userLogin')
         }])
-        //退出登录
         .factory('UserLoginOut',['$resource',function ($resource){
             return $resource(user + 'userLoginOut')
         }])
