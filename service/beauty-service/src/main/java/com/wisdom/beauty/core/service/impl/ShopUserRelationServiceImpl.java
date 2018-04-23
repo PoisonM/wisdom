@@ -30,15 +30,17 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
 
     @Override
     public String isMember(String userId) {
-        logger.info("isMember方法传入的参数userId={}",userId);
+        logger.info("isMember方法传入的参数userId={}", userId);
         ShopUserRelationCriteria criteria = new ShopUserRelationCriteria();
         ShopUserRelationCriteria.Criteria c = criteria.createCriteria();
         c.andSysUserIdEqualTo(userId);
-        List<ShopUserRelationDTO> list= shopUserRelationMapper.selectByCriteria(criteria);
-        ShopUserRelationDTO shopUserRelationDTO=null;
-        if(CollectionUtils.isNotEmpty(list)){
-             shopUserRelationDTO=list.get(0);
+        List<ShopUserRelationDTO> list = shopUserRelationMapper.selectByCriteria(criteria);
+        ShopUserRelationDTO shopUserRelationDTO = null;
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
         }
+
+        shopUserRelationDTO = list.get(0);
         return shopUserRelationDTO.getStatus();
     }
 }

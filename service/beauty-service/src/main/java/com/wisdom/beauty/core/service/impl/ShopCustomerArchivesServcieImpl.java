@@ -30,14 +30,26 @@ public class ShopCustomerArchivesServcieImpl implements ShopCustomerArchivesServ
     private ShopUserArchivesMapper shopUserArchivesMapper;
 
     @Override
-    public int getArchivesCount(String sysShopId) {
-        logger.info("getArchivesCount方法传入的参数={}", sysShopId);
-        if (StringUtils.isBlank(sysShopId)) {
+    public int getArchivesCount(ShopUserArchivesDTO shopUserArchivesDTO) {
+        logger.info("getArchivesCount方法传入的参数={}", shopUserArchivesDTO.getSysShopId());
+        if (StringUtils.isBlank(shopUserArchivesDTO.getSysShopId())) {
             throw new ServiceException("SysShopId为空");
         }
         ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
         ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
-        c.andSysShopIdEqualTo(sysShopId);
+        ShopUserArchivesCriteria.Criteria or = criteria.createCriteria();
+
+        //参数
+        c.andSysShopIdEqualTo(shopUserArchivesDTO.getSysShopId());
+        if (StringUtils.isNotBlank(shopUserArchivesDTO.getPhone())) {
+            c.andPhoneLike("%" + shopUserArchivesDTO.getPhone() + "%");
+        }
+
+        or.andSysShopIdEqualTo(shopUserArchivesDTO.getSysShopId());
+        if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysUserName())) {
+            or.andSysUserNameLike("%" + shopUserArchivesDTO.getSysUserName() + "%");
+        }
+        criteria.or(or);
         int count = shopUserArchivesMapper.countByCriteria(criteria);
         return count;
     }
@@ -54,7 +66,7 @@ public class ShopCustomerArchivesServcieImpl implements ShopCustomerArchivesServ
 
 
         // 排序
-        criteria.setOrderByClause("sys_customer_name");
+        criteria.setOrderByClause("sys_user_name");
         // 分页
         criteria.setLimitStart(shopCustomerArchivesDTO.getPageNo());
         criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
