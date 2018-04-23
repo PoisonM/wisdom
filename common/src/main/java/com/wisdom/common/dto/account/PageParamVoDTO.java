@@ -8,10 +8,10 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 public class PageParamVoDTO<T> {
     @JSONField(name = "pageNo")
-    private int pageNo; //当前第几页
+    private int pageNo = 1; //当前第几页
 
     @JSONField(name = "pageSize")
-    private int pageSize; //每页的条目数
+    private int pageSize = 5; //每页的条目数
 
     @JSONField(name = "pageStartNo")
     private int pageStartNo; //起始行
@@ -58,7 +58,7 @@ public class PageParamVoDTO<T> {
     }
 
     public int getPageStartNo() {
-        return (this.pageNo-1)*this.pageSize;
+        return (this.pageNo-1)*this.pageSize < 0 ? 0 :(this.pageNo-1)*this.pageSize;
     }
 
     public void setPageStartNo(int pageStartNo) {

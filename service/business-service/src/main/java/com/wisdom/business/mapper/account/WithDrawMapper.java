@@ -41,4 +41,6 @@ public interface WithDrawMapper {
     List<WithDrawRecordDTO> getWithdrawInfoByPage(@Param("userId") String userId, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
 
     WithDrawRecordDTO getWithdrawDetail(@Param("withDrawId") String transactionId);
+
+    List<WithDrawRecordDTO> getWithdrawRecordInfo(WithDrawRecordDTO withDrawRecordDTO);
 }

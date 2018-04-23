@@ -69,9 +69,9 @@
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
         <result column="next_user_id" property="nextUserId" jdbcType="VARCHAR" />
-        <result column="user_type" property="nextUserId" jdbcType="VARCHAR" />
-        <result column="next_user_type" property="nextUserId" jdbcType="VARCHAR" />
-        <result column="parent_relation" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR" />
+        <result column="next_user_type" property="nextUserType" jdbcType="VARCHAR" />
+        <result column="parent_relation" property="parentRelation" jdbcType="VARCHAR" />
         <result column="user_mobile" property="mobile" jdbcType="VARCHAR" />
         <result column="next_user_mobile" property="nextUserMobile" jdbcType="VARCHAR" />
         <result column="user_identify_number" property="identifyNumber" jdbcType="VARCHAR" />

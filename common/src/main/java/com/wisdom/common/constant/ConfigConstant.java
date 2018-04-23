@@ -107,4 +107,12 @@ public enum ConfigConstant {
     public static final String financeMember = "finance-1";
 
     public static final String operationMember = "operation-1";
+
+    public static final int MAX_WITHDRAW_NUM = 1;
+
+	public static final int MAX_WITHDRAW_AMOUNT = 5000;
+
+	public static final int MIN_WITHDRAW_AMOUNT = 10;
+
+	public static final int CHECK_WITHDRAW_AMOUNT = 1000;
 }

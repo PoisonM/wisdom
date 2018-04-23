@@ -8,6 +8,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.account.PrePayInfoDTO;
 import com.wisdom.common.dto.product.InvoiceDTO;
+import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderListDTO;
@@ -204,4 +205,11 @@ public class PayRecordService {
         return payRecordMapper.getSellNumByProductId(productId);
     }
 
+    public List<BusinessOrderDTO> queryOrderInfoByTransactionId(String transactionId) {
+        return payRecordMapper.queryOrderInfoByTransactionId(transactionId);
+    }
+
+    public List<PayRecordDTO> queryUserInfoByTransactionId(String transactionId) {
+        return payRecordMapper.queryUserInfoByTransactionId(transactionId);
+    }
 }

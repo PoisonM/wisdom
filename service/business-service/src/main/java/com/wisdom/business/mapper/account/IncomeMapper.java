@@ -68,7 +68,7 @@ public interface IncomeMapper {
 
     //查询月结下的详情
     //Page<MonthTransactionRecordDTO> queryMonthTransactionRecordByIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO, Page<MonthTransactionRecordDTO> page);
-    List<MonthTransactionRecordDTO> queryMonthTransactionRecordByIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+    List<MonthTransactionRecordDTO> queryMonthRecordByParentRelation(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
 
     //审核用户收入的金额是否可提现
     void updateIncomeRecord(IncomeRecordDTO incomeRecordDTO);
@@ -90,4 +90,14 @@ public interface IncomeMapper {
     List<MonthTransactionRecordDTO> queryAllMonthTransactionRecord();
 
     void updateMonthTransactionRecord(MonthTransactionRecordDTO monthTransactionRecordDTO);
+
+    List<IncomeRecordDTO> getIncomeRecordByPageParam(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+
+    int getIncomeRecordCountByPageParam(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+
+    List<IncomeRecordDTO> getIncomeRecordByIncomeManagement(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+
+    int getIncomeRecordCountByIncomeManagement(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+
+    int queryMonthRecordCountByParentRelation(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
 }
