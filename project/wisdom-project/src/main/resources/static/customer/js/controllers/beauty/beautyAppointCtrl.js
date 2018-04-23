@@ -17,13 +17,11 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
             }
 
             $scope.chooseProject=function () {
-                alert("chooseProject");
-                $state.go("beautyProject");
+                $state.go("beautyProjectList");
             }
 
             $scope.chooseClerk=function () {
-                alert("chooseClerk");
-                $state.go("beautyClerk");
+                $state.go("beautyClerkList");
             }
 
 

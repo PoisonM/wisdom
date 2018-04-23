@@ -725,15 +725,15 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         })
         .state('pad-web.attendance', {
             url: '/attendance',
-            templateUrl: root + '/appointment/attendance.html',
+            templateUrl: root + '/attendance/attendance.html',
             controller: 'attendanceCtrl',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "新建预约-选择项目",
-                        files: [root + "appointment/attendanceCtrl.js",
-                            root + "appointment/appointmentType.css",
-                            root + "appointment/attendance.css",
+                        name: "考勤",
+                        files: [root + "attendance/attendanceCtrl.js",
+                            root + "./appointment/appointmentType.css",
+                            root + "attendance/attendance.css",
                         ]
                     })
                 }]
