@@ -61,22 +61,21 @@ public class AccountController {
 	@ResponseBody
 	ResponseDTO<AccountDTO> getUserAccountInfo() {
 
-		logger.info("getUserAccountInfo start time===" + new Date());
+		logger.info("用户获取账户信息===" + new Date());
 
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		ResponseDTO<AccountDTO> result = new ResponseDTO<>();
 
 		AccountDTO accountDTO = new AccountDTO();
 		accountDTO.setSysUserId(userInfoDTO.getId());
-		logger.info("user" + userInfoDTO.getMobile() +" get account information");
 		List<AccountDTO> accountDTOS = accountService.getUserAccountInfo(accountDTO);
 
 		//如果用户没有账户，则为用户创建一个账户
 		if(accountDTOS.size()==0)
 		{
-			accountDTO = new AccountDTO();
+			logger.info("用户之前没有账户，创建一个新账户==" + userInfoDTO.getMobile());
 
-			logger.info(userInfoDTO.getMobile()+"create a new account");
+			accountDTO = new AccountDTO();
 
 			//为用户新建一个账户
 			accountDTO.setId(UUID.randomUUID().toString());
@@ -92,7 +91,7 @@ public class AccountController {
 		else
 		{
 			accountDTO = accountDTOS.get(0);
-			logger.info(userInfoDTO.getMobile()+"already have a account"+ JSONObject.toJSONString(accountDTO));
+			logger.info("用户已经有账户，获取当前账户信息==" + accountDTO);
 		}
 
 		IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
@@ -106,7 +105,8 @@ public class AccountController {
 		}
 		accountDTO.setTodayIncome(todayIncome);
 		accountDTO.setIdentifyNumber(userInfoDTO.getIdentifyNumber());
-		logger.info(userInfoDTO.getMobile()+"get today income==="+todayIncome);
+
+		logger.info(userInfoDTO.getMobile()+"用户获取到今天的收益==="+todayIncome);
 
 		Query query = new Query(Criteria.where("sysUserId").is(userInfoDTO.getId()));
 		List<UserBankCardInfoDTO> userBankCardInfoDTOS = mongoTemplate.find(query,UserBankCardInfoDTO.class,"userBankCardInfo");
@@ -121,13 +121,10 @@ public class AccountController {
 			OrderStatusCountList.add(businessOrderDTOList.size());
 		}
 		accountDTO.setOrderStatusCountList(OrderStatusCountList);
-		logger.info(userInfoDTO.getMobile()+"get order list=="+JSONObject.toJSONString(OrderStatusCountList));
+		logger.info(userInfoDTO.getMobile()+"用户获取所有订单的状态=="+JSONObject.toJSONString(OrderStatusCountList));
 
 		result.setResponseData(accountDTO);
 		result.setResult(StatusConstant.SUCCESS);
-
-		logger.info("getUserAccountInfo end time===" + new Date());
-
 		return result;
 	}
 

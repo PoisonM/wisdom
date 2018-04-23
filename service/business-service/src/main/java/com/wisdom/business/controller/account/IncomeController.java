@@ -97,7 +97,6 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamDTO<List<PayRecordDTO>>> queryInstanceInfoByTransactionId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-
 		pageParamVoDTO.setEndTime(CommonUtils.getEndDate(pageParamVoDTO.getEndTime()));
 		ResponseDTO<PageParamDTO<List<PayRecordDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamDTO<List<PayRecordDTO>> page = incomeService.queryInstanceInfoByTransactionId(pageParamVoDTO);
@@ -367,7 +366,6 @@ public class IncomeController {
 		IncomeRecordManagementDTO incomeRecordManagementDTO1 =new IncomeRecordManagementDTO();
 		incomeRecordManagementDTO1.setIncomeRecordId(incomeRecordId);
 		incomeRecordManagementDTO1.setUserType(userInfoDTO.getUserType());
-//		incomeRecordManagementDTO1.setSysUserId(userInfoDTO.getId());
 		List<IncomeRecordManagementDTO> incomeRecordManagementDTOS = incomeRecordManagementService.getIncomeRecordManagement(incomeRecordManagementDTO1);
 		//如已有审核记录
 		if(incomeRecordManagementDTOS.size()>0){
@@ -402,37 +400,6 @@ public class IncomeController {
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
-	}
-
-	/**
-	 * 修改佣金奖励审核new
-	 * @param status 状态审核通过或不通过
-	 * @param IncomeRecordManagementId
-	 * @return
-	 */
-	@RequestMapping(value = "updateIncomeRecordManagement", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
-	public
-	@ResponseBody
-	ResponseDTO<Map<String,Object>> updateIncomeRecordManagement(@RequestParam String IncomeRecordManagementId,String status) {
-		/*long startTime = System.currentTimeMillis();
-		logger.info("修改佣金审核传入参数={}", "incomeRecordId = [" + IncomeRecordManagementId + "],status = [" + status + "]");
-		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
-		if("".equals(IncomeRecordManagementId) && IncomeRecordManagementId != null){
-			IncomeRecordManagementDTO incomeRecordManagementDTO = new IncomeRecordManagementDTO();
-			incomeRecordManagementDTO.setId(IncomeRecordManagementId);
-			incomeRecordManagementDTO.setStatus(status);
-			incomeRecordManagementService.updateIncomeRecordManagement(incomeRecordManagementDTO);
-			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-		}else {
-			responseDTO.setErrorInfo(StatusConstant.FAILURE);
-			responseDTO.setResult("IncomeRecordManagementId为空");
-			logger.info("修改佣金审核incomeRecordId为空", "incomeRecordId = [" + IncomeRecordManagementId + "]");
-		}
-
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
-		return responseDTO;*/
-		return null;
 	}
 
 	/**
