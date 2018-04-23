@@ -116,10 +116,13 @@ public class PayCoreService {
                 //todo 开启A、B店的规则，给不同的用户给与不同的金额入账，此处涉及到修改用户的account表和income表
                 UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(instanceReturnMoneySignalDTO.getSysUserId());
 
+                logger.info("根据支付交易，处理及时返利=="+instanceReturnMoneySignalDTO);
                 handleInstanceReturnMoney(userInfoDTO,instanceReturnMoneySignalDTO);
 
                 float expenseMoney = calculateUserExpenseMoney(instanceReturnMoneySignalDTO);
+                logger.info("获取支付交易的消费金额=="+expenseMoney);
 
+                logger.info("进行月度流水统计");
                 if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1))
                 {
                     payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
