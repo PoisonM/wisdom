@@ -144,7 +144,7 @@ angular.module('controllers',[]).controller('orderCtrl',
                         }else if(orderLis[i].status == "4"){
                             orderLis[i].status = "待收货"
                         }else if(orderLis[i].status == "del"){
-                            orderLis[i].status = "订单已删除"                                                                    }
+                            orderLis[i].status = "订单已删除"                                                                           }
                     }
                     $scope.orderLis =orderLis;
                     $scope.orderLis = data.responseData.responseData;

@@ -44,15 +44,14 @@
                             </div>
                         </div>
                         <div class="table_lis" >
-                            <div class="statusBar">
-                                <button   ng-click="stateBox('allState')" ng-class="{'actives':stateIndex=='allState'}">全部状态</button>
-                                <button   ng-click="stateBox('Audited')" ng-class="{'actives':stateIndex=='Audited'}">已审核状态</button>
-                                <button   ng-click="stateBox('Unaudited')" ng-class="{'actives':stateIndex=='Unaudited'}">未审核状态</button>
-                            </div>
-                            <div>
+                            <div class="statusBar" style="height:60px;">
+                                <button   ng-click="stateBox('')" ng-class="{'actives':checkStatus==''}">全部状态</button>
+                                <button   ng-click="stateBox('1')" ng-class="{'actives':checkStatus=='1'}">已审核状态</button>
+                                <button   ng-click="stateBox('0')" ng-class="{'actives':checkStatus=='0'}">未审核状态</button>
                                 <button class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='recommends'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
-                                <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommends'">筛选已完成的订单</button>
+                                <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommends'" ng-show="false">筛选已完成的订单</button>
                             </div>
+
                             <table class="table  table-hover text-center ">
                                 <thead>
                                 <tr id="product_lis_title">
@@ -63,9 +62,9 @@
                                     <th class="text-center" >付款时间</th>
                                     <th class="text-center">类型</th>
                                     <th class="text-center">状态</th>
-                                    <th class="text-center">订单状态</th>
+                                    <th class="text-center" ng-hide="status=='month'">订单状态</th>
                                     <th class="text-center">审核</th>
-                                    <th class="text-center">操作</th>
+                                    <th class="text-center" style="width:20%;">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody ng-repeat="item in MonthlyBalanceLis">
@@ -73,46 +72,52 @@
                                     <td>{{item.nickName}}</td>
                                     <td>{{item.mobile}}</td>
                                     <td>{{item.userType}}</td>
-                                    <td>{{item.commission }}</td>
-                                    <td>{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                    <td>{{item.type}}</td>
-                                    <td>{{item.orderType}}</td>
-                                    <td>{{item.present}}</td>
+                                    <td>{{item.amount }}</td>
+                                    <td>{{item.payDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td>{{item.incomeType}}</td>
                                     <td>{{item.status}}</td>
+                                    <td  ng-hide="status=='month'">{{item.orderStatus}}</td>
+                                    <td>{{item.secondCheckStatus}}<span ng-hide="item.secondCheckStatus == '未审核'">({{item.checkStatus}}</span><span ng-show="item.secondCheckStatus=='有一方拒绝'">:{{item.checkUserType}})</span></td>
                                     <td>
-                                        <a ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index)">查看</a>
+                                        <a ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index,item.id)" class="orderBtn">查看</a>
                                          &nbsp;
-                                        <a ng-click="examine(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index)">审核</a>
+                                        <a ng-click="examine(item.id)" class="orderBtn">审核</a>
                                        <!-- <div ng-if="haha.meme == $index" ng-repeat="items in item.types">{{items.nickName}}</div>-->
                                     </td>
                                 </tr>
-                                    <tr class="product_lis_title" ng-show="item.states=='2'">
+                                    <tr class="product_lis_title IncomeListMess" ng-show="item.statesLook=='2'" >
                                         <th class="text-center" >昵称</th>
                                         <th class="text-center" >手机号</th>
                                         <th class="text-center" >当前等级</th>
                                         <th class="text-center" >生成订单等级</th>
-                                        <th class="text-center" >上级当前等级</th>
-                                        <th class="text-center">上级订单生成等级</th>
+                                        <th class="text-center" >下级当前等级</th>
+                                        <th class="text-center">下级订单生成等级</th>
                                         <th class="text-center">订单编号</th>
                                         <th class="text-center">交易流水号</th>
                                         <th class="text-center">订单状态</th>
                                         <th class="text-center">支付金额</th>
                                     </tr>
                                     <!--点击查看出现的下级内容-->
-                                    <tr  ng-repeat="items in item.types" ng-show="item.states=='2'">
-                                        <td>{{items.nickName}}</td>
-                                        <td>{{items.mobile}}</td>
-                                        <!--<td>当前等级</td>
-                                        <td>生成订单等级</td>
-                                        <td>上级当前等级</td>
-                                        <td>上级订单生成等级</td>
-                                        <td>订单编号</td>
-                                        <td>交易流水号</td>
-                                        <td>订单状态</td>
-                                        <td>支付金额</td>-->
+
+                                    <tr  ng-show="item.statesLook=='2'"  ng-repeat="items in IncomeList" id="IncomeListMess">
+                                        <td>{{user[0].nickName}}</td>
+                                        <td>{{user[0].mobile}}</td>
+                                        <td>{{user[0].userTypeNow}}</td>
+                                        <td>{{user[0].userType}}</td>
+                                        <td>{{user[0].nextUserTypeNow}}</td>
+                                        <td>{{user[0].nextUserType}}</td>
+                                        <td>{{items.businessOrderId}}</td>
+                                        <td>{{user[0].transactionId}}</td>
+                                        <td>{{items.status}}</td>
+                                        <td>{{items.amount}}</td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="auditArea" ng-show="auditFlag" ng-click="viod();$event.stopPropagation()">
+                                <p class="textTitle">确认无误审核通过？</p>
+
+                                <p ><button class="candel" ng-click="auditChange(1)">通过</button><button class="true" ng-click="auditChange(0)">驳回</button></p>
+                            </div>
                             <div page-tool></div>
                         </div>
                     </div>

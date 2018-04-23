@@ -2,43 +2,61 @@
  * Created by Administrator on 2018/1/11.
  */
 angular.module('controllers',[]).controller('abschlussCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryMonthTransactionRecordByIncomeRecord','UpdateIncomeRecordStatusById','$filter','ManagementUtil','QueryMonthPayRecordByUserId',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryMonthTransactionRecordByIncomeRecord,UpdateIncomeRecordStatusById,$filter,ManagementUtil,QueryMonthPayRecordByUserId) {
-            /*$scope.mum = true;*/
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryMonthTransactionRecordByIncomeRecord','UpdateIncomeRecordStatusById','$filter','ManagementUtil','QueryMonthPayRecordByUserId',"SelectSelfMonthTransactionRecordByUserId","ExportExcelMonthTransactionRecordByUserId","SelectNextMonthTransactionRecordByUserId",
+        function (
+    $scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryMonthTransactionRecordByIncomeRecord,UpdateIncomeRecordStatusById,$filter,ManagementUtil,QueryMonthPayRecordByUserId,SelectSelfMonthTransactionRecordByUserId,ExportExcelMonthTransactionRecordByUserId,SelectNextMonthTransactionRecordByUserId) {
+            $scope.mum = true;
                  $scope.loadPageList = function () {
                      /*$scope.mum = true;*/
                      var page = {
                          pageNo:$scope.pageNo,
                          pageSize:$scope.pageSize,
+                         isExportExcel:"N",
                          requestData:{
                              sysUserId:$stateParams.id
                          },
-                         endTime:$filter("date")($stateParams.time,'yyyy-MM-dd')
+                       /*  endTime:$filter("date")($stateParams.time,'yyyy-MM-dd')*/
                      };
-                     QueryMonthTransactionRecordByIncomeRecord.save(page,
+                     SelectNextMonthTransactionRecordByUserId.save(page,
                          function(data){
                              ManagementUtil.checkResponseData(data,"");
-                             if(data.result == Global.SUCCESS){
+                             if(data.errorInfo == Global.SUCCESS){
                                  $scope.mum = false;
-                                 $scope.monthlyPar = data.responseData.responseData;
+                                 $scope.monthlyPar = data.responseData.nextList;
                                  for(var i=0;i< $scope.monthlyPar.length;i++){
-
-                                     $scope.monthlyPar[i].userType = $scope.monthlyPar[i].userType.substring(9,10)+"级";
-
+                                     $scope.monthlyPar[i].nextUserType = $scope.monthlyPar[i].nextUserType.substring(9,10)+"级";
+                                     $scope.monthlyPar[i].nextUserTypeNow = $scope.monthlyPar[i].nextUserTypeNow.substring(9,10)+"级";
                                  }
-
                                   $scope.response = {};
-                                  $scope.response.count = data.responseData.totalCount;
+                                  $scope.response.count = data.responseData.nextCount;
                                   $scope.param.pageFrom = ($scope.pageNo-1)*$scope.pageSize+1;
                                   $scope.param.pageTo = ($scope.pageNo-1)*$scope.pageSize+$scope.pageSize;
-
                              }
                          });
-
                  };
                  /*导出列表*/
                  $scope.educeLis=function () {
                      if (confirm("是否筛选已完成的订单？")) {
+                         var page = {
+                             pageNo:$scope.pageNo,
+                             pageSize:$scope.pageSize,
+                             isExportExcel:"Y",
+                             requestData:{
+                                 sysUserId:$stateParams.id
+                             },
+                         };
+                         ExportExcelMonthTransactionRecordByUserId.save(page,
+                             function(data){
+                                 ManagementUtil.checkResponseData(data,"");
+                                 if (data.errorInfo == Global.SUCCESS) {
+                                     var $eleForm = $("<form method='get'></form>");
+                                     $eleForm.attr("action", data.result);
+                                     $(document.body).append($eleForm);
+                                     $eleForm.submit();
+                                     $scope.loadPageList();
+
+                                 }
+                             });
                      }
                  }
             $scope.detailPageList= function () {
@@ -51,12 +69,17 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                     requestData:{
                         sysUserId:$stateParams.id
                     },
-                    endTime:$filter("date")($stateParams.time,'yyyy-MM-dd')
+                   /* endTime:$filter("date")($stateParams.time,'yyyy-MM-dd'),*/
+                    isExportExcel:"N",
                 };
-                QueryMonthPayRecordByUserId.save(page,function(data){
+                SelectSelfMonthTransactionRecordByUserId.save(page,function(data){
                     ManagementUtil.checkResponseData(data,"");
                     if(data.result == Global.SUCCESS){
-                        $scope.abschluss = data.responseData.responseData;
+                        $scope.abschluss = data.responseData.selfList;
+                        for(var i=0;i< $scope.abschluss.length;i++){
+                            $scope.abschluss[i].userType = $scope.abschluss[i].userType.substring(9,10)+"级";
+                            $scope.abschluss[i].userTypeNow = $scope.abschluss[i].userTypeNow.substring(9,10)+"级";
+                        }
                         for(var i=0;i<$scope.abschluss.length;i++){
                             if($scope.abschluss[i].status == "0"){
                                 $scope.abschluss[i].status = "未支付"
@@ -66,23 +89,19 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                                 $scope.abschluss[i].status = "支付失败"
                             }
                         }
-                        var count = data.responseData.totalCount;
-                        if($scope.pageNum>=count/$scope.pageSize){
+                        $scope.count = data.responseData.totalCount;
+                        if($scope.pageNum>=Math.ceil(scope.count/scope.pageSize)){
                             $scope.hint="none"
                         }
                         $scope.mum = false;
+                    }else{
+                        $scope.count = 1;
                     }
                 });
             };
 
 
-/*审核通过*/
-         /*    $scope.true = function(){
 
-            };
-            $scope.cancel = function(){
-
-            };*/
           /*  $scope.submit = function(){
                 var  pageParamVoDTO = {
                     requestData:{
