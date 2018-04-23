@@ -555,6 +555,18 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    .state('specialShopTransactionList', {
+                        url: '/specialShopTransactionList/:specialShopId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'specialShopTransactionListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.specialShopTransactionListCtrl',
+                                    ['js/controllers/business/specialShopTransactionListCtrl.js?ver='+ customerVersion],
+                                    'views/business/specialShopTransactionList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
                 
 
                 $urlRouterProvider.otherwise('/shopHome')

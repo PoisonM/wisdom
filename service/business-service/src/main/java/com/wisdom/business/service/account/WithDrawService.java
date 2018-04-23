@@ -8,6 +8,7 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
+import com.wisdom.common.entity.Article;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.WithDrawRecordDTO;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
@@ -124,54 +126,69 @@ public class WithDrawService {
     public WithDrawRecordDTO getWithdrawDetail(String transactionId) {
         return withDrawMapper.getWithdrawDetail(transactionId);
     }
+
+    public List<WithDrawRecordDTO> getWithdrawRecordInfo(WithDrawRecordDTO withDrawRecordDTO)
+    {
+        return  withDrawMapper.getWithdrawRecordInfo(withDrawRecordDTO);
+    }
     
     @Transactional(rollbackFor = Exception.class)
-    public void withDrawMoneyFromAccount(float moneyAmount, HttpServletRequest request, String openid,
-                                         UserBankCardInfoDTO userBankCardInfoDTO)  throws Exception{
+    public void withDrawMoneyFromAccount(float moneyAmount, HttpServletRequest request, String openid,boolean checkFlag)  throws Exception{
 
-        //生成提现记录
-        RedisLock redisLock = new RedisLock("withDrawRecordLock" + openid);
+        String token = WeixinUtil.getUserToken();
 
-        try{
-            redisLock.lock();
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(userInfoDTO.getId());
 
-            UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-            AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(userInfoDTO.getId());
-
-            //扣除账户余额中的款项
-            if((accountDTO.getBalance()-moneyAmount)<0)
-            {
-                throw new Exception();
-            }
-            else
-            {
-                accountDTO.setBalance(accountDTO.getBalance()-moneyAmount);
-                accountDTO.setUpdateDate(new Date());
-                accountMapper.updateUserAccountInfo(accountDTO);
-            }
-
-            WithDrawRecordDTO withDrawRecordDTO = new WithDrawRecordDTO();
-            withDrawRecordDTO.setId(UUID.randomUUID().toString());
-            withDrawRecordDTO.setWithdrawId(CodeGenUtil.getTransactionCodeNumber());
-            withDrawRecordDTO.setMoneyAmount(moneyAmount);
-            withDrawRecordDTO.setStatus("0");
-            withDrawRecordDTO.setSysUserId(userInfoDTO.getId());
-            withDrawRecordDTO.setCreateDate(new Date());
-            withDrawRecordDTO.setUpdateDate(new Date());
-            withDrawRecordDTO.setUserOpenId(openid);
-            withDrawRecordDTO.setUserAccountId(accountDTO.getId());
-            withDrawMapper.addWithDrawRecord(withDrawRecordDTO);
-
-            userBankCardInfoDTO.setWithDrawId(withDrawRecordDTO.getWithdrawId());
-            mongoTemplate.insert(userBankCardInfoDTO,"userBankCardInfo");
-
-        }catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            redisLock.unlock();
+        //扣除账户余额中的款项
+        if((accountDTO.getBalance()-moneyAmount)<0)
+        {
+            List<Article> articleList = new ArrayList<>();
+            Article article = new Article();
+            article.setTitle("对不起，您的提现金额大于您的账户余额，提现失败。");
+            articleList.add(article);
+            WeixinUtil.senImgMsgToWeixin(token,openid,articleList);
+            throw new Exception();
+        }
+        else
+        {
+            accountDTO.setBalance(accountDTO.getBalance()-moneyAmount);
+            accountDTO.setUpdateDate(new Date());
+            accountMapper.updateUserAccountInfo(accountDTO);
         }
 
+        WithDrawRecordDTO withDrawRecordDTO = new WithDrawRecordDTO();
+        withDrawRecordDTO.setId(UUID.randomUUID().toString());
+        withDrawRecordDTO.setWithdrawId(CodeGenUtil.getTransactionCodeNumber());
+        withDrawRecordDTO.setMoneyAmount(moneyAmount);
+        withDrawRecordDTO.setSysUserId(userInfoDTO.getId());
+        withDrawRecordDTO.setCreateDate(new Date());
+        withDrawRecordDTO.setUpdateDate(new Date());
+        withDrawRecordDTO.setUserOpenId(openid);
+        withDrawRecordDTO.setUserAccountId(accountDTO.getId());
+        if(checkFlag)
+        {
+            withDrawRecordDTO.setStatus("0");
+            withDrawMapper.addWithDrawRecord(withDrawRecordDTO);
+        }
+        else
+        {
+            withDrawRecordDTO.setStatus("1");
+            withDrawMapper.addWithDrawRecord(withDrawRecordDTO);
+
+            //将钱打入用户零钱账户
+            returnMoneyToUser(moneyAmount,request,openid,token);
+        }
+    }
+
+    public void deFrozenWithDrawRecord(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
+        withDrawMapper.updateWithdrawById(withDrawRecordDTO.getWithdrawId(),"1");
+        String token = WeixinUtil.getUserToken();
+        returnMoneyToUser(withDrawRecordDTO.getMoneyAmount(),request,withDrawRecordDTO.getUserOpenId(),token);
+    }
+
+    private static void returnMoneyToUser(float moneyAmount,HttpServletRequest request, String openid,String token)
+    {
         //公众号中的提现操作，moneyAmount为提现金额
         Float returnMoney = moneyAmount*100;
 
@@ -185,8 +202,8 @@ public class WithDrawService {
         parameters.put("nonce_str", IdGen.uuid());
         parameters.put("partner_trade_no",IdGen.uuid());
         parameters.put("check_name","NO_CHECK");
-//        parameters.put("check_name","FORCE_CHECK");
-//        parameters.put("re_user_name","陈佳科");
+        //parameters.put("check_name","FORCE_CHECK");
+        //parameters.put("re_user_name","陈佳科");
         parameters.put("amount", money);//金额
         parameters.put("desc", "提现零钱");
         parameters.put("spbill_create_ip",request.getRemoteAddr());
@@ -196,18 +213,14 @@ public class WithDrawService {
         String requestXML = JsApiTicketUtil.getRequestXml(parameters);
         try{
             String result = HttpRequestUtil.clientCustomSSLS(ConfigConstant.transfer, requestXML);
-            Map<String, String> returnMap = XMLUtil.doXMLParse(result);//解析微信返回的信息，以Map形式存储便于取值
+            Map<String, String> returnMap = XMLUtil.doXMLParse(result);
+            //解析微信返回的信息，以Map形式存储便于取值
             if(!"SUCCESS".equals(returnMap.get("result_code"))){
                 throw new Exception();
             }
         }catch (Exception e){
             e.printStackTrace();
-            throw e;
         }
-
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
-        WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
-        String token = weixinTokenDTO.getToken();
         WeixinTemplateMessageUtil.withdrawalsSuccess2Weixin(openid,token,"",String.valueOf(moneyAmount),DateUtils.DateToStr(new Date(), "date"));
     }
 

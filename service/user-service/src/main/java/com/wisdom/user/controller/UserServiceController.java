@@ -17,6 +17,9 @@ public class UserServiceController {
 	@Autowired
 	private UserInfoService customerInfoService;
 
+	@Autowired
+	private RealNameAuthService realNameAuthService;
+
 	@RequestMapping(value = "/getUserInfo",method=RequestMethod.POST)
 	@ResponseBody
 	List<UserInfoDTO> getUserInfo(@RequestBody UserInfoDTO userInfoDTO){
@@ -48,11 +51,18 @@ public class UserServiceController {
 	List<UserInfoDTO> queryNextUserByUserId(@RequestParam(value = "userId") String userId) {
 		return customerInfoService.queryNextUserById(userId);
 	}
+
 	@RequestMapping(value = "/getUserInfoListFromUserId",method=RequestMethod.GET)
 	@ResponseBody
 	List<UserInfoDTO> getUserInfoFromUserId(@RequestParam String[] userIds,
 											@RequestParam(required = false) String searchFile) {
 		List<String> list= Arrays.asList(userIds);
 		return customerInfoService.getUserInfoFromUserId(list ,searchFile);
+	}
+
+	@RequestMapping(value = "/verifyUserIdentify",method=RequestMethod.GET)
+	@ResponseBody
+	RealNameInfoDTO verifyUserIdentify(@RequestParam(value="idCard") String idCard,@RequestParam(value="name") String name) {
+		return realNameAuthService.getRealNameInfoDTO(idCard,name);
 	}
 }
