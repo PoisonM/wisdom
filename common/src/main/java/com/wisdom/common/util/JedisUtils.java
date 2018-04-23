@@ -367,9 +367,6 @@ public class JedisUtils {
 		Jedis jedis = null;
 		try {
 			jedis = getResource();
-			if (jedis.exists(key)) {
-				jedis.del(key);
-			}
 			result = jedis.zadd(key, score, member);
 			logger.debug("setSet {} = {} = {}", key, member);
 		} catch (Exception e) {

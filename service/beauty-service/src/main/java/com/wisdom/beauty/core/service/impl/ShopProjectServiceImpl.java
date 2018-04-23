@@ -47,7 +47,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     @Override
     public List<ShopUserProjectRelationDTO> getUserProjectList(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
 
-        if (CommonUtils.objectIsNotEmpty(shopUserProjectRelationDTO)) {
+        if (CommonUtils.objectIsEmpty(shopUserProjectRelationDTO)) {
             logger.info("获取用户预约的项目传入参数={}", "shopUserProductRelationDTO = [" + shopUserProjectRelationDTO + "]");
             return null;
         }
@@ -114,9 +114,9 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             criteria.andSysShopIdEqualTo(shopProjectInfoDTO.getSysShopId());
         }
 
-        if (StringUtils.isNotBlank(shopProjectInfoDTO.getStatus())) {
-            criteria.andStatusNotEqualTo(CommonCode.SUCCESS.getCode());
-        }
+//        if (StringUtils.isNotBlank(shopProjectInfoDTO.getStatus())) { 默认查询有效的
+        criteria.andStatusEqualTo(CommonCode.SUCCESS.getCode());
+//        }
 
         if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
             criteria.andUseStyleEqualTo(CardType.TREATMENT_CARD.getCode());

@@ -5,17 +5,16 @@ import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.core.service.ShopProjectService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,28 +34,28 @@ public class ProjectController {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
+	@Resource
 	private ShopProjectService projectService;
 
 	/**
 	 * 查询某个用户预约项目列表信息
 	 *
-	 * @param appointment
+	 * @param appointmentId
 	 * @return
 	 */
 	@RequestMapping(value = "getUserCardProjectList", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCardList(@RequestParam String appointment) {
+	ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCardProjectList(@RequestParam String appointmentId) {
 
 		long startTime = System.currentTimeMillis();
 
-		logger.info("查询某个用户的卡片列表信息传入参数={}", "appointment = [" + appointment + "]");
+		logger.info("查询某个用户的卡片列表信息传入参数={}", "appointment = [" + appointmentId + "]");
 		ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
 
 		ShopUserProjectRelationDTO ShopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
-		ShopUserProjectRelationDTO.setShopAppointmentId(appointment);
+		ShopUserProjectRelationDTO.setShopAppointmentId(appointmentId);
 
         List<ShopUserProjectRelationDTO> projectList = projectService.getUserProjectList(ShopUserProjectRelationDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -73,7 +72,7 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "updateUserCardProjectList", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<List<ShopUserProjectRelationDTO>> updateUserCardProjectList(@RequestBody List<ShopUserProjectRelationDTO> ShopUserProjectRelationDTOS) {
@@ -101,15 +100,15 @@ public class ProjectController {
 	}
 
 	/**
-	 * 查询某个店的疗程卡列表信息
+	 * 查询某个店的疗程卡、单次卡列表信息 "0", "疗程卡"  "1", "单次")
 	 *
 	 * @return
 	 */
 	@RequestMapping(value = "getShopCourseProjectList", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopProjectInfoDTO>> getShopCourseProjectList(@RequestParam String sysShopId) {
+	ResponseDTO<List<ShopProjectInfoDTO>> getShopCourseProjectList(@RequestParam String sysShopId, @RequestParam String useStyle) {
 
 		long currentTimeMillis = System.currentTimeMillis();
 
@@ -118,9 +117,10 @@ public class ProjectController {
 
 		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
 		shopProjectInfoDTO.setSysShopId(sysShopId);
+		shopProjectInfoDTO.setUseStyle(useStyle);
 		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
 
-		if (CommonUtils.objectIsNotEmpty(projectList)) {
+		if (CommonUtils.objectIsEmpty(projectList)) {
 			logger.debug("查询某个店的疗程卡列表信息查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
 			return null;
 		}
@@ -141,7 +141,7 @@ public class ProjectController {
      * @return
      */
 	@RequestMapping(value = "getUserCourseProjectList", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
     ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId,
@@ -155,7 +155,7 @@ public class ProjectController {
         relationDTO.setSysShopId(sysShopId);
         relationDTO.setUseStyle(cardStyle);
         List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
-        if (CommonUtils.objectIsNotEmpty(userProjectList)) {
+		if (CommonUtils.objectIsEmpty(userProjectList)) {
             logger.debug("查询某个用户的卡片列表信息为空, {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
             return null;
         }
@@ -174,7 +174,7 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "getUserProjectGroupList", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<List<ShopUserProjectGroupRelRelationDTO>> getUserProjectGroupList(@RequestParam String sysUserId,
