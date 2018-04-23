@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -44,6 +45,28 @@ public interface ShopAppointmentService {
      */
     ShopAppointServiceDTO getShopAppointService(String userId);
 
+
+    /**
+     *  查询某个美容院某个时间预约个数或某个店员的预约总数
+     *  @param  sysShopId 店铺id
+     *  @param  appointStartTimeS 预约开始时间（范围起始值）
+     *  @param  appointStartTimeE  appointStartTimeE（范围结束值）
+     *  @return  某一个时间段的数量数量
+     *  @autur zhangchao
+     * */
+    HashMap<String,String> findNumForShopByTimeService(String sysShopId, String sysClerkId, String appointStartTimeS, String appointStartTimeE);
+
+
+    /**
+     *  查询某个美容院某个时间预约个数
+     *  @param  sysShopId 店铺id
+     *  @param  sysClerkId 店员id
+     *  @param  appointStartTimeS 预约开始时间（范围起始值）
+     *  @param  appointStartTimeE  appointStartTimeE（范围结束值）
+     *  @return  shopAppointUserInfoList 预约用户列表
+     *  @autur zhangchao
+     * */
+     List<ShopAppointServiceDTO> findUserInfoForShopByTimeService(String sysShopId, String sysClerkId,String appointStartTimeS, String appointStartTimeE);
     /**
      * 保存用户的预约信息
      */
