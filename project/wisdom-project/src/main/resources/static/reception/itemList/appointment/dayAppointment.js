@@ -100,7 +100,6 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                 choose: function(datas){ //选择日期完毕的回调
                     laydate(start);
                     laydate(end);
-                    console.log(datas)
                     $scope.time(datas);
 
                 }

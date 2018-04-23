@@ -23,6 +23,7 @@ function consumption($scope){
    }
    $scope.giving = function(){
        $scope.param.giving = true;
+       $scope.param.givingProduct = true;
    }
    $scope.relatedStaff = function(){
        $scope.param.relatedStaff = true;
