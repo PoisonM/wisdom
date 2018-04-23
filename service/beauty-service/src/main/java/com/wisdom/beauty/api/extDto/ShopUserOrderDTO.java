@@ -26,7 +26,11 @@ public class ShopUserOrderDTO {
     //创建时间
     private Date createDate;
 
+    //备注
     private String detail;
+
+    //签字图片地址
+    private String signUrl;
 
     //用户与项目关系
     private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
@@ -39,6 +43,14 @@ public class ShopUserOrderDTO {
 
     //用户与充值卡的关系
     private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
+
+    public String getSignUrl() {
+        return signUrl;
+    }
+
+    public void setSignUrl(String signUrl) {
+        this.signUrl = signUrl;
+    }
 
     public String getDetail() {
         return detail;

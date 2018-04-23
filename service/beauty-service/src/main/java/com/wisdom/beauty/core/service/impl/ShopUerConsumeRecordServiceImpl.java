@@ -159,5 +159,17 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         return insert;
     }
 
+    /**
+     * 更新用户的消费记录
+     *
+     * @param shopUserConsumeRecordDTO
+     * @return
+     */
+    @Override
+    public int updateConumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
+        logger.info("更新用户的消费记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
+        return shopUserConsumeRecordMapper.updateByPrimaryKeySelective(shopUserConsumeRecordDTO);
+    }
+
 
 }

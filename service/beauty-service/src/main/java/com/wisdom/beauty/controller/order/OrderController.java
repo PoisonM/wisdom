@@ -1,7 +1,9 @@
 package com.wisdom.beauty.controller.order;
 
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
+import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +37,9 @@ public class OrderController {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Resource
+    private ShopUerConsumeRecordService shopUerConsumeRecordService;
 
     /**
      * 查询用户最近一次订单信息
@@ -84,6 +90,40 @@ public class OrderController {
 
         mongoTemplate.insert(shopUserOrderDTO, "shopUserOrderDTO");
 
+        responseDTO.setResponseData(StatusConstant.SUCCESS);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 更新用户的订单信息
+     *
+     * @param shopUserOrderDTO 订单对象
+     * @return
+     */
+    @RequestMapping(value = "updateShopUserOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> updateShopUserOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("保存用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
+        ResponseDTO responseDTO = new ResponseDTO<String>();
+        //mysql中更新消费记录的状态
+        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+        shopUserConsumeRecordDTO.setStatus(shopUserOrderDTO.getStatus());
+        shopUserConsumeRecordDTO.setFlowNo(shopUserOrderDTO.getOrderId());
+        shopUserConsumeRecordDTO.setSignUrl(shopUserOrderDTO.getSignUrl());
+        shopUerConsumeRecordService.updateConumeRecord(shopUserConsumeRecordDTO);
+        //mongodb中更新订单的状态
+        Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
+        Update update = new Update();
+        update.set("status", shopUserOrderDTO.getStatus());
+        update.set("signUrl", shopUserOrderDTO.getSignUrl());
+        mongoTemplate.updateFirst(query, update, "shopUserOrderDTO");
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
