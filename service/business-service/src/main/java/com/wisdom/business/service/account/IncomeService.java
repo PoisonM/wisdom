@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
@@ -201,14 +202,14 @@ public class IncomeService {
     }
 
     public List<IncomeRecordDTO> getIncomeRecordByPageParam(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-        //logger.info("service===getIncomeRecordByPageParam方法传入的参数={}", pageParamVoDTO);
+
         String orderStatus ="2";
         String orderId ="";
         String orderAmount ="0";
 
         String CheckStatus =pageParamVoDTO.getRequestData().getCheckStatus();
         List<IncomeRecordDTO> incomeRecordDTOS = new ArrayList<>();
-        if(!"".equals(CheckStatus) && CheckStatus != null){
+        if (StringUtils.isNotBlank(CheckStatus)) {
             incomeRecordDTOS = incomeMapper.getIncomeRecordByIncomeManagement(pageParamVoDTO);
         }else {
             incomeRecordDTOS =incomeMapper.getIncomeRecordByPageParam(pageParamVoDTO);

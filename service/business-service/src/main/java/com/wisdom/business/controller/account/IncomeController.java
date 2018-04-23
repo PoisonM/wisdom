@@ -19,6 +19,7 @@ import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.slf4j.Logger;
@@ -223,15 +224,17 @@ public class IncomeController {
 		logger.info("根据状态查询返利数据传入参数={}", "pageParamVoDTO = [" + pageParamVoDTO + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		int count = 0;
-		String startDate = "1990-01-01";//设定起始时间
+		//设定起始时间
+		String startDate = "1990-01-01";
 		pageParamVoDTO.setStartTime("".equals(pageParamVoDTO.getStartTime()) ? startDate : pageParamVoDTO.getStartTime());
 		pageParamVoDTO.setEndTime(CommonUtils.getEndDate(pageParamVoDTO.getEndTime()));
-		String checkStatus = "";//审核状态,已审核/未审核
-		if(pageParamVoDTO.getRequestData() != null){
+		//审核状态,已审核/未审核
+		String checkStatus = "";
+		if (null != pageParamVoDTO.getRequestData()) {
 			checkStatus = pageParamVoDTO.getRequestData().getCheckStatus();
 		}
 		//如果checkStauts不为空 则说明用户查询已审核或未审核状态
-		if(checkStatus != null && checkStatus != ""){
+		if (StringUtils.isNotBlank(checkStatus)) {
 			UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 			if(userInfoDTO == null){
 				logger.info("条件查询用户佣金奖励从Redis获取用户信息失败={}", "userInfoDTO = [" + userInfoDTO + "]");
@@ -243,7 +246,12 @@ public class IncomeController {
 			pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
 		}
 		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeRecordByPageParam(pageParamVoDTO);
-		if(CommonUtils.objectIsEmpty(incomeRecordDTOS)) logger.info("佣金数据incomeRecord数据为空");
+
+		if (CommonUtils.objectIsEmpty(incomeRecordDTOS)) {
+			logger.info("佣金数据incomeRecord数据为空");
+			return null;
+		}
+
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())) {
 			try {
 				String[] orderHeaders = {"用户id","用户名","用户手机号","用户获益时等级","用户现在等级","佣金金额",
@@ -287,7 +295,7 @@ public class IncomeController {
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			}
 		}
-		if(!"".equals(checkStatus) && checkStatus != null){
+		if (StringUtils.isNotBlank(checkStatus)) {
 			count = incomeService.getIncomeRecordCountByIncomeManagement(pageParamVoDTO);
 		}else {
 			count = incomeService.getIncomeRecordCountByPageParam(pageParamVoDTO);
