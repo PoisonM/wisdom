@@ -216,7 +216,7 @@ public class ArchivesController {
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysUserId(sysUserId);
         shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
-        ShopUserArchivesDTO info = shopCustomerArchivesService.getShopUserArchivesInfoByUserId(shopUserArchivesDTO);
+        ShopUserArchivesDTO info = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
         responseDTO.setResponseData(info);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
