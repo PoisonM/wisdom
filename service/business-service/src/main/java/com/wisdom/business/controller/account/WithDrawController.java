@@ -192,7 +192,6 @@ public class WithDrawController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamDTO<List<WithDrawRecordDTO>>> getAllWithdraw(@RequestBody PageParamDTO<WithDrawRecordDTO> pageParamDTO) {
-
 		ResponseDTO<PageParamDTO<List<WithDrawRecordDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamDTO<List<WithDrawRecordDTO>> page = withDrawService.queryAllWithdraw(pageParamDTO);
 		responseDTO.setResponseData(page);

@@ -1,6 +1,7 @@
 package com.wisdom.business.service.transaction;
 
 import com.wisdom.business.client.UserServiceClient;
+import com.wisdom.business.controller.transaction.BusinessOrderController;
 import com.wisdom.business.mapper.transaction.PayRecordMapper;
 import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.util.UserUtils;
@@ -15,6 +16,8 @@ import com.wisdom.common.dto.transaction.OrderCopRelationDTO;
 import com.wisdom.common.dto.transaction.OrderProductRelationDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.CommonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -48,30 +52,30 @@ public class TransactionService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public void updateBusinessOrderStatus(BusinessOrderDTO businessOrderDTO){
-        BusinessOrderDTO businessOrderDTONew = transactionMapper.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
-        businessOrderDTONew.setStatus(businessOrderDTO.getStatus());
-        businessOrderDTONew.setUpdateDate(new Date());
-        transactionMapper.updateBusinessOrder(businessOrderDTONew);
-    }
+    Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
     public void updateBusinessOrder(BusinessOrderDTO businessOrderDTO){
+        logger.info("更新订单=="+businessOrderDTO);
         transactionMapper.updateBusinessOrder(businessOrderDTO);
     }
 
     public List<BusinessOrderDTO> getBusinessOrderListByUserIdAndStatus(String userId, String status) {
+        logger.info("获取某个用户所有的订单=="+userId);
+        List<BusinessOrderDTO> businessOrderDTOList = new ArrayList<>();
         if(status.equals("all"))
         {
-            status="";
+           businessOrderDTOList=transactionMapper.getBusinessOrderListByUserIdAndStatus(userId,"");
         }
-        List<BusinessOrderDTO> businessOrderDTOList=transactionMapper.getBusinessOrderListByUserIdAndStatus(userId,status);
         return businessOrderDTOList;
     }
 
     //返回订单的ID号
     @Transactional(rollbackFor = Exception.class)
     public String createBusinessOrder(BusinessOrderDTO businessOrderDTO){
+
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+
+        logger.info("用户创建订单=="+businessOrderDTO);
 
         //查找用户是否下过单，并处于待支付状态，若处于待支付状态，直接返回当前订单号，若没有下过单，则进入后续流程则创建新的订单并返回
         if(businessOrderDTO.getProductSpec().equals("training"))
@@ -200,15 +204,12 @@ public class TransactionService {
     }
 
     public void updateOrderAddress(UserOrderAddressDTO userOrderAddressDTO) {
+        logger.info("用户更新收货地址=="+userOrderAddressDTO);
         transactionMapper.updateOrderAddress(userOrderAddressDTO);
     }
 
     public List<BusinessOrderDTO> getBusinessOrderByUserIdAndProductId(String userId, String productId) {
         return transactionMapper.getBusinessOrderByUserIdAndProductId(userId, productId);
-    }
-
-    public void createOrderProductRelation(OrderProductRelationDTO orderProductRelationDTO) {
-        transactionMapper.createOrderProductRelation(orderProductRelationDTO);
     }
 
     /**
@@ -223,7 +224,6 @@ public class TransactionService {
             businessOrderDTO.setBusinessOrderId(exportOrderExcelDTO.getOrderId());
             businessOrderDTO.setStatus("4");
             businessOrderDTO.setUpdateDate(new Date());
-            //transactionMapper.updateBusinessOrder(businessOrderDTO);
             transactionMapper.updateOrderByOrderId(businessOrderDTO);
             if("是".equals(exportOrderExcelDTO.getInvoice())){
                 Query query = new Query().addCriteria(Criteria.where("orderId").is(exportOrderExcelDTO.getOrderId()));
@@ -237,22 +237,22 @@ public class TransactionService {
         return productDTOList;
     }
 
-    public Date getBusinessOrderSendDate(String orderId) {
-        return null;
-    }
-
     //给订单绑定COP号
     public void insertOrderCopRelation(OrderCopRelationDTO orderCopRelationDTO) {
+        logger.info("给订单绑定COP号=="+orderCopRelationDTO);
         transactionMapper.insertOrderCopRelation(orderCopRelationDTO);
     }
     //查询订单绑定相应的COP号
     public List<OrderCopRelationDTO> queryOrderCopRelationById(OrderCopRelationDTO orderCopRelationDTO) {
         return transactionMapper.queryOrderCopRelationById(orderCopRelationDTO);
     }
+
     //编辑订单绑定相应的COP号
     public void updateOrderCopRelation(OrderCopRelationDTO orderCopRelationDTO) {
+        logger.info("编辑订单绑定相应的COP号"+orderCopRelationDTO);
         transactionMapper.updateOrderCopRelation(orderCopRelationDTO);
     }
+    
     //修改商品库存
     public void updateOfflineProductAmount(ProductDTO productDTO) {
         Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
@@ -266,5 +266,9 @@ public class TransactionService {
                 }
             }
         }
+    }
+
+    public Date getBusinessOrderSendDate(String orderId) {
+        return null;
     }
 }

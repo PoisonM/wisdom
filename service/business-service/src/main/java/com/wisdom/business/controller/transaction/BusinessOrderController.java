@@ -1,6 +1,7 @@
 package com.wisdom.business.controller.transaction;
 
 import com.wisdom.business.client.UserServiceClient;
+import com.wisdom.business.controller.account.AccountController;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.product.ProductService;
 import com.wisdom.business.service.transaction.BuyCartService;
@@ -21,6 +22,8 @@ import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.common.util.excel.ExportExcel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -175,7 +178,7 @@ public class BusinessOrderController {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         try
         {
-            transactionService.updateBusinessOrderStatus(businessOrderDTO);
+            transactionService.updateBusinessOrder(businessOrderDTO);
             responseDTO.setResult(StatusConstant.SUCCESS);
         }
         catch (Exception e)
@@ -527,7 +530,7 @@ public class BusinessOrderController {
                 businessOrderDTO.setPayDate(payRecordDTOS.get(0).getPayDate());
             }
 
-            //根据orderId获取发货时间
+            //todo 根据orderId获取发货时间
             Date sendDate = transactionService.getBusinessOrderSendDate(orderId);
             businessOrderDTO.setSendDate(sendDate);
 

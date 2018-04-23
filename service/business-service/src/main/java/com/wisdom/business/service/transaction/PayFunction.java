@@ -80,7 +80,8 @@ public class PayFunction {
                 //修改business_order的状态，表示已支付
                 BusinessOrderDTO businessOrderDTO = transactionService.getBusinessOrderDetailInfoByOrderId(payRecordDTO.getOrderId());
                 businessOrderDTO.setStatus("1");
-                transactionService.updateBusinessOrderStatus(businessOrderDTO);
+                businessOrderDTO.setUpdateDate(new Date());
+                transactionService.updateBusinessOrder(businessOrderDTO);
 
                 //修改商品库存
 //                ProductDTO productDTO = new ProductDTO();
