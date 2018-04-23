@@ -460,28 +460,27 @@ public class IncomeController {
 	}
 
 	/**
-	 * 查询月度奖励详情new
-	 * @param pageParamVoDTO 用户id
-	 * @param
+	 * 月度奖励详情导出Excel  new
+	 * @param pageParamVoDTO 用户id  param self
 	 * @return
 	 */
-	@RequestMapping(value = "selectMonthTransactionRecordByUserId", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "exportExcelMonthTransactionRecordByUserId", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<Map<String,Object>> selectMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+	ResponseDTO<Map<String,Object>> exportExcelMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
 		long startTime = System.currentTimeMillis();
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if(pageParamVoDTO.getRequestData() == null){
 			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
 		}
 		List<MonthTransactionRecordDTO> selfList1 = new ArrayList<>();
 		List<MonthTransactionRecordDTO> nextList1 = new ArrayList<>();
-		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
-		Map<String,Object> map=new HashMap<>(16);
+		//Map<String,Object> map=new HashMap<>(16);
 
 		//先查出所有本人的,再查出下级的
 		pageParamVoDTO.getRequestData().setParentRelation("self");
-		int selfCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		//int selfCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
 		List<MonthTransactionRecordDTO> selfList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
 		if(CommonUtils.objectIsEmpty(selfList)) logger.info("月度本人详情数据selfList数据为空");
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : selfList){
@@ -495,7 +494,7 @@ public class IncomeController {
 			}
 		}
 		pageParamVoDTO.getRequestData().setParentRelation("other");
-		int nextCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		//int nextCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
 		List<MonthTransactionRecordDTO> nextList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
 		if(CommonUtils.objectIsEmpty(nextList)) logger.info("月度下级详情数据nextList数据为空");
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : nextList){
@@ -517,13 +516,13 @@ public class IncomeController {
 				List<ExportIncomeRecordExcelDTO> excelList = new ArrayList<>();
 				for (MonthTransactionRecordDTO monthTransactionRecordDTO : selfList) {
 					List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
-					if(CommonUtils.objectIsEmpty(businessOrderDTOS)) logger.info("导表-月度本人订单数据businessOrder数据为空");
-					for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS) {
+					if (CommonUtils.objectIsEmpty(businessOrderDTOS)) logger.info("导表-月度本人订单数据businessOrder数据为空");
+					for (BusinessOrderDTO businessOrderDTO : businessOrderDTOS) {
 						ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO = new ExportIncomeRecordExcelDTO();
 						exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
 						exportIncomeRecordExcelDTO.setUserTypeNow(monthTransactionRecordDTO.getUserTypeNow());
 						exportIncomeRecordExcelDTO.setSysUserId(monthTransactionRecordDTO.getUserId());
-						//exportIncomeRecordExcelDTO.setNickName(monthTransactionRecordDTO.getNickName());
+						exportIncomeRecordExcelDTO.setNickName(monthTransactionRecordDTO.getNickName());
 						exportIncomeRecordExcelDTO.setMobile(monthTransactionRecordDTO.getMobile());
 						exportIncomeRecordExcelDTO.setAmount(monthTransactionRecordDTO.getAmount());
 						exportIncomeRecordExcelDTO.setNextUserId(monthTransactionRecordDTO.getNextUserId());
@@ -541,8 +540,8 @@ public class IncomeController {
 				}
 				for (MonthTransactionRecordDTO monthTransactionRecordDTO : nextList) {
 					List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
-					if(CommonUtils.objectIsEmpty(businessOrderDTOS)) logger.info("导表-月度下级订单数据businessOrder数据为空");
-					for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS) {
+					if (CommonUtils.objectIsEmpty(businessOrderDTOS)) logger.info("导表-月度下级订单数据businessOrder数据为空");
+					for (BusinessOrderDTO businessOrderDTO : businessOrderDTOS) {
 						ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO = new ExportIncomeRecordExcelDTO();
 						exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
 						exportIncomeRecordExcelDTO.setUserTypeNow(monthTransactionRecordDTO.getUserTypeNow());
@@ -570,19 +569,101 @@ public class IncomeController {
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 				return responseDTO;
 			} catch (Exception e) {
-				e.printStackTrace();
+				responseDTO.setResult("月度详情导出Excel异常");
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
+				logger.error("月度详情导出Excel异常");
+				e.printStackTrace();
+			}
+		}
+		/*map.put("selfCount",selfCount);
+		map.put("nextCount",nextCount);
+		map.put("selfList",selfList1);
+		map.put("nextList",nextList1);*/
+		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+
+		//responseDTO.setResponseData(map);
+		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		return responseDTO;
+	}
+	/**
+	 * 查询月度奖励本人消费详情new
+	 * @param pageParamVoDTO 用户id  param self
+	 * @return
+	 */
+	@RequestMapping(value = "selectSelfMonthTransactionRecordByUserId", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<Map<String,Object>> selectSelfMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+		long startTime = System.currentTimeMillis();
+		if(pageParamVoDTO.getRequestData() == null){
+			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
+		}
+		List<MonthTransactionRecordDTO> selfList1 = new ArrayList<>();
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
+		Map<String,Object> map=new HashMap<>(16);
+
+		pageParamVoDTO.getRequestData().setParentRelation("self");
+		int selfCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		List<MonthTransactionRecordDTO> selfList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
+		if(CommonUtils.objectIsEmpty(selfList)) logger.info("月度本人详情数据selfList数据为空");
+		for(MonthTransactionRecordDTO monthTransactionRecordDTO : selfList){
+			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
+			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
+				monthTransactionRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+				monthTransactionRecordDTO.setOrderAmount(businessOrderDTO.getAmount());
+				monthTransactionRecordDTO.setOrderStatus(businessOrderDTO.getStatus());
+				monthTransactionRecordDTO.setPayDate(businessOrderDTO.getPayDate());
+				selfList1.add(monthTransactionRecordDTO);
 			}
 		}
 		map.put("selfCount",selfCount);
-		map.put("nextCount",nextCount);
 		map.put("selfList",selfList1);
+		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(map);
+		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		return responseDTO;
+	}
+	/**
+	 * 查询月度奖励下级消费详情new
+	 * @param pageParamVoDTO 用户id  param self
+	 * @return
+	 */
+	@RequestMapping(value = "selectNextMonthTransactionRecordByUserId", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<Map<String,Object>> selectNextMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+		long startTime = System.currentTimeMillis();
+		if(pageParamVoDTO.getRequestData() == null){
+			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
+		}
+		List<MonthTransactionRecordDTO> nextList1 = new ArrayList<>();
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
+		Map<String,Object> map=new HashMap<>(16);
+
+		pageParamVoDTO.getRequestData().setParentRelation("other");
+		int nextCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		List<MonthTransactionRecordDTO> nextList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
+		if(CommonUtils.objectIsEmpty(nextList)) logger.info("月度本人详情数据selfList数据为空");
+		for(MonthTransactionRecordDTO monthTransactionRecordDTO : nextList){
+			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
+			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
+				monthTransactionRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+				monthTransactionRecordDTO.setOrderAmount(businessOrderDTO.getAmount());
+				monthTransactionRecordDTO.setOrderStatus(businessOrderDTO.getStatus());
+				monthTransactionRecordDTO.setPayDate(businessOrderDTO.getPayDate());
+				nextList1.add(monthTransactionRecordDTO);
+			}
+		}
+		map.put("nextCount",nextCount);
 		map.put("nextList",nextList1);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
 		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
+
 	/**
 	 * 根据用户id查询这个月都消费了哪些订单
 	 * @return
