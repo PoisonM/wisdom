@@ -128,8 +128,10 @@ public class PayCoreService {
                     payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
                 }
 
+                logger.info("根据消费金额处理用户的等级提升=="+userInfoDTO.getMobile());
                 handleUserLevelPromotion(userInfoDTO,expenseMoney);
 
+                logger.info("处理用户消费特殊商品后的等级提升=="+userInfoDTO.getMobile());
                 handleUserLevelPromotionInSpecialActivity(userInfoDTO,expenseMoney,instanceReturnMoneySignalDTO);
 
                 handleSpecialActivitySignal(userInfoDTO,instanceReturnMoneySignalDTO);
@@ -375,7 +377,7 @@ public class PayCoreService {
     }
 
     //对用户的级别进行解冻处理
-    public void deFrozenUserType(UserInfoDTO userInfoDTO) {
+    private void deFrozenUserType(UserInfoDTO userInfoDTO) {
         UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
         userBusinessTypeDTO.setSysUserId(userInfoDTO.getId());
         userBusinessTypeDTO.setStatus("2");
