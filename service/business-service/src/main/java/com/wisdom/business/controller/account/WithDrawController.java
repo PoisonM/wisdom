@@ -153,6 +153,56 @@ public class WithDrawController {
 	}
 
 	/**
+	 * 解冻超额提现
+	 * @return
+	 */
+	@RequestMapping(value = "deFrozenWithDrawRecord", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO deFrozenWithDrawRecord(@RequestParam String withDrawRecordId,
+									   HttpServletRequest request)
+	{
+		ResponseDTO responseDTO = new ResponseDTO();
+		RedisLock redisLock = new RedisLock("deFrozenWithDrawRecord"+withDrawRecordId);
+		try
+		{
+			redisLock.lock();
+			WithDrawRecordDTO withDrawRecordDTO = new WithDrawRecordDTO();
+			withDrawRecordDTO.setId(withDrawRecordId);
+			List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawService.getWithdrawRecordInfo(withDrawRecordDTO);
+
+			if(withDrawRecordDTOList.size()>0)
+			{
+				withDrawRecordDTO = withDrawRecordDTOList.get(0);
+				if(withDrawRecordDTO.getStatus().equals("0"))
+				{
+					withDrawService.deFrozenWithDrawRecord(withDrawRecordDTO,request);
+					responseDTO.setResult(StatusConstant.SUCCESS);
+				}
+				else
+				{
+					responseDTO.setResult(StatusConstant.FAILURE);
+				}
+			}
+			else
+			{
+				responseDTO.setResult(StatusConstant.FAILURE);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			responseDTO.setResult(StatusConstant.FAILURE);
+		}
+		finally {
+			redisLock.unlock();
+		}
+
+		return responseDTO;
+	}
+
+	/**
 	 * 提现审核
 	 * @param
 	 * @return

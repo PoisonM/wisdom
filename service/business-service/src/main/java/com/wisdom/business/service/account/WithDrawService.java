@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
@@ -175,41 +176,52 @@ public class WithDrawService {
             withDrawRecordDTO.setStatus("1");
             withDrawMapper.addWithDrawRecord(withDrawRecordDTO);
 
-            //公众号中的提现操作，moneyAmount为提现金额
-            Float returnMoney = moneyAmount*100;
-
-            DecimalFormat decimalFormat=new DecimalFormat("");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-            String money = decimalFormat.format(returnMoney);//format 返回的是字符串
-
-            //调用企业统一支付接口对用户进行退款
-            SortedMap<Object,Object> parameters = new TreeMap<>();
-            parameters.put("mch_appid", ConfigConstant.APP_ID);//APPid
-            parameters.put("mchid", ConfigConstant.MCH_ID);
-            parameters.put("nonce_str", IdGen.uuid());
-            parameters.put("partner_trade_no",IdGen.uuid());
-            parameters.put("check_name","NO_CHECK");
-            //parameters.put("check_name","FORCE_CHECK");
-            //parameters.put("re_user_name","陈佳科");
-            parameters.put("amount", money);//金额
-            parameters.put("desc", "提现零钱");
-            parameters.put("spbill_create_ip",request.getRemoteAddr());
-            parameters.put("openid", openid);
-            String sign = JsApiTicketUtil.createSign("UTF-8", parameters);
-            parameters.put("sign", sign);
-            String requestXML = JsApiTicketUtil.getRequestXml(parameters);
-            try{
-                String result = HttpRequestUtil.clientCustomSSLS(ConfigConstant.transfer, requestXML);
-                Map<String, String> returnMap = XMLUtil.doXMLParse(result);
-                //解析微信返回的信息，以Map形式存储便于取值
-                if(!"SUCCESS".equals(returnMap.get("result_code"))){
-                    throw new Exception();
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                throw e;
-            }
-            WeixinTemplateMessageUtil.withdrawalsSuccess2Weixin(openid,token,"",String.valueOf(moneyAmount),DateUtils.DateToStr(new Date(), "date"));
+            //将钱打入用户零钱账户
+            returnMoneyToUser(moneyAmount,request,openid,token);
         }
+    }
+
+    public void deFrozenWithDrawRecord(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
+        withDrawMapper.updateWithdrawById(withDrawRecordDTO.getWithdrawId(),"1");
+        String token = WeixinUtil.getUserToken();
+        returnMoneyToUser(withDrawRecordDTO.getMoneyAmount(),request,withDrawRecordDTO.getUserOpenId(),token);
+    }
+
+    private static void returnMoneyToUser(float moneyAmount,HttpServletRequest request, String openid,String token)
+    {
+        //公众号中的提现操作，moneyAmount为提现金额
+        Float returnMoney = moneyAmount*100;
+
+        DecimalFormat decimalFormat=new DecimalFormat("");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+        String money = decimalFormat.format(returnMoney);//format 返回的是字符串
+
+        //调用企业统一支付接口对用户进行退款
+        SortedMap<Object,Object> parameters = new TreeMap<>();
+        parameters.put("mch_appid", ConfigConstant.APP_ID);//APPid
+        parameters.put("mchid", ConfigConstant.MCH_ID);
+        parameters.put("nonce_str", IdGen.uuid());
+        parameters.put("partner_trade_no",IdGen.uuid());
+        parameters.put("check_name","NO_CHECK");
+        //parameters.put("check_name","FORCE_CHECK");
+        //parameters.put("re_user_name","陈佳科");
+        parameters.put("amount", money);//金额
+        parameters.put("desc", "提现零钱");
+        parameters.put("spbill_create_ip",request.getRemoteAddr());
+        parameters.put("openid", openid);
+        String sign = JsApiTicketUtil.createSign("UTF-8", parameters);
+        parameters.put("sign", sign);
+        String requestXML = JsApiTicketUtil.getRequestXml(parameters);
+        try{
+            String result = HttpRequestUtil.clientCustomSSLS(ConfigConstant.transfer, requestXML);
+            Map<String, String> returnMap = XMLUtil.doXMLParse(result);
+            //解析微信返回的信息，以Map形式存储便于取值
+            if(!"SUCCESS".equals(returnMap.get("result_code"))){
+                throw new Exception();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        WeixinTemplateMessageUtil.withdrawalsSuccess2Weixin(openid,token,"",String.valueOf(moneyAmount),DateUtils.DateToStr(new Date(), "date"));
     }
 
 }
