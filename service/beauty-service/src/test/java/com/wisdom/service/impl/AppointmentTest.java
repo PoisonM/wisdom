@@ -89,6 +89,11 @@ public class AppointmentTest {
         System.out.println("infoFromRedis");
     }
 
+    @Test
+    public void findAppointNumByTime(){
+
+    }
+
     private ShopAppointServiceDTO getShopAppointServiceDTO() {
         ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
         shopAppointServiceDTO.setId("id_8");

@@ -12,8 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import java.util.*;
 
 /**
  * FileName: AppointmentServiceImpl
@@ -116,5 +115,78 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             }
             return shopAppointServiceDTO;
         }
+
+    /**
+     *  查询某个美容院某个时间预约个数
+     *  @param  sysShopId 店铺id
+     *  @param  sysClerkId 店员id
+     *  @param  appointStartTimeS 预约开始时间（范围起始值）
+     *  @param  appointStartTimeE  appointStartTimeE（范围结束值）
+     *  @return  resultCode 代表执行成功或者失败 fail和success
+     *  @return  resultMessage 成功的话代表预约个数，失败的话代表错误信息
+     *  @autur zhangchao
+     * */
+    @Override
+    public HashMap<String,String> findNumForShopByTimeService(String sysShopId, String sysClerkId,String appointStartTimeS, String appointStartTimeE){
+
+        HashMap<String,String> shopAppointMap = new HashMap<>();
+        shopAppointMap.put("sysShopId",sysShopId);
+        shopAppointMap.put("appointStartTimeS",appointStartTimeS);
+        shopAppointMap.put("appointStartTimeE",appointStartTimeE);
+        shopAppointMap.put("sysClerkId",sysClerkId);
+
+        HashMap<String,String> resultMap = new HashMap<>();
+        Integer shopAppointNum;
+
+        try {
+             shopAppointNum = extShopAppointServiceMapper.findNumForShopAppointByTime(shopAppointMap);
+        }catch(Exception e) {
+            logger.info(e.getMessage());
+            resultMap.put("resultCode", "fail");
+            resultMap.put("resultMessage", "查询存在问题，请联系支撑人员");
+            return resultMap;
+        }
+        //判断是具体到店员还是店铺
+        if(sysClerkId!=null&&sysClerkId!=""){
+            logger.info("店铺"+sysShopId+"下面店员"+sysClerkId+"在"+appointStartTimeS+"到"+appointStartTimeE+"的预约数量是"+shopAppointNum);
+        }else{
+            logger.info("店铺"+sysShopId+"在"+appointStartTimeS+"到"+appointStartTimeE+"的预约数量是"+shopAppointNum);
+        }
+
+        String resultMessage  = String.valueOf(shopAppointNum);
+        resultMap.put("resultCode","success");
+        resultMap.put("resultMessage",resultMessage);
+        return resultMap;
+    }
+
+
+    /**
+     *  查询某个美容院某个时间预约个数
+     *  @param  sysShopId 店铺id
+     *  @param  sysClerkId 店员id
+     *  @param  appointStartTimeS 预约开始时间（范围起始值）
+     *  @param  appointStartTimeE  appointStartTimeE（范围结束值）
+     *  @return  shopAppointUserInfoList 预约用户列表
+     *  @autuor zhangchao
+     * */
+    @Override
+    public List<ShopAppointServiceDTO> findUserInfoForShopByTimeService(String sysShopId, String sysClerkId,String appointStartTimeS, String appointStartTimeE){
+
+        HashMap<String,String> shopAppointMap = new HashMap<>();
+        shopAppointMap.put("sysShopId",sysShopId);
+        shopAppointMap.put("appointStartTimeS",appointStartTimeS);
+        shopAppointMap.put("appointStartTimeE",appointStartTimeE);
+        shopAppointMap.put("sysClerkId",sysClerkId);
+
+        List<ShopAppointServiceDTO> shopAppointUserInfoList = new ArrayList<>();
+        try {
+            shopAppointUserInfoList= extShopAppointServiceMapper.findUserInfoForShopAppointByTime(shopAppointMap);
+        }catch(Exception e) {
+            logger.info(e.getMessage());
+        }
+
+        logger.info("店铺"+sysShopId+"下面店员"+sysClerkId+"在"+appointStartTimeS+"到"+appointStartTimeE+"的预约用户列表是"+shopAppointUserInfoList);
+        return shopAppointUserInfoList;
+    }
 
 }

@@ -248,7 +248,6 @@ public class AppointmentController {
 
 		ResponseDTO<ShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
 		ShopAppointServiceDTO shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceId);
-
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopAppointInfoFromRedis);
         logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - startTime));
@@ -283,6 +282,63 @@ public class AppointmentController {
 
         logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
         return responseDTO;
+	}
+
+
+	/**
+	 *  查询某个美容院某个时间预约个数或某个店员的预约数量
+	 *  @param  sysShopId 店铺id
+	 *  @param  sysClerkId 店员id
+	 *  @param  appointStartTimeS 预约开始时间（范围起始值）
+	 *  @param  appointStartTimeE  appointStartTimeE（范围结束值）
+	 *  @return  某一个时间段的数量数量
+	 *  @autur zhangchao
+	 * */
+	@RequestMapping(value = "findNumForShopByTimeControl", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO<HashMap<String,String>> findNumForShopByTimeControl(@RequestParam String sysShopId,String sysClerkId,String appointStartTimeS,String appointStartTimeE){
+
+		logger.info("根据预约主键修改此次预约信息传入参数={}", "sysShopId = [" + sysShopId + "], sysClerkId = [" + sysClerkId + "] ,appointStartTimeS = [" + appointStartTimeS + "]", "appointStartTimeE = [" + appointStartTimeE + "]");
+		long timeMillis = System.currentTimeMillis();
+
+		HashMap<String,String> shopAppointmentNum = appointmentService.findNumForShopByTimeService(sysShopId,sysClerkId,appointStartTimeS,appointStartTimeE);
+		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
+		ResponseDTO<HashMap<String,String>> responseDTO = new ResponseDTO<>();
+		//判断查询是否成功
+		if(shopAppointmentNum.get("resultCode").equals("success")){
+			responseDTO.setResult(StatusConstant.SUCCESS);
+		}else {
+			responseDTO.setResult(StatusConstant.FAILURE);
+		}
+		responseDTO.setResponseData(shopAppointmentNum);
+		return responseDTO;
+	}
+
+	/**
+	 *  查询某个美容院某个时间预约个数或某个店员的预约用户列表
+	 *  @param  sysShopId 店铺id
+	 *  @param  sysClerkId 店员id
+	 *  @param  appointStartTimeS 预约开始时间（范围起始值）
+	 *  @param  appointStartTimeE  appointStartTimeE（范围结束值）
+	 *  @return  某一个时间段的用户列表
+	 *  @autuor zhangchao
+	 * */
+	@RequestMapping(value = "findUserInfoForShopByTimeControl", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO<List<ShopAppointServiceDTO>> findUserInfoForShopByTimeControl(@RequestParam String sysShopId,String sysClerkId,String appointStartTimeS,String appointStartTimeE){
+
+		logger.info("根据预约主键修改此次预约信息传入参数={}", "sysShopId = [" + sysShopId + "], sysClerkId = [" + sysClerkId + "] ,appointStartTimeS = [" + appointStartTimeS + "]", "appointStartTimeE = [" + appointStartTimeE + "]");
+		long timeMillis = System.currentTimeMillis();
+
+		List<ShopAppointServiceDTO> shopAppointmentUserInfo = appointmentService.findUserInfoForShopByTimeService(sysShopId,sysClerkId,appointStartTimeS,appointStartTimeE);
+
+		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
+		ResponseDTO<List<ShopAppointServiceDTO>> responseDTO = new ResponseDTO<>();
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(shopAppointmentUserInfo);
+		return responseDTO;
 	}
 
 }

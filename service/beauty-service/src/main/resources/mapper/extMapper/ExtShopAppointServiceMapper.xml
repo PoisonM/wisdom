@@ -108,4 +108,32 @@
     </if>
   </select>
 
+    <!--查询某个美容院某个时间预约个数或某个美容院某个店员某个时间预约个数-->
+    <select id="findNumForShopAppointByTime"  parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        select
+            COUNT(1)
+        from
+            shop_appoint_service shop
+        where
+            shop.sys_shop_id = #{sysShopId}
+            and shop.appoint_start_time BETWEEN #{appointStartTimeS}  and #{appointStartTimeE}
+            <if test="sysClerkId!=null and sysClerkId!=''">
+               and shop.sys_clerk_id = #{sysClerkId}
+            </if>
+    </select>
+
+    <!--查询美容院下某个店员某个时间预约用户详情列表-->
+    <select id="findUserInfoForShopAppointByTime"  parameterType="java.util.HashMap" resultType="com.wisdom.beauty.api.dto.ShopAppointServiceDTO">
+        select
+        shop.sys_user_id,
+        shop.sys_user_name,
+        shop.sys_user_phone
+        from
+        shop_appoint_service shop
+        where
+        shop.sys_shop_id = #{sysShopId}
+        and shop.appoint_start_time BETWEEN #{appointStartTimeS}  and #{appointStartTimeE}
+        and shop.sys_clerk_id = #{sysClerkId}
+    </select>
+
 </mapper>

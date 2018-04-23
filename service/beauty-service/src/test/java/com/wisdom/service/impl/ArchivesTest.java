@@ -131,6 +131,27 @@ public class ArchivesTest {
         shopUserArchivesDTO.setHeight(179f);
         return shopUserArchivesDTO;
     }
+//
 
+    @Test
+    public void testFindNumForShopByTimeControl() throws Exception {
 
+        MvcResult result = mvc.perform(get("/appointmentInfo/findNumForShopByTimeControl").param("sysShopId", "3").param("sysClerkId","1").param("appointStartTimeS","2018-02-22").param("appointStartTimeE","2018-04-20"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void testFindUserInfoForShopByTimeControl() throws Exception {
+
+        MvcResult result = mvc.perform(get("/appointmentInfo/findUserInfoForShopByTimeControl").param("sysShopId", "3").param("sysClerkId","78").param("appointStartTimeS","2018-02-22").param("appointStartTimeE","2018-04-20"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
 }
