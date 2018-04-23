@@ -28,6 +28,9 @@ public class SysUserAccountDTO extends BaseEntity implements Serializable {
     //用户ID
     private String sysUserId;
 
+    //
+    private String shopUserArchivesId;
+
     //账户号
     private String accountNumber;
 
@@ -99,6 +102,14 @@ public class SysUserAccountDTO extends BaseEntity implements Serializable {
 
     public void setSysUserId(String sysUserId) {
         this.sysUserId = sysUserId;
+    }
+
+    public String getShopUserArchivesId() {
+        return shopUserArchivesId;
+    }
+
+    public void setShopUserArchivesId(String shopUserArchivesId) {
+        this.shopUserArchivesId = shopUserArchivesId;
     }
 
     public String getAccountNumber() {

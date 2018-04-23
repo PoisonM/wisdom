@@ -25,10 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -381,6 +378,7 @@ public class AppointmentController {
 				relationDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
 				relationDTO.setSysShopProjectId(project);
 				relationDTO.setSysShopProjectSurplusTimes(0);
+                relationDTO.setSysShopId(clerkInfo.getSysShopId());
 				List<ShopUserProjectRelationDTO> userProjectList = shopProjectService.getUserProjectList(relationDTO);
 				//需要重新创建用户与项目的关系
 				if (CommonUtils.objectIsEmpty(userProjectList)) {

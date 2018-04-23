@@ -210,10 +210,12 @@ public class ArchivesController {
     ResponseDTO<ShopUserArchivesDTO> getShopUserArchivesInfoByUserId(@RequestParam String sysUserId) {
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("查询某个用户的档案信息传入参数={}", "sysUserId = [" + sysUserId + "]");
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 
         ResponseDTO<ShopUserArchivesDTO> responseDTO = new ResponseDTO<>();
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysUserId(sysUserId);
+        shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
         ShopUserArchivesDTO info = shopCustomerArchivesService.getShopUserArchivesInfoByUserId(shopUserArchivesDTO);
         responseDTO.setResponseData(info);
         responseDTO.setResult(StatusConstant.SUCCESS);

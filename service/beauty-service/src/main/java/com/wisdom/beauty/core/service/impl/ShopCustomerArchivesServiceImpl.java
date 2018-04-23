@@ -187,7 +187,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
      * @return
      */
     @Override
-    public ShopUserArchivesDTO getShopUserArchivesInfoByUserId(ShopUserArchivesDTO shopUserArchivesDTO) {
+    public ShopUserArchivesDTO getShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO) {
 
         logger.info("查询某个用户的档案信息传入参数={}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
 
@@ -195,6 +195,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
         if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysUserId())) {
             c.andSysUserIdEqualTo(shopUserArchivesDTO.getSysUserId());
+        }
+        if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysShopId())) {
+            c.andSysShopIdEqualTo(shopUserArchivesDTO.getSysShopId());
         }
         List<ShopUserArchivesDTO> shopUserArchivesDTOS = shopUserArchivesMapper.selectByCriteria(criteria);
 

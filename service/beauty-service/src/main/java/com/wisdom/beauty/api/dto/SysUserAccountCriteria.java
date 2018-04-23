@@ -596,6 +596,76 @@ public class SysUserAccountCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andShopUserArchivesIdIsNull() {
+            addCriterion("shop_user_archives_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdIsNotNull() {
+            addCriterion("shop_user_archives_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdEqualTo(String value) {
+            addCriterion("shop_user_archives_id =", value, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdNotEqualTo(String value) {
+            addCriterion("shop_user_archives_id <>", value, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdGreaterThan(String value) {
+            addCriterion("shop_user_archives_id >", value, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdGreaterThanOrEqualTo(String value) {
+            addCriterion("shop_user_archives_id >=", value, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdLessThan(String value) {
+            addCriterion("shop_user_archives_id <", value, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdLessThanOrEqualTo(String value) {
+            addCriterion("shop_user_archives_id <=", value, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdLike(String value) {
+            addCriterion("shop_user_archives_id like", value, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdNotLike(String value) {
+            addCriterion("shop_user_archives_id not like", value, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdIn(List<String> values) {
+            addCriterion("shop_user_archives_id in", values, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdNotIn(List<String> values) {
+            addCriterion("shop_user_archives_id not in", values, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdBetween(String value1, String value2) {
+            addCriterion("shop_user_archives_id between", value1, value2, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopUserArchivesIdNotBetween(String value1, String value2) {
+            addCriterion("shop_user_archives_id not between", value1, value2, "shopUserArchivesId");
+            return (Criteria) this;
+        }
+
         public Criteria andAccountNumberIsNull() {
             addCriterion("account_number is null");
             return (Criteria) this;

@@ -94,4 +94,12 @@ public interface ShopProductInfoService {
     *@Date:2018/4/20 11:50
     */
     List<ProductTypeResponseDTO>  getAllProducts(String sysShopId);
+
+    /**
+     * 保存用户与产品的关系
+     *
+     * @param shopUserProductRelationDTO
+     * @return
+     */
+    int saveShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO);
 }

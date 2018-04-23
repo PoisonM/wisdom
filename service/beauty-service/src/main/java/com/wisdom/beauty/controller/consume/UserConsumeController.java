@@ -300,7 +300,10 @@ public class UserConsumeController {
                 String goodsType = dto.getGoodsType();
 
                 //获取用户的账户信息
-                SysUserAccountDTO sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(dto.getSysUserId());
+                SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
+                sysUserAccountDTO.setSysUserId(dto.getSysUserId());
+                sysUserAccountDTO.setSysShopId(dto.getSysShopId());
+                sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
 
                 //如果是次卡、疗程卡相关操作
                 if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType) || GoodsTypeEnum.TREATMENT_CARD.getCode().equals(goodsType)) {
