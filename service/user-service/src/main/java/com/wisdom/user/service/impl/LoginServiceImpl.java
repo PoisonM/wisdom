@@ -56,14 +56,16 @@ public class LoginServiceImpl implements LoginService{
             return StatusConstant.VALIDATECODE_ERROR;
         }
 
+        String logintoken = null;
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setUserOpenid(openId);
-        //userInfoDTO.setMobile(phone);
-        List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
         RedisLock redisLock = new RedisLock("userInfo" + loginDTO.getUserPhone());
         try {
             redisLock.lock();
+
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setUserOpenid(openId);
+            //userInfoDTO.setMobile(phone);
+            List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
 
             if(userInfoDTOList.size()>0)
             {
@@ -86,6 +88,13 @@ public class LoginServiceImpl implements LoginService{
                 {
                     return StatusConstant.WEIXIN_ATTENTION_ERROR;
                 }
+
+                userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+
+                //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
+                logintoken = UUID.randomUUID().toString();
+                String userInfoStr = gson.toJson(userInfoDTO);
+                JedisUtils.set(logintoken,userInfoStr, ConfigConstant.logintokenPeriod);
             }
 
         } catch (Exception e) {
@@ -95,12 +104,6 @@ public class LoginServiceImpl implements LoginService{
             redisLock.unlock();
         }
 
-        userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
-
-        //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
-        String logintoken = UUID.randomUUID().toString();
-        String userInfoStr = gson.toJson(userInfoDTO);
-        JedisUtils.set(logintoken,userInfoStr, ConfigConstant.logintokenPeriod);
         return logintoken;
     }
 

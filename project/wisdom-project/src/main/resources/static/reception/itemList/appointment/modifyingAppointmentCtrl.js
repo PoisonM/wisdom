@@ -10,7 +10,23 @@
          nextDate = new Date($scope.param.curDate.getTime() +  24*60*60*1000*i); //后一天
          $scope.param.dayTime.push(nextDate)
      }
-
+     /*默认选择时间段*/
+     var time=$scope.param.ModifyAppointmentObject.time/1/0.5;
+     $scope.timeLength = $scope.param.ModifyAppointmentObject.time/1/0.5;
+     var numTime = [];
+     for(var i=0;i<$scope.param.selectedTime.length;i++){
+         if($scope.param.selectedTime[i] !=1){
+            for(var j=1;j<time;j++){
+                if($scope.param.selectedTime[i] ==$scope.param.selectedTime[i+j]){
+                    numTime.push(i)
+                    for(var j=0;j<time;j++){
+                        console.log(numTime[0]);
+                        $scope.param.selectedTime[numTime[0]+j] ="2"
+                    }
+                }
+            }
+         }
+     }
      /*选择时间（天为单位）*/
      $scope.selectDayTime = function(index){
          $scope.bgff6666 = 'bgff6666';

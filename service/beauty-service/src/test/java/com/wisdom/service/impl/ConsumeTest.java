@@ -1,6 +1,7 @@
 package com.wisdom.service.impl;
 
 import com.wisdom.beauty.BeautyServiceApplication;
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.PayTypeEnum;
@@ -50,11 +51,11 @@ public class ConsumeTest {
     @Test
     public void userOneCardOperation() throws Exception {
 
-        List<ShopUserOrderDTO> extShopUserConsumeRecordDTOS = new ArrayList<>();
+        List<ShopUserConsumeRecordDTO> extShopUserConsumeRecordDTOS = new ArrayList<>();
         String uuid = IdGen.uuid();
 
         //构建用户消费信息
-        ShopUserOrderDTO consumeRecordDTO = new ShopUserOrderDTO();
+        ShopUserConsumeRecordDTO consumeRecordDTO = new ShopUserConsumeRecordDTO();
         consumeRecordDTO.setId(uuid);
         consumeRecordDTO.setSysUserId(uuid);
         consumeRecordDTO.setSysUserName("安迪苏瓦");
