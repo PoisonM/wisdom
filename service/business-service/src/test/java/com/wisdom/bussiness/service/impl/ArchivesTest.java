@@ -11,7 +11,6 @@ import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -128,7 +127,7 @@ public class ArchivesTest {
                 incomeRecordDTO.setNextUserType("");
                 incomeRecordDTO.setAmount(returnMonthlyMoney);
                 incomeRecordDTO.setTransactionAmount(0);
-                incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                incomeRecordDTO.setTransactionId("test");
                 incomeRecordDTO.setUpdateDate(new Date());
                 incomeRecordDTO.setCreateDate(new Date());
                 incomeRecordDTO.setStatus("0");
