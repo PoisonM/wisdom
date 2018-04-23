@@ -131,55 +131,103 @@ public class WithDrawService {
     {
         return  withDrawMapper.getWithdrawRecordInfo(withDrawRecordDTO);
     }
-    
+
     @Transactional(rollbackFor = Exception.class)
-    public void withDrawMoneyFromAccount(float moneyAmount, HttpServletRequest request, String openid,boolean checkFlag)  throws Exception{
+    public void withDrawMoneyFromAccount(float moneyAmount, HttpServletRequest request, String openid,
+                                         UserBankCardInfoDTO userBankCardInfoDTO)  throws Exception{
 
-        String token = WeixinUtil.getUserToken();
+        //生成提现记录
+        RedisLock redisLock = new RedisLock("withDrawRecordLock" + openid);
 
-        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(userInfoDTO.getId());
+        try{
+            redisLock.lock();
 
-        //扣除账户余额中的款项
-        if((accountDTO.getBalance()-moneyAmount)<0)
-        {
-            List<Article> articleList = new ArrayList<>();
-            Article article = new Article();
-            article.setTitle("对不起，您的提现金额大于您的账户余额，提现失败。");
-            articleList.add(article);
-            WeixinUtil.senImgMsgToWeixin(token,openid,articleList);
-            throw new Exception();
-        }
-        else
-        {
-            accountDTO.setBalance(accountDTO.getBalance()-moneyAmount);
-            accountDTO.setUpdateDate(new Date());
-            accountMapper.updateUserAccountInfo(accountDTO);
-        }
+            UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+            AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(userInfoDTO.getId());
 
-        WithDrawRecordDTO withDrawRecordDTO = new WithDrawRecordDTO();
-        withDrawRecordDTO.setId(UUID.randomUUID().toString());
-        withDrawRecordDTO.setWithdrawId(CodeGenUtil.getTransactionCodeNumber());
-        withDrawRecordDTO.setMoneyAmount(moneyAmount);
-        withDrawRecordDTO.setSysUserId(userInfoDTO.getId());
-        withDrawRecordDTO.setCreateDate(new Date());
-        withDrawRecordDTO.setUpdateDate(new Date());
-        withDrawRecordDTO.setUserOpenId(openid);
-        withDrawRecordDTO.setUserAccountId(accountDTO.getId());
-        if(checkFlag)
-        {
+            //扣除账户余额中的款项
+            if((accountDTO.getBalance()-moneyAmount)<0)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                accountDTO.setBalance(accountDTO.getBalance()-moneyAmount);
+                accountDTO.setUpdateDate(new Date());
+                accountMapper.updateUserAccountInfo(accountDTO);
+            }
+
+            WithDrawRecordDTO withDrawRecordDTO = new WithDrawRecordDTO();
+            withDrawRecordDTO.setId(UUID.randomUUID().toString());
+            withDrawRecordDTO.setWithdrawId(CodeGenUtil.getTransactionCodeNumber());
+            withDrawRecordDTO.setMoneyAmount(moneyAmount);
             withDrawRecordDTO.setStatus("0");
-            withDrawMapper.addWithDrawRecord(withDrawRecordDTO);
-        }
-        else
-        {
-            withDrawRecordDTO.setStatus("1");
+            withDrawRecordDTO.setSysUserId(userInfoDTO.getId());
+            withDrawRecordDTO.setCreateDate(new Date());
+            withDrawRecordDTO.setUpdateDate(new Date());
+            withDrawRecordDTO.setUserOpenId(openid);
+            withDrawRecordDTO.setUserAccountId(accountDTO.getId());
             withDrawMapper.addWithDrawRecord(withDrawRecordDTO);
 
-            //将钱打入用户零钱账户
-            returnMoneyToUser(moneyAmount,request,openid,token);
+            userBankCardInfoDTO.setWithDrawId(withDrawRecordDTO.getWithdrawId());
+            mongoTemplate.insert(userBankCardInfoDTO,"userBankCardInfo");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            redisLock.unlock();
         }
     }
+
+//    @Transactional(rollbackFor = Exception.class)
+//    public void withDrawMoneyFromAccount(float moneyAmount, HttpServletRequest request, String openid,boolean checkFlag)  throws Exception{
+//
+//        String token = WeixinUtil.getUserToken();
+//
+//        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+//        AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(userInfoDTO.getId());
+//
+//        //扣除账户余额中的款项
+//        if((accountDTO.getBalance()-moneyAmount)<0)
+//        {
+//            List<Article> articleList = new ArrayList<>();
+//            Article article = new Article();
+//            article.setTitle("对不起，您的提现金额大于您的账户余额，提现失败。");
+//            articleList.add(article);
+//            WeixinUtil.senImgMsgToWeixin(token,openid,articleList);
+//            throw new Exception();
+//        }
+//        else
+//        {
+//            accountDTO.setBalance(accountDTO.getBalance()-moneyAmount);
+//            accountDTO.setUpdateDate(new Date());
+//            accountMapper.updateUserAccountInfo(accountDTO);
+//        }
+//
+//        WithDrawRecordDTO withDrawRecordDTO = new WithDrawRecordDTO();
+//        withDrawRecordDTO.setId(UUID.randomUUID().toString());
+//        withDrawRecordDTO.setWithdrawId(CodeGenUtil.getTransactionCodeNumber());
+//        withDrawRecordDTO.setMoneyAmount(moneyAmount);
+//        withDrawRecordDTO.setSysUserId(userInfoDTO.getId());
+//        withDrawRecordDTO.setCreateDate(new Date());
+//        withDrawRecordDTO.setUpdateDate(new Date());
+//        withDrawRecordDTO.setUserOpenId(openid);
+//        withDrawRecordDTO.setUserAccountId(accountDTO.getId());
+//        if(checkFlag)
+//        {
+//            withDrawRecordDTO.setStatus("0");
+//            withDrawMapper.addWithDrawRecord(withDrawRecordDTO);
+//        }
+//        else
+//        {
+//            withDrawRecordDTO.setStatus("1");
+//            withDrawMapper.addWithDrawRecord(withDrawRecordDTO);
+//
+//            //将钱打入用户零钱账户
+//            returnMoneyToUser(moneyAmount,request,openid,token);
+//        }
+//    }
 
     public void deFrozenWithDrawRecord(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
         withDrawMapper.updateWithdrawById(withDrawRecordDTO.getWithdrawId(),"1");
