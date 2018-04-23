@@ -12,6 +12,8 @@ import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.*;
 import com.wisdom.common.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -57,17 +59,21 @@ public class PayCoreService {
     @Autowired
     private UserTypeMapper userTypeMapper;
 
+    Logger logger = LoggerFactory.getLogger(PayCoreService.class);
+
     private static ExecutorService threadExecutorSingle = Executors.newSingleThreadExecutor();
 
     @Transactional(rollbackFor = Exception.class)
     public void handleProductPayNotifyInfo(PayRecordDTO payRecordDTO,String notifyType) {
 
-        RedisLock redisLock = new RedisLock("userPay" + payRecordDTO.getOutTradeNo());
+        logger.info("处理微信平台推送的支付成功消息=="+payRecordDTO);
 
-        List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
+        RedisLock redisLock = new RedisLock("userPay" + payRecordDTO.getOutTradeNo());
 
         try {
             redisLock.lock();
+
+            List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
 
             payFunction.processPayStatus(payRecordDTOList);
 
