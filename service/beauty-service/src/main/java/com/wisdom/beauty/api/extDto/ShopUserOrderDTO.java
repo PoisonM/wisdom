@@ -13,10 +13,15 @@ public class ShopUserOrderDTO {
     //订单失效日期
     private String exprDate;
 
-    //订单状态 1、失效 2、有效
+    //订单状态 1、未支付  2、已支付  3、已失效
     private String status;
+    //订单号
+    private String orderId;
+    //美容店主键
+    private String shopId;
 
-    private String a;
+    //档案表主键
+    private String shopUserArchivesId;
 
     //创建时间
     private Date createDate;
@@ -33,6 +38,29 @@ public class ShopUserOrderDTO {
     //用户与充值卡的关系
     private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
 
+    public String getShopUserArchivesId() {
+        return shopUserArchivesId;
+    }
+
+    public void setShopUserArchivesId(String shopUserArchivesId) {
+        this.shopUserArchivesId = shopUserArchivesId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
 
     public String getExprDate() {
         return exprDate;

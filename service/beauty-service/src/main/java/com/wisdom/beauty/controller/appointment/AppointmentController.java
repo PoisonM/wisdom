@@ -23,6 +23,7 @@ import com.wisdom.common.util.LunarUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +59,9 @@ public class AppointmentController {
 	@Resource
 	private RedisUtils redisUtils;
 
+	@Resource
+	private MongoTemplate mongoTemplate;
+
 	/**
 	 * 根据时间查询某个美容店预约列表
 	 *
@@ -86,7 +90,9 @@ public class AppointmentController {
 		//根据时间查询当前店下所有美容师
 		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
-		if (judgeNull(responseDTO, preLog, clerkInfo)) return responseDTO;
+		if (judgeNull(responseDTO, preLog, clerkInfo)) {
+			return responseDTO;
+		}
 		logger.info(preLog + "根据时间查询当前店下所有美容师个数={}", clerkInfo.size());
 
 		HashMap<String, Object> responseMap = new HashMap<>(32);
@@ -363,6 +369,7 @@ public class AppointmentController {
 		redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
 
 		//生成用户与项目的关系
+//		List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<ShopUserProjectRelationDTO>();
 		if (StringUtils.isNotBlank(shopAppointServiceDTO.getShopProjectId())) {
 			String[] projectStr = shopAppointServiceDTO.getShopProjectId().split(";");
 			for (String project : projectStr) {
@@ -394,8 +401,21 @@ public class AppointmentController {
 					relationDTO.setSysShopId(projectDetail.getSysShopId());
 					int num = shopProjectService.saveUserProjectRelation(relationDTO);
 					logger.debug("建立项目与用户的关系， {}", num > 0 ? "成功" : "失败");
+
+//					shopUserProjectRelationDTOS.add(relationDTO);
 				}
 			}
+//			if(CommonUtils.objectIsNotEmpty(shopUserProjectRelationDTOS)){
+//				//保存用户的订单信息
+//				ShopUserOrderDTO shopUserOrderDTO = new ShopUserOrderDTO();
+//				shopUserOrderDTO.setCreateDate(new Date());
+//				shopUserOrderDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
+//				shopUserOrderDTO.setOrderId(DateUtils.DateToStr(new Date(),"dateMillisecond"));
+//				shopUserOrderDTO.setShopId(shopAppointServiceDTO.getSysShopId());
+//				shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
+//				mongoTemplate.insert(shopUserOrderDTO,"shopUserOrderDTO");
+//				logger.debug("保存用户的订单信息到mongo");
+//			}
 		}
 
 		ResponseDTO<String> responseDTO = new ResponseDTO<>();

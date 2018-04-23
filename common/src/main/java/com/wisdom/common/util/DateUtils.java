@@ -357,8 +357,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		}else if("datetimesec".equals(flag)){
 			format = new SimpleDateFormat("yyyyMMddHHmmss");
+		} else if ("dateMillisecond".equals(flag)) {
+			format = new SimpleDateFormat("yyyyMMddHHmmss");
 		}else{
-			format = new SimpleDateFormat(flag);
+			format = new SimpleDateFormat("yyyyMMddHHmmssS");
 		}
 		Date date = null;
 		try {
@@ -367,6 +369,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			e.printStackTrace();
 		}
 		return date;
+	}
+
+	public static void main(String[] args) {
+		System.out.println("args = [" + DateToStr(new Date(), "dateMillisecond") + "]");
 	}
     
     /**
@@ -382,8 +388,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     		format = new SimpleDateFormat("yyyy-MM-dd");
     	}else if("datetime".equals(flag)){
     		format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	}else if("datetimesec".equals(flag)){
+		}else if("datetimesec".equals(flag)){
 			format = new SimpleDateFormat("yyyyMMddHHmmss");
+		} else if ("dateMillisecond".equals(flag)) {
+			format = new SimpleDateFormat("yyyyMMddHHmmssS");
 		}
         String dateStr = null;
     	dateStr = format.format(date);
