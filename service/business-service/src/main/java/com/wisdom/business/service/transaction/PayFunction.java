@@ -25,6 +25,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sound.midi.ShortMessage;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -104,6 +105,11 @@ public class PayFunction {
                 {
                     WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(token,payRecordDTO.getAmount()+"元",businessOrderDTO,userInfoDTOList.get(0).getUserOpenid(),specialShopInfoDTO);
                 }
+                else
+                {
+                    //直接给店主发送短信
+                    SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(),payRecordDTO.getAmount()+"元",businessOrderDTO,specialShopInfoDTO);
+                }
             }
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();
@@ -119,7 +125,6 @@ public class PayFunction {
         catch (Exception e)
         {
             e.printStackTrace();
-            throw e;
         }
     }
 
