@@ -24,6 +24,7 @@ import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -674,11 +675,13 @@ public class IncomeController {
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : nextList){
 			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
 			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
-				monthTransactionRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
-				monthTransactionRecordDTO.setOrderAmount(businessOrderDTO.getAmount());
-				monthTransactionRecordDTO.setOrderStatus(businessOrderDTO.getStatus());
-				monthTransactionRecordDTO.setPayDate(businessOrderDTO.getPayDate());
-				nextList1.add(monthTransactionRecordDTO);
+				MonthTransactionRecordDTO monthDTO = new MonthTransactionRecordDTO();
+				BeanUtils.copyProperties(monthTransactionRecordDTO, monthDTO);
+				monthDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+				monthDTO.setOrderAmount(businessOrderDTO.getAmount());
+				monthDTO.setOrderStatus(businessOrderDTO.getStatus());
+				monthDTO.setPayDate(businessOrderDTO.getPayDate());
+				nextList1.add(monthDTO);
 			}
 		}
 		map.put("nextCount",nextCount);
