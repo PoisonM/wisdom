@@ -512,11 +512,13 @@ public class IncomeController {
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : selfList){
 			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
 			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
-				monthTransactionRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
-				monthTransactionRecordDTO.setOrderAmount(businessOrderDTO.getAmount());
-				monthTransactionRecordDTO.setOrderStatus(businessOrderDTO.getStatus());
-				monthTransactionRecordDTO.setPayDate(businessOrderDTO.getPayDate());
-				selfList1.add(monthTransactionRecordDTO);
+                MonthTransactionRecordDTO monthDTO = new MonthTransactionRecordDTO();
+                BeanUtils.copyProperties(monthTransactionRecordDTO, monthDTO);
+                monthDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+                monthDTO.setOrderAmount(businessOrderDTO.getAmount());
+                monthDTO.setOrderStatus(businessOrderDTO.getStatus());
+                monthDTO.setPayDate(businessOrderDTO.getPayDate());
+				selfList1.add(monthDTO);
 			}
 		}
 		pageParamVoDTO.getRequestData().setParentRelation("other");
@@ -526,11 +528,13 @@ public class IncomeController {
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : nextList){
 			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
 			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
-				monthTransactionRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
-				monthTransactionRecordDTO.setOrderAmount(businessOrderDTO.getAmount());
-				monthTransactionRecordDTO.setOrderStatus(businessOrderDTO.getStatus());
-				monthTransactionRecordDTO.setPayDate(businessOrderDTO.getPayDate());
-				nextList1.add(monthTransactionRecordDTO);
+                MonthTransactionRecordDTO monthDTO = new MonthTransactionRecordDTO();
+                BeanUtils.copyProperties(monthTransactionRecordDTO, monthDTO);
+                monthDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+                monthDTO.setOrderAmount(businessOrderDTO.getAmount());
+                monthDTO.setOrderStatus(businessOrderDTO.getStatus());
+                monthDTO.setPayDate(businessOrderDTO.getPayDate());
+				nextList1.add(monthDTO);
 			}
 		}
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())) {
@@ -636,11 +640,13 @@ public class IncomeController {
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : selfList){
 			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
 			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
-				monthTransactionRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
-				monthTransactionRecordDTO.setOrderAmount(businessOrderDTO.getAmount());
-				monthTransactionRecordDTO.setOrderStatus(businessOrderDTO.getStatus());
-				monthTransactionRecordDTO.setPayDate(businessOrderDTO.getPayDate());
-				selfList1.add(monthTransactionRecordDTO);
+                MonthTransactionRecordDTO monthDTO = new MonthTransactionRecordDTO();
+                BeanUtils.copyProperties(monthTransactionRecordDTO, monthDTO);
+                monthDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+                monthDTO.setOrderAmount(businessOrderDTO.getAmount());
+                monthDTO.setOrderStatus(businessOrderDTO.getStatus());
+                monthDTO.setPayDate(businessOrderDTO.getPayDate());
+				selfList1.add(monthDTO);
 			}
 		}
 		map.put("selfCount",selfCount);
