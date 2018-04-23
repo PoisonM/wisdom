@@ -60,7 +60,7 @@ public class PayController {
         Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
         ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
 
-        int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO, shopUserPayDTO);
+        int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO, shopUserPayDTO, clerkInfo);
 
         responseDTO.setResponseData(shopUserOrderDTO);
         responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);

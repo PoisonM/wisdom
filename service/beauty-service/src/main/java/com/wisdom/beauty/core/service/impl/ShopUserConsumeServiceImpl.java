@@ -8,7 +8,6 @@ import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
@@ -117,267 +116,179 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO) {
+    public int userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo) {
 
         if (CommonUtils.objectIsEmpty(shopUserOrderDTO) || CommonUtils.objectIsEmpty(shopUserPayDTO)) {
             logger.debug("传入参数为空，{}", "shopUserOrderDTO = [" + shopUserOrderDTO + "], shopUserPayDTO = [" + shopUserPayDTO + "]");
             return 0;
         }
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 
-        //同一笔订单号为交易流水号
-        String transactionCodeNumber = shopUserOrderDTO.getOrderId();
-        //获取用户的账户信息
-        SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
-        sysUserAccountDTO.setShopUserArchivesId(shopUserOrderDTO.getShopUserArchivesId());
-        sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
-        //获取用户的档案信息
-        ShopUserArchivesDTO archivesDTO = new ShopUserArchivesDTO();
-        archivesDTO.setId(shopUserOrderDTO.getShopUserArchivesId());
-        ShopUserArchivesDTO archivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(archivesDTO);
+        try {
+            //同一笔订单号为交易流水号
+            String transactionCodeNumber = shopUserOrderDTO.getOrderId();
+            //获取用户的账户信息
+            SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
+            sysUserAccountDTO.setShopUserArchivesId(shopUserOrderDTO.getShopUserArchivesId());
+            sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
+            //获取用户的档案信息
+            ShopUserArchivesDTO archivesDTO = new ShopUserArchivesDTO();
+            archivesDTO.setId(shopUserOrderDTO.getShopUserArchivesId());
+            ShopUserArchivesDTO archivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(archivesDTO);
 
-        //产品列表相关操作
-        List<ShopUserProductRelationDTO> productRelationDTOS = shopUserOrderDTO.getShopUserProductRelationDTOS();
-        if (CommonUtils.objectIsNotEmpty(productRelationDTOS)) {
-            for (ShopUserProductRelationDTO dto : productRelationDTOS) {
-                //生成用户跟产品的关系
-                String uuid = IdGen.uuid();
-                dto.setId(uuid);
-                dto.setSysShopId(clerkInfo.getSysShopId());
-                dto.setSysShopName(clerkInfo.getSysShopName());
-                shopProductInfoService.saveShopUserProductRelation(dto);
+            //产品列表相关操作
+            List<ShopUserProductRelationDTO> productRelationDTOS = shopUserOrderDTO.getShopUserProductRelationDTOS();
+            if (CommonUtils.objectIsNotEmpty(productRelationDTOS)) {
+                for (ShopUserProductRelationDTO dto : productRelationDTOS) {
+                    //生成用户跟产品的关系
+                    String uuid = IdGen.uuid();
+                    dto.setId(uuid);
+                    dto.setSysShopId(clerkInfo.getSysShopId());
+                    dto.setSysShopName(clerkInfo.getSysShopName());
+                    shopProductInfoService.saveShopUserProductRelation(dto);
 
-                ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-                userConsumeRecordDTO.setFlowName(dto.getShopProductName());
-                userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
-                userConsumeRecordDTO.setPrice(dto.getInitAmount());
-                userConsumeRecordDTO.setConsumeNumber(dto.getInitTimes());
-                userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
-                //生成充值记录
-                ShopUserConsumeRecordDTO consumeRecordDTO = saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
-                shopClerkService.saveSysClerkFlowAccountInfo(consumeRecordDTO);
-                //dto.getPrice()为此次交易的总价格
-                sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().add(userConsumeRecordDTO.getPrice()));
-
-                //更新用户的账户信息
-                try {
-                    sysUserAccountDTO.setFlowNo(transactionCodeNumber);
-                    sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
-                } catch (Exception e) {
-                    logger.error("更新账户信息失败，失败信息为{}" + e.getMessage(), e);
-                    throw new RuntimeException();
-                }
-            }
-        }
-
-        //项目列表相关操作
-        List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserOrderDTO.getShopUserProjectRelationDTOS();
-        if (CommonUtils.objectIsNotEmpty(projectRelationDTOS)) {
-            for (ShopUserProjectRelationDTO dto : projectRelationDTOS) {
-                dto.setCreateDate(new Date());
-                String uuid = IdGen.uuid();
-                dto.setId(uuid);
-                dto.setSysShopName(dto.getSysShopName());
-                shopProjectService.saveUserProjectRelation(dto);
-
-                ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-                userConsumeRecordDTO.setFlowName(dto.getSysShopProjectName());
-                userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
-                userConsumeRecordDTO.setPrice(dto.getSysShopProjectInitAmount());
-                userConsumeRecordDTO.setConsumeNumber(dto.getSysShopProjectInitTimes());
-                userConsumeRecordDTO.setGoodsType(dto.getUseStyle());
-                //生成充值记录
-                ShopUserConsumeRecordDTO consumeRecordDTO = saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
-                shopClerkService.saveSysClerkFlowAccountInfo(consumeRecordDTO);
-            }
-        }
-
-        //套卡列表相关操作
-        List<ShopUserProjectGroupRelRelationDTO> groupRelRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS();
-        if (CommonUtils.objectIsNotEmpty(groupRelRelationDTOS)) {
-            for (ShopUserProjectGroupRelRelationDTO dto : groupRelRelationDTOS) {
-                //根据套卡id查询项目列表
-                ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
-                shopProjectInfoGroupRelationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
-                shopProjectInfoGroupRelationDTO.setSysShopId(shopProjectInfoGroupRelationDTO.getSysShopId());
-                List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
-
-                if (null == groupRelations) {
-                    logger.error("根据项目套卡主键查询出来的项目列表为空，{}", groupRelations);
-                    throw new RuntimeException();
-                }
-
-                //生成用户跟套卡与项目的关系的关系
-                for (ShopProjectInfoGroupRelationDTO dt : groupRelations) {
-                    //查询项目信息
-                    ShopProjectInfoDTO shopProjectInfoDTO = redisUtils.getShopProjectInfoFromRedis(dt.getShopProjectInfoId());
-                    ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
-                    groupRelRelationDTO.setSysShopId(clerkInfo.getSysShopId());
-                    groupRelRelationDTO.setSysUserId(archivesInfo.getSysUserId());
-                    groupRelRelationDTO.setId(IdGen.uuid());
-                    groupRelRelationDTO.setShopProjectGroupId(dto.getId());
-                    groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
-                    groupRelRelationDTO.setSysBossId(shopProjectInfoDTO.getSysBossId());
-                    shopProjectGroupService.saveShopUserProjectGroupRelRelation(groupRelRelationDTO);
-                    //生成充值记录
                     ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-                    userConsumeRecordDTO.setFlowName(groupRelRelationDTO.getShopProjectGroupName());
-                    userConsumeRecordDTO.setFlowId(groupRelRelationDTO.getId());
-                    userConsumeRecordDTO.setDiscount(new BigDecimal(groupRelRelationDTO.getDiscount()));
-                    userConsumeRecordDTO.setPrice(groupRelRelationDTO.getProjectInitAmount());
-                    userConsumeRecordDTO.setConsumeNumber(groupRelRelationDTO.getProjectInitTimes());
-                    userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.COLLECTION_CARD.getCode());
+                    userConsumeRecordDTO.setFlowName(dto.getShopProductName());
+                    userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
+                    userConsumeRecordDTO.setPrice(dto.getInitAmount());
+                    userConsumeRecordDTO.setConsumeNumber(dto.getInitTimes());
+                    userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
+                    //生成充值记录
                     ShopUserConsumeRecordDTO consumeRecordDTO = saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
                     shopClerkService.saveSysClerkFlowAccountInfo(consumeRecordDTO);
+                    //更新用户的账户信息
+                    updateUserAccount(transactionCodeNumber, sysUserAccountDTO, userConsumeRecordDTO);
                 }
-
             }
-        }
-        //充值卡列表相关操作
-        List<ShopUserRechargeCardDTO> rechargeCardDTOS = shopUserOrderDTO.getShopUserRechargeCardDTOS();
-        if (CommonUtils.objectIsNotEmpty(rechargeCardDTOS)) {
-            for (ShopUserRechargeCardDTO dto : rechargeCardDTOS) {
-                ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-                String uuid = IdGen.uuid();
-                userConsumeRecordDTO.setFlowId(uuid);
-                userConsumeRecordDTO.setId(uuid);
-                userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
-                userConsumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
-                userConsumeRecordDTO.setCreateDate(new Date());
-                userConsumeRecordDTO.setFlowNo(transactionCodeNumber);
-                userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.RECHARGE_CARD.getCode());
-                userConsumeRecordDTO.setSysUserName(archivesInfo.getSysUserName());
-                userConsumeRecordDTO.setSysUserId(archivesInfo.getSysUserId());
-                userConsumeRecordDTO.setSysShopName(archivesInfo.getSysShopName());
-                userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
-                userConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
-                userConsumeRecordDTO.setSysBossId(clerkInfo.getSysBossId());
-                userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
-                userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
-                shopUserConsumeService.userConsumeRechargeCard(userConsumeRecordDTO);
-            }
-        }
 
-//        try {
-//            //遍历记录
-//            for (ExtShopUserConsumeRecordDTO dto : extShopUserConsumeRecordDTOS) {
-//                //虚拟商品类型
-//                String goodsType = dto.getGoodsType();
-//
-//                //获取用户的账户信息
-//                SysUserAccountDTO sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(dto.getSysUserId());
-//
-//                //如果是次卡、疗程卡相关操作
-//                if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType) || GoodsTypeEnum.TREATMENT_CARD.getCode().equals(goodsType)) {
-//
-//                    if (dto.getShopUserProjectRelationDTO() == null) {
-//                        logger.error("用户充值操作用户与卡的关系为空,{}", "ShopUserProjectRelationDTO = [" + dto.getShopUserProjectRelationDTO() + "]");
-//                        throw new RuntimeException();
-//                    }
-//                    //生成用户与项目的关系
-//                    ShopUserProjectRelationDTO shopUserRelationDTO = dto.getShopUserProjectRelationDTO();
-//                    shopUserRelationDTO.setCreateDate(new Date());
-//                    String uuid = IdGen.uuid();
-//                    shopUserRelationDTO.setId(uuid);
-//                    shopUserRelationDTO.setSysShopName(dto.getSysShopName());
-//                    //流水id
-//                    dto.setFlowId(uuid);
-//                    dto.setFlowName(GoodsTypeEnum.TIME_CARD.getDesc());
-//                    //如果用充值卡抵扣的话
-//                    if (null != dto.getShopUserRechargeCardDTO()) {
-//                        ShopUserRechargeCardDTO shopUserRechargeCardDTO = dto.getShopUserRechargeCardDTO();
-//                        if (StringUtils.isBlank(shopUserRechargeCardDTO.getId())) {
-//                            logger.error("用户充值操作,充值卡参数异常{}", "extShopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
-//                            throw new RuntimeException();
-//                        }
-//                        ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-//                        userConsumeRecordDTO.setFlowId(dto.getShopUserRechargeCardDTO().getId());
-//                        shopUserConsumeService.userConsumeRechargeCard(userConsumeRecordDTO);
-//                    }
-//                    shopProjectService.saveUserProjectRelation(shopUserRelationDTO);
-//                }
-//                //如果是套卡相关操作
-//                else if (GoodsTypeEnum.COLLECTION_CARD.getCode().equals(goodsType)) {
-//                    if (dto.getShopProjectGroupDTO() == null) {
-//                        logger.error("用户充值操作用户与卡的关系为空,{}", "ShopUserProjectRelationDTO = [" + dto.getShopUserProjectRelationDTO() + "]");
-//                        throw new RuntimeException();
-//                    }
-//                    ShopProjectGroupDTO shopProjectGroupDTO = dto.getShopProjectGroupDTO();
-//
-//                    //根据套卡id查询项目列表
-//                    ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
-//                    shopProjectInfoGroupRelationDTO.setShopProjectGroupId(shopProjectGroupDTO.getId());
-//                    shopProjectInfoGroupRelationDTO.setSysShopId(shopProjectInfoGroupRelationDTO.getSysShopId());
-//                    List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
-//
-//                    if (null == groupRelations) {
-//                        logger.error("根据项目套卡主键查询出来的项目列表为空，{}", groupRelations);
-//                        throw new RuntimeException();
-//                    }
-//                    //如果套卡能买多套
-//                    for (int i = 0; i < dto.getConsumeNumber(); i++) {
-//                        //生成用户跟套卡与项目的关系的关系
-//                        for (ShopProjectInfoGroupRelationDTO dt : groupRelations) {
-//                            //查询项目信息
-//                            ShopProjectInfoDTO shopProjectInfoDTO = redisUtils.getShopProjectInfoFromRedis(dt.getShopProjectInfoId());
-//                            ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
-//                            groupRelRelationDTO.setSysShopId(dto.getSysShopId());
-//                            groupRelRelationDTO.setSysUserId(dto.getSysUserId());
-//                            groupRelRelationDTO.setId(IdGen.uuid());
-//                            groupRelRelationDTO.setProjectInitAmount(shopProjectInfoDTO.getMarketPrice());
-//                            groupRelRelationDTO.setProjectInitTimes(shopProjectInfoDTO.getMaxContainTimes());
-//                            groupRelRelationDTO.setProjectSurplusAmount(shopProjectInfoDTO.getMarketPrice());
-//                            groupRelRelationDTO.setProjectSurplusTimes(shopProjectInfoDTO.getMaxContainTimes());
-//                            groupRelRelationDTO.setShopProjectGroupId(shopProjectGroupDTO.getId());
-//                            groupRelRelationDTO.setShopProjectGroupName(shopProjectGroupDTO.getProjectGroupName());
-//                            groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
-//                            groupRelRelationDTO.setSysBossId(shopProjectInfoDTO.getSysBossId());
-//                            shopProjectGroupService.saveShopUserProjectGroupRelRelation(groupRelRelationDTO);
-//                        }
-//                    }
-//                    dto.setFlowId(shopProjectGroupDTO.getId());
-//                    dto.setFlowName(GoodsTypeEnum.COLLECTION_CARD.getDesc());
-//                }
-//                //如果是产品相关
-//                else if (GoodsTypeEnum.PRODUCT.getCode().equals(goodsType)) {
-//                    //生成用户跟产品的关系
-//                    ShopUserProductRelationDTO userProductRelationDTO = dto.getShopUserProductRelationDTO();
-//                    String uuid = IdGen.uuid();
-//                    userProductRelationDTO.setId(uuid);
-//                    dto.setFlowId(uuid);
-//                    dto.setFlowName(GoodsTypeEnum.PRODUCT.getCode());
-//                }
-//                //dto.getPrice()为此次交易的总价格
-//                sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().add(dto.getPrice()));
-//
-//                //更新用户的账户信息
-//                try {
-//                    sysUserAccountDTO.setFlowNo(transactionCodeNumber);
-//                    sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
-//                } catch (Exception e) {
-//                    logger.error("更新账户信息失败，失败信息为{}" + e.getMessage(), e);
-//                    throw new RuntimeException();
-//                }
-//                //记录店员的流水信息
-//                shopClerkService.saveSysClerkFlowAccountInfo(dto);
-//
-//                dto.setFlowNo(transactionCodeNumber);
-//                dto.setOperDate(new Date());
-//                dto.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
-//                int record = shopUerConsumeRecordService.saveCustomerConsumeRecord(dto);
-//                logger.debug("保存用户充值或消费操作返回结果 {}", record > 0 ? "成功" : "失败");
-//            }
-//        } catch (Exception e) {
-//            logger.error("充值失败，失败原因为，{}" + e.getMessage(), e);
-//            responseDTO.setResult(StatusConstant.FAILURE);
-//            responseDTO.setResponseData("failure");
-//        }
-//        //保存用户的操作记录
-//        responseDTO.setResult(StatusConstant.SUCCESS);
-//        responseDTO.setResponseData("success");
-//        logger.info("用户充值操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
-//        return responseDTO;
-        return 0;
+            //项目列表相关操作
+            List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserOrderDTO.getShopUserProjectRelationDTOS();
+            if (CommonUtils.objectIsNotEmpty(projectRelationDTOS)) {
+                for (ShopUserProjectRelationDTO dto : projectRelationDTOS) {
+                    dto.setCreateDate(new Date());
+                    String uuid = IdGen.uuid();
+                    dto.setId(uuid);
+                    dto.setSysShopName(dto.getSysShopName());
+                    shopProjectService.saveUserProjectRelation(dto);
+
+                    ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+                    userConsumeRecordDTO.setFlowName(dto.getSysShopProjectName());
+                    userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
+                    userConsumeRecordDTO.setPrice(dto.getSysShopProjectInitAmount());
+                    userConsumeRecordDTO.setConsumeNumber(dto.getSysShopProjectInitTimes());
+                    userConsumeRecordDTO.setGoodsType(dto.getUseStyle());
+                    //生成充值记录
+                    ShopUserConsumeRecordDTO consumeRecordDTO = saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
+                    shopClerkService.saveSysClerkFlowAccountInfo(consumeRecordDTO);
+
+                    //更新用户的账户信息
+                    updateUserAccount(transactionCodeNumber, sysUserAccountDTO, userConsumeRecordDTO);
+                }
+            }
+
+            //套卡列表相关操作
+            List<ShopUserProjectGroupRelRelationDTO> groupRelRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS();
+            if (CommonUtils.objectIsNotEmpty(groupRelRelationDTOS)) {
+                for (ShopUserProjectGroupRelRelationDTO dto : groupRelRelationDTOS) {
+                    //根据套卡id查询项目列表
+                    ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
+                    shopProjectInfoGroupRelationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
+                    shopProjectInfoGroupRelationDTO.setSysShopId(shopProjectInfoGroupRelationDTO.getSysShopId());
+                    List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
+
+                    if (null == groupRelations) {
+                        logger.error("根据项目套卡主键查询出来的项目列表为空，{}", groupRelations);
+                        throw new RuntimeException();
+                    }
+
+                    //生成用户跟套卡与项目的关系的关系
+                    for (ShopProjectInfoGroupRelationDTO dt : groupRelations) {
+                        //查询项目信息
+                        ShopProjectInfoDTO shopProjectInfoDTO = redisUtils.getShopProjectInfoFromRedis(dt.getShopProjectInfoId());
+                        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
+                        groupRelRelationDTO.setSysShopId(clerkInfo.getSysShopId());
+                        groupRelRelationDTO.setSysUserId(archivesInfo.getSysUserId());
+                        groupRelRelationDTO.setId(IdGen.uuid());
+                        groupRelRelationDTO.setShopProjectGroupId(dto.getId());
+                        groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
+                        groupRelRelationDTO.setSysBossId(shopProjectInfoDTO.getSysBossId());
+                        shopProjectGroupService.saveShopUserProjectGroupRelRelation(groupRelRelationDTO);
+                        //生成充值记录
+                        ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+                        userConsumeRecordDTO.setFlowName(groupRelRelationDTO.getShopProjectGroupName());
+                        userConsumeRecordDTO.setFlowId(groupRelRelationDTO.getId());
+                        userConsumeRecordDTO.setDiscount(new BigDecimal(groupRelRelationDTO.getDiscount()));
+                        userConsumeRecordDTO.setPrice(groupRelRelationDTO.getProjectInitAmount());
+                        userConsumeRecordDTO.setConsumeNumber(groupRelRelationDTO.getProjectInitTimes());
+                        userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.COLLECTION_CARD.getCode());
+                        ShopUserConsumeRecordDTO consumeRecordDTO = saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
+                        shopClerkService.saveSysClerkFlowAccountInfo(consumeRecordDTO);
+
+                        //更新用户的账户信息
+                        updateUserAccount(transactionCodeNumber, sysUserAccountDTO, userConsumeRecordDTO);
+                    }
+
+                }
+            }
+            //充值卡列表相关操作
+            List<ShopUserRechargeCardDTO> rechargeCardDTOS = shopUserOrderDTO.getShopUserRechargeCardDTOS();
+            if (CommonUtils.objectIsNotEmpty(rechargeCardDTOS)) {
+                for (ShopUserRechargeCardDTO dto : rechargeCardDTOS) {
+                    ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+                    String uuid = IdGen.uuid();
+                    userConsumeRecordDTO.setFlowId(uuid);
+                    userConsumeRecordDTO.setId(uuid);
+                    userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
+                    userConsumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
+                    userConsumeRecordDTO.setCreateDate(new Date());
+                    userConsumeRecordDTO.setFlowNo(transactionCodeNumber);
+                    userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.RECHARGE_CARD.getCode());
+                    userConsumeRecordDTO.setSysUserName(archivesInfo.getSysUserName());
+                    userConsumeRecordDTO.setSysUserId(archivesInfo.getSysUserId());
+                    userConsumeRecordDTO.setSysShopName(archivesInfo.getSysShopName());
+                    userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
+                    userConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
+                    userConsumeRecordDTO.setSysBossId(clerkInfo.getSysBossId());
+                    userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
+                    userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
+                    userConsumeRechargeCard(userConsumeRecordDTO);
+
+                    //更新用户的账户信息
+                    try {
+                        //dto.getPrice()为此次交易的总价格
+                        sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().subtract(userConsumeRecordDTO.getPrice()));
+                        sysUserAccountDTO.setFlowNo(transactionCodeNumber);
+                        sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
+                    } catch (Exception e) {
+                        logger.error("更新账户信息失败，失败信息为{}" + e.getMessage(), e);
+                        throw new RuntimeException();
+                    }
+                }
+            }
+        } catch (RuntimeException e) {
+            logger.error("用户充值操作异常，异常原因为" + e.getMessage(), e);
+            throw new RuntimeException();
+        }
+        return 1;
+    }
+
+    /**
+     * 更新用户的账户信息
+     *
+     * @param transactionCodeNumber
+     * @param sysUserAccountDTO
+     * @param userConsumeRecordDTO
+     */
+    private void updateUserAccount(String transactionCodeNumber, SysUserAccountDTO sysUserAccountDTO, ShopUserConsumeRecordDTO userConsumeRecordDTO) {
+        //更新用户的账户信息
+        try {
+            //dto.getPrice()为此次交易的总价格
+            sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().add(userConsumeRecordDTO.getPrice()));
+            sysUserAccountDTO.setFlowNo(transactionCodeNumber);
+            sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
+        } catch (Exception e) {
+            logger.error("更新账户信息失败，失败信息为{}" + e.getMessage(), e);
+            throw new RuntimeException();
+        }
     }
 
     /**

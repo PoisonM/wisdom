@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 
 /**
  * FileName: ShopUserConsumService
@@ -25,5 +26,5 @@ public interface ShopUserConsumeService {
     /**
      * 用户充值操作
      */
-    int userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO);
+    int userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo);
 }
