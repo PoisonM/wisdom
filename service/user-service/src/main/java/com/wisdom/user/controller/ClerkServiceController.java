@@ -4,8 +4,8 @@
 package com.wisdom.user.controller;
 
 import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.customer.SysClerkDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.user.service.ClerkInfoService;
 import org.slf4j.Logger;
