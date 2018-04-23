@@ -352,7 +352,7 @@ public class IncomeController {
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if("".equals(incomeRecordId) || incomeRecordId == null){
 			responseDTO.setErrorInfo(StatusConstant.FAILURE);
-			responseDTO.setResult("incomeRecordId");
+			responseDTO.setResult("incomeRecordId为空");
 			logger.info("佣金审核接口传入参数incomeRecordId为空", "incomeRecordId = [" + incomeRecordId + "]");
 		}
 		//获取登录人信息
@@ -369,6 +369,8 @@ public class IncomeController {
 		incomeRecordManagementDTO1.setUserType(userInfoDTO.getUserType());
 //		incomeRecordManagementDTO1.setSysUserId(userInfoDTO.getId());
 		List<IncomeRecordManagementDTO> incomeRecordManagementDTOS = incomeRecordManagementService.getIncomeRecordManagement(incomeRecordManagementDTO1);
+
+
 		//如已有审核记录
 		if(incomeRecordManagementDTOS.size()>0){
 			//已有的审核记录状态与本次相同
@@ -387,6 +389,21 @@ public class IncomeController {
 			responseDTO.setResult("已有相关人员审核,不能重复修改");
 			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 			return responseDTO;
+		}
+		//查询此条数据有没有被审核
+		IncomeRecordManagementDTO incomeRecordManagementDTO2 =new IncomeRecordManagementDTO();
+		incomeRecordManagementDTO2.setIncomeRecordId(incomeRecordId);
+		List<IncomeRecordManagementDTO> incomeRecordManagementDTOS2 = incomeRecordManagementService.getIncomeRecordManagement(incomeRecordManagementDTO2);
+
+		//如果有数据,则审核状态为通过则说明此次审核为第二次审核,判断审核结果修改数据状态
+		if(incomeRecordManagementDTOS2.size()>0 && "1".equals(incomeRecordManagementDTOS2.get(0).getStatus())){
+			if("1".equals(status)){
+				//审核通过,修改状态
+				IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+				incomeRecordDTO.setStatus(status);
+				incomeService.updateIncomeRecord(incomeRecordDTO);
+			}
+
 		}
 		//第一次审核,创建审核记录,向incomeRecordManagement表中插入数据
 		IncomeRecordManagementDTO incomeRecordManagementDTO = new IncomeRecordManagementDTO();
