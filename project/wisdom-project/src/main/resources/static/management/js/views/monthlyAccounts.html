@@ -68,7 +68,7 @@
                                 </tr>
                                 </thead>
                                 <tbody ng-repeat="item in MonthlyBalanceLis">
-                                <tr >
+                                <tr ng-class="item.secondCheckStatus=='有一方拒绝'?'red':'white'">
                                     <td>{{item.nickName}}</td>
                                     <td>{{item.mobile}}</td>
                                     <td>{{item.userType}}</td>
