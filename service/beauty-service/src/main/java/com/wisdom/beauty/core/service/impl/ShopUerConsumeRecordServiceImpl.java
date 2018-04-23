@@ -54,11 +54,16 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         // 排序
         criteria.setOrderByClause("create_date");
         // 分页
-        criteria.setLimitStart(pageParamVoDTO.getPageNo());
-        criteria.setPageSize(pageParamVoDTO.getPageSize());
-        if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())) {
-            Date currentDate = DateUtils.parseDate(pageParamVoDTO.getStartTime());
-            c.andCreateDateBetween(currentDate, currentDate);
+        if(pageParamVoDTO.getPageSize()!=0) {
+            criteria.setLimitStart(pageParamVoDTO.getPageNo());
+            criteria.setPageSize(pageParamVoDTO.getPageSize());
+        }
+        if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime()) && StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+            //Date currentDate = DateUtils.parseDate(pageParamVoDTO.getStartTime());
+            logger.info("传入的开始时间，结束时间是,StartTime={}，EndTime={}",pageParamVoDTO.getStartTime(),pageParamVoDTO.getEndTime());
+            Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+            Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+            c.andCreateDateBetween(startTime, endTime);
         }
         //设置查询条件
         c.andSysShopIdEqualTo(sysClerkDTO.getSysShopId());
@@ -80,7 +85,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
                 }
             }
         } else {
-            c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
+            if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getSysUserId())) {
+                c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
+            }
         }
         List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
         Map<String, UserConsumeRecordResponseDTO> map = new HashMap<>(16);
@@ -90,6 +97,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
             if (map.get(shopUserConsumeRecord.getFlowNo()) == null) {
                 userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
                 userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
+                userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
                 if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
                     userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getConsumeType());
                 } else {

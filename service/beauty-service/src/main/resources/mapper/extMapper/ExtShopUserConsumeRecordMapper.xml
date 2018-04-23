@@ -126,5 +126,21 @@
             limit ${limitStart},${pageSize}
         </if>
     </select>
+    <select id="selectPriceListByCriteria" resultType="com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO"
+            parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria">
+        select
+        flow_no flowNo,SUM(price) expenditure
+        from shop_user_consume_record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart >= 0">
+            limit ${limitStart},${pageSize}
+        </if>
+        GROUP  BY flow_no
+    </select>
 
 </mapper>

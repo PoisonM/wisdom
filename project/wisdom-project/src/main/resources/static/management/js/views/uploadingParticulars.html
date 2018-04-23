@@ -24,22 +24,18 @@
                             <label for="name">
                                 商品名称:
                             </label>
-                            <input type="text" id="name" class="product_type uploading_product_name_search name" value="{{uploadingPar.productName}}">
+                            <input type="text" id="name" class="product_type uploading_product_name_search name" ng-model="param.productName">
                         </div>
                         <div class="name_row">
 
                             <label for="brand">品牌:</label>
-                            <select id="brand" class="product_type brand uploading_product_name_search">
-                                <option>{{uploadingPar.brand}}</option>
-                            </select>
+                            <input type="text" id="brand" class="product_type uploading_product_name_search name"  ng-model="param.brand">
+
                         </div>
                         <div class="name_row">
                             <label for="classify">分类:</label>
-                            <select id="classify" class="product_type types uploading_product_name_search">
-                                <option>{{uploadingPar.secondType}}</option>
-                                <option>牙膏</option>
-                                <option>洗面奶</option>
-                            </select>
+                            <input type="text" id="classify" class="product_type uploading_product_name_search name"  ng-model="param.secondType">
+
                         </div>
                         <div class="name_row">
                             <label for="state">状态:</label>
@@ -119,12 +115,10 @@
                             <P> <input type="checkbox" id="postage">
                                 <label for="postage">包邮</label></p>
                         </div>
-                        <div class="name_row">
+
+                        <div class="uploading_product_name">
                             <label for="address">发货地:</label>
-                            <select id="address" class="product_type addresss uploading_product_name_search">
-                                <option>北京地区发货</option>
-                                <option>深圳地区发货</option>
-                            </select>
+                            <input type="text" id="address" class="product_type uploading_product_name_search name"  ng-model="param.productDetail.senderAddress">
                         </div>
                         <div class="save">
                             <button class="save_btn" ng-click="save()">保存</button>

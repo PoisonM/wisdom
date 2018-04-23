@@ -131,6 +131,27 @@ define(['appManagement'], function (app) {
         .factory('QueryUserIncomeByParameters',['$resource',function ($resource){
             return $resource(income + 'queryUserIncomeByParameters');
         }])
+        .factory('GetIncomeRecordByPageParam',['$resource',function ($resource){
+            return $resource(income + 'getIncomeRecordByPageParam');
+        }])
+        .factory('CheckIncomeRecordManagement',['$resource',function ($resource){
+            return $resource(income + 'checkIncomeRecordManagement');
+        }])
+        .factory('SelectSelfMonthTransactionRecordByUserId',['$resource',function ($resource){
+            return $resource(income + 'selectSelfMonthTransactionRecordByUserId');
+        }])
+        .factory('ExportExcelMonthTransactionRecordByUserId',['$resource',function ($resource){
+            return $resource(income + 'exportExcelMonthTransactionRecordByUserId');
+        }])
+        .factory('SelectNextMonthTransactionRecordByUserId',['$resource',function ($resource){
+            return $resource(income + 'selectNextMonthTransactionRecordByUserId');
+        }])
+        .factory('QueryIncomeInfoByIncomeId',['$resource',function ($resource){
+            return $resource(income + 'queryIncomeInfoByIncomeId');
+        }])
+
+
+    
         /*详情 月度结算*/
         .factory('QueryMonthTransactionRecordByIncomeRecord',['$resource',function ($resource){
             return $resource(income + 'queryMonthTransactionRecordByIncomeRecord');

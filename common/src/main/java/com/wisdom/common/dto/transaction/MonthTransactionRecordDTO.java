@@ -63,11 +63,29 @@ public class MonthTransactionRecordDTO {
     @JSONField(name = "userType")
     private String userType;
 
+    @JSONField(name = "userTypeNow")
+    private String userTypeNow;//上级用户现在的等级
+
+    @JSONField(name = "nextUserTypeNow")
+    private String nextUserTypeNow;//下级用户现在的等级
+
     @JSONField(name = "nextUserType")
     private String nextUserType;
 
     @JSONField(name = "parentRelation")
     private String parentRelation;
+
+    @JSONField(name = "payDate")
+    private Date payDate;
+
+    @JSONField(name = "orderId")
+    private String orderId;
+
+    @JSONField(name = "orderAmount")
+    private String orderAmount;
+
+    @JSONField(name = "orderStatus")
+    private String orderStatus;
 
     public String getId() {
         return id;
@@ -195,5 +213,53 @@ public class MonthTransactionRecordDTO {
 
     public void setParentRelation(String parentRelation) {
         this.parentRelation = parentRelation;
+    }
+
+    public String getUserTypeNow() {
+        return userTypeNow;
+    }
+
+    public void setUserTypeNow(String userTypeNow) {
+        this.userTypeNow = userTypeNow;
+    }
+
+    public String getNextUserTypeNow() {
+        return nextUserTypeNow;
+    }
+
+    public void setNextUserTypeNow(String nextUserTypeNow) {
+        this.nextUserTypeNow = nextUserTypeNow;
+    }
+
+    public Date getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(Date payDate) {
+        this.payDate = payDate;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getOrderAmount() {
+        return orderAmount;
+    }
+
+    public void setOrderAmount(String orderAmount) {
+        this.orderAmount = orderAmount;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

@@ -16,6 +16,8 @@ import java.util.List;
  * @since JDK 1.8
  */
 public class UserConsumeRecordResponseDTO extends BaseEntity {
+    //流水号
+    private  String flowNo;
     //总金额
     private BigDecimal sumAmount;
     //划卡和消费页面展示的名称
@@ -95,5 +97,13 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
 
     public void setUserConsumeRecordList(List<ShopUserConsumeRecordDTO> userConsumeRecordList) {
         this.userConsumeRecordList = userConsumeRecordList;
+    }
+
+    public String getFlowNo() {
+        return flowNo;
+    }
+
+    public void setFlowNo(String flowNo) {
+        this.flowNo = flowNo;
     }
 }

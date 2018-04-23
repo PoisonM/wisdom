@@ -158,7 +158,9 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         shopAppointMap.put("appointStartTimeE",appointStartTimeE);
         shopAppointMap.put("sysClerkId",sysClerkId);
 
+        //返回结果map
         HashMap<String,String> resultMap = new HashMap<>();
+        //预约总数
         Integer shopAppointNum;
 
         try {
@@ -169,7 +171,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             resultMap.put("resultMessage", "查询存在问题，请联系支撑人员");
             return resultMap;
         }
-        //判断是具体到店员还是店铺
+        //判断是具体到店员还是店铺仅用于打印日志区分
         if(sysClerkId!=null&&sysClerkId!=""){
             logger.info("店铺"+sysShopId+"下面店员"+sysClerkId+"在"+appointStartTimeS+"到"+appointStartTimeE+"的预约数量是"+shopAppointNum);
         }else{
@@ -201,7 +203,9 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         shopAppointMap.put("appointStartTimeE",appointStartTimeE);
         shopAppointMap.put("sysClerkId",sysClerkId);
 
+        //预约用户列表
         List<ShopAppointServiceDTO> shopAppointUserInfoList = new ArrayList<>();
+
         try {
             shopAppointUserInfoList= extShopAppointServiceMapper.findUserInfoForShopAppointByTime(shopAppointMap);
         }catch(Exception e) {
