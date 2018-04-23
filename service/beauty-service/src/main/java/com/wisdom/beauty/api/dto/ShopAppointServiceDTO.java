@@ -5,7 +5,7 @@ import com.wisdom.common.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ShopAppointService extends BaseEntity implements Serializable {
+public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
     //
     private String id;
 

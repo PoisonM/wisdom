@@ -195,6 +195,146 @@ public class ShopUserProjectGroupRelRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andShopProjectGroupNameIsNull() {
+            addCriterion("shop_project_group_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameIsNotNull() {
+            addCriterion("shop_project_group_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameEqualTo(String value) {
+            addCriterion("shop_project_group_name =", value, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameNotEqualTo(String value) {
+            addCriterion("shop_project_group_name <>", value, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameGreaterThan(String value) {
+            addCriterion("shop_project_group_name >", value, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameGreaterThanOrEqualTo(String value) {
+            addCriterion("shop_project_group_name >=", value, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameLessThan(String value) {
+            addCriterion("shop_project_group_name <", value, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameLessThanOrEqualTo(String value) {
+            addCriterion("shop_project_group_name <=", value, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameLike(String value) {
+            addCriterion("shop_project_group_name like", value, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameNotLike(String value) {
+            addCriterion("shop_project_group_name not like", value, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameIn(List<String> values) {
+            addCriterion("shop_project_group_name in", values, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameNotIn(List<String> values) {
+            addCriterion("shop_project_group_name not in", values, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameBetween(String value1, String value2) {
+            addCriterion("shop_project_group_name between", value1, value2, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNameNotBetween(String value1, String value2) {
+            addCriterion("shop_project_group_name not between", value1, value2, "shopProjectGroupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdIsNull() {
+            addCriterion("shop_project_group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdIsNotNull() {
+            addCriterion("shop_project_group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdEqualTo(String value) {
+            addCriterion("shop_project_group_id =", value, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdNotEqualTo(String value) {
+            addCriterion("shop_project_group_id <>", value, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdGreaterThan(String value) {
+            addCriterion("shop_project_group_id >", value, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdGreaterThanOrEqualTo(String value) {
+            addCriterion("shop_project_group_id >=", value, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdLessThan(String value) {
+            addCriterion("shop_project_group_id <", value, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdLessThanOrEqualTo(String value) {
+            addCriterion("shop_project_group_id <=", value, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdLike(String value) {
+            addCriterion("shop_project_group_id like", value, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdNotLike(String value) {
+            addCriterion("shop_project_group_id not like", value, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdIn(List<String> values) {
+            addCriterion("shop_project_group_id in", values, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdNotIn(List<String> values) {
+            addCriterion("shop_project_group_id not in", values, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdBetween(String value1, String value2) {
+            addCriterion("shop_project_group_id between", value1, value2, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupIdNotBetween(String value1, String value2) {
+            addCriterion("shop_project_group_id not between", value1, value2, "shopProjectGroupId");
+            return (Criteria) this;
+        }
+
         public Criteria andSysUserIdIsNull() {
             addCriterion("sys_user_id is null");
             return (Criteria) this;

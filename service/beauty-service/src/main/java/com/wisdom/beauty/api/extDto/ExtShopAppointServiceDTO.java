@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.extDto;
 
-import com.wisdom.beauty.api.dto.ShopAppointService;
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 
 import java.util.Date;
 
-public class ExtShopAppointServiceDTO extends ShopAppointService {
+public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
 
     private static final long serialVersionUID = 1L;
 

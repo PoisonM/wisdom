@@ -9,13 +9,18 @@ import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: ProjectController
@@ -166,8 +171,6 @@ public class ProjectController {
 	 * 查询某个用户的套卡列表信息
 	 * @param sysUserId
 	 * @param sysShopId
-	 * @param startDate
-	 * @param endDate
 	 * @return
 	 */
 	@RequestMapping(value = "getUserProjectGroupList", method = {RequestMethod.POST, RequestMethod.GET})
@@ -175,11 +178,52 @@ public class ProjectController {
 	public
 	@ResponseBody
 	ResponseDTO<List<ShopUserProjectGroupRelRelationDTO>> getUserProjectGroupList(@RequestParam String sysUserId,
-																				  @RequestParam String sysShopId,
-																				  @RequestParam String startDate,
-																				  @RequestParam String endDate) {
+																				  @RequestParam String sysShopId) {
 		ResponseDTO<List<ShopUserProjectGroupRelRelationDTO>> responseDTO = new ResponseDTO<>();
 
+		if (StringUtils.isBlank(sysShopId) || StringUtils.isBlank(sysUserId)) {
+			logger.debug("查询某个用户的套卡列表信息传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
+			return null;
+		}
+
+		//查询用户的套卡信息
+		ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
+		List<ShopUserProjectGroupRelRelationDTO> userCollectionCardProjectList = projectService.getUserCollectionCardProjectList(shopUserProjectGroupRelRelationDTO);
+
+		Map<String, String> helperMap = new HashMap<>(16);
+
+		//套卡主键保存到helperMap中
+		if (CommonUtils.objectIsNotEmpty(userCollectionCardProjectList)) {
+			for (ShopUserProjectGroupRelRelationDTO dto : userCollectionCardProjectList) {
+				helperMap.put(dto.getShopProjectGroupId(), dto.getShopProjectGroupId());
+			}
+		}
+
+		ArrayList<Object> returnList = new ArrayList<>();
+		if (CommonUtils.objectIsNotEmpty(helperMap)) {
+			//遍历每个项目组
+			for (Map.Entry entry : helperMap.entrySet()) {
+				//套卡map
+				HashMap<Object, Object> map = new HashMap<>(6);
+				//套卡总金额
+				BigDecimal bigDecimal = new BigDecimal(0);
+				//套卡名称
+				String projectGroupName = null;
+				ArrayList<Object> arrayList = new ArrayList<>();
+				for (ShopUserProjectGroupRelRelationDTO dto : userCollectionCardProjectList) {
+					if (entry.getKey().equals(dto.getShopProjectGroupId())) {
+						arrayList.add(dto);
+						bigDecimal = bigDecimal.add(new BigDecimal(dto.getProjectInitAmount()));
+						projectGroupName = dto.getShopProjectGroupName();
+					}
+				}
+				map.put("projectList", arrayList);
+				map.put("totalAmount", bigDecimal);
+				map.put("projectGroupName", projectGroupName);
+				returnList.add(map);
+			}
+		}
+		
 		return  responseDTO;
 	}
 

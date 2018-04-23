@@ -1,6 +1,6 @@
 package com.wisdom.beauty.controller.appointment;
 
-import com.wisdom.beauty.api.dto.ShopAppointService;
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
@@ -111,7 +111,7 @@ public class AppointmentController {
 
 			//查询某个美容师的预约列表
 			extShopAppointServiceDTO.setSysClerkId(SysClerkDTO.getId());
-            List<ShopAppointService> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 
 			if(CommonUtils.objectIsEmpty(shopAppointServiceDTOS)){
 				logger.info(preLog+"美容师预约列表为空");
@@ -119,7 +119,7 @@ public class AppointmentController {
 				shopAppointMap.put("point",0);
 			}else{
 				ArrayList<Object> appointInfoList = new ArrayList<>();
-                for (ShopAppointService serviceDTO : shopAppointServiceDTOS) {
+				for (ShopAppointServiceDTO serviceDTO : shopAppointServiceDTOS) {
 					try {
 						HashMap<String, Object> hashMap = CommonUtils.beanToMap(serviceDTO);
 						String str = CommonUtils.getArrayNo(DateUtils.DateToStr(serviceDTO.getAppointStartTime(),"time"),
@@ -192,10 +192,10 @@ public class AppointmentController {
                 }
                 //遍历预约主键获取预约详细信息
                 Iterator<String> it = stringSet.iterator();
-                List<ShopAppointService> projectList = new ArrayList<>();
+				List<ShopAppointServiceDTO> projectList = new ArrayList<>();
                 while (it.hasNext()) {
                     String appointmentId = it.next();
-                    ShopAppointService shopAppointServiceDTO = redisUtils.getShopAppointInfoFromRedis(appointmentId);
+					ShopAppointServiceDTO shopAppointServiceDTO = redisUtils.getShopAppointInfoFromRedis(appointmentId);
                     projectList.add(shopAppointServiceDTO);
                 }
                 map.put("info", projectList);
@@ -214,7 +214,7 @@ public class AppointmentController {
         responseDTO.setResponseData(returnMap);
         logger.info(preLog + "耗时{}毫秒", (System.currentTimeMillis() - start));
 
-		return  null;
+		return responseDTO;
 	}
 
 	private boolean judgeNull(ResponseDTO<Map<String, Object>> responseDTO, String preLog, List<SysClerkDTO> clerkInfo) {
@@ -236,13 +236,13 @@ public class AppointmentController {
 	@LoginRequired
 	public
 	@ResponseBody
-    ResponseDTO<ShopAppointService> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
+	ResponseDTO<ShopAppointServiceDTO> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
 
         long startTime = System.currentTimeMillis();
         logger.info("获取某次预约详情传入参数={}", "shopAppointServiceId = [" + shopAppointServiceId + "]");
 
-        ResponseDTO<ShopAppointService> responseDTO = new ResponseDTO<>();
-        ShopAppointService shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceId);
+		ResponseDTO<ShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
+		ShopAppointServiceDTO shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceId);
 
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopAppointInfoFromRedis);
@@ -261,12 +261,12 @@ public class AppointmentController {
 	@LoginRequired
 	public
 	@ResponseBody
-    ResponseDTO<ShopAppointService> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, String status) {
+	ResponseDTO<ShopAppointServiceDTO> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, String status) {
         logger.info("根据预约主键修改此次预约信息传入参数={}", "shopAppointServiceId = [" + shopAppointServiceId + "], status = [" + status + "]");
         long timeMillis = System.currentTimeMillis();
-        ResponseDTO<ShopAppointService> responseDTO = new ResponseDTO<>();
+		ResponseDTO<ShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
 
-        ShopAppointService shopAppointServiceDTO = new ShopAppointService();
+		ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
         shopAppointServiceDTO.setId(shopAppointServiceId);
         shopAppointServiceDTO.setStatus(status);
         int info = appointmentService.updateAppointmentInfo(shopAppointServiceDTO);

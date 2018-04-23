@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 
 import java.util.List;
@@ -38,4 +39,15 @@ public interface ShopProjectService {
      * @return
      */
     List<ShopProjectInfoDTO> getShopCourseProjectList(ShopProjectInfoDTO shopProjectInfoDTO);
+
+    /**
+     * 查询某个用户的所有套卡项目列表
+     *
+     * @param shopUserProjectGroupRelRelationDTO
+     * @return
+     */
+    List<ShopUserProjectGroupRelRelationDTO> getUserCollectionCardProjectList(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO);
+
+
+
 }

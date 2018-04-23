@@ -1,12 +1,10 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.ShopProjectInfoCriteria;
-import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectRelationCriteria;
-import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardType;
 import com.wisdom.beauty.api.enums.CommonCode;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoMapper;
+import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectRelationMapper;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.common.util.CommonUtils;
@@ -33,6 +31,9 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
     @Autowired
     public ShopProjectInfoMapper shopProjectInfoMapper;
+
+    @Autowired
+    public ShopUserProjectGroupRelRelationMapper shopUserProjectGroupRelRelationMapper;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -124,5 +125,37 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         List<ShopProjectInfoDTO> dtos = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
 
         return dtos;
+    }
+
+    /**
+     * 查询某个用户的所有套卡项目列表
+     *
+     * @param shopUserProjectGroupRelRelationDTO
+     * @return
+     */
+    @Override
+    public List<ShopUserProjectGroupRelRelationDTO> getUserCollectionCardProjectList(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO) {
+
+        if (shopUserProjectGroupRelRelationDTO == null) {
+            logger.error("查询某个用户的所有套卡项目列表传入参数,{}", "shopUserProjectGroupRelRelationDTO = [" + shopUserProjectGroupRelRelationDTO + "]");
+            return null;
+        }
+
+        ShopUserProjectGroupRelRelationCriteria shopUserProjectGroupRelRelationCriteria = new ShopUserProjectGroupRelRelationCriteria();
+        ShopUserProjectGroupRelRelationCriteria.Criteria criteria = shopUserProjectGroupRelRelationCriteria.createCriteria();
+
+        if (StringUtils.isNotBlank(shopUserProjectGroupRelRelationDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(shopUserProjectGroupRelRelationDTO.getSysShopId());
+        }
+
+        if (StringUtils.isNotBlank(shopUserProjectGroupRelRelationDTO.getSysUserId())) {
+            criteria.andSysUserIdEqualTo(shopUserProjectGroupRelRelationDTO.getSysUserId());
+        }
+
+        List<ShopUserProjectGroupRelRelationDTO> relationDTOS = shopUserProjectGroupRelRelationMapper.selectByCriteria(shopUserProjectGroupRelRelationCriteria);
+
+        logger.debug("查询某个用户的所有套卡项目列表的大小为, {}", CommonUtils.objectIsNotEmpty(relationDTOS) ? relationDTOS.size() : "0");
+
+        return relationDTOS;
     }
 }

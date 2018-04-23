@@ -1,7 +1,7 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
-import com.wisdom.beauty.api.dto.ShopAppointService;
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.SysUserAccountCriteria;
 import com.wisdom.beauty.api.dto.SysUserAccountDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
@@ -79,7 +79,7 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
         String state = shopUserRelationService.isMember(userId);
         customerAccountResponseDto.setMember(state);
         //获取美容师
-        ShopAppointService shopAppointServiceDTO = appointmentService.getShopAppointService(userId);
+        ShopAppointServiceDTO shopAppointServiceDTO = appointmentService.getShopAppointService(userId);
         if (shopAppointServiceDTO != null) {
             customerAccountResponseDto.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
         }

@@ -1,7 +1,7 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.ShopAppointService;
 import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
@@ -40,7 +40,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
      * @return
      */
     @Override
-    public List<ShopAppointService> getShopAppointClerkInfoByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
+    public List<ShopAppointServiceDTO> getShopAppointClerkInfoByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
         if(null == extShopAppointServiceDTO || null == extShopAppointServiceDTO.getSearchStartTime() || null == extShopAppointServiceDTO.getSearchEndTime()){
             logger.info("根据时间查询查询某个店的有预约号源的美容师列表,查询参数为空{}",extShopAppointServiceDTO);
@@ -51,7 +51,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
         criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
         criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(),extShopAppointServiceDTO.getSearchEndTime());
-        List<ShopAppointService> appointServiceDTOS = extShopAppointServiceMapper.selectShopAppointClerkInfoByCriteria(shopAppointServiceCriteria);
+        List<ShopAppointServiceDTO> appointServiceDTOS = extShopAppointServiceMapper.selectShopAppointClerkInfoByCriteria(shopAppointServiceCriteria);
         return appointServiceDTOS;
     }
 
@@ -61,7 +61,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
      * @return
      */
     @Override
-    public List<ShopAppointService> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
+    public List<ShopAppointServiceDTO> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
         if(null == extShopAppointServiceDTO || null == extShopAppointServiceDTO.getSearchStartTime() || null == extShopAppointServiceDTO.getSearchEndTime()){
             logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空{}",extShopAppointServiceDTO);
@@ -80,7 +80,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(),extShopAppointServiceDTO.getSearchEndTime());
         }
 
-        List<ShopAppointService> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
+        List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
         return appointServiceDTOS;
     }
 
@@ -91,7 +91,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
      * @return
      */
     @Override
-    public int updateAppointmentInfo(ShopAppointService shopAppointServiceDTO) {
+    public int updateAppointmentInfo(ShopAppointServiceDTO shopAppointServiceDTO) {
         if (shopAppointServiceDTO == null || StringUtils.isBlank(shopAppointServiceDTO.getId())) {
             return 0;
         }
@@ -99,7 +99,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     }
 
     @Override
-    public ShopAppointService getShopAppointService(String userId) {
+    public ShopAppointServiceDTO getShopAppointService(String userId) {
 
             logger.info("getShopAppointServiceDTO传入参数userId={}",userId);
             if(StringUtils.isBlank(userId)){
@@ -109,8 +109,8 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
             criteria.andSysUserIdEqualTo(userId);
             shopAppointServiceCriteria.setOrderByClause("create_date");
-            List<ShopAppointService> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
-            ShopAppointService shopAppointServiceDTO=null;
+        List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
+        ShopAppointServiceDTO shopAppointServiceDTO = null;
             if(CollectionUtils.isNotEmpty(appointServiceDTOS)){
                 shopAppointServiceDTO=appointServiceDTOS.get(0);
             }
