@@ -19,7 +19,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             content:true,
         },
         ModifyAppointmentObject:{
-            time:'',
+            time:'1',
             beauticianName:"",
             type:"",
             customer:"",
@@ -66,7 +66,6 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         day:[],/*用于寻找预约颜色的其中一个数据*/
         day:[],/*侧边时间循环*/
     };
-    console.log($scope.param);
     $scope.time = function (time) {
         $scope.param.week = [];
         var time = time.replace("年", "-").replace("月", "-").replace("日", "");
@@ -1312,107 +1311,141 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
 }
     $scope.param.week.details = details.responseData;
 
+    var mybody = document.getElementsByTagName('body')[0];
+    //滑动处理
+
+   /* var startX, startY, moveEndX, moveEndY, X, Y;
+    mybody.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].pageX;
+        startY = e.touches[0].pageY;
+    });
+    mybody.addEventListener('touchmove', function(e) {
+        moveEndX = e.changedTouches[0].pageX;
+        moveEndY = e.changedTouches[0].pageY;
+        X = moveEndX - startX;
+        Y = moveEndY - startY;
+        console.log(12)
+        if ( X > 0 ) {alert("向右");}
+        else if ( X < 0 ) {alert("向左");}
+        else if ( Y > 0) {alert("向下");}
+        else if ( Y < 0 ) { alert("向上");}
+        else{alert("没滑动"); }
+
+    });*/
+
+
+    var loadFlag = true;
+    var oi = 0;
+    $scope.flag={
+        upDownScrollFlag : true
+    }
+    var mySwiper = new Swiper('.swiper-container',{
+        direction: 'vertical',
+        scrollbar: '.swiper-scrollbar',
+        slidesPerView: 'auto',
+        mousewheelControl: true,
+        freeMode: true,
+        onTouchStart: function(swiper){		//手动滑动中触发
+
+
+        },
+        onTouchMove: function(swiper,event){		//手动滑动中触发
+            mySwiper.update(); // 重新计算高度;
+            var _viewHeight = document.getElementsByClassName('swiper-wrapper')[0].offsetHeight;
+            var _contentHeight = document.getElementsByClassName('swiper-slide')[0].offsetHeight;
+            if(mySwiper.translate < 50 && mySwiper.translate > 0) {
+                $(".init-loading").html('下拉刷新...').show();
+            }else if(mySwiper.translate > 50 ){
+                $(".init-loading").html('释放刷新...').show();
+            }
+        },
+        onTouchEnd: function(swiper) {
+            var _viewHeight = document.getElementsByClassName('swiper-wrapper')[0].offsetHeight;
+            var _contentHeight = document.getElementsByClassName('swiper-slide')[0].offsetHeight;
+            // 上拉加载
+            if(mySwiper.translate <= _viewHeight - _contentHeight - 50 && mySwiper.translate < 0) {
+                // console.log("已经到达底部！");
+
+                if(loadFlag){
+                    $(".loadtip").html('正在加载...');
+                }else{
+                    $(".loadtip").html('没有更多啦！');
+                }
+
+                setTimeout(function() {
+                    $(".loadtip").html('上拉加载更多...');
+                    mySwiper.update(); // 重新计算高度;
+                }, 800);
+            }
+
+            // 下拉刷新
+            if(mySwiper.translate >= 50) {
+                $(".init-loading").html('正在刷新...').show();
+                $(".loadtip").html('上拉加载更多');
+                loadFlag = true;
+                setTimeout(function() {
+                    $(".refreshtip").show(0);
+                    $(".init-loading").html('刷新成功！');
+                    setTimeout(function(){
+                        $(".init-loading").html('').hide();
+                    },800);
+                    $(".loadtip").show(0);
+
+                    //刷新操作
+                    mySwiper.update(); // 重新计算高度;
+                }, 1000);
+            }else if(mySwiper.translate >= 0 && mySwiper.translate < 50){
+                $(".init-loading").html('').hide();
+            }
+            return false;
+        }
+    });
+    var mySwiper2 = new Swiper('.swiper-container2',{
+        onTouchStart: function(swiper){		//手动滑动中触发
+            $scope.flag.upDownScrollFlag = false;
+            console.log($scope.flag)
+
+        },
+
+    });
+    $('.tab a').click(function(){
+
+        $(this).addClass('active').siblings('a').removeClass('active');
+        mySwiper2.slideTo($(this).index(), 500, false)
+
+        $('.w').css('transform', 'translate3d(0px, 0px, 0px)')
+        $('.swiper-container2 .swiper-slide-active').css('height','auto').siblings('.swiper-slide').css('height','0px');
+        mySwiper.update();
+    });
 
 
 
-    var page = 0;
-    // 每页展示10个
-    var size = 10;
 
-    //
+   /* var mySwiper2 = new Swiper('.swiper-container2',{
+        autoplay: 5000,
+
+        onReachEnd: function(){
+            alert('到了最后一个slide');
+        },
+        setTransition: function(){
+            alert('wer');
+        }
+    })*/
+
+
+
+    $('.tab a').click(function(){
+
+        $(this).addClass('active').siblings('a').removeClass('active');
+        mySwiper2.slideTo($(this).index(), 500, false)
+
+        $('.w').css('transform', 'translate3d(0px, 0px, 0px)')
+        $('.swiper-container2 .swiper-slide-active').css('height','auto').siblings('.swiper-slide').css('height','0px');
+        mySwiper.update();
+    });
     
 
-    $('.dayAppointment .content').dropload({
-        scrollArea : window,
-        domUp : {
-            domClass   : 'dropload-up',
-            domRefresh : '<div class="dropload-refresh">↓下拉刷新-自定义内容</div>',
-            domUpdate  : '<div class="dropload-update">↑释放更新-自定义内容</div>',
-            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中-自定义内容...上</div>'
-        },
-        domDown : {
-            domClass   : 'dropload-down',
-            domRefresh : '<div class="dropload-refresh">↑上拉加载更多-自定义内容</div>',
-            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中-自定义内容.下</div>',
-            domNoData  : '<div class="dropload-noData">暂无数据-自定义内容</div>'
-        },
-        loadUpFn : function(me){
-            $http.get('http://ons.me/tools/dropload/json.php?page='+page+'&size='+size).
-            success(function(data) {
-                $scope.data = data;
-                $timeout(function(){
-                    me.resetload();
-                    page = 0;
-                    me.unlock();
-                    me.noData(false);
-                },300);
-            }).
-            error(function(err) {
-                me.resetload();
-            });
-        },
-        loadDownFn : function(me){
-            console.log(1);
-            page++;
-            // 拼接HTML
-            var result = '';
-            $http.get('http://ons.me/tools/dropload/json.php?page='+page+'&size='+size).
-            success(function(data) {
-                var arrLen = data;
-                if(arrLen > 0){
-                    $scope.data = data;
-                }else{
-                    me.lock();
-                    me.noData();
-                }
-                $timeout(function(){
-                    me.resetload();
-                    page = 0;
-                    me.unlock();
-                    me.noData(false);
-                },300);
-            }).
-            error(function(err) {
-                me.resetload();
-            });
-            $.ajax({
-                type: 'GET',
-                url: 'http://ons.me/tools/dropload/json.php?page='+page+'&size='+size,
-                dataType: 'json',
-                success: function(data){
-                    var arrLen = data.length;
-                    if(arrLen > 0){
-                        for(var i=0; i<arrLen; i++){
-                            result +=   '<a class="item opacity" href="'+data[i].link+'">'
-                                +'<img src="'+data[i].pic+'" alt="">'
-                                +'<h3>'+data[i].title+'</h3>'
-                                +'<span class="date">'+data[i].date+'</span>'
-                                +'</a>';
-                        }
-                        // 如果没有数据
-                    }else{
-                        // 锁定
-                        me.lock();
-                        // 无数据
-                        me.noData();
-                    }
-                    // 为了测试，延迟1秒加载
-                    setTimeout(function(){
-                        // 插入数据到页面，放到最后面
-                        $('.lists').append(result);
-                        // 每次数据插入，必须重置
-                        me.resetload();
-                    },1000);
-                },
-                error: function(xhr, type){
-                    alert('Ajax error!');
-                    // 即使加载出错，也得重置
-                    me.resetload();
-                }
-            });
-        },
-        threshold : 50
-    });
+
 
 });
 

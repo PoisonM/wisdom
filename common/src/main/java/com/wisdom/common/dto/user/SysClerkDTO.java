@@ -18,6 +18,9 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
     //
     private String sysShopId;
 
+    //
+    private String sysShopName;
+
     //user表主键
     private String sysUserId;
 
@@ -95,6 +98,14 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
 
     public void setSysShopId(String sysShopId) {
         this.sysShopId = sysShopId;
+    }
+
+    public String getSysShopName() {
+        return sysShopName;
+    }
+
+    public void setSysShopName(String sysShopName) {
+        this.sysShopName = sysShopName;
     }
 
     public String getSysUserId() {

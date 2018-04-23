@@ -67,4 +67,9 @@ public interface ShopAppointmentService {
      *  @autur zhangchao
      * */
      List<ShopAppointServiceDTO> findUserInfoForShopByTimeService(String sysShopId, String sysClerkId,String appointStartTimeS, String appointStartTimeE);
+    /**
+     * 保存用户的预约信息
+     */
+    int saveUserShopAppointInfo(ShopAppointServiceDTO shopAppointServiceDTO);
+
 }

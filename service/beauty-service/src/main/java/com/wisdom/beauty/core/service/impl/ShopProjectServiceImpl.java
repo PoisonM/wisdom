@@ -71,6 +71,18 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             criteria.andUseStyleEqualTo(shopUserProjectRelationDTO.getUseStyle());
         }
 
+        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getSysShopProjectId())) {
+            criteria.andSysShopProjectIdEqualTo(shopUserProjectRelationDTO.getSysShopProjectId());
+        }
+
+        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getSysUserId())) {
+            criteria.andSysUserIdEqualTo(shopUserProjectRelationDTO.getSysUserId());
+        }
+
+        if (null != shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() > 0) {
+            criteria.andSysShopProjectSurplusTimesGreaterThan(shopUserProjectRelationDTO.getSysShopProjectSurplusTimes());
+        }
+
         List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserProjectRelationMapper.selectByCriteria(shopUserProjectRelationCriteria);
 
         return projectRelationDTOS;

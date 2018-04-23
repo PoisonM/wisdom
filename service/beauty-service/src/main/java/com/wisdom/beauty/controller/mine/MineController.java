@@ -10,12 +10,14 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +44,9 @@ public class MineController {
      * @Author:huan
      * @Param:
      * @Return:
-     * @Description: 划卡记录对应后台的消费---状态是1,此时不需要goodType
-     * 充值记录，消费记录对应后台的充值---状态是0，并且充值记录的goodType--2
+     * @Description: 今日收银记录
+     *              划卡记录对应后台的消费---状态是1,此时不需要goodType
+     *              充值记录，消费记录对应后台的充值---状态是0，并且充值记录的goodType--2
      * @Date:2018/4/17 14:45
      */
     @RequestMapping(value = "/consumes", method = RequestMethod.GET)
@@ -64,6 +67,10 @@ public class MineController {
         pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
+
+        //获取当日时间
+        String currentTime= DateUtils.formatDateTime(new Date());
+        pageParamVoDTO.setStartTime(currentTime);
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecordList(pageParamVoDTO);
 
         ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();

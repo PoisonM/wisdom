@@ -1,6 +1,7 @@
 package com.wisdom.beauty.api.responseDto;
 
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
+import com.wisdom.common.entity.BaseEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * @Date:Created in 2018/4/11 17:44
  * @since JDK 1.8
  */
-public class ProjectInfoGroupResponseDTO {
+public class ProjectInfoGroupResponseDTO extends BaseEntity {
 	/** 套卡名称 */
 	private String projectGroupName;
 

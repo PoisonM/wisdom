@@ -13,7 +13,7 @@
 .fs24 { font-size: 0.1875rem; }
 
 .dayAppointment { background: #ffffff; }
-.dayAppointment .header { height: 0.6875rem; line-height: 0.6875rem; width: 100%; background: #ff6666; display: flex; justify-content: space-between; }
+.dayAppointment .header { height: 0.6875rem; line-height: 0.6875rem; width: 100%; background: #ff6666; display: flex; justify-content: space-between;z-index: 1000;position: fixed; }
 .dayAppointment .header input[type='button'] { width: 1.48438rem; height: 0.45313rem; line-height: 0.45313rem; box-sizing: border-box; border: solid 1px #ffffff; }
 .dayAppointment .header .common { background: #ff6666; color: #ffffff; }
 .dayAppointment .header .btnActive { color: #ff6666; background: #ffffff; }
@@ -26,31 +26,43 @@
 .dayAppointment .header .scheduling span { float: right; margin-right: 0.3125rem; font-size: 0.26563rem; color: #ffffff; }
 .dayAppointment .header .scheduling:after, .dayAppointment .header .timeArea:after { display: block; clear: both; content: ''; }
 .dayAppointment .nameLis ul:after { content: ''; display: block; clear: both; }
-.dayAppointment .nameLis { width: 100%; height: 0.97rem;position: absolute; }
+.dayAppointment .nameLis { width: 100%; height: 0.97rem;position: absolute; z-index: 100;background: #ffffff}
 .dayAppointment .nameLis img { display: inline-block; width: 0.25rem; height: 0.25rem; vertical-align: middle; }
 .dayAppointment .nameLis .seg { width: 0.01563rem; height: 0.23438rem; }
-/*.dayAppointment .nameLis ul { display: flex; }*/
+.dayAppointment .nameLis ul { display: flex; }
 .dayAppointment .nameLis ul li { width: 2.42188rem; text-align: center;height:1.17rem;position: relative; }
 .dayAppointment .nameLis ul li .name { font-size: 0.25rem; color: #333333; margin-top: 0.3125rem; }
 
 .tab-head{list-style-type: none;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;padding:0;overflow:auto;}
 .tab-head-item{-webkit-box-flex:1;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto; text-align: center;}
 .dayAppointment .nameLis  .ml156 {margin-left:1.21875rem;}
-.dayAppointment .messLis{ display: flex; }
+/*.dayAppointment .messLis{ display: flex; }*/
 .dayAppointment .messLis .time { width: 1.21875rem; margin-top: -0.19531rem;}
 .dayAppointment .messLis .time li { height: 0.96875rem; font-size: 0.25rem; color: #888888; width: 1.21875rem;}
 .dayAppointment .messLis .appointmentLis { display: flex; }
 .dayAppointment .messLis .appointmentLis ul >li:last-child> ul> li { border-right: none; }
 .dayAppointment .messLis .appointmentLis ul li ul li { width: 2.42188rem; height: 0.96875rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }
 /*横向滚动时的样式*/
+.Htab-head{list-style-type: none;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;padding:0;overflow:auto;}
+.Htab-head-item{-webkit-box-flex:1;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto; text-align: center;}
 .closMessLis{display: flex;}
-.dayAppointment .closMessLis .time { width: 1.21875rem;margin-top: 1.17188rem}
+.clear{ content: ''; display: block; clear: both; }
+.dayAppointment .closMessLis .nameLis ul:after { content: ''; display: block; clear: both; }
+.dayAppointment .closMessLis .nameLis { width: 100%; height: 0.97rem;}
+.dayAppointment .closMessLis .nameLis img { display: inline-block; width: 0.25rem; height: 0.25rem; vertical-align: middle; }
+.dayAppointment .closMessLis .nameLis .seg { width: 0.01563rem; height: 0.23438rem; }
+.dayAppointment .closMessLis .nameLis ul { display: flex; }
+.dayAppointment .closMessLis .nameLis ul li { width: 2.42188rem; text-align: center;height:1.17rem;position: relative; }
+.dayAppointment .closMessLis .nameLis ul li .name { font-size: 0.25rem; color: #333333; margin-top: 0.3125rem; }
+
+.dayAppointment .closMessLis .time { width: 1.21875rem;padding-top: 1.17188rem;position: relative;}
 .dayAppointment .closMessLis .time li { height: 0.96875rem; font-size: 0.25rem; color: #888888;width: 1.21875rem; }
+.dayAppointment .closMessLis .appointmentLis{padding-top:1.17rem;}
 .dayAppointment .closMessLis .appointmentLis ul >li:last-child> ul> li { border-right: none; }
 .dayAppointment .closMessLis .appointmentLis ul li ul li { width: 2.42188rem; height: 0.96875rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }
 
-
-.day{overflow-y: scroll;}
+/*
+.day{overflow-y: scroll;}*/
 .detailsWrap{position: fixed;top:50%;left:50%;margin-top:-4rem;margin-left:-3rem;}
 .individual{position: fixed;top:50%;left:50%;margin-top:-5rem;margin-left:-3.5rem;}
 .appointmentLisArea{height:7.8rem;position: fixed;left:50%;top:50%;margin-left:-3.5rem;margin-top:-4rem;}
@@ -82,3 +94,4 @@
 .overXHiddden{overflow-x: hidden;}
 .nowarp {display: flex;flex-wrap: nowrap}
 .pt117rem{padding-top:1.17rem;}
+.position{position: absolute; top: -1.17rem;left: -0rem;z-index: 1000;}
