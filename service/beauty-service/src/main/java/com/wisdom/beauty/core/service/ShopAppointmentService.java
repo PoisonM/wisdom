@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+import com.wisdom.common.dto.system.PageParamDTO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,14 +60,11 @@ public interface ShopAppointmentService {
 
     /**
      *  查询某个美容院某个时间预约个数
-     *  @param  sysShopId 店铺id
-     *  @param  sysClerkId 店员id
-     *  @param  appointStartTimeS 预约开始时间（范围起始值）
-     *  @param  appointStartTimeE  appointStartTimeE（范围结束值）
+     *  @param  pageParamDTO 分页对象
      *  @return  shopAppointUserInfoList 预约用户列表
      *  @autur zhangchao
      * */
-     List<ShopAppointServiceDTO> findUserInfoForShopByTimeService(String sysShopId, String sysClerkId,String appointStartTimeS, String appointStartTimeE);
+    PageParamDTO<List<ShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ShopAppointServiceDTO> pageParamDTO);
     /**
      * 保存用户的预约信息
      */

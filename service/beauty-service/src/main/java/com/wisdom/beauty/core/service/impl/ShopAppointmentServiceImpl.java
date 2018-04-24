@@ -1,18 +1,23 @@
 package com.wisdom.beauty.core.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.util.StringUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.*;
 
 /**
  * FileName: AppointmentServiceImpl
@@ -187,33 +192,39 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
 
     /**
      *  查询某个美容院某个时间预约个数
-     *  @param  sysShopId 店铺id
-     *  @param  sysClerkId 店员id
-     *  @param  appointStartTimeS 预约开始时间（范围起始值）
-     *  @param  appointStartTimeE  appointStartTimeE（范围结束值）
+     *  @param  pageParamDTO  分页对象
      *  @return  shopAppointUserInfoList 预约用户列表
      *  @autuor zhangchao
      * */
     @Override
-    public List<ShopAppointServiceDTO> findUserInfoForShopByTimeService(String sysShopId, String sysClerkId,String appointStartTimeS, String appointStartTimeE){
+    public PageParamDTO<List<ShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ShopAppointServiceDTO> pageParamDTO){
+
 
         HashMap<String,String> shopAppointMap = new HashMap<>();
-        shopAppointMap.put("sysShopId",sysShopId);
-        shopAppointMap.put("appointStartTimeS",appointStartTimeS);
-        shopAppointMap.put("appointStartTimeE",appointStartTimeE);
-        shopAppointMap.put("sysClerkId",sysClerkId);
+        shopAppointMap.put("sysShopId",pageParamDTO.getRequestData().getSysShopId());
+        shopAppointMap.put("appointStartTimeS",pageParamDTO.getRequestData().getAppointStartTimeS());
+        shopAppointMap.put("appointStartTimeE",pageParamDTO.getRequestData().getAppointStartTimeE());
+        shopAppointMap.put("sysClerkId",pageParamDTO.getRequestData().getSysClerkId());
 
         //预约用户列表
         List<ShopAppointServiceDTO> shopAppointUserInfoList = new ArrayList<>();
+        int sum = 0;
 
         try {
-            shopAppointUserInfoList= extShopAppointServiceMapper.findUserInfoForShopAppointByTime(shopAppointMap);
+
+            shopAppointUserInfoList= extShopAppointServiceMapper.findUserInfoForShopAppointByTime(pageParamDTO);
+            sum = extShopAppointServiceMapper.findNumForShopAppointByTime(shopAppointMap);
+
         }catch(Exception e) {
             logger.info(e.getMessage());
         }
 
-        logger.info("店铺"+sysShopId+"下面店员"+sysClerkId+"在"+appointStartTimeS+"到"+appointStartTimeE+"的预约用户列表是"+shopAppointUserInfoList);
-        return shopAppointUserInfoList;
+        PageParamDTO<List<ShopAppointServiceDTO>> page = new  PageParamDTO<>();
+        page.setResponseData(shopAppointUserInfoList);
+        page.setTotalCount(sum);
+        logger.info("店铺"+pageParamDTO.getRequestData().getSysShopId()+"下面店员"+pageParamDTO.getRequestData().getSysClerkId()+"在"+pageParamDTO.getRequestData().getAppointStartTimeS()+"到"+pageParamDTO.getRequestData().getAppointStartTimeE()+"的预约用户列表是"+shopAppointUserInfoList);
+
+        return page;
     }
 
 }
