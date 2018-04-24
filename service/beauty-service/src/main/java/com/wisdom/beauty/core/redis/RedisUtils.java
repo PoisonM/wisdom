@@ -43,6 +43,7 @@ public class RedisUtils {
 
         //保存预约信息
         JedisUtils.setObject(shopAppointServiceDTO.getId(),shopAppointServiceDTO,appointCacheSeconds);
+
         //保存美容师与预约的关系 格式 zadd shopId_clerkId createDate appointmentId
         String key = new StringBuffer(shopAppointServiceDTO.getSysShopId()).append("_").
                 append(shopAppointServiceDTO.getSysClerkId()).toString();

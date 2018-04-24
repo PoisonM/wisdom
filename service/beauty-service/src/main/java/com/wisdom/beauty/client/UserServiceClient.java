@@ -13,7 +13,12 @@ import java.util.List;
 @FeignClient("user-service")
 public interface UserServiceClient {
 
-
+    /**
+     * 查询变量信息
+     *
+     * @param userInfoDTO
+     * @return
+     */
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST)
     List<UserInfoDTO> getUserInfo(@RequestBody UserInfoDTO userInfoDTO);
 
@@ -35,13 +40,12 @@ public interface UserServiceClient {
     @RequestMapping(value = "/getUserInfoFromUserId", method = RequestMethod.GET)
     UserInfoDTO getUserInfoFromUserId(@RequestParam(value = "userId") String userId);
     /**
-    *@Author:huan
-    *@Param:
     *@Return:
     *@Description: 根据多个userid查询
     *@Date:2018/4/18 14:15
-    */
-    @RequestMapping(value = "/getUserInfoListFromUserId", method = RequestMethod.GET)
-    List<UserInfoDTO> getUserInfoListFromUserId(@RequestParam(value = "userIds") String[] userIds,
-                                                @RequestParam(required = false,value = "searchFile") String searchFile);
+     */
+    @RequestMapping(value = "/insertUserInfo", method = RequestMethod.POST)
+    void insertUserInfo(@RequestBody UserInfoDTO userInfoDTO);
+
+
 }

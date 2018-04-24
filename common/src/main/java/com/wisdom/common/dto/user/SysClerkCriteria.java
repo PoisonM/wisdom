@@ -405,6 +405,76 @@ public class SysClerkCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysShopNameIsNull() {
+            addCriterion("sys_shop_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameIsNotNull() {
+            addCriterion("sys_shop_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameEqualTo(String value) {
+            addCriterion("sys_shop_name =", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameNotEqualTo(String value) {
+            addCriterion("sys_shop_name <>", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameGreaterThan(String value) {
+            addCriterion("sys_shop_name >", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_shop_name >=", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameLessThan(String value) {
+            addCriterion("sys_shop_name <", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameLessThanOrEqualTo(String value) {
+            addCriterion("sys_shop_name <=", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameLike(String value) {
+            addCriterion("sys_shop_name like", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameNotLike(String value) {
+            addCriterion("sys_shop_name not like", value, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameIn(List<String> values) {
+            addCriterion("sys_shop_name in", values, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameNotIn(List<String> values) {
+            addCriterion("sys_shop_name not in", values, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameBetween(String value1, String value2) {
+            addCriterion("sys_shop_name between", value1, value2, "sysShopName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopNameNotBetween(String value1, String value2) {
+            addCriterion("sys_shop_name not between", value1, value2, "sysShopName");
+            return (Criteria) this;
+        }
+
         public Criteria andSysUserIdIsNull() {
             addCriterion("sys_user_id is null");
             return (Criteria) this;

@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface ShopUerConsumeRecordService {
      * @Description: 根据条件查询某个美容院某个用户的账户记录，包括收银记录和划卡记录
      * @Date:2018/4/3 18:57
      */
-    List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO);
+    List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
     /**
     *@Author:huan
     *@Param:
@@ -40,4 +41,14 @@ public interface ShopUerConsumeRecordService {
      * @return
      */
     int saveCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+
+
+    /**
+     * 更新用户的消费记录
+     *
+     * @param shopUserConsumeRecordDTO
+     * @return
+     */
+    int updateConumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+
 }

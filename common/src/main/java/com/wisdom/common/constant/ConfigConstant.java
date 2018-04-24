@@ -26,6 +26,8 @@ public enum ConfigConstant {
 
 	public static final String businessA1 = "business-A-1";
 
+    public static final String shopBusiness = "shopBusiness";
+
 	public static final String promote_businessB1_ProductId_No1 = "88888888888";
 
 	public static final int livingPeriodYear = 365; //一年有效期,365天

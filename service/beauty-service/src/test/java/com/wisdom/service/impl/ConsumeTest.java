@@ -3,9 +3,13 @@ package com.wisdom.service.impl;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.PayTypeEnum;
-import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
+import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.IdGen;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +41,9 @@ public class ConsumeTest {
 
     @Autowired
     private WebApplicationContext context;
+
+    @Autowired
+    private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
 
     @Before
     public void setupMockMvc() throws Exception {
@@ -85,7 +92,7 @@ public class ConsumeTest {
         projectRelationDTO.setIsSend("1");//1 赠送 0不赠送
         projectRelationDTO.setSysShopProjectInitAmount(new BigDecimal(5728));
         projectRelationDTO.setSysShopProjectSurplusAmount(new BigDecimal(5728));
-        projectRelationDTO.setInvalidDays(3);
+       // projectRelationDTO.setInvalidDays(3);
 //        consumeRecordDTO.setShopUserProjectRelationDTO(projectRelationDTO);
 
         extShopUserConsumeRecordDTOS.add(consumeRecordDTO);
@@ -100,5 +107,15 @@ public class ConsumeTest {
 
     }
 
-
+     @Test
+    public  void  testUserConsume(){
+             PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO=new PageParamVoDTO<>();
+             pageParamVoDTO.setStartTime("2018-04-10 00:00:00");
+             pageParamVoDTO.setEndTime("2018-04-10 23:59:59");
+         UserConsumeRequestDTO shopUserConsumeRecordDTO=new UserConsumeRequestDTO();
+             shopUserConsumeRecordDTO.setSysShopId("11");
+             shopUserConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
+             pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
+             List<ExpenditureAndIncomeResponseDTO>  s=shopStatisticsAnalysisService.getExpenditureAndIncomeList(pageParamVoDTO);
+         }
 }

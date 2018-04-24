@@ -1,5 +1,9 @@
 package com.wisdom.beauty.core.service;
 
+import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+
+import java.util.List;
+
 /**
  * ClassName: ShopUserRelationService
  *
@@ -17,4 +21,13 @@ public interface ShopUserRelationService {
      * @Date:2018/4/3 18:42
      */
     String isMember(String userId);
+
+    /**
+     * @Author:Administrator
+     * @Param:
+     * @Return:
+     * @Description: 根据条件查询美容院
+     * @Date:2018/4/23 17:49
+     */
+    List<ShopUserRelationDTO> getShopListByCondition(ShopUserRelationDTO shopUserRelationDTO);
 }

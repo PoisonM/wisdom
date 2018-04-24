@@ -11,6 +11,16 @@ public enum PayTypeEnum {
         this.desc = desc;
     }
 
+    public static PayTypeEnum judgeValue(String code) {
+        PayTypeEnum[] resultCodes = PayTypeEnum.values();
+        for (PayTypeEnum resultCode : resultCodes) {
+            if (resultCode.getCode().equals(code)) {
+                return resultCode;
+            }
+        }
+        return null;
+    }
+
     private String code;
     private String desc;
 

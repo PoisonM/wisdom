@@ -71,6 +71,22 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             criteria.andUseStyleEqualTo(shopUserProjectRelationDTO.getUseStyle());
         }
 
+        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getSysShopProjectId())) {
+            criteria.andSysShopProjectIdEqualTo(shopUserProjectRelationDTO.getSysShopProjectId());
+        }
+
+        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getSysUserId())) {
+            criteria.andSysUserIdEqualTo(shopUserProjectRelationDTO.getSysUserId());
+        }
+
+        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(shopUserProjectRelationDTO.getSysShopId());
+        }
+
+        if (null != shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() > 0) {
+            criteria.andSysShopProjectSurplusTimesGreaterThan(shopUserProjectRelationDTO.getSysShopProjectSurplusTimes());
+        }
+
         List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserProjectRelationMapper.selectByCriteria(shopUserProjectRelationCriteria);
 
         return projectRelationDTOS;
@@ -124,6 +140,10 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 //        }
 
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
+            criteria.andProjectNameLike(shopProjectInfoDTO.getProjectName());
+        }
+
         if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
             criteria.andUseStyleEqualTo(CardTypeEnum.TREATMENT_CARD.getCode());
         }
@@ -169,6 +189,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     public List<ShopProjectTypeDTO> getOneLevelProjectList(String sysShopId) {
         logger.info("getOneLevelProjectList传入的参数,sysShopId={}", sysShopId);
         if (StringUtils.isBlank(sysShopId)) {
+            logger.info("getOneLevelProjectList传入的参数sysShopId为空");
             return null;
         }
         ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
@@ -184,6 +205,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         logger.info("getTwoLevelProjectList传入的参数,id={}", shopProjectTypeDTO.getId());
 
         if (StringUtils.isBlank(shopProjectTypeDTO.getId())) {
+            logger.info("getTwoLevelProjectList传入的参数id为空");
             return null;
         }
         ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
@@ -201,6 +223,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
                 shopProjectInfoDTO.getProjectTypeTwoId());
 
         if (StringUtils.isBlank(shopProjectInfoDTO.getSysShopId())) {
+            logger.info("getThreeLevelProjectList传入的参数sysShopId为空");
             return null;
         }
 
@@ -218,8 +241,8 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectTypeTwoId())) {
             criteria.andProjectTypeTwoIdEqualTo(shopProjectInfoDTO.getProjectTypeTwoId());
         }
-        if(StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())){
-            criteria.andProjectNameLike("%"+shopProjectInfoDTO.getProjectName()+"%");
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
+            criteria.andProjectNameLike("%" + shopProjectInfoDTO.getProjectName() + "%");
         }
         List<ShopProjectInfoDTO> list = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
         return list;
