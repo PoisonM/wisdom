@@ -1,10 +1,10 @@
 
-  <div>
+  <div  ng-click="bgAll()">
       <nav-bar index1="6" index2="64"></nav-bar>
          <div class="main_content">
              <enjoy-menu></enjoy-menu>
              <div class="content_box">
-                 <div class="mum" ng-show="mum">
+                 <div class="mum" ng-show="mum" style="height:888px;">
                      <div class="m-load2">
                          <div class="line">
                              <div></div>
@@ -54,12 +54,12 @@
 
                             <table class="table  table-hover text-center ">
                                 <thead>
-                                <tr id="product_lis_title">
+                                <tr id="product_lis_title" >
                                     <th class="text-center" >昵称</th>
                                     <th class="text-center" >手机号</th>
                                     <th class="text-center" >当前等级</th>
                                     <th class="text-center" >佣金金额</th>
-                                    <th class="text-center" >付款时间</th>
+                                    <th class="text-center" ng-hide="status=='month'">付款时间</th>
                                     <th class="text-center">类型</th>
                                     <th class="text-center">状态</th>
                                     <th class="text-center" ng-hide="status=='month'">订单状态</th>
@@ -67,21 +67,21 @@
                                     <th class="text-center" style="width:20%;">操作</th>
                                 </tr>
                                 </thead>
-                                <tbody ng-repeat="item in MonthlyBalanceLis">
-                                <tr ng-class="item.secondCheckStatus=='有一方拒绝'?'red':'white'">
+                                <tbody ng-repeat="item in MonthlyBalanceLis" >
+                                <tr ng-class="{'bgeee':agencyIndex != $index && agencyIndex!=-1,'red':item.secondCheckStatus=='有一方拒绝','white':agencyIndex == -1}">
                                     <td>{{item.nickName}}</td>
                                     <td>{{item.mobile}}</td>
                                     <td>{{item.userType}}</td>
                                     <td>{{item.amount }}</td>
-                                    <td>{{item.payDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td ng-hide="status=='month'">{{item.payDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td>{{item.incomeType}}</td>
                                     <td>{{item.status}}</td>
                                     <td  ng-hide="status=='month'">{{item.orderStatus}}</td>
                                     <td>{{item.secondCheckStatus}}<span ng-hide="item.secondCheckStatus == '未审核'">({{item.checkStatus}}</span><span ng-show="item.secondCheckStatus=='有一方拒绝'">:{{item.checkUserType}})</span></td>
                                     <td>
-                                        <a ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index,item.id)" class="orderBtn">查看</a>
+                                        <a ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index,item.id);$event.stopPropagation()" class="orderBtn">查看</a>
                                          &nbsp;
-                                        <a ng-click="examine(item.id)" class="orderBtn">审核</a>
+                                        <a ng-click="examine(item.id);$event.stopPropagation()" class="orderBtn">审核</a>
                                        <!-- <div ng-if="haha.meme == $index" ng-repeat="items in item.types">{{items.nickName}}</div>-->
                                     </td>
                                 </tr>
@@ -90,8 +90,8 @@
                                         <th class="text-center" >手机号</th>
                                         <th class="text-center" >当前等级</th>
                                         <th class="text-center" >生成订单等级</th>
-                                        <th class="text-center" >下级当前等级</th>
-                                        <th class="text-center">下级订单生成等级</th>
+                                        <th class="text-center" >上级当前等级</th>
+                                        <th class="text-center">上级订单生成等级</th>
                                         <th class="text-center">订单编号</th>
                                         <th class="text-center">交易流水号</th>
                                         <th class="text-center">订单状态</th>
@@ -100,12 +100,12 @@
                                     <!--点击查看出现的下级内容-->
 
                                     <tr  ng-show="item.statesLook=='2'"  ng-repeat="items in IncomeList" id="IncomeListMess">
-                                        <td>{{user[0].nickName}}</td>
-                                        <td>{{user[0].mobile}}</td>
-                                        <td>{{user[0].userTypeNow}}</td>
-                                        <td>{{user[0].userType}}</td>
+                                        <td>{{user[0].nextUserNickName}}</td>
+                                        <td>{{user[0].nextUserMobile}}</td>
                                         <td>{{user[0].nextUserTypeNow}}</td>
                                         <td>{{user[0].nextUserType}}</td>
+                                        <td>{{user[0].userTypeNow}}</td>
+                                        <td>{{user[0].userType}}</td>
                                         <td>{{items.businessOrderId}}</td>
                                         <td>{{user[0].transactionId}}</td>
                                         <td>{{items.status}}</td>
