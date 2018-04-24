@@ -89,7 +89,7 @@ public class OrderController {
         shopUserOrderDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
         shopUserOrderDTO.setCreateDate(new Date());
 
-        mongoTemplate.insert(shopUserOrderDTO, "shopUserOrderDTO");
+        mongoTemplate.save(shopUserOrderDTO, "shopUserOrderDTO");
 
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);

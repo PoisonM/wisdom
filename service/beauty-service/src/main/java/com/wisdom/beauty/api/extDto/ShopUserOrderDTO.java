@@ -4,11 +4,13 @@ import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.common.entity.BaseEntity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class ShopUserOrderDTO {
+public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //订单失效日期
     private Date exprDate;
@@ -43,6 +45,7 @@ public class ShopUserOrderDTO {
 
     //用户与充值卡的关系
     private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
+
 
     public String getSignUrl() {
         return signUrl;
