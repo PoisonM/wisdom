@@ -30,6 +30,12 @@ public class TimerServiceApplication {
 
 		//初始化时更新token
 		weixinServiceClient.updateUserWeixinToken();
+
+//		try {
+//			businessRunTimeService.promoteUserBusinessTypeForRecommend();
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
 //
 //		//初始化时处理未支付的订单
 //		businessRunTimeService.autoProcessNoPayRecordData();

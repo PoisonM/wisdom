@@ -378,7 +378,7 @@ public class BusinessRunTimeService {
                 }
             }
 
-            if((recommendBNum+recommendANum)>=20)
+            if((recommendBNum+recommendANum)>=ConfigConstant.RECOMMEND_USER_NUM_REWARD)
             {
                 promoteAFlag = true;
             }
@@ -418,6 +418,7 @@ public class BusinessRunTimeService {
                 AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
                 float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
                 accountDTO.setBalance(balance);
+                accountDTO.setBalanceDeny(balance);
                 businessServiceClient.updateUserAccountInfo(accountDTO);
 
                 IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();

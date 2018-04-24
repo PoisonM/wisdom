@@ -33,6 +33,7 @@ angular.module('controllers',[]).controller('myselfCenterCtrl',
                         $scope.param.accountInfo.balance  = returnFloat($scope.param.accountInfo.balance);
                         $scope.param.accountInfo.todayIncome = returnFloat($scope.param.accountInfo.todayIncome);
                         $(".smallBox").show();
+                        console.log($scope.param.accountInfo);
                     }
                 })
 
