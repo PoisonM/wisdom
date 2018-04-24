@@ -179,9 +179,20 @@ public class WeixinTest {
 
     @Test
     public void testSend() {
-        String token = "8_Vf-ihtyji25Q3hIXaW7Dx8u5Z7BW_8aql3tIt9EqPYeNnkKe1bAtgNZ7SJCsnTPzMHsKGhHfFjhKGU7PAScLYNQpuFkkifoy5aKRccR-1gRFdRrl0LDp76CbLh5_9hwHdwMTm1QgjUqwwGfgHVCcAAAMAH";
-        String tempId = "QIEjNupAi7v9LmDWRrV2rdEcATYudwlRBKYj_mGf9WA";
-        withdrawalsSuccess2Weixin(tempId, "oP0k_0eZYfRQ6HPTMBlxcq9hSWog", token);
+        String token = "9_7Yk90e02AucwsWaeKq_K2lLTftzLwbspcrysLLFdVC39ZoohrU8GApLUAcS9QRsnXLC5N7QsT26X7eluVFwWTOhEp8pHMOrPTnKNv6uz_EbkjYK5rWncqDXQvA4VicqqmCMk_s52RbjGhJq6JUOeAAAZKE";
+        String openId = "o6fNC0s8AdMWUpEVxkvreWxmEuRE";
+        String content = "亲爱的用户：\n" +
+                " \n" +
+                "  为了给您提供更好的“提现”体验，美享商城将于2018年4月24日17:00点—5月10日24:00进行提现服务系统升级，在此期间，将暂时关闭提现通道。5月10日之后即可恢复正常，升级之后，各位小主可以将您个人中心可提现的金额直接提现到微信零用钱。\n" +
+                " \n" +
+                "  感谢您的信任与支持，由此带来不便，敬请谅解。如有任何疑问，请联系美享商城客服进行咨询，祝您生活愉快！\n" +
+                " \n" +
+                "特此公告\n" +
+                " \n" +
+                "美享商城\n" +
+                "2018年4月24日\n" +
+                " ";
+        sendTextMeg(token, openId, content);
     }
 
     public int withdrawalsSuccess2Weixin(String tempId, String openid, String token) {
@@ -228,6 +239,11 @@ public class WeixinTest {
         }
         logger.error("jsonObject返回空");
         return 0;
+    }
+
+
+    public void sendTextMeg(String token, String openId, String content) {
+        WeixinUtil.sendMsgToWeixin(token, openId, content);
     }
 
 
