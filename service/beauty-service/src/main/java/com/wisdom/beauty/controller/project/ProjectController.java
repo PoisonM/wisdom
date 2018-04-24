@@ -177,9 +177,9 @@ public class ProjectController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopUserProjectGroupRelRelationDTO>> getUserProjectGroupList(@RequestParam String sysUserId,
-																				  @RequestParam String sysShopId) {
-		ResponseDTO<List<ShopUserProjectGroupRelRelationDTO>> responseDTO = new ResponseDTO<>();
+	ResponseDTO<List<HashMap<String, Object>>> getUserProjectGroupList(@RequestParam String sysUserId,
+																	   @RequestParam String sysShopId) {
+		ResponseDTO<List<HashMap<String, Object>>> responseDTO = new ResponseDTO<>();
 
 		if (StringUtils.isBlank(sysShopId) || StringUtils.isBlank(sysUserId)) {
 			logger.debug("查询某个用户的套卡列表信息传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
@@ -188,6 +188,8 @@ public class ProjectController {
 
 		//查询用户的套卡信息
 		ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
+		shopUserProjectGroupRelRelationDTO.setSysUserId(sysUserId);
+		shopUserProjectGroupRelRelationDTO.setSysShopId(sysShopId);
 		List<ShopUserProjectGroupRelRelationDTO> userCollectionCardProjectList = projectService.getUserCollectionCardProjectList(shopUserProjectGroupRelRelationDTO);
 
 		Map<String, String> helperMap = new HashMap<>(16);
@@ -199,12 +201,12 @@ public class ProjectController {
 			}
 		}
 
-		ArrayList<Object> returnList = new ArrayList<>();
+		List<HashMap<String, Object>> returnList = new ArrayList<>();
 		if (CommonUtils.objectIsNotEmpty(helperMap)) {
 			//遍历每个项目组
 			for (Map.Entry entry : helperMap.entrySet()) {
 				//套卡map
-				HashMap<Object, Object> map = new HashMap<>(6);
+				HashMap<String, Object> map = new HashMap<>(6);
 				//套卡总金额
 				BigDecimal bigDecimal = new BigDecimal(0);
 				//套卡名称
@@ -223,7 +225,8 @@ public class ProjectController {
 				returnList.add(map);
 			}
 		}
-		
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(returnList);
 		return  responseDTO;
 	}
 
