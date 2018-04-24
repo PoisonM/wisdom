@@ -250,7 +250,6 @@ public class IncomeController {
 
 		if (CommonUtils.objectIsEmpty(incomeRecordDTOS)) {
 			logger.info("佣金数据incomeRecord数据为空");
-			return null;
 		}
 
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())) {
