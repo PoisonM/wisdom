@@ -118,7 +118,7 @@ define(['appManagement'], function(app){
                         }
                     })
                     .state('monthlyAccounts', {
-                        url: '/monthlyAccounts/:true/:MAccount/:startTime/:endTime/:pageNo/:status',
+                        url: '/monthlyAccounts/:true/:MAccount/:startTime/:endTime/:pageNo/:status/:checkStatus',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'monthlyAccountsCtrl',
                         resolve: {
@@ -130,7 +130,7 @@ define(['appManagement'], function(app){
                         }
                     })
                     .state('abschluss', {
-                        url: '/abschluss/:id/:time/:transactionId/:MAccount/:startTime/:endTime/:pageNo/:status',
+                        url: '/abschluss/:id/:time/:transactionId/:MAccount/:startTime/:endTime/:pageNo/:status/:checkStatus',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'abschlussCtrl',
                         resolve: {
