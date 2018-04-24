@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-public class BusinessMessageQueueConfiguration extends CachingConfigurerSupport {
+public class BusinessMessageQueueConfiguration {
 
 	@Bean
 	public Queue notifySpecialShopBossCustomerTransactionQueue() {

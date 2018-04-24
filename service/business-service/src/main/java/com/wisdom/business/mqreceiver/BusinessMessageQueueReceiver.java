@@ -74,10 +74,5 @@ public class BusinessMessageQueueReceiver {
         }
     }
 
-    @RabbitListener(queues = "hello")
-    @RabbitHandler
-    public void process(String hello) {
-        System.out.println("Receiver  : " + hello);
-    }
 
 }
