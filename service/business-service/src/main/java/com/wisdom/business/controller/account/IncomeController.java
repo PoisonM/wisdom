@@ -334,7 +334,7 @@ public class IncomeController {
 						"交易id", "支付时间", "订单id", "订单金额", "订单状态"};
 				ExportExcel<ExportIncomeRecordExcelDTO> ex = new ExportExcel<>();
 				List<ExportIncomeRecordExcelDTO> excelList = new ArrayList<>();
-				for (MonthTransactionRecordDTO monthTransactionRecordDTO : selfList) {
+				for (MonthTransactionRecordDTO monthTransactionRecordDTO : selfList1) {
 						ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO = new ExportIncomeRecordExcelDTO();
 						exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
 						exportIncomeRecordExcelDTO.setUserTypeNow(monthTransactionRecordDTO.getUserTypeNow());
