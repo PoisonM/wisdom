@@ -28,17 +28,17 @@ public class TimerServiceApplication {
 		WeixinServiceClient weixinServiceClient = SpringUtil.getBean(WeixinServiceClient.class);
 		BusinessRunTimeService businessRunTimeService = SpringUtil.getBean(BusinessRunTimeService.class);
 
-//		//初始化时更新token
-//		weixinServiceClient.updateUserWeixinToken();
+		//初始化时更新token
+		weixinServiceClient.updateUserWeixinToken();
 //
 //		//初始化时处理未支付的订单
 //		businessRunTimeService.autoProcessNoPayRecordData();
 
-		try {
-			businessRunTimeService.autoMonthlyIncomeCalc();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			businessRunTimeService.autoMonthlyIncomeCalc();
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 }
