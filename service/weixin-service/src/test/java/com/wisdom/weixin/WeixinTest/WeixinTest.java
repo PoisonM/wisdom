@@ -166,7 +166,7 @@ public class WeixinTest {
      */
     @Test
     public void sendMessage() {
-        String token = "8_0hL_DJXjKE41QGVmT8Jq68RauQKpzvtTN8Y_8h7Q_UoDT2HMjB3PqyKoe0LcotS8Ql7esKG8arikQtQ928A7P17XJgiCJurYo5I7s2LulxRfumOmVcTaPfReQEW1VAApd9gPQswPbdrAm-vmBSSdABAJAA";
+        String token = "9_rPDvyUgMHL6I5DYMFRV1NL4Hi4o7NwP8GNtRsKnvGtR_sAP7VBR7bGNhXs0NaarubkE-Xlodwm9Ry_ni-LV6pIhtn9M0dlNF6Ynx4RRurETCqSNrQcKj8Rz0OBFcHYUg6RBImUBjVhzXeAfUQTFcAFAGJV";
         String tempId = "dz4_XwRKTzYietZlSsr_BWhGhQBJwv1J25ILuVdf7tY";
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setWeixinAttentionStatus("1");
@@ -179,19 +179,9 @@ public class WeixinTest {
 
     @Test
     public void testSend() {
-        String token = "9_7Yk90e02AucwsWaeKq_K2lLTftzLwbspcrysLLFdVC39ZoohrU8GApLUAcS9QRsnXLC5N7QsT26X7eluVFwWTOhEp8pHMOrPTnKNv6uz_EbkjYK5rWncqDXQvA4VicqqmCMk_s52RbjGhJq6JUOeAAAZKE";
+        String token = "9_rPDvyUgMHL6I5DYMFRV1NL4Hi4o7NwP8GNtRsKnvGtR_sAP7VBR7bGNhXs0NaarubkE-Xlodwm9Ry_ni-LV6pIhtn9M0dlNF6Ynx4RRurETCqSNrQcKj8Rz0OBFcHYUg6RBImUBjVhzXeAfUQTFcAFAGJV";
         String openId = "o6fNC0s8AdMWUpEVxkvreWxmEuRE";
-        String content = "亲爱的用户：\n" +
-                " \n" +
-                "  为了给您提供更好的“提现”体验，美享商城将于2018年4月24日17:00点—5月10日24:00进行提现服务系统升级，在此期间，将暂时关闭提现通道。5月10日之后即可恢复正常，升级之后，各位小主可以将您个人中心可提现的金额直接提现到微信零用钱。\n" +
-                " \n" +
-                "  感谢您的信任与支持，由此带来不便，敬请谅解。如有任何疑问，请联系美享商城客服进行咨询，祝您生活愉快！\n" +
-                " \n" +
-                "特此公告\n" +
-                " \n" +
-                "美享商城\n" +
-                "2018年4月24日\n" +
-                " ";
+        String content = "he1hj-icS3N4ZVk49a-X6HN4Ja2ImnvBr0sf965GIpoVdFyuDdCO1F51Mz_vu98T";
         sendTextMeg(token, openId, content);
     }
 
@@ -242,8 +232,8 @@ public class WeixinTest {
     }
 
 
-    public void sendTextMeg(String token, String openId, String content) {
-        WeixinUtil.sendMsgToWeixin(token, openId, content);
+    public void sendTextMeg(String token, String openId, String mediaId) {
+        WeixinUtil.sendImagToWeixin(token, openId, mediaId);
     }
 
 
