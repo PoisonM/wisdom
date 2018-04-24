@@ -178,11 +178,15 @@ public class WeixinTest {
     }
 
     @Test
-    public void testSend() {
+    public void testSendImag() {
         String token = "9_rPDvyUgMHL6I5DYMFRV1NL4Hi4o7NwP8GNtRsKnvGtR_sAP7VBR7bGNhXs0NaarubkE-Xlodwm9Ry_ni-LV6pIhtn9M0dlNF6Ynx4RRurETCqSNrQcKj8Rz0OBFcHYUg6RBImUBjVhzXeAfUQTFcAFAGJV";
-        String openId = "o6fNC0s8AdMWUpEVxkvreWxmEuRE";
-        String content = "he1hj-icS3N4ZVk49a-X6HN4Ja2ImnvBr0sf965GIpoVdFyuDdCO1F51Mz_vu98T";
-        sendTextMeg(token, openId, content);
+        String mediaId = "H7b3rZfbpwHiJQGNap3aVu6G8TUdDRJXhEquSeTEAxMsQOd5XSXZkjcBkrIW03Af";
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setWeixinAttentionStatus("1");
+        List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+        for (UserInfoDTO dto : userInfoDTOS) {
+            sendTextMeg(token, dto.getUserOpenid(), mediaId);
+        }
     }
 
     public int withdrawalsSuccess2Weixin(String tempId, String openid, String token) {
@@ -236,6 +240,84 @@ public class WeixinTest {
         WeixinUtil.sendImagToWeixin(token, openId, mediaId);
     }
 
+    public class MyThread1 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
 
+        void MyThread1(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
+
+    public class MyThread2 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
+
+        void MyThread2(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
+
+    public class MyThread3 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
+
+        void MyThread3(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
+
+    public class MyThread4 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
+
+        void MyThread4(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
+
+    public class MyThread5 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
+
+        void MyThread5(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
 
 }
