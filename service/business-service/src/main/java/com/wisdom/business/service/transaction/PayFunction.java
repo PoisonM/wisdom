@@ -96,20 +96,23 @@ public class PayFunction {
                 //若购买的是跨境商品，告知店主，用户购买的情况
                 Query query = new Query(Criteria.where("order").is(businessOrderDTO.getBusinessOrderId()));
                 SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO = mongoTemplate.findOne(query,SpecialShopBusinessOrderDTO.class,"specialShopBusinessOrder");
-                String shopId = specialShopBusinessOrderDTO.getShopId();
-                query = new Query(Criteria.where("shopId").is(shopId));
-                SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
-                UserInfoDTO userInfoDTO = new UserInfoDTO();
-                userInfoDTO.setMobile(specialShopInfoDTO.getShopBossMobile());
-                List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-                if(userInfoDTOList.size()>0)
+                if(specialShopBusinessOrderDTO!=null)
                 {
-                    WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(token,payRecordDTO.getAmount()+"元",businessOrderDTO,userInfoDTOList.get(0).getUserOpenid(),specialShopInfoDTO);
-                }
-                else
-                {
-                    //直接给店主发送短信
-                    SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(),payRecordDTO.getAmount()+"元",businessOrderDTO,specialShopInfoDTO);
+                    String shopId = specialShopBusinessOrderDTO.getShopId();
+                    query = new Query(Criteria.where("shopId").is(shopId));
+                    SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
+                    UserInfoDTO userInfoDTO = new UserInfoDTO();
+                    userInfoDTO.setMobile(specialShopInfoDTO.getShopBossMobile());
+                    List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+                    if(userInfoDTOList.size()>0)
+                    {
+                        WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(token,payRecordDTO.getAmount()+"元",businessOrderDTO,userInfoDTOList.get(0).getUserOpenid(),specialShopInfoDTO);
+                    }
+                    else
+                    {
+                        //直接给店主发送短信
+                        SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(),payRecordDTO.getAmount()+"元",businessOrderDTO,specialShopInfoDTO);
+                    }
                 }
             }
 

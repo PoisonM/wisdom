@@ -89,7 +89,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                         }
                         else
                         {
-                            WithDrawMoneyFromAccount.get({moneyAmount:$scope.param.withDrawAmount,
+                            WithDrawMoneyFromAccount.save({moneyAmount:$scope.param.withDrawAmount,
                                 identifyNumber:$scope.param.userIdentifyNumber,
                                 mobile:$scope.param.userPhone,
                                 userName:$scope.param.userName,
@@ -102,14 +102,8 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                 }
                                 else
                                 {
-                                    if(data.errorInfo=="noIdentify")
-                                    {
-                                        var alertPopup = $ionicPopup.alert({
-                                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请输入身份证号码</span>',
-                                            okText:'确定'
-                                        });
-                                        $scope.param.withDrawSwitch='off';
-                                    }
+                                    $scope.param.withDrawSwitch='off';
+                                    alert(data.errorInfo);
                                 }
                             })
                         }
