@@ -9,10 +9,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.IncomeRecordManagementDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.ExportIncomeRecordExcelDTO;
-import com.wisdom.common.dto.system.ExportMonthTransactionExcelDTO;
-import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
@@ -258,6 +255,17 @@ public class IncomeController {
 			pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
 		}
 		List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeService.exportExcelIncomeRecord(pageParamVoDTO);
+
+		HashMap<String, String> helperMap = new HashMap<>(16);
+		if (CommonUtils.objectIsNotEmpty(exportIncomeRecordExcelDTOS)) {
+			for (ExportIncomeRecordExcelDTO excelDTO : exportIncomeRecordExcelDTOS) {
+				helperMap.put(excelDTO.getTransactionId(), String.valueOf(excelDTO.getAmount()));
+				if (StringUtils.isNotBlank(helperMap.get(excelDTO.getTransactionId()))) {
+					excelDTO.setAmount(0);
+				}
+			}
+		}
+
 		try {
 			String[] orderHeaders = {"用户id", "用户名", "用户手机号", "用户获益时等级", "用户现在等级", "佣金金额",
 					"下级用户id", "下级用户名", "下级用户手机号", "下级用户等级", "下级用户现在等级",
