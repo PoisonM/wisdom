@@ -1,9 +1,11 @@
 package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
-import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
+import com.wisdom.beauty.api.enums.ConsumeType;
+import com.wisdom.beauty.api.enums.GoodsType;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -37,6 +39,7 @@ public class ProjectController {
 	@Resource
 	private ShopProjectService projectService;
 
+
 	/**
 	 * 查询某个用户预约项目列表信息
 	 *
@@ -66,37 +69,71 @@ public class ProjectController {
 	}
 
 	/**
-	 * 批量更改卡片信息
+	 * 用户充值或消费操作，适用范围为消费单次卡、疗程卡、套卡、产品
 	 *
-	 * @param ShopUserProjectRelationDTOS
+	 * @param shopUserConsumeRecordDTOS
 	 * @return
 	 */
-	@RequestMapping(value = "updateUserCardProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "userRechargeOrConsumeOperation", method = {RequestMethod.POST, RequestMethod.GET})
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<List<ShopUserProjectRelationDTO>> updateUserCardProjectList(@RequestBody List<ShopUserProjectRelationDTO> ShopUserProjectRelationDTOS) {
+	ResponseDTO<String> userRechargeOrConsumeOperation(@RequestBody List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS) {
 
-		long startTime = System.currentTimeMillis();
+		long currentTimeMillis = System.currentTimeMillis();
+		logger.info("传入参数={}", "shopUserConsumeRecordDTOS = [" + shopUserConsumeRecordDTOS + "]");
 
-		logger.info("批量更改卡片信息传入参数={}", "appointment = [" + ShopUserProjectRelationDTOS + "]");
-		ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
+		if (CommonUtils.objectIsNotEmpty(shopUserConsumeRecordDTOS)) {
+			logger.debug("用户充值或消费操作传入参数为空, {}", "shopUserConsumeRecordDTOS = [" + shopUserConsumeRecordDTOS + "]");
+			return null;
+		}
+		//遍历记录
+		for (ShopUserConsumeRecordDTO dto : shopUserConsumeRecordDTOS) {
+			//虚拟商品类型
+			String goodsType = dto.getGoodsType();
+			//消费类型
+			String consumeType = dto.getConsumeType();
+			//如果是购买动作
+			if (ConsumeType.RECHARGE.getCode().equals(consumeType)) {
+				//如果是次卡相关操作
+				if (GoodsType.TIME_CARD.getCode().equals(goodsType)) {
 
-		if (ShopUserProjectRelationDTOS == null) {
-			responseDTO.setResult(StatusConstant.FAILURE);
-			responseDTO.setErrorInfo(BusinessErrorCode.ERROR_DATA_TRANS.getCode());
-			return responseDTO;
+				}
+				//如果是疗程卡相关操作
+				else if (GoodsType.TREATMENT_CARD.getCode().equals(goodsType)) {
+
+				}
+				//如果是套卡相关操作
+				else if (GoodsType.COLLECTION_CARD.getCode().equals(goodsType)) {
+
+				}
+				//如果是产品相关
+				else if (GoodsType.PRODUCT.getCode().equals(goodsType)) {
+
+				}
+			}
+			//如果是消费动作
+			else if (ConsumeType.CONSUME.getCode().equals(consumeType)) {
+				//如果是次卡相关操作
+				if (GoodsType.TIME_CARD.getCode().equals(goodsType)) {
+
+				}
+				//如果是疗程卡相关操作
+				else if (GoodsType.TREATMENT_CARD.getCode().equals(goodsType)) {
+
+				}
+				//如果是套卡相关操作
+				else if (GoodsType.COLLECTION_CARD.getCode().equals(goodsType)) {
+
+				}
+				//如果是产品相关
+				else if (GoodsType.PRODUCT.getCode().equals(goodsType)) {
+
+				}
+			}
 		}
 
-		for (ShopUserProjectRelationDTO ShopUserProjectRelationDTO : ShopUserProjectRelationDTOS) {
-			int project = projectService.updateUserCardProject(ShopUserProjectRelationDTO);
-			logger.info("批量更改卡片信息项目主键={}更新结果为{}", ShopUserProjectRelationDTO.getId(), project > 0 ? "成功" : "失败");
-		}
-
-		responseDTO.setResult(StatusConstant.FAILURE);
-
-		logger.info("批量更改卡片信息信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
-		return responseDTO;
+		return null;
 	}
 
 	/**
@@ -229,8 +266,5 @@ public class ProjectController {
 		responseDTO.setResponseData(returnList);
 		return  responseDTO;
 	}
-
-
-
 
 }

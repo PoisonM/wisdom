@@ -9,41 +9,29 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //
     private String id;
 
-    //项目表主键
-    private String shopProjectId;
+    //单次卡为当前用户与项目的关系 id ,疗程卡也为当前项目跟用户的关系id,用户与套卡跟项目的关系表的关系表id,产品为当前产品跟用户的关系 id ,充值卡为用户与的当前充值卡关系的id
+    private String flowId;
 
-    //项目名称
-    private String shopProjectName;
+    //单次卡为当前项目id,疗程卡也为当前项目名称,产品为当前产品名称,充值卡为的当前充值卡名称
+    private String flowName;
 
-    //产品表主键
-    private String shopProductId;
+    //消费流水号
+    private String flowNo;
 
-    //产品名称
-    private String shopProductName;
+    //用户表主键
+    private String shopUserId;
 
-    //充值卡主键
-    private String shopRechargeCardId;
-
-    //套卡主键
-    private String shopProjectGroupId;
-
-    //套卡主键
-    private String shopProjectGroupName;
-
-    //优惠券主键
-    private String shopCouponId;
-
-    //
-    private String shopCouponName;
-
-    //充值卡名称
-    private String shopRechargeCardName;
+    //用户姓名
+    private String shopUserName;
 
     //消费数量
     private Integer consumeNumber;
 
+    //0、商品类型为次卡；1、商品类型为疗程卡 ；2、商品类型为充值卡；3、商品类型为套卡 4、商品类型为产品
+    private String goodsType;
+
     //0：充值  1：消费 2、还欠款 3、退款 4、划卡
-    private String type;
+    private String consumeType;
 
     //美容院表主键
     private String sysShopId;
@@ -69,11 +57,11 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //支付方式  0:微信 1：支付宝 2:现金
     private String payType;
 
-    //用户姓名
-    private String shopUserName;
+    //签字地址
+    private String signUrl;
 
-    //用户表主键
-    private String shopUserId;
+    //备注
+    private String detail;
 
     //是否有效
     private String status;
@@ -100,84 +88,44 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
         this.id = id;
     }
 
-    public String getShopProjectId() {
-        return shopProjectId;
+    public String getFlowId() {
+        return flowId;
     }
 
-    public void setShopProjectId(String shopProjectId) {
-        this.shopProjectId = shopProjectId;
+    public void setFlowId(String flowId) {
+        this.flowId = flowId;
     }
 
-    public String getShopProjectName() {
-        return shopProjectName;
+    public String getFlowName() {
+        return flowName;
     }
 
-    public void setShopProjectName(String shopProjectName) {
-        this.shopProjectName = shopProjectName;
+    public void setFlowName(String flowName) {
+        this.flowName = flowName;
     }
 
-    public String getShopProductId() {
-        return shopProductId;
+    public String getFlowNo() {
+        return flowNo;
     }
 
-    public void setShopProductId(String shopProductId) {
-        this.shopProductId = shopProductId;
+    public void setFlowNo(String flowNo) {
+        this.flowNo = flowNo;
     }
 
-    public String getShopProductName() {
-        return shopProductName;
+    public String getShopUserId() {
+        return shopUserId;
     }
 
-    public void setShopProductName(String shopProductName) {
-        this.shopProductName = shopProductName;
+    public void setShopUserId(String shopUserId) {
+        this.shopUserId = shopUserId;
     }
 
-    public String getShopRechargeCardId() {
-        return shopRechargeCardId;
+    public String getShopUserName() {
+        return shopUserName;
     }
 
-    public void setShopRechargeCardId(String shopRechargeCardId) {
-        this.shopRechargeCardId = shopRechargeCardId;
-    }
-
-    public String getShopProjectGroupId() {
-        return shopProjectGroupId;
-    }
-
-    public void setShopProjectGroupId(String shopProjectGroupId) {
-        this.shopProjectGroupId = shopProjectGroupId;
-    }
-
-    public String getShopProjectGroupName() {
-        return shopProjectGroupName;
-    }
-
-    public void setShopProjectGroupName(String shopProjectGroupName) {
-        this.shopProjectGroupName = shopProjectGroupName;
-    }
-
-    public String getShopCouponId() {
-        return shopCouponId;
-    }
-
-    public void setShopCouponId(String shopCouponId) {
-        this.shopCouponId = shopCouponId;
-    }
-
-    public String getShopCouponName() {
-        return shopCouponName;
-    }
-
-    public void setShopCouponName(String shopCouponName) {
-        this.shopCouponName = shopCouponName;
-    }
-
-    public String getShopRechargeCardName() {
-        return shopRechargeCardName;
-    }
-
-    public void setShopRechargeCardName(String shopRechargeCardName) {
-        this.shopRechargeCardName = shopRechargeCardName;
+    public void setShopUserName(String shopUserName) {
+        this.shopUserName = shopUserName;
     }
 
     public Integer getConsumeNumber() {
@@ -188,12 +136,20 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
         this.consumeNumber = consumeNumber;
     }
 
-    public String getType() {
-        return type;
+    public String getGoodsType() {
+        return goodsType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType;
+    }
+
+    public String getConsumeType() {
+        return consumeType;
+    }
+
+    public void setConsumeType(String consumeType) {
+        this.consumeType = consumeType;
     }
 
     public String getSysShopId() {
@@ -260,20 +216,20 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
         this.payType = payType;
     }
 
-    public String getShopUserName() {
-        return shopUserName;
+    public String getSignUrl() {
+        return signUrl;
     }
 
-    public void setShopUserName(String shopUserName) {
-        this.shopUserName = shopUserName;
+    public void setSignUrl(String signUrl) {
+        this.signUrl = signUrl;
     }
 
-    public String getShopUserId() {
-        return shopUserId;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setShopUserId(String shopUserId) {
-        this.shopUserId = shopUserId;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public String getStatus() {

@@ -3,18 +3,14 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper">
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO">
     <id column="id" property="id" jdbcType="VARCHAR"/>
-    <result column="shop_project_id" property="shopProjectId" jdbcType="VARCHAR"/>
-    <result column="shop_project_name" property="shopProjectName" jdbcType="VARCHAR"/>
-    <result column="shop_product_id" property="shopProductId" jdbcType="VARCHAR"/>
-    <result column="shop_product_name" property="shopProductName" jdbcType="VARCHAR"/>
-    <result column="shop_recharge_card_id" property="shopRechargeCardId" jdbcType="VARCHAR"/>
-    <result column="shop_project_group_id" property="shopProjectGroupId" jdbcType="VARCHAR"/>
-    <result column="shop_project_group_name" property="shopProjectGroupName" jdbcType="VARCHAR"/>
-    <result column="shop_coupon_id" property="shopCouponId" jdbcType="VARCHAR"/>
-    <result column="shop_coupon_name" property="shopCouponName" jdbcType="VARCHAR"/>
-    <result column="shop_recharge_card_name" property="shopRechargeCardName" jdbcType="VARCHAR"/>
+    <result column="flow_id" property="flowId" jdbcType="VARCHAR"/>
+    <result column="flow_name" property="flowName" jdbcType="VARCHAR"/>
+    <result column="flow_no" property="flowNo" jdbcType="VARCHAR"/>
+    <result column="shop_user_id" property="shopUserId" jdbcType="VARCHAR"/>
+    <result column="shop_user_name" property="shopUserName" jdbcType="VARCHAR"/>
     <result column="consume_number" property="consumeNumber" jdbcType="INTEGER"/>
-    <result column="type" property="type" jdbcType="CHAR"/>
+    <result column="goods_type" property="goodsType" jdbcType="CHAR"/>
+    <result column="consume_type" property="consumeType" jdbcType="CHAR"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
     <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
     <result column="sys_shop_clerk_id" property="sysShopClerkId" jdbcType="VARCHAR"/>
@@ -23,8 +19,8 @@
     <result column="discount" property="discount" jdbcType="DECIMAL"/>
     <result column="oper_date" property="operDate" jdbcType="TIMESTAMP"/>
     <result column="pay_type" property="payType" jdbcType="CHAR"/>
-    <result column="shop_user_name" property="shopUserName" jdbcType="VARCHAR"/>
-    <result column="shop_user_id" property="shopUserId" jdbcType="VARCHAR"/>
+    <result column="sign_url" property="signUrl" jdbcType="VARCHAR"/>
+    <result column="detail" property="detail" jdbcType="VARCHAR"/>
     <result column="status" property="status" jdbcType="CHAR"/>
     <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
@@ -90,11 +86,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, shop_project_id, shop_project_name, shop_product_id, shop_product_name, shop_recharge_card_id, 
-    shop_project_group_id, shop_project_group_name, shop_coupon_id, shop_coupon_name, 
-    shop_recharge_card_name, consume_number, type, sys_shop_id, sys_shop_name, sys_shop_clerk_id,
-    sys_shop_clerk_name, price, discount, oper_date, pay_type, shop_user_name, shop_user_id, 
-    status, create_by, create_date, update_user, update_date
+    id, flow_id, flow_name, flow_no, shop_user_id, shop_user_name, consume_number, goods_type,
+    consume_type, sys_shop_id, sys_shop_name, sys_shop_clerk_id, sys_shop_clerk_name,
+    price, discount, oper_date, pay_type, sign_url, detail, status, create_by, create_date,
+    update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria">
@@ -131,26 +126,24 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO">
-    insert into shop_user_consume_record (id, shop_project_id, shop_project_name, 
-      shop_product_id, shop_product_name, shop_recharge_card_id, 
-      shop_project_group_id, shop_project_group_name, 
-      shop_coupon_id, shop_coupon_name, shop_recharge_card_name, 
-      consume_number, type, sys_shop_id, 
-      sys_shop_name, sys_shop_clerk_id, sys_shop_clerk_name, 
-      price, discount, oper_date,
-    pay_type, shop_user_name, shop_user_id,
-      status, create_by, create_date, 
-      update_user, update_date)
-    values (#{id,jdbcType=VARCHAR}, #{shopProjectId,jdbcType=VARCHAR}, #{shopProjectName,jdbcType=VARCHAR}, 
-      #{shopProductId,jdbcType=VARCHAR}, #{shopProductName,jdbcType=VARCHAR}, #{shopRechargeCardId,jdbcType=VARCHAR}, 
-      #{shopProjectGroupId,jdbcType=VARCHAR}, #{shopProjectGroupName,jdbcType=VARCHAR}, 
-      #{shopCouponId,jdbcType=VARCHAR}, #{shopCouponName,jdbcType=VARCHAR}, #{shopRechargeCardName,jdbcType=VARCHAR}, 
-      #{consumeNumber,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, #{sysShopId,jdbcType=VARCHAR}, 
-      #{sysShopName,jdbcType=VARCHAR}, #{sysShopClerkId,jdbcType=VARCHAR}, #{sysShopClerkName,jdbcType=VARCHAR}, 
-      #{price,jdbcType=DECIMAL}, #{discount,jdbcType=DECIMAL}, #{operDate,jdbcType=TIMESTAMP},
-    #{payType,jdbcType=CHAR}, #{shopUserName,jdbcType=VARCHAR}, #{shopUserId,jdbcType=VARCHAR},
-      #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+    insert into shop_user_consume_record (id, flow_id, flow_name,
+    flow_no, shop_user_id, shop_user_name,
+    consume_number, goods_type, consume_type,
+    sys_shop_id, sys_shop_name, sys_shop_clerk_id,
+    sys_shop_clerk_name, price, discount,
+    oper_date, pay_type, sign_url,
+    detail, status, create_by,
+    create_date, update_user, update_date
+    )
+    values (#{id,jdbcType=VARCHAR}, #{flowId,jdbcType=VARCHAR}, #{flowName,jdbcType=VARCHAR},
+    #{flowNo,jdbcType=VARCHAR}, #{shopUserId,jdbcType=VARCHAR}, #{shopUserName,jdbcType=VARCHAR},
+    #{consumeNumber,jdbcType=INTEGER}, #{goodsType,jdbcType=CHAR}, #{consumeType,jdbcType=CHAR},
+    #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, #{sysShopClerkId,jdbcType=VARCHAR},
+    #{sysShopClerkName,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{discount,jdbcType=DECIMAL},
+    #{operDate,jdbcType=TIMESTAMP}, #{payType,jdbcType=CHAR}, #{signUrl,jdbcType=VARCHAR},
+    #{detail,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR},
+    #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO">
     insert into shop_user_consume_record
@@ -158,41 +151,29 @@
       <if test="id != null">
         id,
       </if>
-      <if test="shopProjectId != null">
-        shop_project_id,
+      <if test="flowId != null">
+        flow_id,
       </if>
-      <if test="shopProjectName != null">
-        shop_project_name,
+      <if test="flowName != null">
+        flow_name,
       </if>
-      <if test="shopProductId != null">
-        shop_product_id,
+      <if test="flowNo != null">
+        flow_no,
       </if>
-      <if test="shopProductName != null">
-        shop_product_name,
+      <if test="shopUserId != null">
+        shop_user_id,
       </if>
-      <if test="shopRechargeCardId != null">
-        shop_recharge_card_id,
-      </if>
-      <if test="shopProjectGroupId != null">
-        shop_project_group_id,
-      </if>
-      <if test="shopProjectGroupName != null">
-        shop_project_group_name,
-      </if>
-      <if test="shopCouponId != null">
-        shop_coupon_id,
-      </if>
-      <if test="shopCouponName != null">
-        shop_coupon_name,
-      </if>
-      <if test="shopRechargeCardName != null">
-        shop_recharge_card_name,
+      <if test="shopUserName != null">
+        shop_user_name,
       </if>
       <if test="consumeNumber != null">
         consume_number,
       </if>
-      <if test="type != null">
-        type,
+      <if test="goodsType != null">
+        goods_type,
+      </if>
+      <if test="consumeType != null">
+        consume_type,
       </if>
       <if test="sysShopId != null">
         sys_shop_id,
@@ -218,11 +199,11 @@
       <if test="payType != null">
         pay_type,
       </if>
-      <if test="shopUserName != null">
-        shop_user_name,
+      <if test="signUrl != null">
+        sign_url,
       </if>
-      <if test="shopUserId != null">
-        shop_user_id,
+      <if test="detail != null">
+        detail,
       </if>
       <if test="status != null">
         status,
@@ -244,41 +225,29 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="shopProjectId != null">
-        #{shopProjectId,jdbcType=VARCHAR},
+      <if test="flowId != null">
+        #{flowId,jdbcType=VARCHAR},
       </if>
-      <if test="shopProjectName != null">
-        #{shopProjectName,jdbcType=VARCHAR},
+      <if test="flowName != null">
+        #{flowName,jdbcType=VARCHAR},
       </if>
-      <if test="shopProductId != null">
-        #{shopProductId,jdbcType=VARCHAR},
+      <if test="flowNo != null">
+        #{flowNo,jdbcType=VARCHAR},
       </if>
-      <if test="shopProductName != null">
-        #{shopProductName,jdbcType=VARCHAR},
+      <if test="shopUserId != null">
+        #{shopUserId,jdbcType=VARCHAR},
       </if>
-      <if test="shopRechargeCardId != null">
-        #{shopRechargeCardId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopProjectGroupId != null">
-        #{shopProjectGroupId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopProjectGroupName != null">
-        #{shopProjectGroupName,jdbcType=VARCHAR},
-      </if>
-      <if test="shopCouponId != null">
-        #{shopCouponId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopCouponName != null">
-        #{shopCouponName,jdbcType=VARCHAR},
-      </if>
-      <if test="shopRechargeCardName != null">
-        #{shopRechargeCardName,jdbcType=VARCHAR},
+      <if test="shopUserName != null">
+        #{shopUserName,jdbcType=VARCHAR},
       </if>
       <if test="consumeNumber != null">
         #{consumeNumber,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        #{type,jdbcType=CHAR},
+      <if test="goodsType != null">
+        #{goodsType,jdbcType=CHAR},
+      </if>
+      <if test="consumeType != null">
+        #{consumeType,jdbcType=CHAR},
       </if>
       <if test="sysShopId != null">
         #{sysShopId,jdbcType=VARCHAR},
@@ -304,11 +273,11 @@
       <if test="payType != null">
         #{payType,jdbcType=CHAR},
       </if>
-      <if test="shopUserName != null">
-        #{shopUserName,jdbcType=VARCHAR},
+      <if test="signUrl != null">
+        #{signUrl,jdbcType=VARCHAR},
       </if>
-      <if test="shopUserId != null">
-        #{shopUserId,jdbcType=VARCHAR},
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=CHAR},
@@ -340,41 +309,29 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopProjectId != null">
-        shop_project_id = #{record.shopProjectId,jdbcType=VARCHAR},
+      <if test="record.flowId != null">
+        flow_id = #{record.flowId,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopProjectName != null">
-        shop_project_name = #{record.shopProjectName,jdbcType=VARCHAR},
+      <if test="record.flowName != null">
+        flow_name = #{record.flowName,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopProductId != null">
-        shop_product_id = #{record.shopProductId,jdbcType=VARCHAR},
+      <if test="record.flowNo != null">
+        flow_no = #{record.flowNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopProductName != null">
-        shop_product_name = #{record.shopProductName,jdbcType=VARCHAR},
+      <if test="record.shopUserId != null">
+        shop_user_id = #{record.shopUserId,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopRechargeCardId != null">
-        shop_recharge_card_id = #{record.shopRechargeCardId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.shopProjectGroupId != null">
-        shop_project_group_id = #{record.shopProjectGroupId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.shopProjectGroupName != null">
-        shop_project_group_name = #{record.shopProjectGroupName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.shopCouponId != null">
-        shop_coupon_id = #{record.shopCouponId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.shopCouponName != null">
-        shop_coupon_name = #{record.shopCouponName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.shopRechargeCardName != null">
-        shop_recharge_card_name = #{record.shopRechargeCardName,jdbcType=VARCHAR},
+      <if test="record.shopUserName != null">
+        shop_user_name = #{record.shopUserName,jdbcType=VARCHAR},
       </if>
       <if test="record.consumeNumber != null">
         consume_number = #{record.consumeNumber,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null">
-        type = #{record.type,jdbcType=CHAR},
+      <if test="record.goodsType != null">
+        goods_type = #{record.goodsType,jdbcType=CHAR},
+      </if>
+      <if test="record.consumeType != null">
+        consume_type = #{record.consumeType,jdbcType=CHAR},
       </if>
       <if test="record.sysShopId != null">
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
@@ -400,11 +357,11 @@
       <if test="record.payType != null">
         pay_type = #{record.payType,jdbcType=CHAR},
       </if>
-      <if test="record.shopUserName != null">
-        shop_user_name = #{record.shopUserName,jdbcType=VARCHAR},
+      <if test="record.signUrl != null">
+        sign_url = #{record.signUrl,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopUserId != null">
-        shop_user_id = #{record.shopUserId,jdbcType=VARCHAR},
+      <if test="record.detail != null">
+        detail = #{record.detail,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=CHAR},
@@ -429,18 +386,14 @@
   <update id="updateByCriteria" parameterType="map">
     update shop_user_consume_record
     set id = #{record.id,jdbcType=VARCHAR},
-      shop_project_id = #{record.shopProjectId,jdbcType=VARCHAR},
-      shop_project_name = #{record.shopProjectName,jdbcType=VARCHAR},
-      shop_product_id = #{record.shopProductId,jdbcType=VARCHAR},
-      shop_product_name = #{record.shopProductName,jdbcType=VARCHAR},
-      shop_recharge_card_id = #{record.shopRechargeCardId,jdbcType=VARCHAR},
-      shop_project_group_id = #{record.shopProjectGroupId,jdbcType=VARCHAR},
-      shop_project_group_name = #{record.shopProjectGroupName,jdbcType=VARCHAR},
-      shop_coupon_id = #{record.shopCouponId,jdbcType=VARCHAR},
-      shop_coupon_name = #{record.shopCouponName,jdbcType=VARCHAR},
-      shop_recharge_card_name = #{record.shopRechargeCardName,jdbcType=VARCHAR},
+    flow_id = #{record.flowId,jdbcType=VARCHAR},
+    flow_name = #{record.flowName,jdbcType=VARCHAR},
+    flow_no = #{record.flowNo,jdbcType=VARCHAR},
+    shop_user_id = #{record.shopUserId,jdbcType=VARCHAR},
+    shop_user_name = #{record.shopUserName,jdbcType=VARCHAR},
       consume_number = #{record.consumeNumber,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=CHAR},
+    goods_type = #{record.goodsType,jdbcType=CHAR},
+    consume_type = #{record.consumeType,jdbcType=CHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
       sys_shop_clerk_id = #{record.sysShopClerkId,jdbcType=VARCHAR},
@@ -449,8 +402,8 @@
       discount = #{record.discount,jdbcType=DECIMAL},
       oper_date = #{record.operDate,jdbcType=TIMESTAMP},
       pay_type = #{record.payType,jdbcType=CHAR},
-    shop_user_name = #{record.shopUserName,jdbcType=VARCHAR},
-    shop_user_id = #{record.shopUserId,jdbcType=VARCHAR},
+    sign_url = #{record.signUrl,jdbcType=VARCHAR},
+    detail = #{record.detail,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=CHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
@@ -463,41 +416,29 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO">
     update shop_user_consume_record
     <set>
-      <if test="shopProjectId != null">
-        shop_project_id = #{shopProjectId,jdbcType=VARCHAR},
+      <if test="flowId != null">
+        flow_id = #{flowId,jdbcType=VARCHAR},
       </if>
-      <if test="shopProjectName != null">
-        shop_project_name = #{shopProjectName,jdbcType=VARCHAR},
+      <if test="flowName != null">
+        flow_name = #{flowName,jdbcType=VARCHAR},
       </if>
-      <if test="shopProductId != null">
-        shop_product_id = #{shopProductId,jdbcType=VARCHAR},
+      <if test="flowNo != null">
+        flow_no = #{flowNo,jdbcType=VARCHAR},
       </if>
-      <if test="shopProductName != null">
-        shop_product_name = #{shopProductName,jdbcType=VARCHAR},
+      <if test="shopUserId != null">
+        shop_user_id = #{shopUserId,jdbcType=VARCHAR},
       </if>
-      <if test="shopRechargeCardId != null">
-        shop_recharge_card_id = #{shopRechargeCardId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopProjectGroupId != null">
-        shop_project_group_id = #{shopProjectGroupId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopProjectGroupName != null">
-        shop_project_group_name = #{shopProjectGroupName,jdbcType=VARCHAR},
-      </if>
-      <if test="shopCouponId != null">
-        shop_coupon_id = #{shopCouponId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopCouponName != null">
-        shop_coupon_name = #{shopCouponName,jdbcType=VARCHAR},
-      </if>
-      <if test="shopRechargeCardName != null">
-        shop_recharge_card_name = #{shopRechargeCardName,jdbcType=VARCHAR},
+      <if test="shopUserName != null">
+        shop_user_name = #{shopUserName,jdbcType=VARCHAR},
       </if>
       <if test="consumeNumber != null">
         consume_number = #{consumeNumber,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        type = #{type,jdbcType=CHAR},
+      <if test="goodsType != null">
+        goods_type = #{goodsType,jdbcType=CHAR},
+      </if>
+      <if test="consumeType != null">
+        consume_type = #{consumeType,jdbcType=CHAR},
       </if>
       <if test="sysShopId != null">
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
@@ -523,11 +464,11 @@
       <if test="payType != null">
         pay_type = #{payType,jdbcType=CHAR},
       </if>
-      <if test="shopUserName != null">
-        shop_user_name = #{shopUserName,jdbcType=VARCHAR},
+      <if test="signUrl != null">
+        sign_url = #{signUrl,jdbcType=VARCHAR},
       </if>
-      <if test="shopUserId != null">
-        shop_user_id = #{shopUserId,jdbcType=VARCHAR},
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=CHAR},
@@ -549,18 +490,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO">
     update shop_user_consume_record
-    set shop_project_id = #{shopProjectId,jdbcType=VARCHAR},
-      shop_project_name = #{shopProjectName,jdbcType=VARCHAR},
-      shop_product_id = #{shopProductId,jdbcType=VARCHAR},
-      shop_product_name = #{shopProductName,jdbcType=VARCHAR},
-      shop_recharge_card_id = #{shopRechargeCardId,jdbcType=VARCHAR},
-      shop_project_group_id = #{shopProjectGroupId,jdbcType=VARCHAR},
-      shop_project_group_name = #{shopProjectGroupName,jdbcType=VARCHAR},
-      shop_coupon_id = #{shopCouponId,jdbcType=VARCHAR},
-      shop_coupon_name = #{shopCouponName,jdbcType=VARCHAR},
-      shop_recharge_card_name = #{shopRechargeCardName,jdbcType=VARCHAR},
+    set flow_id = #{flowId,jdbcType=VARCHAR},
+    flow_name = #{flowName,jdbcType=VARCHAR},
+    flow_no = #{flowNo,jdbcType=VARCHAR},
+    shop_user_id = #{shopUserId,jdbcType=VARCHAR},
+    shop_user_name = #{shopUserName,jdbcType=VARCHAR},
       consume_number = #{consumeNumber,jdbcType=INTEGER},
-      type = #{type,jdbcType=CHAR},
+    goods_type = #{goodsType,jdbcType=CHAR},
+    consume_type = #{consumeType,jdbcType=CHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
       sys_shop_clerk_id = #{sysShopClerkId,jdbcType=VARCHAR},
@@ -569,8 +506,8 @@
       discount = #{discount,jdbcType=DECIMAL},
       oper_date = #{operDate,jdbcType=TIMESTAMP},
       pay_type = #{payType,jdbcType=CHAR},
-    shop_user_name = #{shopUserName,jdbcType=VARCHAR},
-    shop_user_id = #{shopUserId,jdbcType=VARCHAR},
+    sign_url = #{signUrl,jdbcType=VARCHAR},
+    detail = #{detail,jdbcType=VARCHAR},
       status = #{status,jdbcType=CHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
