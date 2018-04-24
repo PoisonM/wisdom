@@ -69,3 +69,4 @@
 .productAppear ul li{width: 1.8rem;height: 0.56rem;;line-height: 0.56rem}
 .productAppear ul li{margin: 0.37rem;background:#FFFFFF;color: #333333;font-size: 0.25rem;border-radius: 0.09rem;border: 1px solid #cccccc;font-family: PingFangTC-Medium}
 .productAppear ul li:nth-child(1){background: #FF6666;color: #FFFFFF;border: 0px}
+.mb{margin-bottom: 0.2rem}
