@@ -295,7 +295,7 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.mobile = #{requestData.mobile}
+            AND i.user_mobile = #{requestData.mobile}
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
@@ -306,7 +306,7 @@
         </if>
         </if>
         <if test='requestData.checkStatus == "1"'>
-            AND m.status = '1' AND m.income_record_id = i.id
+            AND m.income_record_id = i.id
         </if>
         <if test='requestData.checkStatus == "0"'>
             AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
@@ -332,7 +332,7 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.mobile = #{requestData.mobile}
+            AND i.user_mobile = #{requestData.mobile}
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
@@ -343,7 +343,7 @@
             </if>
         </if>
         <if test='requestData.checkStatus == "1"'>
-            AND m.status = '1' AND m.income_record_id = i.id
+            AND m.income_record_id = i.id
         </if>
         <if test='requestData.checkStatus == "0"'>
             AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
@@ -639,7 +639,7 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.mobile = #{requestData.mobile}
+            AND i.user_mobile = #{requestData.mobile}
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
@@ -650,7 +650,7 @@
             </if>
         </if>
         <if test='requestData.checkStatus == "1"'>
-            AND m.status = '1' AND m.income_record_id = i.id
+            AND m.income_record_id = i.id
         </if>
         <if test='requestData.checkStatus == "0"'>
             AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
