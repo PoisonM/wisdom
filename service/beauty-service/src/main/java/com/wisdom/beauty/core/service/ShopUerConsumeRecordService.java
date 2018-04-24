@@ -40,4 +40,14 @@ public interface ShopUerConsumeRecordService {
      * @return
      */
     int saveCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+
+
+    /**
+     * 更新用户的消费记录
+     *
+     * @param shopUserConsumeRecordDTO
+     * @return
+     */
+    int updateConumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+
 }

@@ -16,12 +16,13 @@
     <select id="getIncomeRecordManagement"
             resultMap="IncomeRecordManagementMap">
         SELECT * FROM income_record_management
+        WHERE
         1=1
         <if test="id!= ''and id!=null">
             and id=#{id}
         </if>
-        <if test="income_record_id!= ''and sysUserId!=null">
-            and sys_user_id=#{sysUserId}
+        <if test="incomeRecordId!= ''and incomeRecordId!=null">
+            and income_record_id=#{incomeRecordId}
         </if>
         <if test="sysUserId!= ''and sysUserId!=null">
             and sys_user_id=#{sysUserId}
@@ -65,8 +66,8 @@
     <update id="updateIncomeRecordManagement">
         UPDATE income_record_management SET
         id = #{id}
-        <if test="income_record_id!= ''and sysUserId!=null">
-            and sys_user_id=#{sysUserId}
+        <if test="incomeRecordId!= ''and incomeRecordId!=null">
+            and income_record_id=#{incomeRecordId}
         </if>
         <if test="sysUserId!= ''and sysUserId!=null">
             and sys_user_id=#{sysUserId}

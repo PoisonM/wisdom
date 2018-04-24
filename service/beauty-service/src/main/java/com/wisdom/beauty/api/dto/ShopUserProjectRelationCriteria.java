@@ -546,6 +546,76 @@ public class ShopUserProjectRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andDiscountIsNull() {
+            addCriterion("discount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountIsNotNull() {
+            addCriterion("discount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountEqualTo(String value) {
+            addCriterion("discount =", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountNotEqualTo(String value) {
+            addCriterion("discount <>", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountGreaterThan(String value) {
+            addCriterion("discount >", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountGreaterThanOrEqualTo(String value) {
+            addCriterion("discount >=", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountLessThan(String value) {
+            addCriterion("discount <", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountLessThanOrEqualTo(String value) {
+            addCriterion("discount <=", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountLike(String value) {
+            addCriterion("discount like", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountNotLike(String value) {
+            addCriterion("discount not like", value, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountIn(List<String> values) {
+            addCriterion("discount in", values, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountNotIn(List<String> values) {
+            addCriterion("discount not in", values, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountBetween(String value1, String value2) {
+            addCriterion("discount between", value1, value2, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountNotBetween(String value1, String value2) {
+            addCriterion("discount not between", value1, value2, "discount");
+            return (Criteria) this;
+        }
+
         public Criteria andSysShopNameIsNull() {
             addCriterion("sys_shop_name is null");
             return (Criteria) this;
@@ -1126,52 +1196,52 @@ public class ShopUserProjectRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysEqualTo(Integer value) {
+        public Criteria andInvalidDaysEqualTo(Date value) {
             addCriterion("invalid_days =", value, "invalidDays");
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysNotEqualTo(Integer value) {
+        public Criteria andInvalidDaysNotEqualTo(Date value) {
             addCriterion("invalid_days <>", value, "invalidDays");
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysGreaterThan(Integer value) {
+        public Criteria andInvalidDaysGreaterThan(Date value) {
             addCriterion("invalid_days >", value, "invalidDays");
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysGreaterThanOrEqualTo(Integer value) {
+        public Criteria andInvalidDaysGreaterThanOrEqualTo(Date value) {
             addCriterion("invalid_days >=", value, "invalidDays");
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysLessThan(Integer value) {
+        public Criteria andInvalidDaysLessThan(Date value) {
             addCriterion("invalid_days <", value, "invalidDays");
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysLessThanOrEqualTo(Integer value) {
+        public Criteria andInvalidDaysLessThanOrEqualTo(Date value) {
             addCriterion("invalid_days <=", value, "invalidDays");
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysIn(List<Integer> values) {
+        public Criteria andInvalidDaysIn(List<Date> values) {
             addCriterion("invalid_days in", values, "invalidDays");
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysNotIn(List<Integer> values) {
+        public Criteria andInvalidDaysNotIn(List<Date> values) {
             addCriterion("invalid_days not in", values, "invalidDays");
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysBetween(Integer value1, Integer value2) {
+        public Criteria andInvalidDaysBetween(Date value1, Date value2) {
             addCriterion("invalid_days between", value1, value2, "invalidDays");
             return (Criteria) this;
         }
 
-        public Criteria andInvalidDaysNotBetween(Integer value1, Integer value2) {
+        public Criteria andInvalidDaysNotBetween(Date value1, Date value2) {
             addCriterion("invalid_days not between", value1, value2, "invalidDays");
             return (Criteria) this;
         }

@@ -2,7 +2,9 @@ package com.wisdom.common.util;
 
 import com.aliyun.oss.ClientException;
 import com.wisdom.common.dto.product.ProductCodeDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
+import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.OrderCodeDTO;
 import com.wisdom.common.dto.transaction.TransactionCodeDTO;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -39,5 +41,10 @@ public class SMSUtil {
         } catch (ClientException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void sendSpecialShopBossTransactionInfo(String shopBossMobile, String amount, BusinessOrderDTO businessOrderDTO, SpecialShopInfoDTO specialShopInfoDTO) throws com.aliyuncs.exceptions.ClientException {
+        SMSMessageUtil.sendSpecialShopBossTransactionInfo(shopBossMobile, amount, businessOrderDTO, specialShopInfoDTO);
     }
 }

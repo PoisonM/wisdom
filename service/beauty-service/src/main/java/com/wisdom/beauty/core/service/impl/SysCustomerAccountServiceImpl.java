@@ -11,6 +11,7 @@ import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -65,7 +66,9 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
             customerAccountResponseDto.setPhoto(userInfoDTO.getPhoto());
             customerAccountResponseDto.setUserName(userInfoDTO.getNickname());
         }
-        SysUserAccountDTO sysUserAccount = getSysUserAccountDTO(userId);
+        SysUserAccountDTO sysUserAccountDTO=new SysUserAccountDTO();
+        sysUserAccountDTO.setSysUserId(userId);
+        SysUserAccountDTO sysUserAccount = getSysUserAccountDTO(sysUserAccountDTO);
         //获取资金信息
         if (sysUserAccount != null) {
             logger.info("sysCustomerAccountMapper查询的资金信息是:arrears={},sumAmount={}", sysUserAccount.getArrears(), sysUserAccount.getSumAmount());
@@ -99,16 +102,31 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
     /**
      * 获取用户的账户信息
      *
-     * @param userId
+     * @param sysUserAccountDTO
      * @return
      */
     @Override
-    public SysUserAccountDTO getSysUserAccountDTO(String userId) {
+    public SysUserAccountDTO getSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO) {
+
+        if (CommonUtils.objectIsEmpty(sysUserAccountDTO)) {
+            logger.info("获取用户的账户信息传入参数={}", "sysUserAccountDTO = [" + sysUserAccountDTO + "]");
+            return null;
+        }
+
         SysUserAccountCriteria criteria = new SysUserAccountCriteria();
         SysUserAccountCriteria.Criteria c = criteria.createCriteria();
 
         //参数
-        c.andSysUserIdEqualTo(userId);
+        if (StringUtils.isNotBlank(sysUserAccountDTO.getSysUserId())) {
+            c.andSysUserIdEqualTo(sysUserAccountDTO.getSysUserId());
+        }
+        if (StringUtils.isNotBlank(sysUserAccountDTO.getShopUserArchivesId())) {
+            c.andShopUserArchivesIdEqualTo(sysUserAccountDTO.getShopUserArchivesId());
+        }
+        if (StringUtils.isNotBlank(sysUserAccountDTO.getSysShopId())) {
+            c.andSysShopIdEqualTo(sysUserAccountDTO.getSysShopId());
+        }
+
         List<SysUserAccountDTO> list = sysCustomerAccountMapper.selectByCriteria(criteria);
         SysUserAccountDTO sysUserAccount = null;
         if (CollectionUtils.isNotEmpty(list)) {

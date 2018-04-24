@@ -43,6 +43,9 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     //剩余金额
     private BigDecimal surplusAmount;
 
+    //
+    private Float discount;
+
     //1 赠送 0不赠送
     private String isSend;
 
@@ -154,6 +157,14 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
 
     public void setSurplusAmount(BigDecimal surplusAmount) {
         this.surplusAmount = surplusAmount;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
     }
 
     public String getIsSend() {

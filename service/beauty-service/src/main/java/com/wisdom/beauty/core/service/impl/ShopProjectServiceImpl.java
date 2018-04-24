@@ -79,6 +79,10 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             criteria.andSysUserIdEqualTo(shopUserProjectRelationDTO.getSysUserId());
         }
 
+        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(shopUserProjectRelationDTO.getSysShopId());
+        }
+
         if (null != shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() > 0) {
             criteria.andSysShopProjectSurplusTimesGreaterThan(shopUserProjectRelationDTO.getSysShopProjectSurplusTimes());
         }

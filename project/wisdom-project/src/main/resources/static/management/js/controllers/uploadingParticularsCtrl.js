@@ -11,7 +11,16 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
             for(var i=0;i<serveText.length;i++){
                 serveTextArr.push(serveText[i].innerHTML)
             }
-            $scope.uploadingPar='';
+            $scope.param ={
+                productName:"",
+                brand:"",
+                secondType:"",
+                productDetail:{
+                    senderAddress:""
+                }
+            }
+
+            $scope.param.secondType="";
  /*展示*/
             FindProductById.get({
                 productId:$stateParams.productId
@@ -19,6 +28,11 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                 ManagementUtil.checkResponseData(data,"");
                 if(data.errorInfo == Global.SUCCESS){
                     $scope.uploadingPar = data.responseData;
+                    $scope.param.productName=$scope.uploadingPar.productName;
+                    $scope.param.brand=$scope.uploadingPar.brand;
+                    $scope.param.secondType=$scope.uploadingPar.secondType;
+                    $scope.param.productDetail.senderAddress =  $scope.uploadingPar.productDetail.senderAddress;
+
                    if(data.responseData.productDetail){
                        pic(data,"#particulars_viewPic","detailPic");
                        pic(data,"#list_viewPic","listPic");
@@ -27,7 +41,6 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                        remove("#particulars_viewPic ","detailPic");
                        remove("#publicityPic ","firstUrl");
                        $scope.init(".states option","status",0,"");
-                       $scope.init("#address option","productDetail",1,"senderAddress");
                        if($scope.uploadingPar.productDetail.services!=undefined){
                            for(var j=0;j<$scope.uploadingPar.productDetail.services.length;j++){
                                var num = serveTextArr.indexOf($scope.uploadingPar.productDetail.services[j]);
@@ -279,14 +292,11 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                         $scope.mess = true;
                         return;
                     }
-                    var productName = document.querySelector(".name").value;
-                    var brand = document.querySelector(".brand").value;
-                    var secondType = document.querySelector(".types").value;
+
                     var status = document.querySelector(".states").value;
                     var price = document.querySelector(".price").value;
                     var description = document.querySelector("#introduction").value;
                     var typelis = document.querySelectorAll(".typelis span");
-                    var addresss = document.querySelector("#address").value;
                     /*var productAdd = document.querySelector("#address1").value;*/
                     var listPic = document.querySelectorAll("#list_viewPic .as img");
                     var detailPic = document.querySelectorAll("#particulars_viewPic .as img");
@@ -320,7 +330,12 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                         tagArr.push(tag)
                     }
 
-                    if(productName==""||brand==""||secondType==""||status==""||price==""||addresss==""||typelisText.length<=0||listPicArr.length<=0||detailPicArr.length<=0||$scope.uploadingPar.firstUrl==""||typelisText.length<=0||description ==""||$scope.uploadingPar.productDetail.productAmount==""){
+                $scope.param.productName=$scope.uploadingPar.productName;
+                $scope.param.brand=$scope.uploadingPar.brand;
+                $scope.param.secondType=$scope.uploadingPar.secondType;
+                $scope.param.productDetail.senderAddress =  $scope.uploadingPar.productDetail.senderAddress;
+
+                    if($scope.param.productName ==""||$scope.param.brand$scope.param.brand==""||$scope.param.secondType==""||$scope.param.productDetail.senderAddress==""||status==""||price==""||typelisText.length<=0||listPicArr.length<=0||detailPicArr.length<=0||$scope.uploadingPar.firstUrl==""||typelisText.length<=0||description ==""||$scope.uploadingPar.productDetail.productAmount==""){
                         $scope.mess=true;
                         return
                     }
@@ -333,11 +348,11 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                     /*传给服务器的值*/
                     var ProductDTO = {
                         id:$stateParams.id,
-                        productName:productName,
+                        productName:$scope.param.productName,
                         productId:$stateParams.productId,
-                        brand:brand,
+                        brand:$scope.param.brand,
                         type:"offline",
-                        secondType:secondType,
+                        secondType:$scope.param.secondType,
                         description:description,
                         firstUrl:$scope.uploadingPar.firstUrl,
                         price:price,
@@ -349,17 +364,20 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                             spec:typelisText,
                             detailPic:$scope.uploadingPar.productDetail.detailPic,
                             listPic:$scope.uploadingPar.productDetail.listPic,
-                            senderAddress:addresss,
+                            senderAddress:$scope.param.productDetail.senderAddress,
                             productId:$stateParams.productId,
                             productAmount:$scope.uploadingPar.productDetail.productAmount
 
                         }
                     };
+
                     UpdateProductByParameters.save(ProductDTO,function(data){
                         ManagementUtil.checkResponseData(data,"");
                         if(data.result == Global.SUCCESS){
                             $scope.mess=false;
                             $state.go("home",{true:true,status:$stateParams.status,productsName:$stateParams.productsName,productsId:$stateParams.productId,page:$stateParams.page})
+                        }else{
+                            alert("保存未成功")
                         }
                     })
                 }

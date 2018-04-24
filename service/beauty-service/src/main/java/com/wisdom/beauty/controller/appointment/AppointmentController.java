@@ -1,19 +1,5 @@
 package com.wisdom.beauty.controller.appointment;
 
-import java.math.BigDecimal;
-import java.util.*;
-
-import javax.annotation.Resource;
-
-import com.wisdom.common.dto.system.PageParamDTO;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import com.github.pagehelper.PageHelper;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
@@ -35,6 +21,16 @@ import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.LunarUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * FileName: AppointmentServiceImpl
@@ -495,7 +491,7 @@ public class AppointmentController {
 		PageParamDTO<List<ShopAppointServiceDTO>> shopAppointmentUserInfo = appointmentService.findUserInfoForShopByTimeService(pageParamDTO);
 
 		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
-		ResponseDTO<PageParamDTO<List<ShopAppointServiceDTO>>> responseDTO = new ResponseDTO<>();
+		ResponseDTO<List<ShopAppointServiceDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(shopAppointmentUserInfo);
 		return responseDTO;

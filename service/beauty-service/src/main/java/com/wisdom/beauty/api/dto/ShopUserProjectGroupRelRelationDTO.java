@@ -43,6 +43,9 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     //
     private String sysBossId;
 
+    //折扣
+    private Float discount;
+
     //
     private String createBy;
 
@@ -151,6 +154,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setSysBossId(String sysBossId) {
         this.sysBossId = sysBossId;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
     }
 
     public String getCreateBy() {

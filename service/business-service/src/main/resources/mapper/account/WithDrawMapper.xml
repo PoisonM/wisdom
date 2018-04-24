@@ -167,4 +167,37 @@
         withdraw_id=#{withDrawId}
     </select>
 
+    <select id="getWithdrawRecordInfo" resultMap="WithDrawResultMap">
+        SELECT
+        *
+        FROM withdraw_record
+        WHERE
+        1=1
+        <if test='id != null and id != "" '>
+            AND id=#{id}
+        </if>
+        <if test='sysUserId != null and sysUserId != "" '>
+            AND sys_user_id=#{sysUserId}
+        </if>
+        <if test='userOpenId != null and userOpenId != "" '>
+            AND user_openid=#{userOpenId}
+        </if>
+        <if test='withdrawId != null and withdrawId != "" '>
+            AND withdraw_id=#{withdrawId}
+        </if>
+        <if test='userAccountId != null and userAccountId != "" '>
+            AND user_account_id=#{userAccountId}
+        </if>
+        <if test='status != null and status != "" '>
+            AND status=#{status}
+        </if>
+        <if test='createDate != null'>
+            AND create_date=#{createDate}
+        </if>
+        <if test='updateDate != null and updateDate != "" '>
+            AND update_date=#{updateDate}
+        </if>
+    </select>
+
+
 </mapper>

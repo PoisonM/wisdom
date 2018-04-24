@@ -1,7 +1,7 @@
 package com.wisdom.beauty.api.extDto;
 
-import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 
@@ -26,6 +26,12 @@ public class ShopUserOrderDTO {
     //创建时间
     private Date createDate;
 
+    //备注
+    private String detail;
+
+    //签字图片地址
+    private String signUrl;
+
     //用户与项目关系
     private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
 
@@ -33,10 +39,26 @@ public class ShopUserOrderDTO {
     private List<ShopUserProductRelationDTO> shopUserProductRelationDTOS;
 
     //套卡
-    private List<ShopProjectGroupDTO> shopProjectGroupDTOS;
+    private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
 
     //用户与充值卡的关系
     private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
+
+    public String getSignUrl() {
+        return signUrl;
+    }
+
+    public void setSignUrl(String signUrl) {
+        this.signUrl = signUrl;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     public String getShopUserArchivesId() {
         return shopUserArchivesId;
@@ -102,12 +124,12 @@ public class ShopUserOrderDTO {
         this.shopUserProductRelationDTOS = shopUserProductRelationDTOS;
     }
 
-    public List<ShopProjectGroupDTO> getShopProjectGroupDTOS() {
-        return shopProjectGroupDTOS;
+    public List<ShopUserProjectGroupRelRelationDTO> getProjectGroupRelRelationDTOS() {
+        return projectGroupRelRelationDTOS;
     }
 
-    public void setShopProjectGroupDTOS(List<ShopProjectGroupDTO> shopProjectGroupDTOS) {
-        this.shopProjectGroupDTOS = shopProjectGroupDTOS;
+    public void setProjectGroupRelRelationDTOS(List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS) {
+        this.projectGroupRelRelationDTOS = projectGroupRelRelationDTOS;
     }
 
     public List<ShopUserRechargeCardDTO> getShopUserRechargeCardDTOS() {
