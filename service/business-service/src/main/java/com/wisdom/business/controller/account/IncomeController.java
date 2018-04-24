@@ -383,6 +383,17 @@ public class IncomeController {
 						excelList.add(exportIncomeRecordExcelDTO);
 				}
 
+				HashMap<String, String> helperMap = new HashMap<>(16);
+				if (CommonUtils.objectIsNotEmpty(excelList)) {
+					for (ExportIncomeRecordExcelDTO excelDTO : excelList) {
+						helperMap.put(excelDTO.getTransactionId(), String.valueOf(excelDTO.getAmount()));
+						if (StringUtils.isNotBlank(helperMap.get(excelDTO.getTransactionId()))) {
+							excelDTO.setAmount(0);
+						}
+					}
+				}
+
+
 				ByteArrayInputStream in = ex.getWorkbookIn("账单EXCEL文档", orderHeaders, excelList);
 				String url = CommonUtils.orderExcelToOSS(in);
 				responseDTO.setResult(url);
