@@ -386,9 +386,20 @@ public class IncomeController {
 				HashMap<String, String> helperMap = new HashMap<>(16);
 				if (CommonUtils.objectIsNotEmpty(excelList)) {
 					for (ExportIncomeRecordExcelDTO excelDTO : excelList) {
-						helperMap.put(excelDTO.getTransactionId(), excelDTO.getTransactionId());
-						if (StringUtils.isNotBlank(excelDTO.getTransactionId()) && helperMap.get(excelDTO.getTransactionId()).equals(excelDTO.getTransactionId())) {
+						if (StringUtils.isBlank(helperMap.get(excelDTO.getTransactionId()))) {
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(0));
+						} else {
+							int count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) + 1;
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(count));
+						}
+					}
+
+					for (ExportIncomeRecordExcelDTO excelDTO : excelList) {
+						Integer count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId()));
+						if (count > 1) {
 							excelDTO.setAmount(0);
+							int number = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) - 1;
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(number));
 						}
 					}
 				}
