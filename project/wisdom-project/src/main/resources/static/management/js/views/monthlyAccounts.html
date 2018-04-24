@@ -59,6 +59,7 @@
                                     <th class="text-center" >手机号</th>
                                     <th class="text-center" >当前等级</th>
                                     <th class="text-center" >佣金金额</th>
+                                    <th class="text-center">生成时间</th>
                                     <th class="text-center" ng-hide="status=='month'">付款时间</th>
                                     <th class="text-center">类型</th>
                                     <th class="text-center">状态</th>
@@ -73,6 +74,7 @@
                                     <td>{{item.mobile}}</td>
                                     <td>{{item.userType}}</td>
                                     <td>{{item.amount }}</td>
+                                    <td>{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td ng-hide="status=='month'">{{item.payDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td>{{item.incomeType}}</td>
                                     <td>{{item.status}}</td>
@@ -127,4 +129,3 @@
              </div>
          </div>
   </div>
-  <!--ce-->
