@@ -11,7 +11,7 @@ import java.util.List;
 public class ShopUserOrderDTO {
 
     //订单失效日期
-    private String exprDate;
+    private Date exprDate;
 
     //订单状态 1、未支付  2、已支付  3、已失效
     private String status;
@@ -84,11 +84,11 @@ public class ShopUserOrderDTO {
         this.shopId = shopId;
     }
 
-    public String getExprDate() {
+    public Date getExprDate() {
         return exprDate;
     }
 
-    public void setExprDate(String exprDate) {
+    public void setExprDate(Date exprDate) {
         this.exprDate = exprDate;
     }
 

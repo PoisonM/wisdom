@@ -55,7 +55,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 			ShopUserProductRelationDTO shopUserProductRelationDTO) {
 
 		if (shopUserProductRelationDTO == null) {
-			logger.error("获取用户的产品信息为空{}", "shopUserProductRelationDTO = [" + shopUserProductRelationDTO + "]");
+            logger.error("获取用户的产品信息为空");
 			return null;
 		}
 		ShopUserProductRelationCriteria shopUserProductRelationCriteria = new ShopUserProductRelationCriteria();
