@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.core.mapper.ShopUserRelationMapper;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -52,5 +53,20 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
 
         shopUserRelationDTO = list.get(0);
         return shopUserRelationDTO.getStatus();
+    }
+
+    @Override
+    public List<ShopUserRelationDTO> getShopListByCondition(ShopUserRelationDTO shopUserRelationDTO) {
+        SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+        if (sysBossDTO == null || StringUtils.isNull(sysBossDTO.getId())) {
+            throw new ServiceException("isMember方法从redis获取sysClerkDTO为空");
+        }
+        logger.info("getShopListByCondition方法传入的参数bossId={}", sysBossDTO.getId());
+
+        ShopUserRelationCriteria criteria = new ShopUserRelationCriteria();
+        ShopUserRelationCriteria.Criteria c = criteria.createCriteria();
+        c.andSysBossIdEqualTo(sysBossDTO.getId());
+        List<ShopUserRelationDTO> shopUserRelations = shopUserRelationMapper.selectByCriteria(criteria);
+        return shopUserRelations;
     }
 }

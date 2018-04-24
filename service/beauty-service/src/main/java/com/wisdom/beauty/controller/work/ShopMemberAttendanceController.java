@@ -1,8 +1,8 @@
 package com.wisdom.beauty.controller.work;
 
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.core.service.ShopWorkService;
 import com.wisdom.beauty.interceptor.LoginRequired;
@@ -54,15 +54,15 @@ public class ShopMemberAttendanceController {
     ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getExpenditureAndIncome(@RequestParam String sysShopId,
                                                                                @RequestParam String startTime,
                                                                                @RequestParam String endTime) {
-        PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         pageParamVoDTO.setStartTime(startTime);
         pageParamVoDTO.setEndTime(endTime);
-        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-        shopUserConsumeRecordDTO.setSysShopId(sysShopId);
-        shopUserConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
+        UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+        userConsumeRequest.setSysShopId(sysShopId);
+        userConsumeRequest.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
 
-        pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
-        List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getPerformanceList(pageParamVoDTO);
+        pageParamVoDTO.setRequestData(userConsumeRequest);
+        List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getExpenditureAndIncomeList(pageParamVoDTO);
         ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> response = new ResponseDTO<>();
         response.setResponseData(list);
         response.setResult(StatusConstant.SUCCESS);

@@ -1,11 +1,11 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria;
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
@@ -42,7 +42,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	private ShopCardService shopCardService;
 
 	@Override
-	public BigDecimal getPerformance(PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO) {
+	public BigDecimal getPerformance(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		// 计算充值金额
 		BigDecimal totalAmount = null;
 		// ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new
@@ -122,10 +122,10 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	}
 
 	@Override
-	public List<ExpenditureAndIncomeResponseDTO> getPerformanceList(
-			PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO) {
-        ShopUserConsumeRecordDTO shopUserConsumeRecord=pageParamVoDTO.getRequestData();
-        logger.info("getPerformanceList方法传入的参数,sysShopId={},startTime={},endTime={}",shopUserConsumeRecord.getSysShopId(),pageParamVoDTO.getStartTime(),pageParamVoDTO.getEndTime());
+	public List<ExpenditureAndIncomeResponseDTO> getExpenditureAndIncomeList(
+			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+		UserConsumeRequestDTO userConsumeRequest=pageParamVoDTO.getRequestData();
+        logger.info("getPerformanceList方法传入的参数,sysShopId={},startTime={},endTime={}",userConsumeRequest.getSysShopId(),pageParamVoDTO.getStartTime(),pageParamVoDTO.getEndTime());
 		// 查询数据,获取业绩
 		List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = shopUerConsumeRecordService
 				.getShopCustomerConsumeRecordList(pageParamVoDTO);
@@ -133,7 +133,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
             logger.info("userConsumeRecordResponses结果为空");
 			return null;
 		}
-		Map<String, ExpenditureAndIncomeResponseDTO> map = new HashMap<>();
+		Map<String, ExpenditureAndIncomeResponseDTO> map = new HashMap<>(16);
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
 		for (UserConsumeRecordResponseDTO userConsumeRecordResponse : userConsumeRecordResponses) {
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
@@ -168,6 +168,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			expenditureAndIncomeResponse.setIncome(map.get(expenditureAndIncomeResponse.getFlowNo()).getIncome());
 			expenditureAndIncomeResponse.setExpenditure(expenditureAndIncomeResponse.getExpenditure());
 			expenditureAndIncomeResponse.setDate(map.get(expenditureAndIncomeResponse.getFlowNo()).getDate());
+			expenditureAndIncomeResponse.setSysShopId(expenditureAndIncomeResponse.getSysShopId());
+			expenditureAndIncomeResponse.setSysShopName(expenditureAndIncomeResponse.getSysShopName());
 			expenditureAndIncomeResponses.add(expenditureAndIncomeResponse);
 
 		}

@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.util.UserUtils;
@@ -38,55 +39,56 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
     private ShopUserConsumeRecordMapper shopUserConsumeRecordMapper;
 
     @Override
-    public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO) {
-        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = pageParamVoDTO.getRequestData();
+    public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+        UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
         SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
         if (sysClerkDTO == null) {
             throw new ServiceException("从redis中获取sysClerkDTO对象为空");
         }
-        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},consumeType={}", sysClerkDTO.getSysShopId(), shopUserConsumeRecordDTO.getSysUserId(), shopUserConsumeRecordDTO.getConsumeType());
-        if (StringUtils.isBlank(sysClerkDTO.getSysShopId()) ||
-                StringUtils.isBlank(shopUserConsumeRecordDTO.getConsumeType())) {
-            throw new ServiceException("getShopCustomerConsumeRecordList方法传入的参数为空");
-        }
+        logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},consumeType={}", sysClerkDTO.getSysShopId(), userConsumeRequest.getSysUserId(), userConsumeRequest.getConsumeType());
+
         ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
         ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
         // 排序
         criteria.setOrderByClause("create_date");
         // 分页
-        if(pageParamVoDTO.getPageSize()!=0) {
+        if (pageParamVoDTO.getPageSize() != 0) {
             criteria.setLimitStart(pageParamVoDTO.getPageNo());
             criteria.setPageSize(pageParamVoDTO.getPageSize());
         }
         if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime()) && StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
-            //Date currentDate = DateUtils.parseDate(pageParamVoDTO.getStartTime());
-            logger.info("传入的开始时间，结束时间是,StartTime={}，EndTime={}",pageParamVoDTO.getStartTime(),pageParamVoDTO.getEndTime());
+            logger.info("传入的开始时间，结束时间是,StartTime={}，EndTime={}", pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime());
             Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
             Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
             c.andCreateDateBetween(startTime, endTime);
         }
         //设置查询条件
-        c.andSysShopIdEqualTo(sysClerkDTO.getSysShopId());
-        c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getConsumeType());
+        if (StringUtils.isNotBlank(sysClerkDTO.getSysShopId())) {
+            c.andSysShopIdEqualTo(sysClerkDTO.getSysShopId());
+        }
+        if (StringUtils.isNotBlank(userConsumeRequest.getSysClerkId())) {
+            c.andSysClerkIdEqualTo(userConsumeRequest.getSysClerkId());
+        }
+        if (StringUtils.isNotBlank(userConsumeRequest.getSysBossId())) {
+            c.andSysBossIdEqualTo(userConsumeRequest.getSysBossId());
+        }
+        if (StringUtils.isNotBlank(userConsumeRequest.getSysUserId())) {
+            c.andSysUserIdEqualTo(userConsumeRequest.getSysUserId());
+        }
+        c.andConsumeTypeEqualTo(userConsumeRequest.getConsumeType());
 
-        String sysClerkId = shopUserConsumeRecordDTO.getSysClerkId();
-        //根据是否有店员id，设置查询条件，如果费类型不是划卡则需要通过goodType来区分,如果sysClerkId不为空则需要根据goodType来区分
-        if (StringUtils.isNotBlank(sysClerkId)) {
-            logger.info("此时加入店员消费记录查询条件,店员sysClerkId={}", sysClerkId);
-            c.andSysClerkIdEqualTo(sysClerkId);
-            if (!ConsumeTypeEnum.PUNCH_CARD.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())) {
-                if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType()) ||
-                        GoodsTypeEnum.PRODUCT.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())) {
+
+        //根据goodsTypeRequire设置查询条件，如果费类型不是划卡则需要通过goodType来区分,如果goodsTypeRequire为false则需要根据goodType来区分
+        if (userConsumeRequest.getGoodsTypeRequire()) {
+            if (!ConsumeTypeEnum.PUNCH_CARD.getCode().equals(userConsumeRequest.getConsumeType())) {
+                if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRequest.getGoodsType()) ||
+                        GoodsTypeEnum.PRODUCT.getCode().equals(userConsumeRequest.getGoodsType())) {
                     //如果是充值卡或者是产品领取
-                    c.andGoodsTypeEqualTo(shopUserConsumeRecordDTO.getGoodsType());
+                    c.andGoodsTypeEqualTo(userConsumeRequest.getGoodsType());
                 } else {
                     //如果不是充值卡，则查询非充值卡的type
                     c.andGoodsTypeNotEqualTo(GoodsTypeEnum.RECHARGE_CARD.getCode());
                 }
-            }
-        } else {
-            if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getSysUserId())) {
-                c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
             }
         }
         List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);

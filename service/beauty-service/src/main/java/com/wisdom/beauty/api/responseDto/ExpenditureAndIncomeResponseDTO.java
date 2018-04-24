@@ -15,7 +15,15 @@ import java.util.Date;
  */
 public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
     /**
-     * flow_no
+     * 美容院id
+     */
+    private String sysShopId;
+    /**
+     * 美容院名称
+     */
+    private String sysShopName;
+    /**
+     * 流水号
      */
     private String flowNo;
     /**
@@ -38,6 +46,7 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
     public void setExpenditure(BigDecimal expenditure) {
         this.expenditure = expenditure;
     }
+
     public Date getDate() {
         return date;
     }
@@ -61,6 +70,22 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
     public void setIncome(BigDecimal income) {
         this.income = income;
+    }
+
+    public String getSysShopId() {
+        return sysShopId;
+    }
+
+    public void setSysShopId(String sysShopId) {
+        this.sysShopId = sysShopId;
+    }
+
+    public String getSysShopName() {
+        return sysShopName;
+    }
+
+    public void setSysShopName(String sysShopName) {
+        this.sysShopName = sysShopName;
     }
 }
 

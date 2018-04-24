@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.consume;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.common.constant.StatusConstant;
@@ -72,13 +73,13 @@ public class UserConsumeController {
                                                                     @RequestParam String consumeType, int pageSize) {
 
         long startTime = System.currentTimeMillis();
-        PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
-        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-        shopUserConsumeRecordDTO.setSysUserId(shopUserId);
-        shopUserConsumeRecordDTO.setConsumeType(consumeType);
+        UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+        userConsumeRequest.setSysUserId(shopUserId);
+        userConsumeRequest.setConsumeType(consumeType);
 
-        pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
+        pageParamVoDTO.setRequestData(userConsumeRequest);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecordList(pageParamVoDTO);

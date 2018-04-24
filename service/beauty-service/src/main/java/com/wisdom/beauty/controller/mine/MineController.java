@@ -1,7 +1,7 @@
 package com.wisdom.beauty.controller.mine;
 
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
@@ -56,15 +56,15 @@ public class MineController {
                                                                     @RequestParam String consumeType, int pageSize) {
         long startTime = System.currentTimeMillis();
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
-        PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
-        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-        shopUserConsumeRecordDTO.setSysShopId(sysClerkDTO.getSysShopId());
-        shopUserConsumeRecordDTO.setSysClerkId(sysClerkId);
-        shopUserConsumeRecordDTO.setConsumeType(consumeType);
-        shopUserConsumeRecordDTO.setGoodsType(goodType);
+        UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+        userConsumeRequest.setSysShopId(sysClerkDTO.getSysShopId());
+        userConsumeRequest.setSysClerkId(sysClerkId);
+        userConsumeRequest.setConsumeType(consumeType);
+        userConsumeRequest.setGoodsType(goodType);
 
-        pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
+        pageParamVoDTO.setRequestData(userConsumeRequest);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
 
