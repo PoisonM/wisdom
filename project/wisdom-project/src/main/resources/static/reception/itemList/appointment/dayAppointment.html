@@ -54,16 +54,16 @@
             </ul>
             <div class="appointmentLis">
                 <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsReservation(1,$index,$event,'消费')">12</li>
+                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsWrap(1,$index,'消费')">12</li>
                 </ul>
                 <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsReservation(2,$index,$event,'消费')">12</li>
+                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsWrap(2,$index,'消费')">12</li>
                 </ul>
                 <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsReservation(3,$index,$event,'划卡')">12</li>
+                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsWrap(3,$index,'划卡')">12</li>
                 </ul>
                 <ul>
-                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsReservation(4,$index,$event,'散客')">12</li>
+                    <li ng-repeat="item in arrTime" style="text-align: center" ng-click="detailsWrap(4,$index,'散客')">12</li>
                 </ul>
                 <ul>
                     <li ng-repeat="item in arrTime" style="text-align: center"    ng-onhold="onHold($index)">12</li>
@@ -75,334 +75,389 @@
     <!--周预约-->
     <div ng-include="'itemList/appointment/weeklyReservation.html'" ng-show="param.weekFlag"></div>
 </div>
-<!--消费-消费-->
-<div class="consumption w1344  bgf5f5f5 br36" ng-show="param.consumption">
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel " >
-            <span class="marginLeft20" ng-click = "candelConsumption()">取消</span>
-        </p>
-        <p class="centerBtn ">
-            消费
-        </p>
-        <p class="scheduling ">
-
-        </p>
+<!--预约详情-->
+<script type="text/ng-template" id="detailsWrap">
+    <div class="detailsWrap br36 bgfff " >
+        <div class="header btlr btrr">
+            <p>预约详情</p>
+            <span class="close"><img src="images/bt_shut%20down.png" ng-click = "close()"></span>
+        </div>
+        <div ng-include="'itemList/appointment/detailsReservation.html'"></div>
     </div>
-    <div ng-include="'itemList/appointment/consumption.html'" class="h1465"></div>
-</div>
-<!--消费-选择单次-->
-<div class=" bgf5f5f5 w1344  selectContent br36" ng-show = "param.selectSingle ">
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel " >
-            <img src="images/bt_back.png" ng-click ="consumptionProjuct('selectSingle',0)">
-            <span>消费</span>
-        </p>
-        <p class="centerBtn ">
-            选择单次
-        </p>
-        <p class="scheduling ">
-            <span class="true" ng-click="consumptionProjuct('selectSingle',1)">完成</span>
-        </p>
-    </div>
-    <div class="h1465">
-        <div ng-include="'itemList/appointment/search.html'"></div>
-        <div ng-include="'itemList/appointment/selectSingle.html'"></div>
-    </div>
-
-</div>
-<!--消费-选择疗程卡-->
-<div class=" bgf5f5f5 w1344  selectContent br36" ng-show = "param.selectTreatmentCard ">
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel" >
-            <img src="images/bt_back.png" ng-click="consumptionProjuct('selectTreatmentCard',0)">
-            <span>消费</span>
-        </p>
-        <p class="centerBtn ">
-            选择疗程卡
-        </p>
-        <p class="scheduling ">
-            <span class="true" ng-click = "consumptionProjuct('selectTreatmentCard',1)">完成</span>
-        </p>
-    </div>
-    <div class="h1465">
-        <div ng-include="'itemList/appointment/search.html'"></div>
-        <div ng-include="'itemList/appointment/selectTreatmentCard.html'"></div>
-    </div>
-
-</div>
-<!--消费-选择产品-->
-<div class=" bgf5f5f5 w1344  selectContent br36" ng-show = "param.selectProduct">
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel" >
-            <img src="images/bt_back.png" ng-click="consumptionProjuct('selectProduct',0)">
-            <span>消费</span>
-        </p>
-        <p class="centerBtn ">
-            选择产品
-        </p>
-        <p class="scheduling ">
-            <span class="true" ng-click="consumptionProjuct('selectProduct',1)">完成</span>
-        </p>
-    </div>
-    <div class="h1465">
-        <div ng-include="'itemList/appointment/search.html'"></div>
-        <div ng-include="'itemList/appointment/selectProduct.html'"></div>
-    </div>
-
-</div>
-<!--消费-选择套卡-->
-<div class=" bgf5f5f5 w1344  selectContent  br36" ng-show = "param.collectionCard">
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel" >
-            <img src="images/bt_back.png" ng-click="consumptionProjuct('collectionCard',0)">
-            <span>消费</span>
-        </p>
-        <p class="centerBtn ">
-            选择套卡
-        </p>
-        <p class="scheduling ">
-            <span class="true" ng-click="consumptionProjuct('collectionCard',1)">完成</span>
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/collectionCard.html'" class="h1465"></div>
-</div>
-<!--消费-消费-下一步（记录支付）-->
-<div class="btrr btlr bgf5f5f5 payType w1344 br36" ng-show="param.consumptionNextStep">
-    <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
-        <p class="W33 colfff " >
-            <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="consumptionProjuct('consumptionNextStep',0)">
-            <span>消费</span>
-        </p>
-        <p class="W33 center ">
-            消费
-        </p>
-        <p class="W33 ">
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/payType.html'" class="h1465 bblr bbrr"></div>
-</div>
-<!--优惠券-->
-<div class="btrr btlr bgf5f5f5 payType w1344 br36" ng-show="param.selectCoupons">
-    <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
-        <p class="W33 colfff " >
-            <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="consumptionProjuct('selectCoupons',0)">
-            <span>消费</span>
-        </p>
-        <p class="W33 center ">
-            优惠券
-        </p>
-        <p class="W33 ">
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/selectCoupons.html'" class="h1465 bblr bbrr"></div>
-</div>
-<!--选择银行卡-->
-<div class="btrr btlr bgf5f5f5 payType w1344 br36" ng-show="param.bank">
-    <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
-        <p class="W33 colfff " >
-            <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="consumptionProjuct('bank',0)">
-            <span>消费</span>
-        </p>
-        <p class="W33 center ">
-            银行卡
-        </p>
-        <p class="W33 ">
-        </p>
-    </div>
-    <div class=" h1465 bblr bbrr">
-        <ul class="bgfff">
-            <li class="space-between h100 bte5" ng-repeat="item in [1,2,3]">
-                <p class="fs34 col333">
-                    <img src="images/bt_Single election_nor_.png" class="norPic ml30 mr20">
-                    中国工商银行
-                </p>
-                <p class="col888 fs30 mr30">手续费：3.77元</p>
-            </li>
-        </ul>
-    </div>
-</div>
-<!--余额充值-->
-<div class="btrr btlr bgf5f5f5 payType w1344 br36" ng-show="param.balancePrepaid" >
-    <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
-        <p class="W33 colfff " >
-            <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="consumptionProjuct('balancePrepaid',0)">
-            <span>消费</span>
-        </p>
-        <p class="W33 center ">
-
-        </p>
-        <p class="W33 ">
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/balancePrepaid.html'" class="h1465 bblr bbrr"></div>
-</div>
-<!--关联员工-->
-<div class="scratchCard w1344 bgf5f5f5 br36" ng-show="param.relatedStaff">
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel " >
-            <img src="images/bt_back.png"  ng-click="consumptionProjuct('relatedStaff',0)">
-            <span>消费</span>
-        </p>
-        <p class="centerBtn">
-            关联员工
-        </p>
-        <p class="scheduling ">
-            <span class="true" ng-click="consumptionProjuct('relatedStaff',1)">完成</span>
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/relatedStaff.html'" class="h1465 bblr bbrr"></div>
-</div>
-<!--选择赠送-->
-<div class="givingArea w1344  collectionCard bgf5f5f5 br36" ng-show="param.giving" >
-    <div class="PopupwindowTitle colorWhite bgff6666 ">
-        <p class="cancel " >
-            <img src="images/bt_back.png"  ng-click="consumptionProjuct('giving',0)">
-            <span>取消</span>
-        </p>
-        <p class="centerBtn ">
-            选择赠送
-        </p>
-        <p class="scheduling ">
-            <span class="true"  ng-click="consumptionProjuct('giving',1)">确认</span>
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/giving.html'"  class="h1465 bblr bbrr"></div>
-</div>
-<!--划卡-->
-<div class="scratchCard  w1344 bgf5f5f5 br36" ng-show="param.scratchCard">
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel " >
-            <span class="marginLeft20" ng-click="consumptionProjuct('scratchCard',0)">取消</span>
-        </p>
-        <p class="centerBtn ">
-            划卡
-        </p>
-        <p class="scheduling ">
-            <span class="true" ng-click="consumptionProjuct('scratchCard',1)">添加更多</span>
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/scratchCard.html'"  class="h1465 bblr bbrr"></div>
-</div>
-<!--划卡 选择疗程卡-->
-<div class="trueScratchCard w1344 bgf5f5f5 br36" ng-show="param.scratchCardSelectTreatmentCard">
-    <div class="PopupwindowTitle colorWhite bgff6666">
-        <p class="cancel" >
-            <img src="images/bt_back.png"  ng-click="consumptionProjuct('scratchCardSelectTreatmentCard',0)">
-            <span>划卡</span>
-        </p>
-        <p class="centerBtn ">
-            选择疗程卡
-        </p>
-        <p class="scheduling ">
-            <span class="true" ng-click="consumptionProjuct('scratchCardSelectTreatmentCard',1)">完成</span>
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/CtreatmentCard.html'" class="h1012 bblr bbrr"></div>
-</div>
-<!--散客详情-->
-<div class="individual w885 br36 b" ng-show="param.individualTravelerAppointment">
-    <div class="space-between h104 bgeee btrr btlr">
-        <p class="W33">
-        </p>
-        <p class="center fs38 color333 W33 bold">
-            预约详情
-        </p>
-        <p class="scheduling W33">
-            <span class="floatR mr30"><img src="images/bt_shut down.png." class="closePic mt20" ng-click="individualTravelerAppointmentClose()"></span>
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/individualTravelerAppointment.html'" class=" bblr bbrr"></div>
-</div>
+</script>
 <!--修改预约-->
-<div class=" br36 modifyingAppointment" ng-show="param.modifyingAppointment">
-    <div class="space-between h104 bgeee btrr btlr">
-        <p class="W33">
-            <span class="ml30 colff6666 fs38 bold" ng-click="consumptionProjuct('modifyingAppointment',0)">取消</span>
-        </p>
-        <p class="center fs38 color333 W33 bold">
-            修改预约
-        </p>
-        <p class="scheduling W33">
-            <span class="floatR mr30 fs38 colff6666 bold" ng-click="consumptionProjuct('modifyingAppointment',1)">保存</span>
-        </p>
+<script type="text/ng-template" id="modifyingAppointment">
+    <div class=" br36 modifyingAppointment" >
+        <div class="space-between h104 bgeee btrr btlr">
+            <p class="W33">
+                <span class="ml30 colff6666 fs38 bold" ng-click="close(0)">取消</span>
+            </p>
+            <p class="center fs38 color333 W33 bold">
+                修改预约
+            </p>
+            <p class="scheduling W33">
+                <span class="floatR mr30 fs38 colff6666 bold" ng-click="close(1)">保存</span>
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/modifyingAppointment.html'" class="modifyingWrap bblr bbrr"></div>
     </div>
-    <div ng-include="'itemList/appointment/modifyingAppointment.html'" class="modifyingWrap bblr bbrr"></div>
-
-</div>
-<!--预约列表-->
-<div class="trueAppointment appointmentLisArea" ng-show="param.appointmentLis">
-    <div class="PopupwindowTitle bgeeeeee">
-        <p >
-        </p>
-        <p class="centerBtn color333333 bold">
-            预约列表
-        </p>
-        <p class="scheduling">
-            <img src="images/bt_shut%20down.png" ng-click="consumptionProjuct('appointmentLis',0)">
-        </p>
-    </div>
-    <div ng-include="'itemList/appointment/appointmentLis.html'" class=" bblr bbrr"></div>
-</div>
+</script>
 <!--选择顾客-->
-<div class="selectCustomersWrap br36" ng-show="param.selectCustomersWrap">
-    <div class="customerTop  btrr btlr">
-        <ul class="space-between btrr btlr">
-            <li class="pl W33 "><img  src="images/bt_back.png" class="backPic mr20" ng-click="consumptionProjuct('selectCustomersWrap',0)"><span class="color6666">修改预约</span> </li>
-            <li class="fc W33 center">选择顾客</li>
-            <li class="people pr pt W33"><img src="images/bt_add to.png" alt="" class="floatR ml30" ng-click="addCustomersCtrl()"></li>
-        </ul>
+<script type="text/ng-template" id="selectCustomersWrap">
+    <div class="selectCustomersWrap br36 timeLength" >
+        <div class="customerTop  btrr btlr">
+            <ul class="space-between btrr btlr">
+                <li class="pl W33 "><img  src="images/bt_back.png" class="backPic mr20" ng-click="close(0)"><span class="color6666">修改预约</span> </li>
+                <li class="fc W33 center">选择顾客</li>
+                <li class="people pr pt W33"><img src="images/bt_add to.png" alt="" class="floatR ml30" ng-click="addCustomersCtrl()"></li>
+            </ul>
+        </div>
+        <div ng-include="'itemList/appointment/selectCustomers.html'" class=" bblr bbrr"></div>
     </div>
-    <div ng-include="'itemList/appointment/selectCustomers.html'" class="modifyingWrap bblr bbrr"></div>
-</div>
+</script>
 <!--修改预约-添加客户-->
-<div class="addWraps br36" ng-show="param.addCustomers">
-    <div class="headers btrr btlr">
-        <ul>
-            <li class="checks" ng-click="consumptionProjuct('addCustomers',0)"><span class="ml30">取消</span></li>
-            <li class="addCustomer center">添加顾客</li>
-            <li class="checks" ng-click="consumptionProjuct('addCustomers',1)"><span class="mr30 floatR">保存</span></li>
-        </ul>
+<script type="text/ng-template" id="addCustomers">
+    <div class="addWraps br36" >
+        <div class="headers btrr btlr">
+            <ul>
+                <li class="checks" ng-click="close(0)"><span class="ml30">取消</span></li>
+                <li class="addCustomer center">添加顾客</li>
+                <li class="checks" ng-click="close(1)"><span class="mr30 floatR">保存</span></li>
+            </ul>
+        </div>
+        <div ng-include="'itemList/appointment/addCustomers.html'" class="modifyingWrap bblr bbrr"></div>
     </div>
-    <div ng-include="'itemList/appointment/addCustomers.html'" class="modifyingWrap bblr bbrr"></div>
-</div>
+</script>
 <!--修改预约 - 选择项目-->
-<div class="br36 bgf5f5f5 b w758 newProject" ng-show="param.newProduct">
-    <div class="btlr btrr bgeee space-between h104">
-        <p class="fs34 colff6666 W33"> <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="consumptionProjuct('newProduct',1)">修改预约</p>
-        <p class="fs38 col333 center W33 bold">选择项目</p>
-        <p class="W33"><span class="floatR mr30 fs34 colff6666" ng-click="consumptionProjuct('newProduct',1)">完成</span></p>
+<script type="text/ng-template" id="newProduct">
+    <div class="br36 bgf5f5f5 b w758 newProject" >
+        <div class="btlr btrr bgeee space-between h104">
+            <p class="fs34 colff6666 W33"> <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(1)">修改预约</p>
+            <p class="fs38 col333 center W33 bold">选择项目</p>
+            <p class="W33"><span class="floatR mr30 fs34 colff6666" ng-click="close(1)">完成</span></p>
+        </div>
+        <div ng-include="'itemList/appointment/newProject.html'" class="modifyingWrap bblr bbrr"></div>
     </div>
-    <div ng-include="'itemList/appointment/newProject.html'" class="modifyingWrap bblr bbrr"></div>
-</div>
+</script>
 <!--修改预约--选择时长-->
-<div class="br36 w758 bgf5f5f5 timeLength" ng-show="param.timeLength">
-    <div class="space-between h104  btlr btrr bgeee">
-        <P class="W33">
-            <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="consumptionProjuct('timeLength',0)">
-            <span class="colff6666 fs34">修改预约</span>
-        </P>
-        <P class="fs38 color333 center W33 bold">选择时长</P>
-        <P class="W33"></P>
+<script type="text/ng-template" id="timeLength">
+    <div class="br36 w758 bgf5f5f5 timeLength" >
+        <div class="space-between h104  btlr btrr bgeee">
+            <P class="W33">
+                <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
+                <span class="colff6666 fs34">修改预约</span>
+            </P>
+            <P class="fs38 color333 center W33 bold">选择时长</P>
+            <P class="W33"></P>
+        </div>
+        <div ng-include="'itemList/appointment/timeLength.html'" class="modifyingWrap bblr bbrr"></div>
     </div>
-    <div ng-include="'itemList/appointment/timeLength.html'" class="modifyingWrap bblr bbrr"></div>
-</div>
+</script>
 <!--修改预约--选择美容师-->
-<div class="br36 w758 bgf5f5f5 selectBeautician timeLength" ng-show="param.selectBeautician">
-    <div class="space-between h104  btlr btrr bgeee">
-        <P class="W33">
-            <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="consumptionProjuct('selectBeautician',0)">
-            <span class="colff6666 fs34">修改预约</span>
-        </P>
-        <P class="fs38 color333 center W33 bold">选择美容师</P>
-        <P class="W33"></P>
+<script type="text/ng-template" id="selectBeautician">
+    <div class="br36 w758 bgf5f5f5 selectBeautician timeLength" >
+        <div class="space-between h104  btlr btrr bgeee">
+            <P class="W33">
+                <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
+                <span class="colff6666 fs34">修改预约</span>
+            </P>
+            <P class="fs38 color333 center W33 bold">选择美容师</P>
+            <P class="W33"></P>
+        </div>
+        <div ng-include="'itemList/appointment/timeLength.html'" class="modifyingWrap bblr bbrr"></div>
     </div>
-    <div ng-include="'itemList/appointment/timeLength.html'" class="modifyingWrap bblr bbrr"></div>
-</div>
-<!--
+</script>
 
-<script type="text/ng-template" id="showMessage">
-    <span>我是sss弹窗</span>
-    <div>
-        <button ng-click="close()">关闭</button>
+
+<!--散客详情-->
+<script type="text/ng-template" id="individual">
+    <div class="individual w885 br36 b" >
+        <div class="space-between h104 bgeee btrr btlr">
+            <p class="W33">
+            </p>
+            <p class="center fs38 color333 W33 bold">
+                预约详情
+            </p>
+            <p class="scheduling W33">
+                <span class="floatR mr30"><img src="images/bt_shut down.png." class="closePic mt20" ng-click="close()"></span>
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/individualTravelerAppointment.html'" class=" bblr bbrr"></div>
     </div>
-</script>-->
+</script>
+
+
+<!--消费-消费-->
+<script type="text/ng-template" id="consumption">
+    <div class="consumption w1344  bgf5f5f5 br36" >
+        <div class="PopupwindowTitle colorWhite bgff6666">
+            <p class="cancel " >
+                <span class="marginLeft20" ng-click = "close()">取消</span>
+            </p>
+            <p class="centerBtn ">
+                消费
+            </p>
+            <p class="scheduling ">
+
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/consumption.html'" class="h1465"></div>
+    </div>
+</script>
+<!--消费-选择单次-->
+<script type="text/ng-template" id="selectSingle">
+    <div class=" bgf5f5f5 w1344  selectContent br36">
+        <div class="PopupwindowTitle colorWhite bgff6666">
+            <p class="cancel " >
+                <img src="images/bt_back.png" ng-click ="close(0)">
+                <span>消费</span>
+            </p>
+            <p class="centerBtn ">
+                选择单次
+            </p>
+            <p class="scheduling ">
+                <span class="true" ng-click="close(1)">完成</span>
+            </p>
+        </div>
+        <div class="h1465">
+            <div ng-include="'itemList/appointment/search.html'"></div>
+            <div ng-include="'itemList/appointment/selectSingle.html'"></div>
+        </div>
+
+    </div>
+</script>
+<!--消费-选择疗程卡-->
+<script type="text/ng-template" id="selectTreatmentCard">
+    <div class=" bgf5f5f5 w1344  selectContent br36" >
+        <div class="PopupwindowTitle colorWhite bgff6666">
+            <p class="cancel" >
+                <img src="images/bt_back.png" ng-click="close(0)">
+                <span>消费</span>
+            </p>
+            <p class="centerBtn ">
+                选择疗程卡
+            </p>
+            <p class="scheduling ">
+                <span class="true" ng-click = "close(1)">完成</span>
+            </p>
+        </div>
+        <div class="h1465">
+            <div ng-include="'itemList/appointment/search.html'"></div>
+            <div ng-include="'itemList/appointment/selectTreatmentCard.html'"></div>
+        </div>
+
+    </div>
+</script>
+<!--消费-选择产品-->
+<script type="text/ng-template" id="selectProduct">
+    <div class=" bgf5f5f5 w1344  selectContent br36" >
+        <div class="PopupwindowTitle colorWhite bgff6666">
+            <p class="cancel" >
+                <img src="images/bt_back.png" ng-click="close(0)">
+                <span>消费</span>
+            </p>
+            <p class="centerBtn ">
+                选择产品
+            </p>
+            <p class="scheduling ">
+                <span class="true" ng-click="close(1)">完成</span>
+            </p>
+        </div>
+        <div class="h1465">
+            <div ng-include="'itemList/appointment/search.html'"></div>
+            <div ng-include="'itemList/appointment/selectProduct.html'"></div>
+        </div>
+
+    </div>
+</script>
+<!--消费-选择套卡-->
+<script type="text/ng-template" id="collectionCard">
+    <div class=" bgf5f5f5 w1344  selectContent  br36" >
+        <div class="PopupwindowTitle colorWhite bgff6666">
+            <p class="cancel" >
+                <img src="images/bt_back.png" ng-click="close(0)">
+                <span>消费</span>
+            </p>
+            <p class="centerBtn ">
+                选择套卡
+            </p>
+            <p class="scheduling ">
+                <span class="true" ng-click="close(1)">完成</span>
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/collectionCard.html'" class="h1465"></div>
+    </div>
+</script>
+<!--余额充值-->
+<script type="text/ng-template" id="balancePrepaid">
+    <div class="btrr btlr bgf5f5f5 payType w1344 br36" >
+        <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
+            <p class="W33 colfff " >
+                <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="close()">
+                <span>消费</span>
+            </p>
+            <p class="W33 center ">
+
+            </p>
+            <p class="W33 ">
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/balancePrepaid.html'" class="h1465 bblr bbrr"></div>
+    </div>
+</script>
+<!--关联员工-->
+<script type="text/ng-template" id="relatedStaff">
+    <div class="scratchCard w1344 bgf5f5f5 br36">
+        <div class="PopupwindowTitle colorWhite bgff6666">
+            <p class="cancel " >
+                <img src="images/bt_back.png"  ng-click="close(0)">
+                <span>消费</span>
+            </p>
+            <p class="centerBtn">
+                关联员工
+            </p>
+            <p class="scheduling ">
+                <span class="true" ng-click="close(1)">完成</span>
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/relatedStaff.html'" class="h1465 bblr bbrr"></div>
+    </div>
+</script>
+<!--选择赠送-->
+<script type="text/ng-template" id="giving">
+    <div class="givingArea w1344  collectionCard bgf5f5f5 br36">
+        <div class="PopupwindowTitle colorWhite bgff6666 ">
+            <p class="cancel " >
+                <img src="images/bt_back.png"  ng-click="close(0)">
+                <span>取消</span>
+            </p>
+            <p class="centerBtn ">
+                选择赠送
+            </p>
+            <p class="scheduling ">
+                <span class="true"  ng-click="close(1)">确认</span>
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/giving.html'"  class="h1465 bblr bbrr"></div>
+    </div>
+</script>
+
+<!--消费-消费-下一步（记录支付）-->
+<script type="text/ng-template" id="consumptionNextStep">
+    <div class="btrr btlr bgf5f5f5 payType w1344 br36" >
+        <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
+            <p class="W33 colfff " >
+                <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="close(0)">
+                <span>消费</span>
+            </p>
+            <p class="W33 center ">
+                消费
+            </p>
+            <p class="W33 ">
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/payType.html'" class="h1465 bblr bbrr"></div>
+    </div>
+</script>
+<!--优惠券-->
+<script type="text/ng-template" id="selectCoupons">
+    <div class="btrr btlr bgf5f5f5 payType w1344 br36" >
+        <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
+            <p class="W33 colfff " >
+                <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="close()">
+                <span>消费</span>
+            </p>
+            <p class="W33 center ">
+                优惠券
+            </p>
+            <p class="W33 ">
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/selectCoupons.html'" class="h1465 bblr bbrr"></div>
+    </div>
+</script>
+<!--选择银行卡-->
+<script type="text/ng-template" id="bank">
+    <div class="btrr btlr bgf5f5f5 payType w1344 br36" >
+        <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
+            <p class="W33 colfff " >
+                <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="close()">
+                <span>消费</span>
+            </p>
+            <p class="W33 center ">
+                银行卡
+            </p>
+            <p class="W33 ">
+            </p>
+        </div>
+        <div class=" h1465 bblr bbrr">
+            <ul class="bgfff">
+                <li class="space-between h100 bte5" ng-repeat="item in [1,2,3]">
+                    <p class="fs34 col333">
+                        <img src="images/bt_Single election_nor_.png" class="norPic ml30 mr20">
+                        中国工商银行
+                    </p>
+                    <p class="col888 fs30 mr30">手续费：3.77元</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</script>
+<!--划卡-->
+<script type="text/ng-template" id="scratchCard">
+    <div class="scratchCard  w1344 bgf5f5f5 br36">
+        <div class="PopupwindowTitle colorWhite bgff6666">
+            <p class="cancel " >
+                <span class="marginLeft20" ng-click="close(0)">取消</span>
+            </p>
+            <p class="centerBtn ">
+                划卡
+            </p>
+            <p class="scheduling ">
+                <span class="true" ng-click="close(1)">添加更多</span>
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/scratchCard.html'"  class="h1465 bblr bbrr"></div>
+    </div>
+</script>
+<!--划卡 选择疗程卡-->
+<script type="text/ng-template" id="scratchCardSelectTreatmentCard">
+    <div class="trueScratchCard w1344 bgf5f5f5 br36" >
+        <div class="PopupwindowTitle colorWhite bgff6666">
+            <p class="cancel" >
+                <img src="images/bt_back.png"  ng-click="close(0)">
+                <span>划卡</span>
+            </p>
+            <p class="centerBtn ">
+                选择疗程卡
+            </p>
+            <p class="scheduling ">
+                <span class="true" ng-click="close(1)">完成</span>
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/CtreatmentCard.html'" class="h1012 bblr bbrr"></div>
+    </div>
+</script>
+
+<!--周预约--预约列表-->
+<script type="text/ng-template" id="appointmentLis">
+    <div class="trueAppointment appointmentLisArea" >
+        <div class="PopupwindowTitle bgeeeeee">
+            <p >
+            </p>
+            <p class="centerBtn color333333 bold">
+                预约列表
+            </p>
+            <p class="scheduling">
+                <img src="images/bt_shut%20down.png" ng-click="close()">
+            </p>
+        </div>
+        <div ng-include="'itemList/appointment/appointmentLis.html'" class=" bblr bbrr"></div>
+    </div>
+
+</script>
+
+
+
+
+

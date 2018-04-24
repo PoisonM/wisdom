@@ -640,6 +640,8 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/timeLengthCtrl.js",
                             root + "appointment/selectCouponsCtrl.js",
                             root + "appointment/selectCoupons.css",
+                            root + "appointment/balancePrepaidCtrl.js",
+                            root + "appointment/relatedStaffCtrl.js",
                             root + "../libs/angular-touch.js",
                             root + "../libs/jquery-2.1.3.min.js",
                         ]

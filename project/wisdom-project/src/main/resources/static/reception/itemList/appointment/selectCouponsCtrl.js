@@ -1,12 +1,9 @@
-/**
- * Created by Administrator on 2018/4/8.
- */
-PADWeb.controller("selectCouponsCtrl", function($scope, $state, $stateParams) {
-    console.log("selectCouponsCtrl");
-    $scope.param={
-        appearMoney:"",
+function selectCouponsCtrl($scope){
+    $scope.param.appearMoney="";
+    $scope.selectCoupons = function(){
+        $scope.param.selectCoupons = true;
+        $scope.param.consumptionNextStep = false;
     }
-
     $scope.selectCouponsData = [
         {
             name:"项目券",
@@ -25,6 +22,9 @@ PADWeb.controller("selectCouponsCtrl", function($scope, $state, $stateParams) {
         }
     ];
     $scope.clickMoney=function (index) {
-         // $scope.param.appearMoney=$scope.selectCouponsData[index].money;
+        // $scope.param.appearMoney=$scope.selectCouponsData[index].money;
     }
-})
+ }
+
+
+
