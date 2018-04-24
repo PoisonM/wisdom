@@ -306,8 +306,12 @@ public class IncomeService {
             incomeRecordDTO.setOrderStatus(orderId);
             incomeRecordDTO.setOrderAmount(orderAmount);
             incomeRecordDTO.setOrderStatus(orderStatus);
-            incomeRecordDTO.setUserTypeNow(userInfoDTO.getUserType());
-            incomeRecordDTO.setNextUserTypeNow(nextUserInfoDTO.getUserType());
+            if(null != nextUserInfoDTO){
+                incomeRecordDTO.setUserTypeNow(userInfoDTO.getUserType());
+            }
+            if(null != nextUserInfoDTO){
+                incomeRecordDTO.setNextUserTypeNow(nextUserInfoDTO.getUserType());
+            }
         }
         return incomeRecordDTOS;
     }
