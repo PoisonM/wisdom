@@ -295,7 +295,7 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.mobile = #{requestData.mobile}
+            AND i.user_mobile = #{requestData.mobile}
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
@@ -332,7 +332,7 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.mobile = #{requestData.mobile}
+            AND i.user_mobile = #{requestData.mobile}
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
@@ -639,7 +639,7 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.mobile = #{requestData.mobile}
+            AND i.user_mobile = #{requestData.mobile}
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
