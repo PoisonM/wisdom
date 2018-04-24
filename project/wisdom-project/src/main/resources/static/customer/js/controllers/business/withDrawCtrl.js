@@ -1,7 +1,7 @@
 angular.module('controllers',[]).controller('withDrawCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','BusinessUtil',
+    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','BusinessUtil','GetUserInfo',
         'WithDrawMoneyFromAccount','$ionicPopup','$interval','GetUserValidateCode',
-        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,BusinessUtil,
+        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,BusinessUtil,GetUserInfo,
                   WithDrawMoneyFromAccount,$ionicPopup,$interval,GetUserValidateCode) {
 
             $rootScope.title = "提现";
@@ -24,6 +24,11 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                     {
                         $scope.param.userIdentifyNumber = $scope.param.accountInfo.identifyNumber;
                     }
+                })
+
+                GetUserInfo.get(function (data) {
+                    console.log(data);
+                    $scope.param.userIdentifyNumber = data.responseData.identifyNumber;
                 })
             });
 
@@ -97,7 +102,14 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                 BusinessUtil.checkResponseData(data,'withDraw');
                                 if(data.result==Global.SUCCESS)
                                 {
-                                    $state.go("drawDetails");
+                                    if(data.errorInfo=="CHECK_WITHDRAW_AMOUNT")
+                                    {
+                                        $state.go("drawDetails",{"status":"check","withDrawAmount":$scope.param.withDrawAmount});
+                                    }
+                                    else
+                                    {
+                                        $state.go("drawDetails",{"status":"noCheck","withDrawAmount":$scope.param.withDrawAmount});
+                                    }
                                     $scope.param.withDrawSwitch='off';
                                 }
                                 else

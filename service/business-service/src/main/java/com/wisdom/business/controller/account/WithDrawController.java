@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -98,6 +99,7 @@ public class WithDrawController {
 			if (RealNameResultEnum.MATCHING.getCode().equals(realNameInfoDTO.getCode()))
 			{
 				userInfoDTO.setIdentifyNumber(withDrawRecordDTO.getIdentifyNumber());
+				userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(), "utf-8"));
 				userServiceClient.updateUserInfo(userInfoDTO);
 			}
 			else
@@ -121,6 +123,7 @@ public class WithDrawController {
 			else if(withDrawRecordDTO.getMoneyAmount()>=ConfigConstant.CHECK_WITHDRAW_AMOUNT)
 			{
 				withDrawService.withDrawMoneyFromAccount(withDrawRecordDTO.getMoneyAmount(),request,openid,true);
+				result.setErrorInfo("CHECK_WITHDRAW_AMOUNT");
 				result.setResult(StatusConstant.SUCCESS);
 			}
 			else

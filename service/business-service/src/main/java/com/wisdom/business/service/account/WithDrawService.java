@@ -7,7 +7,6 @@ import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
-import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.dto.account.AccountDTO;
@@ -23,12 +22,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.DecimalFormat;
 import java.util.*;
 
 @Service
@@ -181,20 +177,17 @@ public class WithDrawService {
         }
     }
 
-    public void deFrozenWithDrawRecord(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
+    public void deFrozenWithDrawRecord(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) throws Exception {
         withDrawMapper.updateWithdrawById(withDrawRecordDTO.getWithdrawId(),"1");
         String token = WeixinUtil.getUserToken();
         returnMoneyToUser(withDrawRecordDTO.getMoneyAmount(),request,withDrawRecordDTO.getUserOpenId(),token);
     }
 
-    private static void returnMoneyToUser(float moneyAmount,HttpServletRequest request, String openid,String token)
-    {
+    private static void returnMoneyToUser(float moneyAmount,HttpServletRequest request, String openid,String token) throws Exception {
         //公众号中的提现操作，moneyAmount为提现金额
-        Float returnMoney = moneyAmount*100;
+        int returnMoney = (int) moneyAmount*100;
 
-        DecimalFormat decimalFormat=new DecimalFormat("");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-        String money = decimalFormat.format(returnMoney);//format 返回的是字符串
-
+        String money = String.valueOf(returnMoney);
         //调用企业统一支付接口对用户进行退款
         SortedMap<Object,Object> parameters = new TreeMap<>();
         parameters.put("mch_appid", ConfigConstant.APP_ID);//APPid
@@ -202,8 +195,6 @@ public class WithDrawService {
         parameters.put("nonce_str", IdGen.uuid());
         parameters.put("partner_trade_no",IdGen.uuid());
         parameters.put("check_name","NO_CHECK");
-        //parameters.put("check_name","FORCE_CHECK");
-        //parameters.put("re_user_name","陈佳科");
         parameters.put("amount", money);//金额
         parameters.put("desc", "提现零钱");
         parameters.put("spbill_create_ip",request.getRemoteAddr());
@@ -218,10 +209,14 @@ public class WithDrawService {
             if(!"SUCCESS".equals(returnMap.get("result_code"))){
                 throw new Exception();
             }
+            else
+            {
+                WeixinTemplateMessageUtil.withdrawalsSuccess2Weixin(openid,token,"",String.valueOf(moneyAmount),DateUtils.DateToStr(new Date(), "date"));
+            }
         }catch (Exception e){
             e.printStackTrace();
+            throw e;
         }
-        WeixinTemplateMessageUtil.withdrawalsSuccess2Weixin(openid,token,"",String.valueOf(moneyAmount),DateUtils.DateToStr(new Date(), "date"));
     }
 
 }
