@@ -367,8 +367,14 @@ public class IncomeController {
 		//获取登录人信息
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		if(userInfoDTO == null) {
-			logger.info("佣金奖励审核接口从Redis获取用户信息失败={}", "userInfoDTO = [" + userInfoDTO + "]");
+			logger.info("佣金奖励审核接口从Redis获取用户信息失败={}");
 			responseDTO.setResult("获取用户信息失败");
+			responseDTO.setErrorInfo(StatusConstant.FAILURE);
+			return responseDTO;
+		}
+		if("finance-1".equals(userInfoDTO.getUserType()) && "operation-1".equals(userInfoDTO.getUserType())){
+			logger.info("当前用户既不是运营人员又不是财务人,所以拒绝审核");
+			responseDTO.setResult("当前用户不是相关人员,拒绝审核");
 			responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			return responseDTO;
 		}
