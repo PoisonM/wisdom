@@ -54,7 +54,7 @@
 
                             <table class="table  table-hover text-center ">
                                 <thead>
-                                <tr id="product_lis_title" >
+                                <tr id="product_lis_title IncomeListTitle" >
                                     <th class="text-center" >昵称</th>
                                     <th class="text-center" >手机号</th>
                                     <th class="text-center" >当前等级</th>
@@ -68,7 +68,7 @@
                                 </tr>
                                 </thead>
                                 <tbody ng-repeat="item in MonthlyBalanceLis" >
-                                <tr ng-class="{'bgeee':agencyIndex != $index && agencyIndex!=-1,'red':item.secondCheckStatus=='有一方拒绝','white':agencyIndex == -1}">
+                                <tr ng-class="{'bgeee':agencyIndex != $index && agencyIndex!=-1 && item.secondCheckStatus!='有一方拒绝','red':item.secondCheckStatus=='有一方拒绝','white':agencyIndex == -1}">
                                     <td>{{item.nickName}}</td>
                                     <td>{{item.mobile}}</td>
                                     <td>{{item.userType}}</td>
@@ -85,7 +85,7 @@
                                        <!-- <div ng-if="haha.meme == $index" ng-repeat="items in item.types">{{items.nickName}}</div>-->
                                     </td>
                                 </tr>
-                                    <tr class="product_lis_title IncomeListMess" ng-show="item.statesLook=='2'" >
+                                    <tr class="product_lis_title " ng-show="item.statesLook=='2'" id="IncomeListTitle">
                                         <th class="text-center" >昵称</th>
                                         <th class="text-center" >手机号</th>
                                         <th class="text-center" >当前等级</th>

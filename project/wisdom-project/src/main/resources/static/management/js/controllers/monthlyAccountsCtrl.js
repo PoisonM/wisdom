@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('monthlyAccountsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId) {
             var startTime = document.querySelector(".MStart");
             var endTime = document.querySelector(".MEnd");
             var pattern = /^1[34578]\d{9}$/;
@@ -131,7 +131,6 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                     MonthlyBalanceLis[i].userTypeNow = MonthlyBalanceLis[i].userTypeNow.substring(9,10)+"级";
                     MonthlyBalanceLis[i].nextUserTypeNow = MonthlyBalanceLis[i].nextUserTypeNow.substring(9,10)+"级";
                     MonthlyBalanceLis[i].nextUserType = MonthlyBalanceLis[i].nextUserType.substring(9,10)+"级";
-
                 }
 
             }
@@ -210,6 +209,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                          }
                                     }
 
+                                    MonthlyBalanceLis[i].userType = MonthlyBalanceLis[i].userType.substring(9,10)+"级";
+
 
                                     $scope.orderIdFun(MonthlyBalanceLis);
                                     $scope.MonthlyBalanceLis = MonthlyBalanceLis;
@@ -226,7 +227,6 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                             $scope.param.pageFrom = ($scope.pageNo-1)*$scope.pageSize+1;
                             $scope.param.pageTo = ($scope.pageNo-1)*$scope.pageSize+$scope.pageSize;
                             $scope.mum = false;
-                            $scope.userType($scope.MonthlyBalanceLis)
                             /*  $scope.MAccount = "";
                              startTime.value='';
                              endTime.value='';*/
@@ -281,7 +281,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                             mobile: $scope.MAccount
                         }
                     }
-                    ExportExcelIncomeRecord.save(pageParamVoDTO, function (data) {
+                    GetIncomeRecordByPageParam.save(pageParamVoDTO, function (data) {
                         ManagementUtil.checkResponseData(data, "");
                         if (data.errorInfo == Global.SUCCESS) {
                             var $eleForm = $("<form method='get'></form>");
