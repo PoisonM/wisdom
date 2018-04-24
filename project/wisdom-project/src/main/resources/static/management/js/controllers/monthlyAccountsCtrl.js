@@ -102,7 +102,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 
                     /* $state.go("forthwithAward",{transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status})*/
                 }else if($scope.status=="month"){
-                    $state.go("abschluss",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status})
+                    $state.go("abschluss",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status,checkStatus:$stateParams.checkStatus})
                 }
             };
             $scope.orderIdFun = function(MonthlyBalanceLis){
@@ -147,6 +147,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         endTime.value = $stateParams.endTime;
                         $scope.pageNo= $stateParams.pageNo;
                         $scope.status = $stateParams.status;
+                        $scope.checkStatus = $stateParams.checkStatus;
                         pageTrue = false;
                     }
 
