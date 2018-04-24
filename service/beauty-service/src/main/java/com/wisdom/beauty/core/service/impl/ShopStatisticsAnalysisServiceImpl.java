@@ -147,6 +147,12 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
 		// 卡耗归为消费类
 		criteria.andConsumeTypeEqualTo(pageParamVoDTO.getRequestData().getConsumeType());
+		if(StringUtils.isNotBlank(userConsumeRequest.getSysBossId())){
+			criteria.andSysBossIdEqualTo(userConsumeRequest.getSysBossId());
+		}
+		if(StringUtils.isNotBlank(userConsumeRequest.getSysShopId())){
+			criteria.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
+		}
 		List<String> goods = new ArrayList<>();
 		goods.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 		goods.add(GoodsTypeEnum.TIME_CARD.getCode());

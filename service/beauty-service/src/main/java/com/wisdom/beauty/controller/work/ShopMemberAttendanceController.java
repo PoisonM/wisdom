@@ -69,5 +69,29 @@ public class ShopMemberAttendanceController {
         return response;
     }
 
+    /**
+     * @Author:zhanghuan
+     * @Param: bossId，consumeType 消费类型
+     * @Return:
+     * @Description: 获取老板下所有美容院的列表
+     * @Date:2018/4/24 11:08
+     */
+    @RequestMapping(value = "/getBossExpenditureAndIncome", method = {RequestMethod.GET})
+    @ResponseBody
+    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getBossExpenditureAndIncome(@RequestParam String sysBossId) {
+
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+        userConsumeRequest.setSysBossId(sysBossId);
+        userConsumeRequest.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
+
+        pageParamVoDTO.setRequestData(userConsumeRequest);
+        List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getExpenditureAndIncomeList(pageParamVoDTO);
+        ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> response = new ResponseDTO<>();
+        response.setResponseData(list);
+        response.setResult(StatusConstant.SUCCESS);
+        return response;
+    }
+
 
 }

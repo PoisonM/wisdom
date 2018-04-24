@@ -63,7 +63,7 @@ public class MineController {
         userConsumeRequest.setSysClerkId(sysClerkId);
         userConsumeRequest.setConsumeType(consumeType);
         userConsumeRequest.setGoodsType(goodType);
-
+        userConsumeRequest.setGoodsTypeRequire(true);
         pageParamVoDTO.setRequestData(userConsumeRequest);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
