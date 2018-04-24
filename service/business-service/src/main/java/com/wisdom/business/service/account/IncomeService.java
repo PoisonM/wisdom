@@ -9,6 +9,7 @@ import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.IncomeRecordManagementDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
+import com.wisdom.common.dto.system.ExportIncomeRecordExcelDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
@@ -345,31 +346,8 @@ public class IncomeService {
 
     public List<MonthTransactionRecordDTO> queryMonthRecordByParentRelation(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         List<MonthTransactionRecordDTO> monthTransactionRecordDTOS = incomeMapper.queryMonthRecordByParentRelation(pageParamVoDTO);
-        /*String orderStatus ="2";
-        String orderId ="";
-        String orderAmount ="0";*/
         for (MonthTransactionRecordDTO monthTransactionRecordDTO: monthTransactionRecordDTOS) {
             try {
-                /*List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
-                //判断是否有数据
-                if(businessOrderDTOS.size() != 0) {
-                    //判断是否只有一笔订单
-                    if (businessOrderDTOS.size() > 1) {
-                        for (BusinessOrderDTO businessOrderDTO : businessOrderDTOS) {
-                            //若有未完成订单则把订单状态返回
-                            if (!"2".equals(businessOrderDTO.getStatus())) {
-                                orderId = businessOrderDTO.getBusinessOrderId();
-                                orderAmount = businessOrderDTO.getAmount();
-                                orderStatus = businessOrderDTO.getStatus();
-                            }
-                        }
-                    } else {
-                        orderId = businessOrderDTOS.get(0).getBusinessOrderId();
-                        orderStatus = businessOrderDTOS.get(0).getStatus();
-                        orderAmount = businessOrderDTOS.get(0).getAmount();
-                    }
-                    monthTransactionRecordDTO.setPayDate(businessOrderDTOS.get(0).getPayDate());
-                }*/
                 if (StringUtils.isNotBlank(monthTransactionRecordDTO.getNickName())) {
                     monthTransactionRecordDTO.setNickName(URLDecoder.decode(monthTransactionRecordDTO.getNickName(),"utf-8"));
                 }
@@ -382,9 +360,6 @@ public class IncomeService {
             }
             UserInfoDTO selfUserInfoDTO = userServiceClient.getUserInfoFromUserId(monthTransactionRecordDTO.getUserId());
             UserInfoDTO nextUserInfoDTO = userServiceClient.getUserInfoFromUserId(monthTransactionRecordDTO.getNextUserId());
-            /*monthTransactionRecordDTO.setOrderId(orderId);
-            monthTransactionRecordDTO.setOrderStatus(orderStatus);
-            monthTransactionRecordDTO.setOrderAmount(orderAmount);*/
             monthTransactionRecordDTO.setUserTypeNow(selfUserInfoDTO.getUserType());
             monthTransactionRecordDTO.setNextUserTypeNow(nextUserInfoDTO.getUserType());
         }
@@ -398,5 +373,22 @@ public class IncomeService {
 
     public int queryMonthRecordCountByParentRelation(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         return incomeMapper.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+    }
+
+    public List<ExportIncomeRecordExcelDTO> exportExcelIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+        List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeMapper.exportExcelIncomeRecord(pageParamVoDTO);
+        for (ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO : exportIncomeRecordExcelDTOS){
+            try {
+            if (StringUtils.isNotBlank(exportIncomeRecordExcelDTO.getNickName())) {
+                exportIncomeRecordExcelDTO.setNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNickName(),"utf-8"));
+            }
+            if (StringUtils.isNotBlank(exportIncomeRecordExcelDTO.getNextUserNickName())) {
+                exportIncomeRecordExcelDTO.setNextUserNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNextUserNickName(),"utf-8"));
+            }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return exportIncomeRecordExcelDTOS;
     }
 }
