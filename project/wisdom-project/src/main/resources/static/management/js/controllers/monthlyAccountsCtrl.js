@@ -216,10 +216,13 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                     $scope.MonthlyBalanceLis = MonthlyBalanceLis;
                                 }
                             }
-                            for(var i=0;i< $scope.MonthlyBalanceLis.length;i++){
-                                a[i]=1;
-                                $scope.MonthlyBalanceLis[i].statesLook="1"
+                            if($scope.MonthlyBalanceLis.length >=1){
+                                for(var i=0;i< $scope.MonthlyBalanceLis.length;i++){
+                                    a[i]=1;
+                                    $scope.MonthlyBalanceLis[i].statesLook="1"
+                                }
                             }
+
                             $scope.counnt='';
                             $scope.response = {};
                             $scope.response.count = data.responseData.count;
@@ -243,9 +246,12 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                 $scope.MAccount = "";
                 $scope.active = 'active';
                 $scope.status =type;
-                for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
-                    $scope.MonthlyBalanceLis[i].statesLook = "1"
+                if( $scope.MonthlyBalanceLis.length>=1){
+                    for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
+                        $scope.MonthlyBalanceLis[i].statesLook = "1"
+                    }
                 }
+
 
               /*  $scope.loadPageList();*/
                 $scope.choosePage(1)
@@ -297,9 +303,12 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             }
             $scope.bgAll=function(){
                 $scope.auditFlag = false;
-                for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
-                    $scope.MonthlyBalanceLis[i].statesLook = "1";
+                if($scope.MonthlyBalanceLis.length>=1){
+                    for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
+                        $scope.MonthlyBalanceLis[i].statesLook = "1";
+                    }
                 }
+
                 $scope.agencyIndex =-1;
             };
             /*筛选已完成的订单*/
