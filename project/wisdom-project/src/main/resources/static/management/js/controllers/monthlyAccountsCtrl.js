@@ -138,7 +138,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 /*月结  即时提现*/
 
             $scope.loadPageList = function(){
-                $timeout(function(){
+                // $timeout(function(){
                     if(window.location.hash.indexOf("true") != -1 && pageTrue == true ){
                         $scope.MAccount = $stateParams.MAccount;
                         startTime.value = $stateParams.startTime;
@@ -230,7 +230,9 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 
                         }
                     })
-                },10);
+
+
+                // },10);
                 };
 
 /*按钮的切换*/
@@ -244,7 +246,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                     $scope.MonthlyBalanceLis[i].statesLook = "1"
                 }
 
-                $scope.loadPageList();
+                // $scope.loadPageList();
                 $scope.choosePage(1)
 
 
@@ -278,17 +280,17 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                             mobile: $scope.MAccount
                         }
                     }
-                    GetIncomeRecordByPageParam.save(pageParamVoDTO, function (data) {
-                        ManagementUtil.checkResponseData(data, "");
-                        if (data.errorInfo == Global.SUCCESS) {
-                            var $eleForm = $("<form method='get'></form>");
-                            $eleForm.attr("action", data.result);
-                            $(document.body).append($eleForm);
-                            $eleForm.submit();
-                            $scope.loadPageList();
-
-                        }
-                    })
+                    // GetIncomeRecordByPageParam.save(pageParamVoDTO, function (data) {
+                    //     ManagementUtil.checkResponseData(data, "");
+                    //     if (data.errorInfo == Global.SUCCESS) {
+                    //         var $eleForm = $("<form method='get'></form>");
+                    //         $eleForm.attr("action", data.result);
+                    //         $(document.body).append($eleForm);
+                    //         $eleForm.submit();
+                    //         $scope.loadPageList();
+                    //
+                    //     }
+                    // })
 
                 }
             }

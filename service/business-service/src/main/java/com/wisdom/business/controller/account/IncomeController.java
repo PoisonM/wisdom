@@ -19,10 +19,12 @@ import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -223,15 +225,17 @@ public class IncomeController {
 		logger.info("根据状态查询返利数据传入参数={}", "pageParamVoDTO = [" + pageParamVoDTO + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		int count = 0;
-		String startDate = "1990-01-01";//设定起始时间
+		//设定起始时间
+		String startDate = "1990-01-01";
 		pageParamVoDTO.setStartTime("".equals(pageParamVoDTO.getStartTime()) ? startDate : pageParamVoDTO.getStartTime());
 		pageParamVoDTO.setEndTime(CommonUtils.getEndDate(pageParamVoDTO.getEndTime()));
-		String checkStatus = "";//审核状态,已审核/未审核
-		if(pageParamVoDTO.getRequestData() != null){
+		//审核状态,已审核/未审核
+		String checkStatus = "";
+		if (null != pageParamVoDTO.getRequestData()) {
 			checkStatus = pageParamVoDTO.getRequestData().getCheckStatus();
 		}
 		//如果checkStauts不为空 则说明用户查询已审核或未审核状态
-		if(checkStatus != null && checkStatus != ""){
+		if (StringUtils.isNotBlank(checkStatus)) {
 			UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 			if(userInfoDTO == null){
 				logger.info("条件查询用户佣金奖励从Redis获取用户信息失败={}", "userInfoDTO = [" + userInfoDTO + "]");
@@ -243,7 +247,12 @@ public class IncomeController {
 			pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
 		}
 		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeRecordByPageParam(pageParamVoDTO);
-		if(CommonUtils.objectIsEmpty(incomeRecordDTOS)) logger.info("佣金数据incomeRecord数据为空");
+
+		if (CommonUtils.objectIsEmpty(incomeRecordDTOS)) {
+			logger.info("佣金数据incomeRecord数据为空");
+			return null;
+		}
+
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())) {
 			try {
 				String[] orderHeaders = {"用户id","用户名","用户手机号","用户获益时等级","用户现在等级","佣金金额",
@@ -287,7 +296,7 @@ public class IncomeController {
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			}
 		}
-		if(!"".equals(checkStatus) && checkStatus != null){
+		if (StringUtils.isNotBlank(checkStatus)) {
 			count = incomeService.getIncomeRecordCountByIncomeManagement(pageParamVoDTO);
 		}else {
 			count = incomeService.getIncomeRecordCountByPageParam(pageParamVoDTO);
@@ -352,7 +361,7 @@ public class IncomeController {
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if("".equals(incomeRecordId) || incomeRecordId == null){
 			responseDTO.setErrorInfo(StatusConstant.FAILURE);
-			responseDTO.setResult("incomeRecordId");
+			responseDTO.setResult("incomeRecordId为空");
 			logger.info("佣金审核接口传入参数incomeRecordId为空", "incomeRecordId = [" + incomeRecordId + "]");
 		}
 		//获取登录人信息
@@ -369,6 +378,8 @@ public class IncomeController {
 		incomeRecordManagementDTO1.setUserType(userInfoDTO.getUserType());
 //		incomeRecordManagementDTO1.setSysUserId(userInfoDTO.getId());
 		List<IncomeRecordManagementDTO> incomeRecordManagementDTOS = incomeRecordManagementService.getIncomeRecordManagement(incomeRecordManagementDTO1);
+
+
 		//如已有审核记录
 		if(incomeRecordManagementDTOS.size()>0){
 			//已有的审核记录状态与本次相同
@@ -387,6 +398,21 @@ public class IncomeController {
 			responseDTO.setResult("已有相关人员审核,不能重复修改");
 			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 			return responseDTO;
+		}
+		//查询此条数据有没有被审核
+		IncomeRecordManagementDTO incomeRecordManagementDTO2 =new IncomeRecordManagementDTO();
+		incomeRecordManagementDTO2.setIncomeRecordId(incomeRecordId);
+		List<IncomeRecordManagementDTO> incomeRecordManagementDTOS2 = incomeRecordManagementService.getIncomeRecordManagement(incomeRecordManagementDTO2);
+
+		//如果有数据,则审核状态为通过则说明此次审核为第二次审核,判断审核结果修改数据状态
+		if(incomeRecordManagementDTOS2.size()>0 && "1".equals(incomeRecordManagementDTOS2.get(0).getStatus())){
+			if("1".equals(status)){
+				//审核通过,修改状态
+				IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+				incomeRecordDTO.setStatus(status);
+				incomeService.updateIncomeRecord(incomeRecordDTO);
+			}
+
 		}
 		//第一次审核,创建审核记录,向incomeRecordManagement表中插入数据
 		IncomeRecordManagementDTO incomeRecordManagementDTO = new IncomeRecordManagementDTO();
@@ -460,52 +486,55 @@ public class IncomeController {
 	}
 
 	/**
-	 * 查询月度奖励详情new
-	 * @param pageParamVoDTO 用户id
-	 * @param
+	 * 月度奖励详情导出Excel  new
+	 * @param pageParamVoDTO 用户id  param self
 	 * @return
 	 */
-	@RequestMapping(value = "selectMonthTransactionRecordByUserId", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "exportExcelMonthTransactionRecordByUserId", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<Map<String,Object>> selectMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+	ResponseDTO<Map<String,Object>> exportExcelMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
 		long startTime = System.currentTimeMillis();
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if(pageParamVoDTO.getRequestData() == null){
 			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
 		}
 		List<MonthTransactionRecordDTO> selfList1 = new ArrayList<>();
 		List<MonthTransactionRecordDTO> nextList1 = new ArrayList<>();
-		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
-		Map<String,Object> map=new HashMap<>(16);
+		//Map<String,Object> map=new HashMap<>(16);
 
 		//先查出所有本人的,再查出下级的
 		pageParamVoDTO.getRequestData().setParentRelation("self");
-		int selfCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		//int selfCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
 		List<MonthTransactionRecordDTO> selfList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
 		if(CommonUtils.objectIsEmpty(selfList)) logger.info("月度本人详情数据selfList数据为空");
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : selfList){
 			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
 			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
-				monthTransactionRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
-				monthTransactionRecordDTO.setOrderAmount(businessOrderDTO.getAmount());
-				monthTransactionRecordDTO.setOrderStatus(businessOrderDTO.getStatus());
-				monthTransactionRecordDTO.setPayDate(businessOrderDTO.getPayDate());
-				selfList1.add(monthTransactionRecordDTO);
+                MonthTransactionRecordDTO monthDTO = new MonthTransactionRecordDTO();
+                BeanUtils.copyProperties(monthTransactionRecordDTO, monthDTO);
+                monthDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+                monthDTO.setOrderAmount(businessOrderDTO.getAmount());
+                monthDTO.setOrderStatus(businessOrderDTO.getStatus());
+                monthDTO.setPayDate(businessOrderDTO.getPayDate());
+				selfList1.add(monthDTO);
 			}
 		}
 		pageParamVoDTO.getRequestData().setParentRelation("other");
-		int nextCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		//int nextCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
 		List<MonthTransactionRecordDTO> nextList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
 		if(CommonUtils.objectIsEmpty(nextList)) logger.info("月度下级详情数据nextList数据为空");
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : nextList){
 			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
 			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
-				monthTransactionRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
-				monthTransactionRecordDTO.setOrderAmount(businessOrderDTO.getAmount());
-				monthTransactionRecordDTO.setOrderStatus(businessOrderDTO.getStatus());
-				monthTransactionRecordDTO.setPayDate(businessOrderDTO.getPayDate());
-				nextList1.add(monthTransactionRecordDTO);
+                MonthTransactionRecordDTO monthDTO = new MonthTransactionRecordDTO();
+                BeanUtils.copyProperties(monthTransactionRecordDTO, monthDTO);
+                monthDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+                monthDTO.setOrderAmount(businessOrderDTO.getAmount());
+                monthDTO.setOrderStatus(businessOrderDTO.getStatus());
+                monthDTO.setPayDate(businessOrderDTO.getPayDate());
+				nextList1.add(monthDTO);
 			}
 		}
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())) {
@@ -517,13 +546,13 @@ public class IncomeController {
 				List<ExportIncomeRecordExcelDTO> excelList = new ArrayList<>();
 				for (MonthTransactionRecordDTO monthTransactionRecordDTO : selfList) {
 					List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
-					if(CommonUtils.objectIsEmpty(businessOrderDTOS)) logger.info("导表-月度本人订单数据businessOrder数据为空");
-					for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS) {
+					if (CommonUtils.objectIsEmpty(businessOrderDTOS)) logger.info("导表-月度本人订单数据businessOrder数据为空");
+					for (BusinessOrderDTO businessOrderDTO : businessOrderDTOS) {
 						ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO = new ExportIncomeRecordExcelDTO();
 						exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
 						exportIncomeRecordExcelDTO.setUserTypeNow(monthTransactionRecordDTO.getUserTypeNow());
 						exportIncomeRecordExcelDTO.setSysUserId(monthTransactionRecordDTO.getUserId());
-						//exportIncomeRecordExcelDTO.setNickName(monthTransactionRecordDTO.getNickName());
+						exportIncomeRecordExcelDTO.setNickName(monthTransactionRecordDTO.getNickName());
 						exportIncomeRecordExcelDTO.setMobile(monthTransactionRecordDTO.getMobile());
 						exportIncomeRecordExcelDTO.setAmount(monthTransactionRecordDTO.getAmount());
 						exportIncomeRecordExcelDTO.setNextUserId(monthTransactionRecordDTO.getNextUserId());
@@ -541,8 +570,8 @@ public class IncomeController {
 				}
 				for (MonthTransactionRecordDTO monthTransactionRecordDTO : nextList) {
 					List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
-					if(CommonUtils.objectIsEmpty(businessOrderDTOS)) logger.info("导表-月度下级订单数据businessOrder数据为空");
-					for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS) {
+					if (CommonUtils.objectIsEmpty(businessOrderDTOS)) logger.info("导表-月度下级订单数据businessOrder数据为空");
+					for (BusinessOrderDTO businessOrderDTO : businessOrderDTOS) {
 						ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO = new ExportIncomeRecordExcelDTO();
 						exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
 						exportIncomeRecordExcelDTO.setUserTypeNow(monthTransactionRecordDTO.getUserTypeNow());
@@ -570,19 +599,105 @@ public class IncomeController {
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 				return responseDTO;
 			} catch (Exception e) {
-				e.printStackTrace();
+				responseDTO.setResult("月度详情导出Excel异常");
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
+				logger.error("月度详情导出Excel异常");
+				e.printStackTrace();
+			}
+		}
+		/*map.put("selfCount",selfCount);
+		map.put("nextCount",nextCount);
+		map.put("selfList",selfList1);
+		map.put("nextList",nextList1);*/
+		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+
+		//responseDTO.setResponseData(map);
+		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		return responseDTO;
+	}
+	/**
+	 * 查询月度奖励本人消费详情new
+	 * @param pageParamVoDTO 用户id  param self
+	 * @return
+	 */
+	@RequestMapping(value = "selectSelfMonthTransactionRecordByUserId", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<Map<String,Object>> selectSelfMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+		long startTime = System.currentTimeMillis();
+		if(pageParamVoDTO.getRequestData() == null){
+			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
+		}
+		List<MonthTransactionRecordDTO> selfList1 = new ArrayList<>();
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
+		Map<String,Object> map=new HashMap<>(16);
+
+		pageParamVoDTO.getRequestData().setParentRelation("self");
+		int selfCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		List<MonthTransactionRecordDTO> selfList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
+		if(CommonUtils.objectIsEmpty(selfList)) logger.info("月度本人详情数据selfList数据为空");
+		for(MonthTransactionRecordDTO monthTransactionRecordDTO : selfList){
+			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
+			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
+                MonthTransactionRecordDTO monthDTO = new MonthTransactionRecordDTO();
+                BeanUtils.copyProperties(monthTransactionRecordDTO, monthDTO);
+                monthDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+                monthDTO.setOrderAmount(businessOrderDTO.getAmount());
+                monthDTO.setOrderStatus(businessOrderDTO.getStatus());
+                monthDTO.setPayDate(businessOrderDTO.getPayDate());
+				selfList1.add(monthDTO);
 			}
 		}
 		map.put("selfCount",selfCount);
-		map.put("nextCount",nextCount);
 		map.put("selfList",selfList1);
+		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(map);
+		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		return responseDTO;
+	}
+	/**
+	 * 查询月度奖励下级消费详情new
+	 * @param pageParamVoDTO 用户id  param self
+	 * @return
+	 */
+	@RequestMapping(value = "selectNextMonthTransactionRecordByUserId", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<Map<String,Object>> selectNextMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+		long startTime = System.currentTimeMillis();
+		if(pageParamVoDTO.getRequestData() == null){
+			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
+		}
+		List<MonthTransactionRecordDTO> nextList1 = new ArrayList<>();
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
+		Map<String,Object> map=new HashMap<>(16);
+
+		pageParamVoDTO.getRequestData().setParentRelation("other");
+		int nextCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		List<MonthTransactionRecordDTO> nextList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
+		if(CommonUtils.objectIsEmpty(nextList)) logger.info("月度本人详情数据selfList数据为空");
+		for(MonthTransactionRecordDTO monthTransactionRecordDTO : nextList){
+			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
+			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
+				MonthTransactionRecordDTO monthDTO = new MonthTransactionRecordDTO();
+				BeanUtils.copyProperties(monthTransactionRecordDTO, monthDTO);
+				monthDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+				monthDTO.setOrderAmount(businessOrderDTO.getAmount());
+				monthDTO.setOrderStatus(businessOrderDTO.getStatus());
+				monthDTO.setPayDate(businessOrderDTO.getPayDate());
+				nextList1.add(monthDTO);
+			}
+		}
+		map.put("nextCount",nextCount);
 		map.put("nextList",nextList1);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
 		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
+
 	/**
 	 * 根据用户id查询这个月都消费了哪些订单
 	 * @return

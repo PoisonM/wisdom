@@ -290,6 +290,7 @@
         <if test='requestData.checkStatus == "0"'>
             AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
         </if>
+        ORDER BY i.create_date DESC
         <if test='isExportExcel != "Y"'>
             limit #{pageStartNo},#{pageSize}
         </if>
@@ -348,6 +349,7 @@
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
         </if>
+        ORDER BY i.create_date DESC
         <if test='isExportExcel != "Y"'>
             limit #{pageStartNo},#{pageSize}
         </if>

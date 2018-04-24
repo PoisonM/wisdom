@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
@@ -201,14 +202,14 @@ public class IncomeService {
     }
 
     public List<IncomeRecordDTO> getIncomeRecordByPageParam(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-        //logger.info("service===getIncomeRecordByPageParam方法传入的参数={}", pageParamVoDTO);
+
         String orderStatus ="2";
         String orderId ="";
         String orderAmount ="0";
 
         String CheckStatus =pageParamVoDTO.getRequestData().getCheckStatus();
         List<IncomeRecordDTO> incomeRecordDTOS = new ArrayList<>();
-        if(!"".equals(CheckStatus) && CheckStatus != null){
+        if (StringUtils.isNotBlank(CheckStatus)) {
             incomeRecordDTOS = incomeMapper.getIncomeRecordByIncomeManagement(pageParamVoDTO);
         }else {
             incomeRecordDTOS =incomeMapper.getIncomeRecordByPageParam(pageParamVoDTO);
@@ -265,10 +266,12 @@ public class IncomeService {
                     //没有数据,则说明没有被审核,标记为未审核
                     incomeRecordDTO.setSecondCheckStatus("0");
                 }
-                if(!"".equals(incomeRecordDTO.getNickName()) && incomeRecordDTO.getNickName() != null)
+                if(!"".equals(incomeRecordDTO.getNickName()) && incomeRecordDTO.getNickName() != null){
                     incomeRecordDTO.setNickName(URLDecoder.decode(incomeRecordDTO.getNickName(),"utf-8"));
-                if(!"".equals(incomeRecordDTO.getNextUserNickName()) && incomeRecordDTO.getNextUserNickName() != null)
+                }
+                if(!"".equals(incomeRecordDTO.getNextUserNickName()) && incomeRecordDTO.getNextUserNickName() != null){
                     incomeRecordDTO.setNextUserNickName(URLDecoder.decode(incomeRecordDTO.getNextUserNickName(),"utf-8"));
+                }
             } catch (UnsupportedEncodingException e) {
                 logger.info("service -- 根据条件查询佣金奖励getIncomeRecordByPageParam方法转换nickName失败" );
                 e.printStackTrace();
@@ -317,8 +320,12 @@ public class IncomeService {
         List<IncomeRecordDTO> incomeRecordDTOS = incomeMapper.getIncomeRecordByPageParam(pageParamVoDTO);
         for (IncomeRecordDTO incomeRecordDTO: incomeRecordDTOS) {
             try {
-                incomeRecordDTO.setNickName(URLDecoder.decode(incomeRecordDTO.getNickName(),"utf-8"));
-                incomeRecordDTO.setNextUserNickName(URLDecoder.decode(incomeRecordDTO.getNextUserNickName(),"utf-8"));
+                if (StringUtils.isNotBlank(incomeRecordDTO.getNickName())) {
+                    incomeRecordDTO.setNickName(URLDecoder.decode(incomeRecordDTO.getNickName(),"utf-8"));
+                }
+                if (StringUtils.isNotBlank(incomeRecordDTO.getNextUserNickName())) {
+                    incomeRecordDTO.setNextUserNickName(URLDecoder.decode(incomeRecordDTO.getNextUserNickName(),"utf-8"));
+                }
             } catch (UnsupportedEncodingException e) {
                 logger.info("service -- 佣金奖励详情queryIncomeByParameters方法转换nickName失败" );
                 e.printStackTrace();
@@ -359,8 +366,12 @@ public class IncomeService {
                     }
                     monthTransactionRecordDTO.setPayDate(businessOrderDTOS.get(0).getPayDate());
                 }*/
-                monthTransactionRecordDTO.setNickName(URLDecoder.decode(monthTransactionRecordDTO.getNickName(),"utf-8"));
-                monthTransactionRecordDTO.setNextUserNickName(URLDecoder.decode(monthTransactionRecordDTO.getNextUserNickName(),"utf-8"));
+                if (StringUtils.isNotBlank(monthTransactionRecordDTO.getNickName())) {
+                    monthTransactionRecordDTO.setNickName(URLDecoder.decode(monthTransactionRecordDTO.getNickName(),"utf-8"));
+                }
+                if (StringUtils.isNotBlank(monthTransactionRecordDTO.getNextUserNickName())) {
+                    monthTransactionRecordDTO.setNextUserNickName(URLDecoder.decode(monthTransactionRecordDTO.getNextUserNickName(),"utf-8"));
+                }
             } catch (UnsupportedEncodingException e) {
                 logger.info("service -- 月度奖励详情queryMonthRecordByParentRelation方法转换nickName失败" );
                 e.printStackTrace();
