@@ -51,7 +51,7 @@ public class LoginServiceImpl implements LoginService{
     public String userLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception {
 
         //判断validateCode是否还有效
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -121,7 +121,7 @@ public class LoginServiceImpl implements LoginService{
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setMobile(userPhone);
         userInfoDTO.setPassword(code);
-        userInfoDTO.setUserType("manager-1");
+        //userInfoDTO.setUserType("manager-1");
         List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
         if(userInfoDTOList.size()>0)
         {
@@ -139,7 +139,7 @@ public class LoginServiceImpl implements LoginService{
     public String bossMobileLogin(LoginDTO loginDTO, String loginIP, String openId)
     {
         //判断validateCode是否还有效
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -194,7 +194,7 @@ public class LoginServiceImpl implements LoginService{
     @Override
     public String bossWebLogin(LoginDTO loginDTO, String loginIP)
     {
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -242,7 +242,7 @@ public class LoginServiceImpl implements LoginService{
     @Override
     public String ClerkMobileLogin(LoginDTO loginDTO, String loginIP, String openId) {
         //判断validateCode是否还有效
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -297,7 +297,7 @@ public class LoginServiceImpl implements LoginService{
     @Override
     public String ClerkWebLogin(LoginDTO loginDTO, String loginIP) {
 
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -340,31 +340,5 @@ public class LoginServiceImpl implements LoginService{
         String clerkInfoStr = gson.toJson(sysClerkDTO);
         JedisUtils.set(logintoken,clerkInfoStr, ConfigConstant.logintokenPeriod);
         return logintoken;
-    }
-
-    private String processValidateCode(LoginDTO loginDTO)
-    {
-        //判断validateCode是否还有效
-        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()))
-                .addCriteria(Criteria.where("code").is(loginDTO.getCode()));
-        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
-        List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
-        if(data==null)
-        {
-            return StatusConstant.VALIDATECODE_ERROR;
-        }
-        else
-        {
-            ValidateCodeDTO validateCodeDTO = data.get(0);
-            Date dateStr = validateCodeDTO.getCreateDate();
-            long period =  (new Date()).getTime() - dateStr.getTime();
-
-            //验证码过了5分钟了
-            if(period>300000)
-            {
-                return  StatusConstant.VALIDATECODE_ERROR;
-            }
-        }
-        return StatusConstant.SUCCESS;
     }
 }

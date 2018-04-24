@@ -12,10 +12,7 @@ import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.RedisLock;
-import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.common.util.*;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,137 +47,100 @@ public class WithDrawController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO withDrawMoneyFromAccount(@RequestParam float moneyAmount,
-										 @RequestParam String identifyNumber,
-										 @RequestParam String bankCardNumber,
-										 @RequestParam String userName,
-										 @RequestParam String bankCardAddress,
+	ResponseDTO withDrawMoneyFromAccount(@RequestBody WithDrawRecordDTO withDrawRecordDTO ,
 										 HttpServletRequest request,
 										 HttpSession session) {
 		ResponseDTO<AccountDTO> result = new ResponseDTO<>();
 
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 
-		if(!(identifyNumber==null||identifyNumber.equals("")))
-		{
-			userInfoDTO.setIdentifyNumber(identifyNumber);
-			userServiceClient.updateUserInfo(userInfoDTO);
-		}
-		else
-		{
-			result.setResult(StatusConstant.FAILURE);
-			result.setErrorInfo("noIdentify");
-			return  result;
-		}
+		RedisLock redisLock = new RedisLock("withDrawMoney"+userInfoDTO.getId());
 
-		try{
+		try
+		{
+			redisLock.lock();
+
+			//判断手机号和验证码是否正确
+			LoginDTO loginDTO = new LoginDTO();
+			loginDTO.setUserPhone(withDrawRecordDTO.getMobile());
+			loginDTO.setCode(withDrawRecordDTO.getValidCode());
+			if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+			{
+				result.setResult(StatusConstant.FAILURE);
+				result.setErrorInfo("手机验证码错误");
+				return result;
+			}
+
+			//判断用户的提现次数
+			WithDrawRecordDTO withDrawRecord = new WithDrawRecordDTO();
+			withDrawRecord.setSysUserId(withDrawRecordDTO.getSysUserId());
+			List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawService.getWithdrawRecordInfo(withDrawRecord);
+
+			int withDrawNum = 0;
+			for(WithDrawRecordDTO drawRecordDTO:withDrawRecordDTOList)
+			{
+				if(DateUtils.formatDate(new Date()).equals(DateUtils.formatDate(drawRecordDTO.getCreateDate())))
+				{
+					withDrawNum++;
+				}
+			}
+
+			if(withDrawNum> ConfigConstant.MAX_WITHDRAW_NUM)
+			{
+				result.setResult(StatusConstant.FAILURE);
+				result.setErrorInfo("超出当日最大提现次数");
+				return result;
+			}
+
+
+			RealNameInfoDTO realNameInfoDTO = userServiceClient.verifyUserIdentify(withDrawRecordDTO.getIdentifyNumber(),withDrawRecordDTO.getUserName());
+			//判断提现的身份证是否合法
+			if (RealNameResultEnum.MATCHING.getCode().equals(realNameInfoDTO.getCode()))
+			{
+				userInfoDTO.setIdentifyNumber(withDrawRecordDTO.getIdentifyNumber());
+				userServiceClient.updateUserInfo(userInfoDTO);
+			}
+			else
+			{
+				result.setResult(StatusConstant.FAILURE);
+				result.setErrorInfo("身份证和姓名不匹配");
+				return  result;
+			}
+
 			String openid = WeixinUtil.getUserOpenId(session,request);
-			UserBankCardInfoDTO userBankCardInfoDTO = new UserBankCardInfoDTO();
-			userBankCardInfoDTO.setSysUserId(userInfoDTO.getId());
-			userBankCardInfoDTO.setUserName(userName);
-			userBankCardInfoDTO.setBankCardNumber(bankCardNumber);
-			userBankCardInfoDTO.setBankCardAddress(bankCardAddress);
-			withDrawService.withDrawMoneyFromAccount(moneyAmount,request,openid,userBankCardInfoDTO);
-			result.setResult(StatusConstant.SUCCESS);
-		}catch (Exception e)
+			if(withDrawRecordDTO.getMoneyAmount()>=ConfigConstant.MAX_WITHDRAW_AMOUNT)
+			{
+				result.setErrorInfo("提现金额超出最大额度");
+				result.setResult(StatusConstant.FAILURE);
+			}
+			else if(withDrawRecordDTO.getMoneyAmount()<ConfigConstant.MIN_WITHDRAW_AMOUNT)
+			{
+				result.setErrorInfo("提现金额小于最低额度");
+				result.setResult(StatusConstant.FAILURE);
+			}
+			else if(withDrawRecordDTO.getMoneyAmount()>=ConfigConstant.CHECK_WITHDRAW_AMOUNT)
+			{
+				withDrawService.withDrawMoneyFromAccount(withDrawRecordDTO.getMoneyAmount(),request,openid,true);
+				result.setResult(StatusConstant.SUCCESS);
+			}
+			else
+			{
+				withDrawService.withDrawMoneyFromAccount(withDrawRecordDTO.getMoneyAmount(),request,openid,false);
+				result.setResult(StatusConstant.SUCCESS);
+			}
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
+			result.setErrorInfo("提现失败");
 			result.setResult(StatusConstant.FAILURE);
 		}
+		finally {
+			redisLock.unlock();
+		}
+
 		return result;
 	}
-
-
-//	/**
-//	 * 用户进行提现操作
-//	 */
-//	@RequestMapping(value = "withDrawMoneyFromAccount", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
-//	public
-//	@ResponseBody
-//	ResponseDTO withDrawMoneyFromAccount(@RequestBody WithDrawRecordDTO withDrawRecordDTO ,
-//										 HttpServletRequest request,
-//										 HttpSession session) {
-//		ResponseDTO<AccountDTO> result = new ResponseDTO<>();
-//
-//		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-//
-//		RedisLock redisLock = new RedisLock("withDrawMoney"+userInfoDTO.getId());
-//
-//		try
-//		{
-//			redisLock.lock();
-//
-//			//判断用户的提现次数
-//			WithDrawRecordDTO withDrawRecord = new WithDrawRecordDTO();
-//			withDrawRecord.setSysUserId(withDrawRecordDTO.getSysUserId());
-//			List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawService.getWithdrawRecordInfo(withDrawRecord);
-//
-//			int withDrawNum = 0;
-//			for(WithDrawRecordDTO drawRecordDTO:withDrawRecordDTOList)
-//			{
-//				if(DateUtils.formatDate(new Date()).equals(DateUtils.formatDate(drawRecordDTO.getCreateDate())))
-//				{
-//					withDrawNum++;
-//				}
-//			}
-//
-//			if(withDrawNum> ConfigConstant.MAX_WITHDRAW_NUM)
-//			{
-//				result.setResult(StatusConstant.FAILURE);
-//				result.setErrorInfo("超出当日最大提现次数");
-//				return result;
-//			}
-//
-//
-//			RealNameInfoDTO realNameInfoDTO = userServiceClient.verifyUserIdentify(withDrawRecordDTO.getIdentifyNumber(),withDrawRecordDTO.getUserName());
-//			//判断提现的身份证是否合法
-//			if (RealNameResultEnum.MATCHING.getCode().equals(realNameInfoDTO.getCode()))
-//			{
-//				userInfoDTO.setIdentifyNumber(withDrawRecordDTO.getIdentifyNumber());
-//				userServiceClient.updateUserInfo(userInfoDTO);
-//			}
-//			else
-//			{
-//				result.setResult(StatusConstant.FAILURE);
-//				result.setErrorInfo("身份证和姓名不匹配");
-//				return  result;
-//			}
-//
-//			String openid = WeixinUtil.getUserOpenId(session,request);
-//			if(withDrawRecordDTO.getMoneyAmount()>=ConfigConstant.MAX_WITHDRAW_AMOUNT)
-//			{
-//				result.setErrorInfo("提现金额超出最大额度");
-//				result.setResult(StatusConstant.FAILURE);
-//			}
-//			else if(withDrawRecordDTO.getMoneyAmount()<ConfigConstant.MIN_WITHDRAW_AMOUNT)
-//			{
-//				result.setErrorInfo("提现金额小于最低额度");
-//				result.setResult(StatusConstant.FAILURE);
-//			}
-//			else if(withDrawRecordDTO.getMoneyAmount()>=ConfigConstant.CHECK_WITHDRAW_AMOUNT)
-//			{
-//				withDrawService.withDrawMoneyFromAccount(withDrawRecordDTO.getMoneyAmount(),request,openid,true);
-//				result.setResult(StatusConstant.SUCCESS);
-//			}
-//			else
-//			{
-//				withDrawService.withDrawMoneyFromAccount(withDrawRecordDTO.getMoneyAmount(),request,openid,false);
-//				result.setResult(StatusConstant.SUCCESS);
-//			}
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//			result.setErrorInfo("提现失败");
-//			result.setResult(StatusConstant.FAILURE);
-//		}
-//		finally {
-//			redisLock.unlock();
-//		}
-//
-//		return result;
-//	}
 
 	/**
 	 * 查询所有提现数据

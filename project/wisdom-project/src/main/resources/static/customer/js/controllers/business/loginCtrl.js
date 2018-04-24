@@ -27,6 +27,7 @@ angular.module('controllers',[]).controller('loginCtrl',
                         $scope.param.validateCodeButtonStatus = true;
                     }
                 },1000);
+
                 GetUserValidateCode.get({mobile:$scope.param.userPhone},function(data){
                     if(data.result == Global.FAILURE)
                     {

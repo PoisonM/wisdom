@@ -1,6 +1,8 @@
 angular.module('controllers',[]).controller('withDrawCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','BusinessUtil','WithDrawMoneyFromAccount','$ionicPopup',
-        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,BusinessUtil,WithDrawMoneyFromAccount,$ionicPopup) {
+    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','BusinessUtil',
+        'WithDrawMoneyFromAccount','$ionicPopup','$interval','GetUserValidateCode',
+        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,BusinessUtil,
+                  WithDrawMoneyFromAccount,$ionicPopup,$interval,GetUserValidateCode) {
 
             $rootScope.title = "提现";
 
@@ -10,9 +12,9 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                     withDrawAmount:"",
                     userName:"",
                     userIdentifyNumber:"",
-                    bankCardNumber:"",
-                    bankAddress:"",
                     withDrawSwitch:"off",
+                    validateCode:"",
+                    validateCodeButtonStatus:true
                 }
 
                 GetUserAccountInfo.get(function(data){
@@ -22,16 +24,35 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                     {
                         $scope.param.userIdentifyNumber = $scope.param.accountInfo.identifyNumber;
                     }
-                    if($scope.param.accountInfo.bankCardInfo!=undefined)
-                    {
-                        $scope.param.userName = $scope.param.accountInfo.bankCardInfo.userName;
-                        $scope.param.bankCardNumber = $scope.param.accountInfo.bankCardInfo.bankCardNumber;
-                    }
                 })
             });
 
             $scope.withDrawAll = function(){
                 $scope.param.withDrawAmount = ($scope.param.accountInfo.balance - $scope.param.accountInfo.balanceDeny).toFixed(0)-1;
+            }
+
+            $scope.getValidateCode = function(){
+                $scope.param.validateCodeButtonStatus = false;
+                $scope.param.timeCount = 60;
+
+                //每隔一秒执行
+                var timer= $interval(function(){
+                    $scope.param.timeCount--;
+                    if($scope.param.timeCount<0){
+                        $interval.cancel(timer);
+                        $scope.param.validateCodeButtonStatus = true;
+                    }
+                },1000);
+
+                GetUserValidateCode.get({mobile:$scope.param.userPhone},function(data){
+                    if(data.result == Global.FAILURE)
+                    {
+                        var alertPopup = $ionicPopup.alert({
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">验证码获取失败</span>',
+                            okText:'确定'
+                        });
+                    }
+                })
             }
 
             $scope.confirmWithDraw = function(){
@@ -70,9 +91,9 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                         {
                             WithDrawMoneyFromAccount.get({moneyAmount:$scope.param.withDrawAmount,
                                 identifyNumber:$scope.param.userIdentifyNumber,
-                                bankCardNumber:$scope.param.bankCardNumber,
+                                mobile:$scope.param.userPhone,
                                 userName:$scope.param.userName,
-                                bankCardAddress:$scope.param.bankAddress},function(data){
+                                validCode:$scope.param.validateCode},function(data){
                                 BusinessUtil.checkResponseData(data,'withDraw');
                                 if(data.result==Global.SUCCESS)
                                 {
