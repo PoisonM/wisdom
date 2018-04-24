@@ -3,6 +3,7 @@ package com.wisdom.business.service.transaction;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.level.UserTypeMapper;
 import com.wisdom.business.mapper.transaction.TransactionMapper;
+import com.wisdom.business.mqsender.BusinessMessageQueueSender;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
 import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
@@ -59,6 +60,9 @@ public class PayFunction {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private BusinessMessageQueueSender businessMessageQueueSender;
+
     @Transactional(rollbackFor = Exception.class)
     public void processPayStatus(List<PayRecordDTO> payRecordDTOList) {
         try
@@ -94,26 +98,7 @@ public class PayFunction {
                 userId = businessOrderDTO.getSysUserId();
 
                 //若购买的是跨境商品，告知店主，用户购买的情况
-                Query query = new Query(Criteria.where("order").is(businessOrderDTO.getBusinessOrderId()));
-                SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO = mongoTemplate.findOne(query,SpecialShopBusinessOrderDTO.class,"specialShopBusinessOrder");
-                if(specialShopBusinessOrderDTO!=null)
-                {
-                    String shopId = specialShopBusinessOrderDTO.getShopId();
-                    query = new Query(Criteria.where("shopId").is(shopId));
-                    SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
-                    UserInfoDTO userInfoDTO = new UserInfoDTO();
-                    userInfoDTO.setMobile(specialShopInfoDTO.getShopBossMobile());
-                    List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-                    if(userInfoDTOList.size()>0)
-                    {
-                        WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(token,payRecordDTO.getAmount()+"元",businessOrderDTO,userInfoDTOList.get(0).getUserOpenid(),specialShopInfoDTO);
-                    }
-                    else
-                    {
-                        //直接给店主发送短信
-                        SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(),payRecordDTO.getAmount()+"元",businessOrderDTO,specialShopInfoDTO);
-                    }
-                }
+                businessMessageQueueSender.sendNotifySpecialShopBossCustomerTransaction(businessOrderDTO);
             }
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();

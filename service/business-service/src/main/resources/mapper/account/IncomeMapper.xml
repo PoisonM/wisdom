@@ -69,8 +69,6 @@
         <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
     </resultMap>
 
-
-
     <sql id="Base_incomeRecord_list">
         i.id,i.sys_user_id,i.amount,i.update_date,i.create_date,i.income_type,i.transaction_id,i.status
     </sql>
