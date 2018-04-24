@@ -251,50 +251,6 @@ public class IncomeController {
 		if (CommonUtils.objectIsEmpty(incomeRecordDTOS)) {
 			logger.info("佣金数据incomeRecord数据为空");
 		}
-
-		if("Y".equals(pageParamVoDTO.getIsExportExcel())) {
-			try {
-				String[] orderHeaders = {"用户id","用户名","用户手机号","用户获益时等级","用户现在等级","佣金金额",
-						"下级用户id","下级用户名","下级用户手机号","下级用户等级","下级用户现在等级",
-						"交易id","支付时间","订单id","订单金额","订单状态"};
-				ExportExcel<ExportIncomeRecordExcelDTO> ex = new ExportExcel<>();
-				List<ExportIncomeRecordExcelDTO> excelList = new ArrayList<>();
-				for (IncomeRecordDTO incomeRecordDTO : incomeRecordDTOS) {
-					//根据TransactionId查询订单
-					List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(incomeRecordDTO.getTransactionId());
-					if(CommonUtils.objectIsEmpty(businessOrderDTOS)) logger.info("导表-佣金订单数据businessOrder数据为空");
-					for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
-						ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO = new ExportIncomeRecordExcelDTO();
-						exportIncomeRecordExcelDTO.setUserType(incomeRecordDTO.getUserType());
-						exportIncomeRecordExcelDTO.setUserTypeNow(incomeRecordDTO.getUserTypeNow());
-						exportIncomeRecordExcelDTO.setSysUserId(incomeRecordDTO.getSysUserId());
-						exportIncomeRecordExcelDTO.setNickName(incomeRecordDTO.getNickName());
-						exportIncomeRecordExcelDTO.setMobile(incomeRecordDTO.getMobile());
-						exportIncomeRecordExcelDTO.setAmount(incomeRecordDTO.getAmount());
-						exportIncomeRecordExcelDTO.setNextUserId(incomeRecordDTO.getNextUserId());
-						exportIncomeRecordExcelDTO.setNextUserMobile(incomeRecordDTO.getNextUserMobile());
-						exportIncomeRecordExcelDTO.setNextUserNickName(incomeRecordDTO.getNextUserNickName());
-						exportIncomeRecordExcelDTO.setNextUserType(incomeRecordDTO.getNextUserType());
-						exportIncomeRecordExcelDTO.setNextUserTypeNow(incomeRecordDTO.getNextUserTypeNow());
-						exportIncomeRecordExcelDTO.setOrderAmount(businessOrderDTO.getAmount());
-						exportIncomeRecordExcelDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
-						exportIncomeRecordExcelDTO.setOrderStatus(businessOrderDTO.getStatus());
-						exportIncomeRecordExcelDTO.setPayDate(DateUtils.formatDate(businessOrderDTO.getPayDate(),"yyyy-MM-dd HH:mm:ss"));
-						exportIncomeRecordExcelDTO.setTransactionId(incomeRecordDTO.getTransactionId());
-						excelList.add(exportIncomeRecordExcelDTO);
-					}
-				}
-				ByteArrayInputStream in = ex.getWorkbookIn("佣金奖励EXCEL文档", orderHeaders, excelList);
-				String url = CommonUtils.orderExcelToOSS(in);
-				if("".equals(url) && url == null) logger.info("佣金奖励Excel 获取OSSUrl为空");
-				responseDTO.setResult(url);
-				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-				return responseDTO;
-			} catch (Exception e) {
-				e.printStackTrace();
-				responseDTO.setErrorInfo(StatusConstant.FAILURE);
-			}
-		}
 		if (StringUtils.isNotBlank(checkStatus)) {
 			count = incomeService.getIncomeRecordCountByIncomeManagement(pageParamVoDTO);
 		}else {
