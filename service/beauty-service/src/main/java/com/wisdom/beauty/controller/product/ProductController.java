@@ -3,7 +3,6 @@ package com.wisdom.beauty.controller.product;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +41,7 @@ public class ProductController {
      * @return
      */
     @RequestMapping(value = "getUserProductList", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
+//    @LoginRequired
     public
     @ResponseBody
     ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId,

@@ -3,7 +3,6 @@ package com.wisdom.beauty.controller.card;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.core.service.ShopCardService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -41,7 +40,7 @@ public class CardController {
 	 * @return
 	 */
 	@RequestMapping(value = "getUserRechargeCardList", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<List<ShopUserRechargeCardDTO>> getUserRechargeCardList(@RequestParam String sysUserId,
@@ -60,7 +59,7 @@ public class CardController {
 		shopUserRechargeCardDTO.setSysUserId(sysUserId);
 		shopUserRechargeCardDTO.setSysShopId(sysShopId);
 		List<ShopUserRechargeCardDTO> userRechargeCardList = cardService.getUserRechargeCardList(shopUserRechargeCardDTO);
-		if (CommonUtils.objectIsNotEmpty(userRechargeCardList)) {
+		if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
 			logger.debug("查询某个用户的充值卡列表信息查询结果为空，参数 {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
 			responseDTO.setResult(StatusConstant.SUCCESS);
 			responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());

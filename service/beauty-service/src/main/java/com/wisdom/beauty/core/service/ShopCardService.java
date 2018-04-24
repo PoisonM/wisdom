@@ -14,7 +14,7 @@ import java.util.List;
 public interface ShopCardService {
 
     /**
-     * 查询某个用户预约的项目列表
+     * 查询某个用户的充值卡列表
      *
      * @param shopUserRechargeCardDTO
      * @return
