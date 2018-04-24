@@ -53,7 +53,7 @@ public class OrderController {
     @ResponseBody
     ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String shopUserArchivesId) {
 
-        long startTime = System.currentTimeMillis();
+        long currentTimeMillis = System.currentTimeMillis();
         logger.info("查询用户最近一次订单信息传入参数={}", "shopUserArchivesId = [" + shopUserArchivesId + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
@@ -64,6 +64,7 @@ public class OrderController {
 
         responseDTO.setResponseData(shopUserOrderDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

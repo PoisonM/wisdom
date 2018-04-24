@@ -39,7 +39,7 @@ public class ShopCardServiceImpl implements ShopCardService {
         logger.info("获取用户的充值卡信息传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
 
         if (shopUserRechargeCardDTO == null) {
-            logger.debug("获取用户的充值卡信息参数为空， {}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+            logger.debug("获取用户的充值卡信息参数为空");
             return null;
         }
 

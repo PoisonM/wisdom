@@ -102,7 +102,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     public int updateUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
 
         if (shopUserProjectRelationDTO == null) {
-            logger.info("更新用户与项目的关系传入参数={}", "shopUserProjectRelationDTO = [" + shopUserProjectRelationDTO + "]");
+            logger.info("更新用户与项目的关系传入参数为空");
             return 0;
         }
 
