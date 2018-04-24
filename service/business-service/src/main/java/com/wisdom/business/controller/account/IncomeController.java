@@ -387,7 +387,7 @@ public class IncomeController {
 				if (CommonUtils.objectIsNotEmpty(excelList)) {
 					for (ExportIncomeRecordExcelDTO excelDTO : excelList) {
 						if (StringUtils.isBlank(helperMap.get(excelDTO.getTransactionId()))) {
-							helperMap.put(excelDTO.getTransactionId(), String.valueOf(0));
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(1));
 						} else {
 							int count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) + 1;
 							helperMap.put(excelDTO.getTransactionId(), String.valueOf(count));
