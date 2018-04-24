@@ -2,5 +2,5 @@
 .selectSingle {background: #ffffff;}
 .selectSingle  ul li{display: flex;flex-wrap: wrap;justify-content: space-between;border-bottom: 1px solid #e5e5e5;height: 0.625rem;line-height: 0.625rem;font-size: 0.234rem;
     color: #333333;}
-.selectSingle .wz{color: #ff6666;font-size:0.1875rem  ; height:0.46875rem ; border-bottom: 1px solid #e5e5e5;line-height:0.46875rem;padding-left:5.194rem;}
+.selectSingle .wz{color: #ff6666;font-size:0.1875rem  ; height:0.46875rem ; border-bottom: 1px solid #e5e5e5;line-height:0.46875rem;}
 
