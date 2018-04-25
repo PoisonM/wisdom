@@ -469,28 +469,7 @@ public class BusinessRunTimeService {
             List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
             if(userBusinessTypeDTOS.size()>0)
             {
-                break;
-            }
-
-            //根据transactionId查询orderId，根据orderId查询business_order
-            PayRecordDTO payRecordDTO = new PayRecordDTO();
-            payRecordDTO.setTransactionId(incomeRecord.getTransactionId());
-            List<PayRecordDTO> payRecordDTOList =  businessServiceClient.getUserPayRecordList(payRecordDTO);
-
-            if(payRecordDTOList.size()==0)
-            {
-                break;
-            }
-
-            //判断某笔交易下订单是否都已经收货
-            for(PayRecordDTO payRecord : payRecordDTOList)
-            {
-                BusinessOrderDTO businessOrderDTO = businessServiceClient.getBusinessOrderByOrderId(payRecord.getOrderId());
-                if(!businessOrderDTO.getStatus().equals("2")&&!businessOrderDTO.getStatus().equals("5"))//5代表已退货
-                {
-                    businessFlag = false;
-                    break;
-                }
+                continue;
             }
 
             //判断此记录，是否财务和运营人员，都已经审核通过
