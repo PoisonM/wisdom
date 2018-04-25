@@ -154,12 +154,12 @@ public class IncomeController {
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> checkIncomeRecordManagement(@RequestParam String incomeRecordId,String status) {
 		long startTime = System.currentTimeMillis();
-		logger.info("佣金奖励审核传入参数={}", "incomeRecordId = [" + incomeRecordId + "],status = [" + status + "]");
+		//logger.info("佣金奖励审核传入参数={}", "incomeRecordId = [" + incomeRecordId + "],status = [" + status + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if("".equals(incomeRecordId) || incomeRecordId == null){
 			responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			responseDTO.setResult("incomeRecordId为空");
-			logger.info("佣金审核接口传入参数incomeRecordId为空", "incomeRecordId = [" + incomeRecordId + "]");
+			logger.info("佣金审核接口传入参数incomeRecordId为空");
 		}
 		//获取登录人信息
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
@@ -182,7 +182,6 @@ public class IncomeController {
 //		incomeRecordManagementDTO1.setSysUserId(userInfoDTO.getId());
 		List<IncomeRecordManagementDTO> incomeRecordManagementDTOS = incomeRecordManagementService.getIncomeRecordManagement(incomeRecordManagementDTO1);
 
-
 		//如已有审核记录
 		if(incomeRecordManagementDTOS.size()>0){
 			//已有的审核记录状态与本次相同
@@ -191,7 +190,7 @@ public class IncomeController {
 			return responseDTO;
 		}
 		//查询此条数据有没有被审核
-		IncomeRecordManagementDTO incomeRecordManagementDTO2 =new IncomeRecordManagementDTO();
+		/*IncomeRecordManagementDTO incomeRecordManagementDTO2 =new IncomeRecordManagementDTO();
 		incomeRecordManagementDTO2.setIncomeRecordId(incomeRecordId);
 		List<IncomeRecordManagementDTO> incomeRecordManagementDTOS2 = incomeRecordManagementService.getIncomeRecordManagement(incomeRecordManagementDTO2);
 
@@ -204,7 +203,7 @@ public class IncomeController {
 				incomeService.updateIncomeRecord(incomeRecordDTO);
 			}
 
-		}
+		}*/
 		//第一次审核,创建审核记录,向incomeRecordManagement表中插入数据
 		IncomeRecordManagementDTO incomeRecordManagementDTO = new IncomeRecordManagementDTO();
 		incomeRecordManagementDTO.setId(UUIDUtil.getUUID());
@@ -382,6 +381,28 @@ public class IncomeController {
 						exportIncomeRecordExcelDTO.setTransactionId(monthTransactionRecordDTO.getTransactionId());
 						excelList.add(exportIncomeRecordExcelDTO);
 				}
+
+				HashMap<String, String> helperMap = new HashMap<>(16);
+				if (CommonUtils.objectIsNotEmpty(excelList)) {
+					for (ExportIncomeRecordExcelDTO excelDTO : excelList) {
+						if (StringUtils.isBlank(helperMap.get(excelDTO.getTransactionId()))) {
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(1));
+						} else {
+							int count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) + 1;
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(count));
+						}
+					}
+
+					for (ExportIncomeRecordExcelDTO excelDTO : excelList) {
+						Integer count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId()));
+						if (count > 1) {
+							excelDTO.setAmount(0);
+							int number = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) - 1;
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(number));
+						}
+					}
+				}
+
 
 				ByteArrayInputStream in = ex.getWorkbookIn("账单EXCEL文档", orderHeaders, excelList);
 				String url = CommonUtils.orderExcelToOSS(in);

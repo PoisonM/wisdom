@@ -107,7 +107,7 @@ public class IncomeManagementController {
 				incomeRecord.setUserType(userType);
 				incomeRecord.setMobile(userInfoDTO.getMobile());
 				incomeRecord.setNickName(userInfoDTO.getNickname());
-				incomeRecord.setNextUserIdentifyNumber(userInfoDTO.getIdentifyNumber());
+				incomeRecord.setIdentifyNumber(userInfoDTO.getIdentifyNumber());
 
 				//通过transactionID获取消费者的ID
 				String transactionId = incomeRecord.getTransactionId();
@@ -145,6 +145,24 @@ public class IncomeManagementController {
 					incomeRecord.setParentRelation("A1B1");
 				}
 
+				incomeService.updateIncomeInfo(incomeRecord);
+			}
+		}
+
+		IncomeRecordDTO incomeRecordDTO1 = new IncomeRecordDTO();
+		incomeRecordDTO1.setIncomeType("month");
+		List<IncomeRecordDTO> incomeRecordDTOList1 = incomeService.getUserIncomeRecordInfo(incomeRecordDTO1);
+
+		for(IncomeRecordDTO incomeRecord:incomeRecordDTOList1) {
+			if (incomeRecord.getUserType().equals("")) {
+				String userType = getUserType(incomeRecord.getCreateDate(),incomeRecord.getSysUserId());
+
+				UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecord.getSysUserId());
+
+				incomeRecord.setUserType(userType);
+				incomeRecord.setMobile(userInfoDTO.getMobile());
+				incomeRecord.setNickName(userInfoDTO.getNickname());
+				incomeRecord.setIdentifyNumber(userInfoDTO.getIdentifyNumber());
 				incomeService.updateIncomeInfo(incomeRecord);
 			}
 		}
