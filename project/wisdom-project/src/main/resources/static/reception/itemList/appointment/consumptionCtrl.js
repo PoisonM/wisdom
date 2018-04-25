@@ -12,7 +12,7 @@ function consumption($scope,ngDialog){
                         $scope.closeThisDialog();
                     };
                 }],
-                className: 'selectContent ngdialog-theme-custom'
+                className: 'ngdialog-theme-default ngdialog-theme-custom'
             });
         }else if (type=="selectTreatmentCard"){
             ngDialog.open({
