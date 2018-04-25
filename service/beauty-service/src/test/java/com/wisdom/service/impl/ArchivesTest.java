@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.common.util.IdGen;
+import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,7 @@ public class ArchivesTest {
     @Before
     public void setupMockMvc() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        SpringUtil.setApplicationContext(context);
     }
 
     /**

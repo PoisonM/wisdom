@@ -1,7 +1,10 @@
 package com.wisdom.beauty.core.redis;
 
+import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
+import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
@@ -9,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,10 +28,18 @@ public class RedisUtils {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Resource
+    private ShopProjectService shopProjectService;
+
     /**
      * 预约详情缓存时常，30天
      */
     private int appointCacheSeconds = 1296000;
+
+    /**
+     * 预约详情缓存时常，10天
+     */
+    private int projectInfoCacheSeconds = 10 * 24 * 60 * 60;
 
     /**
      * 保存预约详情
@@ -89,10 +102,35 @@ public class RedisUtils {
     }
 
     /**
-     * 查询用户的项目信息
+     * 根据项目主键查询项目信息
      */
     public ShopProjectInfoDTO getShopProjectInfoFromRedis(String projectInfoId) {
-        return (ShopProjectInfoDTO) JedisUtils.getObject(projectInfoId);
+        ShopProjectInfoDTO shopProjectInfoDTO = (ShopProjectInfoDTO) JedisUtils.getObject(projectInfoId);
+
+        if (null == shopProjectInfoDTO) {
+            shopProjectInfoDTO = new ShopProjectInfoDTO();
+            shopProjectInfoDTO.setId(projectInfoId);
+            List<ShopProjectInfoDTO> projectList = shopProjectService.getShopCourseProjectList(shopProjectInfoDTO);
+            if (CommonUtils.objectIsEmpty(projectList)) {
+                logger.error("根据项目主键查询项目信息为空");
+                throw new ServiceException("根据项目主键查询项目信息为空");
+            }
+            shopProjectInfoDTO = projectList.get(0);
+            //保存到redis
+            saveShopProjectInfoToRedis(shopProjectInfoDTO);
+            return shopProjectInfoDTO;
+        }
+
+        return shopProjectInfoDTO;
+    }
+
+    /**
+     * 缓存项目信息
+     *
+     * @param shopProjectInfoDTO
+     */
+    public void saveShopProjectInfoToRedis(ShopProjectInfoDTO shopProjectInfoDTO) {
+        JedisUtils.setObject(shopProjectInfoDTO.getId(), shopProjectInfoDTO, projectInfoCacheSeconds);
     }
 
 }

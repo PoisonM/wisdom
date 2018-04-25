@@ -64,6 +64,7 @@ public class ArchivesTest {
     @Before
     public void setupMockMvc() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        SpringUtil.setApplicationContext(context);
     }
 
     @Test

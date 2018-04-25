@@ -11,6 +11,7 @@ import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.IdGen;
+import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +49,7 @@ public class ConsumeTest {
     @Before
     public void setupMockMvc() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        SpringUtil.setApplicationContext(context);
     }
 
     /**
