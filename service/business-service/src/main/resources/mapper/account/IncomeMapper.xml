@@ -370,6 +370,7 @@
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
         </if>
+        GROUP BY i.id
         ORDER BY i.create_date DESC
         <if test='isExportExcel != "Y"'>
             limit #{pageStartNo},#{pageSize}
