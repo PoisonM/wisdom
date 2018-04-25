@@ -28,6 +28,7 @@ public interface UserInfoService {
     List<UserInfoDTO> queryParentUserById(String parentUserId);
 
     UserInfoDTO getUserInfoFromRedis();
+
     //多个sysUserId查询UserInfoDTO信息
     List<UserInfoDTO> getUserInfoFromUserId(List<String> sysUserIds,String searchFile);
 }

@@ -63,5 +63,16 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
     }
     $scope.selectSty = function (type) {
         $scope.param.top_bottomSelect = type
+        if(type == "yuyue"){
+            $state.go("pad-web.dayAppointment")
+        }else if(type == "shouyin"){
+            $state.go("pad-web.left_nav.addRecord")
+        }else if(type == "kaoqin"){
+            $state.go("pad-web.attendance")
+        }else if(type =="jiamubiao"){
+            $state.go("pad-web.left_nav.project")
+        }else if(type =="wo"){
+            $state.go("pad-web.userInfo.unclaimedAll")
+        }
     }
 })

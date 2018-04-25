@@ -6,10 +6,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.JedisUtils;
-import com.wisdom.common.util.RedisLock;
+import com.wisdom.common.util.*;
 import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.UserInfoService;
@@ -118,6 +115,10 @@ public class UserInfoServiceImpl implements UserInfoService{
     }
 
     public UserInfoDTO getUserInfoFromUserId(String sysUserId) {
+        UserInfoDTO dto = new UserInfoDTO();
+        if (StringUtils.isBlank(sysUserId)) {
+            return dto;
+        }
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId(sysUserId);
         List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfo(userInfoDTO);
@@ -126,7 +127,7 @@ public class UserInfoServiceImpl implements UserInfoService{
             return userInfoDTOS.get(0);
         }else
         {
-            return new UserInfoDTO();
+            return dto;
         }
     }
     //根据parentId查询上级信息

@@ -61,7 +61,7 @@ function detailsReservation($scope,ngDialog){
                      $scope.closeThisDialog();
                 };
             }],
-            className: 'modifyingAppointment ngdialog-theme-custom'
+            className: 'ngdialog-theme-default ngdialog-theme-custom'
         });
 
     }

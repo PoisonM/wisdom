@@ -5,7 +5,6 @@
     <resultMap id="UserIncomeInfoResultMap" type="com.wisdom.common.dto.account.IncomeRecordDTO" >
         <id column="id" property="id" jdbcType="VARCHAR" />
         <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
-        <result column="user_type" property="userType" jdbcType="VARCHAR" />
         <result column="next_user_id" property="nextUserId" jdbcType="VARCHAR" />
         <result column="next_user_type" property="nextUserType" jdbcType="VARCHAR" />
         <result column="amount" property="amount" jdbcType="REAL" />
@@ -25,22 +24,49 @@
         <result column="nickname" property="nickName" jdbcType="VARCHAR"/>
         <result column="user_type" property="userType" jdbcType="VARCHAR"/>
         <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
-        <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR"/>
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="exportExcelIncomeRecordResultMap" type="com.wisdom.common.dto.system.ExportIncomeRecordExcelDTO" >
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="next_user_id" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="next_user_type" property="nextUserType" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="REAL" />
+        <result column="user_name" property="nickName" jdbcType="VARCHAR" />
+        <result column="next_user_name" property="nextUserNickName" jdbcType="VARCHAR" />
+        <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+        <result column="user_mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="next_user_mobile" property="nextUserMobile" jdbcType="VARCHAR" />
+        <result column="nickname" property="nickName" jdbcType="VARCHAR"/>
+        <result column="user_type" property="userType" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="pay_date" property="payDate" jdbcType="TIMESTAMP"/>
+        <result column="userTypeNow" property="userTypeNow" jdbcType="TIMESTAMP"/>
+        <result column="nextUserTypeNow" property="nextUserTypeNow" jdbcType="TIMESTAMP"/>
+        <result column="orderAmount" property="orderAmount" jdbcType="TIMESTAMP"/>
+        <result column="orderStatus" property="orderStatus" jdbcType="TIMESTAMP"/>
+        <result column="order_id" property="orderId" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
     <resultMap id="MonthTransactionRecordMap" type="com.wisdom.common.dto.transaction.MonthTransactionRecordDTO" >
         <id column="id" property="id" jdbcType="VARCHAR" />
-        <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
         <result column="sys_user_id" property="userId" jdbcType="VARCHAR" />
-        <result column="amount" property="amount" jdbcType="VARCHAR" />
-        <result column="create_date" property="createDate" jdbcType="VARCHAR" />
-        <result column="update_date" property="updateDate" jdbcType="VARCHAR" />
-        <result column="nickname" property="nickName" jdbcType="VARCHAR" />
+        <result column="next_user_id" property="nextUserId" jdbcType="VARCHAR" />
+        <result column="next_user_type" property="nextUserType" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="REAL" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="user_identify_number" property="identifyNumber" jdbcType="VARCHAR" />
+        <result column="next_user_identify_number" property="nextUserIdentifyNumber" jdbcType="VARCHAR" />
+        <result column="user_nickName" property="nickName" jdbcType="VARCHAR" />
+        <result column="next_user_nickName" property="nextUserNickName" jdbcType="VARCHAR" />
+        <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
         <result column="user_mobile" property="mobile" jdbcType="VARCHAR" />
-        <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
-        <result column="user_type" property="userType" jdbcType="VARCHAR" />
+        <result column="next_user_mobile" property="nextUserMobile" jdbcType="VARCHAR" />
+        <result column="parent_relation" property="parentRelation" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <resultMap id="PayRecordResultMap" type="com.wisdom.common.dto.account.PayRecordDTO" >
@@ -62,6 +88,8 @@
         <result column="user_type" property="userType" jdbcType="VARCHAR" />
         <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
     </resultMap>
+
+
 
     <sql id="Base_incomeRecord_list">
         i.id,i.sys_user_id,i.amount,i.update_date,i.create_date,i.income_type,i.transaction_id,i.status
@@ -151,7 +179,7 @@
             ,income_type=#{incomeType}
         </if>
         <if test="identifyNumber!= ''and identifyNumber!=null">
-            ,identify_number=#{identifyNumber}
+            ,user_identify_number=#{identifyNumber}
         </if>
         <if test="nextUserIdentifyNumber!= ''and nextUserIdentifyNumber!=null">
             ,next_user_identify_number=#{nextUserIdentifyNumber}
@@ -250,6 +278,126 @@
         </if>
     </select>
 
+    <select id="getIncomeRecordByIncomeManagement"
+            resultMap="UserIncomeInfoResultMap">
+        SELECT
+        i.*
+        FROM income_record i,income_record_management m
+        WHERE 1=1
+        <if test="requestData.id != null and requestData.id != ''">
+            AND i.id = #{requestData.id}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND i.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
+            AND i.income_type = #{requestData.incomeType}
+        </if>
+        <if test="requestData.mobile != null and requestData.mobile != ''">
+            AND i.user_mobile = #{requestData.mobile}
+        </if>
+        <if test="requestData.status != null and requestData.status != ''">
+            AND i.status = #{requestData.status}
+        </if>
+        <if test='requestData.checkStatus != "0"'>
+        <if test="requestData.checkUserType != null and requestData.checkUserType != ''">
+            AND m.user_type = #{requestData.checkUserType}
+        </if>
+        </if>
+        <if test='requestData.checkStatus == "1"'>
+            AND m.income_record_id = i.id
+        </if>
+        <if test='requestData.checkStatus == "0"'>
+            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
+        </if>
+        GROUP BY i.id
+        ORDER BY i.create_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+    <select id="getIncomeRecordCountByIncomeManagement"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM income_record i,income_record_management m
+        WHERE 1=1
+        <if test="requestData.id != null and requestData.id != ''">
+            AND i.id = #{requestData.id}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND i.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
+            AND i.income_type = #{requestData.incomeType}
+        </if>
+        <if test="requestData.mobile != null and requestData.mobile != ''">
+            AND i.user_mobile = #{requestData.mobile}
+        </if>
+        <if test="requestData.status != null and requestData.status != ''">
+            AND i.status = #{requestData.status}
+        </if>
+        <if test='requestData.checkStatus != "0"'>
+            <if test="requestData.checkUserType != null and requestData.checkUserType != ''">
+                AND m.user_type = #{requestData.checkUserType}
+            </if>
+        </if>
+        <if test='requestData.checkStatus == "1"'>
+            AND m.income_record_id = i.id
+        </if>
+        <if test='requestData.checkStatus == "0"'>
+            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
+        </if>
+    </select>
+    <select id="getIncomeRecordByPageParam"
+            resultMap="UserIncomeInfoResultMap">
+        SELECT
+        i.*
+        FROM income_record i
+        WHERE 1=1
+        <if test="requestData.id != null and requestData.id != ''">
+            AND i.id = #{requestData.id}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND i.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
+            AND i.income_type = #{requestData.incomeType}
+        </if>
+        <if test="requestData.mobile != null and requestData.mobile != ''">
+            AND i.user_mobile = #{requestData.mobile}
+        </if>
+        <if test="requestData.status != null and requestData.status != ''">
+            AND i.status = #{requestData.status}
+        </if>
+        GROUP BY i.id
+        ORDER BY i.create_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getIncomeRecordCountByPageParam" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM income_record i
+        WHERE 1=1
+        <if test="startTime != ''and startTime != null  ">
+            AND i.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
+            AND i.income_type = #{requestData.incomeType}
+        </if>
+        <if test="requestData.mobile != null and requestData.mobile != ''">
+            AND i.user_mobile = #{requestData.mobile}
+        </if>
+        <if test="requestData.status != null and requestData.status != ''">
+            AND i.status = #{requestData.status}
+        </if>
+    </select>
+
+
+
     <!--查询所有提成信息-->
     <select id="queryAllUserIncome"
             resultMap="UserIncomeInfoResultMap"
@@ -306,7 +454,7 @@
     </select>
 
     <!--查询月结下详情交易-->
-    <select id="queryMonthTransactionRecordByIncomeRecord"
+    <select id="queryMonthRecordByParentRelation"
             resultMap="MonthTransactionRecordMap">
         SELECT
         m.*
@@ -315,12 +463,37 @@
         <if test="requestData.sysUserId != ''and requestData.sysUserId != null  ">
             AND m.sys_user_id = #{requestData.sysUserId}
         </if>
+        <if test='requestData.parentRelation == "self" '>
+            AND m.parent_relation = 'self'
+        </if>
+        <if test='requestData.parentRelation != "self" '>
+            AND m.parent_relation != 'self'
+        </if>
         <if test="startTime != ''and startTime != null  ">
             AND m.create_date BETWEEN #{startTime} AND #{endTime}
         </if>
         ORDER BY m.create_date DESC
         <if test='isExportExcel != "Y"'>
             limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+    <select id="queryMonthRecordCountByParentRelation"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM month_transaction_record m
+        WHERE 1=1
+        <if test="requestData.sysUserId != ''and requestData.sysUserId != null  ">
+            AND m.sys_user_id = #{requestData.sysUserId}
+        </if>
+        <if test='requestData.parentRelation == "self" '>
+            AND m.parent_relation = 'self'
+        </if>
+        <if test='requestData.parentRelation != "self" '>
+            AND m.parent_relation != 'self'
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND m.create_date BETWEEN #{startTime} AND #{endTime}
         </if>
     </select>
 
@@ -443,5 +616,47 @@
         WHERE
         id = #{id}
     </update>
-
+    <select id="exportExcelIncomeRecord"
+            resultMap="exportExcelIncomeRecordResultMap">
+        SELECT i.*,
+	        u2.user_type AS userTypeNow,
+	        u3.user_type AS nextUserTypeNow,
+	        p.pay_date,p.amount AS orderAmount,
+	        o.order_id,o.`status`AS orderStatus
+	    from income_record i
+	    LEFT JOIN sys_user u2 ON i.sys_user_id = u2.id
+	    LEFT JOIN sys_user u3 ON i.sys_user_id = u3.id
+	    LEFT JOIN pay_record p ON i.transaction_id = p.transaction_id
+	    LEFT JOIN business_order o ON p.order_id = o.order_id
+        LEFT JOIN income_record_management m ON i.id = m.income_record_id
+	    WHERE 1=1
+        <if test="requestData.id != null and requestData.id != ''">
+            AND i.id = #{requestData.id}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND i.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
+            AND i.income_type = #{requestData.incomeType}
+        </if>
+        <if test="requestData.mobile != null and requestData.mobile != ''">
+            AND i.user_mobile = #{requestData.mobile}
+        </if>
+        <if test="requestData.status != null and requestData.status != ''">
+            AND i.status = #{requestData.status}
+        </if>
+        <if test='requestData.checkStatus != "0"'>
+            <if test="requestData.checkUserType != null and requestData.checkUserType != ''">
+                AND m.user_type = #{requestData.checkUserType}
+            </if>
+        </if>
+        <if test='requestData.checkStatus == "1"'>
+            AND m.income_record_id = i.id
+        </if>
+        <if test='requestData.checkStatus == "0"'>
+            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
+        </if>
+        GROUP BY i.id
+        ORDER BY i.create_date DESC
+    </select>
 </mapper>

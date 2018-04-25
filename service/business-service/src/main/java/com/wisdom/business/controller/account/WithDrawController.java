@@ -3,14 +3,18 @@ package com.wisdom.business.controller.account;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.service.account.WithDrawService;
 import com.wisdom.business.util.UserUtils;
+import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.constant.RealNameResultEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.common.dto.account.*;
+import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.RedisLock;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,6 +90,98 @@ public class WithDrawController {
 		return result;
 	}
 
+
+//	/**
+//	 * 用户进行提现操作
+//	 */
+//	@RequestMapping(value = "withDrawMoneyFromAccount", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+//	public
+//	@ResponseBody
+//	ResponseDTO withDrawMoneyFromAccount(@RequestBody WithDrawRecordDTO withDrawRecordDTO ,
+//										 HttpServletRequest request,
+//										 HttpSession session) {
+//		ResponseDTO<AccountDTO> result = new ResponseDTO<>();
+//
+//		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+//
+//		RedisLock redisLock = new RedisLock("withDrawMoney"+userInfoDTO.getId());
+//
+//		try
+//		{
+//			redisLock.lock();
+//
+//			//判断用户的提现次数
+//			WithDrawRecordDTO withDrawRecord = new WithDrawRecordDTO();
+//			withDrawRecord.setSysUserId(withDrawRecordDTO.getSysUserId());
+//			List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawService.getWithdrawRecordInfo(withDrawRecord);
+//
+//			int withDrawNum = 0;
+//			for(WithDrawRecordDTO drawRecordDTO:withDrawRecordDTOList)
+//			{
+//				if(DateUtils.formatDate(new Date()).equals(DateUtils.formatDate(drawRecordDTO.getCreateDate())))
+//				{
+//					withDrawNum++;
+//				}
+//			}
+//
+//			if(withDrawNum> ConfigConstant.MAX_WITHDRAW_NUM)
+//			{
+//				result.setResult(StatusConstant.FAILURE);
+//				result.setErrorInfo("超出当日最大提现次数");
+//				return result;
+//			}
+//
+//
+//			RealNameInfoDTO realNameInfoDTO = userServiceClient.verifyUserIdentify(withDrawRecordDTO.getIdentifyNumber(),withDrawRecordDTO.getUserName());
+//			//判断提现的身份证是否合法
+//			if (RealNameResultEnum.MATCHING.getCode().equals(realNameInfoDTO.getCode()))
+//			{
+//				userInfoDTO.setIdentifyNumber(withDrawRecordDTO.getIdentifyNumber());
+//				userServiceClient.updateUserInfo(userInfoDTO);
+//			}
+//			else
+//			{
+//				result.setResult(StatusConstant.FAILURE);
+//				result.setErrorInfo("身份证和姓名不匹配");
+//				return  result;
+//			}
+//
+//			String openid = WeixinUtil.getUserOpenId(session,request);
+//			if(withDrawRecordDTO.getMoneyAmount()>=ConfigConstant.MAX_WITHDRAW_AMOUNT)
+//			{
+//				result.setErrorInfo("提现金额超出最大额度");
+//				result.setResult(StatusConstant.FAILURE);
+//			}
+//			else if(withDrawRecordDTO.getMoneyAmount()<ConfigConstant.MIN_WITHDRAW_AMOUNT)
+//			{
+//				result.setErrorInfo("提现金额小于最低额度");
+//				result.setResult(StatusConstant.FAILURE);
+//			}
+//			else if(withDrawRecordDTO.getMoneyAmount()>=ConfigConstant.CHECK_WITHDRAW_AMOUNT)
+//			{
+//				withDrawService.withDrawMoneyFromAccount(withDrawRecordDTO.getMoneyAmount(),request,openid,true);
+//				result.setResult(StatusConstant.SUCCESS);
+//			}
+//			else
+//			{
+//				withDrawService.withDrawMoneyFromAccount(withDrawRecordDTO.getMoneyAmount(),request,openid,false);
+//				result.setResult(StatusConstant.SUCCESS);
+//			}
+//		}
+//		catch (Exception e)
+//		{
+//			e.printStackTrace();
+//			result.setErrorInfo("提现失败");
+//			result.setResult(StatusConstant.FAILURE);
+//		}
+//		finally {
+//			redisLock.unlock();
+//		}
+//
+//		return result;
+//	}
+
 	/**
 	 * 查询所有提现数据
 	 * @param pageParamDTO
@@ -100,6 +197,56 @@ public class WithDrawController {
 		PageParamDTO<List<WithDrawRecordDTO>> page = withDrawService.queryAllWithdraw(pageParamDTO);
 		responseDTO.setResponseData(page);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		return responseDTO;
+	}
+
+	/**
+	 * 解冻超额提现
+	 * @return
+	 */
+	@RequestMapping(value = "deFrozenWithDrawRecord", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO deFrozenWithDrawRecord(@RequestParam String withDrawRecordId,
+									   HttpServletRequest request)
+	{
+		ResponseDTO responseDTO = new ResponseDTO();
+		RedisLock redisLock = new RedisLock("deFrozenWithDrawRecord"+withDrawRecordId);
+		try
+		{
+			redisLock.lock();
+			WithDrawRecordDTO withDrawRecordDTO = new WithDrawRecordDTO();
+			withDrawRecordDTO.setId(withDrawRecordId);
+			List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawService.getWithdrawRecordInfo(withDrawRecordDTO);
+
+			if(withDrawRecordDTOList.size()>0)
+			{
+				withDrawRecordDTO = withDrawRecordDTOList.get(0);
+				if(withDrawRecordDTO.getStatus().equals("0"))
+				{
+					withDrawService.deFrozenWithDrawRecord(withDrawRecordDTO,request);
+					responseDTO.setResult(StatusConstant.SUCCESS);
+				}
+				else
+				{
+					responseDTO.setResult(StatusConstant.FAILURE);
+				}
+			}
+			else
+			{
+				responseDTO.setResult(StatusConstant.FAILURE);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			responseDTO.setResult(StatusConstant.FAILURE);
+		}
+		finally {
+			redisLock.unlock();
+		}
+
 		return responseDTO;
 	}
 

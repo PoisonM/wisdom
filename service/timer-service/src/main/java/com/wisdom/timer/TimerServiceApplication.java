@@ -11,6 +11,8 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import java.io.UnsupportedEncodingException;
+
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableAspectJAutoProxy
@@ -31,6 +33,13 @@ public class TimerServiceApplication {
 //
 //		//初始化时处理未支付的订单
 //		businessRunTimeService.autoProcessNoPayRecordData();
+
+//		try {
+//			//businessRunTimeService.autoMonthlyIncomeCalc();
+//			businessRunTimeService.autoProcessUserAccount();
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 }

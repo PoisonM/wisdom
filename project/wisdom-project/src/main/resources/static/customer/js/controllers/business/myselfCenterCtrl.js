@@ -1,11 +1,13 @@
 angular.module('controllers',[]).controller('myselfCenterCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','$ionicLoading','GetSpecialBossCondition',
+        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,$ionicLoading,GetSpecialBossCondition) {
             $rootScope.title = "个人中心";
 
             $scope.param = {
                 userLogin : false,
-                accountInfo:{}
+                accountInfo:{},
+                specialShopOwner : false,
+                specialShopInfo : {}
             };
 
             $scope.$on('$ionicView.enter', function(){
@@ -19,7 +21,6 @@ angular.module('controllers',[]).controller('myselfCenterCtrl',
 
                 GetUserAccountInfo.get(function(data){
                     $ionicLoading.hide();
-                    console.log(data)
                     if(data.result==Global.FAILURE)
                     {
                         $scope.param.userLogin = false;
@@ -32,10 +33,26 @@ angular.module('controllers',[]).controller('myselfCenterCtrl',
                         $scope.param.accountInfo.balance  = returnFloat($scope.param.accountInfo.balance);
                         $scope.param.accountInfo.todayIncome = returnFloat($scope.param.accountInfo.todayIncome);
                         $(".smallBox").show();
-                        console.log( $scope.param.accountInfo)
                     }
                 })
+
+                GetSpecialBossCondition.get(function(data){
+                    if(data.result==Global.SUCCESS)
+                    {
+                        $scope.param.specialShopInfo = data.responseData;
+                        $scope.param.specialShopOwner = true;
+                    }
+                    else
+                    {
+                        $scope.param.specialShopOwner = false;
+                    }
+                })
+
             });
+
+            $scope.mySpecialShopDetail = function(){
+                $state.go("specialShopTransactionList",{"specialShopId":$scope.param.specialShopInfo.shopId})
+            }
 
             $scope.goMyselfSetting = function(){
               $state.go("personalInformation")

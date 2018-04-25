@@ -7,12 +7,14 @@ import com.wisdom.common.constant.RealNameResultEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.interceptor.LoginRequired;
@@ -20,8 +22,11 @@ import com.wisdom.user.service.RealNameAuthService;
 import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,9 +46,6 @@ public class UserInfoController {
     private RealNameAuthService realNameAuthService;
 
     @Autowired
-    private BusinessServiceClient businessServiceClient;
-
-    @Autowired
     private MongoTemplate mongoTemplate;
 
     /**
@@ -58,6 +60,39 @@ public class UserInfoController {
         UserInfoDTO userInfoDTO = userInfoService.getUserInfoFromRedis();
         responseDTO.setResponseData(userInfoDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
+
+    @RequestMapping(value = "getSpecialBossCondition", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<SpecialShopInfoDTO> getSpecialBossCondition(HttpSession session, HttpServletRequest request) {
+        ResponseDTO<SpecialShopInfoDTO> responseDTO = new ResponseDTO<>();
+        SpecialShopInfoDTO specialShopInfoDTO = new SpecialShopInfoDTO();
+        String openId = WeixinUtil.getUserOpenId(session,request);
+        if(StringUtils.isNotNull(openId))
+        {
+            responseDTO.setResponseData(specialShopInfoDTO);
+
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setUserOpenid(openId);
+            List<UserInfoDTO> userInfoDTOList = userInfoService.getUserInfo(userInfoDTO);
+            if(userInfoDTOList.size()>0&& StringUtils.isNotNull(userInfoDTOList.get(0).getMobile()))
+            {
+                Query query = new Query(Criteria.where("shopBossMobile").is(userInfoDTOList.get(0).getMobile()));
+                specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
+                responseDTO.setResponseData(specialShopInfoDTO);
+                responseDTO.setResult(StatusConstant.SUCCESS);
+            }
+            else
+            {
+                responseDTO.setResult(StatusConstant.FAILURE);
+            }
+        }
+        else
+        {
+            responseDTO.setResult(StatusConstant.FAILURE);
+        }
         return responseDTO;
     }
 

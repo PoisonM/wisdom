@@ -1,6 +1,8 @@
 package com.wisdom.common.util;
 
 import com.wisdom.common.config.Global;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
+import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.entity.TemplateData;
 import com.wisdom.common.entity.WxTemplate;
 import net.sf.json.JSONObject;
@@ -98,8 +100,6 @@ public class WeixinTemplateMessageUtil {
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		//templateData.setValue("还未付款，未付款的订单24时内关闭，请及时付款。感谢您对美享99商城的青睐！点击查看详情。");
-//		templateData.setValue("点击,查看详情。");
 		templateData.setValue("");
 		m.put("remark", templateData);
 
@@ -134,7 +134,6 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("我们已收到您的货款，开始为您打包商品，请耐心等待");
 		templateData.setValue("尊敬的用户，您好！！\n"+
 				"我们已经收到您的货款，正在为您全力打包，请耐心等待！！");
 		m.put("first", templateData);
@@ -152,8 +151,6 @@ public class WeixinTemplateMessageUtil {
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("如有问题请致电400-000-0000，小美将第一时间为您服务！");
-//		templateData.setValue("点击，查看详情。");
 		templateData.setValue("");
 		m.put("remark", templateData);
 
@@ -530,7 +527,6 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("您好，您的下级代理已成功消费。");
 		templateData.setValue("尊敬的用户，您好！！\n"+
 				"恭喜您的下级店主新增一笔消费！正在为您结算返利佣金，请您耐心等待！！");
 		m.put("first", templateData);
@@ -588,7 +584,6 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("您已申请退款，等待商家确认退款信息");
 		templateData.setValue("尊敬的用户，您好！！\n"+
 				"您已申请退款，正在等待平台确认退款信息，请您耐心等待！！");
 		m.put("first", templateData);
@@ -951,4 +946,57 @@ public class WeixinTemplateMessageUtil {
 			}
 		}
     }
+
+	public static void sendSpecialShopBossUserBuyTemplateWXMessage(String token,String amount, BusinessOrderDTO businessOrderDTO, String userOpenid, SpecialShopInfoDTO specialShopInfoDTO) {
+
+		Map<String,TemplateData> m = new HashMap<>();
+
+		WxTemplate t = new WxTemplate();
+		t.setTouser(userOpenid);
+		t.setTopcolor("#000000");
+		t.setTemplate_id(WITHDRAW_SUCCESS_NOTIFY);
+
+		TemplateData templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue("尊敬的用户，您好！！\n"+
+				"您的店铺有用户进行了一笔消费！！");
+		m.put("first", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(DateUtils.DateToStr(businessOrderDTO.getCreateDate()));
+		m.put("keyword1", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(businessOrderDTO.getBusinessProductName()+"："+businessOrderDTO.getBusinessProductNum()+"件");
+		m.put("keyword2", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(amount);
+		m.put("keyword3", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(amount);
+		m.put("keyword4", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(specialShopInfoDTO.getShopName());
+		m.put("keyword4", templateData);
+
+		t.setData(m);
+		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
+				token+"","POST", JSONObject.fromObject(t).toString());
+		JSONObject jsonObject = JSONObject.fromObject(jsonobj.replaceAll("200>>>>",""));
+		if(jsonobj!=null){
+			if("0".equals(jsonObject.getString("errcode"))){
+				System.out.println("发送模板消息成功！");
+			}else{
+				System.out.println(jsonObject.getString("errcode"));
+			}
+		}
+	}
 }

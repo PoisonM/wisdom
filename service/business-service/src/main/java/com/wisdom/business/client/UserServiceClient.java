@@ -1,11 +1,9 @@
 package com.wisdom.business.client;
 
+import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,4 +19,8 @@ public interface UserServiceClient {
 
     @RequestMapping(value = "/updateUserInfo",method=RequestMethod.POST)
     void updateUserInfo(@RequestBody UserInfoDTO userInfoDTO);
+
+    @RequestMapping(value = "/verifyUserIdentify",method=RequestMethod.GET)
+    RealNameInfoDTO verifyUserIdentify(@RequestParam(value="idCard") String idCard, @RequestParam(value="name") String name);
+
 }

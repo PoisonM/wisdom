@@ -23,6 +23,35 @@
         <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="BusinessOrderResultMap" type="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="order_id" property="businessOrderId" jdbcType="VARCHAR" />
+        <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+        <result column="update_date" property="updateDate" jdbcType="VARCHAR" />
+        <result column="user_order_address_id" property="userOrderAddressId" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="pay_date" property="payDate" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="VARCHAR" />
+        <result column="user_name" property="userNameAddress" jdbcType="VARCHAR" />
+        <result column="user_phone" property="userPhoneAddress" jdbcType="VARCHAR" />
+        <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+        <result column="product_id" property="businessProductId" jdbcType="VARCHAR" />
+        <result column="name" property="businessProductName" jdbcType="VARCHAR" />
+        <result column="brand" property="productBrand" jdbcType="VARCHAR" />
+        <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
+        <result column="price" property="businessProductPrice" jdbcType="VARCHAR" />
+        <result column="product_num" property="businessProductNum" jdbcType="VARCHAR" />
+        <result column="waybill_number" property="waybillNumber" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_BusinessOrder_list">
+        o.id,o.sys_user_id,o.order_id,o.type,o.status,o.create_date,o.update_date,o.user_order_address_id
+    </sql>
+
     <!-- 创建账户信息 -->
     <insert id="insertPayRecord">
         INSERT INTO pay_record(
@@ -148,6 +177,15 @@
         ,u.nickname,u.user_type,u.mobile
         FROM pay_record p,sys_user u
         WHERE p.sys_user_id =u.id
+        AND p.transaction_id = #{transactionId}
+    </select>
+    <!--根据支付表中的TransactionId查询订单信息-->
+    <select id="queryOrderInfoByTransactionId"
+            resultMap="BusinessOrderResultMap">
+        SELECT
+        <include refid="Base_BusinessOrder_list"/>,p.pay_date,p.amount
+        FROM pay_record p,business_order o
+        WHERE p.order_id =o.order_id AND p.status = '1'
         AND p.transaction_id = #{transactionId}
     </select>
 </mapper>

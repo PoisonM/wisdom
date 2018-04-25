@@ -20,7 +20,7 @@ public class BusinessOrderDTO {
     @JSONField(name = "businessOrderId")
     private String businessOrderId;
 
-    //订单编号ID
+    //交易流水号
     @JSONField(name = "transactionId")
     private String transactionId;
 
@@ -73,7 +73,7 @@ public class BusinessOrderDTO {
     @JSONField(name = "businessProductPrice")
     private float businessProductPrice;
 
-    //此订单订单价格
+    //此订单订单价格   ==pay表中的amount
     @JSONField(name = "amount")
     private String amount;
 
