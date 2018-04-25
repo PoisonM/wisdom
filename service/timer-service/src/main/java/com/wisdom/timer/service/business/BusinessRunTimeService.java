@@ -469,6 +469,7 @@ public class BusinessRunTimeService {
             List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
             if(userBusinessTypeDTOS.size()>0)
             {
+                businessFlag = false;
                 continue;
             }
 

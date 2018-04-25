@@ -34,11 +34,12 @@ public class TimerServiceApplication {
 //		//初始化时处理未支付的订单
 //		businessRunTimeService.autoProcessNoPayRecordData();
 
-		try {
-			businessRunTimeService.autoMonthlyIncomeCalc();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			//businessRunTimeService.autoMonthlyIncomeCalc();
+//			businessRunTimeService.autoProcessUserAccount();
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 }
