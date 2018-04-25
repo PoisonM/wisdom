@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('monthlyAccountsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord) {
             var startTime = document.querySelector(".MStart");
             var endTime = document.querySelector(".MEnd");
             var pattern = /^1[34578]\d{9}$/;
@@ -131,7 +131,6 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                     MonthlyBalanceLis[i].userTypeNow = MonthlyBalanceLis[i].userTypeNow.substring(9,10)+"级";
                     MonthlyBalanceLis[i].nextUserTypeNow = MonthlyBalanceLis[i].nextUserTypeNow.substring(9,10)+"级";
                     MonthlyBalanceLis[i].nextUserType = MonthlyBalanceLis[i].nextUserType.substring(9,10)+"级";
-
                 }
 
             }
@@ -210,15 +209,20 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                          }
                                     }
 
+                                    MonthlyBalanceLis[i].userType = MonthlyBalanceLis[i].userType.substring(9,10)+"级";
+
 
                                     $scope.orderIdFun(MonthlyBalanceLis);
                                     $scope.MonthlyBalanceLis = MonthlyBalanceLis;
                                 }
                             }
-                            for(var i=0;i< $scope.MonthlyBalanceLis.length;i++){
-                                a[i]=1;
-                                $scope.MonthlyBalanceLis[i].statesLook="1"
+                            if($scope.MonthlyBalanceLis.length >=1){
+                                for(var i=0;i< $scope.MonthlyBalanceLis.length;i++){
+                                    a[i]=1;
+                                    $scope.MonthlyBalanceLis[i].statesLook="1"
+                                }
                             }
+
                             $scope.counnt='';
                             $scope.response = {};
                             $scope.response.count = data.responseData.count;
@@ -226,7 +230,6 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                             $scope.param.pageFrom = ($scope.pageNo-1)*$scope.pageSize+1;
                             $scope.param.pageTo = ($scope.pageNo-1)*$scope.pageSize+$scope.pageSize;
                             $scope.mum = false;
-                            $scope.userType($scope.MonthlyBalanceLis)
                             /*  $scope.MAccount = "";
                              startTime.value='';
                              endTime.value='';*/
@@ -243,9 +246,12 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                 $scope.MAccount = "";
                 $scope.active = 'active';
                 $scope.status =type;
-                for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
-                    $scope.MonthlyBalanceLis[i].statesLook = "1"
+                if( $scope.MonthlyBalanceLis.length>=1){
+                    for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
+                        $scope.MonthlyBalanceLis[i].statesLook = "1"
+                    }
                 }
+
 
               /*  $scope.loadPageList();*/
                 $scope.choosePage(1)
@@ -281,7 +287,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                             mobile: $scope.MAccount
                         }
                     }
-                    GetIncomeRecordByPageParam.save(pageParamVoDTO, function (data) {
+                    ExportExcelIncomeRecord.save(pageParamVoDTO, function (data) {
                         ManagementUtil.checkResponseData(data, "");
                         if (data.errorInfo == Global.SUCCESS) {
                             var $eleForm = $("<form method='get'></form>");
@@ -297,9 +303,12 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             }
             $scope.bgAll=function(){
                 $scope.auditFlag = false;
-                for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
-                    $scope.MonthlyBalanceLis[i].statesLook = "1";
+                if($scope.MonthlyBalanceLis.length>=1){
+                    for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
+                        $scope.MonthlyBalanceLis[i].statesLook = "1";
+                    }
                 }
+
                 $scope.agencyIndex =-1;
             };
             /*筛选已完成的订单*/

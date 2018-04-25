@@ -167,5 +167,7 @@ define(['appManagement'], function (app) {
         .factory('UpdateIncomeRecordStatusById',['$resource',function ($resource){
             return $resource(income + 'updateIncomeRecordStatusById');
         }])
-
+        .factory('ExportExcelIncomeRecord',['$resource',function ($resource){
+            return $resource(income + 'exportExcelIncomeRecord');
+        }])
 });

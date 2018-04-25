@@ -3,7 +3,7 @@ function detailsReservation($scope,ngDialog){
         if(status == "去消费"){
             ngDialog.open({
                 template: 'consumption',
-                scope: $scope, //这样就可以传递参数
+                scope: $scope,
                 controller: ['$scope', '$interval', function($scope, $interval) {
                     $scope.close = function() {
                         $scope.closeThisDialog();
@@ -43,8 +43,6 @@ function detailsReservation($scope,ngDialog){
                 className: 'ngdialog-theme-default ngdialog-theme-custom',
             });
         }
-
-
     };
     $scope.startAppointment = function(){
         $scope.param.ModifyAppointment = false;
@@ -59,11 +57,8 @@ function detailsReservation($scope,ngDialog){
             scope: $scope, //这样就可以传递参数
             controller: ['$scope', '$interval', function($scope, $interval) {
                 $scope.param.cancellationFlag = true;
-                $scope.close = function(type) {
-                    $scope.closeThisDialog();
-                    if(type == 3){
-
-                    }
+                $scope.close = function(status) {
+                     $scope.closeThisDialog();
                 };
             }],
             className: 'ngdialog-theme-default ngdialog-theme-custom'
@@ -79,6 +74,7 @@ function detailsReservation($scope,ngDialog){
             controller: ['$scope', '$interval', function($scope, $interval) {
                 $scope.param.cancellationFlag = true;
                 $scope.close = function(status) {
+
                     $scope.closeThisDialog();
                 };
             }],
@@ -89,102 +85,18 @@ function detailsReservation($scope,ngDialog){
 
     modifyingAppointmentPage && modifyingAppointmentPage ($scope,ngDialog);
 
-    /*选择顾客*/
-    $scope.openCustomers = function(){
-        ngDialog.open({
-            template: 'selectCustomersWrap',
-            scope: $scope, //这样就可以传递参数
-            controller: ['$scope', '$interval', function($scope, $interval) {
-                $scope.close = function() {
-                   /* if(status == 0){
-                        $scope.param.ModifyAppointmentObject.customer =""
-                    }*/
-                    $scope.closeThisDialog();
-                };
-            }],
-            className: 'newProject ngdialog-theme-custom'
-        });
-    }
-    $scope.selectCustomersCtrl = function(){
-        $scope.openCustomers()
-
-    };
-    $scope.selectTheCustomer = function(index,item){
-        $scope.param.ModifyAppointmentObject.customerIndex = index;
-        $scope.param.ModifyAppointmentObject.customer = item;
-        if($scope.param.ModifyAppointmentObject.productNum == "0"){
-            setTimeout(function(){
-                $scope.selectNewProduct();
-                ngDialog.close("selectCustomersWrap")
-            },800)
-        }
 
 
-
-
-    }
-    /*添加顾客*/
-    $scope.addCustomersCtrl = function(){
-        ngDialog.open({
-            template: 'addCustomers',
-            scope: $scope, //这样就可以传递参数
-            controller: ['$scope', '$interval', function($scope, $interval) {
-                console.log($scope.$parent.content);
-                $scope.close = function() {
-                    $scope.closeThisDialog();
-                };
-            }],
-            className: 'newProject ngdialog-theme-custom'
-        });
-
-    };
-    /*选择项目*/
-    $scope.selectNewProduct = function(){
-        if($scope.param.ModifyAppointmentObject.customer == ""){
-            $scope.openCustomers()
-        }else{
-            ngDialog.open({
-                template: 'newProduct',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function($scope, $interval) {
-                    console.log($scope.$parent.content);
-                    $scope.close = function(status) {
-                        if(status == 1){
-                            $scope.param.ModifyAppointmentObject.productData =[];
-                            for(var i=0;i<$scope.param.ModifyAppointmentObject.productIndex.length;i++){
-                                if($scope.param.ModifyAppointmentObject.productIndex[i]==true){
-                                    $scope.param.ModifyAppointmentObject.productData.push($scope.param.ModifyAppointmentObject.productIndex[i])
-                                }
-                            }
-                            $scope.param.ModifyAppointmentObject.productNum = $scope.param.ModifyAppointmentObject.productData.length;
-                            ngDialog.close("selectCustomersWrap")
-                        }else{
-                            $scope.param.ModifyAppointmentObject.productNum = "0";
-                            $scope.falseAll()
-                            $scope.param.ModifyAppointmentObject.productData = []
-
-                        }
-                        $scope.closeThisDialog();
-
-                    };
-                }],
-                className: 'newProject ngdialog-theme-custom'
-            });
-        }
-
-
-    }
     /*选择时长*/
     $scope.selectTimeLength = function(){
-        if($scope.param.ModifyAppointmentObject.customer == ""){
-            $scope.openCustomers()
+        if($scope.param.selectCustomersObject.sysUserName == ""){
+            $scope.selectCustomersCtrl()
         }else {
             ngDialog.open({
                 template: 'timeLength',
                 scope: $scope, //这样就可以传递参数
                 controller: ['$scope', '$interval', function ($scope, $interval) {
                     $scope.param.timeLengthIndex = -1;
-                    $scope.param.ModifyAppointmentObject.type = 'timeLength';
                     $scope.param.timeLengthArr = ["1", "1.5", "2", "2.5", "3", "3.5", "4"];
 
                     $scope.close = function (status) {
@@ -199,17 +111,44 @@ function detailsReservation($scope,ngDialog){
         }
     };
     /*选择美容师*/
+    var selectBeauticianData={
+        "errorInfo": 1,
+            "responseData": [
+            {
+                "address": 1,
+                "delFlag": 1,
+                "email": "12",
+                "id": "2",
+                "identifyNumber": 1,
+                "loginDate": 1,
+                "loginIp": 1,
+                "mobile": 1,
+                "name": "安迪",
+                "nickname": "安迪",
+                "password": "123",
+                "photo": 1,
+                "sysBossId": "3",
+                "sysBossName": "老板2",
+                "sysShopId": "11",
+                "sysUserId": "2",
+                "userOpenid": 1,
+                "userType": 1,
+                "weixinAttentionStatus": 1
+            }
+        ],
+            "result": "0x00001"
+    }
     $scope.selectBeautician = function(){
-        if($scope.param.ModifyAppointmentObject.customer == ""){
-            $scope.openCustomers()
+        if($scope.param.selectCustomersObject.sysUserName == ""){
+            $scope.selectCustomersCtrl()
         }else {
             ngDialog.open({
                 template: 'selectBeautician',
                 scope: $scope, //这样就可以传递参数
                 controller: ['$scope', '$interval', function ($scope, $interval) {
                     $scope.param.timeLengthIndex = -1;
-                    $scope.param.ModifyAppointmentObject.type = 'beautician';
-                    $scope.param.timeLengthArr = ["李", "网", '周'];
+                    $scope.param.timeLength = selectBeauticianData.responseData;
+
                     $scope.close = function (status) {
                         if(status == 0){
                             $scope.param.ModifyAppointmentObject.beauticianName =""
