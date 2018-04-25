@@ -74,27 +74,25 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     /**
      * 用户消费充值卡信息
      *
-     * @param shopUserConsumeRecordDTO
+     * @param userRechargeCardDTO
      * @return
      */
     @Override
-    public int userConsumeRechargeCard(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
-        if (shopUserConsumeRecordDTO == null || StringUtils.isBlank(shopUserConsumeRecordDTO.getFlowId())) {
-            logger.error("用户消费充值卡信息传入参数为空，{}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
+    public int userConsumeRechargeCard(ShopUserRechargeCardDTO userRechargeCardDTO) {
+        if (userRechargeCardDTO == null || StringUtils.isBlank(userRechargeCardDTO.getId())) {
+            logger.error("用户消费充值卡信息传入参数为空");
             throw new RuntimeException();
         }
         //更新用户充值卡记录信息
-        ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
-        shopUserConsumeRecordDTO.setId(shopUserConsumeRecordDTO.getFlowId());
-        List<ShopUserRechargeCardDTO> userRechargeCardList = shopCardService.getUserRechargeCardList(shopUserRechargeCardDTO);
+        List<ShopUserRechargeCardDTO> userRechargeCardList = shopCardService.getUserRechargeCardList(userRechargeCardDTO);
         if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
             logger.error("用户消费充值卡信息,根据主键插叙用户充值卡为空，{}", "userRechargeCardList = [" + userRechargeCardList + "]");
             throw new RuntimeException();
         }
-        shopUserRechargeCardDTO = userRechargeCardList.get(0);
-        BigDecimal surplus = shopUserRechargeCardDTO.getSurplusAmount().subtract(shopUserConsumeRecordDTO.getPrice());
-        shopUserRechargeCardDTO.setSurplusAmount(surplus);
-        return shopCardService.updateUserRechargeCard(shopUserRechargeCardDTO);
+        userRechargeCardDTO = userRechargeCardList.get(0);
+        BigDecimal surplus = userRechargeCardDTO.getSurplusAmount().subtract(userRechargeCardDTO.getSurplusAmount());
+        userRechargeCardDTO.setSurplusAmount(surplus);
+        return shopCardService.updateUserRechargeCard(userRechargeCardDTO);
     }
 
     /**
@@ -255,7 +253,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 }
             }
             //充值卡列表相关操作
-            List<ShopUserRechargeCardDTO> rechargeCardDTOS = shopUserOrderDTO.getShopUserRechargeCardDTOS();
+            List<ShopUserRechargeCardDTO> rechargeCardDTOS = shopUserPayDTO.getShopUserRechargeCardDTOS();
             if (CommonUtils.objectIsNotEmpty(rechargeCardDTOS)) {
                 for (ShopUserRechargeCardDTO dto : rechargeCardDTOS) {
                     //更新用户的充值卡记录
@@ -275,7 +273,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
                     userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
                     logger.info("订单号={},更新用户的充值卡信息={}", orderId, userConsumeRecordDTO);
-                    userConsumeRechargeCard(userConsumeRecordDTO);
+                    userConsumeRechargeCard(dto);
 
                     userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.COLLECTION_CARD.getCode());
                     ShopUserConsumeRecordDTO consumeRecordDTO = saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
@@ -293,7 +291,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
             Update update = new Update();
             update.set("status", OrderStatusEnum.ALREADY_PAY.getCode());
-            mongoTemplate.updateFirst(query, update, "shopUserOrderDTO");
+            update.set("actualPayPrice", shopUserPayDTO.getActualPayPrice());
+            mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         } catch (RuntimeException e) {
             logger.error("用户充值操作异常，异常原因为" + e.getMessage(), e);
             throw new RuntimeException();

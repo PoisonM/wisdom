@@ -2,6 +2,7 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.PayTypeEnum;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.common.util.SpringUtil;
@@ -18,6 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -76,6 +80,13 @@ public class PayTest {
         shopUserPayDTO.setOrderId("20180424200819402");
         shopUserPayDTO.setPayType(PayTypeEnum.ALI_PAY.getCode());
         shopUserPayDTO.setShopUserArchivesId("1");
+        shopUserPayDTO.setActualPayPrice("1000");
+        ArrayList<ShopUserRechargeCardDTO> rechargeCardDTOS = new ArrayList<>();
+        ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
+        //消费的金额
+        userRechargeCardDTO.setSurplusAmount(new BigDecimal(100));
+        userRechargeCardDTO.setId("110");
+        rechargeCardDTOS.add(userRechargeCardDTO);
 
         String toJSONString = JSONObject.toJSONString(shopUserPayDTO);
 
