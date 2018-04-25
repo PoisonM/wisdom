@@ -6,29 +6,51 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         week: [],
         btnActive: ['btnActive', 'common'],
         code: [{"0": "00:00"}, {"1": "00:30"}, {"2": "01:00"}, {"3": "01:30"}, {"4": "02:00"}, {"5": "02:30"}, {"6": "03:00"}, {"7": "03:30"}, {"8": "04:00"}, {"9": "04:30"}, {"10": "05:00"}, {"11": "05:30"}, {"12": "06:00"}, {"13": "06:30"}, {"14": "07:00"}, {"15": "07:30"}, {"16": "08:00"}, {"17": "08:30"}, {"18": "09:00"}, {"19": "09:30"}, {"20": "10:00"}, {"21": "10:30"}, {"22": "11:00"}, {"23": "11:30"}, {"24": "12:00"}, {"25": "12:30"}, {"26": "13:00"}, {"27": "13:30"}, {"28": "14:00"}, {"29": "14:30"}, {"30": "15:00"}, {"31": "15:30"}, {"32": "16:00"}, {"33": "16:30"}, {"34": "17:00"}, {"35": "17:30"}, {"36": "18:00"}, {"37": "18:30"}, {"38": "19:00"}, {"39": "19:30"}, {"40": "20:00"}, {"41": "20:30"}, {"42": "21:00"}, {"43": "21:30"}, {"44": "22:00"}, {"45": "22:30"}, {"46": "23:00"}, {"47": "23:30"}],
+        bgBlack:false,
         serachContent: '', /*搜索内容*/
         givingIndex: 0, /*赠送Index*/
         AppointmentType: "散客",
         dayFlag: true,
         weekFlag: false,
         ModifyAppointment:true,/*修预约改*/
+        ModifyAppointmentObject:{/*修预约改对象*/
+            hoursTime:[],
+            hoursType:[],
+            hoursTimeShow:"",
+
+        },
         cancellationFlag:true,/*取消预约按钮的显示隐藏*/
-        newProductObject: {
+        newProductObject: {/*新建预约 - 选择项目*/
             index: 0,
             titleFlag: false,
             content:true,
+            filterStr:"",/*搜索文本*/
+            newProjectData:"",
+            selfProductData:"",
+            shopProjectId:"",
+            shopProjectName:"",
         },
-        ModifyAppointmentObject:{
-            time:'1',
+        ModifyAppointmentObject:{/*新建预约*/
+            appointPeriod:'1',/*时长*/
             beauticianName:"",
             type:"",
-            customer:"",
-            productIndex:[],
-            customerIndex:"",
+            newProjectDataFlag:[],/*疗程卡的选中显示*/
+            selfProductDataFlag:[],/*本店项目的选中显示*/
             productData:[],
-            productNum:'0',
-            customerIndex:"-1"
+            productNum:'0',/*项目个数*/
+            customerIndex:"-1",
+            appointStartTime:"",/*预约开始时间*/
+            appointEndTime:"",/*预约结束时间*/
+            detail:"",/*备注*/
+            status:"0",
 
+        },
+        selectCustomersObject:{/*选择顾客*/
+            data:"",
+            sysUserId:"",/*客户id*/
+            sysUserName:"",/*客户名*/
+            sysUserPhone:"",/*客户手机*/
+            queryField:""/*查询条件，可为空*/
         },
         appointmentNew:"",
         appointmentObject: {/*日预约对象*/
@@ -38,16 +60,27 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             point: [],/*点*/
             list:[],/*数据处理后 -- */
         },
+        addCustomersObject:{/*添加顾客对象*/
+            sex:"女",
+            picSrc:"",
+            userName:"",
+            userPhone:""
+        },
         week:{
-            weekData:''
+            weekData:''/*周预约数据*/
         },
         index:{
             index1:"",
             index2:""
         },
-        details:"",/*预约详情*/
+        details:"",/**/
+
+        detailsWrap:{/*日预约详情 （包含预约卡项）*/
+            detailsWrapdata:"",
+            scratchCardFlag:false,/*划卡按钮*/
+            consumptionFlag:""/*消费按钮*/
+        },
         selectBeautician: false, /*修改预约-选择美容师*/
-        detailsReservationText: "去消费", /*详情按钮文字*/
         num: 1,
         data: [{
             title: '合作',
@@ -142,6 +175,92 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             $scope.param.btnActive[1] = 'btnActive';
             $scope.param.weekFlag = true;
             $scope.param.dayFlag = false;
+            var mySwiper3 = new Swiper('.swiper-container3',{
+                direction: 'vertical',
+                scrollbar: '.swiper-scrollbar',
+                slidesPerView: 'auto',
+                mousewheelControl: true,
+                freeMode: true,
+                onTouchStart: function(swiper){		//手动滑动中触发
+
+
+                },
+                onTouchMove: function(swiper,event){		//手动滑动中触发
+                    mySwiper.update(); // 重新计算高度;
+                    console.log(mySwiper.update())
+                    var _viewHeight = document.getElementsByClassName('swiper-wrapper')[0].offsetHeight;
+                    var _contentHeight = document.getElementsByClassName('swiper-slide')[0].offsetHeight;
+                    if(mySwiper.translate < 50 && mySwiper.translate > 0) {
+                        $(".init-loading").html('下拉刷新...').show();
+                    }else if(mySwiper.translate > 50 ){
+                        $(".init-loading").html('释放刷新...').show();
+                    }
+                },
+                onTouchEnd: function(swiper) {
+                    var _viewHeight = document.getElementsByClassName('swiper-wrapper')[0].offsetHeight;
+                    var _contentHeight = document.getElementsByClassName('swiper-slide')[0].offsetHeight;
+                    // 上拉加载
+                    if(mySwiper.translate <= _viewHeight - _contentHeight - 50 && mySwiper.translate < 0) {
+                        // console.log("已经到达底部！");
+
+                        if(loadFlag){
+                            $(".loadtip").html('正在加载...');
+                        }else{
+                            $(".loadtip").html('没有更多啦！');
+                        }
+
+                        setTimeout(function() {
+                            $(".loadtip").html('上拉加载更多...');
+                            mySwiper.update(); // 重新计算高度;
+                        }, 800);
+                    }
+
+                    // 下拉刷新
+                    if(mySwiper.translate >= 50) {
+                        $(".init-loading").html('正在刷新...').show();
+                        $(".loadtip").html('上拉加载更多');
+                        loadFlag = true;
+                        setTimeout(function() {
+                            $(".refreshtip").show(0);
+                            $(".init-loading").html('刷新成功！');
+                            setTimeout(function(){
+                                $(".init-loading").html('').hide();
+                            },800);
+                            $(".loadtip").show(0);
+
+                            //刷新操作
+                            mySwiper.update(); // 重新计算高度;
+                        }, 1000);
+                    }else if(mySwiper.translate >= 0 && mySwiper.translate < 50){
+                        $(".init-loading").html('').hide();
+                    }
+                    return false;
+                }
+            });
+            setTimeout(function(){
+                var mySwiper4 = new Swiper('.swiper-container4',{
+                    freeMode: true,
+                    onTouchStart: function(swiper){		//手动滑动中触发
+                        $scope.flag.upDownScrollFlag = false;
+                        console.log($scope.flag)
+
+                    },
+                    onReachEnd: function(){
+                        alert('到了最后一个slide');
+                    },
+
+                });
+            },2000)
+
+            $('.tab a').click(function(){
+
+                $(this).addClass('active').siblings('a').removeClass('active');
+                mySwiper2.slideTo($(this).index(), 500, false)
+
+                $('.w').css('transform', 'translate3d(0px, 0px, 0px)')
+                $('.swiper-container4 .swiper-slide-active3').css('height','auto').siblings('.swiper-slide').css('height','0px');
+                mySwiper.update();
+            });
         } else {
             $scope.arrTime = $scope.param.day;
             $scope.param.btnActive[0] = 'btnActive';
@@ -177,24 +296,83 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
     $scope.onHold = function (index1,index2,type) {
         if(type == 0){
             $scope.param.index.index1 = index1;
-            $scope.param.index.index2 = index2;
+            $scope.param.index.index2 = index2
+            $scope.param.ModifyAppointmentObject.status = "0"
             $scope.param.appointmentObject.list[index1].status[index2] = 4;
             $scope.param.appointmentObject.list[index1].sysUserName[index2] = "新建预约";
             ngDialog.open({
                 template: 'appointmentType',
                 scope: $scope, //这样就可以传递参数
                 controller: ['$scope', '$interval', function ($scope, $interval) {
+                    //$scope.param.bgBlack = true;
                     $scope.close = function () {
                         $scope.closeThisDialog();
                         $scope.param.appointmentObject.list[index1].status[index2] = 0;
                         $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
                     };
                 }],
-                className: 'appointmentType ngdialog-theme-custom',
+                className: ' ngdialog-theme-default ngdialog-theme-custom',
             })
     }};
 /*加载预约详情*/
-    $scope.detailsWrap = function (index1, index2, type){
+var detailsWrapData={
+    "emptyIdentifier": 1,
+        "errorInfo": 1,
+        "responseData": {
+        "consume": [
+            {
+                "createBy": "1",
+                "createDate": 1,
+                "effectiveDate": 1,
+                "effectiveDays": 1,
+                "id": "1",
+                "invalidDays": 1,
+                "isSend": 1,
+                "shopAppointmentId": "1",
+                "sysClerkId": 1,
+                "sysShopId": "101",
+                "sysShopName": "汉方美容院",
+                "sysShopProjectId": "1",
+                "sysShopProjectInitAmount": 1111,
+                "sysShopProjectInitTimes": 11,
+                "sysShopProjectName": "汉方项目",
+                "sysShopProjectSurplusAmount": 11,
+                "sysShopProjectSurplusTimes": 111,
+                "sysUserId": "1",
+                "updateDate": 1,
+                "updateUser": 1,
+                "useStyle": "1"
+            }
+        ],
+         "punchCard": [
+            {
+                "createBy": 1,
+                "createDate": 1,
+                "effectiveDate": 1,
+                "effectiveDays": 1,
+                "id": "2",
+                "invalidDays": 1,
+                "isSend": 1,
+                "shopAppointmentId": "1",
+                "sysClerkId": 1,
+                "sysShopId": "101",
+                "sysShopName": "汉方美容院2",
+                "sysShopProjectId": "2",
+                "sysShopProjectInitAmount": 0,
+                "sysShopProjectInitTimes": 1,
+                "sysShopProjectName": "汉方项目2",
+                "sysShopProjectSurplusAmount": 0,
+                "sysShopProjectSurplusTimes": 1,
+                "sysUserId": "2",
+                "updateDate": 1,
+                "updateUser": 1,
+                "useStyle": "2"
+            }
+        ]
+    },
+    "result": "0x00001"
+}
+    $scope.detailsWrap = function (index1, index2){
         if(type==0)return;
         if (type == 1 || type == 2) {
             $scope.ngDialog = ngDialog;
@@ -202,11 +380,8 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                 template: 'detailsWrap',
                 scope: $scope, //这样就可以传递参数
                 controller: ['$scope', '$interval', function ($scope, $interval) {
-                    if (type == 1) {
-                        $scope.param.detailsReservationText = "去消费";
-                    } else {
-                        $scope.param.detailsReservationText = "去划卡";
-                    }
+                $scope.detailsWrap.detailsWrapData = detailsWrapData.responseData;
+
                    /* GetAppointmentInfoById.get({
                         shopAppointServiceId: "id_7"
                     }, function (data) {
@@ -219,7 +394,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                         $scope.closeThisDialog();
                     };
                 }],
-                className: 'ngdialog-theme-default ',
+                className: 'ngdialog-theme-default',
 
             });
         } else if(type == 3){
@@ -233,7 +408,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                         $scope.closeThisDialog();
                     };
                 }],
-                className: 'individual '
+                className: 'ngdialog-theme-default'
             });
         }else if(type==4){
             ngDialog.open({
@@ -246,7 +421,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                         $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
                     };
                 }],
-                className: 'appointmentType ',
+                className: 'ngdialog-theme-default',
             })
         }
 
@@ -1400,14 +1575,19 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             return false;
         }
     });
-    var mySwiper2 = new Swiper('.swiper-container2',{
-        onTouchStart: function(swiper){		//手动滑动中触发
-            $scope.flag.upDownScrollFlag = false;
-            console.log($scope.flag)
+    setTimeout(function(){
+        var mySwiper2 = new Swiper('.swiper-container2',{
+            freeMode: true,
+            onTouchStart: function(swiper){		//手动滑动中触发
+                $scope.flag.upDownScrollFlag = false;
+            },
+            onReachEnd: function(){
+                alert('到了最后一个slide');
+            },
 
-        },
+        });
+    },2000)
 
-    });
     $('.tab a').click(function(){
 
         $(this).addClass('active').siblings('a').removeClass('active');

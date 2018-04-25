@@ -15,7 +15,7 @@
 .modifyingWrap .cosmetology p{height: 0.78rem;line-height: 0.78rem}
 .modifyingWrap .dayList{display: flex;flex-wrap: wrap;justify-content: space-around;text-align: center}
 .modifyingWrap .dayList li{width:16.6%;height: 0.765rem;line-height: 0.765rem;border: 1px solid #e5e5e5;padding: 0px;}
-.modifyingWrap .minuteList{display: flex;flex-wrap: wrap;justify-content: space-around;text-align: center}
+.modifyingWrap .minuteList{display: flex;flex-wrap: wrap;text-align: center}
 .modifyingWrap .minuteList li{width: 16.6%;height: 0.765rem;line-height: 0.765rem;border: 1px solid #e5e5e5;padding: 0px}
 /*备注*/
 .modifyingWrap .remarksBox{margin-top: 0.156rem;width: 5.90rem;height: 1.92rem;background: #ffffff;}

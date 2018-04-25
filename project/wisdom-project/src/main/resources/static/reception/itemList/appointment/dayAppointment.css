@@ -39,11 +39,11 @@
 /*.dayAppointment .messLis{ display: flex; }*/
 .dayAppointment .messLis .time { width: 1.21875rem; margin-top: -0.19531rem;}
 .dayAppointment .messLis .time li { height: 0.96875rem; font-size: 0.25rem; color: #888888; width: 1.21875rem;}
-.dayAppointment .messLis .appointmentLis { display: flex; }
-.dayAppointment .messLis .appointmentLis ul >li:last-child> ul> li { border-right: none; }
-.dayAppointment .messLis .appointmentLis ul li ul li { width: 2.42188rem; height: 0.96875rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }
+
+.dayAppointment .messLis .appointmentLis ul li:last-child> { border-right: none; }
+.dayAppointment .messLis .appointmentLis  li { width: 2.42188rem; height: 0.96875rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }
 /*横向滚动时的样式*/
-.Htab-head{list-style-type: none;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;padding:0;overflow:auto;}
+/*.Htab-head{list-style-type: none;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;padding:0;overflow:auto;}
 .Htab-head-item{-webkit-box-flex:1;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto; text-align: center;}
 .closMessLis{display: flex;}
 .clear{ content: ''; display: block; clear: both; }
@@ -59,7 +59,7 @@
 .dayAppointment .closMessLis .time li { height: 0.96875rem; font-size: 0.25rem; color: #888888;width: 1.21875rem; }
 .dayAppointment .closMessLis .appointmentLis{padding-top:1.17rem;}
 .dayAppointment .closMessLis .appointmentLis ul >li:last-child> ul> li { border-right: none; }
-.dayAppointment .closMessLis .appointmentLis ul li ul li { width: 2.42188rem; height: 0.96875rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }
+.dayAppointment .closMessLis .appointmentLis ul li ul li { width: 2.42188rem; height: 0.96875rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }*/
 
 /*
 .day{overflow-y: scroll;}*/
@@ -95,3 +95,5 @@
 .nowarp {display: flex;flex-wrap: nowrap}
 .pt117rem{padding-top:1.17rem;}
 .position{position: absolute; top: -1.17rem;left: -0rem;z-index: 1000;}
+.swiper-slide{position: relative;}
+.ngdialog-overlay{background: rgba(0, 0, 0,0.4);}
