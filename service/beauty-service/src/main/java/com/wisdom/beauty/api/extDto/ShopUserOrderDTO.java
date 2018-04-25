@@ -15,7 +15,7 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //订单失效日期
     private Date exprDate;
 
-    //订单状态 1、未支付  2、已支付  3、已失效
+    //订单状态 1、未支付 2、待支付  2、已支付  3、已失效
     private String status;
     //订单号
     private String orderId;

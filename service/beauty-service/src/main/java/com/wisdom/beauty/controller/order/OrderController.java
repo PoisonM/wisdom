@@ -1,6 +1,5 @@
 package com.wisdom.beauty.controller.order;
 
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
@@ -111,20 +110,18 @@ public class OrderController {
     ResponseDTO<String> updateShopUserOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        logger.info("保存用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
+        logger.info("更新用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
         ResponseDTO responseDTO = new ResponseDTO<String>();
-        //mysql中更新消费记录的状态
-        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-        shopUserConsumeRecordDTO.setStatus(shopUserOrderDTO.getStatus());
-        shopUserConsumeRecordDTO.setFlowNo(shopUserOrderDTO.getOrderId());
-        shopUserConsumeRecordDTO.setSignUrl(shopUserOrderDTO.getSignUrl());
-        shopUerConsumeRecordService.updateConumeRecord(shopUserConsumeRecordDTO);
+
         //mongodb中更新订单的状态
         Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
         update.set("status", shopUserOrderDTO.getStatus());
         update.set("signUrl", shopUserOrderDTO.getSignUrl());
-        mongoTemplate.updateFirst(query, update, "shopUserOrderDTO");
+        update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
+        update.set("shopUserProductRelationDTOS", shopUserOrderDTO.getShopUserProductRelationDTOS());
+        update.set("shopUserProjectRelationDTOS", shopUserOrderDTO.getShopUserProjectRelationDTOS());
+        mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
