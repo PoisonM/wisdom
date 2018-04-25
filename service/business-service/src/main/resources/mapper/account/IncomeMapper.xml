@@ -24,7 +24,6 @@
         <result column="nickname" property="nickName" jdbcType="VARCHAR"/>
         <result column="user_type" property="userType" jdbcType="VARCHAR"/>
         <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
-        <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR"/>
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -180,7 +179,7 @@
             ,income_type=#{incomeType}
         </if>
         <if test="identifyNumber!= ''and identifyNumber!=null">
-            ,identify_number=#{identifyNumber}
+            ,user_identify_number=#{identifyNumber}
         </if>
         <if test="nextUserIdentifyNumber!= ''and nextUserIdentifyNumber!=null">
             ,next_user_identify_number=#{nextUserIdentifyNumber}
