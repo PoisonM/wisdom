@@ -36,7 +36,7 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                  };
                  /*导出列表*/
                  $scope.educeLis=function () {
-                     if (confirm("是否筛选已完成的订单？")) {
+                     if (confirm("是否导出列表？")) {
                          var page = {
                              pageNo:$scope.pageNo,
                              pageSize:$scope.pageSize,
@@ -90,6 +90,9 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                             }
                         }
                         $scope.count = data.responseData.totalCount;
+                        if(data.responseData.totalCount == 0){
+                            data.responseData.totalCount=1;
+                        }
                         if($scope.pageNum>=Math.ceil(scope.count/scope.pageSize)){
                             $scope.hint="none"
                         }
@@ -118,7 +121,7 @@ angular.module('controllers',[]).controller('abschlussCtrl',
             };*/
 
             $scope.back = function(){
-                $state.go("monthlyAccounts",{true:'true',MAccount:$stateParams.MAccount,startTime:$stateParams.startTime,endTime:$stateParams.endTime,pageNo:$stateParams.pageNo,status:$stateParams.status});
+                $state.go("monthlyAccounts",{true:'true',MAccount:$stateParams.MAccount,startTime:$stateParams.startTime,endTime:$stateParams.endTime,pageNo:$stateParams.pageNo,status:$stateParams.status,checkStatus:$stateParams.checkStatus});
             }
 
         }]);

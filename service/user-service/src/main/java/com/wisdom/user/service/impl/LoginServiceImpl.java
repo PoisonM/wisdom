@@ -121,7 +121,7 @@ public class LoginServiceImpl implements LoginService{
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setMobile(userPhone);
         userInfoDTO.setPassword(code);
-        userInfoDTO.setUserType("manager-1");
+//        userInfoDTO.setUserType("manager-1");
         List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
         if(userInfoDTOList.size()>0)
         {
@@ -349,22 +349,22 @@ public class LoginServiceImpl implements LoginService{
                 .addCriteria(Criteria.where("code").is(loginDTO.getCode()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
-        if(data==null)
-        {
-            return StatusConstant.VALIDATECODE_ERROR;
-        }
-        else
-        {
-            ValidateCodeDTO validateCodeDTO = data.get(0);
-            Date dateStr = validateCodeDTO.getCreateDate();
-            long period =  (new Date()).getTime() - dateStr.getTime();
-
-            //验证码过了5分钟了
-            if(period>300000)
-            {
-                return  StatusConstant.VALIDATECODE_ERROR;
-            }
-        }
+//        if(data==null)
+//        {
+//            return StatusConstant.VALIDATECODE_ERROR;
+//        }
+//        else
+//        {
+//            ValidateCodeDTO validateCodeDTO = data.get(0);
+//            Date dateStr = validateCodeDTO.getCreateDate();
+//            long period =  (new Date()).getTime() - dateStr.getTime();
+//
+//            //验证码过了5分钟了
+//            if(period>300000)
+//            {
+//                return  StatusConstant.VALIDATECODE_ERROR;
+//            }
+//        }
         return StatusConstant.SUCCESS;
     }
 }
