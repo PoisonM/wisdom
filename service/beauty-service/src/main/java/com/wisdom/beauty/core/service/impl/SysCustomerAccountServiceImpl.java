@@ -120,9 +120,6 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
         if (StringUtils.isNotBlank(sysUserAccountDTO.getSysUserId())) {
             c.andSysUserIdEqualTo(sysUserAccountDTO.getSysUserId());
         }
-        if (StringUtils.isNotBlank(sysUserAccountDTO.getShopUserArchivesId())) {
-            c.andShopUserArchivesIdEqualTo(sysUserAccountDTO.getShopUserArchivesId());
-        }
         if (StringUtils.isNotBlank(sysUserAccountDTO.getSysShopId())) {
             c.andSysShopIdEqualTo(sysUserAccountDTO.getSysShopId());
         }

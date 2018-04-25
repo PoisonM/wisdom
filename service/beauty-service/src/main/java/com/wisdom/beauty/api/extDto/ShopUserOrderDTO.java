@@ -22,6 +22,9 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //美容店主键
     private String shopId;
 
+    //用户id
+    private String userId;
+
     //档案表主键
     private String shopUserArchivesId;
 
@@ -46,6 +49,13 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //用户与充值卡的关系
     private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getSignUrl() {
         return signUrl;
