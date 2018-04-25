@@ -179,7 +179,7 @@
             ,income_type=#{incomeType}
         </if>
         <if test="identifyNumber!= ''and identifyNumber!=null">
-            ,identify_number=#{identifyNumber}
+            ,user_identify_number=#{identifyNumber}
         </if>
         <if test="nextUserIdentifyNumber!= ''and nextUserIdentifyNumber!=null">
             ,next_user_identify_number=#{nextUserIdentifyNumber}
