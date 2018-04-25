@@ -1,4 +1,39 @@
 function addCustomersCtrl ($scope,ngDialog) {
+    var pattern = /^1[34578]\d{9}$/;
+    /*添加顾客*/
+    $scope.addCustomersCtrl = function(){
+        ngDialog.open({
+            template: 'addCustomers',
+            scope: $scope, //这样就可以传递参数
+            controller: ['$scope', '$interval', function($scope, $interval) {
+                console.log($scope.$parent.content);
+                $scope.close = function(type) {
+                    if(type==1){
+                        console.log($scope.param.addCustomersObject)
+                        if($scope.param.addCustomersObject.userPhone == ""){
+                            $scope.param.addCustomersObject.userPhone='请填写手机号';
+                            return;
+                        }
+                        if(pattern.test($scope.param.addCustomersObject.userPhone)==false){
+                            $scope.param.addCustomersObject.userPhone='请填写正确的手机号';
+                            return
+                        }
+                        var ShopUserArchivesDTO = {
+                            sex:$scope.param.addCustomersObject.sex,
+                            picSrc:$scope.param.addCustomersObject.picSrc,
+                            userName:$scope.param.addCustomersObject.userName,
+                            userPhone:$scope.param.addCustomersObject.userPhone,
+                        }/*添加客户参数 post*/
+                    }
+                    $scope.closeThisDialog();
+
+                };
+            }],
+            className: 'newProject ngdialog-theme-custom'
+        });
+
+    };
+    /*上传图片*/
     $scope.uploadPic = function(){
          $scope.uploadingPic("userPic");
     }
@@ -46,6 +81,9 @@ function addCustomersCtrl ($scope,ngDialog) {
             })*/
         }
     };
+    $scope.selectSex = function(sex){
+        $scope.param.addCustomersObject.sex=sex
+    }
 
 }
 
