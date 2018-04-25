@@ -90,6 +90,9 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                             }
                         }
                         $scope.count = data.responseData.totalCount;
+                        if(data.responseData.totalCount == 0){
+                            data.responseData.totalCount=1;
+                        }
                         if($scope.pageNum>=Math.ceil(scope.count/scope.pageSize)){
                             $scope.hint="none"
                         }
@@ -118,7 +121,7 @@ angular.module('controllers',[]).controller('abschlussCtrl',
             };*/
 
             $scope.back = function(){
-                $state.go("monthlyAccounts",{true:'true',MAccount:$stateParams.MAccount,startTime:$stateParams.startTime,endTime:$stateParams.endTime,pageNo:$stateParams.pageNo,status:$stateParams.status});
+                $state.go("monthlyAccounts",{true:'true',MAccount:$stateParams.MAccount,startTime:$stateParams.startTime,endTime:$stateParams.endTime,pageNo:$stateParams.pageNo,status:$stateParams.status,checkStatus:$stateParams.checkStatus});
             }
 
         }]);
