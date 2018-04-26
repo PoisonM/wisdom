@@ -1,4 +1,4 @@
-var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize',"ngTouch"]);
+var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize', "ngTouch"]);
 
 PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterProvider",
     function($provide, $compileProvider, $controllerProvider, $filterProvider) {
@@ -242,7 +242,36 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
-
+        .state('pad-web.left_nav.accountDetails', {
+            url: '/accountDetails',
+            templateUrl: root + '/cashier/accountDetails.html',
+            controller: 'accountDetailsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "账户明细",
+                        files: [root + "cashier/accountDetailsCtrl.js",
+                            root + "cashier/accountDetails.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.selectRechargeCard', {
+            url: '/selectRechargeCard',
+            templateUrl: root + '/cashier/selectRechargeCard.html',
+            controller: 'selectRechargeCardCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "选择充值卡",
+                        files: [root + "cashier/selectRechargeCardCtrl.js",
+                            root + "cashier/selectRechargeCard.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.appointment', {
             url: '/appointmentLis',
             templateUrl: root + '/appointment/appointmentLis.html',
@@ -691,7 +720,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/selectCoupons.css",
                             root + "appointment/balancePrepaidCtrl.js",
                             root + "appointment/relatedStaffCtrl.js",
-                            root+"appointment/dropload.css",
+                            root + "appointment/dropload.css",
                             root + "../libs/angular-touch.js",
                             root + "../libs/swiper-3.4.0.min.js",
                             /*root + "../styles/swiper-3.4.0.min.css",*/
@@ -796,8 +825,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                     })
                 }]
             }
-        })
-    ;
+        });
 
     $urlRouterProvider.otherwise('pad-web/left_nav/demo');
     $httpProvider.interceptors.push('httpInterceptor');

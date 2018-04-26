@@ -1,4 +1,4 @@
-var IP = '';
+var IP = 'http://192.168.1.117/';
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
