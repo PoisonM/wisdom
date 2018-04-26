@@ -71,7 +71,7 @@ public class PayController {
     }
 
     /**
-     * 更新用户的订单信息
+     * 用户支付确认接口
      *
      * @param shopUserPayDTO 付款对象
      * @return
