@@ -281,7 +281,7 @@ public class BusinessRunTimeService {
                 startDate = year + "-" + month + "-26";
             }
             else{
-                int month = Integer.parseInt(DateUtils.getMonth()) - 2;
+                int month = Integer.parseInt(DateUtils.getMonth()) - 1;
                 startDate = DateUtils.getYear() + "-" + month + "-26";
             }
 
