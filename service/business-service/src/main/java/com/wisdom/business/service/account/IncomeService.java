@@ -28,10 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by sunxiao on 2017/6/26.
@@ -110,7 +107,9 @@ public class IncomeService {
             return incomeRecordDTOS;
         }
         IncomeRecordManagementDTO incomeRecordManagementDTO =new IncomeRecordManagementDTO();
-        for (IncomeRecordDTO incomeRecordDTO : incomeRecordDTOS) {
+        Iterator<IncomeRecordDTO> iterator = incomeRecordDTOS.iterator();
+        while (iterator.hasNext()){
+            IncomeRecordDTO incomeRecordDTO = iterator.next();
             try {
                 //查詢审核信息
                 incomeRecordManagementDTO.setIncomeRecordId(incomeRecordDTO.getId());
@@ -152,6 +151,9 @@ public class IncomeService {
                     if(status){
                         incomeRecordDTO.setSecondCheckStatus("4");//记录双方通过标记
                         incomeRecordDTO.setCheckStatus("1");//记录审核状态为通过
+                        if(CheckStatus.equals("0")){
+                            iterator.remove();
+                        }
                     }
                 }else {
                     //没有数据,则说明没有被审核,标记为未审核
