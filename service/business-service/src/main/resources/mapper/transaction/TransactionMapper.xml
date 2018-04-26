@@ -365,7 +365,7 @@
 
     <select id="getBusinessOrderDetailInfoByOrderId"
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO">
-        select bor.sys_user_id sysUserId,bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
+        select bor.id,bor.sys_user_id sysUserId,bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
         opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,
         bpr.price businessProductPrice,bor.status status, bor.create_date createDate from
         business_order bor, order_product_relation opr, business_product bpr

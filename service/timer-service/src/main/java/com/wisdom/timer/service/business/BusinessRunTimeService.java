@@ -371,7 +371,8 @@ public class BusinessRunTimeService {
                     if(user.getUserType().equals(ConfigConstant.businessA1))
                     {
                         recommendANum = recommendANum + 1;
-                    }else if(user.getUserType().equals(ConfigConstant.businessB1))
+                    }
+                    else if(user.getUserType().equals(ConfigConstant.businessB1))
                     {
                         recommendBNum = recommendBNum + 1;
                     }
@@ -414,35 +415,37 @@ public class BusinessRunTimeService {
                 userInfo.setUserType(ConfigConstant.businessA1);
                 userServiceClient.updateUserInfo(userInfo);
 
-                //给用户495的即时奖励
-                AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
-                float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
-                float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
-                accountDTO.setBalance(balance);
-                accountDTO.setBalanceDeny(balanceDeny);
-                businessServiceClient.updateUserAccountInfo(accountDTO);
+                //给B的上一級用户495的即时奖励
+                if(StringUtils.isNotNull(userInfo.getParentUserId()))
+                {
+                    AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getParentUserId());
+                    float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
+                    float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
+                    accountDTO.setBalance(balance);
+                    accountDTO.setBalanceDeny(balanceDeny);
+                    businessServiceClient.updateUserAccountInfo(accountDTO);
 
-                IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                incomeRecordDTO.setId(UUID.randomUUID().toString());
-                incomeRecordDTO.setSysUserId(userInfo.getId());
-                incomeRecordDTO.setUserType(userInfo.getUserType());
-                incomeRecordDTO.setNextUserId("");
-                incomeRecordDTO.setNextUserType("");
-                incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
-                incomeRecordDTO.setTransactionAmount(0);
-                incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                incomeRecordDTO.setUpdateDate(new Date());
-                incomeRecordDTO.setCreateDate(new Date());
-                incomeRecordDTO.setStatus("0");
-                incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
-                incomeRecordDTO.setNextUserIdentifyNumber("");
-                incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
-                incomeRecordDTO.setNextUserNickName("");
-                incomeRecordDTO.setIncomeType("recommend");
-                incomeRecordDTO.setMobile(userInfo.getMobile());
-                incomeRecordDTO.setNextUserMobile("");
-                incomeRecordDTO.setParentRelation("");
-
+                    IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                    incomeRecordDTO.setId(UUID.randomUUID().toString());
+                    incomeRecordDTO.setSysUserId(userInfo.getId());
+                    incomeRecordDTO.setUserType(userInfo.getUserType());
+                    incomeRecordDTO.setNextUserId("");
+                    incomeRecordDTO.setNextUserType("");
+                    incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
+                    incomeRecordDTO.setTransactionAmount(0);
+                    incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                    incomeRecordDTO.setUpdateDate(new Date());
+                    incomeRecordDTO.setCreateDate(new Date());
+                    incomeRecordDTO.setStatus("0");
+                    incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
+                    incomeRecordDTO.setNextUserIdentifyNumber("");
+                    incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
+                    incomeRecordDTO.setNextUserNickName("");
+                    incomeRecordDTO.setIncomeType("recommend");
+                    incomeRecordDTO.setMobile(userInfo.getMobile());
+                    incomeRecordDTO.setNextUserMobile("");
+                    incomeRecordDTO.setParentRelation("");
+                }
                 Calendar calendar = Calendar.getInstance();
                 Date date = new Date();
                 calendar.setTime(date);
