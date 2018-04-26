@@ -291,7 +291,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
             Update update = new Update();
             update.set("status", OrderStatusEnum.ALREADY_PAY.getCode());
-            update.set("actualPayPrice", shopUserPayDTO.getActualPayPrice());
+            update.set("cashPayPrice", shopUserPayDTO.getCashPayPrice());
+            update.set("surplusPayPrice", shopUserPayDTO.getSurplusPayPrice());
+            update.set("payType", shopUserPayDTO.getPayType());
             mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         } catch (RuntimeException e) {
             logger.error("用户充值操作异常，异常原因为" + e.getMessage(), e);
