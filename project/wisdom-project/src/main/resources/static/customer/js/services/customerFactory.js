@@ -183,7 +183,7 @@ define(['appCustomer'], function (app) {
         }])
 
         .factory('GetSpecialBossCondition',['$resource',function ($resource){
-            return $resource(user + 'getSpecialBossCondition');
+            return $resource(customer + 'getSpecialBossCondition');
         }])
 
 

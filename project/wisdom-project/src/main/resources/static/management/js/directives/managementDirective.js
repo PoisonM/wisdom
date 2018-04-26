@@ -456,11 +456,16 @@ define(['appManagement','jquery'], function (app,$) {
                     scope.detailPage = {};
 
                     scope.detailPage.nextDatas = function(){
+                        console.log(scope.count);
+
+                        if(scope.pageNum> Math.ceil(scope.count/scope.pageSize)){
+                            return;
+                        }
                         if(scope.hint=="none"){
                             return;
                         }
                         if(scope.hint != 'none'){
-                            scope.pageNum++;
+
                         }
                         scope.detailPageList();
                     };
@@ -583,7 +588,7 @@ define(['appManagement','jquery'], function (app,$) {
                      '</li>' +*/
                     '<div style="height:20px;"></div>' +
                     '</ul>' +
-                    '<p class="copy">版权所有 © 天津美享网络科技股份有限公司</p>' +
+                  /*  '<p class="copy">版权所有 © 天津美享网络科技股份有限公司</p>' +*/
                     '</div>' +
                     '</div>' +
                     '</div>',

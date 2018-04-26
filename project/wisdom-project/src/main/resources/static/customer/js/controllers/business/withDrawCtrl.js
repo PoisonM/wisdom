@@ -1,6 +1,8 @@
 angular.module('controllers',[]).controller('withDrawCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','BusinessUtil','WithDrawMoneyFromAccount','$ionicPopup',
-        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,BusinessUtil,WithDrawMoneyFromAccount,$ionicPopup) {
+    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','BusinessUtil','GetUserInfo',
+        'WithDrawMoneyFromAccount','$ionicPopup','$interval','GetUserValidateCode','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,BusinessUtil,GetUserInfo,
+                  WithDrawMoneyFromAccount,$ionicPopup,$interval,GetUserValidateCode,$ionicLoading) {
 
             $rootScope.title = "提现";
 
@@ -10,9 +12,9 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                     withDrawAmount:"",
                     userName:"",
                     userIdentifyNumber:"",
-                    bankCardNumber:"",
-                    bankAddress:"",
                     withDrawSwitch:"off",
+                    validateCode:"",
+                    validateCodeButtonStatus:true
                 }
 
                 GetUserAccountInfo.get(function(data){
@@ -22,11 +24,11 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                     {
                         $scope.param.userIdentifyNumber = $scope.param.accountInfo.identifyNumber;
                     }
-                    if($scope.param.accountInfo.bankCardInfo!=undefined)
-                    {
-                        $scope.param.userName = $scope.param.accountInfo.bankCardInfo.userName;
-                        $scope.param.bankCardNumber = $scope.param.accountInfo.bankCardInfo.bankCardNumber;
-                    }
+                })
+
+                GetUserInfo.get(function (data) {
+                    console.log(data);
+                    $scope.param.userIdentifyNumber = data.responseData.identifyNumber;
                 })
             });
 
@@ -34,10 +36,40 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                 $scope.param.withDrawAmount = ($scope.param.accountInfo.balance - $scope.param.accountInfo.balanceDeny).toFixed(0)-1;
             }
 
-            $scope.confirmWithDraw = function(){
+            $scope.getValidateCode = function(){
+                $scope.param.validateCodeButtonStatus = false;
+                $scope.param.timeCount = 60;
 
+                //每隔一秒执行
+                var timer= $interval(function(){
+                    $scope.param.timeCount--;
+                    if($scope.param.timeCount<0){
+                        $interval.cancel(timer);
+                        $scope.param.validateCodeButtonStatus = true;
+                    }
+                },1000);
+
+                GetUserValidateCode.get({mobile:$scope.param.userPhone},function(data){
+                    if(data.result == Global.FAILURE)
+                    {
+                        var alertPopup = $ionicPopup.alert({
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">验证码获取失败</span>',
+                            okText:'确定'
+                        });
+                    }
+                })
+            }
+
+            $scope.confirmWithDraw = function(){
                 if($scope.param.withDrawSwitch=='off')
                 {
+                    $ionicLoading.show({
+                        content: 'Loading',
+                        animation: 'fade-in',
+                        showBackdrop: true,
+                        maxWidth: 200,
+                        showDelay: 0
+                    });
                     $scope.param.withDrawSwitch='on';
                     if($scope.param.userIdentifyNumber!='')
                     {
@@ -47,6 +79,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                 template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">提现金额不能小于或者为0</span>',
                                 okText:'确定'
                             })
+                            $ionicLoading.hide();
                             $scope.param.withDrawSwitch='off';
                         }
                         else if($scope.param.withDrawAmount>$scope.param.accountInfo.balance - $scope.param.accountInfo.balanceDeny)
@@ -55,6 +88,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                 template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">提现金额不能大于最大提现额度</span>',
                                 okText:'确定'
                             });
+                            $ionicLoading.hide();
                             $scope.param.withDrawSwitch='off';
                         }
                         else if($scope.param.userIdentifyNumber==""
@@ -64,31 +98,34 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                 template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请完整的输入用户姓名、身份证、银行卡号和开户行地址</span>',
                                 okText:'确定'
                             });
+                            $ionicLoading.hide();
                             $scope.param.withDrawSwitch='off';
                         }
                         else
                         {
-                            WithDrawMoneyFromAccount.get({moneyAmount:$scope.param.withDrawAmount,
+                            WithDrawMoneyFromAccount.save({moneyAmount:$scope.param.withDrawAmount,
                                 identifyNumber:$scope.param.userIdentifyNumber,
-                                bankCardNumber:$scope.param.bankCardNumber,
+                                mobile:$scope.param.userPhone,
                                 userName:$scope.param.userName,
-                                bankCardAddress:$scope.param.bankAddress},function(data){
+                                validCode:$scope.param.validateCode},function(data){
                                 BusinessUtil.checkResponseData(data,'withDraw');
                                 if(data.result==Global.SUCCESS)
                                 {
-                                    $state.go("drawDetails");
-                                    $scope.param.withDrawSwitch='off';
+                                    $ionicLoading.hide();
+                                    if(data.errorInfo=="CHECK_WITHDRAW_AMOUNT")
+                                    {
+                                        $state.go("drawDetails",{"status":"check","withDrawAmount":$scope.param.withDrawAmount});
+                                    }
+                                    else
+                                    {
+                                        $state.go("drawDetails",{"status":"noCheck","withDrawAmount":$scope.param.withDrawAmount});
+                                    }
                                 }
                                 else
                                 {
-                                    if(data.errorInfo=="noIdentify")
-                                    {
-                                        var alertPopup = $ionicPopup.alert({
-                                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请输入身份证号码</span>',
-                                            okText:'确定'
-                                        });
-                                        $scope.param.withDrawSwitch='off';
-                                    }
+                                    $ionicLoading.hide();
+                                    $scope.param.withDrawSwitch='off';
+                                    alert(data.errorInfo);
                                 }
                             })
                         }

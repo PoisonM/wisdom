@@ -72,7 +72,7 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                  };
                  /*导出列表*/
                  $scope.educeLis=function () {
-                     if (confirm("是否筛选已完成的订单？")) {
+                     if (confirm("是否导出列表？")) {
                          var page = {
                              pageNo:$scope.pageNo,
                              pageSize:$scope.pageSize,

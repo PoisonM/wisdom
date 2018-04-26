@@ -13,7 +13,7 @@
 .addWraps .customerBox label{font-size:0.265rem;color: #333333;float: left;margin-left: 0.156rem}
 .addWraps .customerBox input{float: right;line-height: 0.781rem;;text-align: right;padding-right: 0.156rem ;font-size: 0.265rem}
 .addWraps .maleBox{float: right;color: #ffffff;margin-right:0.156rem }
-.addWraps .customerBox .p1{display: inline-block;background: #ff6666;width: 0.796875rem ;line-height: 0.359rem;text-align: center;border-radius: 0.1875rem;font-size:0.203125rem ;}
+.addWraps .customerBox .p1{display: inline-block;background: #eeeeee;width: 0.796875rem ;line-height: 0.359rem;text-align: center;border-radius: 0.1875rem;font-size:0.203125rem ;}
 .addWraps .customerBox .p1 img{width: 0.1875rem ; height: 0.203125rem;vertical-align: middle;margin-right:0.15625rem ; }
 .addWraps .customerBox img{width: 0.359rem;height: 0.4375rem;}
-.bgeee{background: #eeeeee!important;}
+.bgff6666{background: #ff6666!important;}

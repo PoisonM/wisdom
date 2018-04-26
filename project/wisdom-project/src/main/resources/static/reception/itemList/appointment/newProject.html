@@ -8,31 +8,33 @@
         <div class="searchArea">
          <div class="search">
              <span class="ser_ion"></span>
-             <input type="search" placeholder="可用项目名字搜索" class="br8 fs30">
+             <input type="search" placeholder="可用项目名字搜索" class="br8 fs30" ng-model="param.newProductObject.filterStr" ng-change="newProductSearch()">
          </div>
      </div>
-        <div>
-            <div ng-show="param.newProductObject.titleFlag">
-                <p class="fs34 color333 h70 bgeee pl30" >面部</p>
-                <ul class="bgfff">
-                    <li class="h100 space-between bte5" ng-repeat = "item in [0,1,2]" ng-click="selectTheProduct($index,'本店项目')">
-                        <P><img ng-src=" {{param.ModifyAppointmentObject.productIndex[$index+3]==true?'images/bt_Single%20election_select.png':'images/bt_Single%20election_nor_.png'}}" class="singleSelsectPic ml30 mr20">
-                        <span class="fs30 color333">安娜</span>
-                        </P>
-                        <P><span class="colff6666 fs28 mr30">剩余3次</span></P>
-                    </li>
-
-                </ul>
+        <div >
+            <div ng-repeat = "item in param.newProductObject.selfProductData" ng-show="param.newProductObject.titleFlag">
+                <div  ng-repeat="(key,val) in item">
+                    <p class="fs34 color333 h70 bgeee pl30" >{{key}}</p>
+                    <ul class="bgfff" >
+                        <li class="h100 space-between bte5 "  ng-repeat="(index,items) in val" ng-click="selectTheProduct(index,'本店项目')" >
+                            <P class="" ><img ng-src=" {{param.ModifyAppointmentObject.selfProductDataFlag[$index]==true?'images/bt_Single%20election_select.png':'images/bt_Single%20election_nor_.png'}}" class="singleSelsectPic ml30 mr20">
+                                <span class="fs30 color333 selfProductDataIndex" id="selfProductDataIndex" projectName="{{items.projectName}}" shopProjectId="{{items.id}}" appointPeriod="{{items.projectDuration}}">{{items.projectName}}</span>
+                            </P>
+                            <P><span class="colff6666 fs28 mr30">剩余{{items.maxContainTimes}}次</span></P>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
             <ul ng-show="param.newProductObject.content" class="bgfff">
-                <li class="h100 space-between bte5" ng-repeat = "item in [0,1,2]" ng-click="selectTheProduct($index,'疗程')" ng-click="selectTheProduct($index,'疗程')">
-                    <P><img ng-src=" {{param.ModifyAppointmentObject.productIndex[$index]==true?'images/bt_Single%20election_select.png':'images/bt_Single%20election_nor_.png'}}" class="singleSelsectPic ml30 mr20">
-                        <span class="fs30 color333">安娜</span>
+
+                <li class="h100 space-between bte5" ng-repeat = "(index,item) in param.newProductObject.newProjectData" ng-click="selectTheProduct($index,'疗程',item.projectDuration)" >
+                    <P><img ng-src=" {{param.ModifyAppointmentObject.newProjectDataFlag[$index]==true?'images/bt_Single%20election_select.png':'images/bt_Single%20election_nor_.png'}}" class="singleSelsectPic ml30 mr20">
+                        <span class="fs30 color333 newProjectIndex" projectName="{{item.projectName}}" shopProjectId="{{item.id}}" appointPeriod="{{item.projectDuration}}">{{item.projectName}}123</span>
                     </P>
-                    <P><span class="colff6666 fs28 mr30">剩余3次</span></P>
+                    <P><span class="colff6666 fs28 mr30">剩余{{item.maxContainTimes}}次</span></P>
                 </li>
 
             </ul>
         </div>
     </div>
-    <!--images/bt_Single%20election_select.png-->

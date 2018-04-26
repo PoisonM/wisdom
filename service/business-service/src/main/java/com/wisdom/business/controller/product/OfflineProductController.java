@@ -45,9 +45,9 @@ public class OfflineProductController {
 														HttpSession session,
 														HttpServletRequest request) {
 		ResponseDTO<List<ProductDTO>> responseDTO = new ResponseDTO<>();
-		logger.info("input getOfflineProductList===" + pageParamDTO);
+		logger.info("获取微商城的产品列表===" + pageParamDTO);
 		List<ProductDTO> productDTOList = offlineProductService.findOfflineProductList(pageParamDTO);
-		logger.info("output getOfflineProductList===" + productDTOList);
+		logger.info("查询到的微商城商品列表===" + productDTOList);
 		responseDTO.setResponseData(productDTOList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
@@ -80,7 +80,9 @@ public class OfflineProductController {
 	@ResponseBody
 	ResponseDTO<ProductDTO<OfflineProductDTO>> getOfflineProductDetail(@RequestParam String productId) {
 		ResponseDTO<ProductDTO<OfflineProductDTO>> responseDTO = new ResponseDTO<>();
+		logger.info("获取微商城的某个商品详情===" + productId);
 		ProductDTO<OfflineProductDTO> offlineProductDTO = offlineProductService.getOfflineProductDetailById(productId);
+		logger.info("得到微商城的某个商品详情===" + offlineProductDTO);
 		responseDTO.setResponseData(offlineProductDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;

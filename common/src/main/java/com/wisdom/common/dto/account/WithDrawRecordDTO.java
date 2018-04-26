@@ -101,6 +101,9 @@ public class WithDrawRecordDTO {
     @JSONField(name = "bankCardAddress")
     private String bankCardAddress;
 
+    @JSONField(name = "validCode")
+    private String validCode;
+
     public String getId() {
         return id;
     }
@@ -227,5 +230,13 @@ public class WithDrawRecordDTO {
 
     public void setBankCardAddress(String bankCardAddress) {
         this.bankCardAddress = bankCardAddress;
+    }
+
+    public String getValidCode() {
+        return validCode;
+    }
+
+    public void setValidCode(String validCode) {
+        this.validCode = validCode;
     }
 }

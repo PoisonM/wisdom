@@ -266,27 +266,27 @@ public class BusinessRunTimeService {
             float returnMonthlyMoney_A = 0;
             float returnMonthlyMoney_B = 0;
 
-//            String startDate = "";
-//            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"26";
-//            if(DateUtils.getMonth().equals("01"))
-//            {
-//                int month = 11;
-//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-//                startDate = year + "-" + month + "-26";
-//            }
-//            else if(DateUtils.getMonth().equals("02"))
-//            {
-//                int month = 12;
-//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-//                startDate = year + "-" + month + "-26";
-//            }
-//            else{
-//                int month = Integer.parseInt(DateUtils.getMonth()) - 2;
-//                startDate = DateUtils.getYear() + "-" + month + "-26";
-//            }
+            String startDate = "";
+            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"15";
+            if(DateUtils.getMonth().equals("01"))
+            {
+                int month = 11;
+                int year = Integer.parseInt(DateUtils.getYear()) - 1;
+                startDate = year + "-" + month + "-26";
+            }
+            else if(DateUtils.getMonth().equals("02"))
+            {
+                int month = 12;
+                int year = Integer.parseInt(DateUtils.getYear()) - 1;
+                startDate = year + "-" + month + "-26";
+            }
+            else{
+                int month = Integer.parseInt(DateUtils.getMonth()) - 2;
+                startDate = DateUtils.getYear() + "-" + month + "-26";
+            }
 
-            String startDate = "2018-03-26";
-            String endDate = "2018-04-14";
+//            String startDate = "2018-03-26";
+//            String endDate = "2018-04-15";
 
             List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
 
@@ -336,8 +336,8 @@ public class BusinessRunTimeService {
                 incomeRecordDTO.setNextUserMobile("");
                 incomeRecordDTO.setParentRelation("");
                 businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+                WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
             }
-            WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
         }
     }
 
@@ -378,7 +378,7 @@ public class BusinessRunTimeService {
                 }
             }
 
-            if((recommendBNum+recommendANum)>=20)
+            if((recommendBNum+recommendANum)>=ConfigConstant.RECOMMEND_USER_NUM_REWARD)
             {
                 promoteAFlag = true;
             }
@@ -417,7 +417,9 @@ public class BusinessRunTimeService {
                 //给用户495的即时奖励
                 AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
                 float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
+                float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
                 accountDTO.setBalance(balance);
+                accountDTO.setBalanceDeny(balanceDeny);
                 businessServiceClient.updateUserAccountInfo(accountDTO);
 
                 IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
@@ -469,28 +471,8 @@ public class BusinessRunTimeService {
             List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
             if(userBusinessTypeDTOS.size()>0)
             {
-                break;
-            }
-
-            //根据transactionId查询orderId，根据orderId查询business_order
-            PayRecordDTO payRecordDTO = new PayRecordDTO();
-            payRecordDTO.setTransactionId(incomeRecord.getTransactionId());
-            List<PayRecordDTO> payRecordDTOList =  businessServiceClient.getUserPayRecordList(payRecordDTO);
-
-            if(payRecordDTOList.size()==0)
-            {
-                break;
-            }
-
-            //判断某笔交易下订单是否都已经收货
-            for(PayRecordDTO payRecord : payRecordDTOList)
-            {
-                BusinessOrderDTO businessOrderDTO = businessServiceClient.getBusinessOrderByOrderId(payRecord.getOrderId());
-                if(!businessOrderDTO.getStatus().equals("2")&&!businessOrderDTO.getStatus().equals("5"))//5代表已退货
-                {
-                    businessFlag = false;
-                    break;
-                }
+                businessFlag = false;
+                continue;
             }
 
             //判断此记录，是否财务和运营人员，都已经审核通过

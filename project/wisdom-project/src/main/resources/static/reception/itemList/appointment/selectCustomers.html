@@ -1,10 +1,14 @@
 <div class="customerDown">
   <div class="customerSearch">
       <span class="ser_ion"></span>
-      <input type="text" placeholder="名字/手机号" class="fs30 col999">
+      <input type="text" placeholder="名字/手机号" class="fs30 col999" ng-model="param.selectCustomersObject.queryField" ng-change="searchCustomer()">
       <ul class="customer bblr bbrr">
-          <li  ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11]" class="searchName fs34 col333" ng-click="selectTheCustomer($index,item)" ng-class="{'bg':$index==param.ModifyAppointmentObject.customerIndex}">
-              安娜
+          <li  ng-repeat="item in param.selectCustomersObject.data" class=" fs34 col333"  ng-class="{'bg':$index==param.ModifyAppointmentObject.customerIndex}" >
+              <div  ng-repeat="(key,val) in item" >
+                  <p class="searchNameTitle bgeeeeee">{{key}}</p>
+                  <p class="searchName" ng-repeat="items in val" ng-click="selectTheCustomer($index,items.sysUserName,items.sysUserId,items.phone)">{{items.sysUserName}}</p>
+              </div>
+
           </li>
       </ul>
   </div>
