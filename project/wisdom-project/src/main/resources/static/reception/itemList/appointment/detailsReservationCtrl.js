@@ -1,10 +1,76 @@
 function detailsReservation($scope,ngDialog){
+    var singleByUserId  = {
+        "result":"0x00001",
+        "errorInfo":null,
+        "responseData":[
+            {
+                "id":"2",
+                "shopAppointmentId":"1",
+                "sysUserId":"2",
+                "useStyle":"2",
+                "sysShopId":"2",
+                "sysShopName":"汉方美容院2",
+                "sysShopProjectId":"2",
+                "sysShopProjectName":"汉方项目2",
+                "sysShopProjectInitAmount":"123",
+                "sysShopProjectSurplusAmount":null,
+                "sysShopProjectSurplusTimes":null,
+                "sysShopProjectInitTimes":null,
+                "createBy":null,
+                "createDate":null,
+                "updateUser":null,
+                "updateDate":null
+            }
+        ]
+    };
+    var treatmentCardByUserId = {
+        "result":"0x00001",
+        "errorInfo":null,
+        "responseData":[
+            {
+                "id":"2",
+                "shopAppointmentId":"1",
+                "sysUserId":"2",
+                "useStyle":"2",
+                "sysShopId":"2",
+                "sysShopName":"汉方美容院2",
+                "sysShopProjectId":"2",
+                "sysShopProjectName":"汉方项目2",
+                "sysShopProjectInitAmount":"123",
+                "sysShopProjectSurplusAmount":null,
+                "sysShopProjectSurplusTimes":null,
+                "sysShopProjectInitTimes":null,
+                "createBy":null,
+                "createDate":null,
+                "updateUser":null,
+                "updateDate":null
+            }
+        ]
+    };
+
+    $scope.SingeTreatmentCardProductCollectionCard = function(){
+        /*{
+            sysUserId:$scope.param.consumptionObj.sysUserId,
+            sysShopId:$scope.param.consumptionObj.sysShopId ,
+            cardStyle:1
+        }*/   /*单次参数*/
+        $scope.param.consumptionObj.singleByUserId = singleByUserId.responseData;
+        /*{
+         sysUserId:$scope.param.consumptionObj.sysUserId,
+         sysShopId:$scope.param.consumptionObj.sysShopId ,
+         cardStyle:0
+         }*/   /*疗程卡参数*/
+        $scope.param.consumptionObj.treatmentCardByUserId = treatmentCardByUserId.responseData;
+
+
+    }
     $scope.goConsumption = function(status){
-        if(status == "去消费"){
+        if(status == "消费"){
             ngDialog.open({
                 template: 'consumption',
                 scope: $scope,
                 controller: ['$scope', '$interval', function($scope, $interval) {
+                    $scope.SingeTreatmentCardProductCollectionCard()
                     $scope.close = function() {
                         $scope.closeThisDialog();
                     };
@@ -49,8 +115,8 @@ function detailsReservation($scope,ngDialog){
     };
   /*修改预约*/
     $scope.modifyingAppointment = function(){
-        $scope.param.AppointmentType="长客";
-        $scope.param.appointmentNew = "no";
+        /*$scope.param.AppointmentType="长客";
+        $scope.param.appointmentNew = "no";*/
         $scope.param.cancellationFlag = true;
         ngDialog.open({
             template: 'modifyingAppointment',
@@ -65,7 +131,7 @@ function detailsReservation($scope,ngDialog){
         });
 
     }
-    $scope.modifyingAppointmentIndivdual = function(){
+    /*$scope.modifyingAppointmentIndivdual = function(){
         $scope.param.appointmentNew = "no";
         $scope.param.cancellationFlag = true;
         ngDialog.open({
@@ -82,7 +148,7 @@ function detailsReservation($scope,ngDialog){
         });
         $scope.param.AppointmentType="散客"
     };
-
+*/
     modifyingAppointmentPage && modifyingAppointmentPage ($scope,ngDialog);
 
 
