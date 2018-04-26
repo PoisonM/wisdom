@@ -127,7 +127,7 @@ public class IncomeManagementController {
 
 				String nextUserId = payRecordDTOList.get(0).getSysUserId();
 
-				String nextUserType = getUserType(incomeRecord.getCreateDate(),incomeRecord.getSysUserId());
+				String nextUserType = getUserType(incomeRecord.getCreateDate(),nextUserId);
 
 				UserInfoDTO nextUserInfoDTO = userServiceClient.getUserInfoFromUserId(nextUserId);
 				incomeRecord.setNextUserId(nextUserId);

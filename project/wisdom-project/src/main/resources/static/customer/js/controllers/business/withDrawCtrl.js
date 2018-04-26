@@ -1,8 +1,8 @@
 angular.module('controllers',[]).controller('withDrawCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','BusinessUtil','GetUserInfo',
-        'WithDrawMoneyFromAccount','$ionicPopup','$interval','GetUserValidateCode',
+        'WithDrawMoneyFromAccount','$ionicPopup','$interval','GetUserValidateCode','$ionicLoading',
         function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,BusinessUtil,GetUserInfo,
-                  WithDrawMoneyFromAccount,$ionicPopup,$interval,GetUserValidateCode) {
+                  WithDrawMoneyFromAccount,$ionicPopup,$interval,GetUserValidateCode,$ionicLoading) {
 
             $rootScope.title = "提现";
 
@@ -61,9 +61,15 @@ angular.module('controllers',[]).controller('withDrawCtrl',
             }
 
             $scope.confirmWithDraw = function(){
-
                 if($scope.param.withDrawSwitch=='off')
                 {
+                    $ionicLoading.show({
+                        content: 'Loading',
+                        animation: 'fade-in',
+                        showBackdrop: true,
+                        maxWidth: 200,
+                        showDelay: 0
+                    });
                     $scope.param.withDrawSwitch='on';
                     if($scope.param.userIdentifyNumber!='')
                     {
@@ -73,6 +79,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                 template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">提现金额不能小于或者为0</span>',
                                 okText:'确定'
                             })
+                            $ionicLoading.hide();
                             $scope.param.withDrawSwitch='off';
                         }
                         else if($scope.param.withDrawAmount>$scope.param.accountInfo.balance - $scope.param.accountInfo.balanceDeny)
@@ -81,6 +88,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                 template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">提现金额不能大于最大提现额度</span>',
                                 okText:'确定'
                             });
+                            $ionicLoading.hide();
                             $scope.param.withDrawSwitch='off';
                         }
                         else if($scope.param.userIdentifyNumber==""
@@ -90,6 +98,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                 template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请完整的输入用户姓名、身份证、银行卡号和开户行地址</span>',
                                 okText:'确定'
                             });
+                            $ionicLoading.hide();
                             $scope.param.withDrawSwitch='off';
                         }
                         else
@@ -102,6 +111,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                 BusinessUtil.checkResponseData(data,'withDraw');
                                 if(data.result==Global.SUCCESS)
                                 {
+                                    $ionicLoading.hide();
                                     if(data.errorInfo=="CHECK_WITHDRAW_AMOUNT")
                                     {
                                         $state.go("drawDetails",{"status":"check","withDrawAmount":$scope.param.withDrawAmount});
@@ -110,10 +120,10 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                                     {
                                         $state.go("drawDetails",{"status":"noCheck","withDrawAmount":$scope.param.withDrawAmount});
                                     }
-                                    $scope.param.withDrawSwitch='off';
                                 }
                                 else
                                 {
+                                    $ionicLoading.hide();
                                     $scope.param.withDrawSwitch='off';
                                     alert(data.errorInfo);
                                 }

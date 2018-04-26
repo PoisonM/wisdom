@@ -108,7 +108,7 @@ public enum ConfigConstant {
 
     public static final String operationMember = "operation-1";
 
-    public static final int MAX_WITHDRAW_NUM = 1;
+    public static final int MAX_WITHDRAW_NUM = 1000;
 
 	public static final int MAX_WITHDRAW_AMOUNT = 5000;
 

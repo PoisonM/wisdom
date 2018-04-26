@@ -183,7 +183,7 @@ public class WithDrawService {
         returnMoneyToUser(withDrawRecordDTO.getMoneyAmount(),request,withDrawRecordDTO.getUserOpenId(),token);
     }
 
-    private static void returnMoneyToUser(float moneyAmount,HttpServletRequest request, String openid,String token) throws Exception {
+    private static void returnMoneyToUser(float moneyAmount, HttpServletRequest request, String openid, String token) throws Exception {
         //公众号中的提现操作，moneyAmount为提现金额
         int returnMoney = (int) moneyAmount*100;
 
