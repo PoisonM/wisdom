@@ -12,6 +12,8 @@ import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.*;
 import com.wisdom.common.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -57,17 +59,21 @@ public class PayCoreService {
     @Autowired
     private UserTypeMapper userTypeMapper;
 
+    Logger logger = LoggerFactory.getLogger(PayCoreService.class);
+
     private static ExecutorService threadExecutorSingle = Executors.newSingleThreadExecutor();
 
     @Transactional(rollbackFor = Exception.class)
     public void handleProductPayNotifyInfo(PayRecordDTO payRecordDTO,String notifyType) {
 
-        RedisLock redisLock = new RedisLock("userPay" + payRecordDTO.getOutTradeNo());
+        logger.info("处理微信平台推送的支付成功消息=="+payRecordDTO);
 
-        List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
+        RedisLock redisLock = new RedisLock("userPay" + payRecordDTO.getOutTradeNo());
 
         try {
             redisLock.lock();
+
+            List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
 
             payFunction.processPayStatus(payRecordDTOList);
 
@@ -110,17 +116,22 @@ public class PayCoreService {
                 //todo 开启A、B店的规则，给不同的用户给与不同的金额入账，此处涉及到修改用户的account表和income表
                 UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(instanceReturnMoneySignalDTO.getSysUserId());
 
+                logger.info("根据支付交易，处理及时返利=="+instanceReturnMoneySignalDTO);
                 handleInstanceReturnMoney(userInfoDTO,instanceReturnMoneySignalDTO);
 
                 float expenseMoney = calculateUserExpenseMoney(instanceReturnMoneySignalDTO);
+                logger.info("获取支付交易的消费金额=="+expenseMoney);
 
+                logger.info("进行月度流水统计");
                 if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1))
                 {
                     payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
                 }
 
+                logger.info("根据消费金额处理用户的等级提升=="+userInfoDTO.getMobile());
                 handleUserLevelPromotion(userInfoDTO,expenseMoney);
 
+                logger.info("处理用户消费特殊商品后的等级提升=="+userInfoDTO.getMobile());
                 handleUserLevelPromotionInSpecialActivity(userInfoDTO,expenseMoney,instanceReturnMoneySignalDTO);
 
                 handleSpecialActivitySignal(userInfoDTO,instanceReturnMoneySignalDTO);
@@ -366,7 +377,7 @@ public class PayCoreService {
     }
 
     //对用户的级别进行解冻处理
-    public void deFrozenUserType(UserInfoDTO userInfoDTO) {
+    private void deFrozenUserType(UserInfoDTO userInfoDTO) {
         UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
         userBusinessTypeDTO.setSysUserId(userInfoDTO.getId());
         userBusinessTypeDTO.setStatus("2");

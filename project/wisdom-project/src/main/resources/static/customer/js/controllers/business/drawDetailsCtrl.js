@@ -5,6 +5,9 @@ angular.module('controllers',[]).controller('drawDetailsCtrl',
     ['$scope','$rootScope','$stateParams','$state',
         function ($scope,$rootScope,$stateParams,$state) {
 
-            $rootScope.title = "";
+            $scope.param = {
+                status:$stateParams.status,
+                withDrawAmount:$stateParams.withDrawAmount
+            }
 
         }])
