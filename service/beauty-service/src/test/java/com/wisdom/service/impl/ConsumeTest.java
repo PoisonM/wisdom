@@ -1,11 +1,13 @@
 package com.wisdom.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.PayTypeEnum;
+import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
@@ -18,15 +20,21 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by 赵得良 on 21/09/2016.
@@ -50,6 +58,33 @@ public class ConsumeTest {
     public void setupMockMvc() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
         SpringUtil.setApplicationContext(context);
+    }
+
+    /**
+     * 用户划卡
+     *
+     * @throws Exception
+     */
+    @Test
+    public void consumeCourseCard() throws Exception {
+        List<ShopUserConsumeDTO> shopUserConsumeDTO = new ArrayList<>();
+        ShopUserConsumeDTO consumeDTO = new ShopUserConsumeDTO();
+        consumeDTO.setClerkId("1");
+        consumeDTO.setConsumeId("6a06eb1c040447ea8c33617f0111468b");
+        consumeDTO.setConsumePrice(new BigDecimal(100));
+        consumeDTO.setConsumeNum(12);
+        shopUserConsumeDTO.add(consumeDTO);
+
+        String toJSONString = JSONObject.toJSONString(shopUserConsumeDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/consumes/consumeCourseCard").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
     }
 
     /**

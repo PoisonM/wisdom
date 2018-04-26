@@ -70,7 +70,7 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //备注
     private String detail;
 
-    //是否有效
+    //是否有效 0 有效  1无效
     private String status;
 
     //
