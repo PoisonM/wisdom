@@ -89,7 +89,15 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                     }else if( $scope.IncomeList[i].status == "del"){
                                         $scope.IncomeList[i].status = "订单已删除"
                                     }
-
+                                }
+                                for(var i=0;i<$scope.user.length;i++){
+                                    if($scope.user[i].parentRelation.indexOf("business") !=-1 ){
+                                        $scope.user[i].parentRelation = "直接关系"
+                                    }else if($scope.user[i].parentRelation.indexOf("A1") !=1 || $scope.user[i].parentRelation.indexOf("B1") !=1){
+                                        $scope.user[i].parentRelation = "间接关系"
+                                    }else if($scope.user[i].parentRelation.indexOf("self") !=1){
+                                        $scope.user[i].parentRelation = "本人"
+                                    }
                                 }
 
                             }
@@ -102,7 +110,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 
                     /* $state.go("forthwithAward",{transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status})*/
                 }else if($scope.status=="month"){
-                    $state.go("abschluss",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status,checkStatus:$stateParams.checkStatus})
+                    $state.go("abschluss",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status,checkStatus:$scope.checkStatus})
                 }
             };
             $scope.orderIdFun = function(MonthlyBalanceLis){
@@ -310,7 +318,6 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             /*审核*/
             $scope.examine=function (id) {
                 $scope.auditFlag = !$scope.auditFlag;
-                console.log($scope.auditFlag)
                 $scope.auditChange = function(status){
                     $scope.auditFlag = false;
                     CheckIncomeRecordManagement.get({
