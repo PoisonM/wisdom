@@ -50,7 +50,18 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetShopUserArchivesInfoByUserId', ['$resource', function($resource) {
         return $resource(IP + 'archives/getShopUserArchivesInfoByUserId')
     }])
-
+    //日预约请求接口
+    .factory('ShopDayAppointmentInfoByDate', ['$resource', function($resource) {
+        return $resource(IP + 'appointmentInfo/shopDayAppointmentInfoByDate')
+    }])
+    //根据预约主键查询预约项目
+    .factory('GetUserCardProjectList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getUserCardProjectList',{ appointmentId: '@id' })
+    }])
+    //根据预约主键获取预约详情
+    .factory('GetAppointmentInfoById', ['$resource', function($resource) {
+        return $resource(IP + 'appointmentInfo/getAppointmentInfoById',{ appointmentId: '@id' })
+    }])
 
 
 
