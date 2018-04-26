@@ -10,9 +10,6 @@ public class SysUserAccountDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
-    //流水号
-    private String flowNo;
-
     //总金额
     private BigDecimal sumAmount;
 
@@ -27,9 +24,6 @@ public class SysUserAccountDTO extends BaseEntity implements Serializable {
 
     //用户ID
     private String sysUserId;
-
-    //
-    private String shopUserArchivesId;
 
     //账户号
     private String accountNumber;
@@ -54,14 +48,6 @@ public class SysUserAccountDTO extends BaseEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getFlowNo() {
-        return flowNo;
-    }
-
-    public void setFlowNo(String flowNo) {
-        this.flowNo = flowNo;
     }
 
     public BigDecimal getSumAmount() {
@@ -102,14 +88,6 @@ public class SysUserAccountDTO extends BaseEntity implements Serializable {
 
     public void setSysUserId(String sysUserId) {
         this.sysUserId = sysUserId;
-    }
-
-    public String getShopUserArchivesId() {
-        return shopUserArchivesId;
-    }
-
-    public void setShopUserArchivesId(String shopUserArchivesId) {
-        this.shopUserArchivesId = shopUserArchivesId;
     }
 
     public String getAccountNumber() {

@@ -23,15 +23,15 @@ public class BaseEntity implements Serializable {
      */
     private static final long serialVersionUID = 2249325746951841661L;
 
-    /** 访问控制器,序列化的时候,不做处理 */
-    private transient ThreadLocal<BaseEntity> visitor = new ThreadLocal<BaseEntity>() {
-
-        @Override
-        protected BaseEntity initialValue() {
-            return null;
-        }
-
-    };
+//    /** 访问控制器,序列化的时候,不做处理 */
+//    private transient ThreadLocal<BaseEntity> visitor = new ThreadLocal<BaseEntity>() {
+//
+//        @Override
+//        protected BaseEntity initialValue() {
+//            return null;
+//        }
+//
+//    };
 
     /** 简单名称 */
     private String simpleName = getClass().getSimpleName();
@@ -41,7 +41,8 @@ public class BaseEntity implements Serializable {
      *
      * @return String 返回字符串
      */
-    private String toString0() {
+    @Override
+    public String toString() {
         try {
             //PropertyDescriptor[] props = Introspector.getBeanInfo(getClass(), Object.class).getPropertyDescriptors();
             PropertyDescriptor[] props = BeanUtils.getPropertyDescriptors(getClass());
@@ -113,22 +114,23 @@ public class BaseEntity implements Serializable {
 
         return super.toString();
     }
-
     /*
      * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
-    public String toString() {
-        if (visitor.get() == null) {
-            visitor.set(this);
-            try {
-                return toString0();
-            }
-            finally {
-                visitor.set(null);
-            }
-        }
-        return simpleName + "@" + Integer.toHexString(hashCode());
-    }
+//    @Override
+//    public String toString() {
+//        if (visitor.get() == null) {
+//            visitor.set(this);
+//            try {
+//                return toString0();
+//            }
+//            finally {
+//                visitor.set(null);
+//            }
+//        }
+//        return simpleName + "@" + Integer.toHexString(hashCode());
+//    }
+
+
 }
