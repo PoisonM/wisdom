@@ -15,6 +15,9 @@ public class ShopUserPayDTO {
 
     //创建时间
     private Date createDate;
+
+    //签字地址
+    private String signUrl;
     /**
      * BANK_PAY("0", "银行卡支付"),
      * WECHAT_PAY("1", "微信支付"),
@@ -28,6 +31,14 @@ public class ShopUserPayDTO {
 
     //剩余支付金额
     private String surplusPayPrice;
+
+    public String getSignUrl() {
+        return signUrl;
+    }
+
+    public void setSignUrl(String signUrl) {
+        this.signUrl = signUrl;
+    }
 
     //用户与充值卡的关系
     private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;

@@ -101,4 +101,29 @@ public class PayTest {
         System.out.println(result.getResponse().getContentAsString());
     }
 
+    /**
+     * 用户签字确认接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void paySignConfirm() throws Exception {
+
+        ShopUserPayDTO shopUserPayDTO = new ShopUserPayDTO();
+        shopUserPayDTO.setOrderId("20180424200819402");
+        shopUserPayDTO.setSignUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1524733023679&di=1f09aa7db917eadb7e86e880bdc67f36&imgtype=0&src=http%3A%2F%2Fd9.yihaodianimg.com%2FN04%2FM06%2F31%2F37%2FCgQDr1OpPFKAAmDlAAEftCRsH7g04201_600x600.jpg");
+
+        String toJSONString = JSONObject.toJSONString(shopUserPayDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/userPay/paySignConfirm").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+
 }

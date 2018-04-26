@@ -175,8 +175,14 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     dto.setId(uuid);
                     dto.setSysShopName(dto.getSysShopName());
                     dto.setSysShopId(clerkInfo.getSysShopId());
-                    dto.setSysShopProjectSurplusTimes(dto.getSysShopProjectInitTimes());
-                    dto.setSysShopProjectSurplusAmount(dto.getSysShopProjectInitAmount());
+                    //如果是次卡的话
+                    if (GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getUseStyle())) {
+                        dto.setSysShopProjectSurplusAmount(new BigDecimal(0));
+                        dto.setSysShopProjectSurplusTimes(0);
+                    } else {
+                        dto.setSysShopProjectSurplusAmount(dto.getSysShopProjectInitAmount());
+                        dto.setSysShopProjectSurplusTimes(dto.getSysShopProjectInitTimes());
+                    }
                     dto.setCreateDate(new Date());
                     logger.info("订单号={}，生成用户跟项目的关系={}", orderId, dto);
                     shopProjectService.saveUserProjectRelation(dto);
