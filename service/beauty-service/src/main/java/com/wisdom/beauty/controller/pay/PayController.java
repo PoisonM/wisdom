@@ -53,7 +53,7 @@ public class PayController {
 
         long currentTimeMillis = System.currentTimeMillis();
 
-        logger.info("用户支付接口传入参数={}", "shopUserPayDTO = [" + shopUserPayDTO + "]");
+        logger.info("用户支付接口传入参数={}", "shopUserPayDTO = [" + shopUserPayDTO.toString() + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
 
@@ -62,7 +62,6 @@ public class PayController {
 
         int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO, shopUserPayDTO, clerkInfo);
 
-        responseDTO.setResponseData(shopUserOrderDTO);
         responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 
         logger.info("用户支付接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);

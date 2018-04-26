@@ -1,6 +1,6 @@
 package com.wisdom.beauty.core.service;
 
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
@@ -18,10 +18,10 @@ public interface ShopUserConsumeService {
     /**
      * 用户消费充值卡信息
      *
-     * @param shopUserConsumeRecordDTO
+     * @param userRechargeCardDTO
      * @return
      */
-    int userConsumeRechargeCard(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+    int userConsumeRechargeCard(ShopUserRechargeCardDTO userRechargeCardDTO);
 
     /**
      * 用户充值操作
