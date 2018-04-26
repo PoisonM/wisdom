@@ -3,8 +3,9 @@ package com.wisdom.beauty.api.enums;
 public enum OrderStatusEnum {
 
     NOT_PAY("0", "未支付"),
-    ALREADY_PAY("1", "已支付"),
-    INVALID("2", "已失效"),;
+    WAIT_PAY("1", "待支付"),
+    ALREADY_PAY("2", "已支付"),
+    INVALID("3", "已失效");
 
     OrderStatusEnum(String code, String desc) {
         this.code = code;

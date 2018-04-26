@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,13 +53,47 @@ public class OrderTest {
     }
 
     /**
-     * 保存用户订单信息
+     * 查询用户最近一次订单信息
+     */
+    /**
+     * 删除档案信息
      *
      * @throws Exception
      */
     @Test
-    public void testDeleteArchiveInfo() throws Exception {
+    public void getShopUserRecentlyOrderInfo() throws Exception {
 
+        MvcResult result = mvc.perform(get("/orderInfo/getShopUserRecentlyOrderInfo").param("shopUserArchivesId", "1"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    /**
+     * 更新用户订单信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void updateShopUserOrderInfo() throws Exception {
+
+        ShopUserOrderDTO shopUserOrderDTO = getShopUserOrderDTO();
+
+        String toJSONString = JSONObject.toJSONString(shopUserOrderDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/orderInfo/saveShopUserOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    private ShopUserOrderDTO getShopUserOrderDTO() {
         ShopUserOrderDTO shopUserOrderDTO = new ShopUserOrderDTO();
         shopUserOrderDTO.setExprDate(new Date());
         shopUserOrderDTO.setDetail("备注");
@@ -80,12 +116,26 @@ public class OrderTest {
         ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = getShopUserProjectGroupRelRelationDTO();
         projectGroupRelRelationDTOS.add(groupRelRelationDTO);
         shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
+        return shopUserOrderDTO;
+    }
 
+
+    /**
+     * 保存用户订单信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSaveShopUserOrderInfo() throws Exception {
+
+        ShopUserOrderDTO shopUserOrderDTO = getShopUserOrderDTO();
+        shopUserOrderDTO.setOrderId("20180424200819402");
+        shopUserOrderDTO.setStatus(OrderStatusEnum.WAIT_PAY.getCode());
         String toJSONString = JSONObject.toJSONString(shopUserOrderDTO);
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/orderInfo/saveShopUserOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/orderInfo/updateShopUserOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

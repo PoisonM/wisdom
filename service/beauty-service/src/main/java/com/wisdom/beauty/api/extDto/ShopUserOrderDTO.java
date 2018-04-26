@@ -4,21 +4,26 @@ import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.common.entity.BaseEntity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class ShopUserOrderDTO {
+public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //订单失效日期
     private Date exprDate;
 
-    //订单状态 1、未支付  2、已支付  3、已失效
+    //订单状态 1、未支付 2、待支付  2、已支付  3、已失效
     private String status;
     //订单号
     private String orderId;
     //美容店主键
     private String shopId;
+
+    //用户id
+    private String userId;
 
     //档案表主键
     private String shopUserArchivesId;
@@ -43,6 +48,14 @@ public class ShopUserOrderDTO {
 
     //用户与充值卡的关系
     private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getSignUrl() {
         return signUrl;

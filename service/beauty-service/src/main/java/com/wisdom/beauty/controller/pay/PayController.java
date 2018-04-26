@@ -45,11 +45,11 @@ public class PayController {
      * @param shopUserPayDTO
      * @return
      */
-    @RequestMapping(value = "shopUserPay", method = {RequestMethod.POST})
+    @RequestMapping(value = "userPayOpe", method = {RequestMethod.POST})
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<ShopUserOrderDTO> shopUserPay(@RequestBody ShopUserPayDTO shopUserPayDTO) {
+    ResponseDTO<ShopUserOrderDTO> userPayOpe(@RequestBody ShopUserPayDTO shopUserPayDTO) {
 
         long currentTimeMillis = System.currentTimeMillis();
 
