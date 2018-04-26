@@ -58,6 +58,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         footerBoxFlag:true
     }
     /*--------------------------------------方法-------------------------------------------------*/
+
     $scope.switchType = function (type) {
         $scope.param.tabSty = type
     }

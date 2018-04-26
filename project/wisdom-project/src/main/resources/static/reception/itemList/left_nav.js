@@ -1,4 +1,4 @@
-PADWeb.controller("left_navCtrl", function($scope, $state, $stateParams) {
+PADWeb.controller("left_navCtrl", function($scope, $state,FindArchives) {
     console.log("left_navCtrl")
     $scope.mainLeftSwitch = {
         peopleListFlag:false,
@@ -11,13 +11,20 @@ PADWeb.controller("left_navCtrl", function($scope, $state, $stateParams) {
         selectSty:"1",
         priceType:"xm"
     }
+    /*获取档案列表*/
+    FindArchives.get({
+        queryField:"",
+        pageNo:"1",
+        pageSize:"1"
+    },function (data) {
 
+    })
 
     /*-------------------------------方法-------------------------------------------*/
     //
-    $scope.selectSty = function (index) {
+   /* $scope.selectSty = function (index) {
         $scope.param.selectSty = index
-    }
+    }*/
     //价目表切换
     $scope.selectPriceType = function (type) {
         $scope.param.priceType = type
