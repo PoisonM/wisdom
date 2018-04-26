@@ -82,7 +82,7 @@ public class IncomeController {
 				return responseDTO;
 			}
 			//插入操作人的类型,运营人员/财务人员,根据此条件查询相应结果
-			pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
+			//pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
 		}
 		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeRecordByPageParam(pageParamVoDTO);
 

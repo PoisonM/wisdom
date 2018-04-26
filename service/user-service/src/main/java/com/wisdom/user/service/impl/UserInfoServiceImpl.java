@@ -175,19 +175,23 @@ public class UserInfoServiceImpl implements UserInfoService{
         @Override
         public void run() {
 
-            UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
-            userBusinessTypeDTO.setStatus("1");
-            userBusinessTypeDTO.setSysUserId(userInfoDTO.getId());
-            List<UserBusinessTypeDTO> userBusinessTypeDTOList = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
-            if(userBusinessTypeDTOList.size()>0)
-            {
-                if(!userBusinessTypeDTOList.get(0).getUserType().equals(userInfoDTO.getUserType()))
-                {
-                    userInfoDTO.setUserType(userBusinessTypeDTOList.get(0).getUserType());
-                    String userInfoStr = (new com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson()).toJson(userInfoDTO);
-                    JedisUtils.set(logintoken,userInfoStr,ConfigConstant.logintokenPeriod);
-                }
-            }
+            userInfoDTO = getUserInfoFromUserId(userInfoDTO.getId());
+            String userInfoStr = (new com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson()).toJson(userInfoDTO);
+            JedisUtils.set(logintoken,userInfoStr,ConfigConstant.logintokenPeriod);
+
+//            UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
+//            userBusinessTypeDTO.setStatus("1");
+//            userBusinessTypeDTO.setSysUserId(userInfoDTO.getId());
+//            List<UserBusinessTypeDTO> userBusinessTypeDTOList = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
+//            if(userBusinessTypeDTOList.size()>0)
+//            {
+//                if(!userBusinessTypeDTOList.get(0).getUserType().equals(userInfoDTO.getUserType()))
+//                {
+//                    userInfoDTO.setUserType(userBusinessTypeDTOList.get(0).getUserType());
+//                    String userInfoStr = (new com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson()).toJson(userInfoDTO);
+//                    JedisUtils.set(logintoken,userInfoStr,ConfigConstant.logintokenPeriod);
+//                }
+//            }
         }
     }
 

@@ -77,13 +77,14 @@ public class TransactionController {
         //将商品放入未支付订单列表
         for(NeedPayOrderDTO needPayOrderDTO:needPayOrderList.getNeedPayOrderList())
         {
-            BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
-            businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
-            businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
-            businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
-            businessOrderDTO.setStatus("0");
             try {
-                transactionService.updateBusinessOrderStatus(businessOrderDTO);
+                BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
+                businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
+                businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
+                businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
+                businessOrderDTO.setStatus("0");
+                businessOrderDTO.setUpdateDate(new Date());
+                transactionService.updateBusinessOrder(businessOrderDTO);
             } catch (Exception e) {
                 e.printStackTrace();
             }
