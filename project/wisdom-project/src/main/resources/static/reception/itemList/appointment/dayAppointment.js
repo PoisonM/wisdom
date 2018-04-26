@@ -75,10 +75,24 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         consumptionObj:{
             sysUserId:"",
             sysShopId:"",
+            singleByshopId:{
+                detailProject:"",/*三级*/
+
+            },/*某个店的单次 疗程卡 产品  数据*/
+          /*  singleMessByshopId:{},/!*某个店的单次 疗程卡 产品  的三级 数据*!/*/
+            collectionCardByShowId:"",/*某个店的套卡数据*/
             singleByUserId:"",/*某个用户的单次数据*/
+            singleFilterStr:"",/*项目名称模糊过滤*/
             treatmentCardByUserId:"",/*某个用户的疗程数据*/
             productByUserId:"",/*某个用户的产品数据*/
-            collectionCardByUserId:""/*某个用户的套卡数据*/
+            collectionCardByUserId:"",/*某个用户的套卡数据*/
+            singleByUserIdFlag:true,
+            treatmentCardByUserIdFlag:true,
+            productByUserIdFlag:true,
+            collectionCardByUserIdFlag:true,
+            consumptionType:"",
+            balancePrepaidCtrlData:""/*充值卡数据*/
+
         },
         individualTravelerAppointmentObj:{/*日预约详情 （包含预约卡项）*/
             individualTravelerAppointment:"",
@@ -406,7 +420,7 @@ var detailsWrapData={
         ]
     },
     "result": "0x00001"
-}
+};
     $scope.detailsWrap = function (index1, index2,type,sysUserId,sysShopId){
         if(type==0)return;
            $scope.param.consumptionObj.sysUserId = sysUserId;
