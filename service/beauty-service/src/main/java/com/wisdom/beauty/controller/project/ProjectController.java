@@ -138,7 +138,7 @@ public class ProjectController {
                 }
             }
             helperMap.put(((ShopProjectInfoDTO) entry.getValue()).getProjectTypeOneName(), hashMap);
-            helperMap.put("twoLevelSize", hashMap.size());
+//            helperMap.put("twoLevelSize", hashMap.size());
             levelList.add(helperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表
