@@ -77,6 +77,10 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                          var applyEndTime = document.querySelector(".MEnd");
                          // $scope.abschluss = "";
                          // $scope.monthlyPar = "";
+                         if(null == applyStartTime || ""==applyStartTime || null == applyEndTime || "" == applyEndTime){
+                             startTime = "1970-01-01";
+                             applyEndTime = "2100-01-01";
+                         }
                          var page = {
                              pageNo: $scope.pageNum,
                              pageSize: $scope.pageSize,
