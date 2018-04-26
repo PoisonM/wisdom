@@ -417,8 +417,9 @@ public class BusinessRunTimeService {
                 //给用户495的即时奖励
                 AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
                 float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
+                float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
                 accountDTO.setBalance(balance);
-                accountDTO.setBalanceDeny(balance);
+                accountDTO.setBalanceDeny(balanceDeny);
                 businessServiceClient.updateUserAccountInfo(accountDTO);
 
                 IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
