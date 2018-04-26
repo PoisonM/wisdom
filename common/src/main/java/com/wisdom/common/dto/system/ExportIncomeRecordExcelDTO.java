@@ -107,7 +107,7 @@ public class ExportIncomeRecordExcelDTO {
     }
 
     public String getUserType() {
-        return userType;
+        return userTypeUtil(userType);
     }
 
     public void setUserType(String userType) {
@@ -115,7 +115,7 @@ public class ExportIncomeRecordExcelDTO {
     }
 
     public String getUserTypeNow() {
-        return userTypeNow;
+        return userTypeUtil(userTypeNow);
     }
 
     public void setUserTypeNow(String userTypeNow) {
@@ -155,7 +155,7 @@ public class ExportIncomeRecordExcelDTO {
     }
 
     public String getNextUserType() {
-        return nextUserType;
+        return userTypeUtil(nextUserType);
     }
 
     public void setNextUserType(String nextUserType) {
@@ -163,7 +163,7 @@ public class ExportIncomeRecordExcelDTO {
     }
 
     public String getNextUserTypeNow() {
-        return nextUserTypeNow;
+        return userTypeUtil(nextUserTypeNow);
     }
 
     public void setNextUserTypeNow(String nextUserTypeNow) {
@@ -215,11 +215,24 @@ public class ExportIncomeRecordExcelDTO {
             return "待收货";
         }else if("5".equals(orderStatus)){
             return "已取消";
+        }else if("0".equals(orderStatus)){
+            return "未支付";
         }
-        return "无";
+        return orderStatus;
     }
 
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    private String userTypeUtil(String userType){
+        if("business-B-1".equals(userType)){
+            return "B";
+        }else if("business-A-1".equals(userType)){
+            return "A";
+        }else if("business-C-1".equals(userType)){
+            return "C";
+        }
+        return userType;
     }
 }

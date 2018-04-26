@@ -190,7 +190,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                         $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
                     };
                 }],
-                className: 'appointmentType ngdialog-theme-custom',
+                className: 'ngdialog-theme-default ngdialog-theme-custom',
             })
     }};
 /*加载预约详情*/
@@ -233,7 +233,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                         $scope.closeThisDialog();
                     };
                 }],
-                className: 'individual '
+                className: 'ngdialog-theme-default ngdialog-theme-custom'
             });
         }else if(type==4){
             ngDialog.open({
@@ -246,7 +246,7 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                         $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
                     };
                 }],
-                className: 'appointmentType ',
+                className: 'ngdialog-theme-default ',
             })
         }
 

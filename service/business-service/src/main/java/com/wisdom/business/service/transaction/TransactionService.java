@@ -66,6 +66,10 @@ public class TransactionService {
         {
            businessOrderDTOList=transactionMapper.getBusinessOrderListByUserIdAndStatus(userId,"");
         }
+        else
+        {
+            businessOrderDTOList=transactionMapper.getBusinessOrderListByUserIdAndStatus(userId,status);
+        }
         return businessOrderDTOList;
     }
 
