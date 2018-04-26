@@ -89,7 +89,15 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                     }else if( $scope.IncomeList[i].status == "del"){
                                         $scope.IncomeList[i].status = "订单已删除"
                                     }
-
+                                }
+                                for(var i=0;i<$scope.user.length;i++){
+                                    if($scope.user[i].parentRelation.indexOf("business") !=-1 ){
+                                        $scope.user[i].parentRelation = "直接关系"
+                                    }else if($scope.user[i].parentRelation.indexOf("A1") !=1 || $scope.user[i].parentRelation.indexOf("B1") !=1){
+                                        $scope.user[i].parentRelation = "间接关系"
+                                    }else if($scope.user[i].parentRelation.indexOf("self") !=1){
+                                        $scope.user[i].parentRelation = "本人"
+                                    }
                                 }
 
                             }
@@ -102,7 +110,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 
                     /* $state.go("forthwithAward",{transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status})*/
                 }else if($scope.status=="month"){
-                    $state.go("abschluss",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status,checkStatus:$stateParams.checkStatus})
+                    $state.go("abschluss",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status,checkStatus:$scope.checkStatus})
                 }
             };
             $scope.orderIdFun = function(MonthlyBalanceLis){
@@ -261,18 +269,37 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
  /*搜索*/
             $scope.searchMonthlyBalance = function(){
 
-               /* if($scope.MAccount != ""){
-                    if(pattern.test($scope.MAccount) == false && pattern1.test($scope.MAccount)== false){
-                        $scope.MAccount='请填写正确的手机号或身份证号';
-                        return;
+                SelectSelfMonthTransactionRecordByUserId.save(page,function(data){
+                    ManagementUtil.checkResponseData(data,"");
+                    if(data.result == Global.SUCCESS){
+                        $scope.abschluss = data.responseData.selfList;
+                        for(var i=0;i< $scope.abschluss.length;i++){
+                            $scope.abschluss[i].userType = $scope.abschluss[i].userType.substring(9,10)+"级";
+                            $scope.abschluss[i].userTypeNow = $scope.abschluss[i].userTypeNow.substring(9,10)+"级";
+                        }
+                        for(var i=0;i<$scope.abschluss.length;i++){
+                            if($scope.abschluss[i].status == "0"){
+                                $scope.abschluss[i].status = "未支付"
+                            }else if($scope.abschluss[i].status == "1"){
+                                $scope.abschluss[i].status = "已支付"
+                            }else if($scope.abschluss[i].status == "2"){
+                                $scope.abschluss[i].status = "支付失败"
+                            }
+                        }
+                        $scope.count = data.responseData.totalCount;
+                        if(data.responseData.totalCount == 0){
+                            data.responseData.totalCount=1;
+                        }
+                        if($scope.pageNum>=Math.ceil(scope.count/scope.pageSize)){
+                            $scope.hint="none"
+                        }
+                        $scope.mum = false;
+                    }else{
+                        $scope.count = 1;
                     }
-                }*/
-
-
-
-                /*$scope.loadPageList();*/
-                $scope.choosePage(1)
+                });
             };
+
  /*导出列表*/
             $scope.educeLis = function() {
                 if (confirm("确认要导出？")) {
@@ -319,7 +346,6 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             /*审核*/
             $scope.examine=function (id) {
                 $scope.auditFlag = !$scope.auditFlag;
-                console.log($scope.auditFlag)
                 $scope.auditChange = function(status){
                     $scope.auditFlag = false;
                     CheckIncomeRecordManagement.get({
