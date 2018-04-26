@@ -351,7 +351,7 @@ define(['appCustomer'], function(app){
                         }
                     })
                     .state('drawDetails', {
-                        url: '/drawDetails',
+                        url: '/drawDetails/:status,:withDrawAmount',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'drawDetailsCtrl',
                         resolve: {
