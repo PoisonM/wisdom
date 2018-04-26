@@ -78,7 +78,7 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                          var page = {
                              pageNo: $scope.pageNum,
                              pageSize: $scope.pageSize,
-                             startTime: (applyStartTime.value + " 00:00:00").length>10?(applyEndTime.value + " 00:00:00"):applyEndTime.value,
+                             startTime: (applyStartTime.value + " 00:00:00").length>10?(applyStartTime.value + " 00:00:00"):applyStartTime.value,
                              endTime: (applyEndTime.value + " 23:59:59").length>10?(applyEndTime.value + " 23:59:59"):applyEndTime.value,
                              isExportExcel:"Y",
                              requestData: {
@@ -154,7 +154,7 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                 var page = {
                     pageNo: $scope.pageNum,
                     pageSize: $scope.pageSize,
-                    startTime: (applyStartTime.value + " 00:00:00").length>10?(applyEndTime.value + " 00:00:00"):applyEndTime.value,
+                    startTime: (applyStartTime.value + " 00:00:00").length>10?(applyStartTime.value + " 00:00:00"):applyStartTime.value,
                     endTime: (applyEndTime.value + " 23:59:59").length>10?(applyEndTime.value + " 23:59:59"):applyEndTime.value,
                     requestData: {
                         sysUserId: $stateParams.id
