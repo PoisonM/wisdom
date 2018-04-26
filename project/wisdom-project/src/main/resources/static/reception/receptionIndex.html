@@ -1,0 +1,48 @@
+<!doctype html>
+<html ng-app="app">
+
+<head>
+    <base href="/reception/" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/ngDialog.css">
+    <link rel="stylesheet" href="styles/ngDialog-theme-default.css">
+</head>
+<!--<link rel="shortcut icon" href="images/fav.png"/>-->
+<title>PAD端</title>
+
+<body ng-controller="mainCtrl">
+    <div ui-view style="height: 100%"></div>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="libs/jquery.min.js"></script>
+    <script src="libs/angular.min.js"></script>
+    <script src="libs/ocLazyLoad.require.min.js"></script>
+    <script src="libs/angular-resource.min.js"></script>
+    <script src="libs/angular-loader.min.js"></script>
+    <script src="libs/angular-sanitize.min.js"></script>
+    <script src="libs/angular-file-upload.min.js"></script>
+    <script src="libs/angular-ui-router.min.js"></script>
+    <script src="route/padRoute.js"></script>
+    <script src="controller/receptionIndex.js"></script>
+    <script src="services/padFactory.js"></script>
+    <script src="directives/padDirective.js"></script>
+    <script src="libs/ngDialog.js"></script>
+    <script src="libs/angular-touch.js"></script>
+    <script>
+    (function(doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function() {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+            };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+    </script>
+</body>
+
+</html>
