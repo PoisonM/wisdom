@@ -9,7 +9,7 @@
 .weekLeft ul li div{}
 .weekLeftNumber{font-size: 0.26rem}
 .weekLeft ul li{font-size:0.17rem;color: #888888}
-.weekWrap .content{width:100%;display: flex;flex-wrap: nowrap;overflow-y: scroll;padding-top:1.07rem;}
+.weekWrap .content{width:100%;}
 .weekWrap .foot{height:0.965rem;}
 .weekRight{width: 2.4rem;}
 .weekRight ul li{height: 1.53rem;border: 1px solid #e5e5e5;padding: 0.2rem;box-sizing: border-box}
