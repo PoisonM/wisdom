@@ -1,6 +1,7 @@
 package com.wisdom.business.controller.product;
 
 import com.wisdom.business.client.UserServiceClient;
+import com.wisdom.business.controller.account.AccountController;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.product.InvoiceService;
 import com.wisdom.business.util.UserUtils;
@@ -8,6 +9,8 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.product.InvoiceDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +27,7 @@ public class InvoiceController {
 	@Autowired
 	private InvoiceService invoiceService;
 
-	@Autowired
-	private UserServiceClient userServiceClient;
+	Logger logger = LoggerFactory.getLogger(InvoiceController.class);
 
 	/**
 	 * 发票
@@ -40,6 +42,7 @@ public class InvoiceController {
 	ResponseDTO addInvoiceInfo(@RequestBody InvoiceDTO invoiceDTO) {
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+		logger.info("用户添加发票信息=="+userInfoDTO.getMobile());
 		if (userInfoDTO!=null)
 		{
 			invoiceDTO.setUserId(userInfoDTO.getId());
@@ -72,7 +75,6 @@ public class InvoiceController {
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
-
 
 }
 
