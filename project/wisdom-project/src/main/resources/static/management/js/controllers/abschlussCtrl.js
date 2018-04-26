@@ -75,17 +75,11 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                      if (confirm("是否导出列表？")) {
                          var applyStartTime = document.querySelector(".MStart");
                          var applyEndTime = document.querySelector(".MEnd");
-                         // $scope.abschluss = "";
-                         // $scope.monthlyPar = "";
-                         if(null == applyStartTime || ""==applyStartTime || null == applyEndTime || "" == applyEndTime){
-                             startTime = "1970-01-01";
-                             applyEndTime = "2100-01-01";
-                         }
                          var page = {
                              pageNo: $scope.pageNum,
                              pageSize: $scope.pageSize,
-                             startTime: applyStartTime.value + " 00:00:00",
-                             endTime: applyEndTime.value + " 23:59:59",
+                             startTime: (applyStartTime.value + " 00:00:00").length>10?(applyEndTime.value + " 00:00:00"):applyEndTime.value,
+                             endTime: (applyEndTime.value + " 23:59:59").length>10?(applyEndTime.value + " 23:59:59"):applyEndTime.value,
                              isExportExcel:"Y",
                              requestData: {
                                  sysUserId: $stateParams.id
@@ -160,8 +154,8 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                 var page = {
                     pageNo: $scope.pageNum,
                     pageSize: $scope.pageSize,
-                    startTime: applyStartTime.value + " 00:00:00",
-                    endTime: applyEndTime.value + " 23:59:59",
+                    startTime: (applyStartTime.value + " 00:00:00").length>10?(applyEndTime.value + " 00:00:00"):applyEndTime.value,
+                    endTime: (applyEndTime.value + " 23:59:59").length>10?(applyEndTime.value + " 23:59:59"):applyEndTime.value,
                     requestData: {
                         sysUserId: $stateParams.id
                     },
