@@ -285,9 +285,6 @@ public class BusinessRunTimeService {
                 startDate = DateUtils.getYear() + "-" + month + "-26";
             }
 
-//            String startDate = "2018-03-26";
-//            String endDate = "2018-04-15";
-
             List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
 
             for(MonthTransactionRecordDTO monthTransactionRecordDTO:monthTransactionRecordDTOList)
@@ -413,6 +410,7 @@ public class BusinessRunTimeService {
 
                 //sys_user表也需要更新
                 userInfo.setUserType(ConfigConstant.businessA1);
+                userInfo.setNickname(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
                 userServiceClient.updateUserInfo(userInfo);
 
                 //给B的上一級用户495的即时奖励
@@ -445,13 +443,14 @@ public class BusinessRunTimeService {
                     incomeRecordDTO.setMobile(userInfo.getMobile());
                     incomeRecordDTO.setNextUserMobile("");
                     incomeRecordDTO.setParentRelation("");
+                    businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
                 }
                 Calendar calendar = Calendar.getInstance();
                 Date date = new Date();
                 calendar.setTime(date);
                 calendar.add(Calendar.YEAR, 1);
                 date = calendar.getTime();
-                WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(userInfo.getNickname(),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
+                WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(CommonUtils.nameDecoder(userInfo.getNickname()),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
             }
         }
     }
