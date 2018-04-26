@@ -73,12 +73,18 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                  /*导出列表*/
                  $scope.educeLis=function () {
                      if (confirm("是否导出列表？")) {
+                         var applyStartTime = document.querySelector(".MStart");
+                         var applyEndTime = document.querySelector(".MEnd");
+                         // $scope.abschluss = "";
+                         // $scope.monthlyPar = "";
                          var page = {
-                             pageNo:$scope.pageNo,
-                             pageSize:$scope.pageSize,
+                             pageNo: $scope.pageNum,
+                             pageSize: $scope.pageSize,
+                             startTime: applyStartTime.value,
+                             endTime: applyEndTime.value,
                              isExportExcel:"Y",
-                             requestData:{
-                                 sysUserId:$stateParams.id
+                             requestData: {
+                                 sysUserId: $stateParams.id
                              },
                          };
                          ExportExcelMonthTransactionRecordByUserId.save(page,
@@ -89,7 +95,7 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                                      $eleForm.attr("action", data.result);
                                      $(document.body).append($eleForm);
                                      $eleForm.submit();
-                                     $scope.loadPageList();
+                                     // $scope.loadPageList();
 
                                  }
                              });
