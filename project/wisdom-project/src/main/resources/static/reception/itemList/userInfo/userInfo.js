@@ -1,4 +1,4 @@
-PADWeb.controller('userInfoCtrl', function($scope, $stateParams, ngDialog) {
+PADWeb.controller('userInfoCtrl', function($scope, $stateParams, ngDialog,GetProductRecord) {
 /*-------------------------------------------定义头部信息|----------------------------------------------*/
     $scope.$parent.param.headerCash.leftContent="我"
     $scope.$parent.param.headerCash.leftAddContent=""
@@ -18,4 +18,6 @@ PADWeb.controller('userInfoCtrl', function($scope, $stateParams, ngDialog) {
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
+
+
 });

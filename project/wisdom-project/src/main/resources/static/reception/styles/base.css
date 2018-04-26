@@ -126,9 +126,7 @@ table {
 i {
     font-style: normal;
 }
-
-strong,
-b {
+strong, b{
     font-weight: normal;
 }
 
@@ -157,8 +155,4 @@ b {
 
 .fl {
     float: left;
-}
-
-.mt10 {
-    margin-top: 10px;
 }
