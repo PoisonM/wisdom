@@ -1,7 +1,6 @@
 function consumption($scope,ngDialog){
     $scope.ngDialog = ngDialog;
     $scope.selsectConsumption = function(type){
-
         if(type == "selectSingle"){
             ngDialog.open({
                 template: 'selectSingle',
