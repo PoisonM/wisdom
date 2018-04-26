@@ -156,8 +156,8 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                 var page = {
                     pageNo: $scope.pageNum,
                     pageSize: $scope.pageSize,
-                    startTime: applyStartTime.value,
-                    endTime: applyEndTime.value,
+                    startTime: applyStartTime.value + "00:00:00",
+                    endTime: applyEndTime.value + "23:59:59",
                     requestData: {
                         sysUserId: $stateParams.id
                     },
