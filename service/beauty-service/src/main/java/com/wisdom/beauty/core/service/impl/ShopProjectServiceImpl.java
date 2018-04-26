@@ -148,6 +148,10 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             criteria.andUseStyleEqualTo(CardTypeEnum.TREATMENT_CARD.getCode());
         }
 
+        if (StringUtils.isNotBlank(shopProjectInfoDTO.getId())) {
+            criteria.andIdEqualTo(shopProjectInfoDTO.getId());
+        }
+
         List<ShopProjectInfoDTO> dtos = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
 
         return dtos;

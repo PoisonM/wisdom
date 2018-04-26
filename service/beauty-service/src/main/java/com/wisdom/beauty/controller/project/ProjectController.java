@@ -92,17 +92,17 @@ public class ProjectController {
      *
      * @return
      */
-    @RequestMapping(value = "getShopCourseProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "searchShopProjectList", method = {RequestMethod.POST, RequestMethod.GET})
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<ShopProjectInfoDTO>> getShopCourseProjectList(@RequestParam String useStyle, @RequestParam String filterStr) {
+    ResponseDTO<HashMap<String, Object>> searchShopProjectList(@RequestParam String useStyle, @RequestParam String filterStr) {
 
         long currentTimeMillis = System.currentTimeMillis();
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         String sysShopId = clerkInfo.getSysShopId();
         logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
-        ResponseDTO<List<ShopProjectInfoDTO>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<HashMap<String, Object>> responseDTO = new ResponseDTO<>();
 
         ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
         shopProjectInfoDTO.setSysShopId(sysShopId);
@@ -110,14 +110,41 @@ public class ProjectController {
         if (StringUtils.isNotBlank(useStyle) && (!CardTypeEnum.ALL.getCode().equals(useStyle))) {
             shopProjectInfoDTO.setUseStyle(useStyle);
         }
+
+        HashMap<String, Object> returnMap = new HashMap<>(16);
         List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
 
         if (CommonUtils.objectIsEmpty(projectList)) {
             logger.debug("查询某个店的疗程卡列表信息查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
-            return null;
+            responseDTO.setResult(StatusConstant.FAILURE);
         }
 
-        responseDTO.setResponseData(projectList);
+        //缓存一级
+        HashMap<String, ShopProjectInfoDTO> oneTypeMap = new HashMap<>(16);
+        for (ShopProjectInfoDTO dto : projectList) {
+            oneTypeMap.put(dto.getProjectTypeOneId(), dto);
+        }
+        logger.info("缓存一级项目={}", oneTypeMap);
+
+        ArrayList<Object> levelList = new ArrayList<>();
+        //遍历缓存的一级项目
+        for (Map.Entry entry : oneTypeMap.entrySet()) {
+            HashMap<Object, Object> helperMap = new HashMap<>(16);
+            //承接二级项目
+            HashMap<Object, Object> hashMap = new HashMap<>(16);
+            for (ShopProjectInfoDTO dto : projectList) {
+                if (entry.getKey().equals(dto.getProjectTypeOneId())) {
+                    hashMap.put(dto.getProjectTypeTwoName(), dto);
+                }
+            }
+            helperMap.put(((ShopProjectInfoDTO) entry.getValue()).getProjectTypeOneName(), hashMap);
+            helperMap.put("twoLevelSize", hashMap.size());
+            levelList.add(helperMap);
+        }
+        //detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表
+        returnMap.put("detailLevel", levelList);
+        returnMap.put("detailProject", projectList);
+        responseDTO.setResponseData(returnMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
         logger.info("查询某个店的疗程卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);

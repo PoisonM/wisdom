@@ -54,6 +54,7 @@ public class AppointmentTest {
     @Before
     public void setupMockMvc() {
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        SpringUtil.setApplicationContext(context);
     }
 
     @Autowired

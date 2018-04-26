@@ -8,6 +8,7 @@ import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
+import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +51,7 @@ public class OrderTest {
     @Before
     public void setupMockMvc() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        SpringUtil.setApplicationContext(context);
     }
 
     /**

@@ -23,8 +23,30 @@ public class ShopUserPayDTO {
     //支付方式
     private String payType;
 
+    //用户现金支付金额
+    private String cashPayPrice;
+
+    //剩余支付金额
+    private String surplusPayPrice;
+
     //用户与充值卡的关系
     private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
+
+    public String getCashPayPrice() {
+        return cashPayPrice;
+    }
+
+    public void setCashPayPrice(String cashPayPrice) {
+        this.cashPayPrice = cashPayPrice;
+    }
+
+    public String getSurplusPayPrice() {
+        return surplusPayPrice;
+    }
+
+    public void setSurplusPayPrice(String surplusPayPrice) {
+        this.surplusPayPrice = surplusPayPrice;
+    }
 
     public String getPayType() {
         return payType;
