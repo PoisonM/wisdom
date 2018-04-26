@@ -80,8 +80,8 @@ angular.module('controllers',[]).controller('abschlussCtrl',
                          var page = {
                              pageNo: $scope.pageNum,
                              pageSize: $scope.pageSize,
-                             startTime: applyStartTime.value,
-                             endTime: applyEndTime.value,
+                             startTime: applyStartTime.value + "00:00:00",
+                             endTime: applyEndTime.value + "13:59:59",
                              isExportExcel:"Y",
                              requestData: {
                                  sysUserId: $stateParams.id
