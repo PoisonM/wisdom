@@ -41,7 +41,7 @@ function balancePrepaid ($scope,ngDialog){
                 $scope.close = function() {
                     $scope.closeThisDialog();
                 };
-                /*$scope.showBalancePrepaidPic = function (index) {
+                $scope.showBalancePrepaidPic = function (index) {
                     if($scope.collectionCard[index] == true){
                         $scope.balancePrepaidDataPic[index]='images/bt_Single%20election_select.png';
                         $scope.collectionCard[index] = false;
@@ -50,7 +50,7 @@ function balancePrepaid ($scope,ngDialog){
                         $scope.collectionCard[index] = true;
 
                     }
-                }*/
+                }
             }],
             className: 'payType ngdialog-theme-custom'
         });
