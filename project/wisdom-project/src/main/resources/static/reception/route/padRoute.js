@@ -272,6 +272,66 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.chooseGifts', {
+            url: '/chooseGifts',
+            templateUrl: root + '/cashier/chooseGifts.html',
+            controller: 'chooseGiftsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "选择赠送",
+                        files: [root + "cashier/chooseGiftsCtrl.js",
+                            root + "cashier/chooseGifts.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.sources', {
+            url: '/sources',
+            templateUrl: root + '/cashier/sources.html',
+            controller: 'sourcesCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "来源渠道",
+                        files: [root + "cashier/sourcesCtrl.js",
+                            root + "cashier/sources.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.prepaidRecords', {
+            url: '/prepaidRecords',
+            templateUrl: root + '/cashier/prepaidRecords.html',
+            controller: 'prepaidRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值记录",
+                        files: [root + "cashier/prepaidRecordsCtrl.js",
+                            root + "cashier/prepaidRecords.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.stillOwed', {
+            url: '/stillOwed',
+            templateUrl: root + '/cashier/stillOwed.html',
+            controller: 'stillOwedCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值记录",
+                        files: [root + "cashier/stillOwedCtrl.js",
+                            root + "cashier/stillOwed.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.appointment', {
             url: '/appointmentLis',
             templateUrl: root + '/appointment/appointmentLis.html',
@@ -325,7 +385,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "选择赠送",
-                        files: [root + "appointment/giving.js",
+                        files: [root + "appointment/givingCtrl.js",
                             root + "appointment/style.css",
                         ]
                     })
@@ -340,7 +400,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "关联员工",
-                        files: [root + "appointment/relatedStaff.js",
+                        files: [root + "appointment/relatedStaffCtrl.js",
                             root + "appointment/style.css",
                         ]
                     })
@@ -415,7 +475,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "消费-选择单次",
-                        files: [root + "appointment/selectSingle.js",
+                        files: [root + "appointment/selectSingleCtrl.js",
                             root + "appointment/selectSingle.css",
                         ]
                     })
