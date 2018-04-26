@@ -71,6 +71,10 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             criteria.andUseStyleEqualTo(shopUserProjectRelationDTO.getUseStyle());
         }
 
+        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getId())) {
+            criteria.andIdEqualTo(shopUserProjectRelationDTO.getId());
+        }
+
         if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getSysShopProjectId())) {
             criteria.andSysShopProjectIdEqualTo(shopUserProjectRelationDTO.getSysShopProjectId());
         }
@@ -106,12 +110,12 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             return 0;
         }
 
-        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getId())) {
+        if (StringUtils.isBlank(shopUserProjectRelationDTO.getId())) {
             logger.error("更新用户与项目的关系的主键为空", shopUserProjectRelationDTO.getId());
             return 0;
         }
 
-        int update = shopUserProjectRelationMapper.updateByPrimaryKey(shopUserProjectRelationDTO);
+        int update = shopUserProjectRelationMapper.updateByPrimaryKeySelective(shopUserProjectRelationDTO);
         return update;
     }
 

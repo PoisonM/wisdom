@@ -15,7 +15,7 @@ import java.util.List;
 public interface ShopProjectService {
 
     /**
-     * 查询某个用户预约的项目列表
+     * 查询用户与项目的关系
      *
      * @param shopUserProjectRelationDTO
      * @return
