@@ -504,4 +504,24 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			return 0;
 		}
 	}
+	public static String getStartTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar startDate = new GregorianCalendar();
+		Calendar endDate = new GregorianCalendar();
+		// 当天开始时间
+		startDate.set(Calendar.HOUR_OF_DAY, 0);
+		startDate.set(Calendar.MINUTE, 0);
+		startDate.set(Calendar.SECOND, 0);
+		return sdf.format(startDate.getTime());
+	}
+	public static String getEndTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar startDate = new GregorianCalendar();
+		Calendar endDate = new GregorianCalendar();
+		//当天结束时间
+		endDate.set(Calendar.HOUR_OF_DAY, 23);
+		endDate.set(Calendar.MINUTE, 59);
+		endDate.set(Calendar.SECOND, 59);
+		return sdf.format(endDate.getTime());
+	}
 }
