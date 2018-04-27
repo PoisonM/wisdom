@@ -17,7 +17,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         };
     }])
     /**
-     * 
+     *
      */
     //
     .factory('ShopDayAppointmentInfoByDate', ['$resource', function($resource) {
@@ -30,7 +30,11 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetProductRecord', ['$resource', function($resource) {
         return $resource(IP + 'mine/getProductRecord')
     }])
-    //店员相关的记录统计
+    //领取记录
+    .factory('GetWaitReceiveDetail', ['$resource', function($resource) {
+        return $resource(IP + 'mine/getWaitReceiveDetail')
+    }])
+    //查询店员相关的记录统计
     .factory('Consumes', ['$resource', function($resource) {
         return $resource(IP + 'mine/consumes')
     }])
