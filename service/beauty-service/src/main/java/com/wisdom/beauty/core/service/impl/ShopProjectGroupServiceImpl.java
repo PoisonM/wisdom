@@ -98,7 +98,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     @Override
     public List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation) {
 
-        if (CommonUtils.objectIsNotEmpty(shopUserProjectGroupRelRelation)) {
+        if (CommonUtils.objectIsEmpty(shopUserProjectGroupRelRelation)) {
             logger.error("根据条件查询用户与套卡与项目关系的关系表传入参数为空，{}", "shopUserProjectGroupRelRelation = [" + shopUserProjectGroupRelRelation + "]");
             return null;
         }

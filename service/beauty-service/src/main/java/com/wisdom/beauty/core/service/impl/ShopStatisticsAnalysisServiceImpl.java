@@ -53,22 +53,34 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
     public BigDecimal getPerformance(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
         // 计算充值金额
         BigDecimal totalAmount = null;
-        // ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new
-        // ShopUserConsumeRecordDTO();
-        // shopUserConsumeRecordDTO.getSysClerkId();
-        // shopUserConsumeRecordDTO.setStatus(ConsumeTypeEnum.CONSUME.getCode());
-        // pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
         // 查询数据
-        List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = shopUerConsumeRecordService
-                .getShopCustomerConsumeRecordList(pageParamVoDTO);
+        List<ExpenditureAndIncomeResponseDTO> userConsumeRecordResponses = this.getIncomeList(pageParamVoDTO);
         if (CollectionUtils.isEmpty(userConsumeRecordResponses)) {
             return null;
         }
-        for (UserConsumeRecordResponseDTO userConsumeRecordResponse : userConsumeRecordResponses) {
+        for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : userConsumeRecordResponses) {
             if (totalAmount == null) {
-                totalAmount = userConsumeRecordResponse.getSumAmount();
+                totalAmount = expenditureAndIncomeResponseDTO.getIncome();
             }
-            totalAmount.add(userConsumeRecordResponse.getSumAmount());
+            totalAmount.add(expenditureAndIncomeResponseDTO.getIncome());
+        }
+        return totalAmount;
+    }
+
+    @Override
+    public BigDecimal getExpenditure(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+        // 计算耗卡金额
+        BigDecimal totalAmount = null;
+        // 查询数据
+        List<ExpenditureAndIncomeResponseDTO> userConsumeRecordResponses = this.getExpenditureList(pageParamVoDTO);
+        if (CollectionUtils.isEmpty(userConsumeRecordResponses)) {
+            return null;
+        }
+        for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : userConsumeRecordResponses) {
+            if (totalAmount == null) {
+                totalAmount = expenditureAndIncomeResponseDTO.getExpenditure();
+            }
+            totalAmount.add(expenditureAndIncomeResponseDTO.getExpenditure());
         }
         return totalAmount;
     }
@@ -111,20 +123,22 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
      * 查询新客个数
      */
     @Override
-    public int getShopNewUserNumber(String shopId, Date startDate, Date endDate) {
+    public int getShopNewUserNumber(String shopId, String startDate, String endDate) {
         logger.info("查询新客个数传入参数={}",
                 "shopId = [" + shopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
-        return shopCustomerArchivesService.getShopBuildArchivesNumbers(shopId, startDate, endDate);
+            Date start =DateUtils.StrToDate(startDate, "datetime");
+            Date end =DateUtils.StrToDate(endDate, "datetime");
+        return shopCustomerArchivesService.getShopBuildArchivesNumbers(shopId, start, end);
     }
 
     @Override
-    public Integer getUserConsumeNumber(String sysClerkId, Date startDate, Date endDate) {
+    public Integer getUserConsumeNumber(String sysClerkId, String startDate, String endDate) {
         ShopUserConsumeRecordCriteria recordCriteria = new ShopUserConsumeRecordCriteria();
         ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
         // 设置查询条件
         criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
         criteria.andSysClerkIdEqualTo(sysClerkId);
-        criteria.andCreateDateBetween(startDate, endDate);
+        criteria.andCreateDateBetween(DateUtils.StrToDate(startDate, "datetime"), DateUtils.StrToDate(endDate, "endDate"));
         Integer consumeNumber = extShopUserConsumeRecordMapper.selectUserConsumeNumber(recordCriteria);
         return consumeNumber;
     }
@@ -299,7 +313,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
      * @Description: 获取产生耗卡的消费记录列表
      * @Date:2018/4/26 14:03
      */
-    private List<ExpenditureAndIncomeResponseDTO> getExpenditureList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+    @Override
+    public List<ExpenditureAndIncomeResponseDTO> getExpenditureList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
         UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
 
         ShopUserConsumeRecordCriteria recordCriteria = new ShopUserConsumeRecordCriteria();
@@ -314,9 +329,17 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
         if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
             criteria.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
         }
-        Date startDate = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
-        Date endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
-        criteria.andCreateDateBetween(startDate, endDate);
+        if (StringUtils.isNotBlank(userConsumeRequest.getSysClerkId())) {
+            criteria.andSysShopIdEqualTo(userConsumeRequest.getSysClerkId());
+        }
+        Date startDate=null;
+        Date endDate=null;
+        if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime()) && StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+             startDate = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+             endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+            criteria.andCreateDateBetween(startDate, endDate);
+        }
+
         //或操作
         or.andConsumeTypeEqualTo(ConsumeTypeEnum.RECHARGE.getCode());
         or.andGoodsTypeEqualTo(GoodsTypeEnum.TIME_CARD.getCode());
@@ -326,9 +349,10 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
         if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
             or.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
         }
-        or.andCreateDateBetween(startDate, endDate);
-        recordCriteria.or(or);
-
+        if(startDate!=null &&endDate!=null) {
+            or.andCreateDateBetween(startDate, endDate);
+            recordCriteria.or(or);
+        }
         List<ExpenditureAndIncomeResponseDTO> list = extShopUserConsumeRecordMapper
                 .selectPriceListByCriteria(recordCriteria);
         return list;
@@ -341,7 +365,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
      * @Description: 获取业绩的消费记录列表
      * @Date:2018/4/26 14:52
      */
-    private List<ExpenditureAndIncomeResponseDTO> getIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+    @Override
+    public List<ExpenditureAndIncomeResponseDTO> getIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
         UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
 
         ShopUserConsumeRecordCriteria recordCriteria = new ShopUserConsumeRecordCriteria();
@@ -355,9 +380,14 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
         if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
             criteria.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
         }
-        Date startDate = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
-        Date endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
-        criteria.andCreateDateBetween(startDate, endDate);
+        if (StringUtils.isNotBlank(userConsumeRequest.getSysClerkId())) {
+            criteria.andSysShopIdEqualTo(userConsumeRequest.getSysClerkId());
+        }
+        if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime()) && StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+            Date startDate = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+            Date endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+            criteria.andCreateDateBetween(startDate, endDate);
+        }
 
         List<ExpenditureAndIncomeResponseDTO> list = extShopUserConsumeRecordMapper
                 .selectPriceListByCriteria(recordCriteria);

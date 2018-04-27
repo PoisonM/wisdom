@@ -28,6 +28,7 @@ public interface ShopStatisticsAnalysisService {
      * @Date:2018/4/13 10:24
      */
     BigDecimal getPerformance(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    BigDecimal getExpenditure(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * 查询美容店某个时间段的耗卡金额
@@ -37,7 +38,7 @@ public interface ShopStatisticsAnalysisService {
     /**
      * 查询新客个数
      */
-    int getShopNewUserNumber(String shopId, Date startDate, Date endDate);
+    int getShopNewUserNumber(String shopId, String startDate, String endDate);
 
     /**
      * @Author:huan
@@ -46,7 +47,7 @@ public interface ShopStatisticsAnalysisService {
      * @Description: 查询人头数
      * @Date:2018/4/13 11:34
      */
-    Integer getUserConsumeNumber(String sysClerkId, Date startDate, Date endDate);
+    Integer getUserConsumeNumber(String sysClerkId, String startDate, String endDate);
 
     /**
      * @Author:zhanghuan
@@ -73,5 +74,6 @@ public interface ShopStatisticsAnalysisService {
     *@Date:2018/4/25 19:21
     */
     List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
-
+    List<ExpenditureAndIncomeResponseDTO> getExpenditureList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    List<ExpenditureAndIncomeResponseDTO> getIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 }
