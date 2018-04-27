@@ -47,8 +47,8 @@
                                 <button   ng-click="stateBox('')" ng-class="{'actives':checkStatus==''}">全部状态</button>
                                 <button   ng-click="stateBox('1')" ng-class="{'actives':checkStatus=='1'}">已审核状态</button>
                                 <button   ng-click="stateBox('0')" ng-class="{'actives':checkStatus=='0'}">未审核状态</button>
-                                <button class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='recommends'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
-                                <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommends'" ng-show="false">筛选已完成的订单</button>
+                                <button class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='recommend'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
+                                <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommend'" ng-show="false">筛选已完成的订单</button>
                             </div>
 
                             <table class="table  text-center ">
