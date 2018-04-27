@@ -113,7 +113,7 @@ public class AppointmentController {
 					responseMap.put("startTime", settingDTO.getStartTime());
 					responseMap.put("endTime", settingDTO.getEndTime());
 				} else {
-					responseMap.put("startTime", "9:00");
+                    responseMap.put("startTime", "09:00");
 					responseMap.put("endTime", "23:00");
 				}
 			}
