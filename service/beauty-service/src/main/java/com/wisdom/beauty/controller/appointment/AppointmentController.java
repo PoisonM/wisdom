@@ -399,6 +399,7 @@ public class AppointmentController {
 					relationDTO.setSysShopProjectSurplusAmount(new BigDecimal(0));
 					relationDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
 					relationDTO.setSysShopProjectId(project);
+                    relationDTO.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
 					relationDTO.setSysShopProjectSurplusTimes(0);
 					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
 					relationDTO.setSysShopId(projectDetail.getSysShopId());
