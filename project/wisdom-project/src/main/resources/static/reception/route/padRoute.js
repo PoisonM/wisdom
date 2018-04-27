@@ -850,6 +850,6 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         })
     ;
 
-    $urlRouterProvider.otherwise('pad-web/left_nav/demo');
+    $urlRouterProvider.otherwise('pad-web/userInfo/todayPerformance');
     $httpProvider.interceptors.push('httpInterceptor');
 });
