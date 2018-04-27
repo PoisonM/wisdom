@@ -52,7 +52,7 @@ public class ProductTest {
     @Test
     public void getShopUserRecentlyOrderInfo() throws Exception {
 
-        MvcResult result = mvc.perform(get("/productInfo/searchShopProductList").param("filterStr", ""))
+        MvcResult result = mvc.perform(get("/productInfo/getUserProductInfo").param("id", "1"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

@@ -121,6 +121,34 @@ public class ConsumeTest {
     }
 
     /**
+     * 用户消费产品
+     *
+     * @throws Exception
+     */
+    @Test
+    public void consumesUserProduct() throws Exception {
+        List<ShopUserConsumeDTO> shopUserConsumeDTO = new ArrayList<>();
+        ShopUserConsumeDTO consumeDTO = new ShopUserConsumeDTO();
+        consumeDTO.setClerkId("1");
+        consumeDTO.setConsumeId("1");
+        consumeDTO.setConsumePrice(new BigDecimal(100));
+        consumeDTO.setConsumeNum(12);
+        consumeDTO.setSysUserId("110");
+        shopUserConsumeDTO.add(consumeDTO);
+
+        String toJSONString = JSONObject.toJSONString(shopUserConsumeDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/consumes/consumesUserProduct").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    /**
      * 用户消费单次卡
      *
      * @throws Exception

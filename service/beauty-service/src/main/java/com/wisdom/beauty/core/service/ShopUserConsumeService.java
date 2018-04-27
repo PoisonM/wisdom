@@ -44,4 +44,13 @@ public interface ShopUserConsumeService {
      * @return
      */
     int consumesDaughterCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
+
+    /**
+     * 用户领取产品
+     *
+     * @param shopUserConsumeDTOS
+     * @param clerkInfo
+     * @return
+     */
+    int consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
 }

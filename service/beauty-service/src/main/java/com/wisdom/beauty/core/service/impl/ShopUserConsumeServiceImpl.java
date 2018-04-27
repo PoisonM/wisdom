@@ -398,6 +398,38 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         shopProjectGroupService.updateShopUserProjectGroupRelRelation(relation);
 
         // 更新用户的账户信息
+        return updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
+    }
+
+    /**
+     * 用户领取产品
+     */
+    @Override
+    @Transactional(rollbackFor = Throwable.class)
+    public int consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
+
+        if (CommonUtils.objectIsEmpty(shopUserConsumeDTOS)) {
+            logger.info("用户领取产品传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTOS + "], clerkInfo = [" + clerkInfo + "]");
+            return 0;
+        }
+        String transactionCodeNumber = DateUtils.DateToStr(new Date(), "dateMillisecond");
+
+        ShopUserProductRelationDTO relation = new ShopUserProductRelationDTO();
+
+        //更新用户与套卡与项目关系的关系表
+        ShopUserConsumeDTO consumeDTO = shopUserConsumeDTOS.get(0);
+        relation.setId(consumeDTO.getConsumeId());
+        relation = shopProductInfoService.getUserProductInfoList(relation).get(0);
+        relation.setSurplusAmount(relation.getSurplusAmount().subtract(consumeDTO.getConsumePrice()));
+        relation.setSurplusTimes(relation.getSurplusTimes() - consumeDTO.getConsumeNum());
+        shopProductInfoService.updateShopUserProductRelation(relation);
+        return updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
+
+
+    }
+
+    private int updateUserAccountDTO(SysClerkDTO clerkInfo, String transactionCodeNumber, ShopUserConsumeDTO consumeDTO) {
+        // 更新用户的账户信息
         SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
         sysUserAccountDTO.setSysUserId(consumeDTO.getSysUserId());
         sysUserAccountDTO.setSysShopId(clerkInfo.getSysShopId());
@@ -429,6 +461,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
         return shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
     }
+
     /**
      * 更新用户的账户信息
      *
