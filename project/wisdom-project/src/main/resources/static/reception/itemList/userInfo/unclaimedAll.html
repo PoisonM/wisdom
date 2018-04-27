@@ -3,11 +3,11 @@
         <div class="unclaimedAll_header">
             <div class="header_left">
                 <p>待领取客数</p>
-                <span>350</span>
+                <span>{{totalWaitReceivePeople}}</span>
             </div>
             <div class="header_right">
                 <p>待领取数量</p>
-                <span>3520</span>
+                <span>{{totalWaitReceiveNumber}}</span>
             </div>
         </div>
         <div class="unclaimedAll_content">
@@ -26,10 +26,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in [1,2,3,4]">
-                            <td>许巍</td>
-                            <td>14739212156</td>
-                            <td class="go_set_pre">22 <i class="go_set"></i> </td>
+                        <tr ng-repeat="item in dataList">
+                            <td>{{item.nickname}}</td>
+                            <td>{{item.mobile}}</td>
+                            <td class="go_set_pre">{{item.waitReceiveNumber}} <i class="go_set"></i> </td>
                         </tr>
                     </tbody>
                 </table>
