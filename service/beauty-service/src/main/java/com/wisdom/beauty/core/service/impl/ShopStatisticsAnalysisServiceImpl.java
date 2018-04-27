@@ -1,11 +1,9 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.ShopUserArchivesCriteria;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
@@ -22,11 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -56,6 +52,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
         // 查询数据
         List<ExpenditureAndIncomeResponseDTO> userConsumeRecordResponses = this.getIncomeList(pageParamVoDTO);
         if (CollectionUtils.isEmpty(userConsumeRecordResponses)) {
+            logger.info("userConsumeRecordResponses集合为空");
             return null;
         }
         for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : userConsumeRecordResponses) {
@@ -74,6 +71,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
         // 查询数据
         List<ExpenditureAndIncomeResponseDTO> userConsumeRecordResponses = this.getExpenditureList(pageParamVoDTO);
         if (CollectionUtils.isEmpty(userConsumeRecordResponses)) {
+            logger.info("userConsumeRecordResponses为空");
             return null;
         }
         for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : userConsumeRecordResponses) {
@@ -126,8 +124,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
     public int getShopNewUserNumber(String shopId, String startDate, String endDate) {
         logger.info("查询新客个数传入参数={}",
                 "shopId = [" + shopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
-            Date start =DateUtils.StrToDate(startDate, "datetime");
-            Date end =DateUtils.StrToDate(endDate, "datetime");
+        Date start = DateUtils.StrToDate(startDate, "datetime");
+        Date end = DateUtils.StrToDate(endDate, "datetime");
         return shopCustomerArchivesService.getShopBuildArchivesNumbers(shopId, start, end);
     }
 
@@ -332,11 +330,11 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
         if (StringUtils.isNotBlank(userConsumeRequest.getSysClerkId())) {
             criteria.andSysShopIdEqualTo(userConsumeRequest.getSysClerkId());
         }
-        Date startDate=null;
-        Date endDate=null;
+        Date startDate = null;
+        Date endDate = null;
         if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime()) && StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
-             startDate = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
-             endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+            startDate = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+            endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
             criteria.andCreateDateBetween(startDate, endDate);
         }
 
@@ -349,7 +347,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
         if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
             or.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
         }
-        if(startDate!=null &&endDate!=null) {
+        if (startDate != null && endDate != null) {
             or.andCreateDateBetween(startDate, endDate);
             recordCriteria.or(or);
         }

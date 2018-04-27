@@ -1,11 +1,11 @@
 /**
  * Created by Administrator on 2018/4/3.
  */
-PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$rootScope) {
+PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$rootScope,Detail) {
     console.log("cardDetailsCtrl")
 
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
-    $scope.$parent.param.headerPrice.title = "充值卡详情"
+    $scope.$parent.param.headerPrice.title = "套卡详情"
     $scope.flagFn = function (bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool
@@ -28,4 +28,11 @@ PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$root
             clickable: true,
         },
     });
+    $scope.param={
+        detailList:{}
+    }
+    Detail.get({id:2},function (data) {
+        $scope.detailList=data.responseData;
+        console.log(data)
+    })
 })

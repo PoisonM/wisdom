@@ -1,4 +1,4 @@
-PADWeb.controller('userInfoCtrl', function($scope, $state,$stateParams, ngDialog,GetProductRecord) {
+PADWeb.controller('userInfoCtrl', function($scope, $state,$stateParams, ngDialog,GetProductRecord,GetClerkAchievement) {
 /*-------------------------------------------定义头部信息|----------------------------------------------*/
     $scope.$parent.param.headerCash.leftContent="我"
     $scope.$parent.param.headerCash.leftAddContent=""
@@ -17,7 +17,15 @@ PADWeb.controller('userInfoCtrl', function($scope, $state,$stateParams, ngDialog
         $scope.$parent.mainSwitch.headerCashFlag.rightFlag = bool
     }
     /*打开收银头部/档案头部/我的头部*/
-    $scope.flagFn(true)
+    $scope.flagFn(true);
+/*-----------------------------------------------接口---------------------------------------------------*/
+    GetClerkAchievement.get({
+        sysClerkId:11
+    },function (data) {
+        if(data.result == "0x00001"){
+            $scope.todayPerformance = data.responseData
+        }
+    })
 
 /*----------------------------------------------方法-------------------------------------------------------------*/
     //今日业绩

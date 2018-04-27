@@ -263,4 +263,55 @@ public class UserConsumeController {
     }
 
 
+    /**
+     * 用户划套卡下的子卡操作
+     *
+     * @param shopUserConsumeDTO
+     * @return
+     */
+    @RequestMapping(value = "/consumes/consumesDaughterCard", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> consumesDaughterCard(@RequestBody List<ShopUserConsumeDTO> shopUserConsumeDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("用户划套卡下的子卡操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        int cardFlag = shopUserConsumeService.consumesDaughterCard(shopUserConsumeDTO, clerkInfo);
+        //保存用户的操作记录
+        responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData("success");
+        logger.info("用户划套卡下的子卡操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 用户领取产品
+     *
+     * @param shopUserConsumeDTO
+     * @return
+     */
+    @RequestMapping(value = "/consumes/consumesUserProduct", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> consumesUserProduct(@RequestBody List<ShopUserConsumeDTO> shopUserConsumeDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("用户领取产品操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        int cardFlag = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO, clerkInfo);
+        //保存用户的操作记录
+        responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData("success");
+        logger.info("用户领取产品操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+
 }

@@ -564,7 +564,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.projectDetails', {
-            url: '/projectDetails',
+            url: '/projectDetails/:id',
             templateUrl: root + '/priceList/projectDetails.html',
             controller: 'projectDetailsCtrl',
             resolve: {
@@ -596,7 +596,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.productDetails', {
-            url: '/productDetails',
+            url: '/productDetails/:id',
             templateUrl: root + '/priceList/productDetails.html',
             controller: 'productDetailsCtrl',
             resolve: {
@@ -628,7 +628,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.cardDetails', {
-            url: '/cardDetails',
+            url: '/cardDetails/:id',
             templateUrl: root + '/priceList/cardDetails.html',
             controller: 'cardDetailsCtrl',
             resolve: {
@@ -660,7 +660,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.rechargeableDetails', {
-            url: '/rechargeableDetails',
+            url: '/rechargeableDetails/:shopRechargeCardId',
             templateUrl: root + '/priceList/rechargeableDetails.html',
             controller: 'rechargeableDetailsCtrl',
             resolve: {

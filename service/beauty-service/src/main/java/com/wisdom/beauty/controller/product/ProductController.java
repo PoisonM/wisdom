@@ -145,6 +145,33 @@ public class ProductController {
     }
 
     /**
+     * 获取产品详情
+     *
+     * @param userProductInfoId
+     * @return
+     */
+    @RequestMapping(value = "/getUserProductInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<ShopUserProductRelationDTO> getUserProductInfo(@RequestParam String userProductInfoId) {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ResponseDTO<ShopUserProductRelationDTO> responseDTO = new ResponseDTO<>();
+        //查询数据
+        ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
+        shopUserProductRelationDTO.setId(userProductInfoId);
+        List<ShopUserProductRelationDTO> productInfoList = shopProductInfoService.getUserProductInfoList(shopUserProductRelationDTO);
+        if (CommonUtils.objectIsEmpty(productInfoList)) {
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
+        }
+
+        responseDTO.setResponseData(productInfoList.get(0));
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("获取产品详情方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
      * @Author:huan
      * @Param: id是一级产品的id
      * @Return:

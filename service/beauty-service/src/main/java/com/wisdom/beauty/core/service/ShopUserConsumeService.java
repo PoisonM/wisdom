@@ -35,4 +35,22 @@ public interface ShopUserConsumeService {
      * 用户划疗程卡
      */
     int consumeCourseCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
+
+    /**
+     * 用户划套卡下的子卡操作
+     *
+     * @param shopUserConsumeDTOS
+     * @param clerkInfo
+     * @return
+     */
+    int consumesDaughterCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
+
+    /**
+     * 用户领取产品
+     *
+     * @param shopUserConsumeDTOS
+     * @param clerkInfo
+     * @return
+     */
+    int consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
 }

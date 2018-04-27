@@ -28,6 +28,14 @@ public interface ShopStatisticsAnalysisService {
      * @Date:2018/4/13 10:24
      */
     BigDecimal getPerformance(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 获取耗卡
+     * @Date:2018/4/27 20:08
+     */
     BigDecimal getExpenditure(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
@@ -65,15 +73,30 @@ public interface ShopStatisticsAnalysisService {
      * @Description: 查看某个美容店的充值和消费金额(业绩)
      * @Date:2018/4/25 14:54
      */
-    BigDecimal getShopConsumeAndRecharge(String shopId, String goodType,String consumeType, Boolean isCardConsume,Date startDate, Date endDate);
+    BigDecimal getShopConsumeAndRecharge(String shopId, String goodType, String consumeType, Boolean isCardConsume, Date startDate, Date endDate);
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 查看全部家人中店员信息和业绩情况
+     * @Date:2018/4/25 19:21
+     */
+    List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
     /**
     *@Author:zhanghuan
     *@Param:
     *@Return:
-    *@Description: 查看全部家人中店员信息和业绩情况
-    *@Date:2018/4/25 19:21
+    *@Description: 查询耗卡的集合
+    *@Date:2018/4/27 20:10
     */
-    List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
     List<ExpenditureAndIncomeResponseDTO> getExpenditureList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取业绩集合
+    *@Date:2018/4/27 20:10
+    */
     List<ExpenditureAndIncomeResponseDTO> getIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 }
