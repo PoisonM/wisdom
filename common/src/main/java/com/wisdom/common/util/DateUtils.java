@@ -370,10 +370,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		}
 		return date;
 	}
-
-	public static void main(String[] args) {
-		System.out.println("args = [" + DateToStr(new Date(), "dateMillisecond") + "]");
-	}
     
     /**
      * 日期转换成字符串
