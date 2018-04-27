@@ -88,6 +88,8 @@ public enum ConfigConstant {
 
 	public static final float RECOMMEND_PROMOTE_A1_REWARD = 495;
 
+	public static final float RECOMMEND_USER_NUM_REWARD = 20;
+
 //	public static final float MONTH_A_INCOME_MAX_EXPENSE = 10000;
 //
 //	public static final float MONTH_B1_INCOME_MAX_EXPENSE = 1000;
@@ -108,7 +110,7 @@ public enum ConfigConstant {
 
     public static final String operationMember = "operation-1";
 
-    public static final int MAX_WITHDRAW_NUM = 1;
+    public static final int MAX_WITHDRAW_NUM = 1000;
 
 	public static final int MAX_WITHDRAW_AMOUNT = 5000;
 

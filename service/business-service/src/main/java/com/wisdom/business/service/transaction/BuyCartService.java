@@ -1,6 +1,5 @@
 package com.wisdom.business.service.transaction;
 
-import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -12,6 +11,8 @@ import com.wisdom.common.dto.transaction.OrderProductRelationDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.ObjectUtils;
 import com.wisdom.common.util.RedisLock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -39,8 +40,7 @@ public class BuyCartService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Autowired
-    private UserServiceClient userServiceClient;
+    Logger logger = LoggerFactory.getLogger(BuyCartService.class);
 
     public List<BusinessOrderDTO> getUserUnPayOrderInBuyCart() {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
@@ -57,6 +57,8 @@ public class BuyCartService {
     @Transactional(rollbackFor = Exception.class)
     public String addOfflineProduct2BuyCart(String productId, String productSpec,int num) {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+
+        logger.info(userInfoDTO.getMobile()+"将商品放入购物车中"+productId);
 
         //判断用户是否已经将此商品加入过购物车，如果已经加入过，则直接增加订单中，产品的数量
         OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,productSpec,userInfoDTO.getId());
@@ -136,6 +138,8 @@ public class BuyCartService {
     @Transactional(rollbackFor = Exception.class)
     public void minusProduct2BuyCart(String productId, String productSpec) {
 
+        logger.info("减少购物车中商品数"+productId);
+
         RedisLock redisLock = new RedisLock("OrderProductRelation");
         try
         {
@@ -157,6 +161,8 @@ public class BuyCartService {
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteOrderFromBuyCart(String orderId) {
+
+        logger.info("减少购物车中的订单"+orderId);
 
         RedisLock redisLock = new RedisLock("businessOrder"+orderId);
         try

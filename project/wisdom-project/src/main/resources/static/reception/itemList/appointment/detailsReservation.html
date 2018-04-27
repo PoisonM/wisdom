@@ -14,9 +14,16 @@
         </div>
         <div class="contentDown" >
           <p class=" fs28 bte5 h80 bbe5"><span class="cardItem">预约卡项</span></p>
-            <div class="cardBox ">
-                <p class="skinCare fs28">{{param.week.details.shopProjectName}}</p>
-                <button class="goCard fs32" ng-click = "goConsumption(param.detailsReservationText)">{{param.detailsReservationText}}</button>
+            <div class="cardBox" style="min-height: 2rem">
+                <p class="skinCare fs28 pt20 pb30 " style="display: flex;width:100%"><span ng-repeat="item in param.detailsWrapObject.detailsWrapData.consume" style="width:50%;display: inline-block">{{item.sysShopProjectName}}</span></p>
+                <button class="goCard fs32" ng-click = "goConsumption('消费')">消费</button>
+            </div>
+        </div>
+        <div class="contentDown" >
+            <p class=" fs28 bte5 h80 bbe5"><span class="cardItem">预约卡项</span></p>
+            <div class="cardBox " style="min-height: 2rem">
+                <p class="skinCare fs28 pt20 pb30"><span  ng-repeat="item in param.detailsWrapObject.detailsWrapData.punchCard">{{item.sysShopProjectName}}</span></p>
+                <button class="goCard fs32" ng-click = "goConsumption('划卡')">划卡</button>
             </div>
         </div>
 

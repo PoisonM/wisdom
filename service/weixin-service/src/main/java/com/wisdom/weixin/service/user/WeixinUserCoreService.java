@@ -151,7 +151,8 @@ public class WeixinUserCoreService {
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
         String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
-        String jsonData="{\"expire_seconds\": 626400, \"action_name\": \"QR_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + info + "\"}}}";
+        //有效期改为2592000即30天
+        String jsonData = "{\"expire_seconds\": 2591000, \"action_name\": \"QR_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + info + "\"}}}";
         String reJson= WeixinUtil.post(url, jsonData,"POST");
         JSONObject jb=JSONObject.fromObject(reJson);
         String qrTicket = jb.getString("ticket");

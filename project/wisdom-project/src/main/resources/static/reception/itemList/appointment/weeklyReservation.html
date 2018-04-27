@@ -1,33 +1,45 @@
-<div class="weekWrap H100">
-     <div class="weekHeader">
+<div class="weekWrap H100 swiper-container3">
+    <div class="init-loading list-group-item text-center" style="display: none">下拉可以刷新</div>
+     <div class="weekHeader" style="position: relative;z-index: 2;background: #ffffff;">
          <ul>
              <li  ng-repeat="(key ,val) in param.week.weekData" >
                  {{key}}
              </li>
          </ul>
      </div>
-    <div class="content H100 mt128">
-        <div class="weekLeft">
-            <ul>
-                <li  ng-repeat="item in param.week" >
-                    <div>
-                        <p class="weekLeftNumber">{{item}}<br>
-                            <!--<span>周五</span><span>初五</span></p>-->
-                    </div>
-                </li>
+    <div class="content  swiper-wrapper mt128">
 
-            </ul>
-        </div>
+        <div class="swiper-slide nowarp  nowarp " >
+            <div class="swiper-container2 ">
+                <div class="weekLeft" style="position: relative;z-index: 2;background: #ffffff;">
+                    <ul>
+                        <li  ng-repeat="item in param.week" >
+                            <div>
+                                <p class="weekLeftNumber">{{item}}<br>
+                                    <!--<span>周五</span><span>初五</span></p>-->
+                            </div>
+                        </li>
 
-        <div class="weekRight " ng-repeat="(key ,val) in param.week.weekData">
-            <ul>
-                <li  ng-repeat="item in val" ng-click="weekLis(item)">
-                    <div>
-                        <p ng-repeat="item1 in item.info"><span>{{item1.sysUserName}}</span>&nbsp;<span>{{item1.shopProjectName}}</span><span class="ml30">11:00</span></p>
+                    </ul>
+                </div>
+                <div class="swiper-wrapper nowarp">
+                    <div class="weekRight swiper-slide list-group" ng-repeat="(key ,val) in param.week.weekData">
+                        <ul>
+                            <li  ng-repeat="item in val" ng-click="weekLis(item)">
+                                <div>
+                                    <p ng-repeat="item1 in item.info"><span>{{item1.sysUserName}}</span>&nbsp;<span>{{item1.shopProjectName}}</span><span class="ml30">11:00</span></p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                </li>
-            </ul>
+                </div>
+
+            </div>
+
         </div>
+        <div class="loadtip">上拉加载更多</div>
+        <div class="swiper-scrollbar"></div>
+
     </div>
    <div class="foot"></div>
 

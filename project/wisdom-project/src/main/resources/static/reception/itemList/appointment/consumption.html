@@ -22,69 +22,199 @@
                 </ul>
             </div>
         </div>
-        <div class="space-between discount">
-            <div class="left type">
-                <p class=" color333FS30">折扣类型</p>
-                <p class=" color999FS26">此处可选择不同的充值卡，用于不同商品的折扣</p>
-            </div>
-            <div class="right top-up">
-                <p class="rightContent color333FS30"> 余额充值
-                    <img src="images/bt_more.png" class="morePic" ng-click="balancePrepaid()">
-                </p>
-            </div>
-        </div>
-        <div>
-            <div>
-                <p class="single color666FS30"><img src="images/ic_a.png">
-                    单次
-                </p>
-                <div class="productMess paddingLeft30">
-                    <p class="space-between waterGuangZhen"><span class=" color333FS38" >水光针</span> <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha"></p>
-                    <p class="money color999FS32">
-                        原价 <span class="num">99.00</span>
-                        折扣 <span>无折</span>
-                    </p>
-                    <p class="discountNum color999FS32">
-                        折扣价 ￥
-                        <input type="text">
+        <div style="height:8.5rem;overflow-y: scroll">
+            <div class="space-between discount">
+                <div class="left type">
+                    <p class=" color333FS30">折扣类型</p>
+                    <p class=" color999FS26">此处可选择不同的充值卡，用于不同商品的折扣</p>
+                </div>
+                <div class="right top-up">
+                    <p class="rightContent color333FS30"> 余额充值
+                        <img src="images/bt_more.png" class="morePic" ng-click="balancePrepaid()">
                     </p>
                 </div>
-                <ul class="height100Num color333FS34 ">
-                    <li class="space-between paddingLeft30">
-                        <p class="">购买数量</p>
-                        <p class="rightContent">
-                            <button class="reduction" ng-click = "subtractOrAdd(0)">-</button>
-                            <input type="text" placeholder="1" ng-model="param.num">
-                            <button class="addBtn" ng-click = "subtractOrAdd(1)">+</button>
-                        </p>
-                    </li>
-                    <li class="space-between paddingLeft30 paddingLeft30">
-                        <p></p>
-                        <p class="rightContent">
-                            <span class="color333FS26 smallAll">小计:</span> <span class="colorFF6666FS34">99.00</span>
-                        </p>
-                    </li>
-                    <li class="space-between paddingLeft30">
-                        <span >关联员工</span>
-                        <a class="rightContent"><img src="images/bt_more.png" class="morePic" ng-click="relatedStaff()"></a>
-                    </li>
-                </ul>
-                <p class="space-between color333FS34 giving paddingLeft30">
-                    <span >赠送</span>
-                    <a class="rightContent"><img src="images/bt_more.png" class="morePic" ng-click="giving()"></a>
-                </p>
             </div>
-        </div>
-    </div>
-    <div class="nextStep">
-        <div>
-            <p class="allMoney color333FS34">
-                <span>总金额:</span>
-                <span class="colorFF6666FS34">￥99.00</span>
+            <div>
+                <div ng-show="param.consumptionObj.singleByUserIdFlag">
+                    <p class="single color666FS30"><img src="images/ic_a.png">
+                        单次
+                    </p>
+                    <div ng-repeat="item in param.consumptionObj.singleByUserId">
+                        <div class="productMess paddingLeft30">
+                            <p class="space-between waterGuangZhen"><span class=" color333FS38" >{{item.sysShopProjectName}}</span> <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha" ng-click="candel('singleByUserId',$index)"></p>
+                            <p class="money color999FS32">
+                                原价 <span class="num">{{item.sysShopProjectInitAmount}}</span>
+                                折扣 <span>无折</span>
+                            </p>
+                            <p class="discountNum color999FS32">
+                                折扣价 ￥
+                                <input type="text">
+                            </p>
+                        </div>
+                        <ul class="height100Num color333FS34 ">
+                            <li class="space-between paddingLeft30">
+                                <p class="">购买数量</p>
+                                <p class="rightContent">
+                                    <button class="reduction" ng-click = "subtractOrAdd(0)">-</button>
+                                    <input type="text" placeholder="1" ng-model="param.num">
+                                    <button class="addBtn" ng-click = "subtractOrAdd(1)">+</button>
+                                </p>
+                            </li>
+                            <li class="space-between paddingLeft30 paddingLeft30">
+                                <p></p>
+                                <p class="rightContent">
+                                    <span class="color333FS26 smallAll">小计:</span> <span class="colorFF6666FS34">99.00</span>
+                                </p>
+                            </li>
+                            <li class="space-between paddingLeft30">
+                                <span >关联员工</span>
+                                <a class="rightContent"><img src="images/bt_more.png" class="morePic" ng-click="relatedStaff()"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div ng-show="param.consumptionObj.treatmentCardByUserIdFlag">
+                <p class="single color666FS30"><img src="images/ic_a.png">
+                    疗程卡
+                </p>
+                <div ng-repeat="item in param.consumptionObj.treatmentCardByUserId">
+                    <div class="productMess paddingLeft30">
+                        <p class="space-between waterGuangZhen"><span class=" color333FS38" >{{item.sysShopProjectName}}</span> <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha" ng-click="candel('treatmentCardByUserId',$index)"></p>
+                        <p class="money color999FS32">
+                            原价 <span class="num">{{item.sysShopProjectInitAmount}}</span>
+                            折扣 <span>无折</span>
+                        </p>
+                        <p class="discountNum color999FS32">
+                            折扣价 ￥
+                            <input type="text">
+                        </p>
+                    </div>
+                    <ul class="height100Num color333FS34 ">
+                        <li class="space-between paddingLeft30">
+                            <p class="">购买数量</p>
+                            <p class="rightContent">
+                                <button class="reduction" ng-click = "subtractOrAdd(0)">-</button>
+                                <input type="text" placeholder="1" ng-model="param.num">
+                                <button class="addBtn" ng-click = "subtractOrAdd(1)">+</button>
+                            </p>
+                        </li>
+                        <li class="space-between paddingLeft30 paddingLeft30">
+                            <p></p>
+                            <p class="rightContent">
+                                <span class="color333FS26 smallAll">小计:</span> <span class="colorFF6666FS34">99.00</span>
+                            </p>
+                        </li>
+                        <li class="space-between paddingLeft30">
+                            <span >关联员工</span>
+                            <a class="rightContent"><img src="images/bt_more.png" class="morePic" ng-click="relatedStaff()"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+                <div ng-show="param.consumptionObj.productByUserIdFlag">
+                    <p class="single color666FS30"><img src="images/ic_a.png">
+                        产品
+                    </p>
+                    <div ng-repeat="item in param.consumptionObj.productByUserId">
+                        <div class="productMess paddingLeft30">
+                            <p class="space-between waterGuangZhen"><span class=" color333FS38" >{{item.shopProductName}}</span> <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha" ng-click="candel('productByUserId',$index)"></p>
+                            <p class="money color999FS32">
+                                原价 <span class="num">{{item.surplusAmount}}</span>
+                                折扣 <span>无折</span>
+                            </p>
+                            <p class="discountNum color999FS32">
+                                折扣价 ￥
+                                <input type="text">
+                            </p>
+                        </div>
+                        <ul class="height100Num color333FS34 ">
+                            <li class="space-between paddingLeft30">
+                                <p class="">购买数量</p>
+                                <p class="rightContent">
+                                    <button class="reduction" ng-click = "subtractOrAdd(0)">-</button>
+                                    <input type="text" placeholder="1" ng-model="param.num">
+                                    <button class="addBtn" ng-click = "subtractOrAdd(1)">+</button>
+                                </p>
+                            </li>
+                            <li class="space-between paddingLeft30 paddingLeft30">
+                                <p></p>
+                                <p class="rightContent">
+                                    <span class="color333FS26 smallAll">小计:</span> <span class="colorFF6666FS34">99.00</span>
+                                </p>
+                            </li>
+                            <li class="space-between paddingLeft30">
+                                <span >关联员工</span>
+                                <a class="rightContent"><img src="images/bt_more.png" class="morePic" ng-click="relatedStaff()"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div ng-show="param.consumptionObj.collectionCardByUserIdFlag">
+                    <p class="single color666FS30"><img src="images/ic_a.png">
+                        套卡
+                    </p>
+                    <div ng-repeat="item in param.consumptionObj.collectionCardByUserId">
+                        <div  ng-repeat="items in item.projectList" >
+                            <div class="productMess paddingLeft30">
+                                <p class="space-between waterGuangZhen"><span class=" color333FS38" >{{items.shopProjectGroupName}}</span> <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha" ng-click="candel('collectionCardByUserId',$index)"></p>
+                                <p class="money color999FS32">
+                                    原价 <span class="num">{{items.projectInitAmount}}</span>
+                                    折扣 <span>无折</span>
+                                </p>
+                                <p class="discountNum color999FS32">
+                                    折扣价 ￥
+                                    <input type="text">
+                                </p>
+                            </div>
+                            <ul class="height100Num color333FS34 ">
+                                <li class="space-between paddingLeft30">
+                                    <p class="">购买数量</p>
+                                    <p class="rightContent">
+                                        <button class="reduction" ng-click = "subtractOrAdd(0)">-</button>
+                                        <input type="text" placeholder="1" ng-model="param.num">
+                                        <button class="addBtn" ng-click = "subtractOrAdd(1)">+</button>
+                                    </p>
+                                </li>
+                                <li class="space-between paddingLeft30 paddingLeft30">
+                                    <p></p>
+                                    <p class="rightContent">
+                                        <span class="color333FS26 smallAll">小计:</span> <span class="colorFF6666FS34">99.00</span>
+                                    </p>
+                                </li>
+                                <li class="space-between paddingLeft30">
+                                    <span >关联员工</span>
+                                    <a class="rightContent"><img src="images/bt_more.png" class="morePic" ng-click="relatedStaff()"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                </div>
+            </div>
+
+            <p class="space-between color333FS34 giving paddingLeft30">
+                <span >赠送</span>
+                <a class="rightContent"><img src="images/bt_more.png" class="morePic" ng-click="giving()"></a>
             </p>
-            <p>
-                <button class="nextStepBtn" ng-click="nextStepBtnConsumption()">下一步</button>
-            </p>
+            <div class="nextStep">
+                <div>
+                    <p class="allMoney color333FS34">
+                        <span>总金额:</span>
+                        <span class="colorFF6666FS34">￥99.00</span>
+                    </p>
+                    <p>
+                        <button class="nextStepBtn" ng-click="nextStepBtnConsumption()">下一步</button>
+                    </p>
+                </div>
+
+            </div>
         </div>
 
     </div>
+
