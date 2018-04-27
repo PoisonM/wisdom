@@ -25,6 +25,9 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkId;
 
+    //
+    private String sysClerkName;
+
     //产品待领取的数量
     private Integer waitReceiveNumber;
 
@@ -43,7 +46,7 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     //剩余金额
     private BigDecimal surplusAmount;
 
-    //
+    //折扣
     private Float discount;
 
     //1 赠送 0不赠送
@@ -109,6 +112,14 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
 
     public void setSysClerkId(String sysClerkId) {
         this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
     }
 
     public Integer getWaitReceiveNumber() {

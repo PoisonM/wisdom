@@ -324,6 +324,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             logger.info("用户划疗程卡传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "], clerkInfo = [" + clerkInfo + "]");
             return 0;
         }
+        // 查询用户的账户信息
+        SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
+        sysUserAccountDTO.setSysUserId(shopUserConsumeDTO.get(0).getSysUserId());
+        sysUserAccountDTO.setSysShopId(clerkInfo.getSysShopId());
+        sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
 
         for (ShopUserConsumeDTO dto : shopUserConsumeDTO) {
 
@@ -364,8 +369,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             consumeRecordDTO.setPrice(dto.getConsumePrice());
             consumeRecordDTO.setCreateDate(new Date());
             consumeRecordDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
-            return shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
+            shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
+            logger.info("更新用户的账户信息");
+            sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().subtract(dto.getConsumePrice()));
         }
+        sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
         return 0;
     }
     /**
