@@ -52,6 +52,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetSho
 
     $scope.$parent.selectSty = function (id) {
         $scope.$parent.param.selectSty = id
+        //根据id查用户信息
         GetShopUserArchivesInfoByUserId.get({sysUserId:id},function (data) {
             if(data.result == "0x00001"){
 
@@ -64,7 +65,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetSho
             age	:$scope.param.selectContentAge,
             birthday:$scope.param.selectContentBirthday,
             bloodType:$scope.param.selectContentBlood,
-            channel:'大众点评',
+            channel:'大众点评',//渠道
             constellation:$scope.param.selectContentConstellation,
             detail:'这是个好用户',
             height:$scope.param.selectContentHeight,

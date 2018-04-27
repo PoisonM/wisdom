@@ -54,6 +54,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetShopUserArchivesInfoByUserId', ['$resource', function($resource) {
         return $resource(IP + 'archives/getShopUserArchivesInfoByUserId')
     }])
+    //
+    .factory('GetClerkAchievement', ['$resource', function($resource) {
+        return $resource(IP + 'work/getClerkAchievement')
+    }])
     //日预约请求接口
     .factory('ShopDayAppointmentInfoByDate', ['$resource', function($resource) {
         return $resource(IP + 'appointmentInfo/shopDayAppointmentInfoByDate')
