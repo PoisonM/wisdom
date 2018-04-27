@@ -15,6 +15,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.beauty.ShopMemberAttendacneDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,10 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "work")
@@ -118,16 +117,16 @@ public class ShopMemberAttendanceController {
      */
     @RequestMapping(value = "/getShopConsumeAndRecharge", method = {RequestMethod.GET})
     @ResponseBody
-    ResponseDTO<Map<String, BigDecimal>> getBossExpenditureAndIncome(@RequestParam String shopId,
-                                                                     @RequestParam String startTime,
-                                                                     @RequestParam String consumeType,
-                                                                     @RequestParam String endTime) {
+    ResponseDTO<Map<String, BigDecimal>> getShopConsumeAndRecharge(@RequestParam String shopId,
+                                                                   @RequestParam String startTime,
+                                                                   @RequestParam String consumeType,
+                                                                   @RequestParam String endTime) {
 
         Date startDate = DateUtils.StrToDate(startTime, "datetime");
         Date endDate = DateUtils.StrToDate(endTime, "datetime");
-        Boolean bool=false;
-        BigDecimal recharge = shopStatisticsAnalysisService.getShopConsumeAndRecharge(shopId, GoodsTypeEnum.RECHARGE_CARD.getCode(),consumeType ,bool,startDate, endDate);
-        BigDecimal consume = shopStatisticsAnalysisService.getShopConsumeAndRecharge(shopId, GoodsTypeEnum.TIME_CARD.getCode(),consumeType, bool, startDate,endDate);
+        Boolean bool = false;
+        BigDecimal recharge = shopStatisticsAnalysisService.getShopConsumeAndRecharge(shopId, GoodsTypeEnum.RECHARGE_CARD.getCode(), consumeType, bool, startDate, endDate);
+        BigDecimal consume = shopStatisticsAnalysisService.getShopConsumeAndRecharge(shopId, GoodsTypeEnum.TIME_CARD.getCode(), consumeType, bool, startDate, endDate);
         Map<String, BigDecimal> map = new HashMap<>(16);
         map.put("recharge", recharge);
         map.put("consume", consume);
@@ -137,4 +136,43 @@ public class ShopMemberAttendanceController {
         return response;
     }
 
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 获取店员成绩
+     * @Date:2018/4/27 18:26
+     */
+    @RequestMapping(value = "/getClerkAchievement", method = {RequestMethod.GET})
+    @ResponseBody
+    ResponseDTO<Map<String, String>> getClerkAchievement(@RequestParam String sysClerkId) {
+
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        if (sysClerkDTO == null) {
+            return null;
+        }
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
+        UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
+        userConsumeRequestDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        userConsumeRequestDTO.setSysClerkId(sysClerkId);
+        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        String startTime = DateUtils.getStartTime();
+        String endTime = DateUtils.getEndTime();
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
+        BigDecimal income = shopStatisticsAnalysisService.getPerformance(pageParamVoDTO);
+        BigDecimal expenditure = shopStatisticsAnalysisService.getExpenditure(pageParamVoDTO);
+        Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(sysClerkId, startTime, endTime);
+        Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(sysClerkDTO.getSysShopId(), startTime, endTime);
+
+        Map<String, String> map = new HashMap<>(16);
+        map.put("income", income == null ? "0" : income.toString());
+        map.put("expenditure", expenditure == null ? "0" : income.toString());
+        map.put("consumeNumber", consumeNumber.toString());
+        map.put("shopNewUserNumber", shopNewUserNumber.toString());
+        ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
+        response.setResponseData(map);
+        response.setResult(StatusConstant.SUCCESS);
+        return response;
+    }
 }
