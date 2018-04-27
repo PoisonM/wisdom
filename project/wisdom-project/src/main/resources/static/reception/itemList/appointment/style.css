@@ -142,13 +142,13 @@ margin-left:px2rem(1110/2);*/ }
 .collectionCard  .searchBox button { font-size: 0.23438rem; color: #666666; width: 0.68438rem; text-align: center; }
 .collectionCard  .cardLis { background: #ffffff; }
 
-.consumption .btnsLisArea { height: 1.46875rem; background: #ffffff; }
+.consumption .btnsLisArea { height: 1.46875rem; background: #ffffff;margin-bottom: 0.156rem; }
 .consumption .btnsLisArea .btnLis { width: 6.03125rem; margin: 0 auto; }
 .consumption .btnsLisArea .btnLis ul { display: flex; }
 .consumption .btnsLisArea .btnLis ul li { width: 25%; text-align: center; }
 .consumption .btnsLisArea .btnLis ul li img { margin-top: 0.1875rem; width: 0.6875rem; height: 0.6875rem; }
 .consumption .btnsLisArea .btnLis ul li a { display: block; margin-top: 0.11719rem; }
-.consumption .content .discount { margin-top: 0.15625rem; padding-left: 0.23438rem; background: #ffffff; }
+.consumption .content .discount { padding-left: 0.23438rem; background: #ffffff; }
 .consumption .content .discount .type { padding-top: 0.15625rem; }
 .consumption .content .discount .type p { margin-bottom: 0.11719rem; }
 .consumption .content .discount .top-up { height: 1.09375rem; line-height: 1.09375rem; }

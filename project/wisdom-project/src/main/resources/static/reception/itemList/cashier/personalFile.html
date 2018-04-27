@@ -6,21 +6,71 @@
         <span ng-click="tabclick(2)" ng-class="select=='2'?'select':''">充值卡</span>
         <span ng-click="tabclick(3)" ng-class="select=='3'?'select':''">单次</span>
         <span ng-click="tabclick(4)" ng-class="select=='4'?'select':''">产品</span>
-        <span ng-click="tabclick(5)" ng-class="select=='5'?'select':''">优惠券</span>
     </div>
     <div class="personalFile-content">
         <div class="treatment">
-            <div class="treatmentCard clearfix">
+            <div class="treatmentCard clearfix" ng-if="select=='0'">
                 <div class="treatmentCardTop clearfix">
                     <span class="treatmentCardTopName">美白护理</span>
                     <span class="treatmentCardTopPrice">金额:￥2980.00</span>
-                    <span class="treatmentCardTopUsed">10</span>
-                    <span class="treatmentCardTopTotal">/10</span>
+                    <div class="useNub">
+                        <span class="treatmentCardTopUsed">10</span>
+                        <span class="treatmentCardTopTotal">/10</span>
+                    </div>
                     <button>划卡</button>
                 </div>
                 <div class="treatmentCardBottom">
                     <span>备注:</span>
                     <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
+                </div>
+            </div>
+            <div class="recorderCard clearfix" ng-if="select=='1'">
+                <div class="recorderCardTop clearfix">
+                    <span class="recorderCardTopName">身体综合卡</span>
+                    <span class="recorderCardTopPrice">金额:<b>3900.00</b></span>
+                </div>
+                <div class="recorderCardNote clearfix">
+                    <span>备注:</span>
+                    <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
+                </div>
+                <div>
+                    <div class="recorderCardContent clearfix">
+                        <span class="recorderCardContentName">面部刮痧</span>
+                        <div class="useNub">
+                            <span class="recorderCardContentUsed">10</span>
+                            <span class="recorderCardContentTotal">/10</span>
+                        </div>
+                        <button>划卡</button>
+                    </div>
+                    <div class="recorderCardContent clearfix">
+                        <span class="recorderCardContentName">面部刮痧</span>
+                        <div class="useNub">
+                            <span class="recorderCardContentUsed">10</span>
+                            <span class="recorderCardContentTotal">/10</span>
+                        </div>
+                        <button>划卡</button>
+                    </div>
+                    <div class="recorderCardContent clearfix">
+                        <span class="recorderCardContentName">面部刮痧</span>
+                        <div class="useNub">
+                            <span class="recorderCardContentUsed">10</span>
+                            <span class="recorderCardContentTotal">/10</span>
+                        </div>
+                        <button>划卡</button>
+                    </div>
+                </div>
+            </div>
+            <div class="prepaidCard clearfix" ng-if="select=='2'">
+                <div class="prepaidCardTop clearfix">
+                    <span>总余额：￥51230716.80</span>
+                </div>
+                <div class="prepaidCardContent">
+                    <img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1522311638&di=3712f277b199303e7c7eb1df22e73f55&src=http://img5.xiazaizhijia.com/walls/20160708/1440x900_2f172c09d079701.jpg" alt="">
+                    <span class="prepaidCardName">余额充值</span>
+                    <div class="prepaidCardNote clearfix">
+                        <span>备注:</span>
+                        <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
+                    </div>
                 </div>
             </div>
         </div>

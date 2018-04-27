@@ -207,6 +207,55 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.userInfo.usingHelp', {
+            url: '/usingHelp',
+            templateUrl: root + '/userInfo/usingHelp.html',
+            controller: 'usingHelpCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "使用帮助",
+                        files: [
+                            root + "userInfo/usingHelp.css",
+                            root + "userInfo/usingHelp.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.feedback', {
+            url: '/feedback',
+            templateUrl: root + '/userInfo/feedback.html',
+            controller: 'feedbackCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "意见反馈",
+                        files: [
+                            root + "userInfo/feedback.css",
+                            root + "userInfo/feedback.js",
+                        ]
+                    })
+                }]
+            }
+        })
+
+        .state('pad-web.userInfo.modificationData', {
+            url: '/modificationData',
+            templateUrl: root + '/userInfo/modificationData.html',
+            controller: 'modificationDataCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "修改资料",
+                        files: [
+                            root + "userInfo/modificationData.css",
+                            root + "userInfo/modificationData.js",
+                        ]
+                    })
+                }]
+            }
+        })
 
 
         .state('pad-web.left_nav.addRecord', {
@@ -266,7 +315,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "选择套卡",
-                        files: [root + "appointment/collectionCard.js",
+                        files: [root + "appointment/collectionCardCtrl.js",
                             root + "appointment/style.css",
                         ]
                     })
@@ -673,6 +722,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/balancePrepaid.css",
                             root + "appointment/givingCtrl.js",
                             root + "appointment/scratchCardCtrl.js",
+                            root + "appointment/selectTreatmentCard.js",
                             root + "appointment/individualTravelerAppointment.css",
                             root + "appointment/individualTravelerAppointmentCtrl.js",
                             root + "appointment/postion.css",
@@ -691,10 +741,11 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/selectCoupons.css",
                             root + "appointment/balancePrepaidCtrl.js",
                             root + "appointment/relatedStaffCtrl.js",
+                            root + "appointment/collectionCardCtrl.js",
                             root+"appointment/dropload.css",
                             root + "../libs/angular-touch.js",
                             root + "../libs/swiper-3.4.0.min.js",
-                            /*root + "../styles/swiper-3.4.0.min.css",*/
+                            //root + "../styles/swiper-3.4.0.min.css",
                             root + "../libs/zepto.min.js",
 
                         ]
@@ -800,6 +851,6 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         })
     ;
 
-    $urlRouterProvider.otherwise('pad-web/left_nav/demo');
+    $urlRouterProvider.otherwise('pad-web/userInfo/todayPerformance');
     $httpProvider.interceptors.push('httpInterceptor');
 });
