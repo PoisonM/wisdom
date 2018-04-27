@@ -87,7 +87,9 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
         //获取美容师
         ShopAppointServiceDTO shopAppointServiceDTO = null;
         try {
-            shopAppointServiceDTO = appointmentService.getShopAppointService(userId);
+            shopAppointServiceDTO = new ShopAppointServiceDTO();
+            shopAppointServiceDTO.setSysUserId(userId);
+            shopAppointServiceDTO = appointmentService.getShopAppointService(shopAppointServiceDTO);
         } catch (Exception e) {
             logger.info("appointmentService.getShopAppointService()方法调用异常,异常信息是:" + e.getMessage(), e);
         }

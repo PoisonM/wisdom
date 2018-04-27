@@ -21,7 +21,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -101,4 +105,45 @@ public class PayTest {
         System.out.println(result.getResponse().getContentAsString());
     }
 
+    /**
+     * 用户签字确认接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void paySignConfirm() throws Exception {
+
+        ShopUserPayDTO shopUserPayDTO = new ShopUserPayDTO();
+        shopUserPayDTO.setOrderId("20180424200819402");
+        shopUserPayDTO.setSignUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1524733023679&di=1f09aa7db917eadb7e86e880bdc67f36&imgtype=0&src=http%3A%2F%2Fd9.yihaodianimg.com%2FN04%2FM06%2F31%2F37%2FCgQDr1OpPFKAAmDlAAEftCRsH7g04201_600x600.jpg");
+
+        String toJSONString = JSONObject.toJSONString(shopUserPayDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/userPay/paySignConfirm").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    public static void main(String[] args) throws ParseException {
+        // 获取当月的天数（需完善）
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        // 定义当前期间的1号的date对象
+        Date date = null;
+        try {
+            date = dateFormat.parse("20160201");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, 1);//月增加1天
+        calendar.add(Calendar.DAY_OF_MONTH, -7);//日期倒数一日,既得到本月最后一天
+        Date voucherDate = calendar.getTime();
+        System.out.println(dateFormat.format(voucherDate));
+    }
 }

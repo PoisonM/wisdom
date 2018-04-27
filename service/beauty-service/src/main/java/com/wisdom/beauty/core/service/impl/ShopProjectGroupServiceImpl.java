@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
 
     @Autowired
     private ShopProjectService shopProjectService;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public List<ShopProjectGroupDTO> getShopProjectGroupList(PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO) {

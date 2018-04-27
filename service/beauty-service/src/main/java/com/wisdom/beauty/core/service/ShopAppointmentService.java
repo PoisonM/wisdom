@@ -44,7 +44,7 @@ public interface ShopAppointmentService {
      *@Description: 根据用户ID查询预约信息
      *@Date:2018/4/8 14:26
      */
-    ShopAppointServiceDTO getShopAppointService(String userId);
+    ShopAppointServiceDTO getShopAppointService(ShopAppointServiceDTO shopAppointServiceDTO);
 
 
     /**

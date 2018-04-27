@@ -1,15 +1,5 @@
 package com.wisdom.beauty.core.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
@@ -18,6 +8,15 @@ import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.util.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * FileName: AppointmentServiceImpl
@@ -110,19 +109,26 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
      * @Date:2018/4/8 14:26
      */
     @Override
-    public ShopAppointServiceDTO getShopAppointService(String userId) {
+    public ShopAppointServiceDTO getShopAppointService(ShopAppointServiceDTO shopAppointServiceDTO) {
 
-        logger.info("getShopAppointServiceDTO传入参数userId={}", userId);
-        if (StringUtils.isBlank(userId)) {
-            logger.debug(" 根据用户ID查询预约信息,{}", "userId = [" + userId + "]");
+        logger.info("getShopAppointServiceDTO传入参数userId={}", shopAppointServiceDTO);
+        if (null == shopAppointServiceDTO) {
+            logger.debug(" 根据用户ID查询预约信息,{}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
             return null;
         }
         ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
         ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
-        criteria.andSysUserIdEqualTo(userId);
+
+        if (StringUtils.isNotBlank(shopAppointServiceDTO.getSysUserId())) {
+            criteria.andSysUserIdEqualTo(shopAppointServiceDTO.getSysUserId());
+        }
+
+        if (StringUtils.isNotBlank(shopAppointServiceDTO.getId())) {
+            criteria.andIdEqualTo(shopAppointServiceDTO.getId());
+        }
+
         shopAppointServiceCriteria.setOrderByClause("create_date");
         List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
-        ShopAppointServiceDTO shopAppointServiceDTO = null;
 
         if (CollectionUtils.isNotEmpty(appointServiceDTOS)) {
             shopAppointServiceDTO = appointServiceDTOS.get(0);

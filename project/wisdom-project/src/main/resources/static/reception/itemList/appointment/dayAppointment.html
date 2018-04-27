@@ -38,12 +38,10 @@
                         <li  ng-repeat="item in param.days" style="text-align: center" >{{item}}</li>
                     </ul>
                     <div class="swiper-wrapper nowarp" style="margin-left:1.21875rem;">
-
-
                         <div class="swiper-slide list-group" ng-repeat="(index1,item) in param.appointmentObject.list"style="width:500px">
                             <div class="appointmentLis">
                                 <ul >
-                                <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bgred':item1==4}" ng-click="detailsWrap(index1,index2)" ng-onhold="onHold(index1,index2,item1)">
+                                <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bgred':item1==4}" ng-click="detailsWrap(index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2])" ng-onhold="onHold(index1,index2,item1)">
                                     <p ng-if="item1 == 4" class="colred fs34" style="line-height: 0.96875rem;text-align:center ">{{item.sysUserName[index2]}}</p>
                                     <div ng-if="item1 != 4">
                                         <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3}" ng-if="item1 == item.status[$index+1]">{{item.sysUserName[index2]}}</p>
@@ -56,10 +54,7 @@
                                 </li>
                             </ul>
                             </div>
-
                         </div>
-
-
                     </div>
             </div>
 

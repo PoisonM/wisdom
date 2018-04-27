@@ -766,6 +766,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             url: '/individualTravelerAppointment',
             templateUrl: root + '/appointment/individualTravelerAppointment.html',
             controller: 'individualTravelerAppointmentCtrl',
+
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({

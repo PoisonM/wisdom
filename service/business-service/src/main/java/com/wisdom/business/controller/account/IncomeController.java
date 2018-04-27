@@ -469,6 +469,7 @@ public class IncomeController {
 		map.put("selfList",selfList1);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
+		responseDTO.setResult(StatusConstant.SUCCESS);
 		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}

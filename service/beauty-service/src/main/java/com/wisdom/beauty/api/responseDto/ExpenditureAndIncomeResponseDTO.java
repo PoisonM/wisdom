@@ -15,6 +15,16 @@ import java.util.Date;
  */
 public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
     /**
+     * 照片
+     */
+    private String photo;
+    /**
+     * 店员名字
+     */
+    private String sysShopClerkName;
+
+    private String sysShopClerkId;
+    /**
      * 美容院id
      */
     private String sysShopId;
@@ -38,6 +48,10 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
      * 日期
      */
     private Date date;
+    /**
+     * 格式化后的日期,例如2018-04-04
+     */
+    private String formateDate;
 
     public BigDecimal getExpenditure() {
         return expenditure;
@@ -86,6 +100,38 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
     public void setSysShopName(String sysShopName) {
         this.sysShopName = sysShopName;
+    }
+
+    public String getFormateDate() {
+        return formateDate;
+    }
+
+    public void setFormateDate(String formateDate) {
+        this.formateDate = formateDate;
+    }
+
+    public String getSysShopClerkId() {
+        return sysShopClerkId;
+    }
+
+    public void setSysShopClerkId(String sysShopClerkId) {
+        this.sysShopClerkId = sysShopClerkId;
+    }
+
+    public String getSysShopClerkName() {
+        return sysShopClerkName;
+    }
+
+    public void setSysShopClerkName(String sysShopClerkName) {
+        this.sysShopClerkName = sysShopClerkName;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
 

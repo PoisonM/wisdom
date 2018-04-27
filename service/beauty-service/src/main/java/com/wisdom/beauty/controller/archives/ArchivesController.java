@@ -17,6 +17,7 @@ import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.PinYinSort;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +90,8 @@ public class ArchivesController {
             HashMap<Object, Object> hashMap = new HashMap<>(16);
             ArrayList<Object> arrayList = new ArrayList<>();
             for (ShopUserArchivesDTO archivesDTO : shopUserArchivesDTOS) {
-                if (a == PinYinSort.ToPinYinString(archivesDTO.getSysUserName()).charAt(0)) {
+                String pinyin=PinYinSort.ToPinYinString(archivesDTO.getSysUserName());
+                if (StringUtils.isNotBlank(pinyin) && a == pinyin.charAt(0)) {
                     arrayList.add(archivesDTO);
                 }
             }

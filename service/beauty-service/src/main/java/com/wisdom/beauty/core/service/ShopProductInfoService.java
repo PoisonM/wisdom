@@ -21,10 +21,10 @@ public interface ShopProductInfoService {
      * @Author:huan
      * @Param:
      * @Return:
-     * @Description: 根据产品id获取产品的详细信息
+     * @Description: 根据条件查询产品列表
      * @Date:2018/4/3 19:35
      */
-    ShopProductInfoDTO getShopProductInfo(String id);
+    List<ShopProductInfoDTO> getShopProductInfo(ShopProductInfoDTO shopProductInfoDTO);
 
     /**
      * 获取用户的产品信息

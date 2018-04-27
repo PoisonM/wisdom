@@ -281,12 +281,9 @@ public class BusinessRunTimeService {
                 startDate = year + "-" + month + "-26";
             }
             else{
-                int month = Integer.parseInt(DateUtils.getMonth()) - 2;
+                int month = Integer.parseInt(DateUtils.getMonth()) - 1;
                 startDate = DateUtils.getYear() + "-" + month + "-26";
             }
-
-//            String startDate = "2018-03-26";
-//            String endDate = "2018-04-15";
 
             List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
 
@@ -371,7 +368,8 @@ public class BusinessRunTimeService {
                     if(user.getUserType().equals(ConfigConstant.businessA1))
                     {
                         recommendANum = recommendANum + 1;
-                    }else if(user.getUserType().equals(ConfigConstant.businessB1))
+                    }
+                    else if(user.getUserType().equals(ConfigConstant.businessB1))
                     {
                         recommendBNum = recommendBNum + 1;
                     }
@@ -412,43 +410,47 @@ public class BusinessRunTimeService {
 
                 //sys_user表也需要更新
                 userInfo.setUserType(ConfigConstant.businessA1);
+                userInfo.setNickname(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
                 userServiceClient.updateUserInfo(userInfo);
 
-                //给用户495的即时奖励
-                AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
-                float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
-                float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
-                accountDTO.setBalance(balance);
-                accountDTO.setBalanceDeny(balanceDeny);
-                businessServiceClient.updateUserAccountInfo(accountDTO);
+                //给B的上一級用户495的即时奖励
+                if(StringUtils.isNotNull(userInfo.getParentUserId()))
+                {
+                    AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getParentUserId());
+                    float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
+                    float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
+                    accountDTO.setBalance(balance);
+                    accountDTO.setBalanceDeny(balanceDeny);
+                    businessServiceClient.updateUserAccountInfo(accountDTO);
 
-                IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                incomeRecordDTO.setId(UUID.randomUUID().toString());
-                incomeRecordDTO.setSysUserId(userInfo.getId());
-                incomeRecordDTO.setUserType(userInfo.getUserType());
-                incomeRecordDTO.setNextUserId("");
-                incomeRecordDTO.setNextUserType("");
-                incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
-                incomeRecordDTO.setTransactionAmount(0);
-                incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                incomeRecordDTO.setUpdateDate(new Date());
-                incomeRecordDTO.setCreateDate(new Date());
-                incomeRecordDTO.setStatus("0");
-                incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
-                incomeRecordDTO.setNextUserIdentifyNumber("");
-                incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
-                incomeRecordDTO.setNextUserNickName("");
-                incomeRecordDTO.setIncomeType("recommend");
-                incomeRecordDTO.setMobile(userInfo.getMobile());
-                incomeRecordDTO.setNextUserMobile("");
-                incomeRecordDTO.setParentRelation("");
-
+                    IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                    incomeRecordDTO.setId(UUID.randomUUID().toString());
+                    incomeRecordDTO.setSysUserId(userInfo.getId());
+                    incomeRecordDTO.setUserType(userInfo.getUserType());
+                    incomeRecordDTO.setNextUserId("");
+                    incomeRecordDTO.setNextUserType("");
+                    incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
+                    incomeRecordDTO.setTransactionAmount(0);
+                    incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                    incomeRecordDTO.setUpdateDate(new Date());
+                    incomeRecordDTO.setCreateDate(new Date());
+                    incomeRecordDTO.setStatus("0");
+                    incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
+                    incomeRecordDTO.setNextUserIdentifyNumber("");
+                    incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
+                    incomeRecordDTO.setNextUserNickName("");
+                    incomeRecordDTO.setIncomeType("recommend");
+                    incomeRecordDTO.setMobile(userInfo.getMobile());
+                    incomeRecordDTO.setNextUserMobile("");
+                    incomeRecordDTO.setParentRelation("");
+                    businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+                }
                 Calendar calendar = Calendar.getInstance();
                 Date date = new Date();
                 calendar.setTime(date);
                 calendar.add(Calendar.YEAR, 1);
                 date = calendar.getTime();
-                WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(userInfo.getNickname(),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
+                WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(CommonUtils.nameDecoder(userInfo.getNickname()),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
             }
         }
     }
