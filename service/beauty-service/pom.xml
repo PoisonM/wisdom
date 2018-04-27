@@ -67,7 +67,9 @@
 				<mybatis.config-location>classpath:/mybatis-config.xml</mybatis.config-location>
 
 				<!--jdbc 配置-->
-				<spring.datasource.url>jdbc:mysql://47.100.102.37:3306/mx-beauty?true&amp;amp;characterEncoding=utf-8&amp;amp;useSSL=true&amp;amp;zeroDateTimeBehavior=convertToNull</spring.datasource.url>
+				<spring.datasource.url>jdbc:mysql://47.100.102.37:3306/mx-beauty?useUnicode=true<![CDATA[&]]>
+					characterEncoding=utf-8<![CDATA[&]]>zeroDateTimeBehavior=convertToNull
+				</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>root123456</spring.datasource.password>
 				<spring.datasource.druid.initial-size>1</spring.datasource.druid.initial-size>
