@@ -2,24 +2,24 @@
     <!--导航-->
     <div class="projectHeader">
         <ul class="tab-head">
-            <li ng-repeat="items in selectSingleData" class="tab-head-item" >
-                <span ng-class="{'bg_box_sty' : param.selection == $index}" class="bg_box" ng-click="selection($index)">{{items.name}}</span>
+            <li ng-repeat="items in selectSingleList" class="tab-head-item" >
+                <span ng-class="{'bg_box_sty' : param.selection == $index}" class="bg_box" ng-click="selection($index,items.id)">{{items.projectTypeName}}</span>
                 <span
-     ng-class="{'check_img':items.status == 1,'check_img_bottom':items.status == 3,'check_img_top':items.status == 4}" class="check_img" ng-click="checkImg($index,items.status);" ></span>
+     ng-class="{'check_img':items.status == 1,'check_img_bottom':items.status == 3,'check_img_top':items.status == 4}" class="check_img" ng-click="checkImg($index,items.status,items.id);" ></span>
             </li>
         </ul>
     </div>
     <!--商品-->
-    <div class="projectGoods" ng-click="goProjectDetails()">
+    <div class="projectGoods">
         <ul>
-            <li ng-repeat="item in [1,2,3,4,5,6,7,8,9]">
+            <li ng-repeat="item in threeList" ng-click="goProjectDetails(item.id)">
                 <div class="imgDiv">
-                    <img src="images/timgs.jpg" alt="">
+                    <img ng-src="{{item.projectUrl}}" alt="">
                 </div>
                 <div class="textDiv">
-                    <p class="textName">深度补水</p>
-                    <p class="textMoney">单次价格：￥298.00</p>
-                    <p><span class="cards bff6666">疗程卡</span>&nbsp;<span class="money cff6666 fs39">￥<span>6980</span><span class="fs31">.00</span></span><span class="cff6666 fs31">/10次</span></p>
+                    <p class="textName">{{item.projectName}}</p>
+                    <p class="textMoney">单次价格：￥{{item.marketPrice}}</p>
+                    <p><span class="cards bff6666">{{item.cardType}}</span>&nbsp;<span class="money cff6666 fs39">￥<span>{{item.discountPrice}}</span><span class="fs31"><!--.00--></span></span><span class="cff6666 fs31">/{{item.useStyle}}</span></p>
                 </div>
             </li>
         </ul>
@@ -27,7 +27,7 @@
     <!--点击导航栏的任意商品出现相对应的弹框-->
     <div ng-show="param.projectAppear" class="projectAppear" >
         <ul>
-            <li ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12,13,14]" >保湿</li>
+            <li ng-repeat="items in project2List" ng-click="refreshGoods(items.id)">{{items.projectTypeName}}</li>
         </ul>
     </div>
 </div>
