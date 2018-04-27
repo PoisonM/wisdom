@@ -50,5 +50,13 @@ public interface ShopUerConsumeRecordService {
      * @return
      */
     int updateConumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 根据消费类型和多个sysClerkId查询消费记录集合
+    *@Date:2018/4/26 9:51
+    */
+    List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(String consumeType,List<String> sysClerkIds);
 
 }

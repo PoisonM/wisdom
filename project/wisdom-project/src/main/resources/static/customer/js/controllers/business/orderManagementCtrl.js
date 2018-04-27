@@ -40,7 +40,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
                     if(data.result==Global.SUCCESS)
                     {
-                        window.location.href = "orderPay.do?productType=offlineProduct&random="+Math.random();
+                        window.location.href = "orderPay.do?productType=offline&random="+Math.random();
                     }
                 })
             }

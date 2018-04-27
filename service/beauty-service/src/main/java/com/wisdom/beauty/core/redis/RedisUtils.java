@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.redis;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -35,6 +36,10 @@ public class RedisUtils {
      * 预约详情缓存时常，30天
      */
     private int appointCacheSeconds = 1296000;
+
+    @Resource
+    private ShopAppointmentService appointmentService;
+
 
     /**
      * 预约详情缓存时常，10天
@@ -71,7 +76,20 @@ public class RedisUtils {
      */
     public ShopAppointServiceDTO getShopAppointInfoFromRedis(String appointmentId) {
         logger.info("获取用户的预约详情传入参数={}", "appointmentId = [" + appointmentId + "]");
-        return (ShopAppointServiceDTO) JedisUtils.getObject(appointmentId);
+
+        ShopAppointServiceDTO shopAppointServiceDTO = (ShopAppointServiceDTO) JedisUtils.getObject(appointmentId);
+
+        //redis中没有查出数据，再次缓存到redis中
+        if (null == shopAppointServiceDTO) {
+            shopAppointServiceDTO = new ShopAppointServiceDTO();
+            shopAppointServiceDTO.setId(appointmentId);
+            shopAppointServiceDTO = appointmentService.getShopAppointService(shopAppointServiceDTO);
+            if (null != shopAppointServiceDTO) {
+                saveShopAppointInfoToRedis(shopAppointServiceDTO);
+            }
+        }
+
+        return shopAppointServiceDTO;
     }
 
     /**

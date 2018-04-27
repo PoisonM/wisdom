@@ -81,6 +81,8 @@ public class AppointmentController {
 		String preLog = "根据时间查询某个美容店预约列表,";
 		long startTime = System.currentTimeMillis();
 		logger.info(preLog + "美容店主键为={}", sysShopId);
+		SysClerkDTO info = UserUtils.getClerkInfo();
+		sysShopId = info.getSysShopId();
 
 		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
@@ -105,7 +107,7 @@ public class AppointmentController {
 		if (shopScheduleSettingInfo == null) {
 			logger.error("查询某个店的排班信息为空,美容店主键为{}", "sysShopId = [" + sysShopId + "]");
 			//早晚班默认值
-			responseMap.put("startTime", "9:00");
+			responseMap.put("startTime", "09:00");
 			responseMap.put("endTime", "23:00");
 		} else {
 			for (ShopScheduleSettingDTO settingDTO : shopScheduleSettingInfo) {
@@ -113,7 +115,7 @@ public class AppointmentController {
 					responseMap.put("startTime", settingDTO.getStartTime());
 					responseMap.put("endTime", settingDTO.getEndTime());
 				} else {
-					responseMap.put("startTime", "9:00");
+                    responseMap.put("startTime", "09:00");
 					responseMap.put("endTime", "23:00");
 				}
 			}

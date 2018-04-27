@@ -80,21 +80,25 @@ public class ProcessUserScanEventService {
             else
             {
                 //判断用户所扫描的二维码是否是A店或者B店的二维码
-//                String businessParentPhone = "";
-//                if(StringUtils.isNotNull(xmlEntity.getEventKey())){
-//                    //todo 此处要考虑，未来完善，不仅仅只有mxbusinessshare_一种类型的扩展二维码
-//                    businessParentPhone = xmlEntity.getEventKey().replace("mxbusinessshare_", "");
-//                    String codeArray[] = businessParentPhone.split("_");
-//                    businessParentPhone = codeArray[0];
-//                }
-                List<Article> articleList = new ArrayList<>();
-                Article article = new Article();
-                article.setTitle("欢迎再次光临! \n");
-                article.setDescription("我们是美享商城，在这里，将会为您实时传递最好的美享服务。");
-                article.setPicUrl("");
-                article.setUrl("");
-                articleList.add(article);
-                WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+                if(StringUtils.isNotNull(xmlEntity.getEventKey())&&xmlEntity.getEventKey().indexOf("mxbusinessshare_")!=-1){
+                    //todo 此处要考虑，未来完善，不仅仅只有mxbusinessshare_一种类型的扩展二维码
+                    List<Article> articleList = new ArrayList<>();
+                    Article article = new Article();
+                    article.setTitle("你已经是美享的用户啦， 此次扫码不产生效果哦~~");
+                    articleList.add(article);
+                    WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+                }
+                else
+                {
+                    List<Article> articleList = new ArrayList<>();
+                    Article article = new Article();
+                    article.setTitle("欢迎再次光临! \n");
+                    article.setDescription("我们是美享商城，在这里，将会为您实时传递最好的美享服务。");
+                    article.setPicUrl("");
+                    article.setUrl("");
+                    articleList.add(article);
+                    WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+                }
             }
         }
     }

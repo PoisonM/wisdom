@@ -21,7 +21,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -125,5 +129,21 @@ public class PayTest {
         System.out.println(result.getResponse().getContentAsString());
     }
 
-
+    public static void main(String[] args) throws ParseException {
+        // 获取当月的天数（需完善）
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        // 定义当前期间的1号的date对象
+        Date date = null;
+        try {
+            date = dateFormat.parse("20160201");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, 1);//月增加1天
+        calendar.add(Calendar.DAY_OF_MONTH, -7);//日期倒数一日,既得到本月最后一天
+        Date voucherDate = calendar.getTime();
+        System.out.println(dateFormat.format(voucherDate));
+    }
 }

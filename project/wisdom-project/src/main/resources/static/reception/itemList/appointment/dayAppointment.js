@@ -9,7 +9,6 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         bgBlack:false,
         serachContent: '', /*搜索内容*/
         givingIndex: 0, /*赠送Index*/
-        AppointmentType: "散客",
         dayFlag: true,
         weekFlag: false,
         ModifyAppointment:true,/*修预约改*/
@@ -43,7 +42,6 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             appointEndTime:"",/*预约结束时间*/
             detail:"",/*备注*/
             status:"0",
-
         },
         selectCustomersObject:{/*选择顾客*/
             data:"",
@@ -74,11 +72,32 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
             index2:""
         },
         details:"",/**/
+        consumptionObj:{
+            sysUserId:"",
+            sysShopId:"",
+            singleByshopId:{
+                detailProject:"",/*三级*/
 
-        detailsWrap:{/*日预约详情 （包含预约卡项）*/
-            detailsWrapdata:"",
-            scratchCardFlag:false,/*划卡按钮*/
-            consumptionFlag:""/*消费按钮*/
+            },/*某个店的单次 疗程卡 产品  数据*/
+          /*  singleMessByshopId:{},/!*某个店的单次 疗程卡 产品  的三级 数据*!/*/
+            collectionCardByShowId:"",/*某个店的套卡数据*/
+            singleByUserId:"",/*某个用户的单次数据*/
+            singleFilterStr:"",/*项目名称模糊过滤*/
+            treatmentCardByUserId:"",/*某个用户的疗程数据*/
+            productByUserId:"",/*某个用户的产品数据*/
+            collectionCardByUserId:"",/*某个用户的套卡数据*/
+            singleByUserIdFlag:true,
+            treatmentCardByUserIdFlag:true,
+            productByUserIdFlag:true,
+            collectionCardByUserIdFlag:true,
+            consumptionType:"",
+            balancePrepaidCtrlData:""/*充值卡数据*/
+
+        },
+        individualTravelerAppointmentObj:{/*日预约详情 （包含预约卡项）*/
+            individualTravelerAppointment:"",
+            scratchCardFlag:true,/*划卡按钮*/
+            consumptionFlag:true/*消费按钮*/
         },
         selectBeautician: false, /*修改预约-选择美容师*/
         num: 1,
@@ -93,6 +112,9 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                 title: '眼部',
                 content: ['全部', '保湿']
             }, {
+                title: 'SPA',
+                content: ['全部', '保湿']
+            },{
                 title: 'SPA',
                 content: ['全部', '保湿']
             }],
@@ -311,7 +333,11 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                         $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
                     };
                 }],
+
                 className: ' ngdialog-theme-default ngdialog-theme-custom',
+
+                className: 'ngdialog-theme-default ngdialog-theme-custom',
+
             })
     }};
 /*加载预约详情*/
@@ -320,6 +346,29 @@ var detailsWrapData={
         "errorInfo": 1,
         "responseData": {
         "consume": [
+            {
+                "createBy": "1",
+                "createDate": 1,
+                "effectiveDate": 1,
+                "effectiveDays": 1,
+                "id": "1",
+                "invalidDays": 1,
+                "isSend": 1,
+                "shopAppointmentId": "1",
+                "sysClerkId": 1,
+                "sysShopId": "101",
+                "sysShopName": "汉方美容院",
+                "sysShopProjectId": "1",
+                "sysShopProjectInitAmount": 1111,
+                "sysShopProjectInitTimes": 11,
+                "sysShopProjectName": "汉方项目",
+                "sysShopProjectSurplusAmount": 11,
+                "sysShopProjectSurplusTimes": 111,
+                "sysUserId": "1",
+                "updateDate": 1,
+                "updateUser": 1,
+                "useStyle": "1"
+            },
             {
                 "createBy": "1",
                 "createDate": 1,
@@ -371,16 +420,27 @@ var detailsWrapData={
         ]
     },
     "result": "0x00001"
-}
-    $scope.detailsWrap = function (index1, index2){
+};
+    $scope.detailsWrap = function (index1, index2,type,sysUserId,sysShopId){
         if(type==0)return;
-        if (type == 1 || type == 2) {
+           $scope.param.consumptionObj.sysUserId = sysUserId;
+           $scope.param.consumptionObj.sysShopId = sysShopId;
             $scope.ngDialog = ngDialog;
             ngDialog.open({
-                template: 'detailsWrap',
+                template: 'individual',
                 scope: $scope, //这样就可以传递参数
                 controller: ['$scope', '$interval', function ($scope, $interval) {
-                $scope.detailsWrap.detailsWrapData = detailsWrapData.responseData;
+                $scope.param.individualTravelerAppointmentObj.individualTravelerAppointment = detailsWrapData.responseData;
+                if(detailsWrapData.responseData.consume.length>=0){
+                    $scope.param.individualTravelerAppointmentObj.consumptionFlag=true
+                }else{
+                    $scope.param.individualTravelerAppointmentObj.consumptionFlag=false;
+                }
+                if(detailsWrapData.responseData.punchCard.length>=0){
+                    $scope.param.individualTravelerAppointmentObj.scratchCardFlag=true
+                }else{
+                    $scope.param.individualTravelerAppointmentObj.scratchCardFlag=false;
+                }
 
                    /* GetAppointmentInfoById.get({
                         shopAppointServiceId: "id_7"
@@ -397,20 +457,7 @@ var detailsWrapData={
                 className: 'ngdialog-theme-default',
 
             });
-        } else if(type == 3){
-            $scope.ngDialog = ngDialog;
-            ngDialog.open({
-                template: 'individual',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function ($scope, $interval) {
-                    console.log($scope.$parent.content);
-                    $scope.close = function () {
-                        $scope.closeThisDialog();
-                    };
-                }],
-                className: 'ngdialog-theme-default'
-            });
-        }else if(type==4){
+         if(type==4){
             ngDialog.open({
                 template: 'appointmentType',
                 scope: $scope, //这样就可以传递参数
@@ -421,7 +468,11 @@ var detailsWrapData={
                         $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
                     };
                 }],
+
                 className: 'ngdialog-theme-default',
+
+                className: 'ngdialog-theme-default ',
+
             })
         }
 
@@ -565,7 +616,7 @@ var detailsWrapData={
                     "scheduling": "36,37",
                     "shopProjectName": "项目名称_3",
                     "id": "id_3",
-                    "sysUserId": null,
+                    "sysUserId": "123",
                     "detail": null,
                     "sysShopName": "汉方美容店_1",
                     "appointEndTime": 1522839600000,
@@ -637,7 +688,7 @@ var detailsWrapData={
                     "scheduling": "36,37",
                     "shopProjectName": "项目名称_3",
                     "id": "id_3",
-                    "sysUserId": null,
+                    "sysUserId": 123,
                     "detail": null,
                     "sysShopName": "汉方美容店_1",
                     "appointEndTime": 1522839600000,
@@ -709,7 +760,7 @@ var detailsWrapData={
                     "scheduling": "36,37",
                     "shopProjectName": "项目名称_3",
                     "id": "id_3",
-                    "sysUserId": null,
+                    "sysUserId": 222,
                     "detail": null,
                     "sysShopName": "汉方美容店_1",
                     "appointEndTime": 1522839600000,
@@ -781,7 +832,7 @@ var detailsWrapData={
                     "scheduling": "36,37",
                     "shopProjectName": "项目名称_3",
                     "id": "id_3",
-                    "sysUserId": null,
+                    "sysUserId": 123,
                     "detail": null,
                     "sysShopName": "汉方美容店_1",
                     "appointEndTime": 1522839600000,
@@ -853,7 +904,7 @@ var detailsWrapData={
                     "scheduling": "36,37",
                     "shopProjectName": "项目名称_3",
                     "id": "id_3",
-                    "sysUserId": null,
+                    "sysUserId": 333,
                     "detail": null,
                     "sysShopName": "汉方美容店_1",
                     "appointEndTime": 1522839600000,
@@ -925,7 +976,7 @@ var detailsWrapData={
                     "scheduling": "36,37",
                     "shopProjectName": "项目名称_3",
                     "id": "id_3",
-                    "sysUserId": null,
+                    "sysUserId": 444,
                     "detail": null,
                     "sysShopName": "汉方美容店_1",
                     "appointEndTime": 1522839600000,
@@ -973,22 +1024,29 @@ var detailsWrapData={
     想要的数据格式
     根据时间编码找到对应的索引，通过索引拿到数据
     * */
+
     for(var i=0;i<$scope.param.appointmentObject.appointmentInfo.length;i++){
         $scope.param.appointmentObject.list[i] = new Object;
         $scope.param.appointmentObject.list[i].status = new Array;
         $scope.param.appointmentObject.list[i].sysUserName = new Array;
         $scope.param.appointmentObject.list[i].shopProjectName = new Array;
         $scope.param.appointmentObject.list[i].time = new Array;
+        $scope.param.appointmentObject.list[i].sysUserId = new Array;
+        $scope.param.appointmentObject.list[i].sysShopId = new Array;
         for (var e = 0; e < $scope.param.day.length; e++) {
             $scope.param.appointmentObject.list[i].status[e]=0;
             $scope.param.appointmentObject.list[i].sysUserName[e]=null;
             $scope.param.appointmentObject.list[i].shopProjectName[e]=null;
             $scope.param.appointmentObject.list[i].time[e]=null;
+            $scope.param.appointmentObject.list[i].sysUserId[e]=null;
+            $scope.param.appointmentObject.list[i].sysShopId[e]=null;
             for(var j=0;j<$scope.param.appointmentObject.appointmentInfo[i].length;j++){
                 for (var k = 0;k < $scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",").length; k++) {
                     if ($scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",")[k] == objTemp($scope.param.day[e])) {
                         $scope.param.appointmentObject.list[i].sysUserName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserName;
                         $scope.param.appointmentObject.list[i].shopProjectName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].shopProjectName;
+                        $scope.param.appointmentObject.list[i].sysUserId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserId;
+                        $scope.param.appointmentObject.list[i].sysShopId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysShopId;
                         $scope.param.appointmentObject.list[i].time[e] = $scope.param.days[e];
 
                         if($scope.param.appointmentObject.appointmentInfo[i][j].status == 1){
@@ -1009,6 +1067,9 @@ var detailsWrapData={
             return key
         }
     }
+    console.log($scope.param.appointmentObject.appointmentInfo)
+    console.log($scope.param.appointmentObject.list);
+
     /*周*/
   var weekData = {
       "result": "0x00001",
