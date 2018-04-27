@@ -1,0 +1,40 @@
+.chooseGifts-box {
+    height: 100%;
+    width: 100%;
+    background: #F5F5F5;
+}
+
+.chooseGifts-box .chooseGifts-tab {
+    width: 90%;
+    height: 40px;
+    line-height: 40px;
+    background: #FFFFFF;
+    border: 1px solid #FF6666;
+    border-radius: 4px;
+    margin: 14px auto 35px;
+    overflow: hidden;
+}
+
+.chooseGifts-box .chooseGifts-tab span {
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #FF6666;
+    letter-spacing: 0;
+    width: 33%;
+    display: block;
+    float: left;
+    text-align: center;
+    border-right: 1px solid #FF6666;
+}
+
+.chooseGifts-box .chooseGifts-tab span:last-of-type {
+    border-right: none;
+}
+
+.chooseGifts-box .chooseGifts-tab span.select {
+    background: #FF6666;
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+}

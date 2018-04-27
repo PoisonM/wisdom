@@ -1,4 +1,4 @@
-PADWeb.controller('personalFileCtrl', function($scope, $stateParams, ngDialog, Archives) {
+PADWeb.controller('stillOwedCtrl', function($scope, $stateParams, ngDialog, Archives) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)"
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案"
@@ -24,10 +24,9 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, ngDialog, A
     $scope.flagFn(true)
 
 
-    $scope.select = 2;
+    $scope.select = 0;
     $scope.tabclick = function(e) {
         $scope.select = e;
     }
-    //这边引入include
-    basicInfo && basicInfo($scope, Archives);
+
 });

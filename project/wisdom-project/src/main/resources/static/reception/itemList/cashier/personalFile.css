@@ -5,7 +5,7 @@
 }
 
 .personalFile-box .personalFile-top {
-    width: 675px;
+    width: 95%;
     height: 145px;
     margin: 15px auto;
     box-shadow: 0 2px 4px 0 rgba(228, 228, 228, 0.50);
@@ -14,7 +14,7 @@
 }
 
 .personalFile-box .personalFile-tab {
-    width: 674px;
+    width: 95%;
     height: 40px;
     line-height: 40px;
     background: #FFFFFF;
@@ -29,7 +29,7 @@
     font-size: 13px;
     color: #FF6666;
     letter-spacing: 0;
-    width: 112px;
+    width: 20%;
     display: block;
     float: left;
     text-align: center;
@@ -51,7 +51,7 @@
 .personalFile-box .personalFile-content .treatment {}
 
 .personalFile-box .personalFile-content .treatment .treatmentCard {
-    width: 674px;
+    width: 95%;
     height: 105px;
     background: #FFFFFF;
     box-shadow: 0 2px 4px 0 rgba(228, 228, 228, 0.50);
@@ -144,7 +144,7 @@
 .personalFile-box .personalFile-content .treatment .recorderCard {
     background: #FFFFFF;
     border-radius: 10px;
-    width: 675px;
+    width: 95%;
     margin: 0 auto;
 }
 
@@ -251,7 +251,7 @@
 }
 
 .personalFile-box .personalFile-content .treatment .prepaidCard {
-    width: 706px;
+    width: 95%;
     margin: -31px auto 0;
 }
 
@@ -270,7 +270,7 @@
 }
 
 .personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent {
-    width: 706px;
+    width: 100%;
     height: 164px;
     background: #FFFFFF;
 }
