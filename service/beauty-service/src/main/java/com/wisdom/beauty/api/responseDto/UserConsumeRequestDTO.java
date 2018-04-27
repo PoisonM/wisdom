@@ -3,6 +3,8 @@ package com.wisdom.beauty.api.responseDto;
 
 import com.wisdom.common.entity.BaseEntity;
 
+import java.io.Serializable;
+
 /**
  * ClassName: UserConsumeRequestDTO
  *
@@ -11,7 +13,7 @@ import com.wisdom.common.entity.BaseEntity;
  * @Date:Created in 2018/4/8 11:00
  * @since JDK 1.8
  */
-public class UserConsumeRequestDTO extends BaseEntity {
+public class UserConsumeRequestDTO extends BaseEntity  {
 
     /**
      * 用户表主键
@@ -51,6 +53,7 @@ public class UserConsumeRequestDTO extends BaseEntity {
      * 请求来源，用于区分是否需要设置goodsType条件
      */
     private Boolean goodsTypeRequire;
+    private int pageSize ; //每页的条目
 
     public String getSysUserId() {
         return sysUserId;
@@ -114,5 +117,13 @@ public class UserConsumeRequestDTO extends BaseEntity {
 
     public void setGoodsTypeRequire(Boolean goodsTypeRequire) {
         this.goodsTypeRequire = goodsTypeRequire;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 }

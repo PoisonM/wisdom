@@ -446,4 +446,28 @@ public class ProjectController {
         return responseDTO;
     }
 
+    /**
+     * 查询用户套卡下的子卡的详细信息
+     */
+    @RequestMapping(value = "getShopUserProjectGroupRelRelationInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelationInfo(@RequestParam String shopUserProjectGroupRelRelationId) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
+        shopUserProjectGroupRelRelationDTO.setId(shopUserProjectGroupRelRelationId);
+
+        ResponseDTO<ShopUserProjectGroupRelRelationDTO> responseDTO = new ResponseDTO<>();
+
+        List<ShopUserProjectGroupRelRelationDTO> relRelation = shopProjectGroupService.getShopUserProjectGroupRelRelation(shopUserProjectGroupRelRelationDTO);
+
+        responseDTO.setResponseData(null == relRelation ? new ShopUserProjectGroupRelRelationDTO() : relRelation.get(0));
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
 }
