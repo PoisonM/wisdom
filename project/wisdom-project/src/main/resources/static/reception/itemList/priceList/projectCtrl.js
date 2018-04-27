@@ -39,14 +39,10 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
         $scope.selection(0,"1") //data.responseData.id //初始化默认页面项目的第一项
     });
-    TwoLevelProject.get({id:1},function (data) {
-        $scope.project2List=data.responseData;
-    });
     //点击二级列表调取三级项目列表产品数据方法
     $scope.refreshGoods=function (id) {
-        ThreeLevelProject.get({ProjectTypeTwoId:$scope.ProjectTypeTwoId,projectTypeOneId: $scope.param.projectTypeOneId,projectName:$scope.param.projectName,pageSize:$scope.param.pageSize},function (data) {
+        ThreeLevelProject.get({ProjectTypeTwoId:id,projectTypeOneId: $scope.param.projectTypeOneId,projectName:$scope.param.projectName,pageSize:$scope.param.pageSize},function (data) {
             $scope.threeList=data.responseData;
-            console.log($scope.threeList[0]);
             $scope.param.projectAppear=false;
         })
     };
@@ -89,9 +85,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
                 $scope.threeList=data.responseData;
                 $scope.param.projectAppear=false;
             });
-
         });
-
         $scope.param.childrenFlag = index;
         for(var i = 0; i < $scope.selectSingleList.length; i++ ){
             $scope.selectSingleList[i].status = 1
