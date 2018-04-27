@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.extDto.RelationIds;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.util.UserUtils;
@@ -430,13 +431,13 @@ public class ProjectController {
     @RequestMapping(value = "getUserShopProjectList", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserShopProjectList(@RequestBody List<String> relationIds) {
+    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserShopProjectList(@RequestBody RelationIds<String> relationIds) {
 
         long currentTimeMillis = System.currentTimeMillis();
 
         ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
 
-        List<ShopUserProjectRelationDTO> userShopProjectList = projectService.getUserShopProjectList(relationIds);
+        List<ShopUserProjectRelationDTO> userShopProjectList = projectService.getUserShopProjectList(relationIds.getRelationIds());
 
         responseDTO.setResponseData(userShopProjectList);
         responseDTO.setResult(StatusConstant.SUCCESS);

@@ -180,17 +180,14 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getUseStyle())) {
                         dto.setSysShopProjectSurplusAmount(new BigDecimal(0));
                         dto.setSysShopProjectSurplusTimes(0);
-                        //直接消费掉
-                        userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
                     } else {
                         dto.setSysShopProjectSurplusAmount(dto.getSysShopProjectInitAmount());
                         dto.setSysShopProjectSurplusTimes(dto.getSysShopProjectInitTimes());
-                        userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
                     }
+                    userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
                     dto.setCreateDate(new Date());
                     logger.info("订单号={}，生成用户跟项目的关系={}", orderId, dto);
                     shopProjectService.saveUserProjectRelation(dto);
-
 
                     userConsumeRecordDTO.setFlowName(dto.getSysShopProjectName());
                     userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
