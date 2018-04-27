@@ -47,6 +47,80 @@ function detailsReservation($scope,ngDialog){
             }
         ]
     };
+    var productByUserId = {
+        "result":"0x00001",
+        "errorInfo":null,
+        "responseData":[
+            {
+                "id":"1",
+                "shopProductName":"水光针",
+                "shopProductId":"1",
+                "sysUserId":"1",
+                "sysShopId":"1",
+                "waitReceiveNumber":12,
+                "sysShopName":"汉方美容院",
+                "initTimes":12,
+                "surplusTimes":1,
+                "initAmount":123,
+                "surplusAmount":123,
+                "createBy":"123",
+                "createDate":null,
+                "updateUser":null,
+                "updateDate":null
+            }
+        ]
+    };
+    var collectionCardByUserId ={
+        "result":"0x00001",
+        "errorInfo":null,
+        "responseData":[
+            {
+                "projectList":[
+                    {
+                        "id":"1",
+                        "shopProjectGroupName":"项目套卡1",
+                        "shopProjectGroupId":"1",
+                        "sysUserId":"1",
+                        "shopProjectInfoGroupRelationId":"1",
+                        "projectInitTimes":1,
+                        "projectSurplusTimes":1,
+                        "projectInitAmount":24234,
+                        "projectSurplusAmount":23,
+                        "sysShopId":"1",
+                        "sysBossId":"1",
+                        "createBy":"1",
+                        "createDate":1524537801000,
+                        "updateUser":"1",
+                        "updateDate":1524537805000
+                    }
+                ],
+                "totalAmount":24234,
+                "projectGroupName":"项目套卡1"
+            },
+            {
+                "projectList":[
+                    {
+                        "id":"2",
+                        "shopProjectGroupName":"项目套卡2",
+                        "shopProjectGroupId":"2",
+                        "sysUserId":"1",
+                        "shopProjectInfoGroupRelationId":"2",
+                        "projectInitTimes":2,
+                        "projectSurplusTimes":2,
+                        "projectInitAmount":123123,
+                        "projectSurplusAmount":123,
+                        "sysShopId":"1",
+                        "sysBossId":"2",
+                        "createBy":null,
+                        "createDate":null,
+                        "updateUser":null,
+                        "updateDate":null
+                    }
+                ],
+                "totalAmount":123123,
+                "projectGroupName":"项目套卡2"
+            }
+        ]};
 
     $scope.SingeTreatmentCardProductCollectionCard = function(){
         /*{
@@ -61,8 +135,18 @@ function detailsReservation($scope,ngDialog){
          cardStyle:0
          }*/   /*疗程卡参数*/
         $scope.param.consumptionObj.treatmentCardByUserId = treatmentCardByUserId.responseData;
-
-
+       /* {
+            sysUserId:$scope.param.consumptionObj.sysUserId,
+            sysShopId:$scope.param.consumptionObj.sysShopId ,
+        }*//* 查询某个用户的产品信息*/
+       /* http://localhost:9051/productInfo/getUserProductList*/
+        $scope.param.consumptionObj.productByUserId = productByUserId.responseData;
+        /*{
+         sysUserId:$scope.param.consumptionObj.sysUserId,
+         sysShopId:$scope.param.consumptionObj.sysShopId ,
+         }*//*查询某个用户的套卡信息*/
+      /*  http://localhost:9051/projectInfo/getUserProjectGroupList*/
+        $scope.param.consumptionObj.collectionCardByUserId = collectionCardByUserId.responseData;
     }
     $scope.goConsumption = function(status){
         if(status == "消费"){
