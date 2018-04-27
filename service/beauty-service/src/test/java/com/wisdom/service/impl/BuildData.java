@@ -59,7 +59,7 @@ public class BuildData {
 
         List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo("11");
         for (SysClerkDTO clerkDTO : clerkInfo) {
-            for (int i = 0; i < 20; i++) {
+            for (int i = 1; i < 2; i++) {
                 ShopAppointServiceDTO serviceDTO = new ShopAppointServiceDTO();
                 String uuid = IdGen.uuid();
                 serviceDTO.setId(uuid);
@@ -71,8 +71,8 @@ public class BuildData {
                 serviceDTO.setShopProjectName("项目" + i + "名称");
                 serviceDTO.setSysShopName("汉方美容店");
                 serviceDTO.setSysClerkName(clerkDTO.getName());
-                serviceDTO.setAppointStartTime(DateUtils.StrToDate("2018-04-27 12:00:00", "datetime"));
-                serviceDTO.setAppointEndTime(DateUtils.StrToDate("2018-04-27 15:00:00", "datetime"));
+                serviceDTO.setAppointStartTime(DateUtils.StrToDate("2018-04-27 09:00:00", "datetime"));
+                serviceDTO.setAppointEndTime(DateUtils.StrToDate("2018-04-27 12:00:00", "datetime"));
                 serviceDTO.setSysClerkId(clerkDTO.getId());
                 shopAppointServiceMapper.insertSelective(serviceDTO);
             }
