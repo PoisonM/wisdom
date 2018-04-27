@@ -40,7 +40,18 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
                     if(data.result==Global.SUCCESS)
                     {
-                        window.location.href = "orderPay.do?productType=offline&random="+Math.random();
+                        if(item.type=="offline")
+                        {
+                            window.location.href = "orderPay.do?productType=offline&random="+Math.random();
+                        }
+                        else if(item.type=="special")
+                        {
+                            window.location.href = "orderPay.do?productType=special&random="+Math.random();
+                        }
+                        else if(item.type=="training")
+                        {
+                            window.location.href = "orderPay.do?productType=training&random="+Math.random();
+                        }
                     }
                 })
             }

@@ -63,6 +63,8 @@ public class WeixinTemplateMessageUtil {
 
 	protected static final String WITHDRAW_SUCCESS_NOTIFY = Global.getConfig("WITHDRAW_SUCCESS_NOTIFY");
 
+	protected static final String SPECIAL_PRODUCT_BUY_NOTIFY = Global.getConfig("SPECIAL_PRODUCT_BUY_NOTIFY");
+
 
     /**
 	 * 订单未支付通知模板 ORDER_NOT_PAY
@@ -954,7 +956,7 @@ public class WeixinTemplateMessageUtil {
 		WxTemplate t = new WxTemplate();
 		t.setTouser(userOpenid);
 		t.setTopcolor("#000000");
-		t.setTemplate_id(WITHDRAW_SUCCESS_NOTIFY);
+		t.setTemplate_id(SPECIAL_PRODUCT_BUY_NOTIFY);
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
