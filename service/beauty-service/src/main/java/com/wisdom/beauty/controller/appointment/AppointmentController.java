@@ -105,7 +105,7 @@ public class AppointmentController {
 		if (shopScheduleSettingInfo == null) {
 			logger.error("查询某个店的排班信息为空,美容店主键为{}", "sysShopId = [" + sysShopId + "]");
 			//早晚班默认值
-			responseMap.put("startTime", "9:00");
+			responseMap.put("startTime", "09:00");
 			responseMap.put("endTime", "23:00");
 		} else {
 			for (ShopScheduleSettingDTO settingDTO : shopScheduleSettingInfo) {
