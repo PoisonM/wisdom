@@ -1,6 +1,6 @@
 <div class="userInfo">
     <div class="userInfo_public">
-        <div class="message">
+        <div ng-click="goTodayPerformance()" class="message">
             <ul>
                 <li>
                     <i></i>
@@ -24,7 +24,7 @@
                 </li>
             </ul>
         </div>
-        <div class="basic">
+        <div ng-click= "goModificationData()" class="basic">
             <div class="user_logo">
                 <img src="https://img3.doubanio.com/view/group_topic/l/public/p49495982.webp" alt="">
             </div>
@@ -52,20 +52,20 @@
         </div>
         <div class="help">
             <ul>
-                <li class="img_sty">
+                <li ng-click="goUsingHelp()" class="img_sty">
                     <span></span>
                     使用帮助
-                    <div ng-click="setUserSet()" class="go_set"></div>
+                    <div class="go_set"></div>
                 </li>
-                <li class="img_sty">
+                <li ng-click="goFeedback()" class="img_sty">
                     <span></span>
                     意见反馈
-                    <div ng-click="setUserSet()" class="go_set"></div>
+                    <div  class="go_set"></div>
                 </li>
-                <li class="img_sty">
+                <li ng-click="openService()" class="img_sty">
                     <span></span>
                     联系客服
-                    <div ng-click="setUserSet()" class="go_set"></div>
+                    <div class="go_set"></div>
                 </li>
             </ul>
         </div>
@@ -82,5 +82,18 @@
         </div>
     </div>
 
+    <script type="text/ng-template" id="servicePhone">
+        <div class="service_phone">
+            <div class="phone_num">
+                <p>18701252534</p>
+            </div>
+            <div class="phone_operation">
+                <ul>
+                    <li ng-click="close()">取消</li>
+                    <li>呼叫</li>
+                </ul>
+            </div>
+        </div>
+    </script>
     <div ui-view style="height: 100%"></div>
 </div>

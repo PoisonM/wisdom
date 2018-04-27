@@ -11,20 +11,22 @@ PADWeb.controller("left_navCtrl", function($scope, $state,FindArchives) {
         selectSty:"1",
         priceType:"xm"
     }
+
+
     /*获取档案列表*/
     FindArchives.get({
         queryField:"",
         pageNo:"1",
         pageSize:"1"
     },function (data) {
-
+        if(data.result == "0x00001"){
+            $scope.dataList = [];
+            $scope.info = data.responseData.info
+        }
     })
 
     /*-------------------------------方法-------------------------------------------*/
     //
-   /* $scope.selectSty = function (index) {
-        $scope.param.selectSty = index
-    }*/
     //价目表切换
     $scope.selectPriceType = function (type) {
         $scope.param.priceType = type

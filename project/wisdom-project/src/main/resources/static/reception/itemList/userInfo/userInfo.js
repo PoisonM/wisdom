@@ -1,4 +1,4 @@
-PADWeb.controller('userInfoCtrl', function($scope, $stateParams, ngDialog,GetProductRecord) {
+PADWeb.controller('userInfoCtrl', function($scope, $state,$stateParams, ngDialog,GetProductRecord) {
 /*-------------------------------------------定义头部信息|----------------------------------------------*/
     $scope.$parent.param.headerCash.leftContent="我"
     $scope.$parent.param.headerCash.leftAddContent=""
@@ -19,5 +19,41 @@ PADWeb.controller('userInfoCtrl', function($scope, $stateParams, ngDialog,GetPro
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
+/*----------------------------------------------方法-------------------------------------------------------------*/
+    //今日业绩
+    $scope.goTodayPerformance = function () {
+        $state.go("pad-web.userInfo.todayPerformance")
+    }
+    //修改资料
+    $scope.goModificationData = function () {
+        $state.go("pad-web.userInfo.modificationData")
+    }
+    //使用帮助
+    $scope.goUsingHelp = function () {
+        $state.go("pad-web.userInfo.usingHelp")
+    }
+    //意见反馈
+    $scope.goFeedback = function () {
+        $state.go("pad-web.userInfo.feedback")
+    }
+/*-------------------------------------------------弹窗----------------------------------------------------------------*/
+    $scope.openService = function () {
+        $scope.ngDialog = ngDialog;
+        ngDialog.open({
+            template: 'servicePhone',
+            scope: $scope, //这样就可以传递参数
+            controller: ['$scope', '$interval', function($scope, $interval) {
+                $scope.close = function() {
+                    $scope.closeThisDialog();
+                };
 
+
+
+            }],
+            className: 'ngdialog-theme-default ngdialog-theme-custom border_radius',
+            'width': 270,
+            'height':106,
+            'border-radius': 10,
+        });
+    }
 });
