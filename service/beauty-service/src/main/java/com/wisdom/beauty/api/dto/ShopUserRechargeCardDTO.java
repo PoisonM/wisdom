@@ -25,6 +25,9 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
     //
     private String sysClerkId;
 
+    //
+    private String sysClerkName;
+
     //美容店id
     private String sysShopId;
 
@@ -106,6 +109,14 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
 
     public void setSysClerkId(String sysClerkId) {
         this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
     }
 
     public String getSysShopId() {

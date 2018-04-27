@@ -399,9 +399,11 @@ public class AppointmentController {
 					relationDTO.setSysShopProjectSurplusAmount(new BigDecimal(0));
 					relationDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
 					relationDTO.setSysShopProjectId(project);
+                    relationDTO.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
 					relationDTO.setSysShopProjectSurplusTimes(0);
 					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
 					relationDTO.setSysShopId(projectDetail.getSysShopId());
+					relationDTO.setSysShopProjectInitTimes(1);
 					int num = shopProjectService.saveUserProjectRelation(relationDTO);
 					logger.debug("建立项目与用户的关系， {}", num > 0 ? "成功" : "失败");
 
