@@ -95,7 +95,7 @@ public class PayFunction {
                 userId = businessOrderDTO.getSysUserId();
 
                 //若购买的是跨境商品，告知店主，用户购买的情况
-                Query query = new Query(Criteria.where("order").is(businessOrderDTO.getBusinessOrderId()));
+                Query query = new Query(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId()));
                 SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO = mongoTemplate.findOne(query,SpecialShopBusinessOrderDTO.class,"specialShopBusinessOrder");
                 if(specialShopBusinessOrderDTO!=null)
                 {
