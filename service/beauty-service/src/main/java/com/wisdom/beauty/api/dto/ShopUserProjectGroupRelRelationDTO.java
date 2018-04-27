@@ -41,6 +41,9 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     private String sysClerkId;
 
     //
+    private String sysClerkName;
+
+    //
     private String sysBossId;
 
     //折扣
@@ -146,6 +149,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setSysClerkId(String sysClerkId) {
         this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
     }
 
     public String getSysBossId() {
