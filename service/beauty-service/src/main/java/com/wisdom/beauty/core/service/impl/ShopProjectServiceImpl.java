@@ -97,6 +97,31 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     }
 
     /**
+     * 根据用户与项目的关系主键列表查询用户与项目的关系
+     *
+     * @param relationId
+     * @return
+     */
+    @Override
+    public List<ShopUserProjectRelationDTO> getUserShopProjectList(List<String> relationId) {
+
+        if (CommonUtils.objectIsEmpty(relationId)) {
+            logger.info("根据用户与项目的关系主键列表查询用户与项目的关系传入参数={}", "relationId = [" + relationId + "]");
+            return null;
+        }
+
+        ShopUserProjectRelationCriteria shopUserProjectRelationCriteria = new ShopUserProjectRelationCriteria();
+        ShopUserProjectRelationCriteria.Criteria criteria = shopUserProjectRelationCriteria.createCriteria();
+
+        //根据用户与项目的关系主键列表查询用户与项目的关系
+        criteria.andIdIn(relationId);
+
+        List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserProjectRelationMapper.selectByCriteria(shopUserProjectRelationCriteria);
+
+        return projectRelationDTOS;
+    }
+
+    /**
      * 更新用户与项目的关系
      *
      * @param shopUserProjectRelationDTO
