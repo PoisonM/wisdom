@@ -51,7 +51,7 @@ public class BuildDataTest {
     public void buildSysClerk() {
 
         SysClerkDTO sysClerkDTO = new SysClerkDTO();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 30; i++) {
             sysClerkDTO.setMobile(RandomValue.getTel());
             sysClerkDTO.setNickname(RandomValue.getChineseName());
             sysClerkDTO.setSysShopId("3");

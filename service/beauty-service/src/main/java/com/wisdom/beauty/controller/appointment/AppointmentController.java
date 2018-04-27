@@ -81,6 +81,8 @@ public class AppointmentController {
 		String preLog = "根据时间查询某个美容店预约列表,";
 		long startTime = System.currentTimeMillis();
 		logger.info(preLog + "美容店主键为={}", sysShopId);
+		SysClerkDTO info = UserUtils.getClerkInfo();
+		sysShopId = info.getSysShopId();
 
 		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
