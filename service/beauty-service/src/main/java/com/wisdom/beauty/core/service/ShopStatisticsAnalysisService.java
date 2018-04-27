@@ -3,10 +3,12 @@ package com.wisdom.beauty.core.service;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.alibaba.fastjson.parser.deserializer.AbstractDateDeserializer;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 
 import java.util.List;
 
@@ -54,5 +56,22 @@ public interface ShopStatisticsAnalysisService {
      * @Date:2018/4/23 11:17
      */
     List<ExpenditureAndIncomeResponseDTO> getExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 查看某个美容店的充值和消费金额(业绩)
+     * @Date:2018/4/25 14:54
+     */
+    BigDecimal getShopConsumeAndRecharge(String shopId, String goodType,String consumeType, Boolean isCardConsume,Date startDate, Date endDate);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 查看全部家人中店员信息和业绩情况
+    *@Date:2018/4/25 19:21
+    */
+    List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
 }

@@ -100,8 +100,14 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
                 userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
                 userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
                 userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
+                userConsumeRecordResponseDTO.setSysShopClerkId(shopUserConsumeRecord.getSysClerkId());
                 if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
+                    //如果是充值类型，并且是GoodsType=2,则设置标题为充值
+                    if(shopUserConsumeRecord.getGoodsType().equals(GoodsTypeEnum.RECHARGE_CARD.getCode())){
+                        //userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getConsumeType());
+                    }else {
                     userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getConsumeType());
+                    }
                 } else {
                     userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getFlowName());
                 }
@@ -171,6 +177,46 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
     public int updateConumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
         logger.info("更新用户的消费记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
         return shopUserConsumeRecordMapper.updateByPrimaryKeySelective(shopUserConsumeRecordDTO);
+    }
+
+    @Override
+    public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(String consumeType,List<String> sysClerkIds) {
+
+        logger.info("getShopCustomerConsumeRecordList方法传入sysClerkIds的参数,sysClerkIds={}", sysClerkIds);
+        if(StringUtils.isBlank(consumeType) || CollectionUtils.isEmpty(sysClerkIds)){
+            logger.info("传入的参数为空");
+            return  null;
+        }
+        ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
+        ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
+
+        //设置查询条件
+        c.andConsumeTypeEqualTo(consumeType);
+        c.andSysClerkIdIn(sysClerkIds);
+
+        List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
+
+        Map<String, UserConsumeRecordResponseDTO> map = new HashMap<>(16);
+        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = null;
+        for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
+            userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
+            if (map.get(shopUserConsumeRecord.getFlowNo()) == null) {
+                userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
+                userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
+                userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
+                userConsumeRecordResponseDTO.setSysShopClerkId(shopUserConsumeRecord.getSysClerkId());
+                userConsumeRecordResponseDTO.setGoodType(shopUserConsumeRecord.getGoodsType());
+                map.put(shopUserConsumeRecord.getFlowNo(), userConsumeRecordResponseDTO);
+            } else {
+                UserConsumeRecordResponseDTO userConsumeRecordResponseMap = map.get(shopUserConsumeRecord.getFlowNo());
+                BigDecimal prices = shopUserConsumeRecord.getPrice().add(userConsumeRecordResponseMap.getSumAmount());
+                userConsumeRecordResponseMap.setSumAmount(prices);
+                map.put(shopUserConsumeRecord.getFlowNo(), userConsumeRecordResponseMap);
+            }
+        }
+        logger.info("getShopCustomerConsumeRecordList执行完成");
+        List values = Arrays.asList(map.values().toArray());
+        return values;
     }
 
 
