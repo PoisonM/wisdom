@@ -29,6 +29,10 @@ public class SpecialShopBusinessOrderDTO {
     @JSONField(name = "createDate")
     private Date createDate;
 
+    //当前订单金额
+    private String account;
+
+
     public String getShopId() {
         return shopId;
     }
@@ -83,5 +87,13 @@ public class SpecialShopBusinessOrderDTO {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 }
