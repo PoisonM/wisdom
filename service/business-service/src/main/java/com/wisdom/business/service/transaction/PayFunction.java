@@ -108,6 +108,7 @@ public class PayFunction {
                     if(userInfoDTOList.size()>0)
                     {
                         WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(token,payRecordDTO.getAmount()+"元",businessOrderDTO,userInfoDTOList.get(0).getUserOpenid(),specialShopInfoDTO);
+                        SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(),payRecordDTO.getAmount()+"元",businessOrderDTO,specialShopInfoDTO);
                     }
                     else
                     {
