@@ -18,6 +18,7 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
 
     //消耗金额
     private BigDecimal consumePrice;
+
     //消耗数量
     private int consumeNum;
 

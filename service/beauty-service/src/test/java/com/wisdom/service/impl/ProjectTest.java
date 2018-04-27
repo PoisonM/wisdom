@@ -2,6 +2,7 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
+import com.wisdom.beauty.api.extDto.RelationIds;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,9 +70,12 @@ public class ProjectTest {
     @Test
     public void getUserShopProjectList() throws Exception {
 
-        List<String> relationIds = new ArrayList<>();
-        relationIds.add("1");
-        relationIds.add("2");
+        List<String> arrayList = new ArrayList<>();
+        arrayList.add("1");
+        arrayList.add("2");
+
+        RelationIds<String> relationIds = new RelationIds<String>();
+        relationIds.setRelationIds(arrayList);
 
         String toJSONString = JSONObject.toJSONString(relationIds);
 
