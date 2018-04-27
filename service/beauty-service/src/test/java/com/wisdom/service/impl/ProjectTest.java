@@ -1,5 +1,6 @@
 package com.wisdom.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
@@ -16,7 +17,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,6 +58,26 @@ public class ProjectTest {
     public void getShopUserRecentlyOrderInfo() throws Exception {
 
         MvcResult result = mvc.perform(get("/projectInfo/searchShopProjectList").param("useStyle", "2").param("filterStr", ""))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+
+    @Test
+    public void getUserShopProjectList() throws Exception {
+
+        List<String> relationIds = new ArrayList<>();
+        relationIds.add("1");
+        relationIds.add("2");
+
+        String toJSONString = JSONObject.toJSONString(relationIds);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/projectInfo/getUserShopProjectList").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

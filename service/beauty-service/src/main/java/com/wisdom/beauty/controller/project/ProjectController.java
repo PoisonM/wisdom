@@ -413,5 +413,25 @@ public class ProjectController {
         return responseDTO;
     }
 
+    /**
+     * 根据用户与项目的关系主键列表查询用户与项目的关系
+     */
+    @RequestMapping(value = "getUserShopProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserShopProjectList(@RequestBody List<String> relationIds) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
+
+        List<ShopUserProjectRelationDTO> userShopProjectList = projectService.getUserShopProjectList(relationIds);
+
+        responseDTO.setResponseData(userShopProjectList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
 
 }

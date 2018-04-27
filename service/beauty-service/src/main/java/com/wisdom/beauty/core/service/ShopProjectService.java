@@ -24,6 +24,14 @@ public interface ShopProjectService {
 
 
     /**
+     * 根据用户与项目的关系主键列表查询用户与项目的关系
+     *
+     * @param relationId
+     * @return
+     */
+    List<ShopUserProjectRelationDTO> getUserShopProjectList(List<String> relationId);
+
+    /**
      * 更新用户与项目的关系
      *
      * @param shopUserProjectRelationDTO
