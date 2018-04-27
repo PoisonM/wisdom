@@ -62,5 +62,14 @@ public interface UserServiceClient {
                                        @RequestParam(value = "startTime") String endTime,
                                        @RequestParam(value = "pageSize") int pageSize);
 
-
+    /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 根据多个userid查询
+     * @Date:2018/4/18 14:15
+     */
+    @RequestMapping(value = "/getUserInfoListFromUserId", method = RequestMethod.GET)
+    List<UserInfoDTO> getUserInfoListFromUserId(@RequestParam(value = "userIds") String[] userIds,
+                                                @RequestParam(required = false, value = "searchFile") String searchFile);
 }
