@@ -1,17 +1,16 @@
 .chooseGifts-box {
-    height: 100%;
     width: 100%;
-    background: #F5F5F5;
+    background: #fff;
 }
 
 .chooseGifts-box .chooseGifts-tab {
-    width: 90%;
+    width: 95%;
     height: 40px;
     line-height: 40px;
     background: #FFFFFF;
     border: 1px solid #FF6666;
     border-radius: 4px;
-    margin: 14px auto 35px;
+    margin: 14px auto 0;
     overflow: hidden;
 }
 
@@ -20,7 +19,7 @@
     font-size: 13px;
     color: #FF6666;
     letter-spacing: 0;
-    width: 33%;
+    width: 33.333%;
     display: block;
     float: left;
     text-align: center;
@@ -37,4 +36,64 @@
     font-size: 13px;
     color: #FFFFFF;
     letter-spacing: 0;
+}
+
+.chooseGifts-box .chooseGiftsContetn {}
+
+.chooseGifts-box .chooseGiftsContetn .treatmentCard {}
+
+.chooseGifts-box .chooseGiftsContetn .search {
+    height: 44px;
+    line-height: 44px;
+    background-color: #dddddd;
+    position: relative;
+}
+
+.chooseGifts-box .chooseGiftsContetn .search input {
+    width: 644px;
+    height: 34px;
+    padding-left: 27px;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .ser_ion {
+    position: absolute;
+    top: 0.21875rem;
+    left: 0.25rem;
+    display: block;
+    width: 0.234375rem;
+    height: 0.234375rem;
+    /*padding: 0.109375rem 0.09375rem;
+     */
+    background: url("../../images/bt_search.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+.chooseGifts-box .chooseGiftsContetn .cancel {
+    margin-left: 0.15625rem;
+    font-size: 0.234375rem;
+    color: #A4A4A4;
+}
+
+.chooseGifts-box .chooseGiftsContetn .prepaidCard {
+    width: 95%;
+    margin: 0 auto;
+    height: 42px;
+    line-height: 42px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .prepaidCard span {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+.chooseGifts-box .chooseGiftsContetn .prepaidCard input {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #999999;
+    letter-spacing: 0;
+    margin-left: 20px;
 }

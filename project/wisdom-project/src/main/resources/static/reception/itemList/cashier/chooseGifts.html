@@ -4,4 +4,18 @@
         <span ng-click="tabclick(1)" ng-class="select=='1'?'select':''">套卡</span>
         <span ng-click="tabclick(2)" ng-class="select=='2'?'select':''">充值卡</span>
     </div>
+    <div class="chooseGiftsContetn">
+        <div class="treatmentCard" ng-if="select==0">
+            <div class="search">
+                <span class="ser_ion"></span>
+                <input type="text" placeholder="用户名或者手机号搜索">
+                <span class="cancel">取消</span>
+            </div>
+        </div>
+        <div class="recorderCard" ng-if="select==1"></div>
+        <div class="prepaidCard" ng-if="select==2">
+            <span>赠送金额</span>
+            <input type="text" placeholder="请输入优惠券金额">
+        </div>
+    </div>
 </div>
