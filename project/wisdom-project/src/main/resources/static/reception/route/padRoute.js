@@ -351,6 +351,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.housekeeper', {
+            url: '/housekeeper',
+            templateUrl: root + '/cashier/housekeeper.html',
+            controller: 'housekeeperCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "关联员工",
+                        files: [root + "cashier/housekeeperCtrl.js",
+                            root + "cashier/housekeeper.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.prepaidRecords', {
             url: '/prepaidRecords',
             templateUrl: root + '/cashier/prepaidRecords.html',
