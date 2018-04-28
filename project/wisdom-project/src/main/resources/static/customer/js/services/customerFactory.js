@@ -182,6 +182,10 @@ define(['appCustomer'], function (app) {
             return $resource(product + 'findProductById');
         }])
 
+        .factory('FindProductBargainPriceTimeById',['$resource',function ($resource){
+            return $resource(product + 'findProductBargainPriceTimeById');
+        }])
+
         .factory('GetSpecialBossCondition',['$resource',function ($resource){
             return $resource(customer + 'getSpecialBossCondition');
         }])
