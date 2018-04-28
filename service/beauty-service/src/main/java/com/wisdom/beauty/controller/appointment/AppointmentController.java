@@ -1,11 +1,11 @@
 package com.wisdom.beauty.controller.appointment;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
-import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
@@ -178,7 +178,7 @@ public class AppointmentController {
 		Date endTime = DateUtils.StrToDate(endDate, "datetime");
 
 
-		String preLog = "根据时间查询某个美容店周预约列表,";
+		String preLog = "根据时间查询某个美容店周预约列表";
 		long start = System.currentTimeMillis();
 		logger.info(preLog + "美容店主键为={}", sysShopId);
 
@@ -387,7 +387,7 @@ public class AppointmentController {
 					relationDTO.setSysShopId(shopAppointServiceDTO.getSysShopId());
 					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
 					//根据项目主键查询项目详细信息
-					ShopProjectInfoDTO projectDetail = shopProjectService.getProjectDetail(project);
+					ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(project);
 					relationDTO.setUseStyle(projectDetail.getUseStyle());
 					relationDTO.setCreateBy(shopAppointServiceDTO.getCreateBy());
 					relationDTO.setSysShopProjectName(projectDetail.getProjectName());

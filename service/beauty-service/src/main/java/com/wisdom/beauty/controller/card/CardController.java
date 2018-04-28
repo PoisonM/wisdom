@@ -23,42 +23,39 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * FileName: card
  *
- * @author: 赵得良
- * Date:     2018/4/3 0003 15:06
- * Description: 预约相关
+ * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 预约相关
  */
 @Controller
 @RequestMapping(value = "cardInfo")
 public class CardController {
 
-    @Resource
-    private ShopCardService cardService;
+	@Resource
+	private ShopCardService cardService;
 
-    @Autowired
-    private ShopRechargeCardService shopRechargeCardService;
+	@Autowired
+	private ShopRechargeCardService shopRechargeCardService;
 
-    @Autowired
-    private ShopProjectGroupService shopProjectGroupService;
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+	@Autowired
+	private ShopProjectGroupService shopProjectGroupService;
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /**
-     * 查询某个用户的充值卡列表信息
-     *
-     * @param sysUserId
-     * @param sysShopId
-     * @return
-     */
-    @RequestMapping(value = "/getUserRechargeCardList", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
-    public
-    @ResponseBody
-    ResponseDTO<List<ShopUserRechargeCardDTO>> getUserRechargeCardList(@RequestParam String sysUserId,
-                                                                       @RequestParam String sysShopId) {
+	/**
+	 * 查询某个用户的充值卡列表信息
+	 *
+	 * @param sysUserId
+	 * @param sysShopId
+	 * @return
+	 */
+	@RequestMapping(value = "/getUserRechargeCardList", method = { RequestMethod.POST, RequestMethod.GET })
+	// @LoginRequired
+	public @ResponseBody ResponseDTO<List<ShopUserRechargeCardDTO>> getUserRechargeCardList(
+            @RequestParam String sysUserId, @RequestParam String sysShopId) {
         long currentTimeMillis = System.currentTimeMillis();
 
         logger.info("查询某个用户的充值卡列表信息传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
@@ -72,9 +69,11 @@ public class CardController {
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
         shopUserRechargeCardDTO.setSysUserId(sysUserId);
         shopUserRechargeCardDTO.setSysShopId(sysShopId);
-        List<ShopUserRechargeCardDTO> userRechargeCardList = cardService.getUserRechargeCardList(shopUserRechargeCardDTO);
+        List<ShopUserRechargeCardDTO> userRechargeCardList = cardService
+                .getUserRechargeCardList(shopUserRechargeCardDTO);
         if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
-            logger.debug("查询某个用户的充值卡列表信息查询结果为空，参数 {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
+            logger.debug("查询某个用户的充值卡列表信息查询结果为空，参数 {}",
+                    "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
             responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());
             return responseDTO;
@@ -88,105 +87,149 @@ public class CardController {
     }
 
     /**
-     * @Author:huan
-     * @Param:
-     * @Return:
-     * @Description: 查询充值卡列表
-     * @Date:2018/4/11 13:58
+     * 查询某个用户的充值卡总金额
+     *
+     * @param sysUserId
+     * @return
      */
-    @RequestMapping(value = "/getRechargeCardList", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseDTO<List<ShopRechargeCardResponseDTO>> findRechargeCardList(@RequestParam(required = false) String name,
-                                                                                                        int pageSize) {
-        long currentTimeMillis = System.currentTimeMillis();
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
-        PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO = new PageParamVoDTO<>();
-        ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
-        shopRechargeCardDTO.setSysShopId(sysClerkDTO.getSysShopId());
-        shopRechargeCardDTO.setName(name);
+    @RequestMapping(value = "/getUserRechargeSumAmount", method = {RequestMethod.POST, RequestMethod.GET})
+    // @LoginRequired
+    public @ResponseBody
+    ResponseDTO<BigDecimal> getUserRechargeSumAmount(@RequestParam String sysUserId) {
 
-        pageParamVoDTO.setRequestData(shopRechargeCardDTO);
-        pageParamVoDTO.setPageNo(0);
-        pageParamVoDTO.setPageSize(pageSize);
-        //查询数据
-        List<ShopRechargeCardResponseDTO> list = shopRechargeCardService.getShopRechargeCardList(pageParamVoDTO);
-        ResponseDTO<List<ShopRechargeCardResponseDTO>> responseDTO = new ResponseDTO<>();
-        responseDTO.setResponseData(list);
+        logger.info("查询某个用户的充值卡总金额传入参数={}", "sysUserId = [" + sysUserId + "]");
+        long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        ResponseDTO<BigDecimal> responseDTO = new ResponseDTO<>();
+
+        if (StringUtils.isBlank(sysUserId)) {
+            logger.debug("传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + clerkInfo.getSysShopId() + "]");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+
+        BigDecimal sumAmount = new BigDecimal(0);
+        ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+        shopUserRechargeCardDTO.setSysUserId(sysUserId);
+        shopUserRechargeCardDTO.setSysShopId(clerkInfo.getSysShopId());
+        List<ShopUserRechargeCardDTO> userRechargeCardList = cardService.getUserRechargeCardList(shopUserRechargeCardDTO);
+
+        if (CommonUtils.objectIsNotEmpty(userRechargeCardList)) {
+            for (ShopUserRechargeCardDTO userRechargeCardDTO : userRechargeCardList) {
+                BigDecimal surplusAmount = userRechargeCardDTO.getSurplusAmount();
+                sumAmount = sumAmount.add(surplusAmount);
+            }
+        }
+
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询充值卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        responseDTO.setResponseData(sumAmount);
+
+        logger.info("查询某个用户的充值卡总金额耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
-    /**
-     * @Author:huan
-     * @Param:
-     * @Return:
-     * @Description: 获取具体充值卡的信息
-     * @Date:2018/4/11 14:16
-     */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseDTO<ShopRechargeCardResponseDTO> findRechargeCard(@PathVariable String id) {
-        long currentTimeMillis = System.currentTimeMillis();
-        //查询数据
-        ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(id);
+	/**
+	 * @Author:huan
+	 * @Param:
+	 * @Return:
+	 * @Description: 查询充值卡列表
+	 * @Date:2018/4/11 13:58
+	 */
+	@RequestMapping(value = "/getRechargeCardList", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<List<ShopRechargeCardResponseDTO>> findRechargeCardList(@RequestParam(required = false) String name,
+			int pageSize) {
+		long currentTimeMillis = System.currentTimeMillis();
+		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+		PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
+		shopRechargeCardDTO.setSysShopId(sysClerkDTO.getSysShopId());
+		shopRechargeCardDTO.setName(name);
 
-        ResponseDTO<ShopRechargeCardResponseDTO> responseDTO = new ResponseDTO<>();
-        responseDTO.setResponseData(shopRechargeCardResponseDTO);
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询某个充值卡信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
-        return responseDTO;
-    }
+		pageParamVoDTO.setRequestData(shopRechargeCardDTO);
+		pageParamVoDTO.setPageNo(0);
+		pageParamVoDTO.setPageSize(pageSize);
+		// 查询数据
+		List<ShopRechargeCardResponseDTO> list = shopRechargeCardService.getShopRechargeCardList(pageParamVoDTO);
+		ResponseDTO<List<ShopRechargeCardResponseDTO>> responseDTO = new ResponseDTO<>();
+		responseDTO.setResponseData(list);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("查询充值卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
 
-    /**
-     * @Author:huan
-     * @Param:
-     * @Return:
-     * @Description: 获取某个店里的套卡列表
-     * @Date:2018/4/11 15:40
-     */
-    @RequestMapping(value = "/getShopProjectGroups", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName,int pageSize) {
+	/**
+	 * @Author:huan
+	 * @Param:
+	 * @Return:
+	 * @Description: 获取具体充值卡的信息
+	 * @Date:2018/4/11 14:16
+	 */
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<ShopRechargeCardResponseDTO> findRechargeCard(@PathVariable String id) {
+		long currentTimeMillis = System.currentTimeMillis();
+		// 查询数据
+		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(id);
 
-        long currentTimeMillis = System.currentTimeMillis();
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
-        PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
-        ShopProjectGroupDTO shopProjectGroupDTO = new ShopProjectGroupDTO();
-        shopProjectGroupDTO.setSysShopId(sysClerkDTO.getSysShopId());
-        shopProjectGroupDTO.setProjectGroupName(projectGroupName);
+		ResponseDTO<ShopRechargeCardResponseDTO> responseDTO = new ResponseDTO<>();
+		responseDTO.setResponseData(shopRechargeCardResponseDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("查询某个充值卡信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
 
-        pageParamVoDTO.setRequestData(shopProjectGroupDTO);
-        pageParamVoDTO.setPageNo(0);
-        pageParamVoDTO.setPageSize(pageSize);
-        //查询数据
-        List<ShopProjectGroupDTO> list = shopProjectGroupService.getShopProjectGroupList(pageParamVoDTO);
+	/**
+	 * @Author:huan
+	 * @Param:
+	 * @Return:
+	 * @Description: 获取某个店里的套卡列表
+	 * @Date:2018/4/11 15:40
+	 */
+	@RequestMapping(value = "/getShopProjectGroups", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<List<ProjectInfoGroupResponseDTO>> findShopProjectGroupList(
+			@RequestParam(required = false) String projectGroupName, int pageSize) {
 
-        ResponseDTO<List<ShopProjectGroupDTO>> responseDTO = new ResponseDTO<>();
-        responseDTO.setResponseData(list);
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
-        return responseDTO;
-    }
+		long currentTimeMillis = System.currentTimeMillis();
+		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+		PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		ShopProjectGroupDTO shopProjectGroupDTO = new ShopProjectGroupDTO();
+		shopProjectGroupDTO.setSysShopId(sysClerkDTO.getSysShopId());
+		shopProjectGroupDTO.setProjectGroupName(projectGroupName);
 
-    /**
-     * @Author:huan
-     * @Param:
-     * @Return:
-     * @Description: 获取某个店里的具体套卡的信息
-     * @Date:2018/4/11 15:40
-     */
-    @RequestMapping(value = "/getShopProjectGroup/detail", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseDTO<ProjectInfoGroupResponseDTO> findShopProjectGroupListe(@RequestParam String id) {
-        long currentTimeMillis = System.currentTimeMillis();
+		pageParamVoDTO.setRequestData(shopProjectGroupDTO);
+		pageParamVoDTO.setPageNo(0);
+		pageParamVoDTO.setPageSize(pageSize);
+		// 查询数据
+		List<ProjectInfoGroupResponseDTO> list = shopProjectGroupService.getShopProjectGroupList(pageParamVoDTO);
 
-        ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = shopProjectGroupService.getShopProjectInfoGroupRelation(id);
+		ResponseDTO<List<ProjectInfoGroupResponseDTO>> responseDTO = new ResponseDTO<>();
+		responseDTO.setResponseData(list);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
 
-        ResponseDTO<ProjectInfoGroupResponseDTO> responseDTO = new ResponseDTO<>();
-        responseDTO.setResponseData(projectInfoGroupResponseDTO);
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
-        return responseDTO;
-    }
+	/**
+	 * @Author:huan
+	 * @Param:
+	 * @Return:
+	 * @Description: 获取某个店里的具体套卡的信息
+	 * @Date:2018/4/11 15:40
+	 */
+	@RequestMapping(value = "/getShopProjectGroup/detail", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<ProjectInfoGroupResponseDTO> findShopProjectGroupListe(@RequestParam String id) {
+		long currentTimeMillis = System.currentTimeMillis();
+
+		ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = shopProjectGroupService
+				.getShopProjectInfoGroupRelation(id);
+
+		ResponseDTO<ProjectInfoGroupResponseDTO> responseDTO = new ResponseDTO<>();
+		responseDTO.setResponseData(projectInfoGroupResponseDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
 }
