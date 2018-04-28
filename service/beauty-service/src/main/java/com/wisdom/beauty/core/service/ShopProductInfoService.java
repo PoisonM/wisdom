@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
@@ -67,7 +68,7 @@ public interface ShopProductInfoService {
      * @Description: 获取三级产品列表
      * @Date:2018/4/10 16:21
      */
-    List<ShopProductInfoDTO> getThreeLevelProductList(PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO);
+    List<ShopProductInfoResponseDTO> getThreeLevelProductList(PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO);
 
     /**
      * @Author:huan
@@ -76,7 +77,7 @@ public interface ShopProductInfoService {
      * @Description: 获取产品的详细信息
      * @Date:2018/4/10 16:59
      */
-    ShopProductInfoDTO getProductDetail(String id);
+    ShopProductInfoResponseDTO getProductDetail(String id);
 
     /**
      * @Author:huan

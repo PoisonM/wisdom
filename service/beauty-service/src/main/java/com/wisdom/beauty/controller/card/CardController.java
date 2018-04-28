@@ -147,7 +147,7 @@ public class CardController {
      */
     @RequestMapping(value = "/getShopProjectGroups", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProjectGroupDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName,int pageSize) {
+    ResponseDTO<List<ProjectInfoGroupResponseDTO>> findShopProjectGroupList(@RequestParam(required = false) String projectGroupName,int pageSize) {
 
         long currentTimeMillis = System.currentTimeMillis();
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
@@ -160,9 +160,9 @@ public class CardController {
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
         //查询数据
-        List<ShopProjectGroupDTO> list = shopProjectGroupService.getShopProjectGroupList(pageParamVoDTO);
+        List<ProjectInfoGroupResponseDTO> list = shopProjectGroupService.getShopProjectGroupList(pageParamVoDTO);
 
-        ResponseDTO<List<ShopProjectGroupDTO>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<ProjectInfoGroupResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);

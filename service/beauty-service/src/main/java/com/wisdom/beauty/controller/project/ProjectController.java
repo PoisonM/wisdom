@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.project;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.api.extDto.RelationIds;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.util.UserUtils;
@@ -315,10 +316,10 @@ public class ProjectController {
      */
     @RequestMapping(value = "/threeLevelProject", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProjectInfoDTO>> findThreeLevelProject(@RequestParam String projectTypeOneId,
-                                                                @RequestParam String ProjectTypeTwoId,
-                                                                @RequestParam(required = false) String projectName,
-                                                                @RequestParam int pageSize) {
+    ResponseDTO<List<ShopProjectInfoResponseDTO>> findThreeLevelProject(@RequestParam String projectTypeOneId,
+                                                                        @RequestParam String ProjectTypeTwoId,
+                                                                        @RequestParam(required = false) String projectName,
+                                                                        @RequestParam int pageSize) {
 
         long currentTimeMillis = System.currentTimeMillis();
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
@@ -334,9 +335,9 @@ public class ProjectController {
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
         //查询数据
-        List<ShopProjectInfoDTO> list = projectService.getThreeLevelProjectList(pageParamVoDTO);
+        List<ShopProjectInfoResponseDTO> list = projectService.getThreeLevelProjectList(pageParamVoDTO);
 
-        ResponseDTO<List<ShopProjectInfoDTO>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<ShopProjectInfoResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("findThreeLevelProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
@@ -352,13 +353,13 @@ public class ProjectController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ShopProjectInfoDTO> findDetailProject(@PathVariable String id) {
+    ResponseDTO<ShopProjectInfoResponseDTO> findDetailProject(@PathVariable String id) {
         long currentTimeMillis = System.currentTimeMillis();
         //查询数据
-        ShopProjectInfoDTO shopProjectInfoDTO = projectService.getProjectDetail(id);
+        ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = projectService.getProjectDetail(id);
 
-        ResponseDTO<ShopProjectInfoDTO> responseDTO = new ResponseDTO<>();
-        responseDTO.setResponseData(shopProjectInfoDTO);
+        ResponseDTO<ShopProjectInfoResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(shopProjectInfoResponseDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("findDetailProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
