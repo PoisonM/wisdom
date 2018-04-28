@@ -1,6 +1,6 @@
 PADWeb.controller('personalFileCtrl', function($scope, $stateParams, ngDialog
     , Archives,GetShopUserArchivesInfoByUserId,GetUserCourseProjectList,GetUserProjectGroupList
-    ,GetUserRechargeCardList,GetUserProductList) {
+    ,GetUserRechargeCardList,GetUserProductList,GetUserRechargeSumAmount) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)"
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案"
@@ -27,6 +27,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, ngDialog
     $scope.flagFn(true)
 
 
+    
     $scope.queruList = function (type) {
         if(type == 0){//疗程卡
             GetUserCourseProjectList.get({
@@ -50,6 +51,15 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, ngDialog
                 }
             })
         }else if(type == 2){//充值卡
+            //获取充值卡金额
+            GetUserRechargeSumAmount.get({
+                sysUserId:"1"
+            },function (data) {
+                if(data.result = "0x00001"){
+                    $scope.sunAmount = data.responseData
+                }
+            })
+
             GetUserRechargeCardList.get({
                 sysUserId:1,
                 sysShopId:1
