@@ -4,6 +4,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, ngDialog, A
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案"
     $scope.$parent.$parent.param.headerCash.backContent = "充值记录"
     $scope.$parent.$parent.param.headerCash.leftTip = "保存"
+    $scope.$parent.$parent.param.headerCash.title = "用户档案";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false

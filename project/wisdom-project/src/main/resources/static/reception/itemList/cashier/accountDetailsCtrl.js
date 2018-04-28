@@ -4,6 +4,7 @@ PADWeb.controller('accountDetailsCtrl', function($scope, $stateParams, ngDialog,
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案"
     $scope.$parent.$parent.param.headerCash.backContent = "充值记录"
     $scope.$parent.$parent.param.headerCash.leftTip = "保存"
+    $scope.$parent.$parent.param.headerCash.title = "账户明细";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false
@@ -28,5 +29,4 @@ PADWeb.controller('accountDetailsCtrl', function($scope, $stateParams, ngDialog,
     $scope.tabclick = function(e) {
         $scope.select = e;
     }
-
 });
