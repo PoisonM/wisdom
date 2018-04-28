@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('offlineProductDetailCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetOfflineProductDetail',
         'AddProduct2BuyCart','BusinessUtil','GetProductNumFromBuyCart','$ionicPopup',
-        '$ionicSlideBoxDelegate','CreateBusinessOrder','PutNeedPayOrderListToRedis','Global','$ionicLoading',"$interval",'LoginGlobal','$timeout','IsLogin',
+        '$ionicSlideBoxDelegate','CreateBusinessOrder','PutNeedPayOrderListToRedis','Global','$ionicLoading',"$interval",'LoginGlobal','$timeout',
         function ($scope,$rootScope,$stateParams,$state,GetOfflineProductDetail,
                   AddProduct2BuyCart,BusinessUtil,GetProductNumFromBuyCart,$ionicPopup,
-                  $ionicSlideBoxDelegate,CreateBusinessOrder,PutNeedPayOrderListToRedis,Global,$ionicLoading,$interval,LoginGlobal,$timeout,IsLogin) {
+                  $ionicSlideBoxDelegate,CreateBusinessOrder,PutNeedPayOrderListToRedis,Global,$ionicLoading,$interval,LoginGlobal,$timeout,) {
 
             $rootScope.title = "美享99产品详情";
 
@@ -173,18 +173,6 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 }, 1000);
             };
 
-            $scope.goCart() = function(){
-                showToast("加载中...");
-                IsLogin.get(function(data){
-                      if(data.responseData=='success'){
-                            $state.go("buyCart");
-                      }else{
-                            showToast("请先登录账号");
-                            hideToast();
-                      }
-                })
-
-            }
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.param = {
