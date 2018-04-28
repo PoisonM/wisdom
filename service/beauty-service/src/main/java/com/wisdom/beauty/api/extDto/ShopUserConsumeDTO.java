@@ -4,7 +4,6 @@ import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
 
@@ -21,6 +20,16 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
 
     //消耗数量
     private int consumeNum;
+
+    private T shopUserConsumeDTO;
+
+    public T getT() {
+        return shopUserConsumeDTO;
+    }
+
+    public void setT(T t) {
+        this.shopUserConsumeDTO = t;
+    }
 
     public String getSysUserId() {
         return sysUserId;
@@ -61,15 +70,5 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
 
     public void setConsumePrice(BigDecimal consumePrice) {
         this.consumePrice = consumePrice;
-    }
-
-    private List<T> t;
-
-    public List<T> getT() {
-        return t;
-    }
-
-    public void setT(List<T> t) {
-        this.t = t;
     }
 }
