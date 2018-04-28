@@ -24,6 +24,7 @@ PADWeb.controller("left_navCtrl", function($scope, $state,FindArchives) {
             $scope.info = data.responseData.info
         }
     })
+
     /*-------------------------------方法-------------------------------------------*/
     //
     //价目表切换

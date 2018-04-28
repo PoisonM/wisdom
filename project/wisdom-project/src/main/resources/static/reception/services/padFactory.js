@@ -30,6 +30,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetProductRecord', ['$resource', function($resource) {
         return $resource(IP + 'mine/getProductRecord')
     }])
+    //领取记录
+    .factory('GetWaitReceiveDetail', ['$resource', function($resource) {
+        return $resource(IP + 'mine/getWaitReceiveDetail')
+    }])
     //店员相关的记录统计
     .factory('Consumes', ['$resource', function($resource) {
         return $resource(IP + 'mine/consumes')
@@ -46,10 +50,31 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('DeleteArchiveInfo', ['$resource', function($resource) {
         return $resource(IP + 'archives/deleteArchiveInfo')
     }])
+    //个人中心用户信息
+    .factory('ClerkInfo', ['$resource', function($resource) {
+        return $resource('http://192.168.1.117/user/clerkInfo/:clerkId', { clerkId: '@id' })
+    }])
     //查询某用户档案信息
     .factory('GetShopUserArchivesInfoByUserId', ['$resource', function($resource) {
         return $resource(IP + 'archives/getShopUserArchivesInfoByUserId')
     }])
+    //个人中心获取今日业绩
+    .factory('GetClerkAchievement', ['$resource', function($resource) {
+        return $resource(IP + 'work/getClerkAchievement')
+    }])
+    //日预约请求接口
+    .factory('ShopDayAppointmentInfoByDate', ['$resource', function($resource) {
+        return $resource(IP + 'appointmentInfo/shopDayAppointmentInfoByDate')
+    }])
+    //根据预约主键查询预约项目
+    .factory('GetUserCardProjectList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getUserCardProjectList',{ appointmentId: '@id' })
+    }])
+    //根据预约主键获取预约详情
+    .factory('GetAppointmentInfoById', ['$resource', function($resource) {
+        return $resource(IP + 'appointmentInfo/getAppointmentInfoById',{ appointmentId: '@id' })
+    }])
+
     //项目的接口
     .factory('OneLevelProject', ['$resource', function($resource) {
         return $resource(IP+ 'projectInfo/oneLevelProject')
