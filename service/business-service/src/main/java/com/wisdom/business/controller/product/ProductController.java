@@ -140,7 +140,7 @@ public class ProductController {
 		ResponseDTO<ProductDTO> responseDTO = new ResponseDTO<>();
 		ProductDTO productDTO = productService.findProductById(productId);
 		responseDTO.setResponseData(productDTO);
-		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
 
@@ -160,7 +160,7 @@ public class ProductController {
 		offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
 		ResponseDTO<OfflineProductDTO> responseDTO = new ResponseDTO();
 		responseDTO.setResponseData(offlineProductDTO);
-		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
 
