@@ -1,5 +1,5 @@
-function selectProductCtrl($scope,ngDialog){
-    var  data={
+function selectProductCtrl($scope,ngDialog,GetShopProjectList){
+   /* var  data={
         "errorInfo": 1,
         "responseData": [
             {
@@ -59,12 +59,12 @@ function selectProductCtrl($scope,ngDialog){
         ],
         "result": "0x00001"
     };
-    /*疗程卡*/
+    /!*疗程卡*!/
     $scope.newProjectFun = function(){
-        /*{useStyle:"0",
+        /!*{useStyle:"0",
             filterStr:$scope.param.newProductObject.filterStr  //参数
-        }*/
-        /*请求数据的位置*/
+        }*!/
+        /!*请求数据的位置*!/
         $scope.param.newProductObject.newProjectData=data.responseData;
 
     };
@@ -135,19 +135,21 @@ function selectProductCtrl($scope,ngDialog){
             }
         ]
     }
-    /*本店项目*/
+    /!*本店项目*!/
     $scope.selfProduct=function(){
-        /*{pageNo:1,
+        /!*{pageNo:1,
          pageSize:100,
          filterStr:$scope.param.newProductObject.filterStr}
-         */ //参数
+         *!/ //参数
+
+
        $scope.param.newProductObject.selfProductData = selfData.responseData;
         $scope.falseAll()
     }
     $scope.newProductSearch = function(){
         console.log($scope.param.newProductObject.filterStr)
     }
-    /*选择项目*/
+    /!*选择项目*!/
     $scope.selectNewProduct = function(){
         if($scope.param.selectCustomersObject.sysUserName == ""){
             $scope.selectCustomersCtrl()
@@ -156,13 +158,13 @@ function selectProductCtrl($scope,ngDialog){
                 template: 'newProduct',
                 scope: $scope, //这样就可以传递参数
                 controller: ['$scope', '$interval', function($scope, $interval) {
-                    /*$scope.newProjectFun();*/
+                    /!*$scope.newProjectFun();*!/
                     $scope.close = function(status) {
                         if(status == 1){
-                            $scope.param.newProductObject.shopProjectIdArr = [];/*Id数组*/
-                            $scope.param.newProductObject.shopProjectNameArr = [];/*项目名数组*/
-                            var timeLength = 0;/*项目时长*/
-                           /* $scope.param.ModifyAppointmentObject.productNum = 0;/!*项目个数*!/*/
+                            $scope.param.newProductObject.shopProjectIdArr = [];/!*Id数组*!/
+                            $scope.param.newProductObject.shopProjectNameArr = [];/!*项目名数组*!/
+                            var timeLength = 0;/!*项目时长*!/
+                           /!* $scope.param.ModifyAppointmentObject.productNum = 0;/!*项目个数*!/!*!/
                             for(var i=0;i<$scope.param.ModifyAppointmentObject.selfProductDataFlag.length;i++){
                                 if($scope.param.ModifyAppointmentObject.selfProductDataFlag[i]==true){
                                     $scope.param.newProductObject.shopProjectIdArr.push($(".selfProductDataIndex").eq(i).attr('shopProjectId'))
@@ -180,9 +182,9 @@ function selectProductCtrl($scope,ngDialog){
 
                                 }
                             }
-          /*项目ID*/         $scope.param.newProductObject.shopProjectId=$scope.param.newProductObject.shopProjectIdArr.join(",");
-        /*项目名称*/         $scope.param.newProductObject.shopProjectName=$scope.param.newProductObject.shopProjectNameArr.join(",");
-        /*项目时长*/         $scope.param.ModifyAppointmentObject.appointPeriod = timeLength;
+          /!*项目ID*!/         $scope.param.newProductObject.shopProjectId=$scope.param.newProductObject.shopProjectIdArr.join(",");
+        /!*项目名称*!/         $scope.param.newProductObject.shopProjectName=$scope.param.newProductObject.shopProjectNameArr.join(",");
+        /!*项目时长*!/         $scope.param.ModifyAppointmentObject.appointPeriod = timeLength;
         console.log($scope.param.ModifyAppointmentObject.appointPeriod)
                             ngDialog.close("selectCustomersWrap")
                         }else{
@@ -191,7 +193,7 @@ function selectProductCtrl($scope,ngDialog){
                             $scope.param.newProductObject.shopProjectId='';
                             $scope.param.newProductObject.shopProjectName=""
                         }
-                      /*  $scope.closeThisDialog();*/
+                        $scope.closeThisDialog();
 
                     };
                 }],
@@ -225,7 +227,7 @@ function selectProductCtrl($scope,ngDialog){
         }
     }
 
-var a = -1;
+    var a = -1;
 
     $scope.selectTheProduct = function(index,type){
 
@@ -242,5 +244,5 @@ var a = -1;
 
 
     }
-
+*/
 }
