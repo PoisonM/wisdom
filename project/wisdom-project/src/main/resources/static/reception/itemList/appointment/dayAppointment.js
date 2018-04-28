@@ -150,7 +150,6 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
                     var b = a.replace(/月/g, "-");
                     var c = b.replace(/日/g, "");
                     console.log(c)
-                    $scope.dayBig();
 
                 }
             });
@@ -400,91 +399,88 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
 
     };
 
-    $scope.dayBig = function(){
-        ShopDayAppointmentInfoByDate.get({
-            sysShopId:'3',
-            startDate:"2018-00-00 00:00:00",
-            endDate:"2019-00-00 00:00:00"
-        },function(data){
-            var memeda = data.responseData;
-            /*得到循环时间*/
-            var hourTime = [];
-            for(var i=0;i<$scope.param.code.length;i++){
-                for(key in $scope.param.code[i] ){
-                    hourTime.push($scope.param.code[i][key])
-                    if($scope.param.code[i][key] == memeda.startTime ){
-                        var a= i;
-                    }
-                    if($scope.param.code[i][key] == memeda.endTime ){
-                        var b= i;
-                    }
+    ShopDayAppointmentInfoByDate.get({
+        sysShopId:'3',
+        startDate:"2018-00-00 00:00:00",
+        endDate:"2019-00-00 00:00:00"
+    },function(data){
+        var memeda = data.responseData;
+        /*得到循环时间*/
+        var hourTime = [];
+        for(var i=0;i<$scope.param.code.length;i++){
+            for(key in $scope.param.code[i] ){
+                hourTime.push($scope.param.code[i][key])
+                if($scope.param.code[i][key] == memeda.startTime ){
+                    var a= i;
+                }
+                if($scope.param.code[i][key] == memeda.endTime ){
+                    var b= i;
                 }
             }
-            $scope.param.days=hourTime.slice(a,b+1);
-            $scope.param.day=$scope.param.code.slice(a,b+1);
-            for (key  in memeda) {
-                if (key == 'endTime' || key == "startTime") {
-                } else {
-                    $scope.param.appointmentObject.beautician.push(key);
-                    $scope.param.appointmentObject.appointmentInfo.push(memeda[key].appointmentInfo);
-                    $scope.param.appointmentObject.point.push(memeda[key].point);
+        }
+        $scope.param.days=hourTime.slice(a,b+1);
+        $scope.param.day=$scope.param.code.slice(a,b+1);
+        for (key  in memeda) {
+            if (key == 'endTime' || key == "startTime") {
+            } else {
+                $scope.param.appointmentObject.beautician.push(key);
+                $scope.param.appointmentObject.appointmentInfo.push(memeda[key].appointmentInfo);
+                $scope.param.appointmentObject.point.push(memeda[key].point);
 
-                }
             }
-            /*处理数据*/
-            /*list:[
-             {status:[],
-             sysUserName:[],
-             shopProjectName:[]}
-             \]
-             想要的数据格式
-             根据时间编码找到对应的索引，通过索引拿到数据
-             * */
+        }
+        /*处理数据*/
+        /*list:[
+         {status:[],
+         sysUserName:[],
+         shopProjectName:[]}
+         \]
+         想要的数据格式
+         根据时间编码找到对应的索引，通过索引拿到数据
+         * */
 
-            for(var i=0;i<$scope.param.appointmentObject.appointmentInfo.length;i++){
-                $scope.param.appointmentObject.list[i] = new Object;
-                $scope.param.appointmentObject.list[i].status = new Array;
-                $scope.param.appointmentObject.list[i].sysUserName = new Array;
-                $scope.param.appointmentObject.list[i].shopProjectName = new Array;
-                $scope.param.appointmentObject.list[i].time = new Array;
-                $scope.param.appointmentObject.list[i].sysUserId = new Array;
-                $scope.param.appointmentObject.list[i].sysShopId = new Array;
-                for (var e = 0; e < $scope.param.day.length; e++) {
-                    $scope.param.appointmentObject.list[i].status[e]=6;
-                    $scope.param.appointmentObject.list[i].sysUserName[e]=null;
-                    $scope.param.appointmentObject.list[i].shopProjectName[e]=null;
-                    $scope.param.appointmentObject.list[i].time[e]=null;
-                    $scope.param.appointmentObject.list[i].sysUserId[e]=null;
-                    $scope.param.appointmentObject.list[i].sysShopId[e]=null;
-                    for(var j=0;j<$scope.param.appointmentObject.appointmentInfo[i].length;j++){
-                        for (var k = 0;k < $scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",").length; k++) {
-                            if ($scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",")[k] == objTemp($scope.param.day[e])) {
-                                $scope.param.appointmentObject.list[i].sysUserName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserName;
-                                $scope.param.appointmentObject.list[i].shopProjectName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].shopProjectName;
-                                $scope.param.appointmentObject.list[i].sysUserId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserId;
-                                $scope.param.appointmentObject.list[i].sysShopId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysShopId;
-                                $scope.param.appointmentObject.list[i].time[e] = $scope.param.days[e];
+        for(var i=0;i<$scope.param.appointmentObject.appointmentInfo.length;i++){
+            $scope.param.appointmentObject.list[i] = new Object;
+            $scope.param.appointmentObject.list[i].status = new Array;
+            $scope.param.appointmentObject.list[i].sysUserName = new Array;
+            $scope.param.appointmentObject.list[i].shopProjectName = new Array;
+            $scope.param.appointmentObject.list[i].time = new Array;
+            $scope.param.appointmentObject.list[i].sysUserId = new Array;
+            $scope.param.appointmentObject.list[i].sysShopId = new Array;
+            for (var e = 0; e < $scope.param.day.length; e++) {
+                $scope.param.appointmentObject.list[i].status[e]=6;
+                $scope.param.appointmentObject.list[i].sysUserName[e]=null;
+                $scope.param.appointmentObject.list[i].shopProjectName[e]=null;
+                $scope.param.appointmentObject.list[i].time[e]=null;
+                $scope.param.appointmentObject.list[i].sysUserId[e]=null;
+                $scope.param.appointmentObject.list[i].sysShopId[e]=null;
+                for(var j=0;j<$scope.param.appointmentObject.appointmentInfo[i].length;j++){
+                    for (var k = 0;k < $scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",").length; k++) {
+                        if ($scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",")[k] == objTemp($scope.param.day[e])) {
+                            $scope.param.appointmentObject.list[i].sysUserName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserName;
+                            $scope.param.appointmentObject.list[i].shopProjectName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].shopProjectName;
+                            $scope.param.appointmentObject.list[i].sysUserId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserId;
+                            $scope.param.appointmentObject.list[i].sysShopId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysShopId;
+                            $scope.param.appointmentObject.list[i].time[e] = $scope.param.days[e];
 
-                                if($scope.param.appointmentObject.appointmentInfo[i][j].status == 1){
-                                    $scope.param.appointmentObject.list[i].status[e] = 1
-                                } else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 2){
-                                    $scope.param.appointmentObject.list[i].status[e] = 2
-                                }else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 3){
-                                    $scope.param.appointmentObject.list[i].status[e] = 3
-                                }else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 4){
-                                    $scope.param.appointmentObject.list[i].status[e] = 4
-                                } else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 0){
-                                    $scope.param.appointmentObject.list[i].status[e] = 0
-                                }
+                            if($scope.param.appointmentObject.appointmentInfo[i][j].status == 1){
+                                $scope.param.appointmentObject.list[i].status[e] = 1
+                            } else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 2){
+                                $scope.param.appointmentObject.list[i].status[e] = 2
+                            }else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 3){
+                                $scope.param.appointmentObject.list[i].status[e] = 3
+                            }else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 4){
+                                $scope.param.appointmentObject.list[i].status[e] = 4
+                            } else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 0){
+                                $scope.param.appointmentObject.list[i].status[e] = 0
                             }
                         }
                     }
                 }
             }
-        })
-    }
+        }
+    })
 
-    $scope.dayBig()
 
     function objTemp(obj) {
         for (key  in obj) {

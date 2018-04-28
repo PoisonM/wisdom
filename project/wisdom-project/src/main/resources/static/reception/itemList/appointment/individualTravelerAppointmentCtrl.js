@@ -1,4 +1,4 @@
-function individualTravelerAppointment ($scope,ngDialog,UpdateAppointmentInfoById){
+function individualTravelerAppointment ($scope,ngDialog){
    /* $scope.startAppointmentIndivdual = function(){
         $scope.param.ModifyAppointment = false;
     };
@@ -10,8 +10,8 @@ function individualTravelerAppointment ($scope,ngDialog,UpdateAppointmentInfoByI
    $scope.startAppointmentIndivdual = function(){
        $scope.param.ModifyAppointment = false;
        UpdateAppointmentInfoById.get({
-           shopAppointServiceId:"1",
-           status:2
+           shopAppointServiceId:id,
+           status:0
        },function(data){
 
        })
@@ -19,8 +19,8 @@ function individualTravelerAppointment ($scope,ngDialog,UpdateAppointmentInfoByI
     $scope.startSevier = function(){
         $scope.seriverColor=false;
         UpdateAppointmentInfoById.get({
-            shopAppointServiceId:"1",
-            status:3
+            shopAppointServiceId:id,
+            status:0
         },function(data){
 
         })

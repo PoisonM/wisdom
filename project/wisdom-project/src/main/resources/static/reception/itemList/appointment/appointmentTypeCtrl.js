@@ -27,7 +27,7 @@ function appointmentTypeCtrl($scope, ngDialog,UpdateAppointmentInfoById){
                         };
                     if(status == 3){
                         UpdateAppointmentInfoById.get({
-                            shopAppointServiceId:id,
+                            shopAppointServiceId:
                             status:0
                         },function(data){
 
