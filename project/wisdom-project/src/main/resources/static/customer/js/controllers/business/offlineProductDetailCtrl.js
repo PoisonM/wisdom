@@ -182,6 +182,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                       }else{
                             showToast("请先登录账号");
                             hideToast();
+                            $state.go("login");
                       }
                 })
 
