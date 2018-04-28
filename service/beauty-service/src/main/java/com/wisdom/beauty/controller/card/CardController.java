@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -54,36 +55,78 @@ public class CardController {
 	@RequestMapping(value = "/getUserRechargeCardList", method = { RequestMethod.POST, RequestMethod.GET })
 	// @LoginRequired
 	public @ResponseBody ResponseDTO<List<ShopUserRechargeCardDTO>> getUserRechargeCardList(
-			@RequestParam String sysUserId, @RequestParam String sysShopId) {
-		long currentTimeMillis = System.currentTimeMillis();
+            @RequestParam String sysUserId, @RequestParam String sysShopId) {
+        long currentTimeMillis = System.currentTimeMillis();
 
-		logger.info("查询某个用户的充值卡列表信息传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
-		ResponseDTO<List<ShopUserRechargeCardDTO>> responseDTO = new ResponseDTO<>();
+        logger.info("查询某个用户的充值卡列表信息传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
+        ResponseDTO<List<ShopUserRechargeCardDTO>> responseDTO = new ResponseDTO<>();
 
-		if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
-			logger.debug("传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
-			return null;
-		}
+        if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
+            logger.debug("传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
+            return null;
+        }
 
-		ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
-		shopUserRechargeCardDTO.setSysUserId(sysUserId);
-		shopUserRechargeCardDTO.setSysShopId(sysShopId);
-		List<ShopUserRechargeCardDTO> userRechargeCardList = cardService
-				.getUserRechargeCardList(shopUserRechargeCardDTO);
-		if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
-			logger.debug("查询某个用户的充值卡列表信息查询结果为空，参数 {}",
-					"sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
-			responseDTO.setResult(StatusConstant.SUCCESS);
-			responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());
-			return responseDTO;
-		}
+        ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+        shopUserRechargeCardDTO.setSysUserId(sysUserId);
+        shopUserRechargeCardDTO.setSysShopId(sysShopId);
+        List<ShopUserRechargeCardDTO> userRechargeCardList = cardService
+                .getUserRechargeCardList(shopUserRechargeCardDTO);
+        if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
+            logger.debug("查询某个用户的充值卡列表信息查询结果为空，参数 {}",
+                    "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());
+            return responseDTO;
+        }
 
-		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(userRechargeCardList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(userRechargeCardList);
 
-		logger.info("查询某个用户的充值卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
-		return responseDTO;
-	}
+        logger.info("查询某个用户的充值卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 查询某个用户的充值卡总金额
+     *
+     * @param sysUserId
+     * @return
+     */
+    @RequestMapping(value = "/getUserRechargeSumAmount", method = {RequestMethod.POST, RequestMethod.GET})
+    // @LoginRequired
+    public @ResponseBody
+    ResponseDTO<BigDecimal> getUserRechargeSumAmount(@RequestParam String sysUserId) {
+
+        logger.info("查询某个用户的充值卡总金额传入参数={}", "sysUserId = [" + sysUserId + "]");
+        long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        ResponseDTO<BigDecimal> responseDTO = new ResponseDTO<>();
+
+        if (StringUtils.isBlank(sysUserId)) {
+            logger.debug("传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + clerkInfo.getSysShopId() + "]");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+
+        BigDecimal sumAmount = new BigDecimal(0);
+        ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+        shopUserRechargeCardDTO.setSysUserId(sysUserId);
+        shopUserRechargeCardDTO.setSysShopId(clerkInfo.getSysShopId());
+        List<ShopUserRechargeCardDTO> userRechargeCardList = cardService.getUserRechargeCardList(shopUserRechargeCardDTO);
+
+        if (CommonUtils.objectIsNotEmpty(userRechargeCardList)) {
+            for (ShopUserRechargeCardDTO userRechargeCardDTO : userRechargeCardList) {
+                BigDecimal surplusAmount = userRechargeCardDTO.getSurplusAmount();
+                sumAmount = sumAmount.add(surplusAmount);
+            }
+        }
+
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(sumAmount);
+
+        logger.info("查询某个用户的充值卡总金额耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
 
 	/**
 	 * @Author:huan

@@ -1,7 +1,6 @@
 package com.wisdom.beauty.controller.appointment;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
-import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
@@ -179,7 +178,7 @@ public class AppointmentController {
 		Date endTime = DateUtils.StrToDate(endDate, "datetime");
 
 
-		String preLog = "根据时间查询某个美容店周预约列表,";
+		String preLog = "根据时间查询某个美容店周预约列表";
 		long start = System.currentTimeMillis();
 		logger.info(preLog + "美容店主键为={}", sysShopId);
 

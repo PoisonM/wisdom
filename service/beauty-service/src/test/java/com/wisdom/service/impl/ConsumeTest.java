@@ -37,6 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,6 +67,21 @@ public class ConsumeTest {
         SpringUtil.setApplicationContext(context);
     }
 
+    /**
+     * 删除档案信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void getUserRechargeSumAmount() throws Exception {
+
+        MvcResult result = mvc.perform(get("/cardInfo/getUserRechargeSumAmount").param("sysUserId", "1"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
     /**
      * 用户划卡
      *
