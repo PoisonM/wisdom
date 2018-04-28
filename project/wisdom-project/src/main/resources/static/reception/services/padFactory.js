@@ -1,5 +1,5 @@
-var IP = ' http://192.168.3.89/beauty/';
-var cashierIP = 'http://192.168.3.89/'
+var IP = ' http://192.168.1.117/beauty/';
+var cashierIP = 'http://192.168.1.117/'
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
