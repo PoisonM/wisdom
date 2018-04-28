@@ -16,8 +16,8 @@
                     <u style="color:#333333;font-size: 0.72rem">￥</u>
                 </p>
                 <p>
-                    <span style="font-size: 0.26rem;color: #333333;margin-left: 0.3rem">可提现余额￥{{param.accountInfo.balance - param.accountInfo.balanceDeny}}，</span>
-                    <span style="color:#6D9Fe1;font-size: 0.26rem" ng-click="withDrawAll()">全部提现</span>
+                    <span style="font-size: 0.26rem;color: #333333;margin-left: 0.3rem">可提现余额￥{{(param.accountInfo.balance - param.accountInfo.balanceDeny).toFixed(0)}}</span>
+                    <!--<span style="color:#6D9Fe1;font-size: 0.26rem" ng-click="withDrawAll()">全部提现</span>-->
                 </p>
             </a>
             <label class="item item-input">
@@ -41,7 +41,6 @@
             </button>
             <button class="button button-small"
                     ng-if="!param.validateCodeButtonStatus"
-                    ng-click="getValidateCode()"
                     style="margin-right:0.4rem;border: solid 1px;width: 4rem;border-radius: 20px;
                             background: transparent;float: right;margin-top: -38px;z-index: 2;">
                 请{{param.timeCount}}秒后重新获取验证码

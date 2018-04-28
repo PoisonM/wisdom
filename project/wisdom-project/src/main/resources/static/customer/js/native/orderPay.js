@@ -460,6 +460,7 @@ var check=function(){
 }
 
 var addressManagement = function(){
+    window.localStorage.setItem("productType",productType);
     window.location.href = "#/addressManagement/orderPay.do";
 }
 

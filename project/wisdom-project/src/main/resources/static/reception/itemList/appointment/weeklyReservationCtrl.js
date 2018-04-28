@@ -1,4 +1,5 @@
 function weeklyReservation ($scope,ngDialog){
+
     $scope.weekLis = function(lis){
         ngDialog.open({
             template: 'appointmentLis',
@@ -6,6 +7,7 @@ function weeklyReservation ($scope,ngDialog){
             controller: ['$scope', '$interval', function($scope, $interval) {
                 $scope.param.timeLengthIndex = -1;
                 $scope.param.timeLengthArr = ["李","网",'周'];
+
                 $scope.close = function() {
                     $scope.closeThisDialog();
                 };

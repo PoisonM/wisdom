@@ -99,7 +99,6 @@ public class IncomeManagementController {
 		{
 			if(incomeRecord.getUserType().equals(""))
 			{
-
 				String userType = getUserType(incomeRecord.getCreateDate(),incomeRecord.getSysUserId());
 
 				UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecord.getSysUserId());

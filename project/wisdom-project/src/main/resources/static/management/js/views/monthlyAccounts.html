@@ -21,9 +21,8 @@
                     <div class="rightCenter">
                         <div class="product_lis meunLis2">
                             <button ng-click="bgChangeAndSearch('instance')" ng-class="{'active':status=='instance'}">即时奖励</button>
-                            <button ng-click="bgChangeAndSearch('recommends')" ng-class="{'active':status=='recommends'}">店主推荐</button>
+                            <button ng-click="bgChangeAndSearch('recommend')" ng-class="{'active':status=='recommend'}">店主推荐</button>
                             <button ng-click="bgChangeAndSearch('month')" ng-class="{'active':status=='month'}">月度结算</button>
-                           <!-- <button ng-click="bgChangeAndSearch(3,'recommend')" ng-class="{'active':agencyIndex==3}">同级推荐</button>-->
                         </div>
                         <div class="product_eara">
                             <div class="product_name">
@@ -48,8 +47,8 @@
                                 <button   ng-click="stateBox('')" ng-class="{'actives':checkStatus==''}">全部状态</button>
                                 <button   ng-click="stateBox('1')" ng-class="{'actives':checkStatus=='1'}">已审核状态</button>
                                 <button   ng-click="stateBox('0')" ng-class="{'actives':checkStatus=='0'}">未审核状态</button>
-                                <button class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='recommends'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
-                                <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommends'" ng-show="false">筛选已完成的订单</button>
+                                <button class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='recommend'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
+                                <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommend'" ng-show="false">筛选已完成的订单</button>
                             </div>
 
                             <table class="table  text-center ">
@@ -68,8 +67,8 @@
                                     <th class="text-center" style="width:20%;">操作</th>
                                 </tr>
                                 </thead>
-                                <tbody ng-repeat="item in MonthlyBalanceLis" >
-                                <tr ng-class="{'bgeee':agencyIndex != $index && agencyIndex!=-1 && item.secondCheckStatus!='有一方拒绝','red':item.secondCheckStatus=='有一方拒绝','white':agencyIndex == -1,'col2c2f3e':agencyIndex == $index}">
+                                <tbody class="tbodyCla" ng-repeat="item in MonthlyBalanceLis" >
+                                <tr ng-class="{'bgeee':agencyIndex != $index && agencyIndex!=-1 && item.secondCheckStatus!='有一方拒绝','red':item.secondCheckStatus=='有一方拒绝','white':agencyIndex == -1&&item.secondCheckStatus!='有一方拒绝','col2c2f3e':agencyIndex == $index}">
                                     <td ng-click="viod();$event.stopPropagation()">{{item.nickName}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{item.mobile}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{item.userType}}</td>
@@ -97,7 +96,7 @@
                                         <th class="text-center">交易流水号</th>
                                         <th class="text-center">订单状态</th>
                                         <th class="text-center">支付金额</th>
-                                        <th></th>
+                                        <th class="text-center">关系</th>
                                     </tr>
                                     <!--点击查看出现的下级内容-->
 
@@ -112,7 +111,7 @@
                                         <td ng-click="viod();$event.stopPropagation()">{{user[0].transactionId}}</td>
                                         <td ng-click="viod();$event.stopPropagation()">{{items.status}}</td>
                                         <td ng-click="viod();$event.stopPropagation()">{{items.amount}}</td>
-                                        <td ng-click="viod();$event.stopPropagation()"></td>
+                                        <td ng-click="viod();$event.stopPropagation()">{{user[0].parentRelation}}</td>
                                     </tr>
                                 </tbody>
                             </table>
