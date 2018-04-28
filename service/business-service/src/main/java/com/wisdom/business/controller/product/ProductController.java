@@ -143,6 +143,25 @@ public class ProductController {
 	}
 
 	/**
+	 * 根据id查询商品剩余特价时间
+	 * @param productId  商品id
+	 * @return
+	 */
+	@RequestMapping(value = "findProductBargainPriceTimeById", method = {RequestMethod.POST, RequestMethod.GET})
+	//@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<ProductDTO> findProductBargainPriceTimeById(@RequestParam String productId) {
+		ResponseDTO<ProductDTO> responseDTO = new ResponseDTO<>();
+		ProductDTO productDTO = productService.findProductById(productId);
+		ProductDTO bargainPrice = new ProductDTO();
+		bargainPrice.setProductDetail(productDTO.getProductDetail());
+		responseDTO.setResponseData(productDTO);
+		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		return responseDTO;
+	}
+
+	/**
 	 * 条件查询商品
 	 * @param pageParamVoDTO
 	 * @return

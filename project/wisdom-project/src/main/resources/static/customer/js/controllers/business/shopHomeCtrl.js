@@ -199,7 +199,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 }
             }
 
-            FindProductById.get({
+            FindProductBargainPriceTimeById.get({
                 productId:'MXT99-02'
             },function (data) {
                 //当前时间
