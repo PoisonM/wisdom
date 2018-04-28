@@ -144,3 +144,16 @@ angular.module('customerGlobal',[])
                 }
             };
         }])
+    .factory('BeautyUtil', ['Global','$ionicPopup','$state',
+        function(Global,$ionicPopup,$state) {
+            return {
+                checkResponseData: function(data,redirectParam) {
+                    if(data.result==Global.FAILURE)
+                    {
+                        if(data.errorInfo==Global.TOKEN_ERROR){
+                            $state.go("beautyLogin",{redirectUrl:redirectParam})
+                        }
+                    }
+                }
+            };
+        }])

@@ -579,6 +579,18 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    .state('beautyLogin', {
+                        url: '/beautyLogin/:redirectUrl',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyLoginCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyLoginCtrl',
+                                    ['js/controllers/business/beautyLogin.js?ver='+ customerVersion],
+                                    'views/business/beautyLogin.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('/shopHome')
             }])
