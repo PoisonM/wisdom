@@ -203,9 +203,9 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 productId:'MXT99-02'
             },function (data) {
                 //当前时间
-                $scope.nowTime =convertDateFromString(data.responseData.productDetail.nowTime).getTime();
+                $scope.nowTime =convertDateFromString(data.responseData.nowTime).getTime();
                 //下架时间
-                $scope.soldOutTime = convertDateFromString( data.responseData.productDetail.soldOutTime).getTime();
+                $scope.soldOutTime = convertDateFromString( data.responseData.soldOutTime).getTime();
                 timeInterval($scope.nowTime,$scope.soldOutTime)
             })
             function timeInterval(nowTime,soldOutTime){
