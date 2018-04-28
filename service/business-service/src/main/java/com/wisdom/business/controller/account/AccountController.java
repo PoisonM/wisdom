@@ -249,7 +249,7 @@ public class AccountController {
 	 *
 	 * */
 	@RequestMapping(value = "isShopKeeper", method = {RequestMethod.POST, RequestMethod.GET})
-	//@LoginRequired
+	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Integer> isShopKeeper(){
@@ -392,6 +392,28 @@ public class AccountController {
 		return responseDTO;
 	}
 
+
+	/***
+	 * 查询用户是否登录
+	 *
+	 * */
+	@RequestMapping(value = "isLogin", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO<String> isLogin(){
+
+		ResponseDTO<String> responseDTO = new ResponseDTO<>();
+		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+		if(userInfoDTO !=null) {
+			responseDTO.setResult(StatusConstant.SUCCESS);
+			responseDTO.setResponseData("success");
+		}else{
+			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setResponseData("failure");
+		}
+
+		return responseDTO;
+	}
 
 
 }

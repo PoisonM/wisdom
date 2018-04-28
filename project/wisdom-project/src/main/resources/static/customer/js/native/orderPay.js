@@ -5,6 +5,7 @@ var buyOrderAddressId = window.localStorage.getItem("buyOrderAddressId");
 var orderIds = [];
 var trainingProductId = "";
 var specialShopId = "";
+var orderIdForPay ={};
 
 var GetQueryString = function(name)
 {
@@ -178,6 +179,7 @@ var orderPayInit = function(){
                     else if(data.result=='0x00001')
                     {
                         needPayOrderList = data.responseData.needPayOrderList;
+                        orderIdForPay = data.responseData.needPayOrderList;
                         var needPayOrderListHtml = "";
                         $.each(needPayOrderList,function(index,value){
                             needPayOrderListHtml = needPayOrderListHtml +
@@ -487,4 +489,11 @@ var confirmUserInfo = function(){
 
 var cancelUserInfo = function(){
     $('#specialProductInfo').hide();
+}
+
+var sendMessage = function(){
+    orderIds
+    $.ajax({
+
+    })
 }
