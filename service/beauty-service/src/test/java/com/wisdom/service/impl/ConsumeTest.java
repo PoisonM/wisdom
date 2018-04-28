@@ -7,6 +7,7 @@ import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.PayTypeEnum;
+import com.wisdom.beauty.api.extDto.ShopConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
@@ -99,14 +100,19 @@ public class ConsumeTest {
      */
     @Test
     public void consumesDaughterCard() throws Exception {
-        List<ShopUserConsumeDTO> shopUserConsumeDTO = new ArrayList<>();
+        ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO = new ShopConsumeDTO<List<ShopUserConsumeDTO>>();
+
+        List<ShopUserConsumeDTO> arrayList = new ArrayList<>();
         ShopUserConsumeDTO consumeDTO = new ShopUserConsumeDTO();
         consumeDTO.setClerkId("1");
         consumeDTO.setConsumeId("5b080f1a39634d4eb3b9bc82130402e5");
         consumeDTO.setConsumePrice(new BigDecimal(100));
         consumeDTO.setConsumeNum(12);
         consumeDTO.setSysUserId("110");
-        shopUserConsumeDTO.add(consumeDTO);
+        arrayList.add(consumeDTO);
+        shopUserConsumeDTO.setShopUserConsumeDTO(arrayList);
+
+
 
         String toJSONString = JSONObject.toJSONString(shopUserConsumeDTO);
 

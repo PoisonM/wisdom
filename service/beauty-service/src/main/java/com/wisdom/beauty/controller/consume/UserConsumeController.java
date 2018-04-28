@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.consume;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.extDto.ShopConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
@@ -247,14 +248,14 @@ public class UserConsumeController {
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<String> consumeCourseCard(@RequestBody List<ShopUserConsumeDTO> shopUserConsumeDTO) {
+    ResponseDTO<String> consumeCourseCard(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("用户划疗程卡操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
 
-        int cardFlag = shopUserConsumeService.consumeCourseCard(shopUserConsumeDTO, clerkInfo);
+        int cardFlag = shopUserConsumeService.consumeCourseCard(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
         //保存用户的操作记录
         responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData("success");
@@ -273,14 +274,15 @@ public class UserConsumeController {
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<String> consumesDaughterCard(@RequestBody List<ShopUserConsumeDTO> shopUserConsumeDTO) {
+    ResponseDTO<String> consumesDaughterCard(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("用户划套卡下的子卡操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
 
-        int cardFlag = shopUserConsumeService.consumesDaughterCard(shopUserConsumeDTO, clerkInfo);
+        List<ShopUserConsumeDTO> userConsumeDTOT = shopUserConsumeDTO.getShopUserConsumeDTO();
+        int cardFlag = shopUserConsumeService.consumesDaughterCard(userConsumeDTOT, clerkInfo);
         //保存用户的操作记录
         responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData("success");
@@ -298,14 +300,14 @@ public class UserConsumeController {
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<String> consumesUserProduct(@RequestBody List<ShopUserConsumeDTO> shopUserConsumeDTO) {
+    ResponseDTO<String> consumesUserProduct(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("用户领取产品操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
 
-        int cardFlag = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO, clerkInfo);
+        int cardFlag = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
         //保存用户的操作记录
         responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData("success");

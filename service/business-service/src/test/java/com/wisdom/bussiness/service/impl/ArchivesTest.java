@@ -12,6 +12,7 @@ import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,6 +71,13 @@ public class ArchivesTest {
     @Test
     public void testAccount() throws UnsupportedEncodingException {
         monthlyIncomeCalc(ConfigConstant.businessB1);
+    }
+
+    @Test
+    public void testUserAccount() throws UnsupportedEncodingException {
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setId("045229c6-1de8-4c9f-8196-4e740f1aeda8");
+        accountMapper.updateUserAccountInfo(accountDTO);
     }
 
     public void monthlyIncomeCalc(String businessType) throws UnsupportedEncodingException {
