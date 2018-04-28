@@ -1,5 +1,5 @@
-var IP = ' http://192.168.1.117/beauty/';
-var cashierIP = 'http://192.168.1.117/'
+var IP = ' http://192.168.3.89/beauty/';
+var cashierIP = 'http://192.168.3.89/'
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
@@ -125,7 +125,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //查询某个用户的套卡信息
     .factory('GetUserProjectGroupList', ['$resource', function($resource) {
-        return $resource(IP + 'projectInfo/getUserProjectGroupList',{sysUserId:"@id"})
+        return $resource(IP + 'projectInfo/getUserProjectGroupList', { sysUserId: "@id" })
     }])
     //查询某个用户的单次卡信息
     .factory('GetUserCourseProjectList', ['$resource', function($resource) {
@@ -157,7 +157,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //根据用户与项目的关系主键列表查询用户与项目的关系  俗称划卡
     .factory('GetUserShopProjectList', ['$resource', function($resource) {
-        return $resource(IP + 'projectInfo/getUserShopProjectList',{relationIds:"@id"})
+        return $resource(IP + 'projectInfo/getUserShopProjectList', { relationIds: "@id" })
     }])
     //保存 划卡
     .factory('ConsumeCourseCard', ['$resource', function($resource) {

@@ -1,4 +1,4 @@
-PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, ngDialog, Archives) {
+PADWeb.controller('drawCardRecordsCtrl', function($scope, $state, $stateParams, ngDialog, Archives) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)"
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案"
@@ -24,8 +24,5 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, n
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
-    $scope.goAccountDetails = function() {
-        $state.go('pad-web.left_nav.accountDetails')
-    }
 
 });
