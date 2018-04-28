@@ -15,7 +15,7 @@ public enum ConfigConstant {
 	public static final String SPECIAL_PRODUCT_BUY_NOTIFY_URL = "http://mx99test1.kpbeauty.com.cn/business/transaction/getSpecialProductPayNotifyInfo";
 
 	public static final String SPECIAL_SHOP_URL = "http://mx99test1.kpbeauty.com.cn/weixin/customer/fieldwork/author?url=" +
-			"http://mx99test1.kpbeauty.com.cn/weixin/customer/getCustomerWeixinMenuId?url=specialProductList88888888";
+			"http://mx99test1.kpbeauty.com.cn/weixin/customer/getUserWeixinMenuId?url=specialProductList88888888";
 
 	//redis中存储的登陆后的token的有效期，目前是30天
 	public static final int logintokenPeriod = 60*60*24*30;
