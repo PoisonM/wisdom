@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','findProductBargainPriceTimeById',
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,findProductBargainPriceTimeById) {
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById) {
             $rootScope.title = "美享99触屏版";
             $scope.param = {
                 bannerList:{},
@@ -199,13 +199,13 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 }
             }
 
-            FindProductBargainPriceTimeById.get({
+            FindProductById.get({
                 productId:'MXT99-02'
             },function (data) {
                 //当前时间
-                $scope.nowTime =convertDateFromString(data.responseData.nowTime).getTime();
+                $scope.nowTime =convertDateFromString(data.responseData.productDetail.nowTime).getTime();
                 //下架时间
-                $scope.soldOutTime = convertDateFromString( data.responseData.soldOutTime).getTime();
+                $scope.soldOutTime = convertDateFromString( data.responseData.productDetail.soldOutTime).getTime();
                 timeInterval($scope.nowTime,$scope.soldOutTime)
             })
             function timeInterval(nowTime,soldOutTime){
