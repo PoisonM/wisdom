@@ -342,7 +342,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			logger.info("getProjectDetail返回的结果为空");
 			return null;
 		}
-		ShopProjectInfoDTO shopProjectInfoDTO= list.get(0);
+		ShopProjectInfoDTO shopProjectInfoDTO = list.get(0);
 
 		Query query = new Query(Criteria.where("imageId").is(shopProjectInfoDTO.getId()));
 		List<ImageUrl> imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
@@ -354,14 +354,14 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		shopProjectInfoResponseDTO.setUseStyle(shopProjectInfoDTO.getUseStyle());
 		shopProjectInfoResponseDTO.setProjectDuration(shopProjectInfoDTO.getProjectDuration());
 		shopProjectInfoResponseDTO.setFunctionIntr(shopProjectInfoDTO.getFunctionIntr());
-		if(	CollectionUtils.isNotEmpty(imageUrls)){
-			ImageUrl imageUrl=imageUrls.get(0);
-			String url=imageUrl.getUrl();
-			if(StringUtils.isNotBlank(url)){
+		if (CollectionUtils.isNotEmpty(imageUrls)) {
+			ImageUrl imageUrl = imageUrls.get(0);
+			String url = imageUrl.getUrl();
+			if (StringUtils.isNotBlank(url)) {
 				shopProjectInfoResponseDTO.setImageUrl(url.split("\\|"));
 			}
 		}
-		return  shopProjectInfoResponseDTO;
+		return shopProjectInfoResponseDTO;
 	}
 
 	/**
