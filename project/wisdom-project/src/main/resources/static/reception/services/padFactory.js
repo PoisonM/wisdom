@@ -118,6 +118,58 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetCardInfo', ['$resource', function($resource) {
         return $resource(IP + 'cardInfo/:id', { id: '@id' })
     }])
+    //查询某个用户的产品信息
+    .factory('GetUserProductList', ['$resource', function($resource) {
+        return $resource(IP + 'productInfo/getUserProductList')
+    }])
+    //查询某个用户的套卡信息
+    .factory('GetUserProjectGroupList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getUserProjectGroupList',{sysUserId:"@id"})
+    }])
+    //查询某个用户的单次卡信息
+    .factory('GetUserCourseProjectList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getUserCourseProjectList')
+    }])
+    //查询某个店的疗程卡、单次卡列表信息
+    .factory('SearchShopProjectList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/searchShopProjectList')
+    }])
+    //查询某个店的产品信息
+    .factory('SearchShopProductList', ['$resource', function($resource) {
+        return $resource(IP + 'productInfo/searchShopProductList')
+    }])
+    //获取套卡列表
+    .factory('GetShopProjectGroups', ['$resource', function($resource) {
+        return $resource(IP + 'cardInfo/getShopProjectGroups')
+    }])
+    //获取充值卡列表
+    .factory('GetRechargeCardList', ['$resource', function($resource) {
+        return $resource(IP + 'cardInfo/getRechargeCardList')
+    }])
+    //获取三级级项目列表
+    .factory('ThreeLevelProject', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/threeLevelProject')
+    }])
+    //获取产品三级列表
+    .factory('productInfoThreeLevelProject', ['$resource', function($resource) {
+        return $resource(IP + 'productInfo/threeLevelProduct')
+    }])
+    //根据用户与项目的关系主键列表查询用户与项目的关系  俗称划卡
+    .factory('GetUserShopProjectList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getUserShopProjectList',{relationIds:"@id"})
+    }])
+    //保存 划卡
+    .factory('ConsumeCourseCard', ['$resource', function($resource) {
+        return $resource(IP + 'consumes/consumeCourseCard')
+    }])
+    //获取店员信息
+    .factory('GetShopClerkList', ['$resource', function($resource) {
+        return $resource(IP + 'appointmentInfo/getShopClerkList')
+    }])
+    //取消预约
+    .factory('UpdateAppointmentInfoById', ['$resource', function($resource) {
+        return $resource(IP + 'appointmentInfo/updateAppointmentInfoById')
+    }])
 
 
 

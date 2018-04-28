@@ -10,8 +10,11 @@
          "endTime": "21:00",
          "scheduling":"20,21,22"
      };
-     $scope.param.ModifyAppointmentObject.hoursType=[]
-     $scope.param.ModifyAppointmentObject.hoursTime=[]
+    /* var a = $filter("date")(Date.parse($scope.param.ModifyAppointmentObject.appointStartTime),"yyyy-MM-dd");
+     console.log(a);*/
+
+     $scope.param.ModifyAppointmentObject.hoursType=[];
+     $scope.param.ModifyAppointmentObject.hoursTime=[];
      for(var i=0;i<$scope.param.code.length;i++){
          $scope.param.ModifyAppointmentObject.hoursType[i]="0";
          for(key in $scope.param.code[i] ){
@@ -38,31 +41,34 @@
          $scope.param.dayTime.push(nextDate)
      }
      /*默认选择时间段*/
-     var time=$scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
-     $scope.timeLength = $scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
-     var numTime = [];
-     var timeIntervalArr = [];
-     for(var i=0;i<$scope.param.selectedTime.length;i++){
-         if($scope.param.selectedTime[i] !=1){
-            for(var j=1;j<time;j++){
-                if($scope.param.selectedTime[i] ==$scope.param.selectedTime[i+j]){
-                    numTime.push(i)
-                    for(var j=0;j<time;j++){
-                        $scope.param.selectedTime[numTime[0]+j] ="2";
-                        for(var i=0;i<$scope.param.code.length;i++){
-                            for(key in $scope.param.code[i] ){
-                                if($scope.param.code[i][key] == $scope.param.ModifyAppointmentObject.hoursTimeShow[numTime[0]+j] ){
-                                    timeIntervalArr.push($scope.param.code[i][key])
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+     if($scope.param.ModifyAppointmentObject.appointStartTime ==""){
+         var time=$scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
+         $scope.timeLength = $scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
+         var numTime = [];
+         var timeIntervalArr = [];
+         for(var i=0;i<$scope.param.selectedTime.length;i++){
+             if($scope.param.selectedTime[i] !=1){
+                 for(var j=1;j<time;j++){
+                     if($scope.param.selectedTime[i] ==$scope.param.selectedTime[i+j]){
+                         numTime.push(i)
+                         for(var j=0;j<time;j++){
+                             $scope.param.selectedTime[numTime[0]+j] ="2";
+                             for(var i=0;i<$scope.param.code.length;i++){
+                                 for(key in $scope.param.code[i] ){
+                                     if($scope.param.code[i][key] == $scope.param.ModifyAppointmentObject.hoursTimeShow[numTime[0]+j] ){
+                                         timeIntervalArr.push($scope.param.code[i][key])
+                                     }
+                                 }
+                             }
+                         }
+                     }
+                 }
+             }
          }
+         $scope.param.ModifyAppointmentObject.appointStartTime=timeIntervalArr[0];
+         $scope.param.ModifyAppointmentObject.appointEndTime=timeIntervalArr[timeIntervalArr.length-1]
      }
-     $scope.param.ModifyAppointmentObject.appointStartTime=timeIntervalArr[0];
-     $scope.param.ModifyAppointmentObject.appointEndTime=timeIntervalArr[timeIntervalArr.length-1]
+
      /*选择时间（天为单位）*/
      $scope.selectDayTime = function(index){
          $scope.bgff6666 = 'bgff6666';
