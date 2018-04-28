@@ -25,9 +25,8 @@ PADWeb.controller('housekeeperCtrl', function($scope, $stateParams, ngDialog, Ar
     $scope.flagFn(true)
 
 
-    $scope.select = 0;
-    $scope.tabclick = function(e) {
-        $scope.select = e;
-    }
+    $scope.housekeeperCheck = function(a) {
+        $scope.select = a;
 
+    }
 });

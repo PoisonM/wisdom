@@ -30,3 +30,17 @@
     margin: 13px 16px 13px 0;
     float: right;
 }
+
+.sourcesBox .sourcesUl li .checkRadio {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: block;
+    float: left;
+    border: 1px solid #FF6666;
+    margin-right: 5px;
+}
+
+.sourcesBox .sourcesUl li .check {
+    background: #FF6666;
+}
