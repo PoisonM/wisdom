@@ -31,4 +31,7 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
     $scope.goChooseGifts = function() {
         $state.go('pad-web.left_nav.chooseGifts')
     }
+    $scope.goHousekeeper = function() {
+        $state.go('pad-web.left_nav.housekeeper')
+    }
 });

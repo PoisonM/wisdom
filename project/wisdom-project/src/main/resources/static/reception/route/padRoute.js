@@ -396,6 +396,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.accountRecords', {
+            url: '/accountRecords',
+            templateUrl: root + '/cashier/accountRecords.html',
+            controller: 'accountRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "账户记录",
+                        files: [root + "cashier/accountRecordsCtrl.js",
+                            root + "cashier/accountRecords.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.appointment', {
             url: '/appointmentLis',
             templateUrl: root + '/appointment/appointmentLis.html',

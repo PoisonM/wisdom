@@ -189,6 +189,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetUserProductList', ['$resource', function($resource) {
         return $resource(IP + 'productInfo/getUserProductList')
     }])
+    //查询用户充值卡的总金额  http://192.168.1.117:9051/cardInfo/getUserRechargeSumAmount
+    .factory('GetUserRechargeSumAmount', ['$resource', function($resource) {
+        return $resource(IP + 'cardInfo/getUserRechargeSumAmount')
+    }])
 
 
 
