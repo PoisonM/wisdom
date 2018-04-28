@@ -54,6 +54,7 @@ public class ScheduleController {
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        ArrayList<Object> helperList = new ArrayList<>();
         ShopClerkScheduleDTO shopClerkScheduleDTO = new ShopClerkScheduleDTO();
         shopClerkScheduleDTO.setSysShopId(clerkInfo.getSysShopId());
         shopClerkScheduleDTO.setScheduleDate(searchDate);
@@ -94,10 +95,10 @@ public class ScheduleController {
             logger.info("批量插入{}条数据",number);
         }
 
-        ArrayList<Object> helperList = new ArrayList<>();
+
         for (SysClerkDTO sysClerkDTO : clerkDTOS) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
-            //存储某个美容师的所有排班信息
+            //clerkSchInfo存储某个美容师的所有排班信息
             List<ShopClerkScheduleDTO> clerkSchInfo = new ArrayList<>();
             for (ShopClerkScheduleDTO scheduleDTO : clerkScheduleList) {
                 if (sysClerkDTO.getId().equals(scheduleDTO.getSysClerkId())) {
@@ -116,7 +117,20 @@ public class ScheduleController {
             helperList.add(helperMap);
         }
 
-        responseDTO.setResponseData(helperList);
+
+        HashMap<Object, Object> returnMap = new HashMap<>(16);
+        //界面顶部日期显示
+        ArrayList<Object> dateDetail = new ArrayList<>();
+        for (String string : monthFullDay) {
+            StringBuffer sb = new StringBuffer(string);
+            sb.append("||");
+            sb.append(DateUtils.getWeek(DateUtils.StrToDate(string, "date")));
+            dateDetail.add(sb.toString());
+        }
+
+        returnMap.put("dateDetail", dateDetail);
+        returnMap.put("responseList", helperList);
+        responseDTO.setResponseData(returnMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("获取某个店的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
@@ -126,15 +140,15 @@ public class ScheduleController {
     /**
      * 批量更新某个点的排班信息
      *
-     * @param shopClerkScheduleDTO
+     * @param shopClerkSchedule
      * @return
      */
-    @RequestMapping(value = "/updateShopClerkScheduleList", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateShopClerkScheduleList", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    ResponseDTO<Object> updateShopClerkScheduleList(@RequestBody ExtShopClerkScheduleDTO<List<ShopClerkScheduleDTO>> shopClerkScheduleDTO) {
+    ResponseDTO<Object> updateShopClerkScheduleList(@RequestBody ExtShopClerkScheduleDTO<List<ShopClerkScheduleDTO>> shopClerkSchedule) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        List<ShopClerkScheduleDTO> scheduleDTO = shopClerkScheduleDTO.getShopClerkScheduleDTO();
+        List<ShopClerkScheduleDTO> scheduleDTO = shopClerkSchedule.getShopClerkSchedule();
         int scheduleList = shopClerkScheduleService.updateShopClerkScheduleList(scheduleDTO);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(scheduleList>0?StatusConstant.SUCCESS:StatusConstant.FAILURE);

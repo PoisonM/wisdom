@@ -17,7 +17,7 @@ function balancePrepaid ($scope,ngDialog,GetRechargeCardList){
                         $scope.collectionCard[i] = true;
                     }
                 });
-                console.log($scope.balancePrepaidDataPic);
+                console.log($scope.balancePrepaidDataPic)
                 $scope.close = function() {
                     $scope.closeThisDialog();
                 };

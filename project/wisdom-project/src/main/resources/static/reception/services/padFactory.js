@@ -125,7 +125,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //查询某个用户的套卡信息
     .factory('GetUserProjectGroupList', ['$resource', function($resource) {
-        return $resource(IP + 'projectInfo/getUserProjectGroupList',{sysUserId:"@id"})
+        return $resource(IP + 'projectInfo/getUserProjectGroupList', { sysUserId: "@id" })
     }])
     //查询某个用户的单次卡信息
     .factory('GetUserCourseProjectList', ['$resource', function($resource) {
@@ -157,7 +157,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //根据用户与项目的关系主键列表查询用户与项目的关系  俗称划卡
     .factory('GetUserShopProjectList', ['$resource', function($resource) {
-        return $resource(IP + 'projectInfo/getUserShopProjectList',{relationIds:"@id"})
+        return $resource(IP + 'projectInfo/getUserShopProjectList', { relationIds: "@id" })
     }])
     //保存 划卡
     .factory('ConsumeCourseCard', ['$resource', function($resource) {
@@ -171,6 +171,20 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UpdateAppointmentInfoById', ['$resource', function($resource) {
         return $resource(IP + 'appointmentInfo/updateAppointmentInfoById')
     }])
+    //查询某个店的项目列表
+    .factory('GetShopProjectList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getShopProjectList')
+    }])
+    //查询某个店的项目列表
+    .factory('ShopWeekAppointmentInfoByDate', ['$resource', function($resource) {
+        return $resource(IP + 'appointmentInfo/shopWeekAppointmentInfoByDate')
+    }])
+    //查询美容师的排班信息
+    .factory('GetShopClerkScheduleList', ['$resource', function($resource) {
+        return $resource(IP + 'clerkSchedule/getShopClerkScheduleList')
+    }])
+
+
 
     //查询某个用户的疗程卡、单次卡信息
     .factory('GetUserCourseProjectList', ['$resource', function($resource) {
@@ -193,7 +207,6 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetUserRechargeSumAmount', ['$resource', function($resource) {
         return $resource(IP + 'cardInfo/getUserRechargeSumAmount')
     }])
-
 
 
 

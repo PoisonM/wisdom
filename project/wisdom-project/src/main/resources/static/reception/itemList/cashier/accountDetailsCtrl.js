@@ -1,4 +1,4 @@
-PADWeb.controller('accountDetailsCtrl', function($scope, $stateParams, ngDialog, Archives) {
+PADWeb.controller('accountDetailsCtrl', function($scope, $state, $stateParams, ngDialog, Archives) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";

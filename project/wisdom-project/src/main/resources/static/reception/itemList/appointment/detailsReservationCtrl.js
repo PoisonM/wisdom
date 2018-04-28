@@ -1,4 +1,4 @@
-function detailsReservation($scope,ngDialog,GetUserProjectGroupList,GetUserProductList,GetUserCourseProjectList,SearchShopProjectList,SearchShopProductList,GetShopProjectGroups,GetRechargeCardList,ThreeLevelProject,productInfoThreeLevelProject,GetUserShopProjectList,ConsumeCourseCard,GetShopClerkList,GetAppointmentInfoById,$filter){
+function detailsReservation($scope,ngDialog,GetUserProjectGroupList,GetUserProductList,GetUserCourseProjectList,SearchShopProjectList,SearchShopProductList,GetShopProjectGroups,GetRechargeCardList,ThreeLevelProject,productInfoThreeLevelProject,GetUserShopProjectList,ConsumeCourseCard,GetShopClerkList,GetAppointmentInfoById,FindArchives,GetShopProjectList){
 
     $scope.SingeTreatmentCardProductCollectionCard = function(){
         /*{
@@ -173,7 +173,7 @@ function detailsReservation($scope,ngDialog,GetUserProjectGroupList,GetUserProdu
         $scope.param.AppointmentType="散客"
     };
 */
-    modifyingAppointmentPage && modifyingAppointmentPage ($scope,ngDialog,$filter);
+    modifyingAppointmentPage && modifyingAppointmentPage ($scope,ngDialog,FindArchives);
 
 
 
@@ -200,57 +200,8 @@ function detailsReservation($scope,ngDialog,GetUserProjectGroupList,GetUserProdu
             });
         }
     };
-    /*选择美容师*/
-    var selectBeauticianData={
-        "errorInfo": 1,
-            "responseData": [
-            {
-                "address": 1,
-                "delFlag": 1,
-                "email": "12",
-                "id": "2",
-                "identifyNumber": 1,
-                "loginDate": 1,
-                "loginIp": 1,
-                "mobile": 1,
-                "name": "安迪",
-                "nickname": "安迪",
-                "password": "123",
-                "photo": 1,
-                "sysBossId": "3",
-                "sysBossName": "老板2",
-                "sysShopId": "11",
-                "sysUserId": "2",
-                "userOpenid": 1,
-                "userType": 1,
-                "weixinAttentionStatus": 1
-            }
-        ],
-            "result": "0x00001"
-    }
-    $scope.selectBeautician = function(){
-        if($scope.param.selectCustomersObject.sysUserName == ""){
-            $scope.selectCustomersCtrl()
-        }else {
-            ngDialog.open({
-                template: 'selectBeautician',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function ($scope, $interval) {
-                    $scope.param.timeLengthIndex = -1;
-                    $scope.param.timeLength = selectBeauticianData.responseData;
 
-                    $scope.close = function (status) {
-                        if(status == 0){
-                            $scope.param.ModifyAppointmentObject.beauticianName =""
-                        }
-                        $scope.closeThisDialog();
-                    };
-                }],
-                className: 'selectBeautician ngdialog-theme-custom'
-            });
-        }
-    }
-    consumption && consumption($scope,ngDialog,SearchShopProjectList,SearchShopProductList,GetShopProjectGroups,GetRechargeCardList,ThreeLevelProject,productInfoThreeLevelProject,GetUserShopProjectList,ConsumeCourseCard,GetShopClerkList);
+    consumption && consumption($scope,ngDialog,SearchShopProjectList,SearchShopProductList,GetShopProjectGroups,GetRechargeCardList,ThreeLevelProject,productInfoThreeLevelProject,GetUserShopProjectList,ConsumeCourseCard,GetShopClerkList,FindArchives,GetShopProjectList);
 
 
 }

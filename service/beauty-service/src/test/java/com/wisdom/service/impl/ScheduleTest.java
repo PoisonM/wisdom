@@ -2,8 +2,8 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
-import com.wisdom.beauty.api.extDto.RelationIds;
-import com.wisdom.common.util.DateUtils;
+import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
+import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,11 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.text.SimpleDateFormat;
-import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -68,4 +64,33 @@ public class ScheduleTest {
         System.out.println(result.getResponse().getContentAsString());
     }
 
+    /**
+     * 批量更新排班信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void updateShopClerkScheduleList() throws Exception {
+
+        ExtShopClerkScheduleDTO<List<ShopClerkScheduleDTO>> shopClerkScheduleDTO = new ExtShopClerkScheduleDTO<List<ShopClerkScheduleDTO>>();
+
+        List<ShopClerkScheduleDTO> scheduleDTOS = new ArrayList<>();
+        ShopClerkScheduleDTO scheduleDTO = new ShopClerkScheduleDTO();
+        scheduleDTO.setSysBossId("11");
+        scheduleDTO.setSysClerkName("琴瑞琬");
+        scheduleDTO.setSysClerkId("01dc16c5905c4410a494c7e410b210d5");
+        scheduleDTO.setScheduleType("1");
+        scheduleDTO.setId("003410751d104e69a03f46423e6fa817");
+        scheduleDTOS.add(scheduleDTO);
+        shopClerkScheduleDTO.setShopClerkSchedule(scheduleDTOS);
+
+        String toJSONString = JSONObject.toJSONString(shopClerkScheduleDTO);
+
+        MvcResult result = mvc.perform(post("/clerkSchedule/updateShopClerkScheduleList").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
 }
