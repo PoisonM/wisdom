@@ -51,10 +51,11 @@ public class LoginController {
                 if(userInfoList.size()==1){
                     openid = userInfoList.get(0).getUserOpenid();
                 }else{
-                    openid = WeixinUtil.getOpenId(loginDTO.getCode());
+                    result.setResult(StatusConstant.FAILURE);
+                    result.setErrorInfo("该手机号绑定多个微信号，请联系客服人员，解绑多余微信号。");
+                    return result;
                 }
             }
-
         }
         if(openid==null||openid.equals(""))
         {
