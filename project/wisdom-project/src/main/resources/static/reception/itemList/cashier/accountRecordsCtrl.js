@@ -1,10 +1,10 @@
-PADWeb.controller('prepaidRecordsCtrl', function($scope, $stateParams, ngDialog, Archives) {
+PADWeb.controller('accountRecordsCtrl', function($scope, $state, $stateParams, ngDialog, Archives) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)"
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案"
     $scope.$parent.$parent.param.headerCash.backContent = "充值记录"
-    $scope.$parent.$parent.param.headerCash.title = "收银记录";
     $scope.$parent.$parent.param.headerCash.leftTip = "保存"
+    $scope.$parent.$parent.param.headerCash.title = "账户记录";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false
@@ -17,17 +17,14 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $stateParams, ngDialog,
         $scope.$parent.$parent.mainSwitch.headerCashAllFlag = bool
         $scope.$parent.$parent.mainSwitch.headerPriceListAllFlag = !bool
         $scope.$parent.$parent.mainSwitch.headerLoginFlag = !bool
-        $scope.$parent.$parent.mainSwitch.headerCashFlag.leftFlag = bool
-        $scope.$parent.$parent.mainSwitch.headerCashFlag.middleFlag = bool
-        $scope.$parent.$parent.mainSwitch.headerCashFlag.rightFlag = bool
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.leftFlag = bool,
+            $scope.$parent.$parent.mainSwitch.headerCashFlag.middleFlag = bool,
+            $scope.$parent.$parent.mainSwitch.headerCashFlag.rightFlag = bool
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
-
-    $scope.select = 0;
-    $scope.tabclick = function(e) {
-        $scope.select = e;
+    $scope.goPrepaidRecords = function() {
+        $state.go('pad-web.left_nav.prepaidRecords');
     }
-
 });
