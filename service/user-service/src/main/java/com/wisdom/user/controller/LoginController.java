@@ -51,7 +51,7 @@ public class LoginController {
                 if(userInfoList.size()==1){
                     openid = userInfoList.get(0).getUserOpenid();
                 }else{
-                    openid = WeixinUtil.getOpenId(request);
+                    openid = WeixinUtil.getOpenId(loginDTO.getCode());
                 }
             }
 
