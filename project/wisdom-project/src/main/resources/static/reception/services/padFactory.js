@@ -1,4 +1,5 @@
 var IP = ' http://192.168.1.117/beauty/';
+var cashierIP = 'http://192.168.1.117/'
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
@@ -68,55 +69,55 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //根据预约主键查询预约项目
     .factory('GetUserCardProjectList', ['$resource', function($resource) {
-        return $resource(IP + 'projectInfo/getUserCardProjectList',{ appointmentId: '@id' })
+        return $resource(IP + 'projectInfo/getUserCardProjectList', { appointmentId: '@id' })
     }])
     //根据预约主键获取预约详情
     .factory('GetAppointmentInfoById', ['$resource', function($resource) {
-        return $resource(IP + 'appointmentInfo/getAppointmentInfoById',{ appointmentId: '@id' })
+        return $resource(IP + 'appointmentInfo/getAppointmentInfoById', { appointmentId: '@id' })
     }])
 
     //项目的接口
     .factory('OneLevelProject', ['$resource', function($resource) {
-        return $resource(IP+ 'projectInfo/oneLevelProject')
+        return $resource(IP + 'projectInfo/oneLevelProject')
     }])
     .factory('TwoLevelProject', ['$resource', function($resource) {
-        return $resource(IP+ 'projectInfo/twoLevelProject')
+        return $resource(IP + 'projectInfo/twoLevelProject')
     }])
     .factory('ThreeLevelProject', ['$resource', function($resource) {
-        return $resource(IP+ 'projectInfo/threeLevelProject')
+        return $resource(IP + 'projectInfo/threeLevelProject')
     }])
     //项目的详情页面
     .factory('ProjectInfo', ['$resource', function($resource) {
-        return $resource(IP+ 'projectInfo/:id',{id:'@id'})
+        return $resource(IP + 'projectInfo/:id', { id: '@id' })
     }])
 
     /*产品接口*/
     .factory('OneLevelProduct', ['$resource', function($resource) {
-        return $resource(IP+ 'productInfo/oneLevelProduct')
+        return $resource(IP + 'productInfo/oneLevelProduct')
     }])
     .factory('TwoLevelProduct', ['$resource', function($resource) {
-        return $resource(IP+ 'productInfo/twoLevelProduct')
+        return $resource(IP + 'productInfo/twoLevelProduct')
     }])
     .factory('ThreeLevelProduct', ['$resource', function($resource) {
-        return $resource(IP+ 'productInfo/threeLevelProduct')
+        return $resource(IP + 'productInfo/threeLevelProduct')
     }])
     .factory('ProductInfo', ['$resource', function($resource) {
-        return $resource(IP+ 'productInfo/:productId',{productId:'@productId'})
+        return $resource(IP + 'productInfo/:productId', { productId: '@productId' })
     }])
 
     /*套卡接口*/
     .factory('GetShopProjectGroups', ['$resource', function($resource) {
-        return $resource(IP+ 'cardInfo/getShopProjectGroups')
+        return $resource(IP + 'cardInfo/getShopProjectGroups')
     }])
     .factory('Detail', ['$resource', function($resource) {
-        return $resource(IP+ 'cardInfo/getShopProjectGroup/detail')
+        return $resource(IP + 'cardInfo/getShopProjectGroup/detail')
     }])
     /*充值卡接口*/
     .factory('GetRechargeCardList', ['$resource', function($resource) {
-        return $resource(IP+ 'cardInfo/getRechargeCardList')
+        return $resource(IP + 'cardInfo/getRechargeCardList')
     }])
     .factory('GetCardInfo', ['$resource', function($resource) {
-        return $resource(IP+ 'cardInfo/:id', { id: '@id' })
+        return $resource(IP + 'cardInfo/:id', { id: '@id' })
     }])
     //查询某个用户的产品信息
     .factory('GetUserProductList', ['$resource', function($resource) {
@@ -171,6 +172,27 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(IP + 'appointmentInfo/updateAppointmentInfoById')
     }])
 
+    //查询某个用户的疗程卡、单次卡信息
+    .factory('GetUserCourseProjectList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getUserCourseProjectList')
+    }])
+    //查询用户的套卡信息
+    .factory('GetUserProjectGroupList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getUserProjectGroupList')
+    }])
+
+    //用户充值卡列表
+    .factory('GetUserRechargeCardList', ['$resource', function($resource) {
+        return $resource(IP + 'cardInfo/getUserRechargeCardList')
+    }])
+    //用户产品列表  http://localhost:9051/productInfo/getUserProductList?sysUserId=1&sysShopId=1
+    .factory('GetUserProductList', ['$resource', function($resource) {
+        return $resource(IP + 'productInfo/getUserProductList')
+    }])
+    //查询用户充值卡的总金额  http://192.168.1.117:9051/cardInfo/getUserRechargeSumAmount
+    .factory('GetUserRechargeSumAmount', ['$resource', function($resource) {
+        return $resource(IP + 'cardInfo/getUserRechargeSumAmount')
+    }])
 
 
 

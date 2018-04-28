@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.util.UserUtils;
@@ -88,13 +89,13 @@ public class ProductController {
      */
     @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ShopProductInfoDTO> getProduct(@PathVariable String productId) {
+    ResponseDTO<ShopProductInfoResponseDTO> getProduct(@PathVariable String productId) {
         long currentTimeMillis = System.currentTimeMillis();
         //查询数据
-        ShopProductInfoDTO shopProductInfoDTO = shopProductInfoService.getProductDetail(productId);
+        ShopProductInfoResponseDTO shopProductInfoResponseDTO = shopProductInfoService.getProductDetail(productId);
 
-        ResponseDTO<ShopProductInfoDTO> responseDTO = new ResponseDTO<>();
-        responseDTO.setResponseData(shopProductInfoDTO);
+        ResponseDTO<ShopProductInfoResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(shopProductInfoResponseDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("getProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
@@ -180,7 +181,7 @@ public class ProductController {
      */
     @RequestMapping(value = "/threeLevelProduct", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProductInfoDTO>> findThreeLevelProduct(@RequestParam String productTypeOneId,
+    ResponseDTO<List<ShopProductInfoResponseDTO>> findThreeLevelProduct(@RequestParam String productTypeOneId,
                                                                 @RequestParam String productTypeTwoId,
                                                                 @RequestParam(required = false) String productName,
                                                                 @RequestParam int pageSize) {
@@ -199,9 +200,9 @@ public class ProductController {
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
         //查询数据
-        List<ShopProductInfoDTO> list = shopProductInfoService.getThreeLevelProductList(pageParamVoDTO);
+        List<ShopProductInfoResponseDTO> list = shopProductInfoService.getThreeLevelProductList(pageParamVoDTO);
 
-        ResponseDTO<List<ShopProductInfoDTO>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<ShopProductInfoResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("findThreeLevelProduct方法耗时={}毫秒", System.currentTimeMillis() - currentTimeMillis);

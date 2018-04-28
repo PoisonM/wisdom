@@ -6,148 +6,148 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
-    //
-    private String id;
+	//
+	private String id;
 
-    //
-    private String sysShopId;
+	//
+	private String sysShopId;
 
-    //套卡名称
-    private String projectGroupName;
+	// 套卡名称
+	private String projectGroupName;
 
-    //套卡图片
-    private String projectGroupUrl;
+	// 套卡图片
+	private String projectGroupUrl;
 
-    //市场价格
-    private Long marketPrice;
+	// 市场价格
+	private Long marketPrice;
 
-    //折扣价格
-    private Long discountPrice;
+	// 折扣价格
+	private Long discountPrice;
 
-    //有效期
-    private Date validDate;
+	// 有效期
+	private Date validDate;
 
-    //套卡说明
-    private String detail;
+	// 套卡说明
+	private String detail;
 
-    //是否启用
-    private String status;
+	// 是否启用
+	private String status;
 
-    //
-    private String createBy;
+	//
+	private String createBy;
 
-    //
-    private Date createDate;
+	//
+	private Date createDate;
 
-    //
-    private String updateUser;
+	//
+	private String updateUser;
 
-    //
-    private Date updateDate;
+	//
+	private Date updateDate;
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getSysShopId() {
-        return sysShopId;
-    }
+	public String getSysShopId() {
+		return sysShopId;
+	}
 
-    public void setSysShopId(String sysShopId) {
-        this.sysShopId = sysShopId;
-    }
+	public void setSysShopId(String sysShopId) {
+		this.sysShopId = sysShopId;
+	}
 
-    public String getProjectGroupName() {
-        return projectGroupName;
-    }
+	public String getProjectGroupName() {
+		return projectGroupName;
+	}
 
-    public void setProjectGroupName(String projectGroupName) {
-        this.projectGroupName = projectGroupName;
-    }
+	public void setProjectGroupName(String projectGroupName) {
+		this.projectGroupName = projectGroupName;
+	}
 
-    public String getProjectGroupUrl() {
-        return projectGroupUrl;
-    }
+	public String getProjectGroupUrl() {
+		return projectGroupUrl;
+	}
 
-    public void setProjectGroupUrl(String projectGroupUrl) {
-        this.projectGroupUrl = projectGroupUrl;
-    }
+	public void setProjectGroupUrl(String projectGroupUrl) {
+		this.projectGroupUrl = projectGroupUrl;
+	}
 
-    public Long getMarketPrice() {
-        return marketPrice;
-    }
+	public Long getMarketPrice() {
+		return marketPrice;
+	}
 
-    public void setMarketPrice(Long marketPrice) {
-        this.marketPrice = marketPrice;
-    }
+	public void setMarketPrice(Long marketPrice) {
+		this.marketPrice = marketPrice;
+	}
 
-    public Long getDiscountPrice() {
-        return discountPrice;
-    }
+	public Long getDiscountPrice() {
+		return discountPrice;
+	}
 
-    public void setDiscountPrice(Long discountPrice) {
-        this.discountPrice = discountPrice;
-    }
+	public void setDiscountPrice(Long discountPrice) {
+		this.discountPrice = discountPrice;
+	}
 
-    public Date getValidDate() {
-        return validDate;
-    }
+	public Date getValidDate() {
+		return validDate;
+	}
 
-    public void setValidDate(Date validDate) {
-        this.validDate = validDate;
-    }
+	public void setValidDate(Date validDate) {
+		this.validDate = validDate;
+	}
 
-    public String getDetail() {
-        return detail;
-    }
+	public String getDetail() {
+		return detail;
+	}
 
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public String getCreateBy() {
-        return createBy;
-    }
+	public String getCreateBy() {
+		return createBy;
+	}
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+	public Date getCreateDate() {
+		return createDate;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 
-    public String getUpdateUser() {
-        return updateUser;
-    }
+	public String getUpdateUser() {
+		return updateUser;
+	}
 
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
+	}
 
-    public Date getUpdateDate() {
-        return updateDate;
-    }
+	public Date getUpdateDate() {
+		return updateDate;
+	}
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 }

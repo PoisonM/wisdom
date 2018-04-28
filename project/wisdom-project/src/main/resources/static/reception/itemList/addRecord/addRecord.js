@@ -50,15 +50,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetSho
 
     $scope.flagFn("","添加档案",false)
 
-    $scope.$parent.selectSty = function (id) {
-        $scope.$parent.param.selectSty = id
-        //根据id查用户信息
-        GetShopUserArchivesInfoByUserId.get({sysUserId:id},function (data) {
-            if(data.result == "0x00001"){
-
-            }
-        })
-    }
+   
 
     $scope.$parent.$parent.leftTipFn = function () {
         $scope.ShopUserArchivesDTO = {

@@ -10,12 +10,12 @@
     <div class="personalFile-content">
         <div class="treatment">
             <div class="treatmentCard clearfix" ng-if="select=='0'">
-                <div class="treatmentCardTop clearfix">
-                    <span class="treatmentCardTopName">美白护理</span>
-                    <span class="treatmentCardTopPrice">金额:￥2980.00</span>
+                <div ng-repeat="item0 in courseProjectList0" class="treatmentCardTop clearfix">
+                    <span class="treatmentCardTopName">{{item0.sysShopProjectName}}</span>
+                    <span class="treatmentCardTopPrice">金额:￥{{item0.sysShopProjectInitAmount}}</span>
                     <div class="useNub">
-                        <span class="treatmentCardTopUsed">10</span>
-                        <span class="treatmentCardTopTotal">/10</span>
+                        <span class="treatmentCardTopUsed">{{item0.sysShopProjectSurplusTimes}}</span>
+                        <span class="treatmentCardTopTotal">/{{item0.sysShopProjectInitTimes}}</span>
                     </div>
                     <button>划卡</button>
                 </div>
@@ -24,52 +24,39 @@
                     <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
                 </div>
             </div>
-            <div class="recorderCard clearfix" ng-if="select=='1'">
-                <div class="recorderCardTop clearfix">
-                    <span class="recorderCardTopName">身体综合卡</span>
-                    <span class="recorderCardTopPrice">金额:<b>3900.00</b></span>
-                </div>
-                <div class="recorderCardNote clearfix">
-                    <span>备注:</span>
-                    <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
-                </div>
-                <div>
-                    <div class="recorderCardContent clearfix">
-                        <span class="recorderCardContentName">面部刮痧</span>
-                        <div class="useNub">
-                            <span class="recorderCardContentUsed">10</span>
-                            <span class="recorderCardContentTotal">/10</span>
-                        </div>
-                        <button>划卡</button>
+            <div class=" clearfix" ng-if="select=='1'">
+                <div class="recorderCard " ng-repeat="item1 in projectGroupList">
+                    <div class="recorderCardTop clearfix">
+                        <span class="recorderCardTopName">{{item1.projectGroupName}}</span>
+                        <span class="recorderCardTopPrice">金额:<b>{{item1.marketPrice}}</b></span>
                     </div>
-                    <div class="recorderCardContent clearfix">
-                        <span class="recorderCardContentName">面部刮痧</span>
-                        <div class="useNub">
-                            <span class="recorderCardContentUsed">10</span>
-                            <span class="recorderCardContentTotal">/10</span>
-                        </div>
-                        <button>划卡</button>
+                    <div class="recorderCardNote clearfix">
+                        <span>备注:</span>
+                        <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
                     </div>
-                    <div class="recorderCardContent clearfix">
-                        <span class="recorderCardContentName">面部刮痧</span>
-                        <div class="useNub">
-                            <span class="recorderCardContentUsed">10</span>
-                            <span class="recorderCardContentTotal">/10</span>
+                    <div>
+                        <div ng-repeat="item1Sm in item1.projectList" class="recorderCardContent clearfix">
+                            <span class="recorderCardContentName">{{item1Sm.shopProjectGroupName}}</span>
+                            <div class="useNub">
+                                <span class="recorderCardContentUsed">{{item1Sm.projectSurplusTimes}}</span>
+                                <span class="recorderCardContentTotal">/{{item1Sm.projectInitTimes}}</span>
+                            </div>
+                            <button>划卡</button>
                         </div>
-                        <button>划卡</button>
+
                     </div>
                 </div>
             </div>
             <div class="prepaidCard clearfix" ng-if="select=='2'">
                 <div class="prepaidCardTop clearfix">
-                    <span>总余额：￥51230716.80</span>
+                    <span>总余额：￥{{sunAmount}}</span>
                 </div>
-                <div class="prepaidCardContent">
+                <div ng-repeat="item2 in rechargeCardList" class="prepaidCardContent">
                     <img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1522311638&di=3712f277b199303e7c7eb1df22e73f55&src=http://img5.xiazaizhijia.com/walls/20160708/1440x900_2f172c09d079701.jpg" alt="">
                     <div class="prepaidCardInfo clearfix">
                         <span class="prepaidCardName">余额充值</span>
-                        <span class="prepaidCardRAName">剩余金额：<b>￥5120.40</b></span>
-                        <span class="prepaidCardTAName">充值金额：<b>￥5120.40</b></span>
+                        <span class="prepaidCardRAName">剩余金额：<b>￥{{item2.surplusAmount}}</b></span>
+                        <span class="prepaidCardTAName">充值金额：<b>￥{{item2.initAmount}}</b></span>
                     </div>
                     <div class="prepaidCardNote clearfix">
                         <span>备注:</span>
@@ -79,77 +66,23 @@
             </div>
             <div class="singleCard clearfix" ng-if="select=='3'">
                 <ul>
-                    <li>
-                        <span class="time">2018-03-24  13:30</span>
+                    <li ng-repeat="item3 in courseProjectList1">
+                        <span class="time">{{item3.createDate |date:"yyyy-MM-dd HH:MM:ss"}}</span>
                         <span class="type">单次消费</span>
-                        <span class="name">韩国美白护肤</span>
-                        <span class="number">1</span>
-                        <span class="price">490.00</span>
-                    </li>
-                    <li>
-                        <span class="time">2018-03-24  13:30</span>
-                        <span class="type">单次消费</span>
-                        <span class="name">韩国美白护肤</span>
-                        <span class="number">1</span>
-                        <span class="price">490.00</span>
-                    </li>
-                    <li>
-                        <span class="time">2018-03-24  13:30</span>
-                        <span class="type">单次消费</span>
-                        <span class="name">韩国美白护肤</span>
-                        <span class="number">1</span>
-                        <span class="price">490.00</span>
-                    </li>
-                    <li>
-                        <span class="time">2018-03-24  13:30</span>
-                        <span class="type">单次消费</span>
-                        <span class="name">韩国美白护肤</span>
-                        <span class="number">1</span>
-                        <span class="price">490.00</span>
+                        <span class="name">{{item3.sysShopProjectName}}</span>
+                        <span class="number">{{item3.sysShopProjectInitTimes}}</span>
+                        <span class="price">{{item3.sysShopProjectInitAmount}}</span>
                     </li>
                 </ul>
             </div>
             <div class="productCard clearfix" ng-if="select=='4'">
                 <ul>
-                    <li>
+                    <li ng-repeat="item4 in productList">
                         <div class="left">
-                            <span>私密手工费（4手法）</span>
-                            <p class="price">金额:30.00</p>
-                            <p class="number">购买数量：1 未领取数量：1</p>
-                            <p class="time">购买时间：2018-03-21 11:06</p>
-                        </div>
-                        <div class="right">
-                            <button>领取</button>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="left">
-                            <span>私密手工费（4手法）</span>
-                            <p class="price">金额:30.00</p>
-                            <p class="number">购买数量：1 未领取数量：1</p>
-                            <p class="time">购买时间：2018-03-21 11:06</p>
-                        </div>
-                        <div class="right">
-                            <button>领取</button>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="left">
-                            <span>私密手工费（4手法）</span>
-                            <p class="price">金额:30.00</p>
-                            <p class="number">购买数量：1 未领取数量：1</p>
-                            <p class="time">购买时间：2018-03-21 11:06</p>
-                        </div>
-                        <div class="right">
-                            <button>领取</button>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="left">
-                            <span>私密手工费（4手法）</span>
-                            <p class="price">金额:30.00</p>
-                            <p class="number">购买数量：1 未领取数量：1</p>
-                            <p class="time">购买时间：2018-03-21 11:06</p>
+                            <span>{{item4.shopProductName}}</span>
+                            <p class="price">金额:{{item4.initAmount}}</p>
+                            <p class="number">购买数量：{{item4.initTimes-item4.surplusTimes}} 未领取数量：{{item4.surplusTimes}}</p>
+                            <p class="time">购买时间：{{item4.updateDate |date:'yyyy-MM-dd HH:mm:ss'}}</p>
                         </div>
                         <div class="right">
                             <button>领取</button>

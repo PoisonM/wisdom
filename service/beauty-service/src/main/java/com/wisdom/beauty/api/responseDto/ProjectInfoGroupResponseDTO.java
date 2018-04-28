@@ -36,6 +36,8 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 
 	/** 项目List */
 	private List<ShopProjectInfoDTO> list;
+	/** 图片地址URL */
+	private String[] imageUrl;
 
 	public String getProjectGroupName() {
 		return projectGroupName;
@@ -93,4 +95,11 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 		this.list = list;
 	}
 
+	public String[] getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String[] imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 }

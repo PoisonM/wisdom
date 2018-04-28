@@ -351,6 +351,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.housekeeper', {
+            url: '/housekeeper',
+            templateUrl: root + '/cashier/housekeeper.html',
+            controller: 'housekeeperCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "关联员工",
+                        files: [root + "cashier/housekeeperCtrl.js",
+                            root + "cashier/housekeeper.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.prepaidRecords', {
             url: '/prepaidRecords',
             templateUrl: root + '/cashier/prepaidRecords.html',
@@ -376,6 +391,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "充值记录",
                         files: [root + "cashier/stillOwedCtrl.js",
                             root + "cashier/stillOwed.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.accountRecords', {
+            url: '/accountRecords',
+            templateUrl: root + '/cashier/accountRecords.html',
+            controller: 'accountRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "账户记录",
+                        files: [root + "cashier/accountRecordsCtrl.js",
+                            root + "cashier/accountRecords.css",
                         ]
                     })
                 }]
@@ -449,7 +479,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "关联员工",
-                        files: [root + "appointment/relatedStaff.js",
+                        files: [root + "appointment/relatedStaffCtrl.js",
                             root + "appointment/style.css",
                         ]
                     })

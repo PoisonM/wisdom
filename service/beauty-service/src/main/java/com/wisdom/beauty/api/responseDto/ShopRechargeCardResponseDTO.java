@@ -20,7 +20,7 @@ public class ShopRechargeCardResponseDTO extends BaseEntity {
     //充值面额
     private Long amount;
     //图片
-    private String imageUrl;
+    private String[] imageUrl;
     //折扣
     private Map<String,Object> map;
 
@@ -43,14 +43,6 @@ public class ShopRechargeCardResponseDTO extends BaseEntity {
 
     public void setAmount(Long amount) {
         this.amount = amount;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getDiscountDesc() {
@@ -83,5 +75,13 @@ public class ShopRechargeCardResponseDTO extends BaseEntity {
 
     public void setMap(Map<String, Object> map) {
         this.map = map;
+    }
+
+    public String[] getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String[] imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
