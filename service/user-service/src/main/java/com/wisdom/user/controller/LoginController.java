@@ -6,10 +6,13 @@ package com.wisdom.user.controller;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.*;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.SMSUtil;
+import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.LoginService;
+import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Controller
@@ -25,6 +29,9 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
     @RequestMapping(value = "userLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -36,6 +43,19 @@ public class LoginController {
 
         //获取用户的基本信息 todo 需要完成注释部分的代码
         String openid = WeixinUtil.getUserOpenId(session,request);
+        if (!StringUtils.isNotNull(openid)) {
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setMobile(loginDTO.getUserPhone());
+            List<UserInfoDTO> userInfoList = userInfoService.getUserInfo(userInfoDTO);
+            if(userInfoList!=null&&userInfoList.size()>0){
+                if(userInfoList.size()==1){
+                    openid = userInfoList.get(0).getUserOpenid();
+                }else{
+                    openid = WeixinUtil.getOpenId(request);
+                }
+            }
+
+        }
         if(openid==null||openid.equals(""))
         {
             result.setResult(StatusConstant.FAILURE);
