@@ -20,17 +20,17 @@ PADWeb.controller('userInfoCtrl', function($scope, $state,$stateParams, ngDialog
     $scope.flagFn(true);
 /*-----------------------------------------------接口---------------------------------------------------*/
     GetClerkAchievement.get({
-        sysClerkId:11
+        sysClerkId:22
     },function (data) {
         if(data.result == "0x00001"){
             $scope.todayPerformance = data.responseData
         }
     })
     /*个人信息*/
-    ClerkInfo.get({
+    ClerkInfo.query({
         clerkId:"2"
     },function (data) {
-
+        $scope.userInfoData = data
     })
 /*----------------------------------------------方法-------------------------------------------------------------*/
     //今日业绩
