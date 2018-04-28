@@ -449,7 +449,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "关联员工",
-                        files: [root + "appointment/relatedStaff.js",
+                        files: [root + "appointment/relatedStaffCtrl.js",
                             root + "appointment/style.css",
                         ]
                     })
