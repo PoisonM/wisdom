@@ -1,9 +1,12 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+
+import java.util.List;
 
 /**
  * FileName: ShopUserConsumService
@@ -27,4 +30,27 @@ public interface ShopUserConsumeService {
      * 用户充值操作
      */
     int userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo);
+
+    /**
+     * 用户划疗程卡
+     */
+    int consumeCourseCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
+
+    /**
+     * 用户划套卡下的子卡操作
+     *
+     * @param shopUserConsumeDTOS
+     * @param clerkInfo
+     * @return
+     */
+    int consumesDaughterCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
+
+    /**
+     * 用户领取产品
+     *
+     * @param shopUserConsumeDTOS
+     * @param clerkInfo
+     * @return
+     */
+    int consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
 }

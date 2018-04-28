@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2018/4/16.
  */
-PADWeb.controller("setCardCtrl", function($scope, $state, $stateParams,$rootScope) {
+PADWeb.controller("setCardCtrl", function($scope, $state, $stateParams,$rootScope,GetRechargeCardList) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.headerPrice.blackTitle = "充值卡"
     $scope.flagFn = function (bool) {
@@ -20,7 +20,16 @@ PADWeb.controller("setCardCtrl", function($scope, $state, $stateParams,$rootScop
     $scope.flagFn(true)
     console.log("setCardCtrl");
     $rootScope.title="充值卡";
-    $scope.goCardDetails=function () {
-        $state.go("pad-web.cardDetails")
+    $scope.goCardDetails=function (shopRechargeCardId) {
+        $state.go("pad-web.rechargeableDetails",{shopRechargeCardId:shopRechargeCardId})
     }
+    $scope.param={
+        name:"",
+        pageSize:"10",
+        cardList:{}
+    }
+    GetRechargeCardList.get({name:$scope.param.name,pageSize:$scope.param.pageSize},function (data) {
+        $scope.cardList=data.responseData;
+        console.log(data)
+    })
 })

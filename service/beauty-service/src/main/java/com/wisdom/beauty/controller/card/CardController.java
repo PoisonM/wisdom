@@ -2,7 +2,6 @@ package com.wisdom.beauty.controller.card;
 
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
-import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
@@ -24,9 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * FileName: card
@@ -56,7 +53,7 @@ public class CardController {
      * @param sysShopId
      * @return
      */
-    @RequestMapping(value = "getUserRechargeCardList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getUserRechargeCardList", method = {RequestMethod.POST, RequestMethod.GET})
 //	@LoginRequired
     public
     @ResponseBody

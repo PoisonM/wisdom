@@ -37,7 +37,8 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
             headerCashRightFlag:{
                 leftFlag:true,
                 middleFlag:true,
-                rightFlag:true
+                rightFlag:true,
+                leftBackFlag:true
             },
         },
 
@@ -73,7 +74,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         }else if(type =="jiamubiao"){
             $state.go("pad-web.left_nav.project")
         }else if(type =="wo"){
-            $state.go("pad-web.userInfo.unclaimedAll")
+            $state.go("pad-web.userInfo.todayPerformance")
         }
     }
 })

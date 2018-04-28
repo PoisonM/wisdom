@@ -24,7 +24,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, ngDialog, A
     $scope.flagFn(true)
 
 
-    $scope.select = 2;
+    $scope.select = 4;
     $scope.tabclick = function(e) {
         $scope.select = e;
     }

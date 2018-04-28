@@ -28,10 +28,13 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     private String shopUserName;
     //前台
     private String sysShopClerkName;
+    //前台id
+    private String sysShopClerkId;
     //操作门店
     private String sysShopName;
     //类型
     private String type;
+    private String goodType;
     private List<ShopUserConsumeRecordDTO> userConsumeRecordList;
 
 
@@ -105,5 +108,21 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
 
     public void setFlowNo(String flowNo) {
         this.flowNo = flowNo;
+    }
+
+    public String getSysShopClerkId() {
+        return sysShopClerkId;
+    }
+
+    public void setSysShopClerkId(String sysShopClerkId) {
+        this.sysShopClerkId = sysShopClerkId;
+    }
+
+    public String getGoodType() {
+        return goodType;
+    }
+
+    public void setGoodType(String goodType) {
+        this.goodType = goodType;
     }
 }

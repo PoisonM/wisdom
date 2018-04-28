@@ -39,10 +39,32 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Override
-	public ShopProductInfoDTO getShopProductInfo(String id) {
-		return null;
-	}
+    /**
+     * 根据条件查询产品列表
+     *
+     * @param shopProductInfoDTO
+     * @return
+     */
+    @Override
+    public List<ShopProductInfoDTO> getShopProductInfo(ShopProductInfoDTO shopProductInfoDTO) {
+        if (CommonUtils.objectIsEmpty(shopProductInfoDTO)) {
+            logger.info("根据条件查询产品列表传入参数为空");
+            return null;
+        }
+        ShopProductInfoCriteria shopProductInfoCriteria = new ShopProductInfoCriteria();
+        ShopProductInfoCriteria.Criteria criteria = shopProductInfoCriteria.createCriteria();
+
+        if (StringUtils.isNotBlank(shopProductInfoDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(shopProductInfoDTO.getSysShopId());
+        }
+
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductName())) {
+			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");
+		}
+
+        List<ShopProductInfoDTO> shopProductInfoDTOS = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
+        return shopProductInfoDTOS;
+    }
 
 	/**
 	 * 获取用户的产品信息

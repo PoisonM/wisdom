@@ -1,8 +1,9 @@
 package com.wisdom.beauty.controller.product;
 
-import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
+import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
+import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
-import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.util.UserUtils;
@@ -10,6 +11,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,17 +47,18 @@ public class ProductController {
      * 查询某个用户的产品列表信息
      *
      * @param sysUserId
-     * @param sysShopId
      * @return
      */
     @RequestMapping(value = "getUserProductList", method = {RequestMethod.POST, RequestMethod.GET})
 //    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId,
-                                                                     @RequestParam String sysShopId) {
+    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId) {
 
         long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = clerkInfo.getSysShopId();
+
         logger.info("查询某个用户的产品列表信息传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
         ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
         if (StringUtils.isBlank(sysShopId) || StringUtils.isBlank(sysUserId)) {
@@ -118,7 +123,7 @@ public class ProductController {
 
     /**
      * @Author:huan
-     * @Param: id是一级项目的id
+     * @Param: id是一级产品的id
      * @Return:
      * @Description: 获取二级列表
      * @Date:2018/4/10 17:36
@@ -140,15 +145,42 @@ public class ProductController {
     }
 
     /**
+     * 获取产品详情
+     *
+     * @param userProductInfoId
+     * @return
+     */
+    @RequestMapping(value = "/getUserProductInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<ShopUserProductRelationDTO> getUserProductInfo(@RequestParam String userProductInfoId) {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ResponseDTO<ShopUserProductRelationDTO> responseDTO = new ResponseDTO<>();
+        //查询数据
+        ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
+        shopUserProductRelationDTO.setId(userProductInfoId);
+        List<ShopUserProductRelationDTO> productInfoList = shopProductInfoService.getUserProductInfoList(shopUserProductRelationDTO);
+        if (CommonUtils.objectIsEmpty(productInfoList)) {
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
+        }
+
+        responseDTO.setResponseData(productInfoList.get(0));
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("获取产品详情方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
      * @Author:huan
-     * @Param: id是一级项目的id
+     * @Param: id是一级产品的id
      * @Return:
      * @Description: 获取三级列表
      * @Date:2018/4/10 17:36
      */
     @RequestMapping(value = "/threeLevelProduct", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProductInfoDTO>> findThreeLevelProject(@RequestParam String productTypeOneId,
+    ResponseDTO<List<ShopProductInfoDTO>> findThreeLevelProduct(@RequestParam String productTypeOneId,
                                                                 @RequestParam String productTypeTwoId,
                                                                 @RequestParam(required = false) String productName,
                                                                 @RequestParam int pageSize) {
@@ -172,7 +204,67 @@ public class ProductController {
         ResponseDTO<List<ShopProductInfoDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findThreeLevelProject方法耗时={}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("findThreeLevelProduct方法耗时={}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 查询某个店的产品
+     *
+     * @return
+     */
+    @RequestMapping(value = "searchShopProductList", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = clerkInfo.getSysShopId();
+        logger.info("查询某个店的产品列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
+        ResponseDTO<HashMap<String, Object>> responseDTO = new ResponseDTO<>();
+
+        ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
+        shopProductInfoDTO.setSysShopId(sysShopId);
+        shopProductInfoDTO.setProductName(filterStr);
+
+        HashMap<String, Object> returnMap = new HashMap<>(16);
+        List<ShopProductInfoDTO> shopProductInfo = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
+
+        if (CommonUtils.objectIsEmpty(shopProductInfo)) {
+            logger.debug("查询某个店的产品列表信息查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
+            responseDTO.setResult(StatusConstant.FAILURE);
+        }
+
+        //缓存一级
+        HashMap<String, ShopProductInfoDTO> oneTypeMap = new HashMap<>(16);
+        for (ShopProductInfoDTO dto : shopProductInfo) {
+            oneTypeMap.put(dto.getProductTypeOneId(), dto);
+        }
+        logger.info("缓存一级产品={}", oneTypeMap);
+
+        ArrayList<Object> levelList = new ArrayList<>();
+        //遍历缓存的一级产品
+        for (Map.Entry entry : oneTypeMap.entrySet()) {
+            HashMap<Object, Object> helperMap = new HashMap<>(16);
+            //承接二级产品
+            HashMap<Object, Object> hashMap = new HashMap<>(16);
+            for (ShopProductInfoDTO dto : shopProductInfo) {
+                if (entry.getKey().equals(dto.getProductTypeOneId())) {
+                    hashMap.put(dto.getProductTypeTwoName(), dto);
+                }
+            }
+            helperMap.put(((ShopProductInfoDTO) entry.getValue()).getProductTypeOneName(), hashMap);
+            levelList.add(helperMap);
+        }
+        //detailLevel集合中包含了一级二级的关联信息，detailProduct集合是所有产品的列表
+        returnMap.put("detailLevel", levelList);
+        returnMap.put("detailProduct", shopProductInfo);
+        responseDTO.setResponseData(returnMap);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("查询某个店的产品列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

@@ -16,9 +16,9 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $stateParams, ngDialog,
         $scope.$parent.$parent.mainSwitch.headerCashAllFlag = bool
         $scope.$parent.$parent.mainSwitch.headerPriceListAllFlag = !bool
         $scope.$parent.$parent.mainSwitch.headerLoginFlag = !bool
-        $scope.$parent.$parent.mainSwitch.headerCashFlag.leftFlag = bool,
-            $scope.$parent.$parent.mainSwitch.headerCashFlag.middleFlag = bool,
-            $scope.$parent.$parent.mainSwitch.headerCashFlag.rightFlag = bool
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.leftFlag = bool
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.middleFlag = bool
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.rightFlag = bool
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)

@@ -71,6 +71,10 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             criteria.andUseStyleEqualTo(shopUserProjectRelationDTO.getUseStyle());
         }
 
+        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getId())) {
+            criteria.andIdEqualTo(shopUserProjectRelationDTO.getId());
+        }
+
         if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getSysShopProjectId())) {
             criteria.andSysShopProjectIdEqualTo(shopUserProjectRelationDTO.getSysShopProjectId());
         }
@@ -93,6 +97,31 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     }
 
     /**
+     * 根据用户与项目的关系主键列表查询用户与项目的关系
+     *
+     * @param relationId
+     * @return
+     */
+    @Override
+    public List<ShopUserProjectRelationDTO> getUserShopProjectList(List<String> relationId) {
+
+        if (CommonUtils.objectIsEmpty(relationId)) {
+            logger.info("根据用户与项目的关系主键列表查询用户与项目的关系传入参数={}", "relationId = [" + relationId + "]");
+            return null;
+        }
+
+        ShopUserProjectRelationCriteria shopUserProjectRelationCriteria = new ShopUserProjectRelationCriteria();
+        ShopUserProjectRelationCriteria.Criteria criteria = shopUserProjectRelationCriteria.createCriteria();
+
+        //根据用户与项目的关系主键列表查询用户与项目的关系
+        criteria.andIdIn(relationId);
+
+        List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserProjectRelationMapper.selectByCriteria(shopUserProjectRelationCriteria);
+
+        return projectRelationDTOS;
+    }
+
+    /**
      * 更新用户与项目的关系
      *
      * @param shopUserProjectRelationDTO
@@ -106,12 +135,12 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             return 0;
         }
 
-        if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getId())) {
+        if (StringUtils.isBlank(shopUserProjectRelationDTO.getId())) {
             logger.error("更新用户与项目的关系的主键为空", shopUserProjectRelationDTO.getId());
             return 0;
         }
 
-        int update = shopUserProjectRelationMapper.updateByPrimaryKey(shopUserProjectRelationDTO);
+        int update = shopUserProjectRelationMapper.updateByPrimaryKeySelective(shopUserProjectRelationDTO);
         return update;
     }
 

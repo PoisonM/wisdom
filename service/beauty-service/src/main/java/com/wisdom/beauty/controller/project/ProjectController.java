@@ -1,10 +1,9 @@
 package com.wisdom.beauty.controller.project;
 
-import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
-import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.extDto.RelationIds;
+import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -40,6 +39,9 @@ public class ProjectController {
 
 	@Resource
 	private ShopProjectService projectService;
+
+    @Resource
+    private ShopProjectGroupService shopProjectGroupService;
 
 	/**
 	 * 查询某个用户预约项目列表信息
@@ -191,15 +193,17 @@ public class ProjectController {
      * 查询某个用户的套卡列表信息
      *
      * @param sysUserId
-     * @param sysShopId
      * @return
      */
-    @RequestMapping(value = "getUserProjectGroupList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getUserProjectGroupList", method = {RequestMethod.POST, RequestMethod.GET})
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<HashMap<String, Object>>> getUserProjectGroupList(@RequestParam String sysUserId,
-                                                                       @RequestParam String sysShopId) {
+    ResponseDTO<List<HashMap<String, Object>>> getUserProjectGroupList(@RequestParam String sysUserId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = clerkInfo.getSysShopId();
+
         ResponseDTO<List<HashMap<String, Object>>> responseDTO = new ResponseDTO<>();
 
         if (StringUtils.isBlank(sysShopId) || StringUtils.isBlank(sysUserId)) {
@@ -226,6 +230,12 @@ public class ProjectController {
         if (CommonUtils.objectIsNotEmpty(helperMap)) {
             //遍历每个项目组
             for (Map.Entry entry : helperMap.entrySet()) {
+                //根据主键查询套卡详细信息
+                ShopProjectGroupDTO shopProjectGroupDTO = shopProjectGroupService.getShopProjectGroupDTO((String) entry.getKey());
+                if (CommonUtils.objectIsEmpty(shopProjectGroupDTO)) {
+                    logger.error("根据主键查询套卡详细信息为空");
+                    throw new RuntimeException();
+                }
                 //套卡map
                 HashMap<String, Object> map = new HashMap<>(6);
                 //套卡总金额
@@ -240,6 +250,7 @@ public class ProjectController {
                         projectGroupName = dto.getShopProjectGroupName();
                     }
                 }
+                map.put("marketPrice", shopProjectGroupDTO.getMarketPrice());
                 map.put("projectList", arrayList);
                 map.put("totalAmount", bigDecimal);
                 map.put("projectGroupName", projectGroupName);
@@ -248,6 +259,7 @@ public class ProjectController {
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(returnList);
+        logger.info("查询某个用户的套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -413,5 +425,49 @@ public class ProjectController {
         return responseDTO;
     }
 
+    /**
+     * 根据用户与项目的关系主键列表查询用户与项目的关系
+     */
+    @RequestMapping(value = "getUserShopProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserShopProjectList(@RequestBody RelationIds<String> relationIds) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
+
+        List<ShopUserProjectRelationDTO> userShopProjectList = projectService.getUserShopProjectList(relationIds.getRelationIds());
+
+        responseDTO.setResponseData(userShopProjectList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 查询用户套卡下的子卡的详细信息
+     */
+    @RequestMapping(value = "getShopUserProjectGroupRelRelationInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelationInfo(@RequestParam String shopUserProjectGroupRelRelationId) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
+        shopUserProjectGroupRelRelationDTO.setId(shopUserProjectGroupRelRelationId);
+
+        ResponseDTO<ShopUserProjectGroupRelRelationDTO> responseDTO = new ResponseDTO<>();
+
+        List<ShopUserProjectGroupRelRelationDTO> relRelation = shopProjectGroupService.getShopUserProjectGroupRelRelation(shopUserProjectGroupRelRelationDTO);
+
+        responseDTO.setResponseData(null == relRelation ? new ShopUserProjectGroupRelRelationDTO() : relRelation.get(0));
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
 
 }

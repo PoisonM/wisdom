@@ -10,6 +10,7 @@ import com.wisdom.beauty.core.mapper.ExtShopUserProductRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -97,23 +98,23 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
         String[] strings = new String[idList.size()];
         String[] strs = idList.toArray(strings);
         //查询用户的信息
-//        List<UserInfoDTO> userInfoList = userServiceClient.getUserInfoListFromUserId(strs, searchFile);
-//        if (CollectionUtils.isEmpty(userInfoList)) {
-//
-//        }
-//        List<UserProductRelationResponseDTO> userProductRelationResponses = new ArrayList<>();
-//        UserProductRelationResponseDTO userProductRelationResponseDTO = null;
-//        for (UserInfoDTO userInfoDTO : userInfoList) {
-//            userProductRelationResponseDTO = new UserProductRelationResponseDTO();
-//            userProductRelationResponseDTO.setWaitReceiveNumber(map.get(userInfoDTO.getId()));
-//            userProductRelationResponseDTO.setMobile(userInfoDTO.getMobile());
-//            userProductRelationResponseDTO.setNickname(userInfoDTO.getNickname());
-//            userProductRelationResponses.add(userProductRelationResponseDTO);
-//        }
+        List<UserInfoDTO> userInfoList = userServiceClient.getUserInfoListFromUserId(strs, searchFile);
+        if (CollectionUtils.isEmpty(userInfoList)) {
+
+        }
+        List<UserProductRelationResponseDTO> userProductRelationResponses = new ArrayList<>();
+        UserProductRelationResponseDTO userProductRelationResponseDTO = null;
+        for (UserInfoDTO userInfoDTO : userInfoList) {
+            userProductRelationResponseDTO = new UserProductRelationResponseDTO();
+            userProductRelationResponseDTO.setWaitReceiveNumber(map.get(userInfoDTO.getId()));
+            userProductRelationResponseDTO.setMobile(userInfoDTO.getMobile());
+            userProductRelationResponseDTO.setNickname(userInfoDTO.getNickname());
+            userProductRelationResponses.add(userProductRelationResponseDTO);
+        }
         Map<String, Object> mapResponse = new HashMap<>();
-//        mapResponse.put("data", userProductRelationResponses);
-//        mapResponse.put("totalWaitReceiveNumber", totalWaitReceiveNumber);
-//        mapResponse.put("totalWaitReceivePeople", totalWaitReceivePeople);
+        mapResponse.put("data", userProductRelationResponses);
+        mapResponse.put("totalWaitReceiveNumber", totalWaitReceiveNumber);
+        mapResponse.put("totalWaitReceivePeople", totalWaitReceivePeople);
 
         return mapResponse;
     }

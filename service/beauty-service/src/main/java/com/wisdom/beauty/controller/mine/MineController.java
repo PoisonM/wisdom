@@ -49,24 +49,17 @@ public class MineController {
      *              充值记录，消费记录对应后台的充值---状态是0，并且充值记录的goodType--2
      * @Date:2018/4/17 14:45
      */
-    @RequestMapping(value = "/consumes", method = RequestMethod.GET)
+    @RequestMapping(value = "/consumes", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(@RequestParam String sysClerkId,
-                                                                    @RequestParam(required = false) String goodType,
-                                                                    @RequestParam String consumeType, int pageSize) {
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
         long startTime = System.currentTimeMillis();
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-
-        UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
         userConsumeRequest.setSysShopId(sysClerkDTO.getSysShopId());
-        userConsumeRequest.setSysClerkId(sysClerkId);
-        userConsumeRequest.setConsumeType(consumeType);
-        userConsumeRequest.setGoodsType(goodType);
         userConsumeRequest.setGoodsTypeRequire(true);
         pageParamVoDTO.setRequestData(userConsumeRequest);
         pageParamVoDTO.setPageNo(0);
-        pageParamVoDTO.setPageSize(pageSize);
+        pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
 
         //获取当日时间
         String currentTime= DateUtils.formatDateTime(new Date());

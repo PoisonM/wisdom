@@ -19,7 +19,10 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkId;
 
-    //使用方式 0：单次 1：疗程
+    //
+    private String sysClerkName;
+
+    //使用方式 0：疗程 1：单次
     private String useStyle;
 
     //美容院id
@@ -55,7 +58,7 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //有效天数
     private Integer effectiveDays;
 
-    //
+    //失效日期
     private Date invalidDays;
 
     //1 赠送 0不赠送
@@ -105,6 +108,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setSysClerkId(String sysClerkId) {
         this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
     }
 
     public String getUseStyle() {

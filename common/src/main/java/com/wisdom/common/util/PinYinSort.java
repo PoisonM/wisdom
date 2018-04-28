@@ -12,15 +12,6 @@ import java.util.Comparator;
  * Description: 拼音排序类
  */
 public class PinYinSort {
-    public static void main(String[] args) {
-
-//        String[] arr={ "王二六","张三", "李四", "王五","赵六", "JAVA", "123","怡情"};
-//        Arrays.sort(arr,new ComparatorPinYin());
-//        for (String string : arr) {
-//            System.out.println(string);
-//        }
-        System.out.println("args = [" + PinYinSort.getSortType() + "]");
-    }
 
     /**
      * 功能：实现汉语拼音序比较

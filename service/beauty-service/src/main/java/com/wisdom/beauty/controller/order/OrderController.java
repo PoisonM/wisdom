@@ -44,21 +44,21 @@ public class OrderController {
     /**
      * 查询用户最近一次订单信息
      *
-     * @param shopUserArchivesId 档案表主键
+     * @param sysUserId 用户id
      * @return
      */
     @RequestMapping(value = "getShopUserRecentlyOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String shopUserArchivesId) {
+    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String sysUserId) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        logger.info("查询用户最近一次订单信息传入参数={}", "shopUserArchivesId = [" + shopUserArchivesId + "]");
+        logger.info("查询用户最近一次订单信息传入参数={}", "shopUserArchivesId = [" + sysUserId + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
 
-        Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("shopUserArchivesId").is(shopUserArchivesId));
+        Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(sysUserId));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
 

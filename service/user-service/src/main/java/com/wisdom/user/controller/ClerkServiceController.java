@@ -4,10 +4,12 @@
 package com.wisdom.user.controller;
 
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.user.service.ClerkInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,7 @@ public class ClerkServiceController {
 
     /**
      * 获取店员列表信息
+     *
      * @param shopId
      * @return
      */
@@ -42,19 +45,19 @@ public class ClerkServiceController {
         long startTime = System.currentTimeMillis();
         ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 
-        logger.info("获取店员列表信息传入参数shopId = {}",shopId );
+        logger.info("获取店员列表信息传入参数shopId = {}", shopId);
         SysClerkDTO SysClerkDTO = new SysClerkDTO();
         SysClerkDTO.setSysShopId(shopId);
         List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(SysClerkDTO);
-        if(CommonUtils.objectIsEmpty(clerkInfo)){
+        if (CommonUtils.objectIsEmpty(clerkInfo)) {
             logger.info("获取的店员列表信息为空！");
             listResponseDTO.setResult(StatusConstant.SUCCESS);
-             return null;
+            return null;
         }
         listResponseDTO.setResponseData(clerkInfo);
         listResponseDTO.setResult(StatusConstant.SUCCESS);
 
-        logger.info("获取店员列表信息耗时{}毫秒",(System.currentTimeMillis()-startTime));
+        logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return clerkInfo;
     }
 
@@ -85,6 +88,65 @@ public class ClerkServiceController {
 
         logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return 0;
+    }
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据条件获取店员信息
+     * @Date:2018/4/25 18:34
+     */
+    @RequestMapping(value = "getClerkInfoList", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    List<SysClerkDTO> getClerkInfoList(@RequestParam String sysShopId,
+                                       @RequestParam String sysBossId,
+                                       @RequestParam(required = false) String startTime,
+                                       @RequestParam(required = false) String endTime,int pageSize){
+
+        long time = System.currentTimeMillis();
+
+        ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+        SysClerkDTO sysClerkDTO = new SysClerkDTO();
+        sysClerkDTO.setSysShopId(sysShopId);
+        sysClerkDTO.setSysBossId(sysBossId);
+        PageParamVoDTO<SysClerkDTO> pageParamVoDTO=new PageParamVoDTO<>();
+        pageParamVoDTO.setRequestData(sysClerkDTO);
+        pageParamVoDTO.setPageSize(pageSize);
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
+        List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfoList(pageParamVoDTO);
+
+        listResponseDTO.setResponseData(clerkInfo);
+        listResponseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - time));
+        return clerkInfo;
+    }
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 根据clerkId查询店员信息
+    *@Date:2018/4/28 9:40
+    */
+    @RequestMapping(value = "/clerkInfo/{clerkId}", method = RequestMethod.GET)
+    @ResponseBody
+    List<SysClerkDTO> getClerkInfoByClerkId(@PathVariable String clerkId) {
+
+        long startTime = System.currentTimeMillis();
+        ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+
+        logger.info("获取店员列表信息传入参数shopId = {}", clerkId);
+        SysClerkDTO sysClerkDTO = new SysClerkDTO();
+        sysClerkDTO.setId(clerkId);
+        List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysClerkDTO);
+
+        listResponseDTO.setResponseData(clerkInfo);
+        listResponseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return clerkInfo;
     }
 
 }
