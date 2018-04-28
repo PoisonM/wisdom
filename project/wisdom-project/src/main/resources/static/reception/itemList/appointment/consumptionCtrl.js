@@ -1,4 +1,4 @@
-function consumption($scope,ngDialog,SearchShopProjectList,SearchShopProductList,GetShopProjectGroups,GetRechargeCardList,ThreeLevelProject,productInfoThreeLevelProject,GetUserShopProjectList,ConsumeCourseCard,GetShopClerkList){
+function consumption($scope,ngDialog,SearchShopProjectList,SearchShopProductList,GetShopProjectGroups,GetRechargeCardList,ThreeLevelProject,productInfoThreeLevelProject,GetUserShopProjectList,ConsumeCourseCard,GetShopClerkList,FindArchives){
 
     $scope.ngDialog = ngDialog;
     $scope.selsectConsumption = function(type){

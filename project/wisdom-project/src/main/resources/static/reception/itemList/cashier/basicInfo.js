@@ -25,7 +25,9 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId) {
         $scope.queryUserInfo(id)
     }
     $scope.goAccountRecords = function() {
-        $state.go('pad-web.left_nav.accountRecords')
+        $state.go('pad-web.left_nav.accountRecords');
     }
-
+    $scope.goStillOwed = function() {
+        $state.go('pad-web.left_nav.stillOwed');
+    }
 }

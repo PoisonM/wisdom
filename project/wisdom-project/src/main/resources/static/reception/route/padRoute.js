@@ -381,6 +381,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.drawCardRecords', {
+            url: '/drawCardRecords',
+            templateUrl: root + '/cashier/drawCardRecords.html',
+            controller: 'drawCardRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "划卡记录",
+                        files: [root + "cashier/drawCardRecordsCtrl.js",
+                            root + "cashier/drawCardRecords.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.stillOwed', {
             url: '/stillOwed',
             templateUrl: root + '/cashier/stillOwed.html',
