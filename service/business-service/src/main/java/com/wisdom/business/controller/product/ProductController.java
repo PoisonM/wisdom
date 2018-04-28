@@ -15,6 +15,7 @@ import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -151,12 +153,13 @@ public class ProductController {
 	//@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<ProductDTO> findProductBargainPriceTimeById(@RequestParam String productId) {
-		ResponseDTO<ProductDTO> responseDTO = new ResponseDTO<>();
-		ProductDTO productDTO = productService.findProductById(productId);
-		ProductDTO bargainPrice = new ProductDTO();
-		bargainPrice.setProductDetail(productDTO.getProductDetail());
-		responseDTO.setResponseData(productDTO);
+	ResponseDTO<OfflineProductDTO> findProductBargainPriceTimeById(@RequestParam String productId) {
+
+		Query query = new Query().addCriteria(Criteria.where("productId").is(productId));
+		OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
+		offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
+		ResponseDTO<OfflineProductDTO> responseDTO = new ResponseDTO();
+		responseDTO.setResponseData(offlineProductDTO);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
