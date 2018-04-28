@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById',
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','findProductBargainPriceTimeById',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById) {
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,findProductBargainPriceTimeById) {
             $rootScope.title = "美享99触屏版";
             $scope.param = {
                 bannerList:{},
