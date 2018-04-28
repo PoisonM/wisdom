@@ -7,13 +7,13 @@ import java.io.Serializable;
 public class ExtShopClerkScheduleDTO<T> extends BaseEntity implements Serializable {
 
 
-    private T shopClerkScheduleDTO;
+    private T shopClerkSchedule;
 
-    public T getShopClerkScheduleDTO() {
-        return shopClerkScheduleDTO;
+    public T getShopClerkSchedule() {
+        return shopClerkSchedule;
     }
 
-    public void setShopClerkScheduleDTO(T shopClerkScheduleDTO) {
-        this.shopClerkScheduleDTO = shopClerkScheduleDTO;
+    public void setShopClerkSchedule(T shopClerkSchedule) {
+        this.shopClerkSchedule = shopClerkSchedule;
     }
 }
