@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
@@ -387,7 +388,7 @@ public class AppointmentController {
 					relationDTO.setSysShopId(shopAppointServiceDTO.getSysShopId());
 					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
 					//根据项目主键查询项目详细信息
-					ShopProjectInfoDTO projectDetail = shopProjectService.getProjectDetail(project);
+					ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(project);
 					relationDTO.setUseStyle(projectDetail.getUseStyle());
 					relationDTO.setCreateBy(shopAppointServiceDTO.getCreateBy());
 					relationDTO.setSysShopProjectName(projectDetail.getProjectName());

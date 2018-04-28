@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
@@ -77,7 +78,7 @@ public interface ShopProjectService {
     *@Description: 获取三级项目列表
     *@Date:2018/4/10 16:21
     */
-    List<ShopProjectInfoDTO> getThreeLevelProjectList(PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO);
+    List<ShopProjectInfoResponseDTO> getThreeLevelProjectList(PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO);
     /**
     *@Author:huan
     *@Param:
@@ -85,7 +86,7 @@ public interface ShopProjectService {
     *@Description: 获取项目的详细信息
     *@Date:2018/4/10 16:59
     */
-    ShopProjectInfoDTO getProjectDetail(String id);
+    ShopProjectInfoResponseDTO getProjectDetail(String id);
 
     /**
      * 保存用户与项目的关系

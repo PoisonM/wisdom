@@ -42,7 +42,9 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
         if (StringUtils.isNotBlank(SysClerk.getSysShopId())) {
             criteria.andSysShopIdEqualTo(SysClerk.getSysShopId());
         }
-
+        if (StringUtils.isNotBlank(SysClerk.getId())) {
+            criteria.andIdEqualTo(SysClerk.getId());
+        }
         List<SysClerkDTO> SysClerks = sysClerkMapper.selectByCriteria(SysClerkCriteria);
 
         return SysClerks;
