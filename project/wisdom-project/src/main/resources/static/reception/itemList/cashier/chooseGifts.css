@@ -76,6 +76,66 @@
     color: #A4A4A4;
 }
 
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl {
+    width: 100%;
+    background: #fff;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsTitle {
+    background: #F2F2F2;
+    height: 28px;
+    line-height: 28px;
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #333333;
+    padding-left: 15px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li {
+    height: 45px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li input[type="radio"] {
+    display: block;
+    float: left;
+    margin: 16px 0px 0px 10px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li span {
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #333333;
+    letter-spacing: 0;
+    line-height: 45px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li span.name {
+    float: left;
+    margin-left: 16px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li span.numberTitle {
+    width: 68px;
+    height: 24px;
+    float: right;
+    margin-right: 12px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li span.price {
+    float: right;
+    margin-right: 196px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li input[type="text"] {
+    border: 1px solid #CECECE;
+    border-radius: 4px;
+    width: 80px;
+    height: 34px;
+    float: right;
+    margin: 5px 10px 0 0;
+}
+
 .chooseGifts-box .chooseGiftsContetn .prepaidCard {
     width: 95%;
     margin: 0 auto;
