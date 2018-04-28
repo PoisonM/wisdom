@@ -1,4 +1,5 @@
 var IP = ' http://192.168.1.117/beauty/';
+var cashierIP = 'http://192.168.1.117/'
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
@@ -171,6 +172,23 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(IP + 'appointmentInfo/updateAppointmentInfoById')
     }])
 
+    //查询某个用户的疗程卡、单次卡信息
+    .factory('GetUserCourseProjectList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getUserCourseProjectList')
+    }])
+    //查询用户的套卡信息
+    .factory('GetUserProjectGroupList', ['$resource', function($resource) {
+        return $resource(IP + 'projectInfo/getUserProjectGroupList')
+    }])
+
+    //用户充值卡列表
+    .factory('GetUserRechargeCardList', ['$resource', function($resource) {
+        return $resource(IP + 'cardInfo/getUserRechargeCardList')
+    }])
+    //用户产品列表  http://localhost:9051/productInfo/getUserProductList?sysUserId=1&sysShopId=1
+    .factory('GetUserProductList', ['$resource', function($resource) {
+        return $resource(IP + 'productInfo/getUserProductList')
+    }])
 
 
 

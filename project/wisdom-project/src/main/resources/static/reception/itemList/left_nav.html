@@ -1,9 +1,9 @@
 <div class="left_nav" ng-class="{'left_nav_price_list':mainLeftSwitch.priceListFlag == true}">
     <div ng-if = "mainLeftSwitch.peopleListFlag" class="left_nav_box people_list ">
         <div class="search">
-            <span class="ser_ion"></span>
-            <input type="text" placeholder="用户名或者手机号搜索">
-            <span class="cancel">取消</span>
+            <span ng-click="searchRecord()" class="ser_ion"></span>
+            <input ng-model="param.queryField" type="text" placeholder="用户名或者手机号搜索">
+            <span ng-click="cancelSearch()" class="cancel">取消</span>
         </div>
         <div class="list">
             <div ng-repeat="bigItem in info">

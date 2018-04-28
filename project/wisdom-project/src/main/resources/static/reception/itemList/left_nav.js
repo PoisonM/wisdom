@@ -6,27 +6,40 @@ PADWeb.controller("left_navCtrl", function($scope, $state,FindArchives) {
     }
 
 
+    //获取档案列表
+    $scope.queryRecordList = function () {
+        FindArchives.get({
+            queryField:$scope.param.queryField,
+            pageNo:"1",
+            pageSize:"1"
+        },function (data) {
+            if(data.result == "0x00001"){
+                $scope.dataList = [];
+                $scope.info = data.responseData.info
+            }
+        })
+    }
 
     $scope.param = {
         selectSty:"1",
-        priceType:"xm"
+        priceType:"xm",
+        queryField:""
     }
 
 
     /*获取档案列表*/
-    FindArchives.get({
-        queryField:"",
-        pageNo:"1",
-        pageSize:"1"
-    },function (data) {
-        if(data.result == "0x00001"){
-            $scope.dataList = [];
-            $scope.info = data.responseData.info
-        }
-    })
+    $scope.queryRecordList()
 
-    /*-------------------------------方法-------------------------------------------*/
-    //
+    /*--------------------------w-----方法-------------------------------------------*/
+    $scope.cancelSearch = function () {
+        $scope.param.queryField = ""
+        $scope.queryRecordList()
+    }
+    
+    $scope.searchRecord = function () {
+        $scope.queryRecordList()
+    }
+    
     //价目表切换
     $scope.selectPriceType = function (type) {
         $scope.param.priceType = type
