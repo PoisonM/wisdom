@@ -1,58 +1,42 @@
 <ion-view style="background:white">
-    <br>
-    <ion-content style="margin-top:20px">
-        <ion-list>
-            <div class="item item-divider">
-                店内项目
-            </div>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <br><br><br><br>
-        </ion-list>
-    </ion-content>
-    <<div class="tabs"
-          style="background:#e66;color:white"
-          ng-click="chooseProject()">
-        <a class="tab-item" style="font-size:20px">
-            确认
-        </a>
+    <div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+        <div class="tabs" style="margin-top:-45px">
+            <a class="tab-item active" href="#">
+                进行中
+            </a>
+            <a class="tab-item" href="#">
+                已结束
+            </a>
+        </div>
     </div>
+    <ion-content style="margin-top:60px">
+        <ion-item ng-repeat="item in [1,2,3,4,5]">
+            <h1>2018-04-03 12:00:00</h1>
+            <p class="item-note"><i class="ion ion-clock"></i><span>&nbsp;30分钟</span></p>
+            <p style="margin-top:10px">30分钟局部按摩</p>
+            <p style="margin-top:10px">王正婷</p>
+            <p style="margin-top:10px">泗水亭按摩馆</p>
+        </ion-item>
+        <ion-item ng-repeat="item in [1,2,3]">
+            <h1>2018-04-03 12:00:00</h1>
+            <p class="item-note"><span style="color: red">已结束</span></p>
+            <p style="margin-top:10px">30分钟局部按摩</p>
+            <p style="margin-top:10px">王正婷</p>
+            <p style="margin-top:10px">泗水亭按摩馆</p>
+        </ion-item>
+    </ion-content>
+    <!--<div class="list" style="margin-top:60px">-->
+        <!--<div class="item" ng-repeat="item in [1,2,3,4,5]">-->
+        <!--</div>-->
+        <!--<div class="item">-->
+            <!--<h1>2018-04-03 12:00:00</h1>-->
+            <!--<p class="item-note"><span style="color: red">已结束</span></p>-->
+            <!--<p style="margin-top:10px">30分钟局部按摩</p>-->
+            <!--<p style="margin-top:10px">王正婷</p>-->
+            <!--<p style="margin-top:10px">泗水亭按摩馆</p>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    </ion-content>
+
 </ion-view>
