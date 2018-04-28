@@ -410,6 +410,30 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    .state('specialShopTransactionList', {
+                        url: '/specialShopTransactionList/:specialShopId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'specialShopTransactionListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.specialShopTransactionListCtrl',
+                                    ['js/controllers/business/specialShopTransactionListCtrl.js?ver='+ customerVersion],
+                                    'views/business/specialShopTransactionList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                 .state('specialTransactionDetail', {
+                        url: '/specialTransactionDetail/:orderId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'specialTransactionDetailCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.specialTransactionDetailCtrl',
+                                    ['js/controllers/business/specialTransactionDetailCtrl.js?ver='+ customerVersion],
+                                    'views/business/specialTransactionDetail.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
 
                     .state('beautyAppoint', {
                         url: '/beautyAppoint',
@@ -555,31 +579,6 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
-                    .state('specialShopTransactionList', {
-                        url: '/specialShopTransactionList/:specialShopId',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'specialShopTransactionListCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.specialShopTransactionListCtrl',
-                                    ['js/controllers/business/specialShopTransactionListCtrl.js?ver='+ customerVersion],
-                                    'views/business/specialShopTransactionList.html?ver=' + customerVersion);
-                            }
-                        }
-                    })
-                 .state('specialTransactionDetail', {
-                        url: '/specialTransactionDetail/:orderId',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'specialTransactionDetailCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.specialTransactionDetailCtrl',
-                                    ['js/controllers/business/specialTransactionDetailCtrl.js?ver='+ customerVersion],
-                                    'views/business/specialTransactionDetail.html?ver=' + customerVersion);
-                            }
-                        }
-                    })
-
 
                 $urlRouterProvider.otherwise('/shopHome')
             }])
