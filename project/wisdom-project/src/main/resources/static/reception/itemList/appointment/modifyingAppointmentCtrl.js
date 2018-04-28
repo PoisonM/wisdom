@@ -10,8 +10,11 @@
          "endTime": "21:00",
          "scheduling":"20,21,22"
      };
-     $scope.param.ModifyAppointmentObject.hoursType=[]
-     $scope.param.ModifyAppointmentObject.hoursTime=[]
+    /* var a = $filter("date")(Date.parse($scope.param.ModifyAppointmentObject.appointStartTime),"yyyy-MM-dd");
+     console.log(a);*/
+
+     $scope.param.ModifyAppointmentObject.hoursType=[];
+     $scope.param.ModifyAppointmentObject.hoursTime=[];
      for(var i=0;i<$scope.param.code.length;i++){
          $scope.param.ModifyAppointmentObject.hoursType[i]="0";
          for(key in $scope.param.code[i] ){

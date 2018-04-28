@@ -1,44 +1,46 @@
 <!--划卡-->
 
     <div class="content">
-        <div class="productMess paddingLeft50">
-            <div class="space-between waterGuangZhen ">
-                <p>
-                    <span class=" color333FS38" >年卡</span>
-                    <span class="yearCard w66h32 btnActive marginLeft16 FS24">年卡</span>
-                </p>
-                <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha">
+        <div ng-repeat="item in param.scratchCardObj.scratchCardData"  ng-class="{'mt20':$index!=0}">
+            <div class="productMess paddingLeft50">
+                <div class="space-between waterGuangZhen ">
+                    <p>
+                        <span class=" color333FS38" >{{item.sysShopProjectName}}</span>
+                        <!-- <span class="yearCard w66h32 btnActive marginLeft16 FS24">年卡</span>-->
+                    </p>
+                    <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha" ng-click="candelScratchCard($index)">
 
-            </div>
-            <div class="money color999FS32 colorFF6666FS34 space-between">
-                <p class="W33">金额 <span class="num">￥99.00</span></p>
-                <p class="color333FS38 W33 center" >已划 <span class="colorFF6666FS38">2</span></p>
-                <p class="W33"></p>
+                </div>
+                <div class="money color999FS32 colorFF6666FS34 space-between">
+                    <p class="W33">金额 <span class="num">￥{{item.sysShopProjectSurplusAmount}}</span></p>
+                    <p class="color333FS38 W33 center" >已划 <span class="colorFF6666FS38">{{item.sysShopProjectInitAmount-item.sysShopProjectSurplusTimes}}</span></p>
+                    <p class="W33"></p>
 
+                </div>
+                <p class="discountNum color999FS32">
+                    有效期{{item.effectiveDate}}至{{item.invalidDays}}
             </div>
-            <p class="discountNum color999FS32">
-                有效期2018-01-01至2019-01-01
-            </p>
+            <ul class="height100Num color333FS34 ">
+                <li class="space-between paddingLeft30">
+                    <p >划卡数量</p>
+                    <p class="rightContent">
+                        <button class="reduction" ng-click="minusOrAddScratchCardNum(0,$index)">-</button>
+                        <input type="text" value="1" ng-model="item.num">
+                        <button class="addBtn" ng-click="minusOrAddScratchCardNum(1,$index)">+</button>
+                    </p>
+                </li>
+                <li class="space-between paddingLeft30">
+                    <span >关联员工</span>
+                    <a class="rightContent">{{item.sysClerkName}}<img src="images/bt_more.png" class="morePic marginLeft20" ng-click="relatedStaff()"></a>
+                </li>
+            </ul>
         </div>
-        <ul class="height100Num color333FS34 ">
-            <li class="space-between paddingLeft30">
-                <p >划卡数量</p>
-                <p class="rightContent">
-                    <button class="reduction">-</button>
-                    <input type="text" value="1">
-                    <button class="addBtn">+</button>
-                </p>
-            </li>
-            <li class="space-between paddingLeft30">
-                <span >关联员工</span>
-                <a class="rightContent">李丽<img src="images/bt_more.png" class="morePic marginLeft20" ng-click="relatedStaff()"></a>
-            </li>
-        </ul>
+
         <div class="note">
             <label class="color333FS34">备注</label>
-            <textarea></textarea>
+            <textarea class="fs34 col333" ng-model="param.scratchCardObj.note"></textarea>
             <p>
-                <button class="nextStepBtn rightMgain60" ng-click="close(0)">下一步</button>
+                <button class="nextStepBtn rightMgain60" ng-click="scratchCardNextStep()" >下一步</button>
             </p>
         </div>
     </div>

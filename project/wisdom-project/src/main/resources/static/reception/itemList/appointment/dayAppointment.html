@@ -29,10 +29,8 @@
                 </li>
             </ul>
         </div>
-
         <div class="messLis  pt117rem  swiper-wrapper w " >
             <div class="swiper-slide d  mt128 ">
-
                 <div class="swiper-container2 " style="position: relative;top:0px">
                     <ul class="time " style="position: absolute;z-index: 100;background: #ffffff" >
                         <li  ng-repeat="item in param.days" style="text-align: center" >{{item}}</li>
@@ -41,12 +39,12 @@
                         <div class="swiper-slide list-group" ng-repeat="(index1,item) in param.appointmentObject.list"style="width:500px">
                             <div class="appointmentLis">
                                 <ul >
-                                <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bgred':item1==4}" ng-click="detailsWrap(index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2])" ng-onhold="onHold(index1,index2,item1)">
-                                    <p ng-if="item1 == 4" class="colred fs34" style="line-height: 0.96875rem;text-align:center ">{{item.sysUserName[index2]}}</p>
-                                    <div ng-if="item1 != 4">
-                                        <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3}" ng-if="item1 == item.status[$index+1]">{{item.sysUserName[index2]}}</p>
+                                <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bge4faff':item1==0,'bgred':item1==5}" ng-click="detailsWrap(index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2])" ng-onhold="onHold(index1,index2,item1)">
+                                    <p ng-if="item1 == 5" class="colred fs34" style="line-height: 0.96875rem;text-align:center ">{{item.sysUserName[index2]}}</p>
+                                    <div ng-if="item1 != 5">
+                                        <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3,'colred':item1==0}" ng-if="item.status[$index] == item.status[$index+1]">{{item.sysUserName[index2]}}</p>
                                         <p class="mt30" ng-if="item1 == item.status[$index+1]">
-                                            <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 0">
+                                            <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 6">
                                             <span class="fs24">{{item.time[index2]}}</span>
                                             <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
                                         </p>
@@ -383,7 +381,7 @@
                 关联员工
             </p>
             <p class="scheduling ">
-                <span class="true" ng-click="close(1)">完成</span>
+                <span class="true" ng-click="close(1)" ng-click="finsh()">完成</span>
             </p>
         </div>
         <div ng-include="'itemList/appointment/relatedStaff.html'" class="h1465 bblr bbrr"></div>

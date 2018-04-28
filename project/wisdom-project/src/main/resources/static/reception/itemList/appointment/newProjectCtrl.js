@@ -162,7 +162,7 @@ function selectProductCtrl($scope,ngDialog){
                             $scope.param.newProductObject.shopProjectIdArr = [];/*Id数组*/
                             $scope.param.newProductObject.shopProjectNameArr = [];/*项目名数组*/
                             var timeLength = 0;/*项目时长*/
-                            $scope.param.ModifyAppointmentObject.productNum = 0;/*项目个数*/
+                           /* $scope.param.ModifyAppointmentObject.productNum = 0;/!*项目个数*!/*/
                             for(var i=0;i<$scope.param.ModifyAppointmentObject.selfProductDataFlag.length;i++){
                                 if($scope.param.ModifyAppointmentObject.selfProductDataFlag[i]==true){
                                     $scope.param.newProductObject.shopProjectIdArr.push($(".selfProductDataIndex").eq(i).attr('shopProjectId'))

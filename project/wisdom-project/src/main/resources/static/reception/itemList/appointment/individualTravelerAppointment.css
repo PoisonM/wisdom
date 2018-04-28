@@ -8,3 +8,4 @@
 
 .individual .giveContent{margin-left: 0.234rem;color: #ff6666;display: inline-block}
 .individual .redPoint{width: 0.09rem;height: 0.09rem;background: #ff6666;border-radius: 100%;display: inline-block}
+.startAppointmentActive{background: #e4e4e4;border: #999999 1px solid!important;color:#ffffff}
