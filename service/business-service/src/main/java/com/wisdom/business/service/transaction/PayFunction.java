@@ -1,10 +1,12 @@
 package com.wisdom.business.service.transaction;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.level.UserTypeMapper;
 import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
+import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
@@ -60,7 +62,7 @@ public class PayFunction {
     private MongoTemplate mongoTemplate;
 
     @Transactional(rollbackFor = Exception.class)
-    public void processPayStatus(List<PayRecordDTO> payRecordDTOList) {
+    public void processPayStatus(List<PayRecordDTO> payRecordDTOList) throws ClientException {
         try
         {
             float totalMoney = 0;
@@ -68,8 +70,7 @@ public class PayFunction {
             String token = WeixinUtil.getUserToken();
             String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
             String userId = "";
-            for(PayRecordDTO payRecordDTO:payRecordDTOList)
-            {
+            for(PayRecordDTO payRecordDTO:payRecordDTOList) {
                 //修改payRecord的订单状态，表示已支付
                 payRecordDTO.setStatus("1");
                 payRecordDTO.setUpdateDate(new Date());
@@ -84,17 +85,17 @@ public class PayFunction {
                 transactionService.updateBusinessOrder(businessOrderDTO);
 
                 //修改商品库存
-//                ProductDTO productDTO = new ProductDTO();
-//                productDTO.setProductId(businessOrderDTO.getBusinessProductId());
-//                productDTO.setProductAmount(businessOrderDTO.getBusinessProductNum());
-//                transactionService.updateOfflineProductAmount(productDTO);
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setProductId(businessOrderDTO.getBusinessProductId());
+                productDTO.setProductAmount(businessOrderDTO.getBusinessProductNum());
+                transactionService.updateOfflineProductAmount(productDTO);
 
                 productName = productName + businessOrderDTO.getBusinessProductName() +
                         "(" + businessOrderDTO.getProductSpec() + ")" + businessOrderDTO.getBusinessProductNum() +"套"+";";
                 userId = businessOrderDTO.getSysUserId();
 
                 //若购买的是跨境商品，告知店主，用户购买的情况
-                Query query = new Query(Criteria.where("order").is(businessOrderDTO.getBusinessOrderId()));
+                Query query = new Query(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId()));
                 SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO = mongoTemplate.findOne(query,SpecialShopBusinessOrderDTO.class,"specialShopBusinessOrder");
                 if(specialShopBusinessOrderDTO!=null)
                 {

@@ -82,7 +82,7 @@ public class IncomeController {
 				return responseDTO;
 			}
 			//插入操作人的类型,运营人员/财务人员,根据此条件查询相应结果
-			pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
+			//pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
 		}
 		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeRecordByPageParam(pageParamVoDTO);
 
@@ -258,9 +258,20 @@ public class IncomeController {
 		HashMap<String, String> helperMap = new HashMap<>(16);
 		if (CommonUtils.objectIsNotEmpty(exportIncomeRecordExcelDTOS)) {
 			for (ExportIncomeRecordExcelDTO excelDTO : exportIncomeRecordExcelDTOS) {
-				helperMap.put(excelDTO.getTransactionId(), String.valueOf(excelDTO.getAmount()));
-				if (StringUtils.isNotBlank(helperMap.get(excelDTO.getTransactionId()))) {
+				if (StringUtils.isBlank(helperMap.get(excelDTO.getTransactionId()))) {
+					helperMap.put(excelDTO.getTransactionId(), String.valueOf(1));
+				} else {
+					int count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) + 1;
+					helperMap.put(excelDTO.getTransactionId(), String.valueOf(count));
+				}
+			}
+
+			for (ExportIncomeRecordExcelDTO excelDTO : exportIncomeRecordExcelDTOS) {
+				Integer count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId()));
+				if (count > 1) {
 					excelDTO.setAmount(0);
+					int number = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) - 1;
+					helperMap.put(excelDTO.getTransactionId(), String.valueOf(number));
 				}
 			}
 		}
@@ -458,6 +469,7 @@ public class IncomeController {
 		map.put("selfList",selfList1);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
+		responseDTO.setResult(StatusConstant.SUCCESS);
 		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
