@@ -52,7 +52,7 @@ public class UserConsumeRequestDTO extends BaseEntity  {
     /**
      * 请求来源，用于区分是否需要设置goodsType条件
      */
-    private Boolean goodsTypeRequire;
+    private Boolean goodsTypeRequire=false;
     private int pageSize ; //每页的条目
 
     public String getSysUserId() {

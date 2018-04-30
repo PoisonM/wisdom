@@ -117,20 +117,19 @@ public class ShopMemberAttendanceController {
      */
     @RequestMapping(value = "/getShopConsumeAndRecharge", method = {RequestMethod.GET})
     @ResponseBody
-    ResponseDTO<Map<String, BigDecimal>> getShopConsumeAndRecharge(@RequestParam String shopId,
+    ResponseDTO<Map<String, String>> getShopConsumeAndRecharge(@RequestParam String shopId,
                                                                    @RequestParam String startTime,
-                                                                   @RequestParam String consumeType,
                                                                    @RequestParam String endTime) {
 
-        Date startDate = DateUtils.StrToDate(startTime, "datetime");
-        Date endDate = DateUtils.StrToDate(endTime, "datetime");
-        Boolean bool = false;
-        BigDecimal recharge = shopStatisticsAnalysisService.getShopConsumeAndRecharge(shopId, GoodsTypeEnum.RECHARGE_CARD.getCode(), consumeType, bool, startDate, endDate);
-        BigDecimal consume = shopStatisticsAnalysisService.getShopConsumeAndRecharge(shopId, GoodsTypeEnum.TIME_CARD.getCode(), consumeType, bool, startDate, endDate);
-        Map<String, BigDecimal> map = new HashMap<>(16);
-        map.put("recharge", recharge);
-        map.put("consume", consume);
-        ResponseDTO<Map<String, BigDecimal>> response = new ResponseDTO<>();
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
+        UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+        userConsumeRequest.setSysShopId(shopId);
+
+        pageParamVoDTO.setRequestData(userConsumeRequest);
+        Map<String,String> map = shopStatisticsAnalysisService.getShopConsumeAndRecharge(pageParamVoDTO);
+        ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
         response.setResponseData(map);
         response.setResult(StatusConstant.SUCCESS);
         return response;
