@@ -306,6 +306,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+
+        .state('pad-web.left_nav.selectRechargeType', {
+            url: '/selectRechargeType',
+            templateUrl: root + '/cashier/selectRechargeType.html',
+            controller: 'selectRechargeTypeCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "选择充值卡",
+                        files: [root + "cashier/selectRechargeTypeCtrl.js",
+                            root + "cashier/selectRechargeType.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.selectRechargeCard', {
             url: '/selectRechargeCard',
             templateUrl: root + '/cashier/selectRechargeCard.html',
@@ -313,7 +329,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "选择充值卡",
+                        name: "充值卡充值详情",
                         files: [root + "cashier/selectRechargeCardCtrl.js",
                             root + "cashier/selectRechargeCard.css",
                         ]

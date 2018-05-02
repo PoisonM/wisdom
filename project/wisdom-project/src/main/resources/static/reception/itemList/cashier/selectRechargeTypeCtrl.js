@@ -1,4 +1,4 @@
-PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParams, ngDialog, Archives) {
+PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParams, ngDialog, Archives) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)"
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案"
@@ -23,18 +23,8 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
+    $scope.goSelectRechargeCard = function() {
+        $state.go('pad-web.left_nav.selectRechargeCard');
+    }
 
-    $scope.select = 0;
-    $scope.tabclick = function(e) {
-        $scope.select = e;
-    }
-    $scope.goChooseGifts = function() {
-        $state.go('pad-web.left_nav.chooseGifts')
-    }
-    $scope.goHousekeeper = function() {
-        $state.go('pad-web.left_nav.housekeeper')
-    }
-    $scope.goCustomerSignature = function() {
-        $state.go('pad-web.customerSignature')
-    }
 });
