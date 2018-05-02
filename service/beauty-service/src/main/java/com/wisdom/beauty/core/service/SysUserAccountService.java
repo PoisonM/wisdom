@@ -24,10 +24,10 @@ public interface SysUserAccountService {
     /**
      * 获取用户的账户信息
      *
-     * @param userId
+     * @param sysUserAccountDTO
      * @return
      */
-    SysUserAccountDTO getSysUserAccountDTO(String userId);
+    SysUserAccountDTO getSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO);
 
     /**
      * 更新用户的账户信息

@@ -3,9 +3,14 @@ package com.wisdom.beauty.core.service;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.alibaba.fastjson.parser.deserializer.AbstractDateDeserializer;
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
+import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * FileName: ShopStatisticsAnalysisService
@@ -19,10 +24,19 @@ public interface ShopStatisticsAnalysisService {
      * @Author:huan
      * @Param: ShopUserRechargeCardDTO shopUserRechargeCardDTO
      * @Return:
-     * @Description: 根据sysClerkId获取业绩,当日
+     * @Description: 根据条件获取业绩
      * @Date:2018/4/13 10:24
      */
-    BigDecimal getPerformance(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
+    BigDecimal getPerformance(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 获取耗卡
+     * @Date:2018/4/27 20:08
+     */
+    BigDecimal getExpenditure(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * 查询美容店某个时间段的耗卡金额
@@ -32,14 +46,57 @@ public interface ShopStatisticsAnalysisService {
     /**
      * 查询新客个数
      */
-    int getShopNewUserNumber(String shopId, Date startDate, Date endDate);
+    int getShopNewUserNumber(String shopId, String startDate, String endDate);
+
     /**
-    *@Author:huan
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 查询人头数
+     * @Date:2018/4/13 11:34
+     */
+    Integer getUserConsumeNumber(String sysClerkId, String startDate, String endDate);
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据sysShopId, startTime, endTime获取业绩和耗卡
+     * @Date:2018/4/23 11:17
+     */
+    List<ExpenditureAndIncomeResponseDTO> getExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 查看某个美容店的充值和消费金额(业绩)
+     * @Date:2018/4/25 14:54
+     */
+    BigDecimal getShopConsumeAndRecharge(String shopId, String goodType, String consumeType, Boolean isCardConsume, Date startDate, Date endDate);
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 查看全部家人中店员信息和业绩情况
+     * @Date:2018/4/25 19:21
+     */
+    List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
     *@Param:
     *@Return:
-    *@Description: 查询人头数
-    *@Date:2018/4/13 11:34
+    *@Description: 查询耗卡的集合
+    *@Date:2018/4/27 20:10
     */
-    Integer getUserConsumeNumber(String sysClerkId, Date startDate, Date endDate);
-
+    List<ExpenditureAndIncomeResponseDTO> getExpenditureList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取业绩集合
+    *@Date:2018/4/27 20:10
+    */
+    List<ExpenditureAndIncomeResponseDTO> getIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 }

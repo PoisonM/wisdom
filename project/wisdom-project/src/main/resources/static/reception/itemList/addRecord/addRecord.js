@@ -1,4 +1,4 @@
-PADWeb.controller('addRecordCtrl', function($scope, $stateParams, ngDialog) {
+PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetShopUserArchivesInfoByUserId,DeleteArchiveInfo) {
     console.log($scope);
 /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.headerCash.leftContent="档案(9010)"
@@ -30,6 +30,8 @@ PADWeb.controller('addRecordCtrl', function($scope, $stateParams, ngDialog) {
     $scope.param = {
         select_type:"",
         openSelectFlag:false,//选择页面开关
+        selectContentName:"",
+        selectContentPhone:"",
         selectContentSex:"",
         selectContentBirthday:"",
         selectContentAge:"",
@@ -38,6 +40,7 @@ PADWeb.controller('addRecordCtrl', function($scope, $stateParams, ngDialog) {
         selectContentHeight:"",
         selectContentSource:"",
     }
+
     /*---------------------------------方法-----------------------------------*/
     $scope.flagFn = function (backContent,title,bool) {
         $scope.$parent.$parent.param.headerCash.backContent = backContent
@@ -46,6 +49,34 @@ PADWeb.controller('addRecordCtrl', function($scope, $stateParams, ngDialog) {
     }
 
     $scope.flagFn("","添加档案",false)
+
+   
+
+    $scope.$parent.$parent.leftTipFn = function () {
+        $scope.ShopUserArchivesDTO = {
+            age	:$scope.param.selectContentAge,
+            birthday:$scope.param.selectContentBirthday,
+            bloodType:$scope.param.selectContentBlood,
+            channel:'大众点评',//渠道
+            constellation:$scope.param.selectContentConstellation,
+            detail:'这是个好用户',
+            height:$scope.param.selectContentHeight,
+            imageRul:'www.baidu.com',
+            phone:$scope.param.selectContentPhone,
+            sex:$scope.param.selectContentSex,
+            sysClerkId:'522b6755e0fd40fea026deebd242e098',
+            sysClerkName:$scope.param.selectContentName,
+            sysShopId:'522b6755e0fd40fea026deebd242e098',
+            sysShopName:'汉方美容院',
+            sysUserName:"",
+            weight:$scope.param.selectContentHeight
+        }
+        SaveArchiveInfo.save($scope.ShopUserArchivesDTO,function (data) {
+            if(data.result == "0x00001"){
+                alert("保存成功")
+            }
+        })
+    }
 
 
     //打开选择页面

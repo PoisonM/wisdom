@@ -1,5 +1,7 @@
 package com.wisdom.beauty.api.responseDto;
 
+import com.wisdom.common.entity.BaseEntity;
+
 import java.util.Map;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Map;
  * @Date:Created in 2018/4/16 16:41
  * @since JDK 1.8
  */
-public class ShopRechargeCardResponseDTO {
+public class ShopRechargeCardResponseDTO extends BaseEntity {
     //充值卡主键
     private String shopRechargeCardId;
     //充值卡名称
@@ -18,7 +20,7 @@ public class ShopRechargeCardResponseDTO {
     //充值面额
     private Long amount;
     //图片
-    private String imageUrl;
+    private String[] imageUrl;
     //折扣
     private Map<String,Object> map;
 
@@ -41,14 +43,6 @@ public class ShopRechargeCardResponseDTO {
 
     public void setAmount(Long amount) {
         this.amount = amount;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getDiscountDesc() {
@@ -81,5 +75,13 @@ public class ShopRechargeCardResponseDTO {
 
     public void setMap(Map<String, Object> map) {
         this.map = map;
+    }
+
+    public String[] getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String[] imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

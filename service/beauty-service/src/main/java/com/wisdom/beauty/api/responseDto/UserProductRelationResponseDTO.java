@@ -28,6 +28,22 @@ public class UserProductRelationResponseDTO extends BaseEntity {
      * 手机号
      */
     private String mobile;
+    /**
+     * 产品名称
+     */
+    private String productName;
+    /**
+     * 一级类别名称
+     */
+    private String productTypeOneName;
+    /**
+     * 二级类别名称
+     */
+    private String productTypeTwoName;
+    /**
+     * 规格
+     */
+    private String productSpec;
 
     public UserProductRelationResponseDTO() {
     }
@@ -42,6 +58,38 @@ public class UserProductRelationResponseDTO extends BaseEntity {
 
     public String getSysUserId() {
         return sysUserId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductTypeOneName() {
+        return productTypeOneName;
+    }
+
+    public void setProductTypeOneName(String productTypeOneName) {
+        this.productTypeOneName = productTypeOneName;
+    }
+
+    public String getProductTypeTwoName() {
+        return productTypeTwoName;
+    }
+
+    public void setProductTypeTwoName(String productTypeTwoName) {
+        this.productTypeTwoName = productTypeTwoName;
+    }
+
+    public String getProductSpec() {
+        return productSpec;
+    }
+
+    public void setProductSpec(String productSpec) {
+        this.productSpec = productSpec;
     }
 
     public String getNickname() {
@@ -63,5 +111,6 @@ public class UserProductRelationResponseDTO extends BaseEntity {
     public void setSysUserId(String sysUserId) {
         this.sysUserId = sysUserId;
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.wisdom.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
@@ -14,14 +15,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by 赵得良 on 21/09/2016.
@@ -30,8 +41,21 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BeautyServiceApplication.class)
+@AutoConfigureMockMvc
 @WebAppConfiguration
 public class AppointmentTest {
+
+
+    private MockMvc mvc;
+
+    @Autowired
+    private WebApplicationContext context;
+
+    @Before
+    public void setupMockMvc() {
+        mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        SpringUtil.setApplicationContext(context);
+    }
 
     @Autowired
     private ShopAppointServiceMapper shopAppointServiceMapper;
@@ -76,6 +100,30 @@ public class AppointmentTest {
         System.out.println("测试完毕");
     }
 
+    /**
+     * 保存用户的预约信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSaveAppointmentService() throws Exception {
+
+        ShopAppointServiceDTO shopAppointServiceDTO = getShopAppointServiceDTO();
+
+        String toJSONString = JSONObject.toJSONString(shopAppointServiceDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/appointmentInfo/saveUserAppointInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送post请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+
+    }
+
+
     @Test
     public void getAppointmentService() {
         redisUtils.getAppointmentIdByShopClerk("48940be00e634bae86006c4519263906_8f4bbff4c1404136a521350c08e31483","20180000000000","20190000000000");
@@ -84,9 +132,14 @@ public class AppointmentTest {
     @Test
     public void getShopAppointInfoFromRedis() {
         ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
-        shopAppointServiceDTO.setId("6951d1561c5b4cae84fd72283e52a081");
+        shopAppointServiceDTO.setId("id_7");
         ShopAppointServiceDTO infoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceDTO.getId());
         System.out.println("infoFromRedis");
+    }
+
+    @Test
+    public void findAppointNumByTime(){
+
     }
 
     private ShopAppointServiceDTO getShopAppointServiceDTO() {

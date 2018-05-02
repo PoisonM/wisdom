@@ -1,4 +1,4 @@
-function individualTravelerAppointment ($scope,ngDialog){
+function individualTravelerAppointment ($scope,ngDialog,FindArchives,GetShopProjectList){
    /* $scope.startAppointmentIndivdual = function(){
         $scope.param.ModifyAppointment = false;
     };
@@ -7,6 +7,8 @@ function individualTravelerAppointment ($scope,ngDialog){
         $scope.param.individualTravelerAppointment = false;
         $scope.param.AppointmentType="散客"
     };*/
-    modifyingAppointmentPage && modifyingAppointmentPage ($scope,ngDialog)
+
+
+    modifyingAppointmentPage && modifyingAppointmentPage ($scope,ngDialog,FindArchives,GetShopProjectList)
 }
 

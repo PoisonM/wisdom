@@ -19,11 +19,17 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkId;
 
+    //
+    private String sysClerkName;
+
     //使用方式 0：疗程 1：单次
     private String useStyle;
 
     //美容院id
     private String sysShopId;
+
+    //折扣价格
+    private String discount;
 
     //
     private String sysShopName;
@@ -52,8 +58,8 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //有效天数
     private Integer effectiveDays;
 
-    //
-    private Integer invalidDays;
+    //失效日期
+    private Date invalidDays;
 
     //1 赠送 0不赠送
     private String isSend;
@@ -104,6 +110,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
         this.sysClerkId = sysClerkId;
     }
 
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
     public String getUseStyle() {
         return useStyle;
     }
@@ -118,6 +132,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setSysShopId(String sysShopId) {
         this.sysShopId = sysShopId;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
     }
 
     public String getSysShopName() {
@@ -192,11 +214,11 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
         this.effectiveDays = effectiveDays;
     }
 
-    public Integer getInvalidDays() {
+    public Date getInvalidDays() {
         return invalidDays;
     }
 
-    public void setInvalidDays(Integer invalidDays) {
+    public void setInvalidDays(Date invalidDays) {
         this.invalidDays = invalidDays;
     }
 

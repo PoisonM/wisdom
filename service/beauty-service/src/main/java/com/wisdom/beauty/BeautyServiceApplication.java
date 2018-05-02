@@ -21,4 +21,5 @@ public class BeautyServiceApplication {
 		SpringUtil.setApplicationContext(app);
 	}
 
+
 }

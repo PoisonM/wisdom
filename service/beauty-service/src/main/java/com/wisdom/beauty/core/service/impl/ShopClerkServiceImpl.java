@@ -52,7 +52,7 @@ public class ShopClerkServiceImpl implements ShopClerkService {
             clerkFlowAccountDTO.setSysUserId(dto.getSysUserId());
             clerkFlowAccountDTO.setShopUserConsumeRecordId(dto.getId());
             clerkFlowAccountDTO.setType(dto.getConsumeType());
-            saveSysClerkFlowAccountInfo(clerkFlowAccountDTO);
+//            saveSysClerkFlowAccountInfo(clerkFlowAccountDTO);
         } catch (Exception e) {
             logger.error("保存店员的流水信息失败，失败信息为{}" + e.getMessage(), e);
             throw new RuntimeException();

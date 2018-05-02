@@ -84,7 +84,7 @@
         create_date, update_user, update_date
     </sql>
     <!--查询用户未领取数量-->
-    <select id="getWaitReceiveNumber" resultType="com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO" parameterType="java.lang.String">
-        SELECT SUM(s.`wait_receive_number`) waitReceiveNumber,sys_user_id sysUserId FROM shop_user_product_relation s WHERE  sys_clerk_id=#{sysClerkId} GROUP BY sys_user_id;
+    <select id="getWaitReceiveNumber" resultType="com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO" parameterType="map">
+        SELECT SUM(s.`wait_receive_number`) waitReceiveNumber,sys_user_id sysUserId FROM shop_user_product_relation s WHERE  s.sys_clerk_id=#{sysClerkId}  GROUP BY sys_user_id;
     </select>
 </mapper>

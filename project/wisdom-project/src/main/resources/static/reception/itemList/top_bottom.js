@@ -37,7 +37,8 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
             headerCashRightFlag:{
                 leftFlag:true,
                 middleFlag:true,
-                rightFlag:true
+                rightFlag:true,
+                leftBackFlag:true
             },
         },
 
@@ -58,6 +59,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         footerBoxFlag:true
     }
     /*--------------------------------------方法-------------------------------------------------*/
+
     $scope.switchType = function (type) {
         $scope.param.tabSty = type
     }
@@ -66,13 +68,13 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         if(type == "yuyue"){
             $state.go("pad-web.dayAppointment")
         }else if(type == "shouyin"){
-            $state.go("pad-web.left_nav.addRecord")
+            $state.go("pad-web.left_nav.personalFile")
         }else if(type == "kaoqin"){
             $state.go("pad-web.attendance")
         }else if(type =="jiamubiao"){
             $state.go("pad-web.left_nav.project")
         }else if(type =="wo"){
-            $state.go("pad-web.userInfo.unclaimedAll")
+            $state.go("pad-web.userInfo.todayPerformance")
         }
     }
 })

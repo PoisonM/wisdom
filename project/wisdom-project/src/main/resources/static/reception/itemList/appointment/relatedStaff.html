@@ -1,18 +1,10 @@
 <!--关联员工-->
 
-    <div class="content">
+    <div class="content" style="height: 10.5rem;overflow-y: scroll">
         <ul class="LisH100 bgfff">
-            <li class="bte5">
-                <img src="images/bt_Single%20election_select.png" class="marginLeft30 selTrue">
-                <span class="marginLeft30 color333FS34">万慧茹</span>
-            </li>
-            <li class="bte5">
-                <img src="images/bt_Single%20election_select.png" class="marginLeft30 selTrue">
-                <span class="marginLeft30 color333FS34">万慧茹</span>
-            </li>
-            <li class="bte5">
-                <img src="images/bt_Single%20election_select.png" class="marginLeft30 selTrue">
-                <span class="marginLeft30 color333FS34">万慧茹</span>
+            <li class="bte5" ng-repeat="item in param.relatedAtaffData" >
+                <img ng-src="{{relatedAtaffFlag[$index]==true?'images/bt_Single%20election_select.png':'images/bt_Single%20election_nor_.png'}}" class="marginLeft30 selTrue" ng-click="showOrhideRelateStaff($index)">
+                <span class="marginLeft30 color333FS34">{{item.name}}</span>
             </li>
         </ul>
     </div>

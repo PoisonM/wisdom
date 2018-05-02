@@ -1,14 +1,40 @@
 package com.wisdom.beauty.api.extDto;
 
-import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
-import com.wisdom.common.persistence.Order;
+import com.wisdom.common.entity.BaseEntity;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
-public class ShopUserOrderDTO extends Order {
+public class ShopUserOrderDTO extends BaseEntity implements Serializable {
+
+    //订单失效日期
+    private Date exprDate;
+
+    //订单状态 1、未支付 2、待支付  2、已支付  3、已失效
+    private String status;
+    //订单号
+    private String orderId;
+    //美容店主键
+    private String shopId;
+
+    //用户id
+    private String userId;
+
+    //档案表主键
+    private String shopUserArchivesId;
+
+    //创建时间
+    private Date createDate;
+
+    //备注
+    private String detail;
+
+    //签字图片地址
+    private String signUrl;
 
     //用户与项目关系
     private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
@@ -17,15 +43,79 @@ public class ShopUserOrderDTO extends Order {
     private List<ShopUserProductRelationDTO> shopUserProductRelationDTOS;
 
     //套卡
-    private List<ShopProjectGroupDTO> shopProjectGroupDTOS;
+    private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
 
-    //用户与充值卡的关系
-    private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
-
-    public ShopUserOrderDTO(String property, Direction direction, String orderExpr) {
-        super(property, direction, orderExpr);
+    public String getUserId() {
+        return userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getSignUrl() {
+        return signUrl;
+    }
+
+    public void setSignUrl(String signUrl) {
+        this.signUrl = signUrl;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getShopUserArchivesId() {
+        return shopUserArchivesId;
+    }
+
+    public void setShopUserArchivesId(String shopUserArchivesId) {
+        this.shopUserArchivesId = shopUserArchivesId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
+
+    public Date getExprDate() {
+        return exprDate;
+    }
+
+    public void setExprDate(Date exprDate) {
+        this.exprDate = exprDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
     public List<ShopUserProjectRelationDTO> getShopUserProjectRelationDTOS() {
         return shopUserProjectRelationDTOS;
@@ -43,19 +133,12 @@ public class ShopUserOrderDTO extends Order {
         this.shopUserProductRelationDTOS = shopUserProductRelationDTOS;
     }
 
-    public List<ShopProjectGroupDTO> getShopProjectGroupDTOS() {
-        return shopProjectGroupDTOS;
+    public List<ShopUserProjectGroupRelRelationDTO> getProjectGroupRelRelationDTOS() {
+        return projectGroupRelRelationDTOS;
     }
 
-    public void setShopProjectGroupDTOS(List<ShopProjectGroupDTO> shopProjectGroupDTOS) {
-        this.shopProjectGroupDTOS = shopProjectGroupDTOS;
+    public void setProjectGroupRelRelationDTOS(List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS) {
+        this.projectGroupRelRelationDTOS = projectGroupRelRelationDTOS;
     }
 
-    public List<ShopUserRechargeCardDTO> getShopUserRechargeCardDTOS() {
-        return shopUserRechargeCardDTOS;
-    }
-
-    public void setShopUserRechargeCardDTOS(List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS) {
-        this.shopUserRechargeCardDTOS = shopUserRechargeCardDTOS;
-    }
 }

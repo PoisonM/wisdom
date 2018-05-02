@@ -8,6 +8,7 @@
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR" />
     <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
+    <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
     <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR" />
     <result column="discount" property="discount" jdbcType="REAL" />
@@ -80,8 +81,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_recharge_card_id, shop_recharge_card_name, sys_user_id, sys_user_name, sys_clerk_id, 
-    sys_shop_id, sys_boss_id, discount, detail, discount_desc, surplus_amount, init_amount, 
-    create_by, create_date, update_user, update_date
+    sys_clerk_name, sys_shop_id, sys_boss_id, discount, detail, discount_desc, surplus_amount, 
+    init_amount, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria" >
     select
@@ -119,16 +120,18 @@
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO" >
     insert into shop_user_recharge_card (id, shop_recharge_card_id, shop_recharge_card_name, 
       sys_user_id, sys_user_name, sys_clerk_id, 
-      sys_shop_id, sys_boss_id, discount, 
-      detail, discount_desc, surplus_amount, 
-      init_amount, create_by, create_date, 
-      update_user, update_date)
+      sys_clerk_name, sys_shop_id, sys_boss_id, 
+      discount, detail, discount_desc, 
+      surplus_amount, init_amount, create_by, 
+      create_date, update_user, update_date
+      )
     values (#{id,jdbcType=VARCHAR}, #{shopRechargeCardId,jdbcType=VARCHAR}, #{shopRechargeCardName,jdbcType=VARCHAR}, 
       #{sysUserId,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, 
-      #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{discount,jdbcType=REAL}, 
-      #{detail,jdbcType=VARCHAR}, #{discountDesc,jdbcType=VARCHAR}, #{surplusAmount,jdbcType=DECIMAL}, 
-      #{initAmount,jdbcType=DECIMAL}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+      #{sysClerkName,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, 
+      #{discount,jdbcType=REAL}, #{detail,jdbcType=VARCHAR}, #{discountDesc,jdbcType=VARCHAR}, 
+      #{surplusAmount,jdbcType=DECIMAL}, #{initAmount,jdbcType=DECIMAL}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO" >
     insert into shop_user_recharge_card
@@ -150,6 +153,9 @@
       </if>
       <if test="sysClerkId != null" >
         sys_clerk_id,
+      </if>
+      <if test="sysClerkName != null" >
+        sys_clerk_name,
       </if>
       <if test="sysShopId != null" >
         sys_shop_id,
@@ -203,6 +209,9 @@
       </if>
       <if test="sysClerkId != null" >
         #{sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkName != null" >
+        #{sysClerkName,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
         #{sysShopId,jdbcType=VARCHAR},
@@ -266,6 +275,9 @@
       <if test="record.sysClerkId != null" >
         sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       </if>
+      <if test="record.sysClerkName != null" >
+        sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
+      </if>
       <if test="record.sysShopId != null" >
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
@@ -312,6 +324,7 @@
       sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+      sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
       discount = #{record.discount,jdbcType=REAL},
@@ -344,6 +357,9 @@
       </if>
       <if test="sysClerkId != null" >
         sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkName != null" >
+        sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
@@ -388,6 +404,7 @@
       sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
+      sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
       discount = #{discount,jdbcType=REAL},
