@@ -109,7 +109,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from sys_clerk
     where id = #{id,jdbcType=VARCHAR}

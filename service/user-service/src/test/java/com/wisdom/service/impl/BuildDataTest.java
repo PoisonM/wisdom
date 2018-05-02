@@ -6,6 +6,7 @@ import com.wisdom.common.util.RandomValue;
 import com.wisdom.common.util.SpringUtil;
 import com.wisdom.user.UserServiceApplication;
 import com.wisdom.user.mapper.SysClerkMapper;
+import com.wisdom.user.service.ClerkInfoService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +38,8 @@ public class BuildDataTest {
 
     @Autowired
     private SysClerkMapper sysClerkMapper;
+    @Autowired
+    private ClerkInfoService clerkInfoService;
 
     @Before
     public void setupMockMvc() {
@@ -65,5 +68,13 @@ public class BuildDataTest {
         }
 
     }
+    @Test
+    public void SysClerk() {
 
+        SysClerkDTO sysClerkDTO = new SysClerkDTO();
+        sysClerkDTO.setId("2");
+        sysClerkDTO.setSysUserId("2");
+        sysClerkDTO.setName("测试名字update２");
+        clerkInfoService.updateSysClerk(sysClerkDTO);
+    }
 }

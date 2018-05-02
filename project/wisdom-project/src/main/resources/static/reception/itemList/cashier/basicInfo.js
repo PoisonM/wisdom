@@ -30,4 +30,7 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId) {
     $scope.goStillOwed = function() {
         $state.go('pad-web.left_nav.stillOwed');
     }
+    $scope.goSelectRechargeType = function() {
+        $state.go('pad-web.left_nav.selectRechargeType');
+    }
 }

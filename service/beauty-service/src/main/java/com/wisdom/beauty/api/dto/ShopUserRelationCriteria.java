@@ -685,6 +685,76 @@ public class ShopUserRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andShopPhotoIsNull() {
+            addCriterion("shop_photo is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoIsNotNull() {
+            addCriterion("shop_photo is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoEqualTo(String value) {
+            addCriterion("shop_photo =", value, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoNotEqualTo(String value) {
+            addCriterion("shop_photo <>", value, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoGreaterThan(String value) {
+            addCriterion("shop_photo >", value, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoGreaterThanOrEqualTo(String value) {
+            addCriterion("shop_photo >=", value, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoLessThan(String value) {
+            addCriterion("shop_photo <", value, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoLessThanOrEqualTo(String value) {
+            addCriterion("shop_photo <=", value, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoLike(String value) {
+            addCriterion("shop_photo like", value, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoNotLike(String value) {
+            addCriterion("shop_photo not like", value, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoIn(List<String> values) {
+            addCriterion("shop_photo in", values, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoNotIn(List<String> values) {
+            addCriterion("shop_photo not in", values, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoBetween(String value1, String value2) {
+            addCriterion("shop_photo between", value1, value2, "shopPhoto");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopPhotoNotBetween(String value1, String value2) {
+            addCriterion("shop_photo not between", value1, value2, "shopPhoto");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateByIsNull() {
             addCriterion("create_by is null");
             return (Criteria) this;
