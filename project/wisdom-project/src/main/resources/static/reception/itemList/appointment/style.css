@@ -73,8 +73,8 @@ img, a { display: inline-block; }
 .height100Num li { height: 0.77344rem; line-height: 0.78125rem; border-bottom: solid 1px #e5e5e5; }
 .height100Num li .reduction, .height100Num li .addBtn { width: 0.35938rem; height: 0.42188rem; border: solid 1px #cccccc; padding: 0; }
 .height100Num li .reduction { border-bottom-left-radius: 0.01563rem; border-top-left-radius: 0.01563rem; }
-.height100Num li .addBtn { border-bottom-right-radius: 0.01563rem; border-top-right-radius: 0.01563rem; margin-left: -7px; border-left: none; }
-.height100Num li input { width: 0.54688rem; border: solid 1px #cccccc; margin-left: -5px; border-left: none; text-align: center; }
+.height100Num li .addBtn { border-bottom-right-radius: 0.01563rem; border-top-right-radius: 0.01563rem; margin-left: -6px; border-left: none; }
+.height100Num li input { width: 0.54688rem; border: solid 1px #cccccc; margin-left: -4px; border-left: none; text-align: center; }
 
 .nextStepBtn { width: 3.125rem; height: 0.71875rem; border-radius: 0.125rem; margin-right: 0.46875rem; background: #ff6666; color: #ffffff; font-size: 0.28125rem; margin-top: 0.23438rem; }
 

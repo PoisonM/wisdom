@@ -57,15 +57,23 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
 
     @Override
     public List<ShopUserRelationDTO> getShopListByCondition(ShopUserRelationDTO shopUserRelationDTO) {
-        SysBossDTO sysBossDTO = UserUtils.getBossInfo();
-        if (sysBossDTO == null || StringUtils.isNull(sysBossDTO.getId())) {
-            throw new ServiceException("isMember方法从redis获取sysClerkDTO为空");
-        }
-        logger.info("getShopListByCondition方法传入的参数bossId={}", sysBossDTO.getId());
 
         ShopUserRelationCriteria criteria = new ShopUserRelationCriteria();
         ShopUserRelationCriteria.Criteria c = criteria.createCriteria();
-        c.andSysBossIdEqualTo(sysBossDTO.getId());
+
+        SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+        if (sysBossDTO == null || StringUtils.isNull(sysBossDTO.getId())) {
+            throw new ServiceException("isMember方法从redis获取sysClerkDTO为空");
+        } else {
+            logger.info("getShopListByCondition方法传入的参数bossId={}", sysBossDTO.getId());
+            c.andSysBossIdEqualTo(sysBossDTO.getId());
+        }
+
+        if (StringUtils.isNotBlank(shopUserRelationDTO.getSysUserId())) {
+            c.andSysUserIdEqualTo(shopUserRelationDTO.getSysUserId());
+        }
+
+
         List<ShopUserRelationDTO> shopUserRelations = shopUserRelationMapper.selectByCriteria(criteria);
         return shopUserRelations;
     }

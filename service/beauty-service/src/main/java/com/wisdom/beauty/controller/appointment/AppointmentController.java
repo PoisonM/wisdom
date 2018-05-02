@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
@@ -326,7 +327,19 @@ public class AppointmentController {
 
 		ResponseDTO<List<SysClerkDTO>> responseDTO = new ResponseDTO<>();
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-		List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(clerkInfo.getSysShopId());
+		UserInfoDTO userInfo = UserUtils.getUserInfo();
+
+		String sysShopId = null;
+		//pad端
+		if (null != clerkInfo) {
+			sysShopId = clerkInfo.getSysShopId();
+		}
+		//用户端
+		if (null != userInfo) {
+			sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
+		}
+
+		List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(sysShopId);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(clerkDTOS);
 
@@ -364,7 +377,13 @@ public class AppointmentController {
 			shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
 			shopAppointServiceDTO.setCreateBy(userInfo.getId());
 			shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
-		}
+            ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
+            shopAppointServiceDTO.setSysShopId(userLoginShop.getSysShopId());
+            shopAppointServiceDTO.setSysShopName(userLoginShop.getSysShopName());
+            shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
+            shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
+            shopAppointServiceDTO.setSysBossId(userLoginShop.getSysBossId());
+        }
 		shopAppointServiceDTO.setCreateDate(new Date());
 		int info = appointmentService.saveUserShopAppointInfo(shopAppointServiceDTO);
 		logger.debug("保存用户的预约信息执行结果， {}", info > 0 ? "成功" : "失败");
@@ -372,7 +391,6 @@ public class AppointmentController {
 		redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
 
 		//生成用户与项目的关系
-//		List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<ShopUserProjectRelationDTO>();
 		if (StringUtils.isNotBlank(shopAppointServiceDTO.getShopProjectId())) {
 			String[] projectStr = shopAppointServiceDTO.getShopProjectId().split(";");
 			for (String project : projectStr) {
@@ -406,21 +424,8 @@ public class AppointmentController {
 					relationDTO.setSysShopProjectInitTimes(1);
 					int num = shopProjectService.saveUserProjectRelation(relationDTO);
 					logger.debug("建立项目与用户的关系， {}", num > 0 ? "成功" : "失败");
-
-//					shopUserProjectRelationDTOS.add(relationDTO);
 				}
 			}
-//			if(CommonUtils.objectIsNotEmpty(shopUserProjectRelationDTOS)){
-//				//保存用户的订单信息
-//				ShopUserOrderDTO shopUserOrderDTO = new ShopUserOrderDTO();
-//				shopUserOrderDTO.setCreateDate(new Date());
-//				shopUserOrderDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
-//				shopUserOrderDTO.setOrderId(DateUtils.DateToStr(new Date(),"dateMillisecond"));
-//				shopUserOrderDTO.setShopId(shopAppointServiceDTO.getSysShopId());
-//				shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
-//				mongoTemplate.insert(shopUserOrderDTO,"shopUserOrderDTO");
-//				logger.debug("保存用户的订单信息到mongo");
-//			}
 		}
 
 		ResponseDTO<String> responseDTO = new ResponseDTO<>();

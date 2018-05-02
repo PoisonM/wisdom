@@ -1,4 +1,4 @@
-function balancePrepaid ($scope,ngDialog){
+function balancePrepaid ($scope,ngDialog,GetRechargeCardList){
     $scope.ngDialog = ngDialog;
     $scope.balancePrepaid = function(){
         ngDialog.open({
@@ -6,38 +6,18 @@ function balancePrepaid ($scope,ngDialog){
             scope: $scope, //这样就可以传递参数
             controller: ['$scope', '$interval', function($scope, $interval) {
                 $scope.balancePrepaidDataPic = [];
-                $scope.collectionCard = []
-                var balancePrepaidData = {
-                    "errorInfo":1,
-                    "responseData":[
-                        {
-                            "map":1,
-                            "amount":12222,
-                            "discountDesc":"5折啦",
-                            "imageUrl":"www.baudu.com",
-                            "introduce":"好东西",
-                            "name":"充值卡名字",
-                            "shopRechargeCardId":"1"
-                        },
-                        {
-                            "map":1,
-                            "amount":12222,
-                            "discountDesc":"打折啦",
-                            "imageUrl":"www.baid.com",
-                            "introduce":"发放",
-                            "name":"名字的的的",
-                            "shopRechargeCardId":"2"
-                        }
-                    ],
-                    "result":"0x00001"
-                };
-                $scope.param.consumptionObj.balancePrepaidCtrlData =balancePrepaidData.responseData;
-                for(var i=0;i<$scope.param.consumptionObj.collectionCardByShowId.length;i++){
-                    $scope.balancePrepaidDataPic[i] = 'images/bt_Single%20election_nor_.png';
-                    $scope.collectionCard[i] = true;
-                }
-
-
+                $scope.collectionCard = [];
+                GetRechargeCardList.get({
+                    name:"",
+                    pageSize:100
+                },function(data){
+                    $scope.param.consumptionObj.balancePrepaidCtrlData =data.responseData;
+                    for(var i=0;i<$scope.param.consumptionObj.collectionCardByShowId.length;i++){
+                        $scope.balancePrepaidDataPic[i] = 'images/bt_Single%20election_nor_.png';
+                        $scope.collectionCard[i] = true;
+                    }
+                });
+                console.log($scope.balancePrepaidDataPic)
                 $scope.close = function() {
                     $scope.closeThisDialog();
                 };
