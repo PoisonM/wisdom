@@ -3,7 +3,8 @@ package com.wisdom.beauty.api.enums;
 public enum CommonCodeEnum {
 
     SUCCESS("0", "正常"),
-    UNSUCCESS("1", "非正常");
+    UNSUCCESS("1", "非正常"),
+    TRUE("true", "true"),;
 
     CommonCodeEnum(String code, String desc) {
         this.code = code;

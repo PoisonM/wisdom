@@ -17,6 +17,8 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +43,8 @@ public class ShopMemberAttendanceController {
 
     @Autowired
     private ShopUerConsumeRecordService shopUerConsumeRecordService;
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     //获取门店某天的业绩
     @RequestMapping(value = "shopMemberAttendanceAnalyzeByDate", method = {RequestMethod.POST, RequestMethod.GET})
@@ -118,8 +122,8 @@ public class ShopMemberAttendanceController {
     @RequestMapping(value = "/getShopConsumeAndRecharge", method = {RequestMethod.GET})
     @ResponseBody
     ResponseDTO<Map<String, String>> getShopConsumeAndRecharge(@RequestParam String shopId,
-                                                                   @RequestParam String startTime,
-                                                                   @RequestParam String endTime) {
+                                                               @RequestParam String startTime,
+                                                               @RequestParam String endTime) {
 
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         pageParamVoDTO.setStartTime(startTime);
@@ -128,7 +132,7 @@ public class ShopMemberAttendanceController {
         userConsumeRequest.setSysShopId(shopId);
 
         pageParamVoDTO.setRequestData(userConsumeRequest);
-        Map<String,String> map = shopStatisticsAnalysisService.getShopConsumeAndRecharge(pageParamVoDTO);
+        Map<String, String> map = shopStatisticsAnalysisService.getShopConsumeAndRecharge(pageParamVoDTO);
         ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
         response.setResponseData(map);
         response.setResult(StatusConstant.SUCCESS);
@@ -174,4 +178,44 @@ public class ShopMemberAttendanceController {
         response.setResult(StatusConstant.SUCCESS);
         return response;
     }
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 获取当前美容院当前boss的当前家人列表
+     * @Date:2018/5/2 9:40
+     */
+    @RequestMapping(value = "/getFamilyList", method = {RequestMethod.GET})
+    @ResponseBody
+    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getFamilyList(@RequestParam String startTime,
+                                                                     @RequestParam String endTime,
+                                                                     @RequestParam int pageSize) {
+
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        if (sysClerkDTO == null) {
+            logger.info("redis获取clerk对象sysClerkDTO为空");
+            return null;
+        }
+        SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+        if (sysBossDTO == null) {
+            logger.info("redis获取boos对象sysBossDTO为空");
+            return null;
+        }
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
+        UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
+        userConsumeRequestDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        userConsumeRequestDTO.setSysBossId(sysBossDTO.getId());
+        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        pageParamVoDTO.setPageSize(pageSize);
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
+        List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponse = shopStatisticsAnalysisService.getClerkExpenditureAndIncomeList(pageParamVoDTO);
+
+        ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> response = new ResponseDTO<>();
+        response.setResponseData(expenditureAndIncomeResponse);
+        response.setResult(StatusConstant.SUCCESS);
+        return response;
+    }
+
 }

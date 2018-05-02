@@ -39,6 +39,17 @@ public class UserUtils {
     }
 
     /**
+     * 获取用户信息
+     *
+     * @return
+     */
+    public static UserInfoDTO getTestUserInfoDTO() {
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setId("1");
+        return userInfoDTO;
+    }
+
+    /**
      * 获取店员信息
      *
      * @return

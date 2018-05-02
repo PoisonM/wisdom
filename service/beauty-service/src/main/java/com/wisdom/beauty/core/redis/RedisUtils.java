@@ -178,6 +178,7 @@ public class RedisUtils {
                 loginDTO.setSysShopId(relationDTO.getSysShopId());
                 loginDTO.setSysShopName(relationDTO.getSysShopName());
                 loginDTO.setSysUserId(sysUserId);
+                loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
                 JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
                 return loginDTO;
             }
