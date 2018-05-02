@@ -173,18 +173,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 }, 1000);
             };
 
-           $scope.loginCart = function(){
-                   IsLogin.save(function(data){
-                        if(data.responseData=="failure"){
-                            showToast("请先登录账号");
-                            hideToast();
-                            $state.go("login");
-                        }else{
-                            $state.go("buyCart");
-                        }
 
-                   })
-           };
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.param = {
