@@ -31,7 +31,12 @@
             <div class="user_Information">
                 <p class="user_name">{{userInfoData[0].name}}</p>
                 <p class="user_mobile"><i></i>{{userInfoData[0].mobile}} </p>
-                <p class="user_data"><i class="bg_gray"><e class="col_pink"></e></i>资料完成度25%</p>
+                <p class="user_data">
+                    <i class="bg_gray">
+                        <e class="col_pink"></e>
+                    </i>
+                    资料完成度{{userInfoData[0].completeness}}
+                </p>
             </div>
             <div ng-click="setUserInfo()" class="go_set"></div>
         </div>
