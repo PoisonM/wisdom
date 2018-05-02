@@ -448,7 +448,7 @@ define(['appCustomer'], function(app){
                         }
                     })
                     .state('beautyProjectList', {
-                        url: '/beautyProjectList',
+                        url: '/beautyProjectList/:shopProjectId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'beautyProjectListCtrl',
                         resolve: {

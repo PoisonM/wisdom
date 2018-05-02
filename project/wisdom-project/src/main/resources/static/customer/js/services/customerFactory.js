@@ -13,6 +13,8 @@ var user = '/user/';
 
 var weixin = '/weixin/customer/';
 
+var projectInfo = '/beauty/projectInfo/'
+
 define(['appCustomer'], function (app) {
     app
 
@@ -196,6 +198,11 @@ define(['appCustomer'], function (app) {
          .factory('FindOrderByTransactionId',['$resource',function ($resource){
                 return $resource(account + 'findOrderByTransactionId');
           }])
+
+        //美容院用户侧接口
+        .factory('GetUserClientShopProjectList',['$resource',function ($resource){
+            return $resource(projectInfo + 'getUserClientShopProjectList')
+        }])
 
 
 });

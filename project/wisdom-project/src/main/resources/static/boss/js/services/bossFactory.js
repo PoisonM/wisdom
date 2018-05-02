@@ -8,5 +8,4 @@ define(['appBoss'], function (app) {
             return $resource(user + 'getUserValidateCode')
         }])
 
-
 });

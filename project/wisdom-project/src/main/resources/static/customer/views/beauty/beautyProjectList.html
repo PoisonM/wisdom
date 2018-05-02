@@ -1,29 +1,28 @@
 <ion-view style="background:white">
-    <br>
-    <ion-content style="margin-top:20px">
+    <ion-scroll>
+        <ion-refresher
+                pulling-text="下拉加载更多项目..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
         <ion-list>
             <div class="item item-divider">
                 店内项目
             </div>
-            <ion-item ng-repeat="item in [1,2,3,4,5,6,7,8]">
-                <img style="border-radius: 79px;
-                                width: 25px;
-                                position: absolute;
-                                margin-left: 15px;
-                                margin-top: 5px;"
-                        ng-src="http://thirdwx.qlogo.cn/mmopen/HhRfwkaJkMuUzMJUhZOhicVYGMQkRGtfMo1ZotlLP6wgQaTBibYGviclPticuqrJZae8hyCVCmLibZc06dz9vLUmWmnWjqqDRk5X9/132">
+            <ion-item ng-repeat="item in param.shopProjectList" ng-click="chooseProject(item.id)">
+                <i class="icon ion-ios-checkmark-outline" style="color:deeppink;font-size:30px;position:absolute" ng-if="item.id!=param.shopProjectId"></i>
+                <i class="icon icon ion-ios-checkmark" style="color:deeppink;font-size:30px;position:absolute" ng-if="item.id==param.shopProjectId"></i>
                 <div style="margin-left:60px">
-                    <h style="font-weight:600;">巧克力焕肤</h>
+                    <h style="font-weight:600;">{{item.projectName}}|{{item.id}}</h>
                     <br>
-                    <p style="margin-top:10px">30分钟</p>
+                    <p style="margin-top:10px">{{item.projectDuration}}分钟</p>
                 </div>
             </ion-item>
             <br><br><br><br>
         </ion-list>
-    </ion-content>
+    </ion-scroll>
     <<div class="tabs"
           style="background:#e66;color:white"
-          ng-click="chooseProject()">
+          ng-click="confirmProject()">
         <a class="tab-item" style="font-size:20px">
             确认
         </a>
