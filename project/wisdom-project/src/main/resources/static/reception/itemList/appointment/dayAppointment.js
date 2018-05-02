@@ -1,5 +1,7 @@
-PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$filter,ngDialog,$http,$timeout,ShopDayAppointmentInfoByDate,GetUserCardProjectList,GetAppointmentInfoById,GetUserProjectGroupList,GetUserProductList,GetUserCourseProjectList,SearchShopProjectList,SearchShopProductList,GetShopProjectGroups,GetRechargeCardList,ThreeLevelProject,productInfoThreeLevelProject,GetUserShopProjectList,ConsumeCourseCard,GetShopClerkList,UpdateAppointmentInfoById,FindArchives,GetShopProjectList,ShopWeekAppointmentInfoByDate,GetShopClerkScheduleList)
+PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$filter,ngDialog
+    ,$http,$timeout,ShopDayAppointmentInfoByDate,GetUserCardProjectList,GetAppointmentInfoById,GetUserProjectGroupList,GetUserProductList,GetUserCourseProjectList,SearchShopProjectList,SearchShopProductList,GetShopProjectGroups,GetRechargeCardList,ThreeLevelProject,productInfoThreeLevelProject,GetUserShopProjectList,ConsumeCourseCard,GetShopClerkList,UpdateAppointmentInfoById,FindArchives,GetShopProjectList,ShopWeekAppointmentInfoByDate,GetShopClerkScheduleList)
 {
+    $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
     $scope.param = {
         week: [],

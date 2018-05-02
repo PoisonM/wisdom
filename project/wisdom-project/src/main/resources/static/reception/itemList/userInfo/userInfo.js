@@ -1,5 +1,6 @@
 PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialog, GetProductRecord, GetClerkAchievement, ClerkInfo) {
     /*-------------------------------------------定义头部信息|----------------------------------------------*/
+    $scope.$parent.param.top_bottomSelect = "wo";
     $scope.$parent.param.headerCash.leftContent = "我"
     $scope.$parent.param.headerCash.leftAddContent = ""
     $scope.$parent.param.headerCash.backContent = "今日收银记录"
@@ -27,10 +28,10 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
         }
     })
     /*个人信息*/
-    ClerkInfo.get({
+    ClerkInfo.query({
         clerkId: "2"
     }, function(data) {
-
+        $scope.userInfoData = data
     })
     /*----------------------------------------------方法-------------------------------------------------------------*/
     //今日业绩

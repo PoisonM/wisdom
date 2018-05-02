@@ -3,6 +3,7 @@
  */
 PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelProject,TwoLevelProject,ThreeLevelProject) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
+    $scope.$parent.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.$parent.param.headerPrice.blackTitle = "项目";
     $scope.flagFn = function (bool) {
         //左

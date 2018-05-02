@@ -1,8 +1,6 @@
-/**
- * Created by Administrator on 2018/4/2.
- */
 PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelProduct,TwoLevelProduct,ThreeLevelProduct) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
+    $scope.$parent.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.$parent.param.headerPrice.blackTitle = "产品";
     $scope.flagFn = function (bool) {
         //左
@@ -14,7 +12,6 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
         $scope.$parent.$parent.mainSwitch.headerPriceListAllFlag = bool;
         $scope.$parent.$parent.mainSwitch.headerLoginFlag = !bool;
         $scope.$parent.$parent.mainSwitch.headerPriceListBlackFlag = bool
-
     };
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);

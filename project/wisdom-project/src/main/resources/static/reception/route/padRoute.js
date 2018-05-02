@@ -274,6 +274,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.addRecordDetail', {
+            url: '/addRecordDetail',
+            templateUrl: root + '/addRecord/addRecordDetail.html',
+            controller: 'addRecordDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "档案详情",
+                        files: [
+                            root + "addRecord/addRecordDetail.css",
+                            root + "addRecord/addRecordDetail.js",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.personalFile', {
             url: '/personalFile',
             templateUrl: root + '/cashier/personalFile.html',
