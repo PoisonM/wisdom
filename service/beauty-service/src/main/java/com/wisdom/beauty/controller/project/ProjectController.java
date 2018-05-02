@@ -416,13 +416,46 @@ public class ProjectController {
 
         if (CommonUtils.objectIsEmpty(projectList)) {
             logger.debug("查询某店的项目列表查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
-            return null;
+            responseDTO.setResult(StatusConstant.FAILURE);
         }
 
         responseDTO.setResponseData(arrayList);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
         logger.info("查询某店的项目列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 用户端-查询某店的项目列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "getUserClientShopProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<Object> getUserClientShopProjectList(@RequestParam String pageNo, @RequestParam String pageSize) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = clerkInfo.getSysShopId();
+        logger.info("用户端-查询某店的项目列表传入参数={}", "pageNo = [" + pageNo + "], pageSize = [" + pageSize + "]");
+
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+
+        ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
+        shopProjectInfoDTO.setSysShopId(sysShopId);
+        List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
+        if (CommonUtils.objectIsEmpty(projectList)) {
+            logger.debug("用户端-查询某店的项目列表，个数为空");
+            return null;
+        }
+
+        responseDTO.setResponseData(projectList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("用户端-查询某店的项目列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
