@@ -165,4 +165,30 @@ public class MineController {
         responseDTO.setResponseData(responseMap);
         return responseDTO;
     }
+
+    /**
+     * @Param:
+     * @Return:
+     * @Description: 切换店铺
+     * @Date:2018/4/19 9:46
+     */
+    @RequestMapping(value = "/changeUserShop", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> changeUserShop(@RequestParam String sysShopId) {
+
+        long startTime = System.currentTimeMillis();
+
+        logger.info("切换店铺传入参数={}", "sysShopId = [" + sysShopId + "]");
+
+        UserInfoDTO userInfo = UserUtils.getUserInfo();
+        if (CommonUtils.objectIsEmpty(userInfo)) {
+            userInfo = UserUtils.getTestUserInfoDTO();
+        }
+        redisUtils.updateUserLoginShop(userInfo.getId(), sysShopId);
+
+        logger.info("查询用户的店铺信息方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
 }
