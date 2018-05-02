@@ -4,7 +4,7 @@
 
 define(['angular'], function (angular) {
     var app = angular.module('bossApp',['ngResource','ui.router','ngSanitize','ionic',
-        'oc.lazyLoad','highcharts-ng','infinite-scroll','customerGlobal','ionic-datepicker'])
+        'oc.lazyLoad','highcharts-ng','infinite-scroll','bossGlobal','ionic-datepicker'])
         .config(['$httpProvider',function($httpProvider) {
 
             $httpProvider.interceptors.push(function($rootScope){
