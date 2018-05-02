@@ -391,6 +391,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			format = new SimpleDateFormat("yyyyMMddHHmmss");
 		} else if ("dateMillisecond".equals(flag)) {
 			format = new SimpleDateFormat("yyyyMMddHHmmssS");
+		} else if ("hour".equals(flag)) {
+			format = new SimpleDateFormat("HH");
 		}
         String dateStr = null;
     	dateStr = format.format(date);

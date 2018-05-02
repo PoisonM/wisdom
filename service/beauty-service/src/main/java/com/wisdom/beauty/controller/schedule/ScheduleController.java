@@ -204,8 +204,13 @@ public class ScheduleController {
         extShopAppointServiceDTO.setSysClerkId(clerkId);
         extShopAppointServiceDTO.setSysShopId(sysShopId);
         List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+        StringBuffer filterStr = null;
         //缓存预约过的时间
-        StringBuffer filterStr = new StringBuffer();
+        if (DateUtils.DateToStr(new Date(), "date").equals(DateUtils.DateToStr(searchDate, "date"))) {
+            filterStr = new StringBuffer(CommonUtils.getArrayNo("00:00", DateUtils.DateToStr(new Date(), "hour") + ":30"));
+        } else {
+            filterStr = new StringBuffer();
+        }
 
         //可预约时间 = 当前美容师的排班时间段 - 预约过的时间
         if (CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)) {
@@ -232,7 +237,8 @@ public class ScheduleController {
                 }
             }
             //转为string
-            responseStr = list.toString();
+            responseStr = list.toString().replace("[", "");
+            responseStr = responseStr.replace("]", "");
         }
 
         responseDTO.setResponseData(responseStr);
