@@ -200,9 +200,9 @@ define(['appCustomer'], function (app) {
          .factory('FindOrderByTransactionId',['$resource',function ($resource){
                 return $resource(account + 'findOrderByTransactionId');
           }])
-          .factory('IsLogin',['$resource',function ($resource){
+         .factory('IsLogin',['$resource',function ($resource){
               return $resource(account + 'isLogin');
-           }])
+         }])
 
 
 });
