@@ -221,6 +221,10 @@ public class ScheduleController {
                     filterStr.append(",");
                 }
             }
+
+        }
+
+        if (null != filterStr && filterStr.length() > 0 && null != responseStr && responseStr.length() > 0) {
             //转为字符数组，方便过滤
             String[] filter = filterStr.toString().split(",");
             //转为list方便过滤
@@ -239,6 +243,7 @@ public class ScheduleController {
             //转为string
             responseStr = list.toString().replace("[", "");
             responseStr = responseStr.replace("]", "");
+            responseStr = responseStr.replaceAll(" ", "");
         }
 
         responseDTO.setResponseData(responseStr);
