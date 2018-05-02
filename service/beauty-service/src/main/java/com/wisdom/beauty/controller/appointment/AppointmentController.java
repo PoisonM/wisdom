@@ -326,7 +326,19 @@ public class AppointmentController {
 
 		ResponseDTO<List<SysClerkDTO>> responseDTO = new ResponseDTO<>();
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-		List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(clerkInfo.getSysShopId());
+		UserInfoDTO userInfo = UserUtils.getUserInfo();
+
+		String sysShopId = null;
+		//pad端
+		if (null != clerkInfo) {
+			sysShopId = clerkInfo.getSysShopId();
+		}
+		//用户端
+		if (null != userInfo) {
+			sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
+		}
+
+		List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(sysShopId);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(clerkDTOS);
 
