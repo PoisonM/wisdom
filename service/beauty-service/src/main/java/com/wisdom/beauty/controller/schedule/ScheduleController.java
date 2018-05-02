@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 import com.wisdom.beauty.client.UserServiceClient;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopClerkScheduleService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -38,6 +39,9 @@ public class ScheduleController {
 
     @Autowired
     private UserServiceClient userServiceClient;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     /**
      * 获取某个店的排班信息
@@ -167,13 +171,31 @@ public class ScheduleController {
         logger.info("获取某个店某个美容师某天的排班信息传入参数={}", "searchDate = [" + searchDate + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         ShopClerkScheduleDTO shopClerkScheduleDTO = new ShopClerkScheduleDTO();
-        shopClerkScheduleDTO.setSysShopId(clerkId);
+        //登陆相关-待补充
+//        String sysShopId = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId()).getSysShopId();
+        String sysShopId = "11";
+        shopClerkScheduleDTO.setSysShopId(sysShopId);
         shopClerkScheduleDTO.setSysClerkId(clerkId);
         shopClerkScheduleDTO.setScheduleDate(searchDate);
-        //查询某个店的排班信息
+        //查询美容师的排班信息
         List<ShopClerkScheduleDTO> clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
+        if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            responseDTO.setResponseData("美容师的排班信息为空，没有初始化！");
+            return responseDTO;
+        }
+        shopClerkScheduleDTO = clerkScheduleList.get(0);
+        HashMap<String, String> responseMap = new HashMap<>(6);
 
+        responseMap.put("startTime", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultStartTime());
+        responseMap.put("endTime", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultEndTime());
+        responseMap.put("scheduleTypeDesc", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDesc());
+        responseMap.put("scheduleType", shopClerkScheduleDTO.getScheduleType());
+
+        responseDTO.setResponseData(responseMap);
+        responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("获取某个店某个美容师某天的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+
         return responseDTO;
     }
 
