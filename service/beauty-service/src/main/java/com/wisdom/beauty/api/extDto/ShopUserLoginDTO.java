@@ -8,6 +8,15 @@ public class ShopUserLoginDTO extends BaseEntity implements Serializable {
     private String sysUserId;
     private String sysShopId;
     private String sysShopName;
+    private String sysBossId;
+
+    public String getSysBossId() {
+        return sysBossId;
+    }
+
+    public void setSysBossId(String sysBossId) {
+        this.sysBossId = sysBossId;
+    }
 
     public String getSysUserId() {
         return sysUserId;
