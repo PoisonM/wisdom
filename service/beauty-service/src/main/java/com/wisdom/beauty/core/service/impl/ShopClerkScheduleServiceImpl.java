@@ -2,12 +2,8 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.ShopClerkScheduleCriteria;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.core.mapper.ExtShopClerkScheduleMapper;
 import com.wisdom.beauty.core.mapper.ShopClerkScheduleMapper;
-import com.wisdom.beauty.core.mapper.ShopUserRechargeCardMapper;
-import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopClerkScheduleService;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -57,6 +53,17 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
         if(StringUtils.isNotBlank(shopClerkScheduleDTO.getSysShopId())){
             criteria.andSysShopIdEqualTo(shopClerkScheduleDTO.getSysShopId());
         }
+
+        if (StringUtils.isNotBlank(shopClerkScheduleDTO.getSysClerkId())) {
+            criteria.andSysClerkIdEqualTo(shopClerkScheduleDTO.getSysClerkId());
+        }
+
+        if (null != shopClerkScheduleDTO.getScheduleDate()) {
+            String startDate = DateUtils.DateToStr(shopClerkScheduleDTO.getScheduleDate(), "date") + " 00:00:00";
+            String endDate = DateUtils.DateToStr(shopClerkScheduleDTO.getScheduleDate(), "date") + " 23:59:59";
+            criteria.andScheduleDateBetween(DateUtils.StrToDate(startDate, "datetime"), DateUtils.StrToDate(endDate, "datetime"));
+        }
+
         //默认查询shopClerkScheduleDTO.getScheduleDate()所在的整月份
         if(null != shopClerkScheduleDTO.getScheduleDate()){
             Date firstDate = DateUtils.StrToDate(DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");

@@ -3,14 +3,12 @@ package com.wisdom.beauty.core.service;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.alibaba.fastjson.parser.deserializer.AbstractDateDeserializer;
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: ShopStatisticsAnalysisService
@@ -99,4 +97,12 @@ public interface ShopStatisticsAnalysisService {
     *@Date:2018/4/27 20:10
     */
     List<ExpenditureAndIncomeResponseDTO> getIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取充值金额，消费金额 ，划卡金额，单次消费金额，卡耗消费金额
+    *@Date:2018/4/30 15:56
+    */
+    Map<String,String> getShopConsumeAndRecharge(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 }
