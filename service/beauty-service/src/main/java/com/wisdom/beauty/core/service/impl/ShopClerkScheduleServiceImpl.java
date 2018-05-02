@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,11 +64,11 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
         }
 
         //默认查询shopClerkScheduleDTO.getScheduleDate()所在的整月份
-        if(null != shopClerkScheduleDTO.getScheduleDate()){
-            Date firstDate = DateUtils.StrToDate(DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
-            Date lastDay = DateUtils.StrToDate(DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
-            criteria.andScheduleDateBetween(firstDate,lastDay);
-        }
+//        if(null != shopClerkScheduleDTO.getScheduleDate()){
+//            Date firstDate = DateUtils.StrToDate(DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
+//            Date lastDay = DateUtils.StrToDate(DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
+//            criteria.andScheduleDateBetween(firstDate,lastDay);
+//        }
 
         List<ShopClerkScheduleDTO> shopClerkScheduleDTOS = shopClerkScheduleMapper.selectByCriteria(scheduleCriteria);
         return shopClerkScheduleDTOS;
