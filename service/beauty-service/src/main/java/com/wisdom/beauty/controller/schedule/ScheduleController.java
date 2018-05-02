@@ -190,7 +190,7 @@ public class ScheduleController {
         responseMap.put("startTime", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultStartTime());
         responseMap.put("endTime", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultEndTime());
         responseMap.put("scheduleTypeDesc", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDesc());
-        responseMap.put("scheduleType", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDesc());
+        responseMap.put("scheduleType", shopClerkScheduleDTO.getScheduleType());
 
         responseDTO.setResponseData(responseMap);
         logger.info("获取某个店某个美容师某天的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
