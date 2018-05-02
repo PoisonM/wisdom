@@ -56,7 +56,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(userIP+'clerkInfo/:clerkId', { clerkId: '@id' })
     }])
     //更新个人中心用户信息
-    .factory('pateClerkInfo', ['$resource', function($resource) {
+    .factory('UpateClerkInfo', ['$resource', function($resource) {
         return $resource(userIP+'upateClerkInfo')
     }])
     //查询某用户档案信息
