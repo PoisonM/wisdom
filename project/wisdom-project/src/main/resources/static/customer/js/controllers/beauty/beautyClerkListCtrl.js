@@ -36,7 +36,6 @@ angular.module('controllers',[]).controller('beautyClerkListCtrl',
                             }
                             value.clerkProgressStyle = angular.copy(clerkProgressStyle);
                         })
-                        console.log($scope.param.clerkList);
                     }
                     $scope.$broadcast('scroll.refreshComplete');
                 })

@@ -69,8 +69,9 @@
         <div class="row" ng-repeat="item in param.timeDate"
              style="background:white;color:black;font-size:10px;
                       text-align:center;margin-left:40px;width:90%">
-            <div class="col" ng-repeat="item1 in item">
-                <span style="text-decoration:line-through;color: grey">{{item1.value}}</span>
+            <div class="col" ng-repeat="item1 in item" ng-click="appointProject(item1)">
+                <span style="color: black" ng-if="item1.status=='1'">{{item1.value}}</span>
+                <span style="text-decoration:line-through;color: grey" ng-if="item1.status=='0'">{{item1.value}}</span>
             </div>
         </div>
         <div class="row" style="background:white;color:black;width:45px;margin-top:-184px;height:184px;">
@@ -92,15 +93,18 @@
                     style="width:90%;border-radius:20px">发送预约</button>
         </center>
     </ion-content>
-    <div class="tabs" style="background:white;color:black">
-        <a class="tab-item">
-            预约
+    <div class="tabs" style="background:white;color:black;height: 45px;">
+        <a class="tab-item" style="color:red;">
+            <p style="font-size:25px;margin-top:-12px"><i class="ion ion-ios-paper-outline"></i></p>
+            <p style="margin-top:-30px;font-size:10px">预约</p>
         </a>
         <a class="tab-item">
-            评价
+            <p style="font-size:25px;margin-top:-12px"><i class="ion ion-ios-rose-outline"></i></p>
+            <p style="margin-top:-30px;font-size:10px">评价</p>
         </a>
         <a class="tab-item">
-            我的
+            <p style="font-size: 25px;margin-top:-10px"><i class="ion ion-ios-person-outline"></i></p>
+            <p style="margin-top:-30px;font-size:10px">我的</p>
         </a>
     </div>
 </ion-view>
