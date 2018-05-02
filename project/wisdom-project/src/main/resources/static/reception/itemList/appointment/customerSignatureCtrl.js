@@ -2,6 +2,7 @@
  * Created by Administrator on 2018/4/8.
  */
 PADWeb.controller("customerSignatureCtrl", function($scope, $state, $stateParams) {
+    $scope.$parent.param.top_bottomSelect = "yuyue";
     console.log("customerSignatureCtrl");
     $scope.customerSignature = [
         {
