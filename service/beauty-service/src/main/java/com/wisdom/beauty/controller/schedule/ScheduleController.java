@@ -138,7 +138,7 @@ public class ScheduleController {
 
 
     /**
-     * 批量更新某个点的排班信息
+     * 批量更新某个店的排班信息
      *
      * @param shopClerkSchedule
      * @return
@@ -152,10 +152,29 @@ public class ScheduleController {
         int scheduleList = shopClerkScheduleService.updateShopClerkScheduleList(scheduleDTO);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(scheduleList>0?StatusConstant.SUCCESS:StatusConstant.FAILURE);
-        logger.info("耗时{}毫秒",System.currentTimeMillis()-currentTimeMillis);
+        logger.info("批量更新某个店的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
-
     }
 
+    /**
+     * 获取某个店某个美容师某天的排班信息
+     */
+    @RequestMapping(value = "/getClerkScheduleInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    ResponseDTO<Object> getClerkScheduleInfo(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate, @RequestParam String clerkId) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("获取某个店某个美容师某天的排班信息传入参数={}", "searchDate = [" + searchDate + "]");
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        ShopClerkScheduleDTO shopClerkScheduleDTO = new ShopClerkScheduleDTO();
+        shopClerkScheduleDTO.setSysShopId(clerkId);
+        shopClerkScheduleDTO.setSysClerkId(clerkId);
+        shopClerkScheduleDTO.setScheduleDate(searchDate);
+        //查询某个店的排班信息
+        List<ShopClerkScheduleDTO> clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
+
+        logger.info("获取某个店某个美容师某天的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
 
 }
