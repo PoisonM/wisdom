@@ -3,8 +3,11 @@ package com.wisdom.beauty.core.redis;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
+import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
@@ -39,6 +42,9 @@ public class RedisUtils {
 
     @Resource
     private ShopAppointmentService appointmentService;
+
+    @Resource
+    private ShopUserRelationService shopUserRelationService;
 
 
     /**
@@ -149,6 +155,34 @@ public class RedisUtils {
      */
     public void saveShopProjectInfoToRedis(ShopProjectInfoDTO shopProjectInfoDTO) {
         JedisUtils.setObject(shopProjectInfoDTO.getId(), shopProjectInfoDTO, projectInfoCacheSeconds);
+    }
+
+    /**
+     * 获取用户当前登陆的店铺信息
+     */
+    public ShopUserLoginDTO getUserLoginShop(String sysUserId) {
+
+        logger.info("获取用户当前登陆的店铺信息传入参数={}", "sysUserId = [" + sysUserId + "]");
+
+        ShopUserLoginDTO userLoginDTO = (ShopUserLoginDTO) JedisUtils.getObject("shop_" + sysUserId);
+
+        //获取用户登陆信息
+        if (null == userLoginDTO) {
+            ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
+            shopUserRelationDTO.setSysUserId(sysUserId);
+            List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService.getShopListByCondition(shopUserRelationDTO);
+            //不为空，初始化关联一个店铺
+            if (CommonUtils.objectIsNotEmpty(shopListByCondition)) {
+                ShopUserRelationDTO relationDTO = shopListByCondition.get(0);
+                ShopUserLoginDTO loginDTO = new ShopUserLoginDTO();
+                loginDTO.setSysShopId(relationDTO.getSysShopId());
+                loginDTO.setSysShopName(relationDTO.getSysShopName());
+                loginDTO.setSysUserId(sysUserId);
+                JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
+                return loginDTO;
+            }
+        }
+        return userLoginDTO;
     }
 
 }
