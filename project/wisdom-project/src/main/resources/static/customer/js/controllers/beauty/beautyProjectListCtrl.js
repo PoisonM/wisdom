@@ -12,14 +12,14 @@ angular.module('controllers',[]).controller('beautyProjectListCtrl',
     $scope.chooseProject = function(projectId)
     {
         $scope.param.shopProjectId = angular.copy(projectId);
-        console.log($scope.param.shopProjectId);
+        $rootScope.shopAppointInfo.shopProjectId = $scope.param.shopProjectId
     }
 
     $scope.param = {
         pageNo : 0,
         pageSize:10,
         shopProjectList : [],
-        shopProjectId : $stateParams.shopProjectId
+        shopProjectId : $rootScope.shopAppointInfo.shopProjectId
     }
 
     $scope.doRefresh = function()

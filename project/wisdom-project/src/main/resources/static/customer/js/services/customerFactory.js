@@ -13,7 +13,9 @@ var user = '/user/';
 
 var weixin = '/weixin/customer/';
 
-var projectInfo = '/beauty/projectInfo/'
+var projectInfo = '/beauty/projectInfo/';
+var appointInfo = '/beauty/appointmentInfo/';
+var clerkSchedule = '/beauty/clerkSchedule/';
 
 define(['appCustomer'], function (app) {
     app
@@ -203,6 +205,37 @@ define(['appCustomer'], function (app) {
         .factory('GetUserClientShopProjectList',['$resource',function ($resource){
             return $resource(projectInfo + 'getUserClientShopProjectList')
         }])
-
+        .factory('GetShopClerkList',['$resource',function ($resource){
+            return $resource(appointInfo + 'getShopClerkList')
+        }])
+        .factory('GetClerkScheduleInfo',['$resource',function ($resource){
+            return $resource(clerkSchedule + 'getClerkScheduleInfo')
+        }])
+        .factory('GetBeautyShopInfo',['$resource','$http','$q',function ($resource,$http,$q){
+                return {
+                    clerkInfo: function (clerkId) {
+                        lazyClerkDeferred = $q.defer();
+                        $http({
+                            url: user + 'clerkInfo/' + clerkId,
+                            method: 'GET'
+                        }).success(function (response, status, header, config, statusText) {
+                            //成功处理
+                            lazyClerkDeferred.resolve(response);
+                        });
+                        return lazyClerkDeferred.promise;
+                    },
+                    shopProjectInfo: function (shopProjectId) {
+                        lazyProjectDeferred = $q.defer();
+                        $http({
+                            url: '/beauty/projectInfo/' + shopProjectId,
+                            method: 'GET'
+                        }).success(function (response, status, header, config, statusText) {
+                            //成功处理
+                            lazyProjectDeferred.resolve(response);
+                        });
+                        return lazyProjectDeferred.promise;
+                    }
+                }
+        }])
 
 });

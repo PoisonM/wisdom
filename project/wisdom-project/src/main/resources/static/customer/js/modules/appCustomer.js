@@ -26,6 +26,10 @@ define(['angular'], function (angular) {
         .run(function($rootScope){
             $rootScope.returnRootNative = function(){
             };
+            $rootScope.shopAppointInfo = {
+                clerkId : '',
+                shopProjectId:''
+            }
         })
     return app;
 });
