@@ -193,6 +193,7 @@ public class ScheduleController {
         responseMap.put("scheduleType", shopClerkScheduleDTO.getScheduleType());
 
         responseDTO.setResponseData(responseMap);
+        responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("获取某个店某个美容师某天的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 
         return responseDTO;
