@@ -194,16 +194,20 @@ public class ScheduleController {
 
         String startTime = ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultStartTime();
         String endTime = ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultEndTime();
+        //存储当前美容师的排班时间段
         String responseStr = CommonUtils.getArrayNo(startTime, endTime);
 
         //查询某个美容师某天的预约详情
         ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-        extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
-        extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
+        extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(DateUtils.DateToStr(searchDate, "date") + " 00:00:00", "datetime"));
+        extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(DateUtils.DateToStr(searchDate, "date") + " 23:59:59", "datetime"));
         extShopAppointServiceDTO.setSysClerkId(clerkId);
         extShopAppointServiceDTO.setSysShopId(sysShopId);
         List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+        //缓存预约过的时间
         StringBuffer filterStr = new StringBuffer();
+
+        //可预约时间 = 当前美容师的排班时间段 - 预约过的时间
         if (CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)) {
             for (int i = 0; i < shopAppointServiceDTOS.size(); i++) {
                 filterStr.append(CommonUtils.getArrayNo(DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointStartTime(), "time"),
@@ -212,10 +216,23 @@ public class ScheduleController {
                     filterStr.append(",");
                 }
             }
-
-            for (int j = 0; j < filterStr.length(); j++) {
-                deleteCharString(responseStr, filterStr.charAt(j));
+            //转为字符数组，方便过滤
+            String[] filter = filterStr.toString().split(",");
+            //转为list方便过滤
+            List<String> list = Arrays.asList(responseStr.split(","));
+            list = new ArrayList(list);
+            //list中过滤掉冲突时间段
+            for (int j = 0; j < filter.length; j++) {
+                Iterator<String> iterator = list.iterator();
+                while (iterator.hasNext()) {
+                    String next = iterator.next();
+                    if (next.equals(filter[j])) {
+                        iterator.remove();
+                    }
+                }
             }
+            //转为string
+            responseStr = list.toString();
         }
 
         responseDTO.setResponseData(responseStr);
@@ -223,20 +240,6 @@ public class ScheduleController {
         logger.info("获取某个店某个美容师某天的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 
         return responseDTO;
-    }
-
-    public String deleteCharString(String sourceString, char chElemData) {
-        String tmpString = "";
-        tmpString += chElemData;
-        StringBuffer stringBuffer = new StringBuffer(sourceString);
-        int iFlag = -1;
-        do {
-            iFlag = stringBuffer.indexOf(tmpString);
-            if (iFlag != -1) {
-                stringBuffer.deleteCharAt(iFlag);
-            }
-        } while (iFlag != -1);
-        return stringBuffer.toString();
     }
 
 }
