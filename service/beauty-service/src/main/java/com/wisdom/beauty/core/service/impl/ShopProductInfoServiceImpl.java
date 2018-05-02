@@ -129,16 +129,19 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	 * @Date:2018/4/10 15:59
 	 */
 	@Override
-	public List<ShopProductTypeDTO> getOneLevelProductList(String sysShopId) {
-		logger.info("getOneLevelProjectList传入的参数,sysShopId={}", sysShopId);
-		if (StringUtils.isBlank(sysShopId)) {
+	public List<ShopProductTypeDTO> getOneLevelProductList(ShopProductTypeDTO shopProductTypeDTO) {
+		logger.info("getOneLevelProjectList传入的参数,sysShopId={},productType={}", shopProductTypeDTO.getSysShopId(),shopProductTypeDTO.getProductType());
+		if (shopProductTypeDTO==null||StringUtils.isBlank(shopProductTypeDTO.getSysShopId())) {
 			logger.info("getOneLevelProjectList传入的参数sysShopId为空");
 			return null;
 		}
 		ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
 		ShopProductTypeCriteria.Criteria criteria = shopProductTypeCriteria.createCriteria();
-		criteria.andSysShopIdEqualTo(sysShopId);
+		criteria.andSysShopIdEqualTo(shopProductTypeDTO.getSysShopId());
 		criteria.andParentIdIsNull();
+		if(StringUtils.isNotBlank(shopProductTypeDTO.getProductType())){
+			criteria.andProductTypeEqualTo(shopProductTypeDTO.getProductType());
+		}
 		List<ShopProductTypeDTO> list = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
 		return list;
 	}
@@ -161,6 +164,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
 		ShopProductTypeCriteria.Criteria criteria = shopProductTypeCriteria.createCriteria();
 		criteria.andParentIdEqualTo(shopProductTypeDTO.getId());
+		if(StringUtils.isNotBlank(shopProductTypeDTO.getProductType())){
+			criteria.andProductTypeEqualTo(shopProductTypeDTO.getProductType());
+		}
 		List<ShopProductTypeDTO> list = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
 		return list;
 	}
@@ -292,7 +298,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	@Override
 	public List<ProductTypeResponseDTO> getAllProducts(String sysShopId) {
 		logger.info("getAllProducts方法传入参数sysShopId={}", sysShopId);
-		List<ShopProductTypeDTO> oneLevelProductList = this.getOneLevelProductList(sysShopId);
+		ShopProductTypeDTO shopProductType=new ShopProductTypeDTO();
+		shopProductType.setSysShopId(sysShopId);
+		List<ShopProductTypeDTO> oneLevelProductList = this.getOneLevelProductList(shopProductType);
 
 		// 查询ParentId不为空的产品类型，即二级产品
 		ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
