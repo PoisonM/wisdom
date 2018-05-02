@@ -75,8 +75,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         if (StringUtils.isNotBlank(userConsumeRequest.getSysUserId())) {
             c.andSysUserIdEqualTo(userConsumeRequest.getSysUserId());
         }
-        c.andConsumeTypeEqualTo(userConsumeRequest.getConsumeType());
-
+        if(StringUtils.isNotBlank(userConsumeRequest.getConsumeType())){
+            c.andConsumeTypeEqualTo(userConsumeRequest.getConsumeType());
+        }
 
         //根据goodsTypeRequire设置查询条件，如果费类型不是划卡则需要通过goodType来区分,如果goodsTypeRequire为false则需要根据goodType来区分
         if (userConsumeRequest.getGoodsTypeRequire()) {
@@ -101,6 +102,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
                 userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
                 userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
                 userConsumeRecordResponseDTO.setSysShopClerkId(shopUserConsumeRecord.getSysClerkId());
+                userConsumeRecordResponseDTO.setGoodType(shopUserConsumeRecord.getGoodsType());
+                userConsumeRecordResponseDTO.setConsumeType(shopUserConsumeRecord.getConsumeType());
                 if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
                     //如果是充值类型，并且是GoodsType=2,则设置标题为充值
                     if(shopUserConsumeRecord.getGoodsType().equals(GoodsTypeEnum.RECHARGE_CARD.getCode())){

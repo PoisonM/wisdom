@@ -35,6 +35,7 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     //类型
     private String type;
     private String goodType;
+    private String consumeType;
     private List<ShopUserConsumeRecordDTO> userConsumeRecordList;
 
 
@@ -124,5 +125,13 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
 
     public void setGoodType(String goodType) {
         this.goodType = goodType;
+    }
+
+    public String getConsumeType() {
+        return consumeType;
+    }
+
+    public void setConsumeType(String consumeType) {
+        this.consumeType = consumeType;
     }
 }

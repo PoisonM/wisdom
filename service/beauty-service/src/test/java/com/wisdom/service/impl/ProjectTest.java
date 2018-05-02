@@ -58,7 +58,7 @@ public class ProjectTest {
     @Test
     public void getShopUserRecentlyOrderInfo() throws Exception {
 
-        MvcResult result = mvc.perform(get("/projectInfo/searchShopProjectList").param("useStyle", "2").param("filterStr", ""))
+        MvcResult result = mvc.perform(get("/projectInfo/getUserClientShopProjectList").param("pageNo", "1").param("pageSize", "1").param("filterStr", ""))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -84,7 +84,7 @@ public class ProjectTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/projectInfo/getUserShopProjectList").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/projectInfo/getUserClientShopProjectList").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
