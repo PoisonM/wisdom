@@ -6,225 +6,269 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SysClerkDTO extends BaseEntity implements Serializable {
-    //
-    private String id;
+	//
+	private String id;
 
-    //
-    private String sysBossId;
+	//
+	private String sysBossId;
 
-    //
-    private String sysBossName;
+	//
+	private String sysBossName;
 
-    //
-    private String sysShopId;
+	//
+	private String sysShopId;
 
-    //
-    private String sysShopName;
+	//
+	private String sysShopName;
 
-    //user表主键
-    private String sysUserId;
+	// user表主键
+	private String sysUserId;
 
-    //昵称
-    private String nickname;
+	// 昵称
+	private String nickname;
 
-    //
-    private String name;
+	//
+	private String name;
 
-    //密码
-    private String password;
+	// 密码
+	private String password;
 
-    //
-    private String email;
+	//
+	private String email;
 
-    //身份证号
-    private String identifyNumber;
+	// 身份证号
+	private String identifyNumber;
 
-    //手机号
-    private String mobile;
+	// 手机号
+	private String mobile;
 
-    //用户类型
-    private String userType;
+	// 用户类型
+	private String userType;
 
-    //微信openId
-    private String userOpenid;
+	// 微信openId
+	private String userOpenid;
 
-    //关注状态
-    private String weixinAttentionStatus;
+	// 关注状态
+	private String weixinAttentionStatus;
 
-    //照片
-    private String photo;
+	// 照片
+	private String photo;
 
-    //登陆id地址
-    private String loginIp;
+	// 登陆id地址
+	private String loginIp;
 
-    //登陆时间
-    private Date loginDate;
+	// 登陆时间
+	private Date loginDate;
 
-    //删除标记，1表示用户是否已经剔除系统，0表示用户是系统内的正常用户
-    private String delFlag;
+	// 删除标记，1表示用户是否已经剔除系统，0表示用户是系统内的正常用户
+	private String delFlag;
 
-    //
-    private String address;
+	//
+	private String address;
 
-    private static final long serialVersionUID = 1L;
+	//
+	private String role;
 
-    public String getId() {
-        return id;
-    }
+	//
+	private String sex;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	//
+	private Date createDate;
 
-    public String getSysBossId() {
-        return sysBossId;
-    }
+	//
+	private Date updateDate;
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public String getSysBossName() {
-        return sysBossName;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setSysBossName(String sysBossName) {
-        this.sysBossName = sysBossName;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getSysShopId() {
-        return sysShopId;
-    }
+	public String getSysBossId() {
+		return sysBossId;
+	}
 
-    public void setSysShopId(String sysShopId) {
-        this.sysShopId = sysShopId;
-    }
+	public void setSysBossId(String sysBossId) {
+		this.sysBossId = sysBossId;
+	}
 
-    public String getSysShopName() {
-        return sysShopName;
-    }
+	public String getSysBossName() {
+		return sysBossName;
+	}
 
-    public void setSysShopName(String sysShopName) {
-        this.sysShopName = sysShopName;
-    }
+	public void setSysBossName(String sysBossName) {
+		this.sysBossName = sysBossName;
+	}
 
-    public String getSysUserId() {
-        return sysUserId;
-    }
+	public String getSysShopId() {
+		return sysShopId;
+	}
 
-    public void setSysUserId(String sysUserId) {
-        this.sysUserId = sysUserId;
-    }
+	public void setSysShopId(String sysShopId) {
+		this.sysShopId = sysShopId;
+	}
 
-    public String getNickname() {
-        return nickname;
-    }
+	public String getSysShopName() {
+		return sysShopName;
+	}
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
+	public void setSysShopName(String sysShopName) {
+		this.sysShopName = sysShopName;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getSysUserId() {
+		return sysUserId;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setSysUserId(String sysUserId) {
+		this.sysUserId = sysUserId;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getNickname() {
+		return nickname;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getIdentifyNumber() {
-        return identifyNumber;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setIdentifyNumber(String identifyNumber) {
-        this.identifyNumber = identifyNumber;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getMobile() {
-        return mobile;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getUserType() {
-        return userType;
-    }
+	public String getIdentifyNumber() {
+		return identifyNumber;
+	}
 
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
+	public void setIdentifyNumber(String identifyNumber) {
+		this.identifyNumber = identifyNumber;
+	}
 
-    public String getUserOpenid() {
-        return userOpenid;
-    }
+	public String getMobile() {
+		return mobile;
+	}
 
-    public void setUserOpenid(String userOpenid) {
-        this.userOpenid = userOpenid;
-    }
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 
-    public String getWeixinAttentionStatus() {
-        return weixinAttentionStatus;
-    }
+	public String getUserType() {
+		return userType;
+	}
 
-    public void setWeixinAttentionStatus(String weixinAttentionStatus) {
-        this.weixinAttentionStatus = weixinAttentionStatus;
-    }
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
 
-    public String getPhoto() {
-        return photo;
-    }
+	public String getUserOpenid() {
+		return userOpenid;
+	}
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
+	public void setUserOpenid(String userOpenid) {
+		this.userOpenid = userOpenid;
+	}
 
-    public String getLoginIp() {
-        return loginIp;
-    }
+	public String getWeixinAttentionStatus() {
+		return weixinAttentionStatus;
+	}
 
-    public void setLoginIp(String loginIp) {
-        this.loginIp = loginIp;
-    }
+	public void setWeixinAttentionStatus(String weixinAttentionStatus) {
+		this.weixinAttentionStatus = weixinAttentionStatus;
+	}
 
-    public Date getLoginDate() {
-        return loginDate;
-    }
+	public String getPhoto() {
+		return photo;
+	}
 
-    public void setLoginDate(Date loginDate) {
-        this.loginDate = loginDate;
-    }
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 
-    public String getDelFlag() {
-        return delFlag;
-    }
+	public String getLoginIp() {
+		return loginIp;
+	}
 
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
+	public void setLoginIp(String loginIp) {
+		this.loginIp = loginIp;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public Date getLoginDate() {
+		return loginDate;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public void setLoginDate(Date loginDate) {
+		this.loginDate = loginDate;
+	}
+
+	public String getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(String delFlag) {
+		this.delFlag = delFlag;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 }
