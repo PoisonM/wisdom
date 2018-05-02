@@ -1,25 +1,32 @@
 package com.wisdom.beauty.controller.mine;
 
+import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
+import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * ClassName: MineController
@@ -40,6 +47,14 @@ public class MineController {
     @Autowired
     private ShopCustomerProductRelationService shopCustomerProductRelationService;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
+    @Resource
+    private ShopUserRelationService shopUserRelationService;
+
+    @Value("${test.msg}")
+    private String msg;
     /**
      * @Author:huan
      * @Param:
@@ -106,6 +121,48 @@ public class MineController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(list);
         logger.info("getProductRecord方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * @Param:
+     * @Return:
+     * @Description: 查询用户的店铺信息
+     * @Date:2018/4/19 9:46
+     */
+    @RequestMapping(value = "/getUserClientInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getUserClientInfo() {
+
+        long startTime = System.currentTimeMillis();
+        UserInfoDTO userInfo = UserUtils.getUserInfo();
+        //测试挡板
+        if (CommonCodeEnum.TRUE.getCode().equalsIgnoreCase(msg)) {
+            userInfo = UserUtils.getTestUserInfoDTO();
+        }
+
+        HashMap<Object, Object> responseMap = new HashMap<>(2);
+        ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(userInfo.getId());
+        responseMap.put("currentShop", userLoginShop);
+
+        ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
+        shopUserRelationDTO.setSysUserId(userInfo.getId());
+        List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService.getShopListByCondition(shopUserRelationDTO);
+        if (CommonUtils.objectIsNotEmpty(shopListByCondition) && shopListByCondition.size() > 1) {
+            Iterator it = shopListByCondition.iterator();
+            while (it.hasNext()) {
+                ShopUserRelationDTO next = (ShopUserRelationDTO) it.next();
+                if (userLoginShop.getSysShopId().equals(next.getSysShopId())) {
+                    it.remove();
+                }
+            }
+            responseMap.put("otherShop", shopListByCondition);
+        }
+
+        logger.info("查询用户的店铺信息方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        ResponseDTO<Object> responseDTO = new ResponseDTO<Object>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(responseMap);
         return responseDTO;
     }
 }

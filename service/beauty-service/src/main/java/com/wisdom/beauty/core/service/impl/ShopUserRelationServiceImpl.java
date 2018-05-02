@@ -62,9 +62,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         ShopUserRelationCriteria.Criteria c = criteria.createCriteria();
 
         SysBossDTO sysBossDTO = UserUtils.getBossInfo();
-        if (sysBossDTO == null || StringUtils.isNull(sysBossDTO.getId())) {
-            throw new ServiceException("isMember方法从redis获取sysClerkDTO为空");
-        } else {
+        if (sysBossDTO != null && StringUtils.isNotNull(sysBossDTO.getId())) {
             logger.info("getShopListByCondition方法传入的参数bossId={}", sysBossDTO.getId());
             c.andSysBossIdEqualTo(sysBossDTO.getId());
         }
