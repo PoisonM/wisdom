@@ -56,7 +56,7 @@ public class ScheduleTest {
     @Test
     public void getShopClerkScheduleList() throws Exception {
 
-        MvcResult result = mvc.perform(get("/clerkSchedule/getClerkScheduleInfo").param("searchDate", "2018-04-28").param("clerkId", "34c061c294d544a7bd58752ce71b5e17"))
+        MvcResult result = mvc.perform(get("/clerkSchedule/getShopClerkScheduleList").param("searchDate", "2018-05-28"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
