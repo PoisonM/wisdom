@@ -186,4 +186,32 @@ public class RedisUtils {
         return userLoginDTO;
     }
 
+    /**
+     * 更改用户当前登陆的店铺信息
+     */
+    public ShopUserLoginDTO updateUserLoginShop(String sysUserId, String sysShopId) {
+
+        logger.info("获取用户当前登陆的店铺信息传入参数={}", "sysUserId = [" + sysUserId + "]");
+
+        ShopUserLoginDTO userLoginDTO = (ShopUserLoginDTO) JedisUtils.getObject("shop_" + sysUserId);
+
+        ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
+        shopUserRelationDTO.setSysUserId(sysUserId);
+        List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService.getShopListByCondition(shopUserRelationDTO);
+
+        if (CommonUtils.objectIsNotEmpty(shopListByCondition)) {
+            for (ShopUserRelationDTO relationDTO : shopListByCondition) {
+                if (userLoginDTO.getSysShopId().equalsIgnoreCase(sysShopId)) {
+                    ShopUserLoginDTO loginDTO = new ShopUserLoginDTO();
+                    loginDTO.setSysShopId(relationDTO.getSysShopId());
+                    loginDTO.setSysShopName(relationDTO.getSysShopName());
+                    loginDTO.setSysUserId(sysUserId);
+                    loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
+                    JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
+                }
+            }
+        }
+        return userLoginDTO;
+    }
+
 }
