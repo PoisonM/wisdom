@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.appointment;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
@@ -25,7 +26,7 @@ import com.wisdom.common.util.LunarUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,8 +62,9 @@ public class AppointmentController {
 	@Resource
 	private RedisUtils redisUtils;
 
-	@Resource
-	private MongoTemplate mongoTemplate;
+	@Value("${test.msg}")
+	private String msg;
+
 
 	/**
 	 * 根据时间查询某个美容店预约列表
@@ -304,6 +306,39 @@ public class AppointmentController {
 		redisUtils.updateShopAppointInfoToRedis(shopAppointServiceDTO);
 
 		responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+
+		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
+		return responseDTO;
+	}
+
+	/**
+	 * 获取我的预约列表（修改预约状态等）
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "getMyAppointInfoList", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<Object> getMyAppointInfoList() {
+		long timeMillis = System.currentTimeMillis();
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		UserInfoDTO userInfo = UserUtils.getUserInfo();
+
+		ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
+		shopAppointServiceDTO.setSysUserId(userInfo.getId());
+		String sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
+		if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
+			sysShopId = "11";
+		}
+
+		shopAppointServiceDTO.setSysShopId(sysShopId);
+		List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(shopAppointServiceDTO);
+
+		logger.debug("获取我的预约列表预约信息，执行结果为{}", shopAppointServiceDTOS);
+
+		responseDTO.setResponseData(shopAppointServiceDTOS);
+		responseDTO.setResult(StatusConstant.SUCCESS);
 
 		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
 		return responseDTO;

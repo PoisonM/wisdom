@@ -4,6 +4,7 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopProjectService;
@@ -14,6 +15,7 @@ import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -45,6 +47,9 @@ public class RedisUtils {
 
     @Resource
     private ShopUserRelationService shopUserRelationService;
+
+    @Value("${test.msg}")
+    private static String msg;
 
 
     /**
@@ -179,6 +184,14 @@ public class RedisUtils {
                 loginDTO.setSysShopName(relationDTO.getSysShopName());
                 loginDTO.setSysUserId(sysUserId);
                 loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
+                JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
+                return loginDTO;
+            } else if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
+                ShopUserLoginDTO loginDTO = new ShopUserLoginDTO();
+                loginDTO.setSysShopId("1");
+                loginDTO.setSysShopName("汉方美业");
+                loginDTO.setSysUserId(sysUserId);
+                loginDTO.setSysShopPhoto("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E7%BE%8E%E5%AE%B9%E5%BA%97.png");
                 JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
                 return loginDTO;
             }
