@@ -46,6 +46,7 @@ public class UserUtils {
     public static UserInfoDTO getTestUserInfoDTO() {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId("1");
+        userInfoDTO.setMobile("18810142926");
         return userInfoDTO;
     }
 

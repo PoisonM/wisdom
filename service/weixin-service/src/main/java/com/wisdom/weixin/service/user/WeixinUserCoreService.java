@@ -146,7 +146,7 @@ public class WeixinUserCoreService {
      * @param info
      * @return
      */
-    private String getUserQRCode(String info) {
+    public String getUserQRCode(String info) {
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();

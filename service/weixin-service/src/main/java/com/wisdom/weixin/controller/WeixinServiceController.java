@@ -2,10 +2,7 @@ package com.wisdom.weixin.controller;
 
 import com.wisdom.weixin.service.user.WeixinUserCoreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by chenjiake on 17/11/4.
@@ -31,6 +28,12 @@ public class WeixinServiceController {
     void updateBossWeixinToken()
     {
         weixinCustomerCoreService.updateUserWeixinToken();
+    }
+
+    @RequestMapping(value = "/getTemporaryQrCode", method = RequestMethod.GET)
+    @ResponseBody
+    String getTemporaryQrCode(@RequestParam(value = "info") String info) {
+        return weixinCustomerCoreService.getUserQRCode(info);
     }
 
 }

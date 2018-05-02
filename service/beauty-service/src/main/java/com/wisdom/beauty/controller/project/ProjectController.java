@@ -3,7 +3,9 @@ package com.wisdom.beauty.controller.project;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.api.extDto.RelationIds;
+import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.util.UserUtils;
@@ -11,6 +13,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -40,6 +43,9 @@ public class ProjectController {
 
 	@Resource
 	private ShopProjectService projectService;
+
+    @Resource
+    private RedisUtils redisUtils;
 
     @Resource
     private ShopProjectGroupService shopProjectGroupService;
@@ -169,7 +175,18 @@ public class ProjectController {
     ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId, @RequestParam String cardStyle) {
         long currentTimeMillis = System.currentTimeMillis();
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        String sysShopId = clerkInfo.getSysShopId();
+        UserInfoDTO userInfo = UserUtils.getUserInfo();
+        String sysShopId = "";
+        //pad端登陆
+        if (null != clerkInfo) {
+            sysShopId = clerkInfo.getSysShopId();
+        }
+        //用户端登陆
+        if (null != userInfo) {
+            ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(userInfo.getId());
+            sysShopId = userLoginShop.getSysShopId();
+        }
+
         logger.info("传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
         ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
 

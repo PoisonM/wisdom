@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
+import com.wisdom.beauty.client.WeixinServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
@@ -49,6 +50,9 @@ public class MineController {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private WeixinServiceClient weixinServiceClient;
 
     @Resource
     private ShopUserRelationService shopUserRelationService;
@@ -194,10 +198,29 @@ public class MineController {
     /**
      * 获取我的二维码
      */
+    @RequestMapping(value = "/getUserQrCode", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseDTO<Object> getUserQrCode() {
+
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        return null;
+        UserInfoDTO userInfo = UserUtils.getUserInfo();
+        if (null == userInfo && CommonCodeEnum.TRUE.getCode().equals(msg)) {
+            logger.error("获取我的二维码userInfo为空1");
+            userInfo = UserUtils.getTestUserInfoDTO();
+        }
+        if (null != userInfo) {
+            String temporaryQrCode = weixinServiceClient.getTemporaryQrCode(userInfo.getMobile());
+            logger.info("调用微信服务获取到的二维码为,{}", temporaryQrCode);
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            responseDTO.setResponseData(temporaryQrCode);
+        } else {
+            logger.error("获取我的二维码userInfo为空2");
+            String temporaryQrCode = "https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E4%BA%8C%E7%BB%B4%E7%A0%81.png";
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setResponseData(temporaryQrCode);
+        }
+
+        return responseDTO;
     }
 
 }
