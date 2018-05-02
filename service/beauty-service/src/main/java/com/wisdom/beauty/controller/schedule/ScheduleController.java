@@ -1,10 +1,13 @@
 package com.wisdom.beauty.controller.schedule;
 
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopClerkScheduleService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -42,6 +45,9 @@ public class ScheduleController {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private ShopAppointmentService appointmentService;
 
     /**
      * 获取某个店的排班信息
@@ -185,18 +191,52 @@ public class ScheduleController {
             return responseDTO;
         }
         shopClerkScheduleDTO = clerkScheduleList.get(0);
-        HashMap<String, String> responseMap = new HashMap<>(6);
 
-        responseMap.put("startTime", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultStartTime());
-        responseMap.put("endTime", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultEndTime());
-        responseMap.put("scheduleTypeDesc", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDesc());
-        responseMap.put("scheduleType", shopClerkScheduleDTO.getScheduleType());
+        String startTime = ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultStartTime();
+        String endTime = ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultEndTime();
+        String responseStr = CommonUtils.getArrayNo(startTime, endTime);
 
-        responseDTO.setResponseData(responseMap);
+        //查询某个美容师某天的预约详情
+        ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+        extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
+        extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
+        extShopAppointServiceDTO.setSysClerkId(clerkId);
+        extShopAppointServiceDTO.setSysShopId(sysShopId);
+        List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+        StringBuffer filterStr = new StringBuffer();
+        if (CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)) {
+            for (int i = 0; i < shopAppointServiceDTOS.size(); i++) {
+                filterStr.append(CommonUtils.getArrayNo(DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointStartTime(), "time"),
+                        DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointEndTime(), "time")));
+                if (i != (shopAppointServiceDTOS.size() - 1)) {
+                    filterStr.append(",");
+                }
+            }
+
+            for (int j = 0; j < filterStr.length(); j++) {
+                deleteCharString(responseStr, filterStr.charAt(j));
+            }
+        }
+
+        responseDTO.setResponseData(responseStr);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("获取某个店某个美容师某天的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 
         return responseDTO;
+    }
+
+    public String deleteCharString(String sourceString, char chElemData) {
+        String tmpString = "";
+        tmpString += chElemData;
+        StringBuffer stringBuffer = new StringBuffer(sourceString);
+        int iFlag = -1;
+        do {
+            iFlag = stringBuffer.indexOf(tmpString);
+            if (iFlag != -1) {
+                stringBuffer.deleteCharAt(iFlag);
+            }
+        } while (iFlag != -1);
+        return stringBuffer.toString();
     }
 
 }

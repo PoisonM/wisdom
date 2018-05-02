@@ -167,10 +167,9 @@ public class MineController {
     }
 
     /**
-     * @Param:
-     * @Return:
-     * @Description: 切换店铺
-     * @Date:2018/4/19 9:46
+     * 切换店铺
+     * @param sysShopId
+     * @return
      */
     @RequestMapping(value = "/changeUserShop", method = RequestMethod.GET)
     @ResponseBody
@@ -191,4 +190,14 @@ public class MineController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
+
+    /**
+     * 获取我的二维码
+     */
+    public ResponseDTO<Object> getUserQrCode() {
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return null;
+    }
+
 }
