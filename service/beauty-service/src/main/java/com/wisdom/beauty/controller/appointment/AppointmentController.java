@@ -277,13 +277,13 @@ public class AppointmentController {
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		if (null != shopAppointInfoFromRedis) {
 			BeanUtils.copyProperties(shopAppointInfoFromRedis, extShopAppointServiceDTO);
-			List<SysClerkDTO> clerkInfoByClerkId = userServiceClient.getClerkInfoByClerkId(extShopAppointServiceDTO.getSysClerkId());
-			if (CommonUtils.objectIsEmpty(clerkInfoByClerkId)) {
-				SysClerkDTO sysClerkDTO = clerkInfoByClerkId.get(0);
-				extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
-				extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
-				extShopAppointServiceDTO.setAppointStartTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getSearchEndTime(), "datetime"));
-			}
+//			List<SysClerkDTO> clerkInfoByClerkId = userServiceClient.getClerkInfoByClerkId(extShopAppointServiceDTO.getSysClerkId());
+//			if (CommonUtils.objectIsEmpty(clerkInfoByClerkId)) {
+//				SysClerkDTO sysClerkDTO = clerkInfoByClerkId.get(0);
+//				extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
+//				extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
+//				extShopAppointServiceDTO.setAppointStartTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getSearchEndTime(), "datetime"));
+//			}
 		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
