@@ -228,7 +228,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
      *  @autuor zhangchao
      * */
     @Override
-    public PageParamDTO<List<ShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ShopAppointServiceDTO> pageParamDTO){
+    public PageParamDTO<List<ExtShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO) {
 
 
         HashMap<String,String> shopAppointMap = new HashMap<>();
@@ -238,7 +238,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         shopAppointMap.put("sysClerkId",pageParamDTO.getRequestData().getSysClerkId());
 
         //预约用户列表
-        List<ShopAppointServiceDTO> shopAppointUserInfoList = new ArrayList<>();
+        List<ExtShopAppointServiceDTO> shopAppointUserInfoList = new ArrayList<>();
         int sum = 0;
 
         try {
@@ -250,7 +250,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             logger.info(e.getMessage());
         }
 
-        PageParamDTO<List<ShopAppointServiceDTO>> page = new  PageParamDTO<>();
+        PageParamDTO<List<ExtShopAppointServiceDTO>> page = new PageParamDTO<>();
         page.setResponseData(shopAppointUserInfoList);
         page.setTotalCount(sum);
         logger.info("店铺"+pageParamDTO.getRequestData().getSysShopId()+"下面店员"+pageParamDTO.getRequestData().getSysClerkId()+"在"+pageParamDTO.getRequestData().getAppointStartTimeS()+"到"+pageParamDTO.getRequestData().getAppointStartTimeE()+"的预约用户列表是"+shopAppointUserInfoList);
