@@ -7,6 +7,7 @@ import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
+import com.wisdom.common.dto.transaction.OrderAddressRelationDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.product.InvoiceDTO;
 import com.wisdom.common.dto.product.ProductDTO;
@@ -16,6 +17,7 @@ import com.wisdom.common.dto.transaction.OrderCopRelationDTO;
 import com.wisdom.common.dto.transaction.OrderProductRelationDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +108,19 @@ public class TransactionService {
         if(userOrderAddressDTOList.size()!=0)
         {
             businessOrderDTO.setUserOrderAddressId(userOrderAddressDTOList.get(0).getId());
+
+            OrderAddressRelationDTO orderAddressRelationDTO1 = new OrderAddressRelationDTO();
+            orderAddressRelationDTO1.setId(UUIDUtil.getUUID());
+            orderAddressRelationDTO1.setBusinessOrderId(businessOrderDTO.getBusinessOrderId());
+            orderAddressRelationDTO1.setUserOrderAddressId(userOrderAddressDTOList.get(0).getId());
+            orderAddressRelationDTO1.setUserNameAddress(userOrderAddressDTOList.get(0).getUserName());
+            orderAddressRelationDTO1.setUserPhoneAddress(userOrderAddressDTOList.get(0).getUserPhone());
+            orderAddressRelationDTO1.setUserProvinceAddress(userOrderAddressDTOList.get(0).getProvince());
+            orderAddressRelationDTO1.setUserDetailAddress(userOrderAddressDTOList.get(0).getDetailAddress());
+            orderAddressRelationDTO1.setAddressCreateDate(new Date());
+            orderAddressRelationDTO1.setAddressUpdateDate(new Date());
+            logger.info("添加订单,有默认地址时,插入订单地址"+orderAddressRelationDTO1.toString());
+            userOrderAddressService.addOrderAddressRelation(orderAddressRelationDTO1);
         }
         transactionMapper.createBusinessOrder(businessOrderDTO);
 
