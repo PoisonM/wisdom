@@ -4,6 +4,7 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserProductRelationMapper;
@@ -138,20 +139,20 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
         }
         List<String> list = new ArrayList<>();
         //key是产品id，value是产品信息
-        Map<String, ShopProductInfoDTO> map = new HashMap<>(16);
+        Map<String, ShopProductInfoResponseDTO> map = new HashMap<>(16);
         for (ShopUserProductRelationDTO shopUserProductRelation : shopUserProductRelations) {
             list.add(shopUserProductRelation.getShopProductId());
         }
 
-        List<ShopProductInfoDTO> shopProductInfos = shopProductInfoService.getProductInfoList(list);
-        for (ShopProductInfoDTO productInfo : shopProductInfos) {
+        List<ShopProductInfoResponseDTO> shopProductInfos = shopProductInfoService.getProductInfoList(list);
+        for (ShopProductInfoResponseDTO productInfo : shopProductInfos) {
             map.put(productInfo.getId(), productInfo);
         }
         List<UserProductRelationResponseDTO> responseList = new ArrayList<>();
         UserProductRelationResponseDTO userProductRelationResponseDTO = null;
         for (ShopUserProductRelationDTO shopUserProductRelation : shopUserProductRelations) {
             userProductRelationResponseDTO = new UserProductRelationResponseDTO();
-            ShopProductInfoDTO shopProductInfo = map.get(shopUserProductRelation.getId());
+            ShopProductInfoResponseDTO shopProductInfo = map.get(shopUserProductRelation.getId());
             if(shopProductInfo!=null) {
                 userProductRelationResponseDTO.setProductName(shopProductInfo.getProductName());
                 userProductRelationResponseDTO.setProductSpec(shopProductInfo.getProductSpec());
