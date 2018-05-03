@@ -18,7 +18,7 @@ public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
     private String appointStartTimeS;
 
     //查询预约时间结束时间
-    private String appointStartTimeE;
+    private String appointEndTimeE;
 
     public String getAppointStartTimeS() {
         return appointStartTimeS;
@@ -28,12 +28,12 @@ public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
         this.appointStartTimeS = appointStartTimeS;
     }
 
-    public String getAppointStartTimeE() {
-        return appointStartTimeE;
+    public String getAppointEndTimeE() {
+        return appointEndTimeE;
     }
 
-    public void setAppointStartTimeE(String appointStartTimeE) {
-        this.appointStartTimeE = appointStartTimeE;
+    public void setAppointEndTimeE(String appointEndTimeE) {
+        this.appointEndTimeE = appointEndTimeE;
     }
 
     public Date getSearchStartTime() {

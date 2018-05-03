@@ -282,7 +282,7 @@ public class AppointmentController {
 				SysClerkDTO sysClerkDTO = clerkInfoByClerkId.get(0);
 				extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
 				extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
-				extShopAppointServiceDTO.setAppointStartTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getSearchEndTime(), "datetime"));
+				extShopAppointServiceDTO.setAppointEndTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getSearchEndTime(), "datetime"));
 			}
 		}
 
@@ -575,7 +575,7 @@ public class AppointmentController {
 		shopAppointServiceDTO.setSysShopId(sysShopId);
 		shopAppointServiceDTO.setSysClerkId(sysClerkId);
 		shopAppointServiceDTO.setAppointStartTimeS(appointStartTimeS);
-		shopAppointServiceDTO.setAppointStartTimeE(appointStartTimeE);
+		shopAppointServiceDTO.setAppointEndTimeE(appointStartTimeE);
 
 		pageParamDTO.setRequestData(shopAppointServiceDTO);
 
