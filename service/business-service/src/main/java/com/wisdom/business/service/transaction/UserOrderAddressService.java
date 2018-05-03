@@ -3,6 +3,7 @@ package com.wisdom.business.service.transaction;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.transaction.UserOrderAddressMapper;
 import com.wisdom.business.util.UserUtils;
+import com.wisdom.common.dto.transaction.OrderAddressRelationDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.UserOrderAddressDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +86,15 @@ public class UserOrderAddressService {
 
     public UserOrderAddressDTO getUserOrderAddressByOrderId(String orderId) {
         return userOrderAddressMapper.getUserOrderAddressByOrderId(orderId);
+    }
+    public void addOrderAddressRelation(OrderAddressRelationDTO orderAddressRelationDTO){
+        userOrderAddressMapper.addOrderAddressRelation(orderAddressRelationDTO);
+    }
+    public List<OrderAddressRelationDTO> getOrderAddressRelationByOrderId(String orderId){
+        return userOrderAddressMapper.getOrderAddressRelationByOrderId(orderId);
+    }
+
+    public void updateOrderAddressRelationByOrderId(OrderAddressRelationDTO orderAddressRelationDTO) {
+        userOrderAddressMapper.updateOrderAddressRelationByOrderId(orderAddressRelationDTO);
     }
 }
