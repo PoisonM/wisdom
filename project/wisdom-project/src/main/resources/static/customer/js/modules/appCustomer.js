@@ -28,7 +28,7 @@ define(['angular'], function (angular) {
             };
             $rootScope.shopAppointInfo = {
                 clerkId : '',
-                shopProjectId:''
+                shopProjectIds:[]
             }
         })
     return app;

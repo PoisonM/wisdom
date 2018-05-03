@@ -9,8 +9,8 @@
                 店内项目
             </div>
             <ion-item ng-repeat="item in param.shopProjectList" ng-click="chooseProject(item.id)">
-                <i class="icon ion-ios-checkmark-outline" style="color:deeppink;font-size:30px;position:absolute" ng-if="item.id!=param.shopProjectId"></i>
-                <i class="icon icon ion-ios-checkmark" style="color:deeppink;font-size:30px;position:absolute" ng-if="item.id==param.shopProjectId"></i>
+                <i class="icon ion-ios-checkmark-outline" style="color:deeppink;font-size:30px;position:absolute" ng-if="shopAppointInfo.shopProjectIds.indexOf(item.id)==-1"></i>
+                <i class="icon icon ion-ios-checkmark" style="color:deeppink;font-size:30px;position:absolute" ng-if="shopAppointInfo.shopProjectIds.indexOf(item.id)!=-1"></i>
                 <div style="margin-left:60px">
                     <h style="font-weight:600;">{{item.projectName}}</h>
                     <br>
@@ -20,8 +20,8 @@
             <br><br><br><br>
         </ion-list>
     </ion-scroll>
-    <<div class="tabs"
-          style="background:#e66;color:white"
+    <div class="tabs"
+          style="background:#e66;color:white;z-index: 1000;"
           ng-click="confirmProject()">
         <a class="tab-item" style="font-size:20px">
             确认

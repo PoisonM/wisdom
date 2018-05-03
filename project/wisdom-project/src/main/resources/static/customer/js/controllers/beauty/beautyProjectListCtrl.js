@@ -11,8 +11,22 @@ angular.module('controllers',[]).controller('beautyProjectListCtrl',
 
     $scope.chooseProject = function(projectId)
     {
-        $scope.param.shopProjectId = angular.copy(projectId);
-        $rootScope.shopAppointInfo.shopProjectId = $scope.param.shopProjectId
+        if($rootScope.shopAppointInfo.shopProjectIds.indexOf(projectId)!=-1)
+        {
+            var key = 0;
+            angular.forEach($rootScope.shopAppointInfo.shopProjectIds,function (val,index) {
+                if(val==projectId)
+                {
+                    $rootScope.shopAppointInfo.shopProjectIds.splice(key,1);
+                }
+                key++;
+            })
+        }
+        else
+        {
+            $rootScope.shopAppointInfo.shopProjectIds.push(projectId);
+        }
+        console.log($rootScope.shopAppointInfo.shopProjectIds);
     }
 
     $scope.param = {

@@ -34,7 +34,7 @@
                         &nbsp;
                         <i class="icon ion-arrow-down-b" style="color:grey"></i>
                     </p>
-                    <p style="text-align:center;margin-top: 15px;font-size: 15px;" ng-if="shopAppointInfo.shopProjectId!=''">{{param.beautyShopInfo.projectName}}</p>
+                    <p style="text-align:center;margin-top: 15px;font-size: 15px;" ng-if="shopAppointInfo.shopProjectIds.length!=0">{{param.beautyProjectName}}</p>
                 </div>
             </div>
             <div class="col col-50" style="background:white;color:black;margin-left: 2px" ng-click="chooseClerk()">
@@ -72,6 +72,7 @@
             <div class="col" ng-repeat="item1 in item" ng-click="appointProject(item1)">
                 <span style="color: black" ng-if="item1.status=='1'">{{item1.value}}</span>
                 <span style="text-decoration:line-through;color: grey" ng-if="item1.status=='0'">{{item1.value}}</span>
+                <span style="color:red;text-decoration:underline" ng-if="item1.status=='2'">{{item1.value}}</span>
             </div>
         </div>
         <div class="row" style="background:white;color:black;width:45px;margin-top:-184px;height:184px;">
@@ -90,7 +91,7 @@
         </div>
         <center>
             <button class="button button-assertive"
-                    style="width:90%;border-radius:20px">发送预约</button>
+                    style="width:90%;border-radius:20px" ng-click="confirmAppoint()">发送预约</button>
         </center>
     </ion-content>
     <div class="tabs" style="background:white;color:black;height: 45px;">

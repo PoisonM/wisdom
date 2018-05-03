@@ -2,8 +2,8 @@
  * Created by Administrator on 2017/12/15.
  */
 angular.module('controllers',[]).controller('beautyAppointCtrl',
-    ['$scope','$rootScope','$stateParams','$state','BeautyUtil','GetClerkScheduleInfo','GetBeautyShopInfo','Global',
-        function ($scope,$rootScope,$stateParams,$state,BeautyUtil,GetClerkScheduleInfo,GetBeautyShopInfo,Global) {
+    ['$scope','$rootScope','$stateParams','$state','BeautyUtil','GetClerkScheduleInfo','GetBeautyShopInfo','Global','SaveUserAppointInfo',
+        function ($scope,$rootScope,$stateParams,$state,BeautyUtil,GetClerkScheduleInfo,GetBeautyShopInfo,Global,SaveUserAppointInfo) {
 
             var initialTimeDate = function () {
                 $scope.param.timeDate = [
@@ -25,7 +25,12 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     timeDate :[],
                     chooseDate : BeautyUtil.getAddDate(BeautyUtil.getNowFormatDate(),0),
                     clerkInfo : {},
-                    beautyShopInfo : {}
+                    beautyShopInfo : [],
+                    beautyProjectName : '',
+                    beautyProjectIds : '',
+                    beautyProjectDuration : 0,
+                    appointFlag : false,
+                    chooseDateTime : ''
                 }
 
                 for(var i = 0; i<7; i++)
@@ -62,16 +67,44 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                             arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
                         })
                     })
-
                 }
 
-                if($rootScope.shopAppointInfo.shopProjectId!='')
+                if($rootScope.shopAppointInfo.shopProjectIds.length!=0)
                 {
-                    GetBeautyShopInfo.shopProjectInfo($rootScope.shopAppointInfo.shopProjectId).then(function (data) {
-                        $scope.param.beautyShopInfo = data.responseData;
-                    })
+                    var length = $rootScope.shopAppointInfo.shopProjectIds.length
+                    getBeautyShopInfo($rootScope.shopAppointInfo.shopProjectIds.length[length-1],length);
                 }
             })
+
+            var getBeautyShopInfo = function (projectId,length) {
+                GetBeautyShopInfo.shopProjectInfo(projectId).then(function (data) {
+                    $scope.param.beautyShopInfo.push(data.responseData);
+                    length--;
+                    if(length>=0)
+                    {
+                        getBeautyShopInfo($rootScope.shopAppointInfo.shopProjectIds[length],length);
+                    }
+                    else
+                    {
+                        $scope.param.beautyShopInfo.splice(0,1);
+                        console.log($scope.param.beautyShopInfo);
+                        angular.forEach($scope.param.beautyShopInfo,function (value,index) {
+                            if(index==($scope.param.beautyShopInfo.length-1))
+                            {
+                                $scope.param.beautyProjectName = $scope.param.beautyProjectName + value.projectName;
+                                $scope.param.beautyProjectIds = $scope.param.beautyProjectIds + value.id;
+                            }
+                            else
+                            {
+                                $scope.param.beautyProjectName = $scope.param.beautyProjectName + value.projectName + ',';
+                                $scope.param.beautyProjectIds = $scope.param.beautyProjectIds + value.id + ',';
+                            }
+                            $scope.param.beautyProjectDuration = $scope.param.beautyProjectDuration + value.projectDuration;
+                        })
+                        console.log($scope.param);
+                    }
+                });
+            }
 
             $scope.chooseAppointDate = function(dateValue){
                 $scope.param.chooseDate = dateValue;
@@ -92,11 +125,86 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
             }
 
             $scope.appointProject = function(appointValue){
+                initialTimeDate();
+                if($rootScope.shopAppointInfo.clerkId!='')
+                {
+                    GetBeautyShopInfo.clerkInfo($rootScope.shopAppointInfo.clerkId).then(function(data) {
+                        //success函数
+                        $scope.param.clerkInfo = data[0];
+                        GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
+                            searchDate:$scope.param.chooseDate},function (data){
+                            arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
 
+                            $scope.param.chooseDateTime = $scope.param.chooseDate+' '+appointValue.value;
+                            var length = $scope.param.beautyProjectDuration/30;
+
+                            var flag = false;
+                            angular.forEach($scope.param.timeDate,function (val,index) {
+                                angular.forEach(val,function (data,index) {
+                                    if(flag&&length>=0)
+                                    {
+                                        if(data.status=='0')
+                                        {
+                                            alert("此时间无法预约");
+                                            $scope.chooseAppointDate($scope.param.chooseDate);
+                                            flag = false;
+                                        }
+                                        else
+                                        {
+                                            data.status = '2';
+                                            if(length==0)
+                                            {
+                                                $scope.param.appointFlag = true;
+                                            }
+                                        }
+                                        length--;
+                                    }
+
+                                    if(data.value==appointValue.value&&val.status=='0')
+                                    {
+                                        alert("此时间无法预约");
+                                    }
+                                    else if(data.value==appointValue.value)
+                                    {
+                                        flag = true;
+                                        data.status = '2';
+                                        length--;
+                                    }
+                                })
+                            })
+                        })
+                    })
+                }
+
+
+            }
+            
+            $scope.confirmAppoint = function () {
+
+                if($scope.param.appointFlag)
+                {
+                    SaveUserAppointInfo.save({shopProjectId:$scope.param.beautyProjectIds,
+                        sysClerkId:$rootScope.shopAppointInfo.clerkId,
+                        appointStartTimeS:$scope.param.chooseDateTime,
+                        appointPeriod:$scope.param.beautyProjectDuration,
+                        status:'0'
+                    },function (data) {
+                        console.log(data);
+                        // if(data.result==Global.SUCCESS)
+                        // {
+                        //     console.log(data);
+                        //     //$state.go("beautyUserAppointDetail");
+                        // }
+                    })
+                }
+                else
+                {
+                    alert("不满足预约条件");
+                }
+                
             }
 
             var arrangeTimeDate = function (timeDate,schedule) {
-                console.log(schedule);
                 angular.forEach(timeDate,function (value,index) {
                     angular.forEach(value,function (value1,index) {
                         angular.forEach(schedule,function (val,index) {

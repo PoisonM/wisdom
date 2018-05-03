@@ -237,5 +237,8 @@ define(['appCustomer'], function (app) {
                     }
                 }
         }])
+        .factory('SaveUserAppointInfo',['$resource',function ($resource){
+            return $resource(appointInfo + 'saveUserAppointInfo')
+        }])
 
 });
