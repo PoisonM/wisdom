@@ -412,7 +412,7 @@ public class AppointmentController {
 
 		if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
 			shopAppointServiceDTO.setSysUserId("1");
-			shopAppointServiceDTO.setSysUserId("陈佳科");
+			shopAppointServiceDTO.setSysUserName("陈佳科");
 		}
 		//如果clerkInfo为空说明是用户端用户
 		else if (null == clerkInfo) {
@@ -455,24 +455,26 @@ public class AppointmentController {
 					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
 					//根据项目主键查询项目详细信息
 					ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(project);
-					relationDTO.setUseStyle(projectDetail.getUseStyle());
-					relationDTO.setCreateBy(shopAppointServiceDTO.getCreateBy());
-					relationDTO.setSysShopProjectName(projectDetail.getProjectName());
-					relationDTO.setId(IdGen.uuid());
-					relationDTO.setSysShopProjectInitTimes(0);
-					relationDTO.setSysShopProjectInitAmount(new BigDecimal(0));
-					relationDTO.setSysClerkId(shopAppointServiceDTO.getSysClerkId());
-					relationDTO.setSysShopName(shopAppointServiceDTO.getSysShopName());
-					relationDTO.setSysShopProjectSurplusAmount(new BigDecimal(0));
-					relationDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
-					relationDTO.setSysShopProjectId(project);
-                    relationDTO.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
-					relationDTO.setSysShopProjectSurplusTimes(0);
-					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
-					relationDTO.setSysShopId(projectDetail.getSysShopId());
-					relationDTO.setSysShopProjectInitTimes(1);
-					int num = shopProjectService.saveUserProjectRelation(relationDTO);
-					logger.debug("建立项目与用户的关系， {}", num > 0 ? "成功" : "失败");
+					if (null != projectDetail) {
+						relationDTO.setUseStyle(projectDetail.getUseStyle());
+						relationDTO.setCreateBy(shopAppointServiceDTO.getCreateBy());
+						relationDTO.setSysShopProjectName(projectDetail.getProjectName());
+						relationDTO.setId(IdGen.uuid());
+						relationDTO.setSysShopProjectInitTimes(0);
+						relationDTO.setSysShopProjectInitAmount(new BigDecimal(0));
+						relationDTO.setSysClerkId(shopAppointServiceDTO.getSysClerkId());
+						relationDTO.setSysShopName(shopAppointServiceDTO.getSysShopName());
+						relationDTO.setSysShopProjectSurplusAmount(new BigDecimal(0));
+						relationDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
+						relationDTO.setSysShopProjectId(project);
+						relationDTO.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
+						relationDTO.setSysShopProjectSurplusTimes(0);
+						relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
+						relationDTO.setSysShopId(projectDetail.getSysShopId());
+						relationDTO.setSysShopProjectInitTimes(1);
+						int num = shopProjectService.saveUserProjectRelation(relationDTO);
+						logger.debug("建立项目与用户的关系， {}", num > 0 ? "成功" : "失败");
+					}
 				}
 			}
 		}
