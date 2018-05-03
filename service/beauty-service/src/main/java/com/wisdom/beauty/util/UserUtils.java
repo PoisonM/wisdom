@@ -46,6 +46,7 @@ public class UserUtils {
     public static UserInfoDTO getTestUserInfoDTO() {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId("1");
+        userInfoDTO.setMobile("18810142926");
         return userInfoDTO;
     }
 
@@ -61,11 +62,12 @@ public class UserUtils {
         clerkDTO.setSysUserId("3");
         clerkDTO.setSysBossName("王老板");
         clerkDTO.setSysBossId("sys_boss_id");
-        clerkDTO.setName("张欢");
+        clerkDTO.setName("陈莺梦");
         clerkDTO.setId("clerkId1");
         clerkDTO.setSysShopId("11");
         clerkDTO.setNickname("张欢昵称");
         clerkDTO.setMobile("18810142926");
+        clerkDTO.setScore(70f);
         return clerkDTO;
 
 //        SysClerkDTO sysClerkDTO = null;

@@ -1,10 +1,13 @@
 package com.wisdom.beauty.controller.schedule;
 
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopClerkScheduleService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -42,6 +45,9 @@ public class ScheduleController {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private ShopAppointmentService appointmentService;
 
     /**
      * 获取某个店的排班信息
@@ -185,14 +191,62 @@ public class ScheduleController {
             return responseDTO;
         }
         shopClerkScheduleDTO = clerkScheduleList.get(0);
-        HashMap<String, String> responseMap = new HashMap<>(6);
 
-        responseMap.put("startTime", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultStartTime());
-        responseMap.put("endTime", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultEndTime());
-        responseMap.put("scheduleTypeDesc", ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDesc());
-        responseMap.put("scheduleType", shopClerkScheduleDTO.getScheduleType());
+        String startTime = ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultStartTime();
+        String endTime = ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultEndTime();
+        //存储当前美容师的排班时间段
+        String responseStr = CommonUtils.getArrayNo(startTime, endTime);
 
-        responseDTO.setResponseData(responseMap);
+        //查询某个美容师某天的预约详情
+        ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+        extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(DateUtils.DateToStr(searchDate, "date") + " 00:00:00", "datetime"));
+        extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(DateUtils.DateToStr(searchDate, "date") + " 23:59:59", "datetime"));
+        extShopAppointServiceDTO.setSysClerkId(clerkId);
+        extShopAppointServiceDTO.setSysShopId(sysShopId);
+        List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+        StringBuffer filterStr = null;
+        //缓存预约过的时间
+        if (DateUtils.DateToStr(new Date(), "date").equals(DateUtils.DateToStr(searchDate, "date"))) {
+            filterStr = new StringBuffer(CommonUtils.getArrayNo("00:00", DateUtils.DateToStr(new Date(), "hour") + ":30"));
+        } else {
+            filterStr = new StringBuffer();
+        }
+
+        //可预约时间 = 当前美容师的排班时间段 - 预约过的时间
+        if (CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)) {
+            for (int i = 0; i < shopAppointServiceDTOS.size(); i++) {
+                filterStr.append(CommonUtils.getArrayNo(DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointStartTime(), "time"),
+                        DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointEndTime(), "time")));
+                if (i != (shopAppointServiceDTOS.size() - 1)) {
+                    filterStr.append(",");
+                }
+            }
+
+        }
+
+        if (null != filterStr && filterStr.length() > 0 && null != responseStr && responseStr.length() > 0) {
+            //转为字符数组，方便过滤
+            String[] filter = filterStr.toString().split(",");
+            //转为list方便过滤
+            List<String> list = Arrays.asList(responseStr.split(","));
+            list = new ArrayList(list);
+            //list中过滤掉冲突时间段
+            for (int j = 0; j < filter.length; j++) {
+                Iterator<String> iterator = list.iterator();
+                while (iterator.hasNext()) {
+                    String next = iterator.next();
+                    if (next.equals(filter[j])) {
+                        iterator.remove();
+                    }
+                }
+            }
+            //转为string
+            responseStr = list.toString().replace("[", "");
+            responseStr = responseStr.replace("]", "");
+            responseStr = responseStr.replaceAll(" ", "");
+        }
+
+        responseDTO.setResponseData(responseStr);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("获取某个店某个美容师某天的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 

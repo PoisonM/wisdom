@@ -9,7 +9,6 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.user.service.ClerkInfoService;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -128,9 +127,9 @@ public class ClerkServiceController {
 	 * @Description: 根据clerkId查询店员信息
 	 * @Date:2018/4/28 9:40
 	 */
-	@RequestMapping(value = "/clerkInfo/{clerkId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/clerkInfo", method = RequestMethod.GET)
 	@ResponseBody
-	List<SysClerkDTO> getClerkInfoByClerkId(@PathVariable String clerkId) {
+	List<SysClerkDTO> getClerkInfoByClerkId(@RequestParam String clerkId) {
 
 		long startTime = System.currentTimeMillis();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();

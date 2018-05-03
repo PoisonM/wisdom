@@ -41,6 +41,15 @@ public interface UserServiceClient {
     UserInfoDTO getUserInfoFromUserId(@RequestParam(value = "userId") String userId);
 
     /**
+     * 根据店员id获取用户信息
+     *
+     * @param clerkId
+     * @return
+     */
+    @RequestMapping(value = "/clerkInfo", method = RequestMethod.GET)
+    List<SysClerkDTO> getClerkInfoByClerkId(@RequestParam(value = "clerkId") String clerkId);
+
+    /**
      * @Return:
      * @Description: 根据多个userid查询
      * @Date:2018/4/18 14:15

@@ -274,6 +274,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.addRecordDetail', {
+            url: '/addRecordDetail',
+            templateUrl: root + '/addRecord/addRecordDetail.html',
+            controller: 'addRecordDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "档案详情",
+                        files: [
+                            root + "addRecord/addRecordDetail.css",
+                            root + "addRecord/addRecordDetail.js",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.personalFile', {
             url: '/personalFile',
             templateUrl: root + '/cashier/personalFile.html',
@@ -306,6 +322,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+
+        .state('pad-web.left_nav.selectRechargeType', {
+            url: '/selectRechargeType',
+            templateUrl: root + '/cashier/selectRechargeType.html',
+            controller: 'selectRechargeTypeCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "选择充值卡",
+                        files: [root + "cashier/selectRechargeTypeCtrl.js",
+                            root + "cashier/selectRechargeType.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.selectRechargeCard', {
             url: '/selectRechargeCard',
             templateUrl: root + '/cashier/selectRechargeCard.html',
@@ -313,7 +345,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "选择充值卡",
+                        name: "充值卡充值详情",
                         files: [root + "cashier/selectRechargeCardCtrl.js",
                             root + "cashier/selectRechargeCard.css",
                         ]
@@ -331,6 +363,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "选择赠送",
                         files: [root + "cashier/chooseGiftsCtrl.js",
                             root + "cashier/chooseGifts.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.consumptionList', {
+            url: '/consumptionList',
+            templateUrl: root + '/cashier/consumptionList.html',
+            controller: 'consumptionListCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "消费",
+                        files: [root + "cashier/consumptionListCtrl.js",
+                            root + "cashier/consumptionList.css",
                         ]
                     })
                 }]

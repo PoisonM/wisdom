@@ -1,4 +1,4 @@
-PADWeb.controller('sourcesCtrl', function($scope, $stateParams, ngDialog, Archives) {
+PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParams, ngDialog, Archives) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)"
@@ -24,10 +24,8 @@ PADWeb.controller('sourcesCtrl', function($scope, $stateParams, ngDialog, Archiv
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
-
-    $scope.select = 0;
-    $scope.tabclick = function(e) {
-        $scope.select = e;
+    $scope.goSelectRechargeCard = function() {
+        $state.go('pad-web.left_nav.selectRechargeCard');
     }
 
 });

@@ -64,7 +64,7 @@ public interface ShopAppointmentService {
      *  @return  shopAppointUserInfoList 预约用户列表
      *  @autur zhangchao
      * */
-    PageParamDTO<List<ShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ShopAppointServiceDTO> pageParamDTO);
+    PageParamDTO<List<ExtShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO);
     /**
      * 保存用户的预约信息
      */

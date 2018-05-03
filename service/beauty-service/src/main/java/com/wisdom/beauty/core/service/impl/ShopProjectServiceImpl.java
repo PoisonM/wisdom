@@ -4,7 +4,6 @@ import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ImageUrl;
-import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.service.ShopProjectService;
@@ -14,13 +13,17 @@ import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: ShopProjectService
@@ -351,12 +354,9 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		List<ImageUrl> imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
 
 		ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = new ShopProjectInfoResponseDTO();
-		shopProjectInfoResponseDTO.setProjectName(shopProjectInfoDTO.getProjectName());
-		shopProjectInfoResponseDTO.setDiscountPrice(shopProjectInfoDTO.getDiscountPrice());
-		shopProjectInfoResponseDTO.setMarketPrice(shopProjectInfoDTO.getMarketPrice());
-		shopProjectInfoResponseDTO.setUseStyle(shopProjectInfoDTO.getUseStyle());
-		shopProjectInfoResponseDTO.setProjectDuration(shopProjectInfoDTO.getProjectDuration());
-		shopProjectInfoResponseDTO.setFunctionIntr(shopProjectInfoDTO.getFunctionIntr());
+
+		BeanUtils.copyProperties(shopProjectInfoDTO, shopProjectInfoResponseDTO);
+
 		if (CollectionUtils.isNotEmpty(imageUrls)) {
 			ImageUrl imageUrl = imageUrls.get(0);
 			String url = imageUrl.getUrl();

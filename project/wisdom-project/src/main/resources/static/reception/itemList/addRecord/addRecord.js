@@ -1,6 +1,7 @@
 PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetShopUserArchivesInfoByUserId,DeleteArchiveInfo) {
     console.log($scope);
 /*-------------------------------------------定义头部/左边信息--------------------------------*/
+    $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent="档案(9010)"
     $scope.$parent.$parent.param.headerCash.leftAddContent="添加档案"
     $scope.$parent.$parent.param.headerCash.backContent="今日收银记录"

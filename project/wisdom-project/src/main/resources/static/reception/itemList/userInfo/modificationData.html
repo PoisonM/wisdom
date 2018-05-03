@@ -1,10 +1,10 @@
 <div class="modificationData">
-    <div class="modificationData_box">
+    <div ng-if = "!param.openSexFlag" class="modificationData_box">
         <div class="modificationData_header">
             <div class="modificationData_header_box">
                 头像
                 <div class="modificationData_logo">
-                    <img src="http://t11.baidu.com/it/u=2044179103,4219527833&fm=173&s=8F008C4AE4E324A57B8CE41E03009053&w=640&h=653&img.PNG" alt="">
+                    <img ng-src="{{userInfoData[0].photo}}" alt="">
                 </div>
             </div>
         </div>
@@ -13,11 +13,11 @@
                 <ul>
                     <li>
                         <label for="">姓名 <i>*</i></label>
-                        <input  type="text" placeholder="请输入顾客姓名">
+                        <input ng-model="userInfoDataMod.name" type="text" readonly placeholder="请输入顾客姓名">
                     </li>
                     <li>
                         <label for="">性别 <i>*</i></label>
-                        <input  type="text" placeholder="">
+                        <input ng-click="selectSex(userInfoDataMod.sex)" ng-model="userInfoDataMod.sex" type="text" readonly placeholder="">
                     </li>
                 </ul>
             </div>
@@ -27,7 +27,7 @@
                 <ul>
                     <li>
                         <label for="">所在店名 </label>
-                        <input  type="text" placeholder="美容院">
+                        <input ng-model="userInfoDataMod.sysShopName"  type="text" placeholder="美容院" readonly>
                     </li>
                     <li>
                         <label for="">我的职务 </label>
@@ -66,6 +66,14 @@
                     </li>
                 </ul>
             </div>
+        </div>
+    </div>
+    <div ng-if = "param.openSexFlag" class="modificationData_select">
+        <div  class="sex select_public">
+            <ul>
+                <li ng-click="selectFn('男')">男</li>
+                <li ng-click="selectFn('女')">女</li>
+            </ul>
         </div>
     </div>
 
