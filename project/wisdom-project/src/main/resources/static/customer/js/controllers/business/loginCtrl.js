@@ -16,28 +16,33 @@ angular.module('controllers',[]).controller('loginCtrl',
             }
 
             $scope.getValidateCode = function(){
+                var phone = $scope.param.userPhone;
+                if(phone !=""){
+                    $scope.param.validateCodeButtonStatus = false;
+                    $scope.param.timeCount = 60;
 
-                $scope.param.validateCodeButtonStatus = false;
-                $scope.param.timeCount = 60;
-
-                //每隔一秒执行
-                var timer= $interval(function(){
-                    $scope.param.timeCount--;
-                    if($scope.param.timeCount<0){
-                        $interval.cancel(timer);
-                        $scope.param.validateCodeButtonStatus = true;
-                    }
-                },1000);
-
-                GetUserValidateCode.get({mobile:$scope.param.userPhone},function(data){
-                    if(data.result == Global.FAILURE)
-                    {
-                        var alertPopup = $ionicPopup.alert({
-                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">验证码获取失败</span>',
-                            okText:'确定'
-                        });
-                    }
-                })
+                    //每隔一秒执行
+                    var timer= $interval(function(){
+                        $scope.param.timeCount--;
+                        if($scope.param.timeCount<0){
+                            $interval.cancel(timer);
+                            $scope.param.validateCodeButtonStatus = true;
+                        }
+                    },1000);
+                    alert(phone);
+                    GetUserValidateCode.get({mobile:phone},function(data){
+                        alert(111);
+                        if(data.result == Global.FAILURE)
+                        {
+                            var alertPopup = $ionicPopup.alert({
+                                template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">验证码获取失败</span>',
+                                okText:'确定'
+                            });
+                        }
+                    })
+                }else{
+                    alert("手机号不能为空！");
+                }
           }
 
             $scope.userLogin = function(){
