@@ -291,7 +291,7 @@ public class AppointmentController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<ShopAppointServiceDTO> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, String status) {
+	ResponseDTO<ShopAppointServiceDTO> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, @RequestParam String status) {
 		logger.info("根据预约主键修改此次预约信息传入参数={}", "shopAppointServiceId = [" + shopAppointServiceId + "], status = [" + status + "]");
 		long timeMillis = System.currentTimeMillis();
 		ResponseDTO<ShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
@@ -320,7 +320,7 @@ public class AppointmentController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<Object> getMyAppointInfoList() {
+	ResponseDTO<Object> getMyAppointInfoList(@RequestParam String status) {
 		long timeMillis = System.currentTimeMillis();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
@@ -329,6 +329,7 @@ public class AppointmentController {
 		}
 		ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		shopAppointServiceDTO.setSysUserId(userInfo.getId());
+		shopAppointServiceDTO.setStatus(status);
 		String sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
 		if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
 			sysShopId = "11";
