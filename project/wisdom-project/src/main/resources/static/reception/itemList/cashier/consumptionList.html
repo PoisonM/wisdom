@@ -1,26 +1,26 @@
 <div class="consumptionListBox clearfix">
     <div class="consumptionListLeft clearfix">
         <ul>
-            <li class="clearfix select">
+            <li class="clearfix select" ng-click="tabclick(0)" ng-class="select=='0'?'select':''">
                 <i></i>
                 <span>疗程卡</span>
             </li>
-            <li class="clearfix">
+            <li class="clearfix" ng-click="tabclick(1)" ng-class="select=='1'?'select':''">
                 <i></i>
                 <span>单次</span>
             </li>
-            <li class="clearfix">
+            <li class="clearfix" ng-click="tabclick(2)" ng-class="select=='2'?'select':''">
                 <i></i>
                 <span>产品</span>
             </li>
-            <li class="clearfix">
-                <i></i>
+            <li class="clearfix" ng-click="tabclick(3)" ng-class="select=='3'?'select':''">
+                <b><i></i></b>
                 <span>套卡</span>
             </li>
-            <li class="clearfix">
+            <!-- <li class="clearfix">
                 <i></i>
                 <span>赠送</span>
-            </li>
+            </li> -->
         </ul>
     </div>
     <div class="consumptionListUl">

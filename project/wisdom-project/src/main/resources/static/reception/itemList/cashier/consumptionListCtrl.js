@@ -18,6 +18,8 @@ PADWeb.controller('consumptionListCtrl', function($scope, $stateParams, ngDialog
         $scope.$parent.mainSwitch.headerCashFlag.rightFlag = bool;
     }
     /*打开收银头部/档案头部/我的头部*/
-    $scope.flagFn(true)
-
+    $scope.select = 0;
+    $scope.tabclick = function(e) {
+        $scope.select = e;
+    }
 });

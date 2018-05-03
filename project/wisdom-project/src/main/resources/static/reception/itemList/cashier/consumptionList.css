@@ -23,14 +23,49 @@
     color: #FFFFFF;
 }
 
+.consumptionListBox .consumptionListLeft ul li:nth-child(1).select i {
+    background-position: -72px -268px;
+}
+
+.consumptionListBox .consumptionListLeft ul li:nth-child(2).select i {
+    background-position: -171px -262px;
+}
+
+.consumptionListBox .consumptionListLeft ul li:nth-child(3).select i {
+    background-position: -276px -268px;
+}
+
+.consumptionListBox .consumptionListLeft ul li:nth-child(4).select i {
+    background-position: -72px -268px;
+}
+
 .consumptionListBox .consumptionListLeft ul li i {
     width: 30px;
     height: 30px;
     margin: 30px 0 0 37px;
     display: block;
     background: url(../../images/sprite_cashier.png) no-repeat;
-    background-position: -122px -268px;
     background-size: 425px 425px;
+}
+
+.consumptionListBox .consumptionListLeft ul li:nth-child(1) i {
+
+    background-position: -122px -268px;
+}
+
+.consumptionListBox .consumptionListLeft ul li:nth-child(2) i {
+
+    background-position: -225px -262px;
+}
+
+.consumptionListBox .consumptionListLeft ul li:nth-child(3) i {
+
+    background-position: -323px -268px;
+}
+
+.consumptionListBox .consumptionListLeft ul li:nth-child(4) i {
+
+    background-position: -122px -268px;
 }
 
 .consumptionListBox .consumptionListLeft ul li span {
