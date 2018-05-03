@@ -100,18 +100,27 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					c.andGoodsTypeIn(goodType);
 				}
-			}else {
+			} else {
 				if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRequest.getGoodsType())
 						|| GoodsTypeEnum.PRODUCT.getCode().equals(userConsumeRequest.getGoodsType())) {
 					// 如果是充值卡或者是产品领取
 					c.andGoodsTypeEqualTo(userConsumeRequest.getGoodsType());
-				}else {
+				}
+				if (GoodsTypeEnum.CASHIER.getCode().equals(userConsumeRequest.getGoodsType())) {
+					List goodType = new ArrayList();
+					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
+					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+					goodType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
+					c.andGoodsTypeIn(goodType);
+				} else {
 					List goodType = new ArrayList();
 					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
 					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					c.andGoodsTypeIn(goodType);
 				}
+
 			}
 		}
 		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
