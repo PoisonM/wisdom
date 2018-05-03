@@ -40,9 +40,9 @@ angular.module('controllers',[]).controller('withDrawCtrl',
 
                 var phone = $scope.param.userPhone;
                 if(!angular.isUndefined(phone)){
+
                     $scope.param.validateCodeButtonStatus = false;
                     $scope.param.timeCount = 60;
-
                     //每隔一秒执行
                     var timer= $interval(function(){
                         $scope.param.timeCount--;
