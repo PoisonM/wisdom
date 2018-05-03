@@ -1,5 +1,6 @@
 PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialog, GetProductRecord, GetClerkAchievement, ClerkInfo) {
     /*-------------------------------------------定义头部信息|----------------------------------------------*/
+    $scope.$parent.param.top_bottomSelect = "wo";
     $scope.$parent.param.headerCash.leftContent = "我"
     $scope.$parent.param.headerCash.leftAddContent = ""
     $scope.$parent.param.headerCash.backContent = "今日收银记录"
@@ -27,9 +28,24 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
         }
     })
     /*个人信息*/
-    ClerkInfo.get({
+    ClerkInfo.query({
         clerkId: "2"
     }, function(data) {
+        $scope.tempArr = []
+        $scope.userInfoData = data
+        //计算资料完成度
+        for (var key in $scope.userInfoData[0]) {
+            $scope.tempArr.push($scope.userInfoData[0][key]); //属性
+        }
+        var tempLength = 0
+        for(var i = 0; i < $scope.tempArr.length; i++){
+            if($scope.tempArr[i] != null){
+                tempLength+=1
+            }
+        }
+        $scope.userInfoData[0].completeness = Number(tempLength/$scope.tempArr.length*100).toFixed(0)+"%";
+        /*操作dom*/
+        $(".col_pink").width(($(".bg_gray").width()*Number(tempLength/$scope.tempArr.length*100).toFixed(1))/100)
 
     })
     /*----------------------------------------------方法-------------------------------------------------------------*/

@@ -49,7 +49,7 @@ public class MineTest {
     @Test
     public void getShopClerkScheduleList() throws Exception {
 
-        MvcResult result = mvc.perform(get("/mine/getUserClientInfo").param("sysUserId", "1"))
+        MvcResult result = mvc.perform(get("/mine/getUserQrCode"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

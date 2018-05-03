@@ -274,6 +274,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.addRecordDetail', {
+            url: '/addRecordDetail',
+            templateUrl: root + '/addRecord/addRecordDetail.html',
+            controller: 'addRecordDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "档案详情",
+                        files: [
+                            root + "addRecord/addRecordDetail.css",
+                            root + "addRecord/addRecordDetail.js",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.personalFile', {
             url: '/personalFile',
             templateUrl: root + '/cashier/personalFile.html',
@@ -347,6 +363,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "选择赠送",
                         files: [root + "cashier/chooseGiftsCtrl.js",
                             root + "cashier/chooseGifts.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.consumption', {
+            url: '/consumption',
+            templateUrl: root + '/cashier/consumption.html',
+            controller: 'consumptionCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "消费",
+                        files: [root + "cashier/consumptionCtrl.js",
+                            root + "cashier/consumption.css",
                         ]
                     })
                 }]
