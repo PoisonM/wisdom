@@ -78,6 +78,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = null;
 		for (ShopRechargeCardDTO shopRechargeCard : list) {
 			shopRechargeCardResponseDTO = new ShopRechargeCardResponseDTO();
+			shopRechargeCardResponseDTO.setShopRechargeCardId(shopRechargeCard.getId());
 			shopRechargeCardResponseDTO.setAmount(shopRechargeCard.getAmount());
 			shopRechargeCardResponseDTO.setDiscountDesc(shopRechargeCard.getDiscountDesc());
 			shopRechargeCardResponseDTO.setIntroduce(shopRechargeCard.getIntroduce());
