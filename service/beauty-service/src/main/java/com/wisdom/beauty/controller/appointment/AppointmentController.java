@@ -26,6 +26,7 @@ import com.wisdom.common.util.LunarUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -266,16 +267,27 @@ public class AppointmentController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<ShopAppointServiceDTO> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
+	ResponseDTO<ExtShopAppointServiceDTO> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
 
 		long startTime = System.currentTimeMillis();
 		logger.info("获取某次预约详情传入参数={}", "shopAppointServiceId = [" + shopAppointServiceId + "]");
 
-		ResponseDTO<ShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
+		ResponseDTO<ExtShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
 		ShopAppointServiceDTO shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceId);
+		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+		if (null != shopAppointInfoFromRedis) {
+			BeanUtils.copyProperties(shopAppointInfoFromRedis, extShopAppointServiceDTO);
+			List<SysClerkDTO> clerkInfoByClerkId = userServiceClient.getClerkInfoByClerkId(extShopAppointServiceDTO.getSysClerkId());
+			if (CommonUtils.objectIsEmpty(clerkInfoByClerkId)) {
+				SysClerkDTO sysClerkDTO = clerkInfoByClerkId.get(0);
+				extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
+				extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
+				extShopAppointServiceDTO.setAppointStartTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getSearchEndTime(), "datetime"));
+			}
+		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(shopAppointInfoFromRedis);
+		responseDTO.setResponseData(extShopAppointServiceDTO);
 		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - startTime));
 
 		return responseDTO;
@@ -406,8 +418,8 @@ public class AppointmentController {
 			shopAppointServiceDTO.setSysBossId(clerkInfo.getSysBossId());
 			if (StringUtils.isBlank(shopAppointServiceDTO.getSysClerkId())) {
 				shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
-				shopAppointServiceDTO.setSysClerkName(clerkInfo.getName());
 			}
+			shopAppointServiceDTO.setSysClerkName(clerkInfo.getName());
 			shopAppointServiceDTO.setSysShopId(clerkInfo.getSysShopId());
 			shopAppointServiceDTO.setSysShopName(clerkInfo.getSysShopName());
 		}

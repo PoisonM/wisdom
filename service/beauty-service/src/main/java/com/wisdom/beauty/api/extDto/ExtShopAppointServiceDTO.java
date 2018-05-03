@@ -12,6 +12,7 @@ public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
 
    private Date searchEndTime;
 
+    private Float score;
 
     //查询预约时间开始时间
     private String appointStartTimeS;
@@ -49,5 +50,13 @@ public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
 
     public void setSearchEndTime(Date searchEndTime) {
         this.searchEndTime = searchEndTime;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 }
