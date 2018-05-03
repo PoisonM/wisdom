@@ -59,6 +59,9 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         footerBoxFlag:true
     }
     /*--------------------------------------方法-------------------------------------------------*/
+    $scope.goAddrecord = function () {
+        $state.go("pad-web.left_nav.addRecord")
+    }
 
     $scope.switchType = function (type) {
         $scope.param.tabSty = type

@@ -1,4 +1,4 @@
-PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, ngDialog, Archives) {
+PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, ngDialog, Consumes) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)"
@@ -29,4 +29,16 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, n
         $state.go('pad-web.left_nav.accountDetails')
     }
 
+    Consumes.save({
+        consumeType:"0",
+        shopUserId:"22",
+        pageSize:"10",
+        goodsType:"6"
+    },function (data) {
+        $scope.itemList = data.responseData
+    })
+/*flowNoId*/
+    $scope.goAccountDetails = function (flowNo) {
+        $state.go("pad-web.left_nav.accountDetails",{flowNo:flowNo})
+    }
 });

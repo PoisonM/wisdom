@@ -1,6 +1,7 @@
 PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelProduct,TwoLevelProduct,ThreeLevelProduct) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "jiamubiao";
+    $scope.$parent.param.priceType = "cp"
     $scope.$parent.$parent.param.headerPrice.blackTitle = "产品";
     $scope.flagFn = function (bool) {
         //左
@@ -36,12 +37,13 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
        $scope.selectSingleData=data.responseData;
         $scope.selectSingleData[0].status=3;
         console.log(data);
-        $scope.selection(0,"2")
+        $scope.selection(0,data.responseData[0].id)
+        // $scope.selection(0,"2")
     });
     $scope.checkImg = function (index,status,id) {
         $scope.param.productTypeOneId=id;
         //点击一级列表图标调取二级列表接口
-        TwoLevelProduct.get({id:1},function (data) {
+        TwoLevelProduct.get({id:id},function (data) {
             $scope.product2List=data.responseData;
             console.log(data)
         });
@@ -65,7 +67,12 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
     };
     //点击二级列表调取三级商品接口
     $scope.goThreeList=function (id) {
-        ThreeLevelProduct.get({pageSize:$scope.param.pageSize,productTypeOneId:$scope.param.productTypeOneId,productTypeTwoId:id,productName:$scope.param.productName},function (data) {
+        ThreeLevelProduct.get({
+            pageSize:$scope.param.pageSize,
+            productTypeOneId:$scope.param.productTypeOneId,
+            productTypeTwoId:id,
+            productName:$scope.param.productName
+        },function (data) {
          $scope.product3List=data.responseData[0];
          $scope.param.productAppear=false;
         })
@@ -75,11 +82,15 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
     };
 
     $scope.selection  = function (index,id) {
-        TwoLevelProduct.get({id:1},function (data) {
+        TwoLevelProduct.get({id:id},function (data) {
             $scope.product2List=data.responseData;
             console.log(data);
-            ThreeLevelProduct.get({pageSize:$scope.param.pageSize,productTypeOneId:"2",productTypeTwoId:"3",productName:$scope.param.productName},function (data) {
-                $scope.product3List=data.responseData[0];
+            ThreeLevelProduct.get({
+                pageSize:$scope.param.pageSize,
+                productTypeOneId:"2",productTypeTwoId:"3",
+                productName:$scope.param.productName
+            },function (data) {
+                $scope.product3List=data.responseData;
                 $scope.param.productAppear=false;
             })
         });
