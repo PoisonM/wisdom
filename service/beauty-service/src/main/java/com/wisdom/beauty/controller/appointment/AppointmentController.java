@@ -406,8 +406,8 @@ public class AppointmentController {
 			shopAppointServiceDTO.setSysBossId(clerkInfo.getSysBossId());
 			if (StringUtils.isBlank(shopAppointServiceDTO.getSysClerkId())) {
 				shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
+				shopAppointServiceDTO.setSysClerkName(clerkInfo.getName());
 			}
-			shopAppointServiceDTO.setSysClerkName(clerkInfo.getName());
 			shopAppointServiceDTO.setSysShopId(clerkInfo.getSysShopId());
 			shopAppointServiceDTO.setSysShopName(clerkInfo.getSysShopName());
 		}
