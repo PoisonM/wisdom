@@ -368,16 +368,16 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
-        .state('pad-web.left_nav.consumption', {
-            url: '/consumption',
-            templateUrl: root + '/cashier/consumption.html',
-            controller: 'consumptionCtrl',
+        .state('pad-web.left_nav.consumptionList', {
+            url: '/consumptionList',
+            templateUrl: root + '/cashier/consumptionList.html',
+            controller: 'consumptionListCtrl',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "消费",
-                        files: [root + "cashier/consumptionCtrl.js",
-                            root + "cashier/consumption.css",
+                        files: [root + "cashier/consumptionListCtrl.js",
+                            root + "cashier/consumptionList.css",
                         ]
                     })
                 }]
