@@ -71,21 +71,18 @@ public class UserConsumeController {
      * @Description:
      * @Date:2018/4/9 19:05
      */
-    @RequestMapping(value = "/consumes", method = RequestMethod.GET)
+    @RequestMapping(value = "/consumes", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestParam String shopUserId,
-                                                                    @RequestParam String consumeType, int pageSize) {
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
 
         long startTime = System.currentTimeMillis();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
-        UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
-        userConsumeRequest.setSysUserId(shopUserId);
-        userConsumeRequest.setConsumeType(consumeType);
+        userConsumeRequest.setGoodsTypeRequire(true);
 
         pageParamVoDTO.setRequestData(userConsumeRequest);
         pageParamVoDTO.setPageNo(0);
-        pageParamVoDTO.setPageSize(pageSize);
+        pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecordList(pageParamVoDTO);
 
         ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();

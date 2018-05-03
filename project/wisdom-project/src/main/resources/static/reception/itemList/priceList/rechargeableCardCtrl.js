@@ -1,10 +1,8 @@
-/**
- * Created by Administrator on 2018/4/3.
- */
 PADWeb.controller("rechargeableCardCtrl", function($scope, $state, $stateParams,$rootScope,GetShopProjectGroups) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.$parent.param.headerPrice.blackTitle = "套卡"
+    $scope.$parent.param.priceType = "tk"
     $scope.flagFn = function (bool) {
         //左
         $scope.$parent.mainLeftSwitch.peopleListFlag = !bool

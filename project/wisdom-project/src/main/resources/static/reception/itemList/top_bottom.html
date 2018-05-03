@@ -21,7 +21,7 @@
         <div ng-if="mainSwitch.headerCashAllFlag" class="header_box">
             <div class="header_cash_left">
                 {{param.headerCash.leftContent}}
-                <span class="addrecord">{{param.headerCash.leftAddContent}}</span>
+                <span ng-click="goAddrecord()" class="addrecord">{{param.headerCash.leftAddContent}}</span>
             </div>
             <div  class="header_cash_right">
                 <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag" class="backone">
@@ -41,7 +41,7 @@
         <!--价目表头部-->
         <div ng-if = "mainSwitch.headerPriceListAllFlag" class="header_box">
             <div ng-if = "!mainSwitch.headerPriceListBlackFlag" class="header_price_box">
-                <span class="header_price_left"><i></i>{{param.headerPrice.backContent}}</span>
+                <span ng-click="priceListBlackFn()" class="header_price_left"><i></i>{{param.headerPrice.backContent}}</span>
                 <div class="header_price_right">{{param.headerPrice.title}}</div>
             </div>
             <div ng-if = "mainSwitch.headerPriceListBlackFlag" class="header_price_box">
