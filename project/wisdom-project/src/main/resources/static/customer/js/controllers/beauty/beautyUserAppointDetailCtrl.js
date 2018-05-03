@@ -5,9 +5,12 @@ angular.module('controllers',[]).controller('beautyUserAppointDetailCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetAppointmentInfoById',
         function ($scope,$rootScope,$stateParams,$state,GetAppointmentInfoById) {
 
+        $scope.param = {
+            appointInfo : {}
+        }
+
         GetAppointmentInfoById.get({shopAppointServiceId:$stateParams.appointId},function (data) {
-
-            console.log(data.responseData);
-
+            $scope.param.appointInfo = data.responseData;
+            console.log($scope.param.appointInfo);
         })
 }])

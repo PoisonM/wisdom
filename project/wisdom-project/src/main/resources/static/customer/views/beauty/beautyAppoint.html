@@ -83,10 +83,11 @@
             </div>
         </div>
         <div class="list">
-            <a class="item item-icon-left" href="#">
+            <a class="item item-icon-left" ui-sref="beautySendMessage">
                 <i class="icon ion-chatbubble-working" style="color:pink"></i>
                 <span style="color: black">捎话</span>
-                <span class="item-note">给美容师捎句话&nbsp;></span>
+                <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail==''">给美容师捎句话&nbsp;></span>
+                <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail!=''">{{shopAppointInfo.shopProjectDetail}}&nbsp;></span>
             </a>
         </div>
         <center>
@@ -103,7 +104,7 @@
             <p style="font-size:25px;margin-top:-12px"><i class="ion ion-ios-rose-outline"></i></p>
             <p style="margin-top:-30px;font-size:10px">评价</p>
         </a>
-        <a class="tab-item">
+        <a class="tab-item" ui-sref="beautyUserCenter">
             <p style="font-size: 25px;margin-top:-10px"><i class="ion ion-ios-person-outline"></i></p>
             <p style="margin-top:-30px;font-size:10px">我的</p>
         </a>

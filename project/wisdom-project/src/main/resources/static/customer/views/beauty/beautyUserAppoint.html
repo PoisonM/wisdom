@@ -1,42 +1,30 @@
 <ion-view style="background:white">
-    <div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+    <div class="tabs-striped tabs-top tabs-background-light tabs-color-assertive">
         <div class="tabs" style="margin-top:-45px">
-            <a class="tab-item active" href="#">
+            <a ng-class="{true:'tab-item active',false:'tab-item'}[param.type=='onGoing']" ng-click="selectAppointProject('onGoing')">
                 进行中
             </a>
-            <a class="tab-item" href="#">
+            <a ng-class="{true:'tab-item active',false:'tab-item'}[param.type=='finish']" ng-click="selectAppointProject('finish')">
                 已结束
             </a>
         </div>
     </div>
     <ion-content style="margin-top:60px">
-        <ion-item ng-repeat="item in [1,2,3,4,5]">
-            <h1>2018-04-03 12:00:00</h1>
-            <p class="item-note"><i class="ion ion-clock"></i><span>&nbsp;30分钟</span></p>
-            <p style="margin-top:10px">30分钟局部按摩</p>
-            <p style="margin-top:10px">王正婷</p>
-            <p style="margin-top:10px">泗水亭按摩馆</p>
-        </ion-item>
-        <ion-item ng-repeat="item in [1,2,3]">
-            <h1>2018-04-03 12:00:00</h1>
-            <p class="item-note"><span style="color: red">已结束</span></p>
-            <p style="margin-top:10px">30分钟局部按摩</p>
-            <p style="margin-top:10px">王正婷</p>
-            <p style="margin-top:10px">泗水亭按摩馆</p>
+        <ion-item ng-repeat="item in param.appointProjectList">
+            <div ng-if="param.type=='onGoing'">
+                <h1>{{item.appointStartTime|date:"yyyy-MM-dd HH:MM:ss"}}</h1>
+                <p class="item-note"><i class="ion ion-clock"></i><span>&nbsp;{{item.appointPeriod}}分钟</span></p>
+                <p style="margin-top:10px">{{item.shopProjectName}}</p>
+                <p style="margin-top:10px">{{item.sysClerkName}}</p>
+                <p style="margin-top:10px">{{item.sysShopName}}</p>
+            </div>
+            <div  ng-if="param.type=='finish'">
+                <h1>{{item.appointStartTime|date:"yyyy-MM-dd HH:MM:ss"}}</h1>
+                <p class="item-note"><span style="color: red">已结束</span></p>
+                <p style="margin-top:10px">{{item.shopProjectName}}</p>
+                <p style="margin-top:10px">{{item.sysClerkName}}</p>
+                <p style="margin-top:10px">{{item.sysShopName}}</p>
+            </div>
         </ion-item>
     </ion-content>
-    <!--<div class="list" style="margin-top:60px">-->
-        <!--<div class="item" ng-repeat="item in [1,2,3,4,5]">-->
-        <!--</div>-->
-        <!--<div class="item">-->
-            <!--<h1>2018-04-03 12:00:00</h1>-->
-            <!--<p class="item-note"><span style="color: red">已结束</span></p>-->
-            <!--<p style="margin-top:10px">30分钟局部按摩</p>-->
-            <!--<p style="margin-top:10px">王正婷</p>-->
-            <!--<p style="margin-top:10px">泗水亭按摩馆</p>-->
-        <!--</div>-->
-    <!--</div>-->
-
-    </ion-content>
-
 </ion-view>

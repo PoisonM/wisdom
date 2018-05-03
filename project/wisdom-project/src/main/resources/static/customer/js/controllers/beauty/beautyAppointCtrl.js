@@ -182,7 +182,9 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     SaveUserAppointInfo.save({shopProjectId:$scope.param.beautyProjectIds,
                         sysClerkId:$rootScope.shopAppointInfo.clerkId,
                         appointStartTimeS:$scope.param.chooseDateTime,
+                        shopProjectName:$scope.param.beautyProjectName,
                         appointPeriod:$scope.param.beautyProjectDuration,
+                        detail:$rootScope.shopAppointInfo.shopProjectDetail,
                         status:'0'
                     },function (data) {
                         if(data.result==Global.SUCCESS)
