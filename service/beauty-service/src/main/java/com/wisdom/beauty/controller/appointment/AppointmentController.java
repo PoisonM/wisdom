@@ -392,11 +392,11 @@ public class AppointmentController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<String> saveUserAppointInfo(@RequestBody ExtShopAppointServiceDTO shopAppointServiceDTO) {
+	ResponseDTO<Map> saveUserAppointInfo(@RequestBody ExtShopAppointServiceDTO shopAppointServiceDTO) {
 		long currentTimeMillis = System.currentTimeMillis();
 
 		logger.info("保存用户的预约信息传入参数={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
-		ResponseDTO<String> responseDTO = new ResponseDTO<>();
+		ResponseDTO<Map> responseDTO = new ResponseDTO<>();
 		shopAppointServiceDTO.setId(IdGen.uuid());
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
@@ -438,7 +438,6 @@ public class AppointmentController {
 		List<ShopAppointServiceDTO> appointListByCriteria = appointmentService.getShopClerkAppointListByCriteria(shopAppointServiceDTO);
 		if (CommonUtils.objectIsNotEmpty(appointListByCriteria)) {
 			responseDTO.setResult(StatusConstant.FAILURE);
-			responseDTO.setResponseData(shopAppointServiceDTO.getId());
 			responseDTO.setErrorInfo("当前时间断已被预约，请您重新选择(-_-)");
 			return responseDTO;
 		}
@@ -490,8 +489,9 @@ public class AppointmentController {
 			}
 		}
 
-
-		responseDTO.setResponseData(shopAppointServiceDTO.getId());
+		HashMap<Object, Object> hashMap = new HashMap<>(1);
+		hashMap.put("appointmentId", shopAppointServiceDTO.getId());
+		responseDTO.setResponseData(hashMap);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 
 		logger.info("保存用户的预约信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
