@@ -324,7 +324,9 @@ public class AppointmentController {
 		long timeMillis = System.currentTimeMillis();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
-
+		if (null == userInfo && CommonCodeEnum.TRUE.getCode().equals(msg)) {
+			userInfo = UserUtils.getTestUserInfoDTO();
+		}
 		ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		shopAppointServiceDTO.setSysUserId(userInfo.getId());
 		String sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
