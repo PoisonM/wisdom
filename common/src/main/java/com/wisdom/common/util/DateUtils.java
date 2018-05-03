@@ -360,7 +360,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		}else if("datetimesec".equals(flag)){
 			format = new SimpleDateFormat("yyyyMMddHHmmss");
-		} else if ("dateMillisecond".equals(flag)) {
+		} else if ("hour".equals(flag)) {
+			format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		} else if ("datetimesec".equals(flag)) {
 			format = new SimpleDateFormat("yyyyMMddHHmmss");
 		}else{
 			format = new SimpleDateFormat("yyyyMMddHHmmssS");

@@ -409,19 +409,30 @@ public class AppointmentController {
 			shopAppointServiceDTO.setSysShopId(clerkInfo.getSysShopId());
 			shopAppointServiceDTO.setSysShopName(clerkInfo.getSysShopName());
 		}
+
+		if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
+			shopAppointServiceDTO.setSysUserId("1");
+			shopAppointServiceDTO.setSysUserId("陈佳科");
+		}
 		//如果clerkInfo为空说明是用户端用户
 		else if (null == clerkInfo) {
 			shopAppointServiceDTO.setSysUserId(userInfo.getId());
 			shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
 			shopAppointServiceDTO.setCreateBy(userInfo.getId());
 			shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
-            ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
-            shopAppointServiceDTO.setSysShopId(userLoginShop.getSysShopId());
-            shopAppointServiceDTO.setSysShopName(userLoginShop.getSysShopName());
-            shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
-            shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
-            shopAppointServiceDTO.setSysBossId(userLoginShop.getSysBossId());
-        }
+			ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
+			shopAppointServiceDTO.setSysShopId(userLoginShop.getSysShopId());
+			shopAppointServiceDTO.setSysShopName(userLoginShop.getSysShopName());
+			shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
+			shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
+			shopAppointServiceDTO.setSysBossId(userLoginShop.getSysBossId());
+		}
+		if (StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
+			shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
+			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000);
+			shopAppointServiceDTO.setAppointEndTime(afterDate);
+		}
+		logger.info("保存用户的预约信息={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
 		shopAppointServiceDTO.setCreateDate(new Date());
 		int info = appointmentService.saveUserShopAppointInfo(shopAppointServiceDTO);
 		logger.debug("保存用户的预约信息执行结果， {}", info > 0 ? "成功" : "失败");
