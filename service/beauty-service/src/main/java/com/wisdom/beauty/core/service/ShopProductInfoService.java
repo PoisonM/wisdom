@@ -50,7 +50,7 @@ public interface ShopProductInfoService {
      * @Description: 获取一级产品列表
      * @Date:2018/4/10 15:59
      */
-    List<ShopProductTypeDTO> getOneLevelProductList(String sysShopId);
+    List<ShopProductTypeDTO> getOneLevelProductList(ShopProductTypeDTO shopProductTypeDTO);
 
     /**
      * @Author:huan
