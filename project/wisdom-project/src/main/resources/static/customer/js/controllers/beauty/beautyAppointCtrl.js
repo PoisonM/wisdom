@@ -101,7 +101,6 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                             }
                             $scope.param.beautyProjectDuration = $scope.param.beautyProjectDuration + value.projectDuration;
                         })
-                        console.log($scope.param);
                     }
                 });
             }
@@ -111,7 +110,6 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
                     searchDate:$scope.param.chooseDate},function (data){
                     initialTimeDate();
-                    console.log(data.responseData.split(","));
                     arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
                 })
             }
@@ -159,7 +157,6 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                                         }
                                         length--;
                                     }
-
                                     if(data.value==appointValue.value&&val.status=='0')
                                     {
                                         alert("此时间无法预约");
@@ -180,7 +177,6 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
             }
             
             $scope.confirmAppoint = function () {
-
                 if($scope.param.appointFlag)
                 {
                     SaveUserAppointInfo.save({shopProjectId:$scope.param.beautyProjectIds,
@@ -189,19 +185,16 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                         appointPeriod:$scope.param.beautyProjectDuration,
                         status:'0'
                     },function (data) {
-                        console.log(data);
-                        // if(data.result==Global.SUCCESS)
-                        // {
-                        //     console.log(data);
-                        //     //$state.go("beautyUserAppointDetail");
-                        // }
+                        if(data.result==Global.SUCCESS)
+                        {
+                            $state.go("beautyUserAppointDetail",{appointId:data.responseData.appointmentId});
+                        }
                     })
                 }
                 else
                 {
                     alert("不满足预约条件");
                 }
-                
             }
 
             var arrangeTimeDate = function (timeDate,schedule) {
@@ -216,6 +209,5 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     })
                 })
             }
-
 
 }])

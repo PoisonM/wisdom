@@ -240,5 +240,8 @@ define(['appCustomer'], function (app) {
         .factory('SaveUserAppointInfo',['$resource',function ($resource){
             return $resource(appointInfo + 'saveUserAppointInfo')
         }])
+        .factory('GetAppointmentInfoById',['$resource',function ($resource){
+            return $resource(appointInfo + 'getAppointmentInfoById')
+        }])
 
 });

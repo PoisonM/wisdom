@@ -26,7 +26,6 @@ angular.module('controllers',[]).controller('beautyProjectListCtrl',
         {
             $rootScope.shopAppointInfo.shopProjectIds.push(projectId);
         }
-        console.log($rootScope.shopAppointInfo.shopProjectIds);
     }
 
     $scope.param = {
@@ -42,7 +41,6 @@ angular.module('controllers',[]).controller('beautyProjectListCtrl',
             if(data.result=Global.SUCCESS)
             {
                 $scope.param.shopProjectList = data.responseData;
-                console.log($scope.param.shopProjectList);
             }
             $scope.$broadcast('scroll.refreshComplete');
         })
