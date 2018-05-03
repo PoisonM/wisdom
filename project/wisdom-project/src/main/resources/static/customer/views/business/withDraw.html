@@ -10,7 +10,7 @@
                     <span>每日每用户只能申请一次提现，48小时到账</span>
                 </p>
                 <p>
-                    <input type="tel" onkeypress="return event.keyCode>=48&&event.keyCode<=57" ng-pattern="/[^a-zA-Z]/"  placeholder="请输入要提取的金额" style="position:absolute;font-size:0.4rem;margin-left:1.2rem" ng-model="param.withDrawAmount">
+                    <input type="num"   placeholder="请输入要提取的金额" style="position:absolute;font-size:0.4rem;margin-left:1.2rem" ng-model="param.withDrawAmount">
                 </p>
                 <p style="margin-top:0.45rem;font-size:0.5rem;margin-left:0.5rem;">
                     <u style="color:#333333;font-size: 0.5rem">￥</u>
@@ -27,7 +27,7 @@
                 <input type="text" placeholder="请输入与您姓名一致的身份证号" ng-model="param.userIdentifyNumber">
             </label>
             <label class="item item-input">
-                <input type="text" placeholder="请输入登录美享99商城的手机号码" maxlength="11" ng-model="param.userPhone">
+                <input type="text" placeholder="请输入登录美享99商城的手机号码" maxlength="11" value="" ng-model="param.userPhone">
             </label>
             <label class="item item-input" style="font-size: 0.34rem;color: #cccccc">
                 <input type="text" placeholder="请输入验证码" ng-model="param.validateCode">
