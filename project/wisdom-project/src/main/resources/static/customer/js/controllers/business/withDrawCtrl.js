@@ -39,8 +39,9 @@ angular.module('controllers',[]).controller('withDrawCtrl',
             $scope.getValidateCode = function(){
 
                 var phone = $scope.param.userPhone;
-                alert(phone);
-                if(phone!=""){
+
+                if(angular.isUndefined(phone)){
+                alert(222);
                     $scope.param.validateCodeButtonStatus = false;
                     $scope.param.timeCount = 60;
 
