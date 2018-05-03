@@ -11,7 +11,8 @@ angular.module('controllers',[]).controller('loginCtrl',
                 userPhone:'',
                 validateCode:'',
                 validateCodeButtonStatus:true,
-                timeCount: 60
+                timeCount: 60,
+                buttondis : false
             }
 
             $scope.getValidateCode = function(){
@@ -40,44 +41,50 @@ angular.module('controllers',[]).controller('loginCtrl',
           }
 
             $scope.userLogin = function(){
-                BusinessUtil.buriedPoint(LoginGlobal.MX_DL_SCDL);
-                if($scope.param.validateCode=='')
-                {
-                    var alertPopup = $ionicPopup.alert({
-                        template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请输入验证码</span>',
-                        okText:'确定'
-                    });
-                }
-                else
-                {
-                    UserLogin.save({userPhone:$scope.param.userPhone,code:$scope.param.validateCode},function(data){
-                        if(data.result==Global.FAILURE)
-                        {
-                            alert(data.errorInfo);
-                        }
-                        else
-                        {
-                            window.localStorage.removeItem("logintoken");
-                            window.localStorage.setItem("logintoken",data.responseData);
-
-                            if($stateParams.redirectUrl=='')
+                var phone = $scope.param.userPhone;
+                if(phone !=""){
+                     BusinessUtil.buriedPoint(LoginGlobal.MX_DL_SCDL);
+                    if($scope.param.validateCode=='')
+                    {
+                        var alertPopup = $ionicPopup.alert({
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请输入验证码</span>',
+                            okText:'确定'
+                        });
+                    }
+                    else
+                    {
+                        UserLogin.save({userPhone:$scope.param.userPhone,code:$scope.param.validateCode},function(data){
+                            if(data.result==Global.FAILURE)
                             {
-                                window.location.href = "";
+                                alert(data.errorInfo);
                             }
                             else
                             {
-                                if($stateParams.redirectUrl.indexOf("businessOrderPay")==0)
+                                window.localStorage.removeItem("logintoken");
+                                window.localStorage.setItem("logintoken",data.responseData);
+
+                                if($stateParams.redirectUrl=='')
                                 {
-                                    $state.go("buyCart");
+                                    window.location.href = "";
                                 }
                                 else
                                 {
-                                    window.location.href = "#/" + $stateParams.redirectUrl.replace("&","/");
+                                    if($stateParams.redirectUrl.indexOf("businessOrderPay")==0)
+                                    {
+                                        $state.go("buyCart");
+                                    }
+                                    else
+                                    {
+                                        window.location.href = "#/" + $stateParams.redirectUrl.replace("&","/");
+                                    }
                                 }
                             }
-                        }
-                    })
+                        })
+                    }
+                }else{
+                    alert("手机号不能为空");
                 }
+
             }
 
         }])
