@@ -86,7 +86,7 @@ public interface ShopProductInfoService {
      * @Description: 根据多个id 查询产品信息
      * @Date:2018/4/18 19:30
      */
-    List<ShopProductInfoDTO> getProductInfoList(List<String> ids);
+    List<ShopProductInfoResponseDTO> getProductInfoList(List<String> ids);
     /**
     *@Author:huan
     *@Param:
