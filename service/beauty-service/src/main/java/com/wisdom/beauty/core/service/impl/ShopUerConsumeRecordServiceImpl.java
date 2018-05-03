@@ -86,7 +86,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 		// 根据goodsTypeRequire设置查询条件，如果费类型不是划卡则需要通过goodType来区分,如果goodsTypeRequire为false则需要根据goodType来区分
 		if (userConsumeRequest.getGoodsTypeRequire()) {
-			if (!ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRequest.getConsumeType())) {
+			if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRequest.getConsumeType())) {
 				if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRequest.getGoodsType())
 						|| GoodsTypeEnum.PRODUCT.getCode().equals(userConsumeRequest.getGoodsType())
 						|| GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRequest.getGoodsType())) {
@@ -97,6 +97,18 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					// 如果查询的划卡记录
 					List goodType = new ArrayList();
 					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+					c.andGoodsTypeIn(goodType);
+				}
+			}else {
+				if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRequest.getGoodsType())
+						|| GoodsTypeEnum.PRODUCT.getCode().equals(userConsumeRequest.getGoodsType())) {
+					// 如果是充值卡或者是产品领取
+					c.andGoodsTypeEqualTo(userConsumeRequest.getGoodsType());
+				}else {
+					List goodType = new ArrayList();
+					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					c.andGoodsTypeIn(goodType);
 				}
