@@ -115,7 +115,9 @@ public class ProductController {
         long currentTimeMillis = System.currentTimeMillis();
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
-        List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(sysClerkDTO.getSysShopId());
+        ShopProductTypeDTO shopProductTypeDTO=new ShopProductTypeDTO();
+        shopProductTypeDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(shopProductTypeDTO);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("findOneLevelProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
