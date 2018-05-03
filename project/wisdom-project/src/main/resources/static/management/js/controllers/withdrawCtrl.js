@@ -143,10 +143,11 @@ angular.module('controllers',[]).controller('withdrawCtrl',
                 UpdateWithdrawById.save(withDrawRecordDTO,function(data){
                     ManagementUtil.checkResponseData(data,"");
                     if(data.result == Global.SUCCESS){
+                        alert(data.errorInfo);
                         $scope.flag = false;
                         $scope.loadPageList();
                     }else{
-                        alert("提现未成功");
+                        alert(data.errorInfo);
                         $scope.flag = false;
                     }
                 })
