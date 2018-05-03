@@ -67,6 +67,7 @@ public class UserUtils {
         clerkDTO.setSysShopId("11");
         clerkDTO.setNickname("张欢昵称");
         clerkDTO.setMobile("18810142926");
+        clerkDTO.setSysShopName("汉方美业");
         clerkDTO.setScore(70f);
         return clerkDTO;
 
