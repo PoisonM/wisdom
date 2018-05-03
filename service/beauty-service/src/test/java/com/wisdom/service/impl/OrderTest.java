@@ -87,7 +87,7 @@ public class OrderTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/orderInfo/saveShopUserOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/orderInfo/updateVirtualGoodsOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -100,6 +100,9 @@ public class OrderTest {
         shopUserOrderDTO.setExprDate(new Date());
         shopUserOrderDTO.setDetail("备注");
         shopUserOrderDTO.setShopUserArchivesId("1");
+        shopUserOrderDTO.setOrderId("20180424200819402");
+        shopUserOrderDTO.setOperation("1");
+        shopUserOrderDTO.setGoodsType("0");
         //用户与项目关系
         List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
         buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
@@ -107,17 +110,17 @@ public class OrderTest {
 
 
         //用户与产品
-        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
-        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
-        shopUserProductRelationDTOS.add(productRelationDTO);
-        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
+//        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
+//        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
+//        shopUserProductRelationDTOS.add(productRelationDTO);
+//        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
 
 
         //套卡
-        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = new ArrayList<>();
-        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = getShopUserProjectGroupRelRelationDTO();
-        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
-        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
+//        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = new ArrayList<>();
+//        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = getShopUserProjectGroupRelRelationDTO();
+//        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
+//        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
         return shopUserOrderDTO;
     }
 
@@ -151,6 +154,7 @@ public class OrderTest {
         groupRelRelationDTO.setProjectSurplusAmount(new BigDecimal(1000));
         groupRelRelationDTO.setSysClerkId("110");
         groupRelRelationDTO.setShopProjectGroupName("综合啦");
+        groupRelRelationDTO.setId("20180424200819402");
         groupRelRelationDTO.setShopProjectGroupId("101");
         groupRelRelationDTO.setDiscount(0.23f);
         groupRelRelationDTO.setProjectInitTimes(10);
@@ -164,6 +168,7 @@ public class OrderTest {
         productRelationDTO.setDiscount(0.75f);
         productRelationDTO.setInitAmount(new BigDecimal("100"));
         productRelationDTO.setInitTimes(20);
+        productRelationDTO.setId("20180424200819402");
         productRelationDTO.setSysClerkId("101");
         productRelationDTO.setShopProductId("101");
         productRelationDTO.setShopProductName("迪奥");
@@ -182,6 +187,7 @@ public class OrderTest {
         relationDTO.setSysShopProjectId("1");
         relationDTO.setSysUserId("1");
         relationDTO.setSysShopProjectName("美白");
+        relationDTO.setId("20180424200819402");
         relationDTO.setEffectiveDate(new Date());
         relationDTO.setInvalidDays(new Date());
         relationDTO.setUseStyle(GoodsTypeEnum.TREATMENT_CARD.getCode());
