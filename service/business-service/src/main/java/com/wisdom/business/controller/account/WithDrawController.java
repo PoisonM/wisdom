@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 直播板块
@@ -224,9 +225,15 @@ public class WithDrawController {
 	ResponseDTO updateWithdrawById(@RequestBody WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		try {
-			withDrawService.updateWithdrawById(withDrawRecordDTO,request);
-			responseDTO.setResult(StatusConstant.SUCCESS);
-			responseDTO.setErrorInfo("提现审核通过");
+			Map<String,String> result = withDrawService.updateWithdrawById(withDrawRecordDTO,request);
+			if(result.get("result").equals("success")){
+				responseDTO.setResult(StatusConstant.SUCCESS);
+				responseDTO.setErrorInfo(result.get("message"));
+			}else{
+				responseDTO.setResult(StatusConstant.FAILURE);
+				responseDTO.setErrorInfo(result.get("message"));
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseDTO.setResult(StatusConstant.FAILURE);

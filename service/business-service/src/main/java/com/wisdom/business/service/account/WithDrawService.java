@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.HashMap;
 
 @Service
 @Transactional(readOnly = false)
@@ -47,31 +48,31 @@ public class WithDrawService {
     @Autowired
     private UserServiceClient userServiceClient;
     
-    public void updateWithdrawById(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
+    public Map<String,String> updateWithdrawById(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
 
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId(withDrawRecordDTO.getSysUserId());
-        String openid="";
+        String openid = "";
         List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-        if(userInfoDTOList!=null&&userInfoDTOList.size()>0){
+        if (userInfoDTOList != null && userInfoDTOList.size() > 0) {
             openid = userInfoDTOList.get(0).getUserOpenid();
         }
         String withdrawId = withDrawRecordDTO.getWithdrawId();
         String status = withDrawRecordDTO.getStatus();
-        String token  = WeixinUtil.getUserToken();
-        Float moneyAmount =withDrawRecordDTO.getMoneyAmount();
+        String token = WeixinUtil.getUserToken();
+        Float moneyAmount = withDrawRecordDTO.getMoneyAmount();
         String time = DateUtils.getDateTime();
         WithDrawRecordDTO withDrawRecordDTO1 = new WithDrawRecordDTO();
         withDrawRecordDTO1.setId(withdrawId);
         List<WithDrawRecordDTO> withDrawRecordDTOS = withDrawMapper.getWithdrawRecordInfo(withDrawRecordDTO1);
 
-        if(withDrawRecordDTOS!=null&&withDrawRecordDTOS.size()>0){
+        if (withDrawRecordDTOS != null && withDrawRecordDTOS.size() > 0) {
 
             //判断当前状态是否未审核
-            if(withDrawRecordDTOS.get(0).getStatus().equals("0")){
+            if (withDrawRecordDTOS.get(0).getStatus().equals("0")) {
 
-                withDrawMapper.updateWithdrawById(withdrawId,status);
-                if("2".equals(status)){//拒绝提现,提现金额返还余额
+                withDrawMapper.updateWithdrawById(withdrawId, status);
+                if ("2".equals(status)) {//拒绝提现,提现金额返还余额
                     AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(withDrawRecordDTO.getSysUserId());
                     Float money = accountDTO.getBalance();//用户余额
                     Float balance = withDrawRecordDTO.getMoneyAmount();//提现金额
@@ -82,23 +83,48 @@ public class WithDrawService {
                     for (UserInfoDTO userInfoDTO1 : userInfoDTOList) {
                         openid = userInfoDTO1.getUserOpenid();
                     }
-                    WeixinTemplateMessageUtil.sendWithDrawTemplateFailureMessage(String.valueOf(moneyAmount),time,token,"",openid);
-                }else{
+                    WeixinTemplateMessageUtil.sendWithDrawTemplateFailureMessage(String.valueOf(moneyAmount), time, token, "", openid);
+                    HashMap<String, String> result = new HashMap<String, String>();
+                    result.put("result","success");
+                    result.put("message","执行成功");
+
+                } else {
 
                     try {
                         //将钱打入用户零钱账户
                         returnMoneyToUser(moneyAmount, request, openid, token);
-
-                    }catch(Exception e){
+                        HashMap<String, String> result = new HashMap<String, String>();
+                        result.put("result","success");
+                        result.put("message","执行成功");
+                        return result;
+                    } catch (Exception e) {
                         logger.info(e.getMessage());
+                        withDrawMapper.updateWithdrawById(withdrawId, "0");
+                        HashMap<String, String> result = new HashMap<String, String>();
+                        result.put("result","failure");
+                        result.put("message","公司公众号帐户余额不足，请联系财务人员");
+                        return result;
                     }
                 }
+            }else{
+                HashMap<String, String> result = new HashMap<String, String>();
+                result.put("result","failure");
+                result.put("message","账户已审核，请勿重复操作");
+                return result;
             }
 
+        }else{
+            HashMap<String, String> result = new HashMap<String, String>();
+            result.put("result","failure");
+            result.put("message","此用户信息存在问题，请联系开发人员");
+            return result;
         }
 
+        return null;
 
     }
+
+
     
     public PageParamDTO<List<WithDrawRecordDTO>> queryWithdrawsByParameters(PageParamVoDTO<ProductDTO> pageParamVoDTO) {
         PageParamDTO<List<WithDrawRecordDTO>> page = new  PageParamDTO<>();
