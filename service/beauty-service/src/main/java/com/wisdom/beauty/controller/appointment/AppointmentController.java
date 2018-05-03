@@ -404,7 +404,9 @@ public class AppointmentController {
 		if (null == userInfo) {
 			shopAppointServiceDTO.setCreateBy(clerkInfo.getSysUserId());
 			shopAppointServiceDTO.setSysBossId(clerkInfo.getSysBossId());
-			shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
+			if (StringUtils.isBlank(shopAppointServiceDTO.getSysClerkId())) {
+				shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
+			}
 			shopAppointServiceDTO.setSysClerkName(clerkInfo.getName());
 			shopAppointServiceDTO.setSysShopId(clerkInfo.getSysShopId());
 			shopAppointServiceDTO.setSysShopName(clerkInfo.getSysShopName());
@@ -435,7 +437,10 @@ public class AppointmentController {
 		//根据预约时间查询当前美容师有没有被占用
 		shopAppointServiceDTO.setSearchStartTime(shopAppointServiceDTO.getAppointStartTime());
 		shopAppointServiceDTO.setSearchEndTime(shopAppointServiceDTO.getAppointEndTime());
+		String status = shopAppointServiceDTO.getStatus();
+		shopAppointServiceDTO.setStatus("");
 		List<ShopAppointServiceDTO> appointListByCriteria = appointmentService.getShopClerkAppointListByCriteria(shopAppointServiceDTO);
+		shopAppointServiceDTO.setStatus(status);
 		if (CommonUtils.objectIsNotEmpty(appointListByCriteria)) {
 			logger.info("根据预约时间查询当前美容师有没有被占用查询结果大小为={}", appointListByCriteria.size());
 			responseDTO.setResult(StatusConstant.FAILURE);

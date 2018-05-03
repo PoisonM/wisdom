@@ -150,7 +150,7 @@ public class AppointmentTest {
         shopAppointServiceDTO.setShopProjectId(IdGen.uuid());
         shopAppointServiceDTO.setShopProjectName("面部保洁");
         shopAppointServiceDTO.setStatus("0");
-        shopAppointServiceDTO.setSysClerkId("1");
+        shopAppointServiceDTO.setSysClerkId("6ce974e11feb4deab74b553d3b3c5509");
         return shopAppointServiceDTO;
     }
 
