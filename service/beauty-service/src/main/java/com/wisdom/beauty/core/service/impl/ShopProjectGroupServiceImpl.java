@@ -95,9 +95,11 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
                 map.put(imageUrl.getImageId(), imageUrl.getUrl());
             }
         }
-        ProjectInfoGroupResponseDTO projectInfoGroupResponse = new ProjectInfoGroupResponseDTO();
+        ProjectInfoGroupResponseDTO projectInfoGroupResponse = null;
         List<ProjectInfoGroupResponseDTO> respon = new ArrayList<>();
         for (ShopProjectGroupDTO shopProjectGroup : shopCustomerArchiveslist) {
+            projectInfoGroupResponse = new ProjectInfoGroupResponseDTO();
+            projectInfoGroupResponse.setId(shopProjectGroup.getId());
             projectInfoGroupResponse.setDiscountPrice(shopProjectGroup.getDiscountPrice());
             projectInfoGroupResponse.setMarketPrice(shopProjectGroup.getMarketPrice());
             projectInfoGroupResponse.setProjectGroupName(shopProjectGroup.getProjectGroupName());
