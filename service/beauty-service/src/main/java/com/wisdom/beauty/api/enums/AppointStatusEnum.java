@@ -1,13 +1,16 @@
 package com.wisdom.beauty.api.enums;
 
-public enum ConsumeTypeEnum {
-    //0：充值  1：消费 2、还欠款 3、退款 4、划卡
-    RECHARGE("0", "充值"),
-    CONSUME("1", "消费"),
-    ARREARS("2", "还欠款"),
-    REFUND("3", "退款");
+public enum AppointStatusEnum {
 
-    ConsumeTypeEnum(String code, String desc) {
+    NOT_STARTED("0", "未开始"),
+    CONFIRM("1", "已确认"),
+    ON_SERVICE("2", "服务中"),
+    OVER("3", "已完成"),
+    CANCEL("4", "取消预约"),
+    ONGOING("5", "进行中"),
+    ENDED("6", "已结束");
+
+    AppointStatusEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }

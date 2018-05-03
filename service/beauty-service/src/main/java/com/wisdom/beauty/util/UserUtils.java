@@ -30,15 +30,12 @@ public class UserUtils {
      * @return
      */
     public static UserInfoDTO getUserInfo() {
-//        if(CommonCodeEnum.TRUE.getCode().equals(msg)){
-        return getTestUserInfoDTO();
-//        }
-//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//        Map<String, String> tokenValue = getHeadersInfo(request);
-//        String token = tokenValue.get("logintoken");
-//        String userInfoStr = JedisUtils.get(token);
-//        UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
-//        return userInfoDTO;
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Map<String, String> tokenValue = getHeadersInfo(request);
+        String token = tokenValue.get("logintoken");
+        String userInfoStr = JedisUtils.get(token);
+        UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
+        return userInfoDTO;
     }
 
     /**
@@ -65,11 +62,13 @@ public class UserUtils {
         clerkDTO.setSysUserId("3");
         clerkDTO.setSysBossName("王老板");
         clerkDTO.setSysBossId("sys_boss_id");
-        clerkDTO.setName("张欢");
+        clerkDTO.setName("陈莺梦");
         clerkDTO.setId("clerkId1");
         clerkDTO.setSysShopId("11");
         clerkDTO.setNickname("张欢昵称");
         clerkDTO.setMobile("18810142926");
+        clerkDTO.setSysShopName("汉方美业");
+        clerkDTO.setScore(70f);
         return clerkDTO;
 
 //        SysClerkDTO sysClerkDTO = null;

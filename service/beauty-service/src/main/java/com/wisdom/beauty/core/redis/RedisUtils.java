@@ -49,7 +49,7 @@ public class RedisUtils {
     private ShopUserRelationService shopUserRelationService;
 
     @Value("${test.msg}")
-    private static String msg;
+    private String msg;
 
 
     /**
@@ -90,6 +90,9 @@ public class RedisUtils {
 
         ShopAppointServiceDTO shopAppointServiceDTO = (ShopAppointServiceDTO) JedisUtils.getObject(appointmentId);
 
+        if (msg.equals("true")) {
+            shopAppointServiceDTO = null;
+        }
         //redis中没有查出数据，再次缓存到redis中
         if (null == shopAppointServiceDTO) {
             shopAppointServiceDTO = new ShopAppointServiceDTO();

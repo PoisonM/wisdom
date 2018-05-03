@@ -26,6 +26,7 @@ import com.wisdom.common.util.LunarUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -266,16 +267,28 @@ public class AppointmentController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<ShopAppointServiceDTO> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
+	ResponseDTO<ExtShopAppointServiceDTO> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
 
 		long startTime = System.currentTimeMillis();
 		logger.info("获取某次预约详情传入参数={}", "shopAppointServiceId = [" + shopAppointServiceId + "]");
 
-		ResponseDTO<ShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
+		ResponseDTO<ExtShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
 		ShopAppointServiceDTO shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceId);
+		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+		if (null != shopAppointInfoFromRedis) {
+			BeanUtils.copyProperties(shopAppointInfoFromRedis, extShopAppointServiceDTO);
+			List<SysClerkDTO> clerkInfoByClerkId = userServiceClient.getClerkInfoByClerkId(extShopAppointServiceDTO.getSysClerkId());
+			if (CommonUtils.objectIsNotEmpty(clerkInfoByClerkId)) {
+				SysClerkDTO sysClerkDTO = clerkInfoByClerkId.get(0);
+				extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
+				extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
+                extShopAppointServiceDTO.setAppointEndTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getAppointEndTime(), "datetime"));
+                extShopAppointServiceDTO.setClerkImage(sysClerkDTO.getPhoto());
+			}
+		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(shopAppointInfoFromRedis);
+		responseDTO.setResponseData(extShopAppointServiceDTO);
 		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - startTime));
 
 		return responseDTO;
@@ -291,7 +304,7 @@ public class AppointmentController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<ShopAppointServiceDTO> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, String status) {
+	ResponseDTO<ShopAppointServiceDTO> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, @RequestParam String status) {
 		logger.info("根据预约主键修改此次预约信息传入参数={}", "shopAppointServiceId = [" + shopAppointServiceId + "], status = [" + status + "]");
 		long timeMillis = System.currentTimeMillis();
 		ResponseDTO<ShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
@@ -320,13 +333,16 @@ public class AppointmentController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<Object> getMyAppointInfoList() {
+	ResponseDTO<Object> getMyAppointInfoList(@RequestParam String status) {
 		long timeMillis = System.currentTimeMillis();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
-
+		if (null == userInfo && CommonCodeEnum.TRUE.getCode().equals(msg)) {
+			userInfo = UserUtils.getTestUserInfoDTO();
+		}
 		ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		shopAppointServiceDTO.setSysUserId(userInfo.getId());
+		shopAppointServiceDTO.setStatus(status);
 		String sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
 		if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
 			sysShopId = "11";
@@ -389,11 +405,11 @@ public class AppointmentController {
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<String> saveUserAppointInfo(@RequestBody ShopAppointServiceDTO shopAppointServiceDTO) {
+	ResponseDTO<Map> saveUserAppointInfo(@RequestBody ExtShopAppointServiceDTO shopAppointServiceDTO) {
 		long currentTimeMillis = System.currentTimeMillis();
 
 		logger.info("保存用户的预约信息传入参数={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
-
+		ResponseDTO<Map> responseDTO = new ResponseDTO<>();
 		shopAppointServiceDTO.setId(IdGen.uuid());
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
@@ -401,10 +417,17 @@ public class AppointmentController {
 		if (null == userInfo) {
 			shopAppointServiceDTO.setCreateBy(clerkInfo.getSysUserId());
 			shopAppointServiceDTO.setSysBossId(clerkInfo.getSysBossId());
-			shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
+			if (StringUtils.isBlank(shopAppointServiceDTO.getSysClerkId())) {
+				shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
+			}
 			shopAppointServiceDTO.setSysClerkName(clerkInfo.getName());
 			shopAppointServiceDTO.setSysShopId(clerkInfo.getSysShopId());
 			shopAppointServiceDTO.setSysShopName(clerkInfo.getSysShopName());
+		}
+		//测试挡板
+		if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
+			shopAppointServiceDTO.setSysUserId("1");
+			shopAppointServiceDTO.setSysUserName("陈佳科");
 		}
 		//如果clerkInfo为空说明是用户端用户
 		else if (null == clerkInfo) {
@@ -412,13 +435,33 @@ public class AppointmentController {
 			shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
 			shopAppointServiceDTO.setCreateBy(userInfo.getId());
 			shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
-            ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
-            shopAppointServiceDTO.setSysShopId(userLoginShop.getSysShopId());
-            shopAppointServiceDTO.setSysShopName(userLoginShop.getSysShopName());
-            shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
-            shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
-            shopAppointServiceDTO.setSysBossId(userLoginShop.getSysBossId());
-        }
+			ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
+			shopAppointServiceDTO.setSysShopId(userLoginShop.getSysShopId());
+			shopAppointServiceDTO.setSysShopName(userLoginShop.getSysShopName());
+			shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
+			shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
+			shopAppointServiceDTO.setSysBossId(userLoginShop.getSysBossId());
+		}
+		if (StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
+			shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
+			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000);
+			shopAppointServiceDTO.setAppointEndTime(afterDate);
+		}
+		//根据预约时间查询当前美容师有没有被占用
+		shopAppointServiceDTO.setSearchStartTime(shopAppointServiceDTO.getAppointStartTime());
+		shopAppointServiceDTO.setSearchEndTime(shopAppointServiceDTO.getAppointEndTime());
+		String status = shopAppointServiceDTO.getStatus();
+		shopAppointServiceDTO.setStatus("");
+		List<ShopAppointServiceDTO> appointListByCriteria = appointmentService.getShopClerkAppointListByCriteria(shopAppointServiceDTO);
+		shopAppointServiceDTO.setStatus(status);
+		if (CommonUtils.objectIsNotEmpty(appointListByCriteria)) {
+			logger.info("根据预约时间查询当前美容师有没有被占用查询结果大小为={}", appointListByCriteria.size());
+			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setErrorInfo("当前时间段已被预约，请您重新选择(-_-)");
+			return responseDTO;
+		}
+
+		logger.info("保存用户的预约信息={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
 		shopAppointServiceDTO.setCreateDate(new Date());
 		int info = appointmentService.saveUserShopAppointInfo(shopAppointServiceDTO);
 		logger.debug("保存用户的预约信息执行结果， {}", info > 0 ? "成功" : "失败");
@@ -441,30 +484,33 @@ public class AppointmentController {
 					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
 					//根据项目主键查询项目详细信息
 					ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(project);
-					relationDTO.setUseStyle(projectDetail.getUseStyle());
-					relationDTO.setCreateBy(shopAppointServiceDTO.getCreateBy());
-					relationDTO.setSysShopProjectName(projectDetail.getProjectName());
-					relationDTO.setId(IdGen.uuid());
-					relationDTO.setSysShopProjectInitTimes(0);
-					relationDTO.setSysShopProjectInitAmount(new BigDecimal(0));
-					relationDTO.setSysClerkId(shopAppointServiceDTO.getSysClerkId());
-					relationDTO.setSysShopName(shopAppointServiceDTO.getSysShopName());
-					relationDTO.setSysShopProjectSurplusAmount(new BigDecimal(0));
-					relationDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
-					relationDTO.setSysShopProjectId(project);
-                    relationDTO.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
-					relationDTO.setSysShopProjectSurplusTimes(0);
-					relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
-					relationDTO.setSysShopId(projectDetail.getSysShopId());
-					relationDTO.setSysShopProjectInitTimes(1);
-					int num = shopProjectService.saveUserProjectRelation(relationDTO);
-					logger.debug("建立项目与用户的关系， {}", num > 0 ? "成功" : "失败");
+					if (null != projectDetail) {
+						relationDTO.setUseStyle(projectDetail.getUseStyle());
+						relationDTO.setCreateBy(shopAppointServiceDTO.getCreateBy());
+						relationDTO.setSysShopProjectName(projectDetail.getProjectName());
+						relationDTO.setId(IdGen.uuid());
+						relationDTO.setSysShopProjectInitTimes(0);
+						relationDTO.setSysShopProjectInitAmount(new BigDecimal(0));
+						relationDTO.setSysClerkId(shopAppointServiceDTO.getSysClerkId());
+						relationDTO.setSysShopName(shopAppointServiceDTO.getSysShopName());
+						relationDTO.setSysShopProjectSurplusAmount(new BigDecimal(0));
+						relationDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
+						relationDTO.setSysShopProjectId(project);
+						relationDTO.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
+						relationDTO.setSysShopProjectSurplusTimes(0);
+						relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
+						relationDTO.setSysShopId(projectDetail.getSysShopId());
+						relationDTO.setSysShopProjectInitTimes(1);
+						int num = shopProjectService.saveUserProjectRelation(relationDTO);
+						logger.debug("建立项目与用户的关系， {}", num > 0 ? "成功" : "失败");
+					}
 				}
 			}
 		}
 
-		ResponseDTO<String> responseDTO = new ResponseDTO<>();
-		responseDTO.setResponseData(StatusConstant.SUCCESS);
+		HashMap<Object, Object> hashMap = new HashMap<>(1);
+		hashMap.put("appointmentId", shopAppointServiceDTO.getId());
+		responseDTO.setResponseData(hashMap);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 
 		logger.info("保存用户的预约信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
@@ -516,28 +562,28 @@ public class AppointmentController {
 	@RequestMapping(value = "findUserInfoForShopByTimeControl", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	ResponseDTO<PageParamDTO<List<ShopAppointServiceDTO>>> findUserInfoForShopByTimeControl(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn, String sysShopId, String sysClerkId, String appointStartTimeS, String appointStartTimeE) {
+	ResponseDTO<PageParamDTO<List<ExtShopAppointServiceDTO>>> findUserInfoForShopByTimeControl(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn, String sysShopId, String sysClerkId, String appointStartTimeS, String appointStartTimeE) {
 
 		logger.info("根据预约主键修改此次预约信息传入参数={}", "sysShopId = [" + sysShopId + "], sysClerkId = [" + sysClerkId + "] ,appointStartTimeS = [" + appointStartTimeS + "]", "appointStartTimeE = [" + appointStartTimeE + "]");
 		long timeMillis = System.currentTimeMillis();
 
-		PageParamDTO<ShopAppointServiceDTO> pageParamDTO = new PageParamDTO<>();
+		PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO = new PageParamDTO<>();
 		pageParamDTO.setPageNo(pn);
 		pageParamDTO.setPageSize(10);
 
 		//将查询信息放入分页里面
-		ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
+		ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		shopAppointServiceDTO.setSysShopId(sysShopId);
 		shopAppointServiceDTO.setSysClerkId(sysClerkId);
 		shopAppointServiceDTO.setAppointStartTimeS(appointStartTimeS);
-		shopAppointServiceDTO.setAppointStartTimeE(appointStartTimeE);
+		shopAppointServiceDTO.setAppointEndTimeE(appointStartTimeE);
 
 		pageParamDTO.setRequestData(shopAppointServiceDTO);
 
-		PageParamDTO<List<ShopAppointServiceDTO>> shopAppointmentUserInfo = appointmentService.findUserInfoForShopByTimeService(pageParamDTO);
+		PageParamDTO<List<ExtShopAppointServiceDTO>> shopAppointmentUserInfo = appointmentService.findUserInfoForShopByTimeService(pageParamDTO);
 
 		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
-		ResponseDTO<PageParamDTO<List<ShopAppointServiceDTO>>> responseDTO = new ResponseDTO<>();
+		ResponseDTO<PageParamDTO<List<ExtShopAppointServiceDTO>>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(shopAppointmentUserInfo);
 		return responseDTO;

@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.enums.AppointStatusEnum;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
@@ -73,6 +74,8 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
 
         ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
         ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
+        String status = extShopAppointServiceDTO.getStatus();
+
         if(StringUtils.isNotBlank(extShopAppointServiceDTO.getSysShopId())){
             criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
         }
@@ -84,6 +87,25 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         }
         if(null != extShopAppointServiceDTO.getSearchStartTime() && null != extShopAppointServiceDTO.getSearchEndTime()){
             criteria.andAppointStartTimeBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
+        }
+        if (StringUtils.isNotBlank(status)) {
+            //如果是进行中
+            if (AppointStatusEnum.ONGOING.getCode().equals(status)) {
+                ArrayList<String> arrayList = new ArrayList<>();
+                arrayList.add(AppointStatusEnum.NOT_STARTED.getCode());
+                arrayList.add(AppointStatusEnum.CONFIRM.getCode());
+                arrayList.add(AppointStatusEnum.ON_SERVICE.getCode());
+                criteria.andStatusIn(arrayList);
+            }
+            //如果是已结束
+            else if (AppointStatusEnum.ENDED.getCode().equals(status)) {
+                ArrayList<String> arrayList = new ArrayList<>();
+                arrayList.add(AppointStatusEnum.OVER.getCode());
+                arrayList.add(AppointStatusEnum.CANCEL.getCode());
+                criteria.andStatusIn(arrayList);
+            } else {
+                criteria.andStatusEqualTo(status);
+            }
         }
 
         List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
@@ -206,17 +228,17 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
      *  @autuor zhangchao
      * */
     @Override
-    public PageParamDTO<List<ShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ShopAppointServiceDTO> pageParamDTO){
+    public PageParamDTO<List<ExtShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO) {
 
 
         HashMap<String,String> shopAppointMap = new HashMap<>();
         shopAppointMap.put("sysShopId",pageParamDTO.getRequestData().getSysShopId());
         shopAppointMap.put("appointStartTimeS",pageParamDTO.getRequestData().getAppointStartTimeS());
-        shopAppointMap.put("appointStartTimeE",pageParamDTO.getRequestData().getAppointStartTimeE());
+        shopAppointMap.put("appointStartTimeE", pageParamDTO.getRequestData().getAppointEndTimeE());
         shopAppointMap.put("sysClerkId",pageParamDTO.getRequestData().getSysClerkId());
 
         //预约用户列表
-        List<ShopAppointServiceDTO> shopAppointUserInfoList = new ArrayList<>();
+        List<ExtShopAppointServiceDTO> shopAppointUserInfoList = new ArrayList<>();
         int sum = 0;
 
         try {
@@ -228,10 +250,10 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             logger.info(e.getMessage());
         }
 
-        PageParamDTO<List<ShopAppointServiceDTO>> page = new  PageParamDTO<>();
+        PageParamDTO<List<ExtShopAppointServiceDTO>> page = new PageParamDTO<>();
         page.setResponseData(shopAppointUserInfoList);
         page.setTotalCount(sum);
-        logger.info("店铺"+pageParamDTO.getRequestData().getSysShopId()+"下面店员"+pageParamDTO.getRequestData().getSysClerkId()+"在"+pageParamDTO.getRequestData().getAppointStartTimeS()+"到"+pageParamDTO.getRequestData().getAppointStartTimeE()+"的预约用户列表是"+shopAppointUserInfoList);
+        logger.info("店铺" + pageParamDTO.getRequestData().getSysShopId() + "下面店员" + pageParamDTO.getRequestData().getSysClerkId() + "在" + pageParamDTO.getRequestData().getAppointStartTimeS() + "到" + pageParamDTO.getRequestData().getAppointEndTimeE() + "的预约用户列表是" + shopAppointUserInfoList);
 
         return page;
     }

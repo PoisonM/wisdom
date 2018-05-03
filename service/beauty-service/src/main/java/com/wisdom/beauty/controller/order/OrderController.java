@@ -130,4 +130,35 @@ public class OrderController {
         return responseDTO;
     }
 
+    /**
+     * 更新订单虚拟商品的信息
+     *
+     * @param shopUserOrderDTO 订单对象
+     * @return
+     */
+    @RequestMapping(value = "updateVirtualGoodsOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> updateVirtualGoodsOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("更新订单虚拟商品的信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
+        ResponseDTO responseDTO = new ResponseDTO<String>();
+
+        //mongodb中更新订单的状态
+        Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
+        Update update = new Update();
+        update.set("status", shopUserOrderDTO.getStatus());
+        update.set("signUrl", shopUserOrderDTO.getSignUrl());
+        update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
+        update.set("shopUserProductRelationDTOS", shopUserOrderDTO.getShopUserProductRelationDTOS());
+        update.set("shopUserProjectRelationDTOS", shopUserOrderDTO.getShopUserProjectRelationDTOS());
+        mongoTemplate.upsert(query, update, "shopUserOrderDTO");
+        responseDTO.setResponseData(StatusConstant.SUCCESS);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("更新订单虚拟商品的信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
 }
