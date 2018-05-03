@@ -187,7 +187,7 @@ public class AppointmentTest {
     @Test
     public void testDeleteArchiveInfo() throws Exception {
 
-        MvcResult result = mvc.perform(get("/appointmentInfo/getAppointmentInfoById").param("shopAppointServiceId", "bcdcbba16b9a4036b44b59e7711b969a"))
+        MvcResult result = mvc.perform(get("/appointmentInfo/getAppointmentInfoById").param("shopAppointServiceId", "f83d378c34a747588570d1546b35469b"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

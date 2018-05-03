@@ -283,6 +283,7 @@ public class AppointmentController {
 				extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
 				extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
 				extShopAppointServiceDTO.setAppointEndTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getSearchEndTime(), "datetime"));
+                extShopAppointServiceDTO.setClerkImage(sysClerkDTO.getPhoto());
 			}
 		}
 
