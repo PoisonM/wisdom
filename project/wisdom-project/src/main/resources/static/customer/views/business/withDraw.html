@@ -10,7 +10,7 @@
                     <span>每日每用户只能申请一次提现，48小时到账</span>
                 </p>
                 <p>
-                    <input onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" placeholder="请输入要提取的金额" style="position:absolute;font-size:0.4rem;margin-left:1.2rem" ng-model="param.withDrawAmount">
+                    <input type="tel" placeholder="请输入要提取的金额" style="position:absolute;font-size:0.4rem;margin-left:1.2rem" ng-model="param.withDrawAmount">
                 </p>
                 <p style="margin-top:0.45rem;font-size:0.5rem;margin-left:0.5rem;">
                     <u style="color:#333333;font-size: 0.5rem">￥</u>
@@ -47,7 +47,7 @@
             </button>
             <p>
                 <span>   </span>
-                <span align="middle" style="font-size: 0.26rem;color: #333333">
+                <span align="middle" style="font-size: 0.26rem; text-align: center; color: #333333">
                    注：10元起申请提现，最高5000元。
                 </span>
             </p>
