@@ -16,6 +16,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 public class ProjectInfoGroupResponseDTO extends BaseEntity {
+	private  String id;
 	/** 套卡名称 */
 	private String projectGroupName;
 
@@ -101,5 +102,13 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 
 	public void setImageUrl(String[] imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }
