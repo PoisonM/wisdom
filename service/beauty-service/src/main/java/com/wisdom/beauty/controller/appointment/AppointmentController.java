@@ -438,6 +438,7 @@ public class AppointmentController {
 		List<ShopAppointServiceDTO> appointListByCriteria = appointmentService.getShopClerkAppointListByCriteria(shopAppointServiceDTO);
 		if (CommonUtils.objectIsNotEmpty(appointListByCriteria)) {
 			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setResponseData(shopAppointServiceDTO.getId());
 			responseDTO.setErrorInfo("当前时间断已被预约，请您重新选择(-_-)");
 			return responseDTO;
 		}
@@ -490,7 +491,7 @@ public class AppointmentController {
 		}
 
 
-		responseDTO.setResponseData(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(shopAppointServiceDTO.getId());
 		responseDTO.setResult(StatusConstant.SUCCESS);
 
 		logger.info("保存用户的预约信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
