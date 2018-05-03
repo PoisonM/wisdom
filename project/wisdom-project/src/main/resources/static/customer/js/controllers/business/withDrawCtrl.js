@@ -40,7 +40,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
 
                 var phone = $scope.param.userPhone;
                 alert(phone);
-                if(phone != ""){
+                if(phone.isUndefined()){
                     $scope.param.validateCodeButtonStatus = false;
                     $scope.param.timeCount = 60;
 
