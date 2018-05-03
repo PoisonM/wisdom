@@ -16,6 +16,8 @@ import com.wisdom.common.dto.system.UserBankCardInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.persistence.Page;
 import com.wisdom.common.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -31,6 +33,8 @@ import java.util.*;
 @Transactional(readOnly = false)
 public class WithDrawService {
 
+    Logger logger = LoggerFactory.getLogger(WithDrawService.class);
+
     @Autowired
     private WithDrawMapper withDrawMapper;
 
@@ -43,32 +47,57 @@ public class WithDrawService {
     @Autowired
     private UserServiceClient userServiceClient;
     
-    public void updateWithdrawById(WithDrawRecordDTO withDrawRecordDTO) {
+    public void updateWithdrawById(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
 
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setId(withDrawRecordDTO.getSysUserId());
+        String openid="";
+        List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+        if(userInfoDTOList!=null&&userInfoDTOList.size()>0){
+            openid = userInfoDTOList.get(0).getUserOpenid();
+        }
         String withdrawId = withDrawRecordDTO.getWithdrawId();
         String status = withDrawRecordDTO.getStatus();
-        String openid = "";
         String token  = WeixinUtil.getUserToken();
-        String moneyAmount = String.valueOf(withDrawRecordDTO.getMoneyAmount());
+        Float moneyAmount =withDrawRecordDTO.getMoneyAmount();
         String time = DateUtils.getDateTime();
+        WithDrawRecordDTO withDrawRecordDTO1 = new WithDrawRecordDTO();
+        withDrawRecordDTO1.setId(withdrawId);
+        List<WithDrawRecordDTO> withDrawRecordDTOS = withDrawMapper.getWithdrawRecordInfo(withDrawRecordDTO1);
 
-        withDrawMapper.updateWithdrawById(withdrawId,status);
-        if("2".equals(status)){//拒绝提现,提现金额返还余额
-            AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(withDrawRecordDTO.getSysUserId());
-            Float money = accountDTO.getBalance();//用户余额
-            Float balance = withDrawRecordDTO.getMoneyAmount();//提现金额
-            Float f = money + balance;
-            accountDTO.setBalance(f);
-            accountMapper.updateUserAccountInfo(accountDTO);
-            //发送提现失败消息模板
-            UserInfoDTO userInfoDTO = new UserInfoDTO();
-            userInfoDTO.setId(withDrawRecordDTO.getSysUserId());
-            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-            for (UserInfoDTO userInfoDTO1 : userInfoDTOList) {
-                openid = userInfoDTO1.getUserOpenid();
+        if(withDrawRecordDTOS!=null&&withDrawRecordDTOS.size()>0){
+
+            //判断当前状态是否未审核
+            if(withDrawRecordDTOS.get(0).getStatus().equals("0")){
+
+                withDrawMapper.updateWithdrawById(withdrawId,status);
+                if("2".equals(status)){//拒绝提现,提现金额返还余额
+                    AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(withDrawRecordDTO.getSysUserId());
+                    Float money = accountDTO.getBalance();//用户余额
+                    Float balance = withDrawRecordDTO.getMoneyAmount();//提现金额
+                    Float f = money + balance;
+                    accountDTO.setBalance(f);
+                    accountMapper.updateUserAccountInfo(accountDTO);
+                    //发送提现失败消息模板
+                    for (UserInfoDTO userInfoDTO1 : userInfoDTOList) {
+                        openid = userInfoDTO1.getUserOpenid();
+                    }
+                    WeixinTemplateMessageUtil.sendWithDrawTemplateFailureMessage(String.valueOf(moneyAmount),time,token,"",openid);
+                }else{
+
+                    try {
+                        //将钱打入用户零钱账户
+                        returnMoneyToUser(moneyAmount, request, openid, token);
+
+                    }catch(Exception e){
+                        logger.info(e.getMessage());
+                    }
+                }
             }
-            WeixinTemplateMessageUtil.sendWithDrawTemplateFailureMessage(moneyAmount,time,token,"",openid);
+
         }
+
+
     }
     
     public PageParamDTO<List<WithDrawRecordDTO>> queryWithdrawsByParameters(PageParamVoDTO<ProductDTO> pageParamVoDTO) {

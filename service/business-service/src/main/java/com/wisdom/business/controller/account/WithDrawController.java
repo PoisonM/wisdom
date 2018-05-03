@@ -221,10 +221,10 @@ public class WithDrawController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO updateWithdrawById(@RequestBody WithDrawRecordDTO withDrawRecordDTO) {
+	ResponseDTO updateWithdrawById(@RequestBody WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		try {
-			withDrawService.updateWithdrawById(withDrawRecordDTO);
+			withDrawService.updateWithdrawById(withDrawRecordDTO,request);
 			responseDTO.setResult(StatusConstant.SUCCESS);
 			responseDTO.setErrorInfo("提现审核通过");
 		} catch (Exception e) {
