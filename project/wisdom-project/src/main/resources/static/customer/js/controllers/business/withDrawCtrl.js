@@ -51,7 +51,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                         }
                     },1000);
 
-                    GetUserValidateCode.get({mobile:$scope.param.userPhone},function(data){
+                    GetUserValidateCode.get({mobile:phone},function(data){
                         if(data.result == Global.FAILURE)
                         {
                             var alertPopup = $ionicPopup.alert({

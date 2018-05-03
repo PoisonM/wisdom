@@ -29,9 +29,7 @@ angular.module('controllers',[]).controller('loginCtrl',
                             $scope.param.validateCodeButtonStatus = true;
                         }
                     },1000);
-                    alert(phone);
                     GetUserValidateCode.get({mobile:phone},function(data){
-                        alert(111);
                         if(data.result == Global.FAILURE)
                         {
                             var alertPopup = $ionicPopup.alert({
