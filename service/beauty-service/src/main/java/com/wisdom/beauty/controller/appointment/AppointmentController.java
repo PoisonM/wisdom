@@ -437,8 +437,9 @@ public class AppointmentController {
 		shopAppointServiceDTO.setSearchEndTime(shopAppointServiceDTO.getAppointEndTime());
 		List<ShopAppointServiceDTO> appointListByCriteria = appointmentService.getShopClerkAppointListByCriteria(shopAppointServiceDTO);
 		if (CommonUtils.objectIsNotEmpty(appointListByCriteria)) {
+			logger.info("根据预约时间查询当前美容师有没有被占用查询结果大小为={}", appointListByCriteria.size());
 			responseDTO.setResult(StatusConstant.FAILURE);
-			responseDTO.setErrorInfo("当前时间断已被预约，请您重新选择(-_-)");
+			responseDTO.setErrorInfo("当前时间段已被预约，请您重新选择(-_-)");
 			return responseDTO;
 		}
 
