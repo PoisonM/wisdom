@@ -78,6 +78,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
                     searchDate:$scope.param.chooseDate},function (data){
                     initialTimeDate();
+                    console.log(data.responseData.split(","));
                     arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
                 })
             }
@@ -95,6 +96,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
             }
 
             var arrangeTimeDate = function (timeDate,schedule) {
+                console.log(schedule);
                 angular.forEach(timeDate,function (value,index) {
                     angular.forEach(value,function (value1,index) {
                         angular.forEach(schedule,function (val,index) {
