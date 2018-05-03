@@ -30,15 +30,12 @@ public class UserUtils {
      * @return
      */
     public static UserInfoDTO getUserInfo() {
-//        if(CommonCodeEnum.TRUE.getCode().equals(msg)){
-        return getTestUserInfoDTO();
-//        }
-//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//        Map<String, String> tokenValue = getHeadersInfo(request);
-//        String token = tokenValue.get("logintoken");
-//        String userInfoStr = JedisUtils.get(token);
-//        UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
-//        return userInfoDTO;
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Map<String, String> tokenValue = getHeadersInfo(request);
+        String token = tokenValue.get("logintoken");
+        String userInfoStr = JedisUtils.get(token);
+        UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
+        return userInfoDTO;
     }
 
     /**
