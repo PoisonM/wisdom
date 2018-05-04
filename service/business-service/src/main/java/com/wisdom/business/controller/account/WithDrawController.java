@@ -49,7 +49,7 @@ public class WithDrawController {
 	 * 用户进行提现操作
 	 */
 	@RequestMapping(value = "withDrawMoneyFromAccount", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+	//@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO withDrawMoneyFromAccount(@RequestBody WithDrawRecordDTO withDrawRecordDTO ,

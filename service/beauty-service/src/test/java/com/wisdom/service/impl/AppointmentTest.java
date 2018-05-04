@@ -22,6 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by 赵得良 on 21/09/2016.
@@ -71,6 +72,7 @@ public class AppointmentTest {
     @Test
     public void saveAppointmentService() {
 
+        String a = UUID.randomUUID().toString();
         ShopAppointServiceDTO shopAppointServiceDTO = getShopAppointServiceDTO();
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         System.out.println("测试完毕");
