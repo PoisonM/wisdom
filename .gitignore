@@ -1,2 +1,4 @@
 
 *.xml
+project/wisdom-project/src/main/resources/.DS_Store
+project/wisdom-project/src/main/resources/static/reception/receptionIndex.html
