@@ -13,7 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: workService
@@ -90,7 +92,9 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
      */
     @Override
     public int updateShopClerkScheduleList(List<ShopClerkScheduleDTO> scheduleDTOS) {
-        return extShopClerkScheduleMapper.batchUpdate(scheduleDTOS);
+        Map<String,Object> map = new HashMap<>();
+        map.put("list",scheduleDTOS);
+        return extShopClerkScheduleMapper.batchUpdate(map);
     }
 
 
