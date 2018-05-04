@@ -80,4 +80,8 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
             $state.go("pad-web.userInfo.todayPerformance")
         }
     }
+
+    $scope.backHeaderCashFn = function () {
+        window.history.back()
+    }
 })

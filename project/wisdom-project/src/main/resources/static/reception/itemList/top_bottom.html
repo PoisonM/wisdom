@@ -24,7 +24,7 @@
                 <span ng-click="goAddrecord()" class="addrecord">{{param.headerCash.leftAddContent}}</span>
             </div>
             <div  class="header_cash_right">
-                <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag" class="backone">
+                <span ng-click="backHeaderCashFn()" ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag" class="backone">
                     <i ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag"></i>
                     {{param.headerCash.backContent}}</span>
                 <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag" class="title">{{param.headerCash.title}}</span>
