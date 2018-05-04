@@ -1,0 +1,49 @@
+<div class="arrangeWorkList">
+    <div class="arrangeWorkList_header">
+        <div class="header_box">
+            <div class="header_left">
+                2018年05月04日
+            </div>
+            <div class="header_middle"></div>
+            <div class="header_right">
+                编辑
+            </div>
+        </div>
+    </div>
+    <div class="arrangeWorkList_content">
+        <div class="content_box">
+            <div ng-if="topLeftFlag" class="float_top">
+                <ul>
+                    <li ng-repeat="item in tempWeek">
+                        周{{$index+1}}
+                    </li>
+                </ul>
+            </div>
+            <div ng-if="topLeftFlag" class="float_Left">
+                <ul>
+                    <li ng-repeat="item in tempUser">
+                        张{{index+1}}
+                    </li>
+                </ul>
+            </div>
+            <div class="shadow_box"></div>
+
+
+
+
+            <div class="reality_content">
+                <div class="week_header">
+                    <ul>
+                        <li ng-repeat="item in tempWeek">周{{$index+1}}</li>
+                    </ul>
+                </div>
+                <div class="content_info">
+                    <div  ng-repeat="item in tempUser" class="content_info_box">
+                        <div class="content_info_left"></div>
+                        <div class="content_info_item"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

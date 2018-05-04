@@ -61,11 +61,11 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //个人中心用户信息
     .factory('ClerkInfo', ['$resource', function($resource) {
-        return $resource(userIP+'clerkInfo/:clerkId', { clerkId: '@id' })
+        return $resource(userIP + 'clerkInfo/:clerkId', { clerkId: '@id' })
     }])
     //更新个人中心用户信息
     .factory('UpateClerkInfo', ['$resource', function($resource) {
-        return $resource(userIP+'upateClerkInfo')
+        return $resource(userIP + 'upateClerkInfo')
     }])
     //查询某用户档案信息
     .factory('GetShopUserArchivesInfoByUserId', ['$resource', function($resource) {
@@ -218,6 +218,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     //查询用户充值卡的总金额  http://192.168.1.117:9051/cardInfo/getUserRechargeSumAmount
     .factory('GetUserRechargeSumAmount', ['$resource', function($resource) {
         return $resource(beautyIP + 'cardInfo/getUserRechargeSumAmount')
+    }])
+    //获取排班列表
+    .factory('GetShopClerkScheduleList', ['$resource', function($resource) {
+        return $resource(beautyIP + 'clerkSchedule/getShopClerkScheduleList')
     }])
 
 
