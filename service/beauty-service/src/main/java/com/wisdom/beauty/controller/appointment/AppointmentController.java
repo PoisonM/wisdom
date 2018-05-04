@@ -1,6 +1,7 @@
 package com.wisdom.beauty.controller.appointment;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
@@ -11,12 +12,14 @@ import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.beauty.core.service.ShopBossService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopWorkService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -62,6 +65,9 @@ public class AppointmentController {
 
 	@Resource
 	private RedisUtils redisUtils;
+
+	@Resource
+	private ShopBossService shopBossService;
 
 	@Value("${test.msg}")
 	private String msg;
@@ -546,6 +552,55 @@ public class AppointmentController {
 			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 		responseDTO.setResponseData(shopAppointmentNum);
+		return responseDTO;
+	}
+
+
+	/**
+	 * 获取某个老板下面的店的预约信息
+	 *
+	 * @param searchDate 2018-09-09
+	 * @return
+	 */
+	@RequestMapping(value = "/getShopAppointmentInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO<Object> getShopAppointmentInfo(@RequestParam String searchDate) {
+		long currentTimeMillis = System.currentTimeMillis();
+		logger.info("获取某个老板下面的店的预约信息传入参数={}", "searchDate = [" + searchDate + "]");
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
+
+		//查询老板下的店铺信息
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
+		shopBossRelationDTO.setSysBossId(bossInfo.getId());
+		List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.ShopBossRelationList(shopBossRelationDTO);
+
+		if (CommonUtils.objectIsEmpty(shopBossRelationDTO)) {
+			responseDTO.setResult(StatusConstant.SUCCESS);
+			return responseDTO;
+		}
+		//缓存全部店的预约信息
+		ArrayList<Object> arrayList = new ArrayList<>();
+		//查询店铺下的预约信息
+		for (ShopBossRelationDTO bossRelationDTO : shopBossRelationDTOS) {
+			//hash缓存单个点的预约信息
+			HashMap<Object, Object> hashMap = new HashMap<>(16);
+			ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+			extShopAppointServiceDTO.setSysBossId(bossInfo.getId());
+			extShopAppointServiceDTO.setSysShopId(bossRelationDTO.getSysBossId());
+			extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", ""));
+			extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", ""));
+			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+			hashMap.put("bossRelationDTO", bossRelationDTO);
+			hashMap.put("shopAppointServiceDTOS", shopAppointServiceDTOS);
+			hashMap.put("appointmentNum", null == shopAppointServiceDTOS ? "0" : shopAppointServiceDTOS.size());
+			arrayList.add(hashMap);
+		}
+
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(arrayList);
+		logger.info("获取某个老板下面的店的预约信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 

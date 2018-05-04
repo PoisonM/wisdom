@@ -92,16 +92,25 @@ public class UserUtils {
      * @return
      */
     public static SysBossDTO getBossInfo() {
-        SysBossDTO sysBossDTO = null;
-        try {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            Map<String, String> tokenValue = getHeadersInfo(request);
-            String token = tokenValue.get("logintoken");
-            String userInfoStr = JedisUtils.get(token);
-            sysBossDTO = (new Gson()).fromJson(userInfoStr, SysBossDTO.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        SysBossDTO sysBossDTO = null;
+//        try {
+//            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//            Map<String, String> tokenValue = getHeadersInfo(request);
+//            String token = tokenValue.get("logintoken");
+//            String userInfoStr = JedisUtils.get(token);
+//            sysBossDTO = (new Gson()).fromJson(userInfoStr, SysBossDTO.class);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return sysBossDTO;
+        return getTestBossInfo();
+    }
+
+    public static SysBossDTO getTestBossInfo() {
+        SysBossDTO sysBossDTO = new SysBossDTO();
+        sysBossDTO.setMobile("18810142926");
+        sysBossDTO.setNickname("赵得良");
+        sysBossDTO.setId("zdl");
         return sysBossDTO;
     }
 

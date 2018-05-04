@@ -53,8 +53,15 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
 
         ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
         ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
-        criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
-        criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(),extShopAppointServiceDTO.getSearchEndTime());
+
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
+        }
+
+        if (null != extShopAppointServiceDTO.getSearchStartTime()) {
+            criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
+        }
+
         List<ShopAppointServiceDTO> appointServiceDTOS = extShopAppointServiceMapper.selectShopAppointClerkInfoByCriteria(shopAppointServiceCriteria);
         return appointServiceDTOS;
     }
@@ -88,6 +95,10 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         if(null != extShopAppointServiceDTO.getSearchStartTime() && null != extShopAppointServiceDTO.getSearchEndTime()){
             criteria.andAppointStartTimeBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
         }
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossId())) {
+            criteria.andSysBossIdEqualTo(extShopAppointServiceDTO.getSysBossId());
+        }
+
         if (StringUtils.isNotBlank(status)) {
             //如果是进行中
             if (AppointStatusEnum.ONGOING.getCode().equals(status)) {
@@ -257,5 +268,4 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
 
         return page;
     }
-
 }

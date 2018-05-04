@@ -82,7 +82,7 @@ public class ScheduleController {
             return responseDTO;
         }
 
-        //如果某个店的店员信息为空，则批量初始化
+        //如果某个店的店员排班信息为空，则批量初始化
         if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
             logger.info("获取某个店的排班信息为空");
             clerkScheduleList = new ArrayList<>();

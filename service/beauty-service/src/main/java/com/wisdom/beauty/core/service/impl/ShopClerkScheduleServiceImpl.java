@@ -56,10 +56,10 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
         if (StringUtils.isNotBlank(shopClerkScheduleDTO.getSysClerkId())) {
             criteria.andSysClerkIdEqualTo(shopClerkScheduleDTO.getSysClerkId());
         }
-
+        //注意，这里精确到月份，如有其他需要扩展接口
         if (null != shopClerkScheduleDTO.getScheduleDate()) {
-            String startDate = DateUtils.DateToStr(shopClerkScheduleDTO.getScheduleDate(), "date") + " 00:00:00";
-            String endDate = DateUtils.DateToStr(shopClerkScheduleDTO.getScheduleDate(), "date") + " 23:59:59";
+            String startDate = DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate());
+            String endDate = DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate());
             criteria.andScheduleDateBetween(DateUtils.StrToDate(startDate, "datetime"), DateUtils.StrToDate(endDate, "datetime"));
         }
 
