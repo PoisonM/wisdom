@@ -227,9 +227,9 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetShopClerkScheduleList', ['$resource', function($resource) {
         return $resource(beautyIP + 'clerkSchedule/getShopClerkScheduleList')
     }])
-    //单独更新订单的产品信息
-    .factory('UpdateVirtualGoodsOrderInfo', ['$resource', function($resource) {
-        return $resource(beautyIP + 'orderInfo/updateVirtualGoodsOrderInfo')
+    //保存用户订单
+    .factory('SaveShopUserOrderInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'orderInfo/saveShopUserOrderInfo')
     }])
 
 

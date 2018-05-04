@@ -1,4 +1,4 @@
-PADWeb.controller('consumptionListCtrl', function($scope, $stateParams, ngDialog, Archives, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, ThreeLevelProject, productInfoThreeLevelProject, UpdateVirtualGoodsOrderInfo) {
+PADWeb.controller('consumptionListCtrl', function($scope, $stateParams, ngDialog, Archives, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, ThreeLevelProject, productInfoThreeLevelProject, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.param.headerCash.leftAddContent = "添加档案";
@@ -99,5 +99,19 @@ PADWeb.controller('consumptionListCtrl', function($scope, $stateParams, ngDialog
             $scope.threeCategories = data.responseData;
         });
 
+    }
+    $scope.updateVirtualGoodsOrderInfo = function() {
+        UpdateVirtualGoodsOrderInfo.save({
+
+        }, function() {
+
+        })
+    }
+    $scope.saveShopUserOrderInfo = function() {
+        SaveShopUserOrderInfo.save({
+
+        }, function() {
+
+        })
     }
 });
