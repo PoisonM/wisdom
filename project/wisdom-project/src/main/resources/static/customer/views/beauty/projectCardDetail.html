@@ -1,7 +1,7 @@
 <ion-view style="background:white">
     <ion-content>
-       <ion-item ng-repeat="item in [1,2,3,4,5]">
-            <h>2018-03-30 18:20:02</h>
+       <ion-item ng-repeat="item in param.projectCardConsumes">
+            <h>{{item.createDate|date:'yyyy-MM-dd HH:MM:ss'}}</h>
             <h class="item-note" style="color:black">1次</h>
        </ion-item>
     </ion-content>

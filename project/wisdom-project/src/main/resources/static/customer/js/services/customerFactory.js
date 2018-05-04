@@ -16,6 +16,8 @@ var weixin = '/weixin/customer/';
 var projectInfo = '/beauty/projectInfo/';
 var appointInfo = '/beauty/appointmentInfo/';
 var clerkSchedule = '/beauty/clerkSchedule/';
+var mine = '/beauty/mine/';
+var cardInfo = '/beauty/cardInfo/'
 
 define(['appCustomer'], function (app) {
     app
@@ -245,6 +247,30 @@ define(['appCustomer'], function (app) {
         }])
         .factory('GetMyAppointInfoList',['$resource',function ($resource){
             return $resource(appointInfo + 'getMyAppointInfoList')
+        }])
+        .factory('GetUserClientInfo',['$resource',function ($resource){
+            return $resource(mine + 'getUserClientInfo')
+        }])
+        .factory('ChangeUserShop',['$resource',function ($resource){
+            return $resource(mine + 'changeUserShop')
+        }])
+        .factory('GetUserRechargeCardList',['$resource',function ($resource){
+            return $resource(cardInfo + 'getUserRechargeCardList')
+        }])
+        .factory('GetUserCourseProjectList',['$resource',function ($resource){
+            return $resource(projectInfo + 'getUserCourseProjectList')
+        }])
+        .factory('GetCurrentLoginUserInfo',['$resource',function ($resource){
+            return $resource(mine + 'getCurrentLoginUserInfo')
+        }])
+        .factory('GetProjectCardConsume',['$resource',function ($resource){
+            return $resource('/beauty/consume/consumeFlowNo')
+        }])
+        .factory('GetUserQrCode',['$resource',function ($resource){
+            return $resource(mine + 'getUserQrCode')
+        }])
+        .factory('GetProjectConsumes',['$resource',function ($resource){
+            return $resource('/beauty/consumes')
         }])
 
 });
