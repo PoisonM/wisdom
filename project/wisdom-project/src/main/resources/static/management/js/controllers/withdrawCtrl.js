@@ -136,7 +136,18 @@ angular.module('controllers',[]).controller('withdrawCtrl',
             };
             $scope.changeWithdraw = function(status){
                 $scope.isdisabled = true;
-                alert($scope.isdisabled);
+                if(status == "2"){
+                    var result = confirm("是否确认拒绝！")
+                    if(!result){
+                           return;
+                    }
+                }else{
+                    var result = confirm("是否确认同意！")
+                    if(!result){
+                        return;
+                    }
+                }
+
                 var  withDrawRecordDTO={
                         withdrawId:$scope.id,
                         status:status,
