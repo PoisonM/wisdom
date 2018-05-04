@@ -319,6 +319,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			shopProjectInfoResponseDTO.setDiscountPrice(shopProjectInfo.getDiscountPrice());
 			shopProjectInfoResponseDTO.setMarketPrice(shopProjectInfo.getMarketPrice());
 			shopProjectInfoResponseDTO.setProjectName(shopProjectInfo.getProjectName());
+			shopProjectInfoResponseDTO.setMaxContainTimes(shopProjectInfo.getMaxContainTimes());
 			shopProjectInfoResponseDTO.setId(shopProjectInfo.getId());
 			String[] urls = null;
 			if (map != null && StringUtils.isNotBlank(map.get(shopProjectInfo.getId()))) {
