@@ -1097,13 +1097,10 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
         })
     };
 
-    /*排班*/
-    GetShopClerkScheduleList.get({
-        searchDate:"2018-04-28"
-    },function(data){
-
-    })
-
+    $scope.goArrangeWorkList = function () {
+        $state.go("pad-web.arrangeWorkList")
+    }
+    
 
 
 

@@ -1,4 +1,5 @@
-PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,GetShopClerkScheduleList) {
+PADWeb.controller("compileWorkListCtrl", function($scope, $state, $stateParams
+    ,GetShopClerkScheduleList,UpdateShopClerkScheduleList) {
     $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.$parent.mainSwitch.headerCashAllFlag = false;
 
@@ -16,7 +17,6 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
             }
             $scope.tempUser = data.responseData.responseList
         }
-
     })
 
 
@@ -93,12 +93,50 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         }
     }, false);
 
-
-
-
-    $scope.goCompileWorkList = function () {
-        $state.go("pad-web.compileWorkList")
+    $scope.importData = {
+        shopClerkSchedule:[],
     }
+    $scope.tempType = ""
+
+
+    $scope.changeType = function (type) {
+        $scope.tempType = type
+    }
+
+    $scope.checkedItem = function (parentIndex,index,id,sysBossId,sysClerkId,sysClerkName,scheduleDate) {
+        /*修改样式*/
+        if($scope.tempType === ""){
+            return
+        }
+        $scope.tempUser[parentIndex].clerkSchInfo[index].scheduleType = $scope.tempType
+
+
+        $scope.importData.shopClerkSchedule.push({
+            id:id,
+            sysBossId:sysBossId,
+            sysClerkId:sysClerkId,
+            sysClerkName:sysClerkName,
+            scheduleDate:scheduleDate,
+            scheduleType:$scope.tempType
+        })
+
+
+    }
+    $scope.save = function () {
+        if($scope.tempType === ""){
+            alert("请选择编辑对象")
+            return
+        }
+        UpdateShopClerkScheduleList.save($scope.importData,function (data) {
+            if(data.result == "0x00001"){
+                alert("保存成功")
+                $state.go("pad-web.arrangeWorkList")
+            }
+        })
+    }
+    
+
+
 
 
 

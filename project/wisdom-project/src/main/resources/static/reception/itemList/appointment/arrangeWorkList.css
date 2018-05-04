@@ -55,12 +55,12 @@
     left: 0px;
     right: 0px;
     padding-left: 80px;
-    border: 1px solid pink;
+    /*border: 1px solid pink;*/
     background-color: #ffffff;
-    overflow-x: scroll;
+    /*overflow-x: scroll;*/
 }
 .arrangeWorkList .float_top ul{
-    width: 4060px;
+    width: 4132px;
     height: 100%;
 }
 .arrangeWorkList .float_top ul li{
@@ -72,6 +72,9 @@
     font-size: 16px;
     color: #000000;
     border-left: 1px solid #cccccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .arrangeWorkList .float_Left{
@@ -81,8 +84,7 @@
     width: 80px;
     height: 100%;
     padding-top: 70px;
-    overflow-y: scroll;
-    border: 1px solid aqua;
+    /*overflow-y: scroll;*/
     background-color: #ffffff;
 }
 
@@ -94,6 +96,7 @@
     height: 72px;
     line-height: 72px;
     text-align: center;
+    border-bottom: 1px solid #cccccc;
 }
 .arrangeWorkList .shadow_box{
     width: 80px;
@@ -109,18 +112,18 @@
 .arrangeWorkList .reality_content{
     width: 100%;
     height: 100%;
-    /*overflow: scroll;*/
+    overflow: scroll;
 }
 .arrangeWorkList .reality_content .week_header{
     width: 100%;
     height: 70px;
     line-height: 70px;
     padding-left: 80px;
-    border: 1px solid pink;
+    /*border: 1px solid pink;*/
 
 }
 .arrangeWorkList .reality_content .week_header ul {
-    width: 4060px;
+    width: 4132px;
     height: 100%;
     background-color: #ffffff;
 }
@@ -138,7 +141,7 @@
     width: 100%;
 }
 .arrangeWorkList .reality_content .content_info_box{
-    width: 4060px;
+    width: 4132px;
     height: 72px;
 }
 .arrangeWorkList .reality_content .content_info_box div{
@@ -148,26 +151,43 @@
 .arrangeWorkList .reality_content .content_info_box .content_info_left{
     width: 80px;
     height: 100%;
-    background-color: aqua;
+}
+
+
+.arrangeWorkList .reality_content .content_info_box .content_info_left ul li{
+    height: 72px;
+    line-height: 72px;
+    text-align: center;
 }
 .arrangeWorkList .reality_content .content_info_box .content_info_item{
     width: 135px;
     height: 72px;
+    line-height:72px;
+    text-align: center;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
     border-right: 1px solid #cccccc;
     border-bottom: 1px solid #cccccc;
 }
-/*
-.arrangeWorkList .reality_content .content_info_left{
-    position: absolute;
-    top:0px;
-    left: 0px;
-    width: 80px;
-    border: 1px solid aqua;
-    background-color: #ffffff;
+.arrangeWorkList .bg_all{
+    background-color: #FEC6C6;
+    color: #FB4646;
 }
-.arrangeWorkList .reality_content .content_info_left ul li{
-    width: 100%;
-    height: 72px;
-    line-height: 72px;
-    text-align: center;
-}*/
+.arrangeWorkList .bg_morning{
+    background-color: #FCE6EE;
+    color: #EE4885;
+}
+.arrangeWorkList .bg_noon{
+    background-color: #F0E3FF;
+    color: #9C5CE6;
+}
+.arrangeWorkList .bg_night{
+    background-color: #E4FAFF;
+    color: #3BD5F9;
+}
+.arrangeWorkList .bg_no{
+    background-color: #E2E2E2;
+    color: #666666;
+}
+
+

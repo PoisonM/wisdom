@@ -232,7 +232,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(beautyIP + 'orderInfo/saveShopUserOrderInfo')
     }])
 
-
+    //编辑排班列表
+    .factory('UpdateShopClerkScheduleList', ['$resource', function($resource) {
+        return $resource(beautyIP + 'clerkSchedule/updateShopClerkScheduleList')
+    }])
 
 
 

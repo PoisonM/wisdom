@@ -964,6 +964,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.compileWorkList', {
+            url: '/compileWorkList',
+            templateUrl: root + '/appointment/compileWorkList.html',
+            controller: 'compileWorkListCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "编辑排班",
+                        files: [root + "appointment/compileWorkList.js",
+                            root + "appointment/compileWorkList.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.payType', {
             url: '/payType',
             templateUrl: root + '/appointment/payType.html',
