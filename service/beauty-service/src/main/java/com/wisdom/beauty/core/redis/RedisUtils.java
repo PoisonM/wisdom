@@ -217,7 +217,7 @@ public class RedisUtils {
 
         if (CommonUtils.objectIsNotEmpty(shopListByCondition)) {
             for (ShopUserRelationDTO relationDTO : shopListByCondition) {
-                if (userLoginDTO.getSysShopId().equalsIgnoreCase(sysShopId)) {
+                if (relationDTO.getSysShopId().equalsIgnoreCase(sysShopId)) {
                     ShopUserLoginDTO loginDTO = new ShopUserLoginDTO();
                     loginDTO.setSysShopId(relationDTO.getSysShopId());
                     loginDTO.setSysShopName(relationDTO.getSysShopName());

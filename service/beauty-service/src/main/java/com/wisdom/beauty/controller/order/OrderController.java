@@ -208,7 +208,9 @@ public class OrderController {
                     }
                 }
             }
-            alreadyExistProjectRelationDTOS.addAll(helperList);
+            if (CommonCodeEnum.ADD.getCode().equals(operation)) {
+                alreadyExistProjectRelationDTOS.addAll(helperList);
+            }
 
             //更新操作
             if (alreadyExistProjectRelationDTOS.size() != updateFlag) {
@@ -235,6 +237,7 @@ public class OrderController {
                 responseDTO.setResponseData("传入的产品信息为空");
                 return responseDTO;
             }
+            List<ShopUserProductRelationDTO> helperList = new ArrayList<>();
             Iterator<ShopUserProductRelationDTO> alreadyIterator = alreadyProductRelationDTOS.iterator();
             while (alreadyIterator.hasNext()) {
                 Iterator<ShopUserProductRelationDTO> newIterator = newProductRelationDTOS.iterator();
@@ -243,12 +246,15 @@ public class OrderController {
                     ShopUserProductRelationDTO newRelation = newIterator.next();
                     if (!newRelation.getId().equals(alreadyRelation.getId())) {
                         if (CommonCodeEnum.ADD.getCode().equals(operation)) {
-                            alreadyProductRelationDTOS.add(newRelation);
+                            helperList.add(newRelation);
                         } else if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
                             alreadyIterator.remove();
                         }
                     }
                 }
+            }
+            if (CommonCodeEnum.ADD.getCode().equals(operation)) {
+                alreadyProductRelationDTOS.addAll(helperList);
             }
             //更新操作
             if (alreadyProductRelationDTOS.size() != updateFlag) {
@@ -275,6 +281,7 @@ public class OrderController {
                 responseDTO.setResponseData("传入的产品信息为空");
                 return responseDTO;
             }
+            List<ShopUserProjectGroupRelRelationDTO> helperList = new ArrayList<>();
             Iterator<ShopUserProjectGroupRelRelationDTO> alreadyIterator = alreadyProjectGroupRelRelationDTOS.iterator();
             while (alreadyIterator.hasNext()) {
                 Iterator<ShopUserProjectGroupRelRelationDTO> newIterator = newProjectGroupRelationDTOS.iterator();
@@ -283,12 +290,15 @@ public class OrderController {
                     ShopUserProjectGroupRelRelationDTO newRelation = newIterator.next();
                     if (!newRelation.getId().equals(alreadyRelation.getId())) {
                         if (CommonCodeEnum.ADD.getCode().equals(operation)) {
-                            alreadyProjectGroupRelRelationDTOS.add(newRelation);
+                            helperList.add(newRelation);
                         } else if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
                             alreadyIterator.remove();
                         }
                     }
                 }
+            }
+            if (CommonCodeEnum.ADD.getCode().equals(operation)) {
+                alreadyProjectGroupRelRelationDTOS.addAll(helperList);
             }
             //更新操作
             if (alreadyProjectGroupRelRelationDTOS.size() != updateFlag) {
