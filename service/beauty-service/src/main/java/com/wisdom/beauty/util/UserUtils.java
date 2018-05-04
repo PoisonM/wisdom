@@ -110,7 +110,7 @@ public class UserUtils {
         SysBossDTO sysBossDTO = new SysBossDTO();
         sysBossDTO.setMobile("18810142926");
         sysBossDTO.setNickname("赵得良");
-        sysBossDTO.setId("zdl");
+        sysBossDTO.setId("11");
         return sysBossDTO;
     }
 
