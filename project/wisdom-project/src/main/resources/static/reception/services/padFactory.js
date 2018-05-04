@@ -219,6 +219,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetUserRechargeSumAmount', ['$resource', function($resource) {
         return $resource(beautyIP + 'cardInfo/getUserRechargeSumAmount')
     }])
+    //单独更新订单的产品信息/项目信息/套卡信息
+    .factory('UpdateVirtualGoodsOrderInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'orderInfo/updateVirtualGoodsOrderInfo')
+    }])
     //获取排班列表
     .factory('GetShopClerkScheduleList', ['$resource', function($resource) {
         return $resource(beautyIP + 'clerkSchedule/getShopClerkScheduleList')
