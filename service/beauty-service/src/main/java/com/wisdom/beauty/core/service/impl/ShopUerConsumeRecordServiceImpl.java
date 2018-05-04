@@ -106,6 +106,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					// 如果是充值卡或者是产品领取
 					c.andGoodsTypeEqualTo(userConsumeRequest.getGoodsType());
 				}
+				if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRequest.getGoodsType())) {
+					// 疗程卡
+					c.andGoodsTypeEqualTo(userConsumeRequest.getGoodsType());
+				}
 				if (GoodsTypeEnum.CASHIER.getCode().equals(userConsumeRequest.getGoodsType())) {
 					List goodType = new ArrayList();
 					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
