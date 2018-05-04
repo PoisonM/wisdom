@@ -95,6 +95,16 @@ public class OrderController {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
+        //先查询最后一次订单信息
+        Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(shopUserOrderDTO.getUserId()));
+        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
+        shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        if (null != shopUserOrderDTO) {
+            responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
+        }
+        //如果最后一次订单为空则需初始化插入
         shopUserOrderDTO.setShopId(clerkInfo.getSysShopId());
         shopUserOrderDTO.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
         shopUserOrderDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
