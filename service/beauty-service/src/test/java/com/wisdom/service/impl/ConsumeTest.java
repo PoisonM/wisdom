@@ -75,7 +75,7 @@ public class ConsumeTest {
     @Test
     public void getUserRechargeSumAmount() throws Exception {
 
-        MvcResult result = mvc.perform(get("/cardInfo/getUserRechargeSumAmount").param("sysUserId", "1"))
+        MvcResult result = mvc.perform(get("/consume/getUserConsumeByFlowId").param("flowId", "10b939362aca4680b1634718106cf840"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

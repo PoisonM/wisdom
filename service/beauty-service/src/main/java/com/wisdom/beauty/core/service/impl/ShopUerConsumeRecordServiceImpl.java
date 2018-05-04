@@ -12,11 +12,13 @@ import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -178,16 +180,34 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			return null;
 		}
 		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
-		for (ShopUserConsumeRecordDTO userConsumeRecord : list) {
-			userConsumeRecordResponseDTO.setCreateDate(userConsumeRecord.getCreateDate());
-			userConsumeRecordResponseDTO.setShopUserName(userConsumeRecord.getSysUserName());
-			userConsumeRecordResponseDTO.setSysShopClerkName(userConsumeRecord.getSysClerkName());
-			userConsumeRecordResponseDTO.setSysShopName(userConsumeRecord.getSysShopName());
-			userConsumeRecordResponseDTO.setType(userConsumeRecord.getConsumeType());
-		}
+        if (CommonUtils.objectIsNotEmpty(list)) {
+            BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
+        }
+
 		userConsumeRecordResponseDTO.setUserConsumeRecordList(list);
 		return userConsumeRecordResponseDTO;
 	}
+
+    /**
+     * 根据条件查询消费记录
+     *
+     * @param shopUserConsumeRecordDTO
+     * @return
+     */
+    @Override
+    public List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
+        logger.info("根据条件查询消费记录方法传入的参数,shopUserConsumeRecordDTO={}}", shopUserConsumeRecordDTO);
+
+        ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
+        ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
+
+        if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowId())) {
+            c.andFlowIdEqualTo(shopUserConsumeRecordDTO.getFlowId());
+        }
+        List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper.selectByCriteria(criteria);
+
+        return shopUserConsumeRecordDTOS;
+    }
 
 	/**
 	 * 保存用户消费或充值记录
