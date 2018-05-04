@@ -60,13 +60,13 @@ public class ShopProductInfoResponseDTO extends BaseEntity {
 	// 优惠价格
 	private Long discountPrice;
 
-	//
+	//产品编号
 	private String productCode;
 
-	//
+	//产品单位
 	private Long productUnit;
 
-	//
+	//产品规格
 	private String productSpec;
 
 	//

@@ -1,169 +1,197 @@
 package com.wisdom.beauty.api.dto;
 
 import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopStockDTO extends BaseEntity implements Serializable {
-    //
-    private String id;
+	//
+	private String id;
 
-    //仓库名称
-    private String name;
+	// bossID
+	private String shopBossId;
 
-    //单据号
-    private String flowNo;
+	// 入库记录id
+	private String shopStockRecordId;
 
-    //申请人
-    private String applayUser;
+	// 仓库id
+	private String shopStoreId;
 
-    //状态 0、已入库 
-    private String stockStatus;
+	// 单据号
+	private String flowNo;
 
-    //备注
-    private String detail;
+	// 申请人
+	private String applayUser;
 
-    //库存数量
-    private Integer stockNumber;
+	// 状态 0、已入库
+	private String stockStatus;
 
-    //
-    private String shopProcId;
+	// 备注
+	private String detail;
 
-    //
-    private String shopProcName;
+	// 库存数量
+	private Integer stockNumber;
 
-    //生产日期
-    private Date productDate;
+	//
+	private String shopProcId;
 
-    //库存单价（元）
-    private Long stockPrice;
+	//
+	private String shopProcName;
 
-    //
-    private String createBy;
+	// 生产日期
+	private Date productDate;
 
-    //
-    private Date createDate;
+	// 库存单价（元）
+	private BigDecimal stockPrice;
 
-    //
-    private String updateUser;
+	//
+	private String createBy;
 
-    //
-    private Date updateDate;
+	//
+	private Date createDate;
 
-    private static final long serialVersionUID = 1L;
+	//
+	private String updateUser;
 
-    public String getId() {
-        return id;
-    }
+	//
+	private Date updateDate;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public String getName() {
-        return name;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getFlowNo() {
-        return flowNo;
-    }
+	public String getShopBossId() {
+		return shopBossId;
+	}
 
-    public void setFlowNo(String flowNo) {
-        this.flowNo = flowNo;
-    }
+	public void setShopBossId(String shopBossId) {
+		this.shopBossId = shopBossId;
+	}
 
-    public String getApplayUser() {
-        return applayUser;
-    }
+	public String getShopStockRecordId() {
+		return shopStockRecordId;
+	}
 
-    public void setApplayUser(String applayUser) {
-        this.applayUser = applayUser;
-    }
+	public void setShopStockRecordId(String shopStockRecordId) {
+		this.shopStockRecordId = shopStockRecordId;
+	}
 
-    public String getStockStatus() {
-        return stockStatus;
-    }
+	public String getShopStoreId() {
+		return shopStoreId;
+	}
 
-    public void setStockStatus(String stockStatus) {
-        this.stockStatus = stockStatus;
-    }
+	public void setShopStoreId(String shopStoreId) {
+		this.shopStoreId = shopStoreId;
+	}
 
- public String getDetail() {        return detail;    }    public void setDetail(String detail) {        this.detail = detail;    }
+	public String getFlowNo() {
+		return flowNo;
+	}
 
-    public Integer getStockNumber() {
-        return stockNumber;
-    }
+	public void setFlowNo(String flowNo) {
+		this.flowNo = flowNo;
+	}
 
-    public void setStockNumber(Integer stockNumber) {
-        this.stockNumber = stockNumber;
-    }
+	public String getApplayUser() {
+		return applayUser;
+	}
 
-    public String getShopProcId() {
-        return shopProcId;
-    }
+	public void setApplayUser(String applayUser) {
+		this.applayUser = applayUser;
+	}
 
-    public void setShopProcId(String shopProcId) {
-        this.shopProcId = shopProcId;
-    }
+	public String getStockStatus() {
+		return stockStatus;
+	}
 
-    public String getShopProcName() {
-        return shopProcName;
-    }
+	public void setStockStatus(String stockStatus) {
+		this.stockStatus = stockStatus;
+	}
 
-    public void setShopProcName(String shopProcName) {
-        this.shopProcName = shopProcName;
-    }
+	public String getDetail() {
+		return detail;
+	}
 
-    public Date getProductDate() {
-        return productDate;
-    }
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
 
-    public void setProductDate(Date productDate) {
-        this.productDate = productDate;
-    }
+	public Integer getStockNumber() {
+		return stockNumber;
+	}
 
-    public Long getStockPrice() {
-        return stockPrice;
-    }
+	public void setStockNumber(Integer stockNumber) {
+		this.stockNumber = stockNumber;
+	}
 
-    public void setStockPrice(Long stockPrice) {
-        this.stockPrice = stockPrice;
-    }
+	public String getShopProcId() {
+		return shopProcId;
+	}
 
-    public String getCreateBy() {
-        return createBy;
-    }
+	public void setShopProcId(String shopProcId) {
+		this.shopProcId = shopProcId;
+	}
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
+	public String getShopProcName() {
+		return shopProcName;
+	}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+	public void setShopProcName(String shopProcName) {
+		this.shopProcName = shopProcName;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public Date getProductDate() {
+		return productDate;
+	}
 
-    public String getUpdateUser() {
-        return updateUser;
-    }
+	public void setProductDate(Date productDate) {
+		this.productDate = productDate;
+	}
 
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
+	public BigDecimal getStockPrice() {
+		return stockPrice;
+	}
 
-    public Date getUpdateDate() {
-        return updateDate;
-    }
+	public void setStockPrice(BigDecimal stockPrice) {
+		this.stockPrice = stockPrice;
+	}
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
+	public String getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getUpdateUser() {
+		return updateUser;
+	}
+
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 }
