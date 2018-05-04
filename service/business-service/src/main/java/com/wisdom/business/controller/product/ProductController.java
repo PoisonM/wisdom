@@ -18,6 +18,8 @@ import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.excel.ExportExcel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -47,6 +49,8 @@ public class ProductController {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * 获取某个商品的基本信息
@@ -109,7 +113,6 @@ public class ProductController {
 					exportProductExcelDTO.setSecondType(productDTO.getSecondType());
 					exportProductExcelDTO.setStatus(productDTO.getStatus());
 					exportProductExcelDTO.setSellNum(productDTO.getSellNum());
-					//exportProductExcelDTO.setProductAmount(productDTO.getProductAmount());
 					excelList.add(exportProductExcelDTO);
 				}
 				ByteArrayInputStream in = ex.getWorkbookIn("视频EXCEL文档",orderHeaders, excelList);
@@ -174,6 +177,7 @@ public class ProductController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamVoDTO<List<ProductDTO>>> queryProductsByParameters(@RequestBody PageParamVoDTO<ProductDTO> pageParamVoDTO) {
+		long startTime = System.currentTimeMillis();
 		ResponseDTO<PageParamVoDTO<List<ProductDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamVoDTO<List<ProductDTO>> page = productService.queryProductsByParameters(pageParamVoDTO);
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())){
@@ -201,14 +205,25 @@ public class ProductController {
 				String url = CommonUtils.orderExcelToOSS(in);
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+				logger.info("条件导出商品Excel耗时{}毫秒", (System.currentTimeMillis() - startTime));
+				return responseDTO;
 			}catch (Exception e){
 				e.printStackTrace();
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			}
 			return responseDTO;
 		}
+		if( 0 == page.getResponseData().size()){
+			responseDTO.setResponseData(page);
+			responseDTO.setResult("未查出结果");
+			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			logger.info("条件查询商品未查出数据");
+			logger.info("条件查询商品耗时{}毫秒", (System.currentTimeMillis() - startTime));
+			return responseDTO;
+		}
 		responseDTO.setResponseData(page);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		logger.info("条件查询商品耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
