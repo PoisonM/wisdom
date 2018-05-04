@@ -103,7 +103,7 @@ PADWeb.controller("compileWorkListCtrl", function($scope, $state, $stateParams
         $scope.tempType = type
     }
 
-    $scope.checkedItem = function (parentIndex,index,id,sysBossId,sysClerkId,sysClerkName,scheduleDate) {
+    $scope.checkedItem = function (parentIndex,index,id,sysBossId,sysClerkId,sysClerkName,scheduleDate,sysShopId) {
         /*修改样式*/
         if($scope.tempType === ""){
             return
@@ -117,6 +117,7 @@ PADWeb.controller("compileWorkListCtrl", function($scope, $state, $stateParams
             sysClerkId:sysClerkId,
             sysClerkName:sysClerkName,
             scheduleDate:scheduleDate,
+            sysShopId:sysShopId,
             scheduleType:$scope.tempType
         })
 

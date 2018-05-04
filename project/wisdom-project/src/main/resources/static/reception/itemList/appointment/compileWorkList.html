@@ -41,7 +41,7 @@
                                 <li>{{item4.clerkInfo.name}}</li>
                             </ul>
                         </div>
-                        <div ng-click="checkedItem($parent.$index,$index,infoItem.id,infoItem.sysBossId,infoItem.sysClerkId,infoItem.sysClerkName,infoItem.scheduleDate)"
+                        <div ng-click="checkedItem($parent.$index,$index,infoItem.id,infoItem.sysBossId,infoItem.sysClerkId,infoItem.sysClerkName,infoItem.scheduleDate,infoItem.sysShopId)"
                              ng-repeat="infoItem in item4.clerkSchInfo"
                              ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" class="content_info_item">
                             <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 3">全{{infoItem.scheduleType}}</span>
