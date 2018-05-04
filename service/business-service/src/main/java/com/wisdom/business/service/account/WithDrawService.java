@@ -48,12 +48,11 @@ public class WithDrawService {
     @Autowired
     private UserServiceClient userServiceClient;
 
-    @Autowired
-    private JedisUtils redisUtils;
+
     
     public Map<String,String> updateWithdrawById(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
 
-        String openid = redisUtils.get("openid");
+        String openid = JedisUtils.get("openid");
         RedisLock redisLock = new RedisLock("deFrozenWithDrawRecord"+openid);
         redisLock.lock();
         String withdrawId = withDrawRecordDTO.getWithdrawId();

@@ -44,8 +44,6 @@ public class WithDrawController {
 	@Autowired
 	private WithDrawService withDrawService;
 
-	@Autowired
-	private JedisUtils redisUtils;
 
 	/**
 	 * 用户进行提现操作
@@ -237,7 +235,7 @@ public class WithDrawController {
 		if (userInfoDTOList != null && userInfoDTOList.size() > 0) {
 			openId = userInfoDTOList.get(0).getUserOpenid();
 		}
-		redisUtils.set("openid",openId,90000);
+		JedisUtils.set("openid",openId,90000);
 		try {
 			Map<String,String> result = withDrawService.updateWithdrawById(withDrawRecordDTO,request);
 			if(result.get("result").equals("success")){
