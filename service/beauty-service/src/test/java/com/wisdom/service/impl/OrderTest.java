@@ -101,8 +101,8 @@ public class OrderTest {
         shopUserOrderDTO.setDetail("备注");
         shopUserOrderDTO.setShopUserArchivesId("1");
         shopUserOrderDTO.setOrderId("20180424200819402");
-        shopUserOrderDTO.setOperation("1");
-        shopUserOrderDTO.setGoodsType("0");
+        shopUserOrderDTO.setOperation("0");
+        shopUserOrderDTO.setGoodsType("3");
         //用户与项目关系
         List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
         buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
@@ -154,7 +154,7 @@ public class OrderTest {
         groupRelRelationDTO.setProjectSurplusAmount(new BigDecimal(1000));
         groupRelRelationDTO.setSysClerkId("110");
         groupRelRelationDTO.setShopProjectGroupName("综合啦");
-        groupRelRelationDTO.setId("20180424200819402");
+        groupRelRelationDTO.setId("201804242008s9402");
         groupRelRelationDTO.setShopProjectGroupId("101");
         groupRelRelationDTO.setDiscount(0.23f);
         groupRelRelationDTO.setProjectInitTimes(10);
@@ -168,7 +168,7 @@ public class OrderTest {
         productRelationDTO.setDiscount(0.75f);
         productRelationDTO.setInitAmount(new BigDecimal("100"));
         productRelationDTO.setInitTimes(20);
-        productRelationDTO.setId("20180424200819402");
+        productRelationDTO.setId("20180424200829402");
         productRelationDTO.setSysClerkId("101");
         productRelationDTO.setShopProductId("101");
         productRelationDTO.setShopProductName("迪奥");

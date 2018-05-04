@@ -4,7 +4,6 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.extDto.ImageUrl;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
-import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoGroupRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
@@ -16,6 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -95,14 +95,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
                 map.put(imageUrl.getImageId(), imageUrl.getUrl());
             }
         }
-        ProjectInfoGroupResponseDTO projectInfoGroupResponse = null;
         List<ProjectInfoGroupResponseDTO> respon = new ArrayList<>();
         for (ShopProjectGroupDTO shopProjectGroup : shopCustomerArchiveslist) {
-            projectInfoGroupResponse = new ProjectInfoGroupResponseDTO();
-            projectInfoGroupResponse.setId(shopProjectGroup.getId());
-            projectInfoGroupResponse.setDiscountPrice(shopProjectGroup.getDiscountPrice());
-            projectInfoGroupResponse.setMarketPrice(shopProjectGroup.getMarketPrice());
-            projectInfoGroupResponse.setProjectGroupName(shopProjectGroup.getProjectGroupName());
+            ProjectInfoGroupResponseDTO projectInfoGroupResponse = new ProjectInfoGroupResponseDTO();
+            BeanUtils.copyProperties(shopProjectGroup, projectInfoGroupResponse);
             String[] urls = null;
             if (map != null && com.wisdom.common.util.StringUtils.isNotBlank(map.get(shopProjectGroup.getId()))) {
                 urls = map.get(shopProjectGroup.getId()).split("\\|");
