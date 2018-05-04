@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
-import  com.wisdom.common.util.JedisUtils;
 
 /**
  * FileName: redisUtils
