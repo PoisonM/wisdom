@@ -469,7 +469,7 @@
         <if test='requestData.parentRelation != "self" '>
             AND m.parent_relation != 'self'
         </if>
-        <if test="startTime != null  ">
+        <if test="startTime != ''and startTime != null  ">
             AND m.create_date BETWEEN #{startTime} AND #{endTime}
         </if>
         ORDER BY m.create_date DESC
