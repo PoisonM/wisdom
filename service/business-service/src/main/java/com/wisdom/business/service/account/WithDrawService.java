@@ -47,16 +47,15 @@ public class WithDrawService {
 
     @Autowired
     private UserServiceClient userServiceClient;
+
+    @Autowired
+    private JedisUtils redisUtils;
     
     public Map<String,String> updateWithdrawById(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
 
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setId(withDrawRecordDTO.getSysUserId());
-        String openid = "";
-        List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-        if (userInfoDTOList != null && userInfoDTOList.size() > 0) {
-            openid = userInfoDTOList.get(0).getUserOpenid();
-        }
+        String openid = redisUtils.get("openid");
+        RedisLock redisLock = new RedisLock("deFrozenWithDrawRecord"+openid);
+        redisLock.lock();
         String withdrawId = withDrawRecordDTO.getWithdrawId();
         String status = withDrawRecordDTO.getStatus();
         String token = WeixinUtil.getUserToken();
@@ -80,13 +79,12 @@ public class WithDrawService {
                     accountDTO.setBalance(f);
                     accountMapper.updateUserAccountInfo(accountDTO);
                     //发送提现失败消息模板
-                    for (UserInfoDTO userInfoDTO1 : userInfoDTOList) {
-                        openid = userInfoDTO1.getUserOpenid();
-                    }
                     WeixinTemplateMessageUtil.sendWithDrawTemplateFailureMessage(String.valueOf(moneyAmount), time, token, "", openid);
                     HashMap<String, String> result = new HashMap<String, String>();
                     result.put("result","success");
                     result.put("message","执行成功");
+                    redisLock.unlock();
+                    return result;
 
                 } else {
 
@@ -96,6 +94,7 @@ public class WithDrawService {
                         HashMap<String, String> result = new HashMap<String, String>();
                         result.put("result","success");
                         result.put("message","执行成功");
+                        redisLock.unlock();
                         return result;
                     } catch (Exception e) {
                         logger.info(e.getMessage());
@@ -103,6 +102,7 @@ public class WithDrawService {
                         HashMap<String, String> result = new HashMap<String, String>();
                         result.put("result","failure");
                         result.put("message","公司公众号帐户余额不足，请联系财务人员");
+                        redisLock.unlock();
                         return result;
                     }
                 }
@@ -110,6 +110,7 @@ public class WithDrawService {
                 HashMap<String, String> result = new HashMap<String, String>();
                 result.put("result","failure");
                 result.put("message","账户已审核，请勿重复操作");
+                redisLock.unlock();
                 return result;
             }
 
@@ -117,10 +118,9 @@ public class WithDrawService {
             HashMap<String, String> result = new HashMap<String, String>();
             result.put("result","failure");
             result.put("message","此用户信息存在问题，请联系开发人员");
+            redisLock.unlock();
             return result;
         }
-
-        return null;
 
     }
 

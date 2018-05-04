@@ -17,6 +17,8 @@ import com.wisdom.common.util.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
@@ -41,6 +43,9 @@ public class WithDrawController {
 
 	@Autowired
 	private WithDrawService withDrawService;
+
+	@Autowired
+	private JedisUtils redisUtils;
 
 	/**
 	 * 用户进行提现操作
@@ -224,6 +229,15 @@ public class WithDrawController {
 	@ResponseBody
 	ResponseDTO updateWithdrawById(@RequestBody WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
 		ResponseDTO responseDTO = new ResponseDTO<>();
+
+		UserInfoDTO userInfoDTO = new UserInfoDTO();
+		userInfoDTO.setId(withDrawRecordDTO.getSysUserId());
+		List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+		String openId ="";
+		if (userInfoDTOList != null && userInfoDTOList.size() > 0) {
+			openId = userInfoDTOList.get(0).getUserOpenid();
+		}
+		redisUtils.set("openid",openId,90000);
 		try {
 			Map<String,String> result = withDrawService.updateWithdrawById(withDrawRecordDTO,request);
 			if(result.get("result").equals("success")){
