@@ -40,7 +40,7 @@
     </div>
     <div class="consumptionListContent" ng-class="{true: '', false: 'isThird'}[consumptionListUlShow]">
         <ul>
-            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==0||select==1">
+            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==0||select==1" ng-click="getProductInfoThreeLevelProject()">
                 <div class="checkBox">
                     <img src="images/checkImg.png" alt="">
                 </div>
