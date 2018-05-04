@@ -204,6 +204,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowId())) {
             c.andFlowIdEqualTo(shopUserConsumeRecordDTO.getFlowId());
         }
+		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getId())) {
+			c.andIdEqualTo(shopUserConsumeRecordDTO.getId());
+		}
         List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper.selectByCriteria(criteria);
 
         return shopUserConsumeRecordDTOS;

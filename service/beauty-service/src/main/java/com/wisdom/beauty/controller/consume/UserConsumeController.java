@@ -118,7 +118,31 @@ public class UserConsumeController {
     }
 
     /**
-     * @Author:huan
+     * 根据消费主键查询消费详情
+     * @param consumeId
+     * @return
+     */
+    @RequestMapping(value = "/consume/{consumeId}", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> findUserConsumeDetailInfo(@PathVariable("consumeId") String consumeId) {
+        long startTime = System.currentTimeMillis();
+
+        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+        shopUserConsumeRecordDTO.setId(consumeId);
+        List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+
+        if (CommonUtils.objectIsNotEmpty(shopCustomerConsumeRecord)) {
+            shopUserConsumeRecordDTO = shopCustomerConsumeRecord.get(0);
+        }
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(shopUserConsumeRecordDTO);
+
+        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
      * @Param:
      * @Return:
      * @Description: 根据flowId查询具体某个消费信息记录
