@@ -104,16 +104,16 @@ public class OrderTest {
         shopUserOrderDTO.setOperation("0");
         shopUserOrderDTO.setGoodsType("3");
         //用户与项目关系
-        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
-        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
-        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
+//        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
+//        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
+//        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
 
 
         //用户与产品
-//        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
-//        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
-//        shopUserProductRelationDTOS.add(productRelationDTO);
-//        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
+        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
+        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
+        shopUserProductRelationDTOS.add(productRelationDTO);
+        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
 
 
         //套卡
