@@ -136,6 +136,7 @@ angular.module('controllers',[]).controller('withdrawCtrl',
             };
             $scope.changeWithdraw = function(status){
                 $scope.isDisabled = true;
+
                 var  withDrawRecordDTO={
                         withdrawId:$scope.id,
                         status:status,
