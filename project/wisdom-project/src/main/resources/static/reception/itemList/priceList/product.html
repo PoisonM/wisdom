@@ -12,7 +12,7 @@
     <!--商品-->
     <div class="productGoods" ng-repeat="items in product3List">
         <ul>
-            <li  ng-click="goProductDetails(items.id)">
+            <li  data-iii="{{items}}" ng-click="goProductDetails(items.id)">
                 <div class="imgDiv">
                     <img ng-src="{{items.url}}" alt="">
                 </div>

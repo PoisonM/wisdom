@@ -127,9 +127,9 @@ public class ClerkServiceController {
 	 * @Description: 根据clerkId查询店员信息
 	 * @Date:2018/4/28 9:40
 	 */
-	@RequestMapping(value = "/clerkInfo", method = RequestMethod.GET)
+	@RequestMapping(value = "/clerkInfo/{clerkId}", method = RequestMethod.GET)
 	@ResponseBody
-	List<SysClerkDTO> getClerkInfoByClerkId(@RequestParam String clerkId) {
+	List<SysClerkDTO> getClerkInfoByClerkId(@PathVariable String clerkId) {
 
 		long startTime = System.currentTimeMillis();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();

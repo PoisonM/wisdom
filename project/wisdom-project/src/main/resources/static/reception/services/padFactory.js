@@ -39,6 +39,14 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('Consumes', ['$resource', function($resource) {
         return $resource(beautyIP + 'mine/consumes')
     }])
+    //收银记录统计
+    .factory('cashConsumes', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consumes')
+    }])
+    //收银记录统计明细
+    .factory('cashConsume', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/:consumeFlowNo', { consumeFlowNo: '@id' })
+    }])
     //获取档案列表
     .factory('FindArchives', ['$resource', function($resource) {
         return $resource(beautyIP + 'archives/findArchives')

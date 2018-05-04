@@ -1,10 +1,8 @@
-/**
- * Created by Administrator on 2018/3/29.
- */
 PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelProject,TwoLevelProject,ThreeLevelProject) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.$parent.param.headerPrice.blackTitle = "项目";
+    $scope.$parent.param.priceType = "xm"
     $scope.flagFn = function (bool) {
         //左
         $scope.$parent.mainLeftSwitch.peopleListFlag = !bool;
@@ -36,13 +34,19 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
 
     /*一级项目列表接口*/
     OneLevelProject.get(function (data) {
-       $scope.selectSingleList=data.responseData;
+        $scope.selectSingleList=data.responseData;
         $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
-        $scope.selection(0,"1") //data.responseData.id //初始化默认页面项目的第一项
+        $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
+        // $scope.selection(0,"1") //data.responseData.id //初始化默认页面项目的第一项
     });
     //点击二级列表调取三级项目列表产品数据方法
     $scope.refreshGoods=function (id) {
-        ThreeLevelProject.get({ProjectTypeTwoId:id,projectTypeOneId: $scope.param.projectTypeOneId,projectName:$scope.param.projectName,pageSize:$scope.param.pageSize},function (data) {
+        ThreeLevelProject.get({
+            ProjectTypeTwoId:id,
+            projectTypeOneId: $scope.param.projectTypeOneId,
+            projectName:$scope.param.projectName,
+            pageSize:$scope.param.pageSize
+        },function (data) {
             $scope.threeList=data.responseData;
             $scope.param.projectAppear=false;
         })
@@ -52,7 +56,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
     $scope.checkImg = function (index,status,id) {
         $scope.param.projectTypeOneId=id;
         /*二级产品列表接口*/
-        TwoLevelProject.get({id:1},function (data) {
+        TwoLevelProject.get({id:id},function (data) {
             $scope.project2List=data.responseData;
         });
         if($scope.param.childrenFlag == index){
@@ -78,11 +82,16 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         $state.go("pad-web.projectDetails",{id:id})
     };
 
-    $scope.selection  = function (index,id) {
-        TwoLevelProject.get({id:1},function (data) {
+    $scope.selection  = function (index,oneId) {
+        TwoLevelProject.get({id:oneId},function (data) {
             $scope.project2List=data.responseData;
-            console.log( $scope.project2List[0]);
-            ThreeLevelProject.get({ProjectTypeTwoId:"4",projectTypeOneId:"1",projectName:$scope.param.projectName,pageSize:$scope.param.pageSize},function (data) {
+            //默认调去三级展示
+            ThreeLevelProject.get({
+                ProjectTypeTwoId:data.responseData[0].id,
+                projectTypeOneId:oneId,
+                projectName:$scope.param.projectName,
+                pageSize:$scope.param.pageSize
+            },function (data) {
                 $scope.threeList=data.responseData;
                 $scope.param.projectAppear=false;
             });
@@ -94,5 +103,4 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         $scope.param.selection = index;
         $scope.selectSingleList[index].status = 3
     };
-
 });

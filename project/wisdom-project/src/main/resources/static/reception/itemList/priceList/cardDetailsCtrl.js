@@ -5,7 +5,7 @@ PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$root
     console.log("cardDetailsCtrl")
 
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
-    $scope.$parent.$parent.param.top_bottomSelect = "jiamubiao";
+    $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "套卡详情"
     $scope.flagFn = function (bool) {
         //头
@@ -36,4 +36,7 @@ PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$root
         $scope.detailList=data.responseData;
         console.log(data)
     })
+    $scope.$parent.priceListBlackFn = function () {
+        $state.go("pad-web.left_nav.rechargeableCard")
+    }
 })

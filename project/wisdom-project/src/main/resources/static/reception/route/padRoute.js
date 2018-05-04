@@ -308,7 +308,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.accountDetails', {
-            url: '/accountDetails',
+            url: '/accountDetails/:flowNo',
             templateUrl: root + '/cashier/accountDetails.html',
             controller: 'accountDetailsCtrl',
             resolve: {
@@ -368,7 +368,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
-        .state('pad-web.left_nav.consumptionList', {
+        .state('pad-web.consumptionList', {
             url: '/consumptionList',
             templateUrl: root + '/cashier/consumptionList.html',
             controller: 'consumptionListCtrl',

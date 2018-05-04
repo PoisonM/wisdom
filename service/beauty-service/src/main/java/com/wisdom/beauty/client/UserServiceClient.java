@@ -3,10 +3,7 @@ package com.wisdom.beauty.client;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,8 +43,8 @@ public interface UserServiceClient {
      * @param clerkId
      * @return
      */
-    @RequestMapping(value = "/clerkInfo", method = RequestMethod.GET)
-    List<SysClerkDTO> getClerkInfoByClerkId(@RequestParam(value = "clerkId") String clerkId);
+    @RequestMapping(value = "/clerkInfo/{clerkId}", method = RequestMethod.GET)
+    List<SysClerkDTO> getClerkInfoByClerkId(@PathVariable(value = "clerkId") String clerkId);
 
     /**
      * @Return:

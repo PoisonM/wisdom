@@ -47,6 +47,8 @@ public class UserUtils {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId("1");
         userInfoDTO.setMobile("18810142926");
+        userInfoDTO.setNickname("小明");
+        userInfoDTO.setPhoto("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%91%98%E5%B7%A5%E5%9B%BE%E7%89%87.png");
         return userInfoDTO;
     }
 
@@ -67,6 +69,7 @@ public class UserUtils {
         clerkDTO.setSysShopId("11");
         clerkDTO.setNickname("张欢昵称");
         clerkDTO.setMobile("18810142926");
+        clerkDTO.setSysShopName("汉方美业");
         clerkDTO.setScore(70f);
         return clerkDTO;
 

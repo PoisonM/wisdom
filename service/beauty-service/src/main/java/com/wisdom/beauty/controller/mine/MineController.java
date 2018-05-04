@@ -223,4 +223,22 @@ public class MineController {
         return responseDTO;
     }
 
+    /**
+     * 获取我的个人信息
+     */
+    @RequestMapping(value = "/getCurrentLoginUserInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO<Object> getCurrentLoginUserInfo() {
+
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        UserInfoDTO userInfo = UserUtils.getUserInfo();
+
+        if (null == userInfo) {
+            userInfo = UserUtils.getTestUserInfoDTO();
+        }
+        responseDTO.setResponseData(userInfo);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
+
 }
