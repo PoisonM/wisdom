@@ -7,6 +7,7 @@ angular.module('controllers',[]).controller('withdrawCtrl',
             var updateEndTime = document.querySelector(".updateEndTime");
             $scope.counnt ="";
             $scope.mum = true;
+            $scope.isDisabled = false;
             var pattern = /^1[34578]\d{9}$/;
             var pattern1 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 /*日期插件*/
@@ -134,6 +135,7 @@ angular.module('controllers',[]).controller('withdrawCtrl',
                     $scope.moneyAmount = moneyAmount;
             };
             $scope.changeWithdraw = function(status){
+                $scope.isDisabled = true;
                 var  withDrawRecordDTO={
                         withdrawId:$scope.id,
                         status:status,
