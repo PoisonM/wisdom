@@ -3,6 +3,7 @@
  */
 PADWeb.controller("rechargeableDetailsCtrl", function($scope, $state, $stateParams,$rootScope,GetCardInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
+    $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "充值卡详情"
     $scope.flagFn = function (bool) {
         //头
@@ -32,11 +33,17 @@ PADWeb.controller("rechargeableDetailsCtrl", function($scope, $state, $statePara
         rechargeList:{},
         urlArray:{}
     }
-    GetCardInfo.get({id:"2"},function (data) {
+    GetCardInfo.get({
+        id:$stateParams.shopRechargeCardId
+    },function (data) {
         $scope.rechargeList=data.responseData;
         //将轮播图数据截取
         /*var url= $scope.rechargeList.imageUrl;
         $scope.param.urlArray = url.split(",");*/
-        console.log(data)
     })
+
+
+    $scope.$parent.priceListBlackFn = function () {
+        $state.go("pad-web.left_nav.setCard")
+    }
 })

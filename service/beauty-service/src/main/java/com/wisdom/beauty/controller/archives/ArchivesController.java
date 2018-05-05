@@ -26,6 +26,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * ClassName: ArchivesController
@@ -60,7 +62,7 @@ public class ArchivesController {
      */
     @RequestMapping(value = "/findArchives", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String, Object>> findArchives(@RequestParam String queryField, @RequestParam int pageNo, @RequestParam int pageSize) {
+    ResponseDTO<Map<String, Object>> findArchives(@RequestParam(required = false) String queryField, @RequestParam int pageSize) {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("获取档案列表或某个店的用户列表传入参数={}", "queryField = [" + queryField + "], pageSize = [" + pageSize + "]");
@@ -90,7 +92,15 @@ public class ArchivesController {
             HashMap<Object, Object> hashMap = new HashMap<>(16);
             ArrayList<Object> arrayList = new ArrayList<>();
             for (ShopUserArchivesDTO archivesDTO : shopUserArchivesDTOS) {
-                String pinyin=PinYinSort.ToPinYinString(archivesDTO.getSysUserName());
+                String pinyin=null;
+                String rule="[\\u4e00-\\u9fa5]+";
+                Pattern pattern = Pattern.compile(rule);
+                Matcher m = pattern.matcher(archivesDTO.getSysUserName());
+                if(m.find()&&m.group(0).equals(archivesDTO.getSysUserName())){
+                     pinyin=PinYinSort.ToPinYinString(archivesDTO.getSysUserName());
+                }else {
+                    pinyin=archivesDTO.getSysUserName();
+                }
                 if (StringUtils.isNotBlank(pinyin) && a == pinyin.charAt(0)) {
                     arrayList.add(archivesDTO);
                 }

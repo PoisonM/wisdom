@@ -36,6 +36,12 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //签字图片地址
     private String signUrl;
 
+    //0、商品类型为次卡；1、商品类型为疗程卡 ；2、商品类型为充值卡；3、商品类型为套卡 4、商品类型为产品
+    private String goodsType;
+
+    //0添加  1删除
+    private String operation;
+
     //用户与项目关系
     private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
 
@@ -44,6 +50,22 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public String getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType;
+    }
 
     public String getUserId() {
         return userId;

@@ -3,6 +3,7 @@
  */
 PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,ProjectInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
+    $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "项目详情";
     $scope.flagFn = function (bool) {
         //头
@@ -15,7 +16,6 @@ PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,Pr
     };
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
-    console.log("projectDetailsCtrl");
     $scope.$parent.mainSwitch.footerBoxFlag=false;
     var swiper = new Swiper('.swiper-container', {
         slidesPerView: 3,
@@ -27,8 +27,13 @@ PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,Pr
             clickable: true,
         },
     });
-    ProjectInfo.get({id:1},function (data) {
-        console.log($stateParams.projectTypeOneId)
-        console.log(data)
+    ProjectInfo.get({id:$stateParams.id},function (data) {
+        if(data.result == '0x00001'){
+            $scope.projectInformation = data.responseData
+        }
     })
+    $scope.$parent.priceListBlackFn = function () {
+        $state.go("pad-web.left_nav.project")
+    }
+
 });

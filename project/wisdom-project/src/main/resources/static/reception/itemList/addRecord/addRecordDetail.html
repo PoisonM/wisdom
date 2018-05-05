@@ -1,0 +1,82 @@
+<div class="addRecordDetail">
+    <div ng-if = "!param.openSelectFlag" class="addRecordDetail_box">
+        <div class="addRecordDetail_header">
+            <div class="addRecordDetail_header_box">
+                头像
+                <div class="addRecordDetail_logo">
+                    <img src="http://t11.baidu.com/it/u=2044179103,4219527833&fm=173&s=8F008C4AE4E324A57B8CE41E03009053&w=640&h=653&img.PNG" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="addRecordDetail_content">
+            <div class="addRecordDetail_content_box">
+                <ul>
+                    <li>
+                        <label for="">姓名 <i>*</i></label>
+                        <input ng-model="param.selectContentName" type="text" placeholder="请输入顾客姓名">
+                    </li>
+
+                    <li>
+                        <label for="">手机 <i>*</i></label>
+                        <input ng-model="param.selectContentPhone" type="text" placeholder="请输入顾客手机号">
+                    </li>
+
+                    <li ng-click="openSelect('sex','性别')">
+                        <label for="">性别 </label>
+                        {{param.selectContentSex}}
+                        <span> > </span>
+                    </li>
+
+                    <li>
+                        <label for="">生日 </label>
+                        {{param.selectContentBirthday}}
+                        <span> > </span>
+                    </li>
+                    <li>
+                        <label for="">年龄 </label>
+                        {{param.selectContentAge}}
+                        <span> > </span>
+                    </li>
+                    <li>
+                        <label for="">星座 </label>
+                        {{param.selectContentConstellation}}
+                        <span> > </span>
+                    </li>
+                    <li>
+                        <label for="">血型 </label>
+                        {{param.selectContentBlood}}
+                        <span> > </span>
+                    </li>
+                    <li>
+                        <label for="">身高 </label>
+                        {{param.selectContentHeight}}
+                        <span> > </span>
+                    </li>
+                    <li>
+                        <label for="">来源渠道 </label>
+                        {{param.selectContentSource}}
+                        <span> > </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div ng-if = "param.openSelectFlag" class="addRecordDetail_select">
+        <div ng-if="param.select_type == 'sex'" class="sex select_public">
+            <ul>
+                <li ng-click="selectFn('sex','未知')">未知 <i></i> </li>
+                <li ng-click="selectFn('sex','A')">A <i></i> </li>
+                <li ng-click="selectFn('sex','B')">B <i></i> </li>
+                <li ng-click="selectFn('sex','AB')">AB <i></i> </li>
+                <li ng-click="selectFn('sex','O')">O <i></i> </li>
+            </ul>
+        </div>
+
+        <div ng-if="param.select_type == 'birthday'" class="birthday"></div>
+        <div ng-if="param.select_type == 'age'" class="age"></div>
+        <div ng-if="param.select_type == 'constellation'" class="constellation"></div>
+        <div ng-if="param.select_type == 'blood'" class="blood"></div>
+        <div ng-if="param.select_type == 'height'" class="height"></div>
+        <div ng-if="param.select_type == 'source'" class="source"></div>
+    </div>
+</div>

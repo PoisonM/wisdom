@@ -6,7 +6,9 @@ public enum GoodsTypeEnum {
     TREATMENT_CARD("1", "疗程卡"),
     RECHARGE_CARD("2", "充值卡"),
     COLLECTION_CARD("3", "套卡"),
-    PRODUCT("4", "产品");
+    PRODUCT("4", "产品"),
+    PUNCH_CARD("5", "划卡"),
+    CASHIER("6", "收银");
 
     GoodsTypeEnum(String code, String desc) {
         this.code = code;
