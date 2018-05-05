@@ -78,6 +78,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
 
             var getBeautyShopInfo = function (projectId,length) {
                 GetBeautyShopInfo.shopProjectInfo(projectId).then(function (data) {
+                    BeautyUtil.checkResponseData(data,'beautyAppoint');
                     $scope.param.beautyShopInfo.push(data.responseData);
                     length--;
                     if(length>=0)
@@ -109,6 +110,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 $scope.param.chooseDate = dateValue;
                 GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
                     searchDate:$scope.param.chooseDate},function (data){
+                    BeautyUtil.checkResponseData(data,'beautyAppoint');
                     initialTimeDate();
                     arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
                 })
@@ -127,6 +129,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 if($rootScope.shopAppointInfo.clerkId!='')
                 {
                     GetBeautyShopInfo.clerkInfo($rootScope.shopAppointInfo.clerkId).then(function(data) {
+                        BeautyUtil.checkResponseData(data,'beautyAppoint');
                         //success函数
                         $scope.param.clerkInfo = data[0];
                         GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
@@ -187,6 +190,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                         detail:$rootScope.shopAppointInfo.shopProjectDetail,
                         status:'0'
                     },function (data) {
+                        BeautyUtil.checkResponseData(data,'beautyAppoint');
                         if(data.result==Global.SUCCESS)
                         {
                             $state.go("beautyUserAppointDetail",{appointId:data.responseData.appointmentId});

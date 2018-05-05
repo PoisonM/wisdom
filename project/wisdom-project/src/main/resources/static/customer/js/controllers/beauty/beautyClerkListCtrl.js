@@ -2,8 +2,8 @@
  * Created by Administrator on 2017/12/15.
  */
 angular.module('controllers',[]).controller('beautyClerkListCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopClerkList','Global',
-        function ($scope,$rootScope,$stateParams,$state,GetShopClerkList,Global) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopClerkList','Global','BeautyUtil',
+        function ($scope,$rootScope,$stateParams,$state,GetShopClerkList,Global,BeautyUtil) {
 
             $scope.param = {
                 pageNo : 0,
@@ -25,6 +25,7 @@ angular.module('controllers',[]).controller('beautyClerkListCtrl',
             $scope.doRefresh = function()
             {
                 GetShopClerkList.get({pageNo:$scope.param.pageNo,pageSize:$scope.param.pageSize},function(data){
+                    BeautyUtil.checkResponseData(data,'beautyClerkList');
                     if(data.result==Global.SUCCESS)
                     {
                         $scope.param.clerkList = data.responseData;
