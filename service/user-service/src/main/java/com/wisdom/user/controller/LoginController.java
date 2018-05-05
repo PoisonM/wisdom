@@ -103,6 +103,46 @@ public class LoginController {
         return result;
     }
 
+    @RequestMapping(value = "beautyUserLogin", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<String> beautyUserLogin(@RequestBody LoginDTO loginDTO,
+                                  HttpServletRequest request,
+                                  HttpSession session) throws Exception {
+        ResponseDTO<String> result = new ResponseDTO<>();
+
+        //获取用户的基本信息 todo 需要完成注释部分的代码
+        String openid = WeixinUtil.getUserOpenId(session,request);
+        if(openid==null||openid.equals(""))
+        {
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("没有openid，请在微信公众号中注册登录");
+            return result;
+        }
+
+        String loginResult = loginService.beautyUserLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+
+        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
+        {
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("验证码输入不正确");
+            return result;
+        }
+        else if (loginResult.equals(StatusConstant.WEIXIN_ATTENTION_ERROR))
+        {
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("请在关注公众号后，再绑定登录");
+            return result;
+        }
+        else
+        {
+            result.setResult(StatusConstant.SUCCESS);
+            result.setErrorInfo("调用成功");
+            result.setResponseData(loginResult);
+            return result;
+        }
+    }
+
     @RequestMapping(value = "bossLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
