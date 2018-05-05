@@ -85,4 +85,9 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 
         return SysClerks;
     }
+
+    @Override
+    public int  updateSysClerk(SysClerkDTO sysClerkDTO) {
+       return sysClerkMapper.updateByPrimaryKeySelective(sysClerkDTO);
+    }
 }

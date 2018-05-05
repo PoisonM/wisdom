@@ -1,8 +1,6 @@
-/**
- * Created by Administrator on 2018/4/3.
- */
 PADWeb.controller("productDetailsCtrl", function($scope, $state, $stateParams,$rootScope,ProductInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
+    $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "产品详情";
     $scope.flagFn = function (bool) {
         //头
@@ -30,8 +28,13 @@ PADWeb.controller("productDetailsCtrl", function($scope, $state, $stateParams,$r
             clickable: true,
         },
     });
-    ProductInfo.get({productId:"1"},function (data) {
-        console.log(data)
+    ProductInfo.get({productId:$stateParams.id},function (data) {
+        if(data.result == "0x00001"){
+            $scope.productInformation = data.responseData
+        }
     })
+    $scope.$parent.priceListBlackFn = function () {
+        $state.go("pad-web.left_nav.product")
+    }
 
 })

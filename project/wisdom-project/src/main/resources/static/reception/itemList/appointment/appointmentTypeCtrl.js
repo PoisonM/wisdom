@@ -1,4 +1,5 @@
 function appointmentTypeCtrl($scope, ngDialog,UpdateAppointmentInfoById,FindArchives){
+    $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.newAppointment = function(){
         $scope.param.appointmentNew = "yes";
         ngDialog.open({

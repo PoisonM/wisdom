@@ -2,22 +2,22 @@
     <!--轮播图-->
     <div class="swiper-container ">
         <div class="swiper-wrapper">
-            <div class="swiper-slide"><img src="images/VIP.png" alt=""></div>
-            <div class="swiper-slide swiper-slide-next"><img src="images/VIP.png" alt=""></div>
-            <div class="swiper-slide" ><img src="images/VIP.png" alt=""></div>
+            <div ng-repeat="imgSrc in rechargeList.imageUrl" class="swiper-slide">
+                <img ng-src="{{imgSrc}}" alt="">
+            </div>
         </div>
         <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
     </div>
     <!-项目详情-描述-->
     <div class="cardRechargeable">
-        <div class="describeTwo ">
+        <div class="describeTwo">
             <div class="p32">
-                <p><span class="fs36 c33 bold">3.8预存金</span></p>
-                <p class="fs32 mt32 cff66"><span>面额:&nbsp;</span><span>￥298.00</span></p>
+                <p><span class="fs36 c33 bold">{{rechargeList.name}}</span></p>
+                <p class="fs32 mt32 cff66"><span>面额:&nbsp;</span><span>￥{{rechargeList.amount}}</span></p>
                 <p class="mt86 c99 fs32"><span>折扣</span></p>
                 <p class="mt50 fs32 c99"><span>疗程卡</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>无折</span></p>
-                <p class="mt50 fs32 c99"><span>产品</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>9.0折</span></p>
-                <p class="mt94 fs32 c99 mb50">功能介绍</p>
+                <p class="mt50 fs32 c99"><span>产品</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{rechargeList.discountDesc}}</span></p>
+                <p class="mt94 fs32 c99 mb50">功能介绍：{{rechargeList.introduce}}</p>
             </div>
             <p class="textDestrice c33 fs34"><span>1</span>/<span>40</span></p>
         </div>

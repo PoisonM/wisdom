@@ -13,8 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: workService
@@ -57,19 +58,19 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
         if (StringUtils.isNotBlank(shopClerkScheduleDTO.getSysClerkId())) {
             criteria.andSysClerkIdEqualTo(shopClerkScheduleDTO.getSysClerkId());
         }
-
+        //注意，这里精确到月份，如有其他需要扩展接口
         if (null != shopClerkScheduleDTO.getScheduleDate()) {
-            String startDate = DateUtils.DateToStr(shopClerkScheduleDTO.getScheduleDate(), "date") + " 00:00:00";
-            String endDate = DateUtils.DateToStr(shopClerkScheduleDTO.getScheduleDate(), "date") + " 23:59:59";
+            String startDate = DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate());
+            String endDate = DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate());
             criteria.andScheduleDateBetween(DateUtils.StrToDate(startDate, "datetime"), DateUtils.StrToDate(endDate, "datetime"));
         }
 
         //默认查询shopClerkScheduleDTO.getScheduleDate()所在的整月份
-        if(null != shopClerkScheduleDTO.getScheduleDate()){
-            Date firstDate = DateUtils.StrToDate(DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
-            Date lastDay = DateUtils.StrToDate(DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
-            criteria.andScheduleDateBetween(firstDate,lastDay);
-        }
+//        if(null != shopClerkScheduleDTO.getScheduleDate()){
+//            Date firstDate = DateUtils.StrToDate(DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
+//            Date lastDay = DateUtils.StrToDate(DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
+//            criteria.andScheduleDateBetween(firstDate,lastDay);
+//        }
 
         List<ShopClerkScheduleDTO> shopClerkScheduleDTOS = shopClerkScheduleMapper.selectByCriteria(scheduleCriteria);
         return shopClerkScheduleDTOS;
@@ -91,7 +92,9 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
      */
     @Override
     public int updateShopClerkScheduleList(List<ShopClerkScheduleDTO> scheduleDTOS) {
-        return extShopClerkScheduleMapper.batchUpdate(scheduleDTOS);
+        Map<String,Object> map = new HashMap<>();
+        map.put("list",scheduleDTOS);
+        return extShopClerkScheduleMapper.batchUpdate(map);
     }
 
 

@@ -35,6 +35,14 @@ public interface ShopUerConsumeRecordService {
     UserConsumeRecordResponseDTO getShopCustomerConsumeRecord(String consumeFlowNo);
 
     /**
+     * 根据条件查询消费记录
+     *
+     * @param shopUserConsumeRecordDTO
+     * @return
+     */
+    List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+
+    /**
      * 保存用户消费或充值记录
      *
      * @param shopUserConsumeRecordDTO

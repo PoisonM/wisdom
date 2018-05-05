@@ -1,6 +1,7 @@
 package com.wisdom.beauty.controller.consume;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.extDto.ShopConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
@@ -18,6 +19,7 @@ import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +66,9 @@ public class UserConsumeController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Value("${test.msg}")
+    private String msg;
+
     /**
      * @Author:huan
      * @Param:
@@ -71,21 +76,18 @@ public class UserConsumeController {
      * @Description:
      * @Date:2018/4/9 19:05
      */
-    @RequestMapping(value = "/consumes", method = RequestMethod.GET)
+    @RequestMapping(value = "/consumes", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestParam String shopUserId,
-                                                                    @RequestParam String consumeType, int pageSize) {
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
 
         long startTime = System.currentTimeMillis();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
-        UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
-        userConsumeRequest.setSysUserId(shopUserId);
-        userConsumeRequest.setConsumeType(consumeType);
+        userConsumeRequest.setGoodsTypeRequire(true);
 
         pageParamVoDTO.setRequestData(userConsumeRequest);
         pageParamVoDTO.setPageNo(0);
-        pageParamVoDTO.setPageSize(pageSize);
+        pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecordList(pageParamVoDTO);
 
         ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
@@ -102,15 +104,65 @@ public class UserConsumeController {
      * @Description: 根据业务流水查询具体某个消费信息记录
      * @Date:2018/4/10 11:20
      */
-    @RequestMapping(value = "/consume/{consumeFlowNo}", method = RequestMethod.GET)
+    @RequestMapping(value = "/consume/consumeFlowNo", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetail(@PathVariable String consumeFlowNo) {
+    ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetail(@RequestParam String consumeFlowNo) {
         long startTime = System.currentTimeMillis();
 
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecord(consumeFlowNo);
         ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
+        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * 根据消费主键查询消费详情
+     * @param consumeId
+     * @return
+     */
+    @RequestMapping(value = "/consume/{consumeId}", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> findUserConsumeDetailInfo(@PathVariable("consumeId") String consumeId) {
+        long startTime = System.currentTimeMillis();
+
+        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+        shopUserConsumeRecordDTO.setId(consumeId);
+        List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+
+        if (CommonUtils.objectIsNotEmpty(shopCustomerConsumeRecord)) {
+            shopUserConsumeRecordDTO = shopCustomerConsumeRecord.get(0);
+        }
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(shopUserConsumeRecordDTO);
+
+        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * @Param:
+     * @Return:
+     * @Description: 根据flowId查询具体某个消费信息记录
+     * @Date:2018/4/10 11:20
+     */
+    @RequestMapping(value = "/consume/getUserConsumeByFlowId", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getUserConsumeByFlowId(@RequestParam String flowId) {
+        long startTime = System.currentTimeMillis();
+
+        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+        if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
+            flowId = "10b939362aca4680b1634718106cf840";
+        }
+        shopUserConsumeRecordDTO.setFlowId(flowId);
+        List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(shopCustomerConsumeRecord);
+
         logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }

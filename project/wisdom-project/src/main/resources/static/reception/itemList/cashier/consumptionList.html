@@ -1,0 +1,76 @@
+<div class="consumptionListBox clearfix">
+    <div class="consumptionListLeft clearfix">
+        <ul>
+            <li class="clearfix select" ng-click="tabclick(0)" ng-class="select=='0'?'select':''">
+                <i></i>
+                <span>疗程卡</span>
+            </li>
+            <li class="clearfix" ng-click="tabclick(1)" ng-class="select=='1'?'select':''">
+                <i></i>
+                <span>单次</span>
+            </li>
+            <li class="clearfix" ng-click="tabclick(2)" ng-class="select=='2'?'select':''">
+                <i></i>
+                <span>产品</span>
+            </li>
+            <li class="clearfix" ng-click="tabclick(3)" ng-class="select=='3'?'select':''">
+                <b><i></i></b>
+                <span>套卡</span>
+            </li>
+            <!-- <li class="clearfix">
+                <i></i>
+                <span>赠送</span>
+            </li> -->
+        </ul>
+    </div>
+    <div class="consumptionListUl" ng-if="consumptionListUlShow">
+        <div class="search">
+            <input placeholder="请输入名称" type="text">
+            <button>搜索</button>
+        </div>
+        <ul>
+            <div ng-repeat="(key1,item1) in secondCategory">
+                <div ng-repeat="(key2,item2) in item1">
+                    <div class="consumptionListUlTitle">{{key2}}</div>
+                    <li ng-repeat="(key3,item3) in item2" ng-if="select!=2" ng-click="getThreeCategories(item3.projectTypeOneId,item3.projectTypeTwoId)">{{key3}}</li>
+                    <li ng-repeat="(key3,item3) in item2" ng-if="select==2" ng-click="getProductInfoThreeLevelProject(item3.productTypeOneId,item3.productTypeTwoId)">{{key3}}</li>
+                </div>
+            </div>
+        </ul>
+    </div>
+    <div class="consumptionListContent" ng-class="{true: '', false: 'isThird'}[consumptionListUlShow]">
+        <ul>
+            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==0||select==1" ng-click="getProductInfoThreeLevelProject()">
+                <div class="checkBox">
+                    <img src="images/checkImg.png" alt="">
+                </div>
+                <span class="name">{{item3.projectName}}</span>
+                <br/>
+                <span class="number">{{item3.maxContainTimes}}次</span>
+                <div class="right">
+                    <span><b>¥ </b>{{item3.discountPrice}}<b>.00</b></span>
+                </div>
+            </li>
+            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==2">
+                <div class="checkBox">
+                    <img src="images/checkImg.png" alt="">
+                </div>
+                <span class="name" style="margin-top: 24px;">{{item3.productName}}</span>
+                <div class="right">
+                    <span><b>¥ </b>{{item3.discountPrice}}<b>.00</b></span>
+                </div>
+            </li>
+            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==3">
+                <div class="checkBox">
+                    <img src="images/checkImg.png" alt="">
+                </div>
+                <span class="name">{{item3.projectGroupName}}</span>
+                <br/>
+                <span class="number">永久有效</span>
+                <div class="right">
+                    <span><b>¥ </b>{{item3.discountPrice}}<b>.00</b></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

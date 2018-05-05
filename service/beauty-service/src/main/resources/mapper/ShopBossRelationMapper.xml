@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopBossRelationMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopBossRelationDTO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
+        <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
+        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_name" property="sysBossName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, sys_shop_id, sys_shop_name, sys_boss_id, sys_boss_name
+  </sql>
+    <select id="selectByCriteria" resultMap="BaseResultMap"
+            parameterType="com.wisdom.beauty.api.dto.ShopBossRelationCriteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from shop_boss_relation
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart >= 0">
+            limit ${limitStart},${pageSize}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from shop_boss_relation
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shop_boss_relation
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopBossRelationCriteria">
+        delete from shop_boss_relation
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopBossRelationDTO">
+    insert into shop_boss_relation (id, sys_shop_id, sys_shop_name, 
+      sys_boss_id, sys_boss_name)
+    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, 
+      #{sysBossId,jdbcType=VARCHAR}, #{sysBossName,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopBossRelationDTO">
+        insert into shop_boss_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysShopId != null">
+                sys_shop_id,
+            </if>
+            <if test="sysShopName != null">
+                sys_shop_name,
+            </if>
+            <if test="sysBossId != null">
+                sys_boss_id,
+            </if>
+            <if test="sysBossName != null">
+                sys_boss_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="sysShopId != null">
+                #{sysShopId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysShopName != null">
+                #{sysShopName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysBossId != null">
+                #{sysBossId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysBossName != null">
+                #{sysBossName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopBossRelationCriteria"
+            resultType="java.lang.Integer">
+        select count(1) from shop_boss_relation
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByCriteriaSelective" parameterType="map">
+        update shop_boss_relation
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sysShopId != null">
+                sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sysShopName != null">
+                sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sysBossId != null">
+                sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sysBossName != null">
+                sys_boss_name = #{record.sysBossName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByCriteria" parameterType="map">
+        update shop_boss_relation
+        set id = #{record.id,jdbcType=VARCHAR},
+        sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+        sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
+        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+        sys_boss_name = #{record.sysBossName,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopBossRelationDTO">
+        update shop_boss_relation
+        <set>
+            <if test="sysShopId != null">
+                sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysShopName != null">
+                sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
+            </if>
+            <if test="sysBossId != null">
+                sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysBossName != null">
+                sys_boss_name = #{sysBossName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopBossRelationDTO">
+    update shop_boss_relation
+    set sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+      sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
+      sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      sys_boss_name = #{sysBossName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

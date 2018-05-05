@@ -121,7 +121,7 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.wisdom.common.dto.user.SysClerk">
+    <insert id="insert" parameterType="com.wisdom.common.dto.user.SysClerkDTO">
     insert into sys_clerk (id, sys_boss_id, sys_boss_name, 
       sys_shop_id, sys_shop_name, sys_user_id, 
       nickname, name, password, 
@@ -137,7 +137,7 @@
       #{photo,jdbcType=VARCHAR}, #{loginIp,jdbcType=VARCHAR}, #{loginDate,jdbcType=TIMESTAMP}, 
       #{delFlag,jdbcType=CHAR}, #{address,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.wisdom.common.dto.user.SysClerk">
+    <insert id="insertSelective" parameterType="com.wisdom.common.dto.user.SysClerkDTO">
         insert into sys_clerk
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -365,7 +365,7 @@
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.user.SysClerk">
+    <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.user.SysClerkDTO">
         update sys_clerk
         <set>
             <if test="sysBossId != null">
@@ -428,7 +428,7 @@
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.user.SysClerk">
+    <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.user.SysClerkDTO">
     update sys_clerk
     set sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
       sys_boss_name = #{sysBossName,jdbcType=VARCHAR},

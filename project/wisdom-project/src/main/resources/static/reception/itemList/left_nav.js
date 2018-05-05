@@ -10,8 +10,7 @@ PADWeb.controller("left_navCtrl", function($scope, $state,FindArchives) {
     $scope.queryRecordList = function () {
         FindArchives.get({
             queryField:$scope.param.queryField,
-            pageNo:"1",
-            pageSize:"1"
+            pageSize:"10"
         },function (data) {
             if(data.result == "0x00001"){
                 $scope.dataList = [];
@@ -30,7 +29,7 @@ PADWeb.controller("left_navCtrl", function($scope, $state,FindArchives) {
     /*获取档案列表*/
     $scope.queryRecordList()
 
-    /*--------------------------w-----方法-------------------------------------------*/
+    /*--------------------------------方法-------------------------------------------*/
     $scope.cancelSearch = function () {
         $scope.param.queryField = ""
         $scope.queryRecordList()
