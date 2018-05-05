@@ -34,6 +34,9 @@ angular.module('controllers',[]).controller('homeCtrl',
                         QueryProductsByParameters.save($scope.PageParamVoDTO,function(data){
                             ManagementUtil.checkResponseData(data,"");
                             if(data.errorInfo == Global.SUCCESS){
+                                if( data.responseData.totalCount ==0){
+                                    alert("未查出相应结果");
+                                }
                                 if(data.responseData.responseData){
                                     var homeLis = data.responseData.responseData;
                                 }else{
@@ -72,7 +75,6 @@ angular.module('controllers',[]).controller('homeCtrl',
             };
 /*搜索*/
             $scope.show = function(){
-                $scope.loadPageList();
                 $scope.choosePage(1);
             };
 /*状态的改变*/

@@ -25,6 +25,7 @@ import com.wisdom.common.util.excel.ExportExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -248,7 +249,7 @@ public class AccountController {
 	 *
 	 * */
 	@RequestMapping(value = "isShopKeeper", method = {RequestMethod.POST, RequestMethod.GET})
-	//@LoginRequired
+	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Integer> isShopKeeper(){
@@ -308,6 +309,7 @@ public class AccountController {
 				SpecialShopBusinessOrderDTO  specialShopBusinessOrderDTO = new SpecialShopBusinessOrderDTO();
 				specialShopBusinessOrderDTO.setShopId(specialShopInfoDTOS.get(i).getShopId());
 				Query queryOrder = new Query(Criteria.where("shopId").is(specialShopInfoDTOS.get(i).getShopId()));
+				queryOrder.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
 				List<SpecialShopBusinessOrderDTO> specialShopBusinessOrderDTOS = mongoTemplate.find(queryOrder,SpecialShopBusinessOrderDTO.class,"specialShopBusinessOrder");
 
 				//将所有订单放入一个list里面
@@ -390,6 +392,28 @@ public class AccountController {
 		return responseDTO;
 	}
 
+
+	/***
+	 * 查询用户是否登录
+	 *
+	 * */
+	@RequestMapping(value = "isLogin", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO<String> isLogin(){
+
+		ResponseDTO<String> responseDTO = new ResponseDTO<>();
+		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+		if(userInfoDTO !=null) {
+			responseDTO.setResult(StatusConstant.SUCCESS);
+			responseDTO.setResponseData("success");
+		}else{
+			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setResponseData("failure");
+		}
+
+		return responseDTO;
+	}
 
 
 }

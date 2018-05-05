@@ -13,6 +13,19 @@
         <result column="status" property="status" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="OrderAddressRelationResultMap" type="com.wisdom.common.dto.transaction.OrderAddressRelationDTO" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="business_order_id" property="businessOrderId" jdbcType="VARCHAR" />
+        <result column="user_order_address_id" property="userOrderAddressId" jdbcType="VARCHAR" />
+        <result column="user_name_address" property="userNameAddress" jdbcType="VARCHAR" />
+        <result column="user_phone_address" property="userPhoneAddress" jdbcType="VARCHAR" />
+        <result column="user_province_address" property="userProvinceAddress" jdbcType="VARCHAR" />
+        <result column="user_city_address" property="userCityAddress" jdbcType="VARCHAR" />
+        <result column="user_detail_address" property="userDetailAddress" jdbcType="VARCHAR" />
+        <result column="create_date" property="addressCreateDate" jdbcType="VARCHAR" />
+        <result column="update_date" property="addressUpdateDate" jdbcType="VARCHAR" />
+    </resultMap>
+
     <select id="getUserOrderAddress"
             resultMap="UserOrderAddressResultMap">
         select * from
@@ -72,5 +85,49 @@
         WHERE id=#{id};
     </update>
 
-
+    <insert id="addOrderAddressRelation"
+            parameterType="com.wisdom.common.dto.transaction.OrderAddressRelationDTO">
+        INSERT INTO order_address_relation(
+        id,
+        business_order_id,
+        user_order_address_id,
+        user_name_address,
+        user_phone_address,
+        user_province_address,
+        user_city_address,
+        user_detail_address,
+        create_date,
+        update_date
+        ) values
+        (
+        #{id},
+        #{businessOrderId},
+        #{userOrderAddressId},
+        #{userNameAddress},
+        #{userPhoneAddress},
+        #{userProvinceAddress},
+        #{userCityAddress},
+        #{userDetailAddress},
+        #{addressCreateDate},
+        #{addressUpdateDate});
+    </insert>
+    <select id="getOrderAddressRelationByOrderId"
+            resultMap="OrderAddressRelationResultMap">
+        select * from
+        order_address_relation
+        where
+        business_order_id=#{orderId}
+    </select>
+    <update id="updateOrderAddressRelationByOrderId"
+            parameterType="com.wisdom.common.dto.transaction.OrderAddressRelationDTO">
+        UPDATE order_address_relation SET
+        user_order_address_id=#{userOrderAddressId},
+        user_name_address=#{userNameAddress},
+        user_phone_address=#{userPhoneAddress},
+        user_province_address=#{userProvinceAddress},
+        user_city_address=#{userCityAddress},
+        user_detail_address=#{userDetailAddress},
+        update_date=#{addressUpdateDate}
+        WHERE business_order_id=#{businessOrderId};
+    </update>
 </mapper>

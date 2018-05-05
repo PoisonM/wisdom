@@ -188,6 +188,10 @@ define(['appCustomer'], function (app) {
             return $resource(product + 'findProductById');
         }])
 
+        .factory('FindProductBargainPriceTimeById',['$resource',function ($resource){
+            return $resource(product + 'findProductBargainPriceTimeById');
+        }])
+
         .factory('GetSpecialBossCondition',['$resource',function ($resource){
             return $resource(customer + 'getSpecialBossCondition');
         }])
@@ -202,6 +206,9 @@ define(['appCustomer'], function (app) {
          .factory('FindOrderByTransactionId',['$resource',function ($resource){
                 return $resource(account + 'findOrderByTransactionId');
           }])
+         .factory('IsLogin',['$resource',function ($resource){
+              return $resource(account + 'isLogin');
+         }])
 
         //美容院用户侧接口
         .factory('GetUserClientShopProjectList',['$resource',function ($resource){
