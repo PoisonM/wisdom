@@ -1,10 +1,10 @@
 package com.wisdom.beauty.controller.stock;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.wisdom.beauty.interceptor.LoginRequired;
+import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
+import com.wisdom.beauty.core.service.stock.ShopStockService;
+import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.system.PageParamDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
-import com.wisdom.beauty.core.service.stock.ShopStockService;
-import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.system.PageParamDTO;
-import com.wisdom.common.dto.system.ResponseDTO;
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * FileName: AppointmentServiceImpl
@@ -28,7 +25,6 @@ import com.wisdom.common.dto.system.ResponseDTO;
  */
 @Controller
 @RequestMapping(value = "StoreAndStockController")
-@LoginRequired
 public class StoreAndStockController {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());

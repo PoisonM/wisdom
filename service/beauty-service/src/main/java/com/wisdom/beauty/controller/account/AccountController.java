@@ -3,7 +3,6 @@ package com.wisdom.beauty.controller.account;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.service.SysUserAccountService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.slf4j.Logger;
@@ -23,7 +22,6 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "accountInfo")
-@LoginRequired
 public class AccountController {
 
     @Autowired

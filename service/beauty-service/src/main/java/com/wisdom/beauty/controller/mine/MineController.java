@@ -11,7 +11,6 @@ import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -40,7 +39,6 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "mine")
-@LoginRequired
 public class MineController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 

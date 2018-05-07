@@ -15,7 +15,6 @@ import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopBossService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopWorkService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.PageParamDTO;
@@ -48,7 +47,6 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "appointmentInfo")
-@LoginRequired
 public class AppointmentController {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());

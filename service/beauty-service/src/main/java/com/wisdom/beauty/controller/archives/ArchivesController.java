@@ -7,7 +7,6 @@ import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
@@ -40,7 +39,6 @@ import java.util.regex.Pattern;
  */
 @Controller
 @RequestMapping(value = "archives")
-@LoginRequired
 public class ArchivesController {
 
     @Autowired

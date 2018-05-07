@@ -9,7 +9,6 @@ import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -43,7 +42,6 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "orderInfo")
-@LoginRequired
 public class OrderController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());

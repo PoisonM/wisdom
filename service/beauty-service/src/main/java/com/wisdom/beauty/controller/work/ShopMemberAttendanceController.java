@@ -6,7 +6,6 @@ import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopWorkService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -26,11 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "work")
-@LoginRequired
 public class ShopMemberAttendanceController {
 
     @Resource
