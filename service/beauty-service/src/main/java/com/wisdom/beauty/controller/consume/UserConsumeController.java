@@ -9,6 +9,7 @@ import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
+import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -39,6 +40,7 @@ import static com.wisdom.common.util.CodeGenUtil.getTransactionCodeNumber;
  * @since JDK 1.8
  */
 @Controller
+@LoginRequired
 public class UserConsumeController {
     @Autowired
     private ShopUerConsumeRecordService shopUerConsumeRecordService;

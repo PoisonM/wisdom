@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.wisdom.beauty.interceptor.LoginRequired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
  */
 @Controller
 @RequestMapping(value = "StoreAndStockController")
+@LoginRequired
 public class StoreAndStockController {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());

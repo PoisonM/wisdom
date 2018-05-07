@@ -23,6 +23,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "accountInfo")
+@LoginRequired
 public class AccountController {
 
     @Autowired
@@ -59,7 +60,6 @@ public class AccountController {
      * @return
      */
 	@RequestMapping(value = "getCustomerConsumeRecord", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<List<ShopUserConsumeRecordDTO>> getCustomerConsumeRecord(@RequestParam String type,
@@ -77,7 +77,6 @@ public class AccountController {
      * @return
      */
 	@RequestMapping(value = "getCustomerConsumeRecordInfo", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<ShopUserConsumeRecordDTO> getCustomerConsumeRecord(@RequestParam String shopCustomerConsumeRecordId) {

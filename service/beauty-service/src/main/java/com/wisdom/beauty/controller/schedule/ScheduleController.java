@@ -9,6 +9,7 @@ import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopClerkScheduleService;
+import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -34,6 +35,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "clerkSchedule")
+@LoginRequired
 public class ScheduleController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 

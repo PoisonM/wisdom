@@ -8,6 +8,7 @@ import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -37,6 +38,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "projectInfo")
+@LoginRequired
 public class ProjectController {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());

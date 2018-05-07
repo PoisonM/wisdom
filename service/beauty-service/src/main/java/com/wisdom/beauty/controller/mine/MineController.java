@@ -40,6 +40,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "mine")
+@LoginRequired
 public class MineController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -228,7 +229,6 @@ public class MineController {
      * 获取我的个人信息
      */
     @RequestMapping(value = "/getCurrentLoginUserInfo", method = RequestMethod.GET)
-    @LoginRequired
     @ResponseBody
     public ResponseDTO<Object> getCurrentLoginUserInfo() {
 

@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.beauty.core.service.ShopUserConsumeService;
+import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -31,6 +32,7 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping(value = "userPay")
+@LoginRequired
 public class PayController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());

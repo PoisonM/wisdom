@@ -30,6 +30,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping(value = "work")
+@LoginRequired
 public class ShopMemberAttendanceController {
 
     @Resource
@@ -45,7 +46,6 @@ public class ShopMemberAttendanceController {
 
     //获取门店某天的业绩
     @RequestMapping(value = "shopMemberAttendanceAnalyzeByDate", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
     public
     @ResponseBody
     ResponseDTO<List<ShopMemberAttendacneDTO>> shopMemberAttendanceAnalyzeByDate(@RequestParam String shopId,
