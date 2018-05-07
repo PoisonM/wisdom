@@ -17,6 +17,8 @@ public enum ConfigConstant {
 	public static final String SPECIAL_SHOP_URL = "http://mx99test1.kpbeauty.com.cn/weixin/customer/fieldwork/author?url=" +
 			"http://mx99test1.kpbeauty.com.cn/weixin/customer/getCustomerWeixinMenuId?url=specialProductList88888888";
 
+	public static final String BEAUTY_WEB_URL = "http://mx99test1.kpbeauty.com.cn/beauty#/";
+
 	//redis中存储的登陆后的token的有效期，目前是30天
 	public static final int logintokenPeriod = 60*60*24*30;
 
@@ -40,15 +42,15 @@ public enum ConfigConstant {
 
 	public static final String weixinUserFlag = "userOnlineOperation";
 
-	public static final String weixinBossFlag = "bossOnlineOperation";
+	public static final String weixinBeautyFlag = "beautyOnlineOperation";
 
 	public static final String USER_CORPID = "wx174f02516e9f9733";//测试号
 
 	public static final String USER_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
 
-	public static final String BOSS_CORPID = "wx174f02516e9f9733";//测试号
+	public static final String BEAUTY_CORPID = "wx174f02516e9f9733";//测试号
 
-	public static final String BOSS_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
+	public static final String BEAUTY_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
 
 //	public static final String USER_CORPID = "wxa62609dff1842cd8";//商用号
 //
@@ -104,7 +106,7 @@ public enum ConfigConstant {
 
 	public static final String USER_OPEN_ID = "meixiang99MXtest_user_openid";
 
-	public static final String BOSS_OPEN_ID = "meixiang99MXtest_boss_openid";
+	public static final String BEAUTY_OPEN_ID = "meixiang99MXtest_boss_openid";
 
     public static final String financeMember = "finance-1";
 
@@ -112,9 +114,9 @@ public enum ConfigConstant {
 
     public static final int MAX_WITHDRAW_NUM = 1000;
 
-	public static final int MAX_WITHDRAW_AMOUNT = 5000;
+	public static final int MAX_WITHDRAW_AMOUNT = 10;
 
-	public static final int MIN_WITHDRAW_AMOUNT = 10;
+	public static final int MIN_WITHDRAW_AMOUNT = 1;
 
-	public static final int CHECK_WITHDRAW_AMOUNT = 1000;
+	public static final int CHECK_WITHDRAW_AMOUNT = 5;
 }

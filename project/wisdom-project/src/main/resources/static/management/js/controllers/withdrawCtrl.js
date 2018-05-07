@@ -7,6 +7,7 @@ angular.module('controllers',[]).controller('withdrawCtrl',
             var updateEndTime = document.querySelector(".updateEndTime");
             $scope.counnt ="";
             $scope.mum = true;
+            $scope.isdisabled = false;
             var pattern = /^1[34578]\d{9}$/;
             var pattern1 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 /*日期插件*/
@@ -134,6 +135,21 @@ angular.module('controllers',[]).controller('withdrawCtrl',
                     $scope.moneyAmount = moneyAmount;
             };
             $scope.changeWithdraw = function(status){
+                $scope.isdisabled = true;
+                if(status == "2"){
+                    var result = confirm("是否确认拒绝！")
+                    if(!result){
+                           $scope.isdisabled = false;
+                           return;
+                    }
+                }else{
+                    var result = confirm("是否确认同意！")
+                    if(!result){
+                        $scope.isdisabled = false;
+                        return;
+                    }
+                }
+
                 var  withDrawRecordDTO={
                         withdrawId:$scope.id,
                         status:status,
@@ -143,10 +159,11 @@ angular.module('controllers',[]).controller('withdrawCtrl',
                 UpdateWithdrawById.save(withDrawRecordDTO,function(data){
                     ManagementUtil.checkResponseData(data,"");
                     if(data.result == Global.SUCCESS){
+                        alert(data.errorInfo);
                         $scope.flag = false;
                         $scope.loadPageList();
                     }else{
-                        alert("提现未成功");
+                        alert(data.errorInfo);
                         $scope.flag = false;
                     }
                 })

@@ -15,6 +15,7 @@ import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -138,7 +140,27 @@ public class ProductController {
 		ResponseDTO<ProductDTO> responseDTO = new ResponseDTO<>();
 		ProductDTO productDTO = productService.findProductById(productId);
 		responseDTO.setResponseData(productDTO);
-		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		return responseDTO;
+	}
+
+	/**
+	 * 根据id查询商品剩余特价时间
+	 * @param productId  商品id
+	 * @return
+	 */
+	@RequestMapping(value = "findProductBargainPriceTimeById", method = {RequestMethod.POST, RequestMethod.GET})
+	//@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<OfflineProductDTO> findProductBargainPriceTimeById(@RequestParam String productId) {
+
+		Query query = new Query().addCriteria(Criteria.where("productId").is(productId));
+		OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
+		offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
+		ResponseDTO<OfflineProductDTO> responseDTO = new ResponseDTO();
+		responseDTO.setResponseData(offlineProductDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
 

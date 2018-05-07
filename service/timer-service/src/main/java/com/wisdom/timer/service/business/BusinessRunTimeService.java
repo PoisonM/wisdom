@@ -416,34 +416,47 @@ public class BusinessRunTimeService {
                 //给B的上一級用户495的即时奖励
                 if(StringUtils.isNotNull(userInfo.getParentUserId()))
                 {
-                    AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getParentUserId());
-                    float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
-                    float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
-                    accountDTO.setBalance(balance);
-                    accountDTO.setBalanceDeny(balanceDeny);
-                    businessServiceClient.updateUserAccountInfo(accountDTO);
+                    UserInfoDTO parentUserInfoDTO = new UserInfoDTO();
+                    parentUserInfoDTO.setId(userInfo.getParentUserId());
+                    List<UserInfoDTO> parentUserInfoList = userServiceClient.getUserInfo(parentUserInfoDTO);
 
-                    IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                    incomeRecordDTO.setId(UUID.randomUUID().toString());
-                    incomeRecordDTO.setSysUserId(userInfo.getId());
-                    incomeRecordDTO.setUserType(userInfo.getUserType());
-                    incomeRecordDTO.setNextUserId("");
-                    incomeRecordDTO.setNextUserType("");
-                    incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
-                    incomeRecordDTO.setTransactionAmount(0);
-                    incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                    incomeRecordDTO.setUpdateDate(new Date());
-                    incomeRecordDTO.setCreateDate(new Date());
-                    incomeRecordDTO.setStatus("0");
-                    incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
-                    incomeRecordDTO.setNextUserIdentifyNumber("");
-                    incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
-                    incomeRecordDTO.setNextUserNickName("");
-                    incomeRecordDTO.setIncomeType("recommend");
-                    incomeRecordDTO.setMobile(userInfo.getMobile());
-                    incomeRecordDTO.setNextUserMobile("");
-                    incomeRecordDTO.setParentRelation("");
-                    businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+                    if(parentUserInfoList.size()>0)
+                    {
+                        parentUserInfoDTO = parentUserInfoList.get(0);
+
+                        if(ConfigConstant.businessA1.equals(parentUserInfoDTO.getUserType()))
+                        {
+                            AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(parentUserInfoDTO.getId());
+                            float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
+                            float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
+                            accountDTO.setBalance(balance);
+                            accountDTO.setBalanceDeny(balanceDeny);
+                            businessServiceClient.updateUserAccountInfo(accountDTO);
+
+                            IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                            incomeRecordDTO.setId(UUID.randomUUID().toString());
+                            incomeRecordDTO.setSysUserId(parentUserInfoDTO.getId());
+                            incomeRecordDTO.setUserType(parentUserInfoDTO.getUserType());
+                            incomeRecordDTO.setNextUserId(userInfo.getId());
+                            incomeRecordDTO.setNextUserType(userInfo.getUserType());
+                            incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
+                            incomeRecordDTO.setTransactionAmount(0);
+                            incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                            incomeRecordDTO.setUpdateDate(new Date());
+                            incomeRecordDTO.setCreateDate(new Date());
+                            incomeRecordDTO.setStatus("0");
+                            incomeRecordDTO.setIdentifyNumber(parentUserInfoDTO.getIdentifyNumber());
+                            incomeRecordDTO.setNextUserIdentifyNumber(userInfo.getIdentifyNumber());
+                            incomeRecordDTO.setNickName(URLEncoder.encode(parentUserInfoDTO.getNickname(), "utf-8"));
+                            incomeRecordDTO.setNextUserNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
+                            incomeRecordDTO.setIncomeType("recommend");
+                            incomeRecordDTO.setMobile(parentUserInfoDTO.getMobile());
+                            incomeRecordDTO.setNextUserMobile(userInfo.getMobile());
+                            incomeRecordDTO.setParentRelation(ConfigConstant.businessA1);
+                            businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+
+                        }
+                    }
                 }
                 Calendar calendar = Calendar.getInstance();
                 Date date = new Date();

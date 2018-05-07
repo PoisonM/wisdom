@@ -10,7 +10,7 @@
                         <span ng-if="param.userLogin"   style="font-size: 18px;" class="money" >{{param.accountInfo.balance}}</span>
                          <img src="images/myselfCenter/open.png" style="position:absolute;top:20px;right:20px;width:21px;height: 11px;display: inline-block" ng-click="checkOpen($event)" id="open" class="open">
                         <br>
-                        <span ng-if="param.userLogin"  style="margin-top:0.3rem;display: inline-block">昨日收益：{{param.accountInfo.todayIncome}}</span>
+                        <span ng-if="param.userLogin"  style="margin-top:0.3rem;display: inline-block">今日收益：{{param.accountInfo.todayIncome}}</span>
                     </span>
                     <button class="button" style="border-radius:20px;background: #FF9492;color: #FFFFFF;font-size: 13px;margin-top: -60px;"
                             ng-if="!param.userLogin" ng-click="myselfLogin()">登录查看您的收益</button>
@@ -71,7 +71,7 @@
         <div class="list" style="color: #333333">
             <a class="item" style="font-size:0.3rem" ng-click="goShare()">分享赚钱<i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></a>
             <a class="item" style="font-size:0.3rem" ng-click="goMyselfSetting()">个人设置<i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></a>
-            <a class="item" style="font-size:0.3rem" ng-if="param.specialShopOwner" ng-click="mySpecialShopDetail()">店铺交易明细<i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></a>
+            <a class="item" style="font-size:0.3rem"  ng-show="param.isShopKeeper" ng-click="mySpecialShopDetail()">店铺交易明细<i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></a>
             <a class="item"   style="font-size:0.3rem!important"; href="tel:18611010799">售后服务<span style="float:right;font-size: 0.3rem;color: #333333">18611010899</span></a>
             <a class="item" style="font-size:0.3rem" ng-click="goSuggestion()">建议反馈<i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></a>
             <a class="item" style="font-size:0.3rem" ng-click="goAboutUs()">关于我们<i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></a>

@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
  */
 @Service
 @Transactional(readOnly = false)
-public class ProcessBossViewEventService {
+public class ProcessBeautyViewEventService {
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 

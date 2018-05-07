@@ -65,7 +65,9 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                             UpdateUserAddress.save($scope.param.userAddressInfo, function(data) {
                                 if(Global.SUCCESS==data.result)
                                 {
-                                    window.history.go(-2);
+                                    // window.history.go(-2);
+                                    window.location.href = "orderPay.do?productType="+window.localStorage.getItem("productType")+"&random="+Math.random();
+
                                    /* $state.go("addressManagement");*/
                                 }
                             })
@@ -111,7 +113,8 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                             template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">成功删除地址</span>',
                             okText:'确定'
                         });
-                        $state.go("addressManagement",{routePath:$rootScope.routePath});
+                        $state.go("addressManagement");
+                       /* $state.go("addressManagement",{routePath:$rootScope.routePath});*/
                     }else{
                         var alertPopup = $ionicPopup.alert({
                             template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">删除地址失败</span>',

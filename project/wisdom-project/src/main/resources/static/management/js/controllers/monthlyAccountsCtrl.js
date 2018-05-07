@@ -54,7 +54,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             /*点击查看按钮*/
             $scope.details = function(sysUserId,createDate,incomeType,transactionId,index,id){
                 $scope.agencyIndex = index;
-                if($scope.status == "instance"||$scope.status == "recommends"){
+                if($scope.status == "instance"||$scope.status == "recommend"){
                    for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
                         $scope.MonthlyBalanceLis[i].statesLook = "1"
                     }
