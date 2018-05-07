@@ -20,7 +20,15 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     /**
      * 
      */
-    //
+    //验证码
+    .factory('GetUserValidateCode',['$resource',function ($resource){
+        return $resource(userIP + 'getUserValidateCode')
+    }])
+    //登录
+    .factory('ClerkLogin',['$resource',function ($resource){
+        return $resource(userIP + 'clerkLogin')
+    }])
+
     .factory('ShopDayAppointmentInfoByDate', ['$resource', function($resource) {
         return $resource(appointmentInfo + 'shopDayAppointmentInfoByDate')
     }])

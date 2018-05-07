@@ -61,10 +61,12 @@
     /*overflow-x: scroll;*/
 }
 .compileWorkList .float_top ul{
-    width: 4132px;
+    width: 4185px;
     height: 100%;
 }
 .compileWorkList .float_top ul li{
+    line-height: 25px;
+    padding-top: 10px;
     height: 100%;
     width: 135px;
     text-align: center;
@@ -124,11 +126,13 @@
 
 }
 .compileWorkList .reality_content .week_header ul {
-    width: 4132px;
+    width: 4185px;
     height: 100%;
     background-color: #ffffff;
 }
 .compileWorkList .reality_content .week_header ul li{
+    line-height: 25px;
+    padding-top: 10px;
     height: 100%;
     width: 135px;
     text-align: center;
@@ -142,7 +146,7 @@
     width: 100%;
 }
 .compileWorkList .reality_content .content_info_box{
-    width: 4132px;
+    width: 4265px;
     height: 72px;
 }
 .compileWorkList .reality_content .content_info_box div{

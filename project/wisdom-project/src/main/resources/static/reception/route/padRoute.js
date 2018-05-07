@@ -1046,7 +1046,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.compileWorkList', {
-            url: '/compileWorkList',
+            url: '/compileWorkList/:time',
             templateUrl: root + '/appointment/compileWorkList.html',
             controller: 'compileWorkListCtrl',
             resolve: {
