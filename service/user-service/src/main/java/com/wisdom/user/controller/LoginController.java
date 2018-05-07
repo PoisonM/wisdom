@@ -112,7 +112,7 @@ public class LoginController {
         ResponseDTO<String> result = new ResponseDTO<>();
         String loginResult = "";
 
-        String openid = WeixinUtil.getBossOpenId(session,request);
+        String openid = WeixinUtil.getBeautyOpenId(session,request);
         if((openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
         {
             result.setResult(StatusConstant.FAILURE);
@@ -154,7 +154,7 @@ public class LoginController {
         ResponseDTO<String> result = new ResponseDTO<>();
         String loginResult = "";
 
-        String openid = WeixinUtil.getBossOpenId(session,request);
+        String openid = WeixinUtil.getBeautyOpenId(session,request);
         if((openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
         {
             result.setResult(StatusConstant.FAILURE);
