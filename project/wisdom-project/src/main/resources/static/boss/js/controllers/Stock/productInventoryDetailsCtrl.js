@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2018/5/6.
  */
-angular.module('controllers',[]).controller('productInventoryCtrl',
+angular.module('controllers',[]).controller('productInventoryDetailsCtrl',
     ['$scope','$rootScope','$stateParams','$state',
         function ($scope,$rootScope,$stateParams,$state) {
 
