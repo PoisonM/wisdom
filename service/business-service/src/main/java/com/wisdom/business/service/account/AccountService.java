@@ -60,7 +60,16 @@ public class AccountService {
                 phoneAndIdentify,isExportExcel,pageStartNo,pageSize);
         for(AccountDTO accountDTO : accountDTOList){
             try {
-                accountDTO.setNickName(URLDecoder.decode(accountDTO.getNickName(),"utf-8"));
+                String nickNameW = accountDTO.getNickName();
+                while(true){
+                    if(nickNameW.contains("%25")){
+                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                    }else{
+                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                        break;
+                    }
+                }
+                accountDTO.setNickName(nickNameW);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }

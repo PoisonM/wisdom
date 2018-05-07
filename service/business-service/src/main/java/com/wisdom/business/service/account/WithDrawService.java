@@ -127,6 +127,7 @@ public class WithDrawService {
 
     
     public PageParamDTO<List<WithDrawRecordDTO>> queryWithdrawsByParameters(PageParamVoDTO<ProductDTO> pageParamVoDTO) {
+
         PageParamDTO<List<WithDrawRecordDTO>> page = new  PageParamDTO<>();
         int count = withDrawMapper.queryWithdrawsCountByParameters(pageParamVoDTO);
         page.setTotalCount(count);

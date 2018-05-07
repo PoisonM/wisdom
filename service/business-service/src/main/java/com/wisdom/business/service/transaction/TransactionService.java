@@ -152,7 +152,16 @@ public class TransactionService {
         for(PayRecordDTO payRecordDTO : PayRecordDTOList){
             try {
                 if(payRecordDTO.getNickName() != null && payRecordDTO.getNickName() != ""){
-                    payRecordDTO.setNickName(URLDecoder.decode(payRecordDTO.getNickName(),"utf-8"));
+                    String nickNameW = payRecordDTO.getNickName();
+                    while(true){
+                        if(nickNameW.contains("%25")){
+                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                        }else{
+                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            break;
+                        }
+                    }
+                    payRecordDTO.setNickName(nickNameW);
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
