@@ -223,13 +223,13 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     private void purchaseProjectGroup(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ShopUserProjectGroupRelRelationDTO> groupRelRelationDTOS) {
         if (CommonUtils.objectIsNotEmpty(groupRelRelationDTOS)) {
             for (ShopUserProjectGroupRelRelationDTO dto : groupRelRelationDTOS) {
-                if (null == dto.getShopProjectGroupNumber()) {
-                    dto.setShopProjectGroupNumber(1);
+                if (null == dto.getProjectInitTimes()) {
+                    dto.setProjectInitTimes(1);
                 }
                 //用户一次性购买多个
-                for (int i = 0; i < dto.getShopProjectGroupNumber(); i++) {
+                for (int i = 0; i < dto.getProjectInitTimes(); i++) {
                     //购买一个套卡的金额
-                    BigDecimal price = dto.getProjectInitAmount().divide(new BigDecimal(dto.getShopProjectGroupNumber()));
+                    BigDecimal price = dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()));
                     //根据套卡id查询项目列表
                     ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
                     shopProjectInfoGroupRelationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
