@@ -5,4 +5,9 @@ angular.module('controllers',[]).controller('confirmedCtrl',
     ['$scope','$rootScope','$stateParams','$state',
         function ($scope,$rootScope,$stateParams,$state) {
             $rootScope.title = "已确认预约";
+            $scope.cancel = function(){
+                $state.go('appointment')
+            }
+
+
         }]);

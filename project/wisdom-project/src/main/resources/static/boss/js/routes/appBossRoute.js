@@ -203,7 +203,7 @@ define(['appBoss'], function(app){
                 /*唯美度某美容院预约*/
 
                     .state('beautySalon', {
-                        url: '/beautySalon',
+                        url: '/beautySalon/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'beautySalonCtrl',
                         resolve: {
