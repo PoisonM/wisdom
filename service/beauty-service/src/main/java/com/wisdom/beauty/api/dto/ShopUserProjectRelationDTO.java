@@ -52,6 +52,9 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //项目总次数
     private Integer sysShopProjectInitTimes;
 
+    //服务次数
+    private Integer serviceTime;
+
     //生效日期
     private Date effectiveDate;
 
@@ -196,6 +199,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setSysShopProjectInitTimes(Integer sysShopProjectInitTimes) {
         this.sysShopProjectInitTimes = sysShopProjectInitTimes;
+    }
+
+    public Integer getServiceTime() {
+        return serviceTime;
+    }
+
+    public void setServiceTime(Integer serviceTime) {
+        this.serviceTime = serviceTime;
     }
 
     public Date getEffectiveDate() {
