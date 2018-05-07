@@ -6,9 +6,11 @@ import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
+import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
@@ -47,6 +49,9 @@ public class RedisUtils {
 
     @Resource
     private ShopUserRelationService shopUserRelationService;
+
+    @Resource
+    private UserServiceClient userServiceClient;
 
     @Value("${test.msg}")
     private String msg;
@@ -230,4 +235,24 @@ public class RedisUtils {
         return userLoginDTO;
     }
 
+    /**
+     * 根据clerkId获取店铺信息
+     */
+    public SysClerkDTO getSysClerkDTO(String sysClerkId) {
+
+        logger.info("从redis中获取店员的相关信息传入参数={}", "sysClerkId = [" + sysClerkId + "]");
+
+        Object object = JedisUtils.getObject(sysClerkId);
+
+        if (CommonUtils.objectIsEmpty(object)) {
+
+            logger.info("redis中未获取到店员相关信息传入参数={}", sysClerkId);
+            List<SysClerkDTO> clerkInfoByClerkId = userServiceClient.getClerkInfoByClerkId(sysClerkId);
+            if (CommonUtils.objectIsNotEmpty(clerkInfoByClerkId)) {
+                return clerkInfoByClerkId.get(0);
+            }
+        }
+
+        return (SysClerkDTO) object;
+    }
 }
