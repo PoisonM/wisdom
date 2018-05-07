@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -89,8 +91,7 @@ public class LoginServiceImpl implements LoginService{
                     return StatusConstant.WEIXIN_ATTENTION_ERROR;
                 }
 
-                userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
-
+                userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(),"utf-8"));
                 //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
                 logintoken = UUID.randomUUID().toString();
                 String userInfoStr = gson.toJson(userInfoDTO);
