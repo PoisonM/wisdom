@@ -124,7 +124,7 @@ public class IncomeService {
                         incomeRecordDTO.setCheckStatus(incomeRecordManagementDTOS.get(0).getStatus());
                         incomeRecordDTO.setCheckUserName(URLDecoder.decode(incomeRecordManagementDTOS.get(0).getUserName(),"utf-8"));
                         incomeRecordDTO.setCheckSysUserId(incomeRecordManagementDTOS.get(0).getSysUserId());
-                        incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
+                        //incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
                     }else if(ConfigConstant.financeMember.equals(incomeRecordManagementDTOS.get(0).getUserType())){
                         //财务人员审核
                         incomeRecordDTO.setSecondCheckStatus("2");
@@ -132,7 +132,7 @@ public class IncomeService {
                         incomeRecordDTO.setCheckStatus(incomeRecordManagementDTOS.get(0).getStatus());
                         incomeRecordDTO.setCheckUserName(URLDecoder.decode(incomeRecordManagementDTOS.get(0).getUserName(),"utf-8"));
                         incomeRecordDTO.setCheckSysUserId(incomeRecordManagementDTOS.get(0).getSysUserId());
-                        incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
+                        //incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
                     }
                 }else if(incomeRecordManagementDTOS.size() == 2){
                     boolean status = true;
@@ -145,13 +145,15 @@ public class IncomeService {
                             incomeRecordDTO.setCheckStatus(incomeRecordManagementDTO1.getStatus());
                             incomeRecordDTO.setCheckUserName(URLDecoder.decode(incomeRecordManagementDTO1.getUserName(),"utf-8"));
                             incomeRecordDTO.setCheckSysUserId(incomeRecordManagementDTO1.getSysUserId());
-                            incomeRecordDTO.setCreateDate(incomeRecordManagementDTO1.getCreateDate());
+                            //incomeRecordDTO.setCreateDate(incomeRecordManagementDTO1.getCreateDate());
                         }
                     }
                     //经过双方审核,已通过
                     if(status){
-                        incomeRecordDTO.setSecondCheckStatus("4");//记录双方通过标记
-                        incomeRecordDTO.setCheckStatus("1");//记录审核状态为通过
+                        //记录双方通过标记
+                        incomeRecordDTO.setSecondCheckStatus("4");
+                        //记录审核状态为通过
+                        incomeRecordDTO.setCheckStatus("1");
                         if(CheckStatus.equals("0")){
                             iterator.remove();
                         }
