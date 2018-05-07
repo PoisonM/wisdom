@@ -1,4 +1,4 @@
-PADWeb.controller('stillOwedCtrl', function($scope, $stateParams, $state, ngDialog, Archives) {
+PADWeb.controller('getPorductCtrl', function($scope, $stateParams, $state, ngDialog, Archives) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
@@ -27,8 +27,8 @@ PADWeb.controller('stillOwedCtrl', function($scope, $stateParams, $state, ngDial
     $scope.goHousekeeper = function() {
         $state.go('pad-web.left_nav.housekeeper')
     }
-    $scope.goSignConfirm = function() {
-        $state.go('pad-web.signConfirm')
+    $scope.goConfirmations = function() {
+        $state.go('pad-web.confirmations')
     }
     $scope.checkBoxChek = function(e) {
         $(e.target).children('.checkBox').css('background', '#FF6666')

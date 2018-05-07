@@ -22,18 +22,6 @@ define(['appBoss'], function(app){
                 };
 
                 $stateProvider
-                    .state('shopHome', {
-                        url: '/shopHome',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'shopHomeCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.shopHomeCtrl',
-                                    ['js/controllers/shopHomeCtrl.js?ver='+ bossVersion],
-                                    'views/shopHome.html?ver=' + bossVersion);
-                            }
-                        }
-                    })
                     /*工作首页*/
                     .state('workHome', {
                         url: '/workHome',
@@ -47,7 +35,6 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-
                     .state('comprehensive', {
                         url: '/comprehensive',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1880,6 +1867,6 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-                $urlRouterProvider.otherwise('/shopHome')
+                $urlRouterProvider.otherwise('/workHome')
             }])
 })

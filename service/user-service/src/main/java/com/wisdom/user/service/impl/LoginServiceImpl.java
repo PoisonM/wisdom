@@ -145,7 +145,6 @@ public class LoginServiceImpl implements LoginService{
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setMobile(userPhone);
         userInfoDTO.setPassword(code);
-//        userInfoDTO.setUserType("manager-1");
         List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
         if(userInfoDTOList.size()>0)
         {
@@ -449,8 +448,6 @@ public class LoginServiceImpl implements LoginService{
     private String processValidateCode(LoginDTO loginDTO)
     {
         //判断validateCode是否还有效
-//        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()))
-//                .addCriteria(Criteria.where("code").is(loginDTO.getCode()));
         Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");

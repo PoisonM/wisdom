@@ -17,24 +17,24 @@ import java.util.Date;
  */
 @Service
 @Transactional(readOnly = false)
-public class WeixinBossCoreService {
+public class WeixinBeautyCoreService {
 
     @Autowired
-    ProcessBossViewEventService processBossClickViewEvent;
+    ProcessBeautyViewEventService processBeautyClickViewEvent;
 
     @Autowired
-    ProcessBossScanEventService processBossScanEventService;
+    ProcessBeautyScanEventService processBeautyScanEventService;
 
     @Autowired
-    ProcessBossSubscribeEventService processBossSubscribeEventService;
+    ProcessBeautySubscribeEventService processBeautySubscribeEventService;
 
     @Autowired
-    ProcessBossClickEventService processBossClickEventService;
+    ProcessBeautyClickEventService processBeautyClickEventService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
     
-    public String processBossWeixinRequest(HttpServletRequest request, HttpServletResponse response) {
+    public String processBeautyWeixinRequest(HttpServletRequest request, HttpServletResponse response) {
 
         String respMessage = null;
 
@@ -50,27 +50,27 @@ public class WeixinBossCoreService {
             if(eventType.equals(MessageUtil.SCAN))
             {
                 //已关注公众号的情况下扫描
-                processBossScanEventService.processEvent(xmlEntity);
+                processBeautyScanEventService.processEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE))
             {
                 //扫描关注公众号或者搜索关注公众号都在其中
-                processBossSubscribeEventService.processSubscribeEvent(xmlEntity);
+                processBeautySubscribeEventService.processSubscribeEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE))
             {
                 // 取消订阅
-                processBossSubscribeEventService.processUnSubscribeEvent(xmlEntity);
+                processBeautySubscribeEventService.processUnSubscribeEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK))
             {
                 // 自定义菜单点击事件
-                respMessage = processBossClickEventService.processEvent(xmlEntity,request,response);
+                respMessage = processBeautyClickEventService.processEvent(xmlEntity,request,response);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_VIEW))
             {
                 //点击带URL菜单事件
-                processBossClickViewEvent.processEvent(xmlEntity);
+                processBeautyClickViewEvent.processEvent(xmlEntity);
             }
         }
         else

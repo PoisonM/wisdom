@@ -105,7 +105,7 @@
     padding-left: 9px;
 }
 
-.consumptionListBox .consumptionListUl .search button {
+.consumptionListBox .consumptionListUl .search span {
     font-family: PingFangSC-Regular;
     font-size: 15px;
     color: #666666;
@@ -152,7 +152,6 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    /*background: #FF6666;*/
     padding: 5px;
     margin: 23px 8px;
     float: left;

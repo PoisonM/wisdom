@@ -1,0 +1,84 @@
+.signConfirmBox {
+    height: 100%;
+}
+
+.signConfirmBox .signConfirmLeft {
+    float: left;
+    width: 318px;
+    background: #eee;
+}
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftTitle {
+    margin-top: 30px;
+    background: #fff;
+}
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftTitle .signConfirmLeftTitleName {
+    font-size: 30px;
+    text-align: center;
+    display: block;
+    margin-top: 30px;
+}
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftTitle .signConfirmLeftTitleType {
+    text-align: center;
+    display: block;
+    margin: 10px auto;
+}
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftContent {}
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftContent .signConfirmLeftContentTitle {
+    margin: 15px 10px;
+}
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftContent ul {
+    background: #fff;
+}
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftContent ul li {
+    padding: 15px 10px;
+}
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftContent ul li .name {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+}
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftContent ul li .type {
+    color: #888888;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    float: right;
+}
+
+.signConfirmBox .signConfirmRight {
+    float: right;
+    width: 706px;
+    height: 100%;
+}
+
+.signConfirmBox .signConfirmRightContent {
+    background: #fff;
+}
+
+.signConfirmBox .signConfirmRight .signConfirmRightTitle {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    margin: 10px;
+}
+
+.signConfirmBox .signConfirmRight .okBtn {
+    background: #FF6666;
+    border-radius: 4px;
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #FCFCFC;
+    letter-spacing: 0.4px;
+    float: right;
+    margin: 41px 44px 0 0;
+    width: 180px;
+    height: 44px;
+}

@@ -93,3 +93,37 @@
     height: 100%;
     display: block;
 }
+
+
+.stillOwedBox .stillOwedPorduct {
+    width: 673px;
+    height: 148px;
+    margin: 18px 0 0 15px;
+    background: url('../../images/getProductBg.png');
+    background-size: cover;
+}
+
+.stillOwedBox .stillOwedPorduct .name {
+    font-family: PingFangSC-Regular;
+    font-size: 18px;
+    color: #FFFFFF;
+    letter-spacing: 1.5px;
+    margin: 17px 0 0 21px;
+    display: block;
+}
+
+.stillOwedBox .stillOwedPorduct .number {
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    width: 224px;
+    display: block;
+    text-align: center;
+    float: left;
+    margin-top: 39px;
+}
+
+.stillOwedBox .stillOwedPorduct .number b {
+    display: block;
+}

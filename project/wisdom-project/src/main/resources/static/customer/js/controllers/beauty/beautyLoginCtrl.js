@@ -1,8 +1,9 @@
-angular.module('controllers',[]).controller('loginCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetBeautyUserValidateCode','$interval',
-        'Global','UserLogin','$ionicPopup','LoginGlobal','BeautyUtil',
-        function ($scope,$rootScope,$stateParams,$state,GetBeautyUserValidateCode,$interval,
-                  Global,UserLogin,$ionicPopup,LoginGlobal,BeautyUtil) {
+angular.module('controllers',[]).controller('beautyLoginCtrl',
+    ['$scope','$rootScope','$stateParams','$state','GetUserValidateCode','$interval',
+        'Global','BeautyUserLogin','$ionicPopup',
+        function ($scope,$rootScope,$stateParams,$state, GetUserValidateCode,$interval,
+                  Global,BeautyUserLogin,$ionicPopup
+        ) {
 
             $rootScope.title = "美享登录";
 
@@ -27,7 +28,7 @@ angular.module('controllers',[]).controller('loginCtrl',
                     }
                 },1000);
 
-                GetBeautyUserValidateCode.get({mobile:$scope.param.userPhone},function(data){
+                GetUserValidateCode.get({mobile:$scope.param.userPhone},function(data){
                     if(data.result == Global.FAILURE)
                     {
                         var alertPopup = $ionicPopup.alert({
@@ -49,15 +50,15 @@ angular.module('controllers',[]).controller('loginCtrl',
                 }
                 else
                 {
-                    UserLogin.save({userPhone:$scope.param.userPhone,code:$scope.param.validateCode},function(data){
+                    BeautyUserLogin.save({userPhone:$scope.param.userPhone,code:$scope.param.validateCode},function(data){
                         if(data.result==Global.FAILURE)
                         {
                             alert(data.errorInfo);
                         }
                         else
                         {
-                            window.localStorage.removeItem("beautyLogintoken");
-                            window.localStorage.setItem("beautyLogintoken",data.responseData);
+                            window.localStorage.removeItem("beautylogintoken");
+                            window.localStorage.setItem("beautylogintoken",data.responseData);
 
                             if($stateParams.redirectUrl=='')
                             {

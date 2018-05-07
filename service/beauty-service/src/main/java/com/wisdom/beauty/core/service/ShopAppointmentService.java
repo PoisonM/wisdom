@@ -31,6 +31,14 @@ public interface ShopAppointmentService {
     List<ShopAppointServiceDTO> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO);
 
     /**
+     * 根据时间查询某个店下的某个美容师的预约个数
+     *
+     * @param extShopAppointServiceDTO
+     * @return
+     */
+    Integer getShopClerkAppointNumberByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO);
+
+    /**
      * 更新预约信息
      *
      * @param shopAppointServiceDTO

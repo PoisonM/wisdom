@@ -5,6 +5,15 @@
     overflow: scroll;
 }
 
+.stillOwedTotalAmount {
+    width: 100%;
+    height: 80px;
+    background: #fff;
+    text-align: center;
+    line-height: 80px;
+    font-size: 20px;
+}
+
 .stillOwedBox .stillOwedTitle {
     background: #EEEEEE;
     font-size: 13px;
