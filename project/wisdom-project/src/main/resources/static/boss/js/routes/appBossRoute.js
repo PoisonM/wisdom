@@ -913,8 +913,8 @@ define(['appBoss'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.warehouseProductsCtrl',
-                                    ['js/controllers/Stock/warehouseProductsCtrl.js?ver='+ bossVersion],
-                                    'views/Stock/warehouseProducts.html?ver=' + bossVersion);
+                                    ['js/controllers/Stock/warehouseShopCtrl.js?ver='+ bossVersion],
+                                    'views/Stock/warehouseShop.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -1447,15 +1447,15 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-                    .state('warehouseProducts', {
-                        url: '/warehouseProducts',
+                    .state('warehouseShop', {
+                        url: '/warehouseShop',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'warehouseProductsCtrl',
+                        controller: 'warehouseShopCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.warehouseProductsCtrl',
-                                    ['js/controllers/inventory/warehouseProductsCtrl.js?ver='+ bossVersion],
-                                    'views/inventory/warehouseProducts.html?ver=' + bossVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.warehouseShopCtrl',
+                                    ['js/controllers/inventory/warehouseShopCtrl.js?ver='+ bossVersion],
+                                    'views/inventory/warehouseShop.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -1710,19 +1710,6 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-                /*addSeries 添加系列*/
-                  /*  .state('addSeries', {
-                        url: '/addSeries',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'addSeriesCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addSeriesCtrl',
-                                    ['js/controllers/inventory/addSeriesCtrl.js?ver='+ bossVersion],
-                                    'views/inventory/addSeries.html?ver=' + bossVersion);
-                            }
-                        }
-                    })*/
                 /*addProduct  添加产品*/
                     .state('addProduct', {
                         url: '/addProduct',
