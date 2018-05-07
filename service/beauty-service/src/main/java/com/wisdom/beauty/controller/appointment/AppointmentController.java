@@ -584,13 +584,13 @@ public class AppointmentController {
 		ArrayList<Object> arrayList = new ArrayList<>();
 		//查询店铺下的预约信息
 		for (ShopBossRelationDTO bossRelationDTO : shopBossRelationDTOS) {
-			//hash缓存单个点的预约信息
+			//hash缓存单个店的预约信息
 			HashMap<Object, Object> hashMap = new HashMap<>(16);
 			ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
 			extShopAppointServiceDTO.setSysBossId(bossInfo.getId());
 			extShopAppointServiceDTO.setSysShopId(bossRelationDTO.getSysBossId());
-			extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", ""));
-			extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", ""));
+			extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
+			extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
 			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 			hashMap.put("bossRelationDTO", bossRelationDTO);
 			hashMap.put("shopAppointServiceDTOS", shopAppointServiceDTOS);
