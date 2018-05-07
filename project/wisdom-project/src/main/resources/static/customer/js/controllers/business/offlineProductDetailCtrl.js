@@ -59,7 +59,8 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                         $scope.model=true;
                     }else{
                         showToast("加载中...");
-                        AddProduct2BuyCart.get({productId:$stateParams.productId,productSpec:$scope.param.checkFlag,productNum: $scope.param.productNum},function(data){
+                        AddProduct2BuyCart.get({productId:$stateParams.productId,productSpec:$scope.param.checkFlag,
+                            productNum: $scope.param.productNum},function(data){
                             BusinessUtil.checkResponseData(data,'offlineProductDetail&'+$stateParams.productId);
                             if(data.result==Global.FAILURE){
                                 showToast("加入购物车失败");
@@ -174,6 +175,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
             };
 
             $scope.$on('$ionicView.enter', function(){
+
                 $scope.param = {
                     product:{},
                     productSpec:"",
@@ -183,6 +185,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     productNum:1,
                     checkFlag:""
                 };
+
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
@@ -190,15 +193,24 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
+
                 GetOfflineProductDetail.get({productId:$stateParams.productId},function(data){
-                    $ionicLoading.hide();
-                    $scope.param.product = data.responseData;
-                    $ionicSlideBoxDelegate.update();
-                    $ionicSlideBoxDelegate.loop(true);
-                    $interval(function(){
-                        $scope.param.currentIndex =  $ionicSlideBoxDelegate.currentIndex()+1;
-                        $scope.param.totalIndex =  $ionicSlideBoxDelegate.slidesCount()
-                    },100);
+                    if(data.responseData.status=='0')
+                    {
+                        alert("商品已經下架");
+                        window.history.go(-1);
+                    }
+                    else
+                    {
+                        $ionicLoading.hide();
+                        $scope.param.product = data.responseData;
+                        $ionicSlideBoxDelegate.update();
+                        $ionicSlideBoxDelegate.loop(true);
+                        $interval(function(){
+                            $scope.param.currentIndex =  $ionicSlideBoxDelegate.currentIndex()+1;
+                            $scope.param.totalIndex =  $ionicSlideBoxDelegate.slidesCount()
+                        },100);
+                    }
                 });
 
                 GetProductNumFromBuyCart.get(function(data){

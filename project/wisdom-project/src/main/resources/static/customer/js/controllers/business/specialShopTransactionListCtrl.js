@@ -1,17 +1,17 @@
 angular.module('controllers',[]).controller('specialShopTransactionListCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetTransactionList','BusinessUtil',
-        function ($scope,$rootScope,$stateParams,$state,GetTransactionList,BusinessUtil) {
+    ['$scope','$rootScope','$stateParams','$state','FindShopKeeperOrderS','BusinessUtil',
+        function ($scope,$rootScope,$stateParams,$state,FindShopKeeperOrderS,BusinessUtil) {
 
             $rootScope.title = "交易列表"
 
             $scope.param = {
                 transactionList:{},
-                pageNo:0,
+                pageNo:1,
                 pageSize:5
             }
 
             $scope.$on('$ionicView.enter', function(){
-                GetTransactionList.save({pageNo:$scope.param.pageNo,pageSize:$scope.param.pageSize},function(data){
+                FindShopKeeperOrderS.save({pageNo:$scope.param.pageNo,pageSize:$scope.param.pageSize},function(data){
                     BusinessUtil.checkResponseData(data,"transactionList");
                     $scope.param.transactionList = data.responseData;
                 })
@@ -19,7 +19,7 @@ angular.module('controllers',[]).controller('specialShopTransactionListCtrl',
 
             $scope.getMoreTransactionList = function(){
                 $scope.param.pageSize = $scope.param.pageSize + 5;
-                GetTransactionList.save({pageNo:$scope.param.pageNo,pageSize:$scope.param.pageSize},function(data){
+                FindShopKeeperOrderS.save({pageNo:$scope.param.pageNo,pageSize:$scope.param.pageSize},function(data){
                     BusinessUtil.checkResponseData(data,"transactionList");
                     $scope.param.transactionList = data.responseData;
                     $scope.$broadcast('scroll.refreshComplete');

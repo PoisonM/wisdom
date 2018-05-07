@@ -5,6 +5,7 @@ import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.account.IncomeMapper;
 import com.wisdom.business.mapper.account.IncomeRecordManagementMapper;
 import com.wisdom.business.service.transaction.PayRecordService;
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.IncomeRecordManagementDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -117,14 +118,14 @@ public class IncomeService {
                 //一条数据,这说明有一方已审核,
                 if(incomeRecordManagementDTOS.size()>0 && incomeRecordManagementDTOS.size() ==1) {
                     //运营人员审核
-                    if("operation-1".equals(incomeRecordManagementDTOS.get(0).getUserType())){
+                    if(ConfigConstant.operationMember.equals(incomeRecordManagementDTOS.get(0).getUserType())){
                         incomeRecordDTO.setSecondCheckStatus("1");
                         incomeRecordDTO.setCheckUserType(incomeRecordManagementDTOS.get(0).getUserType());
                         incomeRecordDTO.setCheckStatus(incomeRecordManagementDTOS.get(0).getStatus());
                         incomeRecordDTO.setCheckUserName(URLDecoder.decode(incomeRecordManagementDTOS.get(0).getUserName(),"utf-8"));
                         incomeRecordDTO.setCheckSysUserId(incomeRecordManagementDTOS.get(0).getSysUserId());
                         incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
-                    }else if("finance-1".equals(incomeRecordManagementDTOS.get(0).getUserType())){
+                    }else if(ConfigConstant.financeMember.equals(incomeRecordManagementDTOS.get(0).getUserType())){
                         //财务人员审核
                         incomeRecordDTO.setSecondCheckStatus("2");
                         incomeRecordDTO.setCheckUserType(incomeRecordManagementDTOS.get(0).getUserType());
@@ -159,11 +160,13 @@ public class IncomeService {
                     //没有数据,则说明没有被审核,标记为未审核
                     incomeRecordDTO.setSecondCheckStatus("0");
                 }
-                if(!"".equals(incomeRecordDTO.getNickName()) && incomeRecordDTO.getNickName() != null){
-                    incomeRecordDTO.setNickName(URLDecoder.decode(incomeRecordDTO.getNickName(),"utf-8"));
+                if(!"".equals(incomeRecordDTO.getNickName()) && incomeRecordDTO.getNickName() != null)
+                {
+                    incomeRecordDTO.setNickName(URLDecoder.decode(URLDecoder.decode(incomeRecordDTO.getNickName(),"utf-8"),"utf-8"));
                 }
-                if(!"".equals(incomeRecordDTO.getNextUserNickName()) && incomeRecordDTO.getNextUserNickName() != null){
-                    incomeRecordDTO.setNextUserNickName(URLDecoder.decode(incomeRecordDTO.getNextUserNickName(),"utf-8"));
+                if(!"".equals(incomeRecordDTO.getNextUserNickName()) && incomeRecordDTO.getNextUserNickName() != null)
+                {
+                    incomeRecordDTO.setNextUserNickName(URLDecoder.decode(URLDecoder.decode(incomeRecordDTO.getNextUserNickName(),"utf-8"),"utf-8"));
                 }
             } catch (UnsupportedEncodingException e) {
                 logger.info("service -- 根据条件查询佣金奖励getIncomeRecordByPageParam方法转换nickName失败" );

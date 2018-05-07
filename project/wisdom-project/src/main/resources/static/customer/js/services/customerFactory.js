@@ -186,5 +186,16 @@ define(['appCustomer'], function (app) {
             return $resource(customer + 'getSpecialBossCondition');
         }])
 
+        .factory('GetUserIsBoss',['$resource',function ($resource){
+                return $resource(account + 'isShopKeeper');
+         }])
+
+         .factory('FindShopKeeperOrderS',['$resource',function ($resource){
+                return $resource(account + 'findShopKeeperOrderS');
+         }])
+         .factory('FindOrderByTransactionId',['$resource',function ($resource){
+                return $resource(account + 'findOrderByTransactionId');
+          }])
+
 
 });

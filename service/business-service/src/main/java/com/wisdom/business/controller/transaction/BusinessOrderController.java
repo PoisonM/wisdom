@@ -178,7 +178,10 @@ public class BusinessOrderController {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         try
         {
-            transactionService.updateBusinessOrder(businessOrderDTO);
+            BusinessOrderDTO newBusinessOrderDTO = transactionService.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
+            newBusinessOrderDTO.setUpdateDate(new Date());
+            newBusinessOrderDTO.setStatus(businessOrderDTO.getStatus());
+            transactionService.updateBusinessOrder(newBusinessOrderDTO);
             responseDTO.setResult(StatusConstant.SUCCESS);
         }
         catch (Exception e)

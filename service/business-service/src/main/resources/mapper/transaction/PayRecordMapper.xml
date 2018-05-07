@@ -188,4 +188,20 @@
         WHERE p.order_id =o.order_id AND p.status = '1'
         AND p.transaction_id = #{transactionId}
     </select>
+
+    <!--根据支付表中的orderId查询订单信息-->
+    <select id="findOrderInfoForSpecial"
+            resultType="com.wisdom.common.dto.account.PayRecordDTO">
+        select
+            pay.amount,
+            pay.order_id,
+            pay.transaction_id,
+            pay.pay_date,
+            pay.pay_type
+        from
+            pay_record pay
+        where
+            pay.order_id=#{orderId}
+            AND pay.status='1'
+    </select>
 </mapper>

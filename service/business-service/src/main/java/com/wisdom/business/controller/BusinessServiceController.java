@@ -44,7 +44,8 @@ public class BusinessServiceController {
 	@RequestMapping(value = "/getBusinessOrderList",method=RequestMethod.POST)
 	@ResponseBody
 	List<BusinessOrderDTO> getBusinessOrderList(@RequestBody BusinessOrderDTO businessOrderDTO){
-		return transactionMapper.getBusinessOrderList(businessOrderDTO);
+		List<BusinessOrderDTO> businessOrderDTOList = transactionMapper.getBusinessOrderList(businessOrderDTO);
+		return businessOrderDTOList;
 	};
 
 	@RequestMapping(value = "/updateBusinessOrder",method=RequestMethod.POST)
