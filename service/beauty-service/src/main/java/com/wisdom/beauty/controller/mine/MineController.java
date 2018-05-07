@@ -11,6 +11,7 @@ import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
+import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -227,6 +228,7 @@ public class MineController {
      * 获取我的个人信息
      */
     @RequestMapping(value = "/getCurrentLoginUserInfo", method = RequestMethod.GET)
+    @LoginRequired
     @ResponseBody
     public ResponseDTO<Object> getCurrentLoginUserInfo() {
 

@@ -28,6 +28,9 @@ define(['appCustomer'], function (app) {
         .factory('UserLogin',['$resource',function ($resource){
             return $resource(user + 'userLogin')
         }])
+        .factory('BeautyUserLogin',['$resource',function ($resource){
+            return $resource(user + 'beautyUserLogin')
+        }])
         .factory('UserLoginOut',['$resource',function ($resource){
             return $resource(user + 'userLoginOut')
         }])
