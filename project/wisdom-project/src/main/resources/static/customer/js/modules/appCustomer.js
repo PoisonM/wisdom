@@ -17,8 +17,8 @@ define(['angular'], function (angular) {
                         if(window.localStorage.getItem("logintoken")!=undefined){
                             config.headers.logintoken = window.localStorage.getItem("logintoken");
                         }
-                        if(window.localStorage.getItem("beautyLogintoken")!=undefined){
-                            config.headers.logintoken = window.localStorage.getItem("beautyLogintoken");
+                        if(window.localStorage.getItem("beautylogintoken")!=undefined){
+                            config.headers.beautylogintoken = window.localStorage.getItem("beautylogintoken");
                         }
                         return config;
                     }

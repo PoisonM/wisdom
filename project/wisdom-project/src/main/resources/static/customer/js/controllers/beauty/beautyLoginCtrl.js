@@ -57,8 +57,8 @@ angular.module('controllers',[]).controller('beautyLoginCtrl',
                         }
                         else
                         {
-                            window.localStorage.removeItem("beautyLogintoken");
-                            window.localStorage.setItem("beautyLogintoken",data.responseData);
+                            window.localStorage.removeItem("beautylogintoken");
+                            window.localStorage.setItem("beautylogintoken",data.responseData);
 
                             if($stateParams.redirectUrl=='')
                             {
