@@ -893,15 +893,15 @@ define(['appBoss'], function(app){
                         }
                     })
                 /*产品库存详情*/
-                    .state('productInventory', {
-                        url: '/productInventory',
+                    .state('productInventoryDetails', {
+                        url: '/productInventoryDetails',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'productInventoryCtrl',
+                        controller: 'productInventoryDetailsCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.productInventoryCtrl',
-                                    ['js/controllers/Stock/productInventoryCtrl.js?ver='+ bossVersion],
-                                    'views/Stock/productInventory.html?ver=' + bossVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.productInventoryDetailsCtrl',
+                                    ['js/controllers/Stock/productInventoryDetailsCtrl.js?ver='+ bossVersion],
+                                    'views/Stock/productInventoryDetails.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -1862,8 +1862,8 @@ define(['appBoss'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.productInventoryCtrl',
-                                    ['js/controllers/inventory/productInventoryCtrl.js?ver='+ bossVersion],
-                                    'views/inventory/productInventory.html?ver=' + bossVersion);
+                                    ['js/controllers/inventory/productInventoryDetailsCtrl.js?ver='+ bossVersion],
+                                    'views/inventory/productInventoryDetails.html?ver=' + bossVersion);
                             }
                         }
                     })
