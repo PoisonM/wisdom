@@ -2,19 +2,19 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('canceledCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopAppointmentInfoByStatus',
-        function ($scope,$rootScope,$stateParams,$state,GetShopAppointmentInfoByStatus) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopClerkAppointmentInfo',
+        function ($scope,$rootScope,$stateParams,$state,GetShopClerkAppointmentInfo) {
 
             $rootScope.title = "";
 
-           /* GetShopAppointmentInfoByStatus.get({
+            GetShopClerkAppointmentInfo.get({
                 searchDate:"2018-04-27",
-                sysShopId:'11',
-                status:"4"
+                sysClerkId:'cc03a01d060e4bb09e051788e8d9801b',
+                sysShopId:"11"
             },function(data){
                 $scope.canceled = data.responseData
 
-            })*/
+            })
 
             $scope.confirmedGo = function(){
                 $state.go("confirmed")
