@@ -153,7 +153,11 @@ public class TransactionController {
         });
 
         responseDTO.setResult(StatusConstant.SUCCESS);
-        responseDTO.setResponseData(transactionDTOList);
+        if(transactionDTOList!=null&&transactionDTOList.size()>0){
+            responseDTO.setResponseData(transactionDTOList);
+        }else{
+            responseDTO.setResponseData(null);
+        }
         return responseDTO;
     }
 
