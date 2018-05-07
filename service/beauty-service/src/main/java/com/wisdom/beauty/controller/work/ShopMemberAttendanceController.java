@@ -93,11 +93,11 @@ public class ShopMemberAttendanceController {
      */
     @RequestMapping(value = "/getBossExpenditureAndIncome", method = {RequestMethod.GET})
     @ResponseBody
-    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getBossExpenditureAndIncome(@RequestParam String sysBossId) {
-
+    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getBossExpenditureAndIncome() {
+        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
-        userConsumeRequest.setSysBossId(sysBossId);
+        userConsumeRequest.setSysBossId(sysBossDTO.getId());
         userConsumeRequest.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
 
         pageParamVoDTO.setRequestData(userConsumeRequest);
