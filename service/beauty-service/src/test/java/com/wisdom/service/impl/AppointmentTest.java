@@ -29,6 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -96,6 +97,7 @@ public class AppointmentTest {
     @Test
     public void saveAppointmentService() {
 
+        String a = UUID.randomUUID().toString();
         ShopAppointServiceDTO shopAppointServiceDTO = getShopAppointServiceDTO();
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         System.out.println("测试完毕");

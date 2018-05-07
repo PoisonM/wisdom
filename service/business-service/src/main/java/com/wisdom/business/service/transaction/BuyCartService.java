@@ -168,7 +168,6 @@ public class BuyCartService {
         try
         {
             redisLock.lock();
-
             BusinessOrderDTO businessOrderDTO = transactionMapper.getBusinessOrderByOrderId(orderId);
             businessOrderDTO.setUpdateDate(new Date());
             businessOrderDTO.setStatus("del");

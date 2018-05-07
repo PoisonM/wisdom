@@ -17,18 +17,23 @@ angular.module('controllers',[]).controller('suggestionCtrl',
            // 提交反馈
            $scope.submit=function(){
                showToask("提交中...");
-                console.log($scope.param.suggestion);
-               SuggestionDetail.get({suggestion:$scope.param.suggestion},function(data){
+               console.log($scope.param.suggestion);
+               if($scope.param.suggestion!=""){
+                    SuggestionDetail.get({suggestion:$scope.param.suggestion},function(data){
 
-                   if(Global.SUCCESS==data.result)
-                   {
-                       console.log(111);
-                       showToask("提交成功");
-                       hideToask();
+                           if(Global.SUCCESS==data.result)
+                           {
+                               showToask("提交成功");
+                               hideToask();
 
-                       $state.go("myselfCenter");
-                   }
-               })
+                               $state.go("myselfCenter");
+                           }
+                       })
+               }else{
+                    showToask("建议内容不能为空，请输入建议");
+                    hideToask();
+               }
+
            };
             var showToask = function (content) {
                 $ionicLoading.show({
