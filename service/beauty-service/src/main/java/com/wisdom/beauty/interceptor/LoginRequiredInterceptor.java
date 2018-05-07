@@ -53,7 +53,7 @@ public class LoginRequiredInterceptor {
             {
                 token = tokenValue.get("logintoken");
             }
-            else
+            else if(userType.equals("beautyUser"))
             {
                 token = tokenValue.get("beautylogintoken");
             }

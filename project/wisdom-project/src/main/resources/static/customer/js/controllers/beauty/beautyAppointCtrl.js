@@ -2,8 +2,10 @@
  * Created by Administrator on 2017/12/15.
  */
 angular.module('controllers',[]).controller('beautyAppointCtrl',
-    ['$scope','$rootScope','$stateParams','$state','BeautyUtil','GetClerkScheduleInfo','GetBeautyShopInfo','Global','SaveUserAppointInfo',
-        function ($scope,$rootScope,$stateParams,$state,BeautyUtil,GetClerkScheduleInfo,GetBeautyShopInfo,Global,SaveUserAppointInfo) {
+    ['$scope','$rootScope','$stateParams','$state','BeautyUtil','GetClerkScheduleInfo',
+        'GetBeautyShopInfo','Global','SaveUserAppointInfo','GetCurrentLoginUserInfo',
+        function ($scope,$rootScope,$stateParams,$state,BeautyUtil,GetClerkScheduleInfo,
+                  GetBeautyShopInfo,Global,SaveUserAppointInfo,GetCurrentLoginUserInfo) {
 
             var initialTimeDate = function () {
                 $scope.param.timeDate = [
@@ -19,6 +21,10 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
             }
 
             $scope.$on('$ionicView.enter', function(){
+
+                GetCurrentLoginUserInfo.get(function (data) {
+                    BeautyUtil.checkResponseData(data,'beautyAppoint');
+                })
 
                 $scope.param = {
                     weekDays : [],
