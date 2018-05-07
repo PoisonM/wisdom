@@ -40,7 +40,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 $scope.param.ctx.font = '90px microsoft  yahei';
                 $scope.param.ctx.fillText($scope.param.weixinShareInfo.balance, $scope.param.canvas.width/2-$scope.param.weixinShareInfo.balance.length*90/4,$scope.param.canvas.width*1);
                 $scope.param.ctx.font = '30px microsoft  yahei';
-                $scope.param.ctx.fillText('推荐店主:'+$scope.param.weixinShareInfo.peoperCount + '人', 72, 835);
+                $scope.param.ctx.fillText('推荐:'+$scope.param.weixinShareInfo.peoperCount + '人', 72, 835);
                 $scope.param.ctx.fillText('推荐奖励:'+$scope.param.weixinShareInfo.istanceMoney+'元', 428, 835);
 
                 $scope.param.ctx.fillStyle = '#FFF100';
