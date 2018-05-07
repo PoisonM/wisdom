@@ -249,6 +249,7 @@ public class RedisUtils {
             logger.info("redis中未获取到店员相关信息传入参数={}", sysClerkId);
             List<SysClerkDTO> clerkInfoByClerkId = userServiceClient.getClerkInfoByClerkId(sysClerkId);
             if (CommonUtils.objectIsNotEmpty(clerkInfoByClerkId)) {
+                JedisUtils.setObject(sysClerkId, clerkInfoByClerkId.get(0), appointCacheSeconds);
                 return clerkInfoByClerkId.get(0);
             }
         }

@@ -107,20 +107,20 @@ public class OrderTest {
 //        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
 //        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
 //        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
-
-
-        //用户与产品
-        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
-        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
-        shopUserProductRelationDTOS.add(productRelationDTO);
-        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
-
+//
+//
+//        //用户与产品
+//        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
+//        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
+//        shopUserProductRelationDTOS.add(productRelationDTO);
+//        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
+//
 
         //套卡
-//        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = new ArrayList<>();
-//        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = getShopUserProjectGroupRelRelationDTO();
-//        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
-//        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
+        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = new ArrayList<>();
+        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = getShopUserProjectGroupRelRelationDTO();
+        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
+        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
         return shopUserOrderDTO;
     }
 
