@@ -20,5 +20,8 @@ angular.module('controllers',[]).controller('canceledCtrl',
                 $state.go("confirmed")
             }
 
+            $scope.cancelReservationGo = function(){
+                $state.go("cancelReservation")
+            }
 
         }]);

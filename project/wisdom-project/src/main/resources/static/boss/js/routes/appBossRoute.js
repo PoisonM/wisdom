@@ -905,6 +905,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* partialFiles 全院档案*/
                 .state('partialFiles', {
                     url: '/partialFiles',
                     templateProvider: function() { return lazyDeferred.promise; },
@@ -917,6 +918,7 @@ define(['appBoss'], function(app){
                         }
                     }
                 })
+                /*warningFile 预警档案*/
                 .state('warningFile', {
                     url: '/warningFile',
                     templateProvider: function() { return lazyDeferred.promise; },
@@ -929,6 +931,7 @@ define(['appBoss'], function(app){
                         }
                     }
                 })
+
                 .state('partialFilesSearch', {
                     url: '/partialFilesSearch',
                     templateProvider: function() { return lazyDeferred.promise; },
@@ -953,6 +956,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*modifyTheFile 修改档案*/
                     .state('modifyTheFile', {
                     url: '/modifyTheFile',
                     templateProvider: function() { return lazyDeferred.promise; },
@@ -965,6 +969,7 @@ define(['appBoss'], function(app){
                         }
                     }
                 })
+                    /* userBasicMess 基本信息*/
                     .state('userBasicMess', {
                     url: '/userBasicMess',
                     templateProvider: function() { return lazyDeferred.promise; },
@@ -977,6 +982,7 @@ define(['appBoss'], function(app){
                         }
                     }
                 })
+                    /*menstrualPeriod  经期*/
                     .state('menstrualPeriod', {
                         url: '/menstrualPeriod',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1001,6 +1007,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* refillCard  充值卡*/
                     .state('refillCard', {
                         url: '/refillCard',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1013,6 +1020,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*prepaidPhoneRecords 充值记录*/
                     .state('prepaidPhoneRecords', {
                         url: '/prepaidPhoneRecords',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1025,6 +1033,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*accountDetails 账户明细*/
                     .state('accountDetails', {
                         url: '/accountDetails',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1049,6 +1058,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*balanceRecord 欠款记录*/
                     .state('balanceRecord', {
                         url: '/balanceRecord',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1866,7 +1876,79 @@ define(['appBoss'], function(app){
                                     'views/inventory/productPutInStorageMore.html?ver=' + bossVersion);
                             }
                         }
-                    })
+                    });
+
+                /*
+                 orderdDtails 详情（订单）
+                 payDtails详情（支付)
+                 coupons 优惠券
+                 couponsDtails 优惠券详情
+                 treatmentCard 疗程卡
+                 treatmentCardDtails 疗程卡详情
+                 productDtails 产品详情
+                 treatmentCardDtails领取详情
+                 treatmentCardDetail 疗程卡明细
+                 collectionCard 套卡
+                 product
+                 accountRecords 账户记
+                 recordCashier 收银记录
+                 detailsOfCashier  收银详情
+                 drawCardRecords 划卡记录
+                 drawCardRecordsDetail 划卡记录详情
+                 newUser新建档案
+                 importAddressBook 通讯录导入
+                 selShop  选择分店
+                 membersMess会员信息
+                 distributionFile 分配档案
+                 selFamily 选择家人
+
+                 入库
+                 successfulInventory成功入库
+                 outbound 出库
+                 outboundOrderDetails 出库单详情
+                 outboundRecords  出库记录
+                 reservoirRunningWater出水库流水
+                 unit  单位
+                 efficacy 功效
+                 specifications   规格
+                 funArea 汉方美业
+                 putInStoragePic 入库
+                 outboundPic 出库
+                 inventoryDetailsPic 库存详情
+                 inventoryPic  盘点
+                 settingPic 设置
+                 warehouseProducts  仓库产品
+                 inventoryDetails库存详情
+                 libraryTubeSetting 库管设置
+                 historicalRecord  历史记录
+                 addFamily 添加家人
+                 inventory  盘点
+                 inventoryOver盘点下一步
+                 inventoryRecords 盘点记录
+                 inventoryRecordsDetails  盘点记录详情
+                 unwind  平仓
+                 putInStorage 入库
+                 entryDetails 入库单详情
+                 inventoryRecordsPics 入库记录
+                 sweepTheCodeIntoTheTreasury 扫码入库
+                 automaticallyStorage 扫码自动入库
+                 applicableParts 适用部位
+                 addEmployees 添加家人(员工)
+                 addBrandOne  添加品牌
+                 addSeries 添加系列
+                 addProduct  添加产品
+                 modifyProduct修改产品
+                 inventorySetting  设置
+                 addressBook 库存 通讯录导入
+                 AddOutbound 新增出库
+                 newLibrary 新增入库
+                 modifyLibrary修改(库)
+                 chooseWarehouse 选择仓库
+                 selBrand 选择品牌
+                 selSeries 选择系列
+                 selectTheOutboundType 选择出库类型
+                 productInventory 选择更多产品盘点
+                 productPutInStorageMore  选择更多产品入库*/
                 $urlRouterProvider.otherwise('/workHome')
             }])
 })

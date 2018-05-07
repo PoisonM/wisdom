@@ -7,4 +7,8 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
 
             $rootScope.title = "取消预约";
 
+            $scope.cancelDetailsGo=function(){
+                $state.go("cancelDetails")
+            }
+
         }]);
