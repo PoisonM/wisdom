@@ -17,7 +17,6 @@ angular.module('controllers',[]).controller('canceledCtrl',
             })*/
 
             $scope.confirmedGo = function(){
-                console.log(12)
                 $state.go("confirmed")
             }
 
