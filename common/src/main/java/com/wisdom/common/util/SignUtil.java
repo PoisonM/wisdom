@@ -12,7 +12,7 @@ public class SignUtil {
     // 微信中设置的密匙
     private static String customerToken = "mx99test";
 
-    private static String bossToken = "mxBossTest";
+    private static String bossToken = "mxBeautyTest";
 
     /**
      * 验证消息真实性
@@ -28,7 +28,7 @@ public class SignUtil {
         return tmpStr != null ? tmpStr.equals(signature.toUpperCase()) : false;
     }
 
-    public static boolean checkBossSignature(String signature, String timestamp, String nonce) {
+    public static boolean checkBeautySignature(String signature, String timestamp, String nonce) {
         String[] arr = new String[] { bossToken, timestamp, nonce };
         String tmpStr = dictSort(arr);
         // 将sha1加密后的字符串可与signature对比，标识该请求来源于微信

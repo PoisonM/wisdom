@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
  */
 @Service
 @Transactional(readOnly = false)
-public class ProcessBossClickEventService {
+public class ProcessBeautyClickEventService {
 
     @Autowired
     private MongoTemplate mongoTemplate;

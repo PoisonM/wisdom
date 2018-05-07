@@ -1,4 +1,4 @@
-PADWeb.controller('consumptionListCtrl', function($scope, $stateParams, ngDialog, Archives, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, ThreeLevelProject, productInfoThreeLevelProject, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo) {
+PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, ngDialog, Archives, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, ThreeLevelProject, productInfoThreeLevelProject, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.param.headerCash.leftAddContent = "添加档案";
@@ -6,7 +6,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $stateParams, ngDialog
     $scope.$parent.param.headerCash.leftTip = "保存";
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
+    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
     $scope.flagFn = function(bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool;
@@ -18,6 +18,12 @@ PADWeb.controller('consumptionListCtrl', function($scope, $stateParams, ngDialog
         $scope.$parent.mainSwitch.headerCashFlag.rightFlag = bool;
     }
     /*打开收银头部/档案头部/我的头部*/
+    //获取订单ID
+    SaveShopUserOrderInfo.save({
+        userId: '110'
+    }, function(data) {
+        $scope.orderId = data.responseData;
+    })
     $scope.select = 0;
     $scope.tabclick = function(e) {
         if (e == 3) {
@@ -98,20 +104,26 @@ PADWeb.controller('consumptionListCtrl', function($scope, $stateParams, ngDialog
         }, function(data) {
             $scope.threeCategories = data.responseData;
         });
-
     }
-    $scope.updateVirtualGoodsOrderInfo = function() {
+    $scope.updateVirtualGoodsOrderInfo = function(e) {
+        e.stopPropagation();
+        console.log($(e.target))
         UpdateVirtualGoodsOrderInfo.save({
-
+            goodsType: 4,
+            operation: 0,
+            orderId: $scope.orderId,
+            shopUserProductRelationDTOS: [{
+                initAmount: '100',
+                initTimes: '20',
+                shopProductId: '101',
+                shopProductName: '迪奥',
+            }]
         }, function() {
-
+            $(e.target).children('.checkBox').css('background', '#FF6666')
         })
     }
-    $scope.saveShopUserOrderInfo = function() {
-        SaveShopUserOrderInfo.save({
-
-        }, function() {
-
-        })
+    $scope.$parent.leftTipFn = function() {
+        $state.go('pad-web.left_nav.orderList')
     }
+
 });

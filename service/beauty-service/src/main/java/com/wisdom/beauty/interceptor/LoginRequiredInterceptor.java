@@ -48,12 +48,12 @@ public class LoginRequiredInterceptor {
             Map<String, String> tokenValue = getHeadersInfo(request);
 
             String userType = tokenValue.get("usertype");
-            String token = null;
+            String token = "";
             if(userType==null||userType.equals(""))
             {
                 token = tokenValue.get("logintoken");
             }
-            else
+            else if(userType.equals("beautyUser")||userType.equals("beautyBoss")||userType.equals("beautyClerk"))
             {
                 token = tokenValue.get("beautylogintoken");
             }
@@ -64,6 +64,7 @@ public class LoginRequiredInterceptor {
                 responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
                 return responseDto;
             }
+
             //验证token有效性
             int loginTokenPeriod = ConfigConstant.logintokenPeriod;
             String userInfo = JedisUtils.get(token);
