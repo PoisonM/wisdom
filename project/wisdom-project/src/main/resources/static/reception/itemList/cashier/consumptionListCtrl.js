@@ -123,8 +123,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         })
     }
     $scope.$parent.leftTipFn = function() {
-        console.log('111')
-        $state.go('pad-web.signConfirm')
+        $state.go('pad-web.left_nav.orderList')
     }
 
 });
