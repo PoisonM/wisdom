@@ -77,29 +77,35 @@ public class WeixinBeautyController {
     {
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
 
-
-        String openId = WeixinUtil.getBeautyOpenId(session,request);
-        if (openId==null||openId.equals("")) {
-            String code = request.getParameter("code");
-            String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                    "appid="+ ConfigConstant.BEAUTY_CORPID +
-                    "&secret=" + ConfigConstant.BEAUTY_SECRET +
-                    "&code="+ code +
-                    "&grant_type=authorization_code";
-            WeixinUserBean weixinUserBean;
-            int countNum = 0;
-            do {
-                String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
-                weixinUserBean = JsonUtil.getObjFromJsonStr(json, WeixinUserBean.class);
-                if (countNum++ > 3) {
-                    break;
-                }
-            } while (weixinUserBean == null);
-
-            openId = weixinUserBean.getOpenid();
-            session.setAttribute(ConfigConstant.BEAUTY_OPEN_ID, openId);
-            CookieUtils.setCookie(response, ConfigConstant.BEAUTY_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
+        if ("BeautyUser".equals(url)) {
+            url = ConfigConstant.BEAUTY_WEB_URL + "beautyAppoint";
         }
+        else if ("BeautyBoss".equals(url)) {
+            url = ConfigConstant.BEAUTY_WEB_URL + "beautyBoss";
+        }
+        else if ("BeautyClerk".equals(url)) {
+            url = ConfigConstant.BEAUTY_WEB_URL + "beautyClerk";
+        }
+        
+        String code = request.getParameter("code");
+        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
+                "appid="+ ConfigConstant.BEAUTY_CORPID +
+                "&secret=" + ConfigConstant.BEAUTY_SECRET +
+                "&code="+ code +
+                "&grant_type=authorization_code";
+        WeixinUserBean weixinUserBean;
+        int countNum = 0;
+        do {
+            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
+            weixinUserBean = JsonUtil.getObjFromJsonStr(json, WeixinUserBean.class);
+            if (countNum++ > 3) {
+                break;
+            }
+        } while (weixinUserBean == null);
+
+        String openId = weixinUserBean.getOpenid();
+        session.setAttribute(ConfigConstant.BEAUTY_OPEN_ID, openId);
+        CookieUtils.setCookie(response, ConfigConstant.BEAUTY_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
 
         return "redirect:" + url;
     }

@@ -244,8 +244,8 @@ public class WeixinUtil {
 
 
     public static String getBeautyOpenId(HttpSession session, HttpServletRequest request) {
-
-        return null;
+        String openId = (String) session.getAttribute(ConfigConstant.BEAUTY_OPEN_ID);
+        return openId;
     }
 
     /**
@@ -268,32 +268,5 @@ public class WeixinUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    /**
-     *
-     * 获取openid
-     *
-     *
-     * */
-    public static  String getOpenId(String code){
-        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                "appid="+ ConfigConstant.USER_CORPID +
-                "&secret=" + ConfigConstant.USER_SECRET +
-                "&code="+ code +
-                "&grant_type=authorization_code";
-        WeixinUserBean weixinUserBean;
-        int countNum = 0;
-        do {
-            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
-            weixinUserBean = JsonUtil.getObjFromJsonStr(json, WeixinUserBean.class);
-            if (countNum++ > 3) {
-                break;
-            }
-        } while (weixinUserBean.getOpenid() == null);
-
-        String openId = weixinUserBean.getOpenid();
-        return openId;
     }
 }
