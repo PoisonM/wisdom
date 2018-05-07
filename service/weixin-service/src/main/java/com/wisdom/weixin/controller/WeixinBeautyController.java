@@ -6,7 +6,7 @@ import com.wisdom.common.dto.wexin.WeixinConfigDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.WeixinUserBean;
 import com.wisdom.common.util.*;
-import com.wisdom.weixin.service.beauty.WeixinBossCoreService;
+import com.wisdom.weixin.service.beauty.WeixinBeautyCoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
 public class WeixinBeautyController {
 
     @Autowired
-    private WeixinBossCoreService weixinBossCoreService;
+    private WeixinBeautyCoreService weixinBeautyCoreService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -55,14 +55,14 @@ public class WeixinBeautyController {
               String echostr = request.getParameter("echostr");
 
               // 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
-              if (SignUtil.checkBossSignature(signature, timestamp, nonce)) {
+              if (SignUtil.checkBeautySignature(signature, timestamp, nonce)) {
                 return echostr;
               }
               return "";
           } else {
               // 调用核心业务类接收消息、处理消息
               String respMessage = null;
-              respMessage = weixinBossCoreService.processBossWeixinRequest(request,response);
+              respMessage = weixinBeautyCoreService.processBeautyWeixinRequest(request,response);
               return respMessage;
           }
       }
@@ -70,20 +70,20 @@ public class WeixinBeautyController {
     /**
      * 公众号菜单引导页 081dazSU0Zf1iU1fGISU0q5ASU0dazSd 0815XmM70lSlvH1UnyN70OwBM705XmM9
      */
-    @RequestMapping(value = "getBossWeixinMenuId", method = {RequestMethod.POST, RequestMethod.GET})
-    public String getBossWeixinMenuId(HttpServletRequest request,
+    @RequestMapping(value = "getBeautyWeixinMenuId", method = {RequestMethod.POST, RequestMethod.GET})
+    public String getBeautyWeixinMenuId(HttpServletRequest request,
                                     HttpServletResponse response,
                                     HttpSession session) throws Exception
     {
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
 
 
-        String openId = WeixinUtil.getBossOpenId(session,request);
+        String openId = WeixinUtil.getBeautyOpenId(session,request);
         if (openId==null||openId.equals("")) {
             String code = request.getParameter("code");
             String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                    "appid="+ ConfigConstant.BOSS_CORPID +
-                    "&secret=" + ConfigConstant.BOSS_SECRET +
+                    "appid="+ ConfigConstant.BEAUTY_CORPID +
+                    "&secret=" + ConfigConstant.BEAUTY_SECRET +
                     "&code="+ code +
                     "&grant_type=authorization_code";
             WeixinUserBean weixinUserBean;
@@ -97,8 +97,8 @@ public class WeixinBeautyController {
             } while (weixinUserBean == null);
 
             openId = weixinUserBean.getOpenid();
-            session.setAttribute(ConfigConstant.BOSS_OPEN_ID, openId);
-            CookieUtils.setCookie(response, ConfigConstant.BOSS_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
+            session.setAttribute(ConfigConstant.BEAUTY_OPEN_ID, openId);
+            CookieUtils.setCookie(response, ConfigConstant.BEAUTY_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
         }
 
         return "redirect:" + url;
@@ -119,7 +119,7 @@ public class WeixinBeautyController {
     {
         ResponseDTO<WeixinConfigDTO> responseDTO = new ResponseDTO<>();
         String u = request.getParameter("url");
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBeautyFlag));
         WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String ticket = weixinTokenDTO.getTicket();
         WeixinConfigDTO WeixinConfigDTO = JsApiTicketUtil.bossSign(ticket, u);
@@ -136,7 +136,7 @@ public class WeixinBeautyController {
     @RequestMapping(value = "/fieldwork/author", method = RequestMethod.GET)
     public String Oauth2API(HttpServletRequest request) {
         String backUrl = request.getParameter("url");
-        String oauth2Url = WeixinUtil.getBossOauth2Url(backUrl);
+        String oauth2Url = WeixinUtil.getBeautyOauth2Url(backUrl);
         return "redirect:" + oauth2Url;
     }
 }

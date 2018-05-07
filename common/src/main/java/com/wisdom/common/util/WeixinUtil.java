@@ -68,10 +68,10 @@ public class WeixinUtil {
                 backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
-    public static String getBossOauth2Url(String backUrl) {
+    public static String getBeautyOauth2Url(String backUrl) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-                ConfigConstant.BOSS_CORPID + "&redirect_uri=" +
+                ConfigConstant.BEAUTY_CORPID + "&redirect_uri=" +
                 backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
@@ -243,7 +243,7 @@ public class WeixinUtil {
     }
 
 
-    public static String getBossOpenId(HttpSession session, HttpServletRequest request) {
+    public static String getBeautyOpenId(HttpSession session, HttpServletRequest request) {
 
         return null;
     }

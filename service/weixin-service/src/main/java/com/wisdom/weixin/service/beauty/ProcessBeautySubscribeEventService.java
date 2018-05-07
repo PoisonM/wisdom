@@ -36,7 +36,7 @@ import java.util.concurrent.Executors;
  */
 @Service
 @Transactional(readOnly = false)
-public class ProcessBossSubscribeEventService {
+public class ProcessBeautySubscribeEventService {
 
     @Autowired
     private UserServiceClient userServiceClient;
