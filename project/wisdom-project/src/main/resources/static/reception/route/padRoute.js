@@ -383,6 +383,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.makeSureOrder', {
+            url: '/makeSureOrder',
+            templateUrl: root + '/cashier/makeSureOrder.html',
+            controller: 'makeSureOrderCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "确认订单页",
+                        files: [root + "cashier/makeSureOrderCtrl.js",
+                            root + "cashier/makeSureOrder.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.sources', {
             url: '/sources',
             templateUrl: root + '/cashier/sources.html',
