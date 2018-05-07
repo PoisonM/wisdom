@@ -320,6 +320,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
                     dto.setSysShopProjectInitAmount(price);
                     dto.setCreateDate(new Date());
+                    //划卡次数即为服务次数
                     dto.setSysShopProjectInitTimes(dto.getServiceTime());
                     logger.info("订单号={}，生成用户跟项目的关系={}", orderId, dto);
                     shopProjectService.saveUserProjectRelation(dto);
