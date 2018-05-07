@@ -24,12 +24,13 @@ PADWeb.controller('stillOwedCtrl', function($scope, $stateParams, $state, ngDial
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
-
-    $scope.select = 0;
-    $scope.tabclick = function(e) {
-        $scope.select = e;
-    }
     $scope.goHousekeeper = function() {
         $state.go('pad-web.left_nav.housekeeper')
+    }
+    $scope.goSignConfirm = function() {
+        $state.go('pad-web.signConfirm')
+    }
+    $scope.checkBoxChek = function(e) {
+        $(e.target).children('.checkBox').css('background', '#FF6666')
     }
 });

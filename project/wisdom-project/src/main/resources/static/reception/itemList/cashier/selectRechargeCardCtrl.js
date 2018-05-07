@@ -38,4 +38,7 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
     $scope.goCustomerSignature = function() {
         $state.go('pad-web.signConfirm');
     }
+    $scope.checkBoxChek = function(e) {
+        $(e.target).children('.checkBox').css('background', '#FF6666')
+    }
 });

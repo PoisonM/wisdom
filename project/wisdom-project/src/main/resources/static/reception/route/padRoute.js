@@ -416,6 +416,24 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.confirmations', {
+            url: '/confirmations',
+            templateUrl: root + '/cashier/confirmations.html',
+            controller: 'confirmationsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "确认单",
+                        files: [root + "cashier/confirmationsCtrl.js",
+                            root + "cashier/confirmations.css",
+                            root + "cashier/flashcanvas.min.js",
+                            root + "cashier/jSignature.min.js",
+                            root + "cashier/flashcanvas.swf",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.housekeeper', {
             url: '/housekeeper',
             templateUrl: root + '/cashier/housekeeper.html',
@@ -426,6 +444,36 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "关联员工",
                         files: [root + "cashier/housekeeperCtrl.js",
                             root + "cashier/housekeeper.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.getPorduct', {
+            url: '/getPorduct',
+            templateUrl: root + '/cashier/getPorduct.html',
+            controller: 'getPorductCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "领取产品",
+                        files: [root + "cashier/getPorductCtrl.js",
+                            root + "cashier/getPorduct.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.orderList', {
+            url: '/orderList',
+            templateUrl: root + '/cashier/orderList.html',
+            controller: 'orderListCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "订单页",
+                        files: [root + "cashier/orderListCtrl.js",
+                            root + "cashier/orderList.css",
                         ]
                     })
                 }]
