@@ -4,10 +4,10 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
     $scope.$parent.$parent.param.headerCash.backContent = "充值记录";
-    $scope.$parent.$parent.param.headerCash.leftTip = "保存";
+    $scope.$parent.$parent.param.headerCash.leftTip = "添加更多";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
-    $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
+    $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
     $scope.flagFn = function(bool) {
         //左
         $scope.$parent.mainLeftSwitch.peopleListFlag = bool;
@@ -23,14 +23,19 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
-
+    $scope.$parent.$parent.leftTipFn = function() {
+        $state.go('pad-web.consumptionList');
+    }
     $scope.goHousekeeper = function() {
         $state.go('pad-web.left_nav.housekeeper')
     }
-    $scope.goSignConfirm = function() {
-        $state.go('pad-web.signConfirm')
+    $scope.goOrderListm = function() {
+        $state.go('pad-web.left_nav.orderList')
     }
     $scope.checkBoxChek = function(e) {
         $(e.target).children('.checkBox').css('background', '#FF6666')
+    }
+    $scope.goSelectRechargeType = function() {
+        $state.go('pad-web.left_nav.selectRechargeType');
     }
 });

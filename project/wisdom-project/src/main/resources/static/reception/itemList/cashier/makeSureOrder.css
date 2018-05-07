@@ -159,8 +159,24 @@
     padding-left: 9px;
 }
 
+.stillOwedBox .otherOperation li span b {
+    font-size: 18px;
+    float: left;
+    line-height: 20px;
+}
+
 .stillOwedContent .contentBox {
     background: #F5F5F5;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.stillOwedContent .contentBox .delete {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-style: 20px;
+    color: #FF6666;
 }
 
 .stillOwedContent .contentBox input {
@@ -183,5 +199,9 @@
 
 .stillOwedContent .contentBox .discount {
     display: block;
-    margin: 10px;
+    margin: 10px 20px;
+}
+
+.stillOwedContent .contentBox .discountPrice {
+    margin: 0 0 10px 20px;
 }

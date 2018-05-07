@@ -7,7 +7,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
     $scope.$parent.$parent.param.headerCash.leftTip = "添加更多";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
-    $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
+    $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
     $scope.flagFn = function(bool) {
         //左
         $scope.$parent.mainLeftSwitch.peopleListFlag = bool;

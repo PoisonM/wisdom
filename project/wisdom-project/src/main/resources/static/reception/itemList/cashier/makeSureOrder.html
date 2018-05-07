@@ -1,5 +1,5 @@
 <div class="stillOwedBox clearfix">
-    <ul class="stillOwedUl mt10" ng-click="goHousekeeper()">
+    <ul class="stillOwedUl mt10" ng-click="goSelectRechargeType()">
         <li>
             <div>折扣类型</div>
             <p>此处可以选择不同的充值卡，用于不同的商品折扣</p>
@@ -11,17 +11,25 @@
         <li>
             <div class="contentBox">
                 <span class="name">春雨保湿</span>
-                <span class="discount">原价 300.00 折扣 无折</span>
+                <span class="discount"><s>原价 300.00</s> 折扣 无折</span>
                 <label for="" class="discountPrice">折扣价 ¥</label>
                 <input type="text">
                 <label for="" class="serviceTimes">服务次数</label>
                 <input type="text">
+                <div class="delete">删除</div>
             </div>
             <div class="otherOperation">
                 <ul>
                     <li>
                         <div>购买数量</div>
-                        <span><b>-</b><input type="text" value="1"><b>+</b></span>
+                        <span><b>-</b><input type="text" value="1"><b>＋</b></span>
+                    </li>
+                    <li>
+                        <span>小计¥628.00</span>
+                    </li>
+                    <li ng-click="goHousekeeper()">
+                        <div>关联员工</div>
+                        <span>></span>
                     </li>
                 </ul>
             </div>
@@ -31,5 +39,5 @@
     </ul>
     <div class="stillOwedTitle">备注</div>
     <textarea name="" rows="10"></textarea>
-    <button ng-click="goSignConfirm()">确认</button>
+    <button ng-click="goOrderListm()">确认</button>
 </div>
