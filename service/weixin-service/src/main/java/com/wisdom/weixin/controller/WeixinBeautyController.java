@@ -27,8 +27,8 @@ import javax.servlet.http.HttpSession;
  */
 
 @Controller
-@RequestMapping(value = "boss")
-public class WeixinBossController {
+@RequestMapping(value = "beauty")
+public class WeixinBeautyController {
 
     @Autowired
     private WeixinBossCoreService weixinBossCoreService;
