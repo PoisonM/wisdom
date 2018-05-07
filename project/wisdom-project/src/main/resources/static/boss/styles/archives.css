@@ -55,6 +55,8 @@
 .h50{height:50px;line-height: 50px;}
 .h60{height:60px;}
 .LH60{line-height: 60px;}
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active {
+color: #FF6666}
 
 .center{text-align: center}
 body{background: #f6f6f6; color: #333333;font-size: 16px;}
