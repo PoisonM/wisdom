@@ -928,7 +928,7 @@ public class WeixinTemplateMessageUtil {
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue(returnMoney+"元");
+		templateData.setValue(returnMoney);
 		m.put("keyword1", templateData);
 
 		templateData = new TemplateData();

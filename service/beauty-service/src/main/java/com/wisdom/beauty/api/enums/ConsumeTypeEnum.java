@@ -5,8 +5,7 @@ public enum ConsumeTypeEnum {
     RECHARGE("0", "充值"),
     CONSUME("1", "消费"),
     ARREARS("2", "还欠款"),
-    REFUND("3", "退款"),
-    PUNCH_CARD("4", "划卡"),;
+    REFUND("3", "退款");
 
     ConsumeTypeEnum(String code, String desc) {
         this.code = code;

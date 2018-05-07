@@ -26,6 +26,12 @@ define(['angular'], function (angular) {
         .run(function($rootScope){
             $rootScope.returnRootNative = function(){
             };
+            $rootScope.shopAppointInfo = {
+                clerkId : '',
+                shopProjectIds:[],
+                shopProjectDetail:'',
+                shopUserInfo:{}
+            }
         })
     return app;
 });

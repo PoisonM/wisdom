@@ -100,7 +100,11 @@
 				<spring.http.multipart.maxRequestSize>100</spring.http.multipart.maxRequestSize>
 				<logging.config>classpath:log4j2.xml</logging.config>
 
-			</properties>
+                <!--测试挡板-->
+                <test.msg>true</test.msg>
+                <logging.config>classpath:log4j2.xml</logging.config>
+
+            </properties>
 		</profile>
 
 	</profiles>

@@ -66,6 +66,21 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
     //
     private String address;
 
+    //
+    private String role;
+
+    //
+    private String sex;
+
+    //美容师分数
+    private Float score;
+
+    //
+    private Date createDate;
+
+    //
+    private Date updateDate;
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -226,5 +241,45 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

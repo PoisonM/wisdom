@@ -1,9 +1,7 @@
 package com.wisdom.beauty.controller.work;
 
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
-import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
@@ -17,6 +15,8 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -41,6 +40,8 @@ public class ShopMemberAttendanceController {
 
     @Autowired
     private ShopUerConsumeRecordService shopUerConsumeRecordService;
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     //获取门店某天的业绩
     @RequestMapping(value = "shopMemberAttendanceAnalyzeByDate", method = {RequestMethod.POST, RequestMethod.GET})
@@ -117,20 +118,19 @@ public class ShopMemberAttendanceController {
      */
     @RequestMapping(value = "/getShopConsumeAndRecharge", method = {RequestMethod.GET})
     @ResponseBody
-    ResponseDTO<Map<String, BigDecimal>> getShopConsumeAndRecharge(@RequestParam String shopId,
-                                                                   @RequestParam String startTime,
-                                                                   @RequestParam String consumeType,
-                                                                   @RequestParam String endTime) {
+    ResponseDTO<Map<String, String>> getShopConsumeAndRecharge(@RequestParam String shopId,
+                                                               @RequestParam String startTime,
+                                                               @RequestParam String endTime) {
 
-        Date startDate = DateUtils.StrToDate(startTime, "datetime");
-        Date endDate = DateUtils.StrToDate(endTime, "datetime");
-        Boolean bool = false;
-        BigDecimal recharge = shopStatisticsAnalysisService.getShopConsumeAndRecharge(shopId, GoodsTypeEnum.RECHARGE_CARD.getCode(), consumeType, bool, startDate, endDate);
-        BigDecimal consume = shopStatisticsAnalysisService.getShopConsumeAndRecharge(shopId, GoodsTypeEnum.TIME_CARD.getCode(), consumeType, bool, startDate, endDate);
-        Map<String, BigDecimal> map = new HashMap<>(16);
-        map.put("recharge", recharge);
-        map.put("consume", consume);
-        ResponseDTO<Map<String, BigDecimal>> response = new ResponseDTO<>();
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
+        UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+        userConsumeRequest.setSysShopId(shopId);
+
+        pageParamVoDTO.setRequestData(userConsumeRequest);
+        Map<String, String> map = shopStatisticsAnalysisService.getShopConsumeAndRecharge(pageParamVoDTO);
+        ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
         response.setResponseData(map);
         response.setResult(StatusConstant.SUCCESS);
         return response;
@@ -175,4 +175,44 @@ public class ShopMemberAttendanceController {
         response.setResult(StatusConstant.SUCCESS);
         return response;
     }
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 获取当前美容院当前boss的当前家人列表
+     * @Date:2018/5/2 9:40
+     */
+    @RequestMapping(value = "/getFamilyList", method = {RequestMethod.GET})
+    @ResponseBody
+    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getFamilyList(@RequestParam String startTime,
+                                                                     @RequestParam String endTime,
+                                                                     @RequestParam int pageSize) {
+
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        if (sysClerkDTO == null) {
+            logger.info("redis获取clerk对象sysClerkDTO为空");
+            return null;
+        }
+        SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+        if (sysBossDTO == null) {
+            logger.info("redis获取boos对象sysBossDTO为空");
+            return null;
+        }
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
+        UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
+        userConsumeRequestDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        userConsumeRequestDTO.setSysBossId(sysBossDTO.getId());
+        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        pageParamVoDTO.setPageSize(pageSize);
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
+        List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponse = shopStatisticsAnalysisService.getClerkExpenditureAndIncomeList(pageParamVoDTO);
+
+        ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> response = new ResponseDTO<>();
+        response.setResponseData(expenditureAndIncomeResponse);
+        response.setResult(StatusConstant.SUCCESS);
+        return response;
+    }
+
 }

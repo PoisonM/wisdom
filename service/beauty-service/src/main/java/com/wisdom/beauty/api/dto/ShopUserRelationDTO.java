@@ -31,6 +31,9 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
     private String userAccountNo;
 
     //
+    private String shopPhoto;
+
+    //
     private String createBy;
 
     //
@@ -106,6 +109,14 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
 
     public void setUserAccountNo(String userAccountNo) {
         this.userAccountNo = userAccountNo;
+    }
+
+    public String getShopPhoto() {
+        return shopPhoto;
+    }
+
+    public void setShopPhoto(String shopPhoto) {
+        this.shopPhoto = shopPhoto;
     }
 
     public String getCreateBy() {

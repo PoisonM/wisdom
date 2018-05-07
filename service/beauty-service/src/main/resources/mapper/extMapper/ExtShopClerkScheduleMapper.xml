@@ -88,7 +88,7 @@
     </foreach>
   </insert>
 
-  <update id="batchUpdate">
+  <update id="batchUpdate" parameterType="java.util.Map">
     <foreach collection="list" separator=";" item="record">
       update shop_clerk_schedule
       set sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},

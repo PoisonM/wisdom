@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
@@ -15,6 +16,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -390,6 +392,68 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
         List<ExpenditureAndIncomeResponseDTO> list = extShopUserConsumeRecordMapper
                 .selectPriceListByCriteria(recordCriteria);
         return list;
+    }
+
+    @Override
+    public Map<String, String> getShopConsumeAndRecharge(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+        //根据条件获取消费记录集合
+        List<UserConsumeRecordResponseDTO> userConsumeRecordResponse= shopUerConsumeRecordService.getShopCustomerConsumeRecordList(pageParamVoDTO);
+        //业绩
+        BigDecimal recharge=null;
+        BigDecimal consume=null;
+        BigDecimal scratchCard=null;
+        BigDecimal oneConsume=null;
+        BigDecimal cardConsume=null;
+        Map<String,String> map=null;
+        for(UserConsumeRecordResponseDTO userConsumeRecordResponseDTO:userConsumeRecordResponse){
+            if(ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType()) &&
+                    GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType())){
+                if(recharge!=null){
+                    recharge=recharge.add(userConsumeRecordResponseDTO.getSumAmount());
+                }else {
+                    recharge=userConsumeRecordResponseDTO.getSumAmount();
+                }
+            }
+            if(ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())&&
+                    !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType()) ){
+                if(consume!=null){
+                    consume=consume.add(userConsumeRecordResponseDTO.getSumAmount());
+                }else {
+                    consume=userConsumeRecordResponseDTO.getSumAmount();
+                }
+            }
+            if(ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())&&
+                    GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType())){
+                if(scratchCard!=null){
+                    scratchCard=scratchCard.add(userConsumeRecordResponseDTO.getSumAmount());
+                }else {
+                    scratchCard=userConsumeRecordResponseDTO.getSumAmount();
+                }
+            }
+            if(ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())&&
+                    GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType())){
+                if(oneConsume!=null){
+                    oneConsume=oneConsume.add(userConsumeRecordResponseDTO.getSumAmount());
+                }else {
+                    oneConsume=userConsumeRecordResponseDTO.getSumAmount();
+                }
+            }
+            if(ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())&&
+                    GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType())){
+                if(cardConsume!=null){
+                    cardConsume=cardConsume.add(userConsumeRecordResponseDTO.getSumAmount());
+                }else {
+                    cardConsume=userConsumeRecordResponseDTO.getSumAmount();
+                }
+            }
+        }
+        map=new HashedMap();
+        map.put("recharge",recharge==null?"0":recharge.toString());
+        map.put("consume",consume==null?"0":consume.toString());
+        map.put("scratchCard",scratchCard==null?"0":scratchCard.toString());
+        map.put("oneConsume",oneConsume==null?"0":oneConsume.toString());
+        map.put("cardConsume",cardConsume==null?"0":cardConsume.toString());
+        return map;
     }
 
 }

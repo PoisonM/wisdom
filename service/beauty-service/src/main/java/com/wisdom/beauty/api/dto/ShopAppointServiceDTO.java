@@ -66,11 +66,6 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
     //
     private Date updateDate;
 
-    //查询预约时间开始时间
-    private String appointStartTimeS;
-
-    //查询预约时间结束时间
-    private String appointStartTimeE;
 
     private static final long serialVersionUID = 1L;
 
@@ -232,21 +227,5 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
-    }
-
-    public String getAppointStartTimeS() {
-        return appointStartTimeS;
-    }
-
-    public void setAppointStartTimeS(String appointStartTimeS) {
-        this.appointStartTimeS = appointStartTimeS;
-    }
-
-    public String getAppointStartTimeE() {
-        return appointStartTimeE;
-    }
-
-    public void setAppointStartTimeE(String appointStartTimeE) {
-        this.appointStartTimeE = appointStartTimeE;
     }
 }

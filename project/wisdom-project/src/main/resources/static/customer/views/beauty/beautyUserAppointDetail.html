@@ -4,18 +4,18 @@
     </div>
     <div>
         <center style="margin-top:60px">
-            <img ng-src="http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELSSzKXCOZ23bySrbZZtQksBQ0I5YOic6uiaOhMISX37ibTk9O2tekJL4MbZ26rjfNwziaPg7xpJmPuicosQGn4hEzw4iaRSUNfxRTEQ/132">
-            <p style="color:black;font-size:15px">徐然然</p>
-            <div style="margin-top:-15px">
-                <i class="ion ion-star" style="color:#ffc900;font-size:20px" ng-repeat="item in [1,2,3]"></i>
-            </div>
-            <p style="color:#e42112;font-size:15px;margin-top:20px">----------&nbsp;今天11:30&nbsp;----------</p>
-            <p style="color:black;font-size:15px;margin-top:10px">共计120分钟</p>
-            <p style="color:black;font-size:15px;margin-top:10px">冰光面部细胞护理，小气泡</p>
+            <img style="width:200px;border-radius:100px" ng-src="{{param.appointInfo.clerkImage}}">
+            <p style="color:black;font-size:15px;margin-top:20px">{{param.appointInfo.sysClerkName}}</p>
+            <!--<div style="margin-top:-15px">-->
+                <!--<i class="ion ion-star" style="color:#ffc900;font-size:20px" ng-repeat="item in [1,2,3]"></i>-->
+            <!--</div>-->
+            <p style="color:#e42112;font-size:15px;margin-top:20px">----------&nbsp;{{param.appointInfo.appointStartTimeS}}&nbsp;----------</p>
+            <p style="color:black;font-size:15px;margin-top:10px">共计{{param.appointInfo.appointPeriod}}分钟</p>
+            <p style="color:black;font-size:15px;margin-top:10px">{{param.appointInfo.shopProjectName}}</p>
             <p style="color:#e42112;font-size:15px;margin-top:40px">----------------&nbsp;捎话&nbsp;----------------</p>
         </center>
-        <p ng-repeat="item in [1,2,3]" style="color:black;font-size:15px;margin-top:15px;margin-left: 30px">
-            洗澡水不要那么热
+        <p style="color:black;font-size:15px;margin-top:15px;margin-left: 30px">
+            {{param.appointInfo.detail}}
         </p>
     </div>
 </ion-view>

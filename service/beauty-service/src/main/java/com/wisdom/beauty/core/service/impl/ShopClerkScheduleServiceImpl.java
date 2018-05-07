@@ -2,12 +2,8 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.ShopClerkScheduleCriteria;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.core.mapper.ExtShopClerkScheduleMapper;
 import com.wisdom.beauty.core.mapper.ShopClerkScheduleMapper;
-import com.wisdom.beauty.core.mapper.ShopUserRechargeCardMapper;
-import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopClerkScheduleService;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -17,8 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: workService
@@ -57,12 +54,23 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
         if(StringUtils.isNotBlank(shopClerkScheduleDTO.getSysShopId())){
             criteria.andSysShopIdEqualTo(shopClerkScheduleDTO.getSysShopId());
         }
-        //默认查询shopClerkScheduleDTO.getScheduleDate()所在的整月份
-        if(null != shopClerkScheduleDTO.getScheduleDate()){
-            Date firstDate = DateUtils.StrToDate(DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
-            Date lastDay = DateUtils.StrToDate(DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
-            criteria.andScheduleDateBetween(firstDate,lastDay);
+
+        if (StringUtils.isNotBlank(shopClerkScheduleDTO.getSysClerkId())) {
+            criteria.andSysClerkIdEqualTo(shopClerkScheduleDTO.getSysClerkId());
         }
+        //注意，这里精确到月份，如有其他需要扩展接口
+        if (null != shopClerkScheduleDTO.getScheduleDate()) {
+            String startDate = DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate());
+            String endDate = DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate());
+            criteria.andScheduleDateBetween(DateUtils.StrToDate(startDate, "datetime"), DateUtils.StrToDate(endDate, "datetime"));
+        }
+
+        //默认查询shopClerkScheduleDTO.getScheduleDate()所在的整月份
+//        if(null != shopClerkScheduleDTO.getScheduleDate()){
+//            Date firstDate = DateUtils.StrToDate(DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
+//            Date lastDay = DateUtils.StrToDate(DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
+//            criteria.andScheduleDateBetween(firstDate,lastDay);
+//        }
 
         List<ShopClerkScheduleDTO> shopClerkScheduleDTOS = shopClerkScheduleMapper.selectByCriteria(scheduleCriteria);
         return shopClerkScheduleDTOS;
@@ -84,7 +92,9 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
      */
     @Override
     public int updateShopClerkScheduleList(List<ShopClerkScheduleDTO> scheduleDTOS) {
-        return extShopClerkScheduleMapper.batchUpdate(scheduleDTOS);
+        Map<String,Object> map = new HashMap<>();
+        map.put("list",scheduleDTOS);
+        return extShopClerkScheduleMapper.batchUpdate(map);
     }
 
 

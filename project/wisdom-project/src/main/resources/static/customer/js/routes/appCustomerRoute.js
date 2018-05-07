@@ -496,7 +496,7 @@ define(['appCustomer'], function(app){
                         }
                     })
                     .state('projectCardDetail', {
-                        url: '/projectCardDetail',
+                        url: '/projectCardDetail/:projectId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'projectCardDetailCtrl',
                         resolve: {
@@ -556,7 +556,7 @@ define(['appCustomer'], function(app){
                         }
                     })
                     .state('beautyUserAppointDetail', {
-                        url: '/beautyUserAppointDetail',
+                        url: '/beautyUserAppointDetail/:appointId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'beautyUserAppointDetailCtrl',
                         resolve: {

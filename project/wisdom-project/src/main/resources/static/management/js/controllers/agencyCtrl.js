@@ -73,6 +73,9 @@ angular.module('controllers',[]).controller('agencyCtrl',
                     QueryUserInfoDTOByParameters.save($scope.pageParamVoDTO,function(data){
                         ManagementUtil.checkResponseData(data,"");
                         if(data.result == Global.SUCCESS){
+                            if( data.responseData.totalCount ==0){
+                                alert("未查出相应结果");
+                            }
                             var datas =  data.responseData.responseData;
                             if(data.responseData.responseData == undefined){
                                 $scope.agency =[];
@@ -109,7 +112,6 @@ angular.module('controllers',[]).controller('agencyCtrl',
             };
 /*搜索*/
             $scope.searchAB = function(){
-                $scope.loadPageList();
                 $scope.choosePage(1)
             };
 //导表

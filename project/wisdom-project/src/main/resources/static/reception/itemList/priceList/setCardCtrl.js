@@ -3,7 +3,9 @@
  */
 PADWeb.controller("setCardCtrl", function($scope, $state, $stateParams,$rootScope,GetRechargeCardList) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
+    $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.$parent.param.headerPrice.blackTitle = "充值卡"
+    $scope.$parent.param.priceType = "czk"
     $scope.flagFn = function (bool) {
         //左
         $scope.$parent.mainLeftSwitch.peopleListFlag = !bool
