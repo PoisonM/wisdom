@@ -2,7 +2,6 @@ package com.wisdom.beauty.controller.analyze;
 
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.dto.beauty.CustomerContributionDTO;
-import com.wisdom.common.dto.beauty.ShopAchievementDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

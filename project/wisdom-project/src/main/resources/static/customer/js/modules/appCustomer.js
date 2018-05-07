@@ -14,6 +14,9 @@ define(['angular'], function (angular) {
                         if(window.localStorage.getItem("logintoken")!=undefined){
                             config.headers.logintoken = window.localStorage.getItem("logintoken");
                         }
+                        if(window.localStorage.getItem("beautyLogintoken")!=undefined){
+                            config.headers.logintoken = window.localStorage.getItem("beautyLogintoken");
+                        }
                         return config;
                     }
                 }
@@ -23,6 +26,12 @@ define(['angular'], function (angular) {
         .run(function($rootScope){
             $rootScope.returnRootNative = function(){
             };
+            $rootScope.shopAppointInfo = {
+                clerkId : '',
+                shopProjectIds:[],
+                shopProjectDetail:'',
+                shopUserInfo:{}
+            }
         })
     return app;
 });

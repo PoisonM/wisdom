@@ -86,8 +86,10 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                             AddUserAddress.save($scope.param.userAddressInfo, function(data) {
                                 if(Global.SUCCESS==data.result)
                                 {
-                                    window.history.go(-2);
-                                   /* $state.go("addressManagement");*/
+                                    // window.history.go(-2);
+                                    window.location.href = "orderPay.do?productType="+window.localStorage.getItem("productType")+"&random="+Math.random();
+
+                                    /* $state.go("addressManagement");*/
                                 }
                             });
 

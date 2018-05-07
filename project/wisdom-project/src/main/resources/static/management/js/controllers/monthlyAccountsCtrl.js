@@ -174,6 +174,9 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                     GetIncomeRecordByPageParam.save($scope.pageParamVoDTO,function(data){
                         ManagementUtil.checkResponseData(data,"");
                         if(data.errorInfo == Global.SUCCESS){
+                            if( data.responseData.count ==0){
+                                alert("未查出相应结果");
+                            }
                             if(data.responseData.incomeRecordDTOS.length <=0){
                                 $scope.MonthlyBalanceLis=[];
                             }else {
