@@ -15,7 +15,8 @@
             <div ng-if="true" class="float_top">
                 <ul>
                     <li ng-repeat="item1 in tempWeek">
-                        {{item1}}
+                        {{item1[0]}}</br>
+                        {{item1[1]}}
                     </li>
                 </ul>
             </div>
@@ -31,7 +32,10 @@
             <div class="reality_content">
                 <div class="week_header">
                     <ul>
-                        <li ng-repeat="item3 in tempWeek">{{item3}}</li>
+                        <li ng-repeat="item3 in tempWeek">
+                            {{item3[0]}}</br>
+                            {{item3[1]}}
+                        </li>
                     </ul>
                 </div>
                 <div class="content_info">
@@ -44,11 +48,11 @@
                         <div ng-click="checkedItem($parent.$index,$index,infoItem.id,infoItem.sysBossId,infoItem.sysClerkId,infoItem.sysClerkName,infoItem.scheduleDate,infoItem.sysShopId)"
                              ng-repeat="infoItem in item4.clerkSchInfo"
                              ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" class="content_info_item">
-                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 3">全{{infoItem.scheduleType}}</span>
-                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 0">早{{infoItem.scheduleType}}</span>
-                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 1">中{{infoItem.scheduleType}}</span>
-                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 2">晚{{infoItem.scheduleType}}</span>
-                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 4">休{{infoItem.scheduleType}}</span>
+                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 3">全</span>
+                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 0">早</span>
+                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 1">中</span>
+                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 2">晚</span>
+                            <span data-type="{{infoItem.scheduleType}}" ng-if="infoItem.scheduleType == 4">休</span>
                         </div>
                     </div>
                 </div>

@@ -57,13 +57,15 @@
     padding-left: 80px;
     /*border: 1px solid pink;*/
     background-color: #ffffff;
-    /*overflow-x: scroll;*/
+    overflow-x: scroll;
 }
 .arrangeWorkList .float_top ul{
-    width: 4132px;
+    width: 4185px;
     height: 100%;
 }
 .arrangeWorkList .float_top ul li{
+    line-height: 25px;
+    padding-top: 10px;
     height: 100%;
     width: 135px;
     text-align: center;
@@ -76,6 +78,72 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+/*---测试---*/
+.arrangeWorkList .float_top_temp{
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    padding-left: 80px;
+    /*border: 1px solid pink;*/
+    background-color: #ffffff;
+}
+.arrangeWorkList .float_top_temp ul{
+    width: 4185px;
+    height: 100%;
+}
+.arrangeWorkList .float_top_temp ul li{
+    line-height: 25px;
+    padding-top: 10px;
+    height: 100%;
+    width: 135px;
+    text-align: center;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+    border-left: 1px solid #cccccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: #ffffff;
+}
+
+
+
+
+/*----*/
+.arrangeWorkList .float_top1{
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    padding-left: 80px;
+    /*border: 1px solid pink;*/
+    background-color: #ffffff;
+    overflow-x: scroll;
+}
+.arrangeWorkList .float_top1 ul{
+    width: 4185px;
+    height: 100%;
+}
+.arrangeWorkList .float_top1 ul li{
+    background-color: #ffffff;
+    line-height: 25px;
+    padding-top: 10px;
+    height: 100%;
+    width: 135px;
+    text-align: center;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+    border-left: 1px solid #cccccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
 
 .arrangeWorkList .float_Left{
     position: absolute;
@@ -98,6 +166,28 @@
     text-align: center;
     border-bottom: 1px solid #cccccc;
 }
+
+
+/*--测试---*/
+.arrangeWorkList .float_Left_temp{
+    width: 80px;
+    height: 100%;
+    padding-top: 70px;
+    /*overflow-y: scroll;*/
+    background-color: #ffffff;
+}
+
+.arrangeWorkList .float_Left_temp ul{
+    width: 100%;
+    height: auto;
+}
+.arrangeWorkList .float_Left_temp ul li{
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    border-bottom: 1px solid #cccccc;
+}
+
 .arrangeWorkList .shadow_box{
     width: 80px;
     height: 68px;
@@ -123,11 +213,13 @@
 
 }
 .arrangeWorkList .reality_content .week_header ul {
-    width: 4132px;
+    width: 4185px;
     height: 100%;
     background-color: #ffffff;
 }
 .arrangeWorkList .reality_content .week_header ul li{
+    line-height: 25px;
+    padding-top: 10px;
     height: 100%;
     width: 135px;
     text-align: center;
@@ -135,13 +227,13 @@
     font-family: PingFangSC-Regular;
     font-size: 16px;
     color: #000000;
-    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
 }
 .arrangeWorkList .reality_content .content_info{
     width: 100%;
 }
 .arrangeWorkList .reality_content .content_info_box{
-    width: 4132px;
+    width: 4265px;
     height: 72px;
 }
 .arrangeWorkList .reality_content .content_info_box div{
@@ -158,6 +250,8 @@
     height: 72px;
     line-height: 72px;
     text-align: center;
+    background-color: #fff;
+    border-bottom: 1px solid #cccccc;
 }
 .arrangeWorkList .reality_content .content_info_box .content_info_item{
     width: 135px;
