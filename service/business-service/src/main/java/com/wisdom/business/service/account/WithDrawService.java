@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.HashMap;
 
@@ -140,7 +141,8 @@ public class WithDrawService {
                     withDrawRecordDTO.setBankCardNumber(userBankCardInfoDTO.getBankCardNumber());
                     withDrawRecordDTO.setBankCardAddress(userBankCardInfoDTO.getBankCardAddress());
                 }
-                withDrawRecordDTO.setNickName(URLDecoder.decode(withDrawRecordDTO.getNickName(),"utf-8"));
+
+                withDrawRecordDTO.setNickName(URLDecoder.decode(URLDecoder.decode(withDrawRecordDTO.getNickName(),"utf-8"),"utf-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
