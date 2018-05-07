@@ -1,0 +1,40 @@
+<ion-view class="bg">
+    <ion-content>
+      <!--日期部分-->
+        <div class="bgRgb">
+             <img src="images/work/date.png" class="dateImg" ><span class="date">2016-03-01</span><img src="images/work/drop-down.png" class="dropImg">
+        </div>
+        <!--业绩耗卡-->
+        <div class="list">
+            <a class="item">
+                <div class="list comprehensiveBox" style="position: relative;border-radius: 10px;">
+                    <div class="row comprehensiveBox1">
+                        <div class=" comprehensiveBox2 col col-50">
+                            业绩
+                            <p class="colff">46698.60</p>
+                        </div>
+                        <div class=" comprehensiveBox2 col col-50" >
+                            耗卡
+                            <p class="colff">16418.80</p>
+                        </div>
+                    </div>
+                    <div  style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;">近7日趋势图</div>
+                </div>
+            </a>
+        </div>
+        <!--唯美度美容养生会所-->
+        <div class="list" ng-repeat="item in [1,2]">
+            <p class="item"><span>唯美度美容养生会所</span><i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></p>
+           <div class="row bgfff col33 tc p0">
+               <div class="col col-50 bre5e5 pt10">
+                   业绩
+                   <p class="mt5">46698.60</p>
+               </div>
+               <div class="col col-50 pt10" >
+                   耗卡
+                   <p class="mt5">16418.80</p>
+               </div>
+           </div>
+        </div>
+    </ion-content>
+</ion-view>

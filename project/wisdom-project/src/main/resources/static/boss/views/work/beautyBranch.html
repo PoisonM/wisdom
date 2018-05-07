@@ -1,0 +1,84 @@
+<ion-view class="bg">
+    <ion-content>
+        <!--日期部分-->
+        <div class="bgRgb">
+            <img src="images/work/date.png" class="dateImg" ><span class="date">2016-03-01</span><img src="images/work/drop-down.png" class="dropImg">
+        </div>
+        <div style="width: 100%;height: 175px" class="bgfff pt10">
+            <!--切换部分-->
+            <div  class="tabBox">
+                <button ng-class="{ 'active' : param.current == 1 }" ng-click="setCurrent(1)">人头数</button>
+                <button ng-class="{ 'active' : param.current == 2 }" ng-click="setCurrent(2)">新客数</button>
+                <button ng-class="{ 'active' : param.current == 3 }" ng-click="setCurrent(3)">人次数</button>
+            </div>
+            <!--人头数 新客数 人次数展示部分-->
+             <div class="redBox tc colff " style="margin-top: 15px;margin-bottom: 20px" ng-if="param.current == 1">
+                 <p class="fs13">人头数</p>
+                 <p class="fs14">32</p>
+             </div>
+            <div class="redBox tc colff " style="margin-top: 15px;margin-bottom: 20px" ng-if="param.current == 2">
+                <p class="fs13">新客数</p>
+                <p class="fs14">32</p>
+            </div>
+            <div class="redBox tc colff " style="margin-top: 15px;margin-bottom: 20px" ng-if="param.current == 3">
+                <p class="fs13">人次数</p>
+                <p class="fs14">32</p>
+            </div>
+        </div>
+        <!--切换的内容部分-->
+        <div  style="width: 100%;height: 300px;" class="mt10 col33">
+            <div ng-if="param.current == 1">
+                <ion-item  class=" bgfff row" ng-repeat="item in [1,2,3,4]">
+                    <div class="col col-20" style="line-height: 49px;">
+                        <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;" class="ml10"></p >
+                    </div>
+
+                    <div class="col col-80">
+                        <p class="fs15">安琪 <img src="images/work/newPerson.png" style="width: 20px;height: 20px;display: inline-block;margin-left: 5px"></p >
+                        <p class="fs12 col666"><span >最后到点</span><span>2018-03-0712:30</span></p >
+                    </div>
+                </ion-item>
+            </div>
+
+            <div ng-if="param.current == 2">
+                <ion-item  class=" bgfff row p0">
+                    <div class="col col-33 tc br" >
+                        渠道
+                    </div>
+                    <div class="col col-33 tc br">
+                        人数
+                    </div>
+                    <div class="col col-33 tc ">
+                        渠道占比率
+                    </div>
+                </ion-item>
+                <ion-item  class=" bgfff row p0">
+                    <div class="col col-33 tc br" >
+                        未定义
+                    </div>
+                    <div class="col col-33 tc br">
+                        16
+                    </div>
+                    <div class="col col-33 tc ">
+                        100%
+                    </div>
+                </ion-item>
+            </div>
+            <div ng-if="param.current == 3">
+                <ion-item  class="h60 bgfff row" ng-repeat="item in [1,2,3,4]">
+                    <div class="col col-15" style="line-height: 49px;">
+                        <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;" class="ml10"></p >
+                    </div>
+
+                    <div class="col col-60">
+                        <p class="fs15">安琪 <img src="images/work/newPerson.png" style="width: 20px;height: 20px;display: inline-block;margin-left: 5px"></p >
+                        <p class="fs12 col666"><span >最后到点</span><span>2018-03-0712:30</span></p >
+                    </div>
+                    <p class="col col-25">
+                        <span class="fs11 col66">到点一次</span>
+                    </p >
+                </ion-item>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
