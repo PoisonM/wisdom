@@ -1,0 +1,57 @@
+<ion-view>
+    <ion-content class="warningFile partialFiles">
+        <div class="tabs-striped tabs-top tabs-background-light tabs-color-assertive">
+            <div class="tabs" style="top:0"  >
+                <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='all']"
+                   ng-click="chooseTab('all')">
+                    <span class="fs15 col333"> 一个月未到店</span>
+                </a>
+                <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='0']"
+                   ng-click="chooseTab('0')">
+                    <span class="fs15 col333"> 三个月未到店</span>
+                </a>
+                <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='1']"
+                   ng-click="chooseTab('1')">
+                    <span class="fs15 col333"> 六个月未到店</span>
+                </a>
+            </div>
+        </div>
+        <p style="background: #FBCAC7;font-size: 14px;color: #FF6666;height:30px;line-height:30px;position: relative;width:100%;top: 48px;" class="center">
+            1980份档案
+        </p>
+        <ion-list >
+            <ion-item   class="h30 bge6 ">
+               <span class="ml10">A</span>
+            </ion-item>
+            <ion-item  class="h60 bgfff row" >
+                <div class="col col-15" style="line-height: 49px;">
+                    <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;" class="ml10"></p>
+                </div>
+
+                <div class="col col-60">
+                    <p class="fs16">安琪</p>
+                    <p class="fs12 col666"> <img src="images/time.png" class="timePic mr5">上次到店时间：2018-03-09</p>
+                </div>
+                <p class="col col-25" style="line-height: 49px;">
+                    <img src="images/associated.png" class="associated ml20 ">
+                    <span class="fs11 colff66">夏琳</span>
+                </p>
+            </ion-item>
+            <ion-item  class="h60 bgfff row" >
+                <div class="col col-15" style="line-height: 49px;">
+                    <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;" class="ml10"></p>
+                </div>
+
+                <div class="col col-60">
+                    <p class="fs16">安琪</p>
+                    <p class="fs12 col666"> <img src="images/time.png" class="timePic mr5">上次到店时间：2018-03-09</p>
+                </div>
+                <p class="col col-25" style="line-height: 49px;">
+                    <img src="images/associated.png" class="associated ml20 ">
+                    <span class="fs11 colff66">夏琳</span>
+                </p>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+</ion-view>

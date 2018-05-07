@@ -1,0 +1,93 @@
+<ion-view>
+    <ion-content class="partialFiles">
+       <div>
+           <p class="h45 bgfff fs16 colff66">
+               <img src="images/screening.png" class="screeningPic ml10 mr10">
+               筛选
+           </p>
+           <ion-list >
+               <ion-item  class="h50 bgfff" style="display: flex;" ng-repeat="item in [0,1,2,3]">
+                   <div class="W33 ml20">
+                       <p class="mt5 fs16 fs15 col666">2017-10-27 </p>
+                   </div>
+                   <p class="W33 ml20  fs15 col888 center">店内消费</p>
+                   <div class="W33 ml20 fs15 col888">
+                       <p class="floatR">
+                           <span class=" ">468.00</span>
+                           <img src="images/more.png" class="more mr10">
+                       </p>
+
+                   </div>
+               </ion-item>
+
+           </ion-list>
+       </div>
+        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100;"></div>
+        <div style="position: absolute;right:0;top:0;z-index: 101;width:80%;height:100%; "class="bgf6">
+            <p class=" bgfff">
+                <img src="images/close.png"class="closePic ml10 mt20 ">
+            </p>
+            <div>
+                <p class="fs15 col666 bgfff bbl pb5 h40"><span class="ml10 ">状态</span></p>
+                <div class="row row-wrap bgfff">
+                    <p class="col col-33 " >
+                        <a class="activeType center " style="height:26px;width:80px;line-height: 26px;">全部</a>
+                    </p>
+                    <p class="col col-33 ">
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">全部</a>
+                    </p>
+                    <p class="col col-33 ">
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">全部</a>
+                    </p>
+                </div>
+            </div>
+            <div class="mt10">
+                <p class="fs15 col666 bgfff bbl pb5 h40"><span class="ml10 ">时间</span></p>
+                <div class="row row-wrap bgfff">
+                    <p class="col col-33 " >
+                        <a class="activeType center " style="height:26px;width:80px;line-height: 26px;">不限</a>
+                    </p>
+                    <p class="col col-33 ">
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">最近一周</a>
+                    </p>
+                    <p class="col col-33 ">
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">最近十五天</a>
+                    <p class="col col-33 ">
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">最近一个月</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt10">
+                <ion-list>
+                    <ion-item  class="h45 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml10 fs13 col888">开始时间</p>
+                        <p class="mr10">
+
+                            <img src="images/more.png" style="width:8px;height:14.1px;">
+                        </p>
+                    </ion-item>
+                    <ion-item  class="h45 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml10 fs13 col888">结束时间</p>
+                        <p class="mr10">
+
+                            <img src="images/more.png" style="width:8px;height:14.1px;">
+                        </p>
+                    </ion-item>
+                </ion-list>
+            </div>
+
+            <div class="tabs bgfff">
+                <a class="tab-item True">
+                    重置
+                </a>
+                <a class="tab-item True activeTrue">
+                    确认
+                </a>
+
+            </div>
+
+
+        </div>
+    </ion-content>
+</ion-view>
