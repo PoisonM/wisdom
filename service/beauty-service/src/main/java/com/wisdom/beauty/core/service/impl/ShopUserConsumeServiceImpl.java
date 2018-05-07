@@ -168,40 +168,46 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             //项目列表相关操作
             List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserOrderDTO.getShopUserProjectRelationDTOS();
             if (CommonUtils.objectIsNotEmpty(projectRelationDTOS)) {
+
                 for (ShopUserProjectRelationDTO dto : projectRelationDTOS) {
-                    dto.setCreateDate(new Date());
-                    String uuid = IdGen.uuid();
-                    dto.setId(uuid);
-                    dto.setSysShopName(dto.getSysShopName());
-                    dto.setSysShopId(clerkInfo.getSysShopId());
-
-                    ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-                    //如果是次卡的话
-                    if (GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getUseStyle())) {
-                        dto.setSysShopProjectSurplusAmount(new BigDecimal(0));
-                        dto.setSysShopProjectSurplusTimes(0);
-                    } else {
-                        dto.setSysShopProjectSurplusAmount(dto.getSysShopProjectInitAmount());
-                        dto.setSysShopProjectSurplusTimes(dto.getSysShopProjectInitTimes());
+                    Integer sysShopProjectInitTimes = dto.getSysShopProjectInitTimes();
+                    if (null == sysShopProjectInitTimes) {
+                        dto.setSysShopProjectInitTimes(1);
                     }
-                    userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
-                    dto.setCreateDate(new Date());
-                    logger.info("订单号={}，生成用户跟项目的关系={}", orderId, dto);
-                    shopProjectService.saveUserProjectRelation(dto);
+                    //项目有可能购买多个
+                    for (int i = 0; i < sysShopProjectInitTimes; i++) {
+                        dto.setCreateDate(new Date());
+                        String uuid = IdGen.uuid();
+                        dto.setId(uuid);
+                        dto.setSysShopName(dto.getSysShopName());
+                        dto.setSysShopId(clerkInfo.getSysShopId());
+                        //如果是次卡的话
+                        if (GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getUseStyle())) {
+                            dto.setSysShopProjectSurplusAmount(new BigDecimal(0));
+                            dto.setSysShopProjectSurplusTimes(0);
+                        } else {
+                            dto.setSysShopProjectSurplusAmount(dto.getSysShopProjectInitAmount());
+                            dto.setSysShopProjectSurplusTimes(dto.getServiceTime());
+                        }
 
-                    userConsumeRecordDTO.setFlowName(dto.getSysShopProjectName());
-                    userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
-                    userConsumeRecordDTO.setPrice(dto.getSysShopProjectInitAmount());
-                    userConsumeRecordDTO.setConsumeNumber(dto.getSysShopProjectInitTimes());
-                    userConsumeRecordDTO.setGoodsType(dto.getUseStyle());
+                        dto.setCreateDate(new Date());
+                        dto.setSysShopProjectInitTimes(dto.getServiceTime());
+                        logger.info("订单号={}，生成用户跟项目的关系={}", orderId, dto);
+                        shopProjectService.saveUserProjectRelation(dto);
+                        ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+                        userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+                        userConsumeRecordDTO.setFlowName(dto.getSysShopProjectName());
+                        userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
+                        BigDecimal price = dto.getSysShopProjectInitAmount().divide(new BigDecimal(sysShopProjectInitTimes));
+                        userConsumeRecordDTO.setPrice(price);
+                        userConsumeRecordDTO.setConsumeNumber(sysShopProjectInitTimes);
+                        userConsumeRecordDTO.setGoodsType(dto.getUseStyle());
+                        //更新用户的账户信息
+                        sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().add(userConsumeRecordDTO.getPrice()));
+                        //生成充值记录
+                        saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
 
-                    //生成充值记录
-                    ShopUserConsumeRecordDTO consumeRecordDTO = saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
-                    logger.info("订单号={}，生成店员流水记录={}", orderId, consumeRecordDTO);
-                    shopClerkService.saveSysClerkFlowAccountInfo(consumeRecordDTO);
-
-                    //更新用户的账户信息
-                    sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().add(userConsumeRecordDTO.getPrice()));
+                    }
                     logger.info("订单号={}，用户的账户金额={}", orderId, sysUserAccountDTO.getSumAmount());
                 }
             }
@@ -210,32 +216,35 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             List<ShopUserProjectGroupRelRelationDTO> groupRelRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS();
             if (CommonUtils.objectIsNotEmpty(groupRelRelationDTOS)) {
                 for (ShopUserProjectGroupRelRelationDTO dto : groupRelRelationDTOS) {
-                    //根据套卡id查询项目列表
-                    ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
-                    shopProjectInfoGroupRelationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
-                    shopProjectInfoGroupRelationDTO.setSysShopId(clerkInfo.getSysShopId());
-                    List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
+                    //用户一次性购买多个
+                    for (int i = 0; i < dto.getShopProjectGroupNumber(); i++) {
+                        //根据套卡id查询项目列表
+                        ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
+                        shopProjectInfoGroupRelationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
+                        shopProjectInfoGroupRelationDTO.setSysShopId(clerkInfo.getSysShopId());
+                        List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
 
-                    if (null == groupRelations) {
-                        logger.error("订单号={}，根据项目套卡主键查询出来的项目列表为空，{}", orderId, groupRelations);
-                        throw new RuntimeException();
-                    }
+                        if (null == groupRelations) {
+                            logger.error("订单号={}，根据项目套卡主键查询出来的项目列表为空，{}", orderId, groupRelations);
+                            throw new RuntimeException();
+                        }
 
-                    //生成用户跟套卡与项目的关系的关系
-                    for (ShopProjectInfoGroupRelationDTO dt : groupRelations) {
-                        //查询项目信息
-                        ShopProjectInfoDTO shopProjectInfoDTO = redisUtils.getShopProjectInfoFromRedis(dt.getShopProjectInfoId());
-                        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
-                        groupRelRelationDTO.setSysShopId(clerkInfo.getSysShopId());
-                        groupRelRelationDTO.setSysUserId(archivesInfo.getSysUserId());
-                        groupRelRelationDTO.setId(IdGen.uuid());
-                        groupRelRelationDTO.setShopProjectGroupId(dto.getId());
-                        groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
-                        groupRelRelationDTO.setSysBossId(shopProjectInfoDTO.getSysBossId());
-                        groupRelRelationDTO.setProjectSurplusTimes(dto.getProjectInitTimes());
-                        groupRelRelationDTO.setProjectSurplusAmount(dto.getProjectInitAmount());
-                        logger.info("订单号={}，生成用户跟套卡的关系的关系记录={}", orderId, groupRelRelationDTO);
-                        shopProjectGroupService.saveShopUserProjectGroupRelRelation(groupRelRelationDTO);
+                        //生成用户跟套卡与项目的关系的关系
+                        for (ShopProjectInfoGroupRelationDTO dt : groupRelations) {
+                            //查询项目信息
+                            ShopProjectInfoDTO shopProjectInfoDTO = redisUtils.getShopProjectInfoFromRedis(dt.getShopProjectInfoId());
+                            ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
+                            groupRelRelationDTO.setSysShopId(clerkInfo.getSysShopId());
+                            groupRelRelationDTO.setSysUserId(archivesInfo.getSysUserId());
+                            groupRelRelationDTO.setId(IdGen.uuid());
+                            groupRelRelationDTO.setShopProjectGroupId(dto.getId());
+                            groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
+                            groupRelRelationDTO.setSysBossId(shopProjectInfoDTO.getSysBossId());
+                            groupRelRelationDTO.setProjectSurplusTimes(dto.getProjectInitTimes());
+                            groupRelRelationDTO.setProjectSurplusAmount(dto.getProjectInitAmount());
+                            logger.info("订单号={}，生成用户跟套卡的关系的关系记录={}", orderId, groupRelRelationDTO);
+                            shopProjectGroupService.saveShopUserProjectGroupRelRelation(groupRelRelationDTO);
+                        }
                     }
 
                     //生成充值记录
