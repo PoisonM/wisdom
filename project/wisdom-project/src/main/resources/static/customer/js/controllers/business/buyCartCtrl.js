@@ -16,6 +16,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     }else {
                         $(".cartNull").hide();
                         var senderAddressList = [];
+                        $scope.param.totalPayPrice = 0;
                         angular.forEach(data.responseData,function(value,index,array){
                             $scope.param.totalPayPrice = $scope.param.totalPayPrice + parseInt(value.businessProductPrice)*parseInt(value.businessProductNum);
                             senderAddressList.push(value.senderAddress);
