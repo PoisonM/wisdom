@@ -13,7 +13,14 @@ angular.module('controllers',[]).controller('transactionListCtrl',
             $scope.$on('$ionicView.enter', function(){
                 GetTransactionList.save({pageNo:$scope.param.pageNo,pageSize:$scope.param.pageSize},function(data){
                     BusinessUtil.checkResponseData(data,"transactionList");
-                    $scope.param.transactionList = data.responseData;
+                    alert(data.responseData);
+                    if(data.responseData==null){
+
+                    }else{
+                        $scope.param.transactionList = data.responseData;
+                    }
+
+
                 })
             });
 
