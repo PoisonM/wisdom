@@ -89,15 +89,12 @@ angular.module('controllers',[]).controller('withdrawCtrl',
                         pageSize:$scope.pageSize,
                         isExportExcel:"N"
                     };
-                    if($scope.counnt !=""){
-                        if(pattern.test($scope.counnt) == false &&pattern1.test($scope.counnt)== false){
-                            $scope.counnt='请填写正确的手机号或身份证号';
-                            return
-                        }
-                    }
                     QueryWithdrawsByParameters.save(PageParamVoDTO,function(data){
                         ManagementUtil.checkResponseData(data,"");
                         if(data.result == Global.SUCCESS){
+                            if( data.responseData.totalCount ==0){
+                                alert("未查出相应结果");
+                            }
                              $scope.copy(data);
                             $scope.mum = false;
 
@@ -112,7 +109,6 @@ angular.module('controllers',[]).controller('withdrawCtrl',
                     })
                 };
                 $scope.searchWithdraw = function(){
-                    $scope.loadPageList()
                     $scope.choosePage(1)
                 }
 

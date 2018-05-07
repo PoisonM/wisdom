@@ -46,19 +46,24 @@ public class LoginRequiredInterceptor {
         // 判断该方法是否加了@LoginRequired 注解
         if(method.isAnnotationPresent(LoginRequired.class)){
             Map<String, String> tokenValue = getHeadersInfo(request);
-            String token = tokenValue.get("logintoken");
-            if(token==null||token.equals("")){
-                try {
-                    token=request.getSession().getAttribute("token").toString();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ResponseDTO<String> responseDto=new ResponseDTO<>();
-                    responseDto.setResult(StatusConstant.FAILURE);
-                    responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
-                    return responseDto;
-                }
+
+            String userType = tokenValue.get("usertype");
+            String token = null;
+            if(userType==null||userType.equals(""))
+            {
+                token = tokenValue.get("logintoken");
+            }
+            else
+            {
+                token = tokenValue.get("beautylogintoken");
             }
 
+            if(token==null||token.equals("")){
+                ResponseDTO<String> responseDto=new ResponseDTO<>();
+                responseDto.setResult(StatusConstant.FAILURE);
+                responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
+                return responseDto;
+            }
             //验证token有效性
             int loginTokenPeriod = ConfigConstant.logintokenPeriod;
             String userInfo = JedisUtils.get(token);

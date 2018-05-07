@@ -77,13 +77,13 @@ public class WeixinBeautyController {
     {
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
 
-        if ("BeautyUser".equals(url)) {
-            url = ConfigConstant.BEAUTY_WEB_URL + "beautyAppoint";
+        if ("beautyUser".equals(url)) {
+            url = ConfigConstant.USER_WEB_URL + "beautyAppoint";
         }
-        else if ("BeautyBoss".equals(url)) {
+        else if ("beautyBoss".equals(url)) {
             url = ConfigConstant.BEAUTY_WEB_URL + "beautyBoss";
         }
-        else if ("BeautyClerk".equals(url)) {
+        else if ("beautyClerk".equals(url)) {
             url = ConfigConstant.BEAUTY_WEB_URL + "beautyClerk";
         }
         

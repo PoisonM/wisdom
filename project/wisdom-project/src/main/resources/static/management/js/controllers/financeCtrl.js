@@ -49,7 +49,6 @@ angular.module('controllers',[]).controller('financeCtrl',
 
 /*搜索*/
          $scope.searchBills = function(){
-              $scope.loadPageList();
              $scope.choosePage(1)
             };
 /*展示*/
@@ -94,6 +93,9 @@ angular.module('controllers',[]).controller('financeCtrl',
              QueryPayRecordsByParameters.save(PageParamVoDTO,function(data){
                  ManagementUtil.checkResponseData(data,"");
                  if(data.errorInfo == Global.SUCCESS){
+                     if( data.responseData.totalCount ==0){
+                         alert("未查出相应结果");
+                     }
                      $scope.finance = data.responseData.responseData;
                      $scope.response = {};
                      $scope.response.count = data.responseData.totalCount;
