@@ -27,8 +27,8 @@ PADWeb.controller('getPorductCtrl', function($scope, $stateParams, $state, ngDia
     $scope.goHousekeeper = function() {
         $state.go('pad-web.left_nav.housekeeper')
     }
-    $scope.goSignConfirm = function() {
-        $state.go('pad-web.signConfirm')
+    $scope.goConfirmations = function() {
+        $state.go('pad-web.confirmations')
     }
     $scope.checkBoxChek = function(e) {
         $(e.target).children('.checkBox').css('background', '#FF6666')
