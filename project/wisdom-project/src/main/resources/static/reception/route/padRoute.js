@@ -398,6 +398,24 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.signConfirm', {
+            url: '/signConfirm',
+            templateUrl: root + '/cashier/signConfirm.html',
+            controller: 'signConfirmCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "签字确认",
+                        files: [root + "cashier/signConfirmCtrl.js",
+                            root + "cashier/signConfirm.css",
+                            root + "cashier/flashcanvas.min.js",
+                            root + "cashier/jSignature.min.js",
+                            root + "cashier/flashcanvas.swf",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.housekeeper', {
             url: '/housekeeper',
             templateUrl: root + '/cashier/housekeeper.html',
