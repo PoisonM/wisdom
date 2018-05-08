@@ -5,7 +5,8 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="shop_project_group_name" property="shopProjectGroupName" jdbcType="VARCHAR" />
     <result column="shop_project_group_id" property="shopProjectGroupId" jdbcType="VARCHAR" />
-    <result column="shop_project_group_number" property="shopProjectGroupNumber" jdbcType="INTEGER"/>
+      <result column="shop_project_group_number" property="shopProjectGroupNumber" jdbcType="INTEGER"/>
+      <result column="shop_group_puchase_price" property="shopGroupPuchasePrice" jdbcType="DECIMAL"/>
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="shop_project_info_group_relation_id" property="shopProjectInfoGroupRelationId" jdbcType="VARCHAR" />
     <result column="project_init_times" property="projectInitTimes" jdbcType="INTEGER" />
@@ -81,10 +82,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_project_group_name, shop_project_group_id, shop_project_group_number, sys_user_id,
-    shop_project_info_group_relation_id, project_init_times, project_surplus_times, project_init_amount,
-    project_surplus_amount, sys_shop_id, sys_clerk_id, sys_clerk_name, sys_boss_id, discount,
-    create_by, create_date, update_user, update_date
+      id, shop_project_group_name, shop_project_group_id, shop_project_group_number, shop_group_puchase_price,
+      sys_user_id, shop_project_info_group_relation_id, project_init_times, project_surplus_times,
+      project_init_amount, project_surplus_amount, sys_shop_id, sys_clerk_id, sys_clerk_name,
+      sys_boss_id, discount, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationCriteria" >
     select
@@ -120,17 +121,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO" >
-    insert into shop_user_project_group_rel_relation (id, shop_project_group_name, shop_project_group_id,
-    shop_project_group_number, sys_user_id, shop_project_info_group_relation_id,
+      insert into shop_user_project_group_rel_relation (id, shop_project_group_name, shop_project_group_id,
+      shop_project_group_number, shop_group_puchase_price,
+      sys_user_id, shop_project_info_group_relation_id, 
       project_init_times, project_surplus_times, 
       project_init_amount, project_surplus_amount, 
       sys_shop_id, sys_clerk_id, sys_clerk_name, 
       sys_boss_id, discount, create_by, 
       create_date, update_user, update_date
       )
-    values (#{id,jdbcType=VARCHAR}, #{shopProjectGroupName,jdbcType=VARCHAR}, #{shopProjectGroupId,jdbcType=VARCHAR},
-    #{shopProjectGroupNumber,jdbcType=INTEGER}, #{sysUserId,jdbcType=VARCHAR},
-    #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR},
+      values (#{id,jdbcType=VARCHAR}, #{shopProjectGroupName,jdbcType=VARCHAR}, #{shopProjectGroupId,jdbcType=VARCHAR},
+      #{shopProjectGroupNumber,jdbcType=INTEGER}, #{shopGroupPuchasePrice,jdbcType=DECIMAL},
+      #{sysUserId,jdbcType=VARCHAR}, #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR}, 
       #{projectInitTimes,jdbcType=INTEGER}, #{projectSurplusTimes,jdbcType=INTEGER}, 
       #{projectInitAmount,jdbcType=DECIMAL}, #{projectSurplusAmount,jdbcType=DECIMAL}, 
       #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, 
@@ -150,9 +152,12 @@
       <if test="shopProjectGroupId != null" >
         shop_project_group_id,
       </if>
-      <if test="shopProjectGroupNumber != null">
+        <if test="shopProjectGroupNumber != null">
         shop_project_group_number,
       </if>
+        <if test="shopGroupPuchasePrice != null">
+            shop_group_puchase_price,
+        </if>
       <if test="sysUserId != null" >
         sys_user_id,
       </if>
@@ -209,9 +214,12 @@
       <if test="shopProjectGroupId != null" >
         #{shopProjectGroupId,jdbcType=VARCHAR},
       </if>
-      <if test="shopProjectGroupNumber != null">
+        <if test="shopProjectGroupNumber != null">
         #{shopProjectGroupNumber,jdbcType=INTEGER},
       </if>
+        <if test="shopGroupPuchasePrice != null">
+            #{shopGroupPuchasePrice,jdbcType=DECIMAL},
+        </if>
       <if test="sysUserId != null" >
         #{sysUserId,jdbcType=VARCHAR},
       </if>
@@ -277,9 +285,12 @@
       <if test="record.shopProjectGroupId != null" >
         shop_project_group_id = #{record.shopProjectGroupId,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopProjectGroupNumber != null">
+        <if test="record.shopProjectGroupNumber != null">
         shop_project_group_number = #{record.shopProjectGroupNumber,jdbcType=INTEGER},
       </if>
+        <if test="record.shopGroupPuchasePrice != null">
+            shop_group_puchase_price = #{record.shopGroupPuchasePrice,jdbcType=DECIMAL},
+        </if>
       <if test="record.sysUserId != null" >
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       </if>
@@ -335,7 +346,8 @@
     set id = #{record.id,jdbcType=VARCHAR},
       shop_project_group_name = #{record.shopProjectGroupName,jdbcType=VARCHAR},
       shop_project_group_id = #{record.shopProjectGroupId,jdbcType=VARCHAR},
-    shop_project_group_number = #{record.shopProjectGroupNumber,jdbcType=INTEGER},
+      shop_project_group_number = #{record.shopProjectGroupNumber,jdbcType=INTEGER},
+      shop_group_puchase_price = #{record.shopGroupPuchasePrice,jdbcType=DECIMAL},
       sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       shop_project_info_group_relation_id = #{record.shopProjectInfoGroupRelationId,jdbcType=VARCHAR},
       project_init_times = #{record.projectInitTimes,jdbcType=INTEGER},
@@ -364,9 +376,12 @@
       <if test="shopProjectGroupId != null" >
         shop_project_group_id = #{shopProjectGroupId,jdbcType=VARCHAR},
       </if>
-      <if test="shopProjectGroupNumber != null">
+        <if test="shopProjectGroupNumber != null">
         shop_project_group_number = #{shopProjectGroupNumber,jdbcType=INTEGER},
       </if>
+        <if test="shopGroupPuchasePrice != null">
+            shop_group_puchase_price = #{shopGroupPuchasePrice,jdbcType=DECIMAL},
+        </if>
       <if test="sysUserId != null" >
         sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       </if>
@@ -419,7 +434,8 @@
     update shop_user_project_group_rel_relation
     set shop_project_group_name = #{shopProjectGroupName,jdbcType=VARCHAR},
       shop_project_group_id = #{shopProjectGroupId,jdbcType=VARCHAR},
-    shop_project_group_number = #{shopProjectGroupNumber,jdbcType=INTEGER},
+      shop_project_group_number = #{shopProjectGroupNumber,jdbcType=INTEGER},
+      shop_group_puchase_price = #{shopGroupPuchasePrice,jdbcType=DECIMAL},
       sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       shop_project_info_group_relation_id = #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR},
       project_init_times = #{projectInitTimes,jdbcType=INTEGER},
