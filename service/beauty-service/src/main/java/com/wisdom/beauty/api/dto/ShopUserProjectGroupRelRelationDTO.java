@@ -16,6 +16,9 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     //套卡表主键
     private String shopProjectGroupId;
 
+    //购买套卡的数量
+    private Integer shopProjectGroupNumber;
+
     //
     private String sysUserId;
 
@@ -85,6 +88,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setShopProjectGroupId(String shopProjectGroupId) {
         this.shopProjectGroupId = shopProjectGroupId;
+    }
+
+    public Integer getShopProjectGroupNumber() {
+        return shopProjectGroupNumber;
+    }
+
+    public void setShopProjectGroupNumber(Integer shopProjectGroupNumber) {
+        this.shopProjectGroupNumber = shopProjectGroupNumber;
     }
 
     public String getSysUserId() {

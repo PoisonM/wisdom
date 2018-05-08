@@ -1136,6 +1136,66 @@ public class ShopUserProjectRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andServiceTimeIsNull() {
+            addCriterion("service_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeIsNotNull() {
+            addCriterion("service_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeEqualTo(Integer value) {
+            addCriterion("service_time =", value, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeNotEqualTo(Integer value) {
+            addCriterion("service_time <>", value, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeGreaterThan(Integer value) {
+            addCriterion("service_time >", value, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("service_time >=", value, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeLessThan(Integer value) {
+            addCriterion("service_time <", value, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeLessThanOrEqualTo(Integer value) {
+            addCriterion("service_time <=", value, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeIn(List<Integer> values) {
+            addCriterion("service_time in", values, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeNotIn(List<Integer> values) {
+            addCriterion("service_time not in", values, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeBetween(Integer value1, Integer value2) {
+            addCriterion("service_time between", value1, value2, "serviceTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceTimeNotBetween(Integer value1, Integer value2) {
+            addCriterion("service_time not between", value1, value2, "serviceTime");
+            return (Criteria) this;
+        }
+
         public Criteria andEffectiveDateIsNull() {
             addCriterion("effective_date is null");
             return (Criteria) this;

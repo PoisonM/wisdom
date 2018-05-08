@@ -27,10 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -187,6 +184,7 @@ public class OrderController {
 
         //次卡或者是疗程卡
         if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType) || GoodsTypeEnum.TREATMENT_CARD.getCode().equals(goodsType)) {
+
             //获取已经保存的项目信息
             List<ShopUserProjectRelationDTO> alreadyExistProjectRelationDTOS = alreadyOrderDTO.getShopUserProjectRelationDTOS();
             logger.info("查询项目信息为，{}", "shopUserProjectRelationDTOS = [" + alreadyExistProjectRelationDTOS + "]");
@@ -325,6 +323,75 @@ public class OrderController {
         responseDTO.setResult(StatusConstant.SUCCESS);
 
         logger.info("更新订单虚拟商品的信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 收银板块界面回显接口，查询所有订单里的项目id、产品id
+     *
+     * @param shopUserOrderDTO 订单对象
+     * @return
+     */
+    @RequestMapping(value = "getConsumeDisplayIds", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> getConsumeDisplayIds(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("更新用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
+        ResponseDTO responseDTO = new ResponseDTO<String>();
+
+        Query query = new Query(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
+        ShopUserOrderDTO userOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+
+        ArrayList<Object> arrayList = new ArrayList<>();
+        //获取项目回显数据
+        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = userOrderDTO.getShopUserProjectRelationDTOS();
+        if (CommonUtils.objectIsNotEmpty(shopUserProjectRelationDTOS)) {
+            HashMap<Object, Object> shopUserProjectRelationMap = new HashMap<>(5);
+            shopUserProjectRelationMap.put("projectSize", shopUserProjectRelationDTOS.size());
+            //项目主键作为回显数据
+            ArrayList<String> ids = new ArrayList<>();
+            for (ShopUserProjectRelationDTO userProjectRelationDTO : shopUserProjectRelationDTOS) {
+                ids.add(userProjectRelationDTO.getSysShopProjectId());
+            }
+            shopUserProjectRelationMap.put("ids", ids);
+            arrayList.add(shopUserProjectRelationMap);
+        }
+
+        //获取套卡回显数据
+        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = userOrderDTO.getProjectGroupRelRelationDTOS();
+        if (CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)) {
+            HashMap<Object, Object> hashMap = new HashMap<>(5);
+            hashMap.put("groupSize", projectGroupRelRelationDTOS.size());
+            ArrayList<String> ids = new ArrayList<>();
+            for (ShopUserProjectGroupRelRelationDTO userProjectGroupRelRelationDTO : projectGroupRelRelationDTOS) {
+                //套卡id作为回显数据
+                ids.add(userProjectGroupRelRelationDTO.getShopProjectGroupId());
+            }
+            hashMap.put("ids", ids);
+            arrayList.add(hashMap);
+
+        }
+
+        //获取产品回显数据
+        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = userOrderDTO.getShopUserProductRelationDTOS();
+        if (CommonUtils.objectIsNotEmpty(shopUserProductRelationDTOS)) {
+            HashMap<Object, Object> hashMap = new HashMap<>(5);
+            hashMap.put("productSize", projectGroupRelRelationDTOS.size());
+            //项目主键作为回显数据
+            ArrayList<String> ids = new ArrayList<>();
+            for (ShopUserProductRelationDTO userProductRelationDTO : shopUserProductRelationDTOS) {
+                ids.add(userProductRelationDTO.getShopProductId());
+            }
+            hashMap.put("ids", ids);
+            arrayList.add(hashMap);
+        }
+
+        responseDTO.setResponseData(arrayList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

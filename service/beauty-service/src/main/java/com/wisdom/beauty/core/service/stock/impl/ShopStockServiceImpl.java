@@ -10,9 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
-import com.wisdom.beauty.core.mapper.ExtShopStockMapper;
-import com.wisdom.beauty.core.mapper.ShopStockBossRelationMapper;
-import com.wisdom.beauty.core.mapper.ShopStockMapper;
+import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.DateUtils;
@@ -26,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
 import com.wisdom.beauty.core.mapper.stock.ExtStockServiceMapper;
-import com.wisdom.beauty.core.mapper.ShopStockRecordMapper;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.common.dto.system.PageParamDTO;
 
@@ -54,8 +51,11 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	@Autowired
 	private ShopStockBossRelationMapper shopStockBossRelationMapper;
-    @Autowired
-    private ExtShopStockMapper extShopStockMapper;
+	@Autowired
+	private ExtShopStockMapper extShopStockMapper;
+
+	@Autowired
+	private ShopStockNumberMapper shopStockNumberMapper;
 
 	/**
 	 * 查询仓库列表
@@ -244,19 +244,55 @@ public class ShopStockServiceImpl implements ShopStockService {
 		return lis;
 	}
 
-    @Override
-    public int insertShopStockDTO(String shopStockDTOs) {
-        List<ShopStockDTO>  shopStocks=null;
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            shopStocks = (List<ShopStockDTO>)mapper.readValue(shopStockDTOs, List.class);
-        } catch (IOException e) {
-            logger.error("对象转换异常,异常信息是"+e.getMessage(),e);
-        }
-        if(CollectionUtils.isEmpty(shopStocks)){
-            logger.info("转换出来的集合shopStocks为空");
-            return 0;
-        }
-       return extShopStockMapper.insertBatchShopStock(shopStocks);
-    }
+	@Override
+	public int insertShopStockDTO(String shopStockDTOs) {
+		List<ShopStockDTO> shopStocks = null;
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			shopStocks = (List<ShopStockDTO>) mapper.readValue(shopStockDTOs, List.class);
+		} catch (IOException e) {
+			logger.error("对象转换异常,异常信息是" + e.getMessage(), e);
+		}
+		if (CollectionUtils.isEmpty(shopStocks)) {
+			logger.info("转换出来的集合shopStocks为空");
+			return 0;
+		}
+		return extShopStockMapper.insertBatchShopStock(shopStocks);
+	}
+
+	@Override
+	public int updateStockNumber(ShopStockNumberDTO shopStockNumberDTO) {
+		ShopStockNumberDTO shopStockNumber = this.getStockNumber(shopStockNumberDTO);
+		if (shopStockNumber == null) {
+			return this.saveStockNumber(shopStockNumberDTO);
+		}
+		Integer stockNumber=shopStockNumberDTO.getStockNumber();
+		Integer actualStockNumber=shopStockNumberDTO.getActualStockNumber();
+		shopStockNumberDTO.setStockNumber(shopStockNumber.getStockNumber()+stockNumber);
+		return shopStockNumberMapper.updateByPrimaryKeySelective(shopStockNumberDTO);
+
+	}
+
+	@Override
+	public ShopStockNumberDTO getStockNumber(ShopStockNumberDTO shopStockNumberDTO) {
+		logger.info("getShopStock方法传入的参数shopStockNumberDTO={}", shopStockNumberDTO);
+		ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
+		ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
+		if (StringUtils.isNotBlank(shopStockNumberDTO.getShopProcId())) {
+			c.andShopProcIdEqualTo(shopStockNumberDTO.getShopProcId());
+		}
+		if (StringUtils.isNotBlank(shopStockNumberDTO.getShopStoreId())) {
+			c.andShopStoreIdEqualTo(shopStockNumberDTO.getShopStoreId());
+		}
+		List<ShopStockNumberDTO> list = shopStockNumberMapper.selectByCriteria(criteria);
+		if (CollectionUtils.isEmpty(list)) {
+			return null;
+		}
+		return list.get(0);
+	}
+
+	@Override
+	public int saveStockNumber(ShopStockNumberDTO shopStockNumberDTO) {
+		return shopStockNumberMapper.insert(shopStockNumberDTO);
+	}
 }

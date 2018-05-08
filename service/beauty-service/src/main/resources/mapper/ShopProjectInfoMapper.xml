@@ -17,7 +17,7 @@
     <result column="project_duration" property="projectDuration" jdbcType="INTEGER"/>
     <result column="market_price" property="marketPrice" jdbcType="DECIMAL"/>
     <result column="discount_price" property="discountPrice" jdbcType="DECIMAL"/>
-    <result column="max_contain_times" property="maxContainTimes" jdbcType="INTEGER"/>
+    <result column="service_times" property="serviceTimes" jdbcType="INTEGER"/>
     <result column="visit_date_time" property="visitDateTime" jdbcType="INTEGER"/>
     <result column="once_price" property="oncePrice" jdbcType="DECIMAL"/>
     <result column="function_intr" property="functionIntr" jdbcType="VARCHAR"/>
@@ -89,9 +89,8 @@
   <sql id="Base_Column_List">
     id, sys_shop_id, sys_boss_id, project_name, project_type_one_name, project_type_two_name,
     project_type_one_id, project_type_two_id, product_type, use_style, card_type, project_url,
-    project_duration, market_price, discount_price, max_contain_times, visit_date_time,
-    once_price, function_intr, is_display, status, create_by, create_date, update_user,
-    update_date
+    project_duration, market_price, discount_price, service_times, visit_date_time, once_price,
+    function_intr, is_display, status, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoCriteria">
@@ -133,7 +132,7 @@
     project_type_one_id, project_type_two_id, product_type,
     use_style, card_type, project_url,
     project_duration, market_price, discount_price,
-    max_contain_times, visit_date_time, once_price,
+    service_times, visit_date_time, once_price,
     function_intr, is_display, status,
     create_by, create_date, update_user,
     update_date)
@@ -142,7 +141,7 @@
     #{projectTypeOneId,jdbcType=VARCHAR}, #{projectTypeTwoId,jdbcType=VARCHAR}, #{productType,jdbcType=CHAR},
     #{useStyle,jdbcType=CHAR}, #{cardType,jdbcType=CHAR}, #{projectUrl,jdbcType=VARCHAR},
     #{projectDuration,jdbcType=INTEGER}, #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL},
-    #{maxContainTimes,jdbcType=INTEGER}, #{visitDateTime,jdbcType=INTEGER}, #{oncePrice,jdbcType=DECIMAL},
+    #{serviceTimes,jdbcType=INTEGER}, #{visitDateTime,jdbcType=INTEGER}, #{oncePrice,jdbcType=DECIMAL},
     #{functionIntr,jdbcType=VARCHAR}, #{isDisplay,jdbcType=CHAR}, #{status,jdbcType=CHAR},
     #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
     #{updateDate,jdbcType=TIMESTAMP})
@@ -195,8 +194,8 @@
       <if test="discountPrice != null">
         discount_price,
       </if>
-      <if test="maxContainTimes != null">
-        max_contain_times,
+      <if test="serviceTimes != null">
+        service_times,
       </if>
       <if test="visitDateTime != null">
         visit_date_time,
@@ -272,8 +271,8 @@
       <if test="discountPrice != null">
         #{discountPrice,jdbcType=DECIMAL},
       </if>
-      <if test="maxContainTimes != null">
-        #{maxContainTimes,jdbcType=INTEGER},
+      <if test="serviceTimes != null">
+        #{serviceTimes,jdbcType=INTEGER},
       </if>
       <if test="visitDateTime != null">
         #{visitDateTime,jdbcType=INTEGER},
@@ -359,8 +358,8 @@
       <if test="record.discountPrice != null">
         discount_price = #{record.discountPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.maxContainTimes != null">
-        max_contain_times = #{record.maxContainTimes,jdbcType=INTEGER},
+      <if test="record.serviceTimes != null">
+        service_times = #{record.serviceTimes,jdbcType=INTEGER},
       </if>
       <if test="record.visitDateTime != null">
         visit_date_time = #{record.visitDateTime,jdbcType=INTEGER},
@@ -411,7 +410,7 @@
       project_duration = #{record.projectDuration,jdbcType=INTEGER},
       market_price = #{record.marketPrice,jdbcType=DECIMAL},
       discount_price = #{record.discountPrice,jdbcType=DECIMAL},
-      max_contain_times = #{record.maxContainTimes,jdbcType=INTEGER},
+    service_times = #{record.serviceTimes,jdbcType=INTEGER},
       visit_date_time = #{record.visitDateTime,jdbcType=INTEGER},
       once_price = #{record.oncePrice,jdbcType=DECIMAL},
       function_intr = #{record.functionIntr,jdbcType=VARCHAR},
@@ -470,8 +469,8 @@
       <if test="discountPrice != null">
         discount_price = #{discountPrice,jdbcType=DECIMAL},
       </if>
-      <if test="maxContainTimes != null">
-        max_contain_times = #{maxContainTimes,jdbcType=INTEGER},
+      <if test="serviceTimes != null">
+        service_times = #{serviceTimes,jdbcType=INTEGER},
       </if>
       <if test="visitDateTime != null">
         visit_date_time = #{visitDateTime,jdbcType=INTEGER},
@@ -519,7 +518,7 @@
       project_duration = #{projectDuration,jdbcType=INTEGER},
       market_price = #{marketPrice,jdbcType=DECIMAL},
       discount_price = #{discountPrice,jdbcType=DECIMAL},
-      max_contain_times = #{maxContainTimes,jdbcType=INTEGER},
+    service_times = #{serviceTimes,jdbcType=INTEGER},
       visit_date_time = #{visitDateTime,jdbcType=INTEGER},
       once_price = #{oncePrice,jdbcType=DECIMAL},
       function_intr = #{functionIntr,jdbcType=VARCHAR},

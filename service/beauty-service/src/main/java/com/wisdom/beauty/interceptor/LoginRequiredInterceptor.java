@@ -60,7 +60,7 @@ public class LoginRequiredInterceptor {
 
             if(token==null||token.equals("")){
                 ResponseDTO<String> responseDto=new ResponseDTO<>();
-                responseDto.setResult(StatusConstant.FAILURE);
+                responseDto.setResult(StatusConstant.SUCCESS);
                 responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
                 return responseDto;
             }
@@ -71,7 +71,7 @@ public class LoginRequiredInterceptor {
             if(userInfo==null)
             {
                 ResponseDTO<String> responseDto=new ResponseDTO<String>();
-                responseDto.setResult(StatusConstant.FAILURE);
+                responseDto.setResult(StatusConstant.SUCCESS);
                 responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
                 return responseDto;
             }

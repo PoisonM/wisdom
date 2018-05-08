@@ -78,5 +78,30 @@ public interface ShopStockService {
     *@Date:2018/5/3 16:47
     */
     int insertShopStockDTO(String shopStockDTOs);
+    /**
+    *@Author:zhanghuan
+    *@Param: 仓库ID，产品ID
+    *@Return:
+    *@Description: 产品入库的时候需要调用这个接口更新库存量
+    *@Date:2018/5/4 17:14
+    */
+    int updateStockNumber(ShopStockNumberDTO shopStockNumberDTO);
+    /**
+     *@Author:zhanghuan
+     *@Param: 仓库ID，产品ID
+     *@Return:
+     *@Description: 根据条件查询ShopStockNumberDTO信息
+     *@Date:2018/5/4 17:14
+     */
+    ShopStockNumberDTO getStockNumber(ShopStockNumberDTO shopStockNumberDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 保存ShopStockNumberDTO
+    *@Date:2018/5/4 17:57
+    */
+    int saveStockNumber(ShopStockNumberDTO shopStockNumberDTO);
+
 
 }
