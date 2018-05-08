@@ -209,7 +209,7 @@ public class OrderController {
 
                     ShopUserProjectRelationDTO alreadyRelation = alreadyIterator.next();
                     //不是同一个项目
-                    if (!userProjectRelationDTO.getSysShopProjectId().equals(alreadyRelation.getSysShopProjectId())) {
+                    if (userProjectRelationDTO.getSysShopProjectId().equals(alreadyRelation.getSysShopProjectId())) {
                         if (CommonCodeEnum.ADD.getCode().equals(operation)) {
                             if (null == userProjectRelationDTO.getSysShopProjectInitTimes()) {
                                 userProjectRelationDTO.setSysShopProjectInitTimes(1);
@@ -259,7 +259,7 @@ public class OrderController {
                 while (alreadyIterator.hasNext()) {
                     ShopUserProductRelationDTO alreadyRelation = alreadyIterator.next();
                     //不是同一个产品
-                    if (!userProductRelationDTO.getShopProductId().equals(alreadyRelation.getShopProductId())) {
+                    if (userProductRelationDTO.getShopProductId().equals(alreadyRelation.getShopProductId())) {
                         if (CommonCodeEnum.ADD.getCode().equals(operation)) {
                             if (null == userProductRelationDTO.getInitTimes()) {
                                 userProductRelationDTO.setInitTimes(1);
@@ -307,7 +307,7 @@ public class OrderController {
             } else {
                 while (alreadyIterator.hasNext()) {
                     ShopUserProjectGroupRelRelationDTO alreadyRelation = alreadyIterator.next();
-                    if (!newProjectGroupRelationDTOS.getShopProjectGroupId().equals(alreadyRelation.getShopProjectGroupId())) {
+                    if (newProjectGroupRelationDTOS.getShopProjectGroupId().equals(alreadyRelation.getShopProjectGroupId())) {
                         if (CommonCodeEnum.ADD.getCode().equals(operation)) {
                             if (null == newProjectGroupRelationDTOS.getProjectInitTimes()) {
                                 newProjectGroupRelationDTOS.setProjectInitTimes(1);
