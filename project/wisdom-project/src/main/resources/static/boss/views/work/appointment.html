@@ -1,11 +1,14 @@
 <ion-view class="bg">
-    <ion-content ng-click="none()">
+    <ion-content >
         <!--日期部分-->
-        <div class="bgRgb" >
-            <input  class="time orderPayStartTime laydate-icon fs15 colff" id="time"  ng-click="dataS('#time');$event.stopPropagation()" style="background-color: #fff0;border:none;text-indent:55px;background-image:url('images/work/date.png');background-size: 20px 20px;background-position:10% center;" value="{{date}}">
-
+        <div class="bgRgb">
+            <ionic-datepicker input-obj="datepickerObjectEnd">
+                <img src="images/work/date.png" class="dateImg" >
+                <span class="date">{{param.date}}</span>
+                <img src="images/work/drop-down.png" class="dropImg">
+            </ionic-datepicker>
         </div>
-        <ion-item  class=" bgfff row " ng-repeat="item in appointment"   ng-click="healthClubGo(item.bossRelationDTO.sysShopId)" >
+        <ion-item  class=" bgfff row " ng-repeat="item in appointment"   ng-click="healthClubGo(item.bossRelationDTO.sysShopId,item.bossRelationDTO.sysShopName)" >
                 <div class="col col-80" >
                     <p  class="fs15 col33">{{item.bossRelationDTO.sysShopName}}</p >
                     <p  class="fs12 col88">
@@ -19,4 +22,18 @@
 
         </ion-item>
     </ion-content>
+    <!--<div class="tabs tabs-icon-top">
+        <a class="tab-item" href="#">
+            <i class="icon ion-home" ng-click="change()"></i>
+            主页
+        </a>
+        <a class="tab-item" href="#">
+            <i class="icon ion-star"></i>
+            收藏
+        </a>
+        <a class="tab-item" href="#">
+            <i class="icon ion-gear-a"></i>
+            设置
+        </a>
+    </div>-->
 </ion-view>

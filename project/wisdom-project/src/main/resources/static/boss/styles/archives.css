@@ -74,6 +74,10 @@ img {display: inline-block}
 .partialFiles .item p {color:#333;font-size: 16px;}
 .partialFiles .item-input-wrapper{background: #ffffff}
 .partialFiles .changeArchivesBtn{margin-right: 0.5rem;}
+
+.archivesPic{width:20px;height:20px;}
+.workPic{width:20px;height:20px;}
+.minePic{width:20px;height:20px;}
 .scroll{height:100%;}
 .floatR{float:right;}
 .pd10{padding:0 15px;}

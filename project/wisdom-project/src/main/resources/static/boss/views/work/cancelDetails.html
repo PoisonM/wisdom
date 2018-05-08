@@ -26,14 +26,14 @@
             </div>
         </ion-item>
         <div class="list mt10">
-            <p class="item p10 fs15"><span>取消时间</span><span  class=" fr" >{{cancelDetails.updateDate|date:'yyyy-MM-dd HH:mm:ss '}}</span></p>
+            <p class="item p10 fs15"><span>取消时间</span><span  class=" fr" >{{cancelDetails.appointmentCancleDate}}</span></p>
             <p class="item p10 fs15"><span>操作人</span><span  class="fs14 col66 fr">{{cancelDetails.sysUserName}}</span></p>
         </div>
         <!--项目-->
         <p class="ml10 fs15 col66 mt-20" style="height:35px;line-height: 35px;width: 100%">项目</p>
         <div class="list">
-            <p class="item p10"><span>韩国美白护肤</span><span class=" fr"><img src="images/work/minute.png" style="width: 15px;height: 15px;display: inline-block;"><span class="ml10 fs14 col66">60分钟</span></span></p>
-            <p class="item p10"><span>小气泡</span><span class=" fr"><img src="images/work/minute.png" style="width: 15px;height: 15px;display: inline-block;"><span class="ml10 fs14 col66">60分钟</span></span></p>
+            <p class="item p10" ng-repeat="item in cancelDetails.shopProjectName"><span>{{item}}</span><span class=" fr"><img src="images/work/minute.png" style="width: 15px;height: 15px;display: inline-block;"><span class="ml10 fs14 col66">{{cancelDetails.appointPeriodDetail[$index]}}分钟</span></span></p>
+
             <p class="item p10"><span>美容师</span><span class="fs14 col66 fr">{{cancelDetails.sysClerkName}}</span></p>
         </div>
     </ion-content>
