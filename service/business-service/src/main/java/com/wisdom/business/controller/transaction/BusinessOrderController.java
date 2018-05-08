@@ -220,6 +220,7 @@ public class BusinessOrderController {
                     orderAddressRelationDTO1.setUserNameAddress(userOrderAddressDTO.getUserName());
                     orderAddressRelationDTO1.setUserPhoneAddress(userOrderAddressDTO.getUserPhone());
                     orderAddressRelationDTO1.setUserProvinceAddress(userOrderAddressDTO.getProvince());
+                    orderAddressRelationDTO1.setUserCityAddress(userOrderAddressDTO.getCity());
                     orderAddressRelationDTO1.setUserDetailAddress(userOrderAddressDTO.getDetailAddress());
                     orderAddressRelationDTO1.setAddressCreateDate(new Date());
                     orderAddressRelationDTO1.setAddressUpdateDate(new Date());
@@ -232,6 +233,7 @@ public class BusinessOrderController {
                     orderAddressRelationDTO1.setUserNameAddress(userOrderAddressDTO.getUserName());
                     orderAddressRelationDTO1.setUserPhoneAddress(userOrderAddressDTO.getUserPhone());
                     orderAddressRelationDTO1.setUserProvinceAddress(userOrderAddressDTO.getProvince());
+                    orderAddressRelationDTO1.setUserCityAddress(userOrderAddressDTO.getCity());
                     orderAddressRelationDTO1.setUserDetailAddress(userOrderAddressDTO.getDetailAddress());
                     orderAddressRelationDTO1.setAddressUpdateDate(new Date());
                     logger.info("订单已有地址修改订单地址"+orderAddressRelationDTO1.toString());
