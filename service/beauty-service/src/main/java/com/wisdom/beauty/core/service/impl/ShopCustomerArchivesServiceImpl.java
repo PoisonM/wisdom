@@ -126,8 +126,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             criteria.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
         }
         if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossId())) {
-            // TODO: 2018/5/8
-            //criteria.andsysb(userConsumeRequestDTO.getSysBossId());
+
+            criteria.andSysBossIdEqualTo(userConsumeRequestDTO.getSysBossId());
         }
         if (startDate != null && endDate != endDate) {
             criteria.andCreateDateBetween(start, end);
