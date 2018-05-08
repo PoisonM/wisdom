@@ -24,7 +24,8 @@ define(['angular'], function (angular) {
 
         }])
         .run(function($rootScope){
-            $rootScope.returnRootNative = function(){
+            $rootScope.shopInfo = {
+                shopId:'11'
             };
         })
     return app;

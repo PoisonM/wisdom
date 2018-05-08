@@ -33,8 +33,8 @@ angular.module('bossGlobal',[])
         MX_YX_SZCJ:"MX_YX_SZCJ",
         MX_YX_YXABF:"MX_YX_YXABF"
     })
-    .factory('BusinessUtil', ['Global','$ionicPopup','$state','BuriedPoint','$rootScope','$http',
-        function(Global,$ionicPopup,$state,BuriedPoint,$rootScope,$http) {
+    .factory('BossUtil', ['Global','$ionicPopup','$state',
+        function(Global,$ionicPopup,$state) {
             return {
                 checkResponseData: function(data,redirectParam) {
                     if(data.result==Global.FAILURE)
@@ -43,6 +43,21 @@ angular.module('bossGlobal',[])
                             $state.go("login",{redirectUrl:redirectParam})
                         }
                     }
+                },
+                getNowFormatDate:function() {
+                    var date = new Date();
+                    var seperator1 = "-";
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {
+                        month = "0" + month;
+                    }
+                    if (strDate >= 0 && strDate <= 9) {
+                        strDate = "0" + strDate;
+                    }
+                    var currentdate = year + seperator1 + month + seperator1 + strDate;
+                    return currentdate + " 00:00:00";
                 },
                 getAddDate:function(date,days){
                     var d=new Date(date);
@@ -56,7 +71,7 @@ angular.module('bossGlobal',[])
                         day = "0"+day;
                     }
                     var val = d.getFullYear()+"-"+month+"-"+day;
-                    return val;
+                    return val + " 00:00:00";
                 },
                 IdentityCodeValid:function(code) {
                     var city={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江 ",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北 ",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏 ",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外 "};
@@ -99,61 +114,6 @@ angular.module('bossGlobal',[])
                     }
                     if(!pass) alert(tip);
                     return pass;
-                },
-                buriedPoint:function(bar){
-                    if($rootScope.userOpenId==null)
-                    {
-                        $http.get('/user/customer/getUserOpenIdFromSession').success(function(data) {
-                            $rootScope.userOpenId = data.responseData;
-                            //if(data.result==Global.SUCCESS)
-                            {
-                                BuriedPoint.save({dotLogName:bar,openId:$rootScope.userOpenId},function(data){
-                                    console.log(data);
-                                })
-                            }
-                        }).error(function(err) {
-                        });
-                    }
-                    else
-                    {
-                        BuriedPoint.save({dotLogName:bar,openId:$rootScope.userOpenId},function(data){
-                            console.log(data);
-                        })
-                    }
-                },
-                twoParameters:function(bar,id){
-                    if($rootScope.userOpenId==null)
-                    {
-                        $http.get('/user/customer/getUserOpenIdFromSession').success(function(data) {
-                            $rootScope.userOpenId = data.responseData;
-                            if(data.result==Global.SUCCESS)
-                            {
-                                BuriedPoint.save({dotLogName:bar,openId:$rootScope.userOpenId,productId:id},function(data){
-                                    console.log(data);
-                                })
-                            }
-                        }).error(function(err) {
-                        });
-                    }
-                    else
-                    {
-                        BuriedPoint.save({dotLogName:bar,openId:$rootScope.userOpenId,productId:id},function(data){
-                            console.log(data);
-                        })
-                    }
-                }
-            };
-        }])
-    .factory('BeautyUtil', ['Global','$ionicPopup','$state',
-        function(Global,$ionicPopup,$state) {
-            return {
-                checkResponseData: function(data,redirectParam) {
-                    if(data.result==Global.FAILURE)
-                    {
-                        if(data.errorInfo==Global.TOKEN_ERROR){
-                            $state.go("beautyLogin",{redirectUrl:redirectParam})
-                        }
-                    }
                 }
             };
         }])

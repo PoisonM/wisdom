@@ -27,7 +27,7 @@ define(['appBoss'], function (app) {
        }])
 
         .factory('GetExpenditureAndIncome',['$resource',function ($resource){
-            return $resource(work + 'work/getExpenditureAndIncome')
+            return $resource(work + 'getExpenditureAndIncome')
         }])
 
 
