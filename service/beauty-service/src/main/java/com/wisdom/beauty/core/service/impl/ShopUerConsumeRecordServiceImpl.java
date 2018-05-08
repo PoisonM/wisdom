@@ -102,7 +102,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					c.andGoodsTypeIn(goodType);
 				}
-			} else {
+			}
+			if(ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRequest.getConsumeType())){
 				if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRequest.getGoodsType())
 						|| GoodsTypeEnum.PRODUCT.getCode().equals(userConsumeRequest.getGoodsType())) {
 					// 如果是充值卡或者是产品领取
@@ -126,7 +127,6 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					c.andGoodsTypeIn(goodType);
 				}
-
 			}
 		}
 		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
