@@ -116,14 +116,14 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 initAmount: '100',
                 initTimes: '20',
                 shopProductId: '101',
-                shopProductName: '迪奥',
+                shopProjectGroupName: '迪奥',
             }]
         }, function() {
             $(e.target).children('.checkBox').css('background', '#FF6666')
         })
     }
     $scope.$parent.leftTipFn = function() {
-        $state.go('pad-web.left_nav.orderList')
+        $state.go('pad-web.left_nav.makeSureOrder')
     }
 
 });

@@ -1,0 +1,119 @@
+<div class="stillOwedBox clearfix">
+    <ul class="stillOwedUl mt10" ng-click="goSelectRechargeType()">
+        <li>
+            <div>折扣类型</div>
+            <br/>
+            <br/>
+            <p>此处可以选择不同的充值卡，用于不同的商品折扣</p>
+            <span>余额充值></span>
+        </li>
+    </ul>
+    <div class="stillOwedTitle" ng-if="projectGroupRelRelationDTOS.length>0">套卡</div>
+    <div ng-repeat="item in projectGroupRelRelationDTOS">
+        <ul class="stillOwedContent">
+            <li>
+                <div class="contentBox">
+                    <span class="name">{{item.shopProjectGroupName}}</span>
+                    <span class="discount"><s>原价 {{item.projectInitAmount}}.00</s> 折扣 {{item.discount*100}}折</span>
+                    <label for="" class="discountPrice">折扣价 ¥</label>
+                    <input type="text" ng-value="(item.projectInitAmount*item.discount)">
+                    <!-- <label for="" class="serviceTimes">服务次数</label>
+                    <input type="text" ng-model="item.projectInitTimes"> -->
+                    <div class="delete">删除</div>
+                </div>
+                <div class="otherOperation">
+                    <ul>
+                        <li>
+                            <div>购买数量</div>
+                            <span>
+                                <b>-</b>
+                                <input type="text" value="1" ng-model="car">
+                                <b>＋</b>
+                            </span>
+                        </li>
+                        <li>
+                            <span>小计¥{{item.projectInitAmount*item.discount}}.00</span>
+                        </li>
+                        <li ng-click="goHousekeeper()">
+                            <div>关联员工</div>
+                            <span>></span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="stillOwedTitle" ng-if="shopUserProductRelationDTOS.length>0">产品</div>
+    <div ng-repeat="item in shopUserProductRelationDTOS">
+        <ul class="stillOwedContent">
+            <li>
+                <div class="contentBox">
+                    <span class="name"></span>
+                    <span class="discount"><s>原价 {{item.initAmount}}.00</s> 折扣 {{item.discount*100}}折</span>
+                    <label for="" class="discountPrice">折扣价 ¥</label>
+                    <input type="text" ng-value="(item.initAmount*item.discount)">
+                    <!-- <label for="" class="serviceTimes">服务次数</label>
+                    <input type="text" ng-model="item.initTimes"> -->
+                    <div class="delete">删除</div>
+                </div>
+                <div class="otherOperation">
+                    <ul>
+                        <li>
+                            <div>购买数量</div>
+                            <span>
+                                <b>-</b>
+                                <input type="text" value="1">
+                                <b>＋</b>
+                            </span>
+                        </li>
+                        <li>
+                            <span>小计¥{{item.initAmount*item.discount}}.00</span>
+                        </li>
+                        <li ng-click="goHousekeeper()">
+                            <div>关联员工</div>
+                            <span>></span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="stillOwedTitle" ng-if="shopUserProjectRelationDTOS.length>0">项目</div>
+    <div ng-repeat="item in shopUserProjectRelationDTOS">
+        <ul class="stillOwedContent">
+            <li>
+                <div class="contentBox">
+                    <span class="name">{{item.sysShopProjectName}}</span>
+                    <span class="discount"><s>原价 {{item.sysShopProjectInitAmount}}.00</s> 折扣 {{item.discount}}折</span>
+                    <label for="" class="discountPrice">折扣价 ¥</label>
+                    <input type="text" ng-value="(item.sysShopProjectInitAmount*item.discount)">
+                    <!--<label for="" class="serviceTimes">服务次数</label>
+                    <input type="text">-->
+                    <div class="delete">删除</div>
+                </div>
+                <div class="otherOperation">
+                    <ul>
+                        <li>
+                            <div>购买数量</div>
+                            <span>
+                                <b>-</b>
+                                <input type="text" value="1">
+                                <b>＋</b>
+                            </span>
+                        </li>
+                        <li>
+                            <span>小计¥{{item.sysShopProjectInitAmount*item.discount}}.00</span>
+                        </li>
+                        <li ng-click="goHousekeeper()">
+                            <div>关联员工</div>
+                            <span>></span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="stillOwedTitle">备注</div>
+    <textarea name="" rows="10"></textarea>
+    <button ng-click="goOrderListm()">确认</button>
+</div>

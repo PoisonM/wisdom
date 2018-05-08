@@ -20,7 +20,15 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     /**
      * 
      */
-    //
+    //验证码
+    .factory('GetUserValidateCode',['$resource',function ($resource){
+        return $resource(userIP + 'getUserValidateCode')
+    }])
+    //登录
+    .factory('ClerkLogin',['$resource',function ($resource){
+        return $resource(userIP + 'clerkLogin')
+    }])
+
     .factory('ShopDayAppointmentInfoByDate', ['$resource', function($resource) {
         return $resource(appointmentInfo + 'shopDayAppointmentInfoByDate')
     }])
@@ -236,7 +244,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UpdateShopClerkScheduleList', ['$resource', function($resource) {
         return $resource(beautyIP + 'clerkSchedule/updateShopClerkScheduleList')
     }])
-
+    //查询最近的一笔订单信息
+    .factory('GetShopUserRecentlyOrderInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'orderInfo/getShopUserRecentlyOrderInfo')
+    }])
 
 
 

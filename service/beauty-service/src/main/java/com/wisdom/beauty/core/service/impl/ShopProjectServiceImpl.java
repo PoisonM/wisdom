@@ -315,12 +315,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = null;
 		List<ShopProjectInfoResponseDTO> respon = new ArrayList<>();
 		for (ShopProjectInfoDTO shopProjectInfo : list) {
-			shopProjectInfoResponseDTO=new ShopProjectInfoResponseDTO();
-			shopProjectInfoResponseDTO.setDiscountPrice(shopProjectInfo.getDiscountPrice());
-			shopProjectInfoResponseDTO.setMarketPrice(shopProjectInfo.getMarketPrice());
-			shopProjectInfoResponseDTO.setProjectName(shopProjectInfo.getProjectName());
-			shopProjectInfoResponseDTO.setMaxContainTimes(shopProjectInfo.getMaxContainTimes());
-			shopProjectInfoResponseDTO.setId(shopProjectInfo.getId());
+            BeanUtils.copyProperties(shopProjectInfo, shopProjectInfoResponseDTO);
 			String[] urls = null;
 			if (map != null && StringUtils.isNotBlank(map.get(shopProjectInfo.getId()))) {
 				urls = map.get(shopProjectInfo.getId()).split("\\|");

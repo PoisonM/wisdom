@@ -2,11 +2,11 @@ package com.wisdom.beauty.controller.work;
 
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopWorkService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -19,14 +19,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "work")
@@ -45,7 +44,6 @@ public class ShopMemberAttendanceController {
 
     //获取门店某天的业绩
     @RequestMapping(value = "shopMemberAttendanceAnalyzeByDate", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
     public
     @ResponseBody
     ResponseDTO<List<ShopMemberAttendacneDTO>> shopMemberAttendanceAnalyzeByDate(@RequestParam String shopId,
@@ -90,11 +88,11 @@ public class ShopMemberAttendanceController {
      */
     @RequestMapping(value = "/getBossExpenditureAndIncome", method = {RequestMethod.GET})
     @ResponseBody
-    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getBossExpenditureAndIncome(@RequestParam String sysBossId) {
-
+    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getBossExpenditureAndIncome() {
+        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
-        userConsumeRequest.setSysBossId(sysBossId);
+        userConsumeRequest.setSysBossId(sysBossDTO.getId());
         userConsumeRequest.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
 
         pageParamVoDTO.setRequestData(userConsumeRequest);
@@ -214,5 +212,34 @@ public class ShopMemberAttendanceController {
         response.setResult(StatusConstant.SUCCESS);
         return response;
     }
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:  业绩明细
+    *@Date:2018/5/7 15:35
+    */
+    @RequestMapping(value = "/getBossPerformance ", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
+        long startTime = System.currentTimeMillis();
+        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
 
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        userConsumeRequest.setSysShopId(sysClerkDTO.getSysShopId());
+        userConsumeRequest.setSysBossId(sysBossDTO.getId());
+        userConsumeRequest.setGoodsTypeRequire(true);
+        pageParamVoDTO.setRequestData(userConsumeRequest);
+        pageParamVoDTO.setPageNo(0);
+        pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
+
+        List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecordList(pageParamVoDTO);
+
+        ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(userConsumeRecordResponseDTO);
+        logger.info("findMineConsume方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
 }

@@ -87,7 +87,7 @@ public class OrderTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/orderInfo/updateVirtualGoodsOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(get("/orderInfo/getConsumeDisplayIds").param("orderId", "20180424200819402").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -102,14 +102,14 @@ public class OrderTest {
         shopUserOrderDTO.setShopUserArchivesId("1");
         shopUserOrderDTO.setOrderId("20180424200819402");
         shopUserOrderDTO.setOperation("0");
-        shopUserOrderDTO.setGoodsType("3");
+        shopUserOrderDTO.setGoodsType("4");
         //用户与项目关系
 //        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
 //        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
 //        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
 
-
-        //用户与产品
+//
+//        //用户与产品
         List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
         ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
         shopUserProductRelationDTOS.add(productRelationDTO);

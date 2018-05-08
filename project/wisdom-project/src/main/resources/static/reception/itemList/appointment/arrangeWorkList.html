@@ -2,24 +2,25 @@
     <div class="arrangeWorkList_header">
         <div class="header_box">
             <div class="header_left">
-                2018年05月04日
+                <span ng-click="subMonth()"> < </span> {{param.nowdate}} <span ng-click="addMonth()"> > </span>
             </div>
             <div class="header_middle"></div>
-            <div ng-click="goCompileWorkList()" class="header_right">
+            <div ng-if="param.compileDateFlag" ng-click="goCompileWorkList()" class="header_right">
                 编辑
             </div>
         </div>
     </div>
-    <div class="arrangeWorkList_content">
+    <!--<div class="arrangeWorkList_content">
         <div class="content_box">
-            <div ng-if="true" class="float_top">
+            <div  id="topFlag" class="float_top">
                 <ul>
                     <li ng-repeat="item1 in tempWeek">
-                        {{item1}}
+                        {{item1[0]}}</br>
+                        {{item1[1]}}
                     </li>
                 </ul>
             </div>
-            <div ng-if="true" class="float_Left">
+            <div  id="leftFlag" class="float_Left">
                 <ul>
                     <li ng-repeat="item2 in tempUser">
                         {{item2.clerkInfo.name}}
@@ -31,7 +32,10 @@
             <div class="reality_content">
                 <div class="week_header">
                     <ul>
-                        <li ng-repeat="item3 in tempWeek">{{item3}}</li>
+                        <li ng-repeat="item3 in tempWeek">
+                            {{item3[0]}}</br>
+                            {{item3[1]}}
+                        </li>
                     </ul>
                 </div>
                 <div class="content_info">
@@ -52,6 +56,83 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>-->
+
+
+    <!--固定上部-->
+    <div id="showTop" class="arrangeWorkList_content">
+        <div class="content_box">
+            <div class="reality_content">
+                <div class="content_info">
+                    <div class="float_top_temp">
+                        <ul>
+                            <li ng-repeat="item1 in tempWeek">
+                                {{item1[0]}}</br>
+                                {{item1[1]}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div  ng-repeat="item4 in tempUser" class="content_info_box">
+                        <div class="content_info_left">
+                            <ul>
+                                <li>{{item4.clerkInfo.name}}</li>
+                            </ul>
+                        </div>
+                        <div ng-repeat="infoItem in item4.clerkSchInfo"
+                             ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" class="content_info_item">
+                            <span ng-if="infoItem.scheduleType == 3">{{$parent.$index}}全{{$index}}</span>
+                            <span ng-if="infoItem.scheduleType == 0">{{$parent.$index}}早{{$index}}</span>
+                            <span ng-if="infoItem.scheduleType == 1">{{$parent.$index}}中{{$index}}</span>
+                            <span ng-if="infoItem.scheduleType == 2">{{$parent.$index}}晚{{$index}}</span>
+                            <span ng-if="infoItem.scheduleType == 4">{{$parent.$index}}休{{$index}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--固定左部-->
+    <div id="showLeft" style="display: none" class="arrangeWorkList_content">
+        <div class="content_box">
+            <div class="shadow_box"></div>
+            <div class="reality_content">
+                <!--<div  class="float_Left">
+                    <ul>
+                        <li ng-repeat="item2 in tempUser">
+                            {{item2.clerkInfo.name}}
+                        </li>
+                    </ul>
+                </div>-->
+                <div class="content_info">
+                    <div class="float_top1">
+                        <ul>
+                            <li ng-repeat="item1 in tempWeek">
+                                {{item1[0]}}</br>
+                                {{item1[1]}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div  ng-repeat="item4 in tempUser" class="content_info_box">
+                        <div class="content_info_left">
+                            <ul>
+                                <li>{{item4.clerkInfo.name}}</li>
+                            </ul>
+                        </div>
+                        <div ng-repeat="infoItem in item4.clerkSchInfo"
+                             ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" class="content_info_item">
+                            <span ng-if="infoItem.scheduleType == 3">全{{$index}}</span>
+                            <span ng-if="infoItem.scheduleType == 0">早{{$index}}</span>
+                            <span ng-if="infoItem.scheduleType == 1">中{{$index}}</span>
+                            <span ng-if="infoItem.scheduleType == 2">晚{{$index}}</span>
+                            <span ng-if="infoItem.scheduleType == 4">休{{$index}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
