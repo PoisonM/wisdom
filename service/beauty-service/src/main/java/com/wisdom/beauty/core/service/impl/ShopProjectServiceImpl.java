@@ -315,6 +315,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = null;
 		List<ShopProjectInfoResponseDTO> respon = new ArrayList<>();
 		for (ShopProjectInfoDTO shopProjectInfo : list) {
+			shopProjectInfoResponseDTO=new ShopProjectInfoResponseDTO();
             BeanUtils.copyProperties(shopProjectInfo, shopProjectInfoResponseDTO);
 			String[] urls = null;
 			if (map != null && StringUtils.isNotBlank(map.get(shopProjectInfo.getId()))) {
