@@ -1,7 +1,7 @@
 angular.module('controllers',[]).controller('personalInformationCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetUserInfo','UserLoginOut','Global','BusinessUtil','$ionicLoading','$ionicPopup',
         function ($scope,$rootScope,$stateParams,$state,GetUserInfo,UserLoginOut,Global,BusinessUtil,$ionicLoading,$ionicPopup) {
-
+            $rootScope.title = "个人设置";
             $scope.param={
                 userInfo:{}
             }
