@@ -66,7 +66,7 @@ public class ArchivesController {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("获取档案列表或某个店的用户列表传入参数={}", "queryField = [" + queryField + "], sysShopId = [" + sysShopId + "], pageNo = [" + pageNo + "]");
-
+        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
@@ -78,7 +78,9 @@ public class ArchivesController {
         shopUserArchivesDTO.setSysShopId(sysShopId);
         shopUserArchivesDTO.setPhone(queryField);
         shopUserArchivesDTO.setSysUserName(queryField);
-
+        if (null != UserUtils.getBossInfo()) {
+            shopUserArchivesDTO.setSysBossId(UserUtils.getBossInfo().getId());
+        }
         pageParamVoDTO.setRequestData(shopUserArchivesDTO);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
@@ -87,7 +89,9 @@ public class ArchivesController {
 
         if (CommonUtils.objectIsEmpty(shopUserArchivesDTOS)) {
             logger.debug("获取档案列表或某个店的用户列表查询结果为空");
-            return null;
+            responseDTO.setErrorInfo("获取档案列表或某个店的用户列表查询结果为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
         }
 
         ArrayList<Object> lastList = new ArrayList<>();
@@ -120,7 +124,6 @@ public class ArchivesController {
         map.put("info", lastList);
         map.put("data", count);
 
-        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(map);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
