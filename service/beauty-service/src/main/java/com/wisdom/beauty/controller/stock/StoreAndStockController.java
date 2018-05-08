@@ -105,6 +105,7 @@ public class StoreAndStockController {
 
 		pageParamVoDTO.setRequestData(shopStockRecordDTO);
 		pageParamVoDTO.setPageNo(0);
+		pageParamVoDTO.setPaging(true);
 		pageParamVoDTO.setPageSize(shopStockRecordRequestDTO.getPageSize());
 		pageParamVoDTO.setStartTime(shopStockRecordRequestDTO.getStartTime());
 		pageParamVoDTO.setStartTime(shopStockRecordRequestDTO.getEndTime());
