@@ -407,7 +407,6 @@ public class OrderController {
             hashMap.put("productIds", ids);
             returnMap.put("product", hashMap);
         }
-        returnMap.put("", "");
         responseDTO.setResponseData(returnMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
