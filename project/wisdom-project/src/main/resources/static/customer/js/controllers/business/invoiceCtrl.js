@@ -38,7 +38,7 @@ angular.module('controllers',[]).controller('invoiceCtrl',
                 if(value=="1"){
                     if($scope.param.companyName==""||$scope.param.taxpayerNumber==""){
                         var alertPopup = $ionicPopup.alert({
-                            template: '<span style="font-size: 0.2rem;color: #333333;margin-left: 0.6rem">请填写正确的公司名称及纳税号</span>',
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.25rem">请填写正确的公司名称及纳税号</span>',
                             okText:'确定'
                         });
                         return;
