@@ -1,6 +1,6 @@
 PADWeb.controller('repaymentRecordCtrl', function($scope, $stateParams, ngDialog,Consumes) {
     /*-------------------------------------------定义头部信息----------------------------------------------*/
-    $scope.$parent.param.headerCash.title="还欠款记录"
+    $scope.$parent.$parent.param.headerCash.title="还欠款记录"
     $scope.$parent.$parent.param.headerCash.backContent = "今日收银记录"
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     console.log('还款记录');
