@@ -73,7 +73,7 @@ public interface ShopCustomerArchivesService {
      * @param shopUserArchivesDTO
      * @return
      */
-    ShopUserArchivesDTO getShopUserArchivesInfoByUserId(ShopUserArchivesDTO shopUserArchivesDTO);
+    ShopUserArchivesDTO getShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO);
 
 
 }
