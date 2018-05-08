@@ -44,7 +44,7 @@ public interface ShopStatisticsAnalysisService {
     /**
      * 查询新客个数
      */
-    int getShopNewUserNumber(String shopId, String startDate, String endDate);
+    int getShopNewUserNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * @Author:huan
@@ -71,6 +71,14 @@ public interface ShopStatisticsAnalysisService {
      * @Date:2018/4/23 11:17
      */
     List<ExpenditureAndIncomeResponseDTO> getExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据boss, startTime, endTime获取所有美容店业绩和耗卡
+     * @Date:2018/4/23 11:17
+     */
+    List<ExpenditureAndIncomeResponseDTO> getShopExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * @Author:zhanghuan

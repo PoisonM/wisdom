@@ -316,7 +316,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
 		for (ShopProductInfoDTO shopProductInfo : list) {
 			shopProductInfoResponseDTO= new ShopProductInfoResponseDTO();
-			BeanUtils.copyProperties(shopProductInfoResponseDTO,shopProductInfo);
+			BeanUtils.copyProperties(shopProductInfo,shopProductInfoResponseDTO);
 			String[] urls = null;
 			if (map != null && StringUtils.isNotBlank(map.get(shopProductInfo.getId()))) {
 				urls = map.get(shopProductInfo.getId()).split("\\|");

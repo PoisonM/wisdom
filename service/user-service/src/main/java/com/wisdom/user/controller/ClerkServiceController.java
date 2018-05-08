@@ -96,7 +96,7 @@ public class ClerkServiceController {
 	 */
 	@RequestMapping(value = "getClerkInfoList", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
-	List<SysClerkDTO> getClerkInfoList(@RequestParam String sysShopId, @RequestParam String sysBossId,
+	List<SysClerkDTO> getClerkInfoList(@RequestParam String sysBossId,
 			@RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime,
 			int pageSize) {
 
@@ -104,7 +104,6 @@ public class ClerkServiceController {
 
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 		SysClerkDTO sysClerkDTO = new SysClerkDTO();
-		sysClerkDTO.setSysShopId(sysShopId);
 		sysClerkDTO.setSysBossId(sysBossId);
 		PageParamVoDTO<SysClerkDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		pageParamVoDTO.setRequestData(sysClerkDTO);
