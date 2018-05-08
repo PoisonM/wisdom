@@ -408,7 +408,7 @@ public class OrderController {
             returnMap.put("product", hashMap);
         }
 
-        responseDTO.setResponseData(returnMap);
+        responseDTO.setResponseData(null == returnMap ? new HashMap<>(1) : returnMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
