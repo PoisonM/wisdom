@@ -277,14 +277,13 @@
         COUNT(1)
         from business_order o
         LEFT JOIN sys_user u on u.id=o.sys_user_id
-        LEFT JOIN pay_record p on o.order_id = p.order_id
         LEFT JOIN order_cop_relation r ON o.order_id=r.order_id
         LEFT JOIN (
-        select order_id,max(pay_date) pay_date
+        select sys_user_id,order_id,out_trade_no,`status`,openid,transaction_id,amount,pay_type,invoice,max(pay_date) pay_date
         from pay_record
         group by order_id
-        ) b ON p.pay_date=b.pay_date
-        WHERE 1=1 AND p.order_id=b.order_id
+        ) p ON o.order_id = p.order_id
+        WHERE 1=1
         <if test="param != null and param != ''">
             AND (u.mobile=#{param} OR o.order_id = #{param})
         </if>
@@ -305,14 +304,13 @@
         <include refid="Base_BusinessOrder_list"/>,u.nickname,u.mobile,u.identify_number,p.transaction_id,p.pay_date,p.status AS pay_status,r.waybill_number
         from business_order o
         LEFT JOIN sys_user u on u.id=o.sys_user_id
-        LEFT JOIN pay_record p on o.order_id = p.order_id
         LEFT JOIN order_cop_relation r ON o.order_id=r.order_id
         LEFT JOIN (
-        select order_id,max(pay_date) pay_date
+        select sys_user_id,order_id,out_trade_no,`status`,openid,transaction_id,amount,pay_type,invoice,max(pay_date) pay_date
         from pay_record
         group by order_id
-        ) b ON p.pay_date=b.pay_date
-        WHERE 1=1 AND p.order_id=b.order_id
+        ) p ON o.order_id = p.order_id
+        WHERE 1=1
         <if test="param != null and param != ''">
             AND (u.mobile=#{param} OR o.order_id = #{param})
         </if>
@@ -434,7 +432,7 @@
             resultMap="BusinessOrderResultMap">
         SELECT ord.order_id,ord.update_date,ord.`status`,ord.type,usr.mobile,ord.user_order_address_id
         ,pay.amount,MAX(pay.pay_date) AS pay_date,pay.transaction_id
-        ,oar.user_name_address,oar.user_phone_address,CONCAT(oar.user_province_address," ",oar.user_city_address," ",oar.user_detail_address) as userAddress
+        ,oar.user_name_address,oar.user_phone_address,oar.user_province_address,oar.user_city_address,oar.user_detail_address
         ,pro.`name`,pro.price,pro.product_id,pro.brand
         ,opr.product_spec,opr.product_num
         FROM business_order ord
