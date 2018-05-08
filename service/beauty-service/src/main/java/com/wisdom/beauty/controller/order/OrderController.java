@@ -210,7 +210,8 @@ public class OrderController {
                     ShopUserProjectRelationDTO alreadyRelation = alreadyIterator.next();
                     while (newIterator.hasNext()) {
                         ShopUserProjectRelationDTO newRelation = newIterator.next();
-                        if (!newRelation.getId().equals(alreadyRelation.getId())) {
+                        //不是同一个项目
+                        if (!newRelation.getSysShopProjectId().equals(alreadyRelation.getSysShopProjectId())) {
                             if (CommonCodeEnum.ADD.getCode().equals(operation)) {
                                 helperList.add(newRelation);
                             } else if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
@@ -260,7 +261,8 @@ public class OrderController {
                     ShopUserProductRelationDTO alreadyRelation = alreadyIterator.next();
                     while (newIterator.hasNext()) {
                         ShopUserProductRelationDTO newRelation = newIterator.next();
-                        if (!newRelation.getId().equals(alreadyRelation.getId())) {
+                        //不是同一个产品
+                        if (!newRelation.getShopProductId().equals(alreadyRelation.getShopProductId())) {
                             if (CommonCodeEnum.ADD.getCode().equals(operation)) {
                                 helperList.add(newRelation);
                             } else if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
@@ -309,7 +311,7 @@ public class OrderController {
                     ShopUserProjectGroupRelRelationDTO alreadyRelation = alreadyIterator.next();
                     while (newIterator.hasNext()) {
                         ShopUserProjectGroupRelRelationDTO newRelation = newIterator.next();
-                        if (!newRelation.getId().equals(alreadyRelation.getId())) {
+                        if (!newRelation.getShopProjectGroupId().equals(alreadyRelation.getShopProjectGroupId())) {
                             if (CommonCodeEnum.ADD.getCode().equals(operation)) {
                                 helperList.add(newRelation);
                             } else if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
