@@ -58,6 +58,17 @@ public class LoginServiceImpl implements LoginService{
             return StatusConstant.VALIDATECODE_ERROR;
         }
 
+        UserInfoDTO userInfoDTO1 = new UserInfoDTO();
+        userInfoDTO1.setMobile(loginDTO.getUserPhone());
+        List<UserInfoDTO> userInfoDTOList1 = userMapper.getUserByInfo(userInfoDTO1);
+        if(userInfoDTOList1!=null&&userInfoDTOList1.size()>0){
+            for(UserInfoDTO user : userInfoDTOList1){
+                if(!user.getUserType().equals("finance-1")){
+                    return "phoneNotUse";
+                }
+            }
+        }
+
         String logintoken = null;
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         RedisLock redisLock = new RedisLock("userInfo" + loginDTO.getUserPhone());
@@ -71,6 +82,7 @@ public class LoginServiceImpl implements LoginService{
 
             if(userInfoDTOList.size()>0)
             {
+
                 userInfoDTO = userInfoDTOList.get(0);
                 if(userInfoDTO.getMobile()==null)
                 {
@@ -85,7 +97,9 @@ public class LoginServiceImpl implements LoginService{
                     userInfoDTO.setLoginDate(new Date());
                     userInfoDTO.setLoginIp(loginIP);
                     userMapper.updateUserInfo(userInfoDTO);
-                }
+                }else if(!userInfoDTO.getMobile().equals(loginDTO.getUserPhone())){
+                        return "phoneIsError";
+                    }
                 else
                 {
                     return StatusConstant.WEIXIN_ATTENTION_ERROR;
