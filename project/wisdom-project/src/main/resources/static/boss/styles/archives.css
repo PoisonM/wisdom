@@ -13,14 +13,22 @@
 .item .col4BC647{color: #4BC647;}
 .colfff{color: #ffffff;}
 .item .colfff{color: #ffffff;}
-.partialFiles .fs11{font-size: 11px;}
-.partialFiles .fs12{font-size:12px;}
-.partialFiles .fs13{font-size:13px;}
-.partialFiles .fs15{font-size:15px;}
-.partialFiles .fs14{font-size:14px;}
-.partialFiles .fs16{font-size:16px;}
-.partialFiles .fs17{font-size:17px;}
-.partialFiles .fs18{font-size:18px;}
+.partialFiles  .fs11{font-size: 11px;}
+.partialFiles  .fs12{font-size:12px;}
+.partialFiles  .fs13{font-size:13px;}
+.partialFiles  .fs15{font-size:15px;}
+.partialFiles  .fs14{font-size:14px;}
+.partialFiles  .fs16{font-size:16px;}
+.partialFiles  .fs17{font-size:17px;}
+.partialFiles  .fs18{font-size:18px;}
+.partialFiles .item .fs11{font-size: 11px;}
+.partialFiles .item .fs12{font-size:12px;}
+.partialFiles .item .fs13{font-size:13px;}
+.partialFiles .item .fs15{font-size:15px;}
+.partialFiles .item .fs14{font-size:14px;}
+.partialFiles .item .fs16{font-size:16px;}
+.partialFiles .item .fs17{font-size:17px;}
+.partialFiles .item .fs18{font-size:18px;}
 .img{width:19px;height:19px;}
 .W33{width: 33.3%;}
 

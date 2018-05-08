@@ -1,8 +1,9 @@
 <ion-view class="bg">
-    <ion-content>
+    <ion-content ng-click="none()">
         <!--日期部分-->
-        <div class="bgRgb">
-            <img src="images/work/date.png" class="dateImg" ><span class="date">2016-03-01</span><img src="images/work/drop-down.png" class="dropImg">
+        <div class="bgRgb" >
+            <input  class="time orderPayStartTime laydate-icon fs15 colff" id="time"  ng-click="dataS('#time');$event.stopPropagation()" style="background-color: #fff0;border:none;text-indent:55px;background-image:url('images/work/date.png');background-size: 20px 20px;background-position:10% center;" value="{{date}}">
+
         </div>
         <ion-item  class=" bgfff row " ng-repeat="item in appointment"   ng-click="healthClubGo(item.bossRelationDTO.sysShopId)" >
                 <div class="col col-80" >

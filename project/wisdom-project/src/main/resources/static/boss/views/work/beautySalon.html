@@ -1,10 +1,11 @@
 <ion-view class="bg">
-    <ion-content>
+    <ion-content ng-click="none()">
         <!--日期部分-->
         <div class="bgRgb">
-            <img src="images/work/date.png" class="dateImg" ><span class="date">2016-03-01</span><img src="images/work/drop-down.png" class="dropImg">
+            <input  class="time orderPayStartTime laydate-icon fs15 colff" id="time"  ng-click="dataS('#time');$event.stopPropagation()" style="background-color: #fff0;border:none;text-indent:55px;background-image:url('images/work/date.png');background-size: 20px 20px;background-position:10% center;" value="{{date}}">
+
         </div>
-        <ion-item  class=" bgfff row" ng-repeat="(key,val) in beautySalon"  ng-click="canceledGo()">
+        <ion-item  class=" bgfff row" ng-repeat="(key,val) in beautySalon"  ng-click="canceledGo(val.sysClerkDTO.id)">
             <div class="col col-15" style="line-height: 49px;">
                 <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;">
                     <img ng-src="{{val.sysClerkDTO.photo}}">

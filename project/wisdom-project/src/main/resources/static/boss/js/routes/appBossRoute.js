@@ -203,7 +203,7 @@ define(['appBoss'], function(app){
                 /*唯美度某美容院预约*/
 
                     .state('beautySalon', {
-                        url: '/beautySalon/:sysShopId',
+                        url: '/beautySalon/:sysShopId/:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'beautySalonCtrl',
                         resolve: {
@@ -273,7 +273,7 @@ define(['appBoss'], function(app){
                 /*已确认*/
 
                     .state('confirmed', {
-                        url: '/confirmed',
+                        url: '/confirmed/:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'confirmedCtrl',
                         resolve: {
@@ -301,7 +301,7 @@ define(['appBoss'], function(app){
                 /*取消预约*/
 
                     .state('cancelReservation', {
-                        url: '/cancelReservation',
+                        url: '/cancelReservation/:sysShopId/:sysClerkId/:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'cancelReservationCtrl',
                         resolve: {
@@ -329,7 +329,7 @@ define(['appBoss'], function(app){
                 /*已取消预约的页面*/
                 $stateProvider
                     .state('canceled', {
-                        url: '/canceled',
+                        url: '/canceled/:sysShopId/:sysClerkId/:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'canceledCtrl',
                         resolve: {

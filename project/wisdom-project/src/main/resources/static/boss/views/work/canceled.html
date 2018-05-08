@@ -1,8 +1,10 @@
 <ion-view class="bg">
-    <ion-content>
+    <ion-content class="mb45" ng-click="none()">
         <!--日期部分-->
-        <div style="background:rgb(255,102,102);width: 100%;height: 40px;line-height: 40px">
-            <img src="images/work/date.png" class="dateImg" ><span class="date">2016-03-01</span><img src="images/work/drop-down.png" class="dropImg"><span class="ml10">周六</span ><span class="ml10">全班</span>
+        <div class="bgRgb">
+            <input  class="time orderPayStartTime laydate-icon fs15 colff" id="time"  ng-click="dataS('#time');$event.stopPropagation()" style="background-color: #fff0;border:none;text-indent:55px;background-image:url('images/work/date.png');background-size: 20px 20px;background-position:10% center;" value="{{date}}">
+            <span class="fs14 colff mr20 ml10">周五</span>
+            <span class="fs14 colff">全班</span>
         </div>
         <ion-item  class="bgfff row mb10" ng-repeat="item in canceled"  ng-click="confirmedGo()">
             <div class="col col-20" style="line-height: 49px;">
@@ -15,7 +17,15 @@
                 <p class="fs12 col88">
                     <img src="images/work/minute.png" style="display: inline-block;width: 15px;height: 15px;margin-left: 5px"><span style="margin-left: 17px">{{item.appointmentInfo.appointEndTime|date:'HH'}}~{{item.appointmentInfo.appointStartTime|date:'HH'}}</span><span class="ml10">{{item.appointmentInfo.appointPeriod == null?0:item.appointmentInfo.appointPeriod}}分钟</span>
                 <p>{{item.projectNumber}}个项目</p>
-                <p>状态：{{item.appointmentInfo.status}}</p>
+                <p>状态：
+                    <span ng-if="item.appointmentInfo.status == 0">未开始</span>
+                    <span ng-if="item.appointmentInfo.status == 1">"已确认</span>
+                    <span ng-if="item.appointmentInfo.status == 2">服务中</span>
+                    <span ng-if="item.appointmentInfo.status == 3">已完成</span>
+                    <span ng-if="item.appointmentInfo.status == 4">取消预约</span>
+                    <span ng-if="item.appointmentInfo.status == 5">进行中</span>
+                    <span ng-if="item.appointmentInfo.status == 6">已结束</span>
+                </p>
                 </p >
             </div>
         </ion-item>
