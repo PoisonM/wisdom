@@ -164,11 +164,29 @@ public class IncomeService {
                 }
                 if(!"".equals(incomeRecordDTO.getNickName()) && incomeRecordDTO.getNickName() != null)
                 {
-                    incomeRecordDTO.setNickName(URLDecoder.decode(URLDecoder.decode(incomeRecordDTO.getNickName(),"utf-8"),"utf-8"));
+                    String nickNameW = incomeRecordDTO.getNickName();
+                    while(true){
+                        if(nickNameW.contains("%25")){
+                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                        }else{
+                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            break;
+                        }
+                    }
+                    incomeRecordDTO.setNickName(nickNameW);
                 }
                 if(!"".equals(incomeRecordDTO.getNextUserNickName()) && incomeRecordDTO.getNextUserNickName() != null)
                 {
-                    incomeRecordDTO.setNextUserNickName(URLDecoder.decode(URLDecoder.decode(incomeRecordDTO.getNextUserNickName(),"utf-8"),"utf-8"));
+                    String nickNameW = incomeRecordDTO.getNextUserNickName();
+                    while(true){
+                        if(nickNameW.contains("%25")){
+                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                        }else{
+                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            break;
+                        }
+                    }
+                    incomeRecordDTO.setNextUserNickName(nickNameW);
                 }
             } catch (UnsupportedEncodingException e) {
                 logger.info("service -- 根据条件查询佣金奖励getIncomeRecordByPageParam方法转换nickName失败" );
