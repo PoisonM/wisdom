@@ -24,16 +24,16 @@
             </a>
 
             <label class="item item-input">
-                <input type="text" placeholder="请输入您的真实姓名" ng-model="param.userName">
+                <input type="text" placeholder="请输入您的真实姓名" ng-model="param.userName" required oninvalid="setCustomValidity('不能为空')" oninput="setCustomValidity('')" >
             </label>
             <label class="item item-input">
-                <input type="text" placeholder="请输入与您姓名一致的身份证号" ng-model="param.userIdentifyNumber">
+                <input type="text" placeholder="请输入与您姓名一致的身份证号" ng-model="param.userIdentifyNumber" required oninvalid="setCustomValidity('不能为空')" oninput="setCustomValidity('')" >
             </label>
             <label class="item item-input">
-                <input type="text" placeholder="请输入登录美享平台手机号" maxlength="11" ng-model="param.userPhone">
+                <input type="text" placeholder="请输入登录美享平台手机号" maxlength="11" ng-model="param.userPhone" required oninvalid="setCustomValidity('不能为空')" oninput="setCustomValidity('')" >
             </label>
             <label class="item item-input" style="font-size: 0.34rem;color: #cccccc">
-                <input type="text" placeholder="请输入验证码" ng-model="param.validateCode">
+                <input type="text" placeholder="请输入验证码" ng-model="param.validateCode" required oninvalid="setCustomValidity('不能为空')" oninput="setCustomValidity('')" >
             </label>
             <button class="button button-small"
                     ng-if="param.validateCodeButtonStatus"
