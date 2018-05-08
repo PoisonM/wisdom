@@ -190,12 +190,12 @@
 
 .arrangeWorkList .shadow_box{
     width: 80px;
-    height: 68px;
+    height: 72px;
     background-color: #ffffff;
     position: absolute;
-    top: 0px;
+    top: 44px;
     left: 0px;
-    z-index: 1000;
+    z-index: 99000;
 }
 
 
@@ -282,6 +282,81 @@
 .arrangeWorkList .bg_no{
     background-color: #E2E2E2;
     color: #666666;
+}
+
+
+
+
+.arrangeWorkList table {
+    background-color: #ffffff !important;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+}
+.arrangeWorkList .table_box{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    float: left;
+}
+.arrangeWorkList .table_box .tb_test thead td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+    line-height: 25px;
+    padding-top: 10px;
+}
+.arrangeWorkList .table_box .tb_test thead td:nth-child(1) div{
+    width: 80px;
+    height: 72px;
+    line-height: 72px;
+}
+.arrangeWorkList .table_box .tb_test thead td:nth-child(1){
+    /*padding-left: 72px;*/
+}
+
+.arrangeWorkList .table_box .tb_test tbody td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+}
+.arrangeWorkList .table_box .tb_test tbody td:nth-child(1){
+    width: 80px;
+}
+.arrangeWorkList .table_box .tb_test tbody td:nth-child(1) div{
+    width: 80px;
+    height: 68px;
+    line-height: 68px;
+}
+
+.arrangeWorkList .table_box #ofix1_tb_header{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    float: left;
+}
+.arrangeWorkList .table_box #ofix1_tb_header thead td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+    line-height: 25px;
+    padding-top: 10px;
+}
+.arrangeWorkList .table_box #ofix1_tb_header thead td:nth-child(1){
+    padding-left: 80px;
+}
+
+
+.arrangeWorkList .table_box #ofix1_tb_left tbody td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+}
+.arrangeWorkList .table_box #ofix1_tb_left tbody td:nth-child(1) div{
+    width: 80px;
+    height: 68px;
+    line-height: 25px;
+    padding-top: 10px;
 }
 
 

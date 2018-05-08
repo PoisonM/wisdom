@@ -10,69 +10,43 @@
             </div>
         </div>
     </div>
-    <!--<div class="arrangeWorkList_content">
-        <div class="content_box">
-            <div  id="topFlag" class="float_top">
-                <ul>
-                    <li ng-repeat="item1 in tempWeek">
-                        {{item1[0]}}</br>
-                        {{item1[1]}}
-                    </li>
-                </ul>
-            </div>
-            <div  id="leftFlag" class="float_Left">
-                <ul>
-                    <li ng-repeat="item2 in tempUser">
-                        {{item2.clerkInfo.name}}
-                    </li>
-                </ul>
-            </div>
-            <div class="shadow_box"></div>
-
-            <div class="reality_content">
-                <div class="week_header">
-                    <ul>
-                        <li ng-repeat="item3 in tempWeek">
-                            {{item3[0]}}</br>
-                            {{item3[1]}}
-                        </li>
-                    </ul>
-                </div>
-                <div class="content_info">
-                    <div  ng-repeat="item4 in tempUser" class="content_info_box">
-                        <div class="content_info_left">
-                            <ul>
-                                <li>{{item4.clerkInfo.name}}</li>
-                            </ul>
+    <div class="table_box" id="divBox1"  style=" overflow: auto;height: 100%;width: 100%;float: left;">
+        <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
+            <thead>
+                <tr>
+                    <td ng-repeat="item1 in tempWeek">
+                        <div>
+                            {{item1[0]}}
+                            </br>{{item1[1]}}
                         </div>
-                        <div ng-repeat="infoItem in item4.clerkSchInfo"
-                             ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" class="content_info_item">
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item4 in tempUser">
+                    <td ng-repeat="infoItem in item4.clerkSchInfo">
+                        <div ng-if="$index == 0">{{item4.clerkInfo.name}}</div>
+                        <div ng-if="$index != 0" ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" >
                             <span ng-if="infoItem.scheduleType == 3">全</span>
                             <span ng-if="infoItem.scheduleType == 0">早</span>
                             <span ng-if="infoItem.scheduleType == 1">中</span>
                             <span ng-if="infoItem.scheduleType == 2">晚</span>
                             <span ng-if="infoItem.scheduleType == 4">休</span>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="shadow_box"></div>
+    </div>
 
 
-    <!--固定上部-->
+
+    <!--固定上部
     <div id="showTop" class="arrangeWorkList_content">
         <div class="content_box">
             <div class="reality_content">
                 <div class="content_info">
-                    <div class="float_top_temp">
-                        <ul>
-                            <li ng-repeat="item1 in tempWeek">
-                                {{item1[0]}}</br>
-                                {{item1[1]}}
-                            </li>
-                        </ul>
-                    </div>
                     <div  ng-repeat="item4 in tempUser" class="content_info_box">
                         <div class="content_info_left">
                             <ul>
@@ -94,18 +68,18 @@
         </div>
     </div>
 
-    <!--固定左部-->
+    &lt;!&ndash;固定左部&ndash;&gt;
     <div id="showLeft" style="display: none" class="arrangeWorkList_content">
         <div class="content_box">
             <div class="shadow_box"></div>
             <div class="reality_content">
-                <!--<div  class="float_Left">
+                &lt;!&ndash;<div  class="float_Left">
                     <ul>
                         <li ng-repeat="item2 in tempUser">
                             {{item2.clerkInfo.name}}
                         </li>
                     </ul>
-                </div>-->
+                </div>&ndash;&gt;
                 <div class="content_info">
                     <div class="float_top1">
                         <ul>
@@ -134,5 +108,5 @@
             </div>
 
         </div>
-    </div>
+    </div>-->
 </div>

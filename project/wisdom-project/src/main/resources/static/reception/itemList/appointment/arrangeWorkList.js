@@ -20,7 +20,8 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
 
     $scope.queryScheduleList = function (searchDate) {
         GetShopClerkScheduleList.get({
-            searchDate:searchDate
+            searchDate:searchDate,
+            sysShopId:""
         },function (data) {
             if(data.result == "0x00001"){
                 $scope.tempWeek = data.responseData.dateDetail
@@ -58,134 +59,13 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"))
         $scope.compileDateFn()
     }
-
-
-
-
-
-
-    var startx, starty;
-    //获得角度
-    function getAngle(angx, angy) {
-        return Math.atan2(angy, angx) * 180 / Math.PI;
-    };
-
-    var tempTop = ""
-    var tempLeft = ""
-    //根据起点终点返回方向 1向上 2向下 3向左 4向右 0未滑动
-    function getDirection(startx, starty, endx, endy) {
-        var angx = endx - startx;
-        var angy = endy - starty;
-        var result = 0;
-
-        //如果滑动距离太短
-        if (Math.abs(angx) < 2 && Math.abs(angy) < 2) {
-            return result;
+    //调用固定表头类
+    var tiemInt = setInterval(function () {
+        if($("#tbTest1 thead tr td").length != 0){
+            var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
+            clearTimeout(tiemInt)
         }
-
-        var angle = getAngle(angx, angy);
-
-        if (angle >= -135 && angle <= -45) {
-            result = 1;
-
-            /*$("#showTop").show()
-            $("#showLeft").hide()
-            /!*获取本次滑动距离*!/
-            tempTop = $("#showTop .reality_content").scrollTop()
-            /!*设置上次滑动距离*!/
-            $("#showTop .reality_content").scrollLeft(tempLeft)
-            $("#showTop .reality_content .float_top").scrollLeft(tempLeft)*/
-            /*$(".content_info").css({"padding-top":"67px"})
-            $(".float_top_temp").css({"position":"absolute","top":"0px"})*/
-
-
-            $("#showTop .reality_content").css({"overflow-y":"scroll"})
-            $("#showTop .reality_content").css({"overflow-x":"hidden"})
-        } else if (angle > 45 && angle < 135) {
-            result = 2;
-            /*$("#showTop").show()
-            $("#showLeft").hide()
-
-            tempTop = $("#showTop .reality_content").scrollTop()
-            $("#showTop .reality_content").scrollLeft(tempLeft)
-            $("#showTop .reality_content").scrollLeft(tempLeft)
-            $("#showTop .reality_content .float_top").scrollLeft(tempLeft)*/
-
-            /*----测试----*/
-           /* $(".content_info").css({"padding-top":"67px"})
-            $(".float_top_temp").css({"position":"absolute","top":"0px"})*/
-
-            $("#showTop .reality_content").css({"overflow-y":"scroll"})
-            $("#showTop .reality_content").css({"overflow-x":"hidden"})
-        } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-            result = 3;
-
-            /*$("#showTop").hide()
-            $("#showLeft").show()
-            tempLeft = $("#showLeft .reality_content").scrollLeft()
-            $("#showLeft .reality_content").scrollTop(tempTop)
-            $("#showLeft .reality_content").scrollTop(tempTop)
-            $("#showTop .reality_content .float_left").scrollTop(tempTop)*/
-           /* $(".content_info").css({"padding-top":"0px"})
-            $(".float_top_temp").css({"position":"absolute","top":"0px"})*/
-
-            $("#showTop .reality_content").css({"overflow-y":"hidden"})
-            $("#showTop .reality_content").css({"overflow-x":"scroll"})
-        } else if (angle >= -45 && angle <= 45) {
-            result = 4;
-
-            /*$("#showTop").hide()
-            $("#showLeft").show()
-            tempLeft = $("#showLeft .reality_content").scrollLeft()
-            $("#showLeft .reality_content").scrollTop(tempTop)
-            $("#showTop .reality_content .float_left").scrollTop(tempTop)*/
-
-
-           /* $(".content_info").css({"padding-top":"0px"})
-            $(".float_top_temp").css({"position":"absolute","top":"0px"})*/
-
-            $("#showTop .reality_content").css({"overflow-y":"hidden"})
-            $("#showTop .reality_content").css({"overflow-x":"scroll"})
-        }
-
-        return result;
-    }
-    //手指接触屏幕
-    document.addEventListener("touchstart", function(e) {
-        startx = e.touches[0].pageX;
-        starty = e.touches[0].pageY;
-    }, false);
-    //手指离开屏幕
-    document.addEventListener("touchend", function(e) {
-        var endx, endy;
-        endx = e.changedTouches[0].pageX;
-        endy = e.changedTouches[0].pageY;
-        var direction = getDirection(startx, starty, endx, endy);
-        switch (direction) {
-            case 0:
-                // alert("未滑动！");
-                break;
-            case 1:
-                // alert("向上！")
-                $scope.topLeftFlag = false
-                break;
-            case 2:
-                // alert("向下！")
-                $scope.topLeftFlag = false
-                break;
-            case 3:
-                // alert("向左！")
-                $scope.topLeftFlag = true
-                break;
-            case 4:
-                // alert("向右！")
-                $scope.topLeftFlag = true
-                break;
-            default:
-        }
-    }, false);
-
-
+    },100)
 
     $scope.tempTime = $scope.param.nowdate.replace("年","-").replace("月","-1")
     $scope.goCompileWorkList = function () {
