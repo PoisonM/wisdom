@@ -432,7 +432,7 @@
             resultMap="BusinessOrderResultMap">
         SELECT ord.order_id,ord.update_date,ord.`status`,ord.type,usr.mobile,ord.user_order_address_id
         ,pay.amount,MAX(pay.pay_date) AS pay_date,pay.transaction_id
-        ,oar.user_name_address,oar.user_phone_address,CONCAT(oar.user_province_address," ",oar.user_city_address," ",oar.user_detail_address) as userAddress
+        ,oar.user_name_address,oar.user_phone_address,oar.user_province_address,oar.user_city_address,oar.user_detail_address
         ,pro.`name`,pro.price,pro.product_id,pro.brand
         ,opr.product_spec,opr.product_num
         FROM business_order ord
