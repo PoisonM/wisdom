@@ -276,8 +276,9 @@
         SELECT
         COUNT(1)
         from business_order o
-        LEFT JOIN sys_user u on u.id = o.sys_user_id
+        LEFT JOIN sys_user u on u.id=o.sys_user_id
         LEFT JOIN pay_record p on o.order_id = p.order_id
+        LEFT JOIN order_cop_relation r ON o.order_id=r.order_id
         LEFT JOIN (
         select order_id,max(pay_date) pay_date
         from pay_record
@@ -285,7 +286,7 @@
         ) b ON p.pay_date=b.pay_date
         WHERE 1=1 AND p.order_id=b.order_id
         <if test="param != null and param != ''">
-            AND (u.mobile=#{param} OR u.identify_number = #{param})
+            AND (u.mobile=#{param} OR o.order_id = #{param})
         </if>
         <if test='timeType == "1" '>
             AND p.pay_date BETWEEN #{startTime} AND #{endTime}
