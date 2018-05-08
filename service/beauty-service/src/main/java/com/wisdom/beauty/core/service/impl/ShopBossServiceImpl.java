@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author: 赵得良
  * Date:     2018/4/3 0003 15:06
- * Description: 老板相关
+ * Description: 老板与店相关
  */
 @Service("shopBossService")
 public class ShopBossServiceImpl implements ShopBossService {

@@ -57,7 +57,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		// 排序
 		criteria.setOrderByClause("create_date");
 		// 分页
-		if (pageParamVoDTO.getPageSize() != 0) {
+		if (pageParamVoDTO.getPaging()) {
 			criteria.setLimitStart(pageParamVoDTO.getPageNo());
 			criteria.setPageSize(pageParamVoDTO.getPageSize());
 		}

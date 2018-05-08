@@ -42,6 +42,9 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //0添加  1删除
     private String operation;
 
+    //订单价格
+    private String orderPrice;
+
     //用户与项目关系
     private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
 
@@ -50,6 +53,14 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+
+    public String getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(String orderPrice) {
+        this.orderPrice = orderPrice;
+    }
 
     public String getOperation() {
         return operation;

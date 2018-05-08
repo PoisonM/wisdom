@@ -6,19 +6,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.StockStyleEnum;
+import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +64,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	/**
 	 * 查询仓库列表
-	 * 
+	 *
 	 * @param pageParamDTO
 	 *            分页对象
 	 * @return
@@ -85,23 +90,24 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	/**
 	 * 插入一条出入库记录
-	 * 
+	 *
 	 * @param shopStockRecordDTO
 	 *            出入库表实体对象
 	 * @return
 	 */
 	@Override
-	public void insertStockRecord(ShopStockRecordDTO shopStockRecordDTO) {
-
+	public int insertStockRecord(ShopStockRecordDTO shopStockRecordDTO) {
+		int result = 0;
 		try {
 
-			shopStockRecordMapper.insert(shopStockRecordDTO);
+			result = shopStockRecordMapper.insert(shopStockRecordDTO);
 
 		} catch (Exception e) {
 			logger.info(e.getMessage());
 		}
 
 		logger.info("插入出入库记录成功" + shopStockRecordDTO.getId());
+		return result;
 	}
 
 	@Override
@@ -153,10 +159,19 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockResponseDTO.setProductDate(shopStock.getProductDate());
 			shopStockResponseDTO.setStockNumber(shopStock.getStockNumber());
 			shopStockResponseDTO.setStockPrice(shopStock.getStockPrice());
-			shopStockResponseDTO.setProductCode(map.get(shopStock.getShopProcId()).getProductCode());
-			shopStockResponseDTO.setProductSpec(map.get(shopStock.getShopProcId()).getProductSpec());
-			shopStockResponseDTO.setProductUnit(map.get(shopStock.getShopProcId()).getProductUnit());
-			shopStockResponseDTO.setImageUrl(map.get(shopStock.getShopProcId()).getImageUrl());
+			if (map.get(shopStock.getShopProcId()) != null) {
+				shopStockResponseDTO.setProductCode(map.get(shopStock.getShopProcId()).getProductCode());
+			}
+			if ((map.get(shopStock.getShopProcId()) != null)) {
+				shopStockResponseDTO.setProductSpec(map.get(shopStock.getShopProcId()).getProductSpec());
+			}
+			if (map.get(shopStock.getShopProcId()) != null) {
+				shopStockResponseDTO.setProductUnit(map.get(shopStock.getShopProcId()).getProductUnit());
+			}
+			if (map.get(shopStock.getShopProcId()) != null) {
+				shopStockResponseDTO.setImageUrl(map.get(shopStock.getShopProcId()).getImageUrl());
+			}
+
 			shopStockResponses.add(shopStockResponseDTO);
 		}
 
@@ -191,6 +206,18 @@ public class ShopStockServiceImpl implements ShopStockService {
 			c.andShopStoreIdEqualTo(shopStockRecord.getShopStoreId());
 		}
 		if (StringUtils.isNotBlank(shopStockRecord.getStockStyle())) {
+			if (StockStyleEnum.IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())) {
+				List<String> styles = new ArrayList<>();
+				styles.add(StockStyleEnum.IN_STORAGE.getCode());
+				styles.add(StockStyleEnum.SCAN_IN_STORAGE.getCode());
+				c.andStockStyleIn(styles);
+			}
+			if (StockStyleEnum.OUT_STORAGE.getCode().equals(shopStockRecord.getStockStyle())) {
+				List<String> styles = new ArrayList<>();
+				styles.add(StockStyleEnum.MANUAL_OUT_STORAGE.getCode());
+				styles.add(StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode());
+				c.andStockStyleIn(styles);
+			}
 			c.andStockStyleEqualTo(shopStockRecord.getStockStyle());
 		}
 		if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
@@ -200,7 +227,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			c.andCreateDateBetween(startDate, endDate);
 		}
 
-		criteria.setLimitStart(pageParamVoDTO.getPageNo());
+		criteria.setPageSize(pageParamVoDTO.getPageSize());
 
 		return shopStockRecordMapper.selectByCriteria(criteria);
 
@@ -245,19 +272,42 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
-	public int insertShopStockDTO(String shopStockDTOs) {
-		List<ShopStockDTO> shopStocks = null;
+	public int insertShopStockDTO(String shopStockRequest) {
+		List<ShopStockRequestDTO> shopStockRequestDTO = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			shopStocks = (List<ShopStockDTO>) mapper.readValue(shopStockDTOs, List.class);
+			shopStockRequestDTO = mapper.readValue(shopStockRequest, new TypeReference<List<ShopStockRequestDTO>>() {
+			});
 		} catch (IOException e) {
 			logger.error("对象转换异常,异常信息是" + e.getMessage(), e);
 		}
-		if (CollectionUtils.isEmpty(shopStocks)) {
+		if (CollectionUtils.isEmpty(shopStockRequestDTO)) {
 			logger.info("转换出来的集合shopStocks为空");
 			return 0;
 		}
-		return extShopStockMapper.insertBatchShopStock(shopStocks);
+		// 记录插入
+		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
+
+		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
+		shopStockRecordDTO.setShopBossId(shopStockDto.getShopBossId());
+		shopStockRecordDTO.setShopStoreId(shopStockDto.getShopStoreId());
+		shopStockRecordDTO.setId(IdGen.uuid());
+		shopStockRecordDTO.setCreateDate(new Date());
+		shopStockRecordDTO.setFlowNo(shopStockDto.getFlowNo());
+		shopStockRecordDTO.setStockType(shopStockDto.getStockType());
+		shopStockRecordDTO.setManagerId(shopStockDto.getApplayUser());
+
+		this.insertStockRecord(shopStockRecordDTO);
+		// 记录插入结束
+		List<ShopStockDTO> shopStockDTOList = new ArrayList<>();
+		ShopStockDTO shopStockDTO = null;
+		for (ShopStockRequestDTO shopStock : shopStockRequestDTO) {
+			shopStockDTO = new ShopStockDTO();
+			BeanUtils.copyProperties(shopStock, shopStockDTO);
+			shopStockDTOList.add(shopStockDTO);
+		}
+		return extShopStockMapper.insertBatchShopStock(shopStockDTOList);
+
 	}
 
 	@Override
@@ -266,9 +316,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 		if (shopStockNumber == null) {
 			return this.saveStockNumber(shopStockNumberDTO);
 		}
-		Integer stockNumber=shopStockNumberDTO.getStockNumber();
-		Integer actualStockNumber=shopStockNumberDTO.getActualStockNumber();
-		shopStockNumberDTO.setStockNumber(shopStockNumber.getStockNumber()+stockNumber);
+		Integer stockNumber = shopStockNumberDTO.getStockNumber();
+		Integer actualStockNumber = shopStockNumberDTO.getActualStockNumber();
+		shopStockNumberDTO.setStockNumber(shopStockNumber.getStockNumber() + stockNumber);
 		return shopStockNumberMapper.updateByPrimaryKeySelective(shopStockNumberDTO);
 
 	}

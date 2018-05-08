@@ -396,6 +396,66 @@ public class ShopUserProjectGroupRelRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andShopGroupPuchasePriceIsNull() {
+            addCriterion("shop_group_puchase_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceIsNotNull() {
+            addCriterion("shop_group_puchase_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceEqualTo(BigDecimal value) {
+            addCriterion("shop_group_puchase_price =", value, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceNotEqualTo(BigDecimal value) {
+            addCriterion("shop_group_puchase_price <>", value, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceGreaterThan(BigDecimal value) {
+            addCriterion("shop_group_puchase_price >", value, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("shop_group_puchase_price >=", value, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceLessThan(BigDecimal value) {
+            addCriterion("shop_group_puchase_price <", value, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("shop_group_puchase_price <=", value, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceIn(List<BigDecimal> values) {
+            addCriterion("shop_group_puchase_price in", values, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceNotIn(List<BigDecimal> values) {
+            addCriterion("shop_group_puchase_price not in", values, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("shop_group_puchase_price between", value1, value2, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopGroupPuchasePriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("shop_group_puchase_price not between", value1, value2, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
         public Criteria andSysUserIdIsNull() {
             addCriterion("sys_user_id is null");
             return (Criteria) this;

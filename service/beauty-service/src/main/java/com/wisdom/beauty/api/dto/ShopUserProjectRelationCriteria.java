@@ -896,6 +896,66 @@ public class ShopUserProjectRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysShopProjectPurchasePriceIsNull() {
+            addCriterion("sys_shop_project_purchase_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceIsNotNull() {
+            addCriterion("sys_shop_project_purchase_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceEqualTo(BigDecimal value) {
+            addCriterion("sys_shop_project_purchase_price =", value, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceNotEqualTo(BigDecimal value) {
+            addCriterion("sys_shop_project_purchase_price <>", value, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceGreaterThan(BigDecimal value) {
+            addCriterion("sys_shop_project_purchase_price >", value, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("sys_shop_project_purchase_price >=", value, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceLessThan(BigDecimal value) {
+            addCriterion("sys_shop_project_purchase_price <", value, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("sys_shop_project_purchase_price <=", value, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceIn(List<BigDecimal> values) {
+            addCriterion("sys_shop_project_purchase_price in", values, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceNotIn(List<BigDecimal> values) {
+            addCriterion("sys_shop_project_purchase_price not in", values, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("sys_shop_project_purchase_price between", value1, value2, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopProjectPurchasePriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("sys_shop_project_purchase_price not between", value1, value2, "sysShopProjectPurchasePrice");
+            return (Criteria) this;
+        }
+
         public Criteria andSysShopProjectInitAmountIsNull() {
             addCriterion("sys_shop_project_init_amount is null");
             return (Criteria) this;

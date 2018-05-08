@@ -3,10 +3,12 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserArchivesCriteria;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +65,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
         ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
         ShopUserArchivesCriteria.Criteria or = criteria.createCriteria();
-
+        ShopUserArchivesDTO requestData = shopCustomerArchivesDTO.getRequestData();
         // 排序
         criteria.setOrderByClause("sys_user_name");
         // 分页
@@ -74,20 +76,24 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
         }
         //参数
-        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())){
-            c.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        if (StringUtils.isNotBlank(requestData.getSysShopId())) {
+            c.andSysShopIdEqualTo(requestData.getSysShopId());
         }
-        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getId())){
-            c.andIdEqualTo(shopCustomerArchivesDTO.getRequestData().getId());
+        if (StringUtils.isNotBlank(requestData.getId())) {
+            c.andIdEqualTo(requestData.getId());
         }
-        if (StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getPhone())) {
-            c.andPhoneLike("%" + shopCustomerArchivesDTO.getRequestData().getPhone() + "%");
+        if (StringUtils.isNotBlank(requestData.getPhone())) {
+            c.andPhoneLike("%" + requestData.getPhone() + "%");
         }
-        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())){
-            or.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        if (StringUtils.isNotBlank(requestData.getSysShopId())) {
+            or.andSysShopIdEqualTo(requestData.getSysShopId());
          }
-        if (StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysUserName())) {
-            or.andSysUserNameLike("%" + shopCustomerArchivesDTO.getRequestData().getSysUserName() + "%");
+        if (StringUtils.isNotBlank(requestData.getSysUserName())) {
+            or.andSysUserNameLike("%" + requestData.getSysUserName() + "%");
+        }
+
+        if (StringUtils.isNotBlank(requestData.getSysBossId())) {
+            c.andSysBossIdEqualTo(requestData.getSysBossId());
         }
         criteria.or(or);
         List<ShopUserArchivesDTO> shopCustomerArchiveslist = shopUserArchivesMapper.selectByCriteria(criteria);
@@ -98,24 +104,33 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
     /**
      * 查询某个店某一时间段建档的个数
      *
-     * @param shopId
-     * @param startDate
-     * @param endDate
+     * @param pageParamVoDTO
      * @return
      */
     @Override
-    public int getShopBuildArchivesNumbers(String shopId, Date startDate, Date endDate) {
-
-        logger.info("查询某个店某一时间段建档的个数传入参数={}", "shopId = [" + shopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
-
+    public int getShopBuildArchivesNumbers(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+        UserConsumeRequestDTO userConsumeRequestDTO=pageParamVoDTO.getRequestData();
+        if(userConsumeRequestDTO==null){
+            logger.info("userConsumeRequestDTO为空");
+            return  0;
+        }
+        logger.info("getShopBuildArchivesNumbers方法入参是ShopId={},bossId={},startTime={},endTime={}",userConsumeRequestDTO.getSysShopId(),userConsumeRequestDTO.getSysBossId(),pageParamVoDTO.getStartTime(),pageParamVoDTO.getEndTime());
+        String startDate=pageParamVoDTO.getStartTime();
+        String endDate=pageParamVoDTO.getEndTime();
+        Date start = DateUtils.StrToDate(startDate, "datetime");
+        Date end = DateUtils.StrToDate(endDate, "datetime");
         ShopUserArchivesCriteria archivesCriteria = new ShopUserArchivesCriteria();
         ShopUserArchivesCriteria.Criteria criteria = archivesCriteria.createCriteria();
 
-        if (StringUtils.isNotBlank(shopId)) {
-            criteria.andSysShopIdEqualTo(shopId);
+        if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
+        }
+        if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossId())) {
+
+            criteria.andSysBossIdEqualTo(userConsumeRequestDTO.getSysBossId());
         }
         if (startDate != null && endDate != endDate) {
-            criteria.andCreateDateBetween(startDate, endDate);
+            criteria.andCreateDateBetween(start, end);
         }
 
         int count = shopUserArchivesMapper.countByCriteria(archivesCriteria);

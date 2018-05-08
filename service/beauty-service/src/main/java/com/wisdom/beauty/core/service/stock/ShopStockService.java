@@ -33,7 +33,7 @@ public interface ShopStockService {
      * @param shopStockRecordDTO 出入库表实体对象
      * @return
      */
-    void insertStockRecord(ShopStockRecordDTO shopStockRecordDTO);
+    int insertStockRecord(ShopStockRecordDTO shopStockRecordDTO);
 
     /**
      * @Author:zhanghuan
