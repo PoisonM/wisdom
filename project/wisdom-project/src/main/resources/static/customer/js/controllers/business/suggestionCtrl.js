@@ -30,7 +30,7 @@ angular.module('controllers',[]).controller('suggestionCtrl',
                            }
                        })
                }else{
-                    showToask("建议内容不能为空，请输入建议");
+                    showToask("内容不能为空，请输入建议内容");
                     hideToask();
                }
 

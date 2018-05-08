@@ -63,8 +63,24 @@ public class LoginController {
             result.setErrorInfo("没有openid，请在微信公众号中注册登录");
             return result;
         }
-
-        String loginResult = loginService.userLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+        String loginResult ="";
+        try{
+             loginResult = loginService.userLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+        }catch(Exception e){
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("您输入的手机号与该微信登录平台手机号不符！");
+            return result;
+        }
+        if(loginResult.equals("phoneNotUse")){
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("您输入的手机号以被其他用户的微信绑定过美享平台！");
+            return result;
+        }
+        if(loginResult.equals("phoneIsError")){
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("您输入的手机号与该微信登录平台手机号不符！");
+            return result;
+        }
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
         {
