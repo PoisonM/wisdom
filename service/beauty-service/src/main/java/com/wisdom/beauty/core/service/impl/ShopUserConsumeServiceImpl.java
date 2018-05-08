@@ -229,7 +229,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 //用户一次性购买多个
                 for (int i = 0; i < dto.getProjectInitTimes(); i++) {
                     //购买一个套卡的金额
-                    BigDecimal price = dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()));
+                    BigDecimal price = dto.getProjectInitAmount();
                     //根据套卡id查询项目列表
                     ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
                     shopProjectInfoGroupRelationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
@@ -307,7 +307,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     dto.setSysShopName(dto.getSysShopName());
                     dto.setSysShopId(clerkInfo.getSysShopId());
                     //单个项目的价格 = 总金额/购买了多少个
-                    BigDecimal price = dto.getSysShopProjectInitAmount().divide(new BigDecimal(sysShopProjectInitTimes));
+                    BigDecimal price = dto.getSysShopProjectInitAmount();
 
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getUseStyle())) {
@@ -364,7 +364,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 dto.setSysShopId(clerkInfo.getSysShopId());
                 dto.setSysShopName(clerkInfo.getSysShopName());
                 dto.setSurplusTimes(dto.getInitTimes());
-                dto.setSurplusAmount(dto.getSurplusAmount());
+                dto.setSurplusAmount(dto.getInitAmount());
                 logger.info("订单号={}，生成用户跟产品的关系={}", orderId, dto);
                 shopProductInfoService.saveShopUserProductRelation(dto);
 

@@ -106,9 +106,9 @@
     height: 68px;
     background-color: #ffffff;
     position: absolute;
-    top: 0px;
+    top: 44px;
     left: 0px;
-    z-index: 1000;
+    z-index: 99000;
 }
 
 
@@ -205,21 +205,43 @@
     z-index: 1111;
 }
 .compileWorkList .compileWorkList_footer .footer_box{
-    width: 300px;
+    width: 340px;
     height: 100%;
     margin: 0 auto;
 }
 .compileWorkList .compileWorkList_footer ul li{
     float: left;
     margin-top: 5px;
+    margin-left: 25px;
+    position: relative;
 }
 .compileWorkList .compileWorkList_footer ul li span{
     display: inline-block;
     width: 38px;
     height: 33px;
     margin-right: 5px;
-}
 
+}
+.compileWorkList .compileWorkList_footer ul li em{
+    position: absolute;
+    top: -4px;
+    right: -17px;
+}
+.compileWorkList .compileWorkList_footer ul li .tempType1{
+    background-color: #EE4885 !important;
+}
+.compileWorkList .compileWorkList_footer ul li .tempType2{
+    background-color: #9C5CE6 !important;
+}
+.compileWorkList .compileWorkList_footer ul li .tempType3{
+    background-color: #3BD5F9 !important;
+}
+.compileWorkList .compileWorkList_footer ul li .tempType4{
+    background-color: #FB4646 !important;
+}
+.compileWorkList .compileWorkList_footer ul li .tempType5{
+    background-color: #666666 !important;
+}
 
 .compileWorkList .compileWorkList_footer ul li:nth-child(1){
     color: #EE4885;
@@ -251,4 +273,79 @@
 }
 .compileWorkList .compileWorkList_footer ul li:nth-child(5) span{
     background: #E2E2E2;
+}
+
+
+
+
+.compileWorkList table {
+    background-color: #ffffff !important;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+}
+.compileWorkList .table_box{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    float: left;
+}
+.compileWorkList .table_box .tb_test thead td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+    line-height: 25px;
+    padding-top: 10px;
+}
+.compileWorkList .table_box .tb_test thead td:nth-child(1) div{
+    width: 80px;
+    height: 72px;
+    line-height: 72px;
+}
+.compileWorkList .table_box .tb_test thead td:nth-child(1){
+    /*padding-left: 72px;*/
+}
+
+.compileWorkList .table_box .tb_test tbody td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+}
+.compileWorkList .table_box .tb_test tbody td:nth-child(1){
+    width: 80px;
+}
+.compileWorkList .table_box .tb_test tbody td:nth-child(1) div{
+    width: 80px;
+    height: 68px;
+    line-height: 68px;
+}
+
+.compileWorkList .table_box #ofix1_tb_header{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    float: left;
+}
+.compileWorkList .table_box #ofix1_tb_header thead td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+    line-height: 25px;
+    padding-top: 10px;
+}
+.compileWorkList .table_box #ofix1_tb_header thead td:nth-child(1){
+    padding-left: 80px;
+}
+
+
+.compileWorkList .table_box #ofix1_tb_left tbody td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+}
+.compileWorkList .table_box #ofix1_tb_left tbody td:nth-child(1) div{
+    width: 80px;
+    height: 68px;
+    line-height: 25px;
+    padding-top: 10px;
 }

@@ -40,6 +40,9 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysShopProjectName;
 
+    //
+    private BigDecimal sysShopProjectPurchasePrice;
+
     //项目初始金额
     private BigDecimal sysShopProjectInitAmount;
 
@@ -167,6 +170,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setSysShopProjectName(String sysShopProjectName) {
         this.sysShopProjectName = sysShopProjectName;
+    }
+
+    public BigDecimal getSysShopProjectPurchasePrice() {
+        return sysShopProjectPurchasePrice;
+    }
+
+    public void setSysShopProjectPurchasePrice(BigDecimal sysShopProjectPurchasePrice) {
+        this.sysShopProjectPurchasePrice = sysShopProjectPurchasePrice;
     }
 
     public BigDecimal getSysShopProjectInitAmount() {

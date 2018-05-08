@@ -1,7 +1,6 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ImageUrl;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
@@ -187,7 +186,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		}
 
 		if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
-			criteria.andUseStyleEqualTo(CardTypeEnum.TREATMENT_CARD.getCode());
+			criteria.andUseStyleEqualTo(shopProjectInfoDTO.getUseStyle());
 		}
 
 		if (StringUtils.isNotBlank(shopProjectInfoDTO.getId())) {

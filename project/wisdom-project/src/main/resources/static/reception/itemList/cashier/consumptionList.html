@@ -1,20 +1,28 @@
 <div class="consumptionListBox clearfix">
     <div class="consumptionListLeft clearfix">
         <ul>
-            <li class="clearfix select" ng-click="tabclick(0)" ng-class="select=='0'?'select':''">
-                <i></i>
+            <li class="clearfix" ng-click="tabclick(0)" ng-class="select=='0'?'select':''">
+                <i>
+                    <div>{{theSelected.periodCard.periodCardSize}}</div>
+                </i>
                 <span>疗程卡</span>
             </li>
             <li class="clearfix" ng-click="tabclick(1)" ng-class="select=='1'?'select':''">
-                <i></i>
+                <i>
+                    <div>{{theSelected.timeCard.timeCardSize}}</div>
+                </i>
                 <span>单次</span>
             </li>
             <li class="clearfix" ng-click="tabclick(2)" ng-class="select=='2'?'select':''">
-                <i></i>
+                <i>
+                    <div>{{theSelected.product.productSize}}</div>
+                </i>
                 <span>产品</span>
             </li>
             <li class="clearfix" ng-click="tabclick(3)" ng-class="select=='3'?'select':''">
-                <b><i></i></b>
+                <i>
+                    <div>{{theSelected.groupCard.groupSize}}</div>
+                </i>
                 <span>套卡</span>
             </li>
             <!-- <li class="clearfix">
@@ -40,15 +48,26 @@
     </div>
     <div class="consumptionListContent" ng-class="{true: '', false: 'isThird'}[consumptionListUlShow]">
         <ul>
-            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==0||select==1" ng-click="updateVirtualGoodsOrderInfo($event)">
-                <div class="checkBox">
+            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==0" ng-click="updateVirtualGoodsOrderInfo(1,item3)">
+                <div class="checkBox" ng-class="{bgF6:(theSelected.periodCard.periodCardIds.indexOf(item3.id)!='-1')}">
                     <img src="images/checkImg.png" alt="">
                 </div>
                 <span class="name">{{item3.projectName}}</span>
                 <br/>
-                <span class="number">{{item3.maxContainTimes}}次</span>
+                <span class="number">{{item3.serviceTimes}}次</span>
                 <div class="right">
-                    <span><b>¥ </b>{{item3.discountPrice}}<b>.00</b></span>
+                    <span><b>¥ </b>{{item3.marketPrice}}<b>.00</b></span>
+                </div>
+            </li>
+            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==1" ng-click="updateVirtualGoodsOrderInfo(0,item3)">
+                <div class="checkBox" ng-class="{bgF6:(theSelected.timeCard.timeCardIds.indexOf(item3.id)!='-1')}">
+                    <img src="images/checkImg.png" alt="">{{item3.id}}
+                </div>
+                <span class="name">{{item3.projectName}}</span>
+                <br/>
+                <span class="number">{{item3.serviceTimes}}次</span>
+                <div class="right">
+                    <span><b>¥ </b>{{item3.marketPrice}}<b>.00</b></span>
                 </div>
             </li>
             <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==2">

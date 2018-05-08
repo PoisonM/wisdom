@@ -40,6 +40,9 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     //剩余数量
     private Integer surplusTimes;
 
+    //
+    private BigDecimal purchasePrice;
+
     //初始金额
     private BigDecimal initAmount;
 
@@ -152,6 +155,14 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
 
     public void setSurplusTimes(Integer surplusTimes) {
         this.surplusTimes = surplusTimes;
+    }
+
+    public BigDecimal getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(BigDecimal purchasePrice) {
+        this.purchasePrice = purchasePrice;
     }
 
     public BigDecimal getInitAmount() {

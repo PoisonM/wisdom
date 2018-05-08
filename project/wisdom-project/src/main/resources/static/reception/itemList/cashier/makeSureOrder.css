@@ -20,7 +20,7 @@
 }
 
 .stillOwedBox .stillOwedUl li {
-    height: 45px;
+    height: 70px;
     border-bottom: 1px solid #E5E5E5;
 }
 
@@ -32,7 +32,7 @@
 
 .stillOwedBox .stillOwedUl li p {
     display: block;
-    margin: 20px 0 0 20px;
+    margin-left: 15px;
     float: left;
     color: #999;
 }
@@ -47,7 +47,7 @@
 }
 
 .stillOwedBox .stillOwedUl li span {
-    margin: 13px 16px 0 0;
+    margin: -10px 16px 0 0;
     float: right;
     font-family: PingFangSC-Regular;
     font-size: 11px;
@@ -157,6 +157,7 @@
     color: #888888;
     letter-spacing: 0;
     padding-left: 9px;
+    text-align: center;
 }
 
 .stillOwedBox .otherOperation li span b {

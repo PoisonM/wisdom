@@ -19,6 +19,9 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
     private String sysClerkId;
 
     //
+    private String sysBossId;
+
+    //
     private String sysClerkName;
 
     //
@@ -107,6 +110,14 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
 
     public void setSysClerkId(String sysClerkId) {
         this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysBossId() {
+        return sysBossId;
+    }
+
+    public void setSysBossId(String sysBossId) {
+        this.sysBossId = sysBossId;
     }
 
     public String getSysClerkName() {

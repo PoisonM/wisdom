@@ -65,7 +65,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
         ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
         ShopUserArchivesCriteria.Criteria or = criteria.createCriteria();
-
+        ShopUserArchivesDTO requestData = shopCustomerArchivesDTO.getRequestData();
         // 排序
         criteria.setOrderByClause("sys_user_name");
         // 分页
@@ -76,20 +76,24 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
         }
         //参数
-        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())){
-            c.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        if (StringUtils.isNotBlank(requestData.getSysShopId())) {
+            c.andSysShopIdEqualTo(requestData.getSysShopId());
         }
-        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getId())){
-            c.andIdEqualTo(shopCustomerArchivesDTO.getRequestData().getId());
+        if (StringUtils.isNotBlank(requestData.getId())) {
+            c.andIdEqualTo(requestData.getId());
         }
-        if (StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getPhone())) {
-            c.andPhoneLike("%" + shopCustomerArchivesDTO.getRequestData().getPhone() + "%");
+        if (StringUtils.isNotBlank(requestData.getPhone())) {
+            c.andPhoneLike("%" + requestData.getPhone() + "%");
         }
-        if(StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysShopId())){
-            or.andSysShopIdEqualTo(shopCustomerArchivesDTO.getRequestData().getSysShopId());
+        if (StringUtils.isNotBlank(requestData.getSysShopId())) {
+            or.andSysShopIdEqualTo(requestData.getSysShopId());
          }
-        if (StringUtils.isNotBlank(shopCustomerArchivesDTO.getRequestData().getSysUserName())) {
-            or.andSysUserNameLike("%" + shopCustomerArchivesDTO.getRequestData().getSysUserName() + "%");
+        if (StringUtils.isNotBlank(requestData.getSysUserName())) {
+            or.andSysUserNameLike("%" + requestData.getSysUserName() + "%");
+        }
+
+        if (StringUtils.isNotBlank(requestData.getSysBossId())) {
+            c.andSysBossIdEqualTo(requestData.getSysBossId());
         }
         criteria.or(or);
         List<ShopUserArchivesDTO> shopCustomerArchiveslist = shopUserArchivesMapper.selectByCriteria(criteria);
