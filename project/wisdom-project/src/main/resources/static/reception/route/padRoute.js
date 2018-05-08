@@ -1040,6 +1040,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "排班列表",
                         files: [root + "appointment/arrangeWorkList.js",
                             root + "appointment/arrangeWorkList.css",
+                            "libs/fixedTab.js"
                         ]
                     })
                 }]
@@ -1055,6 +1056,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "编辑排班",
                         files: [root + "appointment/compileWorkList.js",
                             root + "appointment/compileWorkList.css",
+                            "libs/fixedTab.js"
                         ]
                     })
                 }]
