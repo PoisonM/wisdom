@@ -87,7 +87,7 @@ public class OrderTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/orderInfo/updateVirtualGoodsOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/orderInfo/getConsumeDisplayIds").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopProjectInfoMapper">
-  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopProjectInfo">
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
     <id column="id" property="id" jdbcType="VARCHAR"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
     <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
@@ -126,7 +126,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfo">
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
     insert into shop_project_info (id, sys_shop_id, sys_boss_id,
     project_name, project_type_one_name, project_type_two_name,
     project_type_one_id, project_type_two_id, product_type,
@@ -146,7 +146,7 @@
     #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
     #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfo">
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
     insert into shop_project_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -424,7 +424,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfo">
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
     update shop_project_info
     <set>
       <if test="sysShopId != null">
@@ -502,7 +502,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfo">
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopProjectInfoDTO">
     update shop_project_info
     set sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
     sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
