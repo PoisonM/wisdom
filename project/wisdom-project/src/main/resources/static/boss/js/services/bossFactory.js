@@ -25,6 +25,14 @@ define(['appBoss'], function (app) {
         .factory('GetShopAppointmentInfoByStatus',['$resource',function ($resource){
             return $resource(appointmentInfo + 'getShopAppointmentInfoByStatus')
        }])
+        /*根据预约主键获取预约详情*/
+        .factory('GetAppointmentInfoById',['$resource',function ($resource){
+            return $resource(appointmentInfo + 'getAppointmentInfoById')
+        }])
+        /*根据预约主键修改此次预约信息（修改预约状态等）*/
+        .factory('UpdateAppointmentInfoById',['$resource',function ($resource){
+            return $resource(appointmentInfo + 'updateAppointmentInfoById')
+        }])
 
         .factory('GetExpenditureAndIncome',['$resource',function ($resource){
             return $resource(work + 'work/getExpenditureAndIncome')

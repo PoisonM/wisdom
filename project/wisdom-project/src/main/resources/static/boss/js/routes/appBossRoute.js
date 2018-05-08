@@ -273,7 +273,7 @@ define(['appBoss'], function(app){
                 /*已确认*/
 
                     .state('confirmed', {
-                        url: '/confirmed/:date',
+                        url: '/confirmed/:date/:shopAppointServiceId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'confirmedCtrl',
                         resolve: {
@@ -315,7 +315,7 @@ define(['appBoss'], function(app){
                 /*取消的预约详情页面*/
 
                     .state('cancelDetails', {
-                        url: '/cancelDetails',
+                        url: '/cancelDetails/:shopAppointServiceId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'cancelDetailsCtrl',
                         resolve: {

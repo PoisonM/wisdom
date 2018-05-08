@@ -55,9 +55,9 @@ angular.module('controllers',[]).controller('canceledCtrl',
 
             })
 
-            $scope.confirmedGo = function(){
+            $scope.confirmedGo = function(id){
                 $scope.none()
-                $state.go("confirmed",{date:$scope.date})
+                $state.go("confirmed",{date:$scope.date,shopAppointServiceId:id})
             }
 
             $scope.cancelReservationGo = function(){

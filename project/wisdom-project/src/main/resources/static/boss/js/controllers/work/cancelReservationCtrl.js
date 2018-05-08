@@ -46,9 +46,9 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
             $scope.none=function(){
                 $("#laydate_box").css('display',"none")
             };
-            $scope.cancelDetailsGo=function(){
+            $scope.cancelDetailsGo=function(id){
                 $scope.none()
-                $state.go("cancelDetails")
+                $state.go("cancelDetails",{shopAppointServiceId:id})
             }
             GetShopAppointmentInfoByStatus.get({
                 searchDate:"2018-04-27",/*$scope.date*/
@@ -56,7 +56,7 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
                 sysShopId:"11",/*$stateParams.sysShopId*/
                 status:"4"
             },function(data){
-
+                $scope.cancelReservation = data.responseData
             })
 
 

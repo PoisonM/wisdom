@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('confirmedCtrl',
-    ['$scope','$rootScope','$stateParams','$state',
-        function ($scope,$rootScope,$stateParams,$state) {
+    ['$scope','$rootScope','$stateParams','$state','GetAppointmentInfoById','UpdateAppointmentInfoById',
+        function ($scope,$rootScope,$stateParams,$state,GetAppointmentInfoById,UpdateAppointmentInfoById) {
             $rootScope.title = "已确认预约";
             $scope.date=$stateParams.date;
             /*日期插件*/
@@ -46,7 +46,22 @@ angular.module('controllers',[]).controller('confirmedCtrl',
                 $("#laydate_box").css('display',"none")
             };
             $scope.cancel = function(){
-                $state.go('appointment')
+                UpdateAppointmentInfoById.get({
+                    shopAppointServiceId:"id_7", /*$stateParams.shopAppointServiceId*/
+                    status:"4"
+                },function(data){
+                    $state.go('appointment')
+                })
+               
+            }
+            GetAppointmentInfoById.get({
+                shopAppointServiceId:"id_7" /*$stateParams.shopAppointServiceId*/
+            },function(data){
+                $scope.confirmed = data.responseData
+
+            })
+            $scope.pho=function(num){
+                window.location.href = "tel:" + num;
             }
 
 

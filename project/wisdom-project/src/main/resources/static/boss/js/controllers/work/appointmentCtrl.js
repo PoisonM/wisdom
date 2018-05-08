@@ -49,7 +49,7 @@ angular.module('controllers',[]).controller('appointmentCtrl',
             }
 
             GetShopAppointmentNumberInfo.get({
-                searchDate:"2018-04-27"
+                searchDate:"2018-04-27"/*$scope.date*/
             },function(data){
                 $scope.appointment = data.responseData;
                /* if(data.result == Global.SUCCESS){
