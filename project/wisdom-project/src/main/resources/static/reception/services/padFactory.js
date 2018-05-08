@@ -244,7 +244,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UpdateShopClerkScheduleList', ['$resource', function($resource) {
         return $resource(beautyIP + 'clerkSchedule/updateShopClerkScheduleList')
     }])
-
+    //查询最近的一笔订单信息
+    .factory('GetShopUserRecentlyOrderInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'orderInfo/getShopUserRecentlyOrderInfo')
+    }])
 
 
 
