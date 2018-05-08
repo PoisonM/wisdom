@@ -62,17 +62,20 @@ public class ArchivesController {
      */
     @RequestMapping(value = "/findArchives", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String, Object>> findArchives(@RequestParam(required = false) String queryField, @RequestParam int pageSize) {
+    ResponseDTO<Map<String, Object>> findArchives(@RequestParam(required = false) String queryField, @RequestParam(required = false) String sysShopId, @RequestParam(required = false) String pageNo, @RequestParam(required = false) int pageSize) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        logger.info("获取档案列表或某个店的用户列表传入参数={}", "queryField = [" + queryField + "], pageSize = [" + pageSize + "]");
+        logger.info("获取档案列表或某个店的用户列表传入参数={}", "queryField = [" + queryField + "], sysShopId = [" + sysShopId + "], pageNo = [" + pageNo + "]");
 
         PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-
+        //pad端用户
+        if (null != clerkInfo && StringUtils.isBlank(sysShopId)) {
+            sysShopId = clerkInfo.getSysShopId();
+        }
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-        shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
+        shopUserArchivesDTO.setSysShopId(sysShopId);
         shopUserArchivesDTO.setPhone(queryField);
         shopUserArchivesDTO.setSysUserName(queryField);
 
