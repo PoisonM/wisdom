@@ -1,6 +1,6 @@
 PADWeb.controller('unclaimedAllCtrl', function($scope, $stateParams, ngDialog,GetProductRecord) {
     /*-------------------------------------------定义头部信息----------------------------------------------*/
-    $scope.$parent.param.headerCash.title="待领取汇总"
+    $scope.$parent.$parent.param.headerCash.title="待领取汇总"
     console.log('待领取汇总');
     /*-----------------------------------------------------------------------------------------------------*/
     GetProductRecord.get({
