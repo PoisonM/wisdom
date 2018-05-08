@@ -213,6 +213,9 @@ public class OrderController {
                         //不是同一个项目
                         if (!newRelation.getSysShopProjectId().equals(alreadyRelation.getSysShopProjectId())) {
                             if (CommonCodeEnum.ADD.getCode().equals(operation)) {
+                                if (null == newRelation.getSysShopProjectInitTimes()) {
+                                    newRelation.setSysShopProjectInitTimes(1);
+                                }
                                 helperList.add(newRelation);
                             } else if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
                                 alreadyIterator.remove();
@@ -264,6 +267,9 @@ public class OrderController {
                         //不是同一个产品
                         if (!newRelation.getShopProductId().equals(alreadyRelation.getShopProductId())) {
                             if (CommonCodeEnum.ADD.getCode().equals(operation)) {
+                                if (null == newRelation.getInitTimes()) {
+                                    newRelation.setInitTimes(1);
+                                }
                                 helperList.add(newRelation);
                             } else if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
                                 alreadyIterator.remove();
@@ -313,6 +319,9 @@ public class OrderController {
                         ShopUserProjectGroupRelRelationDTO newRelation = newIterator.next();
                         if (!newRelation.getShopProjectGroupId().equals(alreadyRelation.getShopProjectGroupId())) {
                             if (CommonCodeEnum.ADD.getCode().equals(operation)) {
+                                if (null == newRelation.getProjectInitTimes()) {
+                                    newRelation.setProjectInitTimes(1);
+                                }
                                 helperList.add(newRelation);
                             } else if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
                                 alreadyIterator.remove();
