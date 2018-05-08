@@ -54,6 +54,14 @@ public interface ShopStatisticsAnalysisService {
      * @Date:2018/4/13 11:34
      */
     Integer getUserConsumeNumber(String sysClerkId, String startDate, String endDate);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: f复写getUserConsumeNumber方法
+    *@Date:2018/5/8 9:39
+    */
+    Integer getUserConsumeNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * @Author:zhanghuan
