@@ -42,7 +42,7 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //0添加  1删除
     private String operation;
 
-    //0添加  1删除
+    //订单价格
     private String orderPrice;
 
     //用户与项目关系

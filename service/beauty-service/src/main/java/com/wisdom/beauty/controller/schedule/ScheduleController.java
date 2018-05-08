@@ -16,6 +16,7 @@ import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,23 +58,27 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/getShopClerkScheduleList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Object> getShopClerkScheduleList(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date searchDate) {
+    ResponseDTO<Object> getShopClerkScheduleList(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate, @RequestParam String sysShopId) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        logger.info("获取某个店的排班信息传入参数={}", "searchDate = [" + searchDate + "]");
+        logger.info("获取某个店的排班信息传入参数={}", "searchDate = [" + searchDate + "], sysShopId = [" + sysShopId + "]");
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        //shopId为空为pad端请求，不为空为boss端请求
+        if (StringUtils.isBlank(sysShopId)) {
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+            sysShopId = clerkInfo.getSysShopId();
+        }
         ArrayList<Object> helperList = new ArrayList<>();
         ShopClerkScheduleDTO shopClerkScheduleDTO = new ShopClerkScheduleDTO();
-        shopClerkScheduleDTO.setSysShopId(clerkInfo.getSysShopId());
+        shopClerkScheduleDTO.setSysShopId(sysShopId);
         shopClerkScheduleDTO.setScheduleDate(searchDate);
         //查询某个店的排班信息
         List<ShopClerkScheduleDTO> clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
         //获取某个月的所有天的集合
         List<String> monthFullDay = DateUtils.getMonthFullDay(Integer.parseInt(DateUtils.getYear(searchDate)), Integer.parseInt(DateUtils.getMonth(searchDate)), 0);
         //查询店员信息
-        List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(clerkInfo.getSysShopId());
+        List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(sysShopId);
 
         if (null == clerkDTOS) {
             logger.info("查询某个店的店员信息为空");
@@ -91,7 +96,7 @@ public class ScheduleController {
                     ShopClerkScheduleDTO scheduleDTO = new ShopClerkScheduleDTO();
                     scheduleDTO.setId(IdGen.uuid());
                     scheduleDTO.setScheduleDate(DateUtils.StrToDate(string, "date"));
-                    scheduleDTO.setSysShopId(clerkInfo.getSysShopId());
+                    scheduleDTO.setSysShopId(sysShopId);
                     scheduleDTO.setCreateDate(new Date());
                     scheduleDTO.setScheduleType(ScheduleTypeEnum.ALL.getCode());
                     scheduleDTO.setSysClerkId(sysClerkDTO.getId());
