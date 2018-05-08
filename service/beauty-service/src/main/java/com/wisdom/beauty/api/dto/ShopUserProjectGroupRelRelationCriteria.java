@@ -336,6 +336,66 @@ public class ShopUserProjectGroupRelRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andShopProjectGroupNumberIsNull() {
+            addCriterion("shop_project_group_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberIsNotNull() {
+            addCriterion("shop_project_group_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberEqualTo(Integer value) {
+            addCriterion("shop_project_group_number =", value, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberNotEqualTo(Integer value) {
+            addCriterion("shop_project_group_number <>", value, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberGreaterThan(Integer value) {
+            addCriterion("shop_project_group_number >", value, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("shop_project_group_number >=", value, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberLessThan(Integer value) {
+            addCriterion("shop_project_group_number <", value, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("shop_project_group_number <=", value, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberIn(List<Integer> values) {
+            addCriterion("shop_project_group_number in", values, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberNotIn(List<Integer> values) {
+            addCriterion("shop_project_group_number not in", values, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberBetween(Integer value1, Integer value2) {
+            addCriterion("shop_project_group_number between", value1, value2, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectGroupNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("shop_project_group_number not between", value1, value2, "shopProjectGroupNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andSysUserIdIsNull() {
             addCriterion("sys_user_id is null");
             return (Criteria) this;

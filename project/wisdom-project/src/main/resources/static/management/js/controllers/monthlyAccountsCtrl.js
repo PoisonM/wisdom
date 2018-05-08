@@ -54,7 +54,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             /*点击查看按钮*/
             $scope.details = function(sysUserId,createDate,incomeType,transactionId,index,id){
                 $scope.agencyIndex = index;
-                if($scope.status == "instance"||$scope.status == "recommends"){
+                if($scope.status == "instance"||$scope.status == "recommend"){
                    for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
                         $scope.MonthlyBalanceLis[i].statesLook = "1"
                     }
@@ -174,6 +174,9 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                     GetIncomeRecordByPageParam.save($scope.pageParamVoDTO,function(data){
                         ManagementUtil.checkResponseData(data,"");
                         if(data.errorInfo == Global.SUCCESS){
+                            if( data.responseData.count ==0){
+                                alert("未查出相应结果");
+                            }
                             if(data.responseData.incomeRecordDTOS.length <=0){
                                 $scope.MonthlyBalanceLis=[];
                             }else {

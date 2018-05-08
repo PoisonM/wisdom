@@ -213,4 +213,8 @@ public class PayRecordService {
     public List<PayRecordDTO> queryUserInfoByTransactionId(String transactionId) {
         return payRecordMapper.queryUserInfoByTransactionId(transactionId);
     }
+
+    public List<PayRecordDTO> findOrderInfoForSpecial(String orderId) {
+        return payRecordMapper.findOrderInfoForSpecial(orderId);
+    }
 }

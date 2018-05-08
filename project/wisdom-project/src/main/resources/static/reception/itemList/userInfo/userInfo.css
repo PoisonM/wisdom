@@ -91,12 +91,17 @@
     font-size: 0.28125rem;
     color: #333333;
     margin-bottom: 0.09375rem;
+    width: 2.5rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .userInfo .userInfo_public .user_Information .user_mobile{
     margin-bottom: 0.09375rem;
     font-size: 0.21875rem;
     color: #888888;
 }
+
 .userInfo .userInfo_public .user_Information .user_mobile i{
     display: inline-block;
     width: 0.171875rem;
@@ -104,6 +109,13 @@
     background-color: pink;
     margin-right: 0.125rem;
 }
+.userInfo .userInfo_public .user_Information .user_mobile .man{
+    background: url("../../images/man_women.png");
+}
+.userInfo .userInfo_public .user_Information .user_mobile .womem{
+    background: url("../../images/man_women.png");
+}
+
 .userInfo .userInfo_public .user_Information .user_data{
     /*margin-bottom: 0.15625rem;
      */
@@ -126,7 +138,7 @@
     display: inline-block;
     width: 0.46875rem;
     height: 0.03125rem;
-    background-color: pink;
+    background-color: #FF6666;
 }
 .userInfo .userInfo_public .set{
     width: 100%;

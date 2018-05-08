@@ -1,58 +1,15 @@
-<ion-view style="background:white">
-    <br>
-    <ion-content style="margin-top:20px">
-        <ion-list>
-            <div class="item item-divider">
-                店内项目
-            </div>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.blue">
-                <h style="font-weight:600;">巧克力焕肤</h>
-                <p style="margin-top:5px">30分钟</p>
-            </ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow">
-                <h style="font-weight:600;">冰光面部细胞护理</h>
-                <p style="margin-top:5px">45分钟</p>
-            </ion-checkbox>
-            <br><br><br><br>
-        </ion-list>
-    </ion-content>
-    <<div class="tabs"
-          style="background:#e66;color:white"
-          ng-click="chooseProject()">
-        <a class="tab-item" style="font-size:20px">
-            确认
-        </a>
-    </div>
+<ion-view style="background:lightgrey">
+    <center>
+        <div class="item item-body" style="margin-top:75px;width:80%;border-radius:15px">
+            <h style="font-size:15px;color: red">---------&nbsp;绑定美容院&nbsp;---------</h>
+            <img class="full-image"
+                 ng-src="{{userQRCode}}">
+            <p>
+                二维码提供给您所在的美容院操作绑定
+            </p>
+            <p>
+                绑定后可以在本程序预约和查看项目
+            </p>
+        </div>
+    </center>
 </ion-view>

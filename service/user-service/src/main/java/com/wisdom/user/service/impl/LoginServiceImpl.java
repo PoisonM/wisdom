@@ -8,6 +8,7 @@ import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
+import com.wisdom.common.entity.WeixinUserBean;
 import com.wisdom.common.util.*;
 import com.wisdom.user.mapper.SysBossMapper;
 import com.wisdom.user.mapper.SysClerkMapper;
@@ -25,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -66,7 +69,6 @@ public class LoginServiceImpl implements LoginService{
             userInfoDTO.setUserOpenid(openId);
             //userInfoDTO.setMobile(phone);
             List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
-
             if(userInfoDTOList.size()>0)
             {
                 userInfoDTO = userInfoDTOList.get(0);
@@ -96,6 +98,28 @@ public class LoginServiceImpl implements LoginService{
                 String userInfoStr = gson.toJson(userInfoDTO);
                 JedisUtils.set(logintoken,userInfoStr, ConfigConstant.logintokenPeriod);
             }
+            else
+            {
+                WeixinUserBean weixinUserBean = WeixinUtil.getWeixinUserBean(WeixinUtil.getUserToken(),openId);
+
+                userInfoDTO.setId(UUID.randomUUID().toString());
+                userInfoDTO.setMobile(loginDTO.getUserPhone());
+                String nickname = null;
+                try {
+                    nickname = URLEncoder.encode(weixinUserBean.getNickname(), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                userInfoDTO.setNickname(nickname);
+                userInfoDTO.setUserType(ConfigConstant.businessC1);
+                userInfoDTO.setParentUserId("");
+                userInfoDTO.setWeixinAttentionStatus("1");
+                userInfoDTO.setPhoto(weixinUserBean.getHeadimgurl());
+                userInfoDTO.setDelFlag("0");
+                userInfoDTO.setLoginIp(loginIP);
+                userInfoDTO.setCreateDate(new Date());
+                userMapper.insertUserInfo(userInfoDTO);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +145,6 @@ public class LoginServiceImpl implements LoginService{
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setMobile(userPhone);
         userInfoDTO.setPassword(code);
-//        userInfoDTO.setUserType("manager-1");
         List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
         if(userInfoDTOList.size()>0)
         {
@@ -342,29 +365,112 @@ public class LoginServiceImpl implements LoginService{
         return logintoken;
     }
 
+    @Override
+    public String beautyUserLogin(LoginDTO loginDTO, String s, String openid) {
+
+        //判断validateCode是否还有效
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+
+        String beautyLoginToken = null;
+        //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
+        RedisLock redisLock = new RedisLock("userInfo" + loginDTO.getUserPhone());
+        try {
+            redisLock.lock();
+
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setUserOpenid(openid);
+            List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
+            if(userInfoDTOList.size()>0)
+            {
+                userInfoDTO = userInfoDTOList.get(0);
+                if(userInfoDTO.getMobile()==null)
+                {
+                    //用户曾经绑定过手机号，更新用户登录信息
+                    userInfoDTO.setMobile(loginDTO.getUserPhone());
+                    userInfoDTO.setLoginDate(new Date());
+                    userInfoDTO.setLoginIp(s);
+                    userMapper.updateUserInfo(userInfoDTO);
+                }
+                else if(userInfoDTO.getMobile().equals(loginDTO.getUserPhone()))
+                {
+                    userInfoDTO.setLoginDate(new Date());
+                    userInfoDTO.setLoginIp(s);
+                    userMapper.updateUserInfo(userInfoDTO);
+                }
+                else
+                {
+                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
+                }
+
+                userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+            }
+            else
+            {
+                WeixinUserBean weixinUserBean = WeixinUtil.getWeixinUserBean(WeixinUtil.getUserToken(),openid);
+
+                userInfoDTO.setId(UUID.randomUUID().toString());
+                userInfoDTO.setMobile(loginDTO.getUserPhone());
+                String nickname = null;
+                try {
+                    nickname = URLEncoder.encode(weixinUserBean.getNickname(), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                userInfoDTO.setNickname(nickname);
+                userInfoDTO.setUserType("beautyUser");
+                userInfoDTO.setParentUserId("");
+                userInfoDTO.setWeixinAttentionStatus("1");
+                userInfoDTO.setPhoto(weixinUserBean.getHeadimgurl());
+                userInfoDTO.setDelFlag("0");
+                userInfoDTO.setLoginIp(s);
+                userInfoDTO.setCreateDate(new Date());
+                userMapper.insertUserInfo(userInfoDTO);
+            }
+
+            //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
+            beautyLoginToken = UUID.randomUUID().toString();
+            String userInfoStr = gson.toJson(userInfoDTO);
+            JedisUtils.set(beautyLoginToken,userInfoStr, ConfigConstant.logintokenPeriod);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            redisLock.unlock();
+        }
+
+        return beautyLoginToken;
+    }
+
     private String processValidateCode(LoginDTO loginDTO)
     {
         //判断validateCode是否还有效
-        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()))
-                .addCriteria(Criteria.where("code").is(loginDTO.getCode()));
+        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
-//        if(data==null)
-//        {
-//            return StatusConstant.VALIDATECODE_ERROR;
-//        }
-//        else
-//        {
-//            ValidateCodeDTO validateCodeDTO = data.get(0);
-//            Date dateStr = validateCodeDTO.getCreateDate();
-//            long period =  (new Date()).getTime() - dateStr.getTime();
-//
-//            //验证码过了5分钟了
-//            if(period>300000)
-//            {
-//                return  StatusConstant.VALIDATECODE_ERROR;
-//            }
-//        }
+        if(data==null)
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+        else
+        {
+            ValidateCodeDTO validateCodeDTO = data.get(0);
+            Date dateStr = validateCodeDTO.getCreateDate();
+              //判断验证码是否是最新的
+            if(!validateCodeDTO.getCode().equals(loginDTO.getCode())){
+                return StatusConstant.VALIDATECODE_ERROR;
+            }
+            long period =  (new Date()).getTime() - dateStr.getTime();
+
+            //验证码过了5分钟了
+            if(period>300000)
+            {
+                return  StatusConstant.VALIDATECODE_ERROR;
+            }
+        }
         return StatusConstant.SUCCESS;
     }
 }

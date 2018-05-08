@@ -8,6 +8,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
 
 /**
  * 直播板块
@@ -28,6 +30,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "userType")
 public class UserTypeController {
+
+	private  static Logger logger = LoggerFactory.getLogger(UserTypeController.class);
 
 	@Autowired
 	private UserServiceClient userServiceClient;
@@ -41,6 +45,9 @@ public class UserTypeController {
 
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		List<UserInfoDTO> userInfoDTOList = new ArrayList<>();
+
+		logger.info("当前{}登录用户级别为{}",userInfoDTO.getId(),userInfoDTO.getUserType());
+
 		if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1))
 		{
 			UserInfoDTO userInfo = new UserInfoDTO();

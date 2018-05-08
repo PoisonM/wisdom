@@ -19,6 +19,11 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
+
+    $scope.param = {
+
+    }
+
     /*-----------------------------------------------接口---------------------------------------------------*/
     GetClerkAchievement.get({
         sysClerkId: 11

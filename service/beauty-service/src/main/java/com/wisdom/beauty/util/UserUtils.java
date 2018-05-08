@@ -8,6 +8,9 @@ import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.JedisUtils;
+import com.wisdom.common.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -24,32 +27,17 @@ import java.util.Map;
  */
 public class UserUtils {
 
-    /**
-     * 获取用户信息
-     *
-     * @return
-     */
-    public static UserInfoDTO getUserInfo() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        Map<String, String> tokenValue = getHeadersInfo(request);
-        String token = tokenValue.get("logintoken");
-        String userInfoStr = JedisUtils.get(token);
-        UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
-        return userInfoDTO;
-    }
 
     /**
      * 获取用户信息
      *
      * @return
      */
-    public static UserInfoDTO getTestUserInfoDTO() {
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setId("1");
-        userInfoDTO.setMobile("18810142926");
-        userInfoDTO.setNickname("小明");
-        userInfoDTO.setPhoto("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%91%98%E5%B7%A5%E5%9B%BE%E7%89%87.png");
-        return userInfoDTO;
+    public static UserInfoDTO getUserInfo() {
+        String token = getUserToken();
+        String userInfoStr = JedisUtils.get(token);
+        UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
+        return getTestUserInfoDTO();
     }
 
     /**
@@ -58,6 +46,76 @@ public class UserUtils {
      * @return
      */
     public static SysClerkDTO getClerkInfo() {
+        String token = getUserToken();
+        String sysClerkDTO = JedisUtils.get(token);
+        SysClerkDTO clerkDTO = (new Gson()).fromJson(sysClerkDTO, SysClerkDTO.class);
+        return getTestClerkInfo();
+    }
+
+    /**
+     * 获取老板信息
+     *
+     * @return
+     */
+    public static SysBossDTO getBossInfo() {
+        String token = getUserToken();
+        String sysBossDTO = JedisUtils.get(token);
+        SysBossDTO bossDTO = (new Gson()).fromJson(sysBossDTO, SysBossDTO.class);
+        return getTestBossInfo();
+    }
+
+    /**
+     * 获取登陆的token信息
+     * @return
+     */
+    private static String getUserToken() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Map<String, String> tokenValue = getHeadersInfo(request);
+
+        String userType = tokenValue.get("usertype");
+        String token = tokenValue.get("beautylogintoken");
+
+        if(StringUtils.isBlank(userType) || StringUtils.isBlank(token)){
+            System.out.println("商户平台登陆获取userTyp或token为空"+userType+token);
+            return null;
+        }
+        return token;
+    }
+
+    /**
+     * 获取请求信息
+     * @param request
+     * @return
+     */
+    public static Map<String, String> getHeadersInfo(HttpServletRequest request) {
+        Map<String, String> map = new HashMap<>();
+        Enumeration headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String key = (String) headerNames.nextElement();
+            String value = request.getHeader(key);
+            map.put(key, value);
+        }
+        return map;
+    }
+
+    /**
+     * 获取测试老板数据
+     * @return
+     */
+    public static SysBossDTO getTestBossInfo() {
+        SysBossDTO sysBossDTO = new SysBossDTO();
+        sysBossDTO.setMobile("18810142926");
+        sysBossDTO.setNickname("赵得良");
+        sysBossDTO.setId("11");
+        return sysBossDTO;
+    }
+
+    /**
+     * 获取测试店员信息
+     *
+     * @return
+     */
+    public static SysClerkDTO getTestClerkInfo() {
         //挡板
         SysClerkDTO clerkDTO = new SysClerkDTO();
         clerkDTO.setWeixinAttentionStatus("1");
@@ -72,63 +130,20 @@ public class UserUtils {
         clerkDTO.setSysShopName("汉方美业");
         clerkDTO.setScore(70f);
         return clerkDTO;
-
-//        SysClerkDTO sysClerkDTO = null;
-//        try {
-//            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//            Map<String, String> tokenValue = getHeadersInfo(request);
-//            String token = tokenValue.get("logintoken");
-//            String userInfoStr = JedisUtils.get(token);
-//            sysClerkDTO = (new Gson()).fromJson(userInfoStr, SysClerkDTO.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return sysClerkDTO;
     }
 
     /**
-     * 获取老板信息
+     * 获取测试用户信息
      *
      * @return
      */
-    public static SysBossDTO getBossInfo() {
-//        SysBossDTO sysBossDTO = null;
-//        try {
-//            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//            Map<String, String> tokenValue = getHeadersInfo(request);
-//            String token = tokenValue.get("logintoken");
-//            String userInfoStr = JedisUtils.get(token);
-//            sysBossDTO = (new Gson()).fromJson(userInfoStr, SysBossDTO.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return sysBossDTO;
-        return getTestBossInfo();
+    public static UserInfoDTO getTestUserInfoDTO() {
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setId("1");
+        userInfoDTO.setMobile("18810142926");
+        userInfoDTO.setNickname("小明");
+        userInfoDTO.setPhoto("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%91%98%E5%B7%A5%E5%9B%BE%E7%89%87.png");
+        return userInfoDTO;
     }
 
-    public static SysBossDTO getTestBossInfo() {
-        SysBossDTO sysBossDTO = new SysBossDTO();
-        sysBossDTO.setMobile("18810142926");
-        sysBossDTO.setNickname("赵得良");
-        sysBossDTO.setId("11");
-        return sysBossDTO;
-    }
-
-    /**
-     * 获取店员信息
-     *
-     * @param request
-     * @return
-     */
-
-    public static Map<String, String> getHeadersInfo(HttpServletRequest request) {
-        Map<String, String> map = new HashMap<>();
-        Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String key = (String) headerNames.nextElement();
-            String value = request.getHeader(key);
-            map.put(key, value);
-        }
-        return map;
-    }
 }

@@ -25,4 +25,6 @@ public interface LoginService {
     String ClerkMobileLogin(LoginDTO loginDTO, String loginIp, String openid);
 
     String ClerkWebLogin(LoginDTO loginDTO, String loginIp);
+
+    String beautyUserLogin(LoginDTO loginDTO, String s, String openid);
 }

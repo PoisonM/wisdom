@@ -5,11 +5,13 @@ import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.persistence.Page;
 import com.wisdom.common.util.FrontUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.util.List;
 
@@ -70,5 +72,34 @@ public class AccountService {
 
     public void updateUserAccountInfo(AccountDTO accountDTO) {
         accountMapper.updateUserAccountInfo(accountDTO);
+    }
+
+
+    /**
+     * 分页工具
+     * @param  preyPageDate 需要分页的list对象
+     * @param  pageStartNo 页数
+     * @param  pageSize 每页的大小
+     * @return
+     * */
+    public List pagerUtil(List preyPageDate,List returnList,Integer pageStartNo, Integer pageSize){
+
+        Integer total = preyPageDate.size();
+        int pageSum;
+        if(total%pageSize == 0){
+             pageSum = total/pageSize;
+        }else{
+             pageSum = total/pageSize+1;
+        }
+        if(pageSum >= pageStartNo){
+            for(int i=(pageStartNo-1)*pageSize;i<pageStartNo*pageSize;i++){
+                if(i<total){
+                    returnList.add(preyPageDate.get(i));
+                }else{
+                    break;
+                }
+            }
+        }
+        return returnList;
     }
 }

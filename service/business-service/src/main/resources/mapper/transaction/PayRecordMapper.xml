@@ -145,7 +145,7 @@
             AND o.update_date BETWEEN #{startTime} AND #{endTime}
         </if>
         <if test="param != null and param != ''">
-            AND (p.transaction_id = #{param} OR p.order_id=#{param})
+            AND (u.mobile = #{param} OR p.order_id=#{param})
         </if>
         ORDER BY p.pay_date DESC
         <if test='isExportExcel != "Y"'>
@@ -187,5 +187,21 @@
         FROM pay_record p,business_order o
         WHERE p.order_id =o.order_id AND p.status = '1'
         AND p.transaction_id = #{transactionId}
+    </select>
+
+    <!--根据支付表中的orderId查询订单信息-->
+    <select id="findOrderInfoForSpecial"
+            resultType="com.wisdom.common.dto.account.PayRecordDTO">
+        select
+            pay.amount,
+            pay.order_id,
+            pay.transaction_id,
+            pay.pay_date,
+            pay.pay_type
+        from
+            pay_record pay
+        where
+            pay.order_id=#{orderId}
+            AND pay.status='1'
     </select>
 </mapper>

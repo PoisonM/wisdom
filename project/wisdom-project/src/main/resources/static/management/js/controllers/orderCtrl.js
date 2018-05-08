@@ -112,6 +112,9 @@ angular.module('controllers',[]).controller('orderCtrl',
                             QueryBusinessOrderByParameters.save($scope.PageParamVoDTO,function(data){
                                 ManagementUtil.checkResponseData(data,"");
                                 if(data.result == Global.SUCCESS){
+                                    if( data.responseData.totalCount ==0){
+                                        alert("未查出相应结果");
+                                    }
                                     theSame(data);
                                     $scope.mum = false;
                                 }else{
@@ -168,7 +171,6 @@ angular.module('controllers',[]).controller('orderCtrl',
             };
 /*搜索*/
             $scope.searchOrder = function(){
-                $scope.loadPageList();
                 $scope.choosePage(1)
             };
  /*导出列表*/

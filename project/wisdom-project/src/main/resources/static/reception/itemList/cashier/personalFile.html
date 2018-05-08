@@ -17,10 +17,10 @@
                         <span class="treatmentCardTopUsed">{{item0.sysShopProjectSurplusTimes}}</span>
                         <span class="treatmentCardTopTotal">/{{item0.sysShopProjectInitTimes}}</span>
                     </div>
-                    <button>划卡</button>
+                    <button ng-click="goConsumptionList()">划卡</button>
                 </div>
                 <div class="treatmentCardBottom">
-                    <span>备注:</span>
+                    <span>备注：</span>
                     <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                         <span class="recorderCardTopPrice">金额:<b>{{item1.marketPrice}}</b></span>
                     </div>
                     <div class="recorderCardNote clearfix">
-                        <span>备注:</span>
+                        <span>备注：</span>
                         <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
                     </div>
                     <div>
@@ -41,7 +41,7 @@
                                 <span class="recorderCardContentUsed">{{item1Sm.projectSurplusTimes}}</span>
                                 <span class="recorderCardContentTotal">/{{item1Sm.projectInitTimes}}</span>
                             </div>
-                            <button>划卡</button>
+                            <button ng-click="goConsumptionList()">划卡</button>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                         <span class="prepaidCardTAName">充值金额：<b>￥{{item2.initAmount}}</b></span>
                     </div>
                     <div class="prepaidCardNote clearfix">
-                        <span>备注:</span>
+                        <span>备注：</span>
                         <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
                     </div>
                 </div>

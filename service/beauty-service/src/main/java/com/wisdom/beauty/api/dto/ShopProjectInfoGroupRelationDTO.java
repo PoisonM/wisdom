@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopProjectInfoGroupRelationDTO extends BaseEntity implements Serializable {
@@ -23,6 +24,12 @@ public class ShopProjectInfoGroupRelationDTO extends BaseEntity implements Seria
 
     //项目表主键
     private String shopProjectInfoId;
+
+    //项目服务次数
+    private Integer shopProjectServiceTimes;
+
+    //项目价格
+    private BigDecimal shopProjectPrice;
 
     //
     private String createBy;
@@ -84,6 +91,22 @@ public class ShopProjectInfoGroupRelationDTO extends BaseEntity implements Seria
 
     public void setShopProjectInfoId(String shopProjectInfoId) {
         this.shopProjectInfoId = shopProjectInfoId;
+    }
+
+    public Integer getShopProjectServiceTimes() {
+        return shopProjectServiceTimes;
+    }
+
+    public void setShopProjectServiceTimes(Integer shopProjectServiceTimes) {
+        this.shopProjectServiceTimes = shopProjectServiceTimes;
+    }
+
+    public BigDecimal getShopProjectPrice() {
+        return shopProjectPrice;
+    }
+
+    public void setShopProjectPrice(BigDecimal shopProjectPrice) {
+        this.shopProjectPrice = shopProjectPrice;
     }
 
     public String getCreateBy() {

@@ -5,6 +5,7 @@ import com.wisdom.business.constant.OrderStatus;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
 import com.wisdom.business.service.transaction.TransactionService;
+import com.wisdom.business.service.transaction.PayRecordService;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.business.interceptor.LoginRequired;
@@ -16,12 +17,15 @@ import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -29,10 +33,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "account")
@@ -51,6 +52,9 @@ public class AccountController {
 
 	@Autowired
 	private TransactionService transactionService;
+
+	@Autowired
+	private PayRecordService payRecordService;
 
 	/**
 	 * 获取用户的账户信息
@@ -127,6 +131,8 @@ public class AccountController {
 		result.setResult(StatusConstant.SUCCESS);
 		return result;
 	}
+
+
 
 	/**
 	 * 查询所有用户及余额
@@ -237,4 +243,177 @@ public class AccountController {
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
+
+	/**
+	 * 判断当前用户是否是店主
+	 *
+	 * */
+	@RequestMapping(value = "isShopKeeper", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<Integer> isShopKeeper(){
+		logger.info("用户获取账户信息===" + new Date());
+
+		//获取当前登录用户信息
+		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+		String phone = userInfoDTO.getMobile();
+		SpecialShopInfoDTO specialShopInfoDTO = new SpecialShopInfoDTO();
+		specialShopInfoDTO.setShopBossMobile(phone);
+
+		Query query = new Query(Criteria.where("shopBossMobile").is(specialShopInfoDTO.getShopBossMobile()));
+		List<SpecialShopInfoDTO> specialShopInfoDTOS = mongoTemplate.find(query,SpecialShopInfoDTO.class,"specialShopInfo");
+
+		ResponseDTO<Integer> responseDTO = new ResponseDTO<>();
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		if(!specialShopInfoDTOS.isEmpty()){
+			responseDTO.setResponseData(specialShopInfoDTOS.size());
+		}else{
+			responseDTO.setResponseData(0);
+		}
+		return responseDTO;
+	}
+
+	/**
+	 * 查询当前登录用户店铺的交易明细
+	 *
+	 * */
+	@RequestMapping(value = "findShopKeeperOrderS", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<List<SpecialShopBusinessOrderDTO>> findShopKeeperOrderS(@RequestBody PageParamVoDTO<SpecialShopBusinessOrderDTO> pageParamVoDTO){
+		logger.info("用户获取账户信息===" + new Date());
+
+		long startTime = System.currentTimeMillis();
+		//获取当前登录用户信息
+		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+		String phone = userInfoDTO.getMobile();
+
+		SpecialShopInfoDTO specialShopInfoDTO = new SpecialShopInfoDTO();
+		specialShopInfoDTO.setShopBossMobile(phone);
+
+		//获取用户下店铺信息
+		Query query = new Query(Criteria.where("shopBossMobile").is(specialShopInfoDTO.getShopBossMobile()));
+		List<SpecialShopInfoDTO> specialShopInfoDTOS = mongoTemplate.find(query,SpecialShopInfoDTO.class,"specialShopInfo");
+
+		//声明一个该用户下所有订单list
+		List<SpecialShopBusinessOrderDTO>  specialShopBusinessOrderDTOSZ = new ArrayList();
+
+		//判断该用户是否店铺
+		if(!specialShopInfoDTOS.isEmpty()){
+
+			for(int i=0 ;i<specialShopInfoDTOS.size();i++){
+
+				//根据店铺查询店铺下的订单
+				SpecialShopBusinessOrderDTO  specialShopBusinessOrderDTO = new SpecialShopBusinessOrderDTO();
+				specialShopBusinessOrderDTO.setShopId(specialShopInfoDTOS.get(i).getShopId());
+				Query queryOrder = new Query(Criteria.where("shopId").is(specialShopInfoDTOS.get(i).getShopId()));
+				queryOrder.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
+				List<SpecialShopBusinessOrderDTO> specialShopBusinessOrderDTOS = mongoTemplate.find(queryOrder,SpecialShopBusinessOrderDTO.class,"specialShopBusinessOrder");
+
+				//将所有订单放入一个list里面
+				for(int j=0;j<specialShopBusinessOrderDTOS.size();j++){
+
+					List<PayRecordDTO>  payRecordDTOS = payRecordService.findOrderInfoForSpecial(specialShopBusinessOrderDTOS.get(j).getOrderId());
+
+					logger.info("交易订单号为："+specialShopBusinessOrderDTOS.get(j).getOrderId());
+					SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO1 = new SpecialShopBusinessOrderDTO();
+					specialShopBusinessOrderDTO1 = specialShopBusinessOrderDTOS.get(j);
+
+					if(payRecordDTOS != null&&payRecordDTOS.size()>0){
+						Float account=(float)0 ;
+						for (int m=0;m<payRecordDTOS.size();m++){
+							account = account+payRecordDTOS.get(m).getAmount();
+						}
+						specialShopBusinessOrderDTO1.setAccount(String.valueOf(account));
+
+						logger.info("交易金额为："+account);
+					}
+
+					specialShopBusinessOrderDTOSZ.add(specialShopBusinessOrderDTO1);
+
+				}
+			}
+		}
+
+		List<SpecialShopBusinessOrderDTO> responeDateList = new ArrayList<>();
+
+		//将获取的list进行分页
+		List<SpecialShopBusinessOrderDTO> responeList = accountService.pagerUtil(specialShopBusinessOrderDTOSZ,responeDateList,pageParamVoDTO.getPageNo(),pageParamVoDTO.getPageSize());
+
+		logger.info("返回结果为：{}",responeList);
+
+		logger.info("获取该店铺订单列表耗时{}毫秒", (System.currentTimeMillis() - startTime));
+
+		ResponseDTO<List<SpecialShopBusinessOrderDTO>> responseDTO = new ResponseDTO<>();
+		if(responeList!=null&&responeList.size()>0){
+
+			responseDTO.setResult(StatusConstant.SUCCESS);
+			responseDTO.setResponseData(responeList);
+		}else{
+
+			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setErrorInfo("无更多交易记录");
+		}
+
+		return responseDTO;
+	}
+
+	/**
+	 *
+	 *
+	 * 根据交易流水查询所有订单
+	 *
+	 * */
+	@RequestMapping(value = "findOrderByTransactionId", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<List<PayRecordDTO>> findOrderByTransactionId(@RequestParam String orderId){
+
+		logger.info("交易订单号为={}",orderId);
+		long startTime = System.currentTimeMillis();
+
+		List<PayRecordDTO>  payRecordDTOS = payRecordService.findOrderInfoForSpecial(orderId);
+
+		logger.info("获取该交易流水号下订单列表耗时{}毫秒", (System.currentTimeMillis() - startTime));
+
+		Float paySum=(float)0;
+		if(payRecordDTOS!=null&&payRecordDTOS.size()>0){
+			for(int i =0;i<payRecordDTOS.size();i++){
+				paySum = paySum + payRecordDTOS.get(i).getAmount();
+
+			}
+		}
+
+		ResponseDTO<List<PayRecordDTO>> responseDTO = new ResponseDTO<>();
+		responseDTO.setResponseData(payRecordDTOS);
+		return responseDTO;
+	}
+
+
+	/***
+	 * 查询用户是否登录
+	 *
+	 * */
+	@RequestMapping(value = "isLogin", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO<String> isLogin(){
+
+		ResponseDTO<String> responseDTO = new ResponseDTO<>();
+		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+		if(userInfoDTO !=null) {
+			responseDTO.setResult(StatusConstant.SUCCESS);
+			responseDTO.setResponseData("success");
+		}else{
+			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setResponseData("failure");
+		}
+
+		return responseDTO;
+	}
+
+
 }

@@ -29,9 +29,9 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -96,6 +96,7 @@ public class AppointmentTest {
     @Test
     public void saveAppointmentService() {
 
+        String a = UUID.randomUUID().toString();
         ShopAppointServiceDTO shopAppointServiceDTO = getShopAppointServiceDTO();
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         System.out.println("测试完毕");
@@ -115,7 +116,7 @@ public class AppointmentTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/appointmentInfo/getShopAppointmentInfo").param("searchDate", "2018-04-27").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(get("/appointmentInfo/getShopClerkAppointmentInfo").param("searchDate", "2018-04-27").param("sysShopId", "11").param("sysClerkId", "cc03a01d060e4bb09e051788e8d9801b").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送post请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
