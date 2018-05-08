@@ -1,4 +1,4 @@
-PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, ngDialog, Archives, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, ThreeLevelProject, productInfoThreeLevelProject, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo) {
+PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, ngDialog, Archives, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, ThreeLevelProject, productInfoThreeLevelProject, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo, GetConsumeDisplayIds) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.param.headerCash.leftAddContent = "添加档案";
@@ -23,8 +23,31 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         userId: '110'
     }, function(data) {
         $scope.orderId = data.responseData;
+        GetConsumeDisplayIds.get({ orderId: data.responseData }, function(data) {
+            $scope.theSelected = data.responseData;
+            if ($scope.theSelected.length == 0) {
+                $scope.theSelected = {
+                    "periodCard": {
+                        "periodCardSize": 0,
+                        "periodCardIds": []
+                    },
+                    "product": {
+                        "productIds": [],
+                        "productSize": 0
+                    },
+                    "timeCard": {
+                        "timeCardSize": 0,
+                        "timeCardIds": []
+                    },
+                    "groupCard": {
+                        "groupSize": 0,
+                        "groupIds": []
+                    }
+                }
+            }
+        })
     })
-    $scope.select = 0;
+    $scope.select = 1;
     $scope.tabclick = function(e) {
         if (e == 3) {
             $scope.consumptionListUlShow = false;
@@ -105,21 +128,89 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             $scope.threeCategories = data.responseData;
         });
     }
-    $scope.updateVirtualGoodsOrderInfo = function(e) {
-        e.stopPropagation();
-        console.log($(e.target))
+    $scope.updateVirtualGoodsOrderInfo = function(e, res) {
+        Array.prototype.indexOf = function(val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
+            }
+            return -1;
+        };
+        Array.prototype.remove = function(val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+        var bar = 0;
+        switch (e) {
+
+            case 0:
+                if ($scope.theSelected.timeCard.timeCardIds.indexOf(res.id) != -1) { bar = 1; }
+                break;
+            case 1:
+                if ($scope.theSelected.periodCard.periodCardIds.indexOf(res.id) != -1) { bar = 1; }
+                break;
+            case 3:
+                if ($scope.theSelected.groupCard.groupIds.indexOf(res.id) != -1) { bar = 1; }
+                break;
+            case 4:
+                if ($scope.theSelected.product.productIds.indexOf(res.id) != -1) { bar = 1; }
+                break;
+            default:
+        }
         UpdateVirtualGoodsOrderInfo.save({
-            goodsType: 4,
-            operation: 0,
+            goodsType: e,
+            operation: bar,
             orderId: $scope.orderId,
-            shopUserProductRelationDTOS: [{
-                initAmount: '100',
-                initTimes: '20',
-                shopProductId: '101',
-                shopProjectGroupName: '迪奥',
+            shopUserProjectRelationDTOS: [{
+                serviceTime: res.serviceTimes,
+                sysShopProjectId: res.id,
+                sysShopProjectInitAmount: res.marketPrice,
+                sysShopProjectInitTimes: '1',
+                sysShopProjectName: res.projectName,
+                sysUserId: 110,
+                useStyle: res.useStyle,
             }]
         }, function() {
-            $(e.target).children('.checkBox').css('background', '#FF6666')
+            switch (e) {
+                case 0:
+                    if ($scope.theSelected.timeCard.timeCardIds.indexOf(res.id) == -1) {
+                        $scope.theSelected.timeCard.timeCardIds.push(res.id);
+                        $scope.theSelected.timeCard.timeCardSize++;
+                    } else {
+                        $scope.theSelected.timeCard.timeCardIds.remove(res.id);
+                        $scope.theSelected.timeCard.timeCardSize--;
+                    }
+                    break;
+                case 1:
+                    if ($scope.theSelected.periodCard.periodCardIds.indexOf(res.id) == -1) {
+                        $scope.theSelected.periodCard.periodCardIds.push(res.id);
+                        $scope.theSelected.periodCard.periodCardSize++;
+                    } else {
+                        $scope.theSelected.periodCard.periodCardIds.remove(res.id);
+                        $scope.theSelected.periodCard.periodCardSize--;
+                    }
+                    break;
+                case 3:
+                    if ($scope.theSelected.groupCard.groupIds.indexOf(res.id) == -1) {
+                        $scope.theSelected.groupCard.groupIds.push(res.id);
+                        $scope.theSelected.groupCard.groupCard++;
+                    } else {
+                        $scope.theSelected.groupCard.groupIds.remove(res.id);
+                        $scope.theSelected.groupCard.groupCard--;
+                    }
+                    break;
+                case 4:
+                    if ($scope.theSelected.product.productIds.indexOf(res.id) == -1) {
+                        $scope.theSelected.product.productIds.push(res.id);
+                        $scope.theSelected.product.productSize++;
+                    } else {
+                        $scope.theSelected.product.productIds.remove(res.id);
+                        $scope.theSelected.product.productSize--;
+                    }
+                    break;
+                default:
+            }
         })
     }
     $scope.$parent.leftTipFn = function() {

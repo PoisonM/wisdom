@@ -3,6 +3,10 @@
     height: 100%;
 }
 
+.bgF6 {
+    background: #FF6666;
+}
+
 .consumptionListBox .consumptionListLeft {
     width: 100px;
     height: 100%;
@@ -46,6 +50,20 @@
     display: block;
     background: url(../../images/sprite_cashier.png) no-repeat;
     background-size: 425px 425px;
+    position: relative;
+}
+
+.consumptionListBox .consumptionListLeft ul li i div {
+    position: absolute;
+    top: -9px;
+    right: -6px;
+    border-radius: 50%;
+    background: #fff;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    color: #ff6666;
+    text-align: center;
 }
 
 .consumptionListBox .consumptionListLeft ul li:nth-child(1) i {
