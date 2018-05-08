@@ -16,7 +16,7 @@
                     <span class="name">{{item.shopProjectGroupName}}</span>
                     <span class="discount"><s>原价 {{item.projectInitAmount}}.00</s> 折扣 {{item.discount*100}}折</span>
                     <label for="" class="discountPrice">折扣价 ¥</label>
-                    <input type="text" ng-value="(item.projectInitAmount*item.discount)">
+                    <input type="text" ng-value="(item.projectInitAmount*item.discount)" ng-model="item.shopGroupPuchasePrice">
                     <!-- <label for="" class="serviceTimes">服务次数</label>
                     <input type="text" ng-model="item.projectInitTimes"> -->
                     <div class="delete">删除</div>
@@ -26,9 +26,9 @@
                         <li>
                             <div>购买数量</div>
                             <span>
-                                <b>-</b>
-                                <input type="text" value="1" ng-model="car">
-                                <b>＋</b>
+                                <b ng-click="">-</b>
+                                <input type="text" value="1" ng-model="item.projectInitTimes">
+                                <b ng-click="">＋</b>
                             </span>
                         </li>
                         <li>
@@ -86,8 +86,8 @@
                     <span class="name">{{item.sysShopProjectName}}</span>
                     <span class="discount"><s>原价 {{item.sysShopProjectInitAmount}}.00</s> 折扣 {{item.discount}}折</span>
                     <label for="" class="discountPrice">折扣价 ¥</label>
-                    <input type="text" ng-value="(item.sysShopProjectInitAmount*item.discount)">
-                    <!--<label for="" class="serviceTimes">服务次数</label>
+                    <input type="text" ng-value="(item.sysShopProjectInitAmount*item.discount)" ng-model='item.bar'>
+                    <!-- <label for="" class="serviceTimes">服务次数</label>
                     <input type="text">-->
                     <div class="delete">删除</div>
                 </div>
@@ -115,5 +115,6 @@
     </div>
     <div class="stillOwedTitle">备注</div>
     <textarea name="" rows="10"></textarea>
+    span
     <button ng-click="goOrderListm()">确认</button>
 </div>
