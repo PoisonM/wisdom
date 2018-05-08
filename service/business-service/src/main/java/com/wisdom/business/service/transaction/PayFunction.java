@@ -84,11 +84,11 @@ public class PayFunction {
                 businessOrderDTO.setUpdateDate(new Date());
                 transactionService.updateBusinessOrder(businessOrderDTO);
 
-                //修改商品库存
-                ProductDTO productDTO = new ProductDTO();
-                productDTO.setProductId(businessOrderDTO.getBusinessProductId());
-                productDTO.setProductAmount(businessOrderDTO.getBusinessProductNum());
-                transactionService.updateOfflineProductAmount(productDTO);
+                //减商品库存
+//                ProductDTO productDTO = new ProductDTO();
+//                productDTO.setProductId(businessOrderDTO.getBusinessProductId());
+//                productDTO.setProductAmount(businessOrderDTO.getBusinessProductNum());
+//                transactionService.updateOfflineProductAmount(productDTO,"lose");
 
                 productName = productName + businessOrderDTO.getBusinessProductName() +
                         "(" + businessOrderDTO.getProductSpec() + ")" + businessOrderDTO.getBusinessProductNum() +"套"+";";

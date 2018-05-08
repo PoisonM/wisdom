@@ -116,6 +116,7 @@ public class TransactionService {
             orderAddressRelationDTO1.setUserNameAddress(userOrderAddressDTOList.get(0).getUserName());
             orderAddressRelationDTO1.setUserPhoneAddress(userOrderAddressDTOList.get(0).getUserPhone());
             orderAddressRelationDTO1.setUserProvinceAddress(userOrderAddressDTOList.get(0).getProvince());
+            orderAddressRelationDTO1.setUserCityAddress(userOrderAddressDTOList.get(0).getCity());
             orderAddressRelationDTO1.setUserDetailAddress(userOrderAddressDTOList.get(0).getDetailAddress());
             orderAddressRelationDTO1.setAddressCreateDate(new Date());
             orderAddressRelationDTO1.setAddressUpdateDate(new Date());
@@ -280,17 +281,31 @@ public class TransactionService {
         logger.info("编辑订单绑定相应的COP号"+orderCopRelationDTO);
         transactionMapper.updateOrderCopRelation(orderCopRelationDTO);
     }
-    
-    //修改商品库存
-    public void updateOfflineProductAmount(ProductDTO productDTO) {
+
+    /**
+     * 根据订单商品数量修改相应的商品库存
+     * @param productDTO
+     * @param addAndLose add为增加,lose为减少
+     */
+    public void updateOfflineProductAmount(ProductDTO productDTO,String addAndLose) {
+        logger.info("根据订单商品数量修改相应的商品库存,商品id为:"+productDTO.getProductId()+"添加还是减少:"+addAndLose);
         Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
         ProductDTO productDTO1 = mongoTemplate.findOne(query, ProductDTO.class,"offlineProduct");
         if(productDTO1 != null){
             if(productDTO.getProductAmount() != 0) {
                 if (productDTO1.getProductAmount() >= productDTO.getProductAmount()) {
                     Update update = new Update();
-                    update.set("playNum", productDTO1.getProductAmount() - productDTO.getProductAmount());
-                    mongoTemplate.updateFirst(query, update, "offlineProduct");
+                    if("add".equals(addAndLose)){
+                        update.set("productAmount", productDTO1.getProductAmount() + productDTO.getProductAmount());
+                        mongoTemplate.updateFirst(query, update, "offlineProduct");
+                    }else if ("lose".equals(addAndLose)){
+                        if(productDTO1.getProductAmount() - productDTO.getProductAmount() < 0){
+                            logger.info("根据订单商品数量("+productDTO.getProductAmount()+")修改相应的商品库存方法商品数量("+productDTO1.getProductAmount()+")大于库存数量");
+                        }else {
+                            update.set("productAmount", productDTO1.getProductAmount() - productDTO.getProductAmount());
+                            mongoTemplate.updateFirst(query, update, "offlineProduct");
+                        }
+                    }
                 }
             }
         }

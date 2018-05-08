@@ -40,7 +40,7 @@ public class OrderAddressRelationDTO {
     @JSONField(name = "userProvinceAddress")
     private String userProvinceAddress;
     /**
-     * 收货地址省份
+     * 收货地址城市
      */
     @JSONField(name = "userCityAddress")
     private String userCityAddress;
@@ -132,6 +132,14 @@ public class OrderAddressRelationDTO {
         this.addressUpdateDate = addressUpdateDate;
     }
 
+    public String getUserCityAddress() {
+        return userCityAddress;
+    }
+
+    public void setUserCityAddress(String userCityAddress) {
+        this.userCityAddress = userCityAddress;
+    }
+
     @Override
     public String toString() {
         return "OrderAddressRelationDTO{" +
@@ -141,6 +149,7 @@ public class OrderAddressRelationDTO {
                 ", userNameAddress='" + userNameAddress + '\'' +
                 ", userPhoneAddress='" + userPhoneAddress + '\'' +
                 ", userProvinceAddress='" + userProvinceAddress + '\'' +
+                ", userCityAddress='" + userCityAddress + '\'' +
                 ", userDetailAddress='" + userDetailAddress + '\'' +
                 ", addressCreateDate=" + addressCreateDate +
                 ", addressUpdateDate=" + addressUpdateDate +
