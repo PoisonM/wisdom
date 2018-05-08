@@ -3,10 +3,12 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserArchivesCriteria;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,24 +100,33 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
     /**
      * 查询某个店某一时间段建档的个数
      *
-     * @param shopId
-     * @param startDate
-     * @param endDate
+     * @param pageParamVoDTO
      * @return
      */
     @Override
-    public int getShopBuildArchivesNumbers(String shopId, Date startDate, Date endDate) {
-
-        logger.info("查询某个店某一时间段建档的个数传入参数={}", "shopId = [" + shopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
-
+    public int getShopBuildArchivesNumbers(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+        UserConsumeRequestDTO userConsumeRequestDTO=pageParamVoDTO.getRequestData();
+        if(userConsumeRequestDTO==null){
+            logger.info("userConsumeRequestDTO为空");
+            return  0;
+        }
+        logger.info("getShopBuildArchivesNumbers方法入参是ShopId={},bossId={},startTime={},endTime={}",userConsumeRequestDTO.getSysShopId(),userConsumeRequestDTO.getSysBossId(),pageParamVoDTO.getStartTime(),pageParamVoDTO.getEndTime());
+        String startDate=pageParamVoDTO.getStartTime();
+        String endDate=pageParamVoDTO.getEndTime();
+        Date start = DateUtils.StrToDate(startDate, "datetime");
+        Date end = DateUtils.StrToDate(endDate, "datetime");
         ShopUserArchivesCriteria archivesCriteria = new ShopUserArchivesCriteria();
         ShopUserArchivesCriteria.Criteria criteria = archivesCriteria.createCriteria();
 
-        if (StringUtils.isNotBlank(shopId)) {
-            criteria.andSysShopIdEqualTo(shopId);
+        if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
+        }
+        if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossId())) {
+            // TODO: 2018/5/8
+            //criteria.andsysb(userConsumeRequestDTO.getSysBossId());
         }
         if (startDate != null && endDate != endDate) {
-            criteria.andCreateDateBetween(startDate, endDate);
+            criteria.andCreateDateBetween(start, end);
         }
 
         int count = shopUserArchivesMapper.countByCriteria(archivesCriteria);

@@ -62,11 +62,11 @@ public interface UserServiceClient {
      * @Date:2018/4/25 18:32
      */
     @RequestMapping(value = "/getClerkInfoList", method = RequestMethod.GET)
-    List<SysClerkDTO> getClerkInfoList(@RequestParam(value = "sysShopId") String sysShopId,
-                                       @RequestParam(value = "sysBossId") String sysBossId,
+    List<SysClerkDTO> getClerkInfoList(@RequestParam(value = "sysBossId") String sysBossId,
                                        @RequestParam(value = "startTime") String startTime,
                                        @RequestParam(value = "startTime") String endTime,
                                        @RequestParam(value = "pageSize") int pageSize);
+
 
     /**
      * @Author:huan
