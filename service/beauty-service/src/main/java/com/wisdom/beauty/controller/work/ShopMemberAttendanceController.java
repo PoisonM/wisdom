@@ -1,10 +1,13 @@
 package com.wisdom.beauty.controller.work;
 
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopWorkService;
@@ -20,6 +23,7 @@ import com.wisdom.common.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +44,8 @@ public class ShopMemberAttendanceController {
 
     @Autowired
     private ShopUerConsumeRecordService shopUerConsumeRecordService;
+    @Autowired
+    private ShopAppointmentService appointmentService;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -244,4 +250,49 @@ public class ShopMemberAttendanceController {
         logger.info("findMineConsume方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 获取boss成绩
+     * @Date:2018/4/27 18:26
+     */
+    @RequestMapping(value = "/getBossAchievement", method = {RequestMethod.GET})
+    @ResponseBody
+    ResponseDTO<Map<String, String>> getBossAchievement(@RequestParam String sysBossId) {
+
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        if (sysClerkDTO == null) {
+            return null;
+        }
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
+        UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
+        userConsumeRequestDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        userConsumeRequestDTO.setSysBossId(sysBossId);
+        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        String startTime = DateUtils.getStartTime();
+        String endTime = DateUtils.getEndTime();
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
+        //BigDecimal income = shopStatisticsAnalysisService.getPerformance(pageParamVoDTO);
+       // BigDecimal expenditure = shopStatisticsAnalysisService.getExpenditure(pageParamVoDTO);
+        Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(pageParamVoDTO);
+        Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(sysClerkDTO.getSysShopId(), startTime, endTime);
+        ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+        extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(startTime,""));
+        extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(endTime, ""));
+        List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+        //服务次数  划卡消费+单次的次数
+
+        Map<String, String> map = new HashMap<>(16);
+        map.put("appointmentNum", shopAppointServiceDTOS==null? "0":String.valueOf(shopAppointServiceDTOS.size()));
+        //map.put("expenditure", expenditure == null ? "0" : income.toString());
+        map.put("consumeNumber", consumeNumber.toString());
+        map.put("shopNewUserNumber", shopNewUserNumber.toString());
+        ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
+        response.setResponseData(map);
+        response.setResult(StatusConstant.SUCCESS);
+        return response;
+    }
+
 }

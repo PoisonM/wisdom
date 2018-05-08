@@ -145,6 +145,23 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	}
 
 	@Override
+	public Integer getUserConsumeNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+		UserConsumeRequestDTO userConsumeRequestDTO=pageParamVoDTO.getRequestData();
+
+		ShopUserConsumeRecordCriteria recordCriteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
+		// 设置查询条件
+		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
+		criteria.andSysBossIdEqualTo(userConsumeRequestDTO.getSysBossId());
+		String startDate=pageParamVoDTO.getStartTime();
+		String endDate=pageParamVoDTO.getEndTime();
+		criteria.andCreateDateBetween(DateUtils.StrToDate(startDate, "datetime"),
+				DateUtils.StrToDate(endDate, "endDate"));
+		Integer consumeNumber = extShopUserConsumeRecordMapper.selectUserConsumeNumber(recordCriteria);
+		return consumeNumber;
+	}
+
+	@Override
 	public List<ExpenditureAndIncomeResponseDTO> getExpenditureAndIncomeList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
