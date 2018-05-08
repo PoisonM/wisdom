@@ -713,7 +713,7 @@ public class AppointmentController {
 			for (ShopAppointServiceDTO serviceDTO : list) {
 				HashMap<Object, Object> hashMap = new HashMap<>(2);
 				hashMap.put("sysClerkInfo", redisUtils.getSysClerkDTO(serviceDTO.getSysClerkId()));
-				hashMap.put("appointmentInfo", list);
+				hashMap.put("appointmentInfo", serviceDTO);
 				hashMap.put("appointmentNumber", StringUtils.isBlank(serviceDTO.getShopProjectId()) ? "0" : serviceDTO.getShopProjectId().split(";").length);
 				arrayList.add(hashMap);
 			}
