@@ -69,8 +69,16 @@ public class PayRecordService {
             {
                 payPrice = payPrice + Float.valueOf(needPayOrderDTO.getProductPrice())*Float.valueOf(needPayOrderDTO.getProductNum());
             }
-            //prePayInfoMap.put("total_fee",(int)(payPrice*100)+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
-            prePayInfoMap.put("total_fee",1+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
+
+            if(ConfigConstant.PAY_TEST_FLAG.equals("true"))
+            {
+                prePayInfoMap.put("total_fee",1+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
+            }
+            else if(ConfigConstant.PAY_TEST_FLAG.equals("false"))
+            {
+                prePayInfoMap.put("total_fee",(int)(payPrice*100)+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
+            }
+
             prePayInfoMap.put("spbill_create_ip",request.getRemoteAddr());
 
             if(productType.equals("offline"))

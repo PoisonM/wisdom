@@ -97,8 +97,8 @@ public class WeixinUserController {
     /**
      * 公众号菜单引导页 081dazSU0Zf1iU1fGISU0q5ASU0dazSd 0815XmM70lSlvH1UnyN70OwBM705XmM9
      */
-    @RequestMapping(value = "getCustomerWeixinMenuId", method = {RequestMethod.POST, RequestMethod.GET})
-    public String getCustomerWeixinMenuId(HttpServletRequest request,
+    @RequestMapping(value = "getUserWeixinMenuId", method = {RequestMethod.POST, RequestMethod.GET})
+    public String getUserWeixinMenuId(HttpServletRequest request,
                                           HttpServletResponse response,
                                           HttpSession session) throws Exception
     {
@@ -176,7 +176,6 @@ public class WeixinUserController {
      */
     @RequestMapping(value = "/fieldwork/author", method = RequestMethod.GET)
     public String Oauth2API(HttpServletRequest request) {
-        String test1 = ConfigConstant.DOMAIN_VALUE;
         String backUrl = request.getParameter("url");
         String oauth2Url = WeixinUtil.getUserOauth2Url(backUrl);
         return "redirect:" + oauth2Url;
