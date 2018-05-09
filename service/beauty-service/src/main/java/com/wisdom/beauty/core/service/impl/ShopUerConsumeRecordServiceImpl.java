@@ -103,7 +103,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					c.andGoodsTypeIn(goodType);
 				}
 			}
-			if(ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRequest.getConsumeType())){
+			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRequest.getConsumeType())) {
 				if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRequest.getGoodsType())
 						|| GoodsTypeEnum.PRODUCT.getCode().equals(userConsumeRequest.getGoodsType())) {
 					// 如果是充值卡或者是产品领取
@@ -180,45 +180,58 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			return null;
 		}
 		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
-        if (CommonUtils.objectIsNotEmpty(list)) {
-            BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
-        }
-        for(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO:list){
-			if(ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())){
-				if(GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())){
-					userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getCode());
-				}else {
-					userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
-				}
+		if (CommonUtils.objectIsNotEmpty(list)) {
+			BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
+		}
+		BigDecimal totalAmount = null;
+		Set<String> consumeTypes = new HashSet<>();
+		Set<String> goodsTypes = new HashSet<>();
+		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
+			consumeTypes.add(shopUserConsumeRecordDTO.getConsumeType());
+			goodsTypes.add(shopUserConsumeRecordDTO.getGoodsType());
+			if (totalAmount == null) {
+				totalAmount = shopUserConsumeRecordDTO.getPrice().multiply(new BigDecimal(shopUserConsumeRecordDTO.getConsumeNumber()));
+			} else {
+				totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice().multiply(new BigDecimal(shopUserConsumeRecordDTO.getConsumeNumber())));
 			}
 		}
+		if (consumeTypes.contains(ConsumeTypeEnum.RECHARGE.getCode())) {
+			if (goodsTypes.contains(GoodsTypeEnum.RECHARGE_CARD.getCode())) {
+				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getCode());
+			} else {
+				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
+			}
+		}
+		userConsumeRecordResponseDTO.setSumAmount(totalAmount);
 		userConsumeRecordResponseDTO.setUserConsumeRecordList(list);
 		return userConsumeRecordResponseDTO;
 	}
 
-    /**
-     * 根据条件查询消费记录
-     *
-     * @param shopUserConsumeRecordDTO
-     * @return
-     */
-    @Override
-    public List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
-        logger.info("根据条件查询消费记录方法传入的参数,shopUserConsumeRecordDTO={}}", shopUserConsumeRecordDTO);
+	/**
+	 * 根据条件查询消费记录
+	 *
+	 * @param shopUserConsumeRecordDTO
+	 * @return
+	 */
+	@Override
+	public List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(
+			ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
+		logger.info("根据条件查询消费记录方法传入的参数,shopUserConsumeRecordDTO={}}", shopUserConsumeRecordDTO);
 
-        ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
-        ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
+		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
 
-        if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowId())) {
-            c.andFlowIdEqualTo(shopUserConsumeRecordDTO.getFlowId());
-        }
+		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowId())) {
+			c.andFlowIdEqualTo(shopUserConsumeRecordDTO.getFlowId());
+		}
 		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getId())) {
 			c.andIdEqualTo(shopUserConsumeRecordDTO.getId());
 		}
-        List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper.selectByCriteria(criteria);
+		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper
+				.selectByCriteria(criteria);
 
-        return shopUserConsumeRecordDTOS;
-    }
+		return shopUserConsumeRecordDTOS;
+	}
 
 	/**
 	 * 保存用户消费或充值记录
