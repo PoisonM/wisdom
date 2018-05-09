@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service;
 
 
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
@@ -51,4 +52,12 @@ public interface ShopRechargeCardService {
     *@Date:2018/4/16 18:29
     */
     Map<String,Map<String,Object>>getDiscount(List<String> rechargeCardIds);
+
+    /**
+     * 更新用户的充值卡信息
+     *
+     * @param shopUserRechargeCardDTO
+     * @return
+     */
+    int updateRechargeCard(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
 }

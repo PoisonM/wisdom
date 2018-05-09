@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
+import com.wisdom.beauty.api.extDto.ExtShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.core.service.ShopCardService;
@@ -18,6 +19,7 @@ import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -159,15 +161,38 @@ public class CardController {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<ShopRechargeCardResponseDTO> findRechargeCard(@PathVariable String id) {
+	ResponseDTO<Object> findRechargeCard(@PathVariable String id) {
 		long currentTimeMillis = System.currentTimeMillis();
 		// 查询数据
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(id);
+		ExtShopUserRechargeCardDTO extShopUserRechargeCardDTO = new ExtShopUserRechargeCardDTO();
+		BeanUtils.copyProperties(shopRechargeCardResponseDTO, extShopUserRechargeCardDTO);
 
-		ResponseDTO<ShopRechargeCardResponseDTO> responseDTO = new ResponseDTO<>();
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopRechargeCardResponseDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		logger.info("查询某个充值卡信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+	/**
+	 * 更新用户的充值卡信息
+	 *
+	 * @param shopUserRechargeCardDTO
+	 * @return
+	 */
+	@RequestMapping(value = "/updateRechargeCard", method = RequestMethod.POST)
+	@ResponseBody
+	ResponseDTO<Object> updateRechargeCard(@RequestBody ExtShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+		long currentTimeMillis = System.currentTimeMillis();
+		logger.info("更新用户的充值卡信息传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+		// 查询数据
+		int updateRechargeCard = shopRechargeCardService.updateRechargeCard(shopUserRechargeCardDTO);
+
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		responseDTO.setResponseData(updateRechargeCard > 0 ? "更新成功！" : "更新失败！");
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("更新用户的充值卡信息查询某个充值卡信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 

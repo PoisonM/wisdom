@@ -1,15 +1,13 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationCriteria;
-import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
-import com.wisdom.beauty.api.dto.ShopRechargeCardCriteria;
-import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.extDto.ImageUrl;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.core.mapper.ExtShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopRechargeCardMapper;
+import com.wisdom.beauty.core.mapper.ShopUserRechargeCardMapper;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.StringUtils;
@@ -39,6 +37,9 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 
 	@Autowired
 	private ShopRechargeCardMapper shopRechargeCardMapper;
+
+	@Autowired
+	private ShopUserRechargeCardMapper shopUserRechargeCardMapper;
 
 	@Autowired
 	private ShopProjectProductCardRelationMapper shopProjectProductCardRelationMapper;
@@ -247,5 +248,20 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		}
 		logger.info("getDiscount接口获取到的折扣信息结果map={}", map);
 		return map;
+	}
+
+	/**
+	 * 更新用户的充值卡信息
+	 */
+	@Override
+	public int updateRechargeCard(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+		logger.info("更新用户的充值卡信息传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+
+		if (null == shopUserRechargeCardDTO || StringUtils.isBlank(shopUserRechargeCardDTO.getId())) {
+			logger.error("更新用户的充值卡信息传入参数为空");
+			return 0;
+		}
+		int flag = shopUserRechargeCardMapper.updateByPrimaryKey(shopUserRechargeCardDTO);
+		return flag;
 	}
 }
