@@ -225,16 +225,16 @@ public class ShopMemberAttendanceController {
 	 * @Description: 业绩明细
 	 * @Date:2018/5/7 15:35
 	 */
-	@RequestMapping(value = "/getBossPerformance ", method = RequestMethod.POST)
+	@RequestMapping(value = "/getBossPerformance", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(
 			@RequestBody UserConsumeRequestDTO userConsumeRequest) {
 		long startTime = System.currentTimeMillis();
-		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-		userConsumeRequest.setSysShopId(sysClerkDTO.getSysShopId());
+		userConsumeRequest.setSysShopId(userConsumeRequest.getSysShopId());
 		userConsumeRequest.setSysBossId(sysBossDTO.getId());
 		userConsumeRequest.setGoodsTypeRequire(true);
 		pageParamVoDTO.setRequestData(userConsumeRequest);
