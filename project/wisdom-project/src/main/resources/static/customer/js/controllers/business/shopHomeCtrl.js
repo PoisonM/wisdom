@@ -11,7 +11,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 productList:{},//特殊商品
                 product2List:[[]],//普通商品
                 promoteProduct:true,
-                promoteProductId:"88888888888",
+                promoteProductId:"MXT99-04",
                 rookieProduct:true,
                 rookieProductId:"201712101718100007",
                 redPackerFlagOne:false,
