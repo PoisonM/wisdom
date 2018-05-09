@@ -129,7 +129,7 @@
     <select id="selectPriceListByCriteria" resultType="com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO"
             parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria">
         select
-        flow_no flowNo,SUM(price) expenditure,sys_shop_id sysShopId, sys_shop_name sysShopName,DATE_FORMAT(create_date,'%Y-%m-%d') formateDate
+        flow_no flowNo,SUM(price) expenditure,sys_shop_id sysShopId, sys_clerk_id sysShopClerkId,sys_shop_name sysShopName,DATE_FORMAT(create_date,'%Y-%m-%d') formateDate
         from shop_user_consume_record
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

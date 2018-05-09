@@ -126,7 +126,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             //获取用户的档案信息
             ShopUserArchivesDTO archivesDTO = new ShopUserArchivesDTO();
             archivesDTO.setId(shopUserOrderDTO.getShopUserArchivesId());
-            ShopUserArchivesDTO archivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(archivesDTO);
+            ShopUserArchivesDTO archivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(archivesDTO).get(0);
             if (CommonUtils.objectIsEmpty(archivesInfo)) {
                 logger.info("订单号={}，查询用户的档案信息为空", orderId);
                 throw new ServiceException("查询用户的档案信息为空");

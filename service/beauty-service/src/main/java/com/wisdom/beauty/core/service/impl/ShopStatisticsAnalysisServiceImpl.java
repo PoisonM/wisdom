@@ -1,5 +1,6 @@
 package com.wisdom.beauty.core.service.impl;
 
+import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
@@ -8,10 +9,7 @@ import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
-import com.wisdom.beauty.core.service.ShopCardService;
-import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
-import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
-import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
+import com.wisdom.beauty.core.service.*;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.DateUtils;
@@ -46,6 +44,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	private ShopCardService shopCardService;
 	@Resource
 	private UserServiceClient userServiceClient;
+	@Autowired
+	private ShopBossService shopBossService;
 
 	@Override
 	public BigDecimal getPerformance(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
@@ -123,12 +123,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	 * 查询新客个数
 	 */
 	@Override
-	public int getShopNewUserNumber(String shopId, String startDate, String endDate) {
-		logger.info("查询新客个数传入参数={}",
-				"shopId = [" + shopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
-		Date start = DateUtils.StrToDate(startDate, "datetime");
-		Date end = DateUtils.StrToDate(endDate, "datetime");
-		return shopCustomerArchivesService.getShopBuildArchivesNumbers(shopId, start, end);
+	public int getShopNewUserNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+		return shopCustomerArchivesService.getShopBuildArchivesNumbers(pageParamVoDTO);
 	}
 
 	@Override
@@ -146,15 +142,15 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 
 	@Override
 	public Integer getUserConsumeNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
-		UserConsumeRequestDTO userConsumeRequestDTO=pageParamVoDTO.getRequestData();
+		UserConsumeRequestDTO userConsumeRequestDTO = pageParamVoDTO.getRequestData();
 
 		ShopUserConsumeRecordCriteria recordCriteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
 		// 设置查询条件
 		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 		criteria.andSysBossIdEqualTo(userConsumeRequestDTO.getSysBossId());
-		String startDate=pageParamVoDTO.getStartTime();
-		String endDate=pageParamVoDTO.getEndTime();
+		String startDate = pageParamVoDTO.getStartTime();
+		String endDate = pageParamVoDTO.getEndTime();
 		criteria.andCreateDateBetween(DateUtils.StrToDate(startDate, "datetime"),
 				DateUtils.StrToDate(endDate, "endDate"));
 		Integer consumeNumber = extShopUserConsumeRecordMapper.selectUserConsumeNumber(recordCriteria);
@@ -205,9 +201,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				map2.put(expenditure.getSysShopId() + expenditure.getFormateDate(), expenditure);
 			} else {
 				// 取出key是ship的值，计算value中的值
-				if(map2.get(expenditure.getSysShopId() + expenditure.getFormateDate())!=null&&
-						map2.get(expenditure.getSysShopId() + expenditure.getFormateDate()).getExpenditure()!=null&&
-						expenditure.getExpenditure()!=null){
+				if (map2.get(expenditure.getSysShopId() + expenditure.getFormateDate()) != null
+						&& map2.get(expenditure.getSysShopId() + expenditure.getFormateDate()).getExpenditure() != null
+						&& expenditure.getExpenditure() != null) {
 					map2.get(expenditure.getSysShopId() + expenditure.getFormateDate()).getExpenditure()
 							.add(expenditure.getExpenditure());
 				}
@@ -217,14 +213,86 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ExpenditureAndIncomeResponseDTO response = null;
 		for (String key : set) {
 			response = new ExpenditureAndIncomeResponseDTO();
-			response.setFormateDate(map.get(key).getFormateDate());
-			if(map.get(key)!=null){
+			if (map.get(key) != null) {
+				response.setFormateDate(map.get(key).getFormateDate());
 				response.setIncome(map.get(key).getExpenditure());
+				response.setSysShopId(map.get(key).getSysShopId());
+				response.setSysShopName(map.get(key).getSysShopName());
 			}
 			if (map2.get(key) != null) {
 				response.setExpenditure(map2.get(key).getExpenditure());
 			}
-            responsesList.add(response);
+
+			responsesList.add(response);
+		}
+		return responsesList;
+	}
+
+	@Override
+	public List<ExpenditureAndIncomeResponseDTO> getShopExpenditureAndIncomeList(
+			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
+		logger.info("getShopExpenditureAndIncomeList方法传入的参数,sysShopId={},startTime={},endTime={}",
+				userConsumeRequest.getSysShopId(), pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime());
+		// 查询数据,获取业绩
+		List<ExpenditureAndIncomeResponseDTO> incomeList = this.getIncomeList(pageParamVoDTO);
+		if (CollectionUtils.isEmpty(incomeList)) {
+			logger.info("incomeList结果为空");
+			return null;
+		}
+		Map<String, ExpenditureAndIncomeResponseDTO> map = new HashMap<>(16);
+		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
+		// 遍历incomeList，此集合是消费记录，经过流水号去重后计算price和
+		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse : incomeList) {
+			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
+			if (map.get(expenditureAndIncomeResponse.getSysShopId()) == null) {
+				// 如果map中的key没有shopId,则直接将业绩值放入value
+				map.put(expenditureAndIncomeResponse.getSysShopId(), expenditureAndIncomeResponse);
+			} else {
+				// 取出key是ship的值，计算value中的值
+				map.get(expenditureAndIncomeResponse.getSysShopId()).getExpenditure()
+						.add(expenditureAndIncomeResponse.getExpenditure());
+			}
+			expenditureAndIncomeResponseDTO = null;
+		}
+		// 获取耗卡
+		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponses = this.getExpenditureList(pageParamVoDTO);
+		if (CollectionUtils.isEmpty(expenditureAndIncomeResponses)) {
+			logger.info("list结果为空");
+			return null;
+		}
+		Map<String, ExpenditureAndIncomeResponseDTO> map2 = new HashMap<>(16);
+		List<ExpenditureAndIncomeResponseDTO> responsesList = new ArrayList<>();
+		for (ExpenditureAndIncomeResponseDTO expenditure : expenditureAndIncomeResponses) {
+			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
+			if (map2.get(expenditure.getSysShopId()) == null) {
+				// 如果map中的key没有shopId,则直接将业绩值放入value
+				map2.put(expenditure.getSysShopId(), expenditure);
+			} else {
+				// 取出key是ship的值，计算value中的值
+				if (map2.get(expenditure.getSysShopId()) != null
+						&& map2.get(expenditure.getSysShopId()).getExpenditure() != null
+						&& expenditure.getExpenditure() != null) {
+					map2.get(expenditure.getSysShopId()).getExpenditure().add(expenditure.getExpenditure());
+				}
+			}
+		}
+		ExpenditureAndIncomeResponseDTO response = null;
+		// 获取bossid下的所有美容店
+		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
+		shopBossRelationDTO.setSysBossId(userConsumeRequest.getSysBossId());
+		List<ShopBossRelationDTO> shopBossRelationList = shopBossService.ShopBossRelationList(shopBossRelationDTO);
+		for (ShopBossRelationDTO shopBossRelation : shopBossRelationList) {
+			response = new ExpenditureAndIncomeResponseDTO();
+			if (map.get(shopBossRelation.getSysShopId()) != null) {
+				response.setIncome(map.get(shopBossRelation.getSysShopId()).getExpenditure());
+			}
+			if (map2.get(shopBossRelation.getSysShopId()) != null) {
+				response.setExpenditure(map2.get(shopBossRelation.getSysShopId()).getExpenditure());
+			}
+			response.setSysShopId(shopBossRelation.getSysShopId());
+			response.setSysShopName(shopBossRelation.getSysShopName());
+			responsesList.add(response);
 		}
 		return responsesList;
 	}
@@ -284,9 +352,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	public List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
-		List<SysClerkDTO> sysClerkList = userServiceClient.getClerkInfoList(userConsumeRequest.getSysShopId(),
-				userConsumeRequest.getSysBossId(), pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime(),
-				pageParamVoDTO.getPageSize());
+		List<SysClerkDTO> sysClerkList = userServiceClient.getClerkInfoList(userConsumeRequest.getSysBossId(),
+				pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime(), pageParamVoDTO.getPageSize());
 		if (CollectionUtils.isEmpty(sysClerkList)) {
 			logger.info("查询店员的结果为空");
 			return null;
@@ -334,15 +401,15 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse = null;
 		for (SysClerkDTO sysClerkDTO : sysClerkList) {
 			expenditureAndIncomeResponse = new ExpenditureAndIncomeResponseDTO();
-            if(map.get(sysClerkDTO.getId())!=null){
-                expenditureAndIncomeResponse.setIncome(map.get(sysClerkDTO.getId()).getIncome());
-            }
-			if(map2.get(sysClerkDTO.getId())!=null){
-                expenditureAndIncomeResponse.setExpenditure(map2.get(sysClerkDTO.getId()).getExpenditure());
-            }
+			if (map.get(sysClerkDTO.getId()) != null) {
+				expenditureAndIncomeResponse.setIncome(map.get(sysClerkDTO.getId()).getIncome());
+			}
+			if (map2.get(sysClerkDTO.getId()) != null) {
+				expenditureAndIncomeResponse.setExpenditure(map2.get(sysClerkDTO.getId()).getExpenditure());
+			}
 			expenditureAndIncomeResponse.setPhoto(sysClerkDTO.getPhoto());
 			expenditureAndIncomeResponse.setSysShopClerkName(sysClerkDTO.getName());
-            expenditureAndIncomeResponses.add(expenditureAndIncomeResponse);
+			expenditureAndIncomeResponses.add(expenditureAndIncomeResponse);
 		}
 		return expenditureAndIncomeResponses;
 	}

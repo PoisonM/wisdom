@@ -225,17 +225,17 @@ public class ArchivesController {
      */
     @RequestMapping(value = "/getShopUserArchivesInfoByUserId", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ShopUserArchivesDTO> getShopUserArchivesInfoByUserId(@RequestParam String sysUserId) {
+    ResponseDTO<Object> getShopUserArchivesInfoByUserId(@RequestParam String sysUserId) {
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("查询某个用户的档案信息传入参数={}", "sysUserId = [" + sysUserId + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 
-        ResponseDTO<ShopUserArchivesDTO> responseDTO = new ResponseDTO<>();
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysUserId(sysUserId);
         shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
-        ShopUserArchivesDTO info = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
-        responseDTO.setResponseData(info);
+        List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
+        responseDTO.setResponseData(shopUserArchivesInfo);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
         logger.info("删除用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
