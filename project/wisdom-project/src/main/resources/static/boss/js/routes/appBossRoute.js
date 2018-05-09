@@ -945,7 +945,7 @@ define(['appBoss'], function(app){
                     }
                 })
                     .state('archives', {
-                        url: '/archives',
+                        url: '/archives/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'archivesCtrl',
                         resolve: {

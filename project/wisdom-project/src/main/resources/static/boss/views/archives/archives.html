@@ -5,10 +5,11 @@
        </div>
         <div style="border: 1px solid #EEEEEE;border-radius: 2px;width:95%;margin:0 auto;margin-top:-55px;" class="bgfff">
            <div style=";margin-left:10px;">
-              <p style="width:40px;height:40px;border-radius: 5px;background: GAINSBORO;
-    margin-top: -28px; display: inline-block;"></p>
-               <span  style="font-size: 16px;display: inline-block;margin-top:10px;">
-                   安娜
+              <p style="width:40px;height:40px;border-radius: 5px;position: absolute;top:15px;">
+                  <img ng-src="{{archives.imageRul}}" style="width:40px;height:40px;border-radius: 5px; ">
+              </p>
+               <span  style="font-size: 16px;display: inline-block;margin-top:10px;margin-left:50px;" >
+                  {{archives.sysUserName}}
                </span>
                <img src="images/pho.png" class=" mr10" style="float: right;margin-top:10px;height:24px;width:15px;">
            </div>
@@ -16,11 +17,11 @@
                 <div class="col col-50">
                     <p class="col666 fs12">
                         <img src="images/pnoGray.png" class=" mr10" style="width:10px;height:16px;">
-                        123r45
+                        {{archives.phone}}
                     </p>
                     <p class="col666 fs12 mt5">
                         <img src="images/shopgray.png" class=" mr10" style="width:14px;height:12px;">
-                        美容院分院
+                        {{archives.sysShopName}}
                     </p>
                 </div>
                 <div class="col col-50" >
@@ -28,7 +29,7 @@
                         <p style="width:32px;height:32px;border-radius: 50%;background: gainsboro">
 
                         </p>
-                        <p class="fs11 colff66" ><img src="images/associated.png" class="associated "><span style="margin-top: 5px;display: inline-block">夏琳</span></p>
+                        <p class="fs11 colff66" ><img src="images/associated.png" class="associated "><span style="margin-top: 5px;display: inline-block">{{archives.sysClerkName}}</span></p>
                     </div>
                 </div>
 
@@ -36,15 +37,15 @@
             <div style="border: 1px solid #EEEEEE;border-radius: 2px;height:62px;font-size: 14px;color: #666666;" class="row">
                 <div class="col col333 center">
                     <p>总余额</p>
-                    <p>832084093.00</p>
+                    <p>{{archives.totalBalance}}</p>
                 </div>
                 <div class="col col333 center">
                     <p>总欠款</p>
-                    <p>780.00</p>
+                    <p>****</p>
                 </div>
                 <div class="col col333 center">
                     <p>优惠券</p>
-                    <p>1张</p>
+                    <p>****张</p>
                 </div>
 
             </div>

@@ -10,16 +10,19 @@
 
         </div>
         <!--美容师 业绩 耗卡-->
-        <div class="list" ng-repeat="item in [1,2,3]">
-            <p class="item" style="padding: 6px"><img src="images/work/photo.jpg" style="display: inline-block;width: 48px;height: 48px;border-radius: 50%"><span style="margin-left: 10px">苗苗</span><span style="margin-left: 10px;width:80px;height: 20px;display: inline-block;border: 1px solid rgb(255,102,102);border-radius: 8px;text-align: center;line-height: 20px;color:#ff6666;font-size: 12px">美容师&nbsp;前台</span><i style="float:right;font-size: 0.3rem;margin-top: 12px" class="ion ion-ios-arrow-right"></i></p>
+        <div class="list" ng-repeat="item in allFamily">
+            <p class="item" style="padding: 6px"><img ng-src="{{item.photo}}" style="display: inline-block;width: 48px;height: 48px;border-radius: 50%">
+                <span style="margin-left: 10px">{{item.sysShopClerkName}}</span>
+                <span style="margin-left: 10px;width:80px;height: 20px;display: inline-block;border: 1px solid rgb(255,102,102);border-radius: 8px;text-align: center;line-height: 20px;color:#ff6666;font-size: 12px">{{item.role}}</span>
+                <i style="float:right;font-size: 0.3rem;margin-top: 12px" class="ion ion-ios-arrow-right" ng-show="false"></i></p>
             <div class="row" style="background: #FFFFFF;padding: 0px">
                 <div class="col col-50 col33 tc bre5e5">
                     业绩
-                    <p>46698.60</p>
+                    <p>{{item.income}}</p>
                 </div>
                 <div class="col col-50 col33 tc">
                     耗卡
-                    <p>16418.80</p>
+                    <p>{{item.expenditure}}</p>
                 </div>
             </div>
         </div>

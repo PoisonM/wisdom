@@ -16,7 +16,7 @@ angular.module('controllers',[]).controller('confirmedCtrl',
                     $state.go('canceled',{date:$stateParams.date,sysClerkId:$stateParams.sysClerkId,sysShopId:$stateParams.sysShopId})
                 })
                
-            }
+            };
             GetAppointmentInfoById.get({
                 shopAppointServiceId:$stateParams.shopAppointServiceId
             },function(data){

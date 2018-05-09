@@ -1,9 +1,12 @@
 
 var user = '/user/';
-var appointmentInfo = 'http://192.168.1.117/beauty/appointmentInfo/';
-var work = 'http://192.168.1.117/beauty/work/';
+var appointmentInfo = '/beauty/appointmentInfo/';
+var work = '/beauty/work/';
 var stock = 'http://192.168.1.117/beauty/stock/';
-var consume = 'http://192.168.1.117/beauty/consume/';
+var consume = '/beauty/consume/';
+var  earlyWarning =  '/beauty/earlyWarning/';
+var  archives =  '/beauty/archives/';
+
 
 define(['appBoss'], function (app) {
     app
@@ -63,7 +66,7 @@ define(['appBoss'], function (app) {
         }])
         /*获取当前美容院当前boss的当前家人列表*/
         .factory('GetFamilyList',['$resource',function ($resource){
-            return $resource(consume+"getFamilyList")
+            return $resource(work+"getFamilyList")
         }])
 
 
@@ -74,5 +77,15 @@ define(['appBoss'], function (app) {
             return $resource(work+"getBossAchievement")
         }])
 
+
+   /*档案*/
+        /*预警档案*/
+        .factory('GetEarlyWarningList',['$resource',function ($resource){
+            return $resource(earlyWarning+"getEarlyWarningList")
+        }])
+        /*用户档案详情*/
+        .factory('Detail',['$resource',function ($resource){
+            return $resource(archives+"detail/:id",{id:"@id"})
+        }])
 
 });
