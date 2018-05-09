@@ -52,6 +52,7 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
      * 格式化后的日期,例如2018-04-04
      */
     private String formateDate;
+    private  String role;
 
     public BigDecimal getExpenditure() {
         return expenditure;
@@ -132,6 +133,14 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
 
