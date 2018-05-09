@@ -208,22 +208,9 @@ public class TransactionService {
         for(BusinessOrderDTO businessOrderDTO : businessOrderDTODTOList){//用户名解码
             businessOrderDTO.setNickName(CommonUtils.nameDecoder(businessOrderDTO.getNickName()));
             String nickNameW ="";
-            if(businessOrderDTO.getNickName()!=null){
-                nickNameW = businessOrderDTO.getNickName().replaceAll("%", "%25");
-                while(true){
-                    if(nickNameW!=null&&nickNameW!=""){
-                        if(nickNameW.contains("%25")){
-                            nickNameW = CommonUtils.nameDecoder(nickNameW);
-                        }else{
-                            nickNameW = CommonUtils.nameDecoder(nickNameW);
-                            break;
-                        }
-                    }else{
-                        break;
-                    }
-
-                }
-               /* if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
+            try{
+                if(businessOrderDTO.getNickName()!=null){
+                    nickNameW = businessOrderDTO.getNickName().replaceAll("%", "%25");
                     while(true){
                         if(nickNameW!=null&&nickNameW!=""){
                             if(nickNameW.contains("%25")){
@@ -237,11 +224,11 @@ public class TransactionService {
                         }
 
                     }
-                }else{
-                    nickNameW  ="昵称导出暂时不可用";
-                }*/
+                }
+            }catch(Throwable e){
+                logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                nickNameW = "特殊符号用户";
             }
-
             businessOrderDTO.setNickName(nickNameW);
         }
         page.setTotalCount(count);
