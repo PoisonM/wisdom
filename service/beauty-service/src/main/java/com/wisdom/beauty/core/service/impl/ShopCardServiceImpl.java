@@ -4,12 +4,14 @@ import com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.core.mapper.ShopUserRechargeCardMapper;
 import com.wisdom.beauty.core.service.ShopCardService;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -80,5 +82,28 @@ public class ShopCardServiceImpl implements ShopCardService {
             return 0;
         }
         return shopUserRechargeCardMapper.updateByPrimaryKeySelective(shopUserRechargeCardDTO);
+    }
+
+    /**
+     * 获取充值卡总金额
+     *
+     * @param shopUserRechargeCardDTO
+     * @return
+     */
+    @Override
+    public BigDecimal getUserRechargeCardSumAmount(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+
+        BigDecimal sumAmount = new BigDecimal(0);
+
+        List<ShopUserRechargeCardDTO> userRechargeCardList = getUserRechargeCardList(shopUserRechargeCardDTO);
+
+        if (CommonUtils.objectIsNotEmpty(userRechargeCardList)) {
+            for (ShopUserRechargeCardDTO userRechargeCardDTO : userRechargeCardList) {
+                BigDecimal surplusAmount = userRechargeCardDTO.getSurplusAmount();
+                sumAmount = sumAmount.add(surplusAmount);
+            }
+        }
+
+        return sumAmount;
     }
 }

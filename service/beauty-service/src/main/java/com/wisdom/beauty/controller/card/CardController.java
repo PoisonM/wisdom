@@ -107,20 +107,10 @@ public class CardController {
             responseDTO.setResult(StatusConstant.FAILURE);
             return responseDTO;
         }
-
-        BigDecimal sumAmount = new BigDecimal(0);
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
         shopUserRechargeCardDTO.setSysUserId(sysUserId);
         shopUserRechargeCardDTO.setSysShopId(clerkInfo.getSysShopId());
-        List<ShopUserRechargeCardDTO> userRechargeCardList = cardService.getUserRechargeCardList(shopUserRechargeCardDTO);
-
-        if (CommonUtils.objectIsNotEmpty(userRechargeCardList)) {
-            for (ShopUserRechargeCardDTO userRechargeCardDTO : userRechargeCardList) {
-                BigDecimal surplusAmount = userRechargeCardDTO.getSurplusAmount();
-                sumAmount = sumAmount.add(surplusAmount);
-            }
-        }
-
+        BigDecimal sumAmount = cardService.getUserRechargeCardSumAmount(shopUserRechargeCardDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(sumAmount);
 
