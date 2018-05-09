@@ -10,6 +10,7 @@ import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
+import com.wisdom.beauty.core.service.ShopUserConsumeService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -23,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,11 +46,13 @@ public class CardController {
 	@Resource
 	private ShopCardService cardService;
 
-	@Autowired
+	@Resource
 	private ShopRechargeCardService shopRechargeCardService;
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	@Autowired
+	private ShopUserConsumeService shopUserConsumeService;
 
 	@Autowired
 	private ShopProjectGroupService shopProjectGroupService;
@@ -282,19 +287,55 @@ public class CardController {
 	/**
 	 * 充值卡充值确认接口
 	 *
-	 * @param shopUserRechargeCardDTO
+	 * @param extShopUserRechargeCardDTO
 	 * @return
 	 */
 	@RequestMapping(value = "/userRechargeConfirm", method = RequestMethod.POST)
 	@ResponseBody
-	ResponseDTO<Object> userRechargeConfirm(@RequestBody ExtShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+	ResponseDTO<Object> userRechargeConfirm(@RequestBody ExtShopUserRechargeCardDTO extShopUserRechargeCardDTO) {
 		long currentTimeMillis = System.currentTimeMillis();
-		logger.info("充值卡充值确认接口传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
-		shopUserRechargeCardDTO.setTransactionId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
-		mongoTemplate.save(shopUserRechargeCardDTO, "shopUserRechargeCardDTO");
+		logger.info("充值卡充值确认接口传入参数={}", "extShopUserRechargeCardDTO = [" + extShopUserRechargeCardDTO + "]");
+		extShopUserRechargeCardDTO.setTransactionId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
+		mongoTemplate.save(extShopUserRechargeCardDTO, "extShopUserRechargeCardDTO");
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		responseDTO.setResponseData(extShopUserRechargeCardDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+	/**
+	 * 充值卡充值签字确认查询接口
+	 *
+	 * @param transactionId
+	 * @return
+	 */
+	@RequestMapping(value = "/searchRechargeConfirm", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<Object> searchRechargeConfirm(@RequestParam String transactionId) {
+		long currentTimeMillis = System.currentTimeMillis();
+		Query query = new Query(Criteria.where("transactionId").is(transactionId));
+		ExtShopUserRechargeCardDTO shopUserRechargeCardDTO = mongoTemplate.findOne(query, ExtShopUserRechargeCardDTO.class, "extShopUserRechargeCardDTO");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopUserRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+	/**
+	 * 充值卡充值签字确认接口
+	 *
+	 * @param transactionId
+	 * @return
+	 */
+	@RequestMapping(value = "/rechargeCardSignConfirm", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<Object> searchRechargeConfirm(@RequestParam String transactionId, @RequestParam String imageUrl) {
+		long currentTimeMillis = System.currentTimeMillis();
+
+		ResponseDTO<Object> responseDTO = shopUserConsumeService.rechargeRechargeCrad(transactionId, imageUrl);
+
 		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}

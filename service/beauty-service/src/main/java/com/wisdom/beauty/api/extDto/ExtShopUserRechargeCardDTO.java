@@ -22,6 +22,9 @@ public class ExtShopUserRechargeCardDTO extends ShopUserRechargeCardDTO {
     //交易id
     private String transactionId;
 
+    //订单状态 1、未支付 2、待支付  2、已支付  3、已失效
+    private String status;
+
     /**
      * BANK_PAY("0", "银行卡支付"),
      * WECHAT_PAY("1", "微信支付"),
@@ -29,6 +32,14 @@ public class ExtShopUserRechargeCardDTO extends ShopUserRechargeCardDTO {
      */
     //支付方式
     private String payType;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getTransactionId() {
         return transactionId;

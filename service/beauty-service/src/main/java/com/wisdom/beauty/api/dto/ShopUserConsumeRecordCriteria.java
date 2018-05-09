@@ -1156,6 +1156,66 @@ public class ShopUserConsumeRecordCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andBeforePriceIsNull() {
+            addCriterion("before_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceIsNotNull() {
+            addCriterion("before_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceEqualTo(BigDecimal value) {
+            addCriterion("before_price =", value, "beforePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceNotEqualTo(BigDecimal value) {
+            addCriterion("before_price <>", value, "beforePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceGreaterThan(BigDecimal value) {
+            addCriterion("before_price >", value, "beforePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("before_price >=", value, "beforePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceLessThan(BigDecimal value) {
+            addCriterion("before_price <", value, "beforePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("before_price <=", value, "beforePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceIn(List<BigDecimal> values) {
+            addCriterion("before_price in", values, "beforePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceNotIn(List<BigDecimal> values) {
+            addCriterion("before_price not in", values, "beforePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("before_price between", value1, value2, "beforePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeforePriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("before_price not between", value1, value2, "beforePrice");
+            return (Criteria) this;
+        }
+
         public Criteria andDiscountIsNull() {
             addCriterion("discount is null");
             return (Criteria) this;
@@ -1213,6 +1273,186 @@ public class ShopUserConsumeRecordCriteria {
 
         public Criteria andDiscountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("discount not between", value1, value2, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountIsNull() {
+            addCriterion("time_discount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountIsNotNull() {
+            addCriterion("time_discount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountEqualTo(Float value) {
+            addCriterion("time_discount =", value, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountNotEqualTo(Float value) {
+            addCriterion("time_discount <>", value, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountGreaterThan(Float value) {
+            addCriterion("time_discount >", value, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountGreaterThanOrEqualTo(Float value) {
+            addCriterion("time_discount >=", value, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountLessThan(Float value) {
+            addCriterion("time_discount <", value, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountLessThanOrEqualTo(Float value) {
+            addCriterion("time_discount <=", value, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountIn(List<Float> values) {
+            addCriterion("time_discount in", values, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountNotIn(List<Float> values) {
+            addCriterion("time_discount not in", values, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountBetween(Float value1, Float value2) {
+            addCriterion("time_discount between", value1, value2, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeDiscountNotBetween(Float value1, Float value2) {
+            addCriterion("time_discount not between", value1, value2, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountIsNull() {
+            addCriterion("period_discount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountIsNotNull() {
+            addCriterion("period_discount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountEqualTo(Float value) {
+            addCriterion("period_discount =", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountNotEqualTo(Float value) {
+            addCriterion("period_discount <>", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountGreaterThan(Float value) {
+            addCriterion("period_discount >", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountGreaterThanOrEqualTo(Float value) {
+            addCriterion("period_discount >=", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountLessThan(Float value) {
+            addCriterion("period_discount <", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountLessThanOrEqualTo(Float value) {
+            addCriterion("period_discount <=", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountIn(List<Float> values) {
+            addCriterion("period_discount in", values, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountNotIn(List<Float> values) {
+            addCriterion("period_discount not in", values, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountBetween(Float value1, Float value2) {
+            addCriterion("period_discount between", value1, value2, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountNotBetween(Float value1, Float value2) {
+            addCriterion("period_discount not between", value1, value2, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountIsNull() {
+            addCriterion("product_discount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountIsNotNull() {
+            addCriterion("product_discount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountEqualTo(Float value) {
+            addCriterion("product_discount =", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountNotEqualTo(Float value) {
+            addCriterion("product_discount <>", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountGreaterThan(Float value) {
+            addCriterion("product_discount >", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountGreaterThanOrEqualTo(Float value) {
+            addCriterion("product_discount >=", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountLessThan(Float value) {
+            addCriterion("product_discount <", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountLessThanOrEqualTo(Float value) {
+            addCriterion("product_discount <=", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountIn(List<Float> values) {
+            addCriterion("product_discount in", values, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountNotIn(List<Float> values) {
+            addCriterion("product_discount not in", values, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountBetween(Float value1, Float value2) {
+            addCriterion("product_discount between", value1, value2, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountNotBetween(Float value1, Float value2) {
+            addCriterion("product_discount not between", value1, value2, "productDiscount");
             return (Criteria) this;
         }
 

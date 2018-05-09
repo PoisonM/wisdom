@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 
 import java.util.List;
@@ -53,4 +54,13 @@ public interface ShopUserConsumeService {
      * @return
      */
     int consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
+
+    /**
+     * 充值卡充值操作
+     *
+     * @param transactionId
+     * @param imageUrl
+     * @return
+     */
+    ResponseDTO rechargeRechargeCrad(String transactionId, String imageUrl);
 }

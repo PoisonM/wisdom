@@ -52,8 +52,20 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //总价格
     private BigDecimal price;
 
+    //
+    private BigDecimal beforePrice;
+
     //消费折扣
     private BigDecimal discount;
+
+    //
+    private Float timeDiscount;
+
+    //
+    private Float periodDiscount;
+
+    //
+    private Float productDiscount;
 
     //操作日期
     private Date operDate;
@@ -204,12 +216,44 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
         this.price = price;
     }
 
+    public BigDecimal getBeforePrice() {
+        return beforePrice;
+    }
+
+    public void setBeforePrice(BigDecimal beforePrice) {
+        this.beforePrice = beforePrice;
+    }
+
     public BigDecimal getDiscount() {
         return discount;
     }
 
     public void setDiscount(BigDecimal discount) {
         this.discount = discount;
+    }
+
+    public Float getTimeDiscount() {
+        return timeDiscount;
+    }
+
+    public void setTimeDiscount(Float timeDiscount) {
+        this.timeDiscount = timeDiscount;
+    }
+
+    public Float getPeriodDiscount() {
+        return periodDiscount;
+    }
+
+    public void setPeriodDiscount(Float periodDiscount) {
+        this.periodDiscount = periodDiscount;
+    }
+
+    public Float getProductDiscount() {
+        return productDiscount;
+    }
+
+    public void setProductDiscount(Float productDiscount) {
+        this.productDiscount = productDiscount;
     }
 
     public Date getOperDate() {
