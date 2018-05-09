@@ -4,7 +4,13 @@
 package com.wisdom.common.config;
 
 import com.google.common.collect.Maps;
+import com.wisdom.common.dto.SystemEnvDTO;
+import com.wisdom.common.dto.product.OfflineProductDTO;
+import com.wisdom.common.util.SpringUtil;
 import com.wisdom.common.util.StringUtils;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.Map;
 
@@ -29,7 +35,7 @@ public class Global {
 	 * 当前对象实例
 	 */
 	private static Global global = new Global();
-	
+
 	/**
 	 * 保存全局属性值
 	 */
