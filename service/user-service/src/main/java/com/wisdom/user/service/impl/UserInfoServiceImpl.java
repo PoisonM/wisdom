@@ -99,13 +99,13 @@ public class UserInfoServiceImpl implements UserInfoService{
                     userInfoDTO.setLivingPeriod(-1);
                 }
             }
-            String nickNameW = userInfoDTO.getNickname();
+            String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
             while(true){
                 if(nickNameW !=null&&nickNameW!=""){
                     if(nickNameW.contains("%25")){
                         nickNameW = CommonUtils.nameDecoder(nickNameW);
                     }else{
-                        nickNameW = CommonUtils.nameDecoder(userInfoDTO.getNickname());
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
                         break;
                     }
                 }else{

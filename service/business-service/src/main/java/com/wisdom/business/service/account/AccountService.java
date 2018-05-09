@@ -60,7 +60,7 @@ public class AccountService {
                 phoneAndIdentify,isExportExcel,pageStartNo,pageSize);
         for(AccountDTO accountDTO : accountDTOList){
             try {
-                String nickNameW = accountDTO.getNickName();
+                String nickNameW = accountDTO.getNickName().replaceAll("%", "%25");
                 while(true){
                     if(nickNameW!=null&&nickNameW!=""){
                         if(nickNameW.contains("%25")){

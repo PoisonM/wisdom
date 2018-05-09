@@ -142,7 +142,7 @@ public class WithDrawService {
                     withDrawRecordDTO.setBankCardNumber(userBankCardInfoDTO.getBankCardNumber());
                     withDrawRecordDTO.setBankCardAddress(userBankCardInfoDTO.getBankCardAddress());
                 }
-                String nickNameW = withDrawRecordDTO.getNickName();
+                String nickNameW = withDrawRecordDTO.getNickName().replaceAll("%", "%25");
                 while(true){
                     if(nickNameW!=null&&nickNameW!=""){
                         if(nickNameW.contains("%25")){

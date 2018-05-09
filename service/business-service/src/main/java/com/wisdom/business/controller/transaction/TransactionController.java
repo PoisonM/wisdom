@@ -113,7 +113,7 @@ public class TransactionController {
         return responseDTO;
     }
 
-    @LoginRequired
+   // @LoginRequired
     @RequestMapping(value ="getTransactionList",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public ResponseDTO<List<TransactionDTO>> getTransactionList(@RequestBody PageParamDTO pageParamDTO) {

@@ -153,7 +153,7 @@ public class TransactionService {
         for(PayRecordDTO payRecordDTO : PayRecordDTOList){
             try {
                 if(payRecordDTO.getNickName() != null && payRecordDTO.getNickName() != ""){
-                    String nickNameW = payRecordDTO.getNickName();
+                    String nickNameW = payRecordDTO.getNickName().replaceAll("%", "%25");
                     while(true){
                         if(nickNameW!=null&&nickNameW!=""){
                             if(nickNameW.contains("%25")){
@@ -202,7 +202,7 @@ public class TransactionService {
         List<BusinessOrderDTO> businessOrderDTODTOList = transactionMapper.queryBusinessOrderByParameters(pageParamVoDTO);
         for(BusinessOrderDTO businessOrderDTO : businessOrderDTODTOList){//用户名解码
             businessOrderDTO.setNickName(CommonUtils.nameDecoder(businessOrderDTO.getNickName()));
-            String nickNameW = businessOrderDTO.getNickName();
+            String nickNameW = businessOrderDTO.getNickName().replaceAll("%", "%25");
             while(true){
                 if(nickNameW!=null&&nickNameW!=""){
                     if(nickNameW.contains("%25")){
@@ -281,7 +281,7 @@ public class TransactionService {
                 exportOrderExcelDTO.setTaxpayerNumber(invoiceDTO.getTaxpayerNumber());
             }
             //用户名解码
-            String nickNameW = exportOrderExcelDTO.getNickName();
+            String nickNameW = exportOrderExcelDTO.getNickName().replaceAll("%", "%25");
             while(true){
                 if(nickNameW !=null&& nickNameW!=""){
                     if(nickNameW.contains("%25")){

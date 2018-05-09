@@ -164,7 +164,7 @@ public class IncomeService {
                 }
                 if(!"".equals(incomeRecordDTO.getNickName()) && incomeRecordDTO.getNickName() != null)
                 {
-                    String nickNameW = incomeRecordDTO.getNickName();
+                    String nickNameW = incomeRecordDTO.getNickName().replaceAll("%", "%25");
                     while(true){
                         if(nickNameW!=null&&nickNameW!=""){
                             if(nickNameW.contains("%25")){
@@ -182,7 +182,7 @@ public class IncomeService {
                 }
                 if(!"".equals(incomeRecordDTO.getNextUserNickName()) && incomeRecordDTO.getNextUserNickName() != null)
                 {
-                    String nickNameW = incomeRecordDTO.getNextUserNickName();
+                    String nickNameW = incomeRecordDTO.getNextUserNickName().replaceAll("%", "%25");
                     while(true){
                         if(nickNameW!=null&&nickNameW!=""){
                             if(nickNameW.contains("%25")){
