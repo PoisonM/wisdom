@@ -68,6 +68,17 @@ angular.module('controllers',[]).controller('withDrawCtrl',
             }
 
             $scope.confirmWithDraw = function(){
+
+            /*userPhone validateCode*/
+                if($scope.param.userPhone == ""){
+                    alert("请输入手机号")
+                    return
+                }
+                if($scope.param.validateCode == ""){
+                    alert("请输入手机验证码")
+                    return
+                 }
+
                 if($scope.param.withDrawSwitch=='off')
                 {
                     $ionicLoading.show({
