@@ -190,9 +190,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			consumeTypes.add(shopUserConsumeRecordDTO.getConsumeType());
 			goodsTypes.add(shopUserConsumeRecordDTO.getGoodsType());
 			if (totalAmount == null) {
-				totalAmount = shopUserConsumeRecordDTO.getPrice();
+				totalAmount = shopUserConsumeRecordDTO.getPrice().multiply(new BigDecimal(shopUserConsumeRecordDTO.getConsumeNumber()));
 			} else {
-				totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice());
+				totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice().multiply(new BigDecimal(shopUserConsumeRecordDTO.getConsumeNumber())));
 			}
 		}
 		if (consumeTypes.contains(ConsumeTypeEnum.RECHARGE.getCode())) {
