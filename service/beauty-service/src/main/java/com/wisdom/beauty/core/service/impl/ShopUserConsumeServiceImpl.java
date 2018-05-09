@@ -265,6 +265,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                         userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
                     }
                     userConsumeRecordDTO.setPrice(price);
+                    userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
                     userConsumeRecordDTO.setConsumeNumber(dto.getProjectInitTimes());
                     userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.COLLECTION_CARD.getCode());
                     userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
@@ -377,6 +378,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
                 userConsumeRecordDTO.setConsumeNumber(dto.getInitTimes());
                 userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
+                userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
                 ShopUserConsumeRecordDTO consumeRecordDTO = saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
 
                 logger.info("订单号={}，生成店员流水记录={}", orderId, consumeRecordDTO);

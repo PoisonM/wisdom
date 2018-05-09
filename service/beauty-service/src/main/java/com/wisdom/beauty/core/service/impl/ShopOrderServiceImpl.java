@@ -128,6 +128,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     logger.info("订单号={}，对应产品折扣价格信息为，{}", orderId, shopUserProductRelationInfo);
                     BigDecimal multiplyAmount = userProductRelationDTO.getInitAmount().multiply(new BigDecimal(shopUserProductRelationInfo.getDiscount()));
                     userProductRelationDTO.setInitAmount(multiplyAmount);
+                    userProductRelationDTO.setDiscount(shopUserProductRelationInfo.getDiscount());
                     updateFlag = true;
                 }
             }
@@ -148,6 +149,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     logger.info("订单号={}，对应次卡或套卡折扣价格信息为，{}", orderId, shopUserProductRelationInfo);
                     BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserProductRelationInfo.getDiscount()));
                     userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount);
+                    userProjectRelationDTO.setDiscount(String.valueOf(shopUserProductRelationInfo.getDiscount()));
                     updateFlag = true;
                 }
             }
@@ -168,6 +170,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     logger.info("订单号={}，对应套卡折扣价格信息为，{}", orderId, shopUserProductRelationInfo);
                     BigDecimal multiplyAmount = groupRelRelationDTO.getProjectInitAmount().multiply(new BigDecimal(shopUserProductRelationInfo.getDiscount()));
                     groupRelRelationDTO.setProjectInitAmount(multiplyAmount);
+                    groupRelRelationDTO.setDiscount(shopUserProductRelationInfo.getDiscount());
                     updateFlag = true;
                 }
             }
