@@ -404,7 +404,12 @@ public class BusinessOrderController {
                     exportOrderExcelDTO.setProductNum(businessOrderinfo.getBusinessProductNum()+"");
                     exportOrderExcelDTO.setProductSpec(businessOrderinfo.getProductSpec());
                     //exportOrderExcelDTO.setTaxpayerNumber(businessOrderDTO.getIdentifyNumber());
-                    exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
+                    if(businessOrderinfo.getUserAddress()!=null){
+                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserAddress());
+                    }else{
+                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
+                    }
+
                     exportOrderExcelDTO.setUserNameAddress(businessOrderinfo.getUserNameAddress());
                     exportOrderExcelDTO.setUserPhoneAddress(businessOrderinfo.getUserPhoneAddress());
                     excelList.add(exportOrderExcelDTO);
