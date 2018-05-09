@@ -70,17 +70,17 @@
                     <span><b>¥ </b>{{item3.marketPrice}}<b>.00</b></span>
                 </div>
             </li>
-            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==2">
-                <div class="checkBox">
+            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==2" ng-click="updateVirtualGoodsOrderInfo(4,item3)">
+                <div class="checkBox" ng-class="{bgF6:(theSelected.product.productIds.indexOf(item3.id)!='-1')}">
                     <img src="images/checkImg.png" alt="">
                 </div>
                 <span class="name" style="margin-top: 24px;">{{item3.productName}}</span>
                 <div class="right">
-                    <span><b>¥ </b>{{item3.discountPrice}}<b>.00</b></span>
+                    <span><b>¥ </b>{{item3.marketPrice}}<b>.00</b></span>
                 </div>
             </li>
-            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==3">
-                <div class="checkBox">
+            <li class="clearfix" ng-repeat="item3 in threeCategories" ng-if="select==3" ng-click="updateVirtualGoodsOrderInfo(3,item3)">
+                <div class="checkBox" ng-class="{bgF6:(theSelected.groupCard.groupIds.indexOf(item3.id)!='-1')}">
                     <img src="images/checkImg.png" alt="">
                 </div>
                 <span class="name">{{item3.projectGroupName}}</span>
