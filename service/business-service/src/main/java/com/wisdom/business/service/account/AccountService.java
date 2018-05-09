@@ -58,10 +58,11 @@ public class AccountService {
         page.setTotalCount(count);
         List<AccountDTO> accountDTOList = accountMapper.queryUserBalanceByParameters(
                 phoneAndIdentify,isExportExcel,pageStartNo,pageSize);
+        String nickNameW ="";
         for(AccountDTO accountDTO : accountDTOList){
             try {
-                String nickNameW = accountDTO.getNickName().replaceAll("%", "%25");
-                if(!isExportExcel.equals("Y")){
+                if(accountDTO.getNickName()!=null){
+                    nickNameW = accountDTO.getNickName().replaceAll("%", "%25");
                     while(true){
                         if(nickNameW!=null&&nickNameW!=""){
                             if(nickNameW.contains("%25")){
@@ -75,13 +76,15 @@ public class AccountService {
 
                         }
                     }
+
                 }else{
-                    nickNameW="昵称导出暂时不可用";
+                    nickNameW="未知用户";
                 }
-                accountDTO.setNickName(nickNameW);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+
+            } catch(Throwable e){
+                nickNameW="特殊符号用户";
             }
+            accountDTO.setNickName(nickNameW);
         }
         page.setResponseData(accountDTOList);
 

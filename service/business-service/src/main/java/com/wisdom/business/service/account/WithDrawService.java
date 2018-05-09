@@ -134,6 +134,7 @@ public class WithDrawService {
         List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawMapper.queryWithdrawsByParameters(pageParamVoDTO);
 
         for(WithDrawRecordDTO withDrawRecordDTO : withDrawRecordDTOList){
+            String nickNameW ="";
             try {
                 Query query = new Query().addCriteria(Criteria.where("withDrawId").is(withDrawRecordDTO.getWithdrawId()));
                 UserBankCardInfoDTO userBankCardInfoDTO = mongoTemplate.findOne(query, UserBankCardInfoDTO.class,"userBankCardInfo");
@@ -142,8 +143,8 @@ public class WithDrawService {
                     withDrawRecordDTO.setBankCardNumber(userBankCardInfoDTO.getBankCardNumber());
                     withDrawRecordDTO.setBankCardAddress(userBankCardInfoDTO.getBankCardAddress());
                 }
-                String nickNameW = withDrawRecordDTO.getNickName().replaceAll("%", "%25");
-                if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
+                if(withDrawRecordDTO.getNickName()!=null){
+                    nickNameW = withDrawRecordDTO.getNickName().replaceAll("%", "%25");
                     while(true){
                         if(nickNameW!=null&&nickNameW!=""){
                             if(nickNameW.contains("%25")){
@@ -157,14 +158,16 @@ public class WithDrawService {
                         }
                     }
                 }else{
-                    nickNameW="昵称导出暂时不支持";
+                    nickNameW="未知用户";
                 }
 
-                withDrawRecordDTO.setNickName(nickNameW);
+
                 //withDrawRecordDTO.setNickName(URLDecoder.decode(URLDecoder.decode(withDrawRecordDTO.getNickName(),"utf-8"),"utf-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            } catch(Throwable e){
+                logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                nickNameW="特殊符号用户";
             }
+            withDrawRecordDTO.setNickName(nickNameW);
         }
         page.setResponseData(withDrawRecordDTOList);
 

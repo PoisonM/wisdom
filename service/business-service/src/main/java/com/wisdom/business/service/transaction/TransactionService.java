@@ -154,28 +154,26 @@ public class TransactionService {
             try {
                 if(payRecordDTO.getNickName() != null && payRecordDTO.getNickName() != ""){
                     String nickNameW = payRecordDTO.getNickName().replaceAll("%", "%25");
-                    if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
-                        while(true){
-                            if(nickNameW!=null&&nickNameW!=""){
-                                if(nickNameW.contains("%25")){
-                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
-                                }else{
-                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
-                                    break;
-                                }
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                             }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                                 break;
                             }
-
+                        }else{
+                            break;
                         }
-                    }else{
-                        nickNameW = "昵称导出暂时不可用";
-                    }
 
+                    }
                     payRecordDTO.setNickName(nickNameW);
+                }else{
+                    payRecordDTO.setNickName("未知用户");
                 }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            } catch(Throwable e){
+                logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                payRecordDTO.setNickName("特殊符号用户");
             }
         }
         page.setResponseData(PayRecordDTOList);
@@ -224,6 +222,8 @@ public class TransactionService {
                         }
 
                     }
+                }else{
+                    nickNameW = "未知用户";
                 }
             }catch(Throwable e){
                 logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
