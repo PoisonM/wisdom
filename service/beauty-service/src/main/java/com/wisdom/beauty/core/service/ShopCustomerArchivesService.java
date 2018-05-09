@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.Date;
@@ -36,12 +37,10 @@ public interface ShopCustomerArchivesService {
     /**
      * 查询某个店某一时间段建档的个数
      *
-     * @param shopId
-     * @param startDate
-     * @param endDate
+     * @param pageParamVoDTO
      * @return
      */
-    int getShopBuildArchivesNumbers(String shopId, Date startDate, Date endDate);
+    int getShopBuildArchivesNumbers(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * 保存用户的建档案信息
