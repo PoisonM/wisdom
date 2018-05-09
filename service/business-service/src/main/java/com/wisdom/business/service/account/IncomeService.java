@@ -249,17 +249,58 @@ public class IncomeService {
     public List<IncomeRecordDTO> queryIncomeByParameters(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         List<IncomeRecordDTO> incomeRecordDTOS = incomeMapper.getIncomeRecordByPageParam(pageParamVoDTO);
         for (IncomeRecordDTO incomeRecordDTO: incomeRecordDTOS) {
-            try {
                 if (StringUtils.isNotBlank(incomeRecordDTO.getNickName())) {
-                    incomeRecordDTO.setNickName(URLDecoder.decode(incomeRecordDTO.getNickName(),"utf-8"));
+                    try {
+                        if(incomeRecordDTO.getNickName() != null && incomeRecordDTO.getNickName() != ""){
+                            String nickNameW = incomeRecordDTO.getNickName().replaceAll("%", "%25");
+                            while(true){
+                                if(nickNameW!=null&&nickNameW!=""){
+                                    if(nickNameW.contains("%25")){
+                                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    }else{
+                                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                        break;
+                                    }
+                                }else{
+                                    break;
+                                }
+
+                            }
+                            incomeRecordDTO.setNickName(nickNameW);
+                        }else{
+                            incomeRecordDTO.setNickName("未知用户");
+                        }
+                    } catch(Throwable e){
+                        logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                        incomeRecordDTO.setNickName("特殊符号用户");
+                    }
                 }
                 if (StringUtils.isNotBlank(incomeRecordDTO.getNextUserNickName())) {
-                    incomeRecordDTO.setNextUserNickName(URLDecoder.decode(incomeRecordDTO.getNextUserNickName(),"utf-8"));
+                    try {
+                        if(incomeRecordDTO.getNextUserNickName() != null && incomeRecordDTO.getNextUserNickName() != ""){
+                            String nickNameW = incomeRecordDTO.getNextUserNickName().replaceAll("%", "%25");
+                            while(true){
+                                if(nickNameW!=null&&nickNameW!=""){
+                                    if(nickNameW.contains("%25")){
+                                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    }else{
+                                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                        break;
+                                    }
+                                }else{
+                                    break;
+                                }
+
+                            }
+                            incomeRecordDTO.setNextUserNickName(nickNameW);
+                        }else{
+                            incomeRecordDTO.setNextUserNickName("未知用户");
+                        }
+                    } catch(Throwable e){
+                        logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                        incomeRecordDTO.setNextUserNickName("特殊符号用户");
+                    }
                 }
-            } catch (UnsupportedEncodingException e) {
-                logger.info("service -- 佣金奖励详情queryIncomeByParameters方法转换nickName失败" );
-                e.printStackTrace();
-            }
             UserInfoDTO selfUserInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecordDTO.getSysUserId());
             UserInfoDTO nextUserInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecordDTO.getNextUserId());
             incomeRecordDTO.setUserTypeNow(selfUserInfoDTO.getUserType());
