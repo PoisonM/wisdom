@@ -11,8 +11,10 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
                 income : 0,
                 expenditure:0,
                 startDate : BossUtil.getNowFormatDate(),
-                date: ''
+                date:BossUtil.getNowFormatDate()
             }
+            $scope.param.date=$scope.param.date.replace(/00/g,'')
+            $scope.param.date=$scope.param.date.replace(/:/g,'')
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -30,17 +32,9 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
             var datePickerCallbacke = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
-                    var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00"
-                    GetExpenditureAndIncome.get({sysShopId:$rootScope.shopInfo.shopId,
-                        startTime:dateValue,endTime:BossUtil.getAddDate(dateValue,1)},function (data) {
-                        if(data.result==Global.SUCCESS&&data.responseData!=null)
-                        {
-                            $scope.param.income = data.responseData[0].income;
-                            $scope.param.expenditure = data.responseData[0].expenditure;
-                            $scope.param.date = data.responseData[0].formateDate;
-                            console.log($scope.param);
-                        }
-                    })
+                    var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
+                    $scope.param.date =$filter('date')(val, 'yyyy-MM-dd')
+                    $scope.getInfo()
                 }
             };
             //主体对象
@@ -70,16 +64,24 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
 
-            GetExpenditureAndIncome.get({sysShopId:$rootScope.shopInfo.shopId,
-                startTime:$scope.param.startDate,endTime:BossUtil.getAddDate($scope.param.startDate,1)},function (data) {
-                console.log(data);
-                if(data.result==Global.SUCCESS&&data.responseData!=null)
-                {
-                    $scope.param.income = data.responseData[0].income;
-                    $scope.param.expenditure = data.responseData[0].expenditure;
-                    $scope.param.date = data.responseData[0].formateDate;
-                    console.log($scope.param);
-                }
-            })
+            $scope.getInfo = function(){
+                GetExpenditureAndIncome.get({sysShopId:$rootScope.shopInfo.shopId,
+                    startTime:$scope.param.date+" 00:00:00",endTime:$scope.param.date+" 23:59:59"},function (data) {
+                    if(data.result==Global.SUCCESS&&data.responseData!=null)
+                    {
+                        $scope.param.income = data.responseData[0].income;
+                        $scope.param.expenditure = data.responseData[0].expenditure;
+                        $scope.param.date = data.responseData[0].formateDate;
+                        $scope.comprehensive = data.responseData;
+
+                    }
+                });
+            }
+            $scope.getInfo()
+
+
+            $scope.beautyAllGo = function(sysShopId){
+                $state.go("beautyAll",{sysShopId:sysShopId,date:$scope.param.date})
+            }
 
         }]);

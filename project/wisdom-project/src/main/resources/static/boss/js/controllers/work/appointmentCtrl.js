@@ -78,8 +78,8 @@ angular.module('controllers',[]).controller('appointmentCtrl',
             $scope.getInfo()
 
 
-            $scope.healthClubGo = function(sysShopId,name){
-                $state.go("beautySalon",{sysShopId:sysShopId,date:$scope.param.date,shopName:name})
+            $scope.healthClubGo = function(id,name){
+                $state.go("beautySalon",{sysShopId:id,date:$scope.param.date,shopName:name})
             }
 
 

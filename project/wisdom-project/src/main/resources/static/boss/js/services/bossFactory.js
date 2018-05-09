@@ -1,8 +1,9 @@
 
 var user = '/user/';
-var appointmentInfo = '/beauty/appointmentInfo/';
-var work = '/beauty/work/'
-var stock = '/beauty/stock/'
+var appointmentInfo = 'http://192.168.1.117/beauty/appointmentInfo/';
+var work = 'http://192.168.1.117/beauty/work/';
+var stock = 'http://192.168.1.117/beauty/stock/';
+var consume = 'http://192.168.1.117/beauty/consume/';
 
 define(['appBoss'], function (app) {
     app
@@ -39,7 +40,7 @@ define(['appBoss'], function (app) {
             return $resource(stock + 'shopStockRecordList')
         }])
 
-
+/*综合分析*/
         /*根据时间查询某个美容院的耗卡和业绩*/
         .factory('GetExpenditureAndIncome',['$resource',function ($resource){
             return $resource(work + 'getExpenditureAndIncome')
@@ -48,9 +49,29 @@ define(['appBoss'], function (app) {
         .factory('GetBossExpenditureAndIncome',['$resource',function ($resource){
             return $resource(work + 'getBossExpenditureAndIncome')
         }])
+        /*获取具体某个美容院的业绩和耗卡（包含来源分析）*/
+        .factory('GetShopConsumeAndRecharge',['$resource',function ($resource){
+            return $resource(work + 'getShopConsumeAndRecharge')
+        }])
         /*业绩明细(boss端)*/
         .factory('GetBossPerformance',['$resource',function ($resource){
             return $resource(work + 'getBossPerformance')
+        }])
+        /*账户信息记录的详细信息*/
+        .factory('ConsumeFlowNo',['$resource',function ($resource){
+            return $resource(consume+"consumeFlowNo")
+        }])
+        /*获取当前美容院当前boss的当前家人列表*/
+        .factory('GetFamilyList',['$resource',function ($resource){
+            return $resource(consume+"getFamilyList")
+        }])
+
+
+
+  /*工作首页*/
+        /*获取人头数，人次数，新客，服务次数*/
+        .factory('GetBossAchievement',['$resource',function ($resource){
+            return $resource(work+"getBossAchievement")
         }])
 
 

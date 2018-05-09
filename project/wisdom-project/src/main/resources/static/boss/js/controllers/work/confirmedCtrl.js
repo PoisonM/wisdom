@@ -10,15 +10,15 @@ angular.module('controllers',[]).controller('confirmedCtrl',
 
             $scope.cancel = function(){
                 UpdateAppointmentInfoById.get({
-                    shopAppointServiceId:"id_7", /*$stateParams.shopAppointServiceId*/
+                    shopAppointServiceId:$stateParams.shopAppointServiceId, /*$stateParams.shopAppointServiceId*/
                     status:"4"
                 },function(data){
-                    $state.go('appointment')
+                    $state.go('canceled',{date:$stateParams.date,sysClerkId:$stateParams.sysClerkId,sysShopId:$stateParams.sysShopId})
                 })
                
             }
             GetAppointmentInfoById.get({
-                shopAppointServiceId:"id_7" /*$stateParams.shopAppointServiceId*/
+                shopAppointServiceId:$stateParams.shopAppointServiceId
             },function(data){
                 $scope.confirmed = data.responseData;
                 $rootScope.title = $scope.confirmed.sysClerkName

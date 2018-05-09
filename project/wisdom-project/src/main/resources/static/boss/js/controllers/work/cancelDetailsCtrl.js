@@ -7,7 +7,7 @@ angular.module('controllers',[]).controller('cancelDetailsCtrl',
 
             $rootScope.title = "取消预约的详情";
             GetAppointmentInfoById.get({
-                shopAppointServiceId:"id_7" /*$stateParams.shopAppointServiceId*/
+                shopAppointServiceId:$stateParams.shopAppointServiceId
             },function(data){
                 $scope.cancelDetails = data.responseData;
                 if($scope.cancelDetails.shopProjectName.indexOf(";") !=-1){

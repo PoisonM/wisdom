@@ -61,25 +61,15 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
-            $scope.getInfo = function(){
-                GetShopClerkAppointmentInfo.get({
-                    searchDate:"2018-04-27",/*$scope.param.date*/
-                    sysClerkId:'cc03a01d060e4bb09e051788e8d9801b',/*$stateParams.sysClerkId*/
-                    sysShopId:"11" /*$stateParams.sysShopId*/
-                },function(data){
-                    $scope.canceled = data.responseData
-                    $rootScope.title = $scope.canceled[0].sysClerkInfo.name;
 
-                })
-            }
             $scope.cancelDetailsGo=function(id){
                 $state.go("cancelDetails",{shopAppointServiceId:id})
             }
             $scope.getInfo = function(){
                 GetShopAppointmentInfoByStatus.get({
-                    searchDate:"2018-04-27",/*$scope.date*/
-                    sysClerkId:'cc03a01d060e4bb09e051788e8d9801b',/*$stateParams.sysClerkId*/
-                    sysShopId:"11",/*$stateParams.sysShopId*/
+                    searchDate:$scope.param.date,
+                    sysClerkId:$stateParams.sysClerkId,/*$stateParams.sysClerkId*/
+                    sysShopId:$stateParams.sysShopId,
                     status:"4"
                 },function(data){
                     $scope.cancelReservation = data.responseData

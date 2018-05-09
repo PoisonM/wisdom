@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('beautySalonCtrl',
-    ['$scope','$rootScope','$stateParams','$state','ShopDayAppointmentInfoByDate',"BossUtil",'Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,ShopDayAppointmentInfoByDate,BossUtil,Global,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','ShopDayAppointmentInfoByDate',"BossUtil",'Global','$filter','Global',
+        function ($scope,$rootScope,$stateParams,$state,ShopDayAppointmentInfoByDate,BossUtil,Global,$filter,Global) {
             $rootScope.title = $stateParams.shopName;
 
             $scope.param = {
@@ -66,13 +66,15 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
 
             $scope.getInfo=function(){
                 ShopDayAppointmentInfoByDate.get({
-                    startDate:"2018-00-00%2000:00:00",/*$scope.param.date*/
-                    endDate:'2019-00-00%2000:00:00',/*$scope.param.date*/
-                    sysShopId:'3'/*$stateParams.sysShopId*/
+                    startDate:$scope.param.date+" 00:00:00",
+                    endDate:$scope.param.date+" 23:59:59",
+                    sysShopId:$stateParams.sysShopId
                 },function(data){
-                    $scope.beautySalon = data.responseData;
-                    delete $scope.beautySalon.startTime;
-                    delete $scope.beautySalon.endTime;
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $scope.beautySalon = data.responseData;
+                        delete $scope.beautySalon.startTime;
+                        delete $scope.beautySalon.endTime;
+                    }
 
                 })
             }

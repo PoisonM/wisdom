@@ -77,7 +77,7 @@ define(['appBoss'], function(app){
                 /*业绩明细*/
 
                     .state('detailedPerformance', {
-                        url: '/detailedPerformance',
+                        url: '/detailedPerformance/:shopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailedPerformanceCtrl',
                         resolve: {
@@ -91,7 +91,7 @@ define(['appBoss'], function(app){
                 /*全部家人*/
 
                     .state('allFamily', {
-                        url: '/allFamily',
+                        url: '/allFamily/:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'allFamilyCtrl',
                         resolve: {
@@ -161,7 +161,7 @@ define(['appBoss'], function(app){
                 /*唯美度养生会所 全部家人*/
 
                     .state('beautyAll', {
-                        url: '/beautyAll',
+                        url: '/beautyAll/:sysShopId/:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'beautyAllCtrl',
                         resolve: {
@@ -273,7 +273,7 @@ define(['appBoss'], function(app){
                 /*已确认*/
 
                     .state('confirmed', {
-                        url: '/confirmed/:shopAppointServiceId',
+                        url: '/confirmed/:shopAppointServiceId/:date/:sysClerkId/:sysShopId"',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'confirmedCtrl',
                         resolve: {
@@ -362,15 +362,15 @@ define(['appBoss'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyBranchCtrl',
-                                    ['js/controllers/work/branchShopCtrl.js?ver='+ bossVersion],
-                                    'views/work/branchShop.html?ver=' + bossVersion);
+                                    ['js/controllers/work/beautyBranchCtrl.js?ver='+ bossVersion],
+                                    'views/work/beautyBranch.html?ver=' + bossVersion);
                             }
                         }
                     })
                 /*详情*/
 
                     .state('details', {
-                        url: '/details',
+                        url: '/details/:flowNo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailsCtrl',
                         resolve: {

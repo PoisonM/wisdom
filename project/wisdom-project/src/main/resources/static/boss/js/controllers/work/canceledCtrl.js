@@ -2,10 +2,10 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('canceledCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopClerkAppointmentInfo',"BossUtil",'Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetShopClerkAppointmentInfo,BossUtil,Global,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopClerkAppointmentInfo',"BossUtil",'Global','$filter','Global',
+        function ($scope,$rootScope,$stateParams,$state,GetShopClerkAppointmentInfo,BossUtil,Global,$filter,Global) {
 
-            /*$rootScope.title = "";*/
+            $rootScope.title = "";
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
@@ -63,12 +63,15 @@ angular.module('controllers',[]).controller('canceledCtrl',
             };
             $scope.getInfo = function(){
                 GetShopClerkAppointmentInfo.get({
-                    searchDate:"2018-04-27",/*$scope.param.date*/
-                    sysClerkId:'cc03a01d060e4bb09e051788e8d9801b',/*$stateParams.sysClerkId*/
-                    sysShopId:"11" /*$stateParams.sysShopId*/
+                    searchDate:$scope.param.date,
+                    sysClerkId:$stateParams.sysClerkId,/*$stateParams.sysClerkId*/
+                    sysShopId:$stateParams.sysShopId
                 },function(data){
-                    $scope.canceled = data.responseData
-                    $rootScope.title = $scope.canceled[0].sysClerkInfo.name;
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $scope.canceled = data.responseData
+                        /*$rootScope.title = $scope.canceled[0].sysClerkInfo.name;*/
+                    }
+
 
                 })
             }
@@ -76,7 +79,7 @@ angular.module('controllers',[]).controller('canceledCtrl',
 
 
             $scope.confirmedGo = function(id){
-                $state.go("confirmed",{shopAppointServiceId:id})
+                $state.go("confirmed",{shopAppointServiceId:id,date:$scope.param.date,sysClerkId:$stateParams.sysClerkId,sysShopId:$stateParams.sysShopId})
             }
 
             $scope.cancelReservationGo = function(){
