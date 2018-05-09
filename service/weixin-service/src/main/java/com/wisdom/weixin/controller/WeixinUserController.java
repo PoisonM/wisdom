@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.security.krb5.Config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -96,8 +97,8 @@ public class WeixinUserController {
     /**
      * 公众号菜单引导页 081dazSU0Zf1iU1fGISU0q5ASU0dazSd 0815XmM70lSlvH1UnyN70OwBM705XmM9
      */
-    @RequestMapping(value = "getUserWeixinMenuId", method = {RequestMethod.POST, RequestMethod.GET})
-    public String getUserWeixinMenuId(HttpServletRequest request,
+    @RequestMapping(value = "getCustomerWeixinMenuId", method = {RequestMethod.POST, RequestMethod.GET})
+    public String getCustomerWeixinMenuId(HttpServletRequest request,
                                           HttpServletResponse response,
                                           HttpSession session) throws Exception
     {
