@@ -61,18 +61,22 @@ public class AccountService {
         for(AccountDTO accountDTO : accountDTOList){
             try {
                 String nickNameW = accountDTO.getNickName().replaceAll("%", "%25");
-                while(true){
-                    if(nickNameW!=null&&nickNameW!=""){
-                        if(nickNameW.contains("%25")){
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                if(!isExportExcel.equals("Y")){
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
                         }else{
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                             break;
-                        }
-                    }else{
-                        break;
 
+                        }
                     }
+                }else{
+                    nickNameW="昵称导出暂时不可用";
                 }
                 accountDTO.setNickName(nickNameW);
             } catch (UnsupportedEncodingException e) {

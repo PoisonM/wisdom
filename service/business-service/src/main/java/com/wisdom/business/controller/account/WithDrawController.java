@@ -139,7 +139,7 @@ public class WithDrawController {
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			result.setErrorInfo("提现失败,请联系客服处理！");
+			result.setErrorInfo("提现失败");
 			result.setResult(StatusConstant.FAILURE);
 		}
 		finally {

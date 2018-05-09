@@ -143,18 +143,23 @@ public class WithDrawService {
                     withDrawRecordDTO.setBankCardAddress(userBankCardInfoDTO.getBankCardAddress());
                 }
                 String nickNameW = withDrawRecordDTO.getNickName().replaceAll("%", "%25");
-                while(true){
-                    if(nickNameW!=null&&nickNameW!=""){
-                        if(nickNameW.contains("%25")){
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
                         }else{
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                             break;
                         }
-                    }else{
-                        break;
                     }
+                }else{
+                    nickNameW="昵称导出暂时不支持";
                 }
+
                 withDrawRecordDTO.setNickName(nickNameW);
                 //withDrawRecordDTO.setNickName(URLDecoder.decode(URLDecoder.decode(withDrawRecordDTO.getNickName(),"utf-8"),"utf-8"));
             } catch (UnsupportedEncodingException e) {
