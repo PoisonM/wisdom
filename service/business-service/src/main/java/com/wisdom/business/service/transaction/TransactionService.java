@@ -154,20 +154,7 @@ public class TransactionService {
             try {
                 if(payRecordDTO.getNickName() != null && payRecordDTO.getNickName() != ""){
                     String nickNameW = payRecordDTO.getNickName().replaceAll("%", "%25");
-                    while(true){
-                        if(nickNameW!=null&&nickNameW!=""){
-                            if(nickNameW.contains("%25")){
-                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
-                            }else{
-                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
-                                break;
-                            }
-                        }else{
-                            break;
-                        }
-
-                    }
-                    /*if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
+                    if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
                         while(true){
                             if(nickNameW!=null&&nickNameW!=""){
                                 if(nickNameW.contains("%25")){
@@ -184,7 +171,7 @@ public class TransactionService {
                     }else{
                         nickNameW = "昵称导出暂时不可用";
                     }
-*/
+
                     payRecordDTO.setNickName(nickNameW);
                 }
             } catch (UnsupportedEncodingException e) {
@@ -220,8 +207,9 @@ public class TransactionService {
         List<BusinessOrderDTO> businessOrderDTODTOList = transactionMapper.queryBusinessOrderByParameters(pageParamVoDTO);
         for(BusinessOrderDTO businessOrderDTO : businessOrderDTODTOList){//用户名解码
             businessOrderDTO.setNickName(CommonUtils.nameDecoder(businessOrderDTO.getNickName()));
-            String nickNameW = businessOrderDTO.getNickName().replaceAll("%", "%25");
-            if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
+            String nickNameW ="";
+            if(businessOrderDTO.getNickName()!=null){
+                nickNameW = businessOrderDTO.getNickName().replaceAll("%", "%25");
                 while(true){
                     if(nickNameW!=null&&nickNameW!=""){
                         if(nickNameW.contains("%25")){
@@ -235,8 +223,23 @@ public class TransactionService {
                     }
 
                 }
-            }else{
-                nickNameW  ="昵称导出暂时不可用";
+               /* if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = CommonUtils.nameDecoder(nickNameW);
+                            }else{
+                                nickNameW = CommonUtils.nameDecoder(nickNameW);
+                                break;
+                            }
+                        }else{
+                            break;
+                        }
+
+                    }
+                }else{
+                    nickNameW  ="昵称导出暂时不可用";
+                }*/
             }
 
             businessOrderDTO.setNickName(nickNameW);
