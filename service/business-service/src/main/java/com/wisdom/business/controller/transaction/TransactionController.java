@@ -166,6 +166,7 @@ public class TransactionController {
     @ResponseBody
     public ResponseDTO<TransactionDTO> getUserTransactionDetail(@RequestParam String transactionId, @RequestParam String transactionType) {
         ResponseDTO<TransactionDTO> responseDTO = new ResponseDTO();
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 
         if(transactionType.equals("withdraw"))
         {
@@ -187,22 +188,30 @@ public class TransactionController {
         }
         else
         {
-            IncomeRecordDTO incomeRecordDTO = incomeService.getIncomeRecordDetail(transactionId);
-            if(incomeRecordDTO==null)
-            {
-                responseDTO.setResult(StatusConstant.FAILURE);
+
+            IncomeRecordDTO incomeRecordDTOValue  = new IncomeRecordDTO();
+            incomeRecordDTOValue.setSysUserId(userInfoDTO.getId());
+            incomeRecordDTOValue.setTransactionId(transactionId);
+            List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getUserIncomeRecordInfo(incomeRecordDTOValue);
+            if(incomeRecordDTOS!=null&&incomeRecordDTOS.size()>0){
+                IncomeRecordDTO incomeRecordDTO = incomeRecordDTOS.get(0);
+                if(incomeRecordDTO==null)
+                {
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                }
+                else
+                {
+                    TransactionDTO transactionDTO = new TransactionDTO();
+                    transactionDTO.setTransactionType(incomeRecordDTO.getIncomeType());
+                    transactionDTO.setAmount(incomeRecordDTO.getAmount());
+                    transactionDTO.setTransactionDate(incomeRecordDTO.getUpdateDate());
+                    transactionDTO.setTransactionId(incomeRecordDTO.getTransactionId());
+                    transactionDTO.setTransactionStatus(incomeRecordDTO.getStatus());
+                    responseDTO.setResponseData(transactionDTO);
+                    responseDTO.setResult(StatusConstant.SUCCESS);
+                }
             }
-            else
-            {
-                TransactionDTO transactionDTO = new TransactionDTO();
-                transactionDTO.setTransactionType(incomeRecordDTO.getIncomeType());
-                transactionDTO.setAmount(incomeRecordDTO.getAmount());
-                transactionDTO.setTransactionDate(incomeRecordDTO.getUpdateDate());
-                transactionDTO.setTransactionId(incomeRecordDTO.getTransactionId());
-                transactionDTO.setTransactionStatus(incomeRecordDTO.getStatus());
-                responseDTO.setResponseData(transactionDTO);
-                responseDTO.setResult(StatusConstant.SUCCESS);
-            }
+
         }
 
         return responseDTO;
