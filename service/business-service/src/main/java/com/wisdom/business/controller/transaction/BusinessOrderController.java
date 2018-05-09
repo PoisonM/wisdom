@@ -404,9 +404,9 @@ public class BusinessOrderController {
                     exportOrderExcelDTO.setProductNum(businessOrderinfo.getBusinessProductNum()+"");
                     exportOrderExcelDTO.setProductSpec(businessOrderinfo.getProductSpec());
                     //exportOrderExcelDTO.setTaxpayerNumber(businessOrderDTO.getIdentifyNumber());
-                    exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserAddress());
-                    exportOrderExcelDTO.setUserName(businessOrderinfo.getUserNameAddress());
-                    exportOrderExcelDTO.setUserPhone(businessOrderinfo.getUserPhoneAddress());
+                    exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
+                    exportOrderExcelDTO.setUserNameAddress(businessOrderinfo.getUserNameAddress());
+                    exportOrderExcelDTO.setUserPhoneAddress(businessOrderinfo.getUserPhoneAddress());
                     excelList.add(exportOrderExcelDTO);
                 }
                 //ByteArrayInputStream in = ex.getWorkbookIn("订单EXCEL文档",orderHeaders, page.getResponseData(),"yyy-MM-dd HH:mm:ss");
