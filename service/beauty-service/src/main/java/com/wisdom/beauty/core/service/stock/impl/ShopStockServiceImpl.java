@@ -161,15 +161,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockResponseDTO.setStockPrice(shopStock.getStockPrice());
 			if (map.get(shopStock.getShopProcId()) != null) {
 				shopStockResponseDTO.setProductCode(map.get(shopStock.getShopProcId()).getProductCode());
-			}
-			if ((map.get(shopStock.getShopProcId()) != null)) {
 				shopStockResponseDTO.setProductSpec(map.get(shopStock.getShopProcId()).getProductSpec());
-			}
-			if (map.get(shopStock.getShopProcId()) != null) {
 				shopStockResponseDTO.setProductUnit(map.get(shopStock.getShopProcId()).getProductUnit());
-			}
-			if (map.get(shopStock.getShopProcId()) != null) {
 				shopStockResponseDTO.setImageUrl(map.get(shopStock.getShopProcId()).getImageUrl());
+				shopStockResponseDTO.setShopProcName(map.get(shopStock.getShopProcId()).getProductName());
 			}
 
 			shopStockResponses.add(shopStockResponseDTO);
@@ -183,6 +178,17 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockResponseDTO.setStockType(shopStockRecord.getStockType());
 		shopStockResponseDTO.setApplayUser(shopStockRecord.getManagerId());
 		shopStockResponseDTO.setDetail(shopStockRecord.getDetail());
+		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
+		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
+		shopStockResponseDTO.setName(shopStockRecord.getName());
+		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())
+				|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())) {
+			shopStockResponseDTO.setStockStatus(StockStyleEnum.IN_STORAGE.getCode());
+		}
+		if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockRecord.getStockStyle())
+				|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockRecord.getStockStyle())) {
+			shopStockResponseDTO.setStockStatus(StockStyleEnum.OUT_STORAGE.getCode());
+		}
 		shopStockResponseDTO.setShopStockResponseDTO(shopStockResponses);
 
 		return shopStockResponseDTO;
@@ -208,7 +214,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		if (StringUtils.isNotBlank(shopStockRecord.getStockStyle())) {
 			if (StockStyleEnum.IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())) {
 				List<String> styles = new ArrayList<>();
-				styles.add(StockStyleEnum.IN_STORAGE.getCode());
+				styles.add(StockStyleEnum.MANUAL_IN_STORAGE.getCode());
 				styles.add(StockStyleEnum.SCAN_IN_STORAGE.getCode());
 				c.andStockStyleIn(styles);
 			}
