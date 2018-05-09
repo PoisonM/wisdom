@@ -63,7 +63,9 @@ public class CardController {
 
         if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
             logger.debug("传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
-            return null;
+			if (null != UserUtils.getClerkInfo()) {
+				sysShopId = UserUtils.getClerkInfo().getSysShopId();
+			}
         }
 
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
