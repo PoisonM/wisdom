@@ -2,9 +2,7 @@ package com.wisdom.common.constant;
 
 import com.wisdom.common.config.Global;
 
-public enum ConfigConstant {
-
-	instance;
+public class ConfigConstant {
 
 	public static final String DOMAIN_VALUE = Global.getConfig("DOMAIN_VALUE");
 
@@ -33,7 +31,7 @@ public enum ConfigConstant {
 
 	public static final int livingPeriodTripleMonth  = Integer.parseInt(Global.getConfig("livingPeriodTripleMonth"));
 
-	public static final float nextB1TripleMonthReward  =Integer.parseInt(Global.getConfig("nextB1TripleMonthReward"));
+	public static final float nextB1TripleMonthReward  = Integer.parseInt(Global.getConfig("nextB1TripleMonthReward"));
 
 	public static final int livingPeriodTripleMonth_B1  = Integer.parseInt(Global.getConfig("livingPeriodTripleMonth_B1"));
 
@@ -104,4 +102,7 @@ public enum ConfigConstant {
 	public static final int MIN_WITHDRAW_AMOUNT = Integer.parseInt(Global.getConfig("MIN_WITHDRAW_AMOUNT"));
 
 	public static final int CHECK_WITHDRAW_AMOUNT = Integer.parseInt(Global.getConfig("CHECK_WITHDRAW_AMOUNT"));
+
+	public static final String PAY_TEST_FLAG = Global.getConfig("PAY_TEST_FLAG");
+
 }
