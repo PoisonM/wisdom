@@ -32,10 +32,16 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     private String sysShopClerkId;
     //操作门店
     private String sysShopName;
-    //类型
-    private String type;
+    //签字地址
+    private String signUrl;
+    //备注
+    private String detail;
     private String goodType;
     private String consumeType;
+    //用于返回前端判断消费还是充值字段
+    private String type;
+    //剩余金额
+    private BigDecimal remainingAmount;
     private List<ShopUserConsumeRecordDTO> userConsumeRecordList;
 
 
@@ -59,13 +65,6 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
         this.sysShopName = sysShopName;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
@@ -133,5 +132,37 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
 
     public void setConsumeType(String consumeType) {
         this.consumeType = consumeType;
+    }
+
+    public String getSignUrl() {
+        return signUrl;
+    }
+
+    public void setSignUrl(String signUrl) {
+        this.signUrl = signUrl;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public BigDecimal getRemainingAmount() {
+        return remainingAmount;
+    }
+
+    public void setRemainingAmount(BigDecimal remainingAmount) {
+        this.remainingAmount = remainingAmount;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
