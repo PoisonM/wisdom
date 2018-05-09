@@ -197,6 +197,16 @@ public class TransactionService {
         List<BusinessOrderDTO> businessOrderDTODTOList = transactionMapper.queryBusinessOrderByParameters(pageParamVoDTO);
         for(BusinessOrderDTO businessOrderDTO : businessOrderDTODTOList){//用户名解码
             businessOrderDTO.setNickName(CommonUtils.nameDecoder(businessOrderDTO.getNickName()));
+            String nickNameW = businessOrderDTO.getNickName();
+            while(true){
+                if(nickNameW.contains("%25")){
+                    nickNameW = CommonUtils.nameDecoder(nickNameW);
+                }else{
+                    nickNameW = CommonUtils.nameDecoder(nickNameW);
+                    break;
+                }
+            }
+            businessOrderDTO.setNickName(nickNameW);
         }
         page.setTotalCount(count);
         page.setResponseData(businessOrderDTODTOList);
