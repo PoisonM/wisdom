@@ -9,28 +9,19 @@ public class ShopStockDTO extends BaseEntity implements Serializable {
 	//
 	private String id;
 
-	// bossID
+	//bossID
 	private String shopBossId;
 
-	// 入库记录id
+	//入库记录id
 	private String shopStockRecordId;
 
-	// 仓库id
+	//仓库id
 	private String shopStoreId;
 
-	// 单据号
+	//单据号
 	private String flowNo;
 
-	// 申请人
-	private String applayUser;
-
-	// 状态 0、已入库
-	private String stockStatus;
-
-	// 备注
-	private String detail;
-
-	// 库存数量
+	//库存数量
 	private Integer stockNumber;
 
 	//
@@ -39,10 +30,10 @@ public class ShopStockDTO extends BaseEntity implements Serializable {
 	//
 	private String shopProcName;
 
-	// 生产日期
+	//生产日期
 	private Date productDate;
 
-	// 库存单价（元）
+	//库存单价（元）
 	private BigDecimal stockPrice;
 
 	//
@@ -97,30 +88,6 @@ public class ShopStockDTO extends BaseEntity implements Serializable {
 
 	public void setFlowNo(String flowNo) {
 		this.flowNo = flowNo;
-	}
-
-	public String getApplayUser() {
-		return applayUser;
-	}
-
-	public void setApplayUser(String applayUser) {
-		this.applayUser = applayUser;
-	}
-
-	public String getStockStatus() {
-		return stockStatus;
-	}
-
-	public void setStockStatus(String stockStatus) {
-		this.stockStatus = stockStatus;
-	}
-
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
 	}
 
 	public Integer getStockNumber() {

@@ -1,6 +1,7 @@
 package com.wisdom.beauty.api.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.wisdom.common.entity.BaseEntity;
@@ -9,20 +10,26 @@ public class ShopStockNumberDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
-    //产品id
+    //
     private String shopProcId;
 
-    //仓库id
+    //
     private String shopStoreId;
 
-    //bossID
+    //
     private String shopBossId;
 
-    //库存量
+    //
     private Integer stockNumber;
 
-    //实际库存量
+    //
     private Integer actualStockNumber;
+
+    //
+    private Integer actualStockPrice;
+
+    //
+    private BigDecimal stockPrice;
 
     //
     private String createBy;
@@ -84,6 +91,22 @@ public class ShopStockNumberDTO extends BaseEntity implements Serializable {
 
     public void setActualStockNumber(Integer actualStockNumber) {
         this.actualStockNumber = actualStockNumber;
+    }
+
+    public Integer getActualStockPrice() {
+        return actualStockPrice;
+    }
+
+    public void setActualStockPrice(Integer actualStockPrice) {
+        this.actualStockPrice = actualStockPrice;
+    }
+
+    public BigDecimal getStockPrice() {
+        return stockPrice;
+    }
+
+    public void setStockPrice(BigDecimal stockPrice) {
+        this.stockPrice = stockPrice;
     }
 
     public String getCreateBy() {

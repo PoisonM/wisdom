@@ -1,10 +1,7 @@
 package com.wisdom.beauty.core.service.stock.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,6 +58,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	@Autowired
 	private ShopStockNumberMapper shopStockNumberMapper;
+	@Autowired
+	private ExtShopStockNumberMapper extShopStockNumberMapper;
 
 	/**
 	 * 查询仓库列表
@@ -301,29 +300,66 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockRecordDTO.setFlowNo(shopStockDto.getFlowNo());
 		shopStockRecordDTO.setStockType(shopStockDto.getStockType());
 		shopStockRecordDTO.setManagerId(shopStockDto.getApplayUser());
-
+		// 插入StockRecord,并且返回id
 		this.insertStockRecord(shopStockRecordDTO);
 		// 记录插入结束
 		List<ShopStockDTO> shopStockDTOList = new ArrayList<>();
+		List<String> productIds = new ArrayList<>();
 		ShopStockDTO shopStockDTO = null;
+		Map<String, ShopStockRequestDTO> map = new HashedMap();
 		for (ShopStockRequestDTO shopStock : shopStockRequestDTO) {
 			shopStockDTO = new ShopStockDTO();
 			BeanUtils.copyProperties(shopStock, shopStockDTO);
+			shopStockDTO.setId(IdGen.uuid());
+			// 将record表总的id放入shopStockDTO中
+			shopStockDTO.setShopStockRecordId(shopStockRecordDTO.getId());
 			shopStockDTOList.add(shopStockDTO);
+			productIds.add(shopStock.getShopProcId());
+			map.put(shopStock.getShopProcId(), shopStock);
 		}
-		return extShopStockMapper.insertBatchShopStock(shopStockDTOList);
+		extShopStockMapper.insertBatchShopStock(shopStockDTOList);
+		// 更新数量,如果shop_stock_number中没有数据插入。有则更新
+		// 根据产品查询
+		List<ShopStockNumberDTO> shopStockNumberDTOs = this.getShopStockNumberBy(productIds);
+		// 计算需要更新的产品
+		List<String> requireUpdate = new ArrayList<>();
+		// 需要更新的List集合
+		List<ShopStockNumberDTO> updateShopStockNumber = new ArrayList<>();
 
+		ShopStockNumberDTO shopStockNumberDTO = null;
+		for (ShopStockNumberDTO shopStockNumber : shopStockNumberDTOs) {
+			if (map.get(shopStockNumber.getShopProcId()) != null) {
+				// 需要更新的
+				shopStockNumber.setStockNumber(
+						shopStockNumber.getStockNumber() + map.get(shopStockNumber.getShopProcId()).getStockNumber());
+				updateShopStockNumber.add(shopStockNumber);
+				// 出去map中需要更新的，剩下的就是需要插入的
+				map.remove(shopStockNumber.getShopProcId());
+			}
+		}
+		// 获取需要插入的对象，然后遍历
+		Collection<ShopStockRequestDTO> values = map.values();
+		// 需要插入的List集合
+		List<ShopStockNumberDTO> saveShopStockNumber = new ArrayList<>();
+		ShopStockNumberDTO shopStockNumber = null;
+		for (ShopStockRequestDTO addShopStockRequest : values) {
+			shopStockNumberDTO = new ShopStockNumberDTO();
+			shopStockNumberDTO.setId(IdGen.uuid());
+			shopStockNumberDTO.setStockNumber(addShopStockRequest.getStockNumber());
+			shopStockNumberDTO.setShopBossId(addShopStockRequest.getShopBossId());
+			shopStockNumberDTO.setShopProcId(addShopStockRequest.getShopProcId());
+			shopStockNumberDTO.setShopStoreId(addShopStockRequest.getShopStoreId());
+			shopStockNumberDTO.setUpdateDate(new Date());
+			shopStockNumberDTO.setCreateDate(new Date());
+			saveShopStockNumber.add(shopStockNumberDTO);
+		}
+		return this.batchAddShopStockNumber(saveShopStockNumber);
 	}
 
 	@Override
 	public int updateStockNumber(ShopStockNumberDTO shopStockNumberDTO) {
-		ShopStockNumberDTO shopStockNumber = this.getStockNumber(shopStockNumberDTO);
-		if (shopStockNumber == null) {
-			return this.saveStockNumber(shopStockNumberDTO);
-		}
-		Integer stockNumber = shopStockNumberDTO.getStockNumber();
-		Integer actualStockNumber = shopStockNumberDTO.getActualStockNumber();
-		shopStockNumberDTO.setStockNumber(shopStockNumber.getStockNumber() + stockNumber);
+		shopStockNumberDTO.setActualStockNumber(shopStockNumberDTO.getActualStockNumber());
+		shopStockNumberDTO.setActualStockPrice(shopStockNumberDTO.getActualStockPrice());
 		return shopStockNumberMapper.updateByPrimaryKeySelective(shopStockNumberDTO);
 
 	}
@@ -350,4 +386,23 @@ public class ShopStockServiceImpl implements ShopStockService {
 	public int saveStockNumber(ShopStockNumberDTO shopStockNumberDTO) {
 		return shopStockNumberMapper.insert(shopStockNumberDTO);
 	}
+
+	@Override
+	public List<ShopStockNumberDTO> getShopStockNumberBy(List<String> productIds) {
+		logger.info("getShopStockNumberBy方法传入的参数productIds={}", productIds);
+		if (CollectionUtils.isEmpty(productIds)) {
+			logger.info("getShopStockNumberBy方法传入的参数productIds为空");
+			return null;
+		}
+		ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
+		ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
+		c.andShopProcIdIn(productIds);
+		return shopStockNumberMapper.selectByCriteria(criteria);
+	}
+
+	@Override
+	public int batchAddShopStockNumber(List<ShopStockNumberDTO> shopStockNumberDTO) {
+		return extShopStockNumberMapper.saveBatchShopStockNumber(shopStockNumberDTO);
+	}
+
 }

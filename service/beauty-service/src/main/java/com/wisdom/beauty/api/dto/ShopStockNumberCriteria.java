@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -522,6 +523,126 @@ public class ShopStockNumberCriteria {
 
         public Criteria andActualStockNumberNotBetween(Integer value1, Integer value2) {
             addCriterion("actual_stock_number not between", value1, value2, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceIsNull() {
+            addCriterion("actual_stock_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceIsNotNull() {
+            addCriterion("actual_stock_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceEqualTo(Integer value) {
+            addCriterion("actual_stock_price =", value, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceNotEqualTo(Integer value) {
+            addCriterion("actual_stock_price <>", value, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceGreaterThan(Integer value) {
+            addCriterion("actual_stock_price >", value, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("actual_stock_price >=", value, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceLessThan(Integer value) {
+            addCriterion("actual_stock_price <", value, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceLessThanOrEqualTo(Integer value) {
+            addCriterion("actual_stock_price <=", value, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceIn(List<Integer> values) {
+            addCriterion("actual_stock_price in", values, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceNotIn(List<Integer> values) {
+            addCriterion("actual_stock_price not in", values, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceBetween(Integer value1, Integer value2) {
+            addCriterion("actual_stock_price between", value1, value2, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockPriceNotBetween(Integer value1, Integer value2) {
+            addCriterion("actual_stock_price not between", value1, value2, "actualStockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceIsNull() {
+            addCriterion("stock_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceIsNotNull() {
+            addCriterion("stock_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceEqualTo(BigDecimal value) {
+            addCriterion("stock_price =", value, "stockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceNotEqualTo(BigDecimal value) {
+            addCriterion("stock_price <>", value, "stockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceGreaterThan(BigDecimal value) {
+            addCriterion("stock_price >", value, "stockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("stock_price >=", value, "stockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceLessThan(BigDecimal value) {
+            addCriterion("stock_price <", value, "stockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("stock_price <=", value, "stockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceIn(List<BigDecimal> values) {
+            addCriterion("stock_price in", values, "stockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceNotIn(List<BigDecimal> values) {
+            addCriterion("stock_price not in", values, "stockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("stock_price between", value1, value2, "stockPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andStockPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("stock_price not between", value1, value2, "stockPrice");
             return (Criteria) this;
         }
 
