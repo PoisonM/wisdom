@@ -166,12 +166,17 @@ public class IncomeService {
                 {
                     String nickNameW = incomeRecordDTO.getNickName();
                     while(true){
-                        if(nickNameW.contains("%25")){
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
                         }else{
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                             break;
                         }
+
                     }
                     incomeRecordDTO.setNickName(nickNameW);
                 }
@@ -179,12 +184,17 @@ public class IncomeService {
                 {
                     String nickNameW = incomeRecordDTO.getNextUserNickName();
                     while(true){
-                        if(nickNameW.contains("%25")){
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
                         }else{
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                             break;
                         }
+
                     }
                     incomeRecordDTO.setNextUserNickName(nickNameW);
                 }

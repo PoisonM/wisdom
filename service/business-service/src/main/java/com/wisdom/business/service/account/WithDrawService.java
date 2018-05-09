@@ -144,10 +144,14 @@ public class WithDrawService {
                 }
                 String nickNameW = withDrawRecordDTO.getNickName();
                 while(true){
-                    if(nickNameW.contains("%25")){
-                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                    if(nickNameW!=null&&nickNameW!=""){
+                        if(nickNameW.contains("%25")){
+                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                        }else{
+                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            break;
+                        }
                     }else{
-                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                         break;
                     }
                 }

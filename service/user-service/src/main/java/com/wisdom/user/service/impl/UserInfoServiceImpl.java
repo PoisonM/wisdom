@@ -101,12 +101,17 @@ public class UserInfoServiceImpl implements UserInfoService{
             }
             String nickNameW = userInfoDTO.getNickname();
             while(true){
-                if(nickNameW.contains("%25")){
-                    nickNameW = CommonUtils.nameDecoder(nickNameW);
+                if(nickNameW !=null&&nickNameW!=""){
+                    if(nickNameW.contains("%25")){
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
+                    }else{
+                        nickNameW = CommonUtils.nameDecoder(userInfoDTO.getNickname());
+                        break;
+                    }
                 }else{
-                    nickNameW = CommonUtils.nameDecoder(userInfoDTO.getNickname());
                     break;
                 }
+
             }
             userInfoDTO.setNickname(nickNameW);
         }

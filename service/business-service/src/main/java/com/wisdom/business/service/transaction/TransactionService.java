@@ -155,12 +155,17 @@ public class TransactionService {
                 if(payRecordDTO.getNickName() != null && payRecordDTO.getNickName() != ""){
                     String nickNameW = payRecordDTO.getNickName();
                     while(true){
-                        if(nickNameW.contains("%25")){
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
                         }else{
-                            nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                             break;
                         }
+
                     }
                     payRecordDTO.setNickName(nickNameW);
                 }
@@ -199,12 +204,17 @@ public class TransactionService {
             businessOrderDTO.setNickName(CommonUtils.nameDecoder(businessOrderDTO.getNickName()));
             String nickNameW = businessOrderDTO.getNickName();
             while(true){
-                if(nickNameW.contains("%25")){
-                    nickNameW = CommonUtils.nameDecoder(nickNameW);
+                if(nickNameW!=null&&nickNameW!=""){
+                    if(nickNameW.contains("%25")){
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
+                    }else{
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
+                        break;
+                    }
                 }else{
-                    nickNameW = CommonUtils.nameDecoder(nickNameW);
                     break;
                 }
+
             }
             businessOrderDTO.setNickName(nickNameW);
         }
@@ -271,7 +281,20 @@ public class TransactionService {
                 exportOrderExcelDTO.setTaxpayerNumber(invoiceDTO.getTaxpayerNumber());
             }
             //用户名解码
-            exportOrderExcelDTO.setNickName(CommonUtils.nameDecoder(exportOrderExcelDTO.getNickName()));
+            String nickNameW = exportOrderExcelDTO.getNickName();
+            while(true){
+                if(nickNameW !=null&& nickNameW!=""){
+                    if(nickNameW.contains("%25")){
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
+                    }else{
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
+                        break;
+                    }
+                }else{
+                    break;
+                }
+                exportOrderExcelDTO.setNickName(nickNameW);
+            }
         }
         return productDTOList;
     }
