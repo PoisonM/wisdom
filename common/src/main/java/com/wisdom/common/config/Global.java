@@ -15,11 +15,16 @@ import java.util.Map;
  */
 public class Global {
 
-	public static String[] resourcePaths = {"http://localhost:8888/conf/dev/constant-config-dev.properties",
+	public static String[] resourcePaths = {"http://localhost:8888/dev/constant-config-dev.properties",
+			"http://localhost:8888/dev/weixin-message-dev.properties",
+			"http://localhost:8888/conf/config-ali.properties",
 			"http://localhost:8888/conf/status-config.properties"};
 
-//	public static String[] resourcePaths = {"http://localhost:8888/conf/pro/constant-config-pro.properties",
+//	public static String[] resourcePaths = {"http://localhost:8888/pro/constant-config-dev.properties",
+//			"http://localhost:8888/pro/weixin-message-dev.properties",
+//			"http://localhost:8888/conf/config-ali.properties",
 //			"http://localhost:8888/conf/status-config.properties"};
+
 	/**
 	 * 当前对象实例
 	 */

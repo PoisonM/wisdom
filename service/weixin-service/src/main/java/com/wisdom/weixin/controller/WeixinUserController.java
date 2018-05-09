@@ -176,6 +176,7 @@ public class WeixinUserController {
      */
     @RequestMapping(value = "/fieldwork/author", method = RequestMethod.GET)
     public String Oauth2API(HttpServletRequest request) {
+        String test1 = ConfigConstant.DOMAIN_VALUE;
         String backUrl = request.getParameter("url");
         String oauth2Url = WeixinUtil.getUserOauth2Url(backUrl);
         return "redirect:" + oauth2Url;
