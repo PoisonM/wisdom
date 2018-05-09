@@ -397,6 +397,8 @@ public class BusinessOrderController {
                     exportOrderExcelDTO.setOrderStatus(businessOrderDTO.getStatus());
                     if(null!=businessOrderinfo.getPayDate()) {
                         exportOrderExcelDTO.setPayDate(DateUtils.formatDate(businessOrderinfo.getPayDate(), "yyyy-MM-dd HH:mm:ss"));
+                    }else{
+                        exportOrderExcelDTO.setPayDate(null);
                     }
                     exportOrderExcelDTO.setProductBrand(businessOrderinfo.getProductBrand());
                     exportOrderExcelDTO.setProductId(businessOrderinfo.getBusinessProductId());
