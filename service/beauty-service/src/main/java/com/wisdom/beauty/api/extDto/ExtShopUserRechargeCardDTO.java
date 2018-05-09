@@ -16,14 +16,11 @@ public class ExtShopUserRechargeCardDTO extends ShopUserRechargeCardDTO {
     //支付方式
     private String PayType;
 
-    //店员主键
-    private String sysClerkId;
-
     //店员名称
     private String sysCLerkName;
 
-    //备注
-    private String detail;
+    //交易id
+    private String transactionId;
 
     /**
      * BANK_PAY("0", "银行卡支付"),
@@ -33,14 +30,12 @@ public class ExtShopUserRechargeCardDTO extends ShopUserRechargeCardDTO {
     //支付方式
     private String payType;
 
-    @Override
-    public String getSysClerkId() {
-        return sysClerkId;
+    public String getTransactionId() {
+        return transactionId;
     }
 
-    @Override
-    public void setSysClerkId(String sysClerkId) {
-        this.sysClerkId = sysClerkId;
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 
     public String getSysCLerkName() {
@@ -49,16 +44,6 @@ public class ExtShopUserRechargeCardDTO extends ShopUserRechargeCardDTO {
 
     public void setSysCLerkName(String sysCLerkName) {
         this.sysCLerkName = sysCLerkName;
-    }
-
-    @Override
-    public String getDetail() {
-        return detail;
-    }
-
-    @Override
-    public void setDetail(String detail) {
-        this.detail = detail;
     }
 
     public String getCashPay() {

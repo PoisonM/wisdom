@@ -60,4 +60,13 @@ public interface ShopRechargeCardService {
      * @return
      */
     int updateRechargeCard(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
+
+
+    /**
+     * 查询用户的充值卡
+     *
+     * @param shopUserRechargeCardDTO
+     * @return
+     */
+    ShopUserRechargeCardDTO getShopUserRechargeInfo(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
 }

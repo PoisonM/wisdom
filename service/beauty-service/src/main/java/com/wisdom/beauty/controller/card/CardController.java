@@ -16,16 +16,19 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +45,9 @@ public class CardController {
 
 	@Autowired
 	private ShopRechargeCardService shopRechargeCardService;
+
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
 	@Autowired
 	private ShopProjectGroupService shopProjectGroupService;
@@ -165,8 +171,6 @@ public class CardController {
 		long currentTimeMillis = System.currentTimeMillis();
 		// 查询数据
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(id);
-		ExtShopUserRechargeCardDTO extShopUserRechargeCardDTO = new ExtShopUserRechargeCardDTO();
-		BeanUtils.copyProperties(shopRechargeCardResponseDTO, extShopUserRechargeCardDTO);
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopRechargeCardResponseDTO);
@@ -245,6 +249,51 @@ public class CardController {
 
 		ResponseDTO<ProjectInfoGroupResponseDTO> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(projectInfoGroupResponseDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+
+	/**
+	 * 查询某个用户的某个充值卡信息
+	 *
+	 * @param id 用户的某个充值卡id
+	 * @return
+	 */
+	@RequestMapping(value = "/getShopUserRechargeInfo", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<Object> getShopUserRechargeInfo(@RequestParam String id) {
+		long currentTimeMillis = System.currentTimeMillis();
+		logger.info("查询用户的某个充值卡信息传入参数={}", "id = [" + id + "]");
+		ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
+		userRechargeCardDTO.setId(id);
+		ShopUserRechargeCardDTO shopUserRechargeInfo = shopRechargeCardService.getShopUserRechargeInfo(userRechargeCardDTO);
+		ExtShopUserRechargeCardDTO extShopUserRechargeCardDTO = new ExtShopUserRechargeCardDTO();
+		BeanUtils.copyProperties(shopUserRechargeInfo, extShopUserRechargeCardDTO);
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		responseDTO.setResponseData(extShopUserRechargeCardDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+
+	/**
+	 * 充值卡充值确认接口
+	 *
+	 * @param shopUserRechargeCardDTO
+	 * @return
+	 */
+	@RequestMapping(value = "/userRechargeConfirm", method = RequestMethod.POST)
+	@ResponseBody
+	ResponseDTO<Object> userRechargeConfirm(@RequestBody ExtShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+		long currentTimeMillis = System.currentTimeMillis();
+		logger.info("充值卡充值确认接口传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+		shopUserRechargeCardDTO.setTransactionId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
+		mongoTemplate.save(shopUserRechargeCardDTO, "shopUserRechargeCardDTO");
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		responseDTO.setResponseData(shopUserRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;

@@ -264,4 +264,22 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		int flag = shopUserRechargeCardMapper.updateByPrimaryKey(shopUserRechargeCardDTO);
 		return flag;
 	}
+
+	/**
+	 * 查询用户的充值卡
+	 *
+	 * @param shopUserRechargeCardDTO
+	 * @return
+	 */
+	@Override
+	public ShopUserRechargeCardDTO getShopUserRechargeInfo(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+		logger.info("查询用户的充值卡信息传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+
+		if (null == shopUserRechargeCardDTO || StringUtils.isBlank(shopUserRechargeCardDTO.getId())) {
+			logger.error("查询用户的充值卡传入参数为空");
+			return null;
+		}
+		ShopUserRechargeCardDTO userRechargeCardDTO = shopUserRechargeCardMapper.selectByPrimaryKey(shopUserRechargeCardDTO.getId());
+		return userRechargeCardDTO;
+	}
 }

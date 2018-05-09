@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -70,7 +71,7 @@ public class CardTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/cardInfo/updateRechargeCard").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/cardInfo/userRechargeConfirm").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -78,5 +79,24 @@ public class CardTest {
         System.out.println(result.getResponse().getContentAsString());
     }
 
+
+    /**
+     * 查询最近充值卡信息
+     */
+    /**
+     * 删除档案信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void getShopUserRecentlyOrderInfo() throws Exception {
+
+        MvcResult result = mvc.perform(get("/cardInfo/getShopUserRechargeInfo").param("id", "3"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
 
 }
