@@ -55,7 +55,7 @@ public class CardController {
 	@RequestMapping(value = "/getUserRechargeCardList", method = { RequestMethod.POST, RequestMethod.GET })
 	// @LoginRequired
 	public @ResponseBody ResponseDTO<List<ShopUserRechargeCardDTO>> getUserRechargeCardList(
-            @RequestParam String sysUserId, @RequestParam String sysShopId) {
+			@RequestParam String sysUserId, @RequestParam(required = false) String sysShopId) {
         long currentTimeMillis = System.currentTimeMillis();
 
         logger.info("查询某个用户的充值卡列表信息传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
