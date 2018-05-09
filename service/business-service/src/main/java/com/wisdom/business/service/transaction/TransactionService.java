@@ -154,7 +154,20 @@ public class TransactionService {
             try {
                 if(payRecordDTO.getNickName() != null && payRecordDTO.getNickName() != ""){
                     String nickNameW = payRecordDTO.getNickName().replaceAll("%", "%25");
-                    if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
+                        }else{
+                            break;
+                        }
+
+                    }
+                    /*if(!pageParamVoDTO.getIsExportExcel().equals("Y")){
                         while(true){
                             if(nickNameW!=null&&nickNameW!=""){
                                 if(nickNameW.contains("%25")){
@@ -171,7 +184,7 @@ public class TransactionService {
                     }else{
                         nickNameW = "昵称导出暂时不可用";
                     }
-
+*/
                     payRecordDTO.setNickName(nickNameW);
                 }
             } catch (UnsupportedEncodingException e) {
