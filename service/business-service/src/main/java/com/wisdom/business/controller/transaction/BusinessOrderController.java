@@ -395,7 +395,9 @@ public class BusinessOrderController {
                     exportOrderExcelDTO.setMobile(businessOrderDTO.getMobile());
                     exportOrderExcelDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
                     exportOrderExcelDTO.setOrderStatus(businessOrderDTO.getStatus());
-                    exportOrderExcelDTO.setPayDate(DateUtils.formatDate(businessOrderinfo.getPayDate(),"yyyy-MM-dd HH:mm:ss"));
+                    if(null!=businessOrderinfo.getPayDate()) {
+                        exportOrderExcelDTO.setPayDate(DateUtils.formatDate(businessOrderinfo.getPayDate(), "yyyy-MM-dd HH:mm:ss"));
+                    }
                     exportOrderExcelDTO.setProductBrand(businessOrderinfo.getProductBrand());
                     exportOrderExcelDTO.setProductId(businessOrderinfo.getBusinessProductId());
                     exportOrderExcelDTO.setProductName(businessOrderinfo.getBusinessProductName());
