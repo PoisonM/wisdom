@@ -40,8 +40,8 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     private String consumeType;
     //用于返回前端判断消费还是充值字段
     private String type;
-    //剩余金额
-    private BigDecimal remainingAmount;
+    //支付方式  0:微信 1：支付宝 2:现金
+    private String payType;
     private List<ShopUserConsumeRecordDTO> userConsumeRecordList;
 
 
@@ -150,19 +150,19 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
         this.detail = detail;
     }
 
-    public BigDecimal getRemainingAmount() {
-        return remainingAmount;
-    }
-
-    public void setRemainingAmount(BigDecimal remainingAmount) {
-        this.remainingAmount = remainingAmount;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
     }
 }

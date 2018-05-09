@@ -186,9 +186,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         for(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO:list){
 			if(ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())){
 				if(GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())){
-					userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getDesc());
+					userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getCode());
 				}else {
-					userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getDesc());
+					userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
 				}
 			}
 		}
