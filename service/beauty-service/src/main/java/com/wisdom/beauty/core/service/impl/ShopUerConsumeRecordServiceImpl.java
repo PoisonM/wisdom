@@ -183,7 +183,15 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
         if (CommonUtils.objectIsNotEmpty(list)) {
             BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
         }
-
+        for(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO:list){
+			if(ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())){
+				if(GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())){
+					userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getDesc());
+				}else {
+					userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getDesc());
+				}
+			}
+		}
 		userConsumeRecordResponseDTO.setUserConsumeRecordList(list);
 		return userConsumeRecordResponseDTO;
 	}
