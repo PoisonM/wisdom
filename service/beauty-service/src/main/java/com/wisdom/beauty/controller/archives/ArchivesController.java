@@ -2,7 +2,10 @@ package com.wisdom.beauty.controller.archives;
 
 
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.beauty.api.dto.SysUserAccountDTO;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
+import com.wisdom.beauty.api.extDto.ExtShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
@@ -14,13 +17,12 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.IdGen;
-import com.wisdom.common.util.PinYinSort;
-import com.wisdom.common.util.StringUtils;
+import com.wisdom.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +51,9 @@ public class ArchivesController {
 
     @Autowired
     private UserServiceClient userServiceClient;
+
+    @Value("${test.msg}")
+    private String msg;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -293,7 +298,7 @@ public class ArchivesController {
      */
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<ShopUserArchivesDTO> findArchiveById(@PathVariable String id) {
+    ResponseDTO<Object> findArchiveById(@PathVariable String id) {
         long startTime = System.currentTimeMillis();
         PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
@@ -301,13 +306,29 @@ public class ArchivesController {
         shopUserArchivesDTO.setId(id);
         pageParamVoDTO.setRequestData(shopUserArchivesDTO);
         //查询数据
+        pageParamVoDTO.setPageNo(0);
         List<ShopUserArchivesDTO> list = shopCustomerArchivesService.getArchivesList(pageParamVoDTO);
-        ResponseDTO<ShopUserArchivesDTO> responseDTO = new ResponseDTO<>();
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
         if (!CollectionUtils.isEmpty(list)) {
             ShopUserArchivesDTO shopUserArchive = list.get(0);
+            ExtShopUserArchivesDTO extShopUserArchivesDTO = new ExtShopUserArchivesDTO();
+            BeanUtils.copyProperties(shopUserArchive, extShopUserArchivesDTO);
+            //查询用户账户总余额
+            SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
+            sysUserAccountDTO.setSysShopId(extShopUserArchivesDTO.getSysShopId());
+            sysUserAccountDTO.setSysUserId(extShopUserArchivesDTO.getSysUserId());
+            sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
+            if (null != sysUserAccountDTO) {
+                extShopUserArchivesDTO.setTotalBalance(sysUserAccountDTO.getSumAmount().toString());
+            } else {
+                //测试挡板
+                if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
+                    extShopUserArchivesDTO.setTotalBalance(String.valueOf(RandomValue.getNum(100, 10000)));
+                }
+            }
             responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setResponseData(shopUserArchive);
+            responseDTO.setResponseData(extShopUserArchivesDTO);
         }
 
         logger.info("findArchiveById方法耗时{}毫秒", (System.currentTimeMillis() - startTime));

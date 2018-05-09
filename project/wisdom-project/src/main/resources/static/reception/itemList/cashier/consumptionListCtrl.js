@@ -142,23 +142,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             }
         };
         var bar = 0;
-        switch (e) {
-
-            case 0:
-                if ($scope.theSelected.timeCard.timeCardIds.indexOf(res.id) != -1) { bar = 1; }
-                break;
-            case 1:
-                if ($scope.theSelected.periodCard.periodCardIds.indexOf(res.id) != -1) { bar = 1; }
-                break;
-            case 3:
-                if ($scope.theSelected.groupCard.groupIds.indexOf(res.id) != -1) { bar = 1; }
-                break;
-            case 4:
-                if ($scope.theSelected.product.productIds.indexOf(res.id) != -1) { bar = 1; }
-                break;
-            default:
-        }
-        UpdateVirtualGoodsOrderInfo.save({
+        var virtualGoodsOrderInfo = {
             goodsType: e,
             operation: bar,
             orderId: $scope.orderId,
@@ -170,8 +154,49 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 sysShopProjectName: res.projectName,
                 sysUserId: 110,
                 useStyle: res.useStyle,
+            }],
+            shopUserProductRelationDTOS: [{
+                initAmount: res.marketPrice,
+                initTimes: '1',
+                shopProductId: res.id,
+                shopProductName: res.productName,
+                sysUserId: 110,
+            }],
+            projectGroupRelRelationDTOS: [{
+                projectInitAmount: '',
+                projectInitTimes: '',
+                projectSurplusAmount: res.marketPrice,
+                projectSurplusTimes: '',
+                shopProjectGroupId: res.id,
+                shopProjectGroupName: res.projectGroupName,
+                sysUserId: 110,
             }]
-        }, function() {
+        }
+        switch (e) {
+
+            case 0:
+                if ($scope.theSelected.timeCard.timeCardIds.indexOf(res.id) != -1) { bar = 1; }
+                delete virtualGoodsOrderInfo.shopUserProductRelationDTOS;
+                delete virtualGoodsOrderInfo.projectGroupRelRelationDTOS;
+                break;
+            case 1:
+                if ($scope.theSelected.periodCard.periodCardIds.indexOf(res.id) != -1) { bar = 1; }
+                delete virtualGoodsOrderInfo.shopUserProductRelationDTOS;
+                delete virtualGoodsOrderInfo.projectGroupRelRelationDTOS;
+                break;
+            case 3:
+                if ($scope.theSelected.groupCard.groupIds.indexOf(res.id) != -1) { bar = 1; }
+                delete virtualGoodsOrderInfo.shopUserProjectRelationDTOS;
+                delete virtualGoodsOrderInfo.shopUserProductRelationDTOS;
+                break;
+            case 4:
+                if ($scope.theSelected.product.productIds.indexOf(res.id) != -1) { bar = 1; }
+                delete virtualGoodsOrderInfo.shopUserProjectRelationDTOS;
+                delete virtualGoodsOrderInfo.projectGroupRelRelationDTOS;
+                break;
+            default:
+        }
+        UpdateVirtualGoodsOrderInfo.save(virtualGoodsOrderInfo, function() {
             switch (e) {
                 case 0:
                     if ($scope.theSelected.timeCard.timeCardIds.indexOf(res.id) == -1) {
