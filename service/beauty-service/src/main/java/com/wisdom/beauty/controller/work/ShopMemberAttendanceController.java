@@ -225,7 +225,7 @@ public class ShopMemberAttendanceController {
 	 * @Description: 业绩明细
 	 * @Date:2018/5/7 15:35
 	 */
-	@RequestMapping(value = "/getBossPerformance ", method = RequestMethod.POST)
+	@RequestMapping(value = "/getBossPerformance", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(
 			@RequestBody UserConsumeRequestDTO userConsumeRequest) {
