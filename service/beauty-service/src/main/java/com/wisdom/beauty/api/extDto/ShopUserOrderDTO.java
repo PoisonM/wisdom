@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.extDto;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
@@ -50,6 +51,9 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //用户与产品
     private List<ShopUserProductRelationDTO> shopUserProductRelationDTOS;
+
+    //用户与充值卡的关系
+    private ShopUserRechargeCardDTO shopUserRechargeCardDTO;
 
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
@@ -174,4 +178,11 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
         this.projectGroupRelRelationDTOS = projectGroupRelRelationDTOS;
     }
 
+    public ShopUserRechargeCardDTO getShopUserRechargeCardDTO() {
+        return shopUserRechargeCardDTO;
+    }
+
+    public void setShopUserRechargeCardDTO(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+        this.shopUserRechargeCardDTO = shopUserRechargeCardDTO;
+    }
 }

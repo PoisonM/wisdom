@@ -5,21 +5,18 @@ import com.wisdom.common.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ShopProjectProductCardRelation extends BaseEntity implements Serializable {
+public class ShopProjectProductCardRelationDTO extends BaseEntity implements Serializable {
     //主键
     private String id;
 
     //充值卡主键
     private String shopRechargeCardId;
 
-    //
-    private String shopProductId;
+    //虚拟商品主键
+    private String shopGoodsTypeId;
 
-    //项目id
-    private String sysShopProjectId;
-
-    //使用方式 0：疗程 1：单次
-    private String useStyle;
+    //0、商品类型为次卡；1、商品类型为疗程卡 ；2、商品类型为充值卡；3、商品类型为套卡 4、商品类型为产品
+    private String goodsType;
 
     //折扣
     private Float discount;
@@ -54,28 +51,20 @@ public class ShopProjectProductCardRelation extends BaseEntity implements Serial
         this.shopRechargeCardId = shopRechargeCardId;
     }
 
-    public String getShopProductId() {
-        return shopProductId;
+    public String getShopGoodsTypeId() {
+        return shopGoodsTypeId;
     }
 
-    public void setShopProductId(String shopProductId) {
-        this.shopProductId = shopProductId;
+    public void setShopGoodsTypeId(String shopGoodsTypeId) {
+        this.shopGoodsTypeId = shopGoodsTypeId;
     }
 
-    public String getSysShopProjectId() {
-        return sysShopProjectId;
+    public String getGoodsType() {
+        return goodsType;
     }
 
-    public void setSysShopProjectId(String sysShopProjectId) {
-        this.sysShopProjectId = sysShopProjectId;
-    }
-
-    public String getUseStyle() {
-        return useStyle;
-    }
-
-    public void setUseStyle(String useStyle) {
-        this.useStyle = useStyle;
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType;
     }
 
     public Float getDiscount() {

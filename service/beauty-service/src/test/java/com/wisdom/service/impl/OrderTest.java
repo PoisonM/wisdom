@@ -5,6 +5,7 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
@@ -24,7 +25,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -87,7 +87,7 @@ public class OrderTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(get("/orderInfo/getConsumeDisplayIds").param("orderId", "20180424200819402").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/orderInfo/updateVirtualGoodsOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -100,9 +100,9 @@ public class OrderTest {
         shopUserOrderDTO.setExprDate(new Date());
         shopUserOrderDTO.setDetail("备注");
         shopUserOrderDTO.setShopUserArchivesId("1");
-        shopUserOrderDTO.setOrderId("20180424200819402");
+        shopUserOrderDTO.setOrderId("20180424200819401");
         shopUserOrderDTO.setOperation("0");
-        shopUserOrderDTO.setGoodsType("4");
+        shopUserOrderDTO.setGoodsType(GoodsTypeEnum.RECHARGE_CARD.getCode());
         //用户与项目关系
 //        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
 //        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
@@ -110,10 +110,10 @@ public class OrderTest {
 
 //
 //        //用户与产品
-        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
-        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
-        shopUserProductRelationDTOS.add(productRelationDTO);
-        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
+//        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
+//        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
+//        shopUserProductRelationDTOS.add(productRelationDTO);
+//        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
 
 
         //套卡
@@ -121,6 +121,11 @@ public class OrderTest {
 //        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = getShopUserProjectGroupRelRelationDTO();
 //        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
 //        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
+        ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
+        userRechargeCardDTO.setShopRechargeCardId("1");
+        userRechargeCardDTO.setShopRechargeCardName("充值卡啦");
+        shopUserOrderDTO.setShopUserRechargeCardDTO(userRechargeCardDTO);
+        //充值卡
         return shopUserOrderDTO;
     }
 

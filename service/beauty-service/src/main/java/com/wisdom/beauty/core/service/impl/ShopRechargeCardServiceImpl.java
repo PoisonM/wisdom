@@ -1,9 +1,11 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationCriteria;
+import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
+import com.wisdom.beauty.api.dto.ShopRechargeCardCriteria;
+import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.extDto.ImageUrl;
-import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.core.mapper.ExtShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectProductCardRelationMapper;
@@ -190,19 +192,19 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		if (StringUtils.isNotBlank(type)) {
 			// 如果是产品类型的
 			if (GoodsTypeEnum.PRODUCT.getCode().equals(type)) {
-				criteria.andShopProductIdEqualTo(queryCriteria);
+				criteria.andShopGoodsTypeIdEqualTo(queryCriteria);
 			} else {
 				// 项目类型
-				criteria.andSysShopProjectIdEqualTo(queryCriteria);
+				criteria.andShopGoodsTypeIdEqualTo(queryCriteria);
 			}
 		}
-		List<ShopProjectProductCardRelation> list = shopProjectProductCardRelationMapper
+		List<ShopProjectProductCardRelationDTO> list = shopProjectProductCardRelationMapper
 				.selectByCriteria(shopProjectProductCardRelationCriteria);
 		if (CollectionUtils.isEmpty(list)) {
 			logger.info("接口shopRechargeCardMapper#selectByCriteria()查询结果为空");
 			return null;
 		}
-		ShopProjectProductCardRelation shopProjectProductCardRelation = list.get(0);
+		ShopProjectProductCardRelationDTO shopProjectProductCardRelation = list.get(0);
 		Float discount = shopProjectProductCardRelation.getDiscount();
 		logger.info("getDiscount接口获取到的折扣信息={}", discount);
 		return discount;
@@ -222,7 +224,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 				.createCriteria();
 
 		criteria.andShopRechargeCardIdIn(rechargeCardIds);
-		List<ShopProjectProductCardRelation> shopProjectProductCardRelations = extShopProjectProductCardRelationMapper
+		List<ShopProjectProductCardRelationDTO> shopProjectProductCardRelations = extShopProjectProductCardRelationMapper
 				.selectdiscountInfoByCriteria(shopProjectProductCardRelationCriteria);
 		if (CollectionUtils.isEmpty(shopProjectProductCardRelations)) {
 			logger.info("接口shopRechargeCardMapper#selectByCriteria()查询结果为空");
@@ -230,16 +232,16 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		}
 		Map<String, Map<String, Object>> map = new HashMap<>(16);
 		Map<String, Object> dicountMap = new HashMap<>(16);
-		for (ShopProjectProductCardRelation shopProjectProductCardRelation : shopProjectProductCardRelations) {
+		for (ShopProjectProductCardRelationDTO shopProjectProductCardRelation : shopProjectProductCardRelations) {
 			if (map.get(shopProjectProductCardRelation.getShopRechargeCardId()) == null) {
 				// 将类型和折扣放入一个dicountMap中
-				dicountMap.put(shopProjectProductCardRelation.getUseStyle(),
+				dicountMap.put(shopProjectProductCardRelation.getGoodsType(),
 						shopProjectProductCardRelation.getDiscount());
 				// 将dicountMap放入map中,key是充值卡id
 				map.put(shopProjectProductCardRelation.getShopRechargeCardId(), dicountMap);
 			} else {
 				Map<String, Object> map1 = map.get(shopProjectProductCardRelation.getShopRechargeCardId());
-				map1.put(shopProjectProductCardRelation.getUseStyle(), shopProjectProductCardRelation.getDiscount());
+				map1.put(shopProjectProductCardRelation.getGoodsType(), shopProjectProductCardRelation.getDiscount());
 			}
 
 		}

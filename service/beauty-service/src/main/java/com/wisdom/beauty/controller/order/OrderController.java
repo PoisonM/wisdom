@@ -1,21 +1,18 @@
 package com.wisdom.beauty.controller.order;
 
-import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
-import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
+import com.wisdom.beauty.core.service.ShopOrderService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -27,7 +24,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -47,7 +47,7 @@ public class OrderController {
     private MongoTemplate mongoTemplate;
 
     @Resource
-    private ShopUerConsumeRecordService shopUerConsumeRecordService;
+    private ShopOrderService shopOrderService;
 
     /**
      * 查询用户最近一次订单信息
@@ -159,175 +159,11 @@ public class OrderController {
     public
     @ResponseBody
     ResponseDTO<String> updateVirtualGoodsOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
-
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("更新订单虚拟商品的信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
-        ResponseDTO responseDTO = new ResponseDTO<String>();
-        String orderId = shopUserOrderDTO.getOrderId();
-        //0添加  1删除
-        String operation = shopUserOrderDTO.getOperation();
-
-        if (StringUtils.isBlank(orderId)) {
-            logger.info("更新订单虚拟商品的信息传入订单号为空");
-            throw new ServiceException("更新订单虚拟商品的信息传入订单号为空");
-        }
-        //根据订单编号查询订单信息
-        Query query = new Query(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
-        ShopUserOrderDTO alreadyOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-        logger.info("根据订单号，{}，查询订单信息为，{}", orderId, alreadyOrderDTO);
-        if (CommonUtils.objectIsEmpty(alreadyOrderDTO)) {
-            logger.info("根据订单号，{},mongo查询订单信息为空", orderId);
-            throw new ServiceException("mongo查询订单信息为空");
-        }
-
-        String goodsType = shopUserOrderDTO.getGoodsType();
-
-        //次卡或者是疗程卡
-        if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType) || GoodsTypeEnum.TREATMENT_CARD.getCode().equals(goodsType)) {
-
-            //获取已经保存的项目信息
-            List<ShopUserProjectRelationDTO> alreadyExistProjectRelationDTOS = alreadyOrderDTO.getShopUserProjectRelationDTOS();
-            logger.info("查询项目信息为，{}", "shopUserProjectRelationDTOS = [" + alreadyExistProjectRelationDTOS + "]");
-            if (null == alreadyExistProjectRelationDTOS) {
-                alreadyExistProjectRelationDTOS = new ArrayList<>();
-            }
-            int updateFlag = alreadyExistProjectRelationDTOS.size();
-            //获取需要添加的项目信息
-            ShopUserProjectRelationDTO newUserProjectRelationDTO = shopUserOrderDTO.getShopUserProjectRelationDTOS().get(0);
-            if (CommonUtils.objectIsEmpty(newUserProjectRelationDTO)) {
-                responseDTO.setResult(StatusConstant.FAILURE);
-                responseDTO.setResponseData("传入的项目信息为空");
-                return responseDTO;
-            }
-
-            List<ShopUserProjectRelationDTO> helperList = new ArrayList<>();
-            Iterator<ShopUserProjectRelationDTO> alreadyIterator = alreadyExistProjectRelationDTOS.iterator();
-            //如果原订单中为空，直接添加
-            if (!alreadyIterator.hasNext()) {
-                alreadyExistProjectRelationDTOS.add(newUserProjectRelationDTO);
-            } else {
-                while (alreadyIterator.hasNext()) {
-                    ShopUserProjectRelationDTO alreadyRelation = alreadyIterator.next();
-                    //如果是原订单中有记录则将要处理的新数据缓存到helperList中
-                    if (newUserProjectRelationDTO.getSysShopProjectId().equals(alreadyRelation.getSysShopProjectId())) {
-                        helperList.add(newUserProjectRelationDTO);
-                        if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
-                            alreadyIterator.remove();
-                        }
-                    }
-                }
-                //原定单中没有,并且是添加操作
-                if (helperList.size() == 0 && CommonCodeEnum.ADD.getCode().equals(operation)) {
-                    alreadyExistProjectRelationDTOS.add(newUserProjectRelationDTO);
-                }
-            }
-
-            //更新操作
-            if (alreadyExistProjectRelationDTOS.size() != updateFlag) {
-                Query updateQuery = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
-                Update update = new Update();
-                update.set("shopUserProjectRelationDTOS", alreadyExistProjectRelationDTOS);
-                mongoTemplate.upsert(updateQuery, update, "shopUserOrderDTO");
-                responseDTO.setResponseData(StatusConstant.SUCCESS);
-                responseDTO.setResult(StatusConstant.SUCCESS);
-            }
-
-        }
-        //产品
-        else if (GoodsTypeEnum.PRODUCT.getCode().equals(goodsType)) {
-            logger.info("获取已存在的产品信息");
-            List<ShopUserProductRelationDTO> alreadyProductRelationDTOS = alreadyOrderDTO.getShopUserProductRelationDTOS();
-            if (CommonUtils.objectIsEmpty(alreadyProductRelationDTOS)) {
-                alreadyProductRelationDTOS = new ArrayList<>();
-            }
-            int updateFlag = alreadyProductRelationDTOS.size();
-            ShopUserProductRelationDTO newUserProductRelationDTO = shopUserOrderDTO.getShopUserProductRelationDTOS().get(0);
-            if (CommonUtils.objectIsEmpty(newUserProductRelationDTO)) {
-                responseDTO.setResult(StatusConstant.FAILURE);
-                responseDTO.setResponseData("传入的产品信息为空");
-                return responseDTO;
-            }
-            List<ShopUserProductRelationDTO> helperList = new ArrayList<>();
-            Iterator<ShopUserProductRelationDTO> alreadyIterator = alreadyProductRelationDTOS.iterator();
-            if (!alreadyIterator.hasNext()) {
-                alreadyProductRelationDTOS.add(newUserProductRelationDTO);
-            } else {
-                while (alreadyIterator.hasNext()) {
-                    ShopUserProductRelationDTO alreadyRelation = alreadyIterator.next();
-                    //如果是原订单中有记录则将要处理的新数据缓存到helperList中
-                    if (newUserProductRelationDTO.getShopProductId().equals(alreadyRelation.getShopProductId())) {
-                        helperList.add(newUserProductRelationDTO);
-                        if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
-                            alreadyIterator.remove();
-                        }
-                    }
-                }
-                //原定单中没有,并且是添加操作
-                if (helperList.size() == 0 && CommonCodeEnum.ADD.getCode().equals(operation)) {
-                    alreadyProductRelationDTOS.add(newUserProductRelationDTO);
-                }
-            }
-
-            //更新操作
-            if (alreadyProductRelationDTOS.size() != updateFlag) {
-                Query updateQuery = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
-                Update update = new Update();
-                update.set("shopUserProductRelationDTOS", alreadyProductRelationDTOS);
-                mongoTemplate.upsert(updateQuery, update, "shopUserOrderDTO");
-                responseDTO.setResponseData(StatusConstant.SUCCESS);
-                responseDTO.setResult(StatusConstant.SUCCESS);
-            }
-        }
-
-        //套卡
-        else if (GoodsTypeEnum.COLLECTION_CARD.getCode().equals(goodsType)) {
-            logger.info("获取已存在的套卡信息");
-            List<ShopUserProjectGroupRelRelationDTO> alreadyProjectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
-            if (CommonUtils.objectIsEmpty(alreadyProjectGroupRelRelationDTOS)) {
-                alreadyProjectGroupRelRelationDTOS = new ArrayList<>();
-            }
-            int updateFlag = alreadyProjectGroupRelRelationDTOS.size();
-            ShopUserProjectGroupRelRelationDTO newProjectGroupRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS().get(0);
-            if (CommonUtils.objectIsEmpty(newProjectGroupRelationDTOS)) {
-                responseDTO.setResult(StatusConstant.FAILURE);
-                responseDTO.setResponseData("传入的产品信息为空");
-                return responseDTO;
-            }
-            List<ShopUserProjectGroupRelRelationDTO> helperList = new ArrayList<>();
-            Iterator<ShopUserProjectGroupRelRelationDTO> alreadyIterator = alreadyProjectGroupRelRelationDTOS.iterator();
-            if (!alreadyIterator.hasNext()) {
-                alreadyProjectGroupRelRelationDTOS.add(newProjectGroupRelationDTOS);
-            } else {
-                while (alreadyIterator.hasNext()) {
-                    ShopUserProjectGroupRelRelationDTO alreadyRelation = alreadyIterator.next();
-                    //如果是原订单中有记录则将要处理的新数据缓存到helperList中
-                    if (newProjectGroupRelationDTOS.getShopProjectGroupId().equals(alreadyRelation.getShopProjectGroupId())) {
-                        helperList.add(newProjectGroupRelationDTOS);
-                        if (CommonCodeEnum.DELETE.getCode().equals(operation)) {
-                            alreadyIterator.remove();
-                        }
-                    }
-                }
-                //原定单中没有,并且是添加操作
-                if (helperList.size() == 0 && CommonCodeEnum.ADD.getCode().equals(operation)) {
-                    alreadyProjectGroupRelRelationDTOS.add(newProjectGroupRelationDTOS);
-                }
-            }
-
-            //更新操作
-            if (alreadyProjectGroupRelRelationDTOS.size() != updateFlag) {
-                Query updateQuery = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
-                Update update = new Update();
-                update.set("projectGroupRelRelationDTOS", alreadyProjectGroupRelRelationDTOS);
-                mongoTemplate.upsert(updateQuery, update, "shopUserOrderDTO");
-                responseDTO.setResponseData(StatusConstant.SUCCESS);
-                responseDTO.setResult(StatusConstant.SUCCESS);
-            }
-        }
-
-        responseDTO.setResponseData("更新成功");
+        ResponseDTO responseDTO = shopOrderService.updateShopUserOrderInfo(shopUserOrderDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
-
+        responseDTO.setResponseData("更新成功");
         logger.info("更新订单虚拟商品的信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
@@ -398,7 +234,7 @@ public class OrderController {
         List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = userOrderDTO.getShopUserProductRelationDTOS();
         if (CommonUtils.objectIsNotEmpty(shopUserProductRelationDTOS)) {
             HashMap<Object, Object> hashMap = new HashMap<>(5);
-            hashMap.put("productSize", projectGroupRelRelationDTOS.size());
+            hashMap.put("productSize", shopUserProductRelationDTOS.size());
             //项目主键作为回显数据
             ArrayList<String> ids = new ArrayList<>();
             for (ShopUserProductRelationDTO userProductRelationDTO : shopUserProductRelationDTOS) {
