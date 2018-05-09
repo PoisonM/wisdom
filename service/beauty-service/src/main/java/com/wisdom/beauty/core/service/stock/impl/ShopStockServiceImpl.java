@@ -224,7 +224,6 @@ public class ShopStockServiceImpl implements ShopStockService {
 				styles.add(StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode());
 				c.andStockStyleIn(styles);
 			}
-			c.andStockStyleEqualTo(shopStockRecord.getStockStyle());
 		}
 		if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
 				&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
