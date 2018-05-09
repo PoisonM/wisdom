@@ -303,16 +303,62 @@ public class IncomeService {
     public List<ExportIncomeRecordExcelDTO> exportExcelIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeMapper.exportExcelIncomeRecord(pageParamVoDTO);
         for (ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO : exportIncomeRecordExcelDTOS){
-            try {
             if (StringUtils.isNotBlank(exportIncomeRecordExcelDTO.getNickName())) {
-                exportIncomeRecordExcelDTO.setNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNickName(),"utf-8"));
+                try {
+                    if(exportIncomeRecordExcelDTO.getNickName() != null && exportIncomeRecordExcelDTO.getNickName() != ""){
+                        String nickNameW = exportIncomeRecordExcelDTO.getNickName().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW!=null&&nickNameW!=""){
+                                if(nickNameW.contains("%25")){
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                }else{
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    break;
+                                }
+                            }else{
+                                break;
+                            }
+
+                        }
+                        exportIncomeRecordExcelDTO.setNickName(nickNameW);
+                    }else{
+                        exportIncomeRecordExcelDTO.setNickName("未知用户");
+                    }
+                } catch(Throwable e){
+                    logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                    exportIncomeRecordExcelDTO.setNickName("特殊符号用户");
+                }
+              //  exportIncomeRecordExcelDTO.setNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNickName(),"utf-8"));
             }
             if (StringUtils.isNotBlank(exportIncomeRecordExcelDTO.getNextUserNickName())) {
-                exportIncomeRecordExcelDTO.setNextUserNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNextUserNickName(),"utf-8"));
+
+                try {
+                    if(exportIncomeRecordExcelDTO.getNextUserNickName() != null && exportIncomeRecordExcelDTO.getNextUserNickName() != ""){
+                        String nickNameW1 = exportIncomeRecordExcelDTO.getNextUserNickName().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW1!=null&&nickNameW1!=""){
+                                if(nickNameW1.contains("%25")){
+                                    nickNameW1 = URLDecoder.decode(nickNameW1,"utf-8");
+                                }else{
+                                    nickNameW1 = URLDecoder.decode(nickNameW1,"utf-8");
+                                    break;
+                                }
+                            }else{
+                                break;
+                            }
+
+                        }
+                        exportIncomeRecordExcelDTO.setNextUserNickName(nickNameW1);
+                    }else{
+                        exportIncomeRecordExcelDTO.setNextUserNickName("未知用户");
+                    }
+                } catch(Throwable e){
+                    logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                    exportIncomeRecordExcelDTO.setNextUserNickName("特殊符号用户");
+                }
+               // exportIncomeRecordExcelDTO.setNextUserNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNextUserNickName(),"utf-8"));
             }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+
         }
         return exportIncomeRecordExcelDTOS;
     }
