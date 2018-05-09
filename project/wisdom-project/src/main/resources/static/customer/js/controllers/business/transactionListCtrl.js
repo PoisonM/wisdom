@@ -15,8 +15,6 @@ angular.module('controllers',[]).controller('transactionListCtrl',
                     BusinessUtil.checkResponseData(data,"transactionList");
                     $scope.param.transactionList = data.responseData;
 
-
-
                 })
             });
 
