@@ -294,20 +294,30 @@ public class TransactionService {
                 exportOrderExcelDTO.setTaxpayerNumber(invoiceDTO.getTaxpayerNumber());
             }
             //用户名解码
-            String nickNameW = exportOrderExcelDTO.getNickName().replaceAll("%", "%25");
-            /*while(true){
-                if(nickNameW !=null&& nickNameW!=""){
-                    if(nickNameW.contains("%25")){
-                        nickNameW = CommonUtils.nameDecoder(nickNameW);
-                    }else{
-                        nickNameW = CommonUtils.nameDecoder(nickNameW);
-                        break;
+            try {
+                if(exportOrderExcelDTO.getNickName() != null && exportOrderExcelDTO.getNickName() != ""){
+                    String nickNameW = exportOrderExcelDTO.getNickName().replaceAll("%", "%25");
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
+                        }else{
+                            break;
+                        }
+
                     }
+                    exportOrderExcelDTO.setNickName(nickNameW);
                 }else{
-                    break;
+                    exportOrderExcelDTO.setNickName("未知用户");
                 }
-            }*/
-            exportOrderExcelDTO.setNickName(nickNameW);
+            } catch(Throwable e){
+                logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                exportOrderExcelDTO.setNickName("特殊符号用户");
+            }
         }
         return productDTOList;
     }
