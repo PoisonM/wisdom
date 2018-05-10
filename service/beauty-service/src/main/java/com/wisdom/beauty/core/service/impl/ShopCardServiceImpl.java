@@ -58,6 +58,8 @@ public class ShopCardServiceImpl implements ShopCardService {
             criteria.andIdEqualTo(shopUserRechargeCardDTO.getId());
         }
 
+        shopUserRechargeCardCriteria.setOrderByClause("recharge_card_type asc");
+
         List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS = shopUserRechargeCardMapper.selectByCriteria(shopUserRechargeCardCriteria);
 
         logger.debug("查询某个用户的充值卡列表，查询结果大小为 {}", "size = [" + shopUserRechargeCardDTOS == null ? "0" : shopUserRechargeCardDTOS.size() + "]");
