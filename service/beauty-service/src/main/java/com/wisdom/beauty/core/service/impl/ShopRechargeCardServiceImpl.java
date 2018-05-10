@@ -261,7 +261,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 			logger.error("更新用户的充值卡信息传入参数为空");
 			return 0;
 		}
-		int flag = shopUserRechargeCardMapper.updateByPrimaryKey(shopUserRechargeCardDTO);
+		int flag = shopUserRechargeCardMapper.updateByPrimaryKeySelective(shopUserRechargeCardDTO);
 		return flag;
 	}
 

@@ -609,7 +609,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     /**
      * 充值卡充值操作
      *
-     * @param transactionId
+     * @param transactionId  @Transactional(rollbackFor = Throwable.class)
      * @param imageUrl
      * @return
      */
@@ -643,7 +643,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         shopUserConsumeRecordDTO.setFlowNo(DateUtils.DateToStr(new Date(), "dateMillisecond"));
         shopUserConsumeRecordDTO.setFlowName(shopUserRechargeCardDTO.getShopRechargeCardName());
         shopUserConsumeRecordDTO.setGoodsType(GoodsTypeEnum.RECHARGE_CARD.getCode());
-        shopUserConsumeRecordDTO.setPrice(new BigDecimal(shopUserRechargeCardDTO.getRechargeAmount()));
+        if (null != shopUserRechargeCardDTO.getRechargeAmount()) {
+            shopUserConsumeRecordDTO.setPrice(new BigDecimal(shopUserRechargeCardDTO.getRechargeAmount()));
+        }
         shopUserConsumeRecordDTO.setPayType(shopUserRechargeCardDTO.getPayType());
         shopUserConsumeRecordDTO.setCreateDate(new Date());
         shopUserConsumeRecordDTO.setSysClerkId(clerkInfo.getId());

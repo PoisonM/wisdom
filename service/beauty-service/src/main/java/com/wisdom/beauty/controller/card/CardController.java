@@ -331,7 +331,7 @@ public class CardController {
 	 */
 	@RequestMapping(value = "/rechargeCardSignConfirm", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<Object> searchRechargeConfirm(@RequestParam String transactionId, @RequestParam String imageUrl) {
+	ResponseDTO<Object> rechargeCardSignConfirm(@RequestParam String transactionId, @RequestParam String imageUrl) {
 		long currentTimeMillis = System.currentTimeMillis();
 
 		ResponseDTO<Object> responseDTO = shopUserConsumeService.rechargeRechargeCrad(transactionId, imageUrl);

@@ -66,6 +66,7 @@ public class CardTest {
         userRechargeCardDTO.setCashPay("1000");
         userRechargeCardDTO.setPayType("1");
         userRechargeCardDTO.setSurplusPayPrice("100");
+        userRechargeCardDTO.setTransactionId("20180509211744970");
 
         String toJSONString = JSONObject.toJSONString(userRechargeCardDTO);
 
@@ -91,7 +92,7 @@ public class CardTest {
     @Test
     public void getShopUserRecentlyOrderInfo() throws Exception {
 
-        MvcResult result = mvc.perform(get("/cardInfo/searchRechargeConfirm").param("transactionId", "20180509211744970"))
+        MvcResult result = mvc.perform(get("/cardInfo/rechargeCardSignConfirm").param("transactionId", "2018051011464942").param("imageUrl", "1"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

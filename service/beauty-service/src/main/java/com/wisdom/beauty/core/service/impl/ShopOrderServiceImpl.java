@@ -1,14 +1,15 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
-import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.core.service.DiscountService;
+import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopOrderService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -46,6 +47,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Resource
+    private ShopCardService cardService;
     /**
      * 保存用户的订单信息
      *
@@ -110,27 +114,33 @@ public class ShopOrderServiceImpl implements ShopOrderService {
      */
     private void updateRechargeCardInfo(ShopUserOrderDTO shopUserOrderDTO, String orderId, ShopUserOrderDTO alreadyOrderDTO) {
         //充值卡主键
-        String shopRechargeCardId = shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId();
-        logger.info("订单号={}，充值卡主键为，{}", orderId, shopRechargeCardId);
+        String userRechargeId = shopUserOrderDTO.getShopUserRechargeCardDTO().getId();
+        if (StringUtils.isBlank(userRechargeId)) {
+            logger.error("订单号={}，更新订单的充值卡操作,userRechargeId={}", orderId, userRechargeId);
+            throw new ServiceException("充值卡id为空");
+        }
+        //根据主键查询用户与充值卡关系信息
+        ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+        shopUserRechargeCardDTO.setId(userRechargeId);
+        List<ShopUserRechargeCardDTO> userRechargeCardList = cardService.getUserRechargeCardList(shopUserRechargeCardDTO);
+        if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
+            logger.error("订单号={}，根据主键查询用户与充值卡关系信息为空", orderId);
+            throw new ServiceException("根据主键查询用户与充值卡关系信息为空");
+        }
+        shopUserRechargeCardDTO = userRechargeCardList.get(0);
+
+        logger.info("订单号={}，充值卡主键为，{}", orderId, userRechargeId);
         boolean updateFlag = false;
         //遍历用户的产品，更新产品的初始金额
         List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = alreadyOrderDTO.getShopUserProductRelationDTOS();
         if (CommonUtils.objectIsNotEmpty(shopUserProductRelationDTOS)) {
             logger.info("订单号={}，更新用户产品信息", orderId);
             for (ShopUserProductRelationDTO userProductRelationDTO : shopUserProductRelationDTOS) {
-                //根据充值卡主键和产品表主键查询折扣信息
-                ShopProjectProductCardRelationDTO relationDTO = new ShopProjectProductCardRelationDTO();
-                relationDTO.setShopGoodsTypeId(userProductRelationDTO.getShopProductId());
-                relationDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
-                relationDTO.setShopRechargeCardId(shopRechargeCardId);
-                ShopProjectProductCardRelationDTO shopUserProductRelationInfo = discountService.getShopUserProductRelationInfo(relationDTO);
-                if (null != shopUserProductRelationInfo) {
-                    logger.info("订单号={}，对应产品折扣价格信息为，{}", orderId, shopUserProductRelationInfo);
-                    BigDecimal multiplyAmount = userProductRelationDTO.getInitAmount().multiply(new BigDecimal(shopUserProductRelationInfo.getDiscount()));
-                    userProductRelationDTO.setInitAmount(multiplyAmount);
-                    userProductRelationDTO.setDiscount(shopUserProductRelationInfo.getDiscount());
-                    updateFlag = true;
-                }
+                logger.info("订单号={}，对应产品折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
+                BigDecimal multiplyAmount = userProductRelationDTO.getInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount()));
+                userProductRelationDTO.setInitAmount(multiplyAmount);
+                userProductRelationDTO.setDiscount(shopUserRechargeCardDTO.getProductDiscount());
+                updateFlag = true;
             }
         }
 
@@ -139,42 +149,34 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         if (CommonUtils.objectIsNotEmpty(shopUserProjectRelationDTOS)) {
             logger.info("订单号={}，更新用户单次或疗程卡信息", orderId);
             for (ShopUserProjectRelationDTO userProjectRelationDTO : shopUserProjectRelationDTOS) {
-                //根据充值卡主键和产品表主键查询折扣信息
-                ShopProjectProductCardRelationDTO relationDTO = new ShopProjectProductCardRelationDTO();
-                relationDTO.setShopGoodsTypeId(userProjectRelationDTO.getSysShopProjectId());
-                relationDTO.setGoodsType(userProjectRelationDTO.getUseStyle());
-                relationDTO.setShopRechargeCardId(shopRechargeCardId);
-                ShopProjectProductCardRelationDTO shopUserProductRelationInfo = discountService.getShopUserProductRelationInfo(relationDTO);
-                if (null != shopUserProductRelationInfo) {
-                    logger.info("订单号={}，对应次卡或套卡折扣价格信息为，{}", orderId, shopUserProductRelationInfo);
-                    BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserProductRelationInfo.getDiscount()));
+                logger.info("订单号={}，对应单次或疗程卡折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
+                //如果是次卡的话
+                if (GoodsTypeEnum.TIME_CARD.getCode().equals(userProjectRelationDTO.getUseStyle())) {
+                    BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()));
                     userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount);
-                    userProjectRelationDTO.setDiscount(String.valueOf(shopUserProductRelationInfo.getDiscount()));
+                    userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getTimeDiscount()));
+                    updateFlag = true;
+                } else {
+                    BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()));
+                    userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount);
+                    userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getPeriodDiscount()));
                     updateFlag = true;
                 }
             }
         }
 
-        //遍历用户的套卡，更新产品的初始金额
-        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
-        if (CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)) {
-            logger.info("订单号={}，更新用户套卡信息", orderId);
-            for (ShopUserProjectGroupRelRelationDTO groupRelRelationDTO : projectGroupRelRelationDTOS) {
-                //根据充值卡主键和产品表主键查询折扣信息
-                ShopProjectProductCardRelationDTO relationDTO = new ShopProjectProductCardRelationDTO();
-                relationDTO.setShopGoodsTypeId(groupRelRelationDTO.getShopProjectGroupId());
-                relationDTO.setGoodsType(GoodsTypeEnum.COLLECTION_CARD.getCode());
-                relationDTO.setShopRechargeCardId(shopRechargeCardId);
-                ShopProjectProductCardRelationDTO shopUserProductRelationInfo = discountService.getShopUserProductRelationInfo(relationDTO);
-                if (null != shopUserProductRelationInfo) {
-                    logger.info("订单号={}，对应套卡折扣价格信息为，{}", orderId, shopUserProductRelationInfo);
-                    BigDecimal multiplyAmount = groupRelRelationDTO.getProjectInitAmount().multiply(new BigDecimal(shopUserProductRelationInfo.getDiscount()));
-                    groupRelRelationDTO.setProjectInitAmount(multiplyAmount);
-                    groupRelRelationDTO.setDiscount(shopUserProductRelationInfo.getDiscount());
-                    updateFlag = true;
-                }
-            }
-        }
+//        //遍历用户的套卡，更新产品的初始金额
+//        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
+//        if (CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)) {
+//            logger.info("订单号={}，更新用户套卡信息", orderId);
+//            for (ShopUserProjectGroupRelRelationDTO groupRelRelationDTO : projectGroupRelRelationDTOS) {
+//                logger.info("订单号={}，对应套卡折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
+//                BigDecimal multiplyAmount = groupRelRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.get));
+//                userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount);
+//                userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getPeriodDiscount()));
+//                updateFlag = true;
+//            }
+//        }
 
         Query updateQuery = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
@@ -182,7 +184,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         if (updateFlag) {
             update.set("shopUserProjectRelationDTOS", shopUserOrderDTO.getShopUserProjectRelationDTOS());
             update.set("shopUserProductRelationDTOS", shopUserOrderDTO.getShopUserProductRelationDTOS());
-            update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
+//            update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
         }
         mongoTemplate.upsert(updateQuery, update, "shopUserOrderDTO");
 
