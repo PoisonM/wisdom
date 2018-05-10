@@ -149,7 +149,26 @@ public class UserInfoServiceImpl implements UserInfoService{
     public List<UserInfoDTO> queryNextUserById(String sysUserId) {
         List<UserInfoDTO> userInfoDTOList = customerInfoMapper.queryNextUserById(sysUserId);
         for(UserInfoDTO userInfoDTO : userInfoDTOList){
-            userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+            if(StringUtils.isNotBlank(userInfoDTO.getNickname())&&userInfoDTO.getNickname()!=""){
+                String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+                while(true){
+                    logger.info("用户进行编码操作");
+                    if(StringUtils.isNotBlank(nickNameW)){
+                        if(nickNameW.contains("%25")){
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                        }else{
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                            break;
+                        }
+                    }else{
+                        break;
+                    }
+                }
+                userInfoDTO.setNickname(nickNameW);
+            }else{
+                userInfoDTO.setNickname("未知用户");
+            }
+
         }
         return userInfoDTOList;
     }
