@@ -102,6 +102,7 @@ public class OrderController {
             return responseDTO;
         }
         //如果最后一次订单为空则需初始化插入
+        shopUserOrderDTO = new ShopUserOrderDTO();
         shopUserOrderDTO.setShopId(clerkInfo.getSysShopId());
         shopUserOrderDTO.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
         shopUserOrderDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
