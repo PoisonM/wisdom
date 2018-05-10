@@ -6,6 +6,7 @@ var stock = 'http://192.168.1.117/beauty/stock/';
 var consume = 'http://192.168.1.117/beauty/consume/';
 var  earlyWarning =  'http://192.168.1.117/beauty/earlyWarning/';
 var  archives =  'http://192.168.1.117/beauty/archives/';
+var shopBossRelation ='http://192.168.1.117/beauty/shopBossRelation/';
 
 
 define(['appBoss'], function (app) {
@@ -44,13 +45,17 @@ define(['appBoss'], function (app) {
         .factory('ShopStockRecordList',['$resource',function ($resource){
             return $resource(stock + 'shopStockRecordList')
         }])
-        /*获取库存数量和价格*************88888888888888*/
-        .factory('GetStockNumber',['$resource',function ($resource){
-            return $resource(stock + 'getStockNumber')
+        /*跳转更新时候获取的产品信息和库存*/
+        .factory('GetProductInfoAndStock',['$resource',function ($resource){
+            return $resource(stock + 'getProductInfoAndStock')
         }])
         /*更新库存实际量和价格*/
         .factory('UpdateStockNumber',['$resource',function ($resource){
             return $resource(stock + 'updateStockNumber')
+        }])
+        /*入库(确认入库按钮)*/
+        .factory('AddStock',['$resource',function ($resource){
+            return $resource(stock + 'addStock')
         }])
 
 
@@ -97,6 +102,11 @@ define(['appBoss'], function (app) {
         /*用户档案详情*/
         .factory('Detail',['$resource',function ($resource){
             return $resource(archives+"detail/:id",{id:"@id"})
+        }])
+ /*行政管理*/
+        /*查询老板的门店*/
+        .factory('GetBossShopList',['$resource',function ($resource){
+            return $resource(shopBossRelation+"getBossShopList")
         }])
 
 });
