@@ -100,19 +100,19 @@ public class OrderController {
         //先查询最后一次订单信息
         Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(shopUserOrderDTO.getUserId()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
-        shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        ShopUserOrderDTO searchOrderInfo = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
         if (null != shopUserOrderDTO) {
             responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
             responseDTO.setResult(StatusConstant.SUCCESS);
             return responseDTO;
         }
         //如果最后一次订单为空则需初始化插入
-        shopUserOrderDTO = new ShopUserOrderDTO();
-        shopUserOrderDTO.setShopId(clerkInfo.getSysShopId());
-        shopUserOrderDTO.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
-        shopUserOrderDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
-        shopUserOrderDTO.setCreateDate(new Date());
-        shopUserOrderDTO.setUserId(shopUserOrderDTO.getUserId());
+        searchOrderInfo = new ShopUserOrderDTO();
+        searchOrderInfo.setShopId(clerkInfo.getSysShopId());
+        searchOrderInfo.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
+        searchOrderInfo.setStatus(OrderStatusEnum.NOT_PAY.getCode());
+        searchOrderInfo.setCreateDate(new Date());
+        searchOrderInfo.setUserId(shopUserOrderDTO.getUserId());
         mongoTemplate.save(shopUserOrderDTO, "shopUserOrderDTO");
 
         responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
