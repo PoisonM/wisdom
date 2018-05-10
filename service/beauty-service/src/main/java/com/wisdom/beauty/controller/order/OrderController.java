@@ -115,7 +115,7 @@ public class OrderController {
         searchOrderInfo.setUserId(shopUserOrderDTO.getUserId());
         mongoTemplate.save(searchOrderInfo, "shopUserOrderDTO");
 
-        responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
+        responseDTO.setResponseData(searchOrderInfo.getOrderId());
         responseDTO.setResult(StatusConstant.SUCCESS);
 
         logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
