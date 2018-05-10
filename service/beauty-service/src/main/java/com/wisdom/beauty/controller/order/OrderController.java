@@ -101,8 +101,8 @@ public class OrderController {
         Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(shopUserOrderDTO.getUserId()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         ShopUserOrderDTO searchOrderInfo = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-        if (null != shopUserOrderDTO) {
-            responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
+        if (null != searchOrderInfo) {
+            responseDTO.setResponseData(searchOrderInfo.getOrderId());
             responseDTO.setResult(StatusConstant.SUCCESS);
             return responseDTO;
         }
@@ -113,7 +113,7 @@ public class OrderController {
         searchOrderInfo.setStatus(OrderStatusEnum.NOT_PAY.getCode());
         searchOrderInfo.setCreateDate(new Date());
         searchOrderInfo.setUserId(shopUserOrderDTO.getUserId());
-        mongoTemplate.save(shopUserOrderDTO, "shopUserOrderDTO");
+        mongoTemplate.save(searchOrderInfo, "shopUserOrderDTO");
 
         responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
         responseDTO.setResult(StatusConstant.SUCCESS);
