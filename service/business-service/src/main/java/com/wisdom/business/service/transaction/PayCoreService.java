@@ -131,9 +131,8 @@ public class PayCoreService {
                 handleUserLevelPromotion(userInfoDTO,expenseMoney);
 
                 logger.info("处理用户消费特殊商品后的等级提升=="+userInfoDTO.getMobile());
-                handleUserLevelPromotionInSpecialActivity(userInfoDTO,expenseMoney,instanceReturnMoneySignalDTO);
-
-                handleSpecialActivitySignal(userInfoDTO,instanceReturnMoneySignalDTO);
+                //handleUserLevelPromotionInSpecialActivity(userInfoDTO,expenseMoney,instanceReturnMoneySignalDTO);
+                //handleSpecialActivitySignal(userInfoDTO,instanceReturnMoneySignalDTO);
 
                 //正常完成分账和升级处理后，关闭信号灯
                 Query query = new Query().addCriteria(Criteria.where("status").is("0")).addCriteria(Criteria.where("transactionId").is(instanceReturnMoneySignalDTO.getTransactionId()));

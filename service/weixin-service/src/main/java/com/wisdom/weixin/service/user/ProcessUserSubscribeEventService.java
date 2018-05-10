@@ -136,11 +136,17 @@ public class ProcessUserSubscribeEventService {
                     parentUserInfoDTO.setMobile(businessParentPhone);
                     //从sys_user表中，查询父一级用户信息
                     List<UserInfoDTO> parentUserInfoDTOList = userServiceClient.getUserInfo(parentUserInfoDTO);
-                    parentUserInfoDTO = parentUserInfoDTOList.get(0);
-                    if(null != parentUserInfoDTO){
-                        //向父节点推送消息
-                        WeixinTemplateMessageUtil.sendLowLevelBusinessTemplateWXMessage(weixinUserBean.getNickname(),"c级代理商","0元",token,
-                                "",parentUserInfoDTO.getUserOpenid());
+                    if(parentUserInfoDTOList!=null&&parentUserInfoDTOList.size()>0){
+                        for(int i=0; i<parentUserInfoDTOList.size();i++){
+                            if(!parentUserInfoDTOList.get(i).getUserType().equals("finance-1")){
+                                parentUserInfoDTO = parentUserInfoDTOList.get(i);
+                            }
+                        }
+                        if(null != parentUserInfoDTO){
+                            //向父节点推送消息
+                            WeixinTemplateMessageUtil.sendLowLevelBusinessTemplateWXMessage(weixinUserBean.getNickname(),"c级代理商","0元",token,
+                                    "",parentUserInfoDTO.getUserOpenid());
+                        }
                     }
                 }
 

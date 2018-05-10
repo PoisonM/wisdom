@@ -69,7 +69,7 @@ public class ProcessUserScanEventService {
                 //处理境外购的流程
                 List<Article> articleList = new ArrayList<>();
                 Article article = new Article();
-                article.setTitle("嗨!您又来啦! ~\n");
+                article.setTitle("嗨!欢迎再次光临! ~\n");
                 article.setDescription(
                         "请点击我进入"+specialShopInfoDTO.getShopName()+"吧");
                 article.setPicUrl(specialShopInfoDTO.getShopURL());

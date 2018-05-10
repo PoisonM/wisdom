@@ -88,6 +88,21 @@ public class BusinessOrderDTO {
     //收货地址
     @JSONField(name = "userAddress")
     private String userAddress;
+    /**
+     * 收货地址省份
+     */
+    @JSONField(name = "userProvinceAddress")
+    private String userProvinceAddress;
+    /**
+     * 收货地址城市
+     */
+    @JSONField(name = "userCityAddress")
+    private String userCityAddress;
+    /**
+     * 收货地址详情
+     */
+    @JSONField(name = "userDetailAddress")
+    private String userDetailAddress;
 
     //商品型号
     @JSONField(name = "productSpec")
@@ -338,5 +353,29 @@ public class BusinessOrderDTO {
 
     public void setProductBrand(String productBrand) {
         this.productBrand = productBrand;
+    }
+
+    public String getUserProvinceAddress() {
+        return userProvinceAddress;
+    }
+
+    public void setUserProvinceAddress(String userProvinceAddress) {
+        this.userProvinceAddress = userProvinceAddress;
+    }
+
+    public String getUserCityAddress() {
+        return userCityAddress;
+    }
+
+    public void setUserCityAddress(String userCityAddress) {
+        this.userCityAddress = userCityAddress;
+    }
+
+    public String getUserDetailAddress() {
+        return userDetailAddress;
+    }
+
+    public void setUserDetailAddress(String userDetailAddress) {
+        this.userDetailAddress = userDetailAddress;
     }
 }

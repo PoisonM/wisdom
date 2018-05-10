@@ -1,6 +1,7 @@
 package com.wisdom.common.util;
 
 import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.AccessToken;
 import com.wisdom.common.entity.Article;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -179,9 +181,6 @@ public class WeixinUtil {
 
     public static String getUserOpenId(HttpSession session, HttpServletRequest request) {
         String openId = (String) session.getAttribute(ConfigConstant.USER_OPEN_ID);
-        if (!StringUtils.isNotNull(openId)) {
-            openId = CookieUtils.getCookie(request, ConfigConstant.USER_OPEN_ID);
-        }
         return openId;
     }
 
@@ -269,5 +268,32 @@ public class WeixinUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     *
+     * 获取openid
+     *
+     *
+     * */
+    public static  String getOpenId(String code){
+        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
+                "appid="+ ConfigConstant.USER_CORPID +
+                "&secret=" + ConfigConstant.USER_SECRET +
+                "&code="+ code +
+                "&grant_type=authorization_code";
+        WeixinUserBean weixinUserBean;
+        int countNum = 0;
+        do {
+            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
+            weixinUserBean = JsonUtil.getObjFromJsonStr(json, WeixinUserBean.class);
+            if (countNum++ > 3) {
+                break;
+            }
+        } while (weixinUserBean.getOpenid() == null);
+
+        String openId = weixinUserBean.getOpenid();
+        return openId;
     }
 }

@@ -17,6 +17,8 @@ import com.wisdom.common.util.excel.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
@@ -24,6 +26,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 直播板块
@@ -40,6 +43,7 @@ public class WithDrawController {
 
 	@Autowired
 	private WithDrawService withDrawService;
+
 
 	/**
 	 * 用户进行提现操作
@@ -135,7 +139,7 @@ public class WithDrawController {
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			result.setErrorInfo("提现失败");
+			result.setErrorInfo("提现失败,请联系客服人员处理");
 			result.setResult(StatusConstant.FAILURE);
 		}
 		finally {
@@ -221,12 +225,27 @@ public class WithDrawController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO updateWithdrawById(@RequestBody WithDrawRecordDTO withDrawRecordDTO) {
+	ResponseDTO updateWithdrawById(@RequestBody WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
 		ResponseDTO responseDTO = new ResponseDTO<>();
+
+		UserInfoDTO userInfoDTO = new UserInfoDTO();
+		userInfoDTO.setId(withDrawRecordDTO.getSysUserId());
+		List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+		String openId ="";
+		if (userInfoDTOList != null && userInfoDTOList.size() > 0) {
+			openId = userInfoDTOList.get(0).getUserOpenid();
+		}
+		JedisUtils.set("openid",openId,90000);
 		try {
-			withDrawService.updateWithdrawById(withDrawRecordDTO);
-			responseDTO.setResult(StatusConstant.SUCCESS);
-			responseDTO.setErrorInfo("提现审核通过");
+			Map<String,String> result = withDrawService.updateWithdrawById(withDrawRecordDTO,request);
+			if(result.get("result").equals("success")){
+				responseDTO.setResult(StatusConstant.SUCCESS);
+				responseDTO.setErrorInfo(result.get("message"));
+			}else{
+				responseDTO.setResult(StatusConstant.FAILURE);
+				responseDTO.setErrorInfo(result.get("message"));
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseDTO.setResult(StatusConstant.FAILURE);

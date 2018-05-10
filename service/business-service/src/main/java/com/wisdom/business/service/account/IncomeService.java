@@ -124,7 +124,7 @@ public class IncomeService {
                         incomeRecordDTO.setCheckStatus(incomeRecordManagementDTOS.get(0).getStatus());
                         incomeRecordDTO.setCheckUserName(URLDecoder.decode(incomeRecordManagementDTOS.get(0).getUserName(),"utf-8"));
                         incomeRecordDTO.setCheckSysUserId(incomeRecordManagementDTOS.get(0).getSysUserId());
-                        incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
+                        //incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
                     }else if(ConfigConstant.financeMember.equals(incomeRecordManagementDTOS.get(0).getUserType())){
                         //财务人员审核
                         incomeRecordDTO.setSecondCheckStatus("2");
@@ -132,7 +132,7 @@ public class IncomeService {
                         incomeRecordDTO.setCheckStatus(incomeRecordManagementDTOS.get(0).getStatus());
                         incomeRecordDTO.setCheckUserName(URLDecoder.decode(incomeRecordManagementDTOS.get(0).getUserName(),"utf-8"));
                         incomeRecordDTO.setCheckSysUserId(incomeRecordManagementDTOS.get(0).getSysUserId());
-                        incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
+                        //incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
                     }
                 }else if(incomeRecordManagementDTOS.size() == 2){
                     boolean status = true;
@@ -145,13 +145,15 @@ public class IncomeService {
                             incomeRecordDTO.setCheckStatus(incomeRecordManagementDTO1.getStatus());
                             incomeRecordDTO.setCheckUserName(URLDecoder.decode(incomeRecordManagementDTO1.getUserName(),"utf-8"));
                             incomeRecordDTO.setCheckSysUserId(incomeRecordManagementDTO1.getSysUserId());
-                            incomeRecordDTO.setCreateDate(incomeRecordManagementDTO1.getCreateDate());
+                            //incomeRecordDTO.setCreateDate(incomeRecordManagementDTO1.getCreateDate());
                         }
                     }
                     //经过双方审核,已通过
                     if(status){
-                        incomeRecordDTO.setSecondCheckStatus("4");//记录双方通过标记
-                        incomeRecordDTO.setCheckStatus("1");//记录审核状态为通过
+                        //记录双方通过标记
+                        incomeRecordDTO.setSecondCheckStatus("4");
+                        //记录审核状态为通过
+                        incomeRecordDTO.setCheckStatus("1");
                         if(CheckStatus.equals("0")){
                             iterator.remove();
                         }
@@ -162,11 +164,39 @@ public class IncomeService {
                 }
                 if(!"".equals(incomeRecordDTO.getNickName()) && incomeRecordDTO.getNickName() != null)
                 {
-                    incomeRecordDTO.setNickName(URLDecoder.decode(URLDecoder.decode(incomeRecordDTO.getNickName(),"utf-8"),"utf-8"));
+                    String nickNameW = incomeRecordDTO.getNickName().replaceAll("%", "%25");
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
+                        }else{
+                            break;
+                        }
+
+                    }
+                    incomeRecordDTO.setNickName(nickNameW);
                 }
                 if(!"".equals(incomeRecordDTO.getNextUserNickName()) && incomeRecordDTO.getNextUserNickName() != null)
                 {
-                    incomeRecordDTO.setNextUserNickName(URLDecoder.decode(URLDecoder.decode(incomeRecordDTO.getNextUserNickName(),"utf-8"),"utf-8"));
+                    String nickNameW = incomeRecordDTO.getNextUserNickName().replaceAll("%", "%25");
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
+                        }else{
+                            break;
+                        }
+
+                    }
+                    incomeRecordDTO.setNextUserNickName(nickNameW);
                 }
             } catch (UnsupportedEncodingException e) {
                 logger.info("service -- 根据条件查询佣金奖励getIncomeRecordByPageParam方法转换nickName失败" );
@@ -219,17 +249,58 @@ public class IncomeService {
     public List<IncomeRecordDTO> queryIncomeByParameters(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         List<IncomeRecordDTO> incomeRecordDTOS = incomeMapper.getIncomeRecordByPageParam(pageParamVoDTO);
         for (IncomeRecordDTO incomeRecordDTO: incomeRecordDTOS) {
-            try {
                 if (StringUtils.isNotBlank(incomeRecordDTO.getNickName())) {
-                    incomeRecordDTO.setNickName(URLDecoder.decode(incomeRecordDTO.getNickName(),"utf-8"));
+                    try {
+                        if(incomeRecordDTO.getNickName() != null && incomeRecordDTO.getNickName() != ""){
+                            String nickNameW = incomeRecordDTO.getNickName().replaceAll("%", "%25");
+                            while(true){
+                                if(nickNameW!=null&&nickNameW!=""){
+                                    if(nickNameW.contains("%25")){
+                                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    }else{
+                                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                        break;
+                                    }
+                                }else{
+                                    break;
+                                }
+
+                            }
+                            incomeRecordDTO.setNickName(nickNameW);
+                        }else{
+                            incomeRecordDTO.setNickName("未知用户");
+                        }
+                    } catch(Throwable e){
+                        logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                        incomeRecordDTO.setNickName("特殊符号用户");
+                    }
                 }
                 if (StringUtils.isNotBlank(incomeRecordDTO.getNextUserNickName())) {
-                    incomeRecordDTO.setNextUserNickName(URLDecoder.decode(incomeRecordDTO.getNextUserNickName(),"utf-8"));
+                    try {
+                        if(incomeRecordDTO.getNextUserNickName() != null && incomeRecordDTO.getNextUserNickName() != ""){
+                            String nickNameW = incomeRecordDTO.getNextUserNickName().replaceAll("%", "%25");
+                            while(true){
+                                if(nickNameW!=null&&nickNameW!=""){
+                                    if(nickNameW.contains("%25")){
+                                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    }else{
+                                        nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                        break;
+                                    }
+                                }else{
+                                    break;
+                                }
+
+                            }
+                            incomeRecordDTO.setNextUserNickName(nickNameW);
+                        }else{
+                            incomeRecordDTO.setNextUserNickName("未知用户");
+                        }
+                    } catch(Throwable e){
+                        logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                        incomeRecordDTO.setNextUserNickName("特殊符号用户");
+                    }
                 }
-            } catch (UnsupportedEncodingException e) {
-                logger.info("service -- 佣金奖励详情queryIncomeByParameters方法转换nickName失败" );
-                e.printStackTrace();
-            }
             UserInfoDTO selfUserInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecordDTO.getSysUserId());
             UserInfoDTO nextUserInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecordDTO.getNextUserId());
             incomeRecordDTO.setUserTypeNow(selfUserInfoDTO.getUserType());
@@ -273,16 +344,62 @@ public class IncomeService {
     public List<ExportIncomeRecordExcelDTO> exportExcelIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeMapper.exportExcelIncomeRecord(pageParamVoDTO);
         for (ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO : exportIncomeRecordExcelDTOS){
-            try {
             if (StringUtils.isNotBlank(exportIncomeRecordExcelDTO.getNickName())) {
-                exportIncomeRecordExcelDTO.setNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNickName(),"utf-8"));
+                try {
+                    if(exportIncomeRecordExcelDTO.getNickName() != null && exportIncomeRecordExcelDTO.getNickName() != ""){
+                        String nickNameW = exportIncomeRecordExcelDTO.getNickName().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW!=null&&nickNameW!=""){
+                                if(nickNameW.contains("%25")){
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                }else{
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    break;
+                                }
+                            }else{
+                                break;
+                            }
+
+                        }
+                        exportIncomeRecordExcelDTO.setNickName(nickNameW);
+                    }else{
+                        exportIncomeRecordExcelDTO.setNickName("未知用户");
+                    }
+                } catch(Throwable e){
+                    logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                    exportIncomeRecordExcelDTO.setNickName("特殊符号用户");
+                }
+              //  exportIncomeRecordExcelDTO.setNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNickName(),"utf-8"));
             }
             if (StringUtils.isNotBlank(exportIncomeRecordExcelDTO.getNextUserNickName())) {
-                exportIncomeRecordExcelDTO.setNextUserNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNextUserNickName(),"utf-8"));
+
+                try {
+                    if(exportIncomeRecordExcelDTO.getNextUserNickName() != null && exportIncomeRecordExcelDTO.getNextUserNickName() != ""){
+                        String nickNameW1 = exportIncomeRecordExcelDTO.getNextUserNickName().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW1!=null&&nickNameW1!=""){
+                                if(nickNameW1.contains("%25")){
+                                    nickNameW1 = URLDecoder.decode(nickNameW1,"utf-8");
+                                }else{
+                                    nickNameW1 = URLDecoder.decode(nickNameW1,"utf-8");
+                                    break;
+                                }
+                            }else{
+                                break;
+                            }
+
+                        }
+                        exportIncomeRecordExcelDTO.setNextUserNickName(nickNameW1);
+                    }else{
+                        exportIncomeRecordExcelDTO.setNextUserNickName("未知用户");
+                    }
+                } catch(Throwable e){
+                    logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                    exportIncomeRecordExcelDTO.setNextUserNickName("特殊符号用户");
+                }
+               // exportIncomeRecordExcelDTO.setNextUserNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNextUserNickName(),"utf-8"));
             }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+
         }
         return exportIncomeRecordExcelDTOS;
     }

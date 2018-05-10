@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +58,8 @@ public class LoginServiceImpl implements LoginService{
             return StatusConstant.VALIDATECODE_ERROR;
         }
 
+
+
         String logintoken = null;
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         RedisLock redisLock = new RedisLock("userInfo" + loginDTO.getUserPhone());
@@ -69,9 +73,20 @@ public class LoginServiceImpl implements LoginService{
 
             if(userInfoDTOList.size()>0)
             {
+
                 userInfoDTO = userInfoDTOList.get(0);
                 if(userInfoDTO.getMobile()==null)
                 {
+                    UserInfoDTO userInfoDTO1 = new UserInfoDTO();
+                    userInfoDTO1.setMobile(loginDTO.getUserPhone());
+                    List<UserInfoDTO> userInfoDTOList1 = userMapper.getUserByInfo(userInfoDTO1);
+                    if(userInfoDTOList1!=null&&userInfoDTOList1.size()>0){
+                        for(UserInfoDTO user : userInfoDTOList1){
+                            if(!user.getUserType().equals("finance-1")){
+                                return "phoneNotUse";
+                            }
+                        }
+                    }
                     //用户曾经绑定过手机号，更新用户登录信息
                     userInfoDTO.setMobile(loginDTO.getUserPhone());
                     userInfoDTO.setLoginDate(new Date());
@@ -83,14 +98,15 @@ public class LoginServiceImpl implements LoginService{
                     userInfoDTO.setLoginDate(new Date());
                     userInfoDTO.setLoginIp(loginIP);
                     userMapper.updateUserInfo(userInfoDTO);
-                }
+                }else if(!userInfoDTO.getMobile().equals(loginDTO.getUserPhone())){
+                        return "phoneIsError";
+                    }
                 else
                 {
                     return StatusConstant.WEIXIN_ATTENTION_ERROR;
                 }
 
-                userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
-
+                userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(),"utf-8"));
                 //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
                 logintoken = UUID.randomUUID().toString();
                 String userInfoStr = gson.toJson(userInfoDTO);
@@ -345,26 +361,31 @@ public class LoginServiceImpl implements LoginService{
     private String processValidateCode(LoginDTO loginDTO)
     {
         //判断validateCode是否还有效
-        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()))
-                .addCriteria(Criteria.where("code").is(loginDTO.getCode()));
+//        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()))
+//                .addCriteria(Criteria.where("code").is(loginDTO.getCode()));
+        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
-//        if(data==null)
-//        {
-//            return StatusConstant.VALIDATECODE_ERROR;
-//        }
-//        else
-//        {
-//            ValidateCodeDTO validateCodeDTO = data.get(0);
-//            Date dateStr = validateCodeDTO.getCreateDate();
-//            long period =  (new Date()).getTime() - dateStr.getTime();
-//
-//            //验证码过了5分钟了
-//            if(period>300000)
-//            {
-//                return  StatusConstant.VALIDATECODE_ERROR;
-//            }
-//        }
+        if(data==null)
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+        else
+        {
+            ValidateCodeDTO validateCodeDTO = data.get(0);
+            Date dateStr = validateCodeDTO.getCreateDate();
+              //判断验证码是否是最新的
+            if(!validateCodeDTO.getCode().equals(loginDTO.getCode())){
+                return StatusConstant.VALIDATECODE_ERROR;
+            }
+            long period =  (new Date()).getTime() - dateStr.getTime();
+
+            //验证码过了5分钟了
+            if(period>300000)
+            {
+                return  StatusConstant.VALIDATECODE_ERROR;
+            }
+        }
         return StatusConstant.SUCCESS;
     }
 }

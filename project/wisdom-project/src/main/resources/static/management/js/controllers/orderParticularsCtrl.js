@@ -43,7 +43,7 @@ angular.module('controllers',[]).controller('orderParticularsCtrl',
                       }
                       if(data.responseData.userAddress){
                           var address = data.responseData.userAddress;
-                          $scope.userAddress = data.responseData.userAddress.split(" ");
+                         /* $scope.userAddress = data.responseData.userAddress.split(" ");*/
                       }
                       $scope.orderParticulars = data.responseData;
                       $scope.mum = false;

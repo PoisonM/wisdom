@@ -10,7 +10,7 @@
                         <span ng-if="param.userLogin"   style="font-size: 18px;" class="money" >{{param.accountInfo.balance}}</span>
                          <img src="images/myselfCenter/open.png" style="position:absolute;top:20px;right:20px;width:21px;height: 11px;display: inline-block" ng-click="checkOpen($event)" id="open" class="open">
                         <br>
-                        <span ng-if="param.userLogin"  style="margin-top:0.3rem;display: inline-block">昨日收益：{{param.accountInfo.todayIncome}}</span>
+                        <span ng-if="param.userLogin"  style="margin-top:0.3rem;display: inline-block">今日收益：{{param.accountInfo.todayIncome}}</span>
                     </span>
                     <button class="button" style="border-radius:20px;background: #FF9492;color: #FFFFFF;font-size: 13px;margin-top: -60px;"
                             ng-if="!param.userLogin" ng-click="myselfLogin()">登录查看您的收益</button>
