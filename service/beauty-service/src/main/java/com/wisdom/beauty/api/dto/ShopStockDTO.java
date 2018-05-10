@@ -21,6 +21,9 @@ public class ShopStockDTO extends BaseEntity implements Serializable {
 	//单据号
 	private String flowNo;
 
+	//出库数量
+	private Integer outStockNumber;
+
 	//库存数量
 	private Integer stockNumber;
 
@@ -88,6 +91,14 @@ public class ShopStockDTO extends BaseEntity implements Serializable {
 
 	public void setFlowNo(String flowNo) {
 		this.flowNo = flowNo;
+	}
+
+	public Integer getOutStockNumber() {
+		return outStockNumber;
+	}
+
+	public void setOutStockNumber(Integer outStockNumber) {
+		this.outStockNumber = outStockNumber;
 	}
 
 	public Integer getStockNumber() {

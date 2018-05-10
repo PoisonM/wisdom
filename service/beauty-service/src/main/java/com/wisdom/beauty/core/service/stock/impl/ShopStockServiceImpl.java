@@ -4,20 +4,26 @@ import java.io.IOException;
 import java.util.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.StockStyleEnum;
+import com.wisdom.beauty.api.enums.StockTypeEnum;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
+import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +34,9 @@ import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
 import com.wisdom.beauty.core.mapper.stock.ExtStockServiceMapper;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.common.dto.system.PageParamDTO;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * FileName: ShopStockServiceImpl
@@ -157,7 +166,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockResponseDTO = new ShopStockResponseDTO();
 			shopStockResponseDTO.setProductDate(shopStock.getProductDate());
 			shopStockResponseDTO.setStockNumber(shopStock.getStockNumber());
+			shopStockResponseDTO.setOutStockNumber(shopStock.getOutStockNumber());
 			shopStockResponseDTO.setStockPrice(shopStock.getStockPrice());
+			shopStockResponseDTO.setProductId(shopStock.getShopProcId());
 			if (map.get(shopStock.getShopProcId()) != null) {
 				shopStockResponseDTO.setProductCode(map.get(shopStock.getShopProcId()).getProductCode());
 				shopStockResponseDTO.setProductSpec(map.get(shopStock.getShopProcId()).getProductSpec());
@@ -276,31 +287,43 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 	public int insertShopStockDTO(String shopStockRequest) {
-		List<ShopStockRequestDTO> shopStockRequestDTO = null;
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			shopStockRequestDTO = mapper.readValue(shopStockRequest, new TypeReference<List<ShopStockRequestDTO>>() {
-			});
-		} catch (IOException e) {
-			logger.error("对象转换异常,异常信息是" + e.getMessage(), e);
+		if(StringUtils.isBlank(shopStockRequest)){
+			logger.info("insertShopStockDTO方法出入的参数shopStockRequest为空");
 		}
+		ShopStockRequestDTO[] ss =(ShopStockRequestDTO[]) JSONArray.toArray(JSONArray.fromObject(shopStockRequest),ShopStockRequestDTO.class);
+		List<ShopStockRequestDTO> shopStockRequestDTO=Arrays.asList(ss);
 		if (CollectionUtils.isEmpty(shopStockRequestDTO)) {
 			logger.info("转换出来的集合shopStocks为空");
 			return 0;
 		}
+		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		// 记录插入
 		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
-		shopStockRecordDTO.setShopBossId(shopStockDto.getShopBossId());
+		shopStockRecordDTO.setShopBossId(sysBossDTO.getId());
 		shopStockRecordDTO.setShopStoreId(shopStockDto.getShopStoreId());
 		shopStockRecordDTO.setId(IdGen.uuid());
 		shopStockRecordDTO.setCreateDate(new Date());
 		shopStockRecordDTO.setFlowNo(shopStockDto.getFlowNo());
-		shopStockRecordDTO.setStockType(shopStockDto.getStockType());
+		shopStockRecordDTO.setStockStyle(shopStockDto.getStockType());
+		shopStockRecordDTO.setDetail(shopStockDto.getDetail());
+		//待定这个人是谁
 		shopStockRecordDTO.setManagerId(shopStockDto.getApplayUser());
 		// 插入StockRecord,并且返回id
+		//判断是出库还是入库
+		if(StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())||
+				StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())){
+			//此时是入库
+			shopStockRecordDTO.setStockType(StockTypeEnum.PURCHASE_IN_STORAGE.getCode());
+		}
+		if(StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())||
+				StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())){
+			//此时是出库
+			shopStockRecordDTO.setStockType(shopStockDto.getStockType());
+		}
 		this.insertStockRecord(shopStockRecordDTO);
 		// 记录插入结束
 		List<ShopStockDTO> shopStockDTOList = new ArrayList<>();
@@ -311,6 +334,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockDTO = new ShopStockDTO();
 			BeanUtils.copyProperties(shopStock, shopStockDTO);
 			shopStockDTO.setId(IdGen.uuid());
+			shopStock.setShopBossId(sysBossDTO.getId());
 			// 将record表总的id放入shopStockDTO中
 			shopStockDTO.setShopStockRecordId(shopStockRecordDTO.getId());
 			shopStockDTOList.add(shopStockDTO);
@@ -330,8 +354,19 @@ public class ShopStockServiceImpl implements ShopStockService {
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumberDTOs) {
 			if (map.get(shopStockNumber.getShopProcId()) != null) {
 				// 需要更新的
-				shopStockNumber.setStockNumber(
-						shopStockNumber.getStockNumber() + map.get(shopStockNumber.getShopProcId()).getStockNumber());
+				//判断是出库还是入库。入库需要加，出库需要减
+				if(StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())||
+						StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())){
+					//此时是入库
+					shopStockNumber.setStockNumber(
+							shopStockNumber.getStockNumber() + map.get(shopStockNumber.getShopProcId()).getStockNumber());
+				}
+				if(StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())||
+						StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())){
+					//此时是出库
+					shopStockNumber.setStockNumber(
+							shopStockNumber.getStockNumber() - map.get(shopStockNumber.getShopProcId()).getStockNumber());
+				}
 				updateShopStockNumber.add(shopStockNumber);
 				// 出去map中需要更新的，剩下的就是需要插入的
 				map.remove(shopStockNumber.getShopProcId());
@@ -341,12 +376,16 @@ public class ShopStockServiceImpl implements ShopStockService {
 		Collection<ShopStockRequestDTO> values = map.values();
 		// 需要插入的List集合
 		List<ShopStockNumberDTO> saveShopStockNumber = new ArrayList<>();
+		if(CollectionUtils.isEmpty(values)){
+			logger.info("values为空不需要更新");
+			return  1;
+		}
 		ShopStockNumberDTO shopStockNumber = null;
 		for (ShopStockRequestDTO addShopStockRequest : values) {
 			shopStockNumberDTO = new ShopStockNumberDTO();
 			shopStockNumberDTO.setId(IdGen.uuid());
 			shopStockNumberDTO.setStockNumber(addShopStockRequest.getStockNumber());
-			shopStockNumberDTO.setShopBossId(addShopStockRequest.getShopBossId());
+			shopStockNumberDTO.setShopBossId(sysBossDTO.getId());
 			shopStockNumberDTO.setShopProcId(addShopStockRequest.getShopProcId());
 			shopStockNumberDTO.setShopStoreId(addShopStockRequest.getShopStoreId());
 			shopStockNumberDTO.setUpdateDate(new Date());

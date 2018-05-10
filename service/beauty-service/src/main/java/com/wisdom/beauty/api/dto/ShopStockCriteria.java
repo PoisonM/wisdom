@@ -476,6 +476,66 @@ public class ShopStockCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andOutStockNumberIsNull() {
+            addCriterion("out_stock_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberIsNotNull() {
+            addCriterion("out_stock_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberEqualTo(Integer value) {
+            addCriterion("out_stock_number =", value, "outStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberNotEqualTo(Integer value) {
+            addCriterion("out_stock_number <>", value, "outStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberGreaterThan(Integer value) {
+            addCriterion("out_stock_number >", value, "outStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("out_stock_number >=", value, "outStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberLessThan(Integer value) {
+            addCriterion("out_stock_number <", value, "outStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("out_stock_number <=", value, "outStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberIn(List<Integer> values) {
+            addCriterion("out_stock_number in", values, "outStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberNotIn(List<Integer> values) {
+            addCriterion("out_stock_number not in", values, "outStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberBetween(Integer value1, Integer value2) {
+            addCriterion("out_stock_number between", value1, value2, "outStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutStockNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("out_stock_number not between", value1, value2, "outStockNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andStockNumberIsNull() {
             addCriterion("stock_number is null");
             return (Criteria) this;

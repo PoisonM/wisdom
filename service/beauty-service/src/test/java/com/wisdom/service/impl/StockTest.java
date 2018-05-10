@@ -67,25 +67,24 @@ public class StockTest  {
 
 
         List<ShopStockRequestDTO> list = new ArrayList<>();
-        ShopStockRequestDTO shopStockDTO = new ShopStockRequestDTO();
-        shopStockDTO.setShopBossId("11");
-        shopStockDTO.setShopStoreId("123");
-        shopStockDTO.setShopStockRecordId("3333");
-        shopStockDTO.setStockStatus("0");
+        ShopStockRequestDTO shopStockRequestDTO = new ShopStockRequestDTO();
 
-        shopStockDTO.setShopProcId("123");
-        shopStockDTO.setFlowNo("123456789");
-        shopStockDTO.setDetail("beizhu");
-        shopStockDTO.setStockNumber(99);
-        shopStockDTO.setProductDate(new Date());
-        shopStockDTO.setStockPrice(new BigDecimal("44"));
-        list.add(shopStockDTO);
+        shopStockRequestDTO.setShopStoreId("651742081");
+        shopStockRequestDTO.setStockStyle("1");
+        shopStockRequestDTO.setShopProcId("7878");
+        shopStockRequestDTO.setFlowNo("785489636598741258");
+        shopStockRequestDTO.setDetail("我写的备注啦啦啦啦");
+        shopStockRequestDTO.setStockNumber(99);
+        shopStockRequestDTO.setProductDate(new Date());
+        shopStockRequestDTO.setStockPrice(new BigDecimal("88.88"));
+        //如果是入库则不需要出这个
+        //shopStockRequestDTO.setStockType("0");
+        shopStockRequestDTO.setStockStyle("0");
 
+        list.add(shopStockRequestDTO);
 
         JSONArray json = JSONArray.fromObject(list);
         String toJSONString = json.toString();//把json转换为String
-
-
 
         MvcResult result = mvc.perform(post("/stock/addStock").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
@@ -124,15 +123,18 @@ public class StockTest  {
     public void  testUpdate(){
         Map<String,Object> param=new HashedMap();
         ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
-        shopStockNumberDTO.setId("2");
+        shopStockNumberDTO.setId("000000");
+        shopStockNumberDTO.setId("882");
         shopStockNumberDTO.setStockNumber(999);
         ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
-        shopStockNumberDTO2.setId("3");
+        shopStockNumberDTO2.setId("883");
+        shopStockNumberDTO2.setId("00000220");
         shopStockNumberDTO2.setStockNumber(999);
         List<ShopStockNumberDTO> list=new ArrayList<>();
         list.add(shopStockNumberDTO);
         list.add(shopStockNumberDTO2);
         param.put("list",list);
-        extShopStockNumberMapper.updateBatchShopStockNumber(param);
+       // extShopStockNumberMapper.updateBatchShopStockNumber(param);
+        extShopStockNumberMapper.saveBatchShopStockNumber(list);
     }
 }

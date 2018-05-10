@@ -74,7 +74,7 @@ public class StoreAndStockController {
 	 */
 	@RequestMapping(value = "/addStock", method = RequestMethod.POST)
 	@ResponseBody
-	ResponseDTO<Object> addStock(String shopStock) {
+	ResponseDTO<Object> addStock(@RequestBody String shopStock) {
 		long currentTimeMillis = System.currentTimeMillis();
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
@@ -93,14 +93,14 @@ public class StoreAndStockController {
 	 */
 	@RequestMapping(value = "/updateStockNumber", method = RequestMethod.POST)
 	@ResponseBody
-	ResponseDTO<Object> addStock(@RequestBody ShopStockNumberDTO shopStockNumberDTO) {
+	ResponseDTO<Object> updateStockNumber(@RequestBody ShopStockNumberDTO shopStockNumberDTO) {
 		long currentTimeMillis = System.currentTimeMillis();
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
 		shopStockService.updateStockNumber(shopStockNumberDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("addStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		logger.info("updateStockNumber方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 

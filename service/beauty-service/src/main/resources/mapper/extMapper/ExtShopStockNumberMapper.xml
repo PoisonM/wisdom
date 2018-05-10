@@ -38,9 +38,9 @@
         <foreach collection="list" item="item" separator=",">
             (#{item.id,jdbcType=VARCHAR}, #{item.shopProcId,jdbcType=VARCHAR}, #{item.shopStoreId,jdbcType=VARCHAR},
             #{item.shopBossId,jdbcType=VARCHAR}, #{item.stockNumber,jdbcType=INTEGER}, #{item.actualStockNumber,jdbcType=INTEGER},
-            #{item.actualStockPrice,jdbcType=INTEGER}, #{item.stockPrice,jdbcType=DECIMAL}
-            #{item.createBy,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR},
-            #{item.updateDate,jdbcType=TIMESTAMP})
+            #{item.actualStockPrice,jdbcType=INTEGER}, #{item.stockPrice,jdbcType=DECIMAL}, #{item.createBy,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR}, #{item.updateDate,jdbcType=TIMESTAMP}
+            )
         </foreach>
     </insert>
 
