@@ -59,10 +59,10 @@ public class CardTest {
         userRechargeCardDTO.setTimeDiscount(0.25f);
         userRechargeCardDTO.setPeriodDiscount(0.26f);
         userRechargeCardDTO.setProductDiscount(0.27f);
-        userRechargeCardDTO.setShopRechargeCardName("梅大");
-        userRechargeCardDTO.setShopRechargeCardId("11");
+        userRechargeCardDTO.setName("梅大");
+        userRechargeCardDTO.setId("11");
         userRechargeCardDTO.setRechargeAmount("1000");
-        userRechargeCardDTO.setInitAmount(new BigDecimal(5000));
+        userRechargeCardDTO.setAmount(new BigDecimal(5000));
         userRechargeCardDTO.setCashPay("1000");
         userRechargeCardDTO.setPayType("1");
         userRechargeCardDTO.setSurplusPayPrice("100");
