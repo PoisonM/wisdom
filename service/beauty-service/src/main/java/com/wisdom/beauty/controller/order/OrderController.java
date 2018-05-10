@@ -13,6 +13,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -89,7 +90,7 @@ public class OrderController {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("保存用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
-        if(null == shopUserOrderDTO){
+        if(null == shopUserOrderDTO || StringUtils.isBlank(shopUserOrderDTO.getUserId())){
             logger.error("保存用户的订单信息传入参数为空");
             return null;
         }
@@ -111,7 +112,7 @@ public class OrderController {
         shopUserOrderDTO.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
         shopUserOrderDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
         shopUserOrderDTO.setCreateDate(new Date());
-
+        shopUserOrderDTO.setUserId(shopUserOrderDTO.getUserId());
         mongoTemplate.save(shopUserOrderDTO, "shopUserOrderDTO");
 
         responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
