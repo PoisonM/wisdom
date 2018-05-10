@@ -118,6 +118,15 @@ public interface ShopStockService {
     *@Date:2018/5/9 16:52
     */
     int  batchAddShopStockNumber(List<ShopStockNumberDTO> shopStockNumberDTO);
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据记录id获取产品入库单详情
+     * @Date:2018/5/2 16:54
+     */
+    ShopStockResponseDTO getProductInfoAndStock(String shopStoreId, String shopProcId);
+
 
 
 }

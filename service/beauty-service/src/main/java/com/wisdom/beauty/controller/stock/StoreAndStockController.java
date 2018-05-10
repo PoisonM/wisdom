@@ -191,5 +191,28 @@ public class StoreAndStockController {
 		logger.info("getShopStockRecordList方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
+	/**
+	 * @Author:zhanghuan
+	 * @Param: 产品id 和仓库id
+	 * @Return:
+	 * @Description: 获取产品信息以及库存信息
+	 * @Date:2018/5/9 21:21
+	 */
+	@RequestMapping(value = "/getProductInfoAndStock", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<ShopStockResponseDTO> getProductInfoAndStock(@RequestParam String shopStoreId, @RequestParam String shopProcId) {
+		long currentTimeMillis = System.currentTimeMillis();
 
+		ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
+		shopStockNumberDTO.setShopStoreId(shopStoreId);
+		shopStockNumberDTO.setShopProcId(shopProcId);
+		ShopStockResponseDTO shopStockResponseDTO = shopStockService.getProductInfoAndStock(shopStoreId,  shopProcId);
+		Map<String, Object> map = new HashedMap();
+
+		ResponseDTO<ShopStockResponseDTO> responseDTO = new ResponseDTO<>();
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(shopStockResponseDTO);
+		logger.info("addStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
 }

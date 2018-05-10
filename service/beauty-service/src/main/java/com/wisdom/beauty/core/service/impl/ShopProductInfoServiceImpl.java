@@ -273,6 +273,8 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		shopProductInfoResponseDTO.setProductSpec(shopProductInfo.getProductSpec());
 		shopProductInfoResponseDTO.setProductFunction(shopProductInfo.getProductFunction());
 		shopProductInfoResponseDTO.setIntroduce(shopProductInfo.getIntroduce());
+		shopProductInfoResponseDTO.setProductUnit(shopProductInfo.getProductUnit());
+		shopProductInfoResponseDTO.setProductCode(shopProductInfo.getProductCode());
 		if(	CollectionUtils.isNotEmpty(imageUrls)){
 			ImageUrl imageUrl=imageUrls.get(0);
 			String url=imageUrl.getUrl();
