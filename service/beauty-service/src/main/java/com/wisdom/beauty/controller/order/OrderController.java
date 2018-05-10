@@ -13,6 +13,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -89,27 +90,32 @@ public class OrderController {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("保存用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
+        if(null == shopUserOrderDTO || StringUtils.isBlank(shopUserOrderDTO.getUserId())){
+            logger.error("保存用户的订单信息传入参数为空");
+            return null;
+        }
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
         //先查询最后一次订单信息
         Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(shopUserOrderDTO.getUserId()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
-        shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-        if (null != shopUserOrderDTO) {
-            responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
+        ShopUserOrderDTO searchOrderInfo = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        if (null != searchOrderInfo) {
+            responseDTO.setResponseData(searchOrderInfo.getOrderId());
             responseDTO.setResult(StatusConstant.SUCCESS);
             return responseDTO;
         }
         //如果最后一次订单为空则需初始化插入
-        shopUserOrderDTO.setShopId(clerkInfo.getSysShopId());
-        shopUserOrderDTO.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
-        shopUserOrderDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
-        shopUserOrderDTO.setCreateDate(new Date());
+        searchOrderInfo = new ShopUserOrderDTO();
+        searchOrderInfo.setShopId(clerkInfo.getSysShopId());
+        searchOrderInfo.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
+        searchOrderInfo.setStatus(OrderStatusEnum.NOT_PAY.getCode());
+        searchOrderInfo.setCreateDate(new Date());
+        searchOrderInfo.setUserId(shopUserOrderDTO.getUserId());
+        mongoTemplate.save(searchOrderInfo, "shopUserOrderDTO");
 
-        mongoTemplate.save(shopUserOrderDTO, "shopUserOrderDTO");
-
-        responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
+        responseDTO.setResponseData(searchOrderInfo.getOrderId());
         responseDTO.setResult(StatusConstant.SUCCESS);
 
         logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);

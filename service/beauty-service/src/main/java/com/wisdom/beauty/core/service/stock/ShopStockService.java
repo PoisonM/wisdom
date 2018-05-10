@@ -102,6 +102,31 @@ public interface ShopStockService {
     *@Date:2018/5/4 17:57
     */
     int saveStockNumber(ShopStockNumberDTO shopStockNumberDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:  根据多个产品id查询ShopStockNumberDTO集合
+    *@Date:2018/5/9 14:35
+    */
+    List<ShopStockNumberDTO> getShopStockNumberBy(List<String> productIds);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 批量插入ShopStockNumberDTO
+    *@Date:2018/5/9 16:52
+    */
+    int  batchAddShopStockNumber(List<ShopStockNumberDTO> shopStockNumberDTO);
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据记录id获取产品入库单详情
+     * @Date:2018/5/2 16:54
+     */
+    ShopStockResponseDTO getProductInfoAndStock(String shopStoreId, String shopProcId);
+
 
 
 }

@@ -4,13 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.dto.ShopStockDTO;
+import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.dto.ShopStockRecordDTO;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
+import com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.common.util.SpringUtil;
 import net.sf.json.JSONArray;
+import org.apache.commons.collections.map.HashedMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +32,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -48,6 +52,8 @@ public class StockTest  {
     private WebApplicationContext context;
     @Autowired
     private ShopStockService shopStockService;
+    @Autowired
+    private ExtShopStockNumberMapper extShopStockNumberMapper;
 
     @Before
     public void setupMockMvc() throws Exception {
@@ -61,25 +67,24 @@ public class StockTest  {
 
 
         List<ShopStockRequestDTO> list = new ArrayList<>();
-        ShopStockRequestDTO shopStockDTO = new ShopStockRequestDTO();
-        shopStockDTO.setShopBossId("11");
-        shopStockDTO.setShopStoreId("123");
-        shopStockDTO.setShopStockRecordId("3333");
-        shopStockDTO.setStockStatus("0");
+        ShopStockRequestDTO shopStockRequestDTO = new ShopStockRequestDTO();
 
-        shopStockDTO.setShopProcId("123");
-        shopStockDTO.setFlowNo("123456789");
-        shopStockDTO.setDetail("beizhu");
-        shopStockDTO.setStockNumber(99);
-        shopStockDTO.setProductDate(new Date());
-        shopStockDTO.setStockPrice(new BigDecimal("44"));
-        list.add(shopStockDTO);
+        shopStockRequestDTO.setShopStoreId("651742081");
+        shopStockRequestDTO.setStockStyle("1");
+        shopStockRequestDTO.setShopProcId("7878");
+        shopStockRequestDTO.setFlowNo("785489636598741258");
+        shopStockRequestDTO.setDetail("我写的备注啦啦啦啦");
+        shopStockRequestDTO.setStockNumber(99);
+        shopStockRequestDTO.setProductDate(new Date());
+        shopStockRequestDTO.setStockPrice(new BigDecimal("88.88"));
+        //如果是入库则不需要出这个
+        //shopStockRequestDTO.setStockType("0");
+        shopStockRequestDTO.setStockStyle("0");
 
+        list.add(shopStockRequestDTO);
 
         JSONArray json = JSONArray.fromObject(list);
         String toJSONString = json.toString();//把json转换为String
-
-
 
         MvcResult result = mvc.perform(post("/stock/addStock").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
@@ -92,17 +97,44 @@ public class StockTest  {
 
     @Test
     public  void test(){
-      /*  String json =  "[{\"id\":\"133223\",\"shopBossId\":\"20\"},{\"id\":\"3232\",\"shopBossId\":\"20\"}]";
+        /*String json =  "[{\"id\":\"133223\",\"shopBossId\":\"20\"},{\"id\":\"3232\",\"shopBossId\":\"20\"}]";
         shopStockService.insertShopStockDTO(json);*/
-        ShopStockRecordRequestDTO shopStockRecordRequestDTO = new ShopStockRecordRequestDTO();
+        List<ShopStockRequestDTO> list = new ArrayList<>();
+        ShopStockRequestDTO shopStockDTO = new ShopStockRequestDTO();
+        shopStockDTO.setShopBossId("11");
+        shopStockDTO.setShopStoreId("123");
+        shopStockDTO.setShopStockRecordId("3333");
+        shopStockDTO.setStockStatus("0");
 
-        shopStockRecordRequestDTO.setPageSize(9);
-        shopStockRecordRequestDTO.setStartTime("2018-04-10 00:00:00");
-        shopStockRecordRequestDTO.setEndTime("2019-04-10 00:00:00");
-        shopStockRecordRequestDTO.setShopStoreId("5");
-        shopStockRecordRequestDTO.setStockStyle("0");
+        shopStockDTO.setShopProcId("00");
+        shopStockDTO.setFlowNo("999999999");
+        shopStockDTO.setDetail("尹朝阳八佰伴");
+        shopStockDTO.setStockNumber(99);
+        //shopStockDTO.setProductDate(new Date());
+        shopStockDTO.setStockPrice(new BigDecimal("44"));
+        list.add(shopStockDTO);
 
-        String toJSONString = JSONObject.toJSONString(shopStockRecordRequestDTO);
+
+        JSONArray json = JSONArray.fromObject(list);
+        String toJSONString = json.toString();//把json转换为String
+        shopStockService.insertShopStockDTO(toJSONString);
     }
-
+    @Test
+    public void  testUpdate(){
+        Map<String,Object> param=new HashedMap();
+        ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
+        shopStockNumberDTO.setId("000000");
+        shopStockNumberDTO.setId("882");
+        shopStockNumberDTO.setStockNumber(999);
+        ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
+        shopStockNumberDTO2.setId("883");
+        shopStockNumberDTO2.setId("00000220");
+        shopStockNumberDTO2.setStockNumber(999);
+        List<ShopStockNumberDTO> list=new ArrayList<>();
+        list.add(shopStockNumberDTO);
+        list.add(shopStockNumberDTO2);
+        param.put("list",list);
+       // extShopStockNumberMapper.updateBatchShopStockNumber(param);
+        extShopStockNumberMapper.saveBatchShopStockNumber(list);
+    }
 }
