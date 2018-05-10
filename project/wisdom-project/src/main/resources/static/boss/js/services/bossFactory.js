@@ -1,6 +1,6 @@
 
 var user = '/user/';
-var appointmentInfo = 'http://192.168.1.117/beauty/appointmentInfo/';
+var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
 var consume = '/beauty/consume/';
