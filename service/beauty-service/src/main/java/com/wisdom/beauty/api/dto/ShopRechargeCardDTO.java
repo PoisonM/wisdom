@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopRechargeCardDTO extends BaseEntity implements Serializable {
@@ -13,16 +14,19 @@ public class ShopRechargeCardDTO extends BaseEntity implements Serializable {
     private String name;
 
     //充值面额
-    private Long amount;
+    private BigDecimal amount;
 
     //图片
     private String imageUrl;
 
-    //折扣
-    private Float discount;
+    //
+    private Float timeDiscount;
 
-    //折扣描述
-    private String discountDesc;
+    //
+    private Float periodDiscount;
+
+    //
+    private Float productDiscount;
 
     //
     private String sysShopId;
@@ -63,11 +67,11 @@ public class ShopRechargeCardDTO extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public Long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -79,20 +83,28 @@ public class ShopRechargeCardDTO extends BaseEntity implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Float getDiscount() {
-        return discount;
+    public Float getTimeDiscount() {
+        return timeDiscount;
     }
 
-    public void setDiscount(Float discount) {
-        this.discount = discount;
+    public void setTimeDiscount(Float timeDiscount) {
+        this.timeDiscount = timeDiscount;
     }
 
-    public String getDiscountDesc() {
-        return discountDesc;
+    public Float getPeriodDiscount() {
+        return periodDiscount;
     }
 
-    public void setDiscountDesc(String discountDesc) {
-        this.discountDesc = discountDesc;
+    public void setPeriodDiscount(Float periodDiscount) {
+        this.periodDiscount = periodDiscount;
+    }
+
+    public Float getProductDiscount() {
+        return productDiscount;
+    }
+
+    public void setProductDiscount(Float productDiscount) {
+        this.productDiscount = productDiscount;
     }
 
     public String getSysShopId() {
