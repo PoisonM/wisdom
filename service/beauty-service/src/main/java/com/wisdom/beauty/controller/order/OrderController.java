@@ -89,6 +89,10 @@ public class OrderController {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("保存用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
+        if(null == shopUserOrderDTO){
+            logger.error("保存用户的订单信息传入参数为空");
+            return null;
+        }
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
