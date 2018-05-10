@@ -24,4 +24,12 @@ public interface ExtShopStockNumberMapper extends BaseDao<ShopStockNumberDTO, Sh
      * @Date:2018/5/3 18:10
      */
     int updateBatchShopStockNumber(Map<String,Object> param);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:批量插入
+    *@Date:2018/5/9 20:47
+    */
+    int saveBatchShopStockNumber(List<ShopStockNumberDTO> shopStockDTO);
 }

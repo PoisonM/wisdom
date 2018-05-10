@@ -1,18 +1,19 @@
 package com.wisdom.beauty.controller.stock;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
-import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
+import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.dto.ShopStockRecordDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -73,12 +74,64 @@ public class StoreAndStockController {
 	 */
 	@RequestMapping(value = "/addStock", method = RequestMethod.POST)
 	@ResponseBody
-	ResponseDTO<Object> addStock(String shopStock) {
+	ResponseDTO<Object> addStock(@RequestBody String shopStock) {
 		long currentTimeMillis = System.currentTimeMillis();
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		shopStockService.insertShopStockDTO(shopStock);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("addStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+	/**
+	 * @Author:zhanghuan
+	 * @Param:
+	 * @Return:
+	 * @Description: 更新库存实际量和价格
+	 * @Date:2018/5/9 21:21
+	 */
+	@RequestMapping(value = "/updateStockNumber", method = RequestMethod.POST)
+	@ResponseBody
+	ResponseDTO<Object> updateStockNumber(@RequestBody ShopStockNumberDTO shopStockNumberDTO) {
+		long currentTimeMillis = System.currentTimeMillis();
+
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+
+		shopStockService.updateStockNumber(shopStockNumberDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("updateStockNumber方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+	/**
+	 * @Author:zhanghuan
+	 * @Param: 产品id 和仓库id
+	 * @Return:
+	 * @Description: 获取库存数量和价格
+	 * @Date:2018/5/9 21:21
+	 */
+	@RequestMapping(value = "/getStockNumber", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<Map<String, Object>> getStockNumber(@RequestParam String shopStoreId, @RequestParam String shopProcId) {
+		long currentTimeMillis = System.currentTimeMillis();
+
+		ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
+		shopStockNumberDTO.setShopStoreId(shopStoreId);
+		shopStockNumberDTO.setShopProcId(shopProcId);
+		ShopStockNumberDTO shopStockNumber = shopStockService.getStockNumber(shopStockNumberDTO);
+		Map<String, Object> map = new HashedMap();
+		Integer stockNumber = null;
+		BigDecimal stockPrice = null;
+		if (shopStockNumber != null) {
+			stockNumber = shopStockNumber.getStockNumber();
+			stockPrice = shopStockNumber.getStockPrice();
+		}
+		map.put("stockNumber", stockNumber);
+		map.put("stockPrice", stockPrice);
+		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(map);
 		logger.info("addStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
@@ -116,6 +169,7 @@ public class StoreAndStockController {
 		logger.info("getShopStockRecordList方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
+
 	/**
 	 * @Author:zhanghuan
 	 * @Param:
@@ -127,11 +181,10 @@ public class StoreAndStockController {
 	@ResponseBody
 	ResponseDTO<ShopStockResponseDTO> getShopStockRecordDetail(@RequestParam String id) {
 		long currentTimeMillis = System.currentTimeMillis();
-		ShopStockRecordDTO shopStockRecordDTO=new ShopStockRecordDTO();
+		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
 		shopStockRecordDTO.setId(id);
 		ShopStockResponseDTO shopStockResponseDTO = shopStockService.getShopStock(shopStockRecordDTO);
 		ResponseDTO<ShopStockResponseDTO> responseDTO = new ResponseDTO<>();
-
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(shopStockResponseDTO);
