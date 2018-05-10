@@ -1,12 +1,13 @@
 
 var user = '/user/';
 var appointmentInfo = 'http://192.168.1.117/beauty/appointmentInfo/';
-var work = 'http://192.168.1.117/beauty/work/';
-var stock = 'http://192.168.1.117/beauty/stock/';
-var consume = 'http://192.168.1.117/beauty/consume/';
-var  earlyWarning =  'http://192.168.1.117/beauty/earlyWarning/';
-var  archives =  'http://192.168.1.117/beauty/archives/';
-var shopBossRelation ='http://192.168.1.117/beauty/shopBossRelation/';
+var work = '/beauty/work/';
+var stock = '/beauty/stock/';
+var consume = '/beauty/consume/';
+var  earlyWarning =  '/beauty/earlyWarning/';
+var  archives =  '/beauty/archives/';
+var shopBossRelation ='/beauty/shopBossRelation/';
+/*http://192.168.1.117*/
 
 
 define(['appBoss'], function (app) {
