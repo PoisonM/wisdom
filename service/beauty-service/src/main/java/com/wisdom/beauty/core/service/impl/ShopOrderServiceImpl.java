@@ -139,7 +139,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                 if(null != userProductRelationDTO && null != userProductRelationDTO.getInitAmount()){
                     logger.info("订单号={}，对应产品折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
                     BigDecimal multiplyAmount = userProductRelationDTO.getInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount()));
-                    userProductRelationDTO.setInitAmount(multiplyAmount);
+                    userProductRelationDTO.setInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                     userProductRelationDTO.setDiscount(shopUserRechargeCardDTO.getProductDiscount());
                     updateFlag = true;
                 }
@@ -156,12 +156,12 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(userProjectRelationDTO.getUseStyle())) {
                         BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()));
-                        userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount);
+                        userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                         userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getTimeDiscount()));
                         updateFlag = true;
                     } else {
                         BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()));
-                        userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount);
+                        userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                         userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getPeriodDiscount()));
                         updateFlag = true;
                     }
