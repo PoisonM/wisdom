@@ -112,7 +112,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         //充值卡主键
         String shopRechargeCardId = shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId();
         logger.info("订单号={}，充值卡主键为，{}", orderId, shopRechargeCardId);
-        boolean updateFlag = false;
+        boolean updateFlag = true;
         //遍历用户的产品，更新产品的初始金额
         List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = alreadyOrderDTO.getShopUserProductRelationDTOS();
         if (CommonUtils.objectIsNotEmpty(shopUserProductRelationDTOS)) {
@@ -129,7 +129,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     BigDecimal multiplyAmount = userProductRelationDTO.getInitAmount().multiply(new BigDecimal(shopUserProductRelationInfo.getDiscount()));
                     userProductRelationDTO.setInitAmount(multiplyAmount);
                     userProductRelationDTO.setDiscount(shopUserProductRelationInfo.getDiscount());
-                    updateFlag = true;
+                    updateFlag = false;
                 }
             }
         }
@@ -150,7 +150,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserProductRelationInfo.getDiscount()));
                     userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount);
                     userProjectRelationDTO.setDiscount(String.valueOf(shopUserProductRelationInfo.getDiscount()));
-                    updateFlag = true;
+                    updateFlag = false;
                 }
             }
         }
@@ -171,7 +171,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     BigDecimal multiplyAmount = groupRelRelationDTO.getProjectInitAmount().multiply(new BigDecimal(shopUserProductRelationInfo.getDiscount()));
                     groupRelRelationDTO.setProjectInitAmount(multiplyAmount);
                     groupRelRelationDTO.setDiscount(shopUserProductRelationInfo.getDiscount());
-                    updateFlag = true;
+                    updateFlag = false;
                 }
             }
         }
