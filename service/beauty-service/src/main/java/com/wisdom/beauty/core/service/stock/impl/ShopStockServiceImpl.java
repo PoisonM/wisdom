@@ -444,4 +444,29 @@ public class ShopStockServiceImpl implements ShopStockService {
 		return extShopStockNumberMapper.saveBatchShopStockNumber(shopStockNumberDTO);
 	}
 
+	@Override
+	public ShopStockResponseDTO getProductInfoAndStock(String shopStoreId, String shopProcId) {
+		logger.info("getProductInfoAndStock方法传入的参数shopStoreId={}shopProcId={}", shopStoreId,shopProcId);
+
+		// 查询产品信息
+		ShopProductInfoResponseDTO shopProductInfoResponseDTO = shopProductInfoService.getProductDetail(shopProcId);
+		ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
+		shopStockNumberDTO.setShopStoreId(shopStoreId);
+		shopStockNumberDTO.setShopProcId(shopProcId);
+		ShopStockNumberDTO shopStockNumber=this.getStockNumber(shopStockNumberDTO);
+		ShopStockResponseDTO shopStockResponseDTO=new ShopStockResponseDTO();
+		if(shopProductInfoResponseDTO!=null){
+			shopStockResponseDTO.setProductCode(shopProductInfoResponseDTO.getProductCode());
+			shopStockResponseDTO.setProductSpec(shopProductInfoResponseDTO.getProductSpec());
+			shopStockResponseDTO.setProductUnit(shopProductInfoResponseDTO.getProductUnit());
+			shopStockResponseDTO.setImageUrl(shopProductInfoResponseDTO.getImageUrl());
+			shopStockResponseDTO.setShopProcName(shopProductInfoResponseDTO.getProductName());
+		}
+		if(shopStockNumber!=null){
+			shopStockResponseDTO.setStockNumber(shopStockNumber.getStockNumber());
+			shopStockResponseDTO.setStockPrice(shopStockNumber.getStockPrice());
+		}
+		return shopStockResponseDTO;
+	}
+
 }
