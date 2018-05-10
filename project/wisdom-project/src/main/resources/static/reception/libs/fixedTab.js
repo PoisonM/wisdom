@@ -62,7 +62,7 @@ oFixedTable.prototype.buildHead = function(){
 
     //判断是否出现纵向滚动条，若出现，高度减去滚动条宽度 16px
     var sw = _.obj.offsetHeight > _.box.offsetHeight ? 16 : 0;
-    _.divHead.style.width = (_.box.offsetWidth - sw) + 'px';
+    _.divHead.style.width = (_.box.offsetWidth) + 'px';
 
     _.tbHead.style.textAlign = _.obj.style.textAlign;
     _.tbHead.style.width = _.obj.offsetWidth + 'px';
@@ -105,7 +105,7 @@ oFixedTable.prototype.buildLeft = function(){
 
     //判断是否出现横向滚动条，若出现，高度减去滚动条高度 16px
     var sw = _.obj.offsetWidth > _.box.offsetWidth ? 16 : 0;
-    _.divLeft.style.height = (_.box.offsetHeight - sw) + 'px';
+    _.divLeft.style.height = (_.box.offsetHeight) + 'px';
 
     var hasLeft = false;
     for(var i=0,rows=_.obj.rows.length; i<rows; i++){
