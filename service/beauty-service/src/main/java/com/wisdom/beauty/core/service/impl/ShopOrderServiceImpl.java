@@ -136,9 +136,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         if (CommonUtils.objectIsNotEmpty(shopUserProductRelationDTOS)) {
             logger.info("订单号={}，更新用户产品信息", orderId);
             for (ShopUserProductRelationDTO userProductRelationDTO : shopUserProductRelationDTOS) {
-                if(null != userProductRelationDTO && null != userProductRelationDTO.getInitAmount()){
+                if (null != userProductRelationDTO && null != userProductRelationDTO.getPurchasePrice()) {
                     logger.info("订单号={}，对应产品折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
-                    BigDecimal multiplyAmount = userProductRelationDTO.getInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount()));
+                    BigDecimal multiplyAmount = userProductRelationDTO.getPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount()));
                     userProductRelationDTO.setInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                     userProductRelationDTO.setDiscount(shopUserRechargeCardDTO.getProductDiscount());
                     updateFlag = true;
@@ -152,15 +152,15 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             logger.info("订单号={}，更新用户单次或疗程卡信息", orderId);
             for (ShopUserProjectRelationDTO userProjectRelationDTO : shopUserProjectRelationDTOS) {
                 logger.info("订单号={}，对应单次或疗程卡折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
-                if(null != userProjectRelationDTO && null != userProjectRelationDTO.getSysShopProjectInitAmount()){
+                if (null != userProjectRelationDTO && null != userProjectRelationDTO.getSysShopProjectPurchasePrice()) {
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(userProjectRelationDTO.getUseStyle())) {
-                        BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()));
+                        BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()));
                         userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                         userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getTimeDiscount()));
                         updateFlag = true;
                     } else {
-                        BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()));
+                        BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()));
                         userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                         userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getPeriodDiscount()));
                         updateFlag = true;
