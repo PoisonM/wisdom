@@ -90,24 +90,31 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 	}
 
 	@Override
-	public ShopRechargeCardResponseDTO getShopRechargeCard(String id) {
-		logger.info("getThreeLevelProjectList传入的参数,id={}", id);
+	public ShopRechargeCardResponseDTO getShopRechargeCard(ShopRechargeCardDTO shopRechargeCardDTO) {
+		logger.info("getThreeLevelProjectList传入的参数,id={}", shopRechargeCardDTO);
 
-		if (StringUtils.isBlank(id)) {
+		if (null == shopRechargeCardDTO) {
 			return null;
 		}
 
 		ShopRechargeCardCriteria shopRechargeCardCriteria = new ShopRechargeCardCriteria();
 		ShopRechargeCardCriteria.Criteria criteria = shopRechargeCardCriteria.createCriteria();
 
-		criteria.andIdEqualTo(id);
+		if (StringUtils.isNotBlank(shopRechargeCardDTO.getId())) {
+			criteria.andIdEqualTo(shopRechargeCardDTO.getId());
+		}
+
+		if (StringUtils.isNotBlank(shopRechargeCardDTO.getSysShopId())) {
+			criteria.andSysShopIdEqualTo(shopRechargeCardDTO.getSysShopId());
+		}
+
 		List<ShopRechargeCardDTO> list = shopRechargeCardMapper.selectByCriteria(shopRechargeCardCriteria);
 		if (CollectionUtils.isEmpty(list)) {
 			logger.info("shopRechargeCardMapper.selectByCriteria()方法查询结果为空");
 			return null;
 		}
 
-		ShopRechargeCardDTO shopRechargeCardDTO = list.get(0);
+		shopRechargeCardDTO = list.get(0);
 
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = new ShopRechargeCardResponseDTO();
 		BeanUtils.copyProperties(shopRechargeCardDTO, shopRechargeCardResponseDTO);

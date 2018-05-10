@@ -660,11 +660,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             logger.info("针对普通卡进行插入操作交易号，{},订单对象为", transactionId, orderDTO);
             ShopUserRechargeCardDTO rechargeCardDTO = new ShopUserRechargeCardDTO();
             rechargeCardDTO.setId(IdGen.uuid());
-            rechargeCardDTO.setShopRechargeCardId(rechargeCardDTO.getId());
-            rechargeCardDTO.setShopRechargeCardName(rechargeCardDTO.getShopRechargeCardName());
-            rechargeCardDTO.setProductDiscount(rechargeCardDTO.getProductDiscount());
-            rechargeCardDTO.setPeriodDiscount(rechargeCardDTO.getPeriodDiscount());
-            rechargeCardDTO.setTimeDiscount(rechargeCardDTO.getTimeDiscount());
+            rechargeCardDTO.setShopRechargeCardId(orderDTO.getId());
+            rechargeCardDTO.setShopRechargeCardName("余额充值");
+            rechargeCardDTO.setProductDiscount(orderDTO.getProductDiscount());
+            rechargeCardDTO.setPeriodDiscount(orderDTO.getPeriodDiscount());
+            rechargeCardDTO.setTimeDiscount(orderDTO.getTimeDiscount());
             rechargeCardDTO.setSysShopId(clerkInfo.getSysShopId());
             rechargeCardDTO.setSysUserId(orderDTO.getSysUserId());
             //总金额 = 充值金额

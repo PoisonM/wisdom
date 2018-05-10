@@ -176,7 +176,9 @@ public class CardController {
 	ResponseDTO<Object> findRechargeCard(@PathVariable String id) {
 		long currentTimeMillis = System.currentTimeMillis();
 		// 查询数据
-		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(id);
+		ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
+		shopRechargeCardDTO.setId(id);
+		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(shopRechargeCardDTO);
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopRechargeCardResponseDTO);

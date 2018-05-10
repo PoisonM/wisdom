@@ -36,7 +36,7 @@ public interface ShopRechargeCardService {
      * @Description: 根据充值卡id查询充值卡信息
      * @Date:2018/4/11 12:02
      */
-    ShopRechargeCardResponseDTO getShopRechargeCard(String id);
+    ShopRechargeCardResponseDTO getShopRechargeCard(ShopRechargeCardDTO shopRechargeCardDTO);
 
     /**
      * @Author:huan

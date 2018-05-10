@@ -15,6 +15,7 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.*;
@@ -168,12 +169,28 @@ public class ArchivesController {
             userInfoDTO = userInfoDTOS.get(0);
         }
 
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        String sysBossId = null;
+        String sysShopId = null;
+        //pad端登陆
+        if (null != clerkInfo) {
+            sysBossId = clerkInfo.getSysBossId();
+            sysShopId = clerkInfo.getSysShopId();
+        }
+        if (null != bossInfo) {
+            sysBossId = bossInfo.getId();
+        }
+
         shopUserArchivesDTO.setSysUserId(userInfoDTO.getId());
         shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
         shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
         shopUserArchivesDTO.setCreateDate(new Date());
         shopUserArchivesDTO.setSysUserId(shopUserArchivesDTO.getSysClerkId());
-        shopCustomerArchivesService.saveShopUserArchivesInfo(shopUserArchivesDTO);
+        shopUserArchivesDTO.setSysShopId(sysShopId);
+        shopUserArchivesDTO.setSysBossId(sysBossId);
+        int info = shopCustomerArchivesService.saveShopUserArchivesInfo(shopUserArchivesDTO);
+        logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");
 
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
