@@ -2,7 +2,7 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
-import com.wisdom.beauty.api.extDto.ExtShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class CardTest {
     @Test
     public void getShopClerkScheduleList() throws Exception {
 
-        ExtShopUserRechargeCardDTO userRechargeCardDTO = new ExtShopUserRechargeCardDTO();
+        ShopRechargeCardOrderDTO userRechargeCardDTO = new ShopRechargeCardOrderDTO();
         userRechargeCardDTO.setId("1");
         userRechargeCardDTO.setTimeDiscount(0.25f);
         userRechargeCardDTO.setPeriodDiscount(0.26f);

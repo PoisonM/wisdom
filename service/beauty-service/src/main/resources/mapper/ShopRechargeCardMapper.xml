@@ -9,6 +9,7 @@
     <result column="time_discount" property="timeDiscount" jdbcType="REAL"/>
     <result column="period_discount" property="periodDiscount" jdbcType="REAL"/>
     <result column="product_discount" property="productDiscount" jdbcType="REAL"/>
+    <result column="recharge_card_type" property="rechargeCardType" jdbcType="VARCHAR"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
     <result column="introduce" property="introduce" jdbcType="VARCHAR"/>
     <result column="status" property="status" jdbcType="CHAR"/>
@@ -76,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, amount, image_url, time_discount, period_discount, product_discount, sys_shop_id,
-    introduce, status, create_by, create_date, update_user, update_date
+    id, name, amount, image_url, time_discount, period_discount, product_discount, recharge_card_type,
+    sys_shop_id, introduce, status, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopRechargeCardCriteria">
@@ -116,14 +117,16 @@
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopRechargeCardDTO">
     insert into shop_recharge_card (id, name, amount,
     image_url, time_discount, period_discount,
-    product_discount, sys_shop_id, introduce,
-    status, create_by, create_date,
-    update_user, update_date)
+    product_discount, recharge_card_type, sys_shop_id,
+    introduce, status, create_by,
+    create_date, update_user, update_date
+    )
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL},
     #{imageUrl,jdbcType=VARCHAR}, #{timeDiscount,jdbcType=REAL}, #{periodDiscount,jdbcType=REAL},
-    #{productDiscount,jdbcType=REAL}, #{sysShopId,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR},
-    #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+    #{productDiscount,jdbcType=REAL}, #{rechargeCardType,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR},
+    #{introduce,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR},
+    #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopRechargeCardDTO">
     insert into shop_recharge_card
@@ -148,6 +151,9 @@
       </if>
       <if test="productDiscount != null">
         product_discount,
+      </if>
+      <if test="rechargeCardType != null">
+        recharge_card_type,
       </if>
       <if test="sysShopId != null">
         sys_shop_id,
@@ -192,6 +198,9 @@
       </if>
       <if test="productDiscount != null">
         #{productDiscount,jdbcType=REAL},
+      </if>
+      <if test="rechargeCardType != null">
+        #{rechargeCardType,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null">
         #{sysShopId,jdbcType=VARCHAR},
@@ -247,6 +256,9 @@
       <if test="record.productDiscount != null">
         product_discount = #{record.productDiscount,jdbcType=REAL},
       </if>
+      <if test="record.rechargeCardType != null">
+        recharge_card_type = #{record.rechargeCardType,jdbcType=VARCHAR},
+      </if>
       <if test="record.sysShopId != null">
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
@@ -282,6 +294,7 @@
     time_discount = #{record.timeDiscount,jdbcType=REAL},
     period_discount = #{record.periodDiscount,jdbcType=REAL},
     product_discount = #{record.productDiscount,jdbcType=REAL},
+    recharge_card_type = #{record.rechargeCardType,jdbcType=VARCHAR},
     sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       introduce = #{record.introduce,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=CHAR},
@@ -313,6 +326,9 @@
       </if>
       <if test="productDiscount != null">
         product_discount = #{productDiscount,jdbcType=REAL},
+      </if>
+      <if test="rechargeCardType != null">
+        recharge_card_type = #{rechargeCardType,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null">
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
@@ -346,6 +362,7 @@
     time_discount = #{timeDiscount,jdbcType=REAL},
     period_discount = #{periodDiscount,jdbcType=REAL},
     product_discount = #{productDiscount,jdbcType=REAL},
+    recharge_card_type = #{rechargeCardType,jdbcType=VARCHAR},
     sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       introduce = #{introduce,jdbcType=VARCHAR},
       status = #{status,jdbcType=CHAR},

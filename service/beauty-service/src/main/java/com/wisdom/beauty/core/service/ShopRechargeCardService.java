@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
@@ -18,6 +19,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 public interface ShopRechargeCardService {
+
     /**
      * @Author:huan
      * @Param:
@@ -25,7 +27,7 @@ public interface ShopRechargeCardService {
      * @Description: 获取充值卡列表
      * @Date:2018/4/11 11:39
      */
-    List<ShopRechargeCardResponseDTO> getShopRechargeCardList(PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO);
+    List<ShopRechargeCardOrderDTO> getShopRechargeCardList(PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO);
 
     /**
      * @Author:huan
@@ -69,4 +71,12 @@ public interface ShopRechargeCardService {
      * @return
      */
     ShopUserRechargeCardDTO getShopUserRechargeInfo(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
+
+    /**
+     * 生产用户的充值卡
+     *
+     * @param userRechargeCardDTO
+     * @return
+     */
+    int saveShopUserRechargeCardInfo(ShopUserRechargeCardDTO userRechargeCardDTO);
 }

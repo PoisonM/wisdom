@@ -28,6 +28,9 @@ public class ShopRechargeCardDTO extends BaseEntity implements Serializable {
     //
     private Float productDiscount;
 
+    //0 特殊充值卡
+    private String rechargeCardType;
+
     //
     private String sysShopId;
 
@@ -105,6 +108,14 @@ public class ShopRechargeCardDTO extends BaseEntity implements Serializable {
 
     public void setProductDiscount(Float productDiscount) {
         this.productDiscount = productDiscount;
+    }
+
+    public String getRechargeCardType() {
+        return rechargeCardType;
+    }
+
+    public void setRechargeCardType(String rechargeCardType) {
+        this.rechargeCardType = rechargeCardType;
     }
 
     public String getSysShopId() {

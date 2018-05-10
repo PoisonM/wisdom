@@ -576,6 +576,76 @@ public class ShopRechargeCardCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andRechargeCardTypeIsNull() {
+            addCriterion("recharge_card_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeIsNotNull() {
+            addCriterion("recharge_card_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeEqualTo(String value) {
+            addCriterion("recharge_card_type =", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeNotEqualTo(String value) {
+            addCriterion("recharge_card_type <>", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeGreaterThan(String value) {
+            addCriterion("recharge_card_type >", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("recharge_card_type >=", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeLessThan(String value) {
+            addCriterion("recharge_card_type <", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeLessThanOrEqualTo(String value) {
+            addCriterion("recharge_card_type <=", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeLike(String value) {
+            addCriterion("recharge_card_type like", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeNotLike(String value) {
+            addCriterion("recharge_card_type not like", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeIn(List<String> values) {
+            addCriterion("recharge_card_type in", values, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeNotIn(List<String> values) {
+            addCriterion("recharge_card_type not in", values, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeBetween(String value1, String value2) {
+            addCriterion("recharge_card_type between", value1, value2, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeNotBetween(String value1, String value2) {
+            addCriterion("recharge_card_type not between", value1, value2, "rechargeCardType");
+            return (Criteria) this;
+        }
+
         public Criteria andSysShopIdIsNull() {
             addCriterion("sys_shop_id is null");
             return (Criteria) this;

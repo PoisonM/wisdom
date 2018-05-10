@@ -1,8 +1,8 @@
 package com.wisdom.beauty.api.extDto;
 
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 
-public class ExtShopUserRechargeCardDTO extends ShopUserRechargeCardDTO {
+public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     //充值金额
     private String rechargeAmount;
@@ -19,11 +19,14 @@ public class ExtShopUserRechargeCardDTO extends ShopUserRechargeCardDTO {
     //店员名称
     private String sysCLerkName;
 
+    //用户id
+    private String sysUserId;
+
     //交易id
     private String transactionId;
 
     //订单状态 1、未支付 2、待支付  2、已支付  3、已失效
-    private String status;
+    private String orderStatus;
 
     /**
      * BANK_PAY("0", "银行卡支付"),
@@ -33,12 +36,30 @@ public class ExtShopUserRechargeCardDTO extends ShopUserRechargeCardDTO {
     //支付方式
     private String payType;
 
-    public String getStatus() {
-        return status;
+    private String userName;
+
+    public String getUserName() {
+        return userName;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getSysUserId() {
+        return sysUserId;
+    }
+
+    public void setSysUserId(String sysUserId) {
+        this.sysUserId = sysUserId;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public String getTransactionId() {
