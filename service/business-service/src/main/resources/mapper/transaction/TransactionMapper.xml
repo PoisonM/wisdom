@@ -27,6 +27,9 @@
         <result column="user_name_address" property="userNameAddress" jdbcType="VARCHAR" />
         <result column="user_phone_address" property="userPhoneAddress" jdbcType="VARCHAR" />
         <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+        <result column="user_province_address" property="userProvinceAddress" jdbcType="VARCHAR" />
+        <result column="user_city_address" property="userCityAddress" jdbcType="VARCHAR" />
+        <result column="user_detail_address" property="userDetailAddress" jdbcType="VARCHAR" />
         <result column="product_id" property="businessProductId" jdbcType="VARCHAR" />
         <result column="name" property="businessProductName" jdbcType="VARCHAR" />
         <result column="brand" property="productBrand" jdbcType="VARCHAR" />
@@ -48,9 +51,12 @@
         <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
         <result column="product_num" property="productNum" jdbcType="VARCHAR" />
         <result column="status" property="orderStatus" jdbcType="VARCHAR" />
-        <result column="user_name" property="userName" jdbcType="VARCHAR" />
-        <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+        <result column="user_name_address" property="userNameAddress" jdbcType="VARCHAR" />
+        <result column="user_phone_address" property="userPhoneAddress" jdbcType="VARCHAR" />
         <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+        <result column="user_province_address" property="userProvinceAddress" jdbcType="VARCHAR" />
+        <result column="user_city_address" property="userCityAddress" jdbcType="VARCHAR" />
+        <result column="user_detail_address" property="userDetailAddress" jdbcType="VARCHAR" />
         <result column="amount" property="amount" jdbcType="VARCHAR" />
         <result column="invoice" property="invoice" jdbcType="VARCHAR" />
     </resultMap>
@@ -487,7 +493,7 @@
         select
         ord.order_id,pro.product_id,pro.name,pro.brand,usr.id,usr.nickname,usr.mobile,pay.pay_date,pay.amount,pay.invoice,
         opr.product_num,ord.status,opr.product_spec,
-        ddr.user_name_address,ddr.user_phone_address,CONCAT(ddr.user_province_address," ",ddr.user_city_address," ",ddr.user_detail_address) as userAddress
+        ddr.user_name_address,ddr.user_phone_address,ddr.user_province_address,ddr.user_city_address,ddr.user_detail_address
         FROM business_order ord,business_product pro,sys_user usr,pay_record pay,
         order_product_relation opr,
         order_address_relation ddr
