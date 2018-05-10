@@ -1,11 +1,12 @@
 
 var user = '/user/';
-var appointmentInfo = 'http://192.168.1.117/beauty/appointmentInfo/';
+var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
 var consume = '/beauty/consume/';
 var  earlyWarning =  '/beauty/earlyWarning/';
 var  archives =  '/beauty/archives/';
+var clerkSchedule='/beauty/clerkSchedule/';
 var shopBossRelation ='/beauty/shopBossRelation/';
 /*http://192.168.1.117*/
 
@@ -108,6 +109,15 @@ define(['appBoss'], function (app) {
         /*查询老板的门店*/
         .factory('GetBossShopList',['$resource',function ($resource){
             return $resource(shopBossRelation+"getBossShopList")
+        }])
+
+      /*获取档案列表*/
+        .factory('FindArchives',['$resource',function ($resource){
+            return $resource(archives+"findArchives")
+        }])
+    /*查询美容师排班信息*/
+        .factory('GetShopClerkScheduleList',['$resource',function ($resource){
+            return $resource(clerkSchedule+"getShopClerkScheduleList")
         }])
 
 });
