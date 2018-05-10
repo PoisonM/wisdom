@@ -493,7 +493,7 @@
         select
         ord.order_id,pro.product_id,pro.name,pro.brand,usr.id,usr.nickname,usr.mobile,pay.pay_date,pay.amount,pay.invoice,
         opr.product_num,ord.status,opr.product_spec,
-        ddr.user_name_address,ddr.user_phone_address,ddr.user_province_address,ddr.user_city_address,ddr.user_detail_address
+        ddr.user_name_address,ddr.user_phone_address,CONCAT(ddr.user_province_address," ",ddr.user_city_address," ",ddr.user_detail_address) as userAddress
         FROM business_order ord,business_product pro,sys_user usr,pay_record pay,
         order_product_relation opr,
         order_address_relation ddr
