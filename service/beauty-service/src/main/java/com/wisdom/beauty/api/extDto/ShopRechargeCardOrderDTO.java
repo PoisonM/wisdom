@@ -25,6 +25,10 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     //交易id
     private String transactionId;
 
+    private String signUrl;
+
+    private String detail;
+
     //订单状态 1、未支付 2、待支付  2、已支付  3、已失效
     private String orderStatus;
 
@@ -37,6 +41,22 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     private String payType;
 
     private String userName;
+
+    public String getSignUrl() {
+        return signUrl;
+    }
+
+    public void setSignUrl(String signUrl) {
+        this.signUrl = signUrl;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     public String getUserName() {
         return userName;

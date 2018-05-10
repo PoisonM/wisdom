@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.card;
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
@@ -275,6 +276,7 @@ public class CardController {
 		long currentTimeMillis = System.currentTimeMillis();
 		logger.info("充值卡充值确认接口传入参数={}", "extShopUserRechargeCardDTO = [" + extShopUserRechargeCardDTO + "]");
 		extShopUserRechargeCardDTO.setTransactionId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
+		extShopUserRechargeCardDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
 		mongoTemplate.save(extShopUserRechargeCardDTO, "extShopUserRechargeCardDTO");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(extShopUserRechargeCardDTO);

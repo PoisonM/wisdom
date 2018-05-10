@@ -55,6 +55,7 @@ public class CardTest {
     public void getShopClerkScheduleList() throws Exception {
 
         ShopRechargeCardOrderDTO userRechargeCardDTO = new ShopRechargeCardOrderDTO();
+        //充值卡id
         userRechargeCardDTO.setId("1");
         userRechargeCardDTO.setTimeDiscount(0.25f);
         userRechargeCardDTO.setPeriodDiscount(0.26f);
@@ -67,6 +68,8 @@ public class CardTest {
         userRechargeCardDTO.setPayType("1");
         userRechargeCardDTO.setSurplusPayPrice("100");
         userRechargeCardDTO.setTransactionId("20180509211744970");
+        userRechargeCardDTO.setSysUserId("11");
+        userRechargeCardDTO.setUserName("小明");
 
         String toJSONString = JSONObject.toJSONString(userRechargeCardDTO);
 
@@ -92,7 +95,7 @@ public class CardTest {
     @Test
     public void getShopUserRecentlyOrderInfo() throws Exception {
 
-        MvcResult result = mvc.perform(get("/cardInfo/rechargeCardSignConfirm").param("transactionId", "2018051011464942").param("imageUrl", "1"))
+        MvcResult result = mvc.perform(get("/cardInfo/rechargeCardSignConfirm").param("transactionId", "20180510170143457").param("imageUrl", "1"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
