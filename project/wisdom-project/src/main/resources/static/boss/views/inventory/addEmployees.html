@@ -1,8 +1,8 @@
 <ion-view>
-    <ion-content class="partialFiles">
+    <ion-content class="partialFiles bgf6" ng-click="all()">
         <div>
             <div class="h45">
-                <p class="fs15 colff66 center" style="border: 1px solid #FF6666;border-radius: 2px;width:95%;margin:5px auto;height:38px;line-height: 38px;">
+                <p class="fs15 colff66 center" style="border: 1px solid #FF6666;border-radius: 2px;width:95%;margin:5px auto;height:38px;line-height: 38px;" ng-click="importAddressBookGo()">
                     + 通讯录导入
                 </p>
             </div>
@@ -28,9 +28,8 @@
                 <ion-item class="h45 sb">
                     <p>
                         <span class="fs15 col333 ml10">选择门店</span>
-                        <span class="fs15 colff66"></span>
                     </p>
-                    <p>
+                    <p ng-click="shop(); $event.stopPropagation()">
                         <span class="fa15 col333">美容院分店</span>
                         <img src="images/inventory/shou.png" class="shouPic mr10">
                     </p>
@@ -65,6 +64,13 @@
                     </label>
                 </li>
             </ul>
+            <p style="width:165px;height:44px;margin:auto;background: #FF6666;box-shadow: 0 4px 4px 0 rgba(255,102,102,0.24);border-radius: 100px;line-height: 44px;margin-top:100px;" class="center colfff " ng-click="save(); $event.stopPropagation()">保存</p>
+        </div>
+        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100" ng-show="param.flag"></div>
+        <div style="position: absolute;bottom: 0;z-index: 101;width:100%;" ng-show="param.flag">
+            <p class="h50 col333 bbl  bgfff" ng-repeat="item in [1,2,3]" ng-click="selShop(); $event.stopPropagation()">
+                <span class="ml10">汉方</span>
+            </p>
         </div>
     </ion-content>
 </ion-view>

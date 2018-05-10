@@ -110,4 +110,8 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                 })
             }
             $scope.getInfo()
+
+            $scope.entryDetailsGo=function(){
+                $state.go('entryDetails')
+            }
         }])

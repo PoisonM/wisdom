@@ -1,11 +1,12 @@
 <ion-view>
-    <ion-content class="partialFiles mb45" scroll="true">
+    <ion-content class="partialFiles mb45 bgf6" scroll="true">
         <div>
             <div class="">
                 <ion-item class="pd10 h50 sb">
                     <p class="fs16 col333">出库类型<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                        <span>  <img src="images/more.png" class="more"></span>
+
+                        <span ng-click="selectTheOutboundTypeGo()">  请选择<img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
                 <ion-item class="pd10 h50 sb">
@@ -17,7 +18,7 @@
                 <ion-item class="pd10 h50 sb">
                     <p class="fs16 col333">领取人<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                        <span> 请选择 <img src="images/more.png" class="more"></span>
+                        <span ng-click="selFamilyGo()"> 请选择 <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
             </div>
@@ -61,13 +62,13 @@
             </div>
 
             <p class="h45 bgfff fs14 center colff66" style="width:95%;margin:20px auto 0 ;">
-                选择更多产品入库<span class="col333">或者</span>扫码入库
+                <span ng-click="productInventoryGo()">选择更多产品出库</span><span class="col333">或者</span><span ng-click="productInventoryGo()">扫码出库</span>
             </p>
 
         </div>
         </div>
     </ion-content>
-    <div class="h45 bgff66 colfff fs15 tabs">
+    <div class="h45 bgff66 colfff fs15 tabs" ng-click="successfulInventoryGo()">
         确认出库(1/30)
     </div>
 </ion-view>

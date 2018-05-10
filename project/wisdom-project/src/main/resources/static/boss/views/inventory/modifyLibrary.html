@@ -1,5 +1,5 @@
 <ion-view>
-    <ion-content class="partialFiles">
+    <ion-content class="partialFiles bgf6">
         <div>
             <div>
                 <P class="fs12 col333 h30  ml20">产品信息</P>
@@ -33,19 +33,19 @@
                     <p class=" sb bbl fs14 col33 h40" style="background: #F6F6F6;">
                         <span class="ml10 W33">入库数量</span>
                         <span class="center  W33">10</span>
-                        <input type="text "  class="mr10 W33 col666" style="text-align: right" placeholder="请输入实际数量">
+                        <input type="text "  class="mr10 W33 col666" style="text-align: right" placeholder="请输入实际数量" ng-model="shopStockNumberDTO.actualStockNumber">
                     </p>
                     <p class=" sb bbl fs14 col33 h40" style="background: #F6F6F6;height:40px;">
                         <span class="ml10 W33">单价</span>
                         <span class=" center W33">20.00</span>
-                        <input type="text"  class="mr10 W33 col666" style="text-align: right" placeholder="请输入实际价格">
+                        <input type="text"  class="mr10 W33 col666" style="text-align: right" placeholder="请输入实际价格" ng-model="shopStockNumberDTO.actualStockPrice">
                     </p>
                     <p class="sb bbl fs14 col33 h40" style="background: #F6F6F6;">
                         <span class="ml10">生产日期</span>
                         <span class=" mr10">2018-04-13</span>
                     </p>
                 </div>
-                <p style="width:165px;height:44px;margin:auto;background: #FF6666;box-shadow: 0 4px 4px 0 rgba(255,102,102,0.24);border-radius: 100px;line-height: 44px;margin-top:100px;" class="center colfff ">保存</p>
+                <p style="width:165px;height:44px;margin:auto;background: #FF6666;box-shadow: 0 4px 4px 0 rgba(255,102,102,0.24);border-radius: 100px;line-height: 44px;margin-top:100px;" class="center colfff " ng-click="entryDetailsGo()">保存</p>
 
             </div>
         </div>

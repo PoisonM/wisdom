@@ -1,11 +1,11 @@
 
 var user = '/user/';
-var appointmentInfo = '/beauty/appointmentInfo/';
-var work = '/beauty/work/';
-var stock = '/beauty/stock/';
-var consume = '/beauty/consume/';
-var  earlyWarning =  '/beauty/earlyWarning/';
-var  archives =  '/beauty/archives/';
+var appointmentInfo = 'http://192.168.1.117/beauty/appointmentInfo/';
+var work = 'http://192.168.1.117/beauty/work/';
+var stock = 'http://192.168.1.117/beauty/stock/';
+var consume = 'http://192.168.1.117/beauty/consume/';
+var  earlyWarning =  'http://192.168.1.117/beauty/earlyWarning/';
+var  archives =  'http://192.168.1.117/beauty/archives/';
 
 
 define(['appBoss'], function (app) {
@@ -38,10 +38,21 @@ define(['appBoss'], function (app) {
         .factory('UpdateAppointmentInfoById',['$resource',function ($resource){
             return $resource(appointmentInfo + 'updateAppointmentInfoById')
         }])
+
+ /*库存*/
         /*入库出库记录*/
         .factory('ShopStockRecordList',['$resource',function ($resource){
             return $resource(stock + 'shopStockRecordList')
         }])
+        /*获取库存数量和价格*************88888888888888*/
+        .factory('GetStockNumber',['$resource',function ($resource){
+            return $resource(stock + 'getStockNumber')
+        }])
+        /*更新库存实际量和价格*/
+        .factory('UpdateStockNumber',['$resource',function ($resource){
+            return $resource(stock + 'updateStockNumber')
+        }])
+
 
 /*综合分析*/
         /*根据时间查询某个美容院的耗卡和业绩*/

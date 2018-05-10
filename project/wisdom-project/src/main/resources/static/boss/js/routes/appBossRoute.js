@@ -1263,6 +1263,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*importAddressBook 通讯录导入*/
                     .state('importAddressBook', {
                         url: '/importAddressBook',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1348,6 +1349,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*successfulInventory成功入库*/
                     .state('successfulInventory', {
                         url: '/successfulInventory',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1360,6 +1362,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*outbound 出库*/
                     .state('outbound', {
                         url: '/outbound',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1384,6 +1387,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* outboundRecords  出库记录*/
                     .state('outboundRecords', {
                         url: '/outboundRecords',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1504,6 +1508,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*addFamily 添加家人*/
                     .state('addFamily', {
                         url: '/addFamily',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1604,7 +1609,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-               /* modify 修改*/
+              /* /!* modify 修改*!/
                     .state('modify', {
                         url: '/modify',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1612,11 +1617,11 @@ define(['appBoss'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.modifyCtrl',
-                                    ['js/controllers/inventory/modifyLibraryCtrl.js?ver='+ bossVersion],
-                                    'views/inventory/modifyLibrary.html?ver=' + bossVersion);
+                                    ['js/controllers/inventory/modifyCtrl.js?ver='+ bossVersion],
+                                    'views/inventory/modify.html?ver=' + bossVersion);
                             }
                         }
-                    })
+                    })*/
                 /*inventoryRecords 入库记录*/
                     .state('inventoryRecordsPics', {
                         url: '/inventoryRecordsPics',
@@ -1859,8 +1864,8 @@ define(['appBoss'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.productInventoryCtrl',
-                                    ['js/controllers/inventory/productInventoryDetailsCtrl.js?ver='+ bossVersion],
-                                    'views/inventory/productInventoryDetails.html?ver=' + bossVersion);
+                                    ['js/controllers/inventory/productInventoryCtrl.js?ver='+ bossVersion],
+                                    'views/inventory/productInventory.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -1896,15 +1901,14 @@ define(['appBoss'], function(app){
                  drawCardRecords 划卡记录
                  drawCardRecordsDetail 划卡记录详情
                  newUser新建档案
-                 importAddressBook 通讯录导入
+
                  selShop  选择分店
                  membersMess会员信息
                  distributionFile 分配档案
                  selFamily 选择家人
 
                  入库
-                 successfulInventory成功入库
-                 outbound 出库
+
                  outboundOrderDetails 出库单详情
                  outboundRecords  出库记录
                  reservoirRunningWater出水库流水
@@ -1921,7 +1925,7 @@ define(['appBoss'], function(app){
                  inventoryDetails库存详情
                  libraryTubeSetting 库管设置
                  historicalRecord  历史记录
-                 addFamily 添加家人
+
                  inventory  盘点
                  inventoryOver盘点下一步
                  inventoryRecords 盘点记录
@@ -1934,14 +1938,13 @@ define(['appBoss'], function(app){
                  automaticallyStorage 扫码自动入库
                  applicableParts 适用部位
                  addEmployees 添加家人(员工)
-                 addBrandOne  添加品牌
+
                  addSeries 添加系列
                  addProduct  添加产品
                  modifyProduct修改产品
                  inventorySetting  设置
                  addressBook 库存 通讯录导入
                  AddOutbound 新增出库
-                 newLibrary 新增入库
                  modifyLibrary修改(库)
                  chooseWarehouse 选择仓库
                  selBrand 选择品牌
