@@ -1,5 +1,5 @@
 
-var user = '/user/';
+/*var user = '/user/';*/
 var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
@@ -8,6 +8,8 @@ var  earlyWarning =  '/beauty/earlyWarning/';
 var  archives =  '/beauty/archives/';
 var clerkSchedule='/beauty/clerkSchedule/';
 var shopBossRelation ='/beauty/shopBossRelation/';
+var user ='/user/'
+
 /*http://192.168.1.117*/
 
 
@@ -59,6 +61,19 @@ define(['appBoss'], function (app) {
         .factory('AddStock',['$resource',function ($resource){
             return $resource(stock + 'addStock')
         }])
+        /*查询家人*/
+        .factory('GetClerkInfoList',['$resource',function ($resource){
+            return $resource(user + 'getClerkInfoList')
+        }])
+        /*查询家人*/
+        .factory('SaveClerkInfo',['$resource',function ($resource){
+            return $resource(user + 'saveClerkInfo')
+        }])
+
+
+
+
+
 
 
 /*综合分析*/
