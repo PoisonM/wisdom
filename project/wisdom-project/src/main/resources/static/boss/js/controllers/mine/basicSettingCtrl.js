@@ -13,13 +13,33 @@ angular.module('controllers',[]).controller('basicSettingCtrl',
             /*点击编辑分店*/
             $scope.shopListGo=function () {
                 $state.go("shopList")
-            }
+            };
              /*添加项目*/
             $scope.addProjectGo=function () {
                 $state.go("addProject")
-            }
+            };
             /*修改删除项目*/
             $scope.projectListGo=function () {
                 $state.go("projectList")
-            }
+            };
+            /*点击产品品牌设置*/
+            $scope.productBrandGo=function () {
+                $state.go("productBrand")
+            };
+            /*点击添加产品*/
+            $scope.addProductGo=function () {
+                $state.go("addProduct")
+            };
+            /*修改产品*/
+            $scope.modifyProductGo=function () {
+                $state.go("modifyProduct")
+            };
+            /*添加套卡*/
+            $scope.addCardsGo=function () {
+                $state.go("addCards")
+            };
+            /*点解项目大类*/
+            $scope.projectDifferenceGo=function () {
+                $state.go("projectDifference")
+            };
         }]);
