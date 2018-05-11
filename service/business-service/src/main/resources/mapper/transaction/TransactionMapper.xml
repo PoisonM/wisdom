@@ -178,9 +178,8 @@
         business_order
         where
         1=1
-        AND
         <if test="orderId != null and orderId != ''">
-            order_id=#{orderId}
+            AND  order_id=#{orderId}
         </if>
     </select>
 
