@@ -5,7 +5,6 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
@@ -25,6 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -100,13 +100,13 @@ public class OrderTest {
         shopUserOrderDTO.setExprDate(new Date());
         shopUserOrderDTO.setDetail("备注");
         shopUserOrderDTO.setShopUserArchivesId("1");
-        shopUserOrderDTO.setOrderId("20180424200819401");
+        shopUserOrderDTO.setOrderId("20180510175636866");
         shopUserOrderDTO.setOperation("0");
-        shopUserOrderDTO.setGoodsType(GoodsTypeEnum.RECHARGE_CARD.getCode());
+        shopUserOrderDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
         //用户与项目关系
-//        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
-//        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
-//        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
+        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
+        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
+        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
 
 //
 //        //用户与产品
@@ -121,10 +121,11 @@ public class OrderTest {
 //        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = getShopUserProjectGroupRelRelationDTO();
 //        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
 //        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
-        ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
-        userRechargeCardDTO.setShopRechargeCardId("1");
-        userRechargeCardDTO.setShopRechargeCardName("充值卡啦");
-        shopUserOrderDTO.setShopUserRechargeCardDTO(userRechargeCardDTO);
+
+//        ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
+//        userRechargeCardDTO.setShopRechargeCardId("1");
+//        userRechargeCardDTO.setShopRechargeCardName("充值卡啦");
+//        shopUserOrderDTO.setShopUserRechargeCardDTO(userRechargeCardDTO);
         //充值卡
         return shopUserOrderDTO;
     }

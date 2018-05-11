@@ -116,7 +116,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         String userRechargeId;
 
         //消费界面用户选择不同的充值卡，也就是用户更新充值卡操作
-        if (null != shopUserOrderDTO.getShopUserRechargeCardDTO() && StringUtils.isNotBlank(shopUserOrderDTO.getShopUserRechargeCardDTO().getId())) {
+        if (null != shopUserOrderDTO.getShopUserRechargeCardDTO() && StringUtils.isNotBlank(shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId())) {
             userRechargeId = shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId();
         }
         //消费界面添加更多，比如添加了一个信息的产品，那么新的产品折扣也要逆向更新
@@ -137,8 +137,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             shopUserRechargeCardDTO.setProductDiscount(1f);
             shopUserRechargeCardDTO.setTimeDiscount(1f);
             shopUserRechargeCardDTO.setPeriodDiscount(1f);
+        } else {
+            shopUserRechargeCardDTO = userRechargeCardList.get(0);
         }
-        shopUserRechargeCardDTO = userRechargeCardList.get(0);
 
         logger.info("订单号={}，充值卡主键为，{}", orderId, userRechargeId);
         boolean updateFlag = false;
@@ -182,7 +183,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
 
         Query updateQuery = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
-        update.set("shopUserRechargeCardDTO", shopUserOrderDTO.getShopUserRechargeCardDTO());
+        if (null != shopUserOrderDTO.getShopUserRechargeCardDTO()) {
+            update.set("shopUserRechargeCardDTO", shopUserOrderDTO.getShopUserRechargeCardDTO());
+        }
         if (updateFlag) {
             update.set("shopUserProjectRelationDTOS", alreadyOrderDTO.getShopUserProjectRelationDTOS());
             update.set("shopUserProductRelationDTOS", alreadyOrderDTO.getShopUserProductRelationDTOS());
