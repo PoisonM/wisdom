@@ -155,8 +155,9 @@ public class BusinessRunTimeService {
 
     public void autoProcessNoPayRecordData() {
 
-        Date dt1 = new Date((new Date()).getTime() - (long) ConfigConstant.AUTO_NOTIFY_PRODUCT_PAY * 24 * 60 * 60 * 1000);
-        Date dt2 = new Date((new Date()).getTime() - (long) ConfigConstant.AUTO_DELETE_BUSINESS_ORDER * 24 * 60 * 60 * 1000);
+        long autoNotifyProductPay = (long) ConfigConstant.AUTO_NOTIFY_PRODUCT_PAY * 60 * 1000;
+        long autoDeleteBusinessOrder = (long) ConfigConstant.AUTO_DELETE_BUSINESS_ORDER * 60 * 1000;
+        long nowTime = System.currentTimeMillis();
 
         String token = WeixinUtil.getUserToken();
 
@@ -168,9 +169,11 @@ public class BusinessRunTimeService {
         {
             for(BusinessOrderDTO businessOrder : businessOrderDTOList)
             {
-                if((businessOrder.getCreateDate().getTime()-dt1.getTime())<0)
+                //订单已下时间
+                long outTime = nowTime - (long)businessOrder.getCreateDate().getTime();
+                //待付款超过10分钟且不超过20分钟
+                if(outTime > autoNotifyProductPay && outTime < autoDeleteBusinessOrder)
                 {
-
                     UserInfoDTO userInfoDTO = new UserInfoDTO();
                     userInfoDTO.setId(businessOrder.getSysUserId());
                     userInfoDTO.setDelFlag("0");
@@ -182,9 +185,10 @@ public class BusinessRunTimeService {
                                 businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
                     }
                 }
-                else if((businessOrder.getCreateDate().getTime()-dt2.getTime())<0)
+                else if(outTime > autoDeleteBusinessOrder)
                 {
-                    businessOrder.setStatus("del");
+                    //超时取消
+                    businessOrder.setStatus("6");
                     businessServiceClient.updateBusinessOrder(businessOrder);
                     PayRecordDTO payRecordDTO = new PayRecordDTO();
                     payRecordDTO.setSysUserId(businessOrder.getSysUserId());

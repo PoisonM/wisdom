@@ -92,6 +92,7 @@
             <div style="z-index: 13000;float: left;margin-left: 0.3rem;margin-top: 0.3rem">
                 <p style="color: #ff4a59;font-size: 0.32rem;font-weight: 600">￥{{param.product.price}}</p>
                 <p style="color: #666666;font-size: 0.3rem;margin-top: 0.2rem">请选择型号</p>
+                <p style="margin-top: 0.2rem;font-size: 14px;color: #333333">剩余库存  <span style="margin-left: 5px;color: #FF6666;font-size: 16px">{{param.product.productDetail.productAmount}}</span></p>
             </div>
         </div>
         <!--型号-->
@@ -113,9 +114,9 @@
         </div>
         <!--点击加入购物车-->
         <ul style="list-style: none;width: 100%;height: 1rem;display: flex;flex-wrap: wrap;justify-content: space-around;text-align: center;">
-            <li style="background:#fca1a8;color:white;font-size:0.36rem;width: 50%;height: 1rem;line-height: 1rem" ng-click="addBuyCart()" ng-if="param.product.type=='offline'">加入购物车</li>
+            <li style="background:#fca1a8;color:white;font-size:0.36rem;width: 50%;height: 1rem;line-height: 1rem" ng-click="addBuyCart()" ng-if="param.product.type=='offline'" id="Car">加入购物车</li>
             <li style="background:#fca1a8;color:white;font-size:0.36rem;width: 50%;height: 1rem;line-height: 1rem" ng-if="param.product.type=='special'">需立即购买</li>
-            <li style="background: red;color:white;font-size:0.36rem;width: 50%;height: 1rem;line-height: 1rem" ng-click="goPay()">立即购买</li>
+            <li style="background: #fca1a8;color:white;font-size:0.36rem;width: 50%;height: 1rem;line-height: 1rem" ng-click="goPay()" id="goPay">立即购买</li>
         </ul>
     </div>
 </ion-view>

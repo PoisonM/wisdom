@@ -42,11 +42,12 @@
         <result column="user_type" property="userType" jdbcType="VARCHAR"/>
         <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
         <result column="pay_date" property="payDate" jdbcType="TIMESTAMP"/>
-        <result column="userTypeNow" property="userTypeNow" jdbcType="TIMESTAMP"/>
-        <result column="nextUserTypeNow" property="nextUserTypeNow" jdbcType="TIMESTAMP"/>
-        <result column="orderAmount" property="orderAmount" jdbcType="TIMESTAMP"/>
-        <result column="orderStatus" property="orderStatus" jdbcType="TIMESTAMP"/>
-        <result column="order_id" property="orderId" jdbcType="TIMESTAMP"/>
+        <result column="userTypeNow" property="userTypeNow" jdbcType="VARCHAR"/>
+        <result column="nextUserTypeNow" property="nextUserTypeNow" jdbcType="VARCHAR"/>
+        <result column="orderAmount" property="orderAmount" jdbcType="VARCHAR"/>
+        <result column="orderStatus" property="orderStatus" jdbcType="VARCHAR"/>
+        <result column="order_id" property="orderId" jdbcType="VARCHAR"/>
+        <result column="parent_relation" property="parentRelation" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="MonthTransactionRecordMap" type="com.wisdom.common.dto.transaction.MonthTransactionRecordDTO" >
@@ -625,7 +626,7 @@
 	        o.order_id,o.`status`AS orderStatus
 	    from income_record i
 	    LEFT JOIN sys_user u2 ON i.sys_user_id = u2.id
-	    LEFT JOIN sys_user u3 ON i.sys_user_id = u3.id
+	    LEFT JOIN sys_user u3 ON i.next_user_id = u3.id
 	    LEFT JOIN pay_record p ON i.transaction_id = p.transaction_id
 	    LEFT JOIN business_order o ON p.order_id = o.order_id
         LEFT JOIN income_record_management m ON i.id = m.income_record_id

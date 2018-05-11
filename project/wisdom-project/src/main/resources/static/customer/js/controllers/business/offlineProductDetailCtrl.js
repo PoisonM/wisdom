@@ -52,7 +52,10 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     if($scope.param.product.productDetail.spec.length == 1){
                         $scope.param.checkFlag = $scope.param.product.productDetail.spec[0]
                     }
-
+                    if($scope.param.productNum>$scope.param.product.productDetail.productAmount){
+                        alert("库存不足~");
+                        return;
+                    }
                     //没有选择属性
                     if($scope.param.checkFlag=="")
                     {
@@ -91,6 +94,10 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     if($scope.param.checkFlag=="")
                     {
                         $scope.model=true;
+                    }
+                    if($scope.param.productNum>$scope.param.product.productDetail.productAmount){
+                        alert("库存不足~");
+                        return;
                     }
                     else
                     {
@@ -152,6 +159,10 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
 
             $scope.addProductNum = function(){
                 $scope.param.productNum= $scope.param.productNum+1;
+                if($scope.param.productNum>$scope.param.product.productDetail.productAmount){
+                    $("#Car").css("background","grey");
+                    $("#goPay").css("background","grey");
+                }
             }
 
             $scope.minusProductNum = function(){
@@ -160,13 +171,17 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 }else{
                     $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");
                 }
-            }
+                if($scope.param.productNum<=$scope.param.product.productDetail.productAmount){
+                    $("#Car").css("background","#fca1a8");
+                    $("#goPay").css("background","#fca1a8");
+                }
+            };
 
             var showToast = function (content) {
                 $ionicLoading.show({
                     template: content
                 });
-            }
+            };
 
             var hideToast = function () {
                 $timeout(function () {
@@ -207,6 +222,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 GetOfflineProductDetail.get({productId:$stateParams.productId},function(data){
                     $ionicLoading.hide();
                     $scope.param.product = data.responseData;
+                   /* $scope.param.product.productDetail.productAmount=$scope.param.product.productDetail.productAmount-1;*/
                     $ionicSlideBoxDelegate.update();
                     $ionicSlideBoxDelegate.loop(true);
                     $interval(function(){

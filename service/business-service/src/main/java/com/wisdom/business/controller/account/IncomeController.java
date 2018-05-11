@@ -254,36 +254,16 @@ public class IncomeController {
 			pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
 		}
 		List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeService.exportExcelIncomeRecord(pageParamVoDTO);
-
-		HashMap<String, String> helperMap = new HashMap<>(16);
-		if (CommonUtils.objectIsNotEmpty(exportIncomeRecordExcelDTOS)) {
-			for (ExportIncomeRecordExcelDTO excelDTO : exportIncomeRecordExcelDTOS) {
-				if (StringUtils.isBlank(helperMap.get(excelDTO.getTransactionId()))) {
-					helperMap.put(excelDTO.getTransactionId(), String.valueOf(1));
-				} else {
-					int count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) + 1;
-					helperMap.put(excelDTO.getTransactionId(), String.valueOf(count));
-				}
-			}
-
-			for (ExportIncomeRecordExcelDTO excelDTO : exportIncomeRecordExcelDTOS) {
-				Integer count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId()));
-				if (count > 1) {
-					excelDTO.setAmount(0);
-					int number = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) - 1;
-					helperMap.put(excelDTO.getTransactionId(), String.valueOf(number));
-				}
-			}
-		}
-
 		try {
 			String[] orderHeaders = {"用户id", "用户名", "用户手机号", "用户获益时等级", "用户现在等级", "佣金金额",
 					"下级用户id", "下级用户名", "下级用户手机号", "下级用户等级", "下级用户现在等级",
-					"交易id", "支付时间", "订单id", "订单金额", "订单状态"};
+					"交易id", "支付时间", "订单id", "订单金额", "订单状态", "上下级关系"};
 			ExportExcel<ExportIncomeRecordExcelDTO> ex = new ExportExcel<>();
 			ByteArrayInputStream in = ex.getWorkbookIn("佣金奖励EXCEL文档", orderHeaders, exportIncomeRecordExcelDTOS);
 			String url = CommonUtils.orderExcelToOSS(in);
-			if ("".equals(url) && url == null) logger.info("佣金奖励Excel 获取OSSUrl为空");
+			if ("".equals(url) && url == null){
+				logger.info("佣金奖励Excel 获取OSSUrl为空");
+			}
 			responseDTO.setResult(url);
 			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 			//return responseDTO;
@@ -317,7 +297,9 @@ public class IncomeController {
 		//先查出所有本人的,再查出下级的
 		pageParamVoDTO.getRequestData().setParentRelation("self");
 		List<MonthTransactionRecordDTO> selfList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
-		if(CommonUtils.objectIsEmpty(selfList)) logger.info("月度本人详情数据selfList数据为空");
+		if(CommonUtils.objectIsEmpty(selfList)){
+			logger.info("月度本人详情数据selfList数据为空");
+		}
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : selfList){
 			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
 			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
@@ -332,7 +314,9 @@ public class IncomeController {
 		}
 		pageParamVoDTO.getRequestData().setParentRelation("other");
 		List<MonthTransactionRecordDTO> nextList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
-		if(CommonUtils.objectIsEmpty(nextList)) logger.info("月度下级详情数据nextList数据为空");
+		if(CommonUtils.objectIsEmpty(nextList)){
+			logger.info("月度下级详情数据nextList数据为空");
+		}
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : nextList){
 			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
 			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){
@@ -494,7 +478,9 @@ public class IncomeController {
 		pageParamVoDTO.getRequestData().setParentRelation("other");
 		int nextCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
 		List<MonthTransactionRecordDTO> nextList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
-		if(CommonUtils.objectIsEmpty(nextList)) logger.info("月度下级详情数据selfList数据为空");
+		if(CommonUtils.objectIsEmpty(nextList)){
+			logger.info("月度下级详情数据selfList数据为空");
+		}
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : nextList){
 			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(monthTransactionRecordDTO.getTransactionId());
 			for(BusinessOrderDTO businessOrderDTO : businessOrderDTOS){

@@ -175,10 +175,18 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> updateBusinessOrderStatus(@RequestBody BusinessOrderDTO businessOrderDTO) {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("更改某个订单的状态orderId={}"+businessOrderDTO.getBusinessOrderId(), "orderStatus = [" + businessOrderDTO.getStatus() + "]");
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        if(null == businessOrderDTO.getStatus() || "".equals(businessOrderDTO.getStatus())){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("订单状态参数为空");
+            logger.info("更改某个订单的状态耗时{}毫秒", (System.currentTimeMillis() - startTime));
+            return responseDTO;
+        }
         try
         {
+            //查出库中订单数据
             BusinessOrderDTO newBusinessOrderDTO = transactionService.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
             newBusinessOrderDTO.setUpdateDate(new Date());
             newBusinessOrderDTO.setStatus(businessOrderDTO.getStatus());
@@ -189,6 +197,7 @@ public class BusinessOrderController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
+        logger.info("更改某个订单的状态耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -407,7 +416,7 @@ public class BusinessOrderController {
                     exportOrderExcelDTO.setProductSpec(businessOrderinfo.getProductSpec());
                     //exportOrderExcelDTO.setTaxpayerNumber(businessOrderDTO.getIdentifyNumber());
                     if(businessOrderinfo.getUserAddress()!=null){
-                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserAddress());
+                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
                     }else{
                         exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
                     }

@@ -17,6 +17,7 @@ import com.wisdom.common.dto.transaction.OrderCopRelationDTO;
 import com.wisdom.common.dto.transaction.OrderProductRelationDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.RedisLock;
 import com.wisdom.common.util.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,27 @@ public class TransactionService {
 
     public void updateBusinessOrder(BusinessOrderDTO businessOrderDTO){
         logger.info("更新订单=="+businessOrderDTO);
+
+        if(null != businessOrderDTO.getStatus() && !"".equals(businessOrderDTO.getStatus())) {
+            //查出库中订单数据
+            BusinessOrderDTO oldBusinessOrderDTO = transactionMapper.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
+            if ("0".equals(oldBusinessOrderDTO.getStatus())) {
+
+                //根据订单号查出订单对应的商品
+                BusinessOrderDTO businessOrderDTO1 = transactionMapper.getBusinessOrderDetailInfoByOrderId(businessOrderDTO.getBusinessOrderId());
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setProductId(businessOrderDTO1.getBusinessProductId());
+                productDTO.setProductAmount(businessOrderDTO1.getBusinessProductNum());
+                //如果库里订单状态为待付款,并即将修改状态不是已支付,那么将恢复库存
+                if (!"1".equals(businessOrderDTO.getStatus()) && !"0".equals(businessOrderDTO.getStatus())) {
+                    logger.info("updateBusinessOrder方法根据订单增加相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
+                    this.updateOfflineProductAmount(productDTO, "add");
+                } else if ("1".equals(businessOrderDTO.getStatus()) || "0".equals(businessOrderDTO.getStatus())) {
+                    logger.info("updateBusinessOrder方法根据订单减少相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
+                    this.updateOfflineProductAmount(productDTO, "lose");
+                }
+            }
+        }
         transactionMapper.updateBusinessOrder(businessOrderDTO);
     }
 
@@ -203,7 +225,7 @@ public class TransactionService {
         PageParamVoDTO<List<BusinessOrderDTO>> page = new  PageParamVoDTO<>();
         int count = transactionMapper.queryBusinessOrderCountByParameters(pageParamVoDTO);
         List<BusinessOrderDTO> businessOrderDTODTOList = transactionMapper.queryBusinessOrderByParameters(pageParamVoDTO);
-        for(BusinessOrderDTO businessOrderDTO : businessOrderDTODTOList){//用户名解码
+        for(BusinessOrderDTO businessOrderDTO : businessOrderDTODTOList){
             businessOrderDTO.setNickName(CommonUtils.nameDecoder(businessOrderDTO.getNickName()));
             String nickNameW ="";
             try{
@@ -345,25 +367,34 @@ public class TransactionService {
      */
     public void updateOfflineProductAmount(ProductDTO productDTO,String addAndLose) {
         logger.info("根据订单商品数量修改相应的商品库存,商品id为:"+productDTO.getProductId()+"添加还是减少:"+addAndLose);
-        Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
-        ProductDTO productDTO1 = mongoTemplate.findOne(query, ProductDTO.class,"offlineProduct");
-        if(productDTO1 != null){
-            if(productDTO.getProductAmount() != 0) {
-                if (productDTO1.getProductAmount() >= productDTO.getProductAmount()) {
-                    Update update = new Update();
-                    if("add".equals(addAndLose)){
-                        update.set("productAmount", productDTO1.getProductAmount() + productDTO.getProductAmount());
-                        mongoTemplate.updateFirst(query, update, "offlineProduct");
-                    }else if ("lose".equals(addAndLose)){
-                        if(productDTO1.getProductAmount() - productDTO.getProductAmount() < 0){
-                            logger.info("根据订单商品数量("+productDTO.getProductAmount()+")修改相应的商品库存方法商品数量("+productDTO1.getProductAmount()+")大于库存数量");
-                        }else {
-                            update.set("productAmount", productDTO1.getProductAmount() - productDTO.getProductAmount());
+        RedisLock redisLock = new RedisLock("updateOfflineProductAmount");
+        try {
+            redisLock.lock();
+
+            Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
+            ProductDTO productDTO1 = mongoTemplate.findOne(query, ProductDTO.class, "offlineProduct");
+            if (productDTO1 != null) {
+                if (productDTO.getProductAmount() != 0) {
+                    if (productDTO1.getProductAmount() >= productDTO.getProductAmount()) {
+                        Update update = new Update();
+                        if ("add".equals(addAndLose)) {
+                            update.set("productAmount", productDTO1.getProductAmount() + productDTO.getProductAmount());
                             mongoTemplate.updateFirst(query, update, "offlineProduct");
+                        } else if ("lose".equals(addAndLose)) {
+                            if (productDTO1.getProductAmount() - productDTO.getProductAmount() < 0) {
+                                logger.info("更新库存失败订单商品数量(" + productDTO.getProductAmount() + ")相应的商品库存数量(" + productDTO1.getProductAmount() + ")大于库存数量");
+                            } else {
+                                update.set("productAmount", productDTO1.getProductAmount() - productDTO.getProductAmount());
+                                mongoTemplate.updateFirst(query, update, "offlineProduct");
+                            }
                         }
                     }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            redisLock.unlock();
         }
     }
 
