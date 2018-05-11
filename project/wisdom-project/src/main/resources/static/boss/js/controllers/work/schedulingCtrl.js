@@ -7,9 +7,8 @@ angular.module('controllers',[]).controller('schedulingCtrl',
             $rootScope.title = "排班";
             $scope.param={
                 nowdate:new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月",//初始化时间
-                sysShopId:"11",
                 compileDateFlag:true,
-                isplayShopBox:false,
+                displayShopBox:false,
                 displayShop:false
             };
 
