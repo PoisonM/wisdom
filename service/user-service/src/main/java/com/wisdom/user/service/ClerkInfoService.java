@@ -10,7 +10,7 @@ public interface ClerkInfoService {
 
     List<SysClerkDTO> getClerkInfo(SysClerkDTO SysClerk);
     /**
-    *@Author:Administrator
+    *@Author:zhanghuan
     *@Param: pageParamVoDTO
     *@Return:
     *@Description:分页查询店员信息
@@ -25,4 +25,12 @@ public interface ClerkInfoService {
     *@Date:2018/5/2 10:44
     */
     int updateSysClerk(SysClerkDTO sysClerkDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:
+    *@Date:2018/5/11 11:25
+    */
+    int saveSysClerk(SysClerkDTO sysClerkDTO);
 }
