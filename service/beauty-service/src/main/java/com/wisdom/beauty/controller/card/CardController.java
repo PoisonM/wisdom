@@ -180,8 +180,11 @@ public class CardController {
 		shopRechargeCardDTO.setId(id);
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(shopRechargeCardDTO);
 
+		ShopRechargeCardOrderDTO shopRechargeCardOrderDTO = new ShopRechargeCardOrderDTO();
+		BeanUtils.copyProperties(shopRechargeCardResponseDTO, shopRechargeCardOrderDTO);
+
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-		responseDTO.setResponseData(shopRechargeCardResponseDTO);
+		responseDTO.setResponseData(shopRechargeCardOrderDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		logger.info("查询某个充值卡信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
