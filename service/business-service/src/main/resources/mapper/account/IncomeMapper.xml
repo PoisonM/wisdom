@@ -619,10 +619,10 @@
     </update>
     <select id="exportExcelIncomeRecord"
             resultMap="exportExcelIncomeRecordResultMap">
-        SELECT i.*,
+        SELECT i.*,i.transaction_amount AS orderAmount,
 	        u2.user_type AS userTypeNow,
 	        u3.user_type AS nextUserTypeNow,
-	        p.pay_date,p.amount AS orderAmount,
+	        p.pay_date,
 	        o.order_id,o.`status`AS orderStatus
 	    from income_record i
 	    LEFT JOIN sys_user u2 ON i.sys_user_id = u2.id
