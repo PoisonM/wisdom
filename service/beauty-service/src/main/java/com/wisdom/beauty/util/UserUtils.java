@@ -27,8 +27,44 @@ import java.util.Map;
  */
 public class UserUtils {
 
-    public static ExtUserDTO ExtUserDTO() {
-        return null;
+    /**
+     * 获取用户信息
+     *
+     * @return
+     */
+    public static ExtUserDTO getUserDTO() {
+
+        ExtUserDTO extUserDTO = new ExtUserDTO();
+        //用户登陆
+        UserInfoDTO userInfo = getUserInfo();
+        if (null != userInfo) {
+            System.out.println("获取普通用户信息");
+            extUserDTO.setSysUserId(userInfo.getId());
+            extUserDTO.setSysUserName(userInfo.getNickname());
+            extUserDTO.setUserNamePhone(userInfo.getMobile());
+            return extUserDTO;
+        }
+
+        //pad端用户登陆
+        SysClerkDTO clerkInfo = getClerkInfo();
+        if (null != clerkInfo) {
+            System.out.println("获取clerk信息");
+            extUserDTO.setSysBossId(clerkInfo.getSysBossId());
+            extUserDTO.setSysShopId(clerkInfo.getSysShopId());
+            extUserDTO.setSysClerkName(clerkInfo.getName());
+            return extUserDTO;
+        }
+
+        //boss端用户登陆
+        SysBossDTO bossInfo = getBossInfo();
+        if (null != bossInfo) {
+            System.out.println("获取boss信息");
+            extUserDTO.setSysShopId(bossInfo.getId());
+            extUserDTO.setSysBossName(bossInfo.getName());
+            return extUserDTO;
+        }
+        System.out.println("未获取到用户信息");
+        return extUserDTO;
     }
 
 

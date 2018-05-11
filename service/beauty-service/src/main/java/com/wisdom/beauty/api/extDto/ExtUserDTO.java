@@ -13,6 +13,56 @@ public class ExtUserDTO extends BaseEntity implements Serializable {
 
     private String sysShopId;
 
+    private String sysUserName;
+
+    private String sysClerkName;
+
+    private String sysShopName;
+
+    private String sysBossName;
+
+    private String userNamePhone;
+
+    public String getUserNamePhone() {
+        return userNamePhone;
+    }
+
+    public void setUserNamePhone(String userNamePhone) {
+        this.userNamePhone = userNamePhone;
+    }
+
+    public String getSysUserName() {
+        return sysUserName;
+    }
+
+    public void setSysUserName(String sysUserName) {
+        this.sysUserName = sysUserName;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
+    public String getSysShopName() {
+        return sysShopName;
+    }
+
+    public void setSysShopName(String sysShopName) {
+        this.sysShopName = sysShopName;
+    }
+
+    public String getSysBossName() {
+        return sysBossName;
+    }
+
+    public void setSysBossName(String sysBossName) {
+        this.sysBossName = sysBossName;
+    }
+
     public String getSysUserId() {
         return sysUserId;
     }

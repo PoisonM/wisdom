@@ -5,6 +5,7 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
@@ -122,10 +123,10 @@ public class OrderTest {
 //        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
 //        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
 
-//        ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
-//        userRechargeCardDTO.setShopRechargeCardId("1");
-//        userRechargeCardDTO.setShopRechargeCardName("充值卡啦");
-//        shopUserOrderDTO.setShopUserRechargeCardDTO(userRechargeCardDTO);
+        ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
+        userRechargeCardDTO.setShopRechargeCardId("1");
+        userRechargeCardDTO.setShopRechargeCardName("充值卡啦");
+        shopUserOrderDTO.setShopUserRechargeCardDTO(userRechargeCardDTO);
         //充值卡
         return shopUserOrderDTO;
     }

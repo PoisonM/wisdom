@@ -22,6 +22,9 @@ public class ShopProductTypeDTO extends BaseEntity implements Serializable {
     private String productType;
 
     //
+    private String sysBossId;
+
+    //
     private String status;
 
     //
@@ -76,6 +79,14 @@ public class ShopProductTypeDTO extends BaseEntity implements Serializable {
 
     public void setProductType(String productType) {
         this.productType = productType;
+    }
+
+    public String getSysBossId() {
+        return sysBossId;
+    }
+
+    public void setSysBossId(String sysBossId) {
+        this.sysBossId = sysBossId;
     }
 
     public String getStatus() {

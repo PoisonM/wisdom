@@ -429,4 +429,16 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		return list;
 	}
 
+	/**
+	 * 添加项目类别
+	 */
+	@Override
+	public int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO) {
+		if (null == shopProjectTypeDTO) {
+			return 0;
+		}
+		int selective = shopProjectTypeMapper.insertSelective(shopProjectTypeDTO);
+		return selective;
+	}
+
 }
