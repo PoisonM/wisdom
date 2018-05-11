@@ -2,11 +2,13 @@ package com.wisdom.business.service.transaction;
 
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.controller.transaction.BusinessOrderController;
+import com.wisdom.business.mapper.product.ProductMapper;
 import com.wisdom.business.mapper.transaction.PayRecordMapper;
 import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
+import com.wisdom.common.dto.product.OfflineProductAmountRecordDTO;
 import com.wisdom.common.dto.transaction.OrderAddressRelationDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.product.InvoiceDTO;
@@ -53,6 +55,9 @@ public class TransactionService {
     private PayRecordMapper payRecordMapper;
 
     @Autowired
+    private ProductMapper productMapper;
+
+    @Autowired
     private MongoTemplate mongoTemplate;
 
     Logger logger = LoggerFactory.getLogger(TransactionService.class);
@@ -73,10 +78,10 @@ public class TransactionService {
                 //如果库里订单状态为待付款,并即将修改状态不是已支付,那么将恢复库存
                 if (!"1".equals(businessOrderDTO.getStatus()) && !"0".equals(businessOrderDTO.getStatus())) {
                     logger.info("updateBusinessOrder方法根据订单增加相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
-                    this.updateOfflineProductAmount(productDTO, "add");
+                    this.updateOfflineProductAmount(productDTO,businessOrderDTO, "add");
                 } else if ("1".equals(businessOrderDTO.getStatus()) || "0".equals(businessOrderDTO.getStatus())) {
                     logger.info("updateBusinessOrder方法根据订单减少相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
-                    this.updateOfflineProductAmount(productDTO, "lose");
+                    this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
                 }
             }
         }
@@ -365,33 +370,58 @@ public class TransactionService {
      * @param productDTO
      * @param addAndLose add为增加,lose为减少
      */
-    public void updateOfflineProductAmount(ProductDTO productDTO,String addAndLose) {
+    public void updateOfflineProductAmount(ProductDTO productDTO,BusinessOrderDTO businessOrderDTO,String addAndLose) {
         logger.info("根据订单商品数量修改相应的商品库存,商品id为:"+productDTO.getProductId()+"添加还是减少:"+addAndLose);
         RedisLock redisLock = new RedisLock("updateOfflineProductAmount");
+        ProductDTO productDTO2 =new ProductDTO();
+        productDTO2.setProductId(productDTO.getProductId());
+
+        OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = new OfflineProductAmountRecordDTO();
+        offlineProductAmountRecordDTO.setProductId(productDTO.getProductId());
+        offlineProductAmountRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+        offlineProductAmountRecordDTO.setUpdateAmount(productDTO.getProductAmount());
+        offlineProductAmountRecordDTO.setCreateTime(new Date());
+        offlineProductAmountRecordDTO.setTag("");
         try {
             redisLock.lock();
 
-            Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
-            ProductDTO productDTO1 = mongoTemplate.findOne(query, ProductDTO.class, "offlineProduct");
+            ProductDTO productDTO1 = productMapper.findProductById(productDTO.getProductId());
+
+            int addAmount = productDTO1.getProductAmount() + productDTO.getProductAmount();
+            int loseAmount = productDTO1.getProductAmount() - productDTO.getProductAmount();
+            offlineProductAmountRecordDTO.setOldProductAmount(productDTO1.getProductAmount());
+//            Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
+//            ProductDTO productDTO2 = mongoTemplate.findOne(query, ProductDTO.class, "offlineProduct");
             if (productDTO1 != null) {
-                if (productDTO.getProductAmount() != 0) {
+//                if (productDTO.getProductAmount() != 0) {
                     if (productDTO1.getProductAmount() >= productDTO.getProductAmount()) {
-                        Update update = new Update();
+//                        Update update = new Update();
                         if ("add".equals(addAndLose)) {
-                            update.set("productAmount", productDTO1.getProductAmount() + productDTO.getProductAmount());
-                            mongoTemplate.updateFirst(query, update, "offlineProduct");
+//                            update.set("productAmount", productDTO1.getProductAmount() + productDTO.getProductAmount());
+//                            mongoTemplate.updateFirst(query, update, "offlineProduct");
+                            offlineProductAmountRecordDTO.setAddAndLose("add");
+                            offlineProductAmountRecordDTO.setNewProductAmount(addAmount);
+                            mongoTemplate.insert(offlineProductAmountRecordDTO,"offlineProductAmountRecordDTO");
+                            productDTO2.setProductAmount(addAmount);
+                            productMapper.updateProductByParameters(productDTO2);
                         } else if ("lose".equals(addAndLose)) {
                             if (productDTO1.getProductAmount() - productDTO.getProductAmount() < 0) {
                                 logger.info("更新库存失败订单商品数量(" + productDTO.getProductAmount() + ")相应的商品库存数量(" + productDTO1.getProductAmount() + ")大于库存数量");
                             } else {
-                                update.set("productAmount", productDTO1.getProductAmount() - productDTO.getProductAmount());
-                                mongoTemplate.updateFirst(query, update, "offlineProduct");
+//                                update.set("productAmount", productDTO1.getProductAmount() - productDTO.getProductAmount());
+//                                mongoTemplate.updateFirst(query, update, "offlineProduct");
+                                offlineProductAmountRecordDTO.setAddAndLose("lose");
+                                offlineProductAmountRecordDTO.setNewProductAmount(loseAmount);
+                                mongoTemplate.insert(offlineProductAmountRecordDTO,"offlineProductAmountRecordDTO");
+                                productDTO2.setProductAmount(loseAmount);
+                                productMapper.updateProductByParameters(productDTO2);
                             }
                         }
-                    }
+//                    }
                 }
             }
         } catch (Exception e) {
+            logger.info("修改商品库存失败,商品id为:"+productDTO.getProductId());
             e.printStackTrace();
         }finally {
             redisLock.unlock();
