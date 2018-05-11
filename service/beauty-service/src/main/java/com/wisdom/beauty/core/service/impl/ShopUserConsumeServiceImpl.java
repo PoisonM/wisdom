@@ -317,6 +317,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     dto.setId(uuid);
                     dto.setSysShopName(dto.getSysShopName());
                     dto.setSysShopId(clerkInfo.getSysShopId());
+                    dto.setSysBossId(clerkInfo.getSysBossId());
                     //单个项目的价格 = 总金额/购买了多少个
                     BigDecimal price = dto.getSysShopProjectInitAmount();
                     BigDecimal divide = dto.getSysShopProjectPurchasePrice().divide(dto.getSysShopProjectInitAmount());
@@ -375,6 +376,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 dto.setId(uuid);
                 dto.setSysShopId(clerkInfo.getSysShopId());
                 dto.setSysShopName(clerkInfo.getSysShopName());
+                dto.setSysBossId(clerkInfo.getSysBossId());
                 dto.setSurplusTimes(dto.getInitTimes());
                 dto.setSurplusAmount(dto.getInitAmount());
                 BigDecimal divide = dto.getPurchasePrice().divide(dto.getInitAmount());

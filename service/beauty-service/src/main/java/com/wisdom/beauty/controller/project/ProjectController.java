@@ -12,6 +12,7 @@ import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -177,6 +178,7 @@ public class ProjectController {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         UserInfoDTO userInfo = UserUtils.getUserInfo();
         String sysShopId = "";
+        String sysBossId = "";
         //pad端登陆
         if (null != clerkInfo) {
             sysShopId = clerkInfo.getSysShopId();
@@ -185,6 +187,11 @@ public class ProjectController {
         if (null != userInfo) {
             ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(userInfo.getId());
             sysShopId = userLoginShop.getSysShopId();
+        }
+        //boss端登陆
+        if (null != userInfo) {
+            SysBossDTO bossInfo = UserUtils.getBossInfo();
+            sysBossId = bossInfo.getId();
         }
 
         logger.info("传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");

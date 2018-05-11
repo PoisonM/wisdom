@@ -20,6 +20,9 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     private String sysClerkId;
 
     //
+    private String sysBossId;
+
+    //
     private String sysClerkName;
 
     //使用方式 0：疗程 1：单次
@@ -114,6 +117,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setSysClerkId(String sysClerkId) {
         this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysBossId() {
+        return sysBossId;
+    }
+
+    public void setSysBossId(String sysBossId) {
+        this.sysBossId = sysBossId;
     }
 
     public String getSysClerkName() {
