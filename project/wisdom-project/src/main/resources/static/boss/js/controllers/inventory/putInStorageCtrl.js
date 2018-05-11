@@ -6,8 +6,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 flag: false,
                 type: 0, /*客装产品  易耗品*/
                 selType: 0, /*扫码入库  手动入库*/
-                selTypes: -1, /*入库产品*/
-                ids: []
+                ids: []/*入库产品*/
             };
             $scope.changeBtn = function (type) {
                 $scope.param.type = type;
@@ -23,7 +22,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             };
             $scope.threeMess = function () {
                 $scope.param.flag = false;
-            }
+            };
             $scope.selType = function (type) {
                 $scope.param.selType = type;
             }
@@ -40,12 +39,12 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 } else {
                     $scope.param.ids.push(domIndex);
                 }
-            }
+            };
             $scope.inventoryRecordsPicsGo = function(){
                 $state.go("inventoryRecordsPics")
-            }
+            };
             $scope.newLibraryGo = function(){
-                $state.go("newLibrary")
+                $state.go("newLibrary",{stockStyle:$scope.param.selType})
             }
 
 

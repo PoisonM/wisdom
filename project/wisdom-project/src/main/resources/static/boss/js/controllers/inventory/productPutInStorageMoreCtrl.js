@@ -23,10 +23,10 @@ angular.module('controllers',[]).controller('productPutInStorageMoreCtrl',
             };
             $scope.threeMess = function () {
                 $scope.param.flag = false;
-            }
+            };
             $scope.selType = function (type) {
                 $scope.param.selType = type;
-            }
+            };
             $scope.selProduct = function (domIndex) {
                 if ($scope.param.ids.indexOf(domIndex) != -1) {
                     var key = 0;
@@ -39,9 +39,9 @@ angular.module('controllers',[]).controller('productPutInStorageMoreCtrl',
                 } else {
                     $scope.param.ids.push(domIndex);
                 }
-            }
+            };
             $scope.newLibraryGo = function(){
-                $state.go("newLibrary")
+                $state.go("newLibrary",{stockStyle:$stateParams.stockStyle})
             }
 
-        }])
+        }]);

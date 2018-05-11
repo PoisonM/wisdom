@@ -3,4 +3,8 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading) {
             $rootScope.title = "仓库产品";
 
+            $scope.productInventoryDetailsGo = function(){
+                $state.go('productInventoryDetails')
+            }
+
         }])

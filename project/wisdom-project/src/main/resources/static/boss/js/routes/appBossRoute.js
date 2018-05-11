@@ -900,8 +900,8 @@ define(['appBoss'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.warehouseProductsCtrl',
-                                    ['js/controllers/Stock/warehouseShopCtrl.js?ver='+ bossVersion],
-                                    'views/Stock/warehouseShop.html?ver=' + bossVersion);
+                                    ['js/controllers/Stock/warehouseProductsCtrl.js?ver='+ bossVersion],
+                                    'views/Stock/warehouseProducts.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -1400,6 +1400,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* reservoirRunningWater 出入库流水*/
                     .state('reservoirRunningWater', {
                         url: '/reservoirRunningWater',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1460,6 +1461,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* inventoryDetails库存详情*/
                     .state('inventoryDetails', {
                         url: '/inventoryDetails',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1496,6 +1498,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*  historicalRecord  历史记录*/
                     .state('historicalRecord', {
                         url: '/historicalRecord',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1545,6 +1548,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*inventoryRecords 盘点记录*/
                     .state('inventoryRecords', {
                         url: '/inventoryRecords',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1700,6 +1704,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* addSeries 添加系列*/
                     .state('addSeries', {
                         url: '/addSeries',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1766,7 +1771,7 @@ define(['appBoss'], function(app){
                     })
                 /*AddOutbound 新增出库*/
                     .state('AddOutbound', {
-                        url: '/AddOutbound',
+                        url: '/AddOutbound/:stockStyle',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'AddOutboundCtrl',
                         resolve: {
@@ -1779,7 +1784,7 @@ define(['appBoss'], function(app){
                     })
                 /* newLibrary  新增入库*/
                     .state('newLibrary', {
-                        url: '/newLibrary',
+                        url: '/newLibrary/:stockStyle',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newLibraryCtrl',
                         resolve: {
@@ -1858,7 +1863,7 @@ define(['appBoss'], function(app){
                     })
                 /*productInventory 产品盘点*/
                     .state('productInventory', {
-                        url: '/productInventory',
+                        url: '/productInventory/:stockStyle',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productInventoryCtrl',
                         resolve: {
@@ -1871,7 +1876,7 @@ define(['appBoss'], function(app){
                     })
                 /*productPutInStorageMore  选择更多产品入库*/
                     .state('productPutInStorageMore', {
-                        url: '/productPutInStorageMore',
+                        url: '/productPutInStorageMore/:stockStyle',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productPutInStorageMoreCtrl',
                         resolve: {
@@ -1881,7 +1886,34 @@ define(['appBoss'], function(app){
                                     'views/inventory/productPutInStorageMore.html?ver=' + bossVersion);
                             }
                         }
-                    });
+                    })
+                /*trendChart  趋势图*/
+                    .state('trendChart', {
+                        url: '/trendChart',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'trendChartCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.trendChartCtrl',
+                                    ['js/controllers/work/trendChartCtrl.js?ver='+ bossVersion],
+                                    'views/work/trendChart.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*warehousePeople 库管人*/
+                    .state('warehousePeople', {
+                        url: '/warehousePeople',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'warehousePeopleCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.warehousePeopleCtrl',
+                                    ['js/controllers/inventory/warehousePeopleCtrl.js?ver='+ bossVersion],
+                                    'views/inventory/warehousePeople.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+
 
                 /*
                  orderdDtails 详情（订单）
@@ -1911,7 +1943,7 @@ define(['appBoss'], function(app){
 
                  outboundOrderDetails 出库单详情
                  outboundRecords  出库记录
-                 reservoirRunningWater出水库流水
+
                  unit  单位
                  efficacy 功效
                  specifications   规格
@@ -1924,10 +1956,10 @@ define(['appBoss'], function(app){
                  warehouseProducts  仓库产品
                  inventoryDetails库存详情
                  libraryTubeSetting 库管设置
-                 historicalRecord  历史记录
+
 
                  inventory  盘点
-                 inventoryOver盘点下一步
+                 inventoryOver 盘点下一步
                  inventoryRecords 盘点记录
                  inventoryRecordsDetails  盘点记录详情
                  unwind  平仓
@@ -1939,7 +1971,7 @@ define(['appBoss'], function(app){
                  applicableParts 适用部位
                  addEmployees 添加家人(员工)
 
-                 addSeries 添加系列
+
                  addProduct  添加产品
                  modifyProduct修改产品
                  inventorySetting  设置

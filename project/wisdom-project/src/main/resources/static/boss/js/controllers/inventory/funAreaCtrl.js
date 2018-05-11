@@ -8,5 +8,15 @@ angular.module('controllers',[]).controller('funAreaCtrl',
             $scope.outboundGo = function(){
                 $state.go('outbound')
             }
-
+            $scope.inventoryDetailsGo = function(){
+                $state.go('inventoryDetails')
+            }
+            /*盘点*/
+            $scope.inventoryGo = function(){
+                $state.go('inventory')
+            }
+            /*设置*/
+            $scope.inventorySettingGo = function(){
+                $state.go('inventorySetting')
+            }
  }]);

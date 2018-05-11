@@ -5,9 +5,8 @@ angular.module('controllers',[]).controller('outboundCtrl',
             $scope.param = {
                 flag: false,
                 type: 0, /*客装产品  易耗品*/
-                selType: 0, /*扫码入库  手动入库*/
-                selTypes: -1, /*入库产品*/
-                ids: []
+                selType: '2', /*扫码出库  手动出库*/
+                ids: []/*出库产品*/
             };
             $scope.changeBtn = function (type) {
                 $scope.param.type = type;
@@ -41,12 +40,13 @@ angular.module('controllers',[]).controller('outboundCtrl',
                     $scope.param.ids.push(domIndex);
                 }
             }
-
+           /*出库记录*/
             $scope.outboundRecordsGo = function(){
                 $state.go("outboundRecords")
             }
+            /*下一步*/
             $scope.AddOutboundGo = function(){
-                $state.go("AddOutbound")
+                $state.go("AddOutbound",{stockStyle:$scope.param.selType})
             }
 
         }])

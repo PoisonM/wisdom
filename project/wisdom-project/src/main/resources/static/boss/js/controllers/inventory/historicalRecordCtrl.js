@@ -3,4 +3,8 @@ angular.module('controllers',[]).controller('historicalRecordCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading) {
             $rootScope.title = "历史记录";
 
+            $scope.outboundOrderDetailsGo = function(){
+                $state.go('outboundOrderDetails')
+            }
+
         }])

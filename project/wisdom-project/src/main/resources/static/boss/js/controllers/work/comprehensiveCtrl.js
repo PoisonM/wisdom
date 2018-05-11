@@ -80,6 +80,8 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
             $scope.getInfo()
 
 
+
+
             $scope.beautyAllGo = function(sysShopId){
                 $state.go("beautyAll",{sysShopId:sysShopId,date:$scope.param.date})
             }

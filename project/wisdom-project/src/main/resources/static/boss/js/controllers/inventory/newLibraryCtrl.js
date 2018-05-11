@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('newLibraryCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','BossUtil','$filter',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','BossUtil','$filter','Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter,Global) {
             $rootScope.title = "新增入库";
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
@@ -78,19 +78,21 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                 shopProcId:"7878",/*产品id*/
                 shopStoreId:"651742081",/*仓库id*/
                 stockNumber:"12",/*库存数量	*/
-                stockStyle:"0",/*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
+                stockStyle:$stateParams.stockStyle,/*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
 
             }];
 
             $scope.successfulInventoryGo=function(){
 
-                AddStock.save($scope.shopStock,function(){
-
+                AddStock.save($scope.shopStock,function(data){
+                    if(data.result==Global.SUCCESS){
+                         $state.go("successfulInventory")
+                    }
                 })
-               /* $state.go("successfulInventory")*/
+
             }
-            $scope.productPutInStorageMoreGo = function () {
-                $state.go("productPutInStorageMore")
+            $scope.productPutInStorageMoreGo = function (stockStyle) {
+                $state.go("productPutInStorageMore",{stockStyle:stockStyle})
             }
 
         }])

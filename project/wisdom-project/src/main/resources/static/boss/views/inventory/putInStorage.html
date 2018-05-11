@@ -5,14 +5,14 @@
                 <div class="h45 bgfff bbl">
                     <label class="fs16 col333 ml10">入库方式：</label>
 
-                    <span class="fs14 col666 mr10" ng-click="selType(0);$event.stopPropagation()">
-                         <i class="icon ion-ios-checkmark-outline" style="color:#FF6666;font-size:20px;" ng-if="param.selType!=0"></i>
-                         <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.selType==0"></i>
+                    <span class="fs14 col666 mr10" ng-click="selType('0');$event.stopPropagation()">
+                         <i class="icon ion-ios-checkmark-outline" style="color:#FF6666;font-size:20px;" ng-if="param.selType!='0'"></i>
+                         <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.selType=='0'"></i>
                         手动入库</span>
 
-                    <span class="fs14 col666" ng-click="selType(1);$event.stopPropagation()">
-                        <i class="icon ion-ios-checkmark-outline" style="color:#FF6666;font-size:20px;" ng-if="param.selType!=1"></i>
-                        <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.selType==1"></i>
+                    <span class="fs14 col666" ng-click="selType('1');$event.stopPropagation()">
+                        <i class="icon ion-ios-checkmark-outline" style="color:#FF6666;font-size:20px;" ng-if="param.selType!='1'"></i>
+                        <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.selType=='1'"></i>
                         扫码入库</span>
 
                     <p class="fs13 colff66 mr10 mt5 floatR mt10" style="border: 1px solid #FF6666;border-radius: 2px;padding:1px 10px;height:20px;line-height: 20px" ng-show="param.flag" ng-click="inventoryRecordsPicsGo()">入库记录</p>

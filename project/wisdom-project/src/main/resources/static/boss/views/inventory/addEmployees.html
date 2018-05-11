@@ -1,7 +1,7 @@
 <ion-view>
     <ion-content class="partialFiles bgf6" ng-click="all()">
         <div>
-            <div class="h45">
+            <div class="h45" ng-show="false">
                 <p class="fs15 colff66 center" style="border: 1px solid #FF6666;border-radius: 2px;width:95%;margin:5px auto;height:38px;line-height: 38px;" ng-click="importAddressBookGo()">
                     + 通讯录导入
                 </p>
@@ -13,7 +13,7 @@
                         <span class="fs15 colff66">*</span>
                     </p>
                     <p>
-                        <input type="text" placeholder="请输入姓名" class="fs14 col999 mr10" style="text-align: right">
+                        <input type="text" placeholder="请输入姓名" class="fs14 col999 mr10" style="text-align: right" ng-model="sysClerkDTO.name">
                     </p>
                 </ion-item>
                 <ion-item class="h45 sb">
@@ -22,7 +22,7 @@
                         <span class="fs15 colff66">*</span>
                     </p>
                     <p>
-                        <input type="text" placeholder="请输入手机号" class="fs14 col999 mr10" style="text-align: right">
+                        <input type="text" placeholder="请输入手机号" class="fs14 col999 mr10" style="text-align: right" ng-model="sysClerkDTO.mobile">
                     </p>
                 </ion-item>
                 <ion-item class="h45 sb">
@@ -30,8 +30,8 @@
                         <span class="fs15 col333 ml10">选择门店</span>
                     </p>
                     <p ng-click="shop(); $event.stopPropagation()">
-                        <span class="fa15 col333">美容院分店</span>
-                        <img src="images/inventory/shou.png" class="shouPic mr10">
+                        <span class="fa15 col333">{{param.shopName}}</span>
+                        <img src="images/more.png" class="more mr10">
                     </p>
                 </ion-item>
             </ion-list>
@@ -39,7 +39,7 @@
                 <li class="item item-toggle h45">
                     <span class="fa15 col333 ml10">店长</span>
                     <label class="toggle toggle-assertive">
-                        <input type="checkbox">
+                        <input type="checkbox" ng-model="param.managerStatus">
                         <div class="track">
                             <div class="handle"></div>
                         </div>
@@ -48,7 +48,7 @@
                 <li class="item item-toggle h45">
                     <span class="fa15 col333 ml10">前台</span>
                     <label class="toggle toggle-assertive">
-                        <input type="checkbox">
+                        <input type="checkbox" ng-model="param.fontDeskStatus">
                         <div class="track">
                             <div class="handle"></div>
                         </div>
@@ -57,7 +57,7 @@
                 <li class="item item-toggle h45">
                     <span class="fa15 col333 ml10">美容师</span>
                     <label class="toggle toggle-assertive">
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" checked="checked" ng-model="param.beauticianStatus">
                         <div class="track">
                             <div class="handle"></div>
                         </div>
@@ -68,8 +68,8 @@
         </div>
         <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100" ng-show="param.flag"></div>
         <div style="position: absolute;bottom: 0;z-index: 101;width:100%;" ng-show="param.flag">
-            <p class="h50 col333 bbl  bgfff" ng-repeat="item in [1,2,3]" ng-click="selShop(); $event.stopPropagation()">
-                <span class="ml10">汉方</span>
+            <p class="h50 col333 bbl  bgfff" ng-repeat="item in fenShop" ng-click="selShop(item.id,item.sysShopName); $event.stopPropagation()">
+                <span class="ml10">{{item.sysShopName}}</span>
             </p>
         </div>
     </ion-content>

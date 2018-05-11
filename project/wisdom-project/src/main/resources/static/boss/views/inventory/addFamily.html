@@ -11,15 +11,19 @@
                  </span>
                 </ion-item>
                 <div>
-                    <p class="h45 sb bgfff bbl">
-                     <span class="fs15 colff66">
+                    <p class="h45 sb bgfff bbl" >
+                        <span class="fs15 colff66">
                          <img src="images/inventory/fenShop.png" class="ml10 fenShopPic">
                          美容院分店
                      </span>
-                        <img src="images/inventory/shou.png" class="shouPic mr10" style="margin-top: 20px;">
+                        <img src="images/more.png" class="more mr10" style="margin-top: 20px;" ng-click="selShop()">
                     </p>
+                    <div>
+
+                    </div>
+
                     <ul class="bgfff">
-                        <li class="h50  ml20 bbl" style="display: flex" ng-repeat="item in [0,1,2]" ng-click="selEmployees($index)
+                        <li class="h50  ml20 bbl" style="display: flex" ng-repeat="item in addFamily" ng-click="selEmployees($index)
 
 ">
                             <span class="mr10">
@@ -27,18 +31,26 @@
                                  <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.index==$index"></i>
                             </span>
 
-                            <p style="height:40px;line-height: 40px;width:40px;background: gainsboro;border-radius: 50%; "class="mt5" ></p>
-                            <span class="fs15 col333 ml10">花花</span>
+                            <p style="height:40px;line-height: 40px;width:40px;background: gainsboro;border-radius: 50%; "class="mt5" >
+                                <img ng-src="{{item.photo}}" style="height:40px;line-height: 40px;width:40px;border-radius: 50%; ">
+                            </p>
+                            <span class="fs15 col333 ml10">{{item.name}}</span>
                             <p style="height:20px;line-height: 20px;border: solid 1px #FF6666;margin-top:17px;border-radius: 3px;" class="ml10 fs15 colff66">
-                                <span class="mr5 ml10 ">前台</span>
-                                <span class="mr5 ml5">boss</span>
-                                <span class="mr5 ml5">员工</span>
+                                <span class="mr5 ml10 ">{{item.role}}</span>
                             </p>
 
                         </li>
                     </ul>
+
                 </div>
             </ion-list>
+            <div style="position: absolute;height:100%;background:rgba(0,0,0,0.2);top:40px;width:100%;z-index: 1000" ng-show="param.flag" ng-click="all()">
+                <div class="list bgfff">
+                    <p class="h50 item " ng-repeat="item in [0,1,2]" ng-click="selShopTrue()">
+                        <span class="ml10">美业</span>
+                    </p>
+                </div>
+            </div>
         </div>
     </ion-content>
     <div class="h50  bgff66" style="position: absolute;bottom: 0;width:100%;">
