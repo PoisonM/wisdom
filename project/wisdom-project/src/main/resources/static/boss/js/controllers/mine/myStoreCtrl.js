@@ -6,5 +6,8 @@ angular.module('controllers',[]).controller('myStoreCtrl',
         function ($scope,$rootScope,$stateParams,$state) {
 
             $rootScope.title = "我的门店";
+            $scope.branchShopGo=function () {
+                $state.go("branchShop")
+            }
 
         }]);
