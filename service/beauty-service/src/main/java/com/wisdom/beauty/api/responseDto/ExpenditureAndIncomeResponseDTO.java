@@ -53,6 +53,14 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
      */
     private String formateDate;
     private  String role;
+    /**
+     * 金额总计，去重flowNo后计算消费记录算出的金额
+     */
+    private BigDecimal totalPrice;
+    /**
+     *  支付方式  0:微信 1：支付宝 2:现金
+     */
+    private  String payType;
 
     public BigDecimal getExpenditure() {
         return expenditure;
@@ -141,6 +149,22 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
     }
 }
 

@@ -207,7 +207,6 @@ public class StoreAndStockController {
 		shopStockNumberDTO.setShopStoreId(shopStoreId);
 		shopStockNumberDTO.setShopProcId(shopProcId);
 		ShopStockResponseDTO shopStockResponseDTO = shopStockService.getProductInfoAndStock(shopStoreId,  shopProcId);
-		Map<String, Object> map = new HashedMap();
 
 		ResponseDTO<ShopStockResponseDTO> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
