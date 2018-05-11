@@ -10,7 +10,7 @@ define(['appBoss','jquery'], function (app,$) {
                     '<ion-nav-view name="tab-account"></ion-nav-view></ion-tab>' +
                     '<ion-tab title="档案" icon-off="ion-ios-filing" icon-on="ion-ios-filing" ui-sref="partialFiles">' +
                     '<ion-nav-view name="tab-account"></ion-nav-view></ion-tab>' +
-                    '<ion-tab title="我的" icon-off="ion-android-contact" icon-on="ion-android-contact" ui-sref="aboutMine">' +
+                    '<ion-tab title="我的" icon-off="ion-android-contact" icon-on="ion-android-contact" ui-sref="myself">' +
                     '<ion-nav-view name="tab-dash"></ion-nav-view></ion-tab></ion-tabs>',
                     link: function(scope,ele,attrs) {
                     }
