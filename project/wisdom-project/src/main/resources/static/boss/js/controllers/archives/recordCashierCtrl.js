@@ -12,5 +12,8 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                     console.log('Thank you for not eating my delicious ice cream cone');
                 });
             };
-            $scope.showAlert()
-        }])
+            $scope.showAlert();
+            $scope.detailsOfCashierGo=function () {
+                $state.go("detailsOfCashier")
+            }
+        }]);

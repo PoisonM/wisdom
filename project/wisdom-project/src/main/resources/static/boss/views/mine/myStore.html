@@ -1,6 +1,6 @@
 <ion-view class="bg">
     <ion-content>
-        <div>
+        <div class="tc">
             <img src="images/work/photo.jpg" style="width:60%;height: 125px;margin: auto">
         </div>
         <!--门店信息-->
@@ -19,7 +19,7 @@
             <p class="item p10"><span>分店列表</span><img src="images/mine/drop-down.png" style="width: 12px;height: 6px;display: inline-block;float: right;margin-top:8px"></p>
         </div>
           <!--列表-->
-        <div style="width: 100%;background: #ffffff;padding:20px;"  ng-repeat="item in [1,2]">
+        <div style="width: 100%;background: #ffffff;padding:20px;"  ng-repeat="item in [1,2]" ng-click="branchShopGo()">
             <ion-item  class="row" style="width: 342px;height: 73px;background: #F6F6F6;margin:auto;">
                 <div class="col col-80" >
                     <p style="font-size: 15px"><span>美容院分店</span></p >

@@ -1,6 +1,6 @@
 <ion-view class="bg">
     <ion-content>
-        <ion-item  class="bgfff row mt10" >
+        <ion-item  class="bgfff row mt10" ng-click="modificationInformationGo()">
             <div class="col col-15">
                 <img src="images/work/photo.jpg" style="width: 50px;height: 50px;border-radius: 10%">
             </div>
@@ -14,11 +14,11 @@
             </p >
         </ion-item>
         <div class="list mt20">
-            <p class="item"><img src="images/mine/store.png" style="width: 21px;height: 20px;display: inline-block"><span class="ml10 fs15 col33 bold">我的门店</span></p>
+            <p class="item" ng-click="myStoreGo()"><img src="images/mine/store.png" style="width: 21px;height: 20px;display: inline-block"><span class="ml10 fs15 col33 bold">我的门店</span></p>
             <p class="item"><img src="images/mine/customerService.png" style="width: 21px;height: 20px;display: inline-block"><span class="ml10 fs15 col33 bold">客服中心</span></p>
         </div>
         <div class="list">
-            <p class="item"><img src="images/mine/Set.png" style="width: 21px;height: 20px;display: inline-block"><span class="ml10 fs15 col33 bold">设置</span></p>
+            <p class="item" ng-click="setInformationGo()"><img src="images/mine/Set.png" style="width: 21px;height: 20px;display: inline-block"><span class="ml10 fs15 col33 bold">设置</span></p>
         </div>
     </ion-content>
 </ion-view>
