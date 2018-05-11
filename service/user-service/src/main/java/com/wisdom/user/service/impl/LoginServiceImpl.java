@@ -58,8 +58,6 @@ public class LoginServiceImpl implements LoginService{
             return StatusConstant.VALIDATECODE_ERROR;
         }
 
-
-
         String logintoken = null;
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         RedisLock redisLock = new RedisLock("userInfo" + loginDTO.getUserPhone());
