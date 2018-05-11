@@ -4,13 +4,13 @@
 package com.wisdom.beauty.util;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
+import com.aliyun.oss.ServiceException;
+import com.wisdom.beauty.api.extDto.ExtUserDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -26,6 +26,10 @@ import java.util.Map;
  * @version 2013-12-05
  */
 public class UserUtils {
+
+    public static ExtUserDTO ExtUserDTO() {
+        return null;
+    }
 
 
     /**
@@ -80,6 +84,22 @@ public class UserUtils {
             return null;
         }
         return token;
+    }
+
+    /**
+     * 获取登陆人的角色信息
+     *
+     * @return
+     */
+    private static String getUserType() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Map<String, String> tokenValue = getHeadersInfo(request);
+        String userType = tokenValue.get("usertype");
+        if (StringUtils.isNotBlank(userType)) {
+            System.out.println("获取当前登录人的角色为空");
+            throw new ServiceException("获取当前登录人的角色为空");
+        }
+        return userType;
     }
 
     /**

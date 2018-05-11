@@ -99,9 +99,8 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             responseDTO = updateProjectGroupInfo(shopUserOrderDTO, responseDTO, operation, alreadyOrderDTO);
         }
         //充值卡
-        else if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(goodsType)) {
-            updateRechargeCardInfo(shopUserOrderDTO, orderId, alreadyOrderDTO);
-        }
+        updateRechargeCardInfo(shopUserOrderDTO, orderId, alreadyOrderDTO);
+
         return responseDTO;
     }
 
@@ -114,18 +113,30 @@ public class ShopOrderServiceImpl implements ShopOrderService {
      */
     private void updateRechargeCardInfo(ShopUserOrderDTO shopUserOrderDTO, String orderId, ShopUserOrderDTO alreadyOrderDTO) {
         //充值卡主键
-        String userRechargeId = shopUserOrderDTO.getShopUserRechargeCardDTO().getId();
-        if (StringUtils.isBlank(userRechargeId)) {
-            logger.error("订单号={}，更新订单的充值卡操作,userRechargeId={}", orderId, userRechargeId);
-            throw new ServiceException("充值卡id为空");
+        String userRechargeId;
+
+        //消费界面用户选择不同的充值卡，也就是用户更新充值卡操作
+        if (null != shopUserOrderDTO.getShopUserRechargeCardDTO() && StringUtils.isNotBlank(shopUserOrderDTO.getShopUserRechargeCardDTO().getId())) {
+            userRechargeId = shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId();
         }
+        //消费界面添加更多，比如添加了一个信息的产品，那么新的产品折扣也要逆向更新
+        else {
+            userRechargeId = alreadyOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId();
+        }
+
         //根据主键查询用户与充值卡关系信息
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
-        shopUserRechargeCardDTO.setId(userRechargeId);
+        shopUserRechargeCardDTO.setShopRechargeCardId(userRechargeId);
+        shopUserRechargeCardDTO.setSysUserId(alreadyOrderDTO.getUserId());
+        shopUserRechargeCardDTO.setSysShopId(alreadyOrderDTO.getShopId());
         List<ShopUserRechargeCardDTO> userRechargeCardList = cardService.getUserRechargeCardList(shopUserRechargeCardDTO);
-        if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
+        //用户没有选择任何的充值卡
+        if (CommonUtils.objectIsEmpty(userRechargeCardList) || StringUtils.isBlank(userRechargeId)) {
             logger.error("订单号={}，根据主键查询用户与充值卡关系信息为空", orderId);
-            throw new ServiceException("根据主键查询用户与充值卡关系信息为空");
+            shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+            shopUserRechargeCardDTO.setProductDiscount(1f);
+            shopUserRechargeCardDTO.setTimeDiscount(1f);
+            shopUserRechargeCardDTO.setPeriodDiscount(1f);
         }
         shopUserRechargeCardDTO = userRechargeCardList.get(0);
 
@@ -169,26 +180,12 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             }
         }
 
-//        //遍历用户的套卡，更新产品的初始金额
-//        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
-//        if (CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)) {
-//            logger.info("订单号={}，更新用户套卡信息", orderId);
-//            for (ShopUserProjectGroupRelRelationDTO groupRelRelationDTO : projectGroupRelRelationDTOS) {
-//                logger.info("订单号={}，对应套卡折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
-//                BigDecimal multiplyAmount = groupRelRelationDTO.getSysShopProjectInitAmount().multiply(new BigDecimal(shopUserRechargeCardDTO.get));
-//                userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount);
-//                userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getPeriodDiscount()));
-//                updateFlag = true;
-//            }
-//        }
-
         Query updateQuery = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
         update.set("shopUserRechargeCardDTO", shopUserOrderDTO.getShopUserRechargeCardDTO());
         if (updateFlag) {
             update.set("shopUserProjectRelationDTOS", alreadyOrderDTO.getShopUserProjectRelationDTOS());
             update.set("shopUserProductRelationDTOS", alreadyOrderDTO.getShopUserProductRelationDTOS());
-//            update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
         }
         mongoTemplate.upsert(updateQuery, update, "shopUserOrderDTO");
 

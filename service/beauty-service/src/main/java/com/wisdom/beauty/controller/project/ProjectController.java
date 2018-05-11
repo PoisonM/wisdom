@@ -175,21 +175,25 @@ public class ProjectController {
     @ResponseBody
     ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId, @RequestParam String cardStyle) {
         long currentTimeMillis = System.currentTimeMillis();
+        logger.info("查询某个用户的卡片列表信息传入参数={}", "sysUserId = [" + sysUserId + "], cardStyle = [" + cardStyle + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         UserInfoDTO userInfo = UserUtils.getUserInfo();
         String sysShopId = "";
         String sysBossId = "";
         //pad端登陆
         if (null != clerkInfo) {
+            logger.info("pad端操作");
             sysShopId = clerkInfo.getSysShopId();
         }
         //用户端登陆
         if (null != userInfo) {
+            logger.info("用户端操作");
             ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(userInfo.getId());
             sysShopId = userLoginShop.getSysShopId();
         }
         //boss端登陆
         if (null != userInfo) {
+            logger.info("用户端操作");
             SysBossDTO bossInfo = UserUtils.getBossInfo();
             sysBossId = bossInfo.getId();
         }
@@ -201,6 +205,7 @@ public class ProjectController {
         relationDTO.setSysUserId(sysUserId);
         relationDTO.setSysShopId(sysShopId);
         relationDTO.setUseStyle(cardStyle);
+        relationDTO.setSysBossId(sysBossId);
         List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
         if (CommonUtils.objectIsEmpty(userProjectList)) {
             logger.debug("查询某个用户的卡片列表信息为空, {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
