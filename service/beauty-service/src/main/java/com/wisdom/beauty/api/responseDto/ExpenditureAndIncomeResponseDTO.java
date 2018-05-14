@@ -9,163 +9,185 @@ import java.util.Date;
  * ClassName: ExpenditureAndIncomeResponseDTO
  *
  * @Author： huan
+ * 
  * @Description: 收入和支出类
  * @Date:Created in 2018/4/8 11:00
  * @since JDK 1.8
  */
 public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
-    /**
-     * 照片
-     */
-    private String photo;
-    /**
-     * 店员名字
-     */
-    private String sysShopClerkName;
+	/**
+	 * 照片
+	 */
+	private String photo;
+	/**
+	 * 店员名字
+	 */
+	private String sysShopClerkName;
 
-    private String sysShopClerkId;
-    /**
-     * 美容院id
-     */
-    private String sysShopId;
-    /**
-     * 美容院名称
-     */
-    private String sysShopName;
-    /**
-     * 流水号
-     */
-    private String flowNo;
-    /**
-     * 耗卡
-     */
-    private BigDecimal expenditure;
-    /**
-     * 业绩
-     */
-    private BigDecimal income;
-    /**
-     * 日期
-     */
-    private Date date;
-    /**
-     * 格式化后的日期,例如2018-04-04
-     */
-    private String formateDate;
-    private  String role;
-    /**
-     * 金额总计，去重flowNo后计算消费记录算出的金额
-     */
-    private BigDecimal totalPrice;
-    /**
-     *  支付方式  0:微信 1：支付宝 2:现金
-     */
-    private  String payType;
+	private String sysShopClerkId;
+	/**
+	 * 美容院id
+	 */
+	private String sysShopId;
+	/**
+	 * 美容院名称
+	 */
+	private String sysShopName;
+	/**
+	 * 流水号
+	 */
+	private String flowNo;
+	/**
+	 * 耗卡
+	 */
+	private BigDecimal expenditure;
+	/**
+	 * 业绩
+	 */
+	private BigDecimal income;
+	/**
+	 * 日期
+	 */
+	private Date date;
+	/**
+	 * 格式化后的日期,例如2018-04-04
+	 */
+	private String formateDate;
+	private String role;
+	/**
+	 * 金额总计，去重flowNo后计算消费记录算出的金额
+	 */
+	private BigDecimal totalPrice;
+	/**
+	 * 支付方式 0:微信 1：支付宝 2:现金
+	 */
+	private String payType;
+	/**
+	 * 总收益
+	 */
+	private BigDecimal allEarnings;
+	/**
+	 * 现金收益
+	 */
+	private BigDecimal cashEarnings;
 
-    public BigDecimal getExpenditure() {
-        return expenditure;
-    }
+	public BigDecimal getExpenditure() {
+		return expenditure;
+	}
 
-    public void setExpenditure(BigDecimal expenditure) {
-        this.expenditure = expenditure;
-    }
+	public void setExpenditure(BigDecimal expenditure) {
+		this.expenditure = expenditure;
+	}
 
-    public Date getDate() {
-        return date;
-    }
+	public Date getDate() {
+		return date;
+	}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
+	public String getFlowNo() {
+		return flowNo;
+	}
 
-    public String getFlowNo() {
-        return flowNo;
-    }
+	public void setFlowNo(String flowNo) {
+		this.flowNo = flowNo;
+	}
 
-    public void setFlowNo(String flowNo) {
-        this.flowNo = flowNo;
-    }
+	public BigDecimal getIncome() {
+		return income;
+	}
 
-    public BigDecimal getIncome() {
-        return income;
-    }
+	public void setIncome(BigDecimal income) {
+		this.income = income;
+	}
 
-    public void setIncome(BigDecimal income) {
-        this.income = income;
-    }
+	public String getSysShopId() {
+		return sysShopId;
+	}
 
-    public String getSysShopId() {
-        return sysShopId;
-    }
+	public void setSysShopId(String sysShopId) {
+		this.sysShopId = sysShopId;
+	}
 
-    public void setSysShopId(String sysShopId) {
-        this.sysShopId = sysShopId;
-    }
+	public String getSysShopName() {
+		return sysShopName;
+	}
 
-    public String getSysShopName() {
-        return sysShopName;
-    }
+	public void setSysShopName(String sysShopName) {
+		this.sysShopName = sysShopName;
+	}
 
-    public void setSysShopName(String sysShopName) {
-        this.sysShopName = sysShopName;
-    }
+	public String getFormateDate() {
+		return formateDate;
+	}
 
-    public String getFormateDate() {
-        return formateDate;
-    }
+	public void setFormateDate(String formateDate) {
+		this.formateDate = formateDate;
+	}
 
-    public void setFormateDate(String formateDate) {
-        this.formateDate = formateDate;
-    }
+	public String getSysShopClerkId() {
+		return sysShopClerkId;
+	}
 
-    public String getSysShopClerkId() {
-        return sysShopClerkId;
-    }
+	public void setSysShopClerkId(String sysShopClerkId) {
+		this.sysShopClerkId = sysShopClerkId;
+	}
 
-    public void setSysShopClerkId(String sysShopClerkId) {
-        this.sysShopClerkId = sysShopClerkId;
-    }
+	public String getSysShopClerkName() {
+		return sysShopClerkName;
+	}
 
-    public String getSysShopClerkName() {
-        return sysShopClerkName;
-    }
+	public void setSysShopClerkName(String sysShopClerkName) {
+		this.sysShopClerkName = sysShopClerkName;
+	}
 
-    public void setSysShopClerkName(String sysShopClerkName) {
-        this.sysShopClerkName = sysShopClerkName;
-    }
+	public String getPhoto() {
+		return photo;
+	}
 
-    public String getPhoto() {
-        return photo;
-    }
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
+	public String getRole() {
+		return role;
+	}
 
-    public String getRole() {
-        return role;
-    }
+	public void setRole(String role) {
+		this.role = role;
+	}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	public BigDecimal getTotalPrice() {
+		return totalPrice;
+	}
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
+	public void setTotalPrice(BigDecimal totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
+	public String getPayType() {
+		return payType;
+	}
 
-    public String getPayType() {
-        return payType;
-    }
+	public void setPayType(String payType) {
+		this.payType = payType;
+	}
 
-    public void setPayType(String payType) {
-        this.payType = payType;
-    }
+	public BigDecimal getAllEarnings() {
+		return allEarnings;
+	}
+
+	public void setAllEarnings(BigDecimal allEarnings) {
+		this.allEarnings = allEarnings;
+	}
+
+	public BigDecimal getCashEarnings() {
+		return cashEarnings;
+	}
+
+	public void setCashEarnings(BigDecimal cashEarnings) {
+		this.cashEarnings = cashEarnings;
+	}
 }
-
-
