@@ -2,19 +2,23 @@
     <ion-content>
         <!--日期部分-->
         <div class="bgRgb">
-            <img src="images/work/date.png" class="dateImg" ><span class="date">2016-03-01</span><img src="images/work/drop-down.png" class="dropImg">
+            <ionic-datepicker input-obj="datepickerObjectEnd">
+                <img src="images/work/date.png" class="dateImg" >
+                <span class="date">{{param.date}}</span>
+                <img src="images/work/drop-down.png" class="dropImg">
+            </ionic-datepicker>
         </div>
-        <div class="list" ng-repeat="item in [1,2,3,4]" ui-sref="incomeAnalysis">
-            <p class="item"  class="fs15 p10"><span>唯美度美容养生会所</span><i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></p>
-            <p class="item"  class="fs12 p5">现金收益<span  class="fs14 colff66 ml5">+177777.00</span></p>
+        <div class="list" ng-repeat="item in storeExpenditure" ui-sref="incomeAnalysis">
+            <p class="item"  class="fs15 p10"><espan>{{item.sysShopName}}</espan><i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></p>
+            <p class="item"  class="fs12 p5">现金收益<span  class="fs14 colff66 ml5">+{{item.cashEarnings}}</span></p>
             <div class="row col33 bgfff tc p0 fs13" >
                 <div class="col col-50 bre5e5 pt10" >
-                    业绩
-                    <p class="mt5">46698.60</p>
+                    总收入
+                    <p class="mt5">{{item.allEarnings}}</p>
                 </div>
                 <div class="col col-50 mt10" >
-                    耗卡
-                    <p class="mt5">16418.80</p>
+                    总支出
+                    <p class="mt5">****</p>
                 </div>
             </div>
         </div>
