@@ -133,6 +133,7 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
                 expenditureAndIncomeResponseDTO.setAllEarnings(map.get(shopBossRelation.getSysShopId()).getAllEarnings());
             }
             expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());
+            expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());
             expenditureAndIncomeResponses.add(expenditureAndIncomeResponseDTO);
         }
         return expenditureAndIncomeResponses;
