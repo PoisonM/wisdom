@@ -77,7 +77,7 @@ public class TransactionService {
                 productDTO.setProductAmount(businessOrderDTO1.getBusinessProductNum());
                 //查询是否有记录
                 //如果库里订单状态为待付款,并即将修改状态不是已支付,那么将恢复库存
-                if (!"1".equals(businessOrderDTO.getStatus()) && "0".equals(oldBusinessOrderDTO.getStatus())) {
+                if (!"1".equals(businessOrderDTO.getStatus()) && !"0".equals(businessOrderDTO.getStatus())) {
                     logger.info("updateBusinessOrder方法根据订单增加相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
                     Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("add"));
                     OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
