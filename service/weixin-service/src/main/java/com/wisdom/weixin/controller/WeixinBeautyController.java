@@ -81,16 +81,16 @@ public class WeixinBeautyController {
             url = ConfigConstant.USER_WEB_URL + "beautyAppoint";
         }
         else if ("beautyBoss".equals(url)) {
-            url = ConfigConstant.BEAUTY_WEB_URL + "beautyBoss";
+            url = ConfigConstant.BOSS_WEB_URL + "beautyBoss";
         }
         else if ("beautyClerk".equals(url)) {
-            url = ConfigConstant.BEAUTY_WEB_URL + "beautyBoss";
+            url = ConfigConstant.BOSS_WEB_URL + "beautyBoss";
         }
         
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                "appid="+ ConfigConstant.BEAUTY_CORPID +
-                "&secret=" + ConfigConstant.BEAUTY_SECRET +
+                "appid="+ ConfigConstant.BOSS_CORPID +
+                "&secret=" + ConfigConstant.BOSS_SECRET +
                 "&code="+ code +
                 "&grant_type=authorization_code";
         WeixinUserBean weixinUserBean;
@@ -104,8 +104,8 @@ public class WeixinBeautyController {
         } while (weixinUserBean == null);
 
         String openId = weixinUserBean.getOpenid();
-        session.setAttribute(ConfigConstant.BEAUTY_OPEN_ID, openId);
-        CookieUtils.setCookie(response, ConfigConstant.BEAUTY_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
+        session.setAttribute(ConfigConstant.BOSS_OPEN_ID, openId);
+        CookieUtils.setCookie(response, ConfigConstant.BOSS_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
 
         return "redirect:" + url;
     }
@@ -125,7 +125,7 @@ public class WeixinBeautyController {
     {
         ResponseDTO<WeixinConfigDTO> responseDTO = new ResponseDTO<>();
         String u = request.getParameter("url");
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBeautyFlag));
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
         WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String ticket = weixinTokenDTO.getTicket();
         WeixinConfigDTO WeixinConfigDTO = JsApiTicketUtil.bossSign(ticket, u);

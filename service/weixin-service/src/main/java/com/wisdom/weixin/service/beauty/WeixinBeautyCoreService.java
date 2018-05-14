@@ -93,10 +93,10 @@ public class WeixinBeautyCoreService {
     public void updateBeautyWeixinToken() {
         try {
             System.out.print("用户端微信参数更新");
-            String token = WeixinUtil.getUserTokenFromTX(ConfigConstant.BEAUTY_CORPID, ConfigConstant.BEAUTY_SECRET);
+            String token = WeixinUtil.getUserTokenFromTX(ConfigConstant.BOSS_CORPID, ConfigConstant.BOSS_SECRET);
             if(StringUtils.isNotNull(token)) {
                 String ticket = WeixinUtil.getJsapiTicket(token);
-                Query query = new Query().addCriteria(Criteria.where("weixinFlag").is(ConfigConstant.weixinBeautyFlag));
+                Query query = new Query().addCriteria(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
                 Update update = new Update();
                 update.set("token",token);
                 update.set("ticket",ticket);

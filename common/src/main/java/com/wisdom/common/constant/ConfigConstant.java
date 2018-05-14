@@ -8,6 +8,8 @@ public class ConfigConstant {
 
 	public static final String USER_WEB_URL = Global.getConfig("USER_WEB_URL");
 
+	public static final String BOSS_WEB_URL = Global.getConfig("BOSS_WEB_URL");
+
 	public static final String OFFLINE_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("OFFLINE_PRODUCT_BUY_NOTIFY_URL");
 
 	public static final String TRAINING_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("TRAINING_PRODUCT_BUY_NOTIFY_URL");
