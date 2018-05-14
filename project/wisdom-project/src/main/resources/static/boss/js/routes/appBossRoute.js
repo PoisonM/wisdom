@@ -244,7 +244,7 @@ define(['appBoss'], function(app){
                     })
                         /*某个店的收支分析*/
                     .state('oneIncomeAnalysis', {
-                        url: '/oneIncomeAnalysis',
+                        url: '/oneIncomeAnalysis/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'oneIncomeAnalysisCtrl',
                         resolve: {

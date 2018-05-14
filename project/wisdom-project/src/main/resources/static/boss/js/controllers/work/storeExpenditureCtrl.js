@@ -70,6 +70,10 @@ angular.module('controllers',[]).controller('storeExpenditureCtrl',
                     endTime:'2019-01-01 2000:00:00'
                 },function (data) {
                     $scope.storeExpenditure = data.responseData
+
+
+
+                    
                 })
             }
             $scope.getInfo()

@@ -8,7 +8,7 @@
                 <img src="images/work/drop-down.png" class="dropImg">
             </ionic-datepicker>
         </div>
-        <div class="list" ng-repeat="item in storeExpenditure" ui-sref="incomeAnalysis">
+        <div class="list" ng-repeat="item in storeExpenditure" ui-sref="oneIncomeAnalysis({sysShopId:item.sysShopId})">
             <p class="item"  class="fs15 p10"><espan>{{item.sysShopName}}</espan><i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></p>
             <p class="item"  class="fs12 p5">现金收益<span  class="fs14 colff66 ml5">+{{item.cashEarnings}}</span></p>
             <div class="row col33 bgfff tc p0 fs13" >
