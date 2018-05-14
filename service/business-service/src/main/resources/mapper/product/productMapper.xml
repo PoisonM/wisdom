@@ -168,8 +168,11 @@
 	<update id="updateProductByParameters">
 		UPDATE business_product
 		SET
+		<if test="productId != ''and productId != null">
+			product_id=#{productId}
+		</if>
 		<if test="productName != ''and productName != null">
-			name=#{productName}
+			,name=#{productName}
 		</if>
 		<if test="brand != ''and brand != null">
 			,brand=#{brand}
