@@ -75,13 +75,23 @@ public class TransactionService {
                 ProductDTO productDTO = new ProductDTO();
                 productDTO.setProductId(businessOrderDTO1.getBusinessProductId());
                 productDTO.setProductAmount(businessOrderDTO1.getBusinessProductNum());
+                //查询是否有记录
                 //如果库里订单状态为待付款,并即将修改状态不是已支付,那么将恢复库存
-                if (!"1".equals(businessOrderDTO.getStatus()) && !"0".equals(businessOrderDTO.getStatus())) {
+                if (!"1".equals(businessOrderDTO.getStatus()) && "0".equals(oldBusinessOrderDTO.getStatus())) {
                     logger.info("updateBusinessOrder方法根据订单增加相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
-                    this.updateOfflineProductAmount(productDTO,businessOrderDTO, "add");
+                    Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("add"));
+                    OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
+                    //如果有记录,则不需要重复操作库存
+                    if(null == offlineProductAmountRecordDTO){
+                        this.updateOfflineProductAmount(productDTO,businessOrderDTO, "add");
+                    }
                 } else if ("1".equals(businessOrderDTO.getStatus()) || "0".equals(businessOrderDTO.getStatus())) {
                     logger.info("updateBusinessOrder方法根据订单减少相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
-                    this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
+                    Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("lose"));
+                    OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
+                    if(null == offlineProductAmountRecordDTO){
+                        this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
+                    }
                 }
             }
         }
