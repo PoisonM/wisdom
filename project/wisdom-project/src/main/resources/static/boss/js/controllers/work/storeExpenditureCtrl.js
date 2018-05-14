@@ -66,14 +66,14 @@ angular.module('controllers',[]).controller('storeExpenditureCtrl',
             
             $scope.getInfo = function () {
                 GetAllShopIncomeExpenditure.get({
-                    startTime:"2017-01-01 2000:00:00",
-                    endTime:'2019-01-01 2000:00:00'
+                    startTime:param.date+" 00:00:00",
+                    endTime:param.date+' 23:59:59'
                 },function (data) {
                     $scope.storeExpenditure = data.responseData
 
 
 
-                    
+
                 })
             }
             $scope.getInfo()

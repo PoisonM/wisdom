@@ -69,8 +69,8 @@ angular.module('controllers',[]).controller('incomeAnalysisCtrl',
 
             $scope.getInfo = function(){
                 GetInComeExpenditureDetail.get({
-                    startTime:"2018-04-01 00:00:00",
-                    endTime:"2018-06-01 23:59:59"
+                    startTime:param.date+' 00:00:00',
+                    endTime:param.date+ " 23:59:59"
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.incomeAnalysis = data.responseData
