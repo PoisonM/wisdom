@@ -66,8 +66,8 @@ angular.module('controllers',[]).controller('storeExpenditureCtrl',
             
             $scope.getInfo = function () {
                 GetAllShopIncomeExpenditure.get({
-                    startTime:param.date+" 00:00:00",
-                    endTime:param.date+' 23:59:59'
+                    startTime:$scope.param.date+" 00:00:00",
+                    endTime:$scope.param.date+' 23:59:59'
                 },function (data) {
                     $scope.storeExpenditure = data.responseData
 
