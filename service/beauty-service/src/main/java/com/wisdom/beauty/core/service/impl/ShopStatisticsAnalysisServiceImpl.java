@@ -500,7 +500,10 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			Date endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
 			criteria.andCreateDateBetween(startDate, endDate);
 		}
-
+        if(pageParamVoDTO.getPaging()){
+			recordCriteria.setLimitStart(pageParamVoDTO.getPageNo());
+			recordCriteria.setPageSize(pageParamVoDTO.getPageSize());
+		}
 		List<ExpenditureAndIncomeResponseDTO> list = extShopUserConsumeRecordMapper
 				.selectPriceListByCriteria(recordCriteria);
 		return list;
