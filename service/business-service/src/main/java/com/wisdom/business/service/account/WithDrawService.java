@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.HashMap;
 
@@ -126,12 +127,14 @@ public class WithDrawService {
 
     
     public PageParamDTO<List<WithDrawRecordDTO>> queryWithdrawsByParameters(PageParamVoDTO<ProductDTO> pageParamVoDTO) {
+
         PageParamDTO<List<WithDrawRecordDTO>> page = new  PageParamDTO<>();
         int count = withDrawMapper.queryWithdrawsCountByParameters(pageParamVoDTO);
         page.setTotalCount(count);
         List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawMapper.queryWithdrawsByParameters(pageParamVoDTO);
 
         for(WithDrawRecordDTO withDrawRecordDTO : withDrawRecordDTOList){
+            String nickNameW ="";
             try {
                 Query query = new Query().addCriteria(Criteria.where("withDrawId").is(withDrawRecordDTO.getWithdrawId()));
                 UserBankCardInfoDTO userBankCardInfoDTO = mongoTemplate.findOne(query, UserBankCardInfoDTO.class,"userBankCardInfo");
@@ -140,10 +143,31 @@ public class WithDrawService {
                     withDrawRecordDTO.setBankCardNumber(userBankCardInfoDTO.getBankCardNumber());
                     withDrawRecordDTO.setBankCardAddress(userBankCardInfoDTO.getBankCardAddress());
                 }
-                withDrawRecordDTO.setNickName(URLDecoder.decode(withDrawRecordDTO.getNickName(),"utf-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                if(withDrawRecordDTO.getNickName()!=null){
+                    nickNameW = withDrawRecordDTO.getNickName().replaceAll("%", "%25");
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
+                        }else{
+                            break;
+                        }
+                    }
+                }else{
+                    nickNameW="未知用户";
+                }
+
+
+                //withDrawRecordDTO.setNickName(URLDecoder.decode(URLDecoder.decode(withDrawRecordDTO.getNickName(),"utf-8"),"utf-8"));
+            } catch(Throwable e){
+                logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                nickNameW="特殊符号用户";
             }
+            withDrawRecordDTO.setNickName(nickNameW);
         }
         page.setResponseData(withDrawRecordDTOList);
 

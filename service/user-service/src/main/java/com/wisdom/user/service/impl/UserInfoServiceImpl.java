@@ -10,6 +10,9 @@ import com.wisdom.common.util.*;
 import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.UserInfoService;
+import org.apache.ibatis.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -38,12 +42,34 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Autowired
     protected MongoTemplate mongoTemplate;
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
     public List<UserInfoDTO> getUserInfo(UserInfoDTO userInfoDTO) {
         List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfo(userInfoDTO);
+        if(CommonUtils.objectIsEmpty(userInfoDTOS)){
+            logger.info("查询的用户信息为空");
+            return null;
+        }
         for (UserInfoDTO user: userInfoDTOS) {
-            user.setNickname(CommonUtils.nameDecoder(user.getNickname()));
+            if(StringUtils.isNotBlank(user.getNickname())){
+                String nickNameW = user.getNickname().replaceAll("%", "%25");
+                while(true){
+                    logger.info("用户进行编码操作");
+                    if(StringUtils.isNotBlank(nickNameW)){
+                        if(nickNameW.contains("%25")){
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                        }else{
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                            break;
+                        }
+                    }else{
+                        break;
+                    }
+                }
+                user.setNickname(nickNameW);
+            }
         }
         return  userInfoDTOS;
     }
@@ -99,7 +125,21 @@ public class UserInfoServiceImpl implements UserInfoService{
                     userInfoDTO.setLivingPeriod(-1);
                 }
             }
-            userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+            String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+            while(true){
+                if(nickNameW !=null&&nickNameW!=""){
+                    if(nickNameW.contains("%25")){
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
+                    }else{
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
+                        break;
+                    }
+                }else{
+                    break;
+                }
+
+            }
+            userInfoDTO.setNickname(nickNameW);
         }
         page.setResponseData(userInfoDTOList);
         return page;
@@ -109,7 +149,26 @@ public class UserInfoServiceImpl implements UserInfoService{
     public List<UserInfoDTO> queryNextUserById(String sysUserId) {
         List<UserInfoDTO> userInfoDTOList = customerInfoMapper.queryNextUserById(sysUserId);
         for(UserInfoDTO userInfoDTO : userInfoDTOList){
-            userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+            if(StringUtils.isNotBlank(userInfoDTO.getNickname())&&userInfoDTO.getNickname()!=""){
+                String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+                while(true){
+                    logger.info("用户进行编码操作");
+                    if(StringUtils.isNotBlank(nickNameW)){
+                        if(nickNameW.contains("%25")){
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                        }else{
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                            break;
+                        }
+                    }else{
+                        break;
+                    }
+                }
+                userInfoDTO.setNickname(nickNameW);
+            }else{
+                userInfoDTO.setNickname("未知用户");
+            }
+
         }
         return userInfoDTOList;
     }

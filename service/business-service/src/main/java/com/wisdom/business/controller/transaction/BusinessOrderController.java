@@ -220,6 +220,7 @@ public class BusinessOrderController {
                     orderAddressRelationDTO1.setUserNameAddress(userOrderAddressDTO.getUserName());
                     orderAddressRelationDTO1.setUserPhoneAddress(userOrderAddressDTO.getUserPhone());
                     orderAddressRelationDTO1.setUserProvinceAddress(userOrderAddressDTO.getProvince());
+                    orderAddressRelationDTO1.setUserCityAddress(userOrderAddressDTO.getCity());
                     orderAddressRelationDTO1.setUserDetailAddress(userOrderAddressDTO.getDetailAddress());
                     orderAddressRelationDTO1.setAddressCreateDate(new Date());
                     orderAddressRelationDTO1.setAddressUpdateDate(new Date());
@@ -232,6 +233,7 @@ public class BusinessOrderController {
                     orderAddressRelationDTO1.setUserNameAddress(userOrderAddressDTO.getUserName());
                     orderAddressRelationDTO1.setUserPhoneAddress(userOrderAddressDTO.getUserPhone());
                     orderAddressRelationDTO1.setUserProvinceAddress(userOrderAddressDTO.getProvince());
+                    orderAddressRelationDTO1.setUserCityAddress(userOrderAddressDTO.getCity());
                     orderAddressRelationDTO1.setUserDetailAddress(userOrderAddressDTO.getDetailAddress());
                     orderAddressRelationDTO1.setAddressUpdateDate(new Date());
                     logger.info("订单已有地址修改订单地址"+orderAddressRelationDTO1.toString());
@@ -393,16 +395,25 @@ public class BusinessOrderController {
                     exportOrderExcelDTO.setMobile(businessOrderDTO.getMobile());
                     exportOrderExcelDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
                     exportOrderExcelDTO.setOrderStatus(businessOrderDTO.getStatus());
-                    exportOrderExcelDTO.setPayDate(DateUtils.formatDate(businessOrderinfo.getPayDate(),"yyyy-MM-dd HH:mm:ss"));
+                    if(null!=businessOrderinfo.getPayDate()) {
+                        exportOrderExcelDTO.setPayDate(DateUtils.formatDate(businessOrderinfo.getPayDate(), "yyyy-MM-dd HH:mm:ss"));
+                    }else{
+                        exportOrderExcelDTO.setPayDate(null);
+                    }
                     exportOrderExcelDTO.setProductBrand(businessOrderinfo.getProductBrand());
                     exportOrderExcelDTO.setProductId(businessOrderinfo.getBusinessProductId());
                     exportOrderExcelDTO.setProductName(businessOrderinfo.getBusinessProductName());
                     exportOrderExcelDTO.setProductNum(businessOrderinfo.getBusinessProductNum()+"");
                     exportOrderExcelDTO.setProductSpec(businessOrderinfo.getProductSpec());
                     //exportOrderExcelDTO.setTaxpayerNumber(businessOrderDTO.getIdentifyNumber());
-                    exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserAddress());
-                    exportOrderExcelDTO.setUserName(businessOrderinfo.getUserNameAddress());
-                    exportOrderExcelDTO.setUserPhone(businessOrderinfo.getUserPhoneAddress());
+                    if(businessOrderinfo.getUserAddress()!=null){
+                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserAddress());
+                    }else{
+                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
+                    }
+
+                    exportOrderExcelDTO.setUserNameAddress(businessOrderinfo.getUserNameAddress());
+                    exportOrderExcelDTO.setUserPhoneAddress(businessOrderinfo.getUserPhoneAddress());
                     excelList.add(exportOrderExcelDTO);
                 }
                 //ByteArrayInputStream in = ex.getWorkbookIn("订单EXCEL文档",orderHeaders, page.getResponseData(),"yyy-MM-dd HH:mm:ss");

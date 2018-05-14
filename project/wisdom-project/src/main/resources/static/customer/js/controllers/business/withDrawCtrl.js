@@ -68,6 +68,17 @@ angular.module('controllers',[]).controller('withDrawCtrl',
             }
 
             $scope.confirmWithDraw = function(){
+
+            /*userPhone validateCode*/
+                if($scope.param.userPhone == ""){
+                    alert("请输入手机号")
+                    return
+                }
+                if($scope.param.validateCode == ""){
+                    alert("请输入手机验证码")
+                    return
+                 }
+
                 if($scope.param.withDrawSwitch=='off')
                 {
                     $ionicLoading.show({
@@ -102,7 +113,7 @@ angular.module('controllers',[]).controller('withDrawCtrl',
                             ||$scope.param.userName==""||$scope.param.bankAddress==""||$scope.param.bankCardNumber=="")
                         {
                             var alertPopup = $ionicPopup.alert({
-                                template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请完整的输入用户姓名、身份证、银行卡号和开户行地址</span>',
+                                template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem;padding: 0px">请完整的输入用户姓名、身份证、手机号、验证码</span>',
                                 okText:'确定'
                             });
                             $ionicLoading.hide();

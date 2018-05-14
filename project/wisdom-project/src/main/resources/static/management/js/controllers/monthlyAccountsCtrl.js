@@ -287,18 +287,19 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
  /*导出列表*/
             $scope.educeLis = function() {
                 if (confirm("确认要导出？")) {
-                    var pageParamVoDTO = {
-                        startTime: startTime.value,
-                        endTime: endTime.value,
-                        pageNo: $scope.pageNo,
-                        pageSize: $scope.pageSize,
-                        isExportExcel: "Y",
-                        requestData: {
-                            incomeType: $scope.status,
-                            mobile: $scope.MAccount
+                    $scope.pageParamVoDTO = {
+                        isExportExcel:"Y",
+                        startTime:startTime.value,
+                        endTime:endTime.value,
+                        pageNo:$scope.pageNo,
+                        pageSize:$scope.pageSize,
+                        requestData:{
+                            incomeType:$scope.status,
+                            mobile:$scope.MAccount,
+                            checkStatus:$scope.checkStatus
                         }
                     }
-                    ExportExcelIncomeRecord.save(pageParamVoDTO, function (data) {
+                    ExportExcelIncomeRecord.save($scope.pageParamVoDTO, function (data) {
                         ManagementUtil.checkResponseData(data, "");
                         if (data.errorInfo == Global.SUCCESS) {
                             var $eleForm = $("<form method='get'></form>");

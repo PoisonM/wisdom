@@ -333,8 +333,6 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                 $scope.param.productName=$scope.uploadingPar.productName;
                 $scope.param.brand=$scope.uploadingPar.brand;
                 $scope.param.secondType=$scope.uploadingPar.secondType;
-
-
                     if($scope.param.productName ==""||$scope.param.brand==""||$scope.param.secondType==""||status==""||price==""||typelisText.length<=0||listPicArr.length<=0||detailPicArr.length<=0||$scope.uploadingPar.firstUrl==""||typelisText.length<=0||description ==""||$scope.uploadingPar.productDetail.productAmount==""){
                         $scope.mess=true;
                         return

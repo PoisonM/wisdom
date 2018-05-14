@@ -67,13 +67,13 @@ public class ExportOrderExcelDTO {
     /**
      * 收货人姓名
      */
-    @JSONField(name = "userName")
-    private String userName;
+    @JSONField(name = "userNameAddress")
+    private String userNameAddress;
     /**
      * 收货人电话
      */
-    @JSONField(name = "userPhone")
-    private String userPhone;
+    @JSONField(name = "userPhoneAddress")
+    private String userPhoneAddress;
 
     /**
      * 收货人详细地址
@@ -178,24 +178,25 @@ public class ExportOrderExcelDTO {
         }
     }
 
+
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserNameAddress() {
+        return userNameAddress;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserNameAddress(String userNameAddress) {
+        this.userNameAddress = userNameAddress;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getUserPhoneAddress() {
+        return userPhoneAddress;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setUserPhoneAddress(String userPhoneAddress) {
+        this.userPhoneAddress = userPhoneAddress;
     }
 
     public String getUserAddress() {

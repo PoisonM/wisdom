@@ -131,17 +131,15 @@ angular.module('controllers',[]).controller('withdrawCtrl',
                     $scope.moneyAmount = moneyAmount;
             };
             $scope.changeWithdraw = function(status){
-                $scope.isdisabled = true;
+
                 if(status == "2"){
                     var result = confirm("是否确认拒绝！")
                     if(!result){
-                           $scope.isdisabled = false;
                            return;
                     }
                 }else{
                     var result = confirm("是否确认同意！")
                     if(!result){
-                        $scope.isdisabled = false;
                         return;
                     }
                 }

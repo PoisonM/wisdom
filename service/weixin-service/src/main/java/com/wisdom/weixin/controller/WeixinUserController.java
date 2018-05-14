@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.security.krb5.Config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -174,7 +175,7 @@ public class WeixinUserController {
     {
         ResponseDTO<WeixinConfigDTO> responseDTO = new ResponseDTO<>();
         String u = request.getParameter("url");
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBeautyFlag));
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
         WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String ticket = weixinTokenDTO.getTicket();
         WeixinConfigDTO WeixinConfigDTO = JsApiTicketUtil.bossSign(ticket, u);
