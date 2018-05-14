@@ -1,6 +1,6 @@
 <ion-view>
     <ion-content class="partialFiles">
-        <P class="h45 bgfff bbl">
+        <P class="h45 bgfff bbl" ng-show="false">
             <label class="fs16 col333 ml10">出库方式：</label>
             <span class="fs14 col666"><img src="images/selTrue.png" class="selGray mr5">手动出库</span>
             <span class="fs14 col666"><img src="images/selRed.png" class="selGray ml10 mr5">扫码出库</span>
@@ -36,7 +36,7 @@
         </p>
         <div>
             <ion-list>
-                <ion-item class="" ng-repeat="item in [0,1,2,3,4]" style="width:95%;margin: 10px auto 0;border-radius:  6px;box-shadow: 0 2px 2px 0 rgba(102,102,102,0.24)">
+                <ion-item class="" ng-repeat="item in [0,1,2,3,4]" style="width:95%;margin: 10px auto 0;border-radius:  6px;box-shadow: 0 2px 2px 0 rgba(102,102,102,0.24)" ng-click="productInventoryDetailsGo()">
                     <div class="h30 row" style="background: #F9F9F9;">
                         <p class="col col-60 " style="line-height: 12px;height:20px;"> 本仓库库存：<span class="colff66">8</span></p>
                         <p class="col col-40 " style="line-height: 12px;height:20px;">库存总量：<span class="colff66">8</span></p>

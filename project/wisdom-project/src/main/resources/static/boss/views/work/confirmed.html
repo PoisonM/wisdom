@@ -1,24 +1,34 @@
 <ion-view class="bg">
-    <ion-content>
-        <!--日期部分-->
+    <ion-content ng-click="none()">
+       <!-- &lt;!&ndash;日期部分&ndash;&gt;
         <div class="bgRgb">
-            <img src="images/work/date.png" class="dateImg" ><span class="date">2016-03-01</span><img src="images/work/drop-down.png" class="dropImg"><span class="ml10">周六</span ><span class="ml10">全班</span>
-        </div>
+            <input  class="time orderPayStartTime laydate-icon fs15 colff" id="time"  ng-click="dataS('#time');$event.stopPropagation()" style="background-color: #fff0;border:none;text-indent:55px;background-image:url('images/work/date.png');background-size: 20px 20px;background-position:10% center;" value="{{date}}">
+            <span class="fs14 colff mr20 ml10">周五</span>
+            <span class="fs14 colff">全班</span>
+        </div>-->
 
         <ion-item  class="bgfff row">
             <div class="col col-20" style="line-height: 49px;">
-                <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;"></p >
+                <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;">
+                    <img ng-src="{{confirmed.clerkImage}}">
+                </p >
             </div>
             <div class="col col-70 ml-20" >
-                <p class="fs15"><span>王慧</span><span style="width: 40px;height: 20px;display: inline-block;background: #ff6666;color: #ffffff;line-height: 20px;margin-left: 10px;text-align: center;border-radius: 5px;">A类</span></p >
+                <p class="fs15"><span>{{confirmed.sysUserName}}</span><span style="width: 40px;height: 20px;display: inline-block;background: #ff6666;color: #ffffff;line-height: 20px;margin-left: 10px;text-align: center;border-radius: 5px;" ng-show="false">A类</span></p >
                 <p  class="fs12 col88">
-                    <img src="images/work/minute.png" style="display: inline-block;width: 15px;height: 15px;margin-left: 5px"><span style="margin-left: 17px">14:30~16:30</span><span class="ml10">3.0小时</span>
-                    <p>进度条</p>
+                    <img src="images/work/minute.png" style="display: inline-block;width: 15px;height: 15px;margin-left: 5px"><span style="margin-left: 17px">{{confirmed.appointStartTime|date:'HH;mm'}}~{{confirmed.appointEndTime|date:'HH:mm'}}</span><span class="ml10">{{confirmed.appointPeriod}}分钟</span>
+                    <p>状态：<span ng-if="confirmed.status == 0">未开始</span>
+                            <span ng-if="confirmed.status == 1">"已确认</span>
+                            <span ng-if="confirmed.status == 2">服务中</span>
+                            <span ng-if="confirmed.status == 3">已完成</span>
+                            <span ng-if="confirmed.status == 4">取消预约</span>
+                            <span ng-if="confirmed.status == 5">进行中</span>
+                            <span ng-if="confirmed.status == 6">已结束</span></p>
                 </p >
             </div>
             <!--点击拨打美容师的电话-->
             <div class="col col-10">
-                <a href="tel:18611010799"><img src="images/work/phone.png" style="width: 16px;height: 26px;"></a>
+                <a  ng-click="pho(confirmed.sysUserPhone)"><img src="images/work/phone.png" style="width: 14px;height: 23px;"></a>
             </div>
         </ion-item>
         <!--项目-->
@@ -26,12 +36,12 @@
         <div class="list">
             <p class="item p10"><span>韩国美白护肤</span><span class="fr"><img src="images/work/minute.png" style="width: 15px;height: 15px;display: inline-block;"><span class="ml10">60分钟</span></span></p>
             <p class="item p10"><span>小气泡</span><span class="fr"><img src="images/work/minute.png" style="width: 15px;height: 15px;display: inline-block;"><span class="ml10">60分钟</span></span></p>
-            <p class="item p10"><span>美容师</span><span class="fr">小丸子</span></p>
+            <p class="item p10"><span>美容师</span><span class="fr">{{confirmed.sysClerkName}}</span></p>
         </div>
         <!--备注-->
         <p class="ml10 fs15 col33 " style="height:20px;line-height: 20px;width: 100% ;margin-top: -13px">备注</p>
         <div class="list">
-            <p class="item p10 col88 mt5">面部比较干，需要补水！</p>
+            <p class="item p10 col88 mt5">{{confirmed.detail}}</p>
         </div>
     </ion-content>
     <div class="tabs">

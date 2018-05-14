@@ -13,14 +13,22 @@
 .item .col4BC647{color: #4BC647;}
 .colfff{color: #ffffff;}
 .item .colfff{color: #ffffff;}
-.partialFiles .fs11{font-size: 11px;}
-.partialFiles .fs12{font-size:12px;}
-.partialFiles .fs13{font-size:13px;}
-.partialFiles .fs15{font-size:15px;}
-.partialFiles .fs14{font-size:14px;}
-.partialFiles .fs16{font-size:16px;}
-.partialFiles .fs17{font-size:17px;}
-.partialFiles .fs18{font-size:18px;}
+.partialFiles  .fs11{font-size: 11px;}
+.partialFiles  .fs12{font-size:12px;}
+.partialFiles  .fs13{font-size:13px;}
+.partialFiles  .fs15{font-size:15px;}
+.partialFiles  .fs14{font-size:14px;}
+.partialFiles  .fs16{font-size:16px;}
+.partialFiles  .fs17{font-size:17px;}
+.partialFiles  .fs18{font-size:18px;}
+.partialFiles .item .fs11{font-size: 11px;}
+.partialFiles .item .fs12{font-size:12px;}
+.partialFiles .item .fs13{font-size:13px;}
+.partialFiles .item .fs15{font-size:15px;}
+.partialFiles .item .fs14{font-size:14px;}
+.partialFiles .item .fs16{font-size:16px;}
+.partialFiles .item .fs17{font-size:17px;}
+.partialFiles .item .fs18{font-size:18px;}
 .img{width:19px;height:19px;}
 .W33{width: 33.3%;}
 
@@ -55,15 +63,21 @@
 .h50{height:50px;line-height: 50px;}
 .h60{height:60px;}
 .LH60{line-height: 60px;}
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active {
+color: #FF6666}
 
 .center{text-align: center}
 body{background: #f6f6f6; color: #333333;font-size: 16px;}
 img {display: inline-block}
 .pane{background: content-box;!important;}
-.item{padding:0;}
-.item p {color:#333;font-size: 16px;}
+.partialFiles .item{padding:0;}
+.partialFiles .item p {color:#333;font-size: 16px;}
 .partialFiles .item-input-wrapper{background: #ffffff}
 .partialFiles .changeArchivesBtn{margin-right: 0.5rem;}
+
+.archivesPic{width:20px;height:20px;}
+.workPic{width:20px;height:20px;}
+.minePic{width:20px;height:20px;}
 .scroll{height:100%;}
 .floatR{float:right;}
 .pd10{padding:0 15px;}
@@ -118,6 +132,7 @@ img {display: inline-block}
 .Character{border:solid 1px gainsboro;color:#666666;}
 .commonType{border: 1px solid #DDDDDD;border-radius: 4px;font-size: 13px;color: #888888;}
 .activeType{border: 1px solid #FF6666;border-radius: 4px;font-size: 13px;color: #333;}
+
 
 
 

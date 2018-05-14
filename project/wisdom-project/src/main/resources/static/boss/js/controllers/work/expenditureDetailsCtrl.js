@@ -7,4 +7,5 @@ angular.module('controllers',[]).controller('expenditureDetailsCtrl',
 
             $rootScope.title = "支出详情";
 
+
         }]);

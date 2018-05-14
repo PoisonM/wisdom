@@ -8,8 +8,8 @@
             <!--切换部分-->
             <div  class="tabBox">
                 <button ng-class="{ 'active' : param.current == 1 }" ng-click="setCurrent(1)">人头数</button>
-                <button ng-class="{ 'active' : param.current == 2 }" ng-click="setCurrent(2)">新客数</button>
-                <button ng-class="{ 'active' : param.current == 3 }" ng-click="setCurrent(3)">人次数</button>
+                <button ng-class="{ 'active' : param.current == 2 }" ng-click="setCurrent(2)" style="margin-left: -5px;">新客数</button>
+                <button ng-class="{ 'active' : param.current == 3 }" ng-click="setCurrent(3)" style="margin-left: -4px;">人次数</button>
             </div>
             <!--人头数 新客数 人次数展示部分-->
              <div class="redBox tc colff " style="margin-top: 15px;margin-bottom: 20px" ng-if="param.current == 1">

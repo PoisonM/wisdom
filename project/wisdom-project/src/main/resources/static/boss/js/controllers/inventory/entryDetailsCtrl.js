@@ -3,4 +3,8 @@ angular.module('controllers',[]).controller('entryDetailsCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading) {
             $rootScope.title = "入库单详情";
 
+            $scope.modifyLibraryGo=function(){
+                $state.go('modifyLibrary')
+            }
+
         }])

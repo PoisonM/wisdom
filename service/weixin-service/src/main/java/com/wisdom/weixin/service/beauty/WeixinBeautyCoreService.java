@@ -1,10 +1,14 @@
 package com.wisdom.weixin.service.beauty;
 
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.entity.TextMessage;
 import com.wisdom.common.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,5 +88,23 @@ public class WeixinBeautyCoreService {
             respMessage = MessageUtil.textMessageToXml(textMessage);
         }
         return respMessage;
+    }
+
+    public void updateBeautyWeixinToken() {
+        try {
+            System.out.print("用户端微信参数更新");
+            String token = WeixinUtil.getUserTokenFromTX(ConfigConstant.BEAUTY_CORPID, ConfigConstant.BEAUTY_SECRET);
+            if(StringUtils.isNotNull(token)) {
+                String ticket = WeixinUtil.getJsapiTicket(token);
+                Query query = new Query().addCriteria(Criteria.where("weixinFlag").is(ConfigConstant.weixinBeautyFlag));
+                Update update = new Update();
+                update.set("token",token);
+                update.set("ticket",ticket);
+                update.set("updateDate",new Date());
+                mongoTemplate.updateFirst(query,update,"weixinParameter");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,15 +1,15 @@
 <ion-view >
-    <ion-content class="partialFiles">
+    <ion-content class="partialFiles bgf6">
         <div>
             <ion-list>
                 <ion-item class="item-input" style="background: border-box;height: 40px; ">
                 <span class="item-input-wrapper" style="margin-right:16px;height:30px;margin-left:10px;" >
                         <i class="icon ion-ios-search placeholder-icon" ng-click="search()"></i>
-                        <input id="search" type="search" placeholder="请输入顾客姓名或者手机号码" ng-model="searchCont.key" >
+                        <input id="search" type="search" placeholder="请输入顾客姓名或者手机号码" ng-model="searchCont" >
                         <i class="icon ion-close-circled placeholder-icon" style="vertical-align: middle;"
                            on-tap="clearSearch()" ng-if="searchCont.key.length"></i>
                  </span>
-                    <i  class="changeArchivesBtn fs15 col333">切换档案</i>
+                    <i  class="changeArchivesBtn fs15 col333" ng-click="tabSwitching()">切换档案</i>
                 </ion-item>
             </ion-list>
             <div style="position: relative;height:100%;">
@@ -23,52 +23,50 @@
                         分配
                     </ion-item>
                 </ion-list>
-                <div class="h54 bgfff mt5 fs16">
+                <div class="h54 bgfff mt5 fs16" ng-click="switching()">
                     <img src="images/warning.png" class="warningPic ml10 mr10">
                     预警档案
+                    <i class="ion ion-ios-arrow-right" style="float: right;margin-right: 20px;margin-top: 17px;font-size: 20px"></i>
                 </div>
                 <ion-list>
-                    <ion-item   class="h30 bge6 ">
-                        <span class="ml10">A</span>
-                    </ion-item>
-                    <ion-item  class="h60 bgfff "  row ng-repeat='item in [0,1,2]'>
-
-                        <div class="col col-70" style="display: flex">
-
-                            <div class="sb" style="line-height: 49px;">
-                                <img src="images/selGray.png" class="ml10 selGray " style="margin-top:14px;">
-                                <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;" class="ml10"></p>
-                            </div>
-                            <div class="ml10">
-                                <p class="fs16">安琪</p>
-                                <p class="fs12 col666"> <img src="images/time.png" class="timePic mr5">上次到店时间：2018-03-09</p>
-                            </div>
-
-
+                    <div ng-repeat="bigItem in info">
+                        <div ng-repeat="(key,value) in bigItem">
+                            <ion-item   class="h30 bge6 "  >
+                                <span class="ml10">{{key}}</span>
+                            </ion-item>
+                            <ion-item  class="h60 bgfff row" ng-repeat="item in value" ng-click="goActives(item.id)">
+                                <div class="col col-70" style="display: flex">
+                                    <div class="sb" style="line-height: 49px;">
+                                        <img ng-src="{{item.imageRul}}" style="height:42px;width:42px;border-radius: 50%;" class="ml10">
+                                    </div>
+                                    <div class="ml10">
+                                        <p class="fs16">{{item.sysUserName}}</p>
+                                        <p class="fs12 col666"> <img src="images/time.png" class="timePic mr5">上次到店时间：2018-03-09</p>
+                                    </div>
+                                </div>
+                                <div class="col col-25" style="line-height: 49px;">
+                                    <img src="images/associated.png" class="associated ml20 ">
+                                    <span class="fs11 colff66">{{item.sysClerkName}}</span>
+                                </div>
+                            </ion-item>
                         </div>
-                        <p class="col col-25" style="line-height: 49px;">
-                            <img src="images/associated.png" class="associated ml20 ">
-                            <span class="fs11 colff66">夏琳</span>
-                        </p>
-                    </ion-item>
+                    </div>
 
                 </ion-list>
-                <div style="position: absolute;background:#000;opacity: 0.2;width:100%;height:100%;z-index: 100;top:0;display: none">
 
+                <div style="position: absolute;background:#000;opacity: 0.2;width:100%;height:100%;z-index: 3000;top:0;" ng-show="param.blackBox"
+                ng-click="checkBgBox()">
                 </div>
-                <div style="z-index: 101;position: absolute;width:100%;top:0 ;display: none" >
-                    <ion-list >
-                        <ion-item  class="  h50 bgfff center">
-                            全院档案
+                <div style="z-index: 3001;position: absolute;width:100%;top:0 ;background: #ffffff;color: #333333;font-size: 8px" ng-show="param.fileBOx">
+                    <ion-list>
+                        <ion-item  class="  h50 bgfff center"  ng-click="checkFileBox(item.id);$event.stopPropagation()" ng-repeat="item in switchingList">
+                           {{item.sysShopName}}
                         </ion-item>
-                        <ion-item  class="  h50 bgfff center">
-                            美容院分院
-                        </ion-item>
-
                     </ion-list>
                 </div>
 
             </div>
         </div>
+        <boss-footer></boss-footer>
     </ion-content>
 </ion-view>

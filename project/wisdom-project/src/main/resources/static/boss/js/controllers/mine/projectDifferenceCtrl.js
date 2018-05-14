@@ -6,5 +6,8 @@ angular.module('controllers',[]).controller('projectDifferenceCtrl',
         function ($scope,$rootScope,$stateParams,$state) {
 
             $rootScope.title = "综合项目类别";
+            $scope.modifyingGo=function () {
+             $state.go("modifying")
+            }
 
         }]);

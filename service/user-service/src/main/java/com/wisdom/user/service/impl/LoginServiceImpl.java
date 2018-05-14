@@ -409,7 +409,7 @@ public class LoginServiceImpl implements LoginService{
             }
             else
             {
-                WeixinUserBean weixinUserBean = WeixinUtil.getWeixinUserBean(WeixinUtil.getUserToken(),openid);
+                WeixinUserBean weixinUserBean = WeixinUtil.getWeixinUserBean(WeixinUtil.getBeautyToken(),openid);
 
                 userInfoDTO.setId(UUID.randomUUID().toString());
                 userInfoDTO.setMobile(loginDTO.getUserPhone());

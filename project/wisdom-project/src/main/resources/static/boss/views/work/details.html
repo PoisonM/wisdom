@@ -1,31 +1,61 @@
 <ion-view class="bg">
     <ion-content>
         <p style="width: 100%;height: 35px" class="col33 fs15 p5">基本信息</p>
-        <div class="list">
-            <p class="item p10"><span class="col33 fs16">时间</span><span style="float: right" class="fs14 col66">2018-0504<span class="ml10 fs14 col66"></span>16:45:39</span></p>
-            <p class="item p10"><span class="col33 fs16">顾客</span><span style="float: right" class="fs14 col66"><span class="ml10 fs14 col66">薇薇安</span></span></p>
-            <p class="item p10"><span class="col33 fs16">操作门店</span><span style="float: right"class="fs14 col66">韩方美容养生会所</span></p>
-            <p class="item p10"><span class="col33 fs16">前台</span><span style="float: right"class="fs14 col66">小丸子</span></p>
-            <p class="item p10"><span class="col33 fs16">类型</span><span style="float: right"class="fs14 col66">消费</span></p>
+        <div class="list" style="margin-bottom: 0px;">
+            <p class="item p10"><span class="col33 fs16">时间</span><span style="float: right" class="fs14 col66">{{details.createDate|
+date : 'yyyy-MM-dd hh:mm:ss'}}</span></p>
+            <p class="item p10"><span class="col33 fs16">顾客</span><span style="float: right" class="fs14 col66"><span class="ml10 fs14 col66">{{details.shopUserName}}</span></span></p>
+            <p class="item p10"><span class="col33 fs16">操作门店</span><span style="float: right"class="fs14 col66">{{details.sysShopName}}</span></p>
+            <p class="item p10"><span class="col33 fs16">前台</span><span style="float: right"class="fs14 col66">{{details.sysShopClerkName}}</span></p>
+            <p class="item p10"><span class="col33 fs16">类型</span>
+                <span style="float: right"class="fs14 col66" ng-if="details.type == 0">充值 </span>
+                <span style="float: right"class="fs14 col66" ng-if="details.type == 1">消费  </span>
+                <span style="float: right"class="fs14 col66" ng-if="details.type == 2">还欠款 </span>
+                <span style="float: right"class="fs14 col66" ng-if="details.type == 3">退款 </span>
+            </p>
         </div>
-        <p style="width: 100%;height: 35px;margin-top: -16px" class="col33 fs15 p5">单次</p>
-        <div class="list">
-            <p class="item p10 col33 fs16">韩国美容护肤</p>
-            <p class="item p10"><span class="col33 fs16">价格</span><span style="float: right" class="fs14 col66">￥198.00</span></p>
-            <p class="item p10"><span class="col33 fs16">折扣</span><span style="float: right"class="fs14 col66">4.8折</span></p>
-            <p class="item p10"><span class="col33 fs16">数量</span><span style="float: right"class="fs14 col66">1</span></p>
-            <p class="item p10"><span class="col33 fs16">金额</span><span style="float: right"class="fs14 col66">￥198.00</span></p>
+        <div ng-repeat = 'item in details.userConsumeRecordList'>
+            <p style="width: 100%;height: 35px;" class="col33 fs15 p5  " ng-if="item.goodsType
+ == 0">单次</p>
+            <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
+ == 1">疗程卡</p>
+            <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
+ == 2">充值卡</p>
+            <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
+ == 3">套卡</p>
+            <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
+ == 4">产品</p>
+            <div class="list">
+                <p class="item p10 col33 fs16">{{item.flowName}}</p>
+                <p class="item p10"><span class="col33 fs16">价格</span><span style="float: right" class="fs14 col66">￥{{item.price}}</span></p>
+                <p class="item p10"><span class="col33 fs16">折扣</span><span style="float: right"class="fs14 col66">{{item.discount}}折</span></p>
+                <p class="item p10"><span class="col33 fs16">数量</span><span style="float: right"class="fs14 col66">{{item.consumeNumber}}</span></p>
+                <p class="item p10"><span class="col33 fs16">金额</span><span style="float: right"class="fs14 col66">￥{{item.price*item.consumeNumber}}</span></p>
+            </div>
         </div>
+
         <div class="list">
-            <p class="item p5"><span class="col33 fs16">总金额</span><span style="float: right"class="fs14 col66">￥198.00</span></p>
+            <p class="item p5" style="margin-top:30px;">
+                <span class="col33 fs16" ng-if="details.type == 1">总金额</span>
+                <span class="col33 fs16" ng-if="details.type == 0">总余额</span>
+                <span style="float: right"class="fs14 col66">￥{{details.sumAmount}}</span></p>
         </div>
         <p style="width: 100%;height: 35px;margin-top: -16px" class="col33 fs15 p5">支付明细</p>
         <div class="list">
-            <p class="item p5"><span class="col33 fs16">余额</span><span style="float: right"class="fs14 col66">￥198.00</span></p>
+            <p class="item p5">
+                <span class="col33 fs16" ng-if="details.payType == 0">微信 </span>
+                <span class="col33 fs16" ng-if="details.payType == 1">支付宝 </span>
+                <span class="col33 fs16" ng-if="details.payType == 2">现金 </span>
+                <span class="col33 fs16" ng-if="details.payType == 3">余额 </span>
+                <span style="float: right"class="fs14 col66">￥{{details.sumAmount}}</span></p>
         </div>
         <p style="width: 100%;height: 35px;margin-top: -16px" class="col33 fs15 p5">顾客签字</p>
-        <div class="list bgfff" style="width: 100%;height: 130px"></div>
+        <div class="list bgfff" style="width: 100%;height: 130px">
+            <img ng-src="{{details.signUrl}}">
+        </div>
         <p style="width: 100%;height: 35px;margin-top: -16px" class="col33 fs15 p5">备注</p>
-        <textarea style="height: 82px;width:100%;font-size: 0.3rem;color: #333333;padding: 20px;"></textarea>
+        <textarea style="height: 82px;width:100%;font-size: 0.3rem;color: #333333;padding: 20px;">
+            {{details.detail}}
+        </textarea>
     </ion-content>
 </ion-view>

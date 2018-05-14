@@ -9,7 +9,7 @@
                  <div class="col col30" style="line-height: 82px;">
                      <img src="images/banbleCard.png" class="banbleCardPic">
                  </div>
-                 <div class="col col68">
+                 <div class="col col68" ng-click="prepaidPhoneRecordsGo()">
                      <p>余额充值</p>
                      <p class="col666 fs12">充值金额：1208.00</p>
                      <p class="fs12 colff66">剩余金额：¥1208.00</p>
@@ -41,8 +41,8 @@
 
          </ion-list>
      </div>
-        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100"></div>
-        <div class="bgfff" style="width:94%;height:220px;position: absolute;z-index: 101;top:50%;left:50%;margin-top: -100px;margin-left:-47%;padding: 20px 20px 0 20px;">
+        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100" ng-show="false"></div>
+        <div class="bgfff" style="width:94%;height:220px;position: absolute;z-index: 101;top:50%;left:50%;margin-top: -100px;margin-left:-47%;padding: 20px 20px 0 20px;" ng-show="false">
            <h4>余额充值： </h4>
             <div style="font-size: 14px;color: #2A2A2A;margin-top:10px;">
                 是指该档案用余额充值的方式惊醒的自定义总充值金额，此为特殊账户（支持续充值）。

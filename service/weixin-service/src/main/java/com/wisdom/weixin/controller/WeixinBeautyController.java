@@ -84,7 +84,7 @@ public class WeixinBeautyController {
             url = ConfigConstant.BEAUTY_WEB_URL + "beautyBoss";
         }
         else if ("beautyClerk".equals(url)) {
-            url = ConfigConstant.BEAUTY_WEB_URL + "beautyClerk";
+            url = ConfigConstant.BEAUTY_WEB_URL + "beautyBoss";
         }
         
         String code = request.getParameter("code");
