@@ -175,7 +175,7 @@ define(['appBoss'], function(app){
                 /*分店收支*/
                 $stateProvider
                     .state('storeExpenditure', {
-                        url: '/storeExpenditure',
+                        url: '/storeExpenditure/:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'storeExpenditureCtrl',
                         resolve: {
@@ -244,7 +244,7 @@ define(['appBoss'], function(app){
                     })
                         /*某个店的收支分析*/
                     .state('oneIncomeAnalysis', {
-                        url: '/oneIncomeAnalysis/:sysShopId',
+                        url: '/oneIncomeAnalysis/:sysShopId/:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'oneIncomeAnalysisCtrl',
                         resolve: {

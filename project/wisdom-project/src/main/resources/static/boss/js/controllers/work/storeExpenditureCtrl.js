@@ -9,8 +9,9 @@ angular.module('controllers',[]).controller('storeExpenditureCtrl',
             /*日期插件*/
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
-                date: BossUtil.getNowFormatDate(),
+                date: "",
             }
+            $scope.param.date =$stateParams.date
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
             console.log($scope.param.date);
