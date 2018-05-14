@@ -3,11 +3,15 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.*;
+import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
+import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -70,6 +74,10 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     @Resource
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private ShopRechargeCardService shopRechargeCardService;
+
+
     /**
      * 用户消费充值卡信息
      *
@@ -126,7 +134,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             //获取用户的档案信息
             ShopUserArchivesDTO archivesDTO = new ShopUserArchivesDTO();
             archivesDTO.setId(shopUserOrderDTO.getShopUserArchivesId());
-            ShopUserArchivesDTO archivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(archivesDTO);
+            ShopUserArchivesDTO archivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(archivesDTO).get(0);
             if (CommonUtils.objectIsEmpty(archivesInfo)) {
                 logger.info("订单号={}，查询用户的档案信息为空", orderId);
                 throw new ServiceException("查询用户的档案信息为空");
@@ -230,6 +238,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 for (int i = 0; i < dto.getProjectInitTimes(); i++) {
                     //购买一个套卡的金额
                     BigDecimal price = dto.getProjectInitAmount();
+                    BigDecimal divide = dto.getShopGroupPuchasePrice().divide(dto.getProjectInitAmount());
+                    dto.setDiscount(divide.floatValue());
                     //根据套卡id查询项目列表
                     ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
                     shopProjectInfoGroupRelationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
@@ -265,6 +275,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                         userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
                     }
                     userConsumeRecordDTO.setPrice(price);
+                    userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
                     userConsumeRecordDTO.setConsumeNumber(dto.getProjectInitTimes());
                     userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.COLLECTION_CARD.getCode());
                     userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
@@ -306,9 +317,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     dto.setId(uuid);
                     dto.setSysShopName(dto.getSysShopName());
                     dto.setSysShopId(clerkInfo.getSysShopId());
+                    dto.setSysBossId(clerkInfo.getSysBossId());
                     //单个项目的价格 = 总金额/购买了多少个
                     BigDecimal price = dto.getSysShopProjectInitAmount();
-
+                    BigDecimal divide = dto.getSysShopProjectPurchasePrice().divide(dto.getSysShopProjectInitAmount());
+                    dto.setDiscount(divide.toString());
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getUseStyle())) {
                         dto.setSysShopProjectSurplusAmount(new BigDecimal(0));
@@ -363,8 +376,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 dto.setId(uuid);
                 dto.setSysShopId(clerkInfo.getSysShopId());
                 dto.setSysShopName(clerkInfo.getSysShopName());
+                dto.setSysBossId(clerkInfo.getSysBossId());
                 dto.setSurplusTimes(dto.getInitTimes());
                 dto.setSurplusAmount(dto.getInitAmount());
+                BigDecimal divide = dto.getPurchasePrice().divide(dto.getInitAmount());
+                dto.setDiscount(divide.floatValue());
                 logger.info("订单号={}，生成用户跟产品的关系={}", orderId, dto);
                 shopProductInfoService.saveShopUserProductRelation(dto);
 
@@ -377,6 +393,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
                 userConsumeRecordDTO.setConsumeNumber(dto.getInitTimes());
                 userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
+                userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
                 ShopUserConsumeRecordDTO consumeRecordDTO = saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
 
                 logger.info("订单号={}，生成店员流水记录={}", orderId, consumeRecordDTO);
@@ -591,5 +608,108 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         return userConsumeRecordDTO;
     }
 
+    /**
+     * 充值卡充值操作
+     *
+     * @param transactionId  @Transactional(rollbackFor = Throwable.class)
+     * @param imageUrl
+     * @return
+     */
+    @Override
+    public ResponseDTO rechargeRechargeCrad(String transactionId, String imageUrl) {
+        logger.info("充值卡充值操作传入参数={}", "transactionId = [" + transactionId + "], imageUrl = [" + imageUrl + "]");
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        Query query = new Query().addCriteria(Criteria.where("transactionId").is(transactionId));
+        Update update = new Update();
+        update.set("imageUrl", imageUrl);
+        update.set("status", OrderStatusEnum.ALREADY_PAY.getCode());
+        mongoTemplate.upsert(query, update, "extShopUserRechargeCardDTO");
+
+        //查询用户的充值卡信息
+        ShopRechargeCardOrderDTO orderDTO = mongoTemplate.findOne(query, ShopRechargeCardOrderDTO.class, "extShopUserRechargeCardDTO");
+        if (null == orderDTO || StringUtils.isBlank(orderDTO.getId())) {
+            logger.error("mongo查询充值卡信息为空,{}", "transactionId = [" + transactionId + "], imageUrl = [" + imageUrl + "]");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setResponseData("mongo查询充值卡信息为空");
+            return responseDTO;
+        }
+
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+
+        //针对特殊卡进行更新操作
+        if (orderDTO.getPayType().equals(RechargeCardTypeEnum.SPECIAL.getCode())) {
+            logger.info("针对特殊卡进行更新操作交易号，{},订单对象为", transactionId, orderDTO);
+            //查询某个用户的特殊充值卡
+            ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
+            userRechargeCardDTO.setSysUserId(orderDTO.getSysUserId());
+            userRechargeCardDTO.setShopRechargeCardId(orderDTO.getId());
+            ShopUserRechargeCardDTO shopUserRechargeInfo = shopRechargeCardService.getShopUserRechargeInfo(userRechargeCardDTO);
+            if (null == shopUserRechargeInfo) {
+                logger.error("针对特殊卡进行更新操作交易号，{}，查询用户的充值卡={}", orderDTO, shopUserRechargeInfo);
+                throw new ServiceException("查询用户的充值卡为空");
+            }
+            //剩余金额 = 已存剩余金额 + 充值金额
+            shopUserRechargeInfo.setSurplusAmount(shopUserRechargeInfo.getSurplusAmount().add(new BigDecimal(orderDTO.getRechargeAmount())));
+            shopUserRechargeInfo.setTimeDiscount(orderDTO.getTimeDiscount());
+            shopUserRechargeInfo.setProductDiscount(orderDTO.getPeriodDiscount());
+            shopUserRechargeInfo.setProductDiscount(orderDTO.getProductDiscount());
+            int i = shopRechargeCardService.updateRechargeCard(shopUserRechargeInfo);
+            logger.info("更新用户的充值卡记录操作{}", i > 0 ? "成功" : "失败");
+        }
+        //针对普通卡进行插入操作
+        else {
+            logger.info("针对普通卡进行插入操作交易号，{},订单对象为", transactionId, orderDTO);
+            ShopUserRechargeCardDTO rechargeCardDTO = new ShopUserRechargeCardDTO();
+            rechargeCardDTO.setId(IdGen.uuid());
+            rechargeCardDTO.setShopRechargeCardId(orderDTO.getId());
+            rechargeCardDTO.setShopRechargeCardName("余额充值");
+            rechargeCardDTO.setProductDiscount(orderDTO.getProductDiscount());
+            rechargeCardDTO.setPeriodDiscount(orderDTO.getPeriodDiscount());
+            rechargeCardDTO.setTimeDiscount(orderDTO.getTimeDiscount());
+            rechargeCardDTO.setSysShopId(clerkInfo.getSysShopId());
+            rechargeCardDTO.setSysUserId(orderDTO.getSysUserId());
+            //总金额 = 充值金额
+            String rechargeAmount = orderDTO.getRechargeAmount();
+            rechargeCardDTO.setSurplusAmount(new BigDecimal(rechargeAmount));
+            rechargeCardDTO.setCreateBy(clerkInfo.getId());
+            rechargeCardDTO.setSysClerkName(clerkInfo.getName());
+            rechargeCardDTO.setSysBossId(clerkInfo.getSysBossId());
+            rechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.COMMON.getCode());
+            int updateRechargeCard = shopRechargeCardService.saveShopUserRechargeCardInfo(rechargeCardDTO);
+            logger.info("充值卡充值操作传入参数执行结果={}", updateRechargeCard > 0 ? "成功" : "失败");
+        }
+
+        //插入用户的消费记录
+        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+        shopUserConsumeRecordDTO.setId(IdGen.uuid());
+        shopUserConsumeRecordDTO.setFlowId(orderDTO.getId());
+        shopUserConsumeRecordDTO.setFlowNo(DateUtils.DateToStr(new Date(), "dateMillisecond"));
+        shopUserConsumeRecordDTO.setFlowName(orderDTO.getName());
+        shopUserConsumeRecordDTO.setGoodsType(GoodsTypeEnum.RECHARGE_CARD.getCode());
+        if (null != orderDTO.getRechargeAmount()) {
+            shopUserConsumeRecordDTO.setPrice(new BigDecimal(orderDTO.getRechargeAmount()));
+        }
+        shopUserConsumeRecordDTO.setPayType(orderDTO.getPayType());
+        shopUserConsumeRecordDTO.setCreateDate(new Date());
+        shopUserConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
+        shopUserConsumeRecordDTO.setTimeDiscount(orderDTO.getTimeDiscount());
+        shopUserConsumeRecordDTO.setProductDiscount(orderDTO.getProductDiscount());
+        shopUserConsumeRecordDTO.setPeriodDiscount(shopUserConsumeRecordDTO.getPeriodDiscount());
+        shopUserConsumeRecordDTO.setSysUserName(orderDTO.getUserName());
+        shopUserConsumeRecordDTO.setSysUserId(orderDTO.getSysUserId());
+        shopUserConsumeRecordDTO.setSysShopId(orderDTO.getSysShopId());
+        shopUserConsumeRecordDTO.setDetail(shopUserConsumeRecordDTO.getDetail());
+        shopUserConsumeRecordDTO.setSignUrl(orderDTO.getSignUrl());
+        shopUserConsumeRecordDTO.setSysBossId(clerkInfo.getSysBossId());
+        shopUserConsumeRecordDTO.setStatus(shopUserConsumeRecordDTO.getStatus());
+        shopUserConsumeRecordDTO.setOperDate(new Date());
+        shopUserConsumeRecordDTO.setConsumeNumber(1);
+        shopUserConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+        int record = shopUerConsumeRecordService.saveCustomerConsumeRecord(shopUserConsumeRecordDTO);
+        logger.info("充值卡充值操作流水号={}，生成充值记录,{}", transactionId, record > 0 ? "成功" : "失败");
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
 
 }

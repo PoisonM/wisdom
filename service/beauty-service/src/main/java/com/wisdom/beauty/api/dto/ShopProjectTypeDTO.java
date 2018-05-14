@@ -18,8 +18,11 @@ public class ShopProjectTypeDTO extends BaseEntity implements Serializable {
     //父id
     private String parentId;
 
-    //
+    //0 启用  1不启用
     private String status;
+
+    //
+    private String sysBossId;
 
     //
     private String createBy;
@@ -73,6 +76,14 @@ public class ShopProjectTypeDTO extends BaseEntity implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSysBossId() {
+        return sysBossId;
+    }
+
+    public void setSysBossId(String sysBossId) {
+        this.sysBossId = sysBossId;
     }
 
     public String getCreateBy() {

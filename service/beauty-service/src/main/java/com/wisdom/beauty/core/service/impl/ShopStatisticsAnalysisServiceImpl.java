@@ -59,9 +59,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		}
 		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : userConsumeRecordResponses) {
 			if (totalAmount == null) {
-				totalAmount = expenditureAndIncomeResponseDTO.getIncome();
+				totalAmount = expenditureAndIncomeResponseDTO.getTotalPrice();
 			}
-			totalAmount.add(expenditureAndIncomeResponseDTO.getIncome());
+			totalAmount.add(expenditureAndIncomeResponseDTO.getTotalPrice());
 		}
 		return totalAmount;
 	}
@@ -78,9 +78,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		}
 		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : userConsumeRecordResponses) {
 			if (totalAmount == null) {
-				totalAmount = expenditureAndIncomeResponseDTO.getExpenditure();
+				totalAmount = expenditureAndIncomeResponseDTO.getTotalPrice();
 			}
-			totalAmount.add(expenditureAndIncomeResponseDTO.getExpenditure());
+			totalAmount.add(expenditureAndIncomeResponseDTO.getTotalPrice());
 		}
 		return totalAmount;
 	}
@@ -182,7 +182,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			} else {
 				// 取出key是ship的值，计算value中的值
 				map.get(expenditureAndIncomeResponse.getSysShopId() + expenditureAndIncomeResponse.getFormateDate())
-						.getExpenditure().add(expenditureAndIncomeResponse.getExpenditure());
+						.getTotalPrice().add(expenditureAndIncomeResponse.getTotalPrice());
 			}
 			expenditureAndIncomeResponseDTO = null;
 		}
@@ -204,8 +204,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				if (map2.get(expenditure.getSysShopId() + expenditure.getFormateDate()) != null
 						&& map2.get(expenditure.getSysShopId() + expenditure.getFormateDate()).getExpenditure() != null
 						&& expenditure.getExpenditure() != null) {
-					map2.get(expenditure.getSysShopId() + expenditure.getFormateDate()).getExpenditure()
-							.add(expenditure.getExpenditure());
+					map2.get(expenditure.getSysShopId() + expenditure.getFormateDate()).getTotalPrice()
+							.add(expenditure.getTotalPrice());
 				}
 			}
 		}
@@ -250,8 +250,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				map.put(expenditureAndIncomeResponse.getSysShopId(), expenditureAndIncomeResponse);
 			} else {
 				// 取出key是ship的值，计算value中的值
-				map.get(expenditureAndIncomeResponse.getSysShopId()).getExpenditure()
-						.add(expenditureAndIncomeResponse.getExpenditure());
+				map.get(expenditureAndIncomeResponse.getSysShopId()).getTotalPrice()
+						.add(expenditureAndIncomeResponse.getTotalPrice());
 			}
 			expenditureAndIncomeResponseDTO = null;
 		}
@@ -271,9 +271,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			} else {
 				// 取出key是ship的值，计算value中的值
 				if (map2.get(expenditure.getSysShopId()) != null
-						&& map2.get(expenditure.getSysShopId()).getExpenditure() != null
-						&& expenditure.getExpenditure() != null) {
-					map2.get(expenditure.getSysShopId()).getExpenditure().add(expenditure.getExpenditure());
+						&& map2.get(expenditure.getSysShopId()).getTotalPrice() != null
+						&& expenditure.getTotalPrice() != null) {
+					map2.get(expenditure.getSysShopId()).getTotalPrice().add(expenditure.getTotalPrice());
 				}
 			}
 		}
@@ -370,7 +370,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			} else {
 				ExpenditureAndIncomeResponseDTO expenditureAndIncome = map
 						.get(expenditureAndIncomeResponse.getSysShopClerkId());
-				BigDecimal prices = expenditureAndIncome.getIncome().add(expenditureAndIncomeResponse.getIncome());
+				BigDecimal prices = expenditureAndIncome.getTotalPrice().add(expenditureAndIncomeResponse.getTotalPrice());
 				expenditureAndIncome.setIncome(prices);
 				map.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncome);
 			}
@@ -389,8 +389,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			} else {
 				ExpenditureAndIncomeResponseDTO expenditureAndIncome = map2
 						.get(expenditureAndIncomeResponse.getSysShopClerkId());
-				BigDecimal prices = expenditureAndIncome.getExpenditure()
-						.add(expenditureAndIncomeResponse.getExpenditure());
+				BigDecimal prices = expenditureAndIncome.getTotalPrice()
+						.add(expenditureAndIncomeResponse.getTotalPrice());
 				expenditureAndIncome.setExpenditure(prices);
 				map.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncome);
 			}
@@ -409,6 +409,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			}
 			expenditureAndIncomeResponse.setPhoto(sysClerkDTO.getPhoto());
 			expenditureAndIncomeResponse.setSysShopClerkName(sysClerkDTO.getName());
+			expenditureAndIncomeResponse.setRole(sysClerkDTO.getRole());
 			expenditureAndIncomeResponses.add(expenditureAndIncomeResponse);
 		}
 		return expenditureAndIncomeResponses;

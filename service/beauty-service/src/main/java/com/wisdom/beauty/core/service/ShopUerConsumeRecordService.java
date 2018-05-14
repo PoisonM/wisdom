@@ -66,5 +66,13 @@ public interface ShopUerConsumeRecordService {
     *@Date:2018/4/26 9:51
     */
     List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(String consumeType,List<String> sysClerkIds);
+    /**
+    *@Author:zhanghuan
+    *@Param:   bossId  ，shopId
+    *@Return: List<ShopUserConsumeRecordDTO>
+    *@Description:
+    *@Date:2018/5/10 19:24
+    */
+    //List<ShopUserConsumeRecordDTO> getConsumeRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
 }

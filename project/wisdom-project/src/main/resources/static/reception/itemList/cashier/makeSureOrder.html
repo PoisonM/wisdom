@@ -5,7 +5,7 @@
             <br/>
             <br/>
             <p>此处可以选择不同的充值卡，用于不同的商品折扣</p>
-            <span>余额充值></span>
+            <span>{{shopUserRechargeCardDTO.shopRechargeCardName}}></span>
         </li>
     </ul>
     <div class="stillOwedTitle" ng-if="projectGroupRelRelationDTOS.length>0">套卡</div>
@@ -19,7 +19,7 @@
                     <input type="text" ng-value="(item.projectInitAmount*item.discount)" ng-model="item.shopGroupPuchasePrice">
                     <!-- <label for="" class="serviceTimes">服务次数</label>
                     <input type="text" ng-model="item.projectInitTimes"> -->
-                    <div class="delete">删除</div>
+                    <div class="delete" ng-click="deleteClick(3,item.shopProjectGroupId)">删除</div>
                 </div>
                 <div class="otherOperation">
                     <ul>
@@ -48,13 +48,13 @@
         <ul class="stillOwedContent">
             <li>
                 <div class="contentBox">
-                    <span class="name"></span>
+                    <span class="name">{{item.shopProductName}}</span>
                     <span class="discount"><s>原价 {{item.initAmount}}.00</s> 折扣 {{item.discount*100}}折</span>
                     <label for="" class="discountPrice">折扣价 ¥</label>
                     <input type="text" ng-value="(item.initAmount*item.discount)">
                     <!-- <label for="" class="serviceTimes">服务次数</label>
                     <input type="text" ng-model="item.initTimes"> -->
-                    <div class="delete">删除</div>
+                    <div class="delete" ng-click="deleteClick(4,item.shopProductId)">删除</div>
                 </div>
                 <div class="otherOperation">
                     <ul>
@@ -89,7 +89,7 @@
                     <input type="text" ng-value="(item.sysShopProjectInitAmount*item.discount)" ng-model='item.bar'>
                     <!-- <label for="" class="serviceTimes">服务次数</label>
                     <input type="text">-->
-                    <div class="delete">删除</div>
+                    <div class="delete" ng-click="deleteClick(item.useStyle,item.sysShopProjectId)">删除</div>
                 </div>
                 <div class="otherOperation">
                     <ul>

@@ -2,25 +2,28 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
-import com.wisdom.beauty.api.extDto.ImageUrl;
-import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
+import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.core.mapper.ExtShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopRechargeCardMapper;
+import com.wisdom.beauty.core.mapper.ShopUserRechargeCardMapper;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: ShopRechargeCardServiceImpl
@@ -39,6 +42,9 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 	private ShopRechargeCardMapper shopRechargeCardMapper;
 
 	@Autowired
+	private ShopUserRechargeCardMapper shopUserRechargeCardMapper;
+
+	@Autowired
 	private ShopProjectProductCardRelationMapper shopProjectProductCardRelationMapper;
 
 	@Autowired
@@ -48,8 +54,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 	private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<ShopRechargeCardResponseDTO> getShopRechargeCardList(
-			PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO) {
+	public List<ShopRechargeCardOrderDTO> getShopRechargeCardList(PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO) {
 		ShopRechargeCardDTO shopRechargeCardDTO = pageParamVoDTO.getRequestData();
 		logger.info("getThreeLevelProjectList传入的参数,sysShopId={},name={}", shopRechargeCardDTO.getSysShopId(),
 				shopRechargeCardDTO.getName());
@@ -61,7 +66,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		ShopRechargeCardCriteria shopRechargeCardCriteria = new ShopRechargeCardCriteria();
 		ShopRechargeCardCriteria.Criteria criteria = shopRechargeCardCriteria.createCriteria();
 		// 排序
-		shopRechargeCardCriteria.setOrderByClause("create_date");
+		shopRechargeCardCriteria.setOrderByClause("recharge_card_type asc");
 		// 分页
 		shopRechargeCardCriteria.setLimitStart(pageParamVoDTO.getPageNo());
 		shopRechargeCardCriteria.setPageSize(pageParamVoDTO.getPageSize());
@@ -74,101 +79,46 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		List<ShopRechargeCardDTO> list = shopRechargeCardMapper.selectByCriteria(shopRechargeCardCriteria);
 		List<String> ids = new ArrayList<>();
 		// 遍历list,将折扣信息和充值卡信息放入到新的list中
-		List<ShopRechargeCardResponseDTO> shopRechargeCardResponseDTOs = new ArrayList<>();
-		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = null;
+		List<ShopRechargeCardOrderDTO> shopRechargeCardResponseDTOs = new ArrayList<>();
 		for (ShopRechargeCardDTO shopRechargeCard : list) {
-			shopRechargeCardResponseDTO = new ShopRechargeCardResponseDTO();
-			shopRechargeCardResponseDTO.setShopRechargeCardId(shopRechargeCard.getId());
-			shopRechargeCardResponseDTO.setAmount(shopRechargeCard.getAmount());
-			shopRechargeCardResponseDTO.setDiscountDesc(shopRechargeCard.getDiscountDesc());
-			shopRechargeCardResponseDTO.setIntroduce(shopRechargeCard.getIntroduce());
-			shopRechargeCardResponseDTO.setName(shopRechargeCard.getName());
-			shopRechargeCardResponseDTO.setShopRechargeCardId(shopRechargeCard.getId());
-			// 将充值卡id放入集合中
-			ids.add(shopRechargeCard.getId());
-			shopRechargeCardResponseDTOs.add(shopRechargeCardResponseDTO);
-			shopRechargeCardResponseDTO = null;
-		}
-		// 查询mongodb中的图片地址
-		List<ImageUrl> imageUrls = null;
-		if (CollectionUtils.isNotEmpty(ids)) {
-			Query query = new Query(Criteria.where("imageId").in(ids));
-			imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-		}
-		Map<String, String> urlMap = null;
-		if (CollectionUtils.isNotEmpty(imageUrls)) {
-			urlMap = new HashMap<>(16);
-			for (ImageUrl imageUrl : imageUrls) {
-				urlMap.put(imageUrl.getImageId(), imageUrl.getUrl());
-			}
-		}
-		Map<String, Map<String, Object>> map = this.getDiscount(ids);
-
-		Iterator<ShopRechargeCardResponseDTO> iterator = shopRechargeCardResponseDTOs.iterator();
-		List<ShopRechargeCardResponseDTO> shopRechargeCardResponses = new ArrayList<>();
-		while (iterator.hasNext()) {
-			ShopRechargeCardResponseDTO rechargeCardResponse = iterator.next();
-			if (map != null) {
-				rechargeCardResponse.setMap(map.get(rechargeCardResponse.getShopRechargeCardId()));
-			}
-			String[] urls = null;
-			if (urlMap != null && StringUtils.isNotBlank(urlMap.get(rechargeCardResponse.getShopRechargeCardId()))) {
-				urls = urlMap.get(rechargeCardResponse.getShopRechargeCardId()).split("\\|");
-			}
-			if (urls != null) {
-				rechargeCardResponse.setImageUrl(urls);
-			}
-			shopRechargeCardResponses.add(rechargeCardResponse);
+			ShopRechargeCardOrderDTO shopRechargeCardOrderDTO = new ShopRechargeCardOrderDTO();
+			BeanUtils.copyProperties(shopRechargeCard, shopRechargeCardOrderDTO);
+			shopRechargeCardResponseDTOs.add(shopRechargeCardOrderDTO);
 		}
 
 		return shopRechargeCardResponseDTOs;
 	}
 
 	@Override
-	public ShopRechargeCardResponseDTO getShopRechargeCard(String id) {
-		logger.info("getThreeLevelProjectList传入的参数,id={}", id);
+	public ShopRechargeCardResponseDTO getShopRechargeCard(ShopRechargeCardDTO shopRechargeCardDTO) {
+		logger.info("getThreeLevelProjectList传入的参数,id={}", shopRechargeCardDTO);
 
-		if (StringUtils.isBlank(id)) {
+		if (null == shopRechargeCardDTO) {
 			return null;
 		}
 
 		ShopRechargeCardCriteria shopRechargeCardCriteria = new ShopRechargeCardCriteria();
 		ShopRechargeCardCriteria.Criteria criteria = shopRechargeCardCriteria.createCriteria();
 
-		criteria.andIdEqualTo(id);
+		if (StringUtils.isNotBlank(shopRechargeCardDTO.getId())) {
+			criteria.andIdEqualTo(shopRechargeCardDTO.getId());
+		}
+
+		if (StringUtils.isNotBlank(shopRechargeCardDTO.getSysShopId())) {
+			criteria.andSysShopIdEqualTo(shopRechargeCardDTO.getSysShopId());
+		}
+
 		List<ShopRechargeCardDTO> list = shopRechargeCardMapper.selectByCriteria(shopRechargeCardCriteria);
 		if (CollectionUtils.isEmpty(list)) {
 			logger.info("shopRechargeCardMapper.selectByCriteria()方法查询结果为空");
 			return null;
 		}
 
-		ShopRechargeCardDTO shopRechargeCardDTO = list.get(0);
-		logger.info("充值卡的id={}", shopRechargeCardDTO.getId());
-		// 获取折扣信息
-		List<String> ids = new ArrayList<>();
-		ids.add(shopRechargeCardDTO.getId());
-		Map<String, Map<String, Object>> map = this.getDiscount(ids);
-		Map<String, Object> discountMap = null;
-		if (map != null) {
-			discountMap = map.get(shopRechargeCardDTO.getId());
-		}
+		shopRechargeCardDTO = list.get(0);
+
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = new ShopRechargeCardResponseDTO();
-		shopRechargeCardResponseDTO.setMap(discountMap);
-		shopRechargeCardResponseDTO.setName(shopRechargeCardDTO.getName());
-		shopRechargeCardResponseDTO.setIntroduce(shopRechargeCardDTO.getIntroduce());
-		shopRechargeCardResponseDTO.setAmount(shopRechargeCardDTO.getAmount());
-		shopRechargeCardResponseDTO.setDiscountDesc(shopRechargeCardDTO.getDiscountDesc());
+		BeanUtils.copyProperties(shopRechargeCardDTO, shopRechargeCardResponseDTO);
 
-		Query query = new Query(Criteria.where("imageId").is(shopRechargeCardDTO.getId()));
-		List<ImageUrl> imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-
-		if (CollectionUtils.isNotEmpty(imageUrls)) {
-			ImageUrl imageUrl = imageUrls.get(0);
-			String url = imageUrl.getUrl();
-			if (StringUtils.isNotBlank(url)) {
-				shopRechargeCardResponseDTO.setImageUrl(url.split("\\|"));
-			}
-		}
 		return shopRechargeCardResponseDTO;
 	}
 
@@ -190,19 +140,19 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		if (StringUtils.isNotBlank(type)) {
 			// 如果是产品类型的
 			if (GoodsTypeEnum.PRODUCT.getCode().equals(type)) {
-				criteria.andShopProductIdEqualTo(queryCriteria);
+				criteria.andShopGoodsTypeIdEqualTo(queryCriteria);
 			} else {
 				// 项目类型
-				criteria.andSysShopProjectIdEqualTo(queryCriteria);
+				criteria.andShopGoodsTypeIdEqualTo(queryCriteria);
 			}
 		}
-		List<ShopProjectProductCardRelation> list = shopProjectProductCardRelationMapper
+		List<ShopProjectProductCardRelationDTO> list = shopProjectProductCardRelationMapper
 				.selectByCriteria(shopProjectProductCardRelationCriteria);
 		if (CollectionUtils.isEmpty(list)) {
 			logger.info("接口shopRechargeCardMapper#selectByCriteria()查询结果为空");
 			return null;
 		}
-		ShopProjectProductCardRelation shopProjectProductCardRelation = list.get(0);
+		ShopProjectProductCardRelationDTO shopProjectProductCardRelation = list.get(0);
 		Float discount = shopProjectProductCardRelation.getDiscount();
 		logger.info("getDiscount接口获取到的折扣信息={}", discount);
 		return discount;
@@ -222,7 +172,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 				.createCriteria();
 
 		criteria.andShopRechargeCardIdIn(rechargeCardIds);
-		List<ShopProjectProductCardRelation> shopProjectProductCardRelations = extShopProjectProductCardRelationMapper
+		List<ShopProjectProductCardRelationDTO> shopProjectProductCardRelations = extShopProjectProductCardRelationMapper
 				.selectdiscountInfoByCriteria(shopProjectProductCardRelationCriteria);
 		if (CollectionUtils.isEmpty(shopProjectProductCardRelations)) {
 			logger.info("接口shopRechargeCardMapper#selectByCriteria()查询结果为空");
@@ -230,20 +180,84 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		}
 		Map<String, Map<String, Object>> map = new HashMap<>(16);
 		Map<String, Object> dicountMap = new HashMap<>(16);
-		for (ShopProjectProductCardRelation shopProjectProductCardRelation : shopProjectProductCardRelations) {
+		for (ShopProjectProductCardRelationDTO shopProjectProductCardRelation : shopProjectProductCardRelations) {
 			if (map.get(shopProjectProductCardRelation.getShopRechargeCardId()) == null) {
 				// 将类型和折扣放入一个dicountMap中
-				dicountMap.put(shopProjectProductCardRelation.getUseStyle(),
+				dicountMap.put(shopProjectProductCardRelation.getGoodsType(),
 						shopProjectProductCardRelation.getDiscount());
 				// 将dicountMap放入map中,key是充值卡id
 				map.put(shopProjectProductCardRelation.getShopRechargeCardId(), dicountMap);
 			} else {
 				Map<String, Object> map1 = map.get(shopProjectProductCardRelation.getShopRechargeCardId());
-				map1.put(shopProjectProductCardRelation.getUseStyle(), shopProjectProductCardRelation.getDiscount());
+				map1.put(shopProjectProductCardRelation.getGoodsType(), shopProjectProductCardRelation.getDiscount());
 			}
 
 		}
 		logger.info("getDiscount接口获取到的折扣信息结果map={}", map);
 		return map;
+	}
+
+	/**
+	 * 更新用户的充值卡信息
+	 */
+	@Override
+	public int updateRechargeCard(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+		logger.info("更新用户的充值卡信息传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+
+		if (null == shopUserRechargeCardDTO || StringUtils.isBlank(shopUserRechargeCardDTO.getId())) {
+			logger.error("更新用户的充值卡信息传入参数为空");
+			return 0;
+		}
+		int flag = shopUserRechargeCardMapper.updateByPrimaryKeySelective(shopUserRechargeCardDTO);
+		return flag;
+	}
+
+	/**
+	 * 查询用户的充值卡
+	 *
+	 * @param shopUserRechargeCardDTO
+	 * @return
+	 */
+	@Override
+	public ShopUserRechargeCardDTO getShopUserRechargeInfo(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+		logger.info("查询用户的充值卡信息传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+
+		ShopUserRechargeCardCriteria criteria = new ShopUserRechargeCardCriteria();
+		ShopUserRechargeCardCriteria.Criteria c = criteria.createCriteria();
+		if (null == shopUserRechargeCardDTO) {
+			logger.error("查询用户的充值卡传入参数为空");
+			return null;
+		}
+
+		if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getSysUserId())) {
+			c.andSysUserIdEqualTo(shopUserRechargeCardDTO.getSysUserId());
+		}
+
+		if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getId())) {
+			c.andIdEqualTo(shopUserRechargeCardDTO.getId());
+		}
+
+		if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getShopRechargeCardId())) {
+			c.andShopRechargeCardIdEqualTo(shopUserRechargeCardDTO.getShopRechargeCardId());
+		}
+
+		List<ShopUserRechargeCardDTO> rechargeCardDTOS = shopUserRechargeCardMapper.selectByCriteria(criteria);
+
+		ShopUserRechargeCardDTO cardDTO = new ShopUserRechargeCardDTO();
+		if (CommonUtils.objectIsEmpty(rechargeCardDTOS)) {
+			cardDTO = rechargeCardDTOS.get(0);
+		}
+		return cardDTO;
+	}
+
+	/**
+	 * 生产用户的充值卡
+	 *
+	 * @param userRechargeCardDTO
+	 * @return
+	 */
+	@Override
+	public int saveShopUserRechargeCardInfo(ShopUserRechargeCardDTO userRechargeCardDTO) {
+		return shopUserRechargeCardMapper.insert(userRechargeCardDTO);
 	}
 }

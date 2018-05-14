@@ -46,7 +46,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     @Override
     public List<ShopAppointServiceDTO> getShopAppointClerkInfoByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
-        if(null == extShopAppointServiceDTO || null == extShopAppointServiceDTO.getSearchStartTime() || null == extShopAppointServiceDTO.getSearchEndTime()){
+        if (null == extShopAppointServiceDTO) {
             logger.info("根据时间查询查询某个店的有预约号源的美容师列表,查询参数为空{}",extShopAppointServiceDTO);
             return null;
         }

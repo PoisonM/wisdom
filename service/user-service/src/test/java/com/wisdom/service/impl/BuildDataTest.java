@@ -72,9 +72,7 @@ public class BuildDataTest {
     public void SysClerk() {
 
         SysClerkDTO sysClerkDTO = new SysClerkDTO();
-        sysClerkDTO.setId("2");
-        sysClerkDTO.setSysUserId("2");
         sysClerkDTO.setName("测试名字update２");
-        clerkInfoService.updateSysClerk(sysClerkDTO);
+        clerkInfoService.saveSysClerk(sysClerkDTO);
     }
 }

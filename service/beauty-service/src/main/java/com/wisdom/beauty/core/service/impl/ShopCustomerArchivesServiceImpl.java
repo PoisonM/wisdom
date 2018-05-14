@@ -1,20 +1,27 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
+import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserArchivesCriteria;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
+import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
+import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.IdGen;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +39,10 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 
     @Autowired
     private ShopUserArchivesMapper shopUserArchivesMapper;
+
+    @Autowired
+    private ShopRechargeCardService shopRechargeCardService;
+
 
     @Override
     public int getArchivesCount(ShopUserArchivesDTO shopUserArchivesDTO) {
@@ -154,6 +165,32 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             return 0;
         }
 
+        //查询某个店的充值卡特殊卡
+        ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
+        shopRechargeCardDTO.setSysShopId(shopRechargeCardDTO.getSysShopId());
+        shopRechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
+        ShopRechargeCardResponseDTO shopRechargeCard = shopRechargeCardService.getShopRechargeCard(shopRechargeCardDTO);
+        if (null == shopRechargeCard) {
+            logger.error("保存用户的建档案信息，查询店={}的特殊卡位空", shopUserArchivesDTO.getSysShopId());
+            return 0;
+        }
+        //生成用户的特殊充值卡
+        ShopUserRechargeCardDTO rechargeCardDTO = new ShopUserRechargeCardDTO();
+        rechargeCardDTO.setId(IdGen.uuid());
+        rechargeCardDTO.setShopRechargeCardId(shopRechargeCard.getId());
+        rechargeCardDTO.setShopRechargeCardName("余额充值");
+        rechargeCardDTO.setProductDiscount(1f);
+        rechargeCardDTO.setPeriodDiscount(1f);
+        rechargeCardDTO.setTimeDiscount(1f);
+        rechargeCardDTO.setSysShopId(shopUserArchivesDTO.getSysShopId());
+        rechargeCardDTO.setSysUserId(shopUserArchivesDTO.getSysUserId());
+        rechargeCardDTO.setSurplusAmount(new BigDecimal(0));
+        rechargeCardDTO.setCreateBy(shopUserArchivesDTO.getSysClerkId());
+        rechargeCardDTO.setSysClerkName(shopUserArchivesDTO.getSysClerkName());
+        rechargeCardDTO.setSysBossId(shopUserArchivesDTO.getSysBossId());
+        rechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
+        int updateRechargeCard = shopRechargeCardService.saveShopUserRechargeCardInfo(rechargeCardDTO);
+        logger.info("生成用户的特殊卡{}", updateRechargeCard > 0 ? "成功" : "失败");
         return shopUserArchivesMapper.insert(shopUserArchivesDTO);
     }
 
@@ -202,24 +239,28 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
      * @return
      */
     @Override
-    public ShopUserArchivesDTO getShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO) {
+    public List<ShopUserArchivesDTO> getShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO) {
 
         logger.info("查询某个用户的档案信息传入参数={}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
 
         ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
         ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
+
         if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysUserId())) {
             c.andSysUserIdEqualTo(shopUserArchivesDTO.getSysUserId());
         }
-        if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysShopId())) {
-            c.andSysShopIdEqualTo(shopUserArchivesDTO.getSysShopId());
+
+        if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysBossId())) {
+            c.andSysBossIdEqualTo(shopUserArchivesDTO.getSysBossId());
         }
+
         List<ShopUserArchivesDTO> shopUserArchivesDTOS = shopUserArchivesMapper.selectByCriteria(criteria);
 
         if (CommonUtils.objectIsEmpty(shopUserArchivesDTOS)) {
+            logger.error("查询某个用户的档案信息查询结果为空");
             return null;
         }
         logger.debug("查询某个用户的档案信息大小为， {}", shopUserArchivesDTOS.size());
-        return shopUserArchivesDTOS.get(0);
+        return shopUserArchivesDTOS;
     }
 }

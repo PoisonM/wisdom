@@ -2,6 +2,7 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
+import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
 import com.wisdom.beauty.api.extDto.RelationIds;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
@@ -85,6 +86,23 @@ public class ProjectTest {
         System.out.println(toJSONString);
 
         MvcResult result = mvc.perform(post("/projectInfo/getUserClientShopProjectList").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void userShopProjectType() throws Exception {
+
+        ShopProjectTypeDTO shopProjectTypeDTO = new ShopProjectTypeDTO();
+        shopProjectTypeDTO.setProjectTypeName("测试");
+        String toJSONString = JSONObject.toJSONString(shopProjectTypeDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/projectType/saveShopProjectType").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

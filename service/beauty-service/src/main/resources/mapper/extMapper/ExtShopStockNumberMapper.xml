@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper" >
-    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStockNumberDTO" >
-        <id column="id" property="id" jdbcType="VARCHAR" />
-        <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR" />
-        <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR" />
-        <result column="shop_boss_id" property="shopBossId" jdbcType="VARCHAR" />
-        <result column="stock_number" property="stockNumber" jdbcType="INTEGER" />
-        <result column="actual_stock_number" property="actualStockNumber" jdbcType="INTEGER" />
-        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
-        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-        <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
-        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStockNumberDTO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR"/>
+        <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR"/>
+        <result column="shop_boss_id" property="shopBossId" jdbcType="VARCHAR"/>
+        <result column="stock_number" property="stockNumber" jdbcType="INTEGER"/>
+        <result column="actual_stock_number" property="actualStockNumber" jdbcType="INTEGER"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
     </resultMap>
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
         id, shop_proc_id, shop_store_id, shop_boss_id, stock_number, actual_stock_number,
         create_by, create_date, update_user, update_date
     </sql>
-    <update id="updateBatchShopStockNumber"  parameterType="java.util.Map">
+    <update id="updateBatchShopStockNumber" parameterType="java.util.Map">
         <foreach collection="list" separator=";" item="record">
-          update shop_stock_number
+            update shop_stock_number
+            set
+            stock_number = #{record.stockNumber,jdbcType=INTEGER}
 
-          stock_number = #{record.stockNumber,jdbcType=INTEGER}
+            where id = #{record.id,jdbcType=VARCHAR,jdbcType=VARCHAR}
+        </foreach>
+    </update>
 
-        where id = #{record.id,jdbcType=VARCHAR,jdbcType=VARCHAR}
-     </foreach>
-</update>
+    <!--批量插入-->
+    <insert id="saveBatchShopStockNumber">
+        insert into shop_stock_number (id, shop_proc_id, shop_store_id,
+        shop_boss_id, stock_number, actual_stock_number,
+        actual_stock_price, stock_price, create_by,
+        create_date, update_user, update_date
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.shopProcId,jdbcType=VARCHAR}, #{item.shopStoreId,jdbcType=VARCHAR},
+            #{item.shopBossId,jdbcType=VARCHAR}, #{item.stockNumber,jdbcType=INTEGER}, #{item.actualStockNumber,jdbcType=INTEGER},
+            #{item.actualStockPrice,jdbcType=INTEGER}, #{item.stockPrice,jdbcType=DECIMAL}, #{item.createBy,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR}, #{item.updateDate,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
 </mapper>

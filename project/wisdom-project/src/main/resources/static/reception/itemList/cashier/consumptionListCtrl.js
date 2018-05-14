@@ -19,34 +19,39 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     }
     /*打开收银头部/档案头部/我的头部*/
     //获取订单ID
-    SaveShopUserOrderInfo.save({
-        userId: '110'
-    }, function(data) {
+
+    SaveShopUserOrderInfo.save({ userId: '110' }, function(data) {
         $scope.orderId = data.responseData;
         GetConsumeDisplayIds.get({ orderId: data.responseData }, function(data) {
             $scope.theSelected = data.responseData;
-            if ($scope.theSelected.length == 0) {
-                $scope.theSelected = {
-                    "periodCard": {
-                        "periodCardSize": 0,
-                        "periodCardIds": []
-                    },
-                    "product": {
-                        "productIds": [],
-                        "productSize": 0
-                    },
-                    "timeCard": {
-                        "timeCardSize": 0,
-                        "timeCardIds": []
-                    },
-                    "groupCard": {
-                        "groupSize": 0,
-                        "groupIds": []
-                    }
+            if ($scope.theSelected.periodCard == undefined) {
+                $scope.theSelected.periodCard = {
+                    "periodCardSize": 0,
+                    "periodCardIds": []
+                }
+            }
+            if ($scope.theSelected.product == undefined) {
+                $scope.theSelected.product = {
+                    "productIds": [],
+                    "productSize": 0
+                }
+            }
+            if ($scope.theSelected.timeCard == undefined) {
+                $scope.theSelected.timeCard = {
+                    "timeCardSize": 0,
+                    "timeCardIds": []
+                }
+            }
+            if ($scope.theSelected.groupCard == undefined) {
+                $scope.theSelected.groupCard = {
+                    "groupSize": 0,
+                    "groupIds": []
                 }
             }
         })
     })
+
+
     $scope.select = 1;
     $scope.tabclick = function(e) {
         if (e == 3) {
@@ -107,7 +112,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         }
     }
 
-    $scope.tabclick(0);
+    $scope.tabclick(1);
     $scope.getThreeCategories = function(one, two) {
         ThreeLevelProject.get({
             pageSize: 100,
@@ -143,7 +148,6 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         };
         var bar = 0;
         switch (e) {
-
             case 0:
                 if ($scope.theSelected.timeCard.timeCardIds.indexOf(res.id) != -1) { bar = 1; }
                 break;
@@ -158,7 +162,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 break;
             default:
         }
-        UpdateVirtualGoodsOrderInfo.save({
+        var virtualGoodsOrderInfo = {
             goodsType: e,
             operation: bar,
             orderId: $scope.orderId,
@@ -170,8 +174,48 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 sysShopProjectName: res.projectName,
                 sysUserId: 110,
                 useStyle: res.useStyle,
+            }],
+            shopUserProductRelationDTOS: [{
+                initAmount: res.marketPrice,
+                initTimes: '1',
+                shopProductId: res.id,
+                shopProductName: res.productName,
+                sysUserId: 110,
+            }],
+            projectGroupRelRelationDTOS: [{
+                projectInitAmount: res.marketPrice,
+                projectInitTimes: '',
+                projectSurplusAmount: '',
+                projectSurplusTimes: '',
+                shopProjectGroupId: res.id,
+                shopProjectGroupName: res.projectGroupName,
+                sysUserId: 110,
             }]
-        }, function() {
+        }
+        switch (e) {
+            case 0:
+                if ($scope.theSelected.timeCard.timeCardIds.indexOf(res.id) != -1) { bar = 1; }
+                delete virtualGoodsOrderInfo.shopUserProductRelationDTOS;
+                delete virtualGoodsOrderInfo.projectGroupRelRelationDTOS;
+                break;
+            case 1:
+                if ($scope.theSelected.periodCard.periodCardIds.indexOf(res.id) != -1) { bar = 1; }
+                delete virtualGoodsOrderInfo.shopUserProductRelationDTOS;
+                delete virtualGoodsOrderInfo.projectGroupRelRelationDTOS;
+                break;
+            case 3:
+                if ($scope.theSelected.groupCard.groupIds.indexOf(res.id) != -1) { bar = 1; }
+                delete virtualGoodsOrderInfo.shopUserProjectRelationDTOS;
+                delete virtualGoodsOrderInfo.shopUserProductRelationDTOS;
+                break;
+            case 4:
+                if ($scope.theSelected.product.productIds.indexOf(res.id) != -1) { bar = 1; }
+                delete virtualGoodsOrderInfo.shopUserProjectRelationDTOS;
+                delete virtualGoodsOrderInfo.projectGroupRelRelationDTOS;
+                break;
+            default:
+        }
+        UpdateVirtualGoodsOrderInfo.save(virtualGoodsOrderInfo, function() {
             switch (e) {
                 case 0:
                     if ($scope.theSelected.timeCard.timeCardIds.indexOf(res.id) == -1) {
@@ -194,10 +238,10 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 case 3:
                     if ($scope.theSelected.groupCard.groupIds.indexOf(res.id) == -1) {
                         $scope.theSelected.groupCard.groupIds.push(res.id);
-                        $scope.theSelected.groupCard.groupCard++;
+                        $scope.theSelected.groupCard.groupSize++;
                     } else {
                         $scope.theSelected.groupCard.groupIds.remove(res.id);
-                        $scope.theSelected.groupCard.groupCard--;
+                        $scope.theSelected.groupCard.groupSize--;
                     }
                     break;
                 case 4:

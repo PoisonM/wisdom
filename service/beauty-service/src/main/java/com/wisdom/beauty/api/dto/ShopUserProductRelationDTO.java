@@ -26,6 +26,9 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     private String sysClerkId;
 
     //
+    private String sysBossId;
+
+    //
     private String sysClerkName;
 
     //产品待领取的数量
@@ -115,6 +118,14 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
 
     public void setSysClerkId(String sysClerkId) {
         this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysBossId() {
+        return sysBossId;
+    }
+
+    public void setSysBossId(String sysBossId) {
+        this.sysBossId = sysBossId;
     }
 
     public String getSysClerkName() {

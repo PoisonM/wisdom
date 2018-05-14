@@ -8,6 +8,7 @@
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
     <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
+    <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
     <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
     <result column="wait_receive_number" property="waitReceiveNumber" jdbcType="INTEGER" />
     <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR" />
@@ -82,9 +83,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_product_name, shop_product_id, sys_user_id, sys_shop_id, sys_clerk_id, sys_clerk_name,
-    wait_receive_number, sys_shop_name, init_times, surplus_times, purchase_price, init_amount,
-    surplus_amount, discount, is_send, create_by, create_date, update_user, update_date
+    id, shop_product_name, shop_product_id, sys_user_id, sys_shop_id, sys_clerk_id, sys_boss_id,
+    sys_clerk_name, wait_receive_number, sys_shop_name, init_times, surplus_times, purchase_price,
+    init_amount, surplus_amount, discount, is_send, create_by, create_date, update_user,
+    update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserProductRelationCriteria" >
     select
@@ -121,19 +123,21 @@
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserProductRelationDTO" >
     insert into shop_user_product_relation (id, shop_product_name, shop_product_id, 
-      sys_user_id, sys_shop_id, sys_clerk_id, 
-      sys_clerk_name, wait_receive_number, sys_shop_name,
-    init_times, surplus_times, purchase_price,
-    init_amount, surplus_amount, discount,
-    is_send, create_by, create_date,
-    update_user, update_date)
+      sys_user_id, sys_shop_id, sys_clerk_id,
+    sys_boss_id, sys_clerk_name, wait_receive_number,
+    sys_shop_name, init_times, surplus_times,
+    purchase_price, init_amount, surplus_amount,
+    discount, is_send, create_by,
+    create_date, update_user, update_date
+    )
     values (#{id,jdbcType=VARCHAR}, #{shopProductName,jdbcType=VARCHAR}, #{shopProductId,jdbcType=VARCHAR}, 
-      #{sysUserId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, 
-      #{sysClerkName,jdbcType=VARCHAR}, #{waitReceiveNumber,jdbcType=INTEGER}, #{sysShopName,jdbcType=VARCHAR},
-    #{initTimes,jdbcType=INTEGER}, #{surplusTimes,jdbcType=INTEGER}, #{purchasePrice,jdbcType=DECIMAL},
-    #{initAmount,jdbcType=DECIMAL}, #{surplusAmount,jdbcType=DECIMAL}, #{discount,jdbcType=REAL},
-    #{isSend,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+      #{sysUserId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR},
+    #{sysBossId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, #{waitReceiveNumber,jdbcType=INTEGER},
+    #{sysShopName,jdbcType=VARCHAR}, #{initTimes,jdbcType=INTEGER}, #{surplusTimes,jdbcType=INTEGER},
+    #{purchasePrice,jdbcType=DECIMAL}, #{initAmount,jdbcType=DECIMAL}, #{surplusAmount,jdbcType=DECIMAL},
+    #{discount,jdbcType=REAL}, #{isSend,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR},
+    #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserProductRelationDTO" >
     insert into shop_user_product_relation
@@ -155,6 +159,9 @@
       </if>
       <if test="sysClerkId != null" >
         sys_clerk_id,
+      </if>
+      <if test="sysBossId != null">
+        sys_boss_id,
       </if>
       <if test="sysClerkName != null" >
         sys_clerk_name,
@@ -217,6 +224,9 @@
       </if>
       <if test="sysClerkId != null" >
         #{sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBossId != null">
+        #{sysBossId,jdbcType=VARCHAR},
       </if>
       <if test="sysClerkName != null" >
         #{sysClerkName,jdbcType=VARCHAR},
@@ -289,6 +299,9 @@
       <if test="record.sysClerkId != null" >
         sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       </if>
+      <if test="record.sysBossId != null">
+        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      </if>
       <if test="record.sysClerkName != null" >
         sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       </if>
@@ -344,6 +357,7 @@
       sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+    sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
       sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       wait_receive_number = #{record.waitReceiveNumber,jdbcType=INTEGER},
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
@@ -379,6 +393,9 @@
       </if>
       <if test="sysClerkId != null" >
         sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBossId != null">
+        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
       </if>
       <if test="sysClerkName != null" >
         sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
@@ -432,6 +449,7 @@
       sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
+    sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
       sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       wait_receive_number = #{waitReceiveNumber,jdbcType=INTEGER},
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},

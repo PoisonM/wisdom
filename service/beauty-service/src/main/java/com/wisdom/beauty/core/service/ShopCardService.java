@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -28,4 +29,12 @@ public interface ShopCardService {
      * @return
      */
     int updateUserRechargeCard(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
+
+    /**
+     * 获取充值卡总金额
+     *
+     * @param shopUserRechargeCardDTO
+     * @return
+     */
+    BigDecimal getUserRechargeCardSumAmount(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
 }

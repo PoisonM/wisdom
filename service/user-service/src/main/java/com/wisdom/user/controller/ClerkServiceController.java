@@ -61,30 +61,20 @@ public class ClerkServiceController {
 	/**
 	 * 保存店员信息
 	 *
-	 * @param shopId
+	 * @param sysClerkDTO
 	 * @return
 	 */
 	@RequestMapping(value = "saveClerkInfo", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
-	int saveClerkInfo(@RequestParam(value = "shopId") String shopId) {
+	ResponseDTO<Object>  saveClerkInfo(@RequestBody SysClerkDTO sysClerkDTO) {
 
 		long startTime = System.currentTimeMillis();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
-		//
-		// logger.info("获取店员列表信息传入参数shopId = {}", shopId);
-		// SysClerkDTO SysClerkDTO = new SysClerkDTO();
-		// SysClerkDTO.setSysShopId(shopId);
-		// List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(SysClerkDTO);
-		// if (CommonUtils.objectIsEmpty(clerkInfo)) {
-		// logger.info("获取的店员列表信息为空！");
-		// listResponseDTO.setResult(StatusConstant.SUCCESS);
-		// return 0;
-		// }
-		// listResponseDTO.setResponseData(clerkInfo);
-		// listResponseDTO.setResult(StatusConstant.SUCCESS);
-
+		clerkInfoService.saveSysClerk(sysClerkDTO);
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		responseDTO.setResult(StatusConstant.SUCCESS);
 		logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
-		return 0;
+		return responseDTO;
 	}
 
 	/**
@@ -96,18 +86,22 @@ public class ClerkServiceController {
 	 */
 	@RequestMapping(value = "getClerkInfoList", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
-	List<SysClerkDTO> getClerkInfoList(@RequestParam String sysBossId,
-			@RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime,
-			int pageSize) {
+	List<SysClerkDTO> getClerkInfoList(@RequestParam(required = false) String sysBossId,
+										   @RequestParam(required = false) String sysShopId,
+			                           @RequestParam(required = false) String startTime,
+									   @RequestParam(required = false) String endTime,
+									   int pageSize) {
 
 		long time = System.currentTimeMillis();
 
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 		SysClerkDTO sysClerkDTO = new SysClerkDTO();
 		sysClerkDTO.setSysBossId(sysBossId);
+		sysClerkDTO.setSysShopId(sysShopId);
 		PageParamVoDTO<SysClerkDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		pageParamVoDTO.setRequestData(sysClerkDTO);
 		pageParamVoDTO.setPageSize(pageSize);
+		pageParamVoDTO.setPageNo(0);
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
 		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfoList(pageParamVoDTO);

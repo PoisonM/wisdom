@@ -112,4 +112,9 @@ public interface ShopProjectService {
      *@Date:2018/4/11 17:26
      */
     List<ShopProjectInfoDTO> getProjectDetails(List<String> ids);
+
+    /**
+     * 添加项目类别
+     */
+    int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO);
 }

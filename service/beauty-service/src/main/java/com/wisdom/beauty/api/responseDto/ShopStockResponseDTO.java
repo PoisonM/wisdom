@@ -52,6 +52,8 @@ public class ShopStockResponseDTO extends BaseEntity {
 	private String stockType;
 	private String[] imageUrl;
 	private  String productId;
+     /** 出库数量 */
+	private Integer outStockNumber;
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
 
 	public String getId() {
@@ -196,5 +198,13 @@ public class ShopStockResponseDTO extends BaseEntity {
 
 	public void setStockType(String stockType) {
 		this.stockType = stockType;
+	}
+
+	public Integer getOutStockNumber() {
+		return outStockNumber;
+	}
+
+	public void setOutStockNumber(Integer outStockNumber) {
+		this.outStockNumber = outStockNumber;
 	}
 }
