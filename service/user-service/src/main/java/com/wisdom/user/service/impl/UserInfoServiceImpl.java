@@ -193,7 +193,33 @@ public class UserInfoServiceImpl implements UserInfoService{
     public List<UserInfoDTO> queryParentUserById(String parentUserId) {
         List<UserInfoDTO> userInfoDTOS= customerInfoMapper.queryParentUserById(parentUserId);
         for (UserInfoDTO userInfoDTO :userInfoDTOS) {
-            userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+            if(userInfoDTO.getNickname() != null && userInfoDTO.getNickname() != ""){
+                try {
+                    if(userInfoDTO.getNickname() != null && userInfoDTO.getNickname() != ""){
+                        String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW!=null&&nickNameW!=""){
+                                if(nickNameW.contains("%25")){
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                }else{
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    break;
+                                }
+                            }else{
+                                break;
+                            }
+
+                        }
+                        userInfoDTO.setNickname(nickNameW);
+                    }else{
+                        userInfoDTO.setNickname("未知用户");
+                    }
+                } catch(Throwable e){
+                    logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                    userInfoDTO.setNickname("特殊符号用户");
+                }
+            }
+
         }
         return userInfoDTOS;
     }
