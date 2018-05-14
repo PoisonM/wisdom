@@ -30,7 +30,6 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
             var datePickerCallbacke = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
-                    console.log(val)
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
                     $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
                     $scope.getInfo();
@@ -72,6 +71,7 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $scope.beautySalon = data.responseData;
+                        console.log($scope.beautySalon )
                         delete $scope.beautySalon.startTime;
                         delete $scope.beautySalon.endTime;
                     }

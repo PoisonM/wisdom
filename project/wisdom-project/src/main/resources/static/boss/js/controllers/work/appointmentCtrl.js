@@ -7,8 +7,7 @@ angular.module('controllers',[]).controller('appointmentCtrl',
 
             $rootScope.title = "预约";
 
-/*日期插件*/
-
+            /*日期插件*/
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
@@ -33,12 +32,12 @@ angular.module('controllers',[]).controller('appointmentCtrl',
             var datePickerCallbacke = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
-                    console.log(val)
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
                     $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
                     $scope.getInfo();
                 }
             };
+
             //主体对象
             $scope.datepickerObjectEnd = {
                 titleLabel: '选择日期',  //可选
