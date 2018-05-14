@@ -1913,6 +1913,18 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    .state('sevenDayCharts', {
+                        url: '/sevenDayCharts',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'sevenDayChartsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.sevenDayChartsCtrl',
+                                    ['js/controllers/work/sevenDayChartsCtrl.js?ver='+ bossVersion],
+                                    'views/work/sevenDayCharts.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
 
 
                 /*

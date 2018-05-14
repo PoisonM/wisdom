@@ -23,10 +23,6 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                             $scope.tempWeek[i] = ($scope.tempWeek[i].split("||")[0].substr($scope.tempWeek[i].split("||")[0].length-2,2)+","+$scope.tempWeek[i].split("||")[1].replace("星期","周")).split(",")
                         }
                         $scope.tempUser = data.responseData.responseList;
-                        if($scope.tempUser.length>0)
-                        {
-                            new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
-                        }
                     }
                 })
             };
@@ -85,4 +81,11 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 $scope.param.displayShopBox=false;
                 $scope.param.displayShop=false;
             };
+
+            var tiemInt = setInterval(function () {
+                if($("#tbTest1 thead tr td").length != 0){
+                    var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
+                    clearTimeout(tiemInt)
+                }
+            },100)
 }]);

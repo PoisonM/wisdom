@@ -5,7 +5,7 @@
 define(['angular'], function (angular) {
     var app = angular.module('bossApp',['ngResource','ui.router','ngSanitize','ionic',
         'oc.lazyLoad','highcharts-ng','infinite-scroll','bossGlobal','ionic-datepicker'])
-        .config(['$httpProvider',function($httpProvider) {
+        .config(['$httpProvider','$ionicConfigProvider',function($httpProvider,$ionicConfigProvider) {
 
             $httpProvider.interceptors.push(function($rootScope){
                 return {
@@ -21,6 +21,8 @@ define(['angular'], function (angular) {
                     }
                 }
             });
+
+            $ionicConfigProvider.tabs.position('bottom');// other values: top
 
         }])
         .run(function($rootScope){
