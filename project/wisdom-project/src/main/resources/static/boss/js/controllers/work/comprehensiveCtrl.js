@@ -29,12 +29,12 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
             var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
 
             // 日期选择后的回调函数
-            var datePickerCallbacke = function (val) {
+            var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
                     $scope.param.date =$filter('date')(val, 'yyyy-MM-dd')
-                    $scope.getInfo()
+                    $scope.getInfo();
                 }
             };
             //主体对象
@@ -58,7 +58,7 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
                 from: new Date(2008, 8, 2), //可选
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
-                    datePickerCallbacke(val);
+                    datePickerCallback(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
@@ -73,17 +73,17 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
                         $scope.param.expenditure = data.responseData[0].expenditure;
                         $scope.param.date = data.responseData[0].formateDate;
                         $scope.comprehensive = data.responseData;
-
                     }
                 });
             }
+
             $scope.getInfo()
-
-
-
 
             $scope.beautyAllGo = function(sysShopId){
                 $state.go("beautyAll",{sysShopId:sysShopId,date:$scope.param.date})
             }
-
-        }]);
+            
+            $scope.sevenDayChartsClick = function () {
+                $state.go('sevenDayCharts');
+            }
+}]);
