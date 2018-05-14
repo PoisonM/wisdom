@@ -22,7 +22,7 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                         for(var i = 0; i < $scope.tempWeek.length; i++){
                             $scope.tempWeek[i] = ($scope.tempWeek[i].split("||")[0].substr($scope.tempWeek[i].split("||")[0].length-2,2)+","+$scope.tempWeek[i].split("||")[1].replace("星期","周")).split(",")
                         }
-                        $scope.tempUser = data.responseData.responseList
+                        $scope.tempUser = data.responseData.responseList;
                     }
                 })
             };
@@ -74,19 +74,18 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 $scope.param.displayShopBox=false;
                 $scope.param.displayShop=false;
             };
+
             /*点击店铺名字切换店铺*/
             $scope.choseShop=function (id) {
-               $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"))
+                $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"));
                 $scope.param.displayShopBox=false;
                 $scope.param.displayShop=false;
             };
 
-
-            //调用固定表头类
             var tiemInt = setInterval(function () {
                 if($("#tbTest1 thead tr td").length != 0){
                     var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
                     clearTimeout(tiemInt)
                 }
             },100)
-        }]);
+}]);
