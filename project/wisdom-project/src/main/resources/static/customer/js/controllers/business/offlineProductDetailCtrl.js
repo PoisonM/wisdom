@@ -52,7 +52,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     if($scope.param.product.productDetail.spec.length == 1){
                         $scope.param.checkFlag = $scope.param.product.productDetail.spec[0]
                     }
-                    if($scope.param.productNum>$scope.param.product.productDetail.productAmount){
+                    if($scope.param.productNum>$scope.param.product.productAmount){
                         alert("库存不足~");
                         return;
                     }
@@ -95,7 +95,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     {
                         $scope.model=true;
                     }
-                    if($scope.param.productNum>$scope.param.product.productDetail.productAmount){
+                    if($scope.param.productNum>$scope.param.product.productAmount){
                         alert("库存不足~");
                         return;
                     }
@@ -159,7 +159,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
 
             $scope.addProductNum = function(){
                 $scope.param.productNum= $scope.param.productNum+1;
-                if($scope.param.productNum>$scope.param.product.productDetail.productAmount){
+                if($scope.param.productNum>$scope.param.product.productAmount){
                     $("#Car").css("background","grey");
                     $("#goPay").css("background","grey");
                 }
@@ -171,7 +171,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 }else{
                     $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");
                 }
-                if($scope.param.productNum<=$scope.param.product.productDetail.productAmount){
+                if($scope.param.productNum<=$scope.param.product.productAmount){
                     $("#Car").css("background","#fca1a8");
                     $("#goPay").css("background","#fca1a8");
                 }
@@ -222,7 +222,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 GetOfflineProductDetail.get({productId:$stateParams.productId},function(data){
                     $ionicLoading.hide();
                     $scope.param.product = data.responseData;
-                   /* $scope.param.product.productDetail.productAmount=$scope.param.product.productDetail.productAmount-1;*/
+                   /* $scope.param.product.productAmount=$scope.param.product.productAmount-1;*/
                     $ionicSlideBoxDelegate.update();
                     $ionicSlideBoxDelegate.loop(true);
                     $interval(function(){

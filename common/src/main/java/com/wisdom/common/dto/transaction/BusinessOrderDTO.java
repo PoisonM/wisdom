@@ -19,6 +19,9 @@ public class BusinessOrderDTO {
     //订单编号ID
     @JSONField(name = "businessOrderId")
     private String businessOrderId;
+    //订单编号ID
+    @JSONField(name = "orderId")
+    private String orderId;
 
     //交易流水号
     @JSONField(name = "transactionId")
@@ -31,6 +34,9 @@ public class BusinessOrderDTO {
     //订单商品id
     @JSONField(name = "businessProductId")
     private String businessProductId;
+    //订单商品id
+    @JSONField(name = "productAmount")
+    private String productAmount;
 
     //订单类型
     @JSONField(name = "type")
@@ -377,5 +383,21 @@ public class BusinessOrderDTO {
 
     public void setUserDetailAddress(String userDetailAddress) {
         this.userDetailAddress = userDetailAddress;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getProductAmount() {
+        return productAmount;
+    }
+
+    public void setProductAmount(String productAmount) {
+        this.productAmount = productAmount;
     }
 }
