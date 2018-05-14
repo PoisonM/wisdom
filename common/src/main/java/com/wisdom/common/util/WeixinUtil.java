@@ -41,6 +41,15 @@ public class WeixinUtil {
         String token = weixinTokenDTO.getToken();
         return token;
     }
+
+    public static String getBeautyToken()
+    {
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBeautyFlag));
+        WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
+        String token = weixinTokenDTO.getToken();
+        return token;
+    }
+
     /**
      * 获取jsp页面验证用的jsapi-ticket
      *

@@ -5,24 +5,24 @@
                 on-refresh="doRefresh()">
         </ion-refresher>
         <ion-item ng-repeat="item in param.clerkList" ng-click="chooseClerk(item.id)">
-            <i class="icon ion-ios-checkmark-outline" style="color:deeppink;font-size:30px;position:absolute" ng-if="item.id!=param.clerkId"></i>
-            <i class="icon icon ion-ios-checkmark" style="color:deeppink;font-size:30px;position:absolute" ng-if="item.id==param.clerkId"></i>
-            <img style="border-radius:79px;width:40px;position: absolute;margin-left: 35px"
+            <i class="icon ion-ios-checkmark-outline" style="color:#FF6666;font-size:20px;position:absolute;top: 30px" ng-if="item.id!=param.clerkId"></i>
+            <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;position:absolute;top: 30px" ng-if="item.id==param.clerkId"></i>
+            <img style="border-radius:79px;width:50px;position: absolute;margin-left: 35px"
                     ng-src="{{item.photo}}">
-            <div style="margin-left:85px">
+            <div style="margin-left:95px">
                 <h style="font-weight:600;">{{item.name}}</h>
-                <p style="margin-top:18px">
-                    满意度  <span style="color: red">{{item.clerkProgressStyle.width}}</span>
+                <p style="margin-top:18px;font-size: 12px;color: #888888">
+                    满意度  <span style="color: #FF6666;font-size: 12px;">{{item.clerkProgressStyle.width}}</span>
                 </p>
             </div>
-            <div class="progress" style="width:40%;position:absolute;margin-left:168px;margin-top:-12px;height:10px">
+            <div class="progress" style="width:40%;position:absolute;margin-left:178px;margin-top:-12px;height:10px">
                 <span class="red" ng-style="item.clerkProgressStyle"></span>
             </div>
         </ion-item>
         <br><br><br><br>
     </ion-scroll>
     <<div class="tabs"
-          style="background:red;color:white"
+          style="background:#FF6666;color:white;font-size: 16px"
           ng-click="confirmClerk()">
         <a class="tab-item" style="font-size:20px" ng-click="confirmClerk()">
             确认

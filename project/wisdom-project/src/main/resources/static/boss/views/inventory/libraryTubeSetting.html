@@ -1,0 +1,28 @@
+<ion-view>
+    <ion-content class="partialFiles">
+        <div>
+            <div class="h45 sb bgfff bbl" >
+                     <p class="fs16 col333 ">
+                         <span style="background: #FF6666;width:3px;height:18px;display: inline-block;margin-top:2px;" class="ml10"></span>
+                          汉方美业
+                     </p>
+                <img src="images/inventory/shou.png" class="shouPic mr10" style="margin-top: 20px;">
+            </div>
+            <ul class="bgfff">
+                <li class="h50  ml20 bbl sb"  ng-repeat="item in [0,1,2]">
+
+                  <p class="fs16">
+                      <span class="col888">库管</span>
+                      <span class="colff66">*</span>
+                  </p>
+                  <p ng-click="warehousePeopleGo()">
+                      <span class="fs14 col333">章小芳</span>
+                     <img src="images/more.png" class="more mr10">
+                  </p>
+
+                </li>
+            </ul>
+        </div>
+
+    </ion-content>
+</ion-view>

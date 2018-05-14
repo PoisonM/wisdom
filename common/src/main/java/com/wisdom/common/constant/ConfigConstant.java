@@ -6,18 +6,18 @@ public enum ConfigConstant {
 
 	public static final String DOMAIN_VALUE = "kpbeauty.com.cn";
 
-	public static final String USER_WEB_URL = "http://mx99test1.kpbeauty.com.cn/customer#/";
+	public static final String USER_WEB_URL = "http://mx99test2.kpbeauty.com.cn/customer#/";
 
-	public static final String OFFLINE_PRODUCT_BUY_NOTIFY_URL = "http://mx99test1.kpbeauty.com.cn/business/transaction/getOfflineProductPayNotifyInfo";
+	public static final String OFFLINE_PRODUCT_BUY_NOTIFY_URL = "http://mx99test2.kpbeauty.com.cn/business/transaction/getOfflineProductPayNotifyInfo";
 
-	public static final String TRAINING_PRODUCT_BUY_NOTIFY_URL = "http://mx99test1.kpbeauty.com.cn/business/transaction/getTrainingProductPayNotifyInfo";
+	public static final String TRAINING_PRODUCT_BUY_NOTIFY_URL = "http://mx99test2.kpbeauty.com.cn/business/transaction/getTrainingProductPayNotifyInfo";
 
-	public static final String SPECIAL_PRODUCT_BUY_NOTIFY_URL = "http://mx99test1.kpbeauty.com.cn/business/transaction/getSpecialProductPayNotifyInfo";
+	public static final String SPECIAL_PRODUCT_BUY_NOTIFY_URL = "http://mx99test2.kpbeauty.com.cn/business/transaction/getSpecialProductPayNotifyInfo";
 
-	public static final String SPECIAL_SHOP_URL = "http://mx99test1.kpbeauty.com.cn/weixin/customer/fieldwork/author?url=" +
-			"http://mx99test1.kpbeauty.com.cn/weixin/customer/getCustomerWeixinMenuId?url=specialProductList88888888";
+	public static final String SPECIAL_SHOP_URL = "http://mx99test2.kpbeauty.com.cn/weixin/customer/fieldwork/author?url=" +
+			"http://mx99test2.kpbeauty.com.cn/weixin/customer/getCustomerWeixinMenuId?url=specialProductList88888888";
 
-	public static final String BEAUTY_WEB_URL = "http://mx99test1.kpbeauty.com.cn/beauty#/";
+	public static final String BEAUTY_WEB_URL = "http://mx99test2.kpbeauty.com.cn/boss#/";
 
 	//redis中存储的登陆后的token的有效期，目前是30天
 	public static final int logintokenPeriod = 60*60*24*30;
@@ -48,13 +48,9 @@ public enum ConfigConstant {
 
 	public static final String USER_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
 
-	public static final String BEAUTY_CORPID = "wx174f02516e9f9733";//测试号
+	public static final String BEAUTY_CORPID = "wxa62609dff1842cd8";//测试号
 
-	public static final String BEAUTY_SECRET = "b2c3393bf85fc29d2a1ea5b5dec554b3";//测试号
-
-//	public static final String USER_CORPID = "wxa62609dff1842cd8";//商用号
-//
-//	public static final String USER_SECRET = "e2bf27273f48715d12f16fcafca0bb75";//商用号
+	public static final String BEAUTY_SECRET = "5c32cea53d3b62062129f851dcf15e17";//测试号
 
 	public static final String APP_ID = "wx174f02516e9f9733";
 
