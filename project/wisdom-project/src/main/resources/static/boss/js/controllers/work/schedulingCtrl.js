@@ -74,9 +74,10 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 $scope.param.displayShopBox=false;
                 $scope.param.displayShop=false;
             };
+
             /*点击店铺名字切换店铺*/
             $scope.choseShop=function (id) {
-               $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"))
+                $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"));
                 $scope.param.displayShopBox=false;
                 $scope.param.displayShop=false;
             };
