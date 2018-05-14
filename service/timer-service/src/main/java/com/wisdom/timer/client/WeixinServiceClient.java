@@ -9,4 +9,7 @@ public interface WeixinServiceClient {
 
     @RequestMapping(value = "/updateUserWeixinToken",method=RequestMethod.POST)
     void updateUserWeixinToken();
+
+    @RequestMapping(value = "/updateBeautyWeixinToken",method=RequestMethod.POST)
+    void updateBeautyWeixinToken();
 }
