@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -82,5 +83,10 @@ public class ShopCardServiceImpl implements ShopCardService {
             return 0;
         }
         return shopUserRechargeCardMapper.updateByPrimaryKeySelective(shopUserRechargeCardDTO);
+    }
+
+    @Override
+    public BigDecimal getUserRechargeCardSumAmount(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+        return null;
     }
 }
