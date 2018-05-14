@@ -49,7 +49,7 @@ public class IncomeAndExpenseStatisticController {
      * @Param:
      * @Return:
      * @Description: 如果有美容院店的id则查询某一个美容院店的收支情况及具体支付方式支付金额，
-     *                如果没有则查询boss下所有的美容院收支情况以及具体支付方式支付金额
+     *                如果没有则查询boss下所有的美  容院收支情况以及具体支付方式支付金额
      * @Date:2018/5/11 15:02
      */
     @RequestMapping(value = "/getInComeExpenditureDetail", method = RequestMethod.GET)
@@ -81,7 +81,7 @@ public class IncomeAndExpenseStatisticController {
     *@Author:zhanghuan
     *@Param:
     *@Return:
-    *@Description: 获取所有美容的总收入和现金收入
+        *@Description: 获取所有美容的总收入和现金收入
     *@Date:2018/5/11 17:19
     */
     @RequestMapping(value = "/getAllShopIncomeExpenditure", method = RequestMethod.GET)
@@ -142,7 +142,7 @@ public class IncomeAndExpenseStatisticController {
     *@Description: 查询收入明细
     *@Date:2018/5/14 11:08
     */
-    @RequestMapping(value = "/getIncomeExpenditureAnalysisDetail", method = RequestMethod.GET)
+    @RequestMapping(value = "/getIncomeExpenditureAnalysisDetailList", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getIncomeExpenditureAnalysisDetail(@RequestParam String sysShopId,int pageSize){
 
