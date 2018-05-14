@@ -242,6 +242,19 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                        /*某个店的收支分析*/
+                    .state('oneIncomeAnalysis', {
+                        url: '/oneIncomeAnalysis',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'oneIncomeAnalysisCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.oneIncomeAnalysisCtrl',
+                                    ['js/controllers/work/oneIncomeAnalysisCtrl.js?ver='+ bossVersion],
+                                    'views/work/oneIncomeAnalysis.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                 /*员工分析*/
 
                     .state('employeeAnalysis', {
@@ -349,8 +362,13 @@ define(['appBoss'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.schedulingCtrl',
-                                    ['js/controllers/work/schedulingCtrl.js?ver='+ bossVersion],
-                                    'views/work/scheduling.html?ver=' + bossVersion);
+                                    [
+                                        'js/controllers/work/schedulingCtrl.js?ver='+ bossVersion,
+                                        'js/controllers/work/fixedTab.js?ver='+ bossVersion,
+
+                                    ],
+                                    'views/work/scheduling.html?ver=' + bossVersion
+                                );
                             }
                         }
                     })
