@@ -124,6 +124,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
                                     if(data.result==Global.SUCCESS)
                                     {
+                                        hideToast()
                                         $scope.showFlag(false);
                                         $scope.param.checkFlag = ""
                                         $scope.param.productNum = 1

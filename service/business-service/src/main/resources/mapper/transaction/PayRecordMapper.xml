@@ -127,7 +127,7 @@
             AND o.update_date BETWEEN #{startTime} AND #{endTime}
         </if>
         <if test="param != null and param != ''">
-            AND (p.transaction_id = #{param} OR p.order_id=#{param})
+            AND (u.mobile = #{param} OR p.order_id=#{param})
         </if>
     </select>
 

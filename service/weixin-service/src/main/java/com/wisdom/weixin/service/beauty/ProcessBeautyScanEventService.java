@@ -33,7 +33,7 @@ public class ProcessBeautyScanEventService {
 
     public void processEvent(ReceiveXmlEntity xmlEntity)
     {
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBeautyFlag));
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
 

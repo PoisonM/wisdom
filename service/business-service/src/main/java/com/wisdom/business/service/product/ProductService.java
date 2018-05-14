@@ -84,11 +84,11 @@ public class ProductService {
             String sellNum = payRecordService.getSellNumByProductId(productDTO.getProductId());
             Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
-            offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
-            productDTO.setSellNum(sellNum);
-            if(offlineProductDTO != null){
+            if(null != offlineProductDTO){
+                offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
                 productDTO.setProductAmount(offlineProductDTO.getProductAmount());
             }
+            productDTO.setSellNum(sellNum);
             productDTO.setProductDetail(offlineProductDTO);
         }
         page.setResponseData(productDTOList);

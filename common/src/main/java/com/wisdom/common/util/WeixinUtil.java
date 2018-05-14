@@ -44,7 +44,7 @@ public class WeixinUtil {
 
     public static String getBeautyToken()
     {
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBeautyFlag));
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
         WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
         return token;
@@ -80,7 +80,7 @@ public class WeixinUtil {
     public static String getBeautyOauth2Url(String backUrl) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-                ConfigConstant.BEAUTY_CORPID + "&redirect_uri=" +
+                ConfigConstant.BOSS_CORPID + "&redirect_uri=" +
                 backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
@@ -253,7 +253,7 @@ public class WeixinUtil {
 
 
     public static String getBeautyOpenId(HttpSession session, HttpServletRequest request) {
-        String openId = (String) session.getAttribute(ConfigConstant.BEAUTY_OPEN_ID);
+        String openId = (String) session.getAttribute(ConfigConstant.BOSS_OPEN_ID);
         return openId;
     }
 

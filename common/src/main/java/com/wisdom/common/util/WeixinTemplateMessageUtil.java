@@ -6,7 +6,6 @@ import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.entity.TemplateData;
 import com.wisdom.common.entity.WxTemplate;
 import net.sf.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +14,8 @@ import java.util.Map;
  * Created by wangbaowei on 15/11/30
  */
 public class WeixinTemplateMessageUtil {
+
+	public static final String businessA1 = Global.getConfig("businessA1");
 
     //订单未支付通知模板ID
     public static final String ORDER_NOT_PAY = Global.getConfig("ORDER_NOT_PAY");

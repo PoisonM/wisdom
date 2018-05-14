@@ -91,7 +91,7 @@ angular.module('controllers',[]).controller('homeCtrl',
                             id:id
                         },function(data){
                             ManagementUtil.checkResponseData(data,"");
-                            if(data.errorInfo == Global.SUCCESS){
+                            if(data.result == Global.SUCCESS){
                                 $scope.loadPageList()
                             }
                         })
@@ -102,7 +102,7 @@ angular.module('controllers',[]).controller('homeCtrl',
                             id:id
                         },function(data){
                             ManagementUtil.checkResponseData(data,"");
-                            if(data.errorInfo == Global.SUCCESS){
+                            if(data.result == Global.SUCCESS){
                                 $scope.loadPageList()
                             }
                         })
