@@ -68,7 +68,7 @@ public class TransactionService {
         if(null != businessOrderDTO.getStatus() && !"".equals(businessOrderDTO.getStatus())) {
             //查出库中订单数据
             BusinessOrderDTO oldBusinessOrderDTO = transactionMapper.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
-            if ("0".equals(oldBusinessOrderDTO.getStatus())) {
+            if ("0".equals(oldBusinessOrderDTO.getStatus()) || "3".equals(oldBusinessOrderDTO.getStatus())) {
 
                 //根据订单号查出订单对应的商品
                 BusinessOrderDTO businessOrderDTO1 = transactionMapper.getBusinessOrderDetailInfoByOrderId(businessOrderDTO.getBusinessOrderId());
