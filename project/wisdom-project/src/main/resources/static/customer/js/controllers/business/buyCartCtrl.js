@@ -39,10 +39,11 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                         productSpec : value2.productSpec,
                                         productPrice : value2.businessProductPrice,
                                         productNum : value2.businessProductNum,
+                                        productAmount:value2.productAmount,
                                         productId : value2.businessProductId,
                                         orderId : value2.businessOrderId,
-                                        orderChecked:true,
-                                        productAmount:value2.productAmount
+                                        orderChecked:true
+
                                     })
                                 }
                             })
@@ -143,9 +144,11 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         reCalcTotalPayPrice();
                         addButton = true;
                     });
-                    if(item.productNum>=item.productAmount){
+                    if(parseInt(item.productNum)>=item.productAmount){
                         $("#greyBox").css("background","grey")
                     }
+                    console.log(item.productNum);
+                    console.log(item.productAmount);
                 }
             }
 
@@ -168,9 +171,9 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                             minusButton = true;
                         })
                     }
-                    console.log(item.productNum)
-                    console.log(item.productAmount)
-                     if(item.productNum-1<=item.productAmount){
+                    console.log(item.productNum);
+                    console.log(item.productAmount);
+                     if(parseInt(item.productNum)-1<=item.productAmount){
                          $("#greyBox").css("background","red")
                     }
 
@@ -205,7 +208,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         {
                             needPayOrderList.push(value1);
                         }
-
+                       console.log(value1)
                     })
                 });
                 for(var i =0;i<needPayOrderList.length;i++){
@@ -214,8 +217,6 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         return;
                     }
                 }
-
-
                 //将needPayOrderList数据放入后台list中
                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
                     if(needPayOrderList=="")
@@ -244,4 +245,4 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 });
                 loadBuyCartInfo();
             })
-}])
+}]);
