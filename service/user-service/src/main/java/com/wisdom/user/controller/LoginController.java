@@ -136,7 +136,7 @@ public class LoginController {
             return result;
         }
 
-        String loginResult = loginService.beautyUserLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+        String loginResult = loginService.userLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
         {

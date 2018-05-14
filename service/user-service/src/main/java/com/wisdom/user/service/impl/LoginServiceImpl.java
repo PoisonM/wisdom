@@ -9,9 +9,8 @@ import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
 import com.wisdom.common.util.*;
-import com.wisdom.user.mapper.ExtSysClerkMapper;
+import com.wisdom.user.mapper.extMapper.ExtSysClerkMapper;
 import com.wisdom.user.mapper.SysBossMapper;
-import com.wisdom.user.mapper.SysClerkMapper;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +57,6 @@ public class LoginServiceImpl implements LoginService{
             return StatusConstant.VALIDATECODE_ERROR;
         }
 
-
-
         String logintoken = null;
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         RedisLock redisLock = new RedisLock("userInfo" + loginDTO.getUserPhone());
@@ -68,12 +65,10 @@ public class LoginServiceImpl implements LoginService{
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setUserOpenid(openId);
-            //userInfoDTO.setMobile(phone);
             List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
 
             if(userInfoDTOList.size()>0)
             {
-
                 userInfoDTO = userInfoDTOList.get(0);
                 if(userInfoDTO.getMobile()==null)
                 {
@@ -137,7 +132,6 @@ public class LoginServiceImpl implements LoginService{
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setMobile(userPhone);
         userInfoDTO.setPassword(code);
-//        userInfoDTO.setUserType("manager-1");
         List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
         if(userInfoDTOList.size()>0)
         {
@@ -361,8 +355,6 @@ public class LoginServiceImpl implements LoginService{
     private String processValidateCode(LoginDTO loginDTO)
     {
         //判断validateCode是否还有效
-//        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()))
-//                .addCriteria(Criteria.where("code").is(loginDTO.getCode()));
         Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");

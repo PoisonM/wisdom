@@ -107,4 +107,5 @@ public class ConfigConstant {
 
 	public static final String PAY_TEST_FLAG = Global.getConfig("PAY_TEST_FLAG");
 
+	public static final String shopBusiness = Global.getConfig("shopBusiness");
 }
