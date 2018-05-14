@@ -41,7 +41,8 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                         productNum : value2.businessProductNum,
                                         productId : value2.businessProductId,
                                         orderId : value2.businessOrderId,
-                                        orderChecked:true
+                                        orderChecked:true,
+                                        productAmount:value2.productAmount
                                     })
                                 }
                             })
@@ -141,7 +142,10 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         $scope.param.totalPayPrice = 0;
                         reCalcTotalPayPrice();
                         addButton = true;
-                    })
+                    });
+                    if(item.productNum>=item.productAmount){
+                        $("#greyBox").css("background","grey")
+                    }
                 }
             }
 
@@ -164,6 +168,12 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                             minusButton = true;
                         })
                     }
+                    console.log(item.productNum)
+                    console.log(item.productAmount)
+                     if(item.productNum-1<=item.productAmount){
+                         $("#greyBox").css("background","red")
+                    }
+
                 }
             }
 
@@ -195,8 +205,16 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         {
                             needPayOrderList.push(value1);
                         }
+
                     })
                 });
+                for(var i =0;i<needPayOrderList.length;i++){
+                    if(needPayOrderList[i].productNum>needPayOrderList[i].productAmount){
+                        alert("库存不足~");
+                        return;
+                    }
+                }
+
 
                 //将needPayOrderList数据放入后台list中
                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
