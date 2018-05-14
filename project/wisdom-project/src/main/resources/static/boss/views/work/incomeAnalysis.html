@@ -15,14 +15,14 @@
                 <div class="list incomeAnalysisBox" style="position: relative;border-radius: 10px;">
                     <div style="text-align: center;margin: auto;margin-top: 5%">
                         <p  class="colff">现金收益</p>
-                        <p  class="colff">{{incomeAnalysis[3]}}</p>
+                        <p  class="colff">{{oneIncomeAnalysis[3] ==undefined?0:oneIncomeAnalysis[3]}}</p>
                     </div>
                     <p  style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #ff6666"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;">近7日趋势图</p>
                 </div>
               <div class="row col33 p0" >
                   <div class="col col-50 tc fs13" >
                        总收入
-                      <p  class="colff66">+{{incomeAnalysis[4]}}</p>
+                      <p  class="colff66">+{{oneIncomeAnalysis[4] ==undefined?0:oneIncomeAnalysis[4]}}</p>
                   </div>
                   <div class="col col-50 tc fs13" >
                       总支出
@@ -38,22 +38,22 @@
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
                     <img src="images/work/recharge.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
                     现金
-                    <p  class="mt5">{{incomeAnalysis[3]}}</p>
+                    <p  class="mt5">{{oneIncomeAnalysis[3] ==undefined?0:oneIncomeAnalysis[3]}}</p>
                 </div>
                 <div class="col col-50"  style="padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
                     <img src="images/work/Arrears.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
                     银行卡
-                    <p  class="mt5">{{incomeAnalysis[0]}}</p>
+                    <p  class="mt5">{{oneIncomeAnalysis[0] ==undefined?0:oneIncomeAnalysis[0]}}</p>
                 </div>
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;position: relative">
                     <img src="images/work/WeChat.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
                     微信
-                    <p  class="mt5">{{incomeAnalysis[1]}}</p>
+                    <p  class="mt5">{{oneIncomeAnalysis[1] ==undefined?0:oneIncomeAnalysis[1]}}</p>
                 </div>
                 <div class="col col-50"  style="padding-top: 10px;position: relative">
                     <img src="images/work/Alipay.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
                     支付宝
-                    <p  class="mt5">{{incomeAnalysis[2]}}</p>
+                    <p  class="mt5">{{oneIncomeAnalysis[2] ==undefined?0:oneIncomeAnalysis[2]}}</p>
                 </div>
             </div>
         </div>
