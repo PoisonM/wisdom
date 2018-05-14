@@ -78,7 +78,7 @@ public class WithDrawController {
 
 			//判断用户的提现次数
 			WithDrawRecordDTO withDrawRecord = new WithDrawRecordDTO();
-			withDrawRecord.setSysUserId(withDrawRecordDTO.getSysUserId());
+			withDrawRecord.setSysUserId(userInfoDTO.getId());
 			List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawService.getWithdrawRecordInfo(withDrawRecord);
 
 			int withDrawNum = 0;
