@@ -295,16 +295,21 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.user_mobile = #{requestData.mobile}
+            AND i.user_mobile like concat(concat('%',#{requestData.mobile}),'%')
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
         </if>
+        <if test='requestData.checkStatus != "0"'>
+            <if test="requestData.checkUserType != null and requestData.checkUserType != ''">
+                AND m.user_type = #{requestData.checkUserType}
+            </if>
+        </if>
         <if test='requestData.checkStatus == "1"'>
-            AND i.id IN(SELECT m.income_record_id from income_record_management m)
+            AND m.income_record_id = i.id
         </if>
         <if test='requestData.checkStatus == "0"'>
-            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m)
+            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
         </if>
         GROUP BY i.id
         ORDER BY i.create_date DESC
@@ -328,22 +333,28 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.user_mobile = #{requestData.mobile}
+            AND i.user_mobile like concat(concat('%',#{requestData.mobile}),'%')
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
         </if>
+        <if test='requestData.checkStatus != "0"'>
+            <if test="requestData.checkUserType != null and requestData.checkUserType != ''">
+                AND m.user_type = #{requestData.checkUserType}
+            </if>
+        </if>
         <if test='requestData.checkStatus == "1"'>
-            AND i.id IN(SELECT m.income_record_id from income_record_management m)
+            AND m.income_record_id = i.id
         </if>
         <if test='requestData.checkStatus == "0"'>
-            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m)
+            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
         </if>
     </select>
     <select id="getIncomeRecordByPageParam"
             resultMap="UserIncomeInfoResultMap">
         SELECT
-        i.*
+         count(1) count,
+         i.*
         FROM income_record i
         WHERE 1=1
         <if test="requestData.id != null and requestData.id != ''">
@@ -356,7 +367,7 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.user_mobile = #{requestData.mobile}
+            AND i.user_mobile  like concat(concat('%',#{requestData.mobile}),'%')
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
@@ -380,7 +391,7 @@
             AND i.income_type = #{requestData.incomeType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.user_mobile = #{requestData.mobile}
+            AND i.user_mobile like concat(concat('%',#{requestData.mobile}),'%')
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
@@ -636,18 +647,137 @@
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
         </if>
-        <if test='requestData.checkStatus != "0"'>
-            <if test="requestData.checkUserType != null and requestData.checkUserType != ''">
-                AND m.user_type = #{requestData.checkUserType}
-            </if>
+        <if test='requestData.checkStatus == "0"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm)
+        </if>
+        <if test='requestData.checkStatus == "1"||requestData.checkStatus == "2"||requestData.checkStatus == "3"'>
+            AND m.income_record_id = i.id
+            and m.status='1'
         </if>
         <if test='requestData.checkStatus == "1"'>
-            AND m.income_record_id = i.id
+            AND i.id not in(select irm.income_record_id from income_record_management irm  where irm.status='1' and irm.user_type ='finance-1')
         </if>
-        <if test='requestData.checkStatus == "0"'>
-            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
+
+        <if test='requestData.checkStatus == "2"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm  where irm.status='1' and irm.user_type ='operation-1')
+        </if>
+
+        <if test='requestData.checkStatus == "4"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm  where irm.status='1')
+            AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='0')
+        </if>
+
+        <if test='requestData.checkStatus == "3"'>
+            AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='1'and irm.user_type ='finance-1')
+            AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='1'and irm.user_type ='operation-1')
         </if>
         GROUP BY i.id
         ORDER BY i.create_date DESC
+    </select>
+
+
+    <select id="findIncomeForUnaudited" resultMap="UserIncomeInfoResultMap">
+        SELECT
+            count(1) count,
+            i.*
+        FROM income_record i,income_record_management m
+        WHERE 1=1
+        <if test="requestData.id != null and requestData.id != ''">
+            AND i.id = #{requestData.id}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND i.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
+            AND i.income_type = #{requestData.incomeType}
+        </if>
+        <if test="requestData.mobile != null and requestData.mobile != ''">
+            AND i.user_mobile like concat(concat('%',#{requestData.mobile}),'%')
+        </if>
+        <if test="requestData.status != null and requestData.status != ''">
+            AND i.status = #{requestData.status}
+        </if>
+        <if test='requestData.checkStatus == "0"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm)
+        </if>
+        <if test='requestData.checkStatus == "1"||requestData.checkStatus == "2"||requestData.checkStatus == "3"'>
+            AND m.income_record_id = i.id
+            and m.status='1'
+        </if>
+        <if test='requestData.checkStatus == "1"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm  where irm.status='1' and irm.user_type ='finance-1')
+        </if>
+
+        <if test='requestData.checkStatus == "2"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm  where irm.status='1' and irm.user_type ='operation-1')
+        </if>
+
+        <if test='requestData.checkStatus == "4"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm  where irm.status='1')
+            AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='0')
+        </if>
+
+        <if test='requestData.checkStatus == "3"'>
+            AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='1'and irm.user_type ='finance-1')
+            AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='1'and irm.user_type ='operation-1')
+        </if>
+
+        GROUP BY i.id
+        ORDER BY i.create_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getIncomeForUnauditedCount" resultType="java.lang.Integer">
+        SELECT
+            count(1)
+        FROM income_record i,income_record_management m
+        WHERE 1=1
+        <if test="requestData.id != null and requestData.id != ''">
+            AND i.id = #{requestData.id}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND i.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
+            AND i.income_type = #{requestData.incomeType}
+        </if>
+        <if test="requestData.mobile != null and requestData.mobile != ''">
+            AND i.user_mobile like concat(concat('%',#{requestData.mobile}),'%')
+        </if>
+        <if test="requestData.status != null and requestData.status != ''">
+            AND i.status = #{requestData.status}
+        </if>
+        <if test='requestData.checkStatus == "0"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm)
+        </if>
+        <if test='requestData.checkStatus == "1"||requestData.checkStatus == "2"||requestData.checkStatus == "3"'>
+            AND m.income_record_id = i.id
+            and m.status='1'
+        </if>
+        <if test='requestData.checkStatus == "1"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm  where irm.status='1' and irm.user_type ='finance-1')
+        </if>
+
+        <if test='requestData.checkStatus == "2"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm  where irm.status='1' and irm.user_type ='operation-1')
+        </if>
+
+        <if test='requestData.checkStatus == "4"'>
+            AND i.id not in(select irm.income_record_id from income_record_management irm  where irm.status='1')
+            AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='0')
+        </if>
+
+        <if test='requestData.checkStatus == "3"'>
+            AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='1'and irm.user_type ='finance-1')
+            AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='1'and irm.user_type ='operation-1')
+        </if>
+
+        GROUP BY i.id
+        ORDER BY i.create_date DESC
+        <if test='isExportExcel != "Y"'>
+            limit #{pageStartNo},#{pageSize}
+        </if>
     </select>
 </mapper>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.business.mapper.transaction.PromotionTransactionRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.wisdom.common.dto.transaction.PromotionTransactionRelation" >
+    <id column="promotion_level_id" property="promotionLevelId" jdbcType="VARCHAR" />
+    <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+    <result column="promotion_level" property="promotionLevel" jdbcType="VARCHAR" />
+    <result column="promotion_level_time" property="promotionLevelTime" jdbcType="TIMESTAMP" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+    <result column="income_id" property="incomeId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    promotion_level_id, transaction_id, promotion_level, promotion_level_time, sys_user_id, 
+    income_id
+  </sql>
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.common.dto.transaction.PromotionTransactionRelationCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from promotion_transaction_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart >= 0" >
+      limit ${limitStart},${pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from promotion_transaction_relation
+    where promotion_level_id = #{promotionLevelId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from promotion_transaction_relation
+    where promotion_level_id = #{promotionLevelId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByCriteria" parameterType="com.wisdom.common.dto.transaction.PromotionTransactionRelationCriteria" >
+    delete from promotion_transaction_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wisdom.common.dto.transaction.PromotionTransactionRelation" >
+    insert into promotion_transaction_relation (promotion_level_id, transaction_id, 
+      promotion_level, promotion_level_time, sys_user_id, 
+      income_id)
+    values (#{promotionLevelId,jdbcType=VARCHAR}, #{transactionId,jdbcType=VARCHAR}, 
+      #{promotionLevel,jdbcType=VARCHAR}, #{promotionLevelTime,jdbcType=TIMESTAMP}, #{sysUserId,jdbcType=VARCHAR}, 
+      #{incomeId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wisdom.common.dto.transaction.PromotionTransactionRelation" >
+    insert into promotion_transaction_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="promotionLevelId != null" >
+        promotion_level_id,
+      </if>
+      <if test="transactionId != null" >
+        transaction_id,
+      </if>
+      <if test="promotionLevel != null" >
+        promotion_level,
+      </if>
+      <if test="promotionLevelTime != null" >
+        promotion_level_time,
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id,
+      </if>
+      <if test="incomeId != null" >
+        income_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="promotionLevelId != null" >
+        #{promotionLevelId,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionId != null" >
+        #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionLevel != null" >
+        #{promotionLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionLevelTime != null" >
+        #{promotionLevelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUserId != null" >
+        #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeId != null" >
+        #{incomeId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCriteria" parameterType="com.wisdom.common.dto.transaction.PromotionTransactionRelationCriteria" resultType="java.lang.Integer" >
+    select count(1) from promotion_transaction_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCriteriaSelective" parameterType="map" >
+    update promotion_transaction_relation
+    <set >
+      <if test="record.promotionLevelId != null" >
+        promotion_level_id = #{record.promotionLevelId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transactionId != null" >
+        transaction_id = #{record.transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.promotionLevel != null" >
+        promotion_level = #{record.promotionLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.promotionLevelTime != null" >
+        promotion_level_time = #{record.promotionLevelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sysUserId != null" >
+        sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.incomeId != null" >
+        income_id = #{record.incomeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCriteria" parameterType="map" >
+    update promotion_transaction_relation
+    set promotion_level_id = #{record.promotionLevelId,jdbcType=VARCHAR},
+      transaction_id = #{record.transactionId,jdbcType=VARCHAR},
+      promotion_level = #{record.promotionLevel,jdbcType=VARCHAR},
+      promotion_level_time = #{record.promotionLevelTime,jdbcType=TIMESTAMP},
+      sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+      income_id = #{record.incomeId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.transaction.PromotionTransactionRelation" >
+    update promotion_transaction_relation
+    <set >
+      <if test="transactionId != null" >
+        transaction_id = #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionLevel != null" >
+        promotion_level = #{promotionLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionLevelTime != null" >
+        promotion_level_time = #{promotionLevelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeId != null" >
+        income_id = #{incomeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where promotion_level_id = #{promotionLevelId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.transaction.PromotionTransactionRelation" >
+    update promotion_transaction_relation
+    set transaction_id = #{transactionId,jdbcType=VARCHAR},
+      promotion_level = #{promotionLevel,jdbcType=VARCHAR},
+      promotion_level_time = #{promotionLevelTime,jdbcType=TIMESTAMP},
+      sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      income_id = #{incomeId,jdbcType=VARCHAR}
+    where promotion_level_id = #{promotionLevelId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getIsImportLevel" resultType="com.wisdom.common.dto.transaction.PromotionTransactionRelation" >
+    select
+      ptr.promotion_level
+    from
+      promotion_transaction_relation  ptr
+    where
+      ptr.transaction_id = #{transactionId}
+  </select>
+</mapper>

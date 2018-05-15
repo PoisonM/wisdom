@@ -158,6 +158,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         pageTrue = false;
                     }
 
+                    $scope.checkStatus = $("#checkStatus").val();
+
                     $scope.pageParamVoDTO = {
                         isExportExcel:"N",
                         startTime:startTime.value,
@@ -188,6 +190,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                         MonthlyBalanceLis[i].incomeType = "月度结算"
                                     } else if (MonthlyBalanceLis[i].incomeType == "recommend") {
                                         MonthlyBalanceLis[i].incomeType = "店主推荐"
+                                    }  else if (MonthlyBalanceLis[i].incomeType == "permanent") {
+                                        MonthlyBalanceLis[i].incomeType = "永久奖励"
                                     }
                                     if (MonthlyBalanceLis[i].checkStatus == "0") {
                                         MonthlyBalanceLis[i].checkStatus = "未通过"
@@ -197,13 +201,13 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                     if (MonthlyBalanceLis[i].secondCheckStatus == "0") {
                                         MonthlyBalanceLis[i].secondCheckStatus = "未审核"
                                     } else if (MonthlyBalanceLis[i].secondCheckStatus == "1") {
-                                        MonthlyBalanceLis[i].secondCheckStatus = "运营人员"
+                                        MonthlyBalanceLis[i].secondCheckStatus = "运营人员已审核"
                                     } else if (MonthlyBalanceLis[i].secondCheckStatus == "2") {
-                                        MonthlyBalanceLis[i].secondCheckStatus = "财务人员"
+                                        MonthlyBalanceLis[i].secondCheckStatus = "财务人员已审核"
                                     } else if (MonthlyBalanceLis[i].secondCheckStatus == "3") {
-                                        MonthlyBalanceLis[i].secondCheckStatus = "有一方拒绝"
-                                    } else if (MonthlyBalanceLis[i].secondCheckStatus == "4") {
                                         MonthlyBalanceLis[i].secondCheckStatus = "双方已审核"
+                                    } else if (MonthlyBalanceLis[i].secondCheckStatus == "4") {
+                                        MonthlyBalanceLis[i].secondCheckStatus = "审核拒绝"
                                     }
                                     if (MonthlyBalanceLis[i].status == "0") {
                                         MonthlyBalanceLis[i].status = "不可提现"
@@ -286,6 +290,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 
  /*导出列表*/
             $scope.educeLis = function() {
+
+                $scope.checkStatus = $("#checkStatus").val();
                 if (confirm("确认要导出？")) {
                     $scope.pageParamVoDTO = {
                         isExportExcel:"Y",

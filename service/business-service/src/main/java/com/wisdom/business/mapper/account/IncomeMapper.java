@@ -67,4 +67,8 @@ public interface IncomeMapper {
     int queryMonthRecordCountByParentRelation(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
 
     List<ExportIncomeRecordExcelDTO> exportExcelIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+
+
+    List<IncomeRecordDTO> findIncomeForUnaudited(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+    int getIncomeForUnauditedCount(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
 }

@@ -22,31 +22,60 @@
                         <div class="product_lis meunLis2">
                             <button ng-click="bgChangeAndSearch('instance')" ng-class="{'active':status=='instance'}">即时奖励</button>
                             <button ng-click="bgChangeAndSearch('recommend')" ng-class="{'active':status=='recommend'}">店主推荐</button>
+                            <button ng-click="bgChangeAndSearch('permanent')" ng-class="{'active':status=='permanent'}">永久性奖励</button>
                             <button ng-click="bgChangeAndSearch('month')" ng-class="{'active':status=='month'}">月度结算</button>
                         </div>
                         <div class="product_eara">
-                            <div class="product_name">
+                            <div class="product_name" style="margin-right: 30px;">
                                 <div class="product_nameEara">
                                     <label class="bold">手机号:</label>
                                     <input type="text" class="product_search" ng-model="MAccount">
                                 </div>
                             </div>
-                            <div class="product_name big time_box">
-                                <div>
-                                    <span class="bold agencyTime">时间：&nbsp&nbsp&nbsp</span>
 
-                                    <input class="time MStart laydate-icon" id="MStart" ng-click="dataS('#MStart')" >&nbsp--&nbsp<input class="time MEnd laydate-icon" id="MEnd" ng-click="dataS('#MEnd')"  >
+                            <div class="product_name" ng-if="status=='instance'" style="float:left;margin-top: 27px;margin-right: 50px;">
+                                <div>
+                                    <span style="font-weight:600;">审核状态:</span>
+                                    <select class="checkStatus" id="checkStatus" style="border:1px solid;height:30px;colour:#7f818a;">
+                                        <option value=""> 全部状态</option>
+                                        <option value="0"> 未审核</option>
+                                        <option value="1">运营已审核</option>
+                                        <option value="2">财务已审核</option>
+                                        <option value="3">双方审核已审核</option>
+                                        <option value="4">审核拒绝</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="product_searchEara">
-                                <input type="button" value="搜索" class="search_btn top_1" ng-click="searchMonthlyBalance()">
+
+                            <!--<div class="product_name" ng-if="status=='instance'" style="float:left;margin-top: 27px;margin-right: 50px;">
+                                <div>
+                                    <span style="font-weight:600;">是否提升级别:</span>
+                                    <select class="Level_import" style="border:1px solid;height:30px;colour:#7f818a;">
+                                        <option value=""> 全部</option>
+                                        <option value="0">未升级</option>
+                                        <option value="1">升级成B</option>
+                                        <option value="2">升级成A</option>
+                                    </select>
+                                </div>
+                            </div>-->
+
+                            <div class="product_name big time_box">
+                                <div>
+                                    <span class="bold agencyTime">时间：</span>
+                                    <input class="time MStart laydate-icon" id="MStart" ng-click="dataS('#MStart')" >&nbsp;--&nbsp;<input class="time MEnd laydate-icon" id="MEnd" ng-click="dataS('#MEnd')"  >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product_eara" style="margin-right: 90%px;">
+                            <div  class="product_searchEara product_searchEara1">
+                                <input type="button" value="搜索" class="search_btn1 top_1" ng-click="searchMonthlyBalance()">
                             </div>
                         </div>
                         <div class="table_lis" >
                             <div class="statusBar" style="height:60px;">
-                                <button   ng-click="stateBox('')" ng-class="{'actives':checkStatus==''}">全部状态</button>
+                        <!--        <button   ng-click="stateBox('')" ng-class="{'actives':checkStatus==''}">全部状态</button>
                                 <button   ng-click="stateBox('1')" ng-class="{'actives':checkStatus=='1'}">已审核状态</button>
-                                <button   ng-click="stateBox('0')" ng-class="{'actives':checkStatus=='0'}">未审核状态</button>
+                                <button   ng-click="stateBox('0')" ng-class="{'actives':checkStatus=='0'}">未审核状态</button>-->
                                 <button class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='recommend'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
                                 <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommend'" ng-show="false">筛选已完成的订单</button>
                             </div>
@@ -63,6 +92,7 @@
                                     <th class="text-center">类型</th>
                                     <th class="text-center">状态</th>
                                     <th class="text-center" ng-hide="status=='month'">订单状态</th>
+                                    <th class="text-center">用户提升状态</th>
                                     <th class="text-center">审核</th>
                                     <th class="text-center" style="width:20%;">操作</th>
                                 </tr>
@@ -78,7 +108,9 @@
                                     <td ng-click="viod();$event.stopPropagation()">{{item.incomeType}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{item.status}}</td>
                                     <td ng-click="viod();$event.stopPropagation()" ng-hide="status=='month'">{{item.orderStatus}}</td>
-                                    <td ng-click="viod();$event.stopPropagation()">{{item.secondCheckStatus}}<span ng-hide="item.secondCheckStatus == '未审核'">({{item.checkStatus}}</span><span ng-show="item.secondCheckStatus=='有一方拒绝'">:{{item.checkUserType}})</span></td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{item.isImportLevel}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{item.secondCheckStatus}}</td>
+                                   <!--  <td ng-click="viod();$event.stopPropagation()">{{item.secondCheckStatus}}<span ng-hide="item.secondCheckStatus == '未审核'">({{item.checkStatus}}</span><span ng-show="item.secondCheckStatus=='有一方拒绝'">:{{item.checkUserType}})</span></td>-->
                                     <td ng-click="viod();$event.stopPropagation()">
                                         <a ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index,item.id);$event.stopPropagation()" class="orderBtn" >查看</a>
                                          &nbsp;

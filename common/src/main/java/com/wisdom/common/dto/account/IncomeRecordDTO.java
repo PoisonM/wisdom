@@ -104,6 +104,29 @@ public class IncomeRecordDTO {
     @JSONField(name = "secondCheckStatus")
     private String secondCheckStatus;
 
+    //该交易流水与用户等级关系
+    private  String isImportLevel;
+
+    //查询条数
+    private int count;
+
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getIsImportLevel() {
+        return isImportLevel;
+    }
+
+    public void setIsImportLevel(String isImportLevel) {
+        this.isImportLevel = isImportLevel;
+    }
+
     public String getId() {
         return id;
     }
