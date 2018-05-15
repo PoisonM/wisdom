@@ -1,6 +1,7 @@
 package com.wisdom.beauty.controller.archives;
 
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.beauty.api.dto.SysUserAccountDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
@@ -8,6 +9,7 @@ import com.wisdom.beauty.api.extDto.ExtShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
+import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.beauty.util.UserUtils;
@@ -52,6 +54,9 @@ public class ArchivesController {
 
     @Autowired
     private UserServiceClient userServiceClient;
+
+    @Autowired
+    private ShopService shopService;
 
     @Autowired
     private ShopUserRelationService shopUserRelationService;
@@ -164,7 +169,8 @@ public class ArchivesController {
             userInfoDTO.setId(IdGen.uuid());
             userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
             userInfoDTO.setCreateDate(new Date());
-            userInfoDTO.setUserType(ConfigConstant.shopBusiness);
+            userInfoDTO.setUserType(ConfigConstant.beautySource);
+            userInfoDTO.setSource(ConfigConstant.beautySource);
             userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
             logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
             userServiceClient.insertUserInfo(userInfoDTO);
@@ -189,8 +195,12 @@ public class ArchivesController {
         shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
         shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
         shopUserArchivesDTO.setCreateDate(new Date());
-        shopUserArchivesDTO.setSysUserId(shopUserArchivesDTO.getSysClerkId());
         shopUserArchivesDTO.setSysShopId(sysShopId);
+        SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
+        if (null != shopInfoByPrimaryKey) {
+            logger.error("查询的shopId为空{}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+            shopUserArchivesDTO.setShopid(shopInfoByPrimaryKey.getShopId());
+        }
         shopUserArchivesDTO.setSysBossId(sysBossId);
         int info = shopCustomerArchivesService.saveShopUserArchivesInfo(shopUserArchivesDTO);
         logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");

@@ -13,6 +13,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,6 +63,36 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
 
         shopUserRelationDTO = list.get(0);
         return shopUserRelationDTO.getStatus();
+    }
+
+    /**
+     * 用户绑定会员
+     *
+     * @param shopUserRelationDTO
+     * @return
+     */
+    @Override
+    public int saveUserShopRelation(ShopUserRelationDTO shopUserRelationDTO) {
+        if (null == shopUserRelationDTO) {
+            logger.error("用户绑定会员传入参数为空，{}", "shopUserRelationDTO = [" + shopUserRelationDTO + "]");
+            return 0;
+        }
+        List<ShopUserRelationDTO> shopListByCondition = getShopListByCondition(shopUserRelationDTO);
+        //之前没有绑定过
+        if (CommonUtils.objectIsEmpty(shopListByCondition)) {
+            shopUserRelationDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
+            shopUserRelationDTO.setCreateDate(new Date());
+            shopUserRelationDTO.setId(IdGen.uuid());
+            int i = shopUserRelationMapper.insertSelective(shopUserRelationDTO);
+            return i;
+        }
+        //之前绑定过，更新状态
+        else {
+            ShopUserRelationDTO relationDTO = shopListByCondition.get(0);
+            relationDTO.setStatus(shopUserRelationDTO.getStatus());
+            int i = shopUserRelationMapper.updateByPrimaryKeySelective(relationDTO);
+            return i;
+        }
     }
 
     @Override

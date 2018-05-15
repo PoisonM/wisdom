@@ -4,6 +4,8 @@ public enum CommonCodeEnum {
 
     SUCCESS("0", "正常"),
     UNSUCCESS("1", "非正常"),
+    Y("Y", "正常"),
+    N("N", "非正常"),
     ADD("0", "添加"),
     DELETE("1", "删除"),
     TRUE("true", "true");

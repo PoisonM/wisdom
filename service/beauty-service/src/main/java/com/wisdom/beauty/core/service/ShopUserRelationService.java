@@ -23,6 +23,8 @@ public interface ShopUserRelationService {
      */
     String isMember(String userId);
 
+    int saveUserShopRelation(ShopUserRelationDTO shopUserRelationDTO);
+
     /**
      * @Author:Administrator
      * @Param:
