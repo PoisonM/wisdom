@@ -431,7 +431,6 @@ public class TransactionService {
             int loseAmount = oldProductAmount - newProductAmount;
             offlineProductAmountRecordDTO.setOldProductAmount(String.valueOf(newProductAmount));
             if (productDTO1 != null) {
-                    if (oldProductAmount >= newProductAmount) {
                         if ("add".equals(addAndLose)) {
                             offlineProductAmountRecordDTO.setAddAndLose("add");
                             offlineProductAmountRecordDTO.setNewProductAmount(String.valueOf(addAmount));
@@ -449,8 +448,6 @@ public class TransactionService {
                                 productMapper.updateProductByParameters(productDTO2);
                             }
                         }
-//                    }
-                }
             }
         } catch (Exception e) {
             logger.info("修改商品库存失败,商品id为:"+productDTO.getProductId());
