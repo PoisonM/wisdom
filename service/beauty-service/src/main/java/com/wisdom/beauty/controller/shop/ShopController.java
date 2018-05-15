@@ -79,7 +79,7 @@ public class ShopController {
         ResponseDTO<Object> responseDTO = new ResponseDTO();
         if (StringUtils.isNotBlank(shopId) && StringUtils.isNotBlank(sysUserId)) {
             String string = new StringBuffer(shopId).append("_").append(sysUserId).toString();
-            Object object = JedisUtils.getObject(string);
+            Object object = JedisUtils.getStringObject(string);
             logger.info("redis中查询出来的数据为，{}",object);
             if (null != object) {
                 String flag = (String) object;
