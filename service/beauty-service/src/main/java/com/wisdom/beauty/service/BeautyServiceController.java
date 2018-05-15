@@ -20,7 +20,7 @@ public class BeautyServiceController {
      */
     @RequestMapping(value = "/getUserBindingInfo", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Object> getUserBindingInfo(@RequestParam(value = "openId") String openId, @RequestParam(value = "shopId") String shopId) {
+    ResponseDTO<String> getUserBindingInfo(@RequestParam(value = "openId") String openId, @RequestParam(value = "shopId") String shopId) {
         return shopUserRelationService.userBinding(openId, shopId);
     }
 

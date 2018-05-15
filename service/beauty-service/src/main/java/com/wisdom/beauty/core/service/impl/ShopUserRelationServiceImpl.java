@@ -87,7 +87,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
     }
 
     @Override
-    public ResponseDTO<Object> userBinding(String openId, String shopId) {
+    public ResponseDTO<String> userBinding(String openId, String shopId) {
         ResponseDTO responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);

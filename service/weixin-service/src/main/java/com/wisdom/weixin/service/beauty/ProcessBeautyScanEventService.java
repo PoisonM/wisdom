@@ -2,12 +2,14 @@ package com.wisdom.weixin.service.beauty;
 
 
 import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.weixin.client.BeautyServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,6 +31,9 @@ public class ProcessBeautyScanEventService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private BeautyServiceClient beautyServiceClient;
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
@@ -74,10 +79,15 @@ public class ProcessBeautyScanEventService {
             WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
 
             //根据shopId和openId查询用户是否绑定了此美容院
-            JedisUtils.set(shopId+openId,"alreadyBind",ConfigConstant.logintokenPeriod);
-            JedisUtils.set(shopId+openId,"notBind",ConfigConstant.logintokenPeriod);
-
-
+            ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
+            if("N".equals(responseDTO.getResponseData()))
+            {
+                JedisUtils.set(shopId+openId,"alreadyBind",ConfigConstant.logintokenPeriod);
+            }
+            else if("Y".equals(responseDTO.getResponseData()))
+            {
+                JedisUtils.set(shopId+openId,"notBind",ConfigConstant.logintokenPeriod);
+            }
         }
     }
 
