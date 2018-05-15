@@ -10,7 +10,7 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
     }
 
     $.ajax({
-        url:"/weixin/customer/getBeautyConfig",// 跳转到 action
+        url:"/weixin/beauty/getBeautyConfig",// 跳转到 action
         async:true,
         type:'get',
         data:{url:location.href.split('#')[0]},//得到需要分享页面的url

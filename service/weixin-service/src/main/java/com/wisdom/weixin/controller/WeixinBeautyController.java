@@ -110,18 +110,10 @@ public class WeixinBeautyController {
         return "redirect:" + url;
     }
 
-
-    /**
-     * 用户端微信JS-SDK获得初始化参数
-     *
-     * @param request
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "getConfig", method = RequestMethod.GET)
+    @RequestMapping(value = "getBeautyConfig", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseDTO<WeixinConfigDTO> getConfig(HttpServletRequest request) throws Exception
+    ResponseDTO<WeixinConfigDTO> getBeautyConfig(HttpServletRequest request) throws Exception
     {
         ResponseDTO<WeixinConfigDTO> responseDTO = new ResponseDTO<>();
         String u = request.getParameter("url");
