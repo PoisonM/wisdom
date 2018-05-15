@@ -113,9 +113,7 @@ public class IncomeAndExpenseStatisticController {
         */
     @RequestMapping(value = "/getCashEarningsTendency", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getCashEarningsTendency(@RequestParam(required = false) String sysShopId,
-                                                                               @RequestParam String startTime,
-                                                                               @RequestParam String endTime){
+    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getCashEarningsTendency(@RequestParam(required = false) String sysShopId){
 
         long start = System.currentTimeMillis();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
@@ -125,8 +123,6 @@ public class IncomeAndExpenseStatisticController {
           userConsumeRequestDTO.setSysShopId(sysShopId);
         }
         userConsumeRequestDTO.setSysBossId(bossInfo.getId());
-        pageParamVoDTO.setStartTime(startTime);
-        pageParamVoDTO.setEndTime(endTime);
         pageParamVoDTO.setRequestData(userConsumeRequestDTO);
         List<ExpenditureAndIncomeResponseDTO> list=incomeExpenditureAnalysisService.getCashEarningsTendency(pageParamVoDTO);
         ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> responseDTO = new ResponseDTO<>();

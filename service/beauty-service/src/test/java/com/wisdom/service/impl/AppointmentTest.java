@@ -196,6 +196,10 @@ public class AppointmentTest {
         System.out.println(result.getResponse().getContentAsString());
     }
 
+    public static void main(String[] args) {
+        System.out.println("args = [" + args + "]");
+    }
+
 
 
 }

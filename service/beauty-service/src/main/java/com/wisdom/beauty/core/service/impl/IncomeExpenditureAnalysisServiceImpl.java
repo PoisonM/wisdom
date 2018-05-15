@@ -1,5 +1,6 @@
 package com.wisdom.beauty.core.service.impl;
 
+import com.sun.org.apache.xerces.internal.dom.PSVIAttrNSImpl;
 import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.api.enums.PayTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
@@ -8,6 +9,7 @@ import com.wisdom.beauty.core.service.IncomeExpenditureAnalysisService;
 import com.wisdom.beauty.core.service.ShopBossService;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
@@ -17,10 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhanghuan on 2018/5/10.
@@ -157,7 +156,11 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
             str = sdf.format(lastDate.getTime());
             sevenDayList.add(str);
         }
-        //查询
+        //查询七日数据
+        String startTime=sevenDayList.get(0)+" 00:00:00";
+        String endTime=sevenDayList.get(sevenDayList.size()-1)+" 23:59:59";
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
         List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getIncomeList(pageParamVoDTO);
         Map<String, ExpenditureAndIncomeResponseDTO> map = new HashedMap();
         //循环list,将shopId放入map作为key,expenditureAndIncomeResponseDTO作为value,
@@ -201,4 +204,5 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
         List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getIncomeList(pageParamVoDTO);
         return  list;
     }
+
 }
