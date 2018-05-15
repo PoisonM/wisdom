@@ -192,6 +192,7 @@ public class TransactionController {
             IncomeRecordDTO incomeRecordDTOValue  = new IncomeRecordDTO();
             incomeRecordDTOValue.setSysUserId(userInfoDTO.getId());
             incomeRecordDTOValue.setTransactionId(transactionId);
+            incomeRecordDTOValue.setIncomeType(transactionType);
             List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getUserIncomeRecordInfo(incomeRecordDTOValue);
             if(incomeRecordDTOS!=null&&incomeRecordDTOS.size()>0){
                 IncomeRecordDTO incomeRecordDTO = incomeRecordDTOS.get(0);

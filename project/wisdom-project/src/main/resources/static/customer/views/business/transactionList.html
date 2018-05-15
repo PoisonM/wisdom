@@ -8,9 +8,10 @@
                ui-sref="transactionDetail({'transactionId':item.transactionId,'type':item.transactionType})">
                 <p class="item-note">
                     <span ng-if="item.transactionType=='withdraw'">-{{item.amount}}</span>
-                    <span ng-if="item.transactionType=='instance'||item.transactionType=='month'||item.transactionType=='recommend'||item.transactionType=='tripleMonth'">+{{item.amount}}</span>
+                    <span ng-if="item.transactionType=='instance'||item.transactionType=='month'||item.transactionType=='recommend'||item.transactionType=='tripleMonth'||item.transactionType=='permanent'">+{{item.amount}}</span>
                 </p>
                 <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='instance'">即时返现</h1>
+                <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='permanent'">永久性奖励</h1>
                 <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='month'">月度提成</h1>
                 <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='recommend'">推荐奖励</h1>
                 <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='withdraw'">提现</h1>

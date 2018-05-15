@@ -363,7 +363,9 @@ public class IncomeService {
 
 
     public int getIncomeRecordCountByIncomeManagement(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-        return incomeMapper.getIncomeForUnauditedCount(pageParamVoDTO);
+
+        int count = incomeMapper.getIncomeForUnauditedCount(pageParamVoDTO);
+        return count;
     }
 
     public int queryMonthRecordCountByParentRelation(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {

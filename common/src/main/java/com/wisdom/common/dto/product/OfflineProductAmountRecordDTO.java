@@ -17,19 +17,19 @@ public class OfflineProductAmountRecordDTO {
      * 新库存
      */
     @JSONField(name = "newProductAmount")
-    private int newProductAmount;
+    private String newProductAmount;
 
     /**
      * 旧库存
      */
     @JSONField(name = "oldProductAmount")
-    private int oldProductAmount;
+    private String oldProductAmount;
 
     /**
      * 修改个数
      */
     @JSONField(name = "updateAmount")
-    private int updateAmount;
+    private String updateAmount;
 
     /**
      * 增加还是减少
@@ -62,27 +62,27 @@ public class OfflineProductAmountRecordDTO {
         this.orderId = orderId;
     }
 
-    public int getNewProductAmount() {
+    public String getNewProductAmount() {
         return newProductAmount;
     }
 
-    public void setNewProductAmount(int newProductAmount) {
+    public void setNewProductAmount(String newProductAmount) {
         this.newProductAmount = newProductAmount;
     }
 
-    public int getOldProductAmount() {
+    public String getOldProductAmount() {
         return oldProductAmount;
     }
 
-    public void setOldProductAmount(int oldProductAmount) {
+    public void setOldProductAmount(String oldProductAmount) {
         this.oldProductAmount = oldProductAmount;
     }
 
-    public int getUpdateAmount() {
+    public String getUpdateAmount() {
         return updateAmount;
     }
 
-    public void setUpdateAmount(int updateAmount) {
+    public void setUpdateAmount(String updateAmount) {
         this.updateAmount = updateAmount;
     }
 

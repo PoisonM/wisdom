@@ -352,7 +352,7 @@ public class PayFunction {
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, returnMoney);
 
                 this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,parentRuleType,ConfigConstant.INCOME_TYPE_I);
-                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
+               // WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
             }
             //永久性奖励
             if(permanentReward>0){
@@ -469,7 +469,19 @@ public class PayFunction {
      */
     public Float getPermanentReward(float expenseAmount) {
 
-        Float permantReward = expenseAmount * 5/100;
+        Float permantReward = (float)0;
+
+        if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+
+            permantReward = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5/100;
+
+        }else if(expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
+
+            permantReward = (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 5/100;
+
+        }else{
+            permantReward = expenseAmount * 5/100;
+        }
         return permantReward;
 
     }

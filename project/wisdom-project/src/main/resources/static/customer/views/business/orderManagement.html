@@ -30,7 +30,7 @@
 
         <div class="list" ng-repeat="item in param.orderList">
             <div ng-if="$index==0" style="padding-top:48px">
-                <a class="item" style="color: #333333;font-size: 0.28rem">美享专供<span ng-if="item.status=='6'" style="margin-left:20px">超时订单</span></a>
+                <a class="item" style="color: #333333;font-size: 0.28rem">美享专供<span ng-if="item.status=='6'" style="float: right;color: #ff4a59">订单关闭</span></a>
                 <a class="item item-avatar" style="min-height: 3rem" ng-click="goDetails(item.businessOrderId)">
                     <img ng-src="{{item.businessProductFirstUrl}}"
                          style="border-radius: 0;min-width: 2rem;min-height: 2rem">
@@ -59,7 +59,7 @@
                             style="float:right;background: transparent;margin-right:0.1rem;border-color: #ff4a59;color: #ff4a59;font-size: 0.3rem;width: 2rem;border-radius: 20px;top:-0.1rem;">
                         付款
                     </button>
-                    <button ng-if="item.status=='0'||item.status=='2'" class="button button-assertive button-small"
+                    <button ng-if="item.status=='0'||item.status=='2'||item.status=='6'" class="button button-assertive button-small"
                             ng-click="deleteOrder(item)"
                             style="float:right;background:transparent;margin-right:0.1rem;border-color: #ff4a59;color: #ff4a59;font-size: 0.3rem;width: 2rem; border-radius: 20px;top:-0.1rem;">
                         删除订单
