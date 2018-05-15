@@ -83,7 +83,7 @@ public class TransactionService {
                     return;
                 }
                 productDTO.setProductId(businessOrderDTO1.getBusinessProductId());
-                productDTO.setProductAmount(businessOrderDTO1.getBusinessProductNum());
+                productDTO.setProductAmount(String.valueOf(businessOrderDTO1.getBusinessProductNum()));
                 //查询是否有记录
                 //如果库里订单状态为待付款,并即将修改状态不是已支付,那么将恢复库存
                 if (!"1".equals(businessOrderDTO.getStatus()) && !"0".equals(businessOrderDTO.getStatus())) {
@@ -425,25 +425,27 @@ public class TransactionService {
 
             ProductDTO productDTO1 = productMapper.findProductById(productDTO.getProductId());
 
-            int addAmount = productDTO1.getProductAmount() + productDTO.getProductAmount();
-            int loseAmount = productDTO1.getProductAmount() - productDTO.getProductAmount();
-            offlineProductAmountRecordDTO.setOldProductAmount(productDTO1.getProductAmount());
+            int oldProductAmount = Integer.parseInt(productDTO1.getProductAmount());
+            int newProductAmount = Integer.parseInt(productDTO.getProductAmount());
+            int addAmount = oldProductAmount + newProductAmount;
+            int loseAmount = oldProductAmount - newProductAmount;
+            offlineProductAmountRecordDTO.setOldProductAmount(String.valueOf(newProductAmount));
             if (productDTO1 != null) {
-                    if (productDTO1.getProductAmount() >= productDTO.getProductAmount()) {
+                    if (oldProductAmount >= newProductAmount) {
                         if ("add".equals(addAndLose)) {
                             offlineProductAmountRecordDTO.setAddAndLose("add");
-                            offlineProductAmountRecordDTO.setNewProductAmount(addAmount);
+                            offlineProductAmountRecordDTO.setNewProductAmount(String.valueOf(addAmount));
                             mongoTemplate.insert(offlineProductAmountRecordDTO,"offlineProductAmountRecordDTO");
-                            productDTO2.setProductAmount(addAmount);
+                            productDTO2.setProductAmount(String.valueOf(addAmount));
                             productMapper.updateProductByParameters(productDTO2);
                         } else if ("lose".equals(addAndLose)) {
-                            if (productDTO1.getProductAmount() - productDTO.getProductAmount() < 0) {
+                            if (oldProductAmount - newProductAmount < 0) {
                                 logger.info("更新库存失败订单商品数量(" + productDTO.getProductAmount() + ")相应的商品库存数量(" + productDTO1.getProductAmount() + ")大于库存数量");
                             } else {
                                 offlineProductAmountRecordDTO.setAddAndLose("lose");
-                                offlineProductAmountRecordDTO.setNewProductAmount(loseAmount);
+                                offlineProductAmountRecordDTO.setNewProductAmount(String.valueOf(loseAmount));
                                 mongoTemplate.insert(offlineProductAmountRecordDTO,"offlineProductAmountRecordDTO");
-                                productDTO2.setProductAmount(loseAmount);
+                                productDTO2.setProductAmount(String.valueOf(loseAmount));
                                 productMapper.updateProductByParameters(productDTO2);
                             }
                         }

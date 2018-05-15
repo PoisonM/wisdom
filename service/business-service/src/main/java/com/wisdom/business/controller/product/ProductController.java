@@ -198,7 +198,7 @@ public class ProductController {
 					exportProductExcelDTO.setSecondType(productDTO.getSecondType());
 					exportProductExcelDTO.setStatus(productDTO.getStatus());
 					exportProductExcelDTO.setSellNum(productDTO.getSellNum());
-					exportProductExcelDTO.setProductAmount(productDTO.getProductAmount());
+					exportProductExcelDTO.setProductAmount(Integer.parseInt(productDTO.getProductAmount()));
 					excelList.add(exportProductExcelDTO);
 				}
 				ByteArrayInputStream in = ex.getWorkbookIn("产品EXCEL文档",orderHeaders, excelList);
