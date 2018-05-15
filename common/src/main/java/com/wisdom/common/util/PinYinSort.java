@@ -27,14 +27,14 @@ public class PinYinSort {
     public static char[] getSortType() {
 
         char a = 'a';
-        char[] chars = new char[26];
+        char[] chars = new char[56];
         for (int i = 0; i < 26; i++) {
             chars[i] = a;
             a++;
         }
         int i = 26;
         for (int j = 0; j < 10; j++) {
-            chars[i] = (char) j;
+            chars[i] = String.valueOf(j).charAt(0);
             ++i;
         }
         return chars;
