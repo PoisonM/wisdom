@@ -30,9 +30,9 @@ angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
             var datePickerCallbacke = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
-                    console.log(val)
+                    console.log(val);
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
+                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
                     $scope.getInfo();
                 }
             };
