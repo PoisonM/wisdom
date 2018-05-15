@@ -28,6 +28,14 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('ClerkLogin', ['$resource', function($resource) {
         return $resource(userIP + 'clerkLogin')
     }])
+    //获取用户二维码
+    .factory('getBeautyQRCode', ['$resource', function($resource) {
+        return $resource('http://mx99test2.kpbeauty.com.cn/weixin/beauty/getBeautyQRCode')
+    }])
+    //http轮询
+    .factory('getUserScanInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'shop/getUserScanInfo')
+    }])
 
     .factory('ShopDayAppointmentInfoByDate', ['$resource', function($resource) {
         return $resource(appointmentInfo + 'shopDayAppointmentInfoByDate')
