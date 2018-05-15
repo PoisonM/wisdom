@@ -10,7 +10,7 @@
                 <div ng-repeat="(key,value) in bigItem">
                     <div  class="letter">{{key}}</div>
                     <ul>
-                        <li ng-repeat="item in value"  ng-click="selectSty(item.id,item.sysUserId)" ng-class="{'select_sty':param.selectSty == item.id}"  class="user_info">
+                        <li ng-repeat="item in value"  ng-click="selectSty(item.id,item.sysUserId,item.shopid)" ng-class="{'select_sty':param.selectSty == item.id}"  class="user_info">
                             <div class="user_img"></div>
                             <div class="user_mobile">
                                 <span class="name">{{item.sysClerkName}}</span>

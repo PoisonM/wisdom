@@ -291,7 +291,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.bindMember', {
-            url: '/bindMember',
+            url: '/bindMember/:shopId/:userId',
             templateUrl: root + '/addRecord/bindMember.html',
             controller: 'bindMemberCtrl',
             resolve: {

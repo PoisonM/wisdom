@@ -227,6 +227,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getId())) {
 			c.andIdEqualTo(shopUserConsumeRecordDTO.getId());
 		}
+
+		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getConsumeType())) {
+			c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getConsumeType());
+		}
 		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper
 				.selectByCriteria(criteria);
 
