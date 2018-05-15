@@ -107,6 +107,27 @@ public class ProcessBeautySubscribeEventService {
                 userInfoDTO.setLoginIp("");
                 userServiceClient.updateUserInfo(userInfoDTO);
             }
+            else
+            {
+                WeixinUserBean weixinUserBean = WeixinUtil.getWeixinUserBean(token,openId);
+                userInfoDTO.setId(UUID.randomUUID().toString());
+                String nickname = null;
+                try {
+                    nickname = URLEncoder.encode(weixinUserBean.getNickname(), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                userInfoDTO.setNickname(nickname);
+                userInfoDTO.setUserType("");
+                userInfoDTO.setParentUserId("");
+                userInfoDTO.setWeixinAttentionStatus("1");
+                userInfoDTO.setPhoto(weixinUserBean.getHeadimgurl());
+                userInfoDTO.setDelFlag("0");
+                userInfoDTO.setLoginIp("");
+                userInfoDTO.setCreateDate(new Date());
+                userInfoDTO.setSource(ConfigConstant.beautySource);
+                userServiceClient.insertUserInfo(userInfoDTO);
+            }
 
             //为用户的此次关注插入到mongodb记录中
             WeixinAttentionDTO weixinAttentionDTO = new WeixinAttentionDTO();
@@ -120,11 +141,11 @@ public class ProcessBeautySubscribeEventService {
             ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
             if("N".equals(responseDTO.getResponseData()))
             {
-                JedisUtils.set(shopId+openId,"alreadyBind",ConfigConstant.logintokenPeriod);
+                JedisUtils.set(shopId+openId,"notBind",ConfigConstant.logintokenPeriod);
             }
             else if("Y".equals(responseDTO.getResponseData()))
             {
-                JedisUtils.set(shopId+openId,"notBind",ConfigConstant.logintokenPeriod);
+                JedisUtils.set(shopId+openId,"alreadyBind",ConfigConstant.logintokenPeriod);
             }
         }
     }
