@@ -136,5 +136,5 @@ public interface ShopStatisticsAnalysisService {
     *@Description: 获取所有美容院的顾客到店情况
     *@Date:2018/5/15 15:50
     */
-    List<ExpenditureAndIncomeResponseDTO> getCustomerArriveList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    Map<String,Object> getCustomerArriveList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 }

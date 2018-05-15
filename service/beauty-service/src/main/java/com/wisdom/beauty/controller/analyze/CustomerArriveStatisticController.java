@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "analyze")
@@ -50,7 +51,7 @@ public class CustomerArriveStatisticController {
 	*/
 	@RequestMapping(value = "/getCustomerArriveList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getCustomerArriveList(@RequestParam String startTime,
+	ResponseDTO<Map<String,Object>> getCustomerArriveList(@RequestParam String startTime,
 																			 @RequestParam String endTime) {
 
 
@@ -63,10 +64,10 @@ public class CustomerArriveStatisticController {
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
-		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getCustomerArriveList(pageParamVoDTO);
-		ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> responseDTO = new ResponseDTO<>();
+		Map<String,Object> map = shopStatisticsAnalysisService.getCustomerArriveList(pageParamVoDTO);
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(list);
+		responseDTO.setResponseData(map);
 		logger.info("getCustomerArriveList方法耗时{}毫秒", (System.currentTimeMillis() - start));
 		return responseDTO;
 	}

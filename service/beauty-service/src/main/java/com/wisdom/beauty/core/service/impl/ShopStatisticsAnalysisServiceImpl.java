@@ -697,7 +697,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	}
 
 	@Override
-	public List<ExpenditureAndIncomeResponseDTO> getCustomerArriveList(
+	public Map<String,Object> getCustomerArriveList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequestDTO = pageParamVoDTO.getRequestData();
 		if (userConsumeRequestDTO == null) {
@@ -765,13 +765,33 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		Integer totalConsumeTime=null;
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationList) {
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
-			expenditureAndIncomeResponseDTO.setShopNewUserNumber(newCustomerMap.get(shopBossRelation.getSysShopId()));// 新客
 			expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());// 美容院店名字
+			expenditureAndIncomeResponseDTO.setShopNewUserNumber(newCustomerMap.get(shopBossRelation.getSysShopId()));// 新客
 			expenditureAndIncomeResponseDTO.setConsumeNumber(map.get(shopBossRelation.getSysShopId()));// 人头数
 			expenditureAndIncomeResponseDTO.setConsumeTime(timeMap.get(shopBossRelation.getSysShopId()));// 次数
+			if(totalConsumeNumber==null){
+				totalConsumeNumber=map.get(shopBossRelation.getSysShopId());
+			}else {
+				totalConsumeNumber=totalConsumeNumber+map.get(shopBossRelation.getSysShopId());
+			}
+			if(totalShopNewUserNumber==null){
+				totalShopNewUserNumber=newCustomerMap.get(shopBossRelation.getSysShopId());
+			}else {
+				totalShopNewUserNumber=totalShopNewUserNumber+newCustomerMap.get(shopBossRelation.getSysShopId());
+			}
+			if(totalConsumeTime==null){
+				totalConsumeTime=timeMap.get(shopBossRelation.getSysShopId());
+			}else {
+				totalConsumeTime=totalConsumeTime+timeMap.get(shopBossRelation.getSysShopId());
+			}
 			responseDTOList.add(expenditureAndIncomeResponseDTO);
 		}
-		return responseDTOList;
+		Map<String ,Object> responseMap=new HashedMap();
+		responseMap.put("totalConsumeNumber",totalConsumeNumber);
+		responseMap.put("totalShopNewUserNumber",totalShopNewUserNumber);
+		responseMap.put("totalConsumeTime",totalConsumeTime);
+		responseMap.put("responseDTOList",responseDTOList);
+		return responseMap;
 	}
 
 }
