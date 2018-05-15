@@ -10,7 +10,7 @@
         </div>
         <!--业绩耗卡-->
         <div class="list">
-            <a class="item">
+            <div class="item">
                 <div class="list comprehensiveBox" style="position: relative;border-radius: 10px;">
                     <div class="row comprehensiveBox1">
                         <div class=" comprehensiveBox2 col col-50">
@@ -22,9 +22,9 @@
                             <p class="colff">{{param.expenditure}}</p>
                         </div>
                     </div>
-                    <div  style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #FF6666"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;">近7日趋势图</div>
+                    <div  style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #FF6666"  ui-sref="trendChart({id:'a'})"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;">近7日趋势图</div>
                 </div>
-            </a>
+            </div>
         </div>
         <!--唯美度美容养生会所-->
         <div class="list" ng-repeat="item in comprehensive" ng-click="beautyAllGo(item.sysShopId)">
