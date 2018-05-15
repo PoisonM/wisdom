@@ -96,6 +96,7 @@ public class ShopController {
                     JedisUtils.set(string, "alreadyBind", ConfigConstant.logintokenPeriod);
                     return responseDTO;
                 } else if (CommonCodeEnum.ALREADYBIND.getCode().equals(flag)) {
+                    logger.info("用户已经绑定");
                     responseDTO.setResult(CommonCodeEnum.ALREADYBIND.getCode());
                     return responseDTO;
                 }
