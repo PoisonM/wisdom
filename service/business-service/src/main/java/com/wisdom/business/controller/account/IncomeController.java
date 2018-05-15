@@ -63,15 +63,18 @@ public class IncomeController {
 		logger.info("根据状态查询返利数据传入参数={}", "pageParamVoDTO = [" + pageParamVoDTO + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		int count = 0;
+
 		//设定起始时间
 		String startDate = "1990-01-01";
 		pageParamVoDTO.setStartTime("".equals(pageParamVoDTO.getStartTime()) ? startDate : pageParamVoDTO.getStartTime());
 		pageParamVoDTO.setEndTime(CommonUtils.getEndDate(pageParamVoDTO.getEndTime()));
+
 		//审核状态,已审核/未审核
 		String checkStatus = "";
 		if (null != pageParamVoDTO.getRequestData()) {
 			checkStatus = pageParamVoDTO.getRequestData().getCheckStatus();
 		}
+
 		//如果checkStauts不为空 则说明用户查询已审核或未审核状态
 		if (StringUtils.isNotBlank(checkStatus)) {
 			UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
@@ -84,11 +87,13 @@ public class IncomeController {
 			//插入操作人的类型,运营人员/财务人员,根据此条件查询相应结果
 			pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
 		}
+
 		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeRecordByPageParam(pageParamVoDTO);
 
 		if (CommonUtils.objectIsEmpty(incomeRecordDTOS)) {
 			logger.info("佣金数据incomeRecord数据为空");
 		}
+
 		if (StringUtils.isNotBlank(checkStatus)) {
 			count = incomeService.getIncomeRecordCountByIncomeManagement(pageParamVoDTO);
 		}else {

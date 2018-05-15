@@ -273,9 +273,28 @@ public class TransactionService {
         for(BusinessOrderDTO businessOrderDTO : businessOrderDTOList){
             if(businessOrderDTO.getNickName() != null && businessOrderDTO.getNickName() != ""){
                 try {
-                    businessOrderDTO.setNickName(URLDecoder.decode(businessOrderDTO.getNickName(),"utf-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                    if(businessOrderDTO.getNickName() != null && businessOrderDTO.getNickName() != ""){
+                        String nickNameW = businessOrderDTO.getNickName().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW!=null&&nickNameW!=""){
+                                if(nickNameW.contains("%25")){
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                }else{
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    break;
+                                }
+                            }else{
+                                break;
+                            }
+
+                        }
+                        businessOrderDTO.setNickName(nickNameW);
+                    }else{
+                        businessOrderDTO.setNickName("未知用户");
+                    }
+                } catch(Throwable e){
+                    logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                    businessOrderDTO.setNickName("特殊符号用户");
                 }
             }
         }
