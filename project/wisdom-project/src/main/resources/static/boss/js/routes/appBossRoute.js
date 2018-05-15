@@ -1931,8 +1931,21 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                /*balanceOfPaymentsAll    收支分析7日趋势图*/
 
+                    .state('balanceOfPaymentsAll', {
+                        url: '/balanceOfPaymentsAll/:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'balanceOfPaymentsAllCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.balanceOfPaymentsAllCtrl',
+                                    ['js/controllers/work/balanceOfPaymentsAllCtrl.js?ver='+ bossVersion],
+                                    'views/work/balanceOfPaymentsAll.html?ver=' + bossVersion);
 
+                            }
+                        }
+                    })
                 /*
                  orderdDtails 详情（订单）
                  payDtails详情（支付)

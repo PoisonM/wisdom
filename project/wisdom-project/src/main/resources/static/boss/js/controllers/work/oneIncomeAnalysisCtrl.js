@@ -7,4 +7,6 @@ angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
 
             $rootScope.title = "";
 
+
+
         }]);
