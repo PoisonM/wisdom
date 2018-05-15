@@ -227,6 +227,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     }
                     else if(data.result==Global.FAILURE){
                         alert("购买失败");
+                        $ionicLoading.show();
                     }
                 })
             }

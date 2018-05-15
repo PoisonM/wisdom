@@ -147,6 +147,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                         }
                                     }else if(data.result==Global.FAILURE){
                                         alert("购买失败");
+                                        hideToast()
                                         $scope.showFlag(false);
                                     }
 
