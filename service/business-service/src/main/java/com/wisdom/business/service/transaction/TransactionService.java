@@ -73,15 +73,15 @@ public class TransactionService {
 
                 //根据订单号查出订单对应的商品
                 BusinessOrderDTO businessOrderDTO1 = transactionMapper.getBusinessOrderDetailInfoByOrderId(businessOrderDTO.getBusinessOrderId());
+                if(null == businessOrderDTO1){
+                    logger.info("更新订单updateBusinessOrder关联商品为null");
+                    return;
+                }
                 RedisLock redisLock = new RedisLock("OfflineProductAmount"+businessOrderDTO1.getBusinessProductId());
                 try {
                     redisLock.lock();
 
                     ProductDTO productDTO = new ProductDTO();
-                    if(null == businessOrderDTO1){
-                        logger.info("更新订单updateBusinessOrder关联商品为null");
-                        return;
-                    }
                     if(StringUtils.isNull(businessOrderDTO1.getBusinessProductId())){
                         logger.info("更新订单updateBusinessOrder商品id为null");
                         return;
