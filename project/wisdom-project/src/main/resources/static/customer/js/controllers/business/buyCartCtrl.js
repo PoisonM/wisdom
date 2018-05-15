@@ -144,11 +144,9 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         reCalcTotalPayPrice();
                         addButton = true;
                     });
-                    if(parseInt(item.productNum)>=item.productAmount){
+                    if(parseInt(item.productNum)>=parseInt(item.productAmount)){
                         $("#greyBox").css("background","grey")
                     }
-                    console.log(item.productNum);
-                    console.log(item.productAmount);
                 }
             }
 
@@ -173,7 +171,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     }
                     console.log(item.productNum);
                     console.log(item.productAmount);
-                     if(parseInt(item.productNum)-1<=item.productAmount){
+                     if(parseInt(item.productNum)-1<=parseInt(item.productAmount)){
                          $("#greyBox").css("background","red")
                     }
 
@@ -212,7 +210,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     })
                 });
                 for(var i =0;i<needPayOrderList.length;i++){
-                    if(needPayOrderList[i].productNum>needPayOrderList[i].productAmount){
+                    if(needPayOrderList[i].productNum>parseInt(needPayOrderList[i].productAmount)){
                         alert("库存不足~");
                         return;
                     }
