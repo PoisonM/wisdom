@@ -154,7 +154,8 @@ public class WeixinBeautyController {
     @RequestMapping(value = "getBeautyQRCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    String getBeautyQRCode(@RequestParam String shopId,@RequestParam String userId) {
+    ResponseDTO<String> getBeautyQRCode(@RequestParam String shopId,@RequestParam String userId) {
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
         WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
@@ -165,6 +166,7 @@ public class WeixinBeautyController {
         JSONObject jb = JSONObject.fromObject(reJson);
         String qrTicket = jb.getString("ticket");
         String QRCodeURI="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+qrTicket;
-        return  QRCodeURI;
+        responseDTO.setResponseData(QRCodeURI);
+        return  responseDTO;
     }
 }
