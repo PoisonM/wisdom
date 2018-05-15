@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
@@ -92,7 +93,10 @@ public class ShopController {
                     int saveFlag = shopUserRelationService.saveUserShopRelation(userRelationDTO);
                     logger.info("更新用户与店的绑定关系更新结果为={}", saveFlag > 0 ? "成功" : "失败");
                     responseDTO.setResult(StatusConstant.SUCCESS);
-                    JedisUtils.del(string);
+                    JedisUtils.set(string, "alreadyBind", ConfigConstant.logintokenPeriod);
+                    return responseDTO;
+                } else if (CommonCodeEnum.ALREADYBIND.getCode().equals(flag)) {
+                    responseDTO.setResult(CommonCodeEnum.ALREADYBIND.getCode());
                     return responseDTO;
                 }
             }
