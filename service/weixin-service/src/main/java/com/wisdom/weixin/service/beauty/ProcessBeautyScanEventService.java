@@ -3,6 +3,7 @@ package com.wisdom.weixin.service.beauty;
 
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
@@ -10,6 +11,7 @@ import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.weixin.client.BeautyServiceClient;
+import com.wisdom.weixin.client.UserServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -34,6 +36,9 @@ public class ProcessBeautyScanEventService {
 
     @Autowired
     private BeautyServiceClient beautyServiceClient;
+
+    @Autowired
+    private UserServiceClient userServiceClient;
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
@@ -69,24 +74,33 @@ public class ProcessBeautyScanEventService {
                 shopId = codeArray[1];
             }
 
-            List<Article> articleList = new ArrayList<>();
-            Article article = new Article();
-            article.setTitle("欢迎再次光临! \n");
-            article.setDescription("我们是美享商城，在这里，将会为您实时传递最好的美享服务。");
-            article.setPicUrl("");
-            article.setUrl("");
-            articleList.add(article);
-            WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setUserOpenid(openId);
+            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
 
-            //根据shopId和openId查询用户是否绑定了此美容院
-            ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
-            if("N".equals(responseDTO.getResponseData()))
+            if(userInfoDTOList.size()>0)
             {
-                JedisUtils.set(shopId+openId,"notBind",ConfigConstant.logintokenPeriod);
-            }
-            else if("Y".equals(responseDTO.getResponseData()))
-            {
-                JedisUtils.set(shopId+openId,"alreadyBind",ConfigConstant.logintokenPeriod);
+                String userId = userInfoDTOList.get(0).getId();
+
+                List<Article> articleList = new ArrayList<>();
+                Article article = new Article();
+                article.setTitle("欢迎再次光临! \n");
+                article.setDescription("我们是美享商城，在这里，将会为您实时传递最好的美享服务。");
+                article.setPicUrl("");
+                article.setUrl("");
+                articleList.add(article);
+                WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+
+                //根据shopId和openId查询用户是否绑定了此美容院
+                ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
+                if("N".equals(responseDTO.getResponseData()))
+                {
+                    JedisUtils.set(shopId+"_"+userId,"notBind",ConfigConstant.logintokenPeriod);
+                }
+                else if("Y".equals(responseDTO.getResponseData()))
+                {
+                    JedisUtils.set(shopId+"_"+userId,"alreadyBind",ConfigConstant.logintokenPeriod);
+                }
             }
         }
     }

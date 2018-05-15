@@ -141,11 +141,11 @@ public class ProcessBeautySubscribeEventService {
             ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
             if("N".equals(responseDTO.getResponseData()))
             {
-                JedisUtils.set(shopId+openId,"notBind",ConfigConstant.logintokenPeriod);
+                JedisUtils.set(shopId+"_"+userInfoDTO.getId(),"notBind",ConfigConstant.logintokenPeriod);
             }
             else if("Y".equals(responseDTO.getResponseData()))
             {
-                JedisUtils.set(shopId+openId,"alreadyBind",ConfigConstant.logintokenPeriod);
+                JedisUtils.set(shopId+"_"+userInfoDTO.getId(),"alreadyBind",ConfigConstant.logintokenPeriod);
             }
         }
     }
