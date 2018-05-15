@@ -17,10 +17,7 @@ import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.OrderCopRelationDTO;
 import com.wisdom.common.dto.transaction.OrderProductRelationDTO;
-import com.wisdom.common.util.CodeGenUtil;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.RedisLock;
-import com.wisdom.common.util.UUIDUtil;
+import com.wisdom.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,21 +64,43 @@ public class TransactionService {
 
         if(null != businessOrderDTO.getStatus() && !"".equals(businessOrderDTO.getStatus())) {
             //查出库中订单数据
+            if(StringUtils.isNull(businessOrderDTO.getBusinessOrderId())){
+                logger.info("更新订单updateBusinessOrder订单id为null==");
+                return;
+            }
             BusinessOrderDTO oldBusinessOrderDTO = transactionMapper.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
-            if ("0".equals(oldBusinessOrderDTO.getStatus())) {
+            if ("0".equals(oldBusinessOrderDTO.getStatus()) || "3".equals(oldBusinessOrderDTO.getStatus())) {
 
                 //根据订单号查出订单对应的商品
                 BusinessOrderDTO businessOrderDTO1 = transactionMapper.getBusinessOrderDetailInfoByOrderId(businessOrderDTO.getBusinessOrderId());
                 ProductDTO productDTO = new ProductDTO();
+                if(null == businessOrderDTO1){
+                    logger.info("更新订单updateBusinessOrder关联商品为null");
+                    return;
+                }
+                if(StringUtils.isNull(businessOrderDTO1.getBusinessProductId())){
+                    logger.info("更新订单updateBusinessOrder商品id为null");
+                    return;
+                }
                 productDTO.setProductId(businessOrderDTO1.getBusinessProductId());
                 productDTO.setProductAmount(businessOrderDTO1.getBusinessProductNum());
+                //查询是否有记录
                 //如果库里订单状态为待付款,并即将修改状态不是已支付,那么将恢复库存
                 if (!"1".equals(businessOrderDTO.getStatus()) && !"0".equals(businessOrderDTO.getStatus())) {
                     logger.info("updateBusinessOrder方法根据订单增加相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
-                    this.updateOfflineProductAmount(productDTO,businessOrderDTO, "add");
+                    Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("add"));
+                    OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
+                    //如果有记录,则不需要重复操作库存
+                    if(null == offlineProductAmountRecordDTO){
+                        this.updateOfflineProductAmount(productDTO,businessOrderDTO, "add");
+                    }
                 } else if ("1".equals(businessOrderDTO.getStatus()) || "0".equals(businessOrderDTO.getStatus())) {
                     logger.info("updateBusinessOrder方法根据订单减少相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
-                    this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
+                    Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("lose"));
+                    OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
+                    if(null == offlineProductAmountRecordDTO){
+                        this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
+                    }
                 }
             }
         }

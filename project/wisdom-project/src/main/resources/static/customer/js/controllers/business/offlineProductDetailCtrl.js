@@ -173,7 +173,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 }
                 if($scope.param.productNum<=$scope.param.product.productAmount){
                     $("#Car").css("background","#fca1a8");
-                    $("#goPay").css("background","#fca1a8");
+                    $("#goPay").css("background","red");
                 }
             };
 
