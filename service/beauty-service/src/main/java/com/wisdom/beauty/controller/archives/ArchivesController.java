@@ -363,12 +363,12 @@ public class ArchivesController {
      */
     @RequestMapping(value = "/userBinding", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Object> userBinding(@RequestParam String openId, @RequestParam String shopId) {
+    ResponseDTO<String> userBinding(@RequestParam String openId, @RequestParam String shopId) {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("查询某个用户与店的绑定关系传入参数={}", "openId = [" + openId + "], shopId = [" + shopId + "]");
 
-        ResponseDTO<Object> responseDTO = shopUserRelationService.userBinding(openId, shopId);
+        ResponseDTO<String> responseDTO = shopUserRelationService.userBinding(openId, shopId);
 
         logger.info("查询某个用户与店的绑定关系耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;

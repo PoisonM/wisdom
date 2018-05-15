@@ -168,21 +168,6 @@ public class WeixinUserController {
         return responseDTO;
     }
 
-    @RequestMapping(value = "getBeautyConfig", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    ResponseDTO<WeixinConfigDTO> getBeautyConfig(HttpServletRequest request) throws Exception
-    {
-        ResponseDTO<WeixinConfigDTO> responseDTO = new ResponseDTO<>();
-        String u = request.getParameter("url");
-        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
-        WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
-        String ticket = weixinTokenDTO.getTicket();
-        WeixinConfigDTO WeixinConfigDTO = JsApiTicketUtil.bossSign(ticket, u);
-        responseDTO.setResponseData(WeixinConfigDTO);
-        return responseDTO;
-    }
-
     /**
      * 验证主入口
      *

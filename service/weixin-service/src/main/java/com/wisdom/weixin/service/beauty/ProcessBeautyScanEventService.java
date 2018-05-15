@@ -2,11 +2,14 @@ package com.wisdom.weixin.service.beauty;
 
 
 import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.weixin.client.BeautyServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -28,6 +31,9 @@ public class ProcessBeautyScanEventService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private BeautyServiceClient beautyServiceClient;
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
@@ -54,24 +60,34 @@ public class ProcessBeautyScanEventService {
         @Override
         public void run() {
 
-            //判断用户所扫描的二维码是否是A店或者B店的二维码
-            String businessParentPhone = "";
+            String openId = xmlEntity.getFromUserName();
+
+            String shopId = "";
             if(StringUtils.isNotNull(xmlEntity.getEventKey())){
-                //todo 此处要考虑，未来完善，不仅仅只有mxbusinessshare_一种类型的扩展二维码
-                businessParentPhone = xmlEntity.getEventKey().replace("mxbusinessshare_", "");
-                String codeArray[] = businessParentPhone.split("_");
-                businessParentPhone = codeArray[0];
+                shopId = xmlEntity.getEventKey().replace("beautyShop", "");
+                String codeArray[] = shopId.split("_");
+                shopId = codeArray[1];
             }
 
             List<Article> articleList = new ArrayList<>();
             Article article = new Article();
-//            article.setTitle("又来啦，您请坐！\n");
             article.setTitle("欢迎再次光临! \n");
             article.setDescription("我们是美享商城，在这里，将会为您实时传递最好的美享服务。");
             article.setPicUrl("");
             article.setUrl("");
             articleList.add(article);
             WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+
+            //根据shopId和openId查询用户是否绑定了此美容院
+            ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
+            if("N".equals(responseDTO.getResponseData()))
+            {
+                JedisUtils.set(shopId+openId,"notBind",ConfigConstant.logintokenPeriod);
+            }
+            else if("Y".equals(responseDTO.getResponseData()))
+            {
+                JedisUtils.set(shopId+openId,"alreadyBind",ConfigConstant.logintokenPeriod);
+            }
         }
     }
 

@@ -9,6 +9,9 @@ public class UserInfoDTO {
     @JSONField(name = "id")
     private String id;
 
+    @JSONField(name = "source")
+    private String source;
+
     @JSONField(name = "nickname")
     private String nickname;
 
@@ -61,8 +64,13 @@ public class UserInfoDTO {
     @JSONField(name = "extendUserType")
     private String extendUserType;
 
-    @JSONField(name = "source")
-    private String source;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getSource() {
         return source;
@@ -70,14 +78,6 @@ public class UserInfoDTO {
 
     public void setSource(String source) {
         this.source = source;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getNickname() {
