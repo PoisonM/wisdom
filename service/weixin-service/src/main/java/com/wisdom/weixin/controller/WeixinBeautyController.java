@@ -154,13 +154,13 @@ public class WeixinBeautyController {
     @RequestMapping(value = "getBeautyQRCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    String getBeautyQRCode(@RequestParam String shopId) {
+    String getBeautyQRCode(@RequestParam String shopId,@RequestParam String userId) {
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
         WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
         String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
-        String shareCode = "beautyShop_" + shopId;
-        String jsonData="{\"action_name\": \"QR_LIMIT_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + shareCode + "\"}}}";
+        String shareCode = "beautyShop_" + shopId + "_" + userId;
+        String jsonData="{\"expire_seconds\": 2591000, \"action_name\": \"QR_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + shareCode + "\"}}}";
         String reJson= WeixinUtil.post(url, jsonData,"POST");
         JSONObject jb = JSONObject.fromObject(reJson);
         String qrTicket = jb.getString("ticket");
