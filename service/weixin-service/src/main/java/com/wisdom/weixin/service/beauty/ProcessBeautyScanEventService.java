@@ -114,6 +114,7 @@ public class ProcessBeautyScanEventService {
                 }
                 else if("Y".equals(responseDTO.getResponseData()))
                 {
+                    System.out.println("redis中设置已经绑定过的的key为 "+shopId+"_"+userId);
                     JedisUtils.set(shopId+"_"+userId,"alreadyBind",ConfigConstant.logintokenPeriod);
                 }
             }
