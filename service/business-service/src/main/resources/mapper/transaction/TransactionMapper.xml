@@ -174,12 +174,10 @@
 
     <select id="getBusinessOrderByOrderId"
             resultMap="BusinessOrderResultMap">
-        select * from
-        business_order
-        where 1=1
-        <if test="orderId != null and orderId != ''">
-            AND  order_id=#{orderId}
-        </if>
+        select o.*,o.order_id AS businessOrderId from
+        business_order o
+        where
+             o.order_id=#{orderId}
     </select>
 
     <!-- 更新订单 -->
@@ -245,7 +243,7 @@
     <select id="getBusinessOrderList"
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
         SELECT
-        *
+        o.*,o.order_id AS businessOrderId
         FROM business_order o
         WHERE
         1=1
