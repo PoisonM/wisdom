@@ -1,12 +1,18 @@
 package com.wisdom.weixin.controller;
 
 import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.wexin.WeixinConfigDTO;
+import com.wisdom.common.dto.wexin.WeixinShareDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.WeixinUserBean;
 import com.wisdom.common.util.*;
+import com.wisdom.weixin.interceptor.LoginRequired;
 import com.wisdom.weixin.service.beauty.WeixinBeautyCoreService;
+import com.wisdom.weixin.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -19,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.FileNotFoundException;
+import java.util.List;
 
 /**
  * Created by chenjiake on 17/11/4.
@@ -137,4 +145,38 @@ public class WeixinBeautyController {
         String oauth2Url = WeixinUtil.getBeautyOauth2Url(backUrl);
         return "redirect:" + oauth2Url;
     }
+
+//    /**
+//     * 用户获取推广二维码
+//     */
+//    @RequestMapping(value = "getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
+//    @LoginRequired
+//    public
+//    @ResponseBody
+//    ResponseDTO<WeixinShareDTO> getUserQRCode() throws FileNotFoundException {
+//        ResponseDTO<WeixinShareDTO> responseDTO = new ResponseDTO();
+//
+//        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+//        WeixinShareDTO weixinShareDTO = weixinCustomerCoreService.getWeixinShareInfo(userInfoDTO);
+//        if(weixinShareDTO==null)
+//        {
+//            responseDTO.setResult(StatusConstant.FAILURE);
+//        }
+//        else
+//        {
+//            AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(weixinShareDTO.getSysUserId());
+//            String instanceMoney = businessServiceClient.selectIncomeInstanceByUserId(userInfoDTO.getId());
+//            List<UserInfoDTO> userInfoDTOList = userServiceClient.queryNextUserByUserId(userInfoDTO.getId());
+//            float balance = accountDTO.getBalance();
+//            weixinShareDTO.setIstanceMoney(instanceMoney);
+//            weixinShareDTO.setPeoperCount(userInfoDTOList.size());
+//            weixinShareDTO.setBalance(String.valueOf(balance));
+//            weixinShareDTO.setUserType(userInfoDTO.getUserType());
+//            weixinShareDTO.setQrCodeURL(saveImageToLocal(weixinShareDTO.getQrCodeURL(),weixinShareDTO.getSysUserId(),"qrCode"));
+//            weixinShareDTO.setUserImage(saveImageToLocal(weixinShareDTO.getUserImage(),weixinShareDTO.getSysUserId(),"userImage"));
+//            responseDTO.setResult(StatusConstant.SUCCESS);
+//            responseDTO.setResponseData(weixinShareDTO);
+//        }
+//        return responseDTO;
+//    }
 }
