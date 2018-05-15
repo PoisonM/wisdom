@@ -15,6 +15,7 @@ import com.wisdom.common.util.SpringUtil;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.weixin.WeixinServiceApplication;
+import com.wisdom.weixin.client.BeautyServiceClient;
 import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
 import net.sf.json.JSONObject;
@@ -52,6 +53,9 @@ public class WeixinTest {
     private BusinessServiceClient businessServiceClient;
 
     @Autowired
+    private BeautyServiceClient beautyServiceClient;
+
+    @Autowired
     private MongoTemplate mongoTemplate;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -59,6 +63,11 @@ public class WeixinTest {
     public void beforeTest() {
         ApplicationContext app = SpringApplication.run(WeixinServiceApplication.class, "");
         SpringUtil.setApplicationContext(app);
+    }
+
+    @Test
+    public void getUserBindingInfo() {
+        beautyServiceClient.getUserBindingInfo("oP0k_0S-a-U1z64qcVVCIaLWM52s", "20180514102629597");
     }
 
     @Test
