@@ -1,17 +1,13 @@
 /**
- * Created by Administrator on 2018/5/3.
+ * Created by Administrator on 2018/5/14.
  */
-angular.module('controllers',[]).controller('incomeAnalysisCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetInComeExpenditureDetail','$filter','BossUtil','Global',
-        function ($scope,$rootScope,$stateParams,$state,GetInComeExpenditureDetail,$filter,BossUtil,Global) {
-
-            $rootScope.title = "收支分析";
-
+angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
+    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','Global','GetInComeExpenditureDetail',
+        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,Global,GetInComeExpenditureDetail) {
             /*日期插件*/
-
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
-                date: BossUtil.getNowFormatDate(),
+                date:$stateParams.date
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
@@ -66,19 +62,15 @@ angular.module('controllers',[]).controller('incomeAnalysisCtrl',
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
 
-
+            $rootScope.title = "";
             $scope.getInfo = function(){
-                GetInComeExpenditureDetail.get({
-                    startTime:$scope.param.date+' 00:00:00',
-                    endTime:$scope.param.date+ " 23:59:59"
-                },function(data){
+                GetInComeExpenditureDetail.get({sysShopId:"11",startTime:$scope.param.date+" 00:00:00",
+                    endTime:$scope.param.date+" 23:59:59"},function (data) {
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $scope.incomeAnalysis = data.responseData
+                        $scope.oneIncomeAnalysis = data.responseData
                     }
-
                 })
             }
             $scope.getInfo()
-
 
         }]);
