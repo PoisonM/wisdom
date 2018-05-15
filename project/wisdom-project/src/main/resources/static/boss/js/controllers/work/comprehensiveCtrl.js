@@ -83,7 +83,7 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
                 $state.go("beautyAll",{sysShopId:sysShopId,date:$scope.param.date})
             }
             
-            $scope.sevenDayChartsClick = function () {
+            $scope.sevenDayChartsViewClick = function () {
                 $state.go('sevenDayCharts');
             }
 }]);
