@@ -7,7 +7,8 @@ angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
             /*日期插件*/
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
-                date:$stateParams.date
+                date:$stateParams.date,
+                sysShopId :$stateParams.sysShopId
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
@@ -72,5 +73,7 @@ angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
                 })
             }
             $scope.getInfo()
+
+
 
         }]);
