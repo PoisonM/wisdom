@@ -145,7 +145,11 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                                 + "&specialShopId=" + $rootScope.specialShopId
                                                 + "&random="+Math.random();
                                         }
+                                    }else if(data.result==Global.FAILURE){
+                                        alert("购买失败");
+                                        $scope.showFlag(false);
                                     }
+
                                 })
                             }
 
