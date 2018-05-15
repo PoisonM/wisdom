@@ -29,6 +29,7 @@ PADWeb.controller('bindMemberCtrl', function ($scope,$stateParams, $state, getBe
             }
             if(data.result == "alreadyBind"){
                 alert("已绑定")
+                $state.go("pad-web.left_nav.personalFile")
                 clearInterval($scope.timeInfo)
             }
         })
