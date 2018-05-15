@@ -60,7 +60,7 @@ public class OrderController {
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String sysUserId, @RequestParam String orderId) {
+    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String sysUserId, @RequestParam(required = false) String orderId) {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("查询用户最近一次订单信息传入参数={}", "shopUserArchivesId = [" + sysUserId + "]");
