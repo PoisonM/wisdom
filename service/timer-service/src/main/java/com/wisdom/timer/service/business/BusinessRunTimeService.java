@@ -174,7 +174,7 @@ public class BusinessRunTimeService {
                 //订单已下时间
                 long outTime = nowTime - (long)businessOrder.getCreateDate().getTime();
                 long time = outTime - autoNotifyProductPay;
-                //待付款超过10分钟且不超过20分钟
+                //待付款超过10分钟
                 if(MinTime < time && time < MaxTime)
                 {
                     UserInfoDTO userInfoDTO = new UserInfoDTO();
