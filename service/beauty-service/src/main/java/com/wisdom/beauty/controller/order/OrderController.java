@@ -149,6 +149,7 @@ public class OrderController {
         Update update = new Update();
         update.set("status", shopUserOrderDTO.getStatus());
         update.set("signUrl", shopUserOrderDTO.getSignUrl());
+        update.set("orderPrice", shopUserOrderDTO.getOrderPrice());
         update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
         update.set("shopUserProductRelationDTOS", shopUserOrderDTO.getShopUserProductRelationDTOS());
         update.set("shopUserProjectRelationDTOS", shopUserOrderDTO.getShopUserProjectRelationDTOS());
