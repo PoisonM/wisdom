@@ -86,9 +86,13 @@ public class ProcessBeautyScanEventService {
             {
                 //用户之前关注过
                 userInfoDTO = userInfoDTOList.get(0);
-                if(userInfoDTO.getWeixinAttentionStatus().equals("0"))
-                {
+                if(StringUtils.isBlank(userInfoDTO.getWeixinAttentionStatus())){
                     userInfoDTO.setWeixinAttentionStatus("1");
+                }else{
+                    if(userInfoDTO.getWeixinAttentionStatus().equals("0"))
+                    {
+                        userInfoDTO.setWeixinAttentionStatus("1");
+                    }
                 }
                 String nickname = null;
                 try {
@@ -105,6 +109,7 @@ public class ProcessBeautyScanEventService {
                 ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
                 if("N".equals(responseDTO.getResponseData()))
                 {
+                    System.out.println("redis中设置的key为 "+shopId+"_"+userId);
                     JedisUtils.set(shopId+"_"+userId,"notBind",ConfigConstant.logintokenPeriod);
                 }
                 else if("Y".equals(responseDTO.getResponseData()))
