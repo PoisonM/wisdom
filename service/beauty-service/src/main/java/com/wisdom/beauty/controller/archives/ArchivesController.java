@@ -1,6 +1,7 @@
 package com.wisdom.beauty.controller.archives;
 
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.dto.SysUserAccountDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
@@ -8,6 +9,7 @@ import com.wisdom.beauty.api.extDto.ExtShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
+import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
@@ -51,6 +53,9 @@ public class ArchivesController {
 
     @Autowired
     private UserServiceClient userServiceClient;
+
+    @Autowired
+    private ShopUserRelationService shopUserRelationService;
 
     @Value("${test.msg}")
     private String msg;
@@ -348,6 +353,53 @@ public class ArchivesController {
         }
 
         logger.info("findArchiveById方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * 查询某个用户与店的绑定关系
+     */
+    @RequestMapping(value = "/userBinding", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> userBinding(@RequestParam String openId, @RequestParam String shopId) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("查询某个用户与店的绑定关系传入参数={}", "openId = [" + openId + "], shopId = [" + shopId + "]");
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setUserOpenid(openId);
+        userInfoDTO.setSource("beauty");
+        List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+        if (CommonUtils.objectIsEmpty(userInfoDTO)) {
+            logger.error("根据openId查询出来的用户记录为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("根据openId查询出来的用户记录为空");
+            return responseDTO;
+        }
+        //根据openId查询用户记录
+        UserInfoDTO dto = userInfoDTOS.get(0);
+
+        ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
+        shopUserRelationDTO.setSysUserId(dto.getId());
+        shopUserRelationDTO.setShopId(shopId);
+        List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService.getShopListByCondition(shopUserRelationDTO);
+        //没有查出绑定关系，说明是未绑定状态
+        if (CommonUtils.objectIsEmpty(shopListByCondition)) {
+            logger.error("查询用户绑定关系为空");
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            responseDTO.setResponseData("N");
+            return responseDTO;
+        }
+        shopUserRelationDTO = shopListByCondition.get(0);
+        //status为0  为绑定关系
+        if (CommonCodeEnum.SUCCESS.getCode().equals(shopUserRelationDTO.getStatus())) {
+            responseDTO.setResponseData("N");
+        } else {
+
+            responseDTO.setResponseData("Y");
+        }
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("查询某个用户与店的绑定关系耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

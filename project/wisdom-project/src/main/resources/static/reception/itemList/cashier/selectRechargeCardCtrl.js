@@ -1,4 +1,4 @@
-PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParams, ngDialog, Archives) {
+PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParams, ngDialog, Archives, CardInfo, UserRechargeConfirm) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
@@ -36,9 +36,14 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
         $state.go('pad-web.left_nav.housekeeper');
     }
     $scope.goCustomerSignature = function() {
-        $state.go('pad-web.signConfirm');
+        UserRechargeConfirm.save($scope.responseData, function(data) {
+            $state.go('pad-web.signConfirm', { transactionId: data.responseData.transactionId });
+        })
     }
     $scope.checkBoxChek = function(e) {
-        $(e.target).children('.checkBox').css('background', '#FF6666')
+        $scope.responseData.payType = e;
     }
+    CardInfo.get({ id: $state.params.type }, function(data) {
+        $scope.responseData = data.responseData;
+    })
 });

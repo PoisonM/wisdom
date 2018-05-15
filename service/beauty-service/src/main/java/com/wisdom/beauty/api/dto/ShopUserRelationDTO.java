@@ -24,6 +24,9 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
     //老板id
     private String sysBossId;
 
+    //美容院的唯一标识
+    private String shopId;
+
     //关系 0:绑定  1：未绑定
     private String status;
 
@@ -93,6 +96,14 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
 
     public void setSysBossId(String sysBossId) {
         this.sysBossId = sysBossId;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
     }
 
     public String getStatus() {

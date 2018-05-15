@@ -1,4 +1,4 @@
-PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParams, ngDialog, Archives, GetUserRechargeCardList, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo) {
+PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParams, ngDialog, Archives, GetUserRechargeCardList, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo, GetRechargeCardList) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
@@ -36,17 +36,25 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             $scope.updateVirtualGoodsOrderInfo(id, eid, name, ($state.go('pad-web.left_nav.makeSureOrder')));
 
         } else {
-            $state.go('pad-web.left_nav.selectRechargeCard');
+            $state.go('pad-web.left_nav.selectRechargeCard', { type: id });
         }
     }
 
     console.log($state.params.type)
 
-    GetUserRechargeCardList.get({
-        sysUserId: 110
-    }, function(data) {
-        $scope.RechargeCardList = data.responseData;
-    })
+    if ($state.params.type == 1) {
+        GetUserRechargeCardList.get({
+            sysUserId: 110
+        }, function(data) {
+            $scope.RechargeCardList = data.responseData;
+        })
+    } else {
+        GetRechargeCardList.get({
+            pageSize: 100,
+        }, function(data) {
+            $scope.RechargeCardListAll = data.responseData;
+        })
+    }
 
     $scope.updateVirtualGoodsOrderInfo = function(id, eid, name, callback) {
         UpdateVirtualGoodsOrderInfo.save({
@@ -54,7 +62,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             orderId: $scope.orderId,
             shopUserRechargeCardDTO: {
                 id: eid,
-                shopRechargeCardId: id,
+                shopRechargeCardId: eid,
                 shopRechargeCardName: name,
             },
         }, function(data) {
