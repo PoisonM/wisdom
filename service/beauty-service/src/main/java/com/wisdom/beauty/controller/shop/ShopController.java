@@ -93,6 +93,7 @@ public class ShopController {
                     logger.info("更新用户与店的绑定关系更新结果为={}", saveFlag > 0 ? "成功" : "失败");
                     responseDTO.setResult(StatusConstant.SUCCESS);
                     JedisUtils.del(string);
+                    return responseDTO;
                 }
             }
         }
