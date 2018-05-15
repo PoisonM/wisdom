@@ -93,7 +93,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         userInfoDTO.setUserOpenid(openId);
         userInfoDTO.setSource("beauty");
         List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
-        if (CommonUtils.objectIsEmpty(userInfoDTO)) {
+        if (CommonUtils.objectIsEmpty(userInfoDTOS)) {
             logger.error("根据openId查询出来的用户记录为空");
             responseDTO.setResult(StatusConstant.FAILURE);
             responseDTO.setErrorInfo("根据openId查询出来的用户记录为空");

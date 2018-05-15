@@ -50,7 +50,7 @@ public class UserInfoServiceImpl implements UserInfoService{
         List<UserInfoDTO> userInfoDTOS = userInfoMapper.getUserByInfo(userInfoDTO);
         if(CommonUtils.objectIsEmpty(userInfoDTOS)){
             logger.info("查询的用户信息为空");
-            return null;
+            return userInfoDTOS;
         }
         for (UserInfoDTO user: userInfoDTOS) {
             if(StringUtils.isNotBlank(user.getNickname())){
