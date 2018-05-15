@@ -391,7 +391,7 @@ public class PayCoreService {
                 {
                     payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
 
-                    if(parentUserInfoDTO.getParentUserId() !=null){
+                    if(!ObjectUtils.isNullOrEmpty(parentUserInfoDTO.getParentUserId())){
                         //查询祖父级是否存在并且是否为B
                         UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
                         if(grandpaUserInfoDTO!=null){
@@ -415,7 +415,7 @@ public class PayCoreService {
                 if(ConfigConstant.businessA1.equals(parentUserInfoDTO.getUserType()))  //2、如果父一级用户为A店用户
                 {
                     payFunction.updateReturnMoneyDataBase(parentUserInfoDTO.getId(),ConfigConstant.businessC1,ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
-                    if(parentUserInfoDTO.getParentUserId()!=null){
+                    if(!ObjectUtils.isNullOrEmpty(parentUserInfoDTO.getParentUserId())){
                         //查询祖父级是否存在并且是否为A
                         UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
                         if(grandpaUserInfoDTO!=null){
@@ -432,7 +432,7 @@ public class PayCoreService {
                     //先更新用户上一级B店用户的返现金额
                     payFunction.updateReturnMoneyDataBase(parentUserInfoDTO.getId(),ConfigConstant.businessC1,ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
 
-                    if(parentUserInfoDTO.getParentUserId()!=null)
+                    if(!ObjectUtils.isNullOrEmpty(parentUserInfoDTO.getParentUserId()))
                     {
                         UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
 
