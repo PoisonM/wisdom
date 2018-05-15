@@ -19,6 +19,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -68,28 +70,36 @@ public class ProcessBeautyScanEventService {
             String openId = xmlEntity.getFromUserName();
 
             String shopId = "";
+            String userId = "";
             if(StringUtils.isNotNull(xmlEntity.getEventKey())){
                 shopId = xmlEntity.getEventKey().replace("beautyShop", "");
                 String codeArray[] = shopId.split("_");
                 shopId = codeArray[1];
+                userId = codeArray[2];
             }
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();
-            userInfoDTO.setUserOpenid(openId);
+            userInfoDTO.setId(userId);
             List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
 
             if(userInfoDTOList.size()>0)
             {
-                String userId = userInfoDTOList.get(0).getId();
-
-                List<Article> articleList = new ArrayList<>();
-                Article article = new Article();
-                article.setTitle("欢迎再次光临! \n");
-                article.setDescription("我们是美享商城，在这里，将会为您实时传递最好的美享服务。");
-                article.setPicUrl("");
-                article.setUrl("");
-                articleList.add(article);
-                WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+                //用户之前关注过
+                userInfoDTO = userInfoDTOList.get(0);
+                if(userInfoDTO.getWeixinAttentionStatus().equals("0"))
+                {
+                    userInfoDTO.setWeixinAttentionStatus("1");
+                }
+                String nickname = null;
+                try {
+                    nickname = URLEncoder.encode(userInfoDTO.getNickname(), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                userInfoDTO.setNickname(nickname);
+                userInfoDTO.setUserOpenid(openId);
+                userInfoDTO.setLoginIp("");
+                userServiceClient.updateUserInfo(userInfoDTO);
 
                 //根据shopId和openId查询用户是否绑定了此美容院
                 ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
@@ -102,6 +112,15 @@ public class ProcessBeautyScanEventService {
                     JedisUtils.set(shopId+"_"+userId,"alreadyBind",ConfigConstant.logintokenPeriod);
                 }
             }
+
+            List<Article> articleList = new ArrayList<>();
+            Article article = new Article();
+            article.setTitle("欢迎再次光临! \n");
+            article.setDescription("我们是美享商城，在这里，将会为您实时传递最好的美享服务。");
+            article.setPicUrl("");
+            article.setUrl("");
+            articleList.add(article);
+            WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
         }
     }
 
