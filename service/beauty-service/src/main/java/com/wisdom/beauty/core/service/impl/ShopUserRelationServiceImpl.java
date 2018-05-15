@@ -6,7 +6,6 @@ import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.core.mapper.ShopUserRelationMapper;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
-import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -61,16 +60,18 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         ShopUserRelationCriteria criteria = new ShopUserRelationCriteria();
         ShopUserRelationCriteria.Criteria c = criteria.createCriteria();
 
-        SysBossDTO sysBossDTO = UserUtils.getBossInfo();
-        if (sysBossDTO != null && StringUtils.isNotNull(sysBossDTO.getId())) {
-            logger.info("getShopListByCondition方法传入的参数bossId={}", sysBossDTO.getId());
-            c.andSysBossIdEqualTo(sysBossDTO.getId());
+        if (StringUtils.isNotBlank(shopUserRelationDTO.getSysBossId())) {
+            logger.info("getShopListByCondition方法传入的参数bossId={}", shopUserRelationDTO.getSysBossId());
+            c.andSysBossIdEqualTo(shopUserRelationDTO.getSysBossId());
         }
 
         if (StringUtils.isNotBlank(shopUserRelationDTO.getSysUserId())) {
             c.andSysUserIdEqualTo(shopUserRelationDTO.getSysUserId());
         }
 
+        if (StringUtils.isNotBlank(shopUserRelationDTO.getShopId())) {
+            c.andShopIdEqualTo(shopUserRelationDTO.getShopId());
+        }
 
         List<ShopUserRelationDTO> shopUserRelations = shopUserRelationMapper.selectByCriteria(criteria);
         return shopUserRelations;

@@ -53,7 +53,7 @@ public class ArchivesTest {
     @Test
     public void testDeleteArchiveInfo() throws Exception {
 
-        MvcResult result = mvc.perform(get("/archives/detail/8ed0e6aa6ed246d8b788c90492364f6b"))
+        MvcResult result = mvc.perform(get("/archives/userBinding").param("openId", "oP0k_0S-a-U1z64qcVVCIaLWM52s").param("shopId", "20180514102629597"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
