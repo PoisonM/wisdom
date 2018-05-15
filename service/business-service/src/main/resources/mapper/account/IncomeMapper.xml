@@ -300,16 +300,11 @@
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
         </if>
-        <if test='requestData.checkStatus != "0"'>
-        <if test="requestData.checkUserType != null and requestData.checkUserType != ''">
-            AND m.user_type = #{requestData.checkUserType}
-        </if>
-        </if>
         <if test='requestData.checkStatus == "1"'>
-            AND m.income_record_id = i.id
+            AND i.id IN(SELECT m.income_record_id from income_record_management m)
         </if>
         <if test='requestData.checkStatus == "0"'>
-            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
+            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m)
         </if>
         GROUP BY i.id
         ORDER BY i.create_date DESC
@@ -338,16 +333,11 @@
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
         </if>
-        <if test='requestData.checkStatus != "0"'>
-            <if test="requestData.checkUserType != null and requestData.checkUserType != ''">
-                AND m.user_type = #{requestData.checkUserType}
-            </if>
-        </if>
         <if test='requestData.checkStatus == "1"'>
-            AND m.income_record_id = i.id
+            AND i.id IN(SELECT m.income_record_id from income_record_management m)
         </if>
         <if test='requestData.checkStatus == "0"'>
-            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m WHERE m.user_type = #{requestData.checkUserType})
+            AND i.id NOT IN(SELECT m.income_record_id from income_record_management m)
         </if>
     </select>
     <select id="getIncomeRecordByPageParam"
