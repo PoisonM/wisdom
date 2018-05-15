@@ -82,8 +82,14 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	 * 服务次数
 	 */
 	private Integer serviceNumber;
-
-
+	/**
+	 * 人头数
+	 */
+	private  Integer consumeNumber;
+	/**
+	 * 新客
+	 */
+	private Integer shopNewUserNumber;
 	public BigDecimal getExpenditure() {
 		return expenditure;
 	}
@@ -226,5 +232,21 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
 	public void setServiceNumber(Integer serviceNumber) {
 		this.serviceNumber = serviceNumber;
+	}
+
+	public Integer getConsumeNumber() {
+		return consumeNumber;
+	}
+
+	public void setConsumeNumber(Integer consumeNumber) {
+		this.consumeNumber = consumeNumber;
+	}
+
+	public Integer getShopNewUserNumber() {
+		return shopNewUserNumber;
+	}
+
+	public void setShopNewUserNumber(Integer shopNewUserNumber) {
+		this.shopNewUserNumber = shopNewUserNumber;
 	}
 }

@@ -95,10 +95,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         // 排序
         criteria.setOrderByClause("sys_user_name");
         // 分页
-        if(shopCustomerArchivesDTO.getPageNo()!=0) {
+        if(shopCustomerArchivesDTO.getPaging()) {
             criteria.setLimitStart(shopCustomerArchivesDTO.getPageNo());
-        }
-        if(shopCustomerArchivesDTO.getPageSize()!=0) {
             criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
         }
         //参数
@@ -111,16 +109,10 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         if (StringUtils.isNotBlank(requestData.getPhone())) {
             c.andPhoneLike("%" + requestData.getPhone() + "%");
         }
-        if (StringUtils.isNotBlank(requestData.getSysShopId())) {
-            or.andSysShopIdEqualTo(requestData.getSysShopId());
-         }
         if (StringUtils.isNotBlank(requestData.getSysUserName())) {
             or.andSysUserNameLike("%" + requestData.getSysUserName() + "%");
         }
 
-        if (StringUtils.isNotBlank(requestData.getSysBossId())) {
-            c.andSysBossIdEqualTo(requestData.getSysBossId());
-        }
         criteria.or(or);
         List<ShopUserArchivesDTO> shopCustomerArchiveslist = shopUserArchivesMapper.selectByCriteria(criteria);
 

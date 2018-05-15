@@ -25,7 +25,6 @@ PADWeb.controller('bindMemberCtrl', function ($scope,$stateParams, $state, getBe
             }
             if(data.result == "0x00002"){
                 alert("FAILURE")
-                clearInterval($scope.timeInfo)
             }
         })
     }
