@@ -8,8 +8,8 @@ var  earlyWarning =  '/beauty/earlyWarning/';
 var  archives =  '/beauty/archives/';
 var clerkSchedule='/beauty/clerkSchedule/';
 var shopBossRelation ='/beauty/shopBossRelation/';
-var user ='/user/'
-var analyze = '/beauty/analyze/'
+var user ='/user/';
+var analyze = '/beauty/analyze/';
 
 /*http://192.168.1.117*/
 
@@ -116,6 +116,10 @@ define(['appBoss'], function (app) {
         /*获取某个店的收入明细*/
         .factory('GetIncomeExpenditureAnalysisDetailList',['$resource',function ($resource){
             return $resource(analyze+"getIncomeExpenditureAnalysisDetailList")
+        }])
+        /*所有店近7 日现金收入趋势  某个店的也是这个*/
+        .factory('GetCashEarningsTendency',['$resource',function ($resource){
+            return $resource(analyze+"getCashEarningsTendency")
         }])
 
 
