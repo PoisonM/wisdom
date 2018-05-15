@@ -23,6 +23,12 @@ public interface ShopUserRelationService {
      */
     String isMember(String userId);
 
+    /**
+     * 用户绑定会员
+     *
+     * @param shopUserRelationDTO
+     * @return
+     */
     int saveUserShopRelation(ShopUserRelationDTO shopUserRelationDTO);
 
     /**

@@ -87,6 +87,7 @@ public class ShopController {
                     userRelationDTO.setSysUserId(sysUserId);
                     userRelationDTO.setShopId(shopId);
                     userRelationDTO.setStatus(CommonCodeEnum.Y.getCode());
+                    logger.info("保存用户的绑定关系");
                     int saveFlag = shopUserRelationService.saveUserShopRelation(userRelationDTO);
                     logger.info("更新用户与店的绑定关系更新结果为={}", saveFlag > 0 ? "成功" : "失败");
                     responseDTO.setResult(StatusConstant.SUCCESS);
