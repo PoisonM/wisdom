@@ -9,7 +9,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             $scope.status="instance";
             $scope.agencyIndex = -1;
             $scope.checkStatus = "";
-            $scope.mum = false;
+            $scope.mum = true;
             var pageTrue = true;
             $scope.auditFlag=false;
 

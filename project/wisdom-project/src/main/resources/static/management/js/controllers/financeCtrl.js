@@ -3,7 +3,7 @@ angular.module('controllers',[]).controller('financeCtrl',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryPayRecordsByParameters,ManagementUtil) {
             $scope.bills = "";
             $scope.order = "";
-            $scope.mum = false;
+            $scope.mum = true;
             var orderCompleteStart = document.querySelector(".StreamNumberStart");
             var orderCompleteEnd = document.querySelector(".StreamNumberEnd");
             var orderPayStart  = document.querySelector(".orderPayStart");

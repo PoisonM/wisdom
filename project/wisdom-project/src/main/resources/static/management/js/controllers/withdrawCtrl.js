@@ -6,7 +6,7 @@ angular.module('controllers',[]).controller('withdrawCtrl',
             var updateStartTime = document.querySelector(".updateStartTime");
             var updateEndTime = document.querySelector(".updateEndTime");
             $scope.counnt ="";
-            $scope.mum = false;
+            $scope.mum = true;
             $scope.isdisabled = false;
             var pattern = /^1[34578]\d{9}$/;
             var pattern1 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
