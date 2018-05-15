@@ -34,6 +34,7 @@ public class BusinessOrderDTO {
     //订单商品id
     @JSONField(name = "businessProductId")
     private String businessProductId;
+
     //商品库存
     @JSONField(name = "productAmount")
     private String productAmount;
@@ -391,5 +392,13 @@ public class BusinessOrderDTO {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getProductAmount() {
+        return productAmount;
+    }
+
+    public void setProductAmount(String productAmount) {
+        this.productAmount = productAmount;
     }
 }
