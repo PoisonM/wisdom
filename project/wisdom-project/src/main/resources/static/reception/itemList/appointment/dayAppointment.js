@@ -4,9 +4,62 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
     $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
     $scope.param = {
+        zhongjiList:{},
+        hahaList:[],
+        tswTimeAll:[],
+        timeLocation:[],
         week: [],
         btnActive: ['btnActive', 'common'],
-        code: [{"0": "00:00"}, {"1": "00:30"}, {"2": "01:00"}, {"3": "01:30"}, {"4": "02:00"}, {"5": "02:30"}, {"6": "03:00"}, {"7": "03:30"}, {"8": "04:00"}, {"9": "04:30"}, {"10": "05:00"}, {"11": "05:30"}, {"12": "06:00"}, {"13": "06:30"}, {"14": "07:00"}, {"15": "07:30"}, {"16": "08:00"}, {"17": "08:30"}, {"18": "09:00"}, {"19": "09:30"}, {"20": "10:00"}, {"21": "10:30"}, {"22": "11:00"}, {"23": "11:30"}, {"24": "12:00"}, {"25": "12:30"}, {"26": "13:00"}, {"27": "13:30"}, {"28": "14:00"}, {"29": "14:30"}, {"30": "15:00"}, {"31": "15:30"}, {"32": "16:00"}, {"33": "16:30"}, {"34": "17:00"}, {"35": "17:30"}, {"36": "18:00"}, {"37": "18:30"}, {"38": "19:00"}, {"39": "19:30"}, {"40": "20:00"}, {"41": "20:30"}, {"42": "21:00"}, {"43": "21:30"}, {"44": "22:00"}, {"45": "22:30"}, {"46": "23:00"}, {"47": "23:30"}],
+        code: [
+            {"0": "00:00"},
+            {"1": "00:30"},
+            {"2": "01:00"},
+            {"3": "01:30"},
+            {"4": "02:00"},
+            {"5": "02:30"},
+            {"6": "03:00"},
+            {"7": "03:30"},
+            {"8": "04:00"},
+            {"9": "04:30"},
+            {"10": "05:00"},
+            {"11": "05:30"},
+            {"12": "06:00"},
+            {"13": "06:30"},
+            {"14": "07:00"},
+            {"15": "07:30"},
+            {"16": "08:00"},
+            {"17": "08:30"},
+            {"18": "09:00"},
+            {"19": "09:30"},
+            {"20": "10:00"},
+            {"21": "10:30"},
+            {"22": "11:00"},
+            {"23": "11:30"},
+            {"24": "12:00"},
+            {"25": "12:30"},
+            {"26": "13:00"},
+            {"27": "13:30"},
+            {"28": "14:00"},
+            {"29": "14:30"},
+            {"30": "15:00"},
+            {"31": "15:30"},
+            {"32": "16:00"},
+            {"33": "16:30"},
+            {"34": "17:00"},
+            {"35": "17:30"},
+            {"36": "18:00"},
+            {"37": "18:30"},
+            {"38": "19:00"},
+            {"39": "19:30"},
+            {"40": "20:00"},
+            {"41": "20:30"},
+            {"42": "21:00"},
+            {"43": "21:30"},
+            {"44": "22:00"},
+            {"45": "22:30"},
+            {"46": "23:00"},
+            {"47": "23:30"}
+            ],
         bgBlack:false,
         serachContent: '', /*搜索内容*/
         givingIndex: 0, /*赠送Index*/
@@ -186,107 +239,240 @@ PADWeb.controller("dayAppointmentCtrl", function($scope, $state, $stateParams,$f
 
     };
    var  dayAll = function(){
-        ShopDayAppointmentInfoByDate.get({
-            sysShopId:'3',
-            startDate:"2018-00-00 00:00:00",
-            endDate:"2019-00-00 00:00:00"
-        },function(data){
-            var memeda = data.responseData;
-            /*得到循环时间*/
+       ShopDayAppointmentInfoByDate.get({
+           sysShopId: '3',
+           startDate: "2018-00-00 00:00:00",
+           endDate: "2019-00-00 00:00:00"
+       }, function (data) {
+           $scope.memeda = data.responseData;
+           $scope.startTime = data.responseData.startTime;
+           $scope.endTime = data.responseData.endTime;
+           /*/!*得到循环时间*!/
             var hourTime = [];
             for(var i=0;i<$scope.param.code.length;i++){
-                for(key in $scope.param.code[i] ){
-                    hourTime.push($scope.param.code[i][key])
-                    if($scope.param.code[i][key] == memeda.startTime ){
-                        var a= i;
-                    }
-                    if($scope.param.code[i][key] == memeda.endTime ){
-                        var b= i;
-                    }
-                }
+            for(key in $scope.param.code[i] ){
+            hourTime.push($scope.param.code[i][key])
+            if($scope.param.code[i][key] == memeda.startTime ){
+            var a= i;
+            }
+            if($scope.param.code[i][key] == memeda.endTime ){
+            var b= i;
+            }
+            }
             }
             $scope.param.days=hourTime.slice(a,b+1);
             $scope.param.day=$scope.param.code.slice(a,b+1);
             for (key  in memeda) {
-                if (key == 'endTime' || key == "startTime") {
-                } else {
-                    $scope.param.appointmentObject.beautician.push(key);
-                    $scope.param.appointmentObject.appointmentInfo.push(memeda[key].appointmentInfo);
-                    $scope.param.appointmentObject.point.push(memeda[key].point);
+            if (key == 'endTime' || key == "startTime") {
+            } else {
+            $scope.param.appointmentObject.beautician.push(key);
+            $scope.param.appointmentObject.appointmentInfo.push(memeda[key].appointmentInfo);
+            $scope.param.appointmentObject.point.push(memeda[key].point);
 
-                }
+            }
             }
 
 
 
 
-            /*处理数据*/
-            /*list:[
-             {status:[],
-             sysUserName:[],
-             shopProjectName:[]}
-             \]
-             想要的数据格式
-             根据时间编码找到对应的索引，通过索引拿到数据
-             * */
+            /!*处理数据*!/
+            /!*list:[
+            {status:[],
+            sysUserName:[],
+            shopProjectName:[]}
+            \]
+            想要的数据格式
+            根据时间编码找到对应的索引，通过索引拿到数据
+            * *!/
 
             for(var i=0;i<$scope.param.appointmentObject.appointmentInfo.length;i++){
-                $scope.param.appointmentObject.list[i] = new Object;
-                $scope.param.appointmentObject.list[i].status = new Array;
-                $scope.param.appointmentObject.list[i].sysUserName = new Array;
-                $scope.param.appointmentObject.list[i].shopProjectName = new Array;
-                $scope.param.appointmentObject.list[i].time = new Array;
-                $scope.param.appointmentObject.list[i].sysUserId = new Array;
-                $scope.param.appointmentObject.list[i].sysShopId = new Array;
-                $scope.param.appointmentObject.list[i].textShowOrHide = new Array;
-                for (var e = 0; e < $scope.param.day.length; e++) {
-                    $scope.param.appointmentObject.list[i].status[e]=6;
-                    $scope.param.appointmentObject.list[i].sysUserName[e]=null;
-                    $scope.param.appointmentObject.list[i].shopProjectName[e]=null;
-                    $scope.param.appointmentObject.list[i].time[e]=null;
-                    $scope.param.appointmentObject.list[i].sysUserId[e]=null;
-                    $scope.param.appointmentObject.list[i].sysShopId[e]=null;
-                    $scope.param.appointmentObject.list[i].textShowOrHide[e]=0;
-                    for(var j=0;j<$scope.param.appointmentObject.appointmentInfo[i].length;j++){
-                        for (var k = 0;k < $scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",").length; k++) {
-                            if ($scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",")[k] == objTemp($scope.param.day[e])) {
-                                $scope.param.appointmentObject.list[i].sysUserName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserName;
-                                $scope.param.appointmentObject.list[i].shopProjectName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].shopProjectName;
-                                $scope.param.appointmentObject.list[i].sysUserId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserId;
-                                $scope.param.appointmentObject.list[i].sysShopId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysShopId;
-                                $scope.param.appointmentObject.list[i].time[e] = $scope.param.days[e];
+            $scope.param.appointmentObject.list[i] = new Object;
+            $scope.param.appointmentObject.list[i].status = new Array;
+            $scope.param.appointmentObject.list[i].sysUserName = new Array;
+            $scope.param.appointmentObject.list[i].shopProjectName = new Array;
+            $scope.param.appointmentObject.list[i].time = new Array;
+            $scope.param.appointmentObject.list[i].sysUserId = new Array;
+            $scope.param.appointmentObject.list[i].sysShopId = new Array;
+            $scope.param.appointmentObject.list[i].textShowOrHide = new Array;
+            for (var e = 0; e < $scope.param.day.length; e++) {
+            $scope.param.appointmentObject.list[i].status[e]=6;
+            $scope.param.appointmentObject.list[i].sysUserName[e]=null;
+            $scope.param.appointmentObject.list[i].shopProjectName[e]=null;
+            $scope.param.appointmentObject.list[i].time[e]=null;
+            $scope.param.appointmentObject.list[i].sysUserId[e]=null;
+            $scope.param.appointmentObject.list[i].sysShopId[e]=null;
+            $scope.param.appointmentObject.list[i].textShowOrHide[e]=0;
+            for(var j=0;j<$scope.param.appointmentObject.appointmentInfo[i].length;j++){
+            for (var k = 0;k < $scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",").length; k++) {
+            if ($scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",")[k] == objTemp($scope.param.day[e])) {
+            $scope.param.appointmentObject.list[i].sysUserName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserName;
+            $scope.param.appointmentObject.list[i].shopProjectName[e] = $scope.param.appointmentObject.appointmentInfo[i][j].shopProjectName;
+            $scope.param.appointmentObject.list[i].sysUserId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysUserId;
+            $scope.param.appointmentObject.list[i].sysShopId[e] = $scope.param.appointmentObject.appointmentInfo[i][j].sysShopId;
+            $scope.param.appointmentObject.list[i].time[e] = $scope.param.days[e];
 
-                                if ($scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",")[0] == objTemp($scope.param.day[e])) {
-                                    $scope.param.appointmentObject.list[i].textShowOrHide[e]=1;
+            if ($scope.param.appointmentObject.appointmentInfo[i][j].scheduling.split(",")[0] == objTemp($scope.param.day[e])) {
+            $scope.param.appointmentObject.list[i].textShowOrHide[e]=1;
 
-                                }
+            }
 
 
 
-                                if($scope.param.appointmentObject.appointmentInfo[i][j].status == 1){
-                                    $scope.param.appointmentObject.list[i].status[e] = 1
-                                } else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 2){
-                                    $scope.param.appointmentObject.list[i].status[e] = 2
-                                }else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 3){
-                                    $scope.param.appointmentObject.list[i].status[e] = 3
-                                }else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 4){
-                                    $scope.param.appointmentObject.list[i].status[e] = 4
-                                } else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 0){
-                                    $scope.param.appointmentObject.list[i].status[e] = 0
-                                }
-                            }
+            if($scope.param.appointmentObject.appointmentInfo[i][j].status == 1){
+            $scope.param.appointmentObject.list[i].status[e] = 1
+            } else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 2){
+            $scope.param.appointmentObject.list[i].status[e] = 2
+            }else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 3){
+            $scope.param.appointmentObject.list[i].status[e] = 3
+            }else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 4){
+            $scope.param.appointmentObject.list[i].status[e] = 4
+            } else if($scope.param.appointmentObject.appointmentInfo[i][j].status == 0){
+            $scope.param.appointmentObject.list[i].status[e] = 0
+            }
+            }
+            }
+            }
+            }
+            }*/
+
+           /*5.10 18:24 尝试封装*/
+           /*循环出时间列表*/
+           
+           
+           /*
+           * 首先如果转成一行一行 key是时间 val得要每个美容师这个时间段有没有预约
+           * [
+           *    {}
+           * ]
+           *
+           * */
+           // var tswTimeList = []
+           // var tswTimeAll = []
+           // var timeLocation = []
+           $scope.meirongshiList = []
+           $scope.tswTimeList = []
+           $scope.param.code //所有时间点对应的是否选中状态值
+           for(var i = 0; i < $scope.param.code.length; i++){
+               for(timeItem in $scope.param.code[i]){
+                    $scope.param.tswTimeAll.push($scope.param.code[i][timeItem])
+               }
+           }
+           for(var i = 0; i < $scope.param.tswTimeAll.length; i++){
+               if($scope.param.tswTimeAll[i] == $scope.startTime){
+                   $scope.param.timeLocation[0] = i
+               }
+               if($scope.param.tswTimeAll[i] == $scope.endTime){
+                   $scope.param.timeLocation[1] = i
+               }
+           }
+           $scope.tswTimeList = $scope.param.tswTimeAll.slice($scope.param.timeLocation[0],$scope.param.timeLocation[1]+1)
+           console.log($scope.tswTimeList);//拿到需要的所有的时间节点
+            //计算每一行有多少个美容师
+           delete $scope.memeda.startTime//删除对象中的开始结束时间
+           delete $scope.memeda.endTime
+           for (key  in $scope.memeda) {
+               $scope.meirongshiList[$scope.memeda[key].sysClerkDTO.name]={
+                   appointmentInfo:$scope.memeda[key].appointmentInfo
+               }
+               $scope.meirongshiList.length++
+           }
+           //关键一步 配合时间列表完成对应部分状态渲染
+           //先匹配时间code
+           /*$scope.scheduTimeList = []//只是为了把参数scheduling状态值换成具体时间
+           var tempindex = 0
+           for(mrname in $scope.meirongshiList){
+               for(var q = 0; q < $scope.meirongshiList[mrname].appointmentInfo.length; q++){
+                   $scope.meirongshiList[mrname].appointmentInfo[q].schedulingArr = $scope.meirongshiList[mrname].appointmentInfo[q].scheduling.split(",")
+                   for(var t = 0; t < $scope.meirongshiList[mrname].appointmentInfo[q].schedulingArr.length; t++){//拿到所有的配对时间
+                       for(var i = 0; i < $scope.param.code.length; i++){
+                           for( key in $scope.param.code[i] ){
+                               if(key == $scope.meirongshiList[mrname].appointmentInfo[q].schedulingArr[t]){//判断后台返回的时间标识 匹配具体的时间存入数组 然后再和需要的时间列表配对 在每个时间列表下面的每个美容师是否选中
+                                   // $scope.meirongshiList[mrname].appointmentInfo[q].scheduTimeList = []
+                                   // tempindex++
+                                   // $scope.meirongshiList[mrname].appointmentInfo[q].scheduTimeList[tempindex] = $scope.param.code[i][key]//追加到appinfo的一个属性之中
+                                   $scope.scheduTimeList.push($scope.param.code[i][key])
+                                   $scope.meirongshiList[mrname].appointmentInfo[q].scheduTimeList = $scope.scheduTimeList
+                               }
+                           }
+                       }
+                   }
+               }
+           }*/
+
+           for(var d = 0; d < $scope.tswTimeList.length; d++){//所有需要的时间节点
+               $scope.param.zhongjiList[$scope.tswTimeList[d]] = {};
+               for(mrname in $scope.meirongshiList){
+                   $scope.param.zhongjiList[$scope.tswTimeList[d]][mrname] = $scope.meirongshiList[mrname]
+               }
+           }
+           console.log($scope.param.zhongjiList);
+
+
+
+           //深复制对象方法
+           var cloneObj = function (obj) {
+               var newObj = {};
+               if (obj instanceof Array) {
+                   newObj = [];
+               }
+               for (var key in obj) {
+                   var val = obj[key];
+                   //newObj[key] = typeof val === 'object' ? arguments.callee(val) : val; //arguments.callee 在哪一个函数中运行，它就代表哪个函数, 一般用在匿名函数中。
+                   newObj[key] = typeof val === 'object' ? cloneObj(val): val;
+               }
+               return newObj;
+           };
+
+           $scope.tempZhongjiList = ""
+           $scope.tempZhongjiList = cloneObj($scope.param.zhongjiList)
+
+
+
+           //拿到对应时间下的所有美容师
+           for(timeItem in $scope.param.zhongjiList){
+
+                for(var e = 0; e < $scope.param.code.length; e++){
+                    for(codekey in $scope.param.code[e]){
+                        if(timeItem == $scope.param.code[e][codekey]){
+                            //具体时间相等 可以拿到code 因为下面的appinfo有对应的code
+                            $scope.param.zhongjiList[timeItem].timeCode = codekey
                         }
                     }
                 }
-            }
-        })
+                //拿到美容师对应的属性
+                for(mrname in  $scope.tempZhongjiList[timeItem]){
+                    //循环对应的appointmentInfo数组
+                    for(var i = 0; i <  $scope.tempZhongjiList[timeItem][mrname].appointmentInfo.length; i++){
+                        $scope.tempZhongjiList[timeItem][mrname].appointmentInfo[i].scheduling.split(",")
+                        for(var q = 0; q < $scope.tempZhongjiList[timeItem][mrname].appointmentInfo[i].scheduling.split(",").length; q++){
+                            if($scope.param.zhongjiList[timeItem]['timeCode'] == $scope.tempZhongjiList[timeItem][mrname].appointmentInfo[i].scheduling.split(",")[q]){
+                                $scope.param.zhongjiList[timeItem][mrname].statusList= {
+                                    status:$scope.tempZhongjiList[timeItem][mrname].appointmentInfo[i].status,
+                                    flag:"1",//flag 1选中 其他未选中
+                                    sysUserName:$scope.tempZhongjiList[timeItem][mrname].appointmentInfo[i].sysUserName,
+                                    shopProjectName:$scope.tempZhongjiList[timeItem][mrname].appointmentInfo[i].shopProjectName
+                                }
+                            }
+                          
+                        }
+                    }
+
+                }
+           }
 
 
-        function objTemp(obj) {
-            for (key  in obj) {
-                return key
-            }
-        }
+
+           //调用固定表头类
+           var tiemInt = setInterval(function () {
+               if($("#tbTest1 thead tr td").length != 0){
+                   var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
+                   clearTimeout(tiemInt)
+               }
+           },100)
+
+
+       });
+
     }
     $scope.appointmentChange = function (type) {
         if (type == "week") {

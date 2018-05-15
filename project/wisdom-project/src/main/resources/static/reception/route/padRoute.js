@@ -290,6 +290,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.bindMember', {
+            url: '/bindMember',
+            templateUrl: root + '/addRecord/bindMember.html',
+            controller: 'bindMemberCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "绑定用户",
+                        files: [
+                            root + "addRecord/bindMember.css",
+                            root + "addRecord/bindMember.js",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.personalFile', {
             url: '/personalFile',
             templateUrl: root + '/cashier/personalFile.html',

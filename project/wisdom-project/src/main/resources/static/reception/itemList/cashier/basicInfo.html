@@ -9,6 +9,8 @@
         </div>
         <div class="basicInfo-content-second clearfix">
             <span>会员：{{responseData1.member}}</span>
+            <span>未绑定</span>
+            <span ng-click="goBindMember()" class="bind">绑定</span>
         </div>
         <div class="basicInfo-content-third clearfix">
             <span>总金额：<b>{{responseData1.sumAmount}}</b></span>

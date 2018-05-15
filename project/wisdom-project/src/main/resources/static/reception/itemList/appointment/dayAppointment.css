@@ -26,7 +26,7 @@
 .dayAppointment .header .scheduling span { float: right; margin-right: 0.3125rem; font-size: 0.26563rem; color: #ffffff; }
 .dayAppointment .header .scheduling:after, .dayAppointment .header .timeArea:after { display: block; clear: both; content: ''; }
 .dayAppointment .nameLis ul:after { content: ''; display: block; clear: both; }
-.dayAppointment .nameLis { width: 100%; height: 0.97rem;position: absolute; z-index: 100;background: #ffffff}
+.dayAppointment .nameLis { width: 100%; height: 1.17rem;position: absolute; z-index: 100;background: #ffffff}
 .dayAppointment .nameLis img { display: inline-block; width: 0.25rem; height: 0.25rem; vertical-align: middle; }
 .dayAppointment .nameLis .seg { width: 0.01563rem; height: 0.23438rem; }
 .dayAppointment .nameLis ul { display: flex; }
@@ -96,3 +96,16 @@
 .position{position: absolute; top: -1.17rem;left: -0rem;z-index: 1000;}
 .swiper-slide{position: relative;}
 .ngdialog-overlay{background: rgba(0, 0, 0,0.4);}
+
+.dayAppointment .complex_table table{
+    width: 100%;
+}
+.dayAppointment .complex_table table tr{
+    width: 100%;
+    border-bottom: 1px solid;
+}
+.dayAppointment .complex_table table td div{
+    width: 2.42188rem;
+    height: 0.96875rem;
+}
+
