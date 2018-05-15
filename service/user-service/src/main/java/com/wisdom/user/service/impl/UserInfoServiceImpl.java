@@ -90,7 +90,6 @@ public class UserInfoServiceImpl implements UserInfoService{
         RedisLock redisLock = new RedisLock("userInfo"+userInfoDTO.getId());
         try{
             redisLock.lock();
-
             userInfoMapper.insertUserInfo(userInfoDTO);
         } catch (Exception e) {
             e.printStackTrace();

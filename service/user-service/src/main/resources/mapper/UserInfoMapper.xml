@@ -136,6 +136,7 @@
     <insert id="insertUserInfo">
         INSERT INTO sys_user(
         id,
+        source,
         nickname,
         password,
         email,
@@ -152,6 +153,7 @@
         del_flag
         ) VALUES (
         #{id},
+        #{source},
         #{nickname},
         #{password},
         #{email},
