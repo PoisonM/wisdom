@@ -7,14 +7,8 @@ angular.module('controllers',["ionic-datepicker"]).controller('sevenDayChartsCtr
 
             $rootScope.title = "7日收益趋势图";
 
-            $scope.test = '1234';
+            
 
-            $scope.param = {
-                income : 0,
-                expenditure:0,
-                startDate : BossUtil.getNowFormatDate(),
-                dateX : ['2018-04-16','2018-04-16','2018-04-16','2018-04-16','前天','昨日','今日']
-            }
 
 
             $scope.getInfo=function(){
