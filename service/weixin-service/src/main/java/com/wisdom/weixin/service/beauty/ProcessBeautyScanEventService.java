@@ -5,6 +5,7 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,8 @@ public class ProcessBeautyScanEventService {
         @Override
         public void run() {
 
+            String openId = xmlEntity.getFromUserName();
+
             String shopId = "";
             if(StringUtils.isNotNull(xmlEntity.getEventKey())){
                 shopId = xmlEntity.getEventKey().replace("beautyShop", "");
@@ -71,7 +74,8 @@ public class ProcessBeautyScanEventService {
             WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
 
             //根据shopId和openId查询用户是否绑定了此美容院
-
+            JedisUtils.set(shopId+openId,"alreadyBind",ConfigConstant.logintokenPeriod);
+            JedisUtils.set(shopId+openId,"notBind",ConfigConstant.logintokenPeriod);
 
 
         }
