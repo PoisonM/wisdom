@@ -278,8 +278,8 @@ public class ShopMemberAttendanceController {
 		UserConsumeRequestDTO userConsumeRequestDistic = new UserConsumeRequestDTO();
 		userConsumeRequestDistic.setSysBossId(sysBossDTO.getId());
 		userConsumeRequestDistic.setDisticRequire(true);
-		pageParamVoDTO.setStartTime(startTime);
-		pageParamVoDTO.setEndTime(endTime);
+		pageParamDistic.setStartTime(startTime);
+		pageParamDistic.setEndTime(endTime);
 		pageParamDistic.setRequestData(userConsumeRequestDTO);
 
 		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(pageParamDistic);
