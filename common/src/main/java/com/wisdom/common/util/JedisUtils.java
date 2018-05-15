@@ -63,7 +63,8 @@ public class JedisUtils {
 		try {
 			jedis = getResource();
 			if (jedis.exists(getBytesKey(key))) {
-				value = toObject(jedis.get(getBytesKey(key)));
+				byte[] bytes = jedis.get(getBytesKey(key));
+				value = new String(bytes);
 				logger.debug("getObject {} = {}", key, value);
 			}
 		} catch (Exception e) {
