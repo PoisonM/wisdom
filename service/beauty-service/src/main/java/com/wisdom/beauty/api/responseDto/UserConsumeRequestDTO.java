@@ -52,6 +52,10 @@ public class UserConsumeRequestDTO extends BaseEntity  {
      * 请求来源，用于区分是否需要设置goodsType条件
      */
     private Boolean goodsTypeRequire=false;
+    /**
+     * 是否需要去重
+     */
+    private Boolean disticRequire=false;
     private int pageSize ; //每页的条目
 
     public String getId() {
@@ -132,5 +136,13 @@ public class UserConsumeRequestDTO extends BaseEntity  {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public Boolean getDisticRequire() {
+        return disticRequire;
+    }
+
+    public void setDisticRequire(Boolean disticRequire) {
+        this.disticRequire = disticRequire;
     }
 }
