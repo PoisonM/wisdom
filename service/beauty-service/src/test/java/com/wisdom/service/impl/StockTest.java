@@ -2,15 +2,15 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
-import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
-import com.wisdom.beauty.api.dto.ShopStockDTO;
-import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
-import com.wisdom.beauty.api.dto.ShopStockRecordDTO;
+import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper;
+import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.SpringUtil;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
@@ -54,6 +54,9 @@ public class StockTest  {
     private ShopStockService shopStockService;
     @Autowired
     private ExtShopStockNumberMapper extShopStockNumberMapper;
+
+    @Autowired
+    private ExtShopUserConsumeRecordMapper extShopUserConsumeRecordMapper;
 
     @Before
     public void setupMockMvc() throws Exception {
@@ -136,5 +139,15 @@ public class StockTest  {
         param.put("list",list);
        // extShopStockNumberMapper.updateBatchShopStockNumber(param);
         extShopStockNumberMapper.saveBatchShopStockNumber(list);
+    }
+
+    @Test
+    public  void  tesst(){
+        ShopUserConsumeRecordCriteria recordCriteria = new ShopUserConsumeRecordCriteria();
+        ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
+        // 设置查询条件
+        criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
+        criteria.andSysClerkIdEqualTo("11");
+        Integer consumeNumber = extShopUserConsumeRecordMapper.selectUserConsumeNumber(recordCriteria);
     }
 }
