@@ -57,6 +57,7 @@ public class PinYinSort {
             }
         }
 
-        return sb.toString();
+        return StringUtils.isBlank(sb.toString()) ? str : sb.toString();
     }
+
 }
