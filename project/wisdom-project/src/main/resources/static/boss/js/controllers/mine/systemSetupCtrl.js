@@ -6,5 +6,7 @@ angular.module('controllers',[]).controller('systemSetupCtrl',
         function ($scope,$rootScope,$stateParams,$state) {
 
             $rootScope.title = "系统设置";
-
+            $scope.clearSuccess=function () {
+                alert("清除成功")
+            }
         }]);
