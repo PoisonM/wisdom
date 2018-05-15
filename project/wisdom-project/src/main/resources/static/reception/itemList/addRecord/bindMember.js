@@ -22,9 +22,14 @@ PADWeb.controller('bindMemberCtrl', function ($scope,$stateParams, $state, getBe
             if(data.result == "0x00001"){
                 alert("SUCCESS")
                 clearInterval($scope.timeInfo)
+                $state.go("pad-web.left_nav.personalFile")
             }
             if(data.result == "0x00002"){
                 alert("FAILURE")
+            }
+            if(data.result == "alreadyBind"){
+                alert("已绑定")
+                clearInterval($scope.timeInfo)
             }
         })
     }
@@ -32,5 +37,10 @@ PADWeb.controller('bindMemberCtrl', function ($scope,$stateParams, $state, getBe
     $scope.timeInfo = setInterval(function () {
         $scope.queryInfo()
     },3000)
+    /*去其他页面清除定时器*/
+    $scope.priceListBlackFn = function () {
+        $state.go("pad-web.left_nav.personalFile")
+    }
+
 
 });

@@ -89,6 +89,8 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetSho
             if(data.result == "0x00001"){
                 alert("保存成功")
                 $state.go("pad-web.left_nav.personalFile")
+            }else if(data.result == "0x00002"){
+                alert(data.responseData)
             }
         })
     }
