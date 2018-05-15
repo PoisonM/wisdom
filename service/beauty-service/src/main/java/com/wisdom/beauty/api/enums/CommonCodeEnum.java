@@ -6,6 +6,8 @@ public enum CommonCodeEnum {
     UNSUCCESS("1", "非正常"),
     Y("Y", "正常"),
     N("N", "非正常"),
+    NOTBIND("notBind", "正常"),
+    ALREADYBIND("alreadyBind", "非正常"),
     ADD("0", "添加"),
     DELETE("1", "删除"),
     TRUE("true", "true");

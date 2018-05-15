@@ -79,9 +79,10 @@ public class ShopController {
         if (StringUtils.isNotBlank(shopId) && StringUtils.isNotBlank(sysUserId)) {
             String string = new StringBuffer(shopId).append("_").append(sysUserId).toString();
             Object object = JedisUtils.getObject(string);
+            logger.info("redis中查询出来的数据为，{}",object);
             if (null != object) {
                 String flag = (String) object;
-                if (CommonCodeEnum.Y.getCode().equals(flag)) {
+                if (CommonCodeEnum.NOTBIND.getCode().equals(flag)) {
                     //更新用户与店的绑定关系
                     ShopUserRelationDTO userRelationDTO = new ShopUserRelationDTO();
                     userRelationDTO.setSysUserId(sysUserId);
