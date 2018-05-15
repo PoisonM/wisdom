@@ -339,7 +339,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.selectRechargeCard', {
-            url: '/selectRechargeCard',
+            url: '/selectRechargeCard/:type',
             templateUrl: root + '/cashier/selectRechargeCard.html',
             controller: 'selectRechargeCardCtrl',
             resolve: {
@@ -414,7 +414,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.signConfirm', {
-            url: '/signConfirm',
+            url: '/signConfirm/:transactionId',
             templateUrl: root + '/cashier/signConfirm.html',
             controller: 'signConfirmCtrl',
             resolve: {
