@@ -1905,9 +1905,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-                /*trendChart  趋势图*/
+                /*trendChart  趋势图-收支分析*/
                     .state('trendChart', {
-                        url: '/trendChart',
+                        url: '/trendChart/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'trendChartCtrl',
                         resolve: {
@@ -1931,8 +1931,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*sevenDayCharts  趋势图-综合分析*/
                     .state('sevenDayCharts', {
-                        url: '/sevenDayCharts',
+                        url: '/sevenDayCharts/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'sevenDayChartsCtrl',
                         resolve: {

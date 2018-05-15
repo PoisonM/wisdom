@@ -17,61 +17,75 @@ angular.module('controllers',["ionic-datepicker"]).controller('sevenDayChartsCtr
             }
 
 
-            $scope.series = [{
-                name: '业绩',
-                data: [4,7,5,6,9,2,10]
-            }];
+            $scope.getInfo=function(){
+                if($stateParams.id!='a'){
+                    GetExpenditureAndIncome.get({sysShopId:$stateParams.id},function (data) {
+                        if(data.result==Global.SUCCESS&&data.responseData!=null){
+                            $scope.sevenDayCharts = data.responseData
+                            $scope.HPic()
+                        }
 
-            $scope.cardSeries = [ {
-                name: '消卡',
-                data: [20,30.40,22,33,42,25]
-            }];
 
-            $scope.options = {
-                title:'',
-                chart: {
-                    type: 'column'
-                },
-                xAxis: {
-                    categories: $scope.param.dateX,
-                    crosshair: true
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: ''
-                    }
-                },
-                // series: $scope.sportSeries,
-                legend: {
-                    enabled: false			//隐藏data中的name显示
-                },
-                credits: {		            //去除右下角highcharts标志
-                    enabled: false
+                    })
+                }else{
+                    GetExpenditureAndIncome.get({},function (data) {
+                        if(data.result==Global.SUCCESS&&data.responseData!=null){
+                            $scope.sevenDayCharts = data.responseData
+                            $scope.HPic()
+                        }
+
+
+                    })
                 }
-            };
 
-            $scope.cardOptions = {
-                title:'',
-                chart: {
-                    type: 'column'
-                },
-                xAxis: {
-                    categories: $scope.param.dateX,
-                    crosshair: true
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: ''
+            }
+
+            $scope.HPic =function(){
+                $scope.cardSeries = [
+                    {
+                        name: '耗卡',
+                        data: [20,30.40,22,33,42,25]
+                    },
+                    {
+                        name: '业绩',
+                        data: [1,2,3,4],
+                        color:'orange'
                     }
-                },
-                // series: $scope.sportSeries,
-                legend: {
-                    enabled: false			//隐藏data中的name显示
-                },
-                credits: {		            //去除右下角highcharts标志
-                    enabled: false
+                ];
+
+                $scope.cardOptions = {
+                    title:'',
+                    chart: {
+                        type: 'line'
+                    },
+                    xAxis: {
+                        categories: [],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: ''
+                        }
+                    },
+
+                    legend: {
+                        layout: '',
+                        align: 'right',
+                        verticalAlign: 'top',
+                        borderWidth: 0
+                    },
+                    credits: {		            //去除右下角highcharts标志
+                        enabled: false
+                    },
+                };
+
+                for(var i=0;i< $scope.sevenDayCharts.length;i++){
+                    $scope.cardSeries[0].data[i] =  $scope.sevenDayCharts[i].expenditure;
+                    $scope.cardSeries[1].data[i] =  $scope.sevenDayCharts[i].income;
+                    $scope.cardOptions.xAxis.categories[i] =  $scope.sevenDayCharts[i].formateDate
                 }
-            };
+            }
+            $scope.getInfo()
+
 }]);
