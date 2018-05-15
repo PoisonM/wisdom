@@ -147,7 +147,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         }
         shopUserRelationDTO = shopListByCondition.get(0);
         //status为0  为绑定关系
-        if (CommonCodeEnum.SUCCESS.getCode().equals(shopUserRelationDTO.getStatus())) {
+        if (CommonCodeEnum.Y.getCode().equals(shopUserRelationDTO.getStatus())) {
             responseDTO.setResponseData(CommonCodeEnum.Y.getCode());
         } else {
 
