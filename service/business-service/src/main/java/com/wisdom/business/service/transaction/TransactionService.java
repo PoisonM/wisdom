@@ -73,34 +73,44 @@ public class TransactionService {
 
                 //根据订单号查出订单对应的商品
                 BusinessOrderDTO businessOrderDTO1 = transactionMapper.getBusinessOrderDetailInfoByOrderId(businessOrderDTO.getBusinessOrderId());
-                ProductDTO productDTO = new ProductDTO();
-                if(null == businessOrderDTO1){
-                    logger.info("更新订单updateBusinessOrder关联商品为null");
-                    return;
-                }
-                if(StringUtils.isNull(businessOrderDTO1.getBusinessProductId())){
-                    logger.info("更新订单updateBusinessOrder商品id为null");
-                    return;
-                }
-                productDTO.setProductId(businessOrderDTO1.getBusinessProductId());
-                productDTO.setProductAmount(String.valueOf(businessOrderDTO1.getBusinessProductNum()));
-                //查询是否有记录
-                //如果库里订单状态为待付款,并即将修改状态不是已支付,那么将恢复库存
-                if (!"1".equals(businessOrderDTO.getStatus()) && !"0".equals(businessOrderDTO.getStatus())) {
-                    logger.info("updateBusinessOrder方法根据订单增加相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
-                    Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("add"));
-                    OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
-                    //如果有记录,则不需要重复操作库存
-                    if(null == offlineProductAmountRecordDTO){
-                        this.updateOfflineProductAmount(productDTO,businessOrderDTO, "add");
+                RedisLock redisLock = new RedisLock("OfflineProductAmount"+businessOrderDTO1.getBusinessProductId());
+                try {
+                    redisLock.lock();
+
+                    ProductDTO productDTO = new ProductDTO();
+                    if(null == businessOrderDTO1){
+                        logger.info("更新订单updateBusinessOrder关联商品为null");
+                        return;
                     }
-                } else if ("1".equals(businessOrderDTO.getStatus()) || "0".equals(businessOrderDTO.getStatus())) {
-                    logger.info("updateBusinessOrder方法根据订单减少相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
-                    Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("lose"));
-                    OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
-                    if(null == offlineProductAmountRecordDTO){
-                        this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
+                    if(StringUtils.isNull(businessOrderDTO1.getBusinessProductId())){
+                        logger.info("更新订单updateBusinessOrder商品id为null");
+                        return;
                     }
+                    productDTO.setProductId(businessOrderDTO1.getBusinessProductId());
+                    productDTO.setProductAmount(String.valueOf(businessOrderDTO1.getBusinessProductNum()));
+                    //查询是否有记录
+                    //如果库里订单状态为待付款,并即将修改状态不是已支付,那么将恢复库存
+                    if (!"1".equals(businessOrderDTO.getStatus()) && !"0".equals(businessOrderDTO.getStatus())) {
+                        logger.info("updateBusinessOrder方法根据订单增加相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
+                        Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("add"));
+                        OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
+                        //如果有记录,则不需要重复操作库存
+                        if(null == offlineProductAmountRecordDTO){
+                            this.updateOfflineProductAmount(productDTO,businessOrderDTO, "add");
+                        }
+                    } else if ("1".equals(businessOrderDTO.getStatus()) || "0".equals(businessOrderDTO.getStatus())) {
+                        logger.info("updateBusinessOrder方法根据订单减少相应的商品库存,订单id==" + businessOrderDTO.getBusinessOrderId());
+                        Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("lose"));
+                        OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
+                        if(null == offlineProductAmountRecordDTO){
+                            this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.info("修改商品库存失败,商品id为:"+businessOrderDTO1.getBusinessProductId());
+                    e.printStackTrace();
+                }finally {
+                    redisLock.unlock();
                 }
             }
         }
@@ -410,7 +420,7 @@ public class TransactionService {
      */
     public void updateOfflineProductAmount(ProductDTO productDTO,BusinessOrderDTO businessOrderDTO,String addAndLose) {
         logger.info("根据订单商品数量修改相应的商品库存,商品id为:"+productDTO.getProductId()+"添加还是减少:"+addAndLose);
-        RedisLock redisLock = new RedisLock("updateOfflineProductAmount");
+//        RedisLock redisLock = new RedisLock("OfflineProductAmount"+productDTO.getProductId());
         ProductDTO productDTO2 =new ProductDTO();
         productDTO2.setProductId(productDTO.getProductId());
         //创建库存流水记录
@@ -421,7 +431,7 @@ public class TransactionService {
         offlineProductAmountRecordDTO.setCreateTime(new Date());
         offlineProductAmountRecordDTO.setTag("");
         try {
-            redisLock.lock();
+//            redisLock.lock();
 
             ProductDTO productDTO1 = productMapper.findProductById(productDTO.getProductId());
 
@@ -452,8 +462,6 @@ public class TransactionService {
         } catch (Exception e) {
             logger.info("修改商品库存失败,商品id为:"+productDTO.getProductId());
             e.printStackTrace();
-        }finally {
-            redisLock.unlock();
         }
     }
 
