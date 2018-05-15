@@ -32,6 +32,11 @@ public class PinYinSort {
             chars[i] = a;
             a++;
         }
+        int i = 26;
+        for (int j = 0; j < 10; j++) {
+            chars[i] = (char) j;
+            ++i;
+        }
         return chars;
     }
 
