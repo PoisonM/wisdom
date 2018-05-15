@@ -1,14 +1,14 @@
 package com.wisdom.beauty.controller.archives;
 
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
-import com.wisdom.beauty.api.dto.SysUserAccountDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
+import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
-import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.beauty.util.UserUtils;
@@ -29,6 +29,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,8 +59,8 @@ public class ArchivesController {
     @Autowired
     private UserServiceClient userServiceClient;
 
-    @Autowired
-    private ShopService shopService;
+    @Resource
+    private ShopCardService cardService;
 
     @Autowired
     private ShopUserRelationService shopUserRelationService;
@@ -298,17 +300,14 @@ public class ArchivesController {
             ExtShopUserArchivesDTO extShopUserArchivesDTO = new ExtShopUserArchivesDTO();
             BeanUtils.copyProperties(shopUserArchive, extShopUserArchivesDTO);
             //查询用户账户总余额
-            SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
-            sysUserAccountDTO.setSysShopId(extShopUserArchivesDTO.getSysShopId());
-            sysUserAccountDTO.setSysUserId(extShopUserArchivesDTO.getSysUserId());
-            sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
-            if (null != sysUserAccountDTO) {
-                extShopUserArchivesDTO.setTotalBalance(sysUserAccountDTO.getSumAmount().toString());
-            } else {
-                //测试挡板
-                if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
-                    extShopUserArchivesDTO.setTotalBalance(String.valueOf(RandomValue.getNum(100, 10000)));
-                }
+            ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+            shopUserRechargeCardDTO.setSysUserId(shopUserArchive.getSysUserId());
+            shopUserRechargeCardDTO.setSysShopId(shopUserArchive.getSysShopId());
+            BigDecimal sumAmount = cardService.getUserRechargeCardSumAmount(shopUserRechargeCardDTO);
+            extShopUserArchivesDTO.setTotalBalance(sumAmount.toString());
+            //测试挡板
+            if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
+                extShopUserArchivesDTO.setTotalBalance(String.valueOf(RandomValue.getNum(100, 10000)));
             }
             responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setResponseData(extShopUserArchivesDTO);

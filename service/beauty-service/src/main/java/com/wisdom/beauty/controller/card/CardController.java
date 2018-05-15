@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.card;
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
@@ -19,11 +20,13 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.RandomValue;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -33,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,6 +59,10 @@ public class CardController {
 	@Autowired
 	private ShopUserConsumeService shopUserConsumeService;
 
+	@Value("${test.msg}")
+	private String msg;
+
+
 	@Autowired
 	private ShopProjectGroupService shopProjectGroupService;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -68,12 +76,13 @@ public class CardController {
 	 */
 	@RequestMapping(value = "/getUserRechargeCardList", method = { RequestMethod.POST, RequestMethod.GET })
 	// @LoginRequired
-	public @ResponseBody ResponseDTO<List<ShopUserRechargeCardDTO>> getUserRechargeCardList(
+	public @ResponseBody
+	ResponseDTO<Object> getUserRechargeCardList(
 			@RequestParam String sysUserId, @RequestParam(required = false) String sysShopId) {
         long currentTimeMillis = System.currentTimeMillis();
 
         logger.info("查询某个用户的充值卡列表信息传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
-        ResponseDTO<List<ShopUserRechargeCardDTO>> responseDTO = new ResponseDTO<>();
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
         if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
             logger.debug("传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
@@ -94,9 +103,17 @@ public class CardController {
             responseDTO.setErrorInfo(BusinessErrorCode.ERROR_NULL_RECORD.getCode());
             return responseDTO;
         }
-
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        responseDTO.setResponseData(userRechargeCardList);
+		HashMap<Object, Object> hashMap = new HashMap<>(2);
+		hashMap.put("userRechargeCardList", userRechargeCardList);
+		//查询用户账户总余额
+		String sumAmount = cardService.getUserRechargeCardSumAmount(shopUserRechargeCardDTO).toString();
+		//测试挡板
+		if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
+			sumAmount = String.valueOf(RandomValue.getNum(100, 10000));
+		}
+		hashMap.put("totalBalance", sumAmount);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(hashMap);
 
         logger.info("查询某个用户的充值卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
