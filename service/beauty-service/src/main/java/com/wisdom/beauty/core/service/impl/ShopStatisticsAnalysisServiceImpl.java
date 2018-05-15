@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
@@ -659,7 +660,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		}
 		// 人次数
 		ShopUserConsumeRecordCriteria timeCriteria = new ShopUserConsumeRecordCriteria();
-		ShopUserConsumeRecordCriteria.Criteria timeC = recordCriteria.createCriteria();
+		ShopUserConsumeRecordCriteria.Criteria timeC = timeCriteria.createCriteria();
 		List<ExpenditureAndIncomeResponseDTO> timeList = extShopUserConsumeRecordMapper
 				.selectPriceListByCriteria(timeCriteria);
 		Map<String, Integer> map4 = new HashMap<>(16);
@@ -693,6 +694,84 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			expenditureAndIncomeResponses.add(expenditureAndIncomeResponse);
 		}
 		return expenditureAndIncomeResponses;
+	}
+
+	@Override
+	public List<ExpenditureAndIncomeResponseDTO> getCustomerArriveList(
+			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+		UserConsumeRequestDTO userConsumeRequestDTO = pageParamVoDTO.getRequestData();
+		if (userConsumeRequestDTO == null) {
+			logger.info("getCustomerArriveList方法传入的userConsumeRequestDTO对象为空");
+		}
+		// boss下所有的店
+		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
+		shopBossRelationDTO.setSysBossId(userConsumeRequestDTO.getSysBossId());
+		List<ShopBossRelationDTO> shopBossRelationList = shopBossService.ShopBossRelationList(shopBossRelationDTO);
+		if (CollectionUtils.isEmpty(shopBossRelationList)) {
+			return null;
+		}
+		// 人头数
+		ShopUserConsumeRecordCriteria numberCriteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria numberC = numberCriteria.createCriteria();
+		numberCriteria.setDistinct(true);
+		List<ExpenditureAndIncomeResponseDTO> consumeNumberList = extShopUserConsumeRecordMapper
+				.selectPriceListByCriteria(numberCriteria);
+		Map<String, Integer> map = new HashedMap(16);
+		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : consumeNumberList) {
+			if (map.get(expenditureAndIncomeResponseDTO.getSysShopId()) == null) {
+				map.put(expenditureAndIncomeResponseDTO.getSysShopId(), 1);
+			} else {
+				Integer consumeTime = map.get(expenditureAndIncomeResponseDTO.getSysShopId());
+				map.put(expenditureAndIncomeResponseDTO.getSysShopId(), consumeTime + 1);
+			}
+		}
+
+		// 人次数
+		ShopUserConsumeRecordCriteria timeCriteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria timeC = timeCriteria.createCriteria();
+		List<ExpenditureAndIncomeResponseDTO> timeList = extShopUserConsumeRecordMapper
+				.selectPriceListByCriteria(timeCriteria);
+		Map<String, Integer> timeMap = new HashedMap(16);
+		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : timeList) {
+			if (timeMap.get(expenditureAndIncomeResponseDTO.getSysShopId()) == null) {
+				timeMap.put(expenditureAndIncomeResponseDTO.getSysShopId(), 1);
+			} else {
+				Integer consumeTime = map.get(expenditureAndIncomeResponseDTO.getSysShopId());
+				timeMap.put(expenditureAndIncomeResponseDTO.getSysShopId(), consumeTime + 1);
+			}
+		}
+		// 新客
+		PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO = new PageParamVoDTO();
+		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+		shopUserArchivesDTO.setSysBossId(userConsumeRequestDTO.getSysBossId());
+		shopCustomerArchivesDTO.setRequestData(shopUserArchivesDTO);
+		shopCustomerArchivesDTO.setStartTime(pageParamVoDTO.getStartTime());
+		shopCustomerArchivesDTO.setEndTime(pageParamVoDTO.getEndTime());
+		List<ShopUserArchivesDTO> list = shopCustomerArchivesService.getArchivesList(shopCustomerArchivesDTO);
+		Map<String, Integer> newCustomerMap = new HashedMap(16);
+		for (ShopUserArchivesDTO shopUserArchives : list) {
+			if (newCustomerMap.get(shopUserArchives.getSysShopId()) == null) {
+				newCustomerMap.put(shopUserArchives.getSysShopId(), 1);
+			} else {
+				Integer consumeTime = newCustomerMap.get(shopUserArchives.getSysShopId());
+				newCustomerMap.put(shopUserArchives.getSysShopId(), consumeTime + 1);
+			}
+		}
+		// 遍历shopBossRelationList
+		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
+		List<ExpenditureAndIncomeResponseDTO> responseDTOList = new ArrayList<>();
+		Integer totalConsumeNumber=null;
+		Integer totalShopNewUserNumber=null;
+		Integer totalConsumeTime=null;
+		for (ShopBossRelationDTO shopBossRelation : shopBossRelationList) {
+			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
+			expenditureAndIncomeResponseDTO.setShopNewUserNumber(newCustomerMap.get(shopBossRelation.getSysShopId()));// 新客
+			expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());// 美容院店名字
+			expenditureAndIncomeResponseDTO.setConsumeNumber(map.get(shopBossRelation.getSysShopId()));// 人头数
+			expenditureAndIncomeResponseDTO.setConsumeTime(timeMap.get(shopBossRelation.getSysShopId()));// 次数
+			responseDTOList.add(expenditureAndIncomeResponseDTO);
+		}
+		return responseDTOList;
 	}
 
 }

@@ -95,10 +95,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         // 排序
         criteria.setOrderByClause("sys_user_name");
         // 分页
-        if(shopCustomerArchivesDTO.getPageNo()!=0) {
+        if(shopCustomerArchivesDTO.getPaging()) {
             criteria.setLimitStart(shopCustomerArchivesDTO.getPageNo());
-        }
-        if(shopCustomerArchivesDTO.getPageSize()!=0) {
             criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
         }
         //参数
