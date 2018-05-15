@@ -272,6 +272,9 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('ImageUploadToOSS', ['$resource', function($resource) {
         return $resource('http://192.168.1.117/system/file/imageUploadToOSS')
     }])
-
+    //全量更新用户的订单
+    .factory('UpdateShopUserOrderInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + '/orderInfo/updateShopUserOrderInfo')
+    }])
 
 ;

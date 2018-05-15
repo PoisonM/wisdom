@@ -33,7 +33,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
 
     $scope.goSelectRechargeCard = function(id, eid, name) {
         if ($state.params.type == 1) {
-            $scope.updateVirtualGoodsOrderInfo(id, eid, name, ($state.go('pad-web.left_nav.makeSureOrder')));
+            $scope.updateVirtualGoodsOrderInfo(id, eid, name, function() { $state.go('pad-web.left_nav.makeSureOrder') });
 
         } else {
             $state.go('pad-web.left_nav.selectRechargeCard', { type: id });
@@ -67,7 +67,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             },
         }, function(data) {
             console.log(data)
-
+            callback && callback();
         })
     }
 });
