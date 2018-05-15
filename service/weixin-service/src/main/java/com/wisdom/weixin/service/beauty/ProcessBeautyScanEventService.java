@@ -2,11 +2,16 @@ package com.wisdom.weixin.service.beauty;
 
 
 import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.weixin.client.BeautyServiceClient;
+import com.wisdom.weixin.client.UserServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -14,6 +19,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -28,6 +35,12 @@ public class ProcessBeautyScanEventService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private BeautyServiceClient beautyServiceClient;
+
+    @Autowired
+    private UserServiceClient userServiceClient;
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
@@ -54,18 +67,54 @@ public class ProcessBeautyScanEventService {
         @Override
         public void run() {
 
-            //判断用户所扫描的二维码是否是A店或者B店的二维码
-            String businessParentPhone = "";
+            String openId = xmlEntity.getFromUserName();
+
+            String shopId = "";
+            String userId = "";
             if(StringUtils.isNotNull(xmlEntity.getEventKey())){
-                //todo 此处要考虑，未来完善，不仅仅只有mxbusinessshare_一种类型的扩展二维码
-                businessParentPhone = xmlEntity.getEventKey().replace("mxbusinessshare_", "");
-                String codeArray[] = businessParentPhone.split("_");
-                businessParentPhone = codeArray[0];
+                shopId = xmlEntity.getEventKey().replace("beautyShop", "");
+                String codeArray[] = shopId.split("_");
+                shopId = codeArray[1];
+                userId = codeArray[2];
+            }
+
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setId(userId);
+            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+
+            if(userInfoDTOList.size()>0)
+            {
+                //用户之前关注过
+                userInfoDTO = userInfoDTOList.get(0);
+                if(userInfoDTO.getWeixinAttentionStatus().equals("0"))
+                {
+                    userInfoDTO.setWeixinAttentionStatus("1");
+                }
+                String nickname = null;
+                try {
+                    nickname = URLEncoder.encode(userInfoDTO.getNickname(), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                userInfoDTO.setNickname(nickname);
+                userInfoDTO.setUserOpenid(openId);
+                userInfoDTO.setLoginIp("");
+                userServiceClient.updateUserInfo(userInfoDTO);
+
+                //根据shopId和openId查询用户是否绑定了此美容院
+                ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
+                if("N".equals(responseDTO.getResponseData()))
+                {
+                    JedisUtils.set(shopId+"_"+userId,"notBind",ConfigConstant.logintokenPeriod);
+                }
+                else if("Y".equals(responseDTO.getResponseData()))
+                {
+                    JedisUtils.set(shopId+"_"+userId,"alreadyBind",ConfigConstant.logintokenPeriod);
+                }
             }
 
             List<Article> articleList = new ArrayList<>();
             Article article = new Article();
-//            article.setTitle("又来啦，您请坐！\n");
             article.setTitle("欢迎再次光临! \n");
             article.setDescription("我们是美享商城，在这里，将会为您实时传递最好的美享服务。");
             article.setPicUrl("");

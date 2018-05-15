@@ -64,6 +64,9 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
     private String channel;
 
     //
+    private String shopid;
+
+    //
     private String detail;
 
     //
@@ -230,6 +233,14 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getShopid() {
+        return shopid;
+    }
+
+    public void setShopid(String shopid) {
+        this.shopid = shopid;
     }
 
     public String getDetail() {

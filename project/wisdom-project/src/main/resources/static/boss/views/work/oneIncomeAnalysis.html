@@ -1,5 +1,5 @@
 <ion-view class="bg">
-    <ion-content >
+    <ion-content>
         <!--日期部分-->
         <div class="bgRgb">
             <ionic-datepicker input-obj="datepickerObjectEnd">
@@ -7,7 +7,6 @@
                 <span class="date">{{param.date}}</span>
                 <img src="images/work/drop-down.png" class="dropImg">
             </ionic-datepicker>
-            <span  class="fs15 fr mr10 colfff" ui-sref="storeExpenditure({date:param.date})">全部分店</span>
         </div>
         <!--业绩耗卡-->
         <div class="list">
@@ -17,23 +16,23 @@
                         <p  class="colff">现金收益</p>
                         <p  class="colff">{{oneIncomeAnalysis[3] ==undefined?0:oneIncomeAnalysis[3]}}</p>
                     </div>
-                    <p  style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #ff6666" ui-sref="balanceOfPaymentsAll({id:'a'})"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;" >近7日趋势图</p>
+                    <p  style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #ff6666" ui-sref="balanceOfPaymentsAll({id:param.sysShopId})"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;" ui-sref="balanceOfPaymentsAll({id:param.sysShopId})">近7日趋势图</p>
                 </div>
-              <div class="row col33 p0" >
-                  <div class="col col-50 tc fs13" >
-                       总收入
-                      <p  class="colff66">+{{oneIncomeAnalysis[4] ==undefined?0:oneIncomeAnalysis[4]}}</p>
-                  </div>
-                  <div class="col col-50 tc fs13" >
-                      总支出
-                      <p class="colff66">****</p>
-                  </div>
-              </div>
+                <div class="row col33 p0" >
+                    <div class="col col-50 tc fs13" >
+                        总收入
+                        <p  class="colff66">+{{oneIncomeAnalysis[4] ==undefined?0:oneIncomeAnalysis[4]}}</p>
+                    </div>
+                    <div class="col col-50 tc fs13" >
+                        总支出
+                        <p class="colff66">*****</p>
+                    </div>
+                </div>
             </div>
         </div>
         <!--总收入-->
-        <div class="list" >
-            <p class="item p8"><span>总收入</span><span  class="fr fs15 colff66">+{{incomeAnalysis[4]}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
+        <div class="list" ui-sref="incomeDetails">
+            <p class="item p8"><span>总收入</span><span  class="fr fs15 colff66">++{{oneIncomeAnalysis[4]}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
             <div class="row row-wrap bgfff col33 tc p0">
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
                     <img src="images/work/recharge.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
@@ -58,18 +57,18 @@
             </div>
         </div>
         <!--总支出-->
-        <div class="list">
-            <p class="item p8" ><span>总支出</span><span class="fr fs15 colff66">****<i  class="ml10 col99" class="ion ion-ios-arrow-right"></i></span></p>
+        <div class="list" ui-sref="incomeDetails">
+            <p class="item p8" ><span>总支出</span><span class="fr fs15 colff66">-124868.80<i  class="ml10 col99" class="ion ion-ios-arrow-right"></i></span></p>
             <div class="row row-wrap bgfff col33 tc p0" >
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
                     <img src="images/work/refund.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
                     退款
-                    <p class="mt5">*****</p>
+                    <p class="mt5">***</p>
                 </div>
                 <div class="col col-50"  style="padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
                     <img src="images/work/payCard.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
-                    刷卡手续费
-                    <p class="mt5">****</p>
+                    <p style="margin-left: 0.5rem">刷卡手续费</p>
+                    <p class="mt5">***</p>
                 </div>
             </div>
         </div>

@@ -67,14 +67,13 @@ public class ShopMemberAttendanceController {
 	 */
 	@RequestMapping(value = "/getExpenditureAndIncome", method = { RequestMethod.GET })
 	@ResponseBody
-	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getExpenditureAndIncome(@RequestParam String sysShopId,
-			@RequestParam String startTime, @RequestParam String endTime) {
+	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getExpenditureAndIncome(@RequestParam(required = false) String sysShopId) {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-		pageParamVoDTO.setStartTime(startTime);
-		pageParamVoDTO.setEndTime(endTime);
 		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
 		userConsumeRequest.setSysShopId(sysShopId);
 
+		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+		userConsumeRequest.setSysBossId(sysBossDTO.getId());
 		pageParamVoDTO.setRequestData(userConsumeRequest);
 		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService
 				.getExpenditureAndIncomeList(pageParamVoDTO);
@@ -274,19 +273,25 @@ public class ShopMemberAttendanceController {
 		String endTime = DateUtils.getEndTime();
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
-		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(pageParamVoDTO);
+		//设置是否去重的条件
+		PageParamVoDTO<UserConsumeRequestDTO> pageParamDistic = new PageParamVoDTO();
+		UserConsumeRequestDTO userConsumeRequestDistic = new UserConsumeRequestDTO();
+		userConsumeRequestDistic.setSysBossId(sysBossDTO.getId());
+		userConsumeRequestDistic.setDisticRequire(true);
+		pageParamVoDTO.setStartTime(startTime);
+		pageParamVoDTO.setEndTime(endTime);
+		pageParamDistic.setRequestData(userConsumeRequestDTO);
+
+		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(pageParamDistic);
 		Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(pageParamVoDTO);
-		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(startTime, "datetime"));
-		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(endTime, "datetime"));
-        extShopAppointServiceDTO.setSysBossId(sysBossDTO.getId());
-		List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService
-				.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+		Integer consumeTime = shopStatisticsAnalysisService.getUserConsumeNumber(pageParamVoDTO);
 		// 服务次数 划卡消费+单次的次数
         List<ExpenditureAndIncomeResponseDTO> list=shopStatisticsAnalysisService.getExpenditureList(pageParamVoDTO);
 		Map<String, String> map = new HashMap<>(16);
-        map.put("appointmentNum",CollectionUtils.isEmpty(shopAppointServiceDTOS)? "0" : String.valueOf(shopAppointServiceDTOS.size()));
+		//消费次数(人次数)
+        map.put("consumeTime",consumeTime.toString());
 		map.put("serviceNumber", CollectionUtils.isEmpty(list) ? "0" : String.valueOf(list.size()));
+		//消费人数(人头数)
 		map.put("consumeNumber", consumeNumber.toString());
 		map.put("shopNewUserNumber", shopNewUserNumber.toString());
 		ResponseDTO<Map<String, String>> response = new ResponseDTO<>();

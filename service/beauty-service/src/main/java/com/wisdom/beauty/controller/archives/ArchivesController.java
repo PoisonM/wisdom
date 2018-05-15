@@ -8,16 +8,18 @@ import com.wisdom.beauty.api.extDto.ExtShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
+import com.wisdom.beauty.core.service.ShopService;
+import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
 import com.wisdom.beauty.util.UserUtils;
-import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.*;
+import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.PinYinSort;
+import com.wisdom.common.util.RandomValue;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +29,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,6 +56,12 @@ public class ArchivesController {
 
     @Autowired
     private UserServiceClient userServiceClient;
+
+    @Autowired
+    private ShopService shopService;
+
+    @Autowired
+    private ShopUserRelationService shopUserRelationService;
 
     @Value("${test.msg}")
     private String msg;
@@ -146,57 +157,13 @@ public class ArchivesController {
     @ResponseBody
     ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
         long currentTimeMillis = System.currentTimeMillis();
-
-        ResponseDTO<String> responseDTO = new ResponseDTO<>();
-        shopUserArchivesDTO.setId(IdGen.uuid());
-        //查询用户
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setMobile(shopUserArchivesDTO.getPhone());
-        List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
-
-        logger.debug("保存用户档案接口，查询的用户信息为，{}", "userInfoDTOS = [" + userInfoDTOS + "]");
-
-        if (CommonUtils.objectIsEmpty(userInfoDTOS)) {
-            userInfoDTO.setId(IdGen.uuid());
-            userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
-            userInfoDTO.setCreateDate(new Date());
-            userInfoDTO.setUserType(ConfigConstant.shopBusiness);
-            userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
-            logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
-            userServiceClient.insertUserInfo(userInfoDTO);
-        } else {
-            userInfoDTO = userInfoDTOS.get(0);
-        }
-
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        SysBossDTO bossInfo = UserUtils.getBossInfo();
-        String sysBossId = null;
-        String sysShopId = null;
-        //pad端登陆
-        if (null != clerkInfo) {
-            sysBossId = clerkInfo.getSysBossId();
-            sysShopId = clerkInfo.getSysShopId();
-        }
-        if (null != bossInfo) {
-            sysBossId = bossInfo.getId();
-        }
-
-        shopUserArchivesDTO.setSysUserId(userInfoDTO.getId());
-        shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
-        shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
-        shopUserArchivesDTO.setCreateDate(new Date());
-        shopUserArchivesDTO.setSysUserId(shopUserArchivesDTO.getSysClerkId());
-        shopUserArchivesDTO.setSysShopId(sysShopId);
-        shopUserArchivesDTO.setSysBossId(sysBossId);
-        int info = shopCustomerArchivesService.saveShopUserArchivesInfo(shopUserArchivesDTO);
-        logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");
-
-        responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
-        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("保存用户档案接口传入参数={}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+        ResponseDTO<String> responseDTO = shopCustomerArchivesService.saveArchiveInfo(shopUserArchivesDTO);
 
         logger.info("保存用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
 
     /**
      * 更新用户档案接口
@@ -348,6 +315,25 @@ public class ArchivesController {
         }
 
         logger.info("findArchiveById方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * 查询某个用户与店的绑定关系
+     * @param openId
+     * @param shopId
+     * @return
+     */
+    @RequestMapping(value = "/userBinding", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<String> userBinding(@RequestParam String openId, @RequestParam String shopId) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("查询某个用户与店的绑定关系传入参数={}", "openId = [" + openId + "], shopId = [" + shopId + "]");
+
+        ResponseDTO<String> responseDTO = shopUserRelationService.userBinding(openId, shopId);
+
+        logger.info("查询某个用户与店的绑定关系耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
