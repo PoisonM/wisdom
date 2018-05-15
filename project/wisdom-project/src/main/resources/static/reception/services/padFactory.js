@@ -252,8 +252,26 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetConsumeDisplayIds', ['$resource', function($resource) {
         return $resource(beautyIP + 'orderInfo/getConsumeDisplayIds')
     }])
-
-
+    //根据用户与项目的关系主键列表查询用户与项目的关系  俗称划卡
+    .factory('CardInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'cardInfo/:id', { id: "@id" })
+    }])
+    //充值卡充值确认接口
+    .factory('UserRechargeConfirm', ['$resource', function($resource) {
+        return $resource(beautyIP + '/cardInfo/userRechargeConfirm')
+    }])
+    //充值卡充值签字确认查询接口
+    .factory('SearchRechargeConfirm', ['$resource', function($resource) {
+        return $resource(beautyIP + 'cardInfo/searchRechargeConfirm')
+    }])
+    //充值卡充值签字确认接口
+    .factory('RechargeCardSignConfirm', ['$resource', function($resource) {
+        return $resource(beautyIP + '/cardInfo/rechargeCardSignConfirm')
+    }])
+    //图片上传
+    .factory('ImageUploadToOSS', ['$resource', function($resource) {
+        return $resource('http://192.168.1.117/system/file/imageUploadToOSS')
+    }])
 
 
 ;
