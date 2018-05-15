@@ -346,7 +346,7 @@ public class PayCoreService {
                 //父类用户也为A级执行永久返利
                 if(ConfigConstant.businessA1.equals(parentUserInfoDTO.getUserType())){
 
-                    payFunction.flatRebate(parentUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                    payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
 
                     //查询祖父级是否存在并且是否为A
                     UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
@@ -355,7 +355,7 @@ public class PayCoreService {
                         if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
 
                             //执行平级返利
-                            payFunction.flatRebate(grandpaUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                            payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
                         }
 
                     }
@@ -376,7 +376,7 @@ public class PayCoreService {
                     if(grandpaUserInfoDTO!=null){
                         if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
                             //执行平级返利
-                            payFunction.flatRebate(grandpaUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                            payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
                         }
 
                     }
@@ -384,7 +384,7 @@ public class PayCoreService {
                 //查询父类是否是B店用户
                 if(ConfigConstant.businessB1.equals(parentUserInfoDTO.getUserType()))
                 {
-                    payFunction.flatRebate(parentUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
+                    payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
 
                     //查询祖父级是否存在并且是否为B
                     UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
@@ -392,11 +392,11 @@ public class PayCoreService {
                         if(ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
 
                             //执行平级返利
-                            payFunction.flatRebate(parentUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
+                            payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
                         }else if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
 
                             //执行平级返利
-                            payFunction.flatRebate(parentUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                            payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
                         }
 
 
@@ -415,7 +415,7 @@ public class PayCoreService {
                     if(grandpaUserInfoDTO!=null){
                         if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
                             //执行平级返利
-                            payFunction.flatRebate(grandpaUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                            payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
                         }
 
                     }
@@ -437,7 +437,7 @@ public class PayCoreService {
 
                         }else if(ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
 
-                            payFunction.flatRebate(grandpaUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
+                            payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
 
                         }
                     }

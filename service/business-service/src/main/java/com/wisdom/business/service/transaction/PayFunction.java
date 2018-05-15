@@ -208,7 +208,7 @@ public class PayFunction {
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE * 5 / 100 + (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户升级A时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
@@ -221,7 +221,7 @@ public class PayFunction {
                         returnMoney = ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE * 10 / 100 + (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户升级B时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
@@ -233,7 +233,7 @@ public class PayFunction {
                         returnMoney = expenseAmount * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount;
@@ -247,7 +247,7 @@ public class PayFunction {
                         returnMoney = ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE * 10 / 100 + (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 5 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
@@ -256,7 +256,7 @@ public class PayFunction {
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE * 5 / 100 + (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
@@ -266,7 +266,7 @@ public class PayFunction {
                         returnMoney = expenseAmount * 5 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount;
@@ -279,7 +279,7 @@ public class PayFunction {
                         returnMoney = (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
@@ -288,7 +288,7 @@ public class PayFunction {
                         returnMoney = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
@@ -296,7 +296,7 @@ public class PayFunction {
                         returnMoney = expenseAmount * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount;
@@ -310,7 +310,7 @@ public class PayFunction {
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE * 5 / 100 + (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
@@ -318,7 +318,7 @@ public class PayFunction {
                         returnMoney = expenseAmount * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount;
@@ -327,7 +327,7 @@ public class PayFunction {
                 } else if (parentRuleType.equals(ConfigConstant.businessB1)) {
 
                     //平级无即时和月度返利 用户消费时永久性奖励
-                    permanentReward = this.getPermanentReward(expenseAmount);
+                    permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                 }
 
@@ -337,7 +337,7 @@ public class PayFunction {
                 if (parentRuleType.equals(ConfigConstant.businessA1)) {
 
                     //平级无即时和月度返利 用户消费时永久性奖励
-                    permanentReward = this.getPermanentReward(expenseAmount);
+                    permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                 }
             }
@@ -379,7 +379,7 @@ public class PayFunction {
      *
      * */
     @Transactional(rollbackFor = Exception.class)
-    public void flatRebate(String parentUserId,String parentRuleType, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO){
+    public void flatRebate(String userRuleType ,String parentUserId,String parentRuleType, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO){
 
         String token = WeixinUtil.getUserToken();
         PayRecordDTO payRecordDTO = new PayRecordDTO();
@@ -397,7 +397,7 @@ public class PayFunction {
 
         //永久性奖励的金额
         float permanentReward = 0;
-        permanentReward = this.getPermanentReward(expenseAmount);
+        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
         try{
             AccountDTO accountDTO = new AccountDTO();
@@ -467,18 +467,30 @@ public class PayFunction {
      * @param expenseAmount
      * @return
      */
-    public Float getPermanentReward(float expenseAmount) {
+    public Float getPermanentReward(String userRuleType,float expenseAmount) {
 
         Float permantReward = (float)0;
 
-        if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+        if(userRuleType.equals(ConfigConstant.businessC1)){
+            if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
 
-            permantReward = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5/100;
+                permantReward = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5/100;
 
-        }else if(expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
+            }else if(expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
 
-            permantReward = (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 5/100;
+                permantReward = (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 5/100;
 
+            }else{
+                permantReward = expenseAmount * 5/100;
+            }
+        }else if(userRuleType.equals(ConfigConstant.businessB1)){
+            if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+
+                permantReward = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5/100;
+
+            }else{
+                permantReward = expenseAmount * 5/100;
+            }
         }else{
             permantReward = expenseAmount * 5/100;
         }
