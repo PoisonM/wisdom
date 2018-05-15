@@ -6,6 +6,7 @@ import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
 import com.wisdom.business.service.account.WithDrawService;
+import com.wisdom.business.service.product.ProductService;
 import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
@@ -13,6 +14,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.WithDrawRecordDTO;
+import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
@@ -60,6 +62,8 @@ public class TransactionController {
 
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private UserServiceClient userServiceClient;
@@ -77,6 +81,12 @@ public class TransactionController {
         //将商品放入未支付订单列表
         for(NeedPayOrderDTO needPayOrderDTO:needPayOrderList.getNeedPayOrderList())
         {
+//            ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
+//            if(Integer.parseInt(needPayOrderDTO.getProductNum()) > productDTO.getProductAmount()){
+//                responseDTO.setErrorInfo("库存不足");
+//                responseDTO.setResult(StatusConstant.FAILURE);
+//                return responseDTO;
+//            }
             try {
                 BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
                 businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
