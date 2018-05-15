@@ -110,16 +110,16 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         if (CommonUtils.objectIsEmpty(shopListByCondition)) {
             logger.error("查询用户绑定关系为空");
             responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setResponseData("N");
+            responseDTO.setResponseData(CommonCodeEnum.UNSUCCESS.getCode());
             return responseDTO;
         }
         shopUserRelationDTO = shopListByCondition.get(0);
         //status为0  为绑定关系
         if (CommonCodeEnum.SUCCESS.getCode().equals(shopUserRelationDTO.getStatus())) {
-            responseDTO.setResponseData("N");
+            responseDTO.setResponseData(CommonCodeEnum.SUCCESS.getCode());
         } else {
 
-            responseDTO.setResponseData("Y");
+            responseDTO.setResponseData(CommonCodeEnum.UNSUCCESS.getCode());
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
