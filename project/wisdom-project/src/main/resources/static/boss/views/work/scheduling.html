@@ -18,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody >
-                    <tr  ng-repeat="item4 in tempUser" class="list">
+                    <tr ng-repeat="item4 in tempUser" class="list">
                         <td ng-repeat="infoItem in item4.clerkSchInfo">
                             <div ng-if="$index == 0">{{item4.clerkInfo.name}}</div>
                             <div ng-if="$index != 0">
@@ -36,7 +36,7 @@
             <!--点击切换店铺显示的店铺列表-->
             <div class="displayShopBox"   ng-if="param.displayShopBox" ng-click="closeBox()">
                 <div class="displayShop" ng-if="param.displayShop">
-                    <p style="height: 60px;text-align: center;line-height: 60px" ng-click="choseShop(item.id)"ng-repeat="item in shopList;">{{item.sysShopName}}</p>
+                    <p style="height: 60px;text-align: center;line-height: 60px" ng-click="choseShop(item.id)"ng-repeat="item in shopList">{{item.sysShopName}}</p>
                 </div>
             </div>
         </div>
