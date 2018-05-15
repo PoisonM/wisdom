@@ -10,6 +10,8 @@ var clerkSchedule='/beauty/clerkSchedule/';
 var shopBossRelation ='/beauty/shopBossRelation/';
 var user ='/user/';
 var analyze = '/beauty/analyze/';
+var consumes = '/beauty/consumes/';
+var cardInfo  = '/beauty/cardInfo/';
 
 /*http://192.168.1.117*/
 
@@ -121,6 +123,17 @@ define(['appBoss'], function (app) {
         .factory('GetCashEarningsTendency',['$resource',function ($resource){
             return $resource(analyze+"getCashEarningsTendency")
         }])
+/*员工分析*/
+        /*员工分析列表*/
+        .factory('GetClerkAchievementList',['$resource',function ($resource){
+            return $resource(analyze+"getClerkAchievementList")
+        }])
+
+        /*顾客到店*/
+        .factory('GetCustomerArriveList',['$resource',function ($resource){
+            return $resource(analyze+"getCustomerArriveList")
+        }])
+
 
 
   /*工作首页*/
@@ -139,6 +152,22 @@ define(['appBoss'], function (app) {
         .factory('Detail',['$resource',function ($resource){
             return $resource(archives+"detail/:id",{id:"@id"})
         }])
+        /*用户档案详情*/
+        .factory('Consumes',['$resource',function ($resource){
+            return $resource(consumes)
+        }])
+        /*用户档案详情*/
+        .factory('GetUserRechargeCardList',['$resource',function ($resource){
+            return $resource(cardInfo+'getUserRechargeCardList')
+        }])
+        /*获取疗程卡的消费记录*/
+        .factory('GetUserConsumeByFlowId',['$resource',function ($resource){
+            return $resource(consumes+'getUserConsumeByFlowId')
+        }])
+    
+
+
+
  /*行政管理*/
         /*查询老板的门店*/
         .factory('GetBossShopList',['$resource',function ($resource){
