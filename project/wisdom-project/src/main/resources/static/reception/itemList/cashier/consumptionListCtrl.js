@@ -20,9 +20,13 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     /*打开收银头部/档案头部/我的头部*/
     //获取订单ID
 
-    SaveShopUserOrderInfo.save({ userId: '110' }, function(data) {
+    SaveShopUserOrderInfo.save({
+        userId: '110'
+    }, function(data) {
         $scope.orderId = data.responseData;
-        GetConsumeDisplayIds.get({ orderId: data.responseData }, function(data) {
+        GetConsumeDisplayIds.get({
+            orderId: data.responseData
+        }, function(data) {
             $scope.theSelected = data.responseData;
             if ($scope.theSelected.periodCard == undefined) {
                 $scope.theSelected.periodCard = {
@@ -169,21 +173,21 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             shopUserProjectRelationDTOS: [{
                 serviceTime: res.serviceTimes,
                 sysShopProjectId: res.id,
-                sysShopProjectInitAmount: res.marketPrice,
+                sysShopProjectPurchasePrice: res.marketPrice,
                 sysShopProjectInitTimes: '1',
                 sysShopProjectName: res.projectName,
                 sysUserId: 110,
                 useStyle: res.useStyle,
             }],
             shopUserProductRelationDTOS: [{
-                initAmount: res.marketPrice,
+                sysShopProjectPurchasePrice: res.marketPrice,
                 initTimes: '1',
                 shopProductId: res.id,
                 shopProductName: res.productName,
                 sysUserId: 110,
             }],
             projectGroupRelRelationDTOS: [{
-                projectInitAmount: res.marketPrice,
+                shopGroupPuchasePrice: res.marketPrice,
                 projectInitTimes: '',
                 projectSurplusAmount: '',
                 projectSurplusTimes: '',

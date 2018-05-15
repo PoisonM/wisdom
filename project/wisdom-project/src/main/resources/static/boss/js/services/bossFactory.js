@@ -9,6 +9,7 @@ var  archives =  '/beauty/archives/';
 var clerkSchedule='/beauty/clerkSchedule/';
 var shopBossRelation ='/beauty/shopBossRelation/';
 var user ='/user/'
+var analyze = '/beauty/analyze/'
 
 /*http://192.168.1.117*/
 
@@ -102,6 +103,20 @@ define(['appBoss'], function (app) {
             return $resource(work+"getFamilyList")
         }])
 
+/*收支分析*/
+        /*根据时间获取所有店的总收入以及现金，现金，银行卡支付的收入  某个的也是这个*/
+        .factory('GetInComeExpenditureDetail',['$resource',function ($resource){
+            return $resource(analyze+"getInComeExpenditureDetail")
+        }])
+        /*获取全部分店的总收入和现金收入*/
+        .factory('GetAllShopIncomeExpenditure',['$resource',function ($resource){
+            return $resource(analyze+"getAllShopIncomeExpenditure")
+        }])
+       
+        /*获取某个店的收入明细*/
+        .factory('GetIncomeExpenditureAnalysisDetailList',['$resource',function ($resource){
+            return $resource(analyze+"getIncomeExpenditureAnalysisDetailList")
+        }])
 
 
   /*工作首页*/

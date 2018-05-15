@@ -21,6 +21,7 @@
     <result column="weight" property="weight" jdbcType="REAL"/>
     <result column="sys_user_type" property="sysUserType" jdbcType="VARCHAR"/>
     <result column="channel" property="channel" jdbcType="VARCHAR"/>
+    <result column="shopId" property="shopid" jdbcType="VARCHAR"/>
     <result column="detail" property="detail" jdbcType="VARCHAR"/>
     <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
@@ -88,7 +89,7 @@
   <sql id="Base_Column_List">
     id, sys_shop_id, sys_shop_name, sys_clerk_id, sys_boss_id, sys_clerk_name, image_rul,
     sys_user_name, phone, sys_user_id, sex, birthday, age, constellation, blood_type,
-    height, weight, sys_user_type, channel, detail, create_by, create_date, update_user,
+    height, weight, sys_user_type, channel, shopId, detail, create_by, create_date, update_user, 
     update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
@@ -132,18 +133,18 @@
     sys_user_id, sex, birthday,
     age, constellation, blood_type,
     height, weight, sys_user_type,
-    channel, detail, create_by,
-    create_date, update_user, update_date
-    )
+    channel, shopId, detail,
+    create_by, create_date, update_user,
+    update_date)
     values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR},
     #{sysClerkId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR},
     #{imageRul,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
     #{sysUserId,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR},
     #{age,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, #{bloodType,jdbcType=VARCHAR},
     #{height,jdbcType=REAL}, #{weight,jdbcType=REAL}, #{sysUserType,jdbcType=VARCHAR},
-    #{channel,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
-    #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-    )
+    #{channel,jdbcType=VARCHAR}, #{shopid,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR},
+    #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
+    #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO">
     insert into shop_user_archives
@@ -204,6 +205,9 @@
       </if>
       <if test="channel != null">
         channel,
+      </if>
+      <if test="shopid != null">
+        shopId,
       </if>
       <if test="detail != null">
         detail,
@@ -278,6 +282,9 @@
       </if>
       <if test="channel != null">
         #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="shopid != null">
+        #{shopid,jdbcType=VARCHAR},
       </if>
       <if test="detail != null">
         #{detail,jdbcType=VARCHAR},
@@ -363,6 +370,9 @@
       <if test="record.channel != null">
         channel = #{record.channel,jdbcType=VARCHAR},
       </if>
+      <if test="record.shopid != null">
+        shopId = #{record.shopid,jdbcType=VARCHAR},
+      </if>
       <if test="record.detail != null">
         detail = #{record.detail,jdbcType=VARCHAR},
       </if>
@@ -404,6 +414,7 @@
       weight = #{record.weight,jdbcType=REAL},
     sys_user_type = #{record.sysUserType,jdbcType=VARCHAR},
       channel = #{record.channel,jdbcType=VARCHAR},
+    shopId = #{record.shopid,jdbcType=VARCHAR},
       detail = #{record.detail,jdbcType=VARCHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
@@ -470,6 +481,9 @@
       <if test="channel != null">
         channel = #{channel,jdbcType=VARCHAR},
       </if>
+      <if test="shopid != null">
+        shopId = #{shopid,jdbcType=VARCHAR},
+      </if>
       <if test="detail != null">
         detail = #{detail,jdbcType=VARCHAR},
       </if>
@@ -508,6 +522,7 @@
       weight = #{weight,jdbcType=REAL},
     sys_user_type = #{sysUserType,jdbcType=VARCHAR},
       channel = #{channel,jdbcType=VARCHAR},
+    shopId = #{shopid,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

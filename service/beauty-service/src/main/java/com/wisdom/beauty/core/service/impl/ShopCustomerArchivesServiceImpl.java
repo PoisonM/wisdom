@@ -1,17 +1,24 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
-import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
-import com.wisdom.beauty.api.dto.ShopUserArchivesCriteria;
-import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
+import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
+import com.wisdom.beauty.core.service.ShopService;
+import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -20,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -42,6 +50,13 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 
     @Autowired
     private ShopRechargeCardService shopRechargeCardService;
+
+    @Autowired
+    private UserServiceClient userServiceClient;
+
+    @Autowired
+    private ShopService shopService;
+
 
 
     @Override
@@ -250,6 +265,10 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             c.andSysUserIdEqualTo(shopUserArchivesDTO.getSysUserId());
         }
 
+        if (StringUtils.isNotBlank(shopUserArchivesDTO.getPhone())) {
+            c.andPhoneEqualTo(shopUserArchivesDTO.getPhone());
+        }
+
         if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysBossId())) {
             c.andSysBossIdEqualTo(shopUserArchivesDTO.getSysBossId());
         }
@@ -262,5 +281,76 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         }
         logger.debug("查询某个用户的档案信息大小为， {}", shopUserArchivesDTOS.size());
         return shopUserArchivesDTOS;
+    }
+
+    /**
+     * 保存用户档案接口
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    @Override
+    public ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        //查询是否已存在档案信息
+
+        List<ShopUserArchivesDTO> shopUserArchivesInfo = getShopUserArchivesInfo(shopUserArchivesDTO);
+        if (CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)) {
+            responseDTO.setResponseData("用户已经存在了");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+
+        shopUserArchivesDTO.setId(IdGen.uuid());
+        //查询用户
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setMobile(shopUserArchivesDTO.getPhone());
+        List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+
+        logger.debug("保存用户档案接口，查询的用户信息为，{}", "userInfoDTOS = [" + userInfoDTOS + "]");
+
+        if (CommonUtils.objectIsEmpty(userInfoDTOS)) {
+            userInfoDTO.setId(IdGen.uuid());
+            userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
+            userInfoDTO.setCreateDate(new Date());
+            userInfoDTO.setUserType(ConfigConstant.beautySource);
+            userInfoDTO.setSource(ConfigConstant.beautySource);
+            userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
+            logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+            userServiceClient.insertUserInfo(userInfoDTO);
+        } else {
+            userInfoDTO = userInfoDTOS.get(0);
+        }
+
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        String sysBossId = null;
+        String sysShopId = null;
+        //pad端登陆
+        if (null != clerkInfo) {
+            sysBossId = clerkInfo.getSysBossId();
+            sysShopId = clerkInfo.getSysShopId();
+        }
+        if (null != bossInfo) {
+            sysBossId = bossInfo.getId();
+        }
+
+        shopUserArchivesDTO.setSysUserId(userInfoDTO.getId());
+        shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
+        shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
+        shopUserArchivesDTO.setCreateDate(new Date());
+        shopUserArchivesDTO.setSysShopId(sysShopId);
+        SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
+        if (null != shopInfoByPrimaryKey) {
+            logger.error("查询的shopId为空{}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+            shopUserArchivesDTO.setShopid(shopInfoByPrimaryKey.getShopId());
+        }
+        shopUserArchivesDTO.setSysBossId(sysBossId);
+        int info = saveShopUserArchivesInfo(shopUserArchivesDTO);
+        logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");
+
+        responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
     }
 }

@@ -1425,6 +1425,76 @@ public class ShopUserArchivesCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andShopidIsNull() {
+            addCriterion("shopId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidIsNotNull() {
+            addCriterion("shopId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidEqualTo(String value) {
+            addCriterion("shopId =", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidNotEqualTo(String value) {
+            addCriterion("shopId <>", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidGreaterThan(String value) {
+            addCriterion("shopId >", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidGreaterThanOrEqualTo(String value) {
+            addCriterion("shopId >=", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidLessThan(String value) {
+            addCriterion("shopId <", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidLessThanOrEqualTo(String value) {
+            addCriterion("shopId <=", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidLike(String value) {
+            addCriterion("shopId like", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidNotLike(String value) {
+            addCriterion("shopId not like", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidIn(List<String> values) {
+            addCriterion("shopId in", values, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidNotIn(List<String> values) {
+            addCriterion("shopId not in", values, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidBetween(String value1, String value2) {
+            addCriterion("shopId between", value1, value2, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidNotBetween(String value1, String value2) {
+            addCriterion("shopId not between", value1, value2, "shopid");
+            return (Criteria) this;
+        }
+
         public Criteria andDetailIsNull() {
             addCriterion("detail is null");
             return (Criteria) this;

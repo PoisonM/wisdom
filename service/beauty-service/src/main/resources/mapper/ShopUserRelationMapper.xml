@@ -8,6 +8,7 @@
         <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
         <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR"/>
         <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="shop_id" property="shopId" jdbcType="CHAR"/>
         <result column="status" property="status" jdbcType="CHAR"/>
         <result column="user_account_no" property="userAccountNo" jdbcType="VARCHAR"/>
         <result column="shop_photo" property="shopPhoto" jdbcType="VARCHAR"/>
@@ -77,8 +78,8 @@
     </where>
   </sql>
     <sql id="Base_Column_List">
-        id, sys_shop_id, sys_user_id, sys_shop_name, sys_user_name, sys_boss_id, status,
-        user_account_no, shop_photo, create_by, create_date, update_user, update_date
+        id, sys_shop_id, sys_user_id, sys_shop_name, sys_user_name, sys_boss_id, shop_id,
+        status, user_account_no, shop_photo, create_by, create_date, update_user, update_date
   </sql>
     <select id="selectByCriteria" resultMap="BaseResultMap"
             parameterType="com.wisdom.beauty.api.dto.ShopUserRelationCriteria">
@@ -117,14 +118,14 @@
     <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserRelationDTO">
         insert into shop_user_relation (id, sys_shop_id, sys_user_id,
         sys_shop_name, sys_user_name, sys_boss_id,
-        status, user_account_no, shop_photo,
-        create_by, create_date, update_user,
-        update_date)
+        shop_id, status, user_account_no,
+        shop_photo, create_by, create_date,
+        update_user, update_date)
         values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR},
         #{sysShopName,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR},
-        #{status,jdbcType=CHAR}, #{userAccountNo,jdbcType=VARCHAR}, #{shopPhoto,jdbcType=VARCHAR},
-        #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
-        #{updateDate,jdbcType=TIMESTAMP})
+        #{shopId,jdbcType=CHAR}, #{status,jdbcType=CHAR}, #{userAccountNo,jdbcType=VARCHAR},
+        #{shopPhoto,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+        #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserRelationDTO">
     insert into shop_user_relation
@@ -146,7 +147,10 @@
       </if>
             <if test="sysBossId != null">
         sys_boss_id,
-      </if>
+            </if>
+            <if test="shopId != null">
+                shop_id,
+            </if>
             <if test="status != null">
         status,
       </if>
@@ -187,7 +191,10 @@
       </if>
             <if test="sysBossId != null">
         #{sysBossId,jdbcType=VARCHAR},
-      </if>
+            </if>
+            <if test="shopId != null">
+                #{shopId,jdbcType=CHAR},
+            </if>
             <if test="status != null">
         #{status,jdbcType=CHAR},
       </if>
@@ -238,7 +245,10 @@
       </if>
             <if test="record.sysBossId != null">
         sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
-      </if>
+            </if>
+            <if test="record.shopId != null">
+                shop_id = #{record.shopId,jdbcType=CHAR},
+            </if>
             <if test="record.status != null">
         status = #{record.status,jdbcType=CHAR},
       </if>
@@ -273,6 +283,7 @@
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
         sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+        shop_id = #{record.shopId,jdbcType=CHAR},
       status = #{record.status,jdbcType=CHAR},
         user_account_no = #{record.userAccountNo,jdbcType=VARCHAR},
         shop_photo = #{record.shopPhoto,jdbcType=VARCHAR},
@@ -301,7 +312,10 @@
       </if>
             <if test="sysBossId != null">
         sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
-      </if>
+            </if>
+            <if test="shopId != null">
+                shop_id = #{shopId,jdbcType=CHAR},
+            </if>
             <if test="status != null">
         status = #{status,jdbcType=CHAR},
       </if>
@@ -333,6 +347,7 @@
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
         sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+        shop_id = #{shopId,jdbcType=CHAR},
       status = #{status,jdbcType=CHAR},
         user_account_no = #{userAccountNo,jdbcType=VARCHAR},
         shop_photo = #{shopPhoto,jdbcType=VARCHAR},

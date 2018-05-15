@@ -2,6 +2,7 @@ package com.wisdom.weixin.service.beauty;
 
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.BonusFlagDTO;
@@ -10,9 +11,11 @@ import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.entity.WeixinUserBean;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.weixin.client.BeautyServiceClient;
 import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +45,7 @@ public class ProcessBeautySubscribeEventService {
     private UserServiceClient userServiceClient;
 
     @Autowired
-    private BusinessServiceClient businessServiceClient;
+    private BeautyServiceClient beautyServiceClient;
     
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -81,16 +84,18 @@ public class ProcessBeautySubscribeEventService {
             String openId = xmlEntity.getFromUserName();
 
             //判断用户是否是扫码微商用户的二维码关注，
-            String businessParentPhone = "";
+            String shopId = "";
+            String userId = "";
             if(StringUtils.isNotNull(xmlEntity.getEventKey())){
-                businessParentPhone = xmlEntity.getEventKey().replace("mxbusinessshare_", "");
-                String codeArray[] = businessParentPhone.split("_");
-                businessParentPhone = codeArray[1];
+                shopId = xmlEntity.getEventKey().replace("beautyShop", "");
+                String codeArray[] = shopId.split("_");
+                shopId = codeArray[1];
+                userId = codeArray[2];
             }
 
             //为关注公众号的用户创建新的或修订之前的账户
             UserInfoDTO userInfoDTO = new UserInfoDTO();
-            userInfoDTO.setUserOpenid(openId);
+            userInfoDTO.setId(userId);
             List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
 
             if(userInfoDTOList.size()>0)
@@ -101,80 +106,27 @@ public class ProcessBeautySubscribeEventService {
                 {
                     userInfoDTO.setWeixinAttentionStatus("1");
                 }
-                //userInfoDTO.setParentUserId(parentUserInfoDTO.getId());
-                userInfoDTO.setLoginIp("");
-                userServiceClient.updateUserInfo(userInfoDTO);
-            }
-            else
-            {
-                //获取用户的微信信息
-                WeixinUserBean weixinUserBean = WeixinUtil.getWeixinUserBean(token,openId);
-
-                UserInfoDTO parentUserInfoDTO = new UserInfoDTO();
-                if(!businessParentPhone.equals(""))
-                {
-                    parentUserInfoDTO.setMobile(businessParentPhone);
-                    //从sys_user表中，查询父一级用户信息
-                    List<UserInfoDTO> parentUserInfoDTOList = userServiceClient.getUserInfo(parentUserInfoDTO);
-                    parentUserInfoDTO = parentUserInfoDTOList.get(0);
-                    if(null != parentUserInfoDTO){
-                        //向父节点推送消息
-                        WeixinTemplateMessageUtil.sendLowLevelBusinessTemplateWXMessage(weixinUserBean.getNickname(),"c级代理商","0元",token,
-                                "",parentUserInfoDTO.getUserOpenid());
-                    }
-                }
-
-                //用户第一次关注
-                userInfoDTO.setId(UUID.randomUUID().toString());
                 String nickname = null;
                 try {
-                    nickname = URLEncoder.encode(weixinUserBean.getNickname(), "utf-8");
+                    nickname = URLEncoder.encode(userInfoDTO.getNickname(), "utf-8");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
                 userInfoDTO.setNickname(nickname);
-                userInfoDTO.setUserType(ConfigConstant.businessC1);
-                userInfoDTO.setParentUserId(parentUserInfoDTO.getId());
-                userInfoDTO.setWeixinAttentionStatus("1");
-                userInfoDTO.setPhoto(weixinUserBean.getHeadimgurl());
-                userInfoDTO.setDelFlag("0");
+                userInfoDTO.setUserOpenid(openId);
                 userInfoDTO.setLoginIp("");
-                userInfoDTO.setCreateDate(new Date());
-                userServiceClient.insertUserInfo(userInfoDTO);
+                userServiceClient.updateUserInfo(userInfoDTO);
 
-                //为用户新建一个账户
-                AccountDTO accountDTO = new AccountDTO();
-                accountDTO.setId(UUID.randomUUID().toString());
-                accountDTO.setSysUserId(userInfoDTO.getId());
-                accountDTO.setUserOpenId(userInfoDTO.getUserOpenid());
-                accountDTO.setBalance((float)0.00);
-                accountDTO.setScore((float)0.00);
-                accountDTO.setStatus("normal");
-                accountDTO.setUpdateDate(new Date());
-                accountDTO.setBalanceDeny((float)0.00);
-                businessServiceClient.createUserAccount(accountDTO);
-
-                //查询用户当前user_business_type中是否有记录，没有则创建用户为C用户
-                UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
-                userBusinessTypeDTO.setSysUserId(userInfoDTO.getId());
-                userBusinessTypeDTO.setStatus("1");
-                List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
-                if(userBusinessTypeDTOS.size()==0)
+                //根据shopId和openId查询用户是否绑定了此美容院
+                ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
+                if("N".equals(responseDTO.getResponseData()))
                 {
-                    userBusinessTypeDTO.setId(UUID.randomUUID().toString());
-                    userBusinessTypeDTO.setParentUserId(parentUserInfoDTO.getId());
-                    userBusinessTypeDTO.setCreateDate(new Date());
-                    userBusinessTypeDTO.setUserType(ConfigConstant.businessC1);
-                    userBusinessTypeDTO.setStatus("1");
-                    businessServiceClient.insertUserBusinessType(userBusinessTypeDTO);
+                    JedisUtils.set(shopId+"_"+userInfoDTO.getId(),"notBind",ConfigConstant.logintokenPeriod);
                 }
-
-                BonusFlagDTO bonusFlagDTO = new BonusFlagDTO();
-                bonusFlagDTO.setUserId(userInfoDTO.getId());
-                bonusFlagDTO.setProductId(ConfigConstant.promote_businessB1_ProductId_No1);
-                bonusFlagDTO.setMessageFlag("true");
-                bonusFlagDTO.setBonusFlag("false");
-                mongoTemplate.insert(bonusFlagDTO, "bonusFlag");
+                else if("Y".equals(responseDTO.getResponseData()))
+                {
+                    JedisUtils.set(shopId+"_"+userInfoDTO.getId(),"alreadyBind",ConfigConstant.logintokenPeriod);
+                }
             }
 
             //为用户的此次关注插入到mongodb记录中

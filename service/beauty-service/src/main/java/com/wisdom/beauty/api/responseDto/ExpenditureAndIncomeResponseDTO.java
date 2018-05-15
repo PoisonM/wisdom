@@ -70,6 +70,19 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	 * 现金收益
 	 */
 	private BigDecimal cashEarnings;
+	/**
+	 *卡耗
+	 */
+	private BigDecimal kahao;
+	/**
+	 *人次数
+	 */
+	private Integer consumeTime;
+	/**
+	 * 服务次数
+	 */
+	private Integer serviceNumber;
+
 
 	public BigDecimal getExpenditure() {
 		return expenditure;
@@ -189,5 +202,29 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
 	public void setCashEarnings(BigDecimal cashEarnings) {
 		this.cashEarnings = cashEarnings;
+	}
+
+	public BigDecimal getKahao() {
+		return kahao;
+	}
+
+	public void setKahao(BigDecimal kahao) {
+		this.kahao = kahao;
+	}
+
+	public Integer getConsumeTime() {
+		return consumeTime;
+	}
+
+	public void setConsumeTime(Integer consumeTime) {
+		this.consumeTime = consumeTime;
+	}
+
+	public Integer getServiceNumber() {
+		return serviceNumber;
+	}
+
+	public void setServiceNumber(Integer serviceNumber) {
+		this.serviceNumber = serviceNumber;
 	}
 }

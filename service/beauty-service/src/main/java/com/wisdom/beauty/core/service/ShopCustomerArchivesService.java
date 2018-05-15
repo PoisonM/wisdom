@@ -3,8 +3,9 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,4 +76,11 @@ public interface ShopCustomerArchivesService {
     List<ShopUserArchivesDTO> getShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO);
 
 
+    /**
+     * 保存用户档案接口
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO);
 }

@@ -1,12 +1,19 @@
 package com.wisdom.weixin.controller;
 
 import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.wexin.WeixinConfigDTO;
+import com.wisdom.common.dto.wexin.WeixinShareDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.WeixinUserBean;
 import com.wisdom.common.util.*;
+import com.wisdom.weixin.interceptor.LoginRequired;
 import com.wisdom.weixin.service.beauty.WeixinBeautyCoreService;
+import com.wisdom.weixin.util.UserUtils;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -14,11 +21,14 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.FileNotFoundException;
+import java.util.List;
 
 /**
  * Created by chenjiake on 17/11/4.
@@ -110,18 +120,10 @@ public class WeixinBeautyController {
         return "redirect:" + url;
     }
 
-
-    /**
-     * 用户端微信JS-SDK获得初始化参数
-     *
-     * @param request
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "getConfig", method = RequestMethod.GET)
+    @RequestMapping(value = "getBeautyConfig", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseDTO<WeixinConfigDTO> getConfig(HttpServletRequest request) throws Exception
+    ResponseDTO<WeixinConfigDTO> getBeautyConfig(HttpServletRequest request) throws Exception
     {
         ResponseDTO<WeixinConfigDTO> responseDTO = new ResponseDTO<>();
         String u = request.getParameter("url");
@@ -144,5 +146,27 @@ public class WeixinBeautyController {
         String backUrl = request.getParameter("url");
         String oauth2Url = WeixinUtil.getBeautyOauth2Url(backUrl);
         return "redirect:" + oauth2Url;
+    }
+
+    /**
+     * 获取美容院固定二维码
+     */
+    @RequestMapping(value = "getBeautyQRCode", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<String> getBeautyQRCode(@RequestParam String shopId,@RequestParam String userId) {
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
+        WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
+        String token = weixinTokenDTO.getToken();
+        String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
+        String shareCode = "beautyShop_" + shopId + "_" + userId;
+        String jsonData="{\"expire_seconds\": 2591000, \"action_name\": \"QR_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + shareCode + "\"}}}";
+        String reJson= WeixinUtil.post(url, jsonData,"POST");
+        JSONObject jb = JSONObject.fromObject(reJson);
+        String qrTicket = jb.getString("ticket");
+        String QRCodeURI="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+qrTicket;
+        responseDTO.setResponseData(QRCodeURI);
+        return  responseDTO;
     }
 }

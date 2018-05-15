@@ -122,6 +122,9 @@
         <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
         <if test="limitStart >= 0">
             limit ${limitStart},${pageSize}
         </if>

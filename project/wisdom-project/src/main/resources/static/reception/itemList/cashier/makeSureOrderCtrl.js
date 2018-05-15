@@ -1,4 +1,4 @@
-PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ngDialog, Archives, SaveShopUserOrderInfo, GetShopUserRecentlyOrderInfo, UpdateVirtualGoodsOrderInfo) {
+PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ngDialog, Archives, SaveShopUserOrderInfo, GetShopUserRecentlyOrderInfo, UpdateVirtualGoodsOrderInfo, UpdateShopUserOrderInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
@@ -31,7 +31,18 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
         $state.go('pad-web.left_nav.housekeeper')
     }
     $scope.goOrderListm = function() {
-        $state.go('pad-web.left_nav.orderList')
+        console.log($scope.car)
+        UpdateShopUserOrderInfo.save({
+            orderId: $scope.orderId,
+            projectGroupRelRelationDTOS: $scope.projectGroupRelRelationDTOS,
+            shopUserProductRelationDTOS: $scope.shopUserProductRelationDTOS,
+            shopUserProjectRelationDTOS: $scope.shopUserProjectRelationDTOS,
+            status: 1,
+            shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
+            orderPrice: '10000', //总金额
+        }, function(data) {
+            $state.go('pad-web.left_nav.orderList')
+        })
     }
     $scope.checkBoxChek = function(e) {
         $(e.target).children('.checkBox').css('background', '#FF6666')
@@ -46,8 +57,18 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
 
     GetShopUserRecentlyOrderInfo.get({ sysUserId: '110' }, function(data) {
         $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
+        for (var i = 0; i < $scope.projectGroupRelRelationDTOS.length; i++) {
+            $scope.projectGroupRelRelationDTOS[i].ng_markPrice = '';
+        }
         $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
+        for (var i = 0; i < $scope.shopUserProductRelationDTOS.length; i++) {
+            $scope.shopUserProductRelationDTOS[i].ng_markPrice = '';
+        }
         $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
+        for (var i = 0; i < $scope.shopUserProjectRelationDTOS.length; i++) {
+            $scope.shopUserProjectRelationDTOS[i].ng_markPrice = $scope.shopUserProjectRelationDTOS[i].sysShopProjectPurchasePrice * $scope.shopUserProjectRelationDTOS[i].discount;
+            $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
+        }
         $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
     })
     $scope.deleteClick = function(e, id) {
@@ -91,5 +112,8 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
                 $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
             })
         })
+    }
+    $scope.getTotalPrice = function() {
+
     }
 });

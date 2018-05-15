@@ -60,16 +60,22 @@ public class OrderController {
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String sysUserId) {
+    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String sysUserId, @RequestParam(required = false) String orderId) {
 
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("查询用户最近一次订单信息传入参数={}", "shopUserArchivesId = [" + sysUserId + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
 
-        Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(sysUserId));
-        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
-        ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        ShopUserOrderDTO shopUserOrderDTO = null;
+        if (StringUtils.isNotBlank(orderId)) {
+            Query query = new Query(Criteria.where("orderId").is(orderId));
+            shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        } else {
+            Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(sysUserId));
+            query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
+            shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        }
 
         responseDTO.setResponseData(shopUserOrderDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -143,6 +149,7 @@ public class OrderController {
         Update update = new Update();
         update.set("status", shopUserOrderDTO.getStatus());
         update.set("signUrl", shopUserOrderDTO.getSignUrl());
+        update.set("orderPrice", shopUserOrderDTO.getOrderPrice());
         update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
         update.set("shopUserProductRelationDTOS", shopUserOrderDTO.getShopUserProductRelationDTOS());
         update.set("shopUserProjectRelationDTOS", shopUserOrderDTO.getShopUserProjectRelationDTOS());
