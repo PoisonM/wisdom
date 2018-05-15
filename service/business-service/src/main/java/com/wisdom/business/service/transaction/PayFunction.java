@@ -469,7 +469,19 @@ public class PayFunction {
      */
     public Float getPermanentReward(float expenseAmount) {
 
-        Float permantReward = expenseAmount * 5/100;
+        Float permantReward = (float)0;
+
+        if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+
+            permantReward = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5/100;
+
+        }else if(expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
+
+            permantReward = (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 5/100;
+
+        }else{
+            permantReward = expenseAmount * 5/100;
+        }
         return permantReward;
 
     }
