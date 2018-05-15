@@ -9,6 +9,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
             //载入购物车信息
             var loadBuyCartInfo = function(){
                 GetBuyCartInfo.get(function(data){
+                    console.log(data.responseData);
                     $ionicLoading.hide();
                     if (data.responseData=="")
                     {
@@ -43,7 +44,6 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                         productId : value2.businessProductId,
                                         orderId : value2.businessOrderId,
                                         orderChecked:true
-
                                     })
                                 }
                             })

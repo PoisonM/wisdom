@@ -30,7 +30,7 @@ public class RunTimeTaskForBusiness {
     }
 
     //每隔10分钟，将payRecord表中，状态为0的订单，进行状态调整处理
-    @Scheduled(cron="0 */10 * * * ?")
+    @Scheduled(cron="0 */1 * * * ?")
     public void processNoPayRecordData(){
         transactionRunTimeService.autoProcessNoPayRecordData();
     }

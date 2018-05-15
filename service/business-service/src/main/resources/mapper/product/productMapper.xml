@@ -36,15 +36,7 @@
 		select * from
 		business_product
 		where
-		1=1
-		AND
-		<!--<if test="type != null and type != ''">-->
-			<!--type=#{type}-->
-		<!--</if>-->
-		<!--AND-->
-		<if test="productId != null and productId != ''">
 			product_id=#{productId}
-		</if>
 	</select>
 
 	<select id="findOfflineProductList"

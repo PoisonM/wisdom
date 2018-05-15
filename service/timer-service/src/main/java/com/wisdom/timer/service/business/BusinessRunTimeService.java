@@ -158,6 +158,8 @@ public class BusinessRunTimeService {
         long autoNotifyProductPay = (long) ConfigConstant.AUTO_NOTIFY_PRODUCT_PAY * 60 * 1000;
         long autoDeleteBusinessOrder = (long) ConfigConstant.AUTO_DELETE_BUSINESS_ORDER * 60 * 1000;
         long nowTime = System.currentTimeMillis();
+        long MaxTime = 60 * 1000;
+        long MinTime = 0;
 
         String token = WeixinUtil.getUserToken();
 
@@ -171,8 +173,9 @@ public class BusinessRunTimeService {
             {
                 //订单已下时间
                 long outTime = nowTime - (long)businessOrder.getCreateDate().getTime();
-                //待付款超过10分钟且不超过20分钟
-                if(outTime > autoNotifyProductPay && outTime < autoDeleteBusinessOrder)
+                long time = outTime - autoNotifyProductPay;
+                //待付款超过10分钟
+                if(MinTime < time && time < MaxTime)
                 {
                     UserInfoDTO userInfoDTO = new UserInfoDTO();
                     userInfoDTO.setId(businessOrder.getSysUserId());
