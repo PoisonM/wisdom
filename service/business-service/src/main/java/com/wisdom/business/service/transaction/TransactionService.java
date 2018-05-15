@@ -17,10 +17,7 @@ import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.OrderCopRelationDTO;
 import com.wisdom.common.dto.transaction.OrderProductRelationDTO;
-import com.wisdom.common.util.CodeGenUtil;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.RedisLock;
-import com.wisdom.common.util.UUIDUtil;
+import com.wisdom.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +64,24 @@ public class TransactionService {
 
         if(null != businessOrderDTO.getStatus() && !"".equals(businessOrderDTO.getStatus())) {
             //查出库中订单数据
+            if(StringUtils.isNull(businessOrderDTO.getBusinessOrderId())){
+                logger.info("更新订单updateBusinessOrder订单id为null==");
+                return;
+            }
             BusinessOrderDTO oldBusinessOrderDTO = transactionMapper.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
             if ("0".equals(oldBusinessOrderDTO.getStatus()) || "3".equals(oldBusinessOrderDTO.getStatus())) {
 
                 //根据订单号查出订单对应的商品
                 BusinessOrderDTO businessOrderDTO1 = transactionMapper.getBusinessOrderDetailInfoByOrderId(businessOrderDTO.getBusinessOrderId());
                 ProductDTO productDTO = new ProductDTO();
+                if(null == businessOrderDTO1){
+                    logger.info("更新订单updateBusinessOrder关联商品为null");
+                    return;
+                }
+                if(StringUtils.isNull(businessOrderDTO1.getBusinessProductId())){
+                    logger.info("更新订单updateBusinessOrder商品id为null");
+                    return;
+                }
                 productDTO.setProductId(businessOrderDTO1.getBusinessProductId());
                 productDTO.setProductAmount(businessOrderDTO1.getBusinessProductNum());
                 //查询是否有记录
