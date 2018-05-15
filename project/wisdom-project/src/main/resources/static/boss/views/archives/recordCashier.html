@@ -6,14 +6,17 @@
                筛选
            </p>
            <ion-list >
-               <ion-item  class="h50 bgfff" style="display: flex;" ng-repeat="item in [0,1,2,3]" ng-click="detailsOfCashierGo()">
+               <ion-item  class="h50 bgfff" style="display: flex;" ng-repeat="item in recordCashier" ng-click="detailsOfCashierGo()">
                    <div class="W33 ml20">
-                       <p class="mt5 fs16 fs15 col666">2017-10-27 </p>
+                       <p class="mt5 fs16 fs15 col666">{{item.createDate|date:'yyyy-MM-dd'}} </p>
                    </div>
-                   <p class="W33 ml20  fs15 col888 center">店内消费</p>
+                   <p class="W33 ml20  fs15 col888 center" ng-if="item.consumeType == '0'">充值</p>
+                   <p class="W33 ml20  fs15 col888 center" ng-if="item.consumeType == '1'">消费 </p>
+                   <p class="W33 ml20  fs15 col888 center" ng-if="item.consumeType == '2'">还欠款</p>
+                   <p class="W33 ml20  fs15 col888 center" ng-if="item.consumeType == '3'">退款</p>
                    <div class="W33 ml20 fs15 col888">
                        <p class="floatR">
-                           <span class=" ">468.00</span>
+                           <span class=" ">{{item.sumAmount}}</span>
                            <img src="images/more.png" class="more mr10">
                        </p>
 
