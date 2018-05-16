@@ -12,8 +12,9 @@ var user ='/user/';
 var analyze = '/beauty/analyze/';
 var consumes = '/beauty/consumes/';
 var cardInfo  = '/beauty/cardInfo/';
+var projectInfo  = '/beauty/projectInfo/';
+var productInfo  = '/beauty/productInfo/';
 
-/*http://192.168.1.117*/
 
 
 define(['appBoss'], function (app) {
@@ -164,7 +165,7 @@ define(['appBoss'], function (app) {
         .factory('GetUserConsumeByFlowId',['$resource',function ($resource){
             return $resource(consumes+'getUserConsumeByFlowId')
         }])
-    
+
 
 
 
@@ -182,5 +183,23 @@ define(['appBoss'], function (app) {
         .factory('GetShopClerkScheduleList',['$resource',function ($resource){
             return $resource(clerkSchedule+"getShopClerkScheduleList")
         }])
+
+      /*获取用户的疗程卡界面*/
+        .factory('GetUserCourseProjectList',['$resource',function ($resource){
+            return $resource(projectInfo+"getUserCourseProjectList")
+        }])
+       /*获取用户的产品界面*/
+        .factory('GetUserProductList',['$resource',function ($resource){
+            return $resource(productInfo+"getUserProductList")
+        }])
+        /*获取用户的套卡界面*/
+        .factory('GetUserProjectGroupList',['$resource',function ($resource){
+            return $resource(projectInfo+"getUserProjectGroupList")
+        }])
+      /* 更新用户的档案信息*/
+        .factory('UpdateArchiveInfo',['$resource',function ($resource){
+            return $resource(archives+"updateArchiveInfo")
+        }]);
+
 
 });

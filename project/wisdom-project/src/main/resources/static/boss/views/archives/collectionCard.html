@@ -5,58 +5,27 @@
                 <img src="images/screening.png" class="screeningPic ml10 mr10">
                 筛选
             </p>
-            <ion-list>
-                <ion-item style="height:80px;">
+            <ion-list ng-repeat="item in collectionCar">
+                <ion-item style="height:80px;margin-top: 10px">
                     <div class="sb mt10">
-                        <p class="fs16 col333 ml10">闺蜜周卡</p>
-                        <p class="fs15 col666 mr10">金额：520.00元 </p>
+                        <p class="fs16 col333 ml10">{{item.projectGroupName}}</p>
+                        <p class="fs15 col666 mr10">金额：{{item.marketPrice}}元 </p>
                     </div>
-                    <p class="fs14 col666 ml10">备注：</p>
+                    <p class="fs14 col666 ml10 sb">
+                        <span class="mt5">备注：</span>
+                        <img src="images/refund.png" class="refundPic" style="margin-top:-5px;position: absolute;right:10px;top:34px;" ng-show="false">
+                        <img src="images/candel.png" class="refundPic" style="margin-top:-5px;position: absolute;right:10px;top:34px;" ng-show="false">
+                    </p>
                 </ion-item>
-                <ion-item class="h50 sb" ng-repeat="item in [0,1,2,3]">
-                    <p class="fs15 ml20 col666">肩颈按摩</p>
-                    <p class="fa15 col888 mr10">1/2</p>
+                <ion-item class="h50 sb" ng-repeat="item1 in item.projectList">
+                    <p class="fs15 ml20 col666">{{item1.shopProjectGroupName}}</p>
+                    <p class="fa15 col888 mr10">{{item1.projectInitTimes}}/{{item1.projectSurplusTimes}}</p>
                 </ion-item>
             </ion-list>
-            <div class="mt10">
-                <ion-list>
-                    <ion-item style="height:80px;">
-                        <div class="sb mt10">
-                            <p class="fs16 col333 ml10">大礼包</p>
-                            <p class="fs15 col666 mr10">金额：520.00元 </p>
-                        </div>
-                        <p class="fs14 col666 ml10 sb">
-                            <span class="mt5">备注：</span>
-                          <img src="images/refund.png" class="refundPic" style="margin-top:-5px;position: absolute;right:10px;top:34px;">
-                        </p>
-                    </ion-item>
-                    <ion-item class="h50 sb" ng-repeat="item in [0,1,2,3]">
-                        <p class="fs15 ml20 col666">肩颈按摩</p>
-                        <p class="fa15 col888 mr10">1/2</p>
-                    </ion-item>
-                </ion-list>
-            </div>
-            <div class="mt10">
-                <ion-list>
-                    <ion-item style="height:80px;">
-                        <div class="sb mt10">
-                            <p class="fs16 col333 ml10">店庆卡</p>
-                            <p class="fs15 col666 mr10">金额：520.00元 </p>
-                        </div>
-                        <p class="fs14 col666 ml10 sb">
-                            <span class="mt5">备注：</span>
-                            <img src="images/candel.png" class="refundPic" style="margin-top:-5px;position: absolute;right:10px;top:34px;">
-                        </p>
-                    </ion-item>
-                    <ion-item class="h50 sb" ng-repeat="item in [0,1,2,3]">
-                        <p class="fs15 ml20 col666">肩颈按摩</p>
-                        <p class="fa15 col888 mr10">1/2</p>
-                    </ion-item>
-                </ion-list>
-            </div>
         </div>
-        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100;"></div>
-        <div style="position: absolute;right:0;top:0;z-index: 101;width:80%;height:100%; "class="bgf6">
+        <!--筛选-->
+        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100;" ng-show="false"></div>
+        <div style="position: absolute;right:0;top:0;z-index: 101;width:80%;height:100%; "class="bgf6" ng-show="false">
             <p class=" bgfff">
                 <img src="images/close.png"class="closePic ml10 mt20 ">
             </p>
@@ -108,9 +77,7 @@
                 <a class="tab-item True activeTrue">
                     确认
                 </a>
-
             </div>
-
         </div>
     </ion-content>
 </ion-view>
