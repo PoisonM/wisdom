@@ -48,6 +48,9 @@ public class BusinessServiceConfiguration extends CachingConfigurerSupport {
 	@Value("${spring.redis.password}")
 	private String password;
 
+	@Value("${spring.redis.pool.max-active}")
+	private String maxTotal;
+
 	@Bean
 	public JedisPool redisPoolFactory() {
 		logger.info("JedisPool注入成功！！");
@@ -55,6 +58,7 @@ public class BusinessServiceConfiguration extends CachingConfigurerSupport {
 		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
 		jedisPoolConfig.setMaxIdle(maxIdle);
 		jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+		jedisPoolConfig.setMaxTotal(Integer.parseInt(maxTotal));
 		JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, password);
 		return jedisPool;
 	}
