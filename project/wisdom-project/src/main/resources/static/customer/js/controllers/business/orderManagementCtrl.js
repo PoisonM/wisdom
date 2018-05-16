@@ -52,6 +52,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                         {
                             window.location.href = "orderPay.do?productType=training&random="+Math.random();
                         }
+
                     }
                 })
             }

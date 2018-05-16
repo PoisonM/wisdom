@@ -71,22 +71,14 @@ public class TransactionController {
     public ResponseDTO putNeedPayOrderListToRedis(@RequestBody NeedPayOrderListDTO needPayOrderList) {
         ResponseDTO responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        RedisLock redisLock = new RedisLock("putNeedPay" + userInfoDTO.getId());
-        String needPayValue = (new Gson()).toJson(needPayOrderList);
         JedisUtils.del(userInfoDTO.getId()+"needPay");
-        JedisUtils.set(userInfoDTO.getId()+"needPay",needPayValue,60*5);
-
-        try {
-            redisLock.lock();
             //将商品放入未支付订单列表
             for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
-                ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
-                if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
-                    responseDTO.setErrorInfo("库存不足");
-                    responseDTO.setResult(StatusConstant.FAILURE);
-                    return responseDTO;
-                }
+                RedisLock redisLock = new RedisLock("putNeedPay" + needPayOrderDTO.getProductId());
                 try {
+                    redisLock.lock();
+                ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
+                if (Integer.parseInt(needPayOrderDTO.getProductNum()) < Integer.parseInt(productDTO.getProductAmount())) {
                     BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
                     businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
                     businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
@@ -94,19 +86,24 @@ public class TransactionController {
                     businessOrderDTO.setStatus("0");
                     businessOrderDTO.setUpdateDate(new Date());
                     transactionService.updateBusinessOrder(businessOrderDTO);
-                } catch (Exception e) {
+                }else {
+                    responseDTO.setErrorInfo("库存不足");
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                    return responseDTO;
+                }
+                }catch (Exception e)
+                {
                     e.printStackTrace();
+                    throw e;
+                }
+                finally
+                {
+                    redisLock.unlock();
                 }
             }
-        }catch (Exception e)
-            {
-                e.printStackTrace();
-                throw e;
-            }
-        finally
-            {
-                redisLock.unlock();
-            }
+        String needPayValue = (new Gson()).toJson(needPayOrderList);
+
+        JedisUtils.set(userInfoDTO.getId()+"needPay",needPayValue,60*5);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }

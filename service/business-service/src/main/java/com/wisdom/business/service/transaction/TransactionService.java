@@ -6,6 +6,7 @@ import com.wisdom.business.mapper.product.ProductMapper;
 import com.wisdom.business.mapper.transaction.PayRecordMapper;
 import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.util.UserUtils;
+import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.product.OfflineProductAmountRecordDTO;
@@ -77,9 +78,9 @@ public class TransactionService {
                     logger.info("更新订单updateBusinessOrder关联商品为null");
                     return;
                 }
-                RedisLock redisLock = new RedisLock("OfflineProductAmount"+businessOrderDTO1.getBusinessProductId());
+//                RedisLock redisLock = new RedisLock("OfflineProductAmount"+businessOrderDTO1.getBusinessProductId());
                 try {
-                    redisLock.lock();
+//                    redisLock.lock();
 
                     ProductDTO productDTO = new ProductDTO();
                     if(StringUtils.isNull(businessOrderDTO1.getBusinessProductId())){
@@ -110,7 +111,7 @@ public class TransactionService {
                     logger.info("修改商品库存失败,商品id为:"+businessOrderDTO1.getBusinessProductId());
                     e.printStackTrace();
                 }finally {
-                    redisLock.unlock();
+//                    redisLock.unlock();
                 }
             }
         }
@@ -150,7 +151,6 @@ public class TransactionService {
                 return businessOrderDTOList.get(0).getBusinessOrderId();
             }
         }
-
         businessOrderDTO.setId(UUID.randomUUID().toString());
         businessOrderDTO.setSysUserId(userInfoDTO.getId());
         businessOrderDTO.setBusinessOrderId(CodeGenUtil.getOrderCodeNumber());
@@ -468,4 +468,5 @@ public class TransactionService {
     public Date getBusinessOrderSendDate(String orderId) {
         return null;
     }
+
 }

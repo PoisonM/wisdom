@@ -102,6 +102,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     else
                     {
                         showToast("加载中");
+
                         //先将此商品生成订单
                         CreateBusinessOrder.save({businessProductId:$scope.param.product.productId,
                             productSpec:$scope.param.checkFlag,
@@ -153,7 +154,6 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
 
                                 })
                             }
-
                         })
 
                     }
