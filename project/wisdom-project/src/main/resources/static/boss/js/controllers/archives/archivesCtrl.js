@@ -31,8 +31,8 @@ angular.module('controllers',[]).controller('archivesCtrl',
                 $state.go("newUser")
             };
             /*点击总金额跳转到相对应的页面*/
-            $scope.refillCardGo=function () {
-                $state.go("refillCard")
+            $scope.refillCardGo=function (sysShopId,sysUserId) {
+                $state.go("refillCard",{sysShopId:sysShopId,sysUserId:sysUserId})
             };
             /*点击总欠款跳转到相应的页面*/
             $scope.balanceRecordGo=function () {

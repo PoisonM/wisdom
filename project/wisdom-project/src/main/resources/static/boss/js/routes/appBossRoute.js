@@ -1027,7 +1027,7 @@ define(['appBoss'], function(app){
                     })
                     /* refillCard  充值卡*/
                     .state('refillCard', {
-                        url: '/refillCard',
+                        url: '/refillCard/:sysShopId/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'refillCardCtrl',
                         resolve: {
@@ -1040,7 +1040,7 @@ define(['appBoss'], function(app){
                     })
                     /*prepaidPhoneRecords 充值记录*/
                     .state('prepaidPhoneRecords', {
-                        url: '/prepaidPhoneRecords',
+                        url: '/prepaidPhoneRecords/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'prepaidPhoneRecordsCtrl',
                         resolve: {
@@ -1053,7 +1053,7 @@ define(['appBoss'], function(app){
                     })
                     /*accountDetails 账户明细*/
                     .state('accountDetails', {
-                        url: '/accountDetails',
+                        url: '/accountDetails/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'accountDetailsCtrl',
                         resolve: {
