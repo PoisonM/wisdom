@@ -56,7 +56,12 @@ public class ShopTest {
 
         JedisUtils.setObject("20180510170143457_1", "Y", 100000000);
 
-        MvcResult result = mvc.perform(get("/shop/getUserScanInfo").param("sysUserId", "1").param("shopId", "20180510170143457"))
+//        MvcResult result = mvc.perform(get("/shop/getBossShopInfo").param("sysUserId", "1").param("shopId", "20180510170143457"))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+
+        MvcResult result = mvc.perform(get("/shop/getBossShopInfo"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

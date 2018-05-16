@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 
 import java.util.List;
@@ -48,4 +49,9 @@ public interface ShopUserRelationService {
      * @return
      */
     ResponseDTO<String> userBinding(String openId, String shopId);
+
+    /**
+     * 查询美容院信息
+     */
+    List<ExtSysShopDTO> getBossShopInfo(ExtSysShopDTO extSysShopDTO);
 }
