@@ -1,6 +1,7 @@
 package com.wisdom.business.controller.transaction;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
+import com.aliyun.oss.ServiceException;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.account.AccountService;
@@ -20,6 +21,8 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.*;
 import com.wisdom.common.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -64,6 +67,7 @@ public class TransactionController {
 
     @Autowired
     private UserServiceClient userServiceClient;
+    Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
     @LoginRequired
     @RequestMapping(value ="putNeedPayOrderListToRedis",method = {RequestMethod.POST, RequestMethod.GET})
@@ -77,33 +81,44 @@ public class TransactionController {
         JedisUtils.set(userInfoDTO.getId()+"needPay",needPayValue,60*5);
 
         try {
+            //todo log
+            logger.info("订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
             redisLock.lock();
+            //todo log
+            logger.info("订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
             //将商品放入未支付订单列表
             for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
-                try {
                     BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
                     businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
                     businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
+                    //todo log
+                    logger.info("订单号=={}",needPayOrderDTO.getOrderId());
                     businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
                     if("3".equals(businessOrderDTO.getStatus())){
+                        //todo log
+                        logger.info("订单号=={}",needPayOrderDTO.getOrderId());
+                        logger.info("订单状态=={}",businessOrderDTO.getStatus());
+                        logger.info("商品数量=={}",needPayOrderDTO.getProductNum());
                         ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
+                        logger.info("商品库存=={}",productDTO.getProductAmount());
                         if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
+                            //todo log
+                            logger.info("订单号=={}",needPayOrderDTO.getOrderId());
                             responseDTO.setErrorInfo("库存不足");
                             responseDTO.setResult(StatusConstant.FAILURE);
                             return responseDTO;
                         }
                     }
+                    //todo log
+                    logger.info("订单号=={}",needPayOrderDTO.getOrderId());
                     businessOrderDTO.setStatus("0");
                     businessOrderDTO.setUpdateDate(new Date());
                     transactionService.updateBusinessOrder(businessOrderDTO);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-        }catch (Exception e)
+        }catch (Throwable e)
         {
             e.printStackTrace();
-            throw e;
+            throw new ServiceException("");
         }
         finally
         {
