@@ -284,5 +284,9 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UpdateShopUserOrderInfo', ['$resource', function($resource) {
         return $resource(beautyIP + '/orderInfo/updateShopUserOrderInfo')
     }])
+    //用户支付接口
+    .factory('UserPayOpe', ['$resource', function($resource) {
+        return $resource(beautyIP + '/userPay/userPayOpe')
+    }])
 
 ;

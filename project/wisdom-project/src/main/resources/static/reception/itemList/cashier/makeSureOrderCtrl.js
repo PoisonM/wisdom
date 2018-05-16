@@ -41,7 +41,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: '10000', //总金额
         }, function(data) {
-            $state.go('pad-web.left_nav.orderList')
+            $state.go('pad-web.left_nav.orderList', { orderId: $scope.orderId })
         })
     }
     $scope.checkBoxChek = function(e) {
@@ -118,21 +118,21 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
     }
 
     var tempAll =
-    $scope.myChangeFn = function () {
-        tempAll = 0
-        setTimeout(function () {
-            for(var i = 0; i < $(".countSubtotal").length; i++){
-                if($(".countSubtotal").eq(i).val() == ""){
+        $scope.myChangeFn = function() {
+            tempAll = 0
+            setTimeout(function() {
+                for (var i = 0; i < $(".countSubtotal").length; i++) {
+                    if ($(".countSubtotal").eq(i).val() == "") {
 
-                }else {
-                    tempAll += parseInt($(".countSubtotal").eq(i).val())
+                    } else {
+                        tempAll += parseInt($(".countSubtotal").eq(i).val())
+                    }
+
+                    $(".allPrice").html("总金额:" + tempAll)
                 }
+            }, 100)
 
-                $(".allPrice").html("总金额:"+tempAll)
-            }
-        },100)
-
-    }
+        }
 
     $scope.myChangeFn()
 });
