@@ -1,5 +1,6 @@
 
 /*var user = '/user/';*/
+var appointmentInfo = 'http://192.168.1.117/beauty/appointmentInfo/';
 var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
@@ -11,6 +12,7 @@ var shopBossRelation ='/beauty/shopBossRelation/';
 var user ='/user/';
 var analyze = '/beauty/analyze/';
 var consumes = '/beauty/consumes/';
+var consume = '/beauty/consume/';
 var cardInfo  = '/beauty/cardInfo/';
 
 /*http://192.168.1.117*/
@@ -162,7 +164,7 @@ define(['appBoss'], function (app) {
         }])
         /*获取疗程卡的消费记录*/
         .factory('GetUserConsumeByFlowId',['$resource',function ($resource){
-            return $resource(consumes+'getUserConsumeByFlowId')
+            return $resource(consume+'getUserConsumeByFlowId')
         }])
     
 
