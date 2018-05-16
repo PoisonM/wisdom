@@ -1,7 +1,6 @@
 package com.wisdom.service.impl;
 
 import com.wisdom.beauty.BeautyServiceApplication;
-import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +53,7 @@ public class ShopTest {
     @Test
     public void getUserScanInfo() throws Exception {
 
-        JedisUtils.setObject("20180510170143457_1", "Y", 100000000);
+//        JedisUtils.setObject("20180510170143457_1", "Y", 100000000);
 
 //        MvcResult result = mvc.perform(get("/shop/getBossShopInfo").param("sysUserId", "1").param("shopId", "20180510170143457"))
 //                .andExpect(status().isOk())// 模拟向testRest发送get请求
