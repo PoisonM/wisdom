@@ -172,7 +172,7 @@ public class TransactionController {
     }
 
     @LoginRequired
-    @RequestMapping(value ="getUserTransactionDetail",method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value ="",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public ResponseDTO<TransactionDTO> getUserTransactionDetail(@RequestParam String transactionId, @RequestParam String transactionType) {
         ResponseDTO<TransactionDTO> responseDTO = new ResponseDTO();

@@ -251,6 +251,10 @@ public class PayFunction {
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
+
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
 
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE * 5 / 100 + (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5 / 100;
@@ -260,6 +264,9 @@ public class PayFunction {
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
+
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                     } else {
 
                         //b的下级消费返5%的即时
@@ -284,6 +291,9 @@ public class PayFunction {
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
 
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
                         returnMoney = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 2 / 100;
 
@@ -292,6 +302,9 @@ public class PayFunction {
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
+
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                     } else {
                         returnMoney = expenseAmount * 2 / 100;
 
@@ -314,6 +327,9 @@ public class PayFunction {
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
+
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                     } else {
                         returnMoney = expenseAmount * 2 / 100;
 
