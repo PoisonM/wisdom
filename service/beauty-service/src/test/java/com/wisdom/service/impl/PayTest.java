@@ -81,7 +81,7 @@ public class PayTest {
     public void userPayOpe() throws Exception {
 
         ShopUserPayDTO shopUserPayDTO = new ShopUserPayDTO();
-        shopUserPayDTO.setOrderId("20180424200819402");
+        shopUserPayDTO.setOrderId("20180510175636866");
         shopUserPayDTO.setPayType(PayTypeEnum.ALI_PAY.getCode());
         shopUserPayDTO.setShopUserArchivesId("1");
         shopUserPayDTO.setCashPayPrice("1000");
@@ -97,7 +97,7 @@ public class PayTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/userPay/userPayOpe").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/userPay/updateShopUserOrderPayInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
