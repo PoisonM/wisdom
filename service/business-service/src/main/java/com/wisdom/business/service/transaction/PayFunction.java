@@ -7,21 +7,24 @@ import com.wisdom.business.mapper.transaction.PromotionTransactionRelationMapper
 import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
-import com.wisdom.common.dto.product.ProductDTO;
-import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
-import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
-import com.wisdom.common.dto.transaction.PromotionTransactionRelation;
-import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
-import com.wisdom.common.util.*;
+import com.wisdom.common.dto.transaction.PromotionTransactionRelation;
+import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.SMSUtil;
+import com.wisdom.common.util.WeixinTemplateMessageUtil;
+import com.wisdom.common.util.WeixinUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,7 +32,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sound.midi.ShortMessage;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -38,6 +40,9 @@ import java.util.UUID;
 
 @Service
 public class PayFunction {
+
+    Logger logger = LoggerFactory.getLogger(PayFunction.class);
+
 
     @Autowired
     private PayRecordService payRecordService;
@@ -363,7 +368,7 @@ public class PayFunction {
             nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
             List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
 
-            if (returnMoney > 0) {
+            if (returnMoney >= 0) {
                 //将returnMoney去更新要返现的用户ID的account和income两个表的数据
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, returnMoney);
 
@@ -371,18 +376,19 @@ public class PayFunction {
                // WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
             }
             //永久性奖励
-            if(permanentReward>0){
+            if(permanentReward>=0){
 
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, permanentReward);
                 this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,permanentReward,expenseAmount,parentRuleType,ConfigConstant.INCOME_TYPE_P);
 
             }
 
-            if(permanentReward>0||returnMoney > 0){
+            if(permanentReward>=0||returnMoney >=0){
                 //判断该交易号记录是否存在
                 int size = promotionTransactionRelationMapper.isExistence(instanceReturnMoneySignalDTO.getTransactionId());
                 if(size == 0){
                     this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
+                    logger.info("用户购买单号：{}，",instanceReturnMoneySignalDTO.getTransactionId());
                 }
                 WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
             }
@@ -438,7 +444,7 @@ public class PayFunction {
             nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
             List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
 
-            if(permanentReward>0){
+            if(permanentReward>=0){
 
                 //更新用户账户金额
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, permanentReward);
