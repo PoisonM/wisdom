@@ -1260,7 +1260,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('drawCardRecordsDetail', {
-                        url: '/drawCardRecordsDetail',
+                        url: '/drawCardRecordsDetail/:flowNo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'drawCardRecordsDetailCtrl',
                         resolve: {

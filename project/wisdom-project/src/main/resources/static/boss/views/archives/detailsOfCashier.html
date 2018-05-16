@@ -78,19 +78,19 @@
                         <ion-item  class=" bgfff h50" >
                             <p class="sb">
                                 <span class="ml20 fs15 col666">单次</span>
-                                <span class="mr10">6次</span>
+                                <span class="mr10">{{item.timeDiscount}}</span>
                             </p>
                         </ion-item>
                         <ion-item  class=" bgfff h50" >
                             <p class="sb">
                                 <span class="ml20 fs15 col666">疗程卡</span>
-                                <span class="mr10">¥4888.00</span>
+                                <span class="mr10">{{item.periodDiscount}}</span>
                             </p>
                         </ion-item>
                         <ion-item  class=" bgfff h50" >
                             <p class="sb">
                                 <span class="ml20 fs15 col666">产品</span>
-                                <span class="mr10">9.2折</span>
+                                <span class="mr10">{{item.productDiscount}}</span>
                             </p>
                         </ion-item>
 
@@ -164,9 +164,9 @@
                             <div >
                                 <p class="h40 ml20 bbl">包含项目</p>
                                 <div class="sb ml10 " ng-repeat="item in [0,1]">
-                                    <p class="W33 ml20">肩颈保养</p>
-                                    <p class="W33 ml20 center">X10</p>
-                                    <p class="W33 ml20 mr10" style="text-align: right">￥17.00</p>
+                                    <p class="W33 ml20 fs13 col88">肩颈保养</p>
+                                    <p class="W33 ml20 center fs13 col88">X10</p>
+                                    <p class="W33 ml20 mr10 fs13 col88" style="text-align: right">￥17.00</p>
                                 </div>
                             </div>
                         </ion-item>
