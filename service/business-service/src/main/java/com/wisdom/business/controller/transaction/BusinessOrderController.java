@@ -73,10 +73,13 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> createBusinessOrder(@RequestBody BusinessOrderDTO businessOrderDTO) {
-        RedisLock redisLock = new RedisLock("putNeedPay" + businessOrderDTO.getBusinessProductId());
+        RedisLock productAmountLock = new RedisLock("putNeedPayProductAmount");
+        //todo log
+        logger.info("锁前商品id=={}", businessOrderDTO.getBusinessProductId());
+        productAmountLock.lock();
+        logger.info("锁后商品id=={}", businessOrderDTO.getBusinessProductId());
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         try {
-            redisLock.lock();
             ProductDTO productDTO = productService.getBusinessProductInfo(businessOrderDTO.getBusinessProductId());
             if (businessOrderDTO.getBusinessProductNum() > Integer.parseInt(productDTO.getProductAmount())) {
                 responseDTO.setResult(StatusConstant.FAILURE);
@@ -105,7 +108,7 @@ public class BusinessOrderController {
         }
         finally
         {
-            redisLock.unlock();
+            productAmountLock.unlock();
         }
 
         return responseDTO;
