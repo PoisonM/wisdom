@@ -399,11 +399,11 @@ public class PayCoreService {
                             if(ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
 
                                 //执行平级返利
-                                payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),"B1B1", instanceReturnMoneySignalDTO);
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"B1B1", instanceReturnMoneySignalDTO);
                             }else if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
 
                                 //执行平级返利
-                                payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),"B1A1", instanceReturnMoneySignalDTO);
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"B1A1", instanceReturnMoneySignalDTO);
                             }
                         }
                     }
