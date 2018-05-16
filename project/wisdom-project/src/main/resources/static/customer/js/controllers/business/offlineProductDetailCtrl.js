@@ -111,7 +111,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                             BusinessUtil.checkResponseData(data,'offlineProductDetail&'+$scope.param.product.productId);
                             if(data.result==Global.FAILURE)
                             {
-                                showToast("请先登录账号")
+                                showToast("购买失败，库存不够")
                                 hideToast()
                             }
                             else
