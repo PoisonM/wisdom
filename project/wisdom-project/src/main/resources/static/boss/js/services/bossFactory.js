@@ -11,7 +11,7 @@ var shopBossRelation ='/beauty/shopBossRelation/';
 var user ='/user/'
 var analyze = '/beauty/analyze/'
 
-/*http://192.168.1.117*/
+/*http://47.100.246.201*/
 
 
 define(['appBoss'], function (app) {
