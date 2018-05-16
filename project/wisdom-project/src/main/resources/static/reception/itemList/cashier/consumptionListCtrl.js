@@ -180,7 +180,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 useStyle: res.useStyle,
             }],
             shopUserProductRelationDTOS: [{
-                sysShopProjectPurchasePrice: res.marketPrice,
+                purchasePrice: res.marketPrice,
                 initTimes: '1',
                 shopProductId: res.id,
                 shopProductName: res.productName,

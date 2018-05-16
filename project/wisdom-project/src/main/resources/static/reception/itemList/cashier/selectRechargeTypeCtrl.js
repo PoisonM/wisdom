@@ -35,6 +35,8 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
         if ($state.params.type == 1) {
             $scope.updateVirtualGoodsOrderInfo(id, eid, name, function() { $state.go('pad-web.left_nav.makeSureOrder') });
 
+        } else if ($state.params.type == 2) {
+
         } else {
             $state.go('pad-web.left_nav.selectRechargeCard', { type: id });
         }
@@ -46,7 +48,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
         GetUserRechargeCardList.get({
             sysUserId: 110
         }, function(data) {
-            $scope.RechargeCardList = data.responseData;
+            $scope.RechargeCardList = data.responseData.userRechargeCardList;
         })
     } else {
         GetRechargeCardList.get({
