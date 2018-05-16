@@ -1,5 +1,6 @@
 package com.wisdom.beauty.controller.order;
 
+import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
@@ -27,7 +28,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -87,8 +87,12 @@ public class OrderController {
             ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
             shopUserRechargeCardDTO.setSysUserId(shopUserOrderDTO.getUserId());
             shopUserRechargeCardDTO.setSysShopId(shopUserOrderDTO.getShopId());
-            BigDecimal sumAmount = shopCardService.getUserRechargeCardSumAmount(shopUserRechargeCardDTO);
-            shopUserOrderDTO.setAvailableBalance(sumAmount);
+            List<ShopUserRechargeCardDTO> userRechargeCardList = shopCardService.getUserRechargeCardList(shopUserRechargeCardDTO);
+            if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
+                logger.error("用户特殊账号为空={}", "sysUserId = [" + sysUserId + "], orderId = [" + orderId + "]");
+                throw new ServiceException("用户特殊账号为空");
+            }
+            shopUserOrderDTO.setAvailableBalance(userRechargeCardList.get(0).getSurplusAmount());
         }
 
         responseDTO.setResponseData(shopUserOrderDTO);
