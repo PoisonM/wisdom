@@ -57,18 +57,18 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
 
     GetShopUserRecentlyOrderInfo.get({ sysUserId: '110' }, function(data) {
         $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
-        for (var i = 0; i < $scope.projectGroupRelRelationDTOS.length; i++) {
+        /*for (var i = 0; i < $scope.projectGroupRelRelationDTOS.length; i++) {
             $scope.projectGroupRelRelationDTOS[i].ng_markPrice = '';
-        }
+        }*/
         $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
-        for (var i = 0; i < $scope.shopUserProductRelationDTOS.length; i++) {
+        /*for (var i = 0; i < $scope.shopUserProductRelationDTOS.length; i++) {
             $scope.shopUserProductRelationDTOS[i].ng_markPrice = '';
-        }
+        }*/
         $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
-        for (var i = 0; i < $scope.shopUserProjectRelationDTOS.length; i++) {
+        /*for (var i = 0; i < $scope.shopUserProjectRelationDTOS.length; i++) {
             $scope.shopUserProjectRelationDTOS[i].ng_markPrice = $scope.shopUserProjectRelationDTOS[i].sysShopProjectPurchasePrice * $scope.shopUserProjectRelationDTOS[i].discount;
             $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
-        }
+        }*/
         $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
     })
     $scope.deleteClick = function(e, id) {
@@ -116,4 +116,23 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
     $scope.getTotalPrice = function() {
 
     }
+
+    var tempAll =
+    $scope.myChangeFn = function () {
+        tempAll = 0
+        setTimeout(function () {
+            for(var i = 0; i < $(".countSubtotal").length; i++){
+                if($(".countSubtotal").eq(i).val() == ""){
+
+                }else {
+                    tempAll += parseInt($(".countSubtotal").eq(i).val())
+                }
+
+                $(".allPrice").html("总金额:"+tempAll)
+            }
+        },100)
+
+    }
+
+    $scope.myChangeFn()
 });

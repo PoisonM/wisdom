@@ -206,3 +206,16 @@
 .stillOwedContent .contentBox .discountPrice {
     margin: 0 0 10px 20px;
 }
+.stillOwedContent .otherOperation li .subtotal e{
+    float: left;
+}
+.stillOwedContent .otherOperation li .subtotal input{
+    width: 100px;
+    background:#ffffff;
+}
+.stillOwedBox .allPrice{
+    display: block;
+    width: 100%;
+    text-align: right;
+    padding-right: 25px;
+}
