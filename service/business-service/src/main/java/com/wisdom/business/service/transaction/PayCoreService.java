@@ -356,7 +356,7 @@ public class PayCoreService {
                             if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
 
                                 //执行平级返利
-                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"A1A1", instanceReturnMoneySignalDTO);
                             }
 
                         }
@@ -378,8 +378,9 @@ public class PayCoreService {
                         UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
                         if(grandpaUserInfoDTO!=null){
                             if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
+
                                 //执行平级返利
-                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"A1A1", instanceReturnMoneySignalDTO);
                             }
 
                         }
@@ -398,11 +399,11 @@ public class PayCoreService {
                             if(ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
 
                                 //执行平级返利
-                                payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
+                                payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),"B1B1", instanceReturnMoneySignalDTO);
                             }else if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
 
                                 //执行平级返利
-                                payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                                payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),"B1A1", instanceReturnMoneySignalDTO);
                             }
                         }
                     }
@@ -421,7 +422,7 @@ public class PayCoreService {
                         if(grandpaUserInfoDTO!=null){
                             if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
                                 //执行平级返利
-                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"A1A1", instanceReturnMoneySignalDTO);
                             }
 
                         }
@@ -443,7 +444,7 @@ public class PayCoreService {
 
                         }else if(ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
 
-                            payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
+                            payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"B1B1", instanceReturnMoneySignalDTO);
 
                         }
                     }
