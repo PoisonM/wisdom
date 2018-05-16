@@ -383,9 +383,8 @@ public class PayFunction {
                 int size = promotionTransactionRelationMapper.isExistence(instanceReturnMoneySignalDTO.getTransactionId());
                 if(size == 0){
                     this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
-                    WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
                 }
-
+                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
             }
 
         } catch (Exception e) {
@@ -419,6 +418,19 @@ public class PayFunction {
         float permanentReward = 0;
         permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
+        String isImportLevel = ConfigConstant.LEVE_IMPORT;
+
+        if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
+
+            //记录此单是用户升级单
+            isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+
+        } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
+
+            //记录此单是用户升级单
+            isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+        }
+
         try{
             AccountDTO accountDTO = new AccountDTO();
             accountDTO.setSysUserId(parentUserId);
@@ -434,7 +446,13 @@ public class PayFunction {
                 //插入永久奖励信息
                 this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,permanentReward,expenseAmount,parentRuleType,ConfigConstant.INCOME_TYPE_P);
 
+
                 //给用户推送下级消费信息
+                int size = promotionTransactionRelationMapper.isExistence(instanceReturnMoneySignalDTO.getTransactionId());
+                if(size == 0){
+                    this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
+                }
+
                 WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
 
             }
