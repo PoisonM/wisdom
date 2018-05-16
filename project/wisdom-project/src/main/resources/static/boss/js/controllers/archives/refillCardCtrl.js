@@ -2,6 +2,9 @@ angular.module('controllers',[]).controller('refillCardCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserRechargeCardList',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserRechargeCardList) {
             $rootScope.title = "基本信息";
+            $scope.param={
+                flag:false
+            }
            $scope.prepaidPhoneRecordsGo=function () {
                $state.go("prepaidPhoneRecords")
            }
@@ -11,4 +14,10 @@ angular.module('controllers',[]).controller('refillCardCtrl',
             },function(data) {
                 $scope.refillCard = data.responseData
             })
+            $scope.help = function(){
+                $scope.param.flag=true;
+            }
+            $scope.disNone = function(){
+                $scope.param.flag=false;
+            }
         }]);

@@ -6,7 +6,7 @@ angular.module('controllers',[]).controller('prepaidPhoneRecordsCtrl',
                 $state.go("accountDetails")
             }
             GetUserConsumeByFlowId.get({
-                consumeType:"1",
+                consumeType:"0",
                 flowId:"3dcd258cd2ab464b81f32e072e6bee62"
             },function(data){
 

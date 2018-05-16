@@ -13,8 +13,19 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                 });
             };*/
 
-            $scope.detailsOfCashierGo=function () {
-                $state.go("detailsOfCashier")
+           $scope.param={
+               flag:false,
+               typeIndex:'0'
+           };
+           $scope.sel = function(){
+               $scope.param.flag = true
+           };
+           $scope.selType = function(type){
+               $scope.param.typeIndex = type
+           }
+
+            $scope.detailsOfCashierGo=function (flowNo) {
+                $state.go("detailsOfCashier",{flowNo:flowNo})
             }
 
             $scope.userConsumeRequest = {

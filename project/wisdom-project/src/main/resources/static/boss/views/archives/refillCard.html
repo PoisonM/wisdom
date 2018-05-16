@@ -1,12 +1,12 @@
 <ion-view>
-    <ion-content class="partialFiles">
+    <ion-content class="partialFiles bgfff">
      <div>
          <p style="" class="h40 center">
              总余额 {{refillCard.totalBalance}}
          </p>
          <ion-list>
              <div class="" style="position:absolute; right:20px;z-index: 1000">
-                 <img src="images/help.png" class="helpPic ml10">
+                 <img src="images/help.png" class="helpPic ml10" ng-click="help()">
              </div>
              <ion-item  class=" bgfff row" style="height:98px;" ng-repeat="item in refillCard.userRechargeCardList" >
                  <div class="col col30 center" style="line-height: 82px;">
@@ -28,8 +28,8 @@
 
          </ion-list>
      </div>
-        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100" ng-show="false"></div>
-        <div class="bgfff" style="width:94%;height:220px;position: absolute;z-index: 101;top:50%;left:50%;margin-top: -100px;margin-left:-47%;padding: 20px 20px 0 20px;" ng-show="false">
+        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100" ng-show="param.flag"  ng-click="disNone()"></div>
+        <div class="bgfff" style="width:94%;height:220px;position: absolute;z-index: 101;top:50%;left:50%;margin-top: -100px;margin-left:-47%;padding: 20px 20px 0 20px;" ng-show="param.flag">
            <h4>余额充值： </h4>
             <div style="font-size: 14px;color: #2A2A2A;margin-top:10px;">
                 是指该档案用余额充值的方式惊醒的自定义总充值金额，此为特殊账户（支持续充值）。
