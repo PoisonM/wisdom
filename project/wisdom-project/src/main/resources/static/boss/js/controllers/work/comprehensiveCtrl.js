@@ -84,6 +84,6 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
             }
             
             $scope.sevenDayChartsViewClick = function () {
-                $state.go('sevenDayCharts');
+                $state.go('sevenDayCharts',{id:"a"});
             }
 }]);

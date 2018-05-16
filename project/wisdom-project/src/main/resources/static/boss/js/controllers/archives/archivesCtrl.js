@@ -11,8 +11,8 @@ angular.module('controllers',[]).controller('archivesCtrl',
                 }
             });
             /*点击账户记录跳转到账户详情*/
-             $scope.accountRecordsGo=function () {
-                 $state.go("accountRecords")
+             $scope.accountRecordsGo=function (sysUserId) {
+                 $state.go("accountRecords",{sysUserId:sysUserId})
              };
              /*点击产品跳转到产品详情*/
             $scope.goProduct=function () {
