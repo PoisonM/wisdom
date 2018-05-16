@@ -70,14 +70,14 @@ public class PayRecordService {
             NeedPayOrderListDTO needPayOrderListDTO = (new Gson()).fromJson(value, NeedPayOrderListDTO.class);
 
             //
-            for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
-            {
-                ProductDTO productDTO = productMapper.findProductById(needPayOrderDTO.getProductId());
-                if(Integer.parseInt(productDTO.getProductAmount()) < Integer.parseInt(needPayOrderDTO.getProductNum())){
-                    prePayInfoDTO.setResult(StatusConstant.FAILURE);
-                    return prePayInfoDTO;
-                }
-            }
+//            for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
+//            {
+//                ProductDTO productDTO = productMapper.findProductById(needPayOrderDTO.getProductId());
+//                if(Integer.parseInt(productDTO.getProductAmount()) < Integer.parseInt(needPayOrderDTO.getProductNum())){
+//                    prePayInfoDTO.setResult(StatusConstant.FAILURE);
+//                    return prePayInfoDTO;
+//                }
+//            }
             //
 
             Float payPrice = 0F;
