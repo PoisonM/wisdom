@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtSysShopMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.extDto.ExtSysShopDTO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="shop_image_url" property="shopImageUrl" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="business_license_url" property="businessLicenseUrl" jdbcType="VARCHAR"/>
+        <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR"/>
+        <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR"/>
+        <result column="open_account_license_url" property="openAccountLicenseUrl" jdbcType="VARCHAR"/>
+        <result column="on_service_status" property="onServiceStatus" jdbcType="CHAR"/>
+        <result column="detail" property="detail" jdbcType="VARCHAR"/>
+        <result column="area" property="area" jdbcType="REAL"/>
+        <result column="open_door_date" property="openDoorDate" jdbcType="VARCHAR"/>
+        <result column="close_door_date" property="closeDoorDate" jdbcType="VARCHAR"/>
+        <result column="shop_id" property="shopId" jdbcType="CHAR"/>
+        <result column="qr_code_url" property="qrCodeUrl" jdbcType="VARCHAR"/>
+        <result column="parents_id" property="parentsId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="CHAR"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, name, shop_image_url, phone, province, city, address, business_license_url, id_card_front_url,
+        id_card_back_url, open_account_license_url, on_service_status, detail, area, open_door_date,
+        close_door_date, shop_id, qr_code_url, parents_id, type, create_by, create_date,
+        update_user, update_date,sys_boss_id
+    </sql>
+    <select id="selectBossShopInfo" resultMap="BaseResultMap"
+            parameterType="com.wisdom.beauty.api.extDto.ExtSysShopDTO">
+        select * from shop_boss_relation sbr
+        INNER JOIN sys_shop ss on ss.id = sbr.sys_shop_id
+        where 1=1
+        <if test="sysBossId != null">
+            and sbr.sys_boss_id = #{sysBossId}
+        </if>
+        <if test="address != null">
+            and ss.type = #{type}
+        </if>
+    </select>
+
+</mapper>

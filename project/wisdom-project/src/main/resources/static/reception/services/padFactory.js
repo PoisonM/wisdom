@@ -1,5 +1,5 @@
-var beautyIP = ' http://192.168.1.117/beauty/';
-var userIP = ' http://192.168.1.117/user/';
+var beautyIP = ' http://47.100.246.201/beauty/';
+var userIP = ' http://47.100.246.201/user/';
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
@@ -231,7 +231,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetUserProductList', ['$resource', function($resource) {
         return $resource(beautyIP + 'productInfo/getUserProductList')
     }])
-    //查询用户充值卡的总金额  http://192.168.1.117:9051/cardInfo/getUserRechargeSumAmount
+    //查询用户充值卡的总金额  http://47.100.246.201:9051/cardInfo/getUserRechargeSumAmount
     .factory('GetUserRechargeSumAmount', ['$resource', function($resource) {
         return $resource(beautyIP + 'cardInfo/getUserRechargeSumAmount')
     }])
@@ -278,7 +278,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //图片上传
     .factory('ImageUploadToOSS', ['$resource', function($resource) {
-        return $resource('http://192.168.1.117/system/file/imageUploadToOSS')
+        return $resource('http://47.100.246.201/system/file/imageUploadToOSS')
     }])
     //全量更新用户的订单
     .factory('UpdateShopUserOrderInfo', ['$resource', function($resource) {

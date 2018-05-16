@@ -1,11 +1,14 @@
 package com.wisdom.beauty.controller.order;
 
+import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
+import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopOrderService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -48,6 +51,9 @@ public class OrderController {
     private MongoTemplate mongoTemplate;
 
     @Resource
+    private ShopCardService shopCardService;
+
+    @Resource
     private ShopOrderService shopOrderService;
 
     /**
@@ -75,6 +81,18 @@ public class OrderController {
             Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(sysUserId));
             query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
             shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        }
+        if (null != shopUserOrderDTO) {
+            //查询用户账户总余额
+            ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+            shopUserRechargeCardDTO.setSysUserId(shopUserOrderDTO.getUserId());
+            shopUserRechargeCardDTO.setSysShopId(shopUserOrderDTO.getShopId());
+            List<ShopUserRechargeCardDTO> userRechargeCardList = shopCardService.getUserRechargeCardList(shopUserRechargeCardDTO);
+            if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
+                logger.error("用户特殊账号为空={}", "sysUserId = [" + sysUserId + "], orderId = [" + orderId + "]");
+                throw new ServiceException("用户特殊账号为空");
+            }
+            shopUserOrderDTO.setAvailableBalance(userRechargeCardList.get(0).getSurplusAmount());
         }
 
         responseDTO.setResponseData(shopUserOrderDTO);

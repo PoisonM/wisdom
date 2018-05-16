@@ -98,7 +98,7 @@ public class ShopCardServiceImpl implements ShopCardService {
 
         BigDecimal bigDecimal = new BigDecimal(0);
         List<ShopUserRechargeCardDTO> rechargeCardList = getUserRechargeCardList(shopUserRechargeCardDTO);
-        if (CommonUtils.objectIsEmpty(rechargeCardList)) {
+        if (CommonUtils.objectIsNotEmpty(rechargeCardList)) {
             for (ShopUserRechargeCardDTO userRechargeCardDTO : rechargeCardList) {
                 bigDecimal = bigDecimal.add(userRechargeCardDTO.getSurplusAmount());
             }

@@ -120,7 +120,15 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					goodType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
 					c.andGoodsTypeIn(goodType);
-				} else {
+				}
+				if(GoodsTypeEnum.CONSUM.getCode().equals(userConsumeRequest.getGoodsType())){
+					List goodType = new ArrayList();
+					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
+					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+					goodType.add(GoodsTypeEnum.PRODUCT.getCode());
+					c.andGoodsTypeIn(goodType);
+				}else  {
 					List goodType = new ArrayList();
 					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
 					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
@@ -141,6 +149,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				userConsumeRecordResponseDTO.setSysShopClerkId(shopUserConsumeRecord.getSysClerkId());
 				userConsumeRecordResponseDTO.setGoodType(shopUserConsumeRecord.getGoodsType());
 				userConsumeRecordResponseDTO.setConsumeType(shopUserConsumeRecord.getConsumeType());
+				userConsumeRecordResponseDTO.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
+				userConsumeRecordResponseDTO.setSysShopClerkName(shopUserConsumeRecord.getSysClerkName());
 				if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
 					// 如果是充值类型，并且是GoodsType=2,则设置标题为充值
 					if (shopUserConsumeRecord.getGoodsType().equals(GoodsTypeEnum.RECHARGE_CARD.getCode())) {

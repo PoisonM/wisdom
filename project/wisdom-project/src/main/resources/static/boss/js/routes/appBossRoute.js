@@ -364,7 +364,7 @@ define(['appBoss'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.schedulingCtrl',
                                     [
                                         'js/controllers/work/schedulingCtrl.js?ver='+ bossVersion,
-                                        'js/controllers/work/fixedTab.js?ver='+ bossVersion,
+                                        'js/libs/fixedTab.js?ver='+ bossVersion,
 
                                     ],
                                     'views/work/scheduling.html?ver=' + bossVersion
@@ -1209,8 +1209,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*accountRecords 账户记录*/
                     .state('accountRecords', {
-                        url: '/accountRecords',
+                        url: '/accountRecords/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'accountRecordsCtrl',
                         resolve: {
@@ -1222,7 +1223,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('recordCashier', {
-                        url: '/recordCashier',
+                        url: '/recordCashier/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'recordCashierCtrl',
                         resolve: {
@@ -1246,7 +1247,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('drawCardRecords', {
-                        url: '/drawCardRecords',
+                        url: '/drawCardRecords/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'drawCardRecordsCtrl',
                         resolve: {
@@ -1905,9 +1906,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-                /*trendChart  趋势图*/
+                /*trendChart  趋势图-收支分析*/
                     .state('trendChart', {
-                        url: '/trendChart',
+                        url: '/trendChart/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'trendChartCtrl',
                         resolve: {
@@ -1931,8 +1932,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*sevenDayCharts  趋势图-综合分析*/
                     .state('sevenDayCharts', {
-                        url: '/sevenDayCharts',
+                        url: '/sevenDayCharts/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'sevenDayChartsCtrl',
                         resolve: {

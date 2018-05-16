@@ -224,27 +224,6 @@ public class ArchivesController {
      * @Author:huan
      * @Param:
      * @Return:
-     * @Description: 查询某个用户档案信息相关数据
-     * @Date:2018/4/8
-     */
-    @RequestMapping(value = "/findArchiveByUserId/{userId}", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseDTO<CustomerAccountResponseDto> findArchiveByUserId(@PathVariable String userId) {
-        long startTime = System.currentTimeMillis();
-        ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
-        CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
-        if (customerAccountResponseDto != null) {
-            responseDTO.setResponseData(customerAccountResponseDto);
-        }
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findArchive方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
-        return responseDTO;
-    }
-
-    /**
-     * @Author:huan
-     * @Param:
-     * @Return:
      * @Description: 获取用户id查询档案信息
      * @Date:2018/4/8
      */

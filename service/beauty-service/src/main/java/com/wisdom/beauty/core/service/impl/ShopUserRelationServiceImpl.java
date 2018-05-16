@@ -4,7 +4,9 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.beauty.client.UserServiceClient;
+import com.wisdom.beauty.core.mapper.ExtSysShopMapper;
 import com.wisdom.beauty.core.mapper.ShopUserRelationMapper;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
@@ -38,6 +40,8 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
 
     @Autowired
     private ShopUserRelationMapper shopUserRelationMapper;
+    @Autowired
+    private ExtSysShopMapper extSysShopMapper;
 
     @Autowired
     private UserServiceClient userServiceClient;
@@ -155,5 +159,18 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
+    }
+
+    /**
+     * 查询美容院信息
+     */
+    @Override
+    public List<ExtSysShopDTO> getBossShopInfo(ExtSysShopDTO extSysShopDTO) {
+        if (CommonUtils.objectIsEmpty(extSysShopDTO)) {
+            logger.error("查询美容院信息为空{}", "extSysShopDTO = [" + extSysShopDTO + "]");
+            return null;
+        }
+        List<ExtSysShopDTO> extSysShopDTOS = extSysShopMapper.selectBossShopInfo(extSysShopDTO);
+        return extSysShopDTOS;
     }
 }

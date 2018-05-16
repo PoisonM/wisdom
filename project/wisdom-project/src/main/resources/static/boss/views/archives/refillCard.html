@@ -2,42 +2,29 @@
     <ion-content class="partialFiles">
      <div>
          <p style="" class="h40 center">
-             总余额 68798.00
+             总余额 {{refillCard.totalBalance}}
          </p>
          <ion-list>
-             <ion-item  class=" bgfff row" style="height:98px;">
-                 <div class="col col30" style="line-height: 82px;">
+             <div class="" style="position:absolute; right:20px;z-index: 1000">
+                 <img src="images/help.png" class="helpPic ml10">
+             </div>
+             <ion-item  class=" bgfff row" style="height:98px;" ng-repeat="item in refillCard.userRechargeCardList" >
+                 <div class="col col30 center" style="line-height: 82px;">
                      <img src="images/banbleCard.png" class="banbleCardPic">
                  </div>
                  <div class="col col68" ng-click="prepaidPhoneRecordsGo()">
-                     <p>余额充值</p>
-                     <p class="col666 fs12">充值金额：1208.00</p>
-                     <p class="fs12 colff66">剩余金额：¥1208.00</p>
-                     <p class="fs12">折扣：<span>单次无折 </span>|<span>产品无折 </span>  | <span>疗程卡无折 </span></p>
-                     <p class="fs12 col888">购买时间：2018-03-18</p>
-                 </div>
-                 <div class="col col1">
-                     <img src="images/help.png" class="helpPic ml10">
+                     <p>{{item.shopRechargeCardName}}</p>
+                     <p class="col666 fs12">充值金额：{{item.initAmount}}</p>
+                     <p class="fs12 colff66">剩余金额：¥{{item.surplusAmount}}</p>
+                     <p class="fs12">折扣：{{item.discount}}</p>
+                     <p class="fs12 col888">购买时间：{{item.createDate|date:'yyyy-MM-dd'}}</p>
                  </div>
 
+                 <div class="col col1" >
+
+                 </div>
              </ion-item>
-             <ion-item  class=" bgfff row" style="height:116px;" ng-repeat="item in [0,1,2]">
-                 <div class="col col30" style="line-height: 100px;">
-                     <img src="images/banbleCard.png" class="banbleCardPic" >
-                 </div>
-                 <div class="col col70">
-                     <p>美容卡充值</p>
-                     <p class="col666 fs12">充值金额：1208.00</p>
-                     <p class="fs12 colff66">剩余金额：¥1208.00</p>
-                     <p class="fs12">折扣：<span>单次无折 </span>|<span>产品无折 </span>  | <span>疗程卡无折 </span></p>
-                     <p class="fs12 col888">购买时间：2018-03-18</p>
-                 </div>
-                 <div class="col col1">
 
-                 </div>
-
-
-             </ion-item>
 
          </ion-list>
      </div>

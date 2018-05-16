@@ -21,8 +21,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: ShopProductInfoServiceImpl
@@ -220,15 +222,11 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 				map.put(imageUrl.getImageId(), imageUrl.getUrl());
 			}
 		}
-		ShopProductInfoResponseDTO shopProductInfoResponseDTO=null;
+
 		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
 		for (ShopProductInfoDTO shopProductInfo : list) {
-			shopProductInfoResponseDTO= new ShopProductInfoResponseDTO();
-			shopProductInfoResponseDTO.setId(shopProductInfo.getId());
-			shopProductInfoResponseDTO.setDiscountPrice(shopProductInfo.getDiscountPrice());
-			shopProductInfoResponseDTO.setProductName(shopProductInfo.getProductName());
-			shopProductInfoResponseDTO.setProductTypeOneName(shopProductInfo.getProductTypeOneName());
-			shopProductInfoResponseDTO.setProductTypeTwoName(shopProductInfo.getProductTypeTwoName());
+			ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
+			BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
 			String[] urls = null;
 			if (map != null && StringUtils.isNotBlank(map.get(shopProductInfo.getId()))) {
 				urls = map.get(shopProductInfo.getId()).split("\\|");
