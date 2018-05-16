@@ -9,21 +9,21 @@
                     </a>
                     <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='0']"
                        ng-click="chooseTab('1')">
-                        <span class="fs15 col333">  消费记录</span>
+                        <span class="fs15 col333">  操作记录</span>
                     </a>
                 </div>
             </div>
 
             <div ng-show="param.flag">
                 <ion-list>
-                    <ion-item style="height:70px;" class="sb" ng-repeat="item in [0,1,2,3]">
+                    <ion-item style="height:70px;" class="sb" ng-repeat="item in productDtails">
                         <div>
                             <p class="fs16  col333 ml10 mt10">领取记录</p>
                             <p class="fs15  col666 ml10">
-                                2018-01-19 14：38
+                              {{item.createDate|date:'yyyy-MM-dd'}}
                             </p>
                         </div>
-                        <p class="mr10 fs15 col888" style="line-height: 70px">领取数量：1</p>
+                        <p class="mr10 fs15 col888" style="line-height: 70px">领取数量：{{item.consumeNumber}}</p>
 
                     </ion-item>
                 </ion-list>

@@ -52,7 +52,7 @@
         </div>
         <div style="margin-top:10px;">
             <ion-list >
-                <ion-item   class="h54 bgfff sb" style="padding-left:10px;" ng-click="treatmentCardGo()">
+                <ion-item   class="h54 bgfff sb" style="padding-left:10px;" ng-click="treatmentCardGo(archives.sysUserId)">
                     <i>
                         <img src="images/TreatmentCard.png" class="TreatmentCard">
                         疗程卡
@@ -61,7 +61,7 @@
                     <img src="images/more.png" class="more mr10 mt20">
 
                 </ion-item>
-                <ion-item   class="h54 bgfff sb" style="padding-left:10px;" ng-click="collectionCardGo()">
+                <ion-item   class="h54 bgfff sb" style="padding-left:10px;" ng-click="collectionCardGo(archives.sysUserId)">
                     <i>
                         <img src="images/set.png" class="set">
                         套卡
@@ -70,7 +70,7 @@
                     <img src="images/more.png" class="more mr10 mt20">
 
                 </ion-item>
-                <ion-item   class="h54 bgfff sb" style="padding-left:10px;" ng-click="goProduct()">
+                <ion-item   class="h54 bgfff sb" style="padding-left:10px;" ng-click="goProduct(archives.sysShopId,archives.sysUserId)">
                     <i>
                         <img src="images/product.png" class="product ">
                         产品

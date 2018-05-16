@@ -962,6 +962,7 @@ define(['appBoss'], function(app){
                         }
                     }
                 })
+
                     .state('archives', {
                         url: '/archives/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1126,7 +1127,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('treatmentCard', {
-                        url: '/treatmentCard',
+                        url: '/treatmentCard/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'treatmentCardCtrl',
                         resolve: {
@@ -1138,7 +1139,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('treatmentCardDtails', {
-                        url: '/treatmentCardDtails',
+                        url: '/treatmentCardDtails/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'treatmentCardDtailsCtrl',
                         resolve: {
@@ -1162,7 +1163,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('collectionCard', {
-                        url: '/collectionCard',
+                        url: '/collectionCard/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'collectionCardCtrl',
                         resolve: {
@@ -1174,7 +1175,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('product', {
-                        url: '/product',
+                        url: '/product/:sysUserId/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productCtrl',
                         resolve: {
@@ -1272,7 +1273,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('newUser', {
-                        url: '/newUser',
+                        url: '/newUser/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newUserCtrl',
                         resolve: {
