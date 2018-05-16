@@ -1,5 +1,6 @@
 package com.wisdom.business.service.transaction;
 
+import com.aliyun.oss.ServiceException;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.controller.transaction.BusinessOrderController;
 import com.wisdom.business.mapper.product.ProductMapper;
@@ -133,6 +134,7 @@ public class TransactionService {
     public String createBusinessOrder(BusinessOrderDTO businessOrderDTO){
 
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        RedisLock redisLock = new RedisLock("putNeedPayProductAmount");
 
         logger.info("用户创建订单=="+businessOrderDTO);
 
@@ -181,12 +183,24 @@ public class TransactionService {
             userOrderAddressService.addOrderAddressRelation(orderAddressRelationDTO1);
         }
         transactionMapper.createBusinessOrder(businessOrderDTO);
-
-        ProductDTO productDTO1 = new ProductDTO();
-        productDTO1.setProductId(businessOrderDTO.getBusinessProductId());
-        productDTO1.setProductAmount(String.valueOf(businessOrderDTO.getBusinessProductNum()));
-        this.updateOfflineProductAmount(productDTO1,businessOrderDTO, "lose");
-
+        try {
+            //todo log
+            logger.info("锁前商品id=={}", businessOrderDTO.getBusinessProductId());
+            redisLock.lock();
+            logger.info("锁后商品id=={}", businessOrderDTO.getBusinessProductId());
+            ProductDTO productDTO1 = new ProductDTO();
+            productDTO1.setProductId(businessOrderDTO.getBusinessProductId());
+            productDTO1.setProductAmount(String.valueOf(businessOrderDTO.getBusinessProductNum()));
+            this.updateOfflineProductAmount(productDTO1, businessOrderDTO, "lose");
+        }catch (Throwable e)
+        {
+            e.printStackTrace();
+            throw new ServiceException("");
+        }
+        finally
+        {
+            redisLock.unlock();
+        }
         OrderProductRelationDTO orderProductRelationDTO = new OrderProductRelationDTO();
         orderProductRelationDTO.setId(UUID.randomUUID().toString());
         orderProductRelationDTO.setBusinessOrderId(businessOrderDTO.getBusinessOrderId());
