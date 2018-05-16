@@ -80,17 +80,19 @@ public class TransactionController {
             redisLock.lock();
             //将商品放入未支付订单列表
             for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
-                /*ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
-                if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
-                    responseDTO.setErrorInfo("库存不足");
-                    responseDTO.setResult(StatusConstant.FAILURE);
-                    return responseDTO;
-                }*/
                 try {
                     BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
                     businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
                     businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
                     businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
+                    if("3".equals(businessOrderDTO.getStatus())){
+                        ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
+                        if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
+                            responseDTO.setErrorInfo("库存不足");
+                            responseDTO.setResult(StatusConstant.FAILURE);
+                            return responseDTO;
+                        }
+                    }
                     businessOrderDTO.setStatus("0");
                     businessOrderDTO.setUpdateDate(new Date());
                     transactionService.updateBusinessOrder(businessOrderDTO);
