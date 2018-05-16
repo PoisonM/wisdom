@@ -99,4 +99,32 @@ public class PayController {
         return responseDTO;
     }
 
+    /**
+     * 更新订单的充值卡信息，pad端支付界面选择充值卡抵扣
+     *
+     * @param shopUserOrderDTO 订单对象
+     * @return
+     */
+    @RequestMapping(value = "updateShopUserOrderPayInfo", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> updateShopUserOrderPayInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("pad端支付界面选择充值卡抵扣传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
+        ResponseDTO responseDTO = new ResponseDTO<String>();
+
+        //mongodb中更新订单的状态
+        Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
+        Update update = new Update();
+        update.set("userPayRechargeCardList", shopUserOrderDTO.getUserPayRechargeCardList());
+        mongoTemplate.upsert(query, update, "shopUserOrderDTO");
+        responseDTO.setResponseData(StatusConstant.SUCCESS);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
 }
