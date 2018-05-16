@@ -201,6 +201,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
                 userConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
                 userConsumeRecordDTO.setSysBossId(clerkInfo.getSysBossId());
+                userConsumeRecordDTO.setPrice(dto.getSurplusAmount());
                 userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
                 userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
                 logger.info("订单号={},更新用户的充值卡信息={}", orderId, userConsumeRecordDTO);

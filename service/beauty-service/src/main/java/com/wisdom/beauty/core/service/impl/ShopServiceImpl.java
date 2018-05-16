@@ -26,7 +26,7 @@ public class ShopServiceImpl implements ShopService {
     private SysShopMapper sysShopMapper;
 
     /**
-     * 根据条件查询shop相关信息
+     * 根据主键查询shop相关信息
      *
      * @param id
      * @return
@@ -41,4 +41,21 @@ public class ShopServiceImpl implements ShopService {
         SysShopDTO sysShopDTOS = sysShopMapper.selectByPrimaryKey(id);
         return sysShopDTOS;
     }
+
+//    /**
+//     * 根据条件查询shop相关信息
+//     *
+//     * @param id
+//     * @return
+//     */
+//    @Override
+//    public SysShopDTO getShopInfo(SysShopDTO SysShopDTO) {
+//        if (StringUtils.isBlank(id)) {
+//            logger.error("根据条件查询shop相关信息{}", "id = [" + id + "]");
+//            return null;
+//        }
+//
+//        SysShopDTO sysShopDTOS = sysShopMapper.selectByPrimaryKey(id);
+//        return sysShopDTOS;
+//    }
 }
