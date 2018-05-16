@@ -238,4 +238,13 @@
     where
       ptr.transaction_id = #{transactionId}
   </select>
+
+  <select id="isExistence" resultType="java.lang.Integer" >
+    select
+      count(1)
+    from
+    promotion_transaction_relation  ptr
+    where
+    ptr.transaction_id = #{transactionId}
+  </select>
 </mapper>

@@ -16,4 +16,6 @@ public interface PromotionTransactionRelationMapper extends BaseDao<PromotionTra
 
 
     PromotionTransactionRelation getIsImportLevel(@Param("transactionId") String transactionId);
+
+    int isExistence(@Param("transactionId") String transactionId);
 }

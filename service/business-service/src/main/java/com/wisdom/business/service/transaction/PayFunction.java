@@ -379,9 +379,13 @@ public class PayFunction {
             }
 
             if(permanentReward>0||returnMoney > 0){
+                //判断该交易号记录是否存在
+                int size = promotionTransactionRelationMapper.isExistence(instanceReturnMoneySignalDTO.getTransactionId());
+                if(size == 0){
+                    this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
+                    WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
+                }
 
-                this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
-                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
             }
 
         } catch (Exception e) {
