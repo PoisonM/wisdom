@@ -42,6 +42,8 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     private String type;
     //支付方式  0:微信 1：支付宝 2:现金
     private String payType;
+    //消费数量
+    private Integer consumeNumber;
     private List<ShopUserConsumeRecordDTO> userConsumeRecordList;
 
 
@@ -164,5 +166,13 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
 
     public void setPayType(String payType) {
         this.payType = payType;
+    }
+
+    public Integer getConsumeNumber() {
+        return consumeNumber;
+    }
+
+    public void setConsumeNumber(Integer consumeNumber) {
+        this.consumeNumber = consumeNumber;
     }
 }

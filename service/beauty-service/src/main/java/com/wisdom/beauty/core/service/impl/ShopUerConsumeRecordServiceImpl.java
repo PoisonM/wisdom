@@ -141,6 +141,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				userConsumeRecordResponseDTO.setSysShopClerkId(shopUserConsumeRecord.getSysClerkId());
 				userConsumeRecordResponseDTO.setGoodType(shopUserConsumeRecord.getGoodsType());
 				userConsumeRecordResponseDTO.setConsumeType(shopUserConsumeRecord.getConsumeType());
+				userConsumeRecordResponseDTO.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
+				userConsumeRecordResponseDTO.setSysShopClerkName(shopUserConsumeRecord.getSysClerkName());
 				if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
 					// 如果是充值类型，并且是GoodsType=2,则设置标题为充值
 					if (shopUserConsumeRecord.getGoodsType().equals(GoodsTypeEnum.RECHARGE_CARD.getCode())) {
