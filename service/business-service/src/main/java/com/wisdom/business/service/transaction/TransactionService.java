@@ -78,9 +78,7 @@ public class TransactionService {
                     logger.info("更新订单updateBusinessOrder关联商品为null");
                     return;
                 }
-//                RedisLock redisLock = new RedisLock("OfflineProductAmount"+businessOrderDTO1.getBusinessProductId());
                 try {
-//                    redisLock.lock();
 
                     ProductDTO productDTO = new ProductDTO();
                     if(StringUtils.isNull(businessOrderDTO1.getBusinessProductId())){
@@ -110,8 +108,6 @@ public class TransactionService {
                 } catch (Exception e) {
                     logger.info("修改商品库存失败,商品id为:"+businessOrderDTO1.getBusinessProductId());
                     e.printStackTrace();
-                }finally {
-//                    redisLock.unlock();
                 }
             }
         }
@@ -151,6 +147,11 @@ public class TransactionService {
                 return businessOrderDTOList.get(0).getBusinessOrderId();
             }
         }
+        ProductDTO productDTO = productMapper.getBusinessProductInfo(businessOrderDTO.getBusinessProductId());
+        if (businessOrderDTO.getBusinessProductNum() > Integer.parseInt(productDTO.getProductAmount())) {
+            return StatusConstant.FAILURE;
+        }
+
         businessOrderDTO.setId(UUID.randomUUID().toString());
         businessOrderDTO.setSysUserId(userInfoDTO.getId());
         businessOrderDTO.setBusinessOrderId(CodeGenUtil.getOrderCodeNumber());
@@ -180,6 +181,8 @@ public class TransactionService {
             userOrderAddressService.addOrderAddressRelation(orderAddressRelationDTO1);
         }
         transactionMapper.createBusinessOrder(businessOrderDTO);
+
+        this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
 
         OrderProductRelationDTO orderProductRelationDTO = new OrderProductRelationDTO();
         orderProductRelationDTO.setId(UUID.randomUUID().toString());
@@ -420,53 +423,54 @@ public class TransactionService {
      */
     public void updateOfflineProductAmount(ProductDTO productDTO,BusinessOrderDTO businessOrderDTO,String addAndLose) {
         logger.info("根据订单商品数量修改相应的商品库存,商品id为:"+productDTO.getProductId()+"添加还是减少:"+addAndLose);
-//        RedisLock redisLock = new RedisLock("OfflineProductAmount"+productDTO.getProductId());
-        ProductDTO productDTO2 =new ProductDTO();
-        productDTO2.setProductId(productDTO.getProductId());
-        //创建库存流水记录
-        OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = new OfflineProductAmountRecordDTO();
-        offlineProductAmountRecordDTO.setProductId(productDTO.getProductId());
-        offlineProductAmountRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
-        offlineProductAmountRecordDTO.setUpdateAmount(productDTO.getProductAmount());
-        offlineProductAmountRecordDTO.setCreateTime(new Date());
-        offlineProductAmountRecordDTO.setTag("");
-        try {
-//            redisLock.lock();
+        Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("add"));
+        OfflineProductAmountRecordDTO offlineProductAmountRecordDTO1 = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
+        if(null == offlineProductAmountRecordDTO1) {
+            ProductDTO productDTO2 = new ProductDTO();
+            productDTO2.setProductId(productDTO.getProductId());
+            //创建库存流水记录
+            OfflineProductAmountRecordDTO offlineProductAmountRecordDTO = new OfflineProductAmountRecordDTO();
+            offlineProductAmountRecordDTO.setProductId(productDTO.getProductId());
+            offlineProductAmountRecordDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
+            offlineProductAmountRecordDTO.setUpdateAmount(productDTO.getProductAmount());
+            offlineProductAmountRecordDTO.setCreateTime(new Date());
+            offlineProductAmountRecordDTO.setTag("");
+            try {
 
-            ProductDTO productDTO1 = productMapper.findProductById(productDTO.getProductId());
+                ProductDTO productDTO1 = productMapper.findProductById(productDTO.getProductId());
 
-            int oldProductAmount = Integer.parseInt(productDTO1.getProductAmount());
-            int newProductAmount = Integer.parseInt(productDTO.getProductAmount());
-            int addAmount = oldProductAmount + newProductAmount;
-            int loseAmount = oldProductAmount - newProductAmount;
-            offlineProductAmountRecordDTO.setOldProductAmount(String.valueOf(newProductAmount));
-            if (productDTO1 != null) {
-                        if ("add".equals(addAndLose)) {
-                            offlineProductAmountRecordDTO.setAddAndLose("add");
-                            offlineProductAmountRecordDTO.setNewProductAmount(String.valueOf(addAmount));
-                            mongoTemplate.insert(offlineProductAmountRecordDTO,"offlineProductAmountRecordDTO");
-                            productDTO2.setProductAmount(String.valueOf(addAmount));
+                int oldProductAmount = Integer.parseInt(productDTO1.getProductAmount());
+                int newProductAmount = Integer.parseInt(productDTO.getProductAmount());
+                int addAmount = oldProductAmount + newProductAmount;
+                int loseAmount = oldProductAmount - newProductAmount;
+                offlineProductAmountRecordDTO.setOldProductAmount(String.valueOf(newProductAmount));
+                if (productDTO1 != null) {
+                    if ("add".equals(addAndLose)) {
+                        offlineProductAmountRecordDTO.setAddAndLose("add");
+                        offlineProductAmountRecordDTO.setNewProductAmount(String.valueOf(addAmount));
+                        mongoTemplate.insert(offlineProductAmountRecordDTO, "offlineProductAmountRecordDTO");
+                        productDTO2.setProductAmount(String.valueOf(addAmount));
+                        productMapper.updateProductByParameters(productDTO2);
+                    } else if ("lose".equals(addAndLose)) {
+                        if (oldProductAmount - newProductAmount < 0) {
+                            logger.info("更新库存失败订单商品数量(" + productDTO.getProductAmount() + ")相应的商品库存数量(" + productDTO1.getProductAmount() + ")大于库存数量");
+                        } else {
+                            offlineProductAmountRecordDTO.setAddAndLose("lose");
+                            offlineProductAmountRecordDTO.setNewProductAmount(String.valueOf(loseAmount));
+                            mongoTemplate.insert(offlineProductAmountRecordDTO, "offlineProductAmountRecordDTO");
+                            productDTO2.setProductAmount(String.valueOf(loseAmount));
                             productMapper.updateProductByParameters(productDTO2);
-                        } else if ("lose".equals(addAndLose)) {
-                            if (oldProductAmount - newProductAmount < 0) {
-                                logger.info("更新库存失败订单商品数量(" + productDTO.getProductAmount() + ")相应的商品库存数量(" + productDTO1.getProductAmount() + ")大于库存数量");
-                            } else {
-                                offlineProductAmountRecordDTO.setAddAndLose("lose");
-                                offlineProductAmountRecordDTO.setNewProductAmount(String.valueOf(loseAmount));
-                                mongoTemplate.insert(offlineProductAmountRecordDTO,"offlineProductAmountRecordDTO");
-                                productDTO2.setProductAmount(String.valueOf(loseAmount));
-                                productMapper.updateProductByParameters(productDTO2);
-                            }
                         }
+                    }
+                }
+            } catch (Exception e) {
+                logger.info("修改商品库存失败,商品id为:" + productDTO.getProductId());
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            logger.info("修改商品库存失败,商品id为:"+productDTO.getProductId());
-            e.printStackTrace();
         }
     }
 
     public Date getBusinessOrderSendDate(String orderId) {
         return null;
     }
-
 }
