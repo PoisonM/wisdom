@@ -75,42 +75,42 @@ public class TransactionController {
     public ResponseDTO putNeedPayOrderListToRedis(@RequestBody NeedPayOrderListDTO needPayOrderList) {
         ResponseDTO responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        RedisLock redisLock = new RedisLock("putNeedPay" + userInfoDTO.getId());
+        RedisLock redisLock = new RedisLock("putNeedPayProductAmount");
         String needPayValue = (new Gson()).toJson(needPayOrderList);
         JedisUtils.del(userInfoDTO.getId()+"needPay");
         JedisUtils.set(userInfoDTO.getId()+"needPay",needPayValue,60*5);
 
         try {
             //todo log
-            logger.info("订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
+            logger.info("锁前订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
             redisLock.lock();
             //todo log
-            logger.info("订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
+            logger.info("锁下订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
             //将商品放入未支付订单列表
             for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
                     BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
                     businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
                     businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
                     //todo log
-                    logger.info("订单号=={}",needPayOrderDTO.getOrderId());
+                    logger.info("查询订单前订单号=={}",needPayOrderDTO.getOrderId());
                     businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
                     if("3".equals(businessOrderDTO.getStatus())){
                         //todo log
-                        logger.info("订单号=={}",needPayOrderDTO.getOrderId());
-                        logger.info("订单状态=={}",businessOrderDTO.getStatus());
-                        logger.info("商品数量=={}",needPayOrderDTO.getProductNum());
+                        logger.info("状态3进入订单号=={}",needPayOrderDTO.getOrderId());
+                        logger.info("状态3进入订单状态=={}",businessOrderDTO.getStatus());
+                        logger.info("状态3进入商品数量=={}",needPayOrderDTO.getProductNum());
                         ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
-                        logger.info("商品库存=={}",productDTO.getProductAmount());
+                        logger.info("状态3进入查出库中商品库存=={}",productDTO.getProductAmount());
                         if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
                             //todo log
-                            logger.info("订单号=={}",needPayOrderDTO.getOrderId());
+                            logger.info("商品数量大于商品库存订单号=={}",needPayOrderDTO.getOrderId());
                             responseDTO.setErrorInfo("库存不足");
                             responseDTO.setResult(StatusConstant.FAILURE);
                             return responseDTO;
                         }
                     }
                     //todo log
-                    logger.info("订单号=={}",needPayOrderDTO.getOrderId());
+                    logger.info("状态3判断通过订单号=={}",needPayOrderDTO.getOrderId());
                     businessOrderDTO.setStatus("0");
                     businessOrderDTO.setUpdateDate(new Date());
                     transactionService.updateBusinessOrder(businessOrderDTO);
