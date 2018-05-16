@@ -1234,8 +1234,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*detailsOfCashier  收银详情*/
                     .state('detailsOfCashier', {
-                        url: '/detailsOfCashier',
+                        url: '/detailsOfCashier/:flowNo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailsOfCashierCtrl',
                         resolve: {
@@ -1961,7 +1962,7 @@ define(['appBoss'], function(app){
                  product
                  accountRecords 账户记
                  recordCashier 收银记录
-                 detailsOfCashier  收银详情
+
                  drawCardRecords 划卡记录
                  drawCardRecordsDetail 划卡记录详情
                  newUser新建档案
