@@ -120,7 +120,15 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					goodType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
 					c.andGoodsTypeIn(goodType);
-				} else {
+				}
+				if(GoodsTypeEnum.CONSUM.getCode().equals(userConsumeRequest.getGoodsType())){
+					List goodType = new ArrayList();
+					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
+					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+					goodType.add(GoodsTypeEnum.PRODUCT.getCode());
+					c.andGoodsTypeIn(goodType);
+				}else  {
 					List goodType = new ArrayList();
 					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
 					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());

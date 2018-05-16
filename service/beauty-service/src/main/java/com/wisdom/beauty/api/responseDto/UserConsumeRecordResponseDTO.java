@@ -44,6 +44,14 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     private String payType;
     //消费数量
     private Integer consumeNumber;
+    //
+    private Float timeDiscount;
+
+    //
+    private Float periodDiscount;
+
+    //
+    private Float productDiscount;
     private List<ShopUserConsumeRecordDTO> userConsumeRecordList;
 
 
@@ -174,5 +182,29 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
 
     public void setConsumeNumber(Integer consumeNumber) {
         this.consumeNumber = consumeNumber;
+    }
+
+    public Float getTimeDiscount() {
+        return timeDiscount;
+    }
+
+    public void setTimeDiscount(Float timeDiscount) {
+        this.timeDiscount = timeDiscount;
+    }
+
+    public Float getPeriodDiscount() {
+        return periodDiscount;
+    }
+
+    public void setPeriodDiscount(Float periodDiscount) {
+        this.periodDiscount = periodDiscount;
+    }
+
+    public Float getProductDiscount() {
+        return productDiscount;
+    }
+
+    public void setProductDiscount(Float productDiscount) {
+        this.productDiscount = productDiscount;
     }
 }
