@@ -61,6 +61,12 @@ public class SysShopDTO extends BaseEntity implements Serializable {
     private String qrCodeUrl;
 
     //
+    private String parentsId;
+
+    //0 表示美容院  1代表分店
+    private String type;
+
+    //
     private String createBy;
 
     //
@@ -216,6 +222,22 @@ public class SysShopDTO extends BaseEntity implements Serializable {
 
     public void setQrCodeUrl(String qrCodeUrl) {
         this.qrCodeUrl = qrCodeUrl;
+    }
+
+    public String getParentsId() {
+        return parentsId;
+    }
+
+    public void setParentsId(String parentsId) {
+        this.parentsId = parentsId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getCreateBy() {

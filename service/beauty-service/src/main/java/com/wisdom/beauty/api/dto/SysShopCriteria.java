@@ -1375,6 +1375,146 @@ public class SysShopCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andParentsIdIsNull() {
+            addCriterion("parents_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdIsNotNull() {
+            addCriterion("parents_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdEqualTo(String value) {
+            addCriterion("parents_id =", value, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdNotEqualTo(String value) {
+            addCriterion("parents_id <>", value, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdGreaterThan(String value) {
+            addCriterion("parents_id >", value, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdGreaterThanOrEqualTo(String value) {
+            addCriterion("parents_id >=", value, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdLessThan(String value) {
+            addCriterion("parents_id <", value, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdLessThanOrEqualTo(String value) {
+            addCriterion("parents_id <=", value, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdLike(String value) {
+            addCriterion("parents_id like", value, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdNotLike(String value) {
+            addCriterion("parents_id not like", value, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdIn(List<String> values) {
+            addCriterion("parents_id in", values, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdNotIn(List<String> values) {
+            addCriterion("parents_id not in", values, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdBetween(String value1, String value2) {
+            addCriterion("parents_id between", value1, value2, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentsIdNotBetween(String value1, String value2) {
+            addCriterion("parents_id not between", value1, value2, "parentsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(String value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(String value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(String value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(String value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(String value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLike(String value) {
+            addCriterion("type like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotLike(String value) {
+            addCriterion("type not like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<String> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<String> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(String value1, String value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(String value1, String value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateByIsNull() {
             addCriterion("create_by is null");
             return (Criteria) this;

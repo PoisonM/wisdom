@@ -7,6 +7,7 @@ import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +47,9 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //订单价格
     private String orderPrice;
 
+    //可用余额
+    private BigDecimal availableBalance;
+
     //用户与项目关系
     private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
 
@@ -57,6 +61,14 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+
+    public BigDecimal getAvailableBalance() {
+        return availableBalance;
+    }
+
+    public void setAvailableBalance(BigDecimal availableBalance) {
+        this.availableBalance = availableBalance;
+    }
 
     public String getOrderPrice() {
         return orderPrice;
