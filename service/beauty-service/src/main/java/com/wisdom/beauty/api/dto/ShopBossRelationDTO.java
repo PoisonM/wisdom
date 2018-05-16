@@ -20,6 +20,9 @@ public class ShopBossRelationDTO extends BaseEntity implements Serializable {
     //
     private String sysBossName;
 
+    //店铺地址
+    private String sysShopAddress;
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -60,5 +63,13 @@ public class ShopBossRelationDTO extends BaseEntity implements Serializable {
 
     public void setSysBossName(String sysBossName) {
         this.sysBossName = sysBossName;
+    }
+
+    public String getSysShopAddress() {
+        return sysShopAddress;
+    }
+
+    public void setSysShopAddress(String sysShopAddress) {
+        this.sysShopAddress = sysShopAddress;
     }
 }

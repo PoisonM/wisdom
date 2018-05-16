@@ -12,6 +12,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -123,6 +124,42 @@ public class ShopController {
         ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
         extSysShopDTO.setSysBossId(bossInfo.getId());
         extSysShopDTO.setType(CommonCodeEnum.SUCCESS.getCode());
+        List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
+        responseDTO.setResponseData(CommonUtils.objectIsEmpty(bossShopInfo) ? new ExtSysShopDTO() : bossShopInfo.get(0));
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 查询某个老板的店面
+     */
+    @RequestMapping(value = "/getBossAllShopList", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getBossAllShopList() {
+        long currentTimeMillis = System.currentTimeMillis();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        ResponseDTO<Object> responseDTO = new ResponseDTO();
+        ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
+        extSysShopDTO.setSysBossId(bossInfo.getId());
+        List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
+        responseDTO.setResponseData(bossShopInfo);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 修改门店
+     */
+    @RequestMapping(value = "/updateShopInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> updateShopInfo(SysShopDTO sysShopDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        ResponseDTO<Object> responseDTO = new ResponseDTO();
+        ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
+        extSysShopDTO.setSysBossId(bossInfo.getId());
         List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
         responseDTO.setResponseData(bossShopInfo);
         responseDTO.setResult(StatusConstant.SUCCESS);
