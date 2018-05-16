@@ -16,7 +16,7 @@
                     <span class="name">{{item.shopProjectGroupName}}</span>
                     <span class="discount"><s>原价 {{item.shopGroupPuchasePrice}}</s> 折扣 {{item.discount*100}}折</span>
                     <label for="" class="discountPrice">折扣价 ¥</label>
-                    <input type="text" ng-value="(item.projectInitAmount*item.discount|number:2)" ng-model="item.shopGroupPuchasePrice">
+                    <input ng-change="myChangeFn()" type="text" ng-value="(item.projectInitAmount*item.discount|number:2)" ng-model="item.shopGroupPuchasePrice">
                     <!-- <label for="" class="serviceTimes">服务次数</label>
                     <input type="text" ng-model="item.projectInitTimes"> -->
                     <div class="delete" ng-click="deleteClick(3,item.shopProjectGroupId)">删除</div>
@@ -27,7 +27,7 @@
                             <div>购买数量</div>
                             <span>
                                 <b ng-click="">-</b>
-                                <input type="text" value="1" ng-model="item.projectInitTimes">
+                                <input ng-change="myChangeFn()" type="text" value="1" ng-model="item.projectInitTimes">
                                 <b ng-click="">＋</b>
                             </span>
                         </li>
@@ -51,7 +51,7 @@
                     <span class="name">{{item.shopProductName}}</span>
                     <span class="discount"><s>原价 {{item.sysShopProjectPurchasePrice}}</s> 折扣 {{item.discount*100}}折</span>
                     <label for="" class="discountPrice">折扣价 ¥</label>
-                    <input type="text" ng-value="(item.initAmount*item.discount|number:2)">
+                    <input ng-change="myChangeFn()" type="text" ng-value="(item.initAmount*item.discount|number:2)">
                     <!-- <label for="" class="serviceTimes">服务次数</label>
                     <input type="text" ng-model="item.initTimes"> -->
                     <div class="delete" ng-click="deleteClick(4,item.shopProductId)">删除</div>
@@ -62,7 +62,7 @@
                             <div>购买数量</div>
                             <span>
                                 <b>-</b>
-                                <input type="text" value="1" ng-model="item.initTimes">
+                                <input ng-change="myChangeFn()" type="text" value="1" ng-model="item.initTimes">
                                 <b>＋</b>
                             </span>
                         </li>
@@ -86,7 +86,7 @@
                     <span class="name">{{item.sysShopProjectName}}</span>
                     <span class="discount"><s>原价 {{item.sysShopProjectPurchasePrice}}.00</s> 折扣 {{item.discount*100}}折</span>
                     <label for="" class="discountPrice">折扣价 ¥</label>
-                    <input type="text" ng-model='item.ng_markPrice'>
+                    <input ng-change="myChangeFn()" type="text" ng-model="item.ng_markPrice" ng-value="item.sysShopProjectPurchasePrice*item.discount">
                     <!-- <label for="" class="serviceTimes">服务次数</label>
                     <input type="text">-->
                     <div class="delete" ng-click="deleteClick(item.useStyle,item.sysShopProjectId)">删除</div>
@@ -97,13 +97,15 @@
                             <div>购买数量</div>
                             <span>
                                 <b>-</b>
-                                <input type="text" value="1" ng-model="item.sysShopProjectInitTimes">
+                                <input  ng-change="myChangeFn()" type="text" value="1" ng-model="item.sysShopProjectInitTimes">
                                 <b>＋</b>
                             </span>
                         </li>
                         <li>
                             <input type="none" ng-value="(item.ng_markPrice*item.sysShopProjectInitTimes)|number:2" ng-model="item.totalPrice">
-                            <span>小计¥{{item.totalPrice}}</span>
+                            <span class="subtotal">
+                                <e style="float: left">小计¥</e>
+                                <input readonly ng-value="(item.ng_markPrice*item.sysShopProjectInitTimes)|number:2" ng-model="item.totalPrice" class="countSubtotal"></span>
                         </li>
                         <li ng-click="goHousekeeper()">
                             <div>关联员工</div>
@@ -116,5 +118,6 @@
     </div>
     <div class="stillOwedTitle">备注</div>
     <textarea name="" rows="10"></textarea>
+    <span class="allPrice">111</span>
     <button ng-click="goOrderListm()">确认</button>
 </div>
