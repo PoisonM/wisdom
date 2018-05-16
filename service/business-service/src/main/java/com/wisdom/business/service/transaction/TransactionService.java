@@ -64,11 +64,11 @@ public class TransactionService {
         logger.info("更新订单=="+businessOrderDTO);
 
         if(null != businessOrderDTO.getStatus() && !"".equals(businessOrderDTO.getStatus())) {
-            //查出库中订单数据
             if(StringUtils.isNull(businessOrderDTO.getBusinessOrderId())){
                 logger.info("更新订单updateBusinessOrder订单id为null==");
                 return;
             }
+            //查出库中订单数据
             BusinessOrderDTO oldBusinessOrderDTO = transactionMapper.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
             if ("0".equals(oldBusinessOrderDTO.getStatus()) || "3".equals(oldBusinessOrderDTO.getStatus())) {
 
@@ -182,7 +182,10 @@ public class TransactionService {
         }
         transactionMapper.createBusinessOrder(businessOrderDTO);
 
-        this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
+        ProductDTO productDTO1 = new ProductDTO();
+        productDTO1.setProductId(businessOrderDTO.getBusinessProductId());
+        productDTO1.setProductAmount(String.valueOf(businessOrderDTO.getBusinessProductNum()));
+        this.updateOfflineProductAmount(productDTO1,businessOrderDTO, "lose");
 
         OrderProductRelationDTO orderProductRelationDTO = new OrderProductRelationDTO();
         orderProductRelationDTO.setId(UUID.randomUUID().toString());
@@ -443,7 +446,7 @@ public class TransactionService {
                 int newProductAmount = Integer.parseInt(productDTO.getProductAmount());
                 int addAmount = oldProductAmount + newProductAmount;
                 int loseAmount = oldProductAmount - newProductAmount;
-                offlineProductAmountRecordDTO.setOldProductAmount(String.valueOf(newProductAmount));
+                offlineProductAmountRecordDTO.setOldProductAmount(String.valueOf(oldProductAmount));
                 if (productDTO1 != null) {
                     if ("add".equals(addAndLose)) {
                         offlineProductAmountRecordDTO.setAddAndLose("add");
