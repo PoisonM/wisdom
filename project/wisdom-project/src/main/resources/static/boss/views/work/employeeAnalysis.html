@@ -2,7 +2,12 @@
     <ion-content>
         <!--日期部分-->
         <div class="bgRgb">
-            <img src="images/work/date.png" class="dateImg" ><span class="date">2016-03-01</span><img src="images/work/drop-down.png" class="dropImg"><span  class="fs15 fr mr10">切换店铺</span>
+            <ionic-datepicker input-obj="datepickerObjectEnd">
+                <img src="images/work/date.png" class="dateImg" >
+                <span class="date">{{param.date}}</span>
+                <img src="images/work/drop-down.png" class="dropImg">
+            </ionic-datepicker>
+            <span  class="fs15 fr mr10" ng-click="tabShop()">切换店铺</span>
         </div>
         <!---->
         <div class="list employeeAnalysisBox">
@@ -33,20 +38,27 @@
                 </div>
             </div>
             <!---->
-            <div class="row tc bgfff col33  p0 fs13"  style="border: 1px solid #e5e5e5" ng-repeat="item in [1,2,3,4]">
+            <div class="row tc bgfff col33  p0 fs13"  style="border: 1px solid #e5e5e5" ng-repeat="item in employeeAnalysis">
                 <div class="col col-25" style="border-right: 1px solid #e5e5e5">
-                    玛丽
+                   {{item.sysShopClerkName}}
                 </div>
                 <div class="col col-25 bre5e5" >
-                    2489.00
+                  {{item.income}}
                 </div>
                 <div class="col col-25 br">
-                    5240.00
+                  {{item.kahao}}
                 </div>
                 <div class="col col-25">
-                    6280.00
+                    {{item.expenditure}}
                 </div>
             </div>
         </div>
+        <div style="width:100%;height:100%;background:rgba(0,0,0,0.2);position: absolute;top:0" ng-if="param.displayShopBox" ></div>
+        <!--点击切换店铺显示的店铺列表-->
+        <div class="list " ng-if="param.displayShopBox" style="position: absolute;bottom:0;width:100%;">
+            <p class="item" ng-click="choseShop(item.id)"ng-repeat="item in shopList">{{item.sysShopName}}</p>
+        </div>
+
+
     </ion-content>
 </ion-view>

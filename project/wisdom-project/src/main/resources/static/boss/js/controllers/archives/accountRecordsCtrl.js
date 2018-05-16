@@ -3,9 +3,10 @@ angular.module('controllers',[]).controller('accountRecordsCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading) {
             $rootScope.title = "账户记录";
             $scope.goDrawCardRecords=function () {
-                   $state.go("drawCardRecords")
+                   $state.go("drawCardRecords",{sysUserId:$stateParams.sysUserId})
                };
             $scope.recordCashierGo=function () {
-                $state.go("recordCashier")
+                $state.go("recordCashier",{sysUserId:$stateParams.sysUserId})
             }
+
         }]);

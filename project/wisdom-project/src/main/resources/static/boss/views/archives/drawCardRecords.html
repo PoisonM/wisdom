@@ -2,16 +2,18 @@
     <ion-content class="partialFiles">
         <div>
             <ion-list>
-                <ion-item style="height:70px;" class="sb" ng-repeat="item in [0,1,2,3]" ng-click="goDrawCardRecordsDetail()">
+                <ion-item style="height:70px;" class="sb" ng-repeat="item in recordCashier" ng-click="goDrawCardRecordsDetail()">
                     <div>
-                        <p class="fs15 col666 ml10 mt10">2018-01-19</p>
+                        <p class="fs15 col666 ml10 mt10">{{item.createDate|date:'yyyy-MM-dd'}}</p>
                         <p class="fs15 col333 ml10">
-                            <span style="width:80px;display: inline-block">面部紧致  </span>
-                            <span style="width:50px;display: inline-block">1次 </span>
-                            <span>李聪（汉方美颜）</span>
+                            <span style="width:80px;display: inline-block">{{item.title}}</span>
+                            <span style="width:50px;display: inline-block">*次 </span>
+                            <span>{{item.shopUserName}}（{{item.sysShopName}}）</span>
                         </p>
                     </div>
                     <p class="mr10 fs16 col333" style="line-height: 70px">签字</p>
+
+
 
                 </ion-item>
             </ion-list>
