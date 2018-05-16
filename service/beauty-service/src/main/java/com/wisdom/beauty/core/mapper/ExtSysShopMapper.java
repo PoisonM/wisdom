@@ -6,7 +6,10 @@ import com.wisdom.common.entity.BaseDao;
 import com.wisdom.common.persistence.annotation.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @MyBatisDao
 @Repository
 public interface ExtSysShopMapper extends BaseDao<ExtSysShopDTO, SysShopCriteria, String> {
+    List<ExtSysShopDTO> selectBossShopInfo(ExtSysShopDTO extSysShopDTO);
 }

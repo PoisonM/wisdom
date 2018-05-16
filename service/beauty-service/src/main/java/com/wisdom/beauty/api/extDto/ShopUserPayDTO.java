@@ -29,8 +29,29 @@ public class ShopUserPayDTO {
     //用户现金支付金额
     private String cashPayPrice;
 
+    //余额支付
+    private String balancePay;
+
     //剩余支付金额
     private String surplusPayPrice;
+
+    private String detail;
+
+    public String getBalancePay() {
+        return balancePay;
+    }
+
+    public void setBalancePay(String balancePay) {
+        this.balancePay = balancePay;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     public String getSignUrl() {
         return signUrl;
