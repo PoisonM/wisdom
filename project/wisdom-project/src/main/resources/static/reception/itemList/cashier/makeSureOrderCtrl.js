@@ -120,19 +120,31 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
     var tempAll =
         $scope.myChangeFn = function() {
             tempAll = 0
-            setTimeout(function() {
-                for (var i = 0; i < $(".countSubtotal").length; i++) {
-                    if ($(".countSubtotal").eq(i).val() == "") {
-
-                    } else {
-                        tempAll += parseInt($(".countSubtotal").eq(i).val())
+            var setTimer = setInterval(function() {
+                if($(".xiaoji").length != 0){
+                    clearInterval(setTimer)
+                    //计算小计
+                    for(var i = 0; i < $(".xiaoji").length; i++){
+                        $(".xiaoji").eq(i).find('input').val($(".xiaoji").eq(i).parent().prev().find('input').val()*$(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val())
+                        // $(".xiaoji").eq(i).parent().prev().find('input').val()//数量
+                        // $(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val()//折扣价
+                        
                     }
+                    //计算总额
+                    for(var i = 0; i < $(".xiaoji").length; i++){
+                        if ($(".xiaoji").eq(i).find('input').val() == "") {
 
-                    $(".allPrice").html("总金额:" + tempAll)
+                        } else {
+                            tempAll += parseInt($(".xiaoji").eq(i).find('input').val().replace(",",""))
+                        }
+
+                        $(".allPrice").html("总金额:" + tempAll)
+
+                    }
                 }
+
+
             }, 100)
-
         }
-
     $scope.myChangeFn()
 });

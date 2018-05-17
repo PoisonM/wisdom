@@ -1,47 +1,26 @@
-function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId) {
+function basicInfo($scope,$state,Archives,GetShopUserArchivesInfoByUserId,ArchivesDetail) {
     //初始化参数
     $scope.param = {
         userId:"",//用户id
         id:"",//档案id
         shopId:""
     }
-    var timeIn = setInterval(function () {
-        if($(".user_info").length!=0){
-            $(".user_info").eq(0).trigger("click");
-            clearInterval(timeIn)
-            //因接口需要写成死数据
-            $scope.queryUserInfo($scope.param.userId)
-        }
-    },100)
 
 
-    $scope.queryUserInfo = function(sysUserId) {
+
+    $scope.queryUserInfo = function(sysUserId,id) {
         //根据id查用户信息
-        GetShopUserArchivesInfoByUserId.get({ sysUserId:sysUserId}, function(data) {
+        //member	会员状态	string	0:绑定 1：未绑定
+        Archives.get({ userId:sysUserId }, function(data) {
             if (data.result == "0x00001") {
                 $scope.responseData = data.responseData
             }
         })
 
-        Archives.get({ userId:sysUserId }, function(data) {
-            if (data.result == "0x00001") {
-                $scope.responseData1 = data.responseData
-            }
-        })
     }
+    $scope.queryUserInfo($state.params.sysUserId,$state.params.id)
 
 
-
-    console.log(Archives)
-
-
-    $scope.$parent.selectSty = function(id,sysUserId,shopId) {
-        $scope.$parent.param.selectSty = id
-        $scope.param.userId = sysUserId
-        $scope.param.shopId = shopId
-        $scope.param.id = id
-        $scope.queryUserInfo(id,sysUserId)
-    };
     $scope.goAccountRecords = function() {
         $state.go('pad-web.left_nav.accountRecords');
     };
@@ -60,4 +39,9 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId) {
             userId:$scope.param.userId
         });
     };
+    $scope.goAddRecordDetail = function () {
+        $state.go("pad-web.left_nav.addRecordDetail",{
+            id:$state.params.id
+        })
+    }
 }
