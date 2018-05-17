@@ -50,6 +50,10 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	 */
 	private Date date;
 	/**
+	 * 创建时间
+	 */
+	private Date createDate;
+	/**
 	 * 格式化后的日期,例如2018-04-04
 	 */
 	private String formateDate;
@@ -90,6 +94,10 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	 * 新客
 	 */
 	private Integer shopNewUserNumber;
+	/**
+	 * 用户id
+	 */
+	private String  sysUserId;
 	public BigDecimal getExpenditure() {
 		return expenditure;
 	}
@@ -248,5 +256,21 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
 	public void setShopNewUserNumber(Integer shopNewUserNumber) {
 		this.shopNewUserNumber = shopNewUserNumber;
+	}
+
+	public String getSysUserId() {
+		return sysUserId;
+	}
+
+	public void setSysUserId(String sysUserId) {
+		this.sysUserId = sysUserId;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 }

@@ -7,6 +7,7 @@ import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoGroupRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
+import com.wisdom.beauty.core.mapper.ShopUserProjectRelationMapper;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -53,6 +54,9 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private ShopUserProjectRelationMapper shopUserProjectRelationMapper;
 
     @Override
     public List<ProjectInfoGroupResponseDTO> getShopProjectGroupList(PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO) {
@@ -241,5 +245,32 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         }
         ShopProjectGroupDTO shopProjectGroupDTO = list.get(0);
         return shopProjectGroupDTO;
+    }
+
+    @Override
+    public List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(List<String> ids) {
+        logger.info("getShopUserProjectGroupRelRelation方法出入的参数ids={}",ids );
+        if(CollectionUtils.isEmpty(ids)){
+            return  null;
+        }
+        ShopUserProjectGroupRelRelationCriteria relationCriteria = new ShopUserProjectGroupRelRelationCriteria();
+        ShopUserProjectGroupRelRelationCriteria.Criteria criteria = relationCriteria.createCriteria();
+        criteria.andIdIn(ids);
+
+        return shopUserProjectGroupRelRelationMapper.selectByCriteria(relationCriteria);
+
+    }
+
+    @Override
+    public List<ShopProjectInfoGroupRelationDTO> getShopProjectInfoGroupRelation(List<String> ids) {
+        logger.info("getShopProjectInfoGroupRelation方法出入的参数ids={}",ids );
+        if(CollectionUtils.isEmpty(ids)){
+            return  null;
+        }
+        ShopProjectInfoGroupRelationCriteria relationCriteria = new ShopProjectInfoGroupRelationCriteria();
+        ShopProjectInfoGroupRelationCriteria.Criteria criteria = relationCriteria.createCriteria();
+        criteria.andShopProjectGroupIdIn(ids);
+
+        return shopProjectInfoGroupRelationMapper.selectByCriteria(relationCriteria);
     }
 }

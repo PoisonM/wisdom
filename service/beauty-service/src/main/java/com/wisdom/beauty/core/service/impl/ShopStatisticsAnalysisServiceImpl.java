@@ -8,12 +8,15 @@ import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.JedisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
@@ -538,7 +541,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		Map<String, String> map = null;
 		for (UserConsumeRecordResponseDTO userConsumeRecordResponseDTO : userConsumeRecordResponse) {
 			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType())) {
+					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				if (recharge != null) {
 					recharge = recharge.add(userConsumeRecordResponseDTO.getSumAmount());
 				} else {
@@ -546,7 +549,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				}
 			}
 			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType())) {
+					&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				if (consume != null) {
 					consume = consume.add(userConsumeRecordResponseDTO.getSumAmount());
 				} else {
@@ -554,7 +557,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				}
 			}
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType())) {
+					&& GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				if (scratchCard != null) {
 					scratchCard = scratchCard.add(userConsumeRecordResponseDTO.getSumAmount());
 				} else {
@@ -562,7 +565,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				}
 			}
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType())) {
+					&& GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				if (oneConsume != null) {
 					oneConsume = oneConsume.add(userConsumeRecordResponseDTO.getSumAmount());
 				} else {
@@ -570,7 +573,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				}
 			}
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodType())) {
+					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				if (cardConsume != null) {
 					cardConsume = cardConsume.add(userConsumeRecordResponseDTO.getSumAmount());
 				} else {
@@ -697,8 +700,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	}
 
 	@Override
-	public Map<String,Object> getCustomerArriveList(
-			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+	public Map<String, Object> getCustomerArriveList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequestDTO = pageParamVoDTO.getRequestData();
 		if (userConsumeRequestDTO == null) {
 			logger.info("getCustomerArriveList方法传入的userConsumeRequestDTO对象为空");
@@ -760,38 +762,119 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		// 遍历shopBossRelationList
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
 		List<ExpenditureAndIncomeResponseDTO> responseDTOList = new ArrayList<>();
-		Integer totalConsumeNumber=null;
-		Integer totalShopNewUserNumber=null;
-		Integer totalConsumeTime=null;
+		Integer totalConsumeNumber = null;
+		Integer totalShopNewUserNumber = null;
+		Integer totalConsumeTime = null;
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationList) {
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
 			expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());// 美容院店名字
 			expenditureAndIncomeResponseDTO.setShopNewUserNumber(newCustomerMap.get(shopBossRelation.getSysShopId()));// 新客
 			expenditureAndIncomeResponseDTO.setConsumeNumber(map.get(shopBossRelation.getSysShopId()));// 人头数
 			expenditureAndIncomeResponseDTO.setConsumeTime(timeMap.get(shopBossRelation.getSysShopId()));// 次数
-			if(totalConsumeNumber==null){
-				totalConsumeNumber=map.get(shopBossRelation.getSysShopId());
-			}else {
-				totalConsumeNumber=totalConsumeNumber+map.get(shopBossRelation.getSysShopId());
+			if (totalConsumeNumber == null) {
+				totalConsumeNumber = map.get(shopBossRelation.getSysShopId());
+			} else {
+				totalConsumeNumber = totalConsumeNumber + map.get(shopBossRelation.getSysShopId());
 			}
-			if(totalShopNewUserNumber==null){
-				totalShopNewUserNumber=newCustomerMap.get(shopBossRelation.getSysShopId());
-			}else {
-				totalShopNewUserNumber=totalShopNewUserNumber+newCustomerMap.get(shopBossRelation.getSysShopId());
+			if (totalShopNewUserNumber == null) {
+				totalShopNewUserNumber = newCustomerMap.get(shopBossRelation.getSysShopId());
+			} else {
+				totalShopNewUserNumber = totalShopNewUserNumber + newCustomerMap.get(shopBossRelation.getSysShopId());
 			}
-			if(totalConsumeTime==null){
-				totalConsumeTime=timeMap.get(shopBossRelation.getSysShopId());
-			}else {
-				totalConsumeTime=totalConsumeTime+timeMap.get(shopBossRelation.getSysShopId());
+			if (totalConsumeTime == null) {
+				totalConsumeTime = timeMap.get(shopBossRelation.getSysShopId());
+			} else {
+				totalConsumeTime = totalConsumeTime + timeMap.get(shopBossRelation.getSysShopId());
 			}
 			responseDTOList.add(expenditureAndIncomeResponseDTO);
 		}
-		Map<String ,Object> responseMap=new HashedMap();
-		responseMap.put("totalConsumeNumber",totalConsumeNumber);
-		responseMap.put("totalShopNewUserNumber",totalShopNewUserNumber);
-		responseMap.put("totalConsumeTime",totalConsumeTime);
-		responseMap.put("responseDTOList",responseDTOList);
+		Map<String, Object> responseMap = new HashedMap();
+		responseMap.put("totalConsumeNumber", totalConsumeNumber);
+		responseMap.put("totalShopNewUserNumber", totalShopNewUserNumber);
+		responseMap.put("totalConsumeTime", totalConsumeTime);
+		responseMap.put("responseDTOList", responseDTOList);
 		return responseMap;
+	}
+
+	@Override
+	public List<ExpenditureAndIncomeResponseDTO> getShopCustomerArriveList(
+			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO, String condition) {
+		UserConsumeRequestDTO userConsumeRequestDTO = pageParamVoDTO.getRequestData();
+		if (userConsumeRequestDTO == null) {
+			logger.info("getCustomerArriveList方法传入的userConsumeRequestDTO对象为空");
+		}
+		List<String> userIds=new ArrayList<>();
+		// 人头数
+		Map<String,ExpenditureAndIncomeResponseDTO>  map=new HashedMap();
+		if ("1".equals(condition)) {
+			ShopUserConsumeRecordCriteria numberCriteria = new ShopUserConsumeRecordCriteria();
+			ShopUserConsumeRecordCriteria.Criteria numberC = numberCriteria.createCriteria();
+			List<ExpenditureAndIncomeResponseDTO> consumeNumberList = extShopUserConsumeRecordMapper
+					.selectPriceListByCriteria(numberCriteria);
+			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : consumeNumberList) {
+				userIds.add(expenditureAndIncomeResponseDTO.getSysUserId());
+				if(map.get(expenditureAndIncomeResponseDTO.getSysUserId())==null){
+					map.put(expenditureAndIncomeResponseDTO.getSysUserId(),expenditureAndIncomeResponseDTO);
+				}
+			}
+		}
+
+		// 人次数
+		if ("2".equals(condition)) {
+			ShopUserConsumeRecordCriteria timeCriteria = new ShopUserConsumeRecordCriteria();
+			ShopUserConsumeRecordCriteria.Criteria timeC = timeCriteria.createCriteria();
+			List<ExpenditureAndIncomeResponseDTO> timeList = extShopUserConsumeRecordMapper
+					.selectPriceListByCriteria(timeCriteria);
+			Map<String, Integer> timeMap = new HashedMap(16);
+			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : timeList) {
+				userIds.add(expenditureAndIncomeResponseDTO.getSysUserId());
+			}
+		}
+
+		// 新客
+		if ("3".equals(condition)) {
+			PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO = new PageParamVoDTO();
+			ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+			shopUserArchivesDTO.setSysBossId(userConsumeRequestDTO.getSysBossId());
+			shopCustomerArchivesDTO.setRequestData(shopUserArchivesDTO);
+			shopCustomerArchivesDTO.setStartTime(pageParamVoDTO.getStartTime());
+			shopCustomerArchivesDTO.setEndTime(pageParamVoDTO.getEndTime());
+			List<ShopUserArchivesDTO> list = shopCustomerArchivesService.getArchivesList(shopCustomerArchivesDTO);
+			Map<String, Integer> newCustomerMap = new HashedMap(16);
+			for (ShopUserArchivesDTO shopUserArchives : list) {
+				if (newCustomerMap.get(shopUserArchives.getSysShopId()) == null) {
+					newCustomerMap.put(shopUserArchives.getSysShopId(), 1);
+				} else {
+					Integer consumeTime = newCustomerMap.get(shopUserArchives.getSysShopId());
+					newCustomerMap.put(shopUserArchives.getSysShopId(), consumeTime + 1);
+				}
+			}
+		}
+		String[] strings = new String[userIds.size()];
+		String[] strs = userIds.toArray(strings);
+		//查询用户的信息
+		List<UserInfoDTO> userInfoList = userServiceClient.getUserInfoListFromUserId(strs,null);
+		// 遍历userInfoList
+		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
+		List<ExpenditureAndIncomeResponseDTO> responseDTOList = new ArrayList<>();
+		UserInfoDTOResponseDTO userInfoDTOResponseDTO=new UserInfoDTOResponseDTO();
+		Date date=DateUtils.StrToDate(pageParamVoDTO.getStartTime(),"datetime");
+
+		for (UserInfoDTO userInfoDTO : userInfoList) {
+			userInfoDTOResponseDTO.setPhoto(userInfoDTO.getPhoto());
+			userInfoDTOResponseDTO.setNickname(userInfoDTO.getNickname());
+			userInfoDTOResponseDTO.setLastArriveTime(map.get(userInfoDTO.getId()).getCreateDate());
+			//查询redis是否存在记录,key是 "arrive"+shopId+userId
+			String key="arrive"+map.get(userInfoDTO.getId()).getSysShopId()+userInfoDTO.getId();
+			String str= (String)JedisUtils.getObject("key");
+			if(StringUtils.isBlank(str)){
+
+			}else {
+
+			}
+
+		}
+		return null;
 	}
 
 }

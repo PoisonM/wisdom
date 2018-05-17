@@ -137,4 +137,12 @@ public interface ShopStatisticsAnalysisService {
     *@Date:2018/5/15 15:50
     */
     Map<String,Object> getCustomerArriveList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取某个美容院的到店情况，
+    *@Date:2018/5/15 18:32
+    */
+    List<ExpenditureAndIncomeResponseDTO> getShopCustomerArriveList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO,String condition);
 }
