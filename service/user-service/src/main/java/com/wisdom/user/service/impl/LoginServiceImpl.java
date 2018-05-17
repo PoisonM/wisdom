@@ -3,15 +3,16 @@ package com.wisdom.user.service.impl;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.system.LoginDTO;
+import com.wisdom.common.dto.system.ValidateCodeDTO;
+import com.wisdom.common.dto.user.SysBossCriteria;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
-import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.dto.system.ValidateCodeDTO;
 import com.wisdom.common.util.*;
-import com.wisdom.user.mapper.extMapper.ExtSysClerkMapper;
 import com.wisdom.user.mapper.SysBossMapper;
 import com.wisdom.user.mapper.UserInfoMapper;
+import com.wisdom.user.mapper.extMapper.ExtSysClerkMapper;
 import com.wisdom.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -24,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
@@ -157,7 +157,12 @@ public class LoginServiceImpl implements LoginService{
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysBossDTO sysBossDTO = new SysBossDTO();
         sysBossDTO.setUserOpenid(loginDTO.getUserPhone());
-        List<SysBossDTO> sysBossDTOList = sysBossMapper.getBossInfo(sysBossDTO);
+
+        SysBossCriteria sysBossCriteria = new SysBossCriteria();
+        SysBossCriteria.Criteria c = sysBossCriteria.createCriteria();
+        c.andUserOpenidEqualTo(loginDTO.getUserPhone());
+        List<SysBossDTO> sysBossDTOList = sysBossMapper.selectByCriteria(sysBossCriteria);
+
         RedisLock redisLock = new RedisLock("bossInfo"+loginDTO.getUserPhone());
         try {
             redisLock.lock();
@@ -168,7 +173,7 @@ public class LoginServiceImpl implements LoginService{
                 sysBossDTO.setLoginDate(new Date());
                 sysBossDTO.setLoginIp(loginIP);
                 sysBossDTO.setUserOpenid(openId);
-                sysBossMapper.updateUserInfo(sysBossDTO);
+                sysBossMapper.updateByCriteriaSelective(sysBossDTO, sysBossCriteria);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,7 +202,10 @@ public class LoginServiceImpl implements LoginService{
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysBossDTO sysBossDTO = new SysBossDTO();
         sysBossDTO.setMobile(loginDTO.getUserPhone());
-        List<SysBossDTO> sysBossDTOList = sysBossMapper.getBossInfo(sysBossDTO);
+        SysBossCriteria sysBossCriteria = new SysBossCriteria();
+        SysBossCriteria.Criteria c = sysBossCriteria.createCriteria();
+        c.andUserOpenidEqualTo(loginDTO.getUserPhone());
+        List<SysBossDTO> sysBossDTOList = sysBossMapper.selectByCriteria(sysBossCriteria);
         RedisLock redisLock = new RedisLock("bossInfo" + loginDTO.getUserPhone());
         try {
             redisLock.lock();
@@ -208,7 +216,7 @@ public class LoginServiceImpl implements LoginService{
                 sysBossDTO.setMobile(loginDTO.getUserPhone());
                 sysBossDTO.setLoginDate(new Date());
                 sysBossDTO.setLoginIp(loginIP);
-                sysBossMapper.updateBossInfo(sysBossDTO);
+                sysBossMapper.updateByCriteriaSelective(sysBossDTO, sysBossCriteria);
             }
         } catch (Exception e) {
             e.printStackTrace();

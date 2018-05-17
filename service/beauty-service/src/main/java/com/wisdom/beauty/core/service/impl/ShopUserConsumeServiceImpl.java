@@ -239,8 +239,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 for (int i = 0; i < dto.getProjectInitTimes(); i++) {
                     //购买一个套卡的金额
                     BigDecimal price = dto.getProjectInitAmount();
-                    BigDecimal divide = dto.getShopGroupPuchasePrice().divide(dto.getProjectInitAmount(), 2, ROUND_HALF_DOWN);
-                    dto.setDiscount(divide.floatValue());
+                    BigDecimal discount = dto.getShopGroupPuchasePrice().divide(dto.getProjectInitAmount(), 2, ROUND_HALF_DOWN);
+                    dto.setDiscount(discount.floatValue());
                     //根据套卡id查询项目列表
                     ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
                     shopProjectInfoGroupRelationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
@@ -269,6 +269,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     //生成充值记录
                     ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
                     userConsumeRecordDTO.setFlowName(dto.getShopProjectGroupName());
+                    //存储套卡id
                     userConsumeRecordDTO.setFlowId(dto.getId());
                     if (null != dto.getDiscount()) {
                         userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));

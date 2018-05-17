@@ -16,6 +16,12 @@ public class SysBossDTO extends BaseEntity implements Serializable {
     private String parentShopId;
 
     //
+    private String currentShopId;
+
+    //
+    private String currentStoreId;
+
+    //
     private String name;
 
     //昵称
@@ -87,6 +93,22 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setParentShopId(String parentShopId) {
         this.parentShopId = parentShopId;
+    }
+
+    public String getCurrentShopId() {
+        return currentShopId;
+    }
+
+    public void setCurrentShopId(String currentShopId) {
+        this.currentShopId = currentShopId;
+    }
+
+    public String getCurrentStoreId() {
+        return currentStoreId;
+    }
+
+    public void setCurrentStoreId(String currentStoreId) {
+        this.currentStoreId = currentStoreId;
     }
 
     public String getName() {

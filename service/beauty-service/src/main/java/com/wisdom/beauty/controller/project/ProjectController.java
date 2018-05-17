@@ -113,10 +113,12 @@ public class ProjectController {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         if(null != clerkInfo){
+            logger.info("pad端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
             sysShopId = clerkInfo.getSysShopId();
         }
         if(null != bossInfo){
-            sysShopId = clerkInfo.getSysShopId();
+            logger.info("boss端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
+            sysShopId = bossInfo.getParentShopId();
         }
 
         logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
@@ -540,5 +542,6 @@ public class ProjectController {
         logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
 
 }

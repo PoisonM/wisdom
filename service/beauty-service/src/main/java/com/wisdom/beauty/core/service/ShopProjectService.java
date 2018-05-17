@@ -117,4 +117,12 @@ public interface ShopProjectService {
      * 添加项目类别
      */
     int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO);
+
+    /**
+     * 修改项目类别
+     *
+     * @param shopProjectTypeDTO
+     * @return
+     */
+    int updateProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO);
 }

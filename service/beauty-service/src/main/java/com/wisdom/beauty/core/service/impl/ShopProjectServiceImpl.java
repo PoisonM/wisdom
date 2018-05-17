@@ -6,8 +6,12 @@ import com.wisdom.beauty.api.extDto.ImageUrl;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.core.service.ShopService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -19,10 +23,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * FileName: ShopProjectService
@@ -49,6 +50,9 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+
+	@Autowired
+	private ShopService shopService;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -244,6 +248,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
 		ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
 		criteria.andSysShopIdEqualTo(sysShopId);
+		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 		criteria.andParentIdIsNull();
 		List<ShopProjectTypeDTO> list = shopProjectTypeMapper.selectByCriteria(shopProjectTypeCriteria);
 		return list;
@@ -260,6 +265,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
 		ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
 		criteria.andParentIdEqualTo(shopProjectTypeDTO.getId());
+		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 		List<ShopProjectTypeDTO> list = shopProjectTypeMapper.selectByCriteria(shopProjectTypeCriteria);
 		return list;
 	}
@@ -294,6 +300,8 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
 			criteria.andProjectNameLike("%" + shopProjectInfoDTO.getProjectName() + "%");
 		}
+		//项目为启用状态
+		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 		List<ShopProjectInfoDTO> list = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
 		List<String> ids = new ArrayList<>();
 		for (ShopProjectInfoDTO shopProjectInfo : list) {
@@ -435,10 +443,73 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	@Override
 	public int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO) {
 		if (null == shopProjectTypeDTO) {
+			logger.error("添加项目类别传入参数异常={}", "shopProjectTypeDTO = [" + shopProjectTypeDTO + "]");
 			return 0;
 		}
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
+		if (null == bossInfo) {
+			logger.error("获取老板信息异常，{}", "bossInfo = [" + bossInfo + "]");
+			return 0;
+		}
+
+		//查询当前老板的所有店面
+		SysShopDTO sysShopDTO = new SysShopDTO();
+		sysShopDTO.setParentsId(bossInfo.getParentShopId());
+		List<SysShopDTO> shopInfo = shopService.getShopInfo(sysShopDTO);
+
+		//老板每一个店面都要插入数据
+		shopProjectTypeDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
+		shopProjectTypeDTO.setCreateDate(new Date());
+		if (CommonUtils.objectIsNotEmpty(shopInfo)) {
+			for (SysShopDTO shopDTO : shopInfo) {
+				shopProjectTypeDTO.setId(IdGen.uuid());
+				shopProjectTypeDTO.setSysShopId(shopDTO.getId());
+				shopProjectTypeDTO.setParentShopId(bossInfo.getParentShopId());
+				shopProjectTypeMapper.insertSelective(shopProjectTypeDTO);
+			}
+		}
+		//老板的唯一一家美容院也需要插入
+		shopProjectTypeDTO.setId(IdGen.uuid());
+		shopProjectTypeDTO.setParentShopId(bossInfo.getParentShopId());
+		shopProjectTypeDTO.setSysShopId(bossInfo.getParentShopId());
 		int selective = shopProjectTypeMapper.insertSelective(shopProjectTypeDTO);
 		return selective;
+	}
+
+	/**
+	 * 修改项目类别
+	 *
+	 * @param shopProjectTypeDTO
+	 * @return
+	 */
+	@Override
+	public int updateProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO) {
+		if (null == shopProjectTypeDTO || StringUtils.isBlank(shopProjectTypeDTO.getId())) {
+			logger.error("修改项目类别传入参数有误={}", shopProjectTypeDTO);
+			return 0;
+		}
+		ShopProjectTypeCriteria criteria = new ShopProjectTypeCriteria();
+		ShopProjectTypeCriteria.Criteria c = criteria.createCriteria();
+
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
+		if (null == bossInfo) {
+			logger.error("获取老板信息异常，{}", "bossInfo = [" + bossInfo + "]");
+			return 0;
+		}
+
+		//查询当前老板的所有店面
+		SysShopDTO sysShopDTO = new SysShopDTO();
+		sysShopDTO.setParentsId(bossInfo.getParentShopId());
+		List<SysShopDTO> shopInfo = shopService.getShopInfo(sysShopDTO);
+
+		//老板每一个店面都要插入数据
+		shopProjectTypeDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
+		shopProjectTypeDTO.setCreateDate(new Date());
+		if (CommonUtils.objectIsNotEmpty(shopInfo)) {
+
+		}
+		c.andParentShopIdEqualTo(bossInfo.getParentShopId());
+		return shopProjectTypeMapper.updateByCriteriaSelective(shopProjectTypeDTO, criteria);
 	}
 
 }

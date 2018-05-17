@@ -335,6 +335,146 @@ public class SysBossCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andCurrentShopIdIsNull() {
+            addCriterion("current_shop_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdIsNotNull() {
+            addCriterion("current_shop_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdEqualTo(String value) {
+            addCriterion("current_shop_id =", value, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdNotEqualTo(String value) {
+            addCriterion("current_shop_id <>", value, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdGreaterThan(String value) {
+            addCriterion("current_shop_id >", value, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdGreaterThanOrEqualTo(String value) {
+            addCriterion("current_shop_id >=", value, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdLessThan(String value) {
+            addCriterion("current_shop_id <", value, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdLessThanOrEqualTo(String value) {
+            addCriterion("current_shop_id <=", value, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdLike(String value) {
+            addCriterion("current_shop_id like", value, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdNotLike(String value) {
+            addCriterion("current_shop_id not like", value, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdIn(List<String> values) {
+            addCriterion("current_shop_id in", values, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdNotIn(List<String> values) {
+            addCriterion("current_shop_id not in", values, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdBetween(String value1, String value2) {
+            addCriterion("current_shop_id between", value1, value2, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentShopIdNotBetween(String value1, String value2) {
+            addCriterion("current_shop_id not between", value1, value2, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdIsNull() {
+            addCriterion("current_store_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdIsNotNull() {
+            addCriterion("current_store_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdEqualTo(String value) {
+            addCriterion("current_store_id =", value, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdNotEqualTo(String value) {
+            addCriterion("current_store_id <>", value, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdGreaterThan(String value) {
+            addCriterion("current_store_id >", value, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdGreaterThanOrEqualTo(String value) {
+            addCriterion("current_store_id >=", value, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdLessThan(String value) {
+            addCriterion("current_store_id <", value, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdLessThanOrEqualTo(String value) {
+            addCriterion("current_store_id <=", value, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdLike(String value) {
+            addCriterion("current_store_id like", value, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdNotLike(String value) {
+            addCriterion("current_store_id not like", value, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdIn(List<String> values) {
+            addCriterion("current_store_id in", values, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdNotIn(List<String> values) {
+            addCriterion("current_store_id not in", values, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdBetween(String value1, String value2) {
+            addCriterion("current_store_id between", value1, value2, "currentStoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentStoreIdNotBetween(String value1, String value2) {
+            addCriterion("current_store_id not between", value1, value2, "currentStoreId");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;
