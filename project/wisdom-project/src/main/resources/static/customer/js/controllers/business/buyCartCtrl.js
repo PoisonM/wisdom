@@ -21,7 +21,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         angular.forEach(data.responseData,function(value,index,array){
                             $scope.param.totalPayPrice = $scope.param.totalPayPrice + parseInt(value.businessProductPrice)*parseInt(value.businessProductNum);
                             senderAddressList.push(value.senderAddress);
-                        })
+                        });
                         var uniqueSenderAddressList = unique(senderAddressList);
                         angular.forEach(uniqueSenderAddressList,function(value1,index,array){
                             $scope.param.unPaidOrder.push({
@@ -29,7 +29,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                 addressChecked:true,
                                 orderList: []
                             })
-                        })
+                        });
                         angular.forEach(data.responseData,function(value2,index,array){
                             angular.forEach($scope.param.unPaidOrder,function(value3,index,array){
                                 if(value3.senderAddress==value2.senderAddress)
@@ -43,14 +43,16 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                         productAmount:value2.productAmount,
                                         productId : value2.businessProductId,
                                         orderId : value2.businessOrderId,
+                                        productStatus:value2.productStatus,
                                         orderChecked:true
                                     })
                                 }
                             })
+                           /* $scope.param.unPaidOrder[0].orderList[0].productStatus='0'*/
                         })
                     }
                 })
-            }
+            };
 
             var unique = function(arr) {
                 var result = [], hash = {};
@@ -62,7 +64,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 }
 
                 return result;
-            }
+            };
 
             var reCalcTotalPayPrice = function() {
                 angular.forEach($scope.param.unPaidOrder,function(value,index,array){
@@ -73,7 +75,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         }
                     })
                 })
-            }
+            };
 
             $scope.selectAllOrder = function() {
                 $scope.param.selectAll = !$scope.param.selectAll;
@@ -97,13 +99,13 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 }
                 $scope.param.totalPayPrice = 0;
                 reCalcTotalPayPrice();
-            }
+            };
 
             $scope.chooseOrder = function(item){
                 item.orderChecked = !item.orderChecked;
                 $scope.param.totalPayPrice = 0;
                 reCalcTotalPayPrice();
-            }
+            };
 
             $scope.chooseAddress = function(item){
                 item.addressChecked = !item.addressChecked;
@@ -131,7 +133,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 }
                 $scope.param.totalPayPrice = 0;
                 reCalcTotalPayPrice();
-            }
+            };
 
             var addButton = true;
             $scope.addProductNum = function(item){
@@ -148,7 +150,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         $("#greyBox").css("background","grey")
                     }
                 }
-            }
+            };
 
             var minusButton =  true;
             $scope.minusProductNum = function(item){
@@ -196,7 +198,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         loadBuyCartInfo();
                     }
                 })
-            }
+            };
 
             $scope.goPay = function() {
                 var needPayOrderList = [];
@@ -230,14 +232,14 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         $state.go("shopHome");
                     }
                 })
-            }
+            };
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.param = {
                     unPaidOrder:[],
                     totalPayPrice : 0,
                     selectAll:true
-                }
+                };
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
