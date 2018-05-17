@@ -7,21 +7,24 @@ import com.wisdom.business.mapper.transaction.PromotionTransactionRelationMapper
 import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
-import com.wisdom.common.dto.product.ProductDTO;
-import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
-import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
-import com.wisdom.common.dto.transaction.PromotionTransactionRelation;
-import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
+import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
-import com.wisdom.common.util.*;
+import com.wisdom.common.dto.transaction.PromotionTransactionRelation;
+import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.SMSUtil;
+import com.wisdom.common.util.WeixinTemplateMessageUtil;
+import com.wisdom.common.util.WeixinUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,7 +32,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sound.midi.ShortMessage;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -38,6 +40,9 @@ import java.util.UUID;
 
 @Service
 public class PayFunction {
+
+    Logger logger = LoggerFactory.getLogger(PayFunction.class);
+
 
     @Autowired
     private PayRecordService payRecordService;
@@ -208,7 +213,7 @@ public class PayFunction {
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE * 5 / 100 + (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户升级A时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
@@ -221,7 +226,7 @@ public class PayFunction {
                         returnMoney = ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE * 10 / 100 + (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户升级B时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
@@ -233,7 +238,7 @@ public class PayFunction {
                         returnMoney = expenseAmount * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount;
@@ -247,26 +252,33 @@ public class PayFunction {
                         returnMoney = ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE * 10 / 100 + (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 5 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
+
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
 
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE * 5 / 100 + (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
+
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                     } else {
 
                         //b的下级消费返5%的即时
                         returnMoney = expenseAmount * 5 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount;
@@ -279,24 +291,30 @@ public class PayFunction {
                         returnMoney = (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
+
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_B;
 
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
                         returnMoney = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
+
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                     } else {
                         returnMoney = expenseAmount * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount;
@@ -310,15 +328,18 @@ public class PayFunction {
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE * 5 / 100 + (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
+
+                        //记录此单是用户升级单
+                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                     } else {
                         returnMoney = expenseAmount * 2 / 100;
 
                         //用户消费时永久性奖励
-                        permanentReward = this.getPermanentReward(expenseAmount);
+                        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                         //记录月度交易流水
                         amount = expenseAmount;
@@ -327,7 +348,7 @@ public class PayFunction {
                 } else if (parentRuleType.equals(ConfigConstant.businessB1)) {
 
                     //平级无即时和月度返利 用户消费时永久性奖励
-                    permanentReward = this.getPermanentReward(expenseAmount);
+                    permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                 }
 
@@ -337,7 +358,7 @@ public class PayFunction {
                 if (parentRuleType.equals(ConfigConstant.businessA1)) {
 
                     //平级无即时和月度返利 用户消费时永久性奖励
-                    permanentReward = this.getPermanentReward(expenseAmount);
+                    permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
 
                 }
             }
@@ -347,7 +368,7 @@ public class PayFunction {
             nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
             List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
 
-            if (returnMoney > 0) {
+            if (returnMoney >= 0) {
                 //将returnMoney去更新要返现的用户ID的account和income两个表的数据
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, returnMoney);
 
@@ -355,16 +376,20 @@ public class PayFunction {
                // WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
             }
             //永久性奖励
-            if(permanentReward>0){
+            if(permanentReward>=0){
 
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, permanentReward);
                 this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,permanentReward,expenseAmount,parentRuleType,ConfigConstant.INCOME_TYPE_P);
 
             }
 
-            if(permanentReward>0||returnMoney > 0){
-
-                this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
+            if(permanentReward>=0||returnMoney >=0){
+                //判断该交易号记录是否存在
+                int size = promotionTransactionRelationMapper.isExistence(instanceReturnMoneySignalDTO.getTransactionId());
+                if(size == 0){
+                    this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
+                    logger.info("用户购买单号：{}，",instanceReturnMoneySignalDTO.getTransactionId());
+                }
                 WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
             }
 
@@ -379,7 +404,7 @@ public class PayFunction {
      *
      * */
     @Transactional(rollbackFor = Exception.class)
-    public void flatRebate(String parentUserId,String parentRuleType, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO){
+    public void flatRebate(String userRuleType ,String parentUserId,String parentRuleType, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO){
 
         String token = WeixinUtil.getUserToken();
         PayRecordDTO payRecordDTO = new PayRecordDTO();
@@ -397,7 +422,20 @@ public class PayFunction {
 
         //永久性奖励的金额
         float permanentReward = 0;
-        permanentReward = this.getPermanentReward(expenseAmount);
+        permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
+
+        String isImportLevel = ConfigConstant.LEVE_IMPORT;
+
+        if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
+
+            //记录此单是用户升级单
+            isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+
+        } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
+
+            //记录此单是用户升级单
+            isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+        }
 
         try{
             AccountDTO accountDTO = new AccountDTO();
@@ -406,7 +444,7 @@ public class PayFunction {
             nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
             List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
 
-            if(permanentReward>0){
+            if(permanentReward>=0){
 
                 //更新用户账户金额
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, permanentReward);
@@ -414,11 +452,16 @@ public class PayFunction {
                 //插入永久奖励信息
                 this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,permanentReward,expenseAmount,parentRuleType,ConfigConstant.INCOME_TYPE_P);
 
+
                 //给用户推送下级消费信息
+                int size = promotionTransactionRelationMapper.isExistence(instanceReturnMoneySignalDTO.getTransactionId());
+                if(size == 0){
+                    this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
+                }
+
                 WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
 
             }
-
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -467,18 +510,30 @@ public class PayFunction {
      * @param expenseAmount
      * @return
      */
-    public Float getPermanentReward(float expenseAmount) {
+    public Float getPermanentReward(String userRuleType,float expenseAmount) {
 
         Float permantReward = (float)0;
 
-        if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+        if(userRuleType.equals(ConfigConstant.businessC1)){
+            if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
 
-            permantReward = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5/100;
+                permantReward = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5/100;
 
-        }else if(expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
+            }else if(expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
 
-            permantReward = (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 5/100;
+                permantReward = (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 5/100;
 
+            }else{
+                permantReward = expenseAmount * 5/100;
+            }
+        }else if(userRuleType.equals(ConfigConstant.businessB1)){
+            if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+
+                permantReward = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5/100;
+
+            }else{
+                permantReward = expenseAmount * 5/100;
+            }
         }else{
             permantReward = expenseAmount * 5/100;
         }

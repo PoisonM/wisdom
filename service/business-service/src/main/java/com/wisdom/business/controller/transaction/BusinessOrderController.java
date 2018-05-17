@@ -18,10 +18,7 @@ import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.OrderCopRelationDTO;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.UUIDUtil;
-import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.common.util.*;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,25 +73,42 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> createBusinessOrder(@RequestBody BusinessOrderDTO businessOrderDTO) {
-
+        RedisLock productAmountLock = new RedisLock("putNeedPayProductAmount");
+        //todo log
+        logger.info("锁前商品id=={}", businessOrderDTO.getBusinessProductId());
+        productAmountLock.lock();
+        logger.info("锁后商品id=={}", businessOrderDTO.getBusinessProductId());
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
-
-        String businessOrderId = transactionService.createBusinessOrder(businessOrderDTO);
-
-        if(businessOrderId.equals(StatusConstant.FAILURE))
+        try {
+            ProductDTO productDTO = productService.getBusinessProductInfo(businessOrderDTO.getBusinessProductId());
+            if (businessOrderDTO.getBusinessProductNum() > Integer.parseInt(productDTO.getProductAmount())) {
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("订单创建失败");
+            }
+            String businessOrderId = transactionService.createBusinessOrder(businessOrderDTO);
+            if(businessOrderId.equals(StatusConstant.FAILURE))
+            {
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("订单创建失败");
+            }
+            else if(businessOrderId.equals(StatusConstant.NO_USER_ADDRESS))
+            {
+                responseDTO.setResult(StatusConstant.NO_USER_ADDRESS);
+            }
+            else
+            {
+                responseDTO.setResponseData(businessOrderId);
+                responseDTO.setResult(StatusConstant.SUCCESS);
+                responseDTO.setErrorInfo("订单创建成功");
+            }
+        }catch (Exception e)
         {
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("订单创建失败");
+            e.printStackTrace();
+            throw e;
         }
-        else if(businessOrderId.equals(StatusConstant.NO_USER_ADDRESS))
+        finally
         {
-            responseDTO.setResult(StatusConstant.NO_USER_ADDRESS);
-        }
-        else
-        {
-            responseDTO.setResponseData(businessOrderId);
-            responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setErrorInfo("订单创建成功");
+            productAmountLock.unlock();
         }
 
         return responseDTO;

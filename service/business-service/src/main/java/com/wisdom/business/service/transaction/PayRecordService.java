@@ -1,6 +1,7 @@
 package com.wisdom.business.service.transaction;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
+import com.wisdom.business.mapper.product.ProductMapper;
 import com.wisdom.business.mapper.transaction.PayRecordMapper;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
@@ -8,6 +9,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.account.PrePayInfoDTO;
 import com.wisdom.common.dto.product.InvoiceDTO;
+import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderDTO;
@@ -37,6 +39,8 @@ public class PayRecordService {
 
     @Autowired
     private PayRecordMapper payRecordMapper;
+    @Autowired
+    private ProductMapper productMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public PrePayInfoDTO getPrepayInfo(HttpServletRequest request, HttpSession session, String productType) {
@@ -64,6 +68,18 @@ public class PayRecordService {
 
             String value = JedisUtils.get(userInfoDTO.getId()+"needPay");
             NeedPayOrderListDTO needPayOrderListDTO = (new Gson()).fromJson(value, NeedPayOrderListDTO.class);
+
+            //
+//            for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
+//            {
+//                ProductDTO productDTO = productMapper.findProductById(needPayOrderDTO.getProductId());
+//                if(Integer.parseInt(productDTO.getProductAmount()) < Integer.parseInt(needPayOrderDTO.getProductNum())){
+//                    prePayInfoDTO.setResult(StatusConstant.FAILURE);
+//                    return prePayInfoDTO;
+//                }
+//            }
+            //
+
             Float payPrice = 0F;
             for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
             {

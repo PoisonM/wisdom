@@ -102,6 +102,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     else
                     {
                         showToast("加载中");
+
                         //先将此商品生成订单
                         CreateBusinessOrder.save({businessProductId:$scope.param.product.productId,
                             productSpec:$scope.param.checkFlag,
@@ -110,7 +111,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                             BusinessUtil.checkResponseData(data,'offlineProductDetail&'+$scope.param.product.productId);
                             if(data.result==Global.FAILURE)
                             {
-                                showToast("请先登录账号")
+                                showToast("交易失败")
                                 hideToast()
                             }
                             else
@@ -145,10 +146,14 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                                 + "&specialShopId=" + $rootScope.specialShopId
                                                 + "&random="+Math.random();
                                         }
+                                    }else if(data.result==Global.FAILURE){
+                                        alert("购买失败");
+                                        hideToast()
+                                        $scope.showFlag(false);
                                     }
+
                                 })
                             }
-
                         })
 
                     }

@@ -225,6 +225,10 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     {
                         window.location.href = "orderPay.do?productType=offline&random="+Math.random();
                     }
+                    else if(data.result==Global.FAILURE){
+                        alert("库存不足~,购买失败");
+                        $state.go("shopHome");
+                    }
                 })
             }
 
