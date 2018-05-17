@@ -11,13 +11,11 @@ import com.wisdom.common.util.IdGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * FileName: ProjectTypeController
@@ -60,6 +58,27 @@ public class ProjectTypeController {
         responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 
         logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 获取一二级项目列表
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/getOneTwoLevelProject", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<List<ShopProjectTypeDTO>> getOneTwoLevelProject(@RequestParam String id) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ShopProjectTypeDTO shopProjectTypeDTO = new ShopProjectTypeDTO();
+        shopProjectTypeDTO.setId(id);
+        //查询数据
+        List<ShopProjectTypeDTO> list = projectService.getTwoLevelProjectList(shopProjectTypeDTO);
+
+        ResponseDTO<List<ShopProjectTypeDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(list);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("findTwoLevelProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
