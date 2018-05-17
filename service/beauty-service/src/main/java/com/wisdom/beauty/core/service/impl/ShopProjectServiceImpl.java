@@ -23,7 +23,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: ShopProjectService
@@ -452,26 +455,8 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			return 0;
 		}
 
-		//查询当前老板的所有店面
-		SysShopDTO sysShopDTO = new SysShopDTO();
-		sysShopDTO.setParentsId(bossInfo.getParentShopId());
-		List<SysShopDTO> shopInfo = shopService.getShopInfo(sysShopDTO);
-
-		//老板每一个店面都要插入数据
-		shopProjectTypeDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
-		shopProjectTypeDTO.setCreateDate(new Date());
-		if (CommonUtils.objectIsNotEmpty(shopInfo)) {
-			for (SysShopDTO shopDTO : shopInfo) {
-				shopProjectTypeDTO.setId(IdGen.uuid());
-				shopProjectTypeDTO.setSysShopId(shopDTO.getId());
-				shopProjectTypeDTO.setParentShopId(bossInfo.getParentShopId());
-				shopProjectTypeMapper.insertSelective(shopProjectTypeDTO);
-			}
-		}
-		//老板的唯一一家美容院也需要插入
 		shopProjectTypeDTO.setId(IdGen.uuid());
-		shopProjectTypeDTO.setParentShopId(bossInfo.getParentShopId());
-		shopProjectTypeDTO.setSysShopId(bossInfo.getParentShopId());
+		shopProjectTypeDTO.setSysShopId(bossInfo.getCurrentShopId());
 		int selective = shopProjectTypeMapper.insertSelective(shopProjectTypeDTO);
 		return selective;
 	}
@@ -497,19 +482,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			return 0;
 		}
 
-		//查询当前老板的所有店面
-		SysShopDTO sysShopDTO = new SysShopDTO();
-		sysShopDTO.setParentsId(bossInfo.getParentShopId());
-		List<SysShopDTO> shopInfo = shopService.getShopInfo(sysShopDTO);
-
-		//老板每一个店面都要插入数据
-		shopProjectTypeDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
-		shopProjectTypeDTO.setCreateDate(new Date());
-		if (CommonUtils.objectIsNotEmpty(shopInfo)) {
-
-		}
-		c.andParentShopIdEqualTo(bossInfo.getParentShopId());
-		return shopProjectTypeMapper.updateByCriteriaSelective(shopProjectTypeDTO, criteria);
+		return shopProjectTypeMapper.updateByPrimaryKeySelective(shopProjectTypeDTO);
 	}
 
 }

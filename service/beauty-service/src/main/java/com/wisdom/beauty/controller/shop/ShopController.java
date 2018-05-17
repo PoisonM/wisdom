@@ -140,7 +140,37 @@ public class ShopController {
         ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
         extSysShopDTO.setSysBossId(bossInfo.getId());
         List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
+        if (CommonUtils.objectIsEmpty(bossShopInfo)) {
+            logger.info("老板{}切换店铺", bossInfo.getId());
+            bossInfo.setCurrentShopId(bossShopInfo.get(0).getShopId());
+            UserUtils.bossSwitchShops(bossInfo);
+        }
         responseDTO.setResponseData(bossShopInfo);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 老板切换店铺
+     *
+     * @param sysShopId 为店铺的id
+     * @return
+     */
+    @RequestMapping(value = "/bossSwitchShops", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> bossSwitchShops(@RequestParam String sysShopId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (StringUtils.isBlank(sysShopId)) {
+            responseDTO.setResponseData("传入的sysShopId为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        bossInfo.setCurrentShopId(sysShopId);
+        UserUtils.bossSwitchShops(bossInfo);
+
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;

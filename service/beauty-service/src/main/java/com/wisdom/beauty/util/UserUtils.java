@@ -6,6 +6,7 @@ package com.wisdom.beauty.util;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.extDto.ExtUserDTO;
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
@@ -102,6 +103,17 @@ public class UserUtils {
         String sysBossDTO = JedisUtils.get(token);
         SysBossDTO bossDTO = (new Gson()).fromJson(sysBossDTO, SysBossDTO.class);
         return getTestBossInfo();
+    }
+
+    /**
+     * 老板切换店铺
+     *
+     * @param sysBossDTO
+     */
+    public static void bossSwitchShops(SysBossDTO sysBossDTO) {
+        Gson gson = new Gson();
+        String bossInfoStr = gson.toJson(sysBossDTO);
+        JedisUtils.set(getUserToken(), bossInfoStr, ConfigConstant.logintokenPeriod);
     }
 
     /**
