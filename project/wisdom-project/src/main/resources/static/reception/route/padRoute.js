@@ -430,7 +430,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.signConfirm', {
-            url: '/signConfirm/:transactionId',
+            url: '/signConfirm/:transactionId/:orderId',
             templateUrl: root + '/cashier/signConfirm.html',
             controller: 'signConfirmCtrl',
             resolve: {

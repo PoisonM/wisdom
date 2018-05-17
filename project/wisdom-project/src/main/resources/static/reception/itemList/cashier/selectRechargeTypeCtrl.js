@@ -1,4 +1,4 @@
-PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParams, ngDialog, Archives, GetUserRechargeCardList, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo, GetRechargeCardList) {
+PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParams, ngDialog, Archives, GetShopUserRecentlyOrderInfo, GetUserRechargeCardList, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo, GetRechargeCardList, UpdateVirtualGoodsOrderInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
@@ -29,7 +29,46 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
         userId: '110'
     }, function(data) {
         $scope.orderId = data.responseData;
+        if ($state.params.type == 1) {
+            GetUserRechargeCardList.get({
+                sysUserId: 110
+            }, function(data) {
+                $scope.RechargeCardList = data.responseData.userRechargeCardList;
+            })
+        } else if ($state.params.type == 2) {
+            $scope.type = $state.params.type;
+            $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
+            GetShopUserRecentlyOrderInfo.get({
+                orderId: $scope.orderId,
+                sysUserId: '110'
+            }, function(data) {
+                console.log(data)
+            })
+            GetUserRechargeCardList.get({
+                sysUserId: 110
+            }, function(data) {
+                $scope.RechargeCardList = data.responseData.userRechargeCardList;
+            })
+            $scope.$parent.$parent.leftTipFn = function() {
+                UpdateVirtualGoodsOrderInfo.save({
+                    goodsType: '2',
+                    orderId: $state.params.orderId,
+                    shopUserRechargeCardDTO: [{
+                        shopRechargeCardId: '',
+                        shopRechargeCardName: ''
+                    }]
+                }, function(data) {})
+            }
+
+        } else {
+            GetRechargeCardList.get({
+                pageSize: 100,
+            }, function(data) {
+                $scope.RechargeCardListAll = data.responseData;
+            })
+        }
     })
+
 
     $scope.goSelectRechargeCard = function(id, eid, name) {
         if ($state.params.type == 1) {
@@ -42,21 +81,6 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
         }
     }
 
-    console.log($state.params.type)
-
-    if ($state.params.type == 1) {
-        GetUserRechargeCardList.get({
-            sysUserId: 110
-        }, function(data) {
-            $scope.RechargeCardList = data.responseData.userRechargeCardList;
-        })
-    } else {
-        GetRechargeCardList.get({
-            pageSize: 100,
-        }, function(data) {
-            $scope.RechargeCardListAll = data.responseData;
-        })
-    }
 
     $scope.updateVirtualGoodsOrderInfo = function(id, eid, name, callback) {
         UpdateVirtualGoodsOrderInfo.save({

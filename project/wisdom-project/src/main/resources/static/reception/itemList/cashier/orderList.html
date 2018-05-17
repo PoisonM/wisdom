@@ -1,7 +1,7 @@
-<div class="stillOwedBox clearfix">
-    <div class="stillOwedTotalAmount">总金额：¥{{responseData.orderPrice}}</div>
-    <div class="stillOwedTitle" ng-click="goSelectRechargeType(2)">充值卡支付</div>
-    <ul class="stillOwedUl">
+<div class="orderListBox clearfix">
+    <div class="orderListTotalAmount">总金额：¥{{responseData.orderPrice}}</div>
+    <div class="orderListTitle" ng-click="goSelectRechargeType(2)">充值卡支付</div>
+    <ul class="orderListUl">
         <li>
             <div>余额（可用余额：¥{{responseData.availableBalance}}）</div>
             <span><b class="fl">¥</b><input type="text" ng-model="balancePay"></span>
@@ -15,8 +15,8 @@
             <span><b class="fl">¥</b><input type="text" ng-model="cashPayPrice"></span>
         </li>
     </ul>
-    <div class="stillOwedTitle">其他支付方式</div>
-    <ul class="stillOwedUl mt10">
+    <div class="orderListTitle">其他支付方式</div>
+    <ul class="orderListUl mt10">
         <li ng-click="checkBoxChek(0)">
             <div class="checkBox" ng-class="{bgF6:(payType==0)}">
                 <img src="images/checkImg.png" alt="">
@@ -37,7 +37,7 @@
         </li>
     </ul>
     <img src="" alt="">
-    <div class="stillOwedTitle">备注</div>
+    <div class="orderListTitle">备注</div>
     <textarea name="" rows="10"></textarea>
     <button ng-click="goSignConfirm()">确认</button>
 </div>

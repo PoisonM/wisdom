@@ -34,7 +34,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
             surplusPayPrice: '',
             detail: $scope.detail
         }, function(data) {
-            $state.go('pad-web.signConfirm')
+            $state.go('pad-web.signConfirm', { orderId: $state.params.orderId, })
         })
     }
 
