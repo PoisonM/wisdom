@@ -293,5 +293,9 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UserPayOpe', ['$resource', function($resource) {
         return $resource(beautyIP + '/userPay/userPayOpe')
     }])
+    //用户选择充值卡操作
+    .factory('UpdateVirtualGoodsOrderInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + '/orderInfo/updateVirtualGoodsOrderInfo')
+    }])
 
 ;

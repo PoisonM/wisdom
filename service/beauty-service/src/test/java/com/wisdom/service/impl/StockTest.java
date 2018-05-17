@@ -11,6 +11,7 @@ import com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.SpringUtil;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
@@ -29,6 +30,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -149,5 +152,27 @@ public class StockTest  {
         criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
         criteria.andSysClerkIdEqualTo("11");
         Integer consumeNumber = extShopUserConsumeRecordMapper.selectUserConsumeNumber(recordCriteria);
+    }
+    @Test
+    public void testRedis(){
+        //JedisUtils.setObject("zhtest3", new Date(), 0);
+        //Object object=JedisUtils.getObject("zhtest3");
+        String DATE1="1995-11-12 15:21:00";
+        String DATE2="1996-01-01 15:21:00";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date dt1 = df.parse(DATE1);
+            Date dt2 = df.parse(DATE2);
+            if (dt1.getTime() > dt2.getTime()) {
+                System.out.println("dt1 在dt2前");
+
+            } else if (dt1.getTime() < dt2.getTime()) {
+                System.out.println("dt1在dt2后");
+            } else {
+
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }
