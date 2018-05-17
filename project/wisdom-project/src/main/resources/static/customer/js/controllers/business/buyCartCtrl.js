@@ -43,10 +43,12 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                         productAmount:value2.productAmount,
                                         productId : value2.businessProductId,
                                         orderId : value2.businessOrderId,
+                                        productStatus:value2.productStatus,
                                         orderChecked:true
                                     })
                                 }
                             })
+                            /*$scope.param.unPaidOrder[0].orderList[0].productStatus='0'*/
                         })
                     }
                 })
