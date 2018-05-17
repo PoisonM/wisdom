@@ -190,7 +190,6 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockResponseDTO.setDetail(shopStockRecord.getDetail());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
-		shopStockResponseDTO.setName(shopStockRecord.getName());
 		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())
 				|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())) {
 			shopStockResponseDTO.setStockStatus(StockStyleEnum.IN_STORAGE.getCode());

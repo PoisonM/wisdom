@@ -18,12 +18,48 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private String stockType;
 	private String[] imageUrl;
 	private  String productId;
+	private  String name;
+	private  String detail;
+	private  String applayUser;
+	private  String stockStatus;
 	private  String productCode;
 	private  String productSpec;
 	private  BigDecimal productUnit;
      /** 出库数量 */
 	private Integer outStockNumber;
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public String getApplayUser() {
+		return applayUser;
+	}
+
+	public void setApplayUser(String applayUser) {
+		this.applayUser = applayUser;
+	}
+
+	public String getStockStatus() {
+		return stockStatus;
+	}
+
+	public void setStockStatus(String stockStatus) {
+		this.stockStatus = stockStatus;
+	}
 
 	public String getProductCode() {
 		return productCode;
