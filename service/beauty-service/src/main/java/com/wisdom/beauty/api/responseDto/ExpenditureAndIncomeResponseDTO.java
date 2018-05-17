@@ -40,11 +40,11 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	/**
 	 * 耗卡
 	 */
-	private BigDecimal expenditure;
+	private BigDecimal expenditure=new BigDecimal("0");
 	/**
 	 * 业绩
 	 */
-	private BigDecimal income;
+	private BigDecimal income=new BigDecimal("0");
 	/**
 	 * 日期
 	 */
@@ -77,7 +77,7 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	/**
 	 *卡耗
 	 */
-	private BigDecimal kahao;
+	private BigDecimal kahao=new BigDecimal("0");
 	/**
 	 *人次数
 	 */
