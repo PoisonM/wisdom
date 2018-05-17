@@ -1,6 +1,6 @@
 <div class="basicInfo-box">
     <div class="headPortrait-box fl clearfix">
-        <div class="headPortrait"><img ng-src="{{responseData.imageRul}}" alt=""></div>
+        <div ng-click="goAddRecordDetail()" class="headPortrait"><img ng-src="{{responseData.photo}}" alt=""></div>
     </div>
     <div class="basicInfo-content clearfix fl">
         <div class="basicInfo-content-first clearfix">
@@ -8,17 +8,17 @@
             <span class="accountRecords fl" ng-click="goAccountRecords()">账户记录<b>＞</b></span>
         </div>
         <div class="basicInfo-content-second clearfix">
-            <span>会员：{{responseData1.member}}</span>
-            <span>未绑定</span>
-            <span ng-click="goBindMember()" class="bind">绑定</span>
+            <span>会员：{{responseData.userName}}</span>
+            <span ng-if="responseData.userName.member == '1'">未绑定</span>
+            <span ng-if="responseData.userName.member == '0'" ng-click="goBindMember()" class="bind">绑定</span>
         </div>
         <div class="basicInfo-content-third clearfix">
-            <span>总金额：<b>{{responseData1.sumAmount}}</b></span>
-            <span class="totalOwed">总欠款：<b>{{responseData1.arrears}}</b></span>
+            <span>总金额：<b>{{responseData.sumAmount}}</b></span>
+            <span class="totalOwed">总欠款：<b>{{responseData.arrears}}</b></span>
         </div>
         <div class="basicInfo-content-fourth clearfix">
             <span>档案生成：未知</span>
-            <span class="beautician">美容师：{{responseData1.sysClerkName}}</span>
+            <span class="beautician">美容师：{{responseData.sysClerkName}}</span>
         </div>
     </div>
     <div class="basicInfo-right">

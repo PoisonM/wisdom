@@ -27,12 +27,16 @@
                             <div>购买数量</div>
                             <span>
                                 <b ng-click="">-</b>
-                                <input ng-change="myChangeFn()" type="text" value="1" ng-model="item.projectInitTimes">
+                                <input ng-change="myChangeFn()" type="text" value="" ng-model="item.projectInitTimes">
                                 <b ng-click="">＋</b>
                             </span>
                         </li>
                         <li>
-                            <span>小计¥{{(item.projectInitAmount*item.discount*item.projectInitTimes)|number:2}}</span>
+                            <!--小计¥{{(item.projectInitAmount*item.discount*item.projectInitTimes)|number:2}}-->
+                            <span class="subtotal xiaoji">
+                                <e style="float: left">小计¥</e>
+                                <input readonly>
+                            </span>
                         </li>
                         <li ng-click="goHousekeeper()">
                             <div>关联员工</div>
@@ -62,12 +66,16 @@
                             <div>购买数量</div>
                             <span>
                                 <b>-</b>
-                                <input ng-change="myChangeFn()" type="text" value="1" ng-model="item.initTimes">
+                                <input ng-change="myChangeFn()" type="text" value="" ng-model="item.initTimes">
                                 <b>＋</b>
                             </span>
                         </li>
                         <li>
-                            <span>小计¥{{(item.purchasePrice*item.discount*item.initTimes)|number:2}}</span>
+                            <!--小计¥{{(item.purchasePrice*item.discount*item.initTimes)|number:2}}-->
+                            <span class="subtotal xiaoji">
+                                <e style="float: left">小计¥</e>
+                                <input readonly >
+                            </span>
                         </li>
                         <li ng-click="goHousekeeper()">
                             <div>关联员工</div>
@@ -97,15 +105,16 @@
                             <div>购买数量</div>
                             <span>
                                 <b>-</b>
-                                <input  ng-change="myChangeFn()" type="text" value="1" ng-model="item.sysShopProjectInitTimes">
+                                <input  ng-change="myChangeFn()" type="text" value="" ng-model="item.sysShopProjectInitTimes">
                                 <b>＋</b>
                             </span>
                         </li>
                         <li>
                             <input type="none" ng-value="(item.ng_markPrice*item.sysShopProjectInitTimes)|number:2" ng-model="item.totalPrice">
-                            <span class="subtotal">
+                            <span class="subtotal xiaoji">
                                 <e style="float: left">小计¥</e>
-                                <input readonly ng-value="(item.ng_markPrice*item.sysShopProjectInitTimes)|number:2" ng-model="item.totalPrice" class="countSubtotal"></span>
+                                <input readonly  >
+                            </span>
                         </li>
                         <li ng-click="goHousekeeper()">
                             <div>关联员工</div>
