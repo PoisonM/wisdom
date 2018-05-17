@@ -275,7 +275,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.addRecordDetail', {
-            url: '/addRecordDetail',
+            url: '/addRecordDetail/:id',
             templateUrl: root + '/addRecord/addRecordDetail.html',
             controller: 'addRecordDetailCtrl',
             resolve: {
@@ -307,7 +307,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.personalFile', {
-            url: '/personalFile',
+            url: '/personalFile/:id/:shopid/:sysShopId/:sysUserId',
             templateUrl: root + '/cashier/personalFile.html',
             controller: 'personalFileCtrl',
             resolve: {

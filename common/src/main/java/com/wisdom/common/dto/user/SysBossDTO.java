@@ -6,12 +6,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SysBossDTO extends BaseEntity implements Serializable {
-
+    //
     private String id;
 
     //user表主键
     private String sysUserId;
 
+    //
+    private String parentShopId;
+
+    //
     private String name;
 
     //昵称
@@ -75,6 +79,14 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setSysUserId(String sysUserId) {
         this.sysUserId = sysUserId;
+    }
+
+    public String getParentShopId() {
+        return parentShopId;
+    }
+
+    public void setParentShopId(String parentShopId) {
+        this.parentShopId = parentShopId;
     }
 
     public String getName() {

@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 
@@ -52,6 +53,13 @@ public interface ShopUserRelationService {
 
     /**
      * 查询美容院信息
+     * @param extSysShopDTO
+     * @return
      */
     List<ExtSysShopDTO> getBossShopInfo(ExtSysShopDTO extSysShopDTO);
+
+    /**
+     * 更新店铺信息
+     */
+    int updateShopInfo(SysShopDTO sysShopDTO);
 }

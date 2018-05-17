@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopProductInfoDTO extends BaseEntity implements Serializable {
@@ -11,6 +12,9 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
 
     //
     private String sysShopId;
+
+    //
+    private String parentShopId;
 
     //产品名称
     private String productName;
@@ -52,18 +56,18 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     private Integer productWarningNum;
 
     //市场价格
-    private Long marketPrice;
+    private BigDecimal marketPrice;
 
     //优惠价格
-    private Long discountPrice;
+    private BigDecimal discountPrice;
 
     //
     private String productCode;
 
     //
-    private Long productUnit;
+    private BigDecimal productUnit;
 
-    //规格
+    //
     private String productSpec;
 
     //
@@ -103,6 +107,14 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
 
     public void setSysShopId(String sysShopId) {
         this.sysShopId = sysShopId;
+    }
+
+    public String getParentShopId() {
+        return parentShopId;
+    }
+
+    public void setParentShopId(String parentShopId) {
+        this.parentShopId = parentShopId;
     }
 
     public String getProductName() {
@@ -209,19 +221,19 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.productWarningNum = productWarningNum;
     }
 
-    public Long getMarketPrice() {
+    public BigDecimal getMarketPrice() {
         return marketPrice;
     }
 
-    public void setMarketPrice(Long marketPrice) {
+    public void setMarketPrice(BigDecimal marketPrice) {
         this.marketPrice = marketPrice;
     }
 
-    public Long getDiscountPrice() {
+    public BigDecimal getDiscountPrice() {
         return discountPrice;
     }
 
-    public void setDiscountPrice(Long discountPrice) {
+    public void setDiscountPrice(BigDecimal discountPrice) {
         this.discountPrice = discountPrice;
     }
 
@@ -233,11 +245,11 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.productCode = productCode;
     }
 
-    public Long getProductUnit() {
+    public BigDecimal getProductUnit() {
         return productUnit;
     }
 
-    public void setProductUnit(Long productUnit) {
+    public void setProductUnit(BigDecimal productUnit) {
         this.productUnit = productUnit;
     }
 

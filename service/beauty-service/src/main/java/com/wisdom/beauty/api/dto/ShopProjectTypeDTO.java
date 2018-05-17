@@ -22,7 +22,7 @@ public class ShopProjectTypeDTO extends BaseEntity implements Serializable {
     private String status;
 
     //
-    private String sysBossId;
+    private String parentShopId;
 
     //
     private String createBy;
@@ -78,12 +78,12 @@ public class ShopProjectTypeDTO extends BaseEntity implements Serializable {
         this.status = status;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getParentShopId() {
+        return parentShopId;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setParentShopId(String parentShopId) {
+        this.parentShopId = parentShopId;
     }
 
     public String getCreateBy() {

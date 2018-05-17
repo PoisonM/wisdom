@@ -102,7 +102,7 @@
         <if test="sysBossId != null">
             and sbr.sys_boss_id = #{sysBossId}
         </if>
-        <if test="address != null">
+        <if test="type != null">
             and ss.type = #{type}
         </if>
     </select>

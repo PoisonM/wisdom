@@ -1,12 +1,12 @@
 <ion-view>
-    <ion-content class="partialFiles">
+    <ion-content class="partialFiles bgf6">
        <div>
            <p class="h45 bgfff fs16 colff66">
-               <img src="images/screening.png" class="screeningPic ml10 mr10">
-               筛选
+
+               <span ng-click="sel()"><img src="images/screening.png" class="screeningPic ml10 mr10">筛选</span>
            </p>
            <ion-list >
-               <ion-item  class="h50 bgfff" style="display: flex;" ng-repeat="item in recordCashier" ng-click="detailsOfCashierGo()">
+               <ion-item  class="h50 bgfff" style="display: flex;" ng-repeat="item in recordCashier" ng-click="detailsOfCashierGo(item.flowNo)">
                    <div class="W33 ml20">
                        <p class="mt5 fs16 fs15 col666">{{item.createDate|date:'yyyy-MM-dd'}} </p>
                    </div>
@@ -25,22 +25,22 @@
 
            </ion-list>
        </div>
-        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100;" ng-show="false"></div>
-        <div style="position: absolute;right:0;top:0;z-index: 101;width:80%;height:100%; "class="bgf6" ng-show="false">
+        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100;" ng-show="param.flag" ng-click="disNone()"></div>
+        <div style="position: absolute;right:0;top:0;z-index: 101;width:80%;height:100%; "class="bgf6" ng-show="param.flag">
             <p class=" bgfff">
-                <img src="images/close.png"class="closePic ml10 mt20 ">
+                <img src="images/close.png"class="closePic ml10 mt20 " ng-click="disNone()">
             </p>
             <div>
                 <p class="fs15 col666 bgfff bbl pb5 h40"><span class="ml10 ">状态</span></p>
                 <div class="row row-wrap bgfff">
                     <p class="col col-33 " >
-                        <a class="activeType center " style="height:26px;width:80px;line-height: 26px;">全部</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('6')" ng-class="{'activeType':param.goodType=='6'}">全部</a>
                     </p>
                     <p class="col col-33 ">
-                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">全部</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('7')" ng-class="{'activeType':param.goodType=='7'}">消费</a>
                     </p>
                     <p class="col col-33 ">
-                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">全部</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('2')" ng-class="{'activeType':param.goodType=='2'}">充值</a>
                     </p>
                 </div>
             </div>
@@ -48,15 +48,15 @@
                 <p class="fs15 col666 bgfff bbl pb5 h40"><span class="ml10 ">时间</span></p>
                 <div class="row row-wrap bgfff">
                     <p class="col col-33 " >
-                        <a class="activeType center " style="height:26px;width:80px;line-height: 26px;">不限</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selTime(0)" ng-class="{'activeType':param.timeIndex==0}">不限</a>
                     </p>
                     <p class="col col-33 ">
-                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">最近一周</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selTime(-7)" ng-class="{'activeType':param.timeIndex==-7}">最近一周</a>
                     </p>
                     <p class="col col-33 ">
-                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">最近十五天</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selTime(-15)" ng-class="{'activeType':param.timeIndex==-15}">最近十五天</a>
                     <p class="col col-33 ">
-                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;">最近一个月</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selTime(-30)" ng-class="{'activeType':param.timeIndex==-30}">最近一个月</a>
                     </p>
                 </div>
             </div>
@@ -66,25 +66,30 @@
                     <ion-item  class="h45 bgfff" style="display: flex;justify-content: space-between">
                         <p class="ml10 fs13 col888">开始时间</p>
                         <p class="mr10">
+                            <ionic-datepicker input-obj="datepickerObjectEnd" ng-click="selStart(0)">
+                                {{param.startDate}}
+                                <img src="images/more.png" style="width:8px;height:14.1px;">
+                            </ionic-datepicker>
 
-                            <img src="images/more.png" style="width:8px;height:14.1px;">
                         </p>
                     </ion-item>
                     <ion-item  class="h45 bgfff" style="display: flex;justify-content: space-between">
                         <p class="ml10 fs13 col888">结束时间</p>
                         <p class="mr10">
-
-                            <img src="images/more.png" style="width:8px;height:14.1px;">
+                            <ionic-datepicker input-obj="datepickerObjectEnd" ng-click="selStart(1)">
+                                {{param.endDate}}
+                                <img src="images/more.png" style="width:8px;height:14.1px;">
+                            </ionic-datepicker>
                         </p>
                     </ion-item>
                 </ion-list>
             </div>
 
             <div class="tabs bgfff">
-                <a class="tab-item True">
+                <a class="tab-item True" ng-click="reset()">
                     重置
                 </a>
-                <a class="tab-item True activeTrue">
+                <a class="tab-item True activeTrue" ng-click="selTrue()">
                     确认
                 </a>
 

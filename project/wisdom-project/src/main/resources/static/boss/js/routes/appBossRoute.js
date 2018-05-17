@@ -962,6 +962,7 @@ define(['appBoss'], function(app){
                         }
                     }
                 })
+
                     .state('archives', {
                         url: '/archives/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1027,7 +1028,7 @@ define(['appBoss'], function(app){
                     })
                     /* refillCard  充值卡*/
                     .state('refillCard', {
-                        url: '/refillCard',
+                        url: '/refillCard/:sysShopId/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'refillCardCtrl',
                         resolve: {
@@ -1040,7 +1041,7 @@ define(['appBoss'], function(app){
                     })
                     /*prepaidPhoneRecords 充值记录*/
                     .state('prepaidPhoneRecords', {
-                        url: '/prepaidPhoneRecords',
+                        url: '/prepaidPhoneRecords/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'prepaidPhoneRecordsCtrl',
                         resolve: {
@@ -1053,7 +1054,7 @@ define(['appBoss'], function(app){
                     })
                     /*accountDetails 账户明细*/
                     .state('accountDetails', {
-                        url: '/accountDetails',
+                        url: '/accountDetails/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'accountDetailsCtrl',
                         resolve: {
@@ -1126,7 +1127,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('treatmentCard', {
-                        url: '/treatmentCard',
+                        url: '/treatmentCard/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'treatmentCardCtrl',
                         resolve: {
@@ -1138,7 +1139,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('treatmentCardDtails', {
-                        url: '/treatmentCardDtails',
+                        url: '/treatmentCardDtails/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'treatmentCardDtailsCtrl',
                         resolve: {
@@ -1162,7 +1163,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('collectionCard', {
-                        url: '/collectionCard',
+                        url: '/collectionCard/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'collectionCardCtrl',
                         resolve: {
@@ -1174,7 +1175,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('product', {
-                        url: '/product',
+                        url: '/product/:sysUserId/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productCtrl',
                         resolve: {
@@ -1234,8 +1235,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*detailsOfCashier  收银详情*/
                     .state('detailsOfCashier', {
-                        url: '/detailsOfCashier',
+                        url: '/detailsOfCashier/:flowNo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailsOfCashierCtrl',
                         resolve: {
@@ -1259,7 +1261,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('drawCardRecordsDetail', {
-                        url: '/drawCardRecordsDetail',
+                        url: '/drawCardRecordsDetail/:flowNo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'drawCardRecordsDetailCtrl',
                         resolve: {
@@ -1271,7 +1273,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('newUser', {
-                        url: '/newUser',
+                        url: '/newUser/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newUserCtrl',
                         resolve: {
@@ -1961,7 +1963,7 @@ define(['appBoss'], function(app){
                  product
                  accountRecords 账户记
                  recordCashier 收银记录
-                 detailsOfCashier  收银详情
+
                  drawCardRecords 划卡记录
                  drawCardRecordsDetail 划卡记录详情
                  newUser新建档案

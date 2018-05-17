@@ -109,8 +109,16 @@ public class ProjectController {
     ResponseDTO<HashMap<String, Object>> searchShopProjectList(@RequestParam String useStyle, @RequestParam String filterStr) {
 
         long currentTimeMillis = System.currentTimeMillis();
+        String sysShopId = null;
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        String sysShopId = clerkInfo.getSysShopId();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if(null != clerkInfo){
+            sysShopId = clerkInfo.getSysShopId();
+        }
+        if(null != bossInfo){
+            sysShopId = clerkInfo.getSysShopId();
+        }
+
         logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
         ResponseDTO<HashMap<String, Object>> responseDTO = new ResponseDTO<>();
 

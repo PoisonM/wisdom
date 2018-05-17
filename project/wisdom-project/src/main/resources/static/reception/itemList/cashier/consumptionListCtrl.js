@@ -188,7 +188,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             }],
             projectGroupRelRelationDTOS: [{
                 shopGroupPuchasePrice: res.marketPrice,
-                projectInitTimes: '',
+                projectInitTimes: '1',
                 projectSurplusAmount: '',
                 projectSurplusTimes: '',
                 shopProjectGroupId: res.id,
