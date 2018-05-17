@@ -266,7 +266,6 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                         groupRelRelationDTO.setId(IdGen.uuid());
                         groupRelRelationDTO.setShopProjectGroupId(dto.getId());
                         groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
-                        groupRelRelationDTO.setSysBossId(shopProjectInfoDTO.getSysBossId());
                         groupRelRelationDTO.setProjectSurplusTimes(dt.getShopProjectServiceTimes());
                         groupRelRelationDTO.setProjectSurplusAmount(dt.getShopProjectPrice());
                         logger.info("订单号={}，生成用户跟套卡的关系的关系记录={}", orderId, groupRelRelationDTO);
