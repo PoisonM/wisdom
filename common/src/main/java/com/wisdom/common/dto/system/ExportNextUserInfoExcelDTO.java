@@ -30,9 +30,6 @@ public class ExportNextUserInfoExcelDTO {
     private String parentUserType;//
 
 
-    @JSONField(name = "getAmount")
-    private float getAmount;//
-
     @JSONField(name = "nextNickName")
     private String nextNickName;
 
@@ -43,7 +40,6 @@ public class ExportNextUserInfoExcelDTO {
 
     @JSONField(name = "nextUserType")
     private String nextUserType;//
-
 
     @JSONField(name = "payDate")
     private String payDate;
@@ -111,7 +107,7 @@ public class ExportNextUserInfoExcelDTO {
         return parentMobile;
     }
 
-    public void setParentMobile(String parentUserType) {
+    public void setParentMobile(String parentMobile) {
         this.parentMobile = parentMobile;
     }
 
@@ -130,16 +126,6 @@ public class ExportNextUserInfoExcelDTO {
     public String getParentUserType() {
         return userTypeUtil(parentUserType);
     }
-
-
-    public float getGetAmount() {
-        return getAmount;
-    }
-
-    public void setGetAmount(float getAmount) {
-        this.getAmount = getAmount;
-    }
-
 
     public float getAmount() {
         return amount;

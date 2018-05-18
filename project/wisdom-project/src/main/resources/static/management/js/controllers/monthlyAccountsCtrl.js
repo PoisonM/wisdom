@@ -70,6 +70,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         })
                     }else if (a[index]%2==1){
                         $scope.MonthlyBalanceLis[index].statesLook = "1";
+                        $scope.agencyIndex = -1
                     }
 
 
