@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
 import com.wisdom.beauty.api.extDto.RelationIds;
+import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -122,6 +123,27 @@ public class ProjectTest {
         System.out.println(toJSONString);
 
         MvcResult result = mvc.perform(post("/projectType/updateOneLevelProjectType").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void updateTwoLevelProjectType() throws Exception {
+
+        ShopProjectTypeDTO shopProjectTypeDTO = new ShopProjectTypeDTO();
+        shopProjectTypeDTO.setProjectTypeName("美容啊");
+        shopProjectTypeDTO.setId("1");
+        shopProjectTypeDTO.setStatus("1");
+        RequestDTO requestDTO = new RequestDTO();
+        requestDTO.andList(shopProjectTypeDTO);
+        String toJSONString = JSONObject.toJSONString(requestDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/projectType/updateTwoLevelProjectType").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

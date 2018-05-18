@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 
 import java.util.List;
 
@@ -116,7 +117,7 @@ public interface ShopProjectService {
     /**
      * 添加项目类别
      */
-    int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO);
+    int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO, SysBossDTO bossInfo);
 
     /**
      * 修改项目类别

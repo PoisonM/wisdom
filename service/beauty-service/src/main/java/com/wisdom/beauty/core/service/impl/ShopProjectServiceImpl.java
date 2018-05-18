@@ -7,7 +7,6 @@ import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopService;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -444,17 +443,11 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	 * 添加项目类别
 	 */
 	@Override
-	public int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO) {
+	public int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO, SysBossDTO bossInfo) {
 		if (null == shopProjectTypeDTO) {
 			logger.error("添加项目类别传入参数异常={}", "shopProjectTypeDTO = [" + shopProjectTypeDTO + "]");
 			return 0;
 		}
-		SysBossDTO bossInfo = UserUtils.getBossInfo();
-		if (null == bossInfo) {
-			logger.error("获取老板信息异常，{}", "bossInfo = [" + bossInfo + "]");
-			return 0;
-		}
-
 		shopProjectTypeDTO.setId(IdGen.uuid());
 		shopProjectTypeDTO.setSysShopId(bossInfo.getCurrentShopId());
 		int selective = shopProjectTypeMapper.insertSelective(shopProjectTypeDTO);
@@ -475,13 +468,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		}
 		ShopProjectTypeCriteria criteria = new ShopProjectTypeCriteria();
 		ShopProjectTypeCriteria.Criteria c = criteria.createCriteria();
-
-		SysBossDTO bossInfo = UserUtils.getBossInfo();
-		if (null == bossInfo) {
-			logger.error("获取老板信息异常，{}", "bossInfo = [" + bossInfo + "]");
-			return 0;
-		}
-
+		c.andIdEqualTo(shopProjectTypeDTO.getId());
 		return shopProjectTypeMapper.updateByPrimaryKeySelective(shopProjectTypeDTO);
 	}
 
