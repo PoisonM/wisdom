@@ -22,7 +22,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 //背景图
                 $scope.param.ctx.drawImage($scope.param.imgs.bg, 0, 0, $scope.param.canvas.width, $scope.param.canvas.height);
                 //头像
-                $scope.param.ctx.drawImage($scope.param.imgs.via, 148,148);
+                $scope.param.ctx.drawImage($scope.param.imgs.via,70,50);
                 //微信名字
                 $scope.param.ctx.fillStyle = '#ffffff';
                 // //字体设置 三个参数，font-weight font-size font-family
@@ -30,13 +30,13 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 $scope.param.ctx.fillText($scope.param.weixinShareInfo.nickName,218,70);
                 /*美享*/
                 $scope.param.ctx.font = '36px microsoft  yahei';
-                $scope.param.ctx.fillText('美享' ,218, 100);
+                $scope.param.ctx.fillText('美享' ,218, 110);
                   /*九小主 大当家*/
                 $scope.param.ctx.fillStyle = '#FFF100';
                 $scope.param.ctx.font = '36px microsoft #FFF100';
-                $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,238,100);
+                $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,328,110);
                 //二维码
-                $scope.param.ctx.drawImage($scope.param.imgs.qrCode, $scope.param.canvas.width*0.08, $scope.param.canvas.height*0.8 , $scope.param.canvas.width*0.22, calcHeight($scope.param.imgs.qrCode, $scope.param.canvas.width*0.22));
+                $scope.param.ctx.drawImage($scope.param.imgs.qrCode, $scope.param.canvas.width*0.08, $scope.param.canvas.height*0.7 , $scope.param.canvas.width*0.22, calcHeight($scope.param.imgs.qrCode, $scope.param.canvas.width*0.22));
 
                 //获取base64格式的src
                 var imgSrc = $scope.param.canvas.toDataURL('image/jpg');
