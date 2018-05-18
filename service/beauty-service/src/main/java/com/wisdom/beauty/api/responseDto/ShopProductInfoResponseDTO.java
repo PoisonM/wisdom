@@ -1,9 +1,7 @@
 package com.wisdom.beauty.api.responseDto;
 
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
-import com.wisdom.common.entity.BaseEntity;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,13 +10,13 @@ import java.util.List;
 public class ShopProductInfoResponseDTO extends ShopProductInfoDTO {
 
 	/** 图片地址id */
-	private String[] imageUrl;
+	private List<String> imageUrl;
 
-	public String[] getImageUrl() {
+	public List<String> getImageUrl() {
 		return imageUrl;
 	}
 
-	public void setImageUrl(String[] imageUrl) {
+	public void setImageUrl(List<String> imageUrl) {
 		this.imageUrl = imageUrl;
 	}
 }

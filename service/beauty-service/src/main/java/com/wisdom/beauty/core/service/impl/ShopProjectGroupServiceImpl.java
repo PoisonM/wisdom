@@ -2,12 +2,11 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.extDto.ImageUrl;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoGroupRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
-import com.wisdom.beauty.core.mapper.ShopUserProjectRelationMapper;
+import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -19,14 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ClassName: ShopProjectGroupServiceImpl
@@ -56,7 +51,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private ShopUserProjectRelationMapper shopUserProjectRelationMapper;
+    private MongoUtils mongoUtils;
 
     @Override
     public List<ProjectInfoGroupResponseDTO> getShopProjectGroupList(PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO) {
@@ -81,38 +76,16 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             c.andProjectGroupNameLike("%" + shopProjectGroupDTO.getProjectGroupName() + "%");
         }
 
-        List<ShopProjectGroupDTO> shopCustomerArchiveslist = shopProjectGroupMapper.selectByCriteria(criteria);
-        // TODO: 2018/4/28
-        List<String> ids = new ArrayList<>();
-        for (ShopProjectGroupDTO shopProjectGroup : shopCustomerArchiveslist) {
-            ids.add(shopProjectGroup.getId());
+        List<ShopProjectGroupDTO> groupDTOS = shopProjectGroupMapper.selectByCriteria(criteria);
+
+        List<ProjectInfoGroupResponseDTO> response = new ArrayList();
+        for (ShopProjectGroupDTO s : groupDTOS) {
+            ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = new ProjectInfoGroupResponseDTO();
+            BeanUtils.copyProperties(s, projectInfoGroupResponseDTO);
+            projectInfoGroupResponseDTO.setImageUrl(mongoUtils.getImageUrl(s.getId()));
+            response.add(projectInfoGroupResponseDTO);
         }
-        List<ImageUrl> imageUrls = null;
-        if (CollectionUtils.isNotEmpty(ids)) {
-            Query query = new Query(Criteria.where("imageId").in(ids));
-            imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-        }
-        Map<String, String> map = null;
-        if (CollectionUtils.isNotEmpty(imageUrls)) {
-            map = new HashMap<>(16);
-            for (ImageUrl imageUrl : imageUrls) {
-                map.put(imageUrl.getImageId(), imageUrl.getUrl());
-            }
-        }
-        List<ProjectInfoGroupResponseDTO> respon = new ArrayList<>();
-        for (ShopProjectGroupDTO shopProjectGroup : shopCustomerArchiveslist) {
-            ProjectInfoGroupResponseDTO projectInfoGroupResponse = new ProjectInfoGroupResponseDTO();
-            BeanUtils.copyProperties(shopProjectGroup, projectInfoGroupResponse);
-            String[] urls = null;
-            if (map != null && com.wisdom.common.util.StringUtils.isNotBlank(map.get(shopProjectGroup.getId()))) {
-                urls = map.get(shopProjectGroup.getId()).split("\\|");
-            }
-            if (urls != null) {
-                projectInfoGroupResponse.setImageUrl(urls);
-            }
-            respon.add(projectInfoGroupResponse);
-        }
-        return respon;
+        return response;
     }
 
     /**
@@ -194,7 +167,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             logger.info("shopProjectInfoGroupRelationMapper查询的结果shopProjectInfoGroupRelations为空");
         }
         List<String> shopProjectInfoIds = new ArrayList<>();
-        ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = new ProjectInfoGroupResponseDTO();
+
         for (ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO : shopProjectInfoGroupRelations) {
             shopProjectInfoIds.add(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
         }
@@ -205,24 +178,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         }
         // 获取套卡信息
         ShopProjectGroupDTO shopProjectGroupDTO = this.getShopProjectGroupDTO(id);
-
+        ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = new ProjectInfoGroupResponseDTO();
         if (shopProjectGroupDTO != null) {
-            projectInfoGroupResponseDTO.setProjectGroupName(shopProjectGroupDTO.getProjectGroupName());
-            projectInfoGroupResponseDTO.setDetail(shopProjectGroupDTO.getDetail());
-            projectInfoGroupResponseDTO.setDiscountPrice(shopProjectGroupDTO.getDiscountPrice());
-            projectInfoGroupResponseDTO.setMarketPrice(shopProjectGroupDTO.getMarketPrice());
-            projectInfoGroupResponseDTO.setProjectGroupUrl(shopProjectGroupDTO.getProjectGroupUrl());
-            projectInfoGroupResponseDTO.setValidDate(shopProjectGroupDTO.getValidDate());
-            // mongodb中的图片地址
-            Query query = new Query(Criteria.where("imageId").is(shopProjectGroupDTO.getId()));
-            List<ImageUrl> imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-            if (CollectionUtils.isNotEmpty(imageUrls)) {
-                ImageUrl imageUrl = imageUrls.get(0);
-                String url = imageUrl.getUrl();
-                if (StringUtils.isNotBlank(url)) {
-                    projectInfoGroupResponseDTO.setImageUrl(url.split("\\|"));
-                }
-            }
+            BeanUtils.copyProperties(shopProjectGroupDTO, projectInfoGroupResponseDTO);
+            projectInfoGroupResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProjectGroupDTO.getId()));
         }
         projectInfoGroupResponseDTO.setList(shopProjectInfos);
         return projectInfoGroupResponseDTO;

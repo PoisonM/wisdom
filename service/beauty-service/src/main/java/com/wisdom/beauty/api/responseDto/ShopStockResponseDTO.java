@@ -1,7 +1,6 @@
 package com.wisdom.beauty.api.responseDto;
 
 import com.wisdom.beauty.api.dto.ShopStockDTO;
-import com.wisdom.common.entity.BaseEntity;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,7 +15,7 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	// 入库时间
 	private Date operDate;
 	private String stockType;
-	private String[] imageUrl;
+	private List<String> imageUrl;
 	private  String productId;
 	private  String name;
 	private  String detail;
@@ -85,11 +84,11 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 		this.productUnit = productUnit;
 	}
 
-	public String[] getImageUrl() {
+	public List<String> getImageUrl() {
 		return imageUrl;
 	}
 
-	public void setImageUrl(String[] imageUrl) {
+	public void setImageUrl(List<String> imageUrl) {
 		this.imageUrl = imageUrl;
 	}
 

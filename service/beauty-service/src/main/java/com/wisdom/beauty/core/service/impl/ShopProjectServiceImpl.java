@@ -2,11 +2,11 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
-import com.wisdom.beauty.api.extDto.ImageUrl;
+import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
+import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProjectService;
-import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -18,14 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * FileName: ShopProjectService
@@ -54,7 +51,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	private MongoTemplate mongoTemplate;
 
 	@Autowired
-	private ShopService shopService;
+    private MongoUtils mongoUtils;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -305,37 +302,18 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		//项目为启用状态
 		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 		List<ShopProjectInfoDTO> list = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
-		List<String> ids = new ArrayList<>();
-		for (ShopProjectInfoDTO shopProjectInfo : list) {
-			ids.add(shopProjectInfo.getId());
-		}
-		List<ImageUrl> imageUrls = null;
-		if (CollectionUtils.isNotEmpty(ids)) {
-			Query query = new Query(Criteria.where("imageId").in(ids));
-			imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-		}
-		Map<String, String> map = null;
-		if (CollectionUtils.isNotEmpty(imageUrls)) {
-			map = new HashMap<>(16);
-			for (ImageUrl imageUrl : imageUrls) {
-				map.put(imageUrl.getImageId(), imageUrl.getUrl());
+
+        List<ShopProjectInfoResponseDTO> responseDTOS = new ArrayList<>();
+        //查询图片信息
+        if (CommonUtils.objectIsEmpty(list)) {
+            for (ShopProjectInfoDTO dto : list) {
+                ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = new ShopProjectInfoResponseDTO();
+                BeanUtils.copyProperties(dto, shopProjectInfoResponseDTO);
+                shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(dto.getId()));
+                responseDTOS.add(shopProjectInfoResponseDTO);
 			}
 		}
-		ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = null;
-		List<ShopProjectInfoResponseDTO> respon = new ArrayList<>();
-		for (ShopProjectInfoDTO shopProjectInfo : list) {
-			shopProjectInfoResponseDTO=new ShopProjectInfoResponseDTO();
-            BeanUtils.copyProperties(shopProjectInfo, shopProjectInfoResponseDTO);
-			String[] urls = null;
-			if (map != null && StringUtils.isNotBlank(map.get(shopProjectInfo.getId()))) {
-				urls = map.get(shopProjectInfo.getId()).split("\\|");
-			}
-			if (urls != null) {
-				shopProjectInfoResponseDTO.setImageUrl(urls);
-			}
-			respon.add(shopProjectInfoResponseDTO);
-		}
-		return respon;
+        return responseDTOS;
 	}
 
 	@Override
@@ -356,20 +334,11 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		}
 		ShopProjectInfoDTO shopProjectInfoDTO = list.get(0);
 
-		Query query = new Query(Criteria.where("imageId").is(shopProjectInfoDTO.getId()));
-		List<ImageUrl> imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-
 		ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = new ShopProjectInfoResponseDTO();
 
 		BeanUtils.copyProperties(shopProjectInfoDTO, shopProjectInfoResponseDTO);
 
-		if (CollectionUtils.isNotEmpty(imageUrls)) {
-			ImageUrl imageUrl = imageUrls.get(0);
-			String url = imageUrl.getUrl();
-			if (StringUtils.isNotBlank(url)) {
-				shopProjectInfoResponseDTO.setImageUrl(url.split("\\|"));
-			}
-		}
+        shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
 		return shopProjectInfoResponseDTO;
 	}
 
@@ -471,5 +440,30 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		c.andIdEqualTo(shopProjectTypeDTO.getId());
 		return shopProjectTypeMapper.updateByPrimaryKeySelective(shopProjectTypeDTO);
 	}
+
+    /**
+     * 保存项目
+     *
+     * @param extShopProjectInfoDTO
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int saveProjectInfo(ExtShopProjectInfoDTO extShopProjectInfoDTO) {
+        if (null == extShopProjectInfoDTO) {
+            logger.error("保存项目={}", "extShopProjectInfoDTO = [" + extShopProjectInfoDTO + "]");
+            return 0;
+        }
+        if (CommonUtils.objectIsNotEmpty(extShopProjectInfoDTO.getImageList())) {
+            extShopProjectInfoDTO.setProjectUrl(extShopProjectInfoDTO.getImageList().get(0));
+        }
+        String uuid = IdGen.uuid();
+        extShopProjectInfoDTO.setId(uuid);
+        //保存图片信息
+        mongoUtils.saveImageUrl(extShopProjectInfoDTO.getImageList(), uuid);
+        return shopProjectInfoMapper.insertSelective(extShopProjectInfoDTO);
+    }
+
+
 
 }

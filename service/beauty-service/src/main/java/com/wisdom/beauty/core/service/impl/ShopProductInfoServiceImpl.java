@@ -1,12 +1,12 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.extDto.ImageUrl;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProductInfoMapper;
 import com.wisdom.beauty.core.mapper.ShopProductTypeMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
+import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,6 +43,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private MongoUtils mongoUtils;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -206,34 +207,12 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");
 		}
 		List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
-		List<String> ids = new ArrayList<>();
-		for (ShopProductInfoDTO shopProductInfo : list) {
-			ids.add(shopProductInfo.getId());
-		}
-		List<ImageUrl> imageUrls = null;
-		if (CollectionUtils.isNotEmpty(ids)) {
-			Query query = new Query(Criteria.where("imageId").in(ids));
-			imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-		}
-		Map<String, String> map = null;
-		if (CollectionUtils.isNotEmpty(imageUrls)) {
-			map = new HashMap<>(16);
-			for (ImageUrl imageUrl : imageUrls) {
-				map.put(imageUrl.getImageId(), imageUrl.getUrl());
-			}
-		}
 
 		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
 		for (ShopProductInfoDTO shopProductInfo : list) {
 			ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
 			BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
-			String[] urls = null;
-			if (map != null && StringUtils.isNotBlank(map.get(shopProductInfo.getId()))) {
-				urls = map.get(shopProductInfo.getId()).split("\\|");
-			}
-			if (urls != null) {
-				shopProductInfoResponseDTO.setImageUrl(urls);
-			}
+            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
 			respon.add(shopProductInfoResponseDTO);
 		}
 		return respon;
@@ -257,29 +236,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		}
 
 		ShopProductInfoDTO shopProductInfo = list.get(0);
-
-		Query query = new Query(Criteria.where("imageId").is(shopProductInfo.getId()));
-		List<ImageUrl> imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-
 		ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
-		shopProductInfoResponseDTO.setDiscountPrice(shopProductInfo.getDiscountPrice());
-		shopProductInfoResponseDTO.setMarketPrice(shopProductInfo.getMarketPrice());
-		shopProductInfoResponseDTO.setProductName(shopProductInfo.getProductName());
-		shopProductInfoResponseDTO.setProductTypeOneName(shopProductInfo.getProductTypeOneName());
-		shopProductInfoResponseDTO.setProductTypeTwoName(shopProductInfo.getProductTypeTwoName());
-		shopProductInfoResponseDTO.setProductPosition(shopProductInfo.getProductPosition());
-		shopProductInfoResponseDTO.setProductSpec(shopProductInfo.getProductSpec());
-		shopProductInfoResponseDTO.setProductFunction(shopProductInfo.getProductFunction());
-		shopProductInfoResponseDTO.setIntroduce(shopProductInfo.getIntroduce());
-		shopProductInfoResponseDTO.setProductUnit(shopProductInfo.getProductUnit());
-		shopProductInfoResponseDTO.setProductCode(shopProductInfo.getProductCode());
-		if(	CollectionUtils.isNotEmpty(imageUrls)){
-			ImageUrl imageUrl=imageUrls.get(0);
-			String url=imageUrl.getUrl();
-			if(StringUtils.isNotBlank(url)){
-				shopProductInfoResponseDTO.setImageUrl(url.split("\\|"));
-			}
-		}
+        BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
+        shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
 		return shopProductInfoResponseDTO;
 
 	}
@@ -296,34 +255,13 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 		criteria.andIdIn(ids);
 		List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
-		List<String> idList = new ArrayList<>();
-		for (ShopProductInfoDTO shopProductInfo : list) {
-			idList.add(shopProductInfo.getId());
-		}
-		List<ImageUrl> imageUrls = null;
-		if (CollectionUtils.isNotEmpty(idList)) {
-			Query query = new Query(Criteria.where("imageId").in(idList));
-			imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-		}
-		Map<String, String> map = null;
-		if (CollectionUtils.isNotEmpty(imageUrls)) {
-			map = new HashMap<>(16);
-			for (ImageUrl imageUrl : imageUrls) {
-				map.put(imageUrl.getImageId(), imageUrl.getUrl());
-			}
-		}
+
 		ShopProductInfoResponseDTO shopProductInfoResponseDTO =null;
 		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
 		for (ShopProductInfoDTO shopProductInfo : list) {
 			shopProductInfoResponseDTO= new ShopProductInfoResponseDTO();
 			BeanUtils.copyProperties(shopProductInfo,shopProductInfoResponseDTO);
-			String[] urls = null;
-			if (map != null && StringUtils.isNotBlank(map.get(shopProductInfo.getId()))) {
-				urls = map.get(shopProductInfo.getId()).split("\\|");
-			}
-			if (urls != null) {
-				shopProductInfoResponseDTO.setImageUrl(urls);
-			}
+            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
 			respon.add(shopProductInfoResponseDTO);
 		}
 		return respon;

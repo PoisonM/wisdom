@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
@@ -126,4 +127,12 @@ public interface ShopProjectService {
      * @return
      */
     int updateProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO);
+
+    /**
+     * 保存项目
+     *
+     * @param extShopProjectInfoDTO
+     * @return
+     */
+    int saveProjectInfo(ExtShopProjectInfoDTO extShopProjectInfoDTO);
 }
