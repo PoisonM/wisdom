@@ -129,6 +129,14 @@ public interface ShopProjectService {
     int updateProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO);
 
     /**
+     * 修改项目
+     *
+     * @param shopProjectInfoDTO
+     * @return
+     */
+    int updateProjectInfo(ShopProjectInfoDTO shopProjectInfoDTO);
+
+    /**
      * 保存项目
      *
      * @param extShopProjectInfoDTO

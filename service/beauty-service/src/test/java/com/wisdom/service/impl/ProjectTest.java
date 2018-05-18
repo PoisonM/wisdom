@@ -123,10 +123,16 @@ public class ProjectTest {
         extShopProjectInfoDTO.setOncePrice(new BigDecimal(100));
         extShopProjectInfoDTO.setVisitDateTime(12);
         extShopProjectInfoDTO.setDiscountPrice(new BigDecimal(1000));
+        extShopProjectInfoDTO.setId("1");
         String toJSONString = JSONObject.toJSONString(extShopProjectInfoDTO);
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/projectInfo/saveProjectInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+//        MvcResult result = mvc.perform(post("/projectInfo/saveProjectInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+
+        MvcResult result = mvc.perform(post("/projectInfo/updateProjectInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

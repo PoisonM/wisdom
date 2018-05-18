@@ -25,10 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * FileName: ProjectController
@@ -579,11 +576,40 @@ public class ProjectController {
             return responseDTO;
         }
         extShopProjectInfoDTO.setSysShopId(bossInfo.getCurrentShopId());
+        extShopProjectInfoDTO.setCreateDate(new Date());
         if (!CardTypeEnum.ONE_TIME_CARD.getCode().equals(extShopProjectInfoDTO.getCardType())) {
             extShopProjectInfoDTO.setUseStyle(CardTypeEnum.TREATMENT_CARD.getCode());
         }
         extShopProjectInfoDTO.setMarketPrice(extShopProjectInfoDTO.getOncePrice().multiply(new BigDecimal(extShopProjectInfoDTO.getServiceTimes())));
         int info = projectService.saveProjectInfo(extShopProjectInfoDTO);
+        responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+
+        logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 保存用户的项目信息
+     */
+    @RequestMapping(value = "updateProjectInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<Object> updateProjectInfo(@RequestBody ExtShopProjectInfoDTO extShopProjectInfoDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if (judgeBossCurrentShop(responseDTO, bossInfo)) {
+            return responseDTO;
+        }
+        if (null == extShopProjectInfoDTO.getId()) {
+            responseDTO.setResponseData("更新主键不可为空不能为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        extShopProjectInfoDTO.setUpdateDate(new Date());
+        int info = projectService.updateProjectInfo(extShopProjectInfoDTO);
         responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 
         logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);

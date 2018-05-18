@@ -441,7 +441,22 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		return shopProjectTypeMapper.updateByPrimaryKeySelective(shopProjectTypeDTO);
 	}
 
-    /**
+	/**
+	 * 更新项目信息
+	 *
+	 * @param shopProjectInfoDTO
+	 * @return
+	 */
+	@Override
+	public int updateProjectInfo(ShopProjectInfoDTO shopProjectInfoDTO) {
+		if (CommonUtils.objectIsEmpty(shopProjectInfoDTO)) {
+			logger.error("更新项目信息传入参数有误={}", "shopProjectInfoDTO = [" + shopProjectInfoDTO + "]");
+			return 0;
+		}
+		return shopProjectInfoMapper.updateByPrimaryKeySelective(shopProjectInfoDTO);
+	}
+
+	/**
      * 保存项目
      *
      * @param extShopProjectInfoDTO

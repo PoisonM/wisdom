@@ -175,7 +175,7 @@ public class UserUtils {
         sysBossDTO.setMobile("18810142926");
         sysBossDTO.setNickname("赵得良");
         sysBossDTO.setId("11");
-        sysBossDTO.setParentShopId("11");
+        sysBossDTO.setCurrentShopId("11");
         return sysBossDTO;
     }
 
