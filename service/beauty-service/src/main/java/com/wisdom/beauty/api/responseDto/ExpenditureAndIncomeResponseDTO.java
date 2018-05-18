@@ -98,6 +98,10 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	 * 用户id
 	 */
 	private String  sysUserId;
+	/**
+	 * 到店次数，标记每个用户的到店次数
+	 */
+	private Integer  useArriveShopTime;
 	public BigDecimal getExpenditure() {
 		return expenditure;
 	}
@@ -272,5 +276,13 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+
+	public Integer getUseArriveShopTime() {
+		return useArriveShopTime;
+	}
+
+	public void setUseArriveShopTime(Integer useArriveShopTime) {
+		this.useArriveShopTime = useArriveShopTime;
 	}
 }

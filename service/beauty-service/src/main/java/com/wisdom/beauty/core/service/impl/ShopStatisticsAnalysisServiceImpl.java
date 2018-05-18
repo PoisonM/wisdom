@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -797,21 +799,24 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	}
 
 	@Override
-	public List<ExpenditureAndIncomeResponseDTO> getShopCustomerArriveList(
+	public Map<String,Object> getShopCustomerArriveList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO, String condition) {
 		UserConsumeRequestDTO userConsumeRequestDTO = pageParamVoDTO.getRequestData();
 		if (userConsumeRequestDTO == null) {
 			logger.info("getCustomerArriveList方法传入的userConsumeRequestDTO对象为空");
 		}
-		List<String> userIds=new ArrayList<>();
+		Set<String> userIds=new HashSet<>();
+		List<ExpenditureAndIncomeResponseDTO> list=null;
 		// 人头数
 		Map<String,ExpenditureAndIncomeResponseDTO>  map=new HashedMap();
 		if ("1".equals(condition)) {
 			ShopUserConsumeRecordCriteria numberCriteria = new ShopUserConsumeRecordCriteria();
 			ShopUserConsumeRecordCriteria.Criteria numberC = numberCriteria.createCriteria();
-			List<ExpenditureAndIncomeResponseDTO> consumeNumberList = extShopUserConsumeRecordMapper
-					.selectPriceListByCriteria(numberCriteria);
-			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : consumeNumberList) {
+			//根据时间排序，降序
+			numberCriteria.setOrderByClause("create_date  desc");
+			list = extShopUserConsumeRecordMapper.selectPriceListByCriteria(numberCriteria);
+
+			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : list) {
 				userIds.add(expenditureAndIncomeResponseDTO.getSysUserId());
 				if(map.get(expenditureAndIncomeResponseDTO.getSysUserId())==null){
 					map.put(expenditureAndIncomeResponseDTO.getSysUserId(),expenditureAndIncomeResponseDTO);
@@ -823,58 +828,94 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		if ("2".equals(condition)) {
 			ShopUserConsumeRecordCriteria timeCriteria = new ShopUserConsumeRecordCriteria();
 			ShopUserConsumeRecordCriteria.Criteria timeC = timeCriteria.createCriteria();
-			List<ExpenditureAndIncomeResponseDTO> timeList = extShopUserConsumeRecordMapper
-					.selectPriceListByCriteria(timeCriteria);
-			Map<String, Integer> timeMap = new HashedMap(16);
-			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : timeList) {
+			//根据时间排序，降序
+			timeCriteria.setOrderByClause("create_date  desc");
+			list = extShopUserConsumeRecordMapper.selectPriceListByCriteria(timeCriteria);
+
+			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : list) {
 				userIds.add(expenditureAndIncomeResponseDTO.getSysUserId());
+				if(map.get(expenditureAndIncomeResponseDTO.getSysUserId())==null){
+					expenditureAndIncomeResponseDTO.setUseArriveShopTime(1);
+					map.put(expenditureAndIncomeResponseDTO.getSysUserId(),expenditureAndIncomeResponseDTO);
+				}else {
+					Integer useArriveShopTime=map.get(expenditureAndIncomeResponseDTO.getSysUserId()).getUseArriveShopTime()+1;
+					ExpenditureAndIncomeResponseDTO expenditureAndIncomeRespons=map.get(expenditureAndIncomeResponseDTO.getSysUserId());
+					expenditureAndIncomeRespons.setUseArriveShopTime(useArriveShopTime);
+					map.put(expenditureAndIncomeResponseDTO.getSysUserId(),expenditureAndIncomeRespons);
+				}
 			}
 		}
 
 		// 新客
+		Map<String, Integer> newCustomerMap = new HashedMap(16);
+		List<ShopUserArchivesDTO> archivesList=null;
 		if ("3".equals(condition)) {
 			PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO = new PageParamVoDTO();
 			ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
 			shopUserArchivesDTO.setSysBossId(userConsumeRequestDTO.getSysBossId());
+			shopUserArchivesDTO.setSysShopId(userConsumeRequestDTO.getSysShopId());
 			shopCustomerArchivesDTO.setRequestData(shopUserArchivesDTO);
 			shopCustomerArchivesDTO.setStartTime(pageParamVoDTO.getStartTime());
 			shopCustomerArchivesDTO.setEndTime(pageParamVoDTO.getEndTime());
-			List<ShopUserArchivesDTO> list = shopCustomerArchivesService.getArchivesList(shopCustomerArchivesDTO);
-			Map<String, Integer> newCustomerMap = new HashedMap(16);
-			for (ShopUserArchivesDTO shopUserArchives : list) {
+			//查询出来新客列表
+			archivesList = shopCustomerArchivesService.getArchivesList(shopCustomerArchivesDTO);
+			//遍历新客列表，将渠道作为key ,计算出每个渠道的人数
+			// TODO: 2018/5/18
+	/*		for (ShopUserArchivesDTO shopUserArchives : archivesList) {
 				if (newCustomerMap.get(shopUserArchives.getSysShopId()) == null) {
 					newCustomerMap.put(shopUserArchives.getSysShopId(), 1);
 				} else {
 					Integer consumeTime = newCustomerMap.get(shopUserArchives.getSysShopId());
 					newCustomerMap.put(shopUserArchives.getSysShopId(), consumeTime + 1);
 				}
-			}
+			}*/
+			Map<String,Object>  responseMap=new HashedMap();
+			responseMap.put("shopNewUserNumber",archivesList==null?0:archivesList.size());//新客
+			return  responseMap;
 		}
-		String[] strings = new String[userIds.size()];
-		String[] strs = userIds.toArray(strings);
-		//查询用户的信息
-		List<UserInfoDTO> userInfoList = userServiceClient.getUserInfoListFromUserId(strs,null);
+		//查询档案列表
+		List<String> userIdList=new ArrayList<>(userIds);
+		List<ShopUserArchivesDTO> shopUserArchivesDTOs= shopCustomerArchivesService.getArchivesList(userIdList);
 		// 遍历userInfoList
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
-		List<ExpenditureAndIncomeResponseDTO> responseDTOList = new ArrayList<>();
-		UserInfoDTOResponseDTO userInfoDTOResponseDTO=new UserInfoDTOResponseDTO();
-		Date date=DateUtils.StrToDate(pageParamVoDTO.getStartTime(),"datetime");
+		List<UserInfoDTOResponseDTO> responseDTOList = new ArrayList<>();
+		UserInfoDTOResponseDTO userInfoDTOResponseDTO=null;
 
-		for (UserInfoDTO userInfoDTO : userInfoList) {
-			userInfoDTOResponseDTO.setPhoto(userInfoDTO.getPhoto());
-			userInfoDTOResponseDTO.setNickname(userInfoDTO.getNickname());
-			userInfoDTOResponseDTO.setLastArriveTime(map.get(userInfoDTO.getId()).getCreateDate());
+		for (ShopUserArchivesDTO shopUserArchivesDTO : shopUserArchivesDTOs) {
+			userInfoDTOResponseDTO=new UserInfoDTOResponseDTO();
+			userInfoDTOResponseDTO.setPhoto(shopUserArchivesDTO.getImageRul());
+			userInfoDTOResponseDTO.setNickname(shopUserArchivesDTO.getSysUserName());
+			userInfoDTOResponseDTO.setLastArriveTime(map.get(shopUserArchivesDTO.getSysUserId()).getCreateDate());
 			//查询redis是否存在记录,key是 "arrive"+shopId+userId
-			String key="arrive"+map.get(userInfoDTO.getId()).getSysShopId()+userInfoDTO.getId();
-			String str= (String)JedisUtils.getObject("key");
-			if(StringUtils.isBlank(str)){
-
+			String key="arrive"+shopUserArchivesDTO.getSysShopId()+shopUserArchivesDTO.getSysUserId();
+			String date1= (String)JedisUtils.getObject(key);
+			if(StringUtils.isBlank(date1)){
+				userInfoDTOResponseDTO.setNewUser(true);
 			}else {
+               //判断redis中获取到的时间是否大于当前时间
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				try {
+					Date dt1 = df.parse(date1);
+					Date dt2 = df.parse(pageParamVoDTO.getStartTime());
+					if(dt1.getTime() > dt2.getTime()){
+						userInfoDTOResponseDTO.setNewUser(true);
+					}else {
+						userInfoDTOResponseDTO.setNewUser(false);
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 
 			}
-
+			userInfoDTOResponseDTO.setUseArriveShopTime(map.get(shopUserArchivesDTO.getSysUserId()).getUseArriveShopTime());
+			responseDTOList.add(userInfoDTOResponseDTO);
 		}
-		return null;
+		Map<String,Object>  responseMap=new HashedMap();
+		responseMap.put("responseDTOList",responseDTOList);
+		responseMap.put("consumeNumber",userIds.size());//人头数
+		responseMap.put("consumeTime",list==null?0:list.size());//人次数
+
+		return responseMap;
 	}
 
 }

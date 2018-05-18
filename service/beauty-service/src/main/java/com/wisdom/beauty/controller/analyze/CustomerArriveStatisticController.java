@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.analyze;
 
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
@@ -69,6 +70,34 @@ public class CustomerArriveStatisticController {
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
 		logger.info("getCustomerArriveList方法耗时{}毫秒", (System.currentTimeMillis() - start));
+		return responseDTO;
+	}
+	/**
+	*@Author:zhanghuan
+	*@Param:
+	*@Return:
+	*@Description:
+	*@Date:2018/5/17 19:54
+	*/
+	@RequestMapping(value = "/getShopCustomerArriveList", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<Map<String,Object>> getShopCustomerArriveList(@RequestParam String sysShopId,
+			                                                  @RequestParam String startTime,
+														      @RequestParam String endTime,
+															  @RequestParam String condition) {
+
+		long start = System.currentTimeMillis();
+		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
+		userConsumeRequestDTO.setSysShopId(sysShopId);
+		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+		pageParamVoDTO.setStartTime(startTime);
+		pageParamVoDTO.setEndTime(endTime);
+		Map<String,Object> map = shopStatisticsAnalysisService.getShopCustomerArriveList(pageParamVoDTO, condition);
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(map);
+		logger.info("getShopCustomerArriveList{}毫秒", (System.currentTimeMillis() - start));
 		return responseDTO;
 	}
 }

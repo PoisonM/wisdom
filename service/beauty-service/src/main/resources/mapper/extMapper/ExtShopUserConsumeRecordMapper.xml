@@ -137,10 +137,10 @@
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
+        GROUP  BY flow_no
         <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
-        GROUP  BY flow_no
         <if test="limitStart >= 0">
             limit ${limitStart},${pageSize}
         </if>

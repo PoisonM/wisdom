@@ -12,6 +12,10 @@ public class UserInfoDTOResponseDTO extends BaseEntity {
     private String nickname;
     private Date lastArriveTime;
     private Boolean newUser;
+    /**
+     * 到店次数，标记每个用户的到店次数
+     */
+    private Integer  useArriveShopTime;
 
     public String getPhoto() {
         return photo;
@@ -55,4 +59,11 @@ public class UserInfoDTOResponseDTO extends BaseEntity {
 
     private String arriveTime;
 
+    public Integer getUseArriveShopTime() {
+        return useArriveShopTime;
+    }
+
+    public void setUseArriveShopTime(Integer useArriveShopTime) {
+        this.useArriveShopTime = useArriveShopTime;
+    }
 }

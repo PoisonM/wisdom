@@ -54,16 +54,7 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDi
     }
 
     $scope.clickOk = function() {
-        var ptoductType = "offlineProduct/";
-        var MultipartFile = new FormData();
-        MultipartFile.append("folder", ptoductType);
-        var reader = new FileReader();
-        reader.readAsBinaryString(convertBase64UrlToBlob(data));
-        MultipartFile.append("listFile", convertBase64UrlToBlob(data));
 
-        ImageUploadToOSS.save(MultipartFile, function(data) {
-
-        })
         /*RechargeCardSignConfirm.get({
             transactionId: $state.params.transactionId,
             //图片base64流是data
