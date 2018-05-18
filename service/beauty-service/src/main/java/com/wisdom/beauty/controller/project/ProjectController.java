@@ -314,9 +314,17 @@ public class ProjectController {
     @ResponseBody
     ResponseDTO<List<ShopProjectTypeDTO>> findOneLevelProject() {
         long currentTimeMillis = System.currentTimeMillis();
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        String sysShopId = null;
+        if (StringUtils.isBlank(sysShopId)) {
+            SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+            sysShopId = sysClerkDTO.getSysShopId();
+        }
+        if (StringUtils.isBlank(sysShopId)) {
+            SysBossDTO bossInfo = UserUtils.getBossInfo();
+            sysShopId = bossInfo.getCurrentShopId();
+        }
         ResponseDTO<List<ShopProjectTypeDTO>> responseDTO = new ResponseDTO<>();
-        List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysClerkDTO.getSysShopId());
+        List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysShopId);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
