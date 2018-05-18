@@ -214,4 +214,32 @@ public class StoreAndStockController {
 		logger.info("addStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
+	/**
+	 * @Author:zhanghuan
+	 * @Param: 产品id 和仓库id
+	 * @Return:
+	 * @Description: 获取库存详情
+	 * @Date:2018/5/9 21:21
+	 */
+	@RequestMapping(value = "/getStockDetailList", method = RequestMethod.GET)
+	@ResponseBody
+	ResponseDTO<List<ShopStockResponseDTO>> getStockDetailList(@RequestParam String shopStoreId, @RequestParam String productTypeTwoId,int pageSize) {
+		long currentTimeMillis = System.currentTimeMillis();
+
+		ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
+		shopStockNumberDTO.setShopStoreId(shopStoreId);
+		shopStockNumberDTO.setProductTypeTwoId(productTypeTwoId);
+		PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO=new PageParamVoDTO();
+		pageParamVoDTO.setPaging(true);
+		pageParamVoDTO.setPageSize(pageSize);
+		pageParamVoDTO.setPageNo(0);
+		pageParamVoDTO.setRequestData(shopStockNumberDTO);
+		List<ShopStockResponseDTO> list = shopStockService.getStockDetailList(pageParamVoDTO);
+
+		ResponseDTO<List<ShopStockResponseDTO>> responseDTO = new ResponseDTO<>();
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(list);
+		logger.info("getStockDetailList方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
 }
