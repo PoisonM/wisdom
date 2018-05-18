@@ -111,13 +111,14 @@ public class ProjectController {
 
         long currentTimeMillis = System.currentTimeMillis();
         String sysShopId = null;
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        SysBossDTO bossInfo = UserUtils.getBossInfo();
-        if(null != clerkInfo){
+
+        if (null != sysShopId) {
             logger.info("pad端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
             sysShopId = clerkInfo.getSysShopId();
         }
-        if(null != bossInfo){
+        if (null != sysShopId) {
+            SysBossDTO bossInfo = UserUtils.getBossInfo();
             logger.info("boss端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
             sysShopId = bossInfo.getParentShopId();
         }
