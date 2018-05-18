@@ -93,7 +93,7 @@ public class FileController {
         ResponseDTO responseDTO = new ResponseDTO<>();
         InputStream inputStream = null;
         try {
-            Base64Utils.getInputStream(imageStr);
+            inputStream = Base64Utils.getInputStream(imageStr);
             try {
                 String fileName = DateUtils.DateToStr(new Date(), "dateMillisecond");
                 MultipartFile multipartFile = new MockMultipartFile(DateUtils.DateToStr(new Date(), "dateMillisecond"), inputStream);
