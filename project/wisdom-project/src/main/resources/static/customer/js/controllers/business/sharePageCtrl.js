@@ -29,13 +29,13 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 $scope.param.ctx.fillText($scope.param.weixinShareInfo.nickName,218,90);
                 /*美享*/
                 $scope.param.ctx.font = '36px microsoft  yahei';
-                $scope.param.ctx.fillText('美享' ,218, 170);
+                $scope.param.ctx.fillText('美享' ,218, 150);
                   /*九小主 大当家*/
                 $scope.param.ctx.fillStyle = '#FFF100';
                 $scope.param.ctx.font = '36px microsoft #FFF100';
-                $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,328,170);
+                $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,328,150);
                 //二维码
-                $scope.param.ctx.drawImage($scope.param.imgs.qrCode, $scope.param.canvas.width*0.08, $scope.param.canvas.height*0.75 , $scope.param.canvas.width*0.22, calcHeight($scope.param.imgs.qrCode, $scope.param.canvas.width*0.22));
+                $scope.param.ctx.drawImage($scope.param.imgs.qrCode, $scope.param.canvas.width*0.08, $scope.param.canvas.height*0.78 , $scope.param.canvas.width*0.25, calcHeight($scope.param.imgs.qrCode, $scope.param.canvas.width*0.25));
 
                 //获取base64格式的src
                 var imgSrc = $scope.param.canvas.toDataURL('image/jpg');
