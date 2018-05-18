@@ -19,7 +19,7 @@
                  </div>
                  <div class="product_content_right">
                     <div class="rightCenter">
-                        <div class="product_lis meunLis2">
+                        <div class="product_lis meunLis1">
                             <button ng-click="bgChangeAndSearch('instance')" ng-class="{'active':status=='instance'}">即时奖励</button>
                             <button ng-click="bgChangeAndSearch('recommend')" ng-class="{'active':status=='recommend'}">店主推荐</button>
                             <button ng-click="bgChangeAndSearch('permanent')" ng-class="{'active':status=='permanent'}">永久性奖励</button>
@@ -31,21 +31,22 @@
                                     <label class="bold">手机号:</label>
                                     <input type="text" class="product_search" ng-model="MAccount">
                                 </div>
-                            </div>
 
-                            <div class="product_name" ng-if="status=='instance'" style="float:left;margin-top: 27px;margin-right: 50px;">
-                                <div>
-                                    <span style="font-weight:600;">审核状态:</span>
-                                    <select class="checkStatus" id="checkStatus" style="border:1px solid;height:30px;colour:#7f818a;">
-                                        <option value=""> 全部状态</option>
-                                        <option value="0"> 未审核</option>
-                                        <option value="1">运营已审核</option>
-                                        <option value="2">财务已审核</option>
-                                        <option value="3">双方审核已审核</option>
-                                        <option value="4">审核拒绝</option>
-                                    </select>
+                                <div  ng-if="status=='instance'" >
+                                    <div class="product_nameEara ">
+                                        <label style="font-weight:600;">审核状态:</label>
+                                        <select class="checkStatus selectWidth" id="checkStatus" >
+                                            <option value=""> 全部状态</option>
+                                            <option value="0"> 未审核</option>
+                                            <option value="1">运营已审核</option>
+                                            <option value="2">财务已审核</option>
+                                            <option value="3">双方审核已审核</option>
+                                            <option value="4">审核拒绝</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
+
 
                             <!--<div class="product_name" ng-if="status=='instance'" style="float:left;margin-top: 27px;margin-right: 50px;">
                                 <div>
@@ -60,29 +61,24 @@
                             </div>-->
 
                             <div class="product_name big time_box">
-                                <div>
+                                <div style="margin-top:54px;">
                                     <span class="bold agencyTime">时间：</span>
-                                    <input class="time MStart laydate-icon" id="MStart"  >&nbsp;--&nbsp;<input class="time MEnd laydate-icon" id="MEnd" >
+                                    <input class="time MStart date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp;--&nbsp;<input class="time MEnd date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
                                 </div>
                             </div>
-                        </div>
-                        <div class="product_eara" style="margin-right: 90%px;">
-                            <div  class="product_searchEara product_searchEara1">
-                                <input type="button" value="搜索" class="search_btn1 top_1" ng-click="searchMonthlyBalance()">
+                            <div class="product_searchEara">
+                                <input type="button" value="搜索" class="search_btn" ng-click="searchMonthlyBalance()">
                             </div>
                         </div>
                         <div class="table_lis" >
                             <div class="statusBar" style="height:60px;">
-                        <!--        <button   ng-click="stateBox('')" ng-class="{'actives':checkStatus==''}">全部状态</button>
-                                <button   ng-click="stateBox('1')" ng-class="{'actives':checkStatus=='1'}">已审核状态</button>
-                                <button   ng-click="stateBox('0')" ng-class="{'actives':checkStatus=='0'}">未审核状态</button>-->
                                 <button class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='recommend'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
                                 <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommend'" ng-show="false">筛选已完成的订单</button>
                             </div>
 
                             <table class="table  text-center ">
                                 <thead>
-                                <tr id="product_lis_title IncomeListTitle" >
+                                <tr id="product_lis_title IncomeListTitle" class="pos">
                                     <th class="text-center" >昵称</th>
                                     <th class="text-center" >手机号</th>
                                     <th class="text-center" >当前等级</th>
@@ -97,8 +93,8 @@
                                     <th class="text-center" style="width:20%;">操作</th>
                                 </tr>
                                 </thead>
-                                <tbody class="tbodyCla" ng-repeat="item in MonthlyBalanceLis" >
-                                <tr ng-class="{'bgeee':agencyIndex != $index && agencyIndex!=-1 && item.secondCheckStatus!='有一方拒绝','red':item.secondCheckStatus=='有一方拒绝','white':agencyIndex == -1&&item.secondCheckStatus!='有一方拒绝','col2c2f3e':agencyIndex == $index}">
+                                <tbody class="tbodyCla pos" ng-repeat="item in MonthlyBalanceLis"  >
+                                <tr class='white' ng-class="{'red':item.secondCheckStatus=='有一方拒绝','col55a4ef':agencyIndex == $index}">
                                     <td ng-click="viod();$event.stopPropagation()">{{item.nickName}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{item.mobile}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{item.userType}}</td>
@@ -112,11 +108,11 @@
                                     <td ng-click="viod();$event.stopPropagation()">{{item.secondCheckStatus}}</td>
                                    <!--  <td ng-click="viod();$event.stopPropagation()">{{item.secondCheckStatus}}<span ng-hide="item.secondCheckStatus == '未审核'">({{item.checkStatus}}</span><span ng-show="item.secondCheckStatus=='有一方拒绝'">:{{item.checkUserType}})</span></td>-->
                                     <td ng-click="viod();$event.stopPropagation()">
-                                        <a ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index,item.id);$event.stopPropagation()" class="orderBtn" >查看</a>
+                                        <a ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index,item.id);$event.stopPropagation()" class="orderBtn" ng-class="{'red':item.secondCheckStatus=='有一方拒绝','white':agencyIndex == -1&&item.secondCheckStatus!='有一方拒绝'&&agencyIndex != $index,'col55a4ef':agencyIndex == $index}" >查看</a>
                                          &nbsp;
-                                        <a ng-click="examine(item.id);$event.stopPropagation()" class="orderBtn" >审核</a>
+                                        <a ng-click="examine(item.id);$event.stopPropagation()" class="orderBtn" ng-class="{'red':item.secondCheckStatus=='有一方拒绝','white':agencyIndex == -1&&item.secondCheckStatus!='有一方拒绝'&&agencyIndex != $index,'col55a4ef':agencyIndex == $index}">审核</a>
                                     </td>
-                                </tr>
+                                </tr >
                                     <tr class="product_lis_title " ng-show="item.statesLook=='2'" id="IncomeListTitle">
                                         <th class="text-center" >昵称</th>
                                         <th class="text-center" >手机号</th>
@@ -129,6 +125,7 @@
                                         <th class="text-center">订单状态</th>
                                         <th class="text-center">支付金额</th>
                                         <th class="text-center">关系</th>
+                                        <th></th>
                                     </tr>
                                     <!--点击查看出现的下级内容-->
 
@@ -144,6 +141,7 @@
                                         <td ng-click="viod();$event.stopPropagation()">{{items.status}}</td>
                                         <td ng-click="viod();$event.stopPropagation()">{{items.amount}}</td>
                                         <td ng-click="viod();$event.stopPropagation()">{{user[0].parentRelation}}</td>
+                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>

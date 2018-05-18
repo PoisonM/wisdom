@@ -11,19 +11,6 @@ angular.module('controllers',[]).controller('financeCtrl',
 
 
 
-/*日期插件*/
-            laydate.render({
-                elem: '#StreamNumberStart' //指定元素
-            })
-            laydate.render({
-                elem: '#StreamNumberEnd' //指定元素
-            })
-            laydate.render({
-                elem: '#orderPayStart' //指定元素
-            })
-            laydate.render({
-                elem: '#orderPayEnd' //指定元素
-            })
 
 /*搜索*/
          $scope.searchBills = function(){
@@ -67,7 +54,7 @@ angular.module('controllers',[]).controller('financeCtrl',
                   param:$scope.order+$scope.bills,
                   timeType:$scope.type,
                   isExportExcel:"N"
-             }
+             };
              QueryPayRecordsByParameters.save(PageParamVoDTO,function(data){
                  ManagementUtil.checkResponseData(data,"");
                  if(data.errorInfo == Global.SUCCESS){

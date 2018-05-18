@@ -10,19 +10,7 @@ angular.module('controllers',[]).controller('withdrawCtrl',
             $scope.isdisabled = false;
             var pattern = /^1[34578]\d{9}$/;
             var pattern1 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-/*日期插件*/
-            laydate.render({
-                elem: '#applyStartTime' //指定元素
-            })
-            laydate.render({
-                elem: '#applyEndTime' //指定元素
-            })
-            laydate.render({
-                elem: '#updateStartTime' //指定元素
-            })
-            laydate.render({
-                elem: '#updateEndTime' //指定元素
-            })
+
 
 
 

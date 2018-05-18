@@ -9,13 +9,7 @@ angular.module('controllers',[]).controller('agencyCtrl',
             $scope.agencyIndex=0;/*用于按钮的切换*/
             $scope.mum = true;
             var pageTrue = true;
- /*日期插件*/
-                laydate.render({
-                    elem: '#startTime' //指定元素
-                })
-                laydate.render({
-                    elem: '#endTime' //指定元素
-                })
+
 /*此页面一个接口*/
             $scope.loadPageList = function(){
                 if($scope.phoNum != "" ){

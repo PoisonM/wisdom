@@ -12,13 +12,8 @@ angular.module('controllers',[]).controller('orderCtrl',
             $scope.status = "";
             var pageTrue = true;
 
- /*日期插件*/
-            laydate.render({
-                elem: '#orderPayStartTime' //指定元素
-           })
-            laydate.render({
-                elem: '#orderPayEndTime' //指定元素
-            })
+
+
 /*展示所有*/
 /*订单状态，
 0表示未支付；

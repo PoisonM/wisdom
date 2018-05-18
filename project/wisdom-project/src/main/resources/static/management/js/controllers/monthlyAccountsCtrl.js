@@ -14,13 +14,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             $scope.auditFlag=false;
 
 
-            /*日期插件*/
-            laydate.render({
-                elem: '#MStart' //指定元素
-            })
-            laydate.render({
-                elem: '#MEnd' //指定元素
-            })
+
 
             var a = [];
             /*点击查看按钮*/
@@ -76,7 +70,6 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         })
                     }else if (a[index]%2==1){
                         $scope.MonthlyBalanceLis[index].statesLook = "1";
-                        $scope.agencyIndex =-1;
                     }
 
 
