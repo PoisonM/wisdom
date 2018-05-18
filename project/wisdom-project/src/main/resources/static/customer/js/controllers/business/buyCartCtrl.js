@@ -9,7 +9,6 @@ angular.module('controllers',[]).controller('buyCartCtrl',
             //载入购物车信息
             var loadBuyCartInfo = function(){
                 GetBuyCartInfo.get(function(data){
-                    console.log(data.responseData);
                     $ionicLoading.hide();
                     if (data.responseData=="")
                     {
@@ -47,8 +46,9 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                         orderChecked:true
                                     })
                                 }
-                            })
-                           /* $scope.param.unPaidOrder[0].orderList[0].productStatus='0'*/
+                            });
+                            /*测试用的*/
+                           /* $scope.param.unPaidOrder[0].orderList[0].productStatus='0';*/
                         })
                     }
                 })
@@ -93,8 +93,11 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     angular.forEach($scope.param.unPaidOrder,function(value,index,array){
                         value.addressChecked = true;
                         angular.forEach(value.orderList,function(value1,index,array){
-                            value1.orderChecked=true;
-                        })
+                            if (value1.productStatus == "1"){
+                                value1.orderChecked=true;
+                            }
+                        });
+                        console.log(value.orderList)
                     })
                 }
                 $scope.param.totalPayPrice = 0;
@@ -171,14 +174,12 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                             minusButton = true;
                         })
                     }
-                    console.log(item.productNum);
-                    console.log(item.productAmount);
                      if(parseInt(item.productNum)-1<=parseInt(item.productAmount)){
                          $("#greyBox").css("background","red")
                     }
 
                 }
-            }
+            };
 
             //删除此订单
             $scope.delete=function(item2){
@@ -194,7 +195,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         $ionicLoading.hide();
                         $scope.param = {
                             unPaidOrder:[]
-                        }
+                        };
                         loadBuyCartInfo();
                     }
                 })
@@ -202,15 +203,30 @@ angular.module('controllers',[]).controller('buyCartCtrl',
 
             $scope.goPay = function() {
                 var needPayOrderList = [];
+                var alertFlag = true;
                 angular.forEach($scope.param.unPaidOrder,function(value,index,array){
                     angular.forEach(value.orderList,function(value1,index,array){
-                        if(value1.orderChecked)
+                        if(value1.orderChecked&&value1.productStatus == "1")
                         {
                             needPayOrderList.push(value1);
+
                         }
-                       console.log(value1)
+                        if(value1.productStatus == "1"){
+                            alertFlag = false;
+                            return;
+                        }
                     })
                 });
+
+                angular.forEach($scope.param.unPaidOrder,function(value,index,array){
+                    angular.forEach(value.orderList,function(value1,index,array){
+                        if(value1.productStatus == "0"&&alertFlag){
+                            alertFlag = false;
+                            alert("商品下架啦哟亲！");
+                        }
+                    })
+                });
+
                 for(var i =0;i<needPayOrderList.length;i++){
                     if(needPayOrderList[i].productNum>parseInt(needPayOrderList[i].productAmount)){
                         alert("库存不足~");
