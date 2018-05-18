@@ -1,16 +1,11 @@
 angular.module('controllers',[]).controller('shareHomeCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserInfoByOpenId','Global','$ionicPopup','IsLogin',
-        function ($scope,$rootScope,$stateParams,$state,GetUserInfoByOpenId,Global,$ionicPopup,IsLogin) {
+    ['$scope','$rootScope','$stateParams','$state','GetUserInfoByOpenId','Global','$ionicPopup',
+        function ($scope,$rootScope,$stateParams,$state,GetUserInfoByOpenId,Global,$ionicPopup) {
 
             $rootScope.title = "分享赚钱";
 
             $scope.goSharePage = function()
             {
-                IsLogin.save(function(data){
-                    if(data.responseData=="failure"){
-                        $state.go("login");
-                    }
-                });
                 GetUserInfoByOpenId.get(function(data){
 
                     if(data.result==Global.SUCCESS)
@@ -35,11 +30,11 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
                                 ]
 
                             });
+                            // alert("亲，请先升级为我们的铂金店主或者钻石店主");
                         }
                     }
                     else{
-                        $state.go("shareHome")
-                       /* var alertPopup = $ionicPopup.alert({
+                        var alertPopup = $ionicPopup.alert({
                             template: '<span style="font-size: 0.3rem;color: #333333;">立做美享店主，坐拥75%返利</span>',
                             buttons: [
                                 {
@@ -54,7 +49,7 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
                                 }
                             ]
 
-                        });*/
+                        });
                         // alert("亲，请先升级为我们的铂金店主或者钻石店主");
                     }
                 })
