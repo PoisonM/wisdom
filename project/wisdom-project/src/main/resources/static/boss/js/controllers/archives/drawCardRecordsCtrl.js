@@ -9,7 +9,7 @@ angular.module('controllers',[]).controller('drawCardRecordsCtrl',
                 consumeType:'1',
                 goodType:"5",
                 pageSize:1000,
-                shopUserId:"11"
+                shopUserId:$stateParams.sysUserId
             }
             Consumes.save($scope.userConsumeRequest,function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
