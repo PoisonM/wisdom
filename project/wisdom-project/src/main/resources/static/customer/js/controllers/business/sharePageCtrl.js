@@ -22,30 +22,19 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 //背景图
                 $scope.param.ctx.drawImage($scope.param.imgs.bg, 0, 0, $scope.param.canvas.width, $scope.param.canvas.height);
                 //头像
-                $scope.param.ctx.beginPath();
-                $scope.param.ctx.save(); // 保存当前canvas的状态
-                $scope.param.ctx.arc($scope.param.canvas.width*0.5, $scope.param.canvas.width*0.46, $scope.param.canvas.width*0.16, 0, 2*Math.PI);
-                $scope.param.ctx.fill();
-                $scope.param.ctx.clip(); // 裁剪圆形
-                $scope.param.ctx.drawImage($scope.param.imgs.via, $scope.param.canvas.width*0.34, $scope.param.canvas.width*0.29, $scope.param.canvas.width*0.35, calcHeight($scope.param.imgs.via, $scope.param.canvas.width*0.35));
-                $scope.param.ctx.closePath();
-                $scope.param.ctx.restore(); //还原状态
-                //昵称
-                //颜色
+                $scope.param.ctx.drawImage($scope.param.imgs.via, 148,148);
+                //微信名字
                 $scope.param.ctx.fillStyle = '#ffffff';
                 // //字体设置 三个参数，font-weight font-size font-family
-                $scope.param.ctx.font = '40px microsoft yahei';
-                $scope.param.ctx.fillText($scope.param.weixinShareInfo.nickName, $scope.param.canvas.width/2-$scope.param.weixinShareInfo.nickName.length*30/2, $scope.param.canvas.width*0.68);
-                // // //说明
-                $scope.param.ctx.font = '100px microsoft  yahei';
-                $scope.param.ctx.fillText($scope.param.weixinShareInfo.balance, $scope.param.canvas.width/2-$scope.param.weixinShareInfo.balance.length*90/4,$scope.param.canvas.width*1);
-                $scope.param.ctx.font = '30px microsoft  yahei';
-                $scope.param.ctx.fillText('推荐人数:'+$scope.param.weixinShareInfo.peoperCount + '人', 72, 835);
-                $scope.param.ctx.fillText('推荐奖励:'+$scope.param.weixinShareInfo.istanceMoney+'元', 428, 835);
-
+                $scope.param.ctx.font = '28px microsoft yahei';
+                $scope.param.ctx.fillText($scope.param.weixinShareInfo.nickName,218,70);
+                /*美享*/
+                $scope.param.ctx.font = '36px microsoft  yahei';
+                $scope.param.ctx.fillText('美享' ,218, 100);
+                  /*九小主 大当家*/
                 $scope.param.ctx.fillStyle = '#FFF100';
-                $scope.param.ctx.font = '70px microsoft #FFF100';
-                $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,278,562);
+                $scope.param.ctx.font = '36px microsoft #FFF100';
+                $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,238,100);
                 //二维码
                 $scope.param.ctx.drawImage($scope.param.imgs.qrCode, $scope.param.canvas.width*0.08, $scope.param.canvas.height*0.8 , $scope.param.canvas.width*0.22, calcHeight($scope.param.imgs.qrCode, $scope.param.canvas.width*0.22));
 
@@ -87,7 +76,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
 
                     //设置宽高
                     //想获取高清图请*2，一般的直接等于Width就行
-                    var Height = 1196;
+                    var Height = 1102;
                     var Width = 750;
 
                     //$scope.param.canvas绘制需要的对象
