@@ -30,7 +30,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
             cashPayPrice: $scope.cashPayPrice,
             orderId: $state.params.orderId,
             payType: $scope.payType,
-            shopUserRechargeCard: [],
+            shopUserRechargeCard: $scope.responseData.userPayRechargeCardList,
             surplusPayPrice: '',
             detail: $scope.detail
         }, function(data) {
