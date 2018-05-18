@@ -8,7 +8,8 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
             {
                 IsLogin.save(function(data){
                     if(data.responseData=="failure"){
-                        $state.go("login");
+                        $state.go("login",{redirectUrl:"shareHome"})
+
                     }else{
                         GetUserInfoByOpenId.get(function(data){
 
