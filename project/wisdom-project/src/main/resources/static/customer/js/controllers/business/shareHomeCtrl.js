@@ -9,8 +9,6 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
                 IsLogin.save(function(data){
                     if(data.responseData=="failure"){
                         $state.go("login");
-                    }else{
-                        $state.go("shareHome");
                     }
                 });
                 GetUserInfoByOpenId.get(function(data){
@@ -37,11 +35,11 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
                                 ]
 
                             });
-                            // alert("亲，请先升级为我们的铂金店主或者钻石店主");
                         }
                     }
                     else{
-                        var alertPopup = $ionicPopup.alert({
+                        $state.go("shareHome")
+                       /* var alertPopup = $ionicPopup.alert({
                             template: '<span style="font-size: 0.3rem;color: #333333;">立做美享店主，坐拥75%返利</span>',
                             buttons: [
                                 {
@@ -56,7 +54,7 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
                                 }
                             ]
 
-                        });
+                        });*/
                         // alert("亲，请先升级为我们的铂金店主或者钻石店主");
                     }
                 })
