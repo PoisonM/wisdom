@@ -261,7 +261,7 @@ public class IncomeController {
 		List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeService.exportExcelIncomeRecord(pageParamVoDTO);
 		try {
 			String[] orderHeaders = {"用户id", "用户名", "用户手机号", "用户获益时等级", "用户现在等级", "佣金金额",
-					"下级用户id", "下级用户名", "下级用户手机号", "下级用户等级", "下级用户现在等级",
+					"下级用户id", "下级用户名", "下级用户手机号", "下级生成订单等级", "下级用户现在等级",
 					"交易id", "支付时间", "订单id", "支付金额", "订单状态", "上下级关系"};
 			ExportExcel<ExportIncomeRecordExcelDTO> ex = new ExportExcel<>();
 			ByteArrayInputStream in = ex.getWorkbookIn("佣金奖励EXCEL文档", orderHeaders, exportIncomeRecordExcelDTOS);
@@ -337,7 +337,7 @@ public class IncomeController {
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())) {
 			try {
 				String[] orderHeaders = {"用户id", "用户名", "用户手机号", "用户获益时等级", "用户现在等级", "佣金金额",
-						"下级用户id", "下级用户名", "下级用户手机号", "下级用户等级", "下级用户现在等级",
+						"下级用户id", "下级用户名", "下级用户手机号", "下级生成订单等级", "下级用户现在等级",
 						"交易id", "支付时间", "订单id", "订单金额", "订单状态"};
 				ExportExcel<ExportIncomeRecordExcelDTO> ex = new ExportExcel<>();
 				List<ExportIncomeRecordExcelDTO> excelList = new ArrayList<>();
