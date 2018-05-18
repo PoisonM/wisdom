@@ -18,7 +18,9 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         var senderAddressList = [];
                         $scope.param.totalPayPrice = 0;
                         angular.forEach(data.responseData,function(value,index,array){
-                            $scope.param.totalPayPrice = $scope.param.totalPayPrice + parseInt(value.businessProductPrice)*parseInt(value.businessProductNum);
+                            if (value.productStatus == "1"){
+                                $scope.param.totalPayPrice = $scope.param.totalPayPrice + parseInt(value.businessProductPrice)*parseInt(value.businessProductNum);
+                            }
                             senderAddressList.push(value.senderAddress);
                         });
                         var uniqueSenderAddressList = unique(senderAddressList);
@@ -69,10 +71,12 @@ angular.module('controllers',[]).controller('buyCartCtrl',
             var reCalcTotalPayPrice = function() {
                 angular.forEach($scope.param.unPaidOrder,function(value,index,array){
                     angular.forEach(value.orderList,function(value1,index,array){
-                        if(value1.orderChecked)
+                        if(value1.orderChecked && value1.productStatus == "1")
                         {
                             $scope.param.totalPayPrice = $scope.param.totalPayPrice + parseInt(value1.productPrice)*parseInt(value1.productNum);
                         }
+                        console.log(value1.orderChecked);
+                        console.log(value1.productStatus)
                     })
                 })
             };
