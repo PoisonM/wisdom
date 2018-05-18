@@ -17,23 +17,24 @@
                 </div>
                 <div class="col col-25 bre5e5" style="position: relative;">
                    <p style="margin-left: -20px">业绩</p>
-                    <p style="position: absolute;right: 17%;top: 27%">
-                        <img src="images/work/Above.png" alt="" style="width: 12px;height: 10px;margin-bottom: 3px;display: block" ng-click=" sorting('income','asc')">
-                        <img src="images/work/Below.png" alt="" style="width: 12px;height: 10px;display: block"  ng-click=" sorting('income','desc')">
+                    <p style="position: absolute;right: 17%;top:0">
+                        <i class="ion-arrow-up-b col999" style='display: block;height: 10px;' ng-click=" sorting('income','asc')" ng-class="{'colff66':param.sortBy == 'income'&&param.sortRule=='asc'}" ></i>
+                        <i class="ion-arrow-down-b col999" style='display: block;height: 10px;' ng-click=" sorting('income','desc')" ng-class="{'colff66':param.sortBy == 'income'&&param.sortRule=='desc'}"></i>
                     </p>
                 </div>
                 <div class="col col-25 bre5e5" style="position: relative;">
                      <p style="margin-left: -20px">卡耗</p>
-                    <p style="position: absolute;right: 17%;top: 27%">
-                        <img src="images/work/Above.png" alt="" style="width: 12px;height: 10px;margin-bottom: 3px;display: block" ng-click=" sorting('kahao','asc')">
-                        <img src="images/work/Below.png" alt="" style="width: 12px;height: 10px;display: block" ng-click=" sorting('kahao','desc')">
+                    <p style="position: absolute;right: 17%;top: 0">
+                        <i class="ion-arrow-up-b col999" style='display: block;height: 10px;' ng-click=" sorting('kahao','asc')" ng-class="{'colff66':param.sortBy == 'kahao'&&param.sortRule=='asc'}" ></i>
+                        <i class="ion-arrow-down-b col999" style='display: block;height: 10px;' ng-click=" sorting('kahao','desc')" ng-class="{'colff66':param.sortBy == 'kahao'&&param.sortRule=='desc'}"></i>
+
                     </p>
                 </div>
                 <div class="col col-25" style="position: relative">
                     <p style="margin-left: -20px">耗卡</p>
-                    <p style="position: absolute;right: 17%;top: 27%">
-                        <img src="images/work/Above.png" alt="" style="width: 12px;height: 10px;margin-bottom: 3px;display: block" ng-click=" sorting('expenditure','asc')">
-                        <img src="images/work/Below.png" alt="" style="width: 12px;height: 10px;display: block" ng-click=" sorting('expenditure','des')">
+                    <p style="position: absolute;right: 17%;top: 0">
+                        <i class="ion-arrow-up-b col999" style='display: block;height: 10px;' ng-click=" sorting('expenditure','asc')" ng-class="{'colff66':param.sortBy == 'expenditure'&&param.sortRule=='asc'}" ></i>
+                        <i class="ion-arrow-down-b col999" style='display: block;height: 10px;' ng-click=" sorting('expenditure','desc')" ng-class="{'colff66':param.sortBy == 'expenditure'&&param.sortRule=='desc'}"></i>
                     </p>
                 </div>
             </div>
