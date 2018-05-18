@@ -7,7 +7,7 @@
                 <span class="date">{{param.date}}</span>
                 <img src="images/work/drop-down.png" class="dropImg">
             </ionic-datepicker>
-            <span  class="fs15 fr mr10" ng-click="tabShop()">切换店铺</span>
+            <span  class="fs15 fr mr10 colfff" ng-click="tabShop()">切换店铺</span>
         </div>
         <!---->
         <div class="list employeeAnalysisBox">
@@ -18,22 +18,22 @@
                 <div class="col col-25 bre5e5" style="position: relative;">
                   业绩
                     <p style="position: absolute;right: 17%;top: 30%">
-                        <img src="images/work/Above.png" alt="" style="width: 10px;height: 7px;margin-bottom: 1px">
-                        <img src="images/work/Below.png" alt="" style="width: 10px;height: 7px">
+                        <img src="images/work/Above.png" alt="" style="width: 10px;height: 7px;margin-bottom: 1px" ng-click=" sorting('income','asc')">
+                        <img src="images/work/Below.png" alt="" style="width: 10px;height: 7px"  ng-click=" sorting('income','desc')">
                     </p>
                 </div>
                 <div class="col col-25 bre5e5" style="position: relative;">
                     卡耗
                     <p style="position: absolute;right: 17%;top: 30%">
-                        <img src="images/work/Above.png" alt="" style="width: 10px;height: 7px;margin-bottom: 1px">
-                        <img src="images/work/Below.png" alt="" style="width: 10px;height: 7px">
+                        <img src="images/work/Above.png" alt="" style="width: 10px;height: 7px;margin-bottom: 1px" ng-click=" sorting('kahao','asc')">
+                        <img src="images/work/Below.png" alt="" style="width: 10px;height: 7px" ng-click=" sorting('kahao','desc')">
                     </p>
                 </div>
                 <div class="col col-25" style="position: relative">
                    耗卡
                     <p style="position: absolute;right: 17%;top: 30%">
-                        <img src="images/work/Above.png" alt="" style="width: 10px;height: 7px;margin-bottom: 1px">
-                        <img src="images/work/Below.png" alt="" style="width: 10px;height: 7px">
+                        <img src="images/work/Above.png" alt="" style="width: 10px;height: 7px;margin-bottom: 1px" ng-click=" sorting('expenditure','asc')">
+                        <img src="images/work/Below.png" alt="" style="width: 10px;height: 7px" ng-click=" sorting('expenditure','des')">
                     </p>
                 </div>
             </div>
