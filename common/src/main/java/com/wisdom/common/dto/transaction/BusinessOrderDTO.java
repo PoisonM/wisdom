@@ -79,6 +79,9 @@ public class BusinessOrderDTO {
     //商品价格
     @JSONField(name = "businessProductPrice")
     private float businessProductPrice;
+    //商品状态
+    @JSONField(name = "productStatus")
+    private String productStatus;
 
     //此订单订单价格   ==pay表中的amount
     @JSONField(name = "amount")
@@ -400,5 +403,13 @@ public class BusinessOrderDTO {
 
     public void setProductAmount(String productAmount) {
         this.productAmount = productAmount;
+    }
+
+    public String getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(String productStatus) {
+        this.productStatus = productStatus;
     }
 }

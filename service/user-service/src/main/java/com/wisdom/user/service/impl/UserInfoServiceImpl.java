@@ -54,21 +54,27 @@ public class UserInfoServiceImpl implements UserInfoService{
         }
         for (UserInfoDTO user: userInfoDTOS) {
             if(StringUtils.isNotBlank(user.getNickname())){
-                String nickNameW = user.getNickname().replaceAll("%", "%25");
-                while(true){
-                    logger.info("用户进行编码操作");
-                    if(StringUtils.isNotBlank(nickNameW)){
-                        if(nickNameW.contains("%25")){
-                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                try{
+                    String nickNameW = user.getNickname().replaceAll("%", "%25");
+                    while(true){
+                        logger.info("用户进行编码操作");
+                        if(StringUtils.isNotBlank(nickNameW)){
+                            if(nickNameW.contains("%25")){
+                                nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                            }else{
+                                nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                                break;
+                            }
                         }else{
-                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
                             break;
                         }
-                    }else{
-                        break;
                     }
+                    user.setNickname(nickNameW);
+                }catch(Throwable e ){
+                    logger.info("用户昵有特殊字符");
+                    String nickNameW ="特殊字符用户";
+                    user.setNickname(nickNameW);
                 }
-                user.setNickname(nickNameW);
             }
         }
         return  userInfoDTOS;
