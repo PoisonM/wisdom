@@ -1,11 +1,18 @@
 angular.module('controllers',[]).controller('shareHomeCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserInfoByOpenId','Global','$ionicPopup',
-        function ($scope,$rootScope,$stateParams,$state,GetUserInfoByOpenId,Global,$ionicPopup) {
+    ['$scope','$rootScope','$stateParams','$state','GetUserInfoByOpenId','Global','$ionicPopup','IsLogin',
+        function ($scope,$rootScope,$stateParams,$state,GetUserInfoByOpenId,Global,$ionicPopup,IsLogin) {
 
             $rootScope.title = "分享赚钱";
 
             $scope.goSharePage = function()
             {
+                IsLogin.save(function(data){
+                    if(data.responseData=="failure"){
+                        $state.go("login");
+                    }else{
+                        $state.go("shareHome");
+                    }
+                });
                 GetUserInfoByOpenId.get(function(data){
 
                     if(data.result==Global.SUCCESS)
