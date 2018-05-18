@@ -406,6 +406,76 @@ public class ShopStockNumberCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andProductTypeTwoIdIsNull() {
+            addCriterion("product_type_two_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdIsNotNull() {
+            addCriterion("product_type_two_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdEqualTo(String value) {
+            addCriterion("product_type_two_id =", value, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdNotEqualTo(String value) {
+            addCriterion("product_type_two_id <>", value, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdGreaterThan(String value) {
+            addCriterion("product_type_two_id >", value, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdGreaterThanOrEqualTo(String value) {
+            addCriterion("product_type_two_id >=", value, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdLessThan(String value) {
+            addCriterion("product_type_two_id <", value, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdLessThanOrEqualTo(String value) {
+            addCriterion("product_type_two_id <=", value, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdLike(String value) {
+            addCriterion("product_type_two_id like", value, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdNotLike(String value) {
+            addCriterion("product_type_two_id not like", value, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdIn(List<String> values) {
+            addCriterion("product_type_two_id in", values, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdNotIn(List<String> values) {
+            addCriterion("product_type_two_id not in", values, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdBetween(String value1, String value2) {
+            addCriterion("product_type_two_id between", value1, value2, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductTypeTwoIdNotBetween(String value1, String value2) {
+            addCriterion("product_type_two_id not between", value1, value2, "productTypeTwoId");
+            return (Criteria) this;
+        }
+
         public Criteria andStockNumberIsNull() {
             addCriterion("stock_number is null");
             return (Criteria) this;

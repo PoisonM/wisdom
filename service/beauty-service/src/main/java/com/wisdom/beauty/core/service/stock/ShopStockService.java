@@ -126,6 +126,14 @@ public interface ShopStockService {
      * @Date:2018/5/2 16:54
      */
     ShopStockResponseDTO getProductInfoAndStock(String shopStoreId, String shopProcId);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取库存详情
+    *@Date:2018/5/18 15:28
+    */
+   List<ShopStockResponseDTO> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO);
 
 
 

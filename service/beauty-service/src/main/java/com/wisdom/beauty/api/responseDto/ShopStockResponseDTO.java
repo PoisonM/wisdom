@@ -26,6 +26,10 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private  BigDecimal productUnit;
      /** 出库数量 */
 	private Integer outStockNumber;
+	/** 本仓库存 */
+	private Integer storeNumberSelf;
+	/** 库存总量 */
+	private Integer allStoreNumber;
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
 
 	public String getName() {
@@ -130,5 +134,21 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 
 	public void setOutStockNumber(Integer outStockNumber) {
 		this.outStockNumber = outStockNumber;
+	}
+
+	public Integer getStoreNumberSelf() {
+		return storeNumberSelf;
+	}
+
+	public void setStoreNumberSelf(Integer storeNumberSelf) {
+		this.storeNumberSelf = storeNumberSelf;
+	}
+
+	public Integer getAllStoreNumber() {
+		return allStoreNumber;
+	}
+
+	public void setAllStoreNumber(Integer allStoreNumber) {
+		this.allStoreNumber = allStoreNumber;
 	}
 }
