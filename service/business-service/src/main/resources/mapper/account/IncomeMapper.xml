@@ -351,33 +351,33 @@
         </if>
     </select>
     <select id="getIncomeRecordByPageParam"
-            resultMap="UserIncomeInfoResultMap">
-        SELECT
-         count(1) count,
-         i.*
-        FROM income_record i
-        WHERE 1=1
-        <if test="requestData.id != null and requestData.id != ''">
-            AND i.id = #{requestData.id}
-        </if>
-        <if test="startTime != ''and startTime != null  ">
-            AND i.create_date BETWEEN #{startTime} AND #{endTime}
-        </if>
-        <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
-            AND i.income_type = #{requestData.incomeType}
-        </if>
-        <if test="requestData.mobile != null and requestData.mobile != ''">
-            AND i.user_mobile  like concat(concat('%',#{requestData.mobile}),'%')
-        </if>
-        <if test="requestData.status != null and requestData.status != ''">
-            AND i.status = #{requestData.status}
-        </if>
-        GROUP BY i.id
-        ORDER BY i.create_date DESC
-        <if test='isExportExcel != "Y"'>
-            limit #{pageStartNo},#{pageSize}
-        </if>
-    </select>
+                      resultMap="UserIncomeInfoResultMap">
+    SELECT
+    count(1) count,
+    i.*
+    FROM income_record i
+    WHERE 1=1
+    <if test="requestData.id != null and requestData.id != ''">
+        AND i.id = #{requestData.id}
+    </if>
+    <if test="startTime != ''and startTime != null  ">
+        AND i.create_date BETWEEN #{startTime} AND #{endTime}
+    </if>
+    <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
+        AND i.income_type = #{requestData.incomeType}
+    </if>
+    <if test="requestData.mobile != null and requestData.mobile != ''">
+        AND i.user_mobile  like concat(concat('%',#{requestData.mobile}),'%')
+    </if>
+    <if test="requestData.status != null and requestData.status != ''">
+        AND i.status = #{requestData.status}
+    </if>
+    GROUP BY i.id
+    ORDER BY i.create_date DESC
+    <if test='isExportExcel != "Y"'>
+        limit #{pageStartNo},#{pageSize}
+    </if>
+</select>
 
     <select id="getIncomeRecordCountByPageParam" resultType="java.lang.Integer">
         SELECT
@@ -728,6 +728,7 @@
         </if>
     </select>
 
+    <!--获取总数-->
     <select id="getIncomeForUnauditedCount" resultType="java.lang.Integer">
         SELECT
             count(1)
@@ -773,4 +774,5 @@
             AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='1'and irm.user_type ='operation-1')
         </if>
     </select>
+
 </mapper>

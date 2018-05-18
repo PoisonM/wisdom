@@ -20,7 +20,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             /*点击查看按钮*/
             $scope.details = function(sysUserId,createDate,incomeType,transactionId,index,id){
                 $scope.agencyIndex = index;
-                if($scope.status == "instance"||$scope.status == "recommend"){
+                if($scope.status == "instance"||$scope.status == "permanent"){
                    for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
                         $scope.MonthlyBalanceLis[i].statesLook = "1"
                     }
@@ -75,7 +75,11 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 
                     /* $state.go("forthwithAward",{transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status})*/
                 }else if($scope.status=="month"){
+                    //月度查看页面
                     $state.go("abschluss",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status,checkStatus:$scope.checkStatus})
+                }else if ($scope.status=="recommend"){
+                     //推荐奖励页面
+                     $state.go("recommend",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status,checkStatus:$scope.checkStatus})
                 }
             };
             $scope.orderIdFun = function(MonthlyBalanceLis){

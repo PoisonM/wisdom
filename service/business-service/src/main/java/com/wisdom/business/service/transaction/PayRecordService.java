@@ -241,4 +241,14 @@ public class PayRecordService {
     public List<PayRecordDTO> findOrderInfoForSpecial(String orderId) {
         return payRecordMapper.findOrderInfoForSpecial(orderId);
     }
+
+    /**
+     * 查询用户下的交易记录（去重）
+     * @param payRecordDTO
+     *
+     * */
+    public List<String> findTransactionIdList(PayRecordDTO payRecordDTO){
+
+        return payRecordMapper.findTransactionIdList(payRecordDTO);
+    }
 }

@@ -1,15 +1,16 @@
 package com.wisdom.business.controller.account;
 
+import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.account.IncomeRecordManagementService;
 import com.wisdom.business.service.account.IncomeService;
 import com.wisdom.business.service.transaction.PayRecordService;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.account.IncomeRecordDTO;
-import com.wisdom.common.dto.account.IncomeRecordManagementDTO;
-import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.account.*;
 import com.wisdom.common.dto.system.ExportIncomeRecordExcelDTO;
+import com.wisdom.common.dto.system.ExportNextUserInfoExcelDTO;
+import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.*;
+import java.text.SimpleDateFormat;
 
 /**
  * 直播板块
@@ -48,6 +50,9 @@ public class IncomeController {
 
 	@Autowired
 	private IncomeRecordManagementService incomeRecordManagementService;
+
+	@Autowired
+	private UserServiceClient userServiceClient;
 
 	/**
 	 * 根据条件查询用户佣金奖励new
@@ -261,7 +266,7 @@ public class IncomeController {
 		List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeService.exportExcelIncomeRecord(pageParamVoDTO);
 		try {
 			String[] orderHeaders = {"用户id", "用户名", "用户手机号", "用户获益时等级", "用户现在等级", "佣金金额",
-					"下级用户id", "下级用户名", "下级用户手机号", "下级生成订单等级", "下级用户现在等级",
+					"下级用户id", "下级用户名", "下级用户手机号", "下级用户等级", "下级用户现在等级",
 					"交易id", "支付时间", "订单id", "支付金额", "订单状态", "上下级关系"};
 			ExportExcel<ExportIncomeRecordExcelDTO> ex = new ExportExcel<>();
 			ByteArrayInputStream in = ex.getWorkbookIn("佣金奖励EXCEL文档", orderHeaders, exportIncomeRecordExcelDTOS);
@@ -504,5 +509,152 @@ public class IncomeController {
 		responseDTO.setResponseData(map);
 		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
+	}
+
+
+	/**
+	 * 查询店主推荐下级列表
+	 * @param
+	 *
+	 * */
+	@RequestMapping(value = "findNextUserInfoControl", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+    ResponseDTO<PageParamDTO<List<IncomeRecordDTOExt>>>  findNextUserInfoControl(@RequestBody PageParamVoDTO<PayRecordDTO> pageParamVoDTO){
+		long startTime = System.currentTimeMillis();
+
+		UserInfoDTO userInfoDTO = new UserInfoDTO();
+		userInfoDTO.setParentUserId(pageParamVoDTO.getRequestData().getSysUserId());
+		PageParamVoDTO<UserInfoDTO> userPageParamVoDTO = new PageParamVoDTO<UserInfoDTO>();
+		userPageParamVoDTO.setPageNo(pageParamVoDTO.getPageNo());
+		userPageParamVoDTO.setPageSize(pageParamVoDTO.getPageSize());
+		userPageParamVoDTO.setRequestData(userInfoDTO);
+		userPageParamVoDTO.setIsExportExcel(pageParamVoDTO.getIsExportExcel());
+		PageParamDTO<List<IncomeRecordDTOExt>> page = incomeService.findNextUserInfo(userPageParamVoDTO);
+
+		ResponseDTO<PageParamDTO<List<IncomeRecordDTOExt>>> responseDTO = new ResponseDTO<>();
+		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
+
+		responseDTO.setResponseData(page);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		return responseDTO;
+
+	}
+
+	/**
+	 * 查询店主推荐下级列表
+	 * @param
+	 *
+	 * */
+	@RequestMapping(value = "exportNextUserInfoControl", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<PageParamDTO<List<IncomeRecordDTOExt>>>  exportNextUserInfoControl(@RequestBody PageParamVoDTO<PayRecordDTO> pageParamVoDTO){
+		long startTime = System.currentTimeMillis();
+
+		UserInfoDTO userInfoDTO = new UserInfoDTO();
+		userInfoDTO.setParentUserId(pageParamVoDTO.getRequestData().getSysUserId());
+		PageParamVoDTO<UserInfoDTO> userPageParamVoDTO = new PageParamVoDTO<UserInfoDTO>();
+		userPageParamVoDTO.setPageNo(pageParamVoDTO.getPageNo());
+		userPageParamVoDTO.setPageSize(pageParamVoDTO.getPageSize());
+		userPageParamVoDTO.setRequestData(userInfoDTO);
+		userPageParamVoDTO.setIsExportExcel(pageParamVoDTO.getIsExportExcel());
+		PageParamDTO<List<IncomeRecordDTOExt>> page = incomeService.findNextUserInfo(userPageParamVoDTO);
+
+		ResponseDTO<PageParamDTO<List<IncomeRecordDTOExt>>> responseDTO = new ResponseDTO<>();
+		List<ExportNextUserInfoExcelDTO>  exportNextUserInfoExcelDTOS = new ArrayList<>();
+		List<IncomeRecordDTOExt> result =  page.getResponseData();
+
+		UserInfoDTO userInfoP = new UserInfoDTO();
+		UserInfoDTO userInfoG = new UserInfoDTO();
+		userInfoP = userServiceClient.getUserInfoFromUserId(pageParamVoDTO.getRequestData().getSysUserId());
+		if(userInfoP!=null){
+			if(userInfoP.getParentUserId()!=null){
+				userInfoG = userServiceClient.getUserInfoFromUserId(userInfoP.getParentUserId());
+			}
+		}
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+		for(IncomeRecordDTOExt IncomeRecordDTO:result){
+			ExportNextUserInfoExcelDTO exportNextUserInfoExcelDTO = new  ExportNextUserInfoExcelDTO();
+			if(userInfoP!=null){
+				exportNextUserInfoExcelDTO.setNickName(incomeService.decodeNickName(userInfoP.getNickname()));
+				exportNextUserInfoExcelDTO.setMobile(userInfoP.getMobile());
+				exportNextUserInfoExcelDTO.setUserType(userInfoP.getUserType());
+			}
+			if(userInfoG!=null){
+				exportNextUserInfoExcelDTO.setParentNickName(incomeService.decodeNickName(userInfoG.getNickname()));
+				exportNextUserInfoExcelDTO.setParentMobile(userInfoG.getMobile());
+				exportNextUserInfoExcelDTO.setParentUserType(userInfoG.getUserType());
+				exportNextUserInfoExcelDTO.setGetAmount(495);
+			}
+			if(IncomeRecordDTO!=null){
+				if(IncomeRecordDTO.getUserInfoDTO()!=null){
+					exportNextUserInfoExcelDTO.setNextNickName(IncomeRecordDTO.getUserInfoDTO().getNickname());
+					exportNextUserInfoExcelDTO.setNextMobile(IncomeRecordDTO.getUserInfoDTO().getMobile());
+					exportNextUserInfoExcelDTO.setNextUserType(IncomeRecordDTO.getUserInfoDTO().getUserType());
+				}
+				if(IncomeRecordDTO.getPayDate()!=null){
+					exportNextUserInfoExcelDTO.setPayDate(sdf.format(IncomeRecordDTO.getPayDate()));
+				}
+				exportNextUserInfoExcelDTO.setTransactionId(IncomeRecordDTO.getTransactionId());
+				exportNextUserInfoExcelDTO.setOrderId(IncomeRecordDTO.getOrderId());
+				exportNextUserInfoExcelDTO.setAmount(IncomeRecordDTO.getAmount());
+			}
+			exportNextUserInfoExcelDTOS.add(exportNextUserInfoExcelDTO);
+		}
+
+		if("Y".equals(pageParamVoDTO.getIsExportExcel())) {
+			try {
+				String[] orderHeaders = {"昵称","手机号", "用户当前等级","上级级昵称","上级手机号", "上级用户当前等级","上级获得佣金","下级昵称","下级手机号", "下级用户当前等级","升级支付时间", "升级订单id",
+						"升级交易流水号", "升级订单金额"};
+				ExportExcel<ExportNextUserInfoExcelDTO> ex = new ExportExcel<>();
+
+				HashMap<String, String> helperMap = new HashMap<>(16);
+				if (CommonUtils.objectIsNotEmpty(exportNextUserInfoExcelDTOS)) {
+					for (ExportNextUserInfoExcelDTO excelDTO : exportNextUserInfoExcelDTOS) {
+						if (StringUtils.isBlank(helperMap.get(excelDTO.getTransactionId()))) {
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(1));
+						} else {
+							int count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) + 1;
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(count));
+						}
+					}
+
+					for (ExportNextUserInfoExcelDTO excelDTO : exportNextUserInfoExcelDTOS) {
+						Integer count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId()));
+						if (count > 1) {
+							excelDTO.setAmount(0);
+							int number = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) - 1;
+							helperMap.put(excelDTO.getTransactionId(), String.valueOf(number));
+						}
+					}
+				}
+
+
+				ByteArrayInputStream in = ex.getWorkbookIn("账单EXCEL文档", orderHeaders, exportNextUserInfoExcelDTOS);
+				String url = CommonUtils.orderExcelToOSS(in);
+				if ("".equals(url) && url == null){
+					logger.info("佣金奖励Excel 获取OSSUrl为空");
+				}
+				responseDTO.setResult(url);
+				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+
+			} catch (Exception e) {
+				responseDTO.setResult("月度详情导出Excel异常");
+				responseDTO.setErrorInfo(StatusConstant.FAILURE);
+				logger.error("月度详情导出Excel异常");
+				e.printStackTrace();
+			}
+		}
+
+
+		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
+
+		responseDTO.setResponseData(page);
+		return responseDTO;
+
 	}
 }

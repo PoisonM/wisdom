@@ -61,6 +61,18 @@ public class ExportIncomeRecordExcelDTO {
     @JSONField(name = "parentRelation")
     private String parentRelation;
 
+
+    //该交易流水与用户等级关系
+    private  String isImportLevel;
+
+    public String getIsImportLevel() {
+        return isImportLevel;
+    }
+
+    public void setIsImportLevel(String isImportLevel) {
+        this.isImportLevel = isImportLevel;
+    }
+
     public String getSysUserId() {
         return sysUserId;
     }

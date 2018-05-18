@@ -54,6 +54,9 @@ public class IncomeService {
     @Autowired
     private PromotionTransactionRelationMapper promotionTransactionRelationMapper;
 
+    @Autowired
+    private AccountService accountService;
+
     public List<IncomeRecordDTO> getUserIncomeInfoByDate(String userId, Date date) {
         List<IncomeRecordDTO> incomeRecordDTOS = incomeMapper.getUserIncomeInfoByDate(userId,date);
         return incomeRecordDTOS;
@@ -275,6 +278,7 @@ public class IncomeService {
         return incomeMapper.getIncomeRecordCountByPageParam(pageParamVoDTO);
     }
 
+
     public List<IncomeRecordDTO> queryIncomeByParameters(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         List<IncomeRecordDTO> incomeRecordDTOS = incomeMapper.getIncomeRecordByPageParam(pageParamVoDTO);
         for (IncomeRecordDTO incomeRecordDTO: incomeRecordDTOS) {
@@ -330,6 +334,21 @@ public class IncomeService {
                         incomeRecordDTO.setNextUserNickName("特殊符号用户");
                     }
                 }
+
+            //判断该交易购买者是否升级
+            PromotionTransactionRelation promotionTransactionRelation = promotionTransactionRelationMapper.getIsImportLevel(incomeRecordDTO.getTransactionId());
+            if(promotionTransactionRelation!=null){
+                if(promotionTransactionRelation.getPromotionLevel()!=null){
+
+                    if((promotionTransactionRelation.getPromotionLevel().equals(ConfigConstant.LEVE_IMPORT_A))||(promotionTransactionRelation.getPromotionLevel().equals(ConfigConstant.LEVE_IMPORT_B))){
+                        incomeRecordDTO.setIsImportLevel("是");
+                    }else{
+                        incomeRecordDTO.setIsImportLevel("否");
+                    }
+                }
+            }
+
+            //获取购买者信息
             UserInfoDTO selfUserInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecordDTO.getSysUserId());
             UserInfoDTO nextUserInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecordDTO.getNextUserId());
             incomeRecordDTO.setUserTypeNow(selfUserInfoDTO.getUserType());
@@ -375,6 +394,18 @@ public class IncomeService {
     public List<ExportIncomeRecordExcelDTO> exportExcelIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeMapper.exportExcelIncomeRecord(pageParamVoDTO);
         for (ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO : exportIncomeRecordExcelDTOS){
+            //判断该交易购买者是否升级
+            PromotionTransactionRelation promotionTransactionRelation = promotionTransactionRelationMapper.getIsImportLevel(exportIncomeRecordExcelDTO.getTransactionId());
+            if(promotionTransactionRelation!=null){
+                if(promotionTransactionRelation.getPromotionLevel()!=null){
+                    if((promotionTransactionRelation.getPromotionLevel().equals(ConfigConstant.LEVE_IMPORT_A))||(promotionTransactionRelation.getPromotionLevel().equals(ConfigConstant.LEVE_IMPORT_B))){
+                        exportIncomeRecordExcelDTO.setIsImportLevel("是");
+                    }else{
+                        exportIncomeRecordExcelDTO.setIsImportLevel("否");
+                    }
+                }
+            }
+
             if (StringUtils.isNotBlank(exportIncomeRecordExcelDTO.getNickName())) {
                 try {
                     if(exportIncomeRecordExcelDTO.getNickName() != null && exportIncomeRecordExcelDTO.getNickName() != ""){
@@ -433,7 +464,111 @@ public class IncomeService {
                // exportIncomeRecordExcelDTO.setNextUserNickName(URLDecoder.decode(exportIncomeRecordExcelDTO.getNextUserNickName(),"utf-8"));
             }
 
+
         }
         return exportIncomeRecordExcelDTOS;
     }
+
+
+
+    /**
+     * 店铺信息
+     *
+     *
+     *
+     * */
+    public PageParamDTO<List<IncomeRecordDTOExt>> findNextUserInfo(PageParamVoDTO<UserInfoDTO> pageParamVoDTO){
+
+        PageParamDTO<List<IncomeRecordDTOExt>> pageResult = new PageParamDTO<List<IncomeRecordDTOExt>>();
+
+        //获取父类是该用户的所有用户
+        List<UserInfoDTO> userInfoDTOS = (ArrayList)userServiceClient.getUserInfo(pageParamVoDTO.getRequestData());
+        List<IncomeRecordDTOExt> incomeRecordDTOExts = new ArrayList<>();
+        if(userInfoDTOS != null && userInfoDTOS.size()>0){
+            for(UserInfoDTO userInfo : userInfoDTOS){
+                IncomeRecordDTOExt incomeRecordDTOExt = new IncomeRecordDTOExt();
+                if(userInfo.getUserType()!=null){
+                    if(userInfo.getUserType().equals(ConfigConstant.businessB1)||userInfo.getUserType().equals(ConfigConstant.businessA1)){
+                        PayRecordDTO pay  = new PayRecordDTO();
+                        pay.setSysUserId(userInfo.getId());
+                        //支付成功
+                        pay.setStatus("1");
+                        List<String> transactionIdS  =  payRecordService.findTransactionIdList(pay);
+                        if(transactionIdS!=null&& transactionIdS.size()>0){
+                            for(String transactionId :transactionIdS){
+                                Float amount = (float)0;
+                                StringBuilder orderId = new StringBuilder();
+                                PayRecordDTO payRecord  = new PayRecordDTO();
+                                payRecord.setTransactionId(transactionId);
+                                payRecord.setStatus("1");
+                                List<PayRecordDTO> payRecordDTOList  =  payRecordService.getUserPayRecordList(payRecord);
+                                if(payRecordDTOList!=null&&payRecordDTOList.size()>0){
+                                    if(payRecordDTOList.size()>1){
+                                        for(PayRecordDTO payRecordDTO1:payRecordDTOList){
+                                            amount = amount + payRecordDTO1.getAmount();
+                                            orderId.append(",").append(payRecordDTO1.getOrderId());
+                                        }
+                                    }else{
+                                        amount = payRecordDTOList.get(0).getAmount();
+                                        orderId = orderId.append(payRecordDTOList.get(0).getOrderId());
+                                    }
+                                }
+
+                                //判断此单是否大于498
+                                if(amount>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE){
+                                    incomeRecordDTOExt.setUserInfoDTO(userInfo);
+                                    incomeRecordDTOExt.setAmount(amount);
+                                    incomeRecordDTOExt.setOrderId(orderId.toString());
+                                    incomeRecordDTOExt.setPayDate(payRecordDTOList.get(0).getPayDate());
+                                    incomeRecordDTOExt.setTransactionId(transactionId);
+                                    incomeRecordDTOExts.add(incomeRecordDTOExt);
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
+        }
+        if(pageParamVoDTO.getIsExportExcel().equals("N")){
+            List<IncomeRecordDTOExt> incomeRecordDTOResult = new ArrayList<>();
+            incomeRecordDTOResult = accountService.pagerUtil(incomeRecordDTOExts,incomeRecordDTOResult,pageParamVoDTO.getPageNo(),pageParamVoDTO.getPageSize());
+            pageResult.setResponseData(incomeRecordDTOResult);
+        }else{
+            pageResult.setResponseData(incomeRecordDTOExts);
+        }
+        pageResult.setTotalCount(incomeRecordDTOExts.size());
+        pageResult.setPageNo(pageParamVoDTO.getPageNo());
+        pageResult.setPageSize(pageParamVoDTO.getPageSize());
+        return pageResult;
+
+    }
+
+    public   String decodeNickName(String nickNameW){
+        String nickName = "";
+        try {
+            while(true){
+                if(nickNameW!=null&&nickNameW!=""){
+                    if(nickNameW.contains("%25")){
+                        nickName = URLDecoder.decode(nickNameW,"utf-8");
+                    }else{
+                        nickName = URLDecoder.decode(nickNameW,"utf-8");
+                        break;
+                    }
+                }else{
+                    break;
+                }
+
+            }
+        }catch(Throwable e){
+            logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+            nickName="特殊符号用户";
+        }
+        return nickName;
+    }
+
+
+
 }
