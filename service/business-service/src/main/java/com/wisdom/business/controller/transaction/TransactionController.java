@@ -82,10 +82,10 @@ public class TransactionController {
 
         try {
             //todo log
-            logger.info("锁前订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
+            //logger.info("锁前订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
             redisLock.lock();
             //todo log
-            logger.info("锁下订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
+            //logger.info("锁下订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
             //将商品放入未支付订单列表
             for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
                     BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
