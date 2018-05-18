@@ -3,6 +3,10 @@ package com.wisdom.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
+import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.RelationIds;
 import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.common.util.SpringUtil;
@@ -20,6 +24,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,13 +102,31 @@ public class ProjectTest {
     @Test
     public void userShopProjectType() throws Exception {
 
-        ShopProjectTypeDTO shopProjectTypeDTO = new ShopProjectTypeDTO();
-        shopProjectTypeDTO.setProjectTypeName("测试2");
-        String toJSONString = JSONObject.toJSONString(shopProjectTypeDTO);
-
+        ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
+        List<String> imageList = new ArrayList<>();
+        imageList.add("https://mx-beauty.oss-cn-beijing.aliyuncs.com/timg.jpg?Expires=1526640873&OSSAccessKeyId=TMP.AQFGtLjtekwFvWligMxLOOBWqNvlmeSb3ver52q_BjluZJM4xMg_1NnGWhSmAAAwLAIUS50EPBng4P3pNrjwAifi_WVt4-wCFH1tK76rGREOdeMlM3Ld-uWxlCz4&Signature=O7gUDNP0CNSeMb4t%2FAuQdzKajHo%3D");
+        imageList.add("https://mx-beauty.oss-cn-beijing.aliyuncs.com/timg.jpg?Expires=1526640873&OSSAccessKeyId=TMP.AQFGtLjtekwFvWligMxLOOBWqNvlmeSb3ver52q_BjluZJM4xMg_1NnGWhSmAAAwLAIUS50EPBng4P3pNrjwAifi_WVt4-wCFH1tK76rGREOdeMlM3Ld-uWxlCz4&Signature=O7gUDNP0CNSeMb4t%2FAuQdzKajHo%3D");
+        extShopProjectInfoDTO.setImageList(imageList);
+        extShopProjectInfoDTO.setProjectName("足疗项目");
+        extShopProjectInfoDTO.setProjectTypeOneId("1");
+        extShopProjectInfoDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
+        extShopProjectInfoDTO.setServiceTimes(10);
+        extShopProjectInfoDTO.setProjectTypeTwoName("足疗系列");
+        extShopProjectInfoDTO.setProjectTypeOneName("足疗类型");
+        extShopProjectInfoDTO.setProjectTypeTwoId("2");
+        extShopProjectInfoDTO.setProjectDuration(60);
+        extShopProjectInfoDTO.setMarketPrice(new BigDecimal(1000));
+        extShopProjectInfoDTO.setFunctionIntr("对足部很有好处");
+        extShopProjectInfoDTO.setDiscountPrice(new BigDecimal(800));
+        extShopProjectInfoDTO.setCardType(CardTypeEnum.HALF_YEAR_CARD.getCode());
+        extShopProjectInfoDTO.setUseStyle(GoodsTypeEnum.TREATMENT_CARD.getCode());
+        extShopProjectInfoDTO.setOncePrice(new BigDecimal(100));
+        extShopProjectInfoDTO.setVisitDateTime(12);
+        extShopProjectInfoDTO.setDiscountPrice(new BigDecimal(1000));
+        String toJSONString = JSONObject.toJSONString(extShopProjectInfoDTO);
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/projectType/saveShopProjectType").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/projectInfo/saveProjectInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

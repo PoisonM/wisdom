@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.RelationIds;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
@@ -551,5 +552,58 @@ public class ProjectController {
         return responseDTO;
     }
 
+    /**
+     * 保存用户的项目信息
+     */
+    @RequestMapping(value = "saveProjectInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<Object> saveProjectInfo(@RequestBody ExtShopProjectInfoDTO extShopProjectInfoDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if (judgeBossCurrentShop(responseDTO, bossInfo)) {
+            return responseDTO;
+        }
+        if (null == extShopProjectInfoDTO.getOncePrice()) {
+            responseDTO.setResponseData("折扣价格不能为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        if (null == extShopProjectInfoDTO.getServiceTimes()) {
+            responseDTO.setResponseData("服务次数不能为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        extShopProjectInfoDTO.setSysShopId(bossInfo.getCurrentShopId());
+        if (!CardTypeEnum.ONE_TIME_CARD.getCode().equals(extShopProjectInfoDTO.getCardType())) {
+            extShopProjectInfoDTO.setUseStyle(CardTypeEnum.TREATMENT_CARD.getCode());
+        }
+        extShopProjectInfoDTO.setMarketPrice(extShopProjectInfoDTO.getOncePrice().multiply(new BigDecimal(extShopProjectInfoDTO.getServiceTimes())));
+        int info = projectService.saveProjectInfo(extShopProjectInfoDTO);
+        responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+
+        logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 判断老板有当前店铺信息
+     *
+     * @param responseDTO
+     * @param bossInfo
+     * @return
+     */
+    private boolean judgeBossCurrentShop(ResponseDTO<Object> responseDTO, SysBossDTO bossInfo) {
+        if (null == bossInfo || com.wisdom.common.util.StringUtils.isBlank(bossInfo.getCurrentShopId())) {
+            logger.error("获取老板信息异常，{}", "bossInfo = [" + bossInfo + "]");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setResponseData("获取老板信息异常");
+            return true;
+        }
+        return false;
+    }
 
 }
