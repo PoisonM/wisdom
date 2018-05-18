@@ -5,6 +5,8 @@ angular.module('controllers',[]).controller('pricesCtrl',
     ['$scope','$rootScope','$stateParams','$state',
         function ($scope,$rootScope,$stateParams,$state) {
 
-            $rootScope.title = "";
-
+            $rootScope.title = "价目表";
+            $scope.chooseTab = function(type){
+                $scope.queryType = type;
+            }
         }]);
