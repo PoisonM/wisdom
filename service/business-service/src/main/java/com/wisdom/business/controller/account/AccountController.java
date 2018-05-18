@@ -178,7 +178,7 @@ public class AccountController {
 					exportAccountExcelDTO.setNickName(accountDTO.getNickName());
 					exportAccountExcelDTO.setSysUserId(accountDTO.getSysUserId());
 					exportAccountExcelDTO.setUserType(accountDTO.getUserType());
-					exportAccountExcelDTO.setBalanceYes(accountDTO.getBalanceYes());
+					exportAccountExcelDTO.setBalanceDeny(accountDTO.getBalanceDeny());
 					exportAccountExcelDTO.setBalanceYes(accountDTO.getBalanceYes());
 					excelList.add(exportAccountExcelDTO);
 				}
