@@ -1,4 +1,3 @@
-
 var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
@@ -13,7 +12,6 @@ var consumes = '/beauty/consumes/';
 var consume = '/beauty/consume/';
 var cardInfo  = '/beauty/cardInfo/';
 var projectInfo  = '/beauty/projectInfo/';
-var productInfo  = '/beauty/productInfo/';
 
 
 
