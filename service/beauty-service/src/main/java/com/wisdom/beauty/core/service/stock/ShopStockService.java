@@ -142,6 +142,14 @@ public interface ShopStockService {
     *@Date:2018/5/18 19:11
     */
     ShopStockResponseDTO getProductStockDetail(ShopStockNumberDTO shopStockNumberDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 产品盘点
+    *@Date:2018/5/19 14:33
+    */
+   int checkProduct(ShopStockNumberDTO shopStockNumberDTO);
 
 
 

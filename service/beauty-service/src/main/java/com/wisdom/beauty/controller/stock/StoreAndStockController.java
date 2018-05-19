@@ -268,4 +268,23 @@ public class StoreAndStockController {
         logger.info("getProductStockDetail方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+    /**
+    *@Author:zhanghuan
+    *@Param: 产品id   仓库id    实际数量
+    *@Return:
+    *@Description:  产品盘点
+    *@Date:2018/5/19 15:53
+    */
+    @RequestMapping(value = "/checkProduct", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<Integer> checkProduct(ShopStockNumberDTO shopStockNumberDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        Integer result = shopStockService.checkProduct(shopStockNumberDTO);
+        ResponseDTO<Integer> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(result);
+        logger.info("checkProduct{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
 }
