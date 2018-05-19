@@ -12,6 +12,9 @@ public class ShopStockNumberDTO extends BaseEntity implements Serializable {
     //产品id
     private String shopProcId;
 
+    //仓库名字
+    private String shopStoreName;
+
     //仓库id
     private String shopStoreId;
 
@@ -61,6 +64,14 @@ public class ShopStockNumberDTO extends BaseEntity implements Serializable {
 
     public void setShopProcId(String shopProcId) {
         this.shopProcId = shopProcId;
+    }
+
+    public String getShopStoreName() {
+        return shopStoreName;
+    }
+
+    public void setShopStoreName(String shopStoreName) {
+        this.shopStoreName = shopStoreName;
     }
 
     public String getShopStoreId() {

@@ -134,6 +134,14 @@ public interface ShopStockService {
     *@Date:2018/5/18 15:28
     */
    List<ShopStockResponseDTO> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:
+    *@Date:2018/5/18 19:11
+    */
+    ShopStockResponseDTO getProductStockDetail(ShopStockNumberDTO shopStockNumberDTO);
 
 
 

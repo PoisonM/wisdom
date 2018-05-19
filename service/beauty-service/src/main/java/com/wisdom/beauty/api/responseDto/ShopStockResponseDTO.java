@@ -30,6 +30,12 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private Integer storeNumberSelf;
 	/** 库存总量 */
 	private Integer allStoreNumber;
+	/** 占用成本 */
+	private BigDecimal useCost;
+	/** 占用总成本 */
+	private BigDecimal allUseCost;
+	//仓库名字
+	private String shopStoreName;
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
 
 	public String getName() {
@@ -128,14 +134,6 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 		this.stockType = stockType;
 	}
 
-	public Integer getOutStockNumber() {
-		return outStockNumber;
-	}
-
-	public void setOutStockNumber(Integer outStockNumber) {
-		this.outStockNumber = outStockNumber;
-	}
-
 	public Integer getStoreNumberSelf() {
 		return storeNumberSelf;
 	}
@@ -150,5 +148,29 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 
 	public void setAllStoreNumber(Integer allStoreNumber) {
 		this.allStoreNumber = allStoreNumber;
+	}
+
+	public BigDecimal getUseCost() {
+		return useCost;
+	}
+
+	public void setUseCost(BigDecimal useCost) {
+		this.useCost = useCost;
+	}
+
+	public BigDecimal getAllUseCost() {
+		return allUseCost;
+	}
+
+	public void setAllUseCost(BigDecimal allUseCost) {
+		this.allUseCost = allUseCost;
+	}
+
+	public String getShopStoreName() {
+		return shopStoreName;
+	}
+
+	public void setShopStoreName(String shopStoreName) {
+		this.shopStoreName = shopStoreName;
 	}
 }
