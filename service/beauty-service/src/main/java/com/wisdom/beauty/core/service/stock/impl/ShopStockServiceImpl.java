@@ -395,9 +395,15 @@ public class ShopStockServiceImpl implements ShopStockService {
 
     @Override
     public int updateStockNumber(ShopStockNumberDTO shopStockNumberDTO) {
+        ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
+        ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
+        c.andShopProcIdEqualTo(shopStockNumberDTO.getShopProcId());
+        c.andShopStoreIdEqualTo(shopStockNumberDTO.getShopStoreId());
+
         shopStockNumberDTO.setActualStockNumber(shopStockNumberDTO.getActualStockNumber());
         shopStockNumberDTO.setActualStockPrice(shopStockNumberDTO.getActualStockPrice());
-        return shopStockNumberMapper.updateByPrimaryKeySelective(shopStockNumberDTO);
+
+        return shopStockNumberMapper.updateByCriteriaSelective(shopStockNumberDTO,criteria);
 
     }
 
@@ -610,6 +616,11 @@ public class ShopStockServiceImpl implements ShopStockService {
         shopStockResponse.setAllUseCost(allUseCost);
         shopStockResponse.setAllStoreNumber(allStoreNumber);
         return shopStockResponse;
+    }
+
+    @Override
+    public int checkProduct(ShopStockNumberDTO shopStockNumberDTO) {
+       return   this.updateStockNumber(shopStockNumberDTO);
     }
 
     private List<ShopStockNumberDTO> getShopStockNumberDTOList(ShopStockNumberDTO shopStockNumberDTO) {

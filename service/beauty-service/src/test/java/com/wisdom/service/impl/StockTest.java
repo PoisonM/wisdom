@@ -175,4 +175,13 @@ public class StockTest  {
             exception.printStackTrace();
         }
     }
+
+    @Test
+    public  void  pandian(){
+        ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
+        shopStockNumberDTO.setShopProcId("6");
+        shopStockNumberDTO.setShopStoreId("651742081");
+        shopStockNumberDTO.setActualStockNumber(333433);
+        shopStockService.checkProduct(shopStockNumberDTO);
+    }
 }
