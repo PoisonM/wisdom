@@ -119,6 +119,14 @@ public interface ShopProductInfoService {
     int updateProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS);
 
     /**
+     * 更新产品信息
+     *
+     * @param shopProductInfoDTO
+     * @return
+     */
+    int updateProductInfo(ShopProductInfoDTO shopProductInfoDTO);
+
+    /**
      * 添加某个店的某个产品类别
      *
      * @param shopProductTypeDTOS

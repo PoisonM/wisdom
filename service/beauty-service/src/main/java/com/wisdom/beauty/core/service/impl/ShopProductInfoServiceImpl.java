@@ -375,6 +375,22 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	}
 
 	/**
+	 * 更新产品信息
+	 *
+	 * @param shopProductInfoDTO
+	 * @return
+	 */
+	@Override
+	public int updateProductInfo(ShopProductInfoDTO shopProductInfoDTO) {
+		if (CommonUtils.objectIsEmpty(shopProductInfoDTO) || StringUtils.isBlank(shopProductInfoDTO.getId())) {
+			logger.error("{}", "shopProductInfoDTO = [" + shopProductInfoDTO + "]");
+			return 0;
+		}
+		shopProductInfoDTO.setUpdateDate(new Date());
+		return shopProductInfoMapper.updateByPrimaryKeySelective(shopProductInfoDTO);
+	}
+
+	/**
 	 * 添加某个店的某个产品类别
 	 *
 	 * @param shopProductTypeDTOS

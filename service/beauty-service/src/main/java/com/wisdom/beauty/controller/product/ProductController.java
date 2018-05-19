@@ -176,6 +176,25 @@ public class ProductController {
     }
 
     /**
+     * 更新产品信息
+     *
+     * @param shopProductInfoDTO
+     * @return
+     */
+    @RequestMapping(value = "/updateProductInfo", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<Object> updateProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        int info = shopProductInfoService.updateProductInfo(shopProductInfoDTO);
+
+        responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        logger.info("获取产品详情方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
      * @Author:huan
      * @Param: id是一级产品的id
      * @Return:

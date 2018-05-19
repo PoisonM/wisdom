@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,13 +65,35 @@ public class ProductTest {
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
 //                .andReturn();// 返回执行请求的结果
 
-        MvcResult result = mvc.perform(get("/productTypeInfo/getShopProductLevelInfo").param("productType", "0").param("levelOneId", "1"))
-                .andExpect(status().isOk())// 模拟向testRest发送get请求
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
-                .andReturn();// 返回执行请求的结果
-
-        System.out.println(result.getResponse().getContentAsString());
+//        MvcResult result = mvc.perform(get("/productTypeInfo/getShopProductLevelInfo").param("productType", "0").param("levelOneId", "1"))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+//        System.out.println(result.getResponse().getContentAsString());
     }
+
+    /**
+     * 保存档案信息
+     *
+     * @throws Exception
+     */
+//    @Test
+//    public void testSaveArchiveInfo() throws Exception {
+//
+//        ShopUserArchivesDTO shopUserArchivesDTO = getShopUserArchivesDTO();
+//
+//        String toJSONString = JSONObject.toJSONString(shopUserArchivesDTO);
+//
+//        System.out.println(toJSONString);
+//
+//        MvcResult result = mvc.perform(post("/archives/saveArchiveInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+//
+//        System.out.println(result.getResponse().getContentAsString());
+//
+//    }
 
 
     /**
