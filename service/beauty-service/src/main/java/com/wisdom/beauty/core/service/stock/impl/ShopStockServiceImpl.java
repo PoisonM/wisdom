@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service.stock.impl;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -546,6 +547,69 @@ public class ShopStockServiceImpl implements ShopStockService {
             shopStockResponses.add(shopStockResponseDTO);
         }
         return shopStockResponses;
+    }
+
+    @Override
+    public ShopStockResponseDTO getProductStockDetail(ShopStockNumberDTO shopStockNumberDTO) {
+        if(shopStockNumberDTO==null){
+            logger.info("getProductStockDetail方法出入的参数shopStockNumberDTO为空");
+            return null;
+        }
+       logger.info("getProductStockDetail方法传入的参数shopProcId={}",shopStockNumberDTO.getShopProcId());
+        if(StringUtils.isBlank(shopStockNumberDTO.getShopProcId())){
+            return  null;
+        }
+        //计算占用成本，库存量*进货价格
+        //根据产品id获取该产品所有的库存信息
+        ShopStockNumberCriteria shopStockNumberCriteria = new ShopStockNumberCriteria();
+        ShopStockNumberCriteria.Criteria c = shopStockNumberCriteria.createCriteria();
+        c.andShopProcIdEqualTo(shopStockNumberDTO.getShopProcId());
+        List<ShopStockNumberDTO> shopStockNumbers=shopStockNumberMapper.selectByCriteria(shopStockNumberCriteria);
+        if(CollectionUtils.isEmpty(shopStockNumbers)){
+            logger.info("产品"+shopStockNumberDTO.getShopProcId()+"没有库存信息");
+            return  null;
+        }
+        List<ShopStockResponseDTO> shopStockResponses=new ArrayList<>();
+        ShopStockResponseDTO shopStockResponse=null;
+        Integer allStoreNumber=null;
+        BigDecimal allUseCost=null;
+        for (ShopStockNumberDTO shopStockNumber:shopStockNumbers){
+            shopStockResponse=new ShopStockResponseDTO();
+            shopStockResponse.setStoreNumberSelf(shopStockNumber.getStockNumber());
+            BigDecimal useCost= shopStockNumber.getStockPrice().multiply(new BigDecimal(shopStockNumber.getStockNumber()));
+            shopStockResponse.setUseCost(useCost);
+            shopStockResponse.setShopStoreName(shopStockNumber.getShopStoreName());
+            if(allStoreNumber==null){
+                allStoreNumber=shopStockNumber.getStockNumber();
+            }else {
+                allStoreNumber=allStoreNumber+shopStockNumber.getStockNumber();
+            }
+            if(allUseCost==null){
+                allUseCost=useCost;
+            }else {
+                allUseCost=allUseCost.add(useCost);
+            }
+            shopStockResponses.add(shopStockResponse);
+        }
+
+        shopStockResponse=new ShopStockResponseDTO();
+        //根据产品id查询产品信息
+        ShopProductInfoResponseDTO shopProductInfoResponses = shopProductInfoService.getProductDetail(shopStockNumberDTO.getShopProcId());
+        if(shopProductInfoResponses==null){
+            logger.info("getProductDetail方法获取的对象shopProductInfoResponses为空");
+            return  null;
+        }
+        shopStockResponse.setImageUrl(shopProductInfoResponses.getImageUrl());
+        shopStockResponse.setShopProcName(shopProductInfoResponses.getProductName());
+        shopStockResponse.setProductCode(shopProductInfoResponses.getProductCode());
+        //单位
+        shopStockResponse.setProductUnit(shopProductInfoResponses.getProductUnit());
+        //规格
+        shopStockResponse.setProductSpec(shopProductInfoResponses.getProductSpec());
+        shopStockResponse.setShopStockResponseDTO(shopStockResponses);
+        shopStockResponse.setAllUseCost(allUseCost);
+        shopStockResponse.setAllStoreNumber(allStoreNumber);
+        return shopStockResponse;
     }
 
     private List<ShopStockNumberDTO> getShopStockNumberDTOList(ShopStockNumberDTO shopStockNumberDTO) {

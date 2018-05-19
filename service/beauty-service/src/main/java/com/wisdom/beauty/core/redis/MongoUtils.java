@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.redis;
 
 import com.wisdom.beauty.api.extDto.ImageUrl;
+import com.wisdom.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -39,7 +40,14 @@ public class MongoUtils {
      * 查询图片信息
      */
     public List<String> getImageUrl(String imageId) {
+        if(StringUtils.isNull(imageId)){
+            return  null;
+        }
         Query query = new Query(Criteria.where("imageId").is(imageId));
-        return mongoTemplate.findOne(query, ImageUrl.class, "imageUrl").getUrl();
+        ImageUrl imageUrl=mongoTemplate.findOne(query, ImageUrl.class, "imageUrl");
+        if(imageUrl==null){
+            return  null;
+        }
+        return imageUrl.getUrl();
     }
 }

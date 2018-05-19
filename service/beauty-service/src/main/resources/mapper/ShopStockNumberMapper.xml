@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR" />
     <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR" />
+    <result column="shop_store_name" jdbcType="VARCHAR" property="shopStoreName" />
     <result column="shop_boss_id" property="shopBossId" jdbcType="VARCHAR" />
     <result column="product_type_two_id" property="productTypeTwoId" jdbcType="VARCHAR" />
     <result column="stock_number" property="stockNumber" jdbcType="INTEGER" />
@@ -75,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_proc_id, shop_store_id, shop_boss_id, product_type_two_id, stock_number, 
+    id, shop_proc_id, shop_store_id, shop_store_name,shop_boss_id, product_type_two_id, stock_number,
     actual_stock_number, actual_stock_price, stock_price, create_by, create_date, update_user, 
     update_date
   </sql>
@@ -113,12 +114,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopStockNumberDTO" >
-    insert into shop_stock_number (id, shop_proc_id, shop_store_id, 
+    insert into shop_stock_number (id, shop_proc_id, shop_store_id, shop_store_name,
       shop_boss_id, product_type_two_id, stock_number, 
       actual_stock_number, actual_stock_price, stock_price, 
       create_by, create_date, update_user, 
       update_date)
-    values (#{id,jdbcType=VARCHAR}, #{shopProcId,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{shopProcId,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, #{shopStoreName,jdbcType=VARCHAR},
       #{shopBossId,jdbcType=VARCHAR}, #{productTypeTwoId,jdbcType=VARCHAR}, #{stockNumber,jdbcType=INTEGER}, 
       #{actualStockNumber,jdbcType=INTEGER}, #{actualStockPrice,jdbcType=INTEGER}, #{stockPrice,jdbcType=DECIMAL}, 
       #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
@@ -135,6 +136,9 @@
       </if>
       <if test="shopStoreId != null" >
         shop_store_id,
+      </if>
+      <if test="shopStoreName != null" >
+        shop_store_name,
       </if>
       <if test="shopBossId != null" >
         shop_boss_id,
@@ -176,6 +180,9 @@
       </if>
       <if test="shopStoreId != null" >
         #{shopStoreId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStoreName != null" >
+        #{shopStoreName,jdbcType=VARCHAR},
       </if>
       <if test="shopBossId != null" >
         #{shopBossId,jdbcType=VARCHAR},
@@ -224,6 +231,9 @@
       <if test="record.shopProcId != null" >
         shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
       </if>
+      <if test="record.shopStoreName != null" >
+        shop_store_name = #{record.shopStoreName,jdbcType=VARCHAR},
+      </if>
       <if test="record.shopStoreId != null" >
         shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
       </if>
@@ -267,6 +277,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
       shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
+      shop_store_name = #{record.shopStoreName,jdbcType=VARCHAR},
       shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
       product_type_two_id = #{record.productTypeTwoId,jdbcType=VARCHAR},
       stock_number = #{record.stockNumber,jdbcType=INTEGER},
@@ -289,6 +300,9 @@
       </if>
       <if test="shopStoreId != null" >
         shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStoreName != null" >
+        shop_store_name = #{shopStoreName,jdbcType=VARCHAR},
       </if>
       <if test="shopBossId != null" >
         shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
@@ -327,6 +341,7 @@
     update shop_stock_number
     set shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
       shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
+      shop_store_name = #{shopStoreName,jdbcType=VARCHAR},
       shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
       product_type_two_id = #{productTypeTwoId,jdbcType=VARCHAR},
       stock_number = #{stockNumber,jdbcType=INTEGER},
