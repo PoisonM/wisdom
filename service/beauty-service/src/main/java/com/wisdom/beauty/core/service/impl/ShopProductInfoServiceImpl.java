@@ -65,6 +65,15 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(shopProductInfoDTO.getSysShopId());
 		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductTypeOneId())) {
+			criteria.andProductTypeOneIdEqualTo(shopProductInfoDTO.getProductTypeOneId());
+		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductTypeTwoId())) {
+			criteria.andProductTypeTwoIdEqualTo(shopProductInfoDTO.getProductTypeTwoId());
+		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductType())) {
+			criteria.andProductTypeEqualTo(shopProductInfoDTO.getProductType());
+		}
 
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductName())) {
 			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");

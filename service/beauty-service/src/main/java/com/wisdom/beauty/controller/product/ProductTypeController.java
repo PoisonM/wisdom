@@ -1,5 +1,6 @@
 package com.wisdom.beauty.controller.product;
 
+import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -113,6 +116,77 @@ public class ProductTypeController {
         logger.info("更新产品二级类别信息方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
+    /**
+     * 根据产品类型、产品等级，查询一级二级产品
+     *
+     * @param productType "0", "客装产品";"1", "院装产品";"2", "易耗品"
+     * @param levelOneId
+     * @param levelTwoId
+     * @return 1、什么都不传，表示查询当前店铺下所有产品
+     * 2、可以根据产品类型productType 查询一级产品，二级产品（一级产品没有传的话默认取第一个一级产品的二级产品，一级产品传值查询选中的一级产品的二级产品），以及产品列表
+     * 3、productType、levelOne、levelTwo 可以随机匹配查询
+     */
+    @RequestMapping(value = "/getShopProductLevelInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getShopProductLevelInfo(@RequestParam(required = false) String productType, @RequestParam(required = false) String levelOneId,
+                                                @RequestParam(required = false) String levelTwoId, @RequestParam(required = false) String pageNo,
+                                                @RequestParam(required = false) String pageSize) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("根据产品类型查询一级二级产品传入参数={}", "productType = [" + productType + "], levelOneId = [" + levelOneId + "], levelTwoId = [" + levelTwoId + "]");
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if (judgeBossCurrentShop(responseDTO, bossInfo)) {
+            return responseDTO;
+        }
+        String currentShopId = bossInfo.getCurrentShopId();
+
+        if (StringUtils.isNotBlank(productType)) {
+            shopProductInfoDTO.setProductType(productType);
+        }
+        if (StringUtils.isNotBlank(levelOneId)) {
+            shopProductInfoDTO.setProductTypeOneId(levelOneId);
+        }
+        if (StringUtils.isNotBlank(levelTwoId)) {
+            shopProductInfoDTO.setProductTypeTwoId(levelTwoId);
+        }
+
+        shopProductInfoDTO.setSysShopId(currentShopId);
+        List<ShopProductInfoDTO> detailProductList = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
+
+        HashMap<Object, Object> responseMap = new HashMap<>(8);
+        if (CommonUtils.objectIsNotEmpty(detailProductList)) {
+            //缓存一级产品名牌
+            LinkedHashMap<String, ShopProductInfoDTO> oneMap = new LinkedHashMap<>(16);
+            logger.info("开始缓存一级产品品牌");
+            for (ShopProductInfoDTO dto : detailProductList) {
+                oneMap.put(dto.getProductTypeOneName(), dto);
+            }
+            responseMap.put("oneMap", oneMap);
+            //缓存选中的二级产品品牌，如果levelTwo，默认取oneMap中的第一条作为查询结果
+            logger.info("开始缓存二级产品品牌,levelOneId={}", levelOneId);
+            HashMap<Object, Object> twoMap = new HashMap<>(16);
+            if (StringUtils.isBlank(levelOneId)) {
+                levelOneId = oneMap.entrySet().iterator().next().getValue().getProductTypeOneId();
+            }
+            for (ShopProductInfoDTO dto : detailProductList) {
+                if (dto.getProductTypeOneId().equals(levelOneId)) {
+                    twoMap.put(dto.getProductTypeTwoName(), dto);
+                }
+            }
+            responseMap.put("twoMap", twoMap);
+        }
+
+        responseMap.put("detailProductList", detailProductList);
+        responseDTO.setResponseData(responseMap);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("根据产品类型查询一级二级产品耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
 
     /**
      * 判断老板有当前店铺信息
