@@ -10,6 +10,7 @@ import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -19,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * FileName: ShopProductInfoServiceImpl
@@ -324,6 +322,66 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		int insertFlag = shopUserProductRelationMapper.insertSelective(shopUserProductRelationDTO);
 
 		return insertFlag;
+	}
+
+	/**
+	 * 更新产品类别列表
+	 *
+	 * @param shopProductTypeDTOS
+	 * @return
+	 */
+	@Override
+	public int updateProductTypeListInfo(List<ShopProductTypeDTO> shopProductTypeDTOS) {
+		int returnFlag = 0;
+		logger.info("更新产品类别列表传入参数={}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+		if (CommonUtils.objectIsNotEmpty(shopProductTypeDTOS)) {
+			for (ShopProductTypeDTO dto : shopProductTypeDTOS) {
+				//id为空则是新增
+				if (StringUtils.isBlank(dto.getId())) {
+					logger.info("主键为空，说明是新增记录={}", dto.getProductTypeName());
+					returnFlag = saveProductTypeInfo(dto);
+				} else {
+					logger.info("主键不为空，说明是修改记录={}", dto.getProductTypeName());
+					returnFlag = updateProductTypeInfo(dto);
+				}
+			}
+		}
+		return returnFlag;
+	}
+
+	/**
+	 * 更新产品类别
+	 *
+	 * @param shopProductTypeDTOS
+	 * @return
+	 */
+	@Override
+	public int updateProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS) {
+		if (CommonUtils.objectIsEmpty(shopProductTypeDTOS) || StringUtils.isBlank(shopProductTypeDTOS.getId())) {
+			logger.error("{}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+			return 0;
+		}
+		shopProductTypeDTOS.setUpdateDate(new Date());
+		return shopProductTypeMapper.updateByPrimaryKeySelective(shopProductTypeDTOS);
+	}
+
+	/**
+	 * 添加某个店的某个产品类别
+	 *
+	 * @param shopProductTypeDTOS
+	 */
+	@Override
+	public int saveProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS) {
+
+		logger.info("添加某个店的某个产品类别传入参数={}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+		if (CommonUtils.objectIsEmpty(shopProductTypeDTOS)) {
+			logger.error("添加某个店的某个产品类别{}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+			return 0;
+		}
+		shopProductTypeDTOS.setCreateDate(new Date());
+		shopProductTypeDTOS.setId(IdGen.uuid());
+		shopProductTypeMapper.insertSelective(shopProductTypeDTOS);
+		return 0;
 	}
 
 }

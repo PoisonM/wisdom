@@ -11,6 +11,7 @@ import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -223,8 +224,17 @@ public class ProductController {
     ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        String sysShopId = clerkInfo.getSysShopId();
+        String sysShopId = null;
+        if (StringUtils.isBlank(sysShopId)) {
+            logger.info("pad端查询某个店的产品传入参数={}", "filterStr = [" + filterStr + "]");
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+            sysShopId = clerkInfo.getSysShopId();
+        }
+        if (StringUtils.isBlank(sysShopId)) {
+            logger.info("老板端查询某个店的产品传入参数={}", "filterStr = [" + filterStr + "]");
+            SysBossDTO bossInfo = UserUtils.getBossInfo();
+            sysShopId = bossInfo.getCurrentShopId();
+        }
         logger.info("查询某个店的产品列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
         ResponseDTO<HashMap<String, Object>> responseDTO = new ResponseDTO<>();
 

@@ -96,7 +96,7 @@ public class ProjectTypeController {
 
 
     /**
-     * 修改二级项目类别
+     * 批量修改二级项目类别
      */
     @RequestMapping(value = "updateTwoLevelProjectType", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -113,7 +113,15 @@ public class ProjectTypeController {
         }
         List<ShopProjectTypeDTO> shopProjectTypeDTOS = requestDTO.getRequestList();
         for (ShopProjectTypeDTO shopProjectTypeDTO : shopProjectTypeDTOS) {
-            projectService.updateProjectTypeInfo(shopProjectTypeDTO);
+            //主键为空说明是新增操作
+            if (StringUtils.isBlank(shopProjectTypeDTO.getId())) {
+                logger.info("批量修改二级项目类别新增操作={}", shopProjectTypeDTO.getProjectTypeName());
+                SysBossDTO bossInfo = UserUtils.getBossInfo();
+                projectService.saveProjectTypeInfo(shopProjectTypeDTO, bossInfo);
+            } else {
+                logger.info("批量修改二级项目类别修改操作={}", shopProjectTypeDTO.getProjectTypeName());
+                projectService.updateProjectTypeInfo(shopProjectTypeDTO);
+            }
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);

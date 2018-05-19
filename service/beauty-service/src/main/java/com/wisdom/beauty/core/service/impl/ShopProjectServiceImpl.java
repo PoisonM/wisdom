@@ -419,6 +419,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		}
 		shopProjectTypeDTO.setId(IdGen.uuid());
 		shopProjectTypeDTO.setSysShopId(bossInfo.getCurrentShopId());
+        shopProjectTypeDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
 		int selective = shopProjectTypeMapper.insertSelective(shopProjectTypeDTO);
 		return selective;
 	}

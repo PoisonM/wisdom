@@ -103,4 +103,25 @@ public interface ShopProductInfoService {
      * @return
      */
     int saveShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO);
+
+    /**
+     * 更新某个店的产品类别列表
+     *
+     * @param shopProductTypeDTOS
+     */
+    int updateProductTypeListInfo(List<ShopProductTypeDTO> shopProductTypeDTOS);
+
+    /**
+     * 更新某个店的某个产品类别
+     *
+     * @param shopProductTypeDTOS
+     */
+    int updateProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS);
+
+    /**
+     * 添加某个店的某个产品类别
+     *
+     * @param shopProductTypeDTOS
+     */
+    int saveProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS);
 }
