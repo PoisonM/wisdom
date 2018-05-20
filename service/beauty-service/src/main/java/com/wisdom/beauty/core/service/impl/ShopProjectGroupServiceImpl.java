@@ -2,15 +2,19 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoGroupRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
 import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.IdGen;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -19,8 +23,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -232,4 +238,90 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
 
         return shopProjectInfoGroupRelationMapper.selectByCriteria(relationCriteria);
     }
+
+    /**
+     * 添加套卡
+     *
+     * @param extShopProjectGroupDTO
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int saveProjectGroupInfo(ExtShopProjectGroupDTO extShopProjectGroupDTO) {
+
+        List<String> shopProjectIds = extShopProjectGroupDTO.getShopProjectIds();
+        //保存套卡
+        String groupId = IdGen.uuid();
+        String shopId = UserUtils.getBossInfo().getCurrentShopId();
+        extShopProjectGroupDTO.setCreateDate(new Date());
+        extShopProjectGroupDTO.setId(groupId);
+        extShopProjectGroupDTO.setSysShopId(shopId);
+        int insertSelective = shopProjectGroupMapper.insertSelective(extShopProjectGroupDTO);
+        //保存图片信息
+        mongoUtils.saveImageUrl(extShopProjectGroupDTO.getImages(), groupId);
+        logger.error("添加套卡执行结果，{}", "insertSelective = [" + (insertSelective > 0 ? "成功" : "失败") + "]");
+
+        if (CommonUtils.objectIsNotEmpty(shopProjectIds)) {
+            saveGroupProjectRelationInfo(extShopProjectGroupDTO, shopProjectIds, groupId, shopId);
+        }
+
+        return insertSelective;
+    }
+
+    /**
+     * 修改套卡
+     *
+     * @param extShopProjectGroupDTO
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateProjectGroupInfo(ExtShopProjectGroupDTO extShopProjectGroupDTO) {
+        logger.info("修改套卡传入参数={}", "extShopProjectGroupDTO = [" + extShopProjectGroupDTO + "]");
+        String groupDTOId = extShopProjectGroupDTO.getId();
+        if (CommonUtils.objectIsEmpty(extShopProjectGroupDTO) || StringUtils.isBlank(groupDTOId)) {
+            logger.error("修改套卡传入参数异常={}", "extShopProjectGroupDTO = [" + extShopProjectGroupDTO + "]");
+            return 0;
+        }
+        List<String> images = extShopProjectGroupDTO.getImages();
+        mongoUtils.saveImageUrl(images, groupDTOId);
+        int update = shopProjectGroupMapper.updateByPrimaryKeySelective(extShopProjectGroupDTO);
+        logger.info("修改套卡执行结果={}", update > 0 ? "成功" : "失败");
+
+        List<String> shopProjectIds = extShopProjectGroupDTO.getShopProjectIds();
+        //查询此套卡与项目的关系
+        ShopProjectInfoGroupRelationCriteria criteria = new ShopProjectInfoGroupRelationCriteria();
+        ShopProjectInfoGroupRelationCriteria.Criteria c = criteria.createCriteria();
+        c.andShopProjectGroupIdEqualTo(groupDTOId);
+        shopProjectInfoGroupRelationMapper.deleteByCriteria(criteria);
+        //不为空重新构建项目与套卡的关系
+        if (CommonUtils.objectIsNotEmpty(shopProjectIds)) {
+            String currentShopId = UserUtils.getBossInfo().getCurrentShopId();
+            saveGroupProjectRelationInfo(extShopProjectGroupDTO, shopProjectIds, groupDTOId, currentShopId);
+        }
+        return update;
+    }
+
+    private void saveGroupProjectRelationInfo(ExtShopProjectGroupDTO extShopProjectGroupDTO, List<String> shopProjectIds, String groupId, String shopId) {
+        for (String string : shopProjectIds) {
+            ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(string);
+            if (null == projectDetail) {
+                logger.error("添加套卡查询项目信息为空，{}", "projectId = [" + string + "]");
+                throw new ServiceException("添加套卡查询项目信息为空");
+            }
+            //保存项目与套卡的关系
+            ShopProjectInfoGroupRelationDTO relationDTO = new ShopProjectInfoGroupRelationDTO();
+            relationDTO.setSysShopId(shopId);
+            relationDTO.setCreateDate(new Date());
+            relationDTO.setId(IdGen.uuid());
+            relationDTO.setProjectGroupName(extShopProjectGroupDTO.getProjectGroupName());
+            relationDTO.setShopProjectGroupId(groupId);
+            relationDTO.setShopProjectInfoId(projectDetail.getId());
+            relationDTO.setShopProjectInfoName(projectDetail.getProjectName());
+            relationDTO.setShopProjectPrice(projectDetail.getMarketPrice());
+            relationDTO.setShopProjectServiceTimes(projectDetail.getServiceTimes());
+            shopProjectInfoGroupRelationMapper.insertSelective(relationDTO);
+        }
+    }
+
 }
