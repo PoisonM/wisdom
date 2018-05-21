@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.ShopClerkScheduleCriteria;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
+import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.core.mapper.ExtShopClerkScheduleMapper;
 import com.wisdom.beauty.core.mapper.ShopClerkScheduleMapper;
 import com.wisdom.beauty.core.service.ShopClerkScheduleService;
@@ -95,6 +96,17 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
         Map<String,Object> map = new HashMap<>();
         map.put("list",scheduleDTOS);
         return extShopClerkScheduleMapper.batchUpdate(map);
+    }
+
+    @Override
+    public List<ShopScheduleSettingDTO> getBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO) {
+        shopScheduleSettingDTO.setSysBossId(shopScheduleSettingDTO.getSysShopId());
+        return null;
+    }
+
+    @Override
+    public List<ShopScheduleSettingDTO> updateBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO) {
+        return null;
     }
 
 
