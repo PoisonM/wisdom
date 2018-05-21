@@ -1,4 +1,4 @@
-PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm, ImageUploadToOSS) {
+PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm, ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.param.headerCash.leftAddContent = "添加档案";
@@ -35,32 +35,34 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDi
     img.src = data
     $(img).appendTo($('#signimg'))
     //将数据显示在文本框
-    SearchRechargeConfirm.get({
-        transactionId: $state.params.transactionId,
-    }, function(data) {
-        $scope.responseData = data.responseData;
-    })
-
-    function convertBase64UrlToBlob(urlData, type) {
-        var bytes = window.atob(urlData.split(',')[1]);
-        //去掉url的头，并转换为byte
-        //处理异常,将ascii码小于0的转换为大于0
-        var ab = new ArrayBuffer(bytes.length);
-        var ia = new Uint8Array(ab);
-        for (var i = 0; i < bytes.length; i++) {
-            ia[i] = bytes.charCodeAt(i);
-        }
-        return new Blob([ab], { type: 'image/' + type });
+    if ($state.params.transactionId != '') {
+        SearchRechargeConfirm.get({
+            transactionId: $state.params.transactionId,
+        }, function(data) {
+            $scope.responseData = data.responseData;
+        })
+    } else if ($state.params.orderId != '') {
+        GetShopUserRecentlyOrderInfo.get({
+            orderId: $state.params.orderId,
+            sysUserId: '110'
+        }, function(data) {
+            console.log(data)
+        })
     }
 
-    $scope.clickOk = function() {
 
-        /*RechargeCardSignConfirm.get({
-            transactionId: $state.params.transactionId,
-            //图片base64流是data
-            imageUrl: 'http://dizmix.com/upload/534bef3095584e9893511c45753e5c21_WechatIMG96.jpeg',
-        }, function(data) {
-            $state.go("pad-web.left_nav.personalFile");
-        })*/
+
+    $scope.clickOk = function() {
+        ImageBase64UploadToOSS.save({ imageStr: $("#signConfirmRight").jSignature("getData") }, function(data) {
+            RechargeCardSignConfirm.get({
+                transactionId: $state.params.transactionId,
+                //图片base64流是data
+                imageUrl: 'http://dizmix.com/upload/534bef3095584e9893511c45753e5c21_WechatIMG96.jpeg',
+            }, function(data) {
+                $state.go("pad-web.left_nav.personalFile");
+            })
+        })
+
+
     }
 });
