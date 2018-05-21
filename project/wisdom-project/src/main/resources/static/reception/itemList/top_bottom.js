@@ -71,7 +71,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         if(type == "yuyue"){
             $state.go("pad-web.dayAppointment")
         }else if(type == "shouyin"){
-            $state.go("pad-web.left_nav.personalFile")
+            $state.go("pad-web.left_nav.blankPage")
         }else if(type == "kaoqin"){
             $state.go("pad-web.attendance")
         }else if(type =="jiamubiao"){

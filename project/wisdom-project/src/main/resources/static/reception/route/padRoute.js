@@ -323,6 +323,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.blankPage', {
+            url: '/blankPage',
+            templateUrl: root + '/cashier/blankPage.html',
+            controller: 'blankPageCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "空白",
+                        files: [root + "cashier/blankPage.js",
+                            root + "cashier/blankPage.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.accountDetails', {
             url: '/accountDetails/:flowNo',
             templateUrl: root + '/cashier/accountDetails.html',
@@ -1025,7 +1040,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "../libs/swiper-3.4.0.min.js",
                             //root + "../styles/swiper-3.4.0.min.css",
                             root + "../libs/zepto.min.js",
-
+                            "libs/fixedTab.js"
                         ]
                     })
                 }]
