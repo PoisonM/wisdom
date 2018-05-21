@@ -1,7 +1,9 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ClosePositionTypeEnum;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
+import com.wisdom.beauty.api.responseDto.ShopClosePositionResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopCheckRecordMapper;
@@ -15,11 +17,13 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +123,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         shopStockNumberDTO.setActualStockNumber(shopClosePositionRequestDTO.getActualStockNumber());
         shopStockNumberDTO.setShopProcId(shopClosePositionRequestDTO.getShopProcId());
         shopStockNumberDTO.setShopStoreId(shopClosePositionRequestDTO.getShopStoreId());
+        shopStockNumberDTO.setUpdateDate(new Date());
         shopStockService.updateStockNumber(shopStockNumberDTO);
         //插入平仓记录
         ShopClosePositionRecordDTO shopClosePositionRecordDTO=new ShopClosePositionRecordDTO();
@@ -129,6 +134,39 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         //暂时先随机生成一个数，需要根据需求修改到底生成什么样子的数据
         shopClosePositionRecordDTO.setFlowNo(IdGen.uuid());
         shopClosePositionRecordDTO.setId(IdGen.uuid());
-        return shopClosePositionRecordMapper.insertSelective(shopClosePositionRecordDTO);
+        shopClosePositionRecordDTO.setCreateDate(new Date());
+        shopClosePositionRecordDTO.setUpdateDate(new Date());
+        shopClosePositionRecordMapper.insertSelective(shopClosePositionRecordDTO);
+        //更新盘点记录表，1.更新盘点记录字段shopClosePositionId  2.更新平仓状态 state
+        ShopCheckRecordDTO shopCheckRecordDTO=new ShopCheckRecordDTO();
+        shopCheckRecordDTO.setId(shopClosePositionRequestDTO.getShopCheckRecorId());
+        shopCheckRecordDTO.setState(ClosePositionTypeEnum.CLOSE_POSITION_YES.getCode());
+        shopCheckRecordDTO.setShopClosePositionId(shopClosePositionRecordDTO.getId());
+        return shopCheckRecordMapper.updateByPrimaryKeySelective(shopCheckRecordDTO);
+    }
+
+    @Override
+    public ShopClosePositionRecordDTO getShopClosePositionDetail(String id,String productName,String productTypeName) {
+         logger.info("getshopClosePositionRecordDTO方法传入的参数id={},productName={},productTypeName={}",id,productName,productTypeName);
+         if(StringUtils.isBlank(id)){
+             return  null;
+         }
+        ShopClosePositionRecordDTO shopClosePositionRecordDTO= shopClosePositionRecordMapper.selectByPrimaryKey(id);
+        ShopClosePositionResponseDTO shopClosePositionResponseDTO=new ShopClosePositionResponseDTO();
+        BeanUtils.copyProperties(shopClosePositionRecordDTO,shopClosePositionResponseDTO);
+        Integer differenceNumber=shopClosePositionRecordDTO.getActualStockNumber()-shopClosePositionRecordDTO.getStockNumber();
+        shopClosePositionResponseDTO.setDifferenceNumber(Math.abs(differenceNumber));
+        if(differenceNumber>0){
+            //实际库存大于库存， 盘盈
+            shopClosePositionResponseDTO.setState(ClosePositionTypeEnum.INVENTORY_PROFIT.getCode());
+
+        }
+        if(differenceNumber>0){
+            //实际库存小于库存 盘亏
+            shopClosePositionResponseDTO.setState(ClosePositionTypeEnum.INVENTORY_LOSS.getCode());
+        }
+        shopClosePositionResponseDTO.setProductName(productName);
+        shopClosePositionResponseDTO.setProductTypeName(productTypeName);
+        return shopClosePositionResponseDTO;
     }
 }

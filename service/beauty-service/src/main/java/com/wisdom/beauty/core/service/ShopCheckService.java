@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
+import com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 
 import java.util.List;
@@ -35,4 +36,12 @@ public interface ShopCheckService {
     *@Date:2018/5/21 14:48
     */
     int doClosePosition(ShopClosePositionRequestDTO shopClosePositionRequestDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:   平仓详情
+    *@Date:2018/5/21 16:00
+    */
+    ShopClosePositionRecordDTO getShopClosePositionDetail(String id,String productName,String productTypeName);
 }
