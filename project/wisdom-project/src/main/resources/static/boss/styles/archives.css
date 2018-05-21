@@ -133,6 +133,7 @@ img {display: inline-block}
 .Character{border:solid 1px gainsboro;color:#666666;}
 .commonType{border: 1px solid #DDDDDD;border-radius: 4px;font-size: 13px;color: #888888;}
 .activeType{border: 1px solid #FF6666;border-radius: 4px;font-size: 13px;color: #333;}
+.textL{text-align: right}
 
 
 

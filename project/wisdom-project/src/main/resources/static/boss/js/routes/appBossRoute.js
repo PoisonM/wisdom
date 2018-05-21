@@ -639,7 +639,7 @@ define(['appBoss'], function(app){
                     })
                 /*修改门店*/
                     .state('amendStore', {
-                        url: '/amendStore',
+                        url: '/amendStore/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'amendStoreCtrl',
                         resolve: {
