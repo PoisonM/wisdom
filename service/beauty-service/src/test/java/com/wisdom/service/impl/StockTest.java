@@ -5,10 +5,12 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
+import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
+import com.wisdom.beauty.core.service.ShopCheckService;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
@@ -60,6 +62,8 @@ public class StockTest  {
 
     @Autowired
     private ExtShopUserConsumeRecordMapper extShopUserConsumeRecordMapper;
+    @Autowired
+    private ShopCheckService shopCheckService;
 
     @Before
     public void setupMockMvc() throws Exception {
@@ -183,5 +187,14 @@ public class StockTest  {
         shopStockNumberDTO.setShopStoreId("651742081");
         shopStockNumberDTO.setActualStockNumber(333433);
         shopStockService.checkProduct(shopStockNumberDTO);
+    }
+    @Test
+    public  void  pingcang(){
+        ShopClosePositionRequestDTO shopClosePositionRequestDTO=new ShopClosePositionRequestDTO();
+        shopClosePositionRequestDTO.setShopProcId("6");
+        shopClosePositionRequestDTO.setShopStoreId("651742081");
+        shopClosePositionRequestDTO.setActualStockNumber(8585);
+        shopClosePositionRequestDTO.setOriginalFlowNo("d");
+        shopCheckService.doClosePosition(shopClosePositionRequestDTO);
     }
 }

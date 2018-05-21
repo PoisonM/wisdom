@@ -1,7 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
-import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
+import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +27,12 @@ public interface ShopCheckService {
     *@Date:2018/5/21 10:10
     */
     Map<String ,Object> getProductCheckRecordDeatil(ShopCheckRecordDTO shopCheckRecordDTO);
+    /**
+    *@Author:平仓
+    *@Param:
+    *@Return:
+    *@Description:
+    *@Date:2018/5/21 14:48
+    */
+    int doClosePosition(ShopClosePositionRequestDTO shopClosePositionRequestDTO);
 }

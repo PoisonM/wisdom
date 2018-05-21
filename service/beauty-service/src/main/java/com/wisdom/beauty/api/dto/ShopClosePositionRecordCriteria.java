@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ShopCheckRecordCriteria {
+public class ShopClosePositionRecordCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -15,7 +15,7 @@ public class ShopCheckRecordCriteria {
 
     protected int pageSize = -1;
 
-    public ShopCheckRecordCriteria() {
+    public ShopClosePositionRecordCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -195,353 +195,213 @@ public class ShopCheckRecordCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdIsNull() {
-            addCriterion("shop_store_id is null");
+        public Criteria andFlowNoIsNull() {
+            addCriterion("flow_no is null");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdIsNotNull() {
-            addCriterion("shop_store_id is not null");
+        public Criteria andFlowNoIsNotNull() {
+            addCriterion("flow_no is not null");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdEqualTo(String value) {
-            addCriterion("shop_store_id =", value, "shopStoreId");
+        public Criteria andFlowNoEqualTo(String value) {
+            addCriterion("flow_no =", value, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdNotEqualTo(String value) {
-            addCriterion("shop_store_id <>", value, "shopStoreId");
+        public Criteria andFlowNoNotEqualTo(String value) {
+            addCriterion("flow_no <>", value, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdGreaterThan(String value) {
-            addCriterion("shop_store_id >", value, "shopStoreId");
+        public Criteria andFlowNoGreaterThan(String value) {
+            addCriterion("flow_no >", value, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdGreaterThanOrEqualTo(String value) {
-            addCriterion("shop_store_id >=", value, "shopStoreId");
+        public Criteria andFlowNoGreaterThanOrEqualTo(String value) {
+            addCriterion("flow_no >=", value, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdLessThan(String value) {
-            addCriterion("shop_store_id <", value, "shopStoreId");
+        public Criteria andFlowNoLessThan(String value) {
+            addCriterion("flow_no <", value, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdLessThanOrEqualTo(String value) {
-            addCriterion("shop_store_id <=", value, "shopStoreId");
+        public Criteria andFlowNoLessThanOrEqualTo(String value) {
+            addCriterion("flow_no <=", value, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdLike(String value) {
-            addCriterion("shop_store_id like", value, "shopStoreId");
+        public Criteria andFlowNoLike(String value) {
+            addCriterion("flow_no like", value, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdNotLike(String value) {
-            addCriterion("shop_store_id not like", value, "shopStoreId");
+        public Criteria andFlowNoNotLike(String value) {
+            addCriterion("flow_no not like", value, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdIn(List<String> values) {
-            addCriterion("shop_store_id in", values, "shopStoreId");
+        public Criteria andFlowNoIn(List<String> values) {
+            addCriterion("flow_no in", values, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdNotIn(List<String> values) {
-            addCriterion("shop_store_id not in", values, "shopStoreId");
+        public Criteria andFlowNoNotIn(List<String> values) {
+            addCriterion("flow_no not in", values, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdBetween(String value1, String value2) {
-            addCriterion("shop_store_id between", value1, value2, "shopStoreId");
+        public Criteria andFlowNoBetween(String value1, String value2) {
+            addCriterion("flow_no between", value1, value2, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopStoreIdNotBetween(String value1, String value2) {
-            addCriterion("shop_store_id not between", value1, value2, "shopStoreId");
+        public Criteria andFlowNoNotBetween(String value1, String value2) {
+            addCriterion("flow_no not between", value1, value2, "flowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateIsNull() {
-            addCriterion("state is null");
+        public Criteria andOriginalFlowNoIsNull() {
+            addCriterion("original_flow_no is null");
             return (Criteria) this;
         }
 
-        public Criteria andStateIsNotNull() {
-            addCriterion("state is not null");
+        public Criteria andOriginalFlowNoIsNotNull() {
+            addCriterion("original_flow_no is not null");
             return (Criteria) this;
         }
 
-        public Criteria andStateEqualTo(String value) {
-            addCriterion("state =", value, "state");
+        public Criteria andOriginalFlowNoEqualTo(String value) {
+            addCriterion("original_flow_no =", value, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotEqualTo(String value) {
-            addCriterion("state <>", value, "state");
+        public Criteria andOriginalFlowNoNotEqualTo(String value) {
+            addCriterion("original_flow_no <>", value, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateGreaterThan(String value) {
-            addCriterion("state >", value, "state");
+        public Criteria andOriginalFlowNoGreaterThan(String value) {
+            addCriterion("original_flow_no >", value, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateGreaterThanOrEqualTo(String value) {
-            addCriterion("state >=", value, "state");
+        public Criteria andOriginalFlowNoGreaterThanOrEqualTo(String value) {
+            addCriterion("original_flow_no >=", value, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateLessThan(String value) {
-            addCriterion("state <", value, "state");
+        public Criteria andOriginalFlowNoLessThan(String value) {
+            addCriterion("original_flow_no <", value, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateLessThanOrEqualTo(String value) {
-            addCriterion("state <=", value, "state");
+        public Criteria andOriginalFlowNoLessThanOrEqualTo(String value) {
+            addCriterion("original_flow_no <=", value, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateLike(String value) {
-            addCriterion("state like", value, "state");
+        public Criteria andOriginalFlowNoLike(String value) {
+            addCriterion("original_flow_no like", value, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotLike(String value) {
-            addCriterion("state not like", value, "state");
+        public Criteria andOriginalFlowNoNotLike(String value) {
+            addCriterion("original_flow_no not like", value, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateIn(List<String> values) {
-            addCriterion("state in", values, "state");
+        public Criteria andOriginalFlowNoIn(List<String> values) {
+            addCriterion("original_flow_no in", values, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotIn(List<String> values) {
-            addCriterion("state not in", values, "state");
+        public Criteria andOriginalFlowNoNotIn(List<String> values) {
+            addCriterion("original_flow_no not in", values, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateBetween(String value1, String value2) {
-            addCriterion("state between", value1, value2, "state");
+        public Criteria andOriginalFlowNoBetween(String value1, String value2) {
+            addCriterion("original_flow_no between", value1, value2, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotBetween(String value1, String value2) {
-            addCriterion("state not between", value1, value2, "state");
+        public Criteria andOriginalFlowNoNotBetween(String value1, String value2) {
+            addCriterion("original_flow_no not between", value1, value2, "originalFlowNo");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdIsNull() {
-            addCriterion("shop_boss_id is null");
+        public Criteria andManagerIdIsNull() {
+            addCriterion("manager_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdIsNotNull() {
-            addCriterion("shop_boss_id is not null");
+        public Criteria andManagerIdIsNotNull() {
+            addCriterion("manager_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdEqualTo(String value) {
-            addCriterion("shop_boss_id =", value, "shopBossId");
+        public Criteria andManagerIdEqualTo(String value) {
+            addCriterion("manager_id =", value, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdNotEqualTo(String value) {
-            addCriterion("shop_boss_id <>", value, "shopBossId");
+        public Criteria andManagerIdNotEqualTo(String value) {
+            addCriterion("manager_id <>", value, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdGreaterThan(String value) {
-            addCriterion("shop_boss_id >", value, "shopBossId");
+        public Criteria andManagerIdGreaterThan(String value) {
+            addCriterion("manager_id >", value, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdGreaterThanOrEqualTo(String value) {
-            addCriterion("shop_boss_id >=", value, "shopBossId");
+        public Criteria andManagerIdGreaterThanOrEqualTo(String value) {
+            addCriterion("manager_id >=", value, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdLessThan(String value) {
-            addCriterion("shop_boss_id <", value, "shopBossId");
+        public Criteria andManagerIdLessThan(String value) {
+            addCriterion("manager_id <", value, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdLessThanOrEqualTo(String value) {
-            addCriterion("shop_boss_id <=", value, "shopBossId");
+        public Criteria andManagerIdLessThanOrEqualTo(String value) {
+            addCriterion("manager_id <=", value, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdLike(String value) {
-            addCriterion("shop_boss_id like", value, "shopBossId");
+        public Criteria andManagerIdLike(String value) {
+            addCriterion("manager_id like", value, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdNotLike(String value) {
-            addCriterion("shop_boss_id not like", value, "shopBossId");
+        public Criteria andManagerIdNotLike(String value) {
+            addCriterion("manager_id not like", value, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdIn(List<String> values) {
-            addCriterion("shop_boss_id in", values, "shopBossId");
+        public Criteria andManagerIdIn(List<String> values) {
+            addCriterion("manager_id in", values, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdNotIn(List<String> values) {
-            addCriterion("shop_boss_id not in", values, "shopBossId");
+        public Criteria andManagerIdNotIn(List<String> values) {
+            addCriterion("manager_id not in", values, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdBetween(String value1, String value2) {
-            addCriterion("shop_boss_id between", value1, value2, "shopBossId");
+        public Criteria andManagerIdBetween(String value1, String value2) {
+            addCriterion("manager_id between", value1, value2, "managerId");
             return (Criteria) this;
         }
 
-        public Criteria andShopBossIdNotBetween(String value1, String value2) {
-            addCriterion("shop_boss_id not between", value1, value2, "shopBossId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdIsNull() {
-            addCriterion("shop_close_position_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdIsNotNull() {
-            addCriterion("shop_close_position_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdEqualTo(String value) {
-            addCriterion("shop_close_position_id =", value, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdNotEqualTo(String value) {
-            addCriterion("shop_close_position_id <>", value, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdGreaterThan(String value) {
-            addCriterion("shop_close_position_id >", value, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdGreaterThanOrEqualTo(String value) {
-            addCriterion("shop_close_position_id >=", value, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdLessThan(String value) {
-            addCriterion("shop_close_position_id <", value, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdLessThanOrEqualTo(String value) {
-            addCriterion("shop_close_position_id <=", value, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdLike(String value) {
-            addCriterion("shop_close_position_id like", value, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdNotLike(String value) {
-            addCriterion("shop_close_position_id not like", value, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdIn(List<String> values) {
-            addCriterion("shop_close_position_id in", values, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdNotIn(List<String> values) {
-            addCriterion("shop_close_position_id not in", values, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdBetween(String value1, String value2) {
-            addCriterion("shop_close_position_id between", value1, value2, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopClosePositionIdNotBetween(String value1, String value2) {
-            addCriterion("shop_close_position_id not between", value1, value2, "shopClosePositionId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdIsNull() {
-            addCriterion("shop_stock_number_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdIsNotNull() {
-            addCriterion("shop_stock_number_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdEqualTo(String value) {
-            addCriterion("shop_stock_number_id =", value, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdNotEqualTo(String value) {
-            addCriterion("shop_stock_number_id <>", value, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdGreaterThan(String value) {
-            addCriterion("shop_stock_number_id >", value, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdGreaterThanOrEqualTo(String value) {
-            addCriterion("shop_stock_number_id >=", value, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdLessThan(String value) {
-            addCriterion("shop_stock_number_id <", value, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdLessThanOrEqualTo(String value) {
-            addCriterion("shop_stock_number_id <=", value, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdLike(String value) {
-            addCriterion("shop_stock_number_id like", value, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdNotLike(String value) {
-            addCriterion("shop_stock_number_id not like", value, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdIn(List<String> values) {
-            addCriterion("shop_stock_number_id in", values, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdNotIn(List<String> values) {
-            addCriterion("shop_stock_number_id not in", values, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdBetween(String value1, String value2) {
-            addCriterion("shop_stock_number_id between", value1, value2, "shopStockNumberId");
-            return (Criteria) this;
-        }
-
-        public Criteria andShopStockNumberIdNotBetween(String value1, String value2) {
-            addCriterion("shop_stock_number_id not between", value1, value2, "shopStockNumberId");
+        public Criteria andManagerIdNotBetween(String value1, String value2) {
+            addCriterion("manager_id not between", value1, value2, "managerId");
             return (Criteria) this;
         }
 
@@ -615,73 +475,193 @@ public class ShopCheckRecordCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdIsNull() {
-            addCriterion("manager_id is null");
+        public Criteria andStockNumberIsNull() {
+            addCriterion("stock_number is null");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdIsNotNull() {
-            addCriterion("manager_id is not null");
+        public Criteria andStockNumberIsNotNull() {
+            addCriterion("stock_number is not null");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdEqualTo(String value) {
-            addCriterion("manager_id =", value, "managerId");
+        public Criteria andStockNumberEqualTo(Integer value) {
+            addCriterion("stock_number =", value, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdNotEqualTo(String value) {
-            addCriterion("manager_id <>", value, "managerId");
+        public Criteria andStockNumberNotEqualTo(Integer value) {
+            addCriterion("stock_number <>", value, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdGreaterThan(String value) {
-            addCriterion("manager_id >", value, "managerId");
+        public Criteria andStockNumberGreaterThan(Integer value) {
+            addCriterion("stock_number >", value, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdGreaterThanOrEqualTo(String value) {
-            addCriterion("manager_id >=", value, "managerId");
+        public Criteria andStockNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("stock_number >=", value, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdLessThan(String value) {
-            addCriterion("manager_id <", value, "managerId");
+        public Criteria andStockNumberLessThan(Integer value) {
+            addCriterion("stock_number <", value, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdLessThanOrEqualTo(String value) {
-            addCriterion("manager_id <=", value, "managerId");
+        public Criteria andStockNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("stock_number <=", value, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdLike(String value) {
-            addCriterion("manager_id like", value, "managerId");
+        public Criteria andStockNumberIn(List<Integer> values) {
+            addCriterion("stock_number in", values, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdNotLike(String value) {
-            addCriterion("manager_id not like", value, "managerId");
+        public Criteria andStockNumberNotIn(List<Integer> values) {
+            addCriterion("stock_number not in", values, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdIn(List<String> values) {
-            addCriterion("manager_id in", values, "managerId");
+        public Criteria andStockNumberBetween(Integer value1, Integer value2) {
+            addCriterion("stock_number between", value1, value2, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdNotIn(List<String> values) {
-            addCriterion("manager_id not in", values, "managerId");
+        public Criteria andStockNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("stock_number not between", value1, value2, "stockNumber");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdBetween(String value1, String value2) {
-            addCriterion("manager_id between", value1, value2, "managerId");
+        public Criteria andActualStockNumberIsNull() {
+            addCriterion("actual_stock_number is null");
             return (Criteria) this;
         }
 
-        public Criteria andManagerIdNotBetween(String value1, String value2) {
-            addCriterion("manager_id not between", value1, value2, "managerId");
+        public Criteria andActualStockNumberIsNotNull() {
+            addCriterion("actual_stock_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberEqualTo(Integer value) {
+            addCriterion("actual_stock_number =", value, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberNotEqualTo(Integer value) {
+            addCriterion("actual_stock_number <>", value, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberGreaterThan(Integer value) {
+            addCriterion("actual_stock_number >", value, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("actual_stock_number >=", value, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberLessThan(Integer value) {
+            addCriterion("actual_stock_number <", value, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("actual_stock_number <=", value, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberIn(List<Integer> values) {
+            addCriterion("actual_stock_number in", values, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberNotIn(List<Integer> values) {
+            addCriterion("actual_stock_number not in", values, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberBetween(Integer value1, Integer value2) {
+            addCriterion("actual_stock_number between", value1, value2, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andActualStockNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("actual_stock_number not between", value1, value2, "actualStockNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIsNull() {
+            addCriterion("detail is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIsNotNull() {
+            addCriterion("detail is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEqualTo(String value) {
+            addCriterion("detail =", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotEqualTo(String value) {
+            addCriterion("detail <>", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailGreaterThan(String value) {
+            addCriterion("detail >", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailGreaterThanOrEqualTo(String value) {
+            addCriterion("detail >=", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLessThan(String value) {
+            addCriterion("detail <", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLessThanOrEqualTo(String value) {
+            addCriterion("detail <=", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLike(String value) {
+            addCriterion("detail like", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotLike(String value) {
+            addCriterion("detail not like", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIn(List<String> values) {
+            addCriterion("detail in", values, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotIn(List<String> values) {
+            addCriterion("detail not in", values, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailBetween(String value1, String value2) {
+            addCriterion("detail between", value1, value2, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotBetween(String value1, String value2) {
+            addCriterion("detail not between", value1, value2, "detail");
             return (Criteria) this;
         }
 

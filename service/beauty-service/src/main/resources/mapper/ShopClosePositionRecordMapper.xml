@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wisdom.beauty.core.mapper.ShopCheckRecordMapper" >
-  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopClosePositionRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="CHAR" />
-    <result column="shop_boss_id" property="shopBossId" jdbcType="VARCHAR" />
-    <result column="shop_close_position_id" property="shopClosePositionId" jdbcType="VARCHAR" />
-    <result column="shop_stock_number_id" property="shopStockNumberId" jdbcType="VARCHAR" />
-    <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR" />
+    <result column="flow_no" property="flowNo" jdbcType="VARCHAR" />
+    <result column="original_flow_no" property="originalFlowNo" jdbcType="VARCHAR" />
     <result column="manager_id" property="managerId" jdbcType="VARCHAR" />
+    <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR" />
+    <result column="stock_number" property="stockNumber" jdbcType="INTEGER" />
+    <result column="actual_stock_number" property="actualStockNumber" jdbcType="INTEGER" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -72,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_store_id, state, shop_boss_id, shop_close_position_id, shop_stock_number_id, 
-    shop_proc_id, manager_id, create_date, update_date
+    id, flow_no, original_flow_no, manager_id, shop_proc_id, stock_number, actual_stock_number, 
+    detail, create_date, update_date
   </sql>
-  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordCriteria" >
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopClosePositionRecordCriteria" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from shop_check_record
+    from shop_close_position_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,55 +95,55 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from shop_check_record
+    from shop_close_position_record
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from shop_check_record
+    delete from shop_close_position_record
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordCriteria" >
-    delete from shop_check_record
+  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopClosePositionRecordCriteria" >
+    delete from shop_close_position_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
-    insert into shop_check_record (id, shop_store_id, state, 
-      shop_boss_id, shop_close_position_id, shop_stock_number_id, 
-      shop_proc_id, manager_id, create_date, 
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO" >
+    insert into shop_close_position_record (id, flow_no, original_flow_no, 
+      manager_id, shop_proc_id, stock_number, 
+      actual_stock_number, detail, create_date, 
       update_date)
-    values (#{id,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, #{state,jdbcType=CHAR}, 
-      #{shopBossId,jdbcType=VARCHAR}, #{shopClosePositionId,jdbcType=VARCHAR}, #{shopStockNumberId,jdbcType=VARCHAR}, 
-      #{shopProcId,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=VARCHAR}, #{flowNo,jdbcType=VARCHAR}, #{originalFlowNo,jdbcType=VARCHAR}, 
+      #{managerId,jdbcType=VARCHAR}, #{shopProcId,jdbcType=VARCHAR}, #{stockNumber,jdbcType=INTEGER}, 
+      #{actualStockNumber,jdbcType=INTEGER}, #{detail,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
-    insert into shop_check_record
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO" >
+    insert into shop_close_position_record
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="shopStoreId != null" >
-        shop_store_id,
+      <if test="flowNo != null" >
+        flow_no,
       </if>
-      <if test="state != null" >
-        state,
+      <if test="originalFlowNo != null" >
+        original_flow_no,
       </if>
-      <if test="shopBossId != null" >
-        shop_boss_id,
-      </if>
-      <if test="shopClosePositionId != null" >
-        shop_close_position_id,
-      </if>
-      <if test="shopStockNumberId != null" >
-        shop_stock_number_id,
+      <if test="managerId != null" >
+        manager_id,
       </if>
       <if test="shopProcId != null" >
         shop_proc_id,
       </if>
-      <if test="managerId != null" >
-        manager_id,
+      <if test="stockNumber != null" >
+        stock_number,
+      </if>
+      <if test="actualStockNumber != null" >
+        actual_stock_number,
+      </if>
+      <if test="detail != null" >
+        detail,
       </if>
       <if test="createDate != null" >
         create_date,
@@ -156,26 +156,26 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="shopStoreId != null" >
-        #{shopStoreId,jdbcType=VARCHAR},
+      <if test="flowNo != null" >
+        #{flowNo,jdbcType=VARCHAR},
       </if>
-      <if test="state != null" >
-        #{state,jdbcType=CHAR},
+      <if test="originalFlowNo != null" >
+        #{originalFlowNo,jdbcType=VARCHAR},
       </if>
-      <if test="shopBossId != null" >
-        #{shopBossId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopClosePositionId != null" >
-        #{shopClosePositionId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopStockNumberId != null" >
-        #{shopStockNumberId,jdbcType=VARCHAR},
+      <if test="managerId != null" >
+        #{managerId,jdbcType=VARCHAR},
       </if>
       <if test="shopProcId != null" >
         #{shopProcId,jdbcType=VARCHAR},
       </if>
-      <if test="managerId != null" >
-        #{managerId,jdbcType=VARCHAR},
+      <if test="stockNumber != null" >
+        #{stockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="actualStockNumber != null" >
+        #{actualStockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
       </if>
       <if test="createDate != null" >
         #{createDate,jdbcType=TIMESTAMP},
@@ -185,38 +185,38 @@
       </if>
     </trim>
   </insert>
-  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordCriteria" resultType="java.lang.Integer" >
-    select count(1) from shop_check_record
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopClosePositionRecordCriteria" resultType="java.lang.Integer" >
+    select count(1) from shop_close_position_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByCriteriaSelective" parameterType="map" >
-    update shop_check_record
+    update shop_close_position_record
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopStoreId != null" >
-        shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
+      <if test="record.flowNo != null" >
+        flow_no = #{record.flowNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.state != null" >
-        state = #{record.state,jdbcType=CHAR},
+      <if test="record.originalFlowNo != null" >
+        original_flow_no = #{record.originalFlowNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopBossId != null" >
-        shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.shopClosePositionId != null" >
-        shop_close_position_id = #{record.shopClosePositionId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.shopStockNumberId != null" >
-        shop_stock_number_id = #{record.shopStockNumberId,jdbcType=VARCHAR},
+      <if test="record.managerId != null" >
+        manager_id = #{record.managerId,jdbcType=VARCHAR},
       </if>
       <if test="record.shopProcId != null" >
         shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
       </if>
-      <if test="record.managerId != null" >
-        manager_id = #{record.managerId,jdbcType=VARCHAR},
+      <if test="record.stockNumber != null" >
+        stock_number = #{record.stockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.actualStockNumber != null" >
+        actual_stock_number = #{record.actualStockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.detail != null" >
+        detail = #{record.detail,jdbcType=VARCHAR},
       </if>
       <if test="record.createDate != null" >
         create_date = #{record.createDate,jdbcType=TIMESTAMP},
@@ -230,44 +230,44 @@
     </if>
   </update>
   <update id="updateByCriteria" parameterType="map" >
-    update shop_check_record
+    update shop_close_position_record
     set id = #{record.id,jdbcType=VARCHAR},
-      shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
-      state = #{record.state,jdbcType=CHAR},
-      shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
-      shop_close_position_id = #{record.shopClosePositionId,jdbcType=VARCHAR},
-      shop_stock_number_id = #{record.shopStockNumberId,jdbcType=VARCHAR},
-      shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
+      flow_no = #{record.flowNo,jdbcType=VARCHAR},
+      original_flow_no = #{record.originalFlowNo,jdbcType=VARCHAR},
       manager_id = #{record.managerId,jdbcType=VARCHAR},
+      shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
+      stock_number = #{record.stockNumber,jdbcType=INTEGER},
+      actual_stock_number = #{record.actualStockNumber,jdbcType=INTEGER},
+      detail = #{record.detail,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       update_date = #{record.updateDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
-    update shop_check_record
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO" >
+    update shop_close_position_record
     <set >
-      <if test="shopStoreId != null" >
-        shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
+      <if test="flowNo != null" >
+        flow_no = #{flowNo,jdbcType=VARCHAR},
       </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=CHAR},
+      <if test="originalFlowNo != null" >
+        original_flow_no = #{originalFlowNo,jdbcType=VARCHAR},
       </if>
-      <if test="shopBossId != null" >
-        shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopClosePositionId != null" >
-        shop_close_position_id = #{shopClosePositionId,jdbcType=VARCHAR},
-      </if>
-      <if test="shopStockNumberId != null" >
-        shop_stock_number_id = #{shopStockNumberId,jdbcType=VARCHAR},
+      <if test="managerId != null" >
+        manager_id = #{managerId,jdbcType=VARCHAR},
       </if>
       <if test="shopProcId != null" >
         shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
       </if>
-      <if test="managerId != null" >
-        manager_id = #{managerId,jdbcType=VARCHAR},
+      <if test="stockNumber != null" >
+        stock_number = #{stockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="actualStockNumber != null" >
+        actual_stock_number = #{actualStockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=VARCHAR},
       </if>
       <if test="createDate != null" >
         create_date = #{createDate,jdbcType=TIMESTAMP},
@@ -278,15 +278,15 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
-    update shop_check_record
-    set shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
-      state = #{state,jdbcType=CHAR},
-      shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
-      shop_close_position_id = #{shopClosePositionId,jdbcType=VARCHAR},
-      shop_stock_number_id = #{shopStockNumberId,jdbcType=VARCHAR},
-      shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO" >
+    update shop_close_position_record
+    set flow_no = #{flowNo,jdbcType=VARCHAR},
+      original_flow_no = #{originalFlowNo,jdbcType=VARCHAR},
       manager_id = #{managerId,jdbcType=VARCHAR},
+      shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
+      stock_number = #{stockNumber,jdbcType=INTEGER},
+      actual_stock_number = #{actualStockNumber,jdbcType=INTEGER},
+      detail = #{detail,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
