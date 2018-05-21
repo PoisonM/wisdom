@@ -10,11 +10,8 @@ angular.module('controllers',[]).controller('productBrandCtrl',
             $scope.addSeriesGo = function(){
                 $state.go("addSeries")
             };
-            $scope.addBrandOneGo = function(){
-                $state.go("addBrandOne")
-            };
-            $scope.checkProduct=function () {
-                $state.go("addBrandOne")
+            $scope.addBrandOneGo = function(type,id){
+                $state.go("productSetting",{type:type,id:id});
             };
             $scope.checkSeries=function () {
                 $state.go("addSeries")

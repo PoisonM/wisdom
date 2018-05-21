@@ -2,7 +2,7 @@
     <ion-content>
         <div class="list" ng-repeat="item in productBrand">
             <div ng-repeat="(key,val) in item">
-                <li class="item p10" ng-click="checkProduct()" >
+                <li class="item p10" ng-click="addBrandOneGo('edit',item.id)">
                     <span STYLE="width: 2px;height: 20px;display: inline-block;background: #FF6666;"></span>
                     <span class="fs17 col33 ml10">{{key}}</span>
                     <span class="fr col88 fs14" ng-repeat="(keys,vals) in val " ng-if="index == 0">{{vals.status}}<i class="ion ion-ios-arrow-right ml10"></i></span>
@@ -14,11 +14,9 @@ border-radius: 6px;margin: 5px;font-size: 11px;" ng-repeat="(keys,vals) in val">
             </div>
 
         </div>
-       <!-- <div class="list">
+        <div class="list">
             <li class="item p10">
-                <span STYLE="width: 2px;height: 20px;display: inline-block;background: #FF6666;"></span>
-                <span class="fs17 col33 ml10">如新</span>
-                <span class="fr col88 fs14">已禁用<i class="ion ion-ios-arrow-right ml10"></i></span>
+                <span STYLE="width: 2px;height: 20px;display: inline-block;background: #FF6666;"></span><span class="fs17 col33 ml10">如新</span><span class="fr col88 fs14">已禁用<i class="ion ion-ios-arrow-right ml10"></i></span>
             </li>
             <li class="item p5" style="display: flex;flex-wrap: wrap">
                   <span style="height: 23px;background: #F6F6F6;color: #333333;padding: 5px;border: 0 solid #E5E5E5;
@@ -35,9 +33,9 @@ border-radius: 6px;margin: 5px;font-size: 11px;" ng-repeat="item in [1,2]">纯�
                       添加产品类别
                   </span>
             </li>
-        </div>-->
+        </div>
     </ion-content>
-    <div class="bar bar-footer bar-assertive" ng-click="addBrandOneGo()">
+    <div class="bar bar-footer bar-assertive"ng-click="addBrandOneGo('add','')">
         <div class="title" >添加</div>
     </div>
 </ion-view>
