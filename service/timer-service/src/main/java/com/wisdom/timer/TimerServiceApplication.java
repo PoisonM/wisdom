@@ -36,15 +36,15 @@ public class TimerServiceApplication {
 		weixinServiceClient.updateUserWeixinToken();
 //
 //		//初始化时处理未支付的订单
-		businessRunTimeService.autoProcessNoPayRecordData();
+//		businessRunTimeService.autoProcessNoPayRecordData();
 
-
-		try {
-			/*businessRunTimeService.autoMonthlyIncomeCalc();*/
-			businessRunTimeService.autoProcessUserAccount();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-}
+//
+//		try {
+//			/*businessRunTimeService.autoMonthlyIncomeCalc();*/
+//			businessRunTimeService.autoProcessUserAccount();
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 }
