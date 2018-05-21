@@ -195,6 +195,7 @@ public class StockTest  {
         shopClosePositionRequestDTO.setShopStoreId("651742081");
         shopClosePositionRequestDTO.setActualStockNumber(8585);
         shopClosePositionRequestDTO.setOriginalFlowNo("d");
+        shopClosePositionRequestDTO.setShopCheckRecorId("222");
         shopCheckService.doClosePosition(shopClosePositionRequestDTO);
     }
 }
