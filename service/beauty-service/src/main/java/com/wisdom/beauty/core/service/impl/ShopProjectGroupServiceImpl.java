@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
@@ -256,9 +257,14 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         extShopProjectGroupDTO.setCreateDate(new Date());
         extShopProjectGroupDTO.setId(groupId);
         extShopProjectGroupDTO.setSysShopId(shopId);
-        int insertSelective = shopProjectGroupMapper.insertSelective(extShopProjectGroupDTO);
+        extShopProjectGroupDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
         //保存图片信息
         mongoUtils.saveImageUrl(extShopProjectGroupDTO.getImages(), groupId);
+        if (CommonUtils.objectIsNotEmpty(extShopProjectGroupDTO.getImages())) {
+            extShopProjectGroupDTO.setProjectGroupUrl(extShopProjectGroupDTO.getImages().get(0));
+        }
+        extShopProjectGroupDTO.setCreateBy(UserUtils.getBossInfo().getId());
+        int insertSelective = shopProjectGroupMapper.insertSelective(extShopProjectGroupDTO);
         logger.error("添加套卡执行结果，{}", "insertSelective = [" + (insertSelective > 0 ? "成功" : "失败") + "]");
 
         if (CommonUtils.objectIsNotEmpty(shopProjectIds)) {
