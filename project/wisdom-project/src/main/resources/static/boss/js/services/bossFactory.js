@@ -1,5 +1,3 @@
-
-/*var user = '/user/';*/
 var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
@@ -15,9 +13,9 @@ var consume = '/beauty/consume/';
 var cardInfo  = '/beauty/cardInfo/';
 var projectInfo  = '/beauty/projectInfo/';
 var productInfo  = '/beauty/productInfo/';
+var productTypeInfo = '/beauty/productTypeInfo/';
 
 
-/*http://47.100.246.201*/
 
 
 define(['appBoss'], function (app) {
@@ -202,7 +200,24 @@ define(['appBoss'], function (app) {
       /* 更新用户的档案信息*/
         .factory('UpdateArchiveInfo',['$resource',function ($resource){
             return $resource(archives+"updateArchiveInfo")
-        }]);
+        }])
+/*产品品牌*/
+        /* 查询某个店的产品信息*/
+        .factory('SearchShopProductList',['$resource',function ($resource){
+            return $resource(productInfo+"searchShopProductList")
+        }])
+        /* 添加产品品牌*/
+        .factory('SaveProductTypeInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"saveProductTypeInfo")
+        }])
+        /* 修改产品品牌*/
+        .factory('UpdateOneLevelTypeInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"updateOneLevelTypeInfo")
+        }])
+        /* 修改产品系列*/
+        .factory('UpdateTwoLevelTypeInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"updateTwoLevelTypeInfo")
+        }])
 
 
 });

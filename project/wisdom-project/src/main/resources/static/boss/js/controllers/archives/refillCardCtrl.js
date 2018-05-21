@@ -9,8 +9,8 @@ angular.module('controllers',[]).controller('refillCardCtrl',
                $state.go("accountDetails",{id:id})
            }
             GetUserRechargeCardList.get({
-                sysUserId:'11',/*$stateParams.sysUserId*/
-                sysShopId:'11'/*$stateParams.sysShopId*/
+                sysUserId:$stateParams.sysUserId,
+                sysShopId:stateParams.sysShopId,
             },function(data) {
                 $scope.refillCard = data.responseData
             })
