@@ -619,8 +619,8 @@ public class ShopStockServiceImpl implements ShopStockService {
     }
 
     @Override
-    public int checkProduct(ShopStockNumberDTO shopStockNumberDTO) {
-       return   this.updateStockNumber(shopStockNumberDTO);
+    public int checkProduct(List<ShopStockNumberDTO> list) {
+        return  extShopStockNumberMapper.updateBatchShopStockNumber(list);
     }
 
     private List<ShopStockNumberDTO> getShopStockNumberDTOList(ShopStockNumberDTO shopStockNumberDTO) {

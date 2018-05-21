@@ -1,6 +1,7 @@
 package com.wisdom.beauty.controller.stock;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +13,13 @@ import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.dto.ShopStockRecordDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
+import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.service.ShopCheckService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
+import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -286,10 +289,11 @@ public class StoreAndStockController {
      */
     @RequestMapping(value = "/checkProduct", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<Integer> checkProduct(@RequestBody ShopStockNumberDTO shopStockNumberDTO) {
+    ResponseDTO<Integer> checkProduct(@RequestParam String shopStockNumberDTOs) {
         long currentTimeMillis = System.currentTimeMillis();
-
-        Integer result = shopStockService.checkProduct(shopStockNumberDTO);
+        ShopStockNumberDTO[] shopStockNumberDTOArry = (ShopStockNumberDTO[]) JSONArray.toArray(JSONArray.fromObject(shopStockNumberDTOs), ShopStockNumberDTO.class);
+        List<ShopStockNumberDTO> list = Arrays.asList(shopStockNumberDTOArry);
+        Integer result = shopStockService.checkProduct(list);
         ResponseDTO<Integer> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(result);
