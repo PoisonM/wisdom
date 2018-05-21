@@ -123,6 +123,7 @@ img {display: inline-block}
 .settingKuPic{width:25px;height:25px;}
 .sb{display: flex;justify-content: space-between}
 .bbl{border-bottom: #E6E6E6 solid 1px}
+.btl{border-top: #E6E6E6 solid 1px}
 
 
 .b{font-weight: 900;}
