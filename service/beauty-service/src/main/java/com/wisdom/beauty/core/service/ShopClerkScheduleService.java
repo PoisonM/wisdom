@@ -50,5 +50,5 @@ public interface ShopClerkScheduleService {
      * @param shopScheduleSettingDTO
      * @return
      */
-    List<ShopScheduleSettingDTO> updateBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO);
+    int updateBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO);
 }
