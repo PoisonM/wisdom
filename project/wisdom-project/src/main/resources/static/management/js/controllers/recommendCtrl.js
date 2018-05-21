@@ -118,7 +118,13 @@ angular.module('controllers',[]).controller('recommendCtrl',
 
 
                         $scope.param.recommend = data.responseData.responseData;
+                        for(var i =0;i<$scope.param.recommend.length;i++){
+                            if( $scope.param.recommend[i].userInfoDTO.userType !=null){
+                                $scope.param.recommend[i].userInfoDTO.userType = $scope.param.recommend[i].userInfoDTO.userType.substring(9,10)+"级";
+                            }
 
+
+                        }
 
                         $scope.count = data.responseData.totalCount;
                         if(data.responseData.totalCount == 0){

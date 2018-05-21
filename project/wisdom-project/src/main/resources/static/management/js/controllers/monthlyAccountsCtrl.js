@@ -40,7 +40,10 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                 $scope.user=data.responseData.user;
                                 $scope.IncomeList=data.responseData.IncomeList;
                                 $scope.orderIdFun($scope.IncomeList);
-                                $scope.userType($scope.user);
+                                $scope.userType($scope.user,'userType');
+                                $scope.userType($scope.user,'userTypeNow');
+                                $scope.userType($scope.user,'nextUserTypeNow');
+                                $scope.userType($scope.user,'nextUserType');
                                 for (var i = 0; i <  $scope.IncomeList.length; i++) {
                                     if( $scope.IncomeList[i].status == "0"){
                                         $scope.IncomeList[i].status = "未付款"
@@ -103,12 +106,11 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 
 
             };
-            $scope.userType = function(MonthlyBalanceLis){
+            $scope.userType = function(MonthlyBalanceLis,type){
                 for(var i=0;i<MonthlyBalanceLis.length;i++){
-                    MonthlyBalanceLis[i].userType = MonthlyBalanceLis[i].userType.substring(9,10)+"级";
-                    MonthlyBalanceLis[i].userTypeNow = MonthlyBalanceLis[i].userTypeNow.substring(9,10)+"级";
-                    MonthlyBalanceLis[i].nextUserTypeNow = MonthlyBalanceLis[i].nextUserTypeNow.substring(9,10)+"级";
-                    MonthlyBalanceLis[i].nextUserType = MonthlyBalanceLis[i].nextUserType.substring(9,10)+"级";
+                    if( MonthlyBalanceLis[i][type]!=null){
+                        MonthlyBalanceLis[i][type] = MonthlyBalanceLis[i][type].substring(9,10)+"级";
+                    }
                 }
 
             }
@@ -194,8 +196,13 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                          }
                                     }
 
-                                    MonthlyBalanceLis[i].userType = MonthlyBalanceLis[i].userType.substring(9,10)+"级";
-                                    MonthlyBalanceLis[i].nextUserType = MonthlyBalanceLis[i].nextUserType.substring(9,10)+"级";
+                                    if(MonthlyBalanceLis[i].userType!=null){
+                                        MonthlyBalanceLis[i].userType= MonthlyBalanceLis[i].userType.substring(9,10)+"级";
+                                    }
+                                    if(MonthlyBalanceLis[i].nextUserType !=null){
+                                        MonthlyBalanceLis[i].nextUserType = MonthlyBalanceLis[i].nextUserType.substring(9,10)+"级";
+                                    }
+
 
                                     $scope.orderIdFun(MonthlyBalanceLis);
                                     $scope.MonthlyBalanceLis = MonthlyBalanceLis;
