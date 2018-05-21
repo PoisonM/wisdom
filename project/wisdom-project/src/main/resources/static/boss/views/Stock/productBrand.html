@@ -1,8 +1,7 @@
 <ion-view class="bg">
     <ion-content>
         <div class="list" ng-repeat="item in productBrand">
-
-                <li class="item p10" ng-click="checkProduct(item.levelOneDetail.productTypeOneId)" >
+                <li class="item p10" ng-click="checkProduct('edit',item.levelOneDetail.productTypeOneId)" >
                     <span style="width: 2px;height: 20px;display: inline-block;background: #FF6666;"></span>
                     <span class="fs17 col33 ml10">{{item.levelOneDetail.productTypeOneName}}</span>
                     <span class="fr col88 fs14" >{{item.levelOneDetail.status=='1'?'启用':'已禁用'}}<i class="ion ion-ios-arrow-right ml10"></i></span>
@@ -13,7 +12,6 @@ border-radius: 6px;margin: 5px;font-size: 11px;" ng-repeat="(keys,vals) in item.
                 </li>
 
         </div>
-
 
     </ion-content>
     <div class="bar bar-footer bar-assertive"ng-click="addBrandOneGo('add','')">

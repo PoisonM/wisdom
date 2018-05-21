@@ -235,8 +235,13 @@ define(['appBoss'], function (app) {
         .factory('UpdateTwoLevelProjectType',['$resource',function ($resource){
             return $resource(projectType+"updateTwoLevelProjectType")
         }])
-        /* 获取二级项目列表*/
+         
+        /* 获取二级产品列表*/
         .factory('TwoLevelProduct',['$resource',function ($resource){
             return $resource(productInfo+"twoLevelProduct")
+        }])
+       /*获取二级项目列表*/
+        .factory('TwoLevelProject',['$resource',function ($resource){
+            return $resource(projectInfo+"twoLevelProject")
         }])
 });
