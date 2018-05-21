@@ -2,7 +2,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.param.headerCash.leftAddContent = "添加档案";
-    $scope.$parent.param.headerCash.backContent = "充值记录";
+    $scope.$parent.param.headerCash.backContent = "消费";
     $scope.$parent.param.headerCash.leftTip = "保存";
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;

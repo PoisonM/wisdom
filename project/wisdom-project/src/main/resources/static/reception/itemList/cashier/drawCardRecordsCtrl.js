@@ -26,11 +26,11 @@ PADWeb.controller('drawCardRecordsCtrl', function($scope, $state, $stateParams, 
     $scope.flagFn(true)
 
     cashConsumes.save({
-        consumeType:"1",
-        goodsType:"5",
-        sysUserId:"110",
-        pageSize:"100"
-    },function (data) {
+        consumeType: "1",
+        goodsType: "5",
+        sysUserId: "110",
+        pageSize: "100"
+    }, function(data) {
         $scope.itemList = data.responseData
     })
 });

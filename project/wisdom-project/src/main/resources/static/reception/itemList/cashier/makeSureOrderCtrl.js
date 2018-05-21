@@ -39,7 +39,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
             shopUserProjectRelationDTOS: $scope.shopUserProjectRelationDTOS,
             status: 1,
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
-            orderPrice: '10000', //总金额
+            orderPrice: $scope.tempAll, //总金额
         }, function(data) {
             $state.go('pad-web.left_nav.orderList', { orderId: $scope.orderId })
         })
@@ -117,34 +117,34 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
 
     }
 
-    var tempAll =
-        $scope.myChangeFn = function() {
-            tempAll = 0
-            var setTimer = setInterval(function() {
-                if($(".xiaoji").length != 0){
-                    clearInterval(setTimer)
-                    //计算小计
-                    for(var i = 0; i < $(".xiaoji").length; i++){
-                        $(".xiaoji").eq(i).find('input').val($(".xiaoji").eq(i).parent().prev().find('input').val()*$(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val())
-                        // $(".xiaoji").eq(i).parent().prev().find('input').val()//数量
-                        // $(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val()//折扣价
-                        
-                    }
-                    //计算总额
-                    for(var i = 0; i < $(".xiaoji").length; i++){
-                        if ($(".xiaoji").eq(i).find('input').val() == "") {
+    $scope.tempAll = 0;
+    $scope.myChangeFn = function() {
+        $scope.tempAll = 0
+        var setTimer = setInterval(function() {
+            if ($(".xiaoji").length != 0) {
+                clearInterval(setTimer)
+                //计算小计
+                for (var i = 0; i < $(".xiaoji").length; i++) {
+                    $(".xiaoji").eq(i).find('input').val($(".xiaoji").eq(i).parent().prev().find('input').val() * $(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val())
+                    // $(".xiaoji").eq(i).parent().prev().find('input').val()//数量
+                    // $(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val()//折扣价
 
-                        } else {
-                            tempAll += parseInt($(".xiaoji").eq(i).find('input').val().replace(",",""))
-                        }
-
-                        $(".allPrice").html("总金额:" + tempAll)
-
-                    }
                 }
+                //计算总额
+                for (var i = 0; i < $(".xiaoji").length; i++) {
+                    if ($(".xiaoji").eq(i).find('input').val() == "") {
+
+                    } else {
+                        $scope.tempAll += parseInt($(".xiaoji").eq(i).find('input').val().replace(",", ""))
+                    }
+
+                    $(".allPrice").html("总金额:" + $scope.tempAll)
+
+                }
+            }
 
 
-            }, 100)
-        }
+        }, 100)
+    }
     $scope.myChangeFn()
 });
