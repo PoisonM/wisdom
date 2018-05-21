@@ -1727,7 +1727,7 @@ define(['appBoss'], function(app){
                     })
                     /* addSeries 添加系列*/
                     .state('addSeries', {
-                        url: '/addSeries',
+                        url: '/addSeries/:productTypeOneId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'addSeriesCtrl',
                         resolve: {
