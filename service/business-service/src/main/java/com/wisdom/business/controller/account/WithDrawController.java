@@ -103,7 +103,7 @@ public class WithDrawController {
 			if (RealNameResultEnum.MATCHING.getCode().equals(realNameInfoDTO.getCode()))
 			{
 				userInfoDTO.setIdentifyNumber(withDrawRecordDTO.getIdentifyNumber());
-				userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(), "utf-8"));
+				userInfoDTO.setNickname(userInfoDTO.getNickname());
 				userServiceClient.updateUserInfo(userInfoDTO);
 			}
 			else

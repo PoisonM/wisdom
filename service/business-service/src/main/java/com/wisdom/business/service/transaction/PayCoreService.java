@@ -2,6 +2,7 @@ package com.wisdom.business.service.transaction;
 
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.level.UserTypeMapper;
+import com.wisdom.business.mapper.transaction.PromotionTransactionRelationMapper;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
 import com.wisdom.common.constant.ConfigConstant;
@@ -58,6 +59,7 @@ public class PayCoreService {
 
     @Autowired
     private UserTypeMapper userTypeMapper;
+
 
     Logger logger = LoggerFactory.getLogger(PayCoreService.class);
 
@@ -333,10 +335,35 @@ public class PayCoreService {
 
     //处理即时返现逻辑
     private void handleInstanceReturnMoney(UserInfoDTO userInfoDTO, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO) {
+
         //todo 此处的逻辑主要是用来实现即时返现功能，此时即时返现的资金是冻结的，需要用户收货之后，获得返现的用户才能拿到钱
         if(!ObjectUtils.isNullOrEmpty(userInfoDTO.getParentUserId()))
         {
             UserInfoDTO parentUserInfoDTO = userServiceClient.getUserInfoFromUserId(userInfoDTO.getParentUserId());
+
+            if(ConfigConstant.businessA1.equals(userInfoDTO.getUserType())){
+
+                //父类用户也为A级执行永久返利
+                if(ConfigConstant.businessA1.equals(parentUserInfoDTO.getUserType())){
+
+                    payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+
+                    if(!ObjectUtils.isNullOrEmpty(parentUserInfoDTO.getParentUserId())){
+                        //查询祖父级是否存在并且是否为A
+                        UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
+
+                        if(grandpaUserInfoDTO!=null){
+                            if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
+
+                                //执行平级返利
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"A1A1", instanceReturnMoneySignalDTO);
+                            }
+
+                        }
+                    }
+
+                }
+            }
 
             if(ConfigConstant.businessB1.equals(userInfoDTO.getUserType()))
             {
@@ -345,6 +372,42 @@ public class PayCoreService {
                 if(ConfigConstant.businessA1.equals(parentUserInfoDTO.getUserType()))
                 {
                     payFunction.updateReturnMoneyDataBase(parentUserInfoDTO.getId(),ConfigConstant.businessB1,ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+
+                    if(!ObjectUtils.isNullOrEmpty(parentUserInfoDTO.getParentUserId())){
+                        //查询祖父级是否存在并且是否为A
+                        UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
+                        if(grandpaUserInfoDTO!=null){
+                            if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
+
+                                //执行平级返利
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"A1A1", instanceReturnMoneySignalDTO);
+                            }
+
+                        }
+                    }
+
+                }
+                //查询父类是否是B店用户
+                if(ConfigConstant.businessB1.equals(parentUserInfoDTO.getUserType()))
+                {
+                    payFunction.flatRebate(userInfoDTO.getUserType(),parentUserInfoDTO.getId(),ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
+
+                    if(!ObjectUtils.isNullOrEmpty(parentUserInfoDTO.getParentUserId())){
+                        //查询祖父级是否存在并且是否为B
+                        UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
+                        if(grandpaUserInfoDTO!=null){
+                            if(ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
+
+                                //执行平级返利
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"B1B1", instanceReturnMoneySignalDTO);
+                            }else if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
+
+                                //执行平级返利
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"B1A1", instanceReturnMoneySignalDTO);
+                            }
+                        }
+                    }
+
                 }
             }
             else if(ConfigConstant.businessC1.equals(userInfoDTO.getUserType()))
@@ -353,13 +416,24 @@ public class PayCoreService {
                 if(ConfigConstant.businessA1.equals(parentUserInfoDTO.getUserType()))  //2、如果父一级用户为A店用户
                 {
                     payFunction.updateReturnMoneyDataBase(parentUserInfoDTO.getId(),ConfigConstant.businessC1,ConfigConstant.businessA1, instanceReturnMoneySignalDTO);
+                    if(!ObjectUtils.isNullOrEmpty(parentUserInfoDTO.getParentUserId())){
+                        //查询祖父级是否存在并且是否为A
+                        UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
+                        if(grandpaUserInfoDTO!=null){
+                            if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
+                                //执行平级返利
+                                payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"A1A1", instanceReturnMoneySignalDTO);
+                            }
+
+                        }
+                    }
                 }
                 else if(ConfigConstant.businessB1.equals(parentUserInfoDTO.getUserType())) //3、如果父一级用户为B店用户
                 {
                     //先更新用户上一级B店用户的返现金额
                     payFunction.updateReturnMoneyDataBase(parentUserInfoDTO.getId(),ConfigConstant.businessC1,ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
 
-                    if(parentUserInfoDTO.getParentUserId()!=null)
+                    if(!ObjectUtils.isNullOrEmpty(parentUserInfoDTO.getParentUserId()))
                     {
                         UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
 
@@ -367,6 +441,11 @@ public class PayCoreService {
                         if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType()))
                         {
                             payFunction.updateReturnMoneyDataBase(grandpaUserInfoDTO.getId(),ConfigConstant.businessC1,"A1B1", instanceReturnMoneySignalDTO);
+
+                        }else if(ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
+
+                            payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"B1B1", instanceReturnMoneySignalDTO);
+
                         }
                     }
                 }

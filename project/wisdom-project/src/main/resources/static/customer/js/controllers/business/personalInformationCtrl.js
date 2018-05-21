@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('personalInformationCtrl',
             $rootScope.title = "个人设置";
             $scope.param={
                 userInfo:{}
-            }
+            };
 
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
@@ -53,4 +53,4 @@ angular.module('controllers',[]).controller('personalInformationCtrl',
                         }]
                 });
             }
-}])
+}]);

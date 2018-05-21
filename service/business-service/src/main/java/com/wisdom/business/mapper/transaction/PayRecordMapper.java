@@ -39,4 +39,6 @@ public interface PayRecordMapper {
     List<BusinessOrderDTO> queryOrderInfoByTransactionId(@Param("transactionId")String transactionId);
 
     List<PayRecordDTO> findOrderInfoForSpecial(@Param("orderId")String orderId);
+
+    List<String> findTransactionIdList(PayRecordDTO payRecord);
 }

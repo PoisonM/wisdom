@@ -170,4 +170,12 @@ define(['appManagement'], function (app) {
         .factory('ExportExcelIncomeRecord',['$resource',function ($resource){
             return $resource(income + 'exportExcelIncomeRecord');
         }])
+
+        .factory('FindNextUserInfoControl',['$resource',function ($resource){
+            return $resource(income + 'findNextUserInfoControl');
+        }])
+
+        .factory('ExportNextUserInfoControl',['$resource',function ($resource){
+            return $resource(income + 'exportNextUserInfoControl');
+        }])
 });

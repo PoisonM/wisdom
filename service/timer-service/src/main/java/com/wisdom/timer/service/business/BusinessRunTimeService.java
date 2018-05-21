@@ -155,8 +155,11 @@ public class BusinessRunTimeService {
 
     public void autoProcessNoPayRecordData() {
 
-        Date dt1 = new Date((new Date()).getTime() - (long) ConfigConstant.AUTO_NOTIFY_PRODUCT_PAY * 24 * 60 * 60 * 1000);
-        Date dt2 = new Date((new Date()).getTime() - (long) ConfigConstant.AUTO_DELETE_BUSINESS_ORDER * 24 * 60 * 60 * 1000);
+        long autoNotifyProductPay = (long) ConfigConstant.AUTO_NOTIFY_PRODUCT_PAY * 60 * 1000;
+        long autoDeleteBusinessOrder = (long) ConfigConstant.AUTO_DELETE_BUSINESS_ORDER * 60 * 1000;
+        long nowTime = System.currentTimeMillis();
+        long MaxTime = 60 * 1000;
+        long MinTime = 0;
 
         String token = WeixinUtil.getUserToken();
 
@@ -168,9 +171,12 @@ public class BusinessRunTimeService {
         {
             for(BusinessOrderDTO businessOrder : businessOrderDTOList)
             {
-                if((businessOrder.getCreateDate().getTime()-dt1.getTime())<0)
+                //订单已下时间
+                long outTime = nowTime - (long)businessOrder.getCreateDate().getTime();
+                long time = outTime - autoNotifyProductPay;
+                //待付款超过10分钟
+                if(MinTime < time && time < MaxTime)
                 {
-
                     UserInfoDTO userInfoDTO = new UserInfoDTO();
                     userInfoDTO.setId(businessOrder.getSysUserId());
                     userInfoDTO.setDelFlag("0");
@@ -182,9 +188,10 @@ public class BusinessRunTimeService {
                                 businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
                     }
                 }
-                else if((businessOrder.getCreateDate().getTime()-dt2.getTime())<0)
+                else if(outTime > autoDeleteBusinessOrder)
                 {
-                    businessOrder.setStatus("del");
+                    //超时取消
+                    businessOrder.setStatus("6");
                     businessServiceClient.updateBusinessOrder(businessOrder);
                     PayRecordDTO payRecordDTO = new PayRecordDTO();
                     payRecordDTO.setSysUserId(businessOrder.getSysUserId());
@@ -272,17 +279,17 @@ public class BusinessRunTimeService {
             {
                 int month = 11;
                 int year = Integer.parseInt(DateUtils.getYear()) - 1;
-                startDate = year + "-" + month + "-26";
+                startDate = year + "-" + month + "-15";
             }
             else if(DateUtils.getMonth().equals("02"))
             {
                 int month = 12;
                 int year = Integer.parseInt(DateUtils.getYear()) - 1;
-                startDate = year + "-" + month + "-26";
+                startDate = year + "-" + month + "-15";
             }
             else{
                 int month = Integer.parseInt(DateUtils.getMonth()) - 1;
-                startDate = DateUtils.getYear() + "-" + month + "-26";
+                startDate = DateUtils.getYear() + "-" + month + "-15";
             }
 
             List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);

@@ -50,25 +50,31 @@ public class UserInfoServiceImpl implements UserInfoService{
         List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfo(userInfoDTO);
         if(CommonUtils.objectIsEmpty(userInfoDTOS)){
             logger.info("查询的用户信息为空");
-            return null;
+            return userInfoDTOS;
         }
         for (UserInfoDTO user: userInfoDTOS) {
             if(StringUtils.isNotBlank(user.getNickname())){
-                String nickNameW = user.getNickname().replaceAll("%", "%25");
-                while(true){
-                    logger.info("用户进行编码操作");
-                    if(StringUtils.isNotBlank(nickNameW)){
-                        if(nickNameW.contains("%25")){
-                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                try{
+                    String nickNameW = user.getNickname().replaceAll("%", "%25");
+                    while(true){
+                        logger.info("用户进行编码操作");
+                        if(StringUtils.isNotBlank(nickNameW)){
+                            if(nickNameW.contains("%25")){
+                                nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                            }else{
+                                nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                                break;
+                            }
                         }else{
-                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
                             break;
                         }
-                    }else{
-                        break;
                     }
+                    user.setNickname(nickNameW);
+                }catch(Throwable e ){
+                    logger.info("用户昵有特殊字符");
+                    String nickNameW ="特殊字符用户";
+                    user.setNickname(nickNameW);
                 }
-                user.setNickname(nickNameW);
             }
         }
         return  userInfoDTOS;
@@ -193,7 +199,33 @@ public class UserInfoServiceImpl implements UserInfoService{
     public List<UserInfoDTO> queryParentUserById(String parentUserId) {
         List<UserInfoDTO> userInfoDTOS= customerInfoMapper.queryParentUserById(parentUserId);
         for (UserInfoDTO userInfoDTO :userInfoDTOS) {
-            userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+            if(userInfoDTO.getNickname() != null && userInfoDTO.getNickname() != ""){
+                try {
+                    if(userInfoDTO.getNickname() != null && userInfoDTO.getNickname() != ""){
+                        String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW!=null&&nickNameW!=""){
+                                if(nickNameW.contains("%25")){
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                }else{
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    break;
+                                }
+                            }else{
+                                break;
+                            }
+
+                        }
+                        userInfoDTO.setNickname(nickNameW);
+                    }else{
+                        userInfoDTO.setNickname("未知用户");
+                    }
+                } catch(Throwable e){
+                    logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                    userInfoDTO.setNickname("特殊符号用户");
+                }
+            }
+
         }
         return userInfoDTOS;
     }

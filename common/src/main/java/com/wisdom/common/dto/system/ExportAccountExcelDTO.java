@@ -32,6 +32,35 @@ public class ExportAccountExcelDTO {
     @JSONField(name = "balance")
     private Float balance;
 
+    /**
+     * 不可提现金额
+     */
+    @JSONField(name = "balanceDeny")
+    private Float balanceDeny;
+
+    /**
+     * 可提现金额
+     */
+    @JSONField(name = "balanceYes")
+    private String balanceYes;
+
+
+    public Float getBalanceDeny() {
+        return balanceDeny;
+    }
+
+    public void setBalanceDeny(Float balanceDeny) {
+        this.balanceDeny = balanceDeny;
+    }
+
+    public String getBalanceYes() {
+        return balanceYes;
+    }
+
+    public void setBalanceYes(String balanceYes) {
+        this.balanceYes = balanceYes;
+    }
+
     public String getSysUserId() {
         return sysUserId;
     }

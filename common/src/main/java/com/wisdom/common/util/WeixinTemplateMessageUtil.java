@@ -85,9 +85,8 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-		//templateData.setValue("客官，您好！您的订单未支付，即将关闭。");
 		templateData.setValue("尊敬的用户，您好！！\n"+
-						"您的订单还未完成支付，请您在24小时之内完成支付，避免订单丢失！！");
+						"您的订单还未完成支付，请您在10分钟之内完成支付，避免订单丢失！！");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();

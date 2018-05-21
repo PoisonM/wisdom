@@ -37,17 +37,15 @@
                         <form name="form1">
                             <div class="uploading_product_name">
                                 <label>收货人：</label>
-                                <input type="text" ng-model="orderParticulars.userNameAddress"  name="userName">
+                                {{orderParticulars.userNameAddress}}
                             </div>
                             <div class="uploading_product_name">
                                 <label>联系方式：</label>
-                                <input type="text" ng-model="orderParticulars.userPhoneAddress" >
+                                {{orderParticulars.userPhoneAddress}}
                             </div>
                             <div class="uploading_product_name takeGoodsAddress" style="width:100%;">
                                 <label>收货地址：</label>
-                                <input type="text" ng-model="orderParticulars.userProvinceAddress"   class="delivery_province" style="width:350px;"> 省&nbsp&nbsp
-                                <input type="text" ng-model="orderParticulars.userCityAddress"  class="delivery_city" style="width:100px;"> 市&nbsp&nbsp
-                                <input type="text" ng-model="orderParticulars.userDetailAddress"  class="delivery_particularAddress" style="width:250px;"> 详细地址
+                                {{orderParticulars.userProvinceAddress}}{{orderParticulars.userCityAddress}}{{orderParticulars.userDetailAddress}}
                             </div>
 
                         </form>
