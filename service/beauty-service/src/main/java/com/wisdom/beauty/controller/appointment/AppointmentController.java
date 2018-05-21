@@ -158,9 +158,9 @@ public class AppointmentController {
 					}
 				}
 				shopAppointMap.put("appointmentInfo", appointInfoList);
-				shopAppointMap.put("sysClerkDTO", SysClerkDTO);
 				shopAppointMap.put("point", shopAppointServiceDTOS.size());
 			}
+			shopAppointMap.put("sysClerkDTO", SysClerkDTO);
 			responseMap.put(SysClerkDTO.getName(), shopAppointMap);
 		}
 
