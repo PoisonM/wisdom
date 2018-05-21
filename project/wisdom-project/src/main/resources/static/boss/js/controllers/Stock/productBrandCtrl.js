@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/6.
  */
 angular.module('controllers',[]).controller('productBrandCtrl',
-    ['$scope','$rootScope','$stateParams','$state',
-        function ($scope,$rootScope,$stateParams,$state) {
+    ['$scope','$rootScope','$stateParams','$state','SearchShopProductList',
+        function ($scope,$rootScope,$stateParams,$state,SearchShopProductList) {
 
             $rootScope.title = "产品品牌";
 
@@ -19,4 +19,11 @@ angular.module('controllers',[]).controller('productBrandCtrl',
             $scope.checkSeries=function () {
                 $state.go("addSeries")
             }
+            SearchShopProductList.get({filterStr:''},function (date) {
+                $scope.productBrand = date.responseData.detailLevel
+
+            })
+
+
+
         }]);
