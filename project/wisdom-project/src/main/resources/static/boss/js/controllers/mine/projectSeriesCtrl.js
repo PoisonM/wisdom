@@ -1,29 +1,30 @@
-angular.module('controllers',[]).controller('addSeriesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProduct','Global','UpdateTwoLevelTypeInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProduct,Global,UpdateTwoLevelTypeInfo) {
+angular.module('controllers',[]).controller('projectSeriesCtrl',
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProject','Global','UpdateTwoLevelProjectType',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProject,Global,UpdateTwoLevelProjectType) {
             $rootScope.title = "添加系列";
             $scope.param = {
                 selTrue:[]
             };
-            $scope.productBrandGo = function () {
-                console.log(1)
+            $scope.projectBrandGo = function () {
                 var requestList = {
                     requestList:$scope.requestList
                 };
-                UpdateTwoLevelTypeInfo.save(requestList,function(data){
-                    if(data.result == '0x00002'){
-                         $state.go("productBrand")
+                UpdateTwoLevelProjectType.save(requestList,function(data){
+                    if(data.result == '0x00001'){
+                        $state.go("projectBrand")
                     }
                 })
 
             };
-            TwoLevelProduct.get({
-               id:$stateParams.productTypeOneId
+
+            TwoLevelProject.get({
+                id:$stateParams.projectTypeOneId
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.requestList = data.responseData;
+                    console.log($scope.requestList);
                     for(var i=0;i<$scope.requestList.length;i++){
-                        $scope.requestList[i].parentId = $stateParams.productTypeOneId;
+                        $scope.requestList[i].parentId = $stateParams.projectTypeOneId;
                         $scope.param.selTrue.push(false)
                     }
                 }
@@ -37,8 +38,8 @@ angular.module('controllers',[]).controller('addSeriesCtrl',
             $scope.addSeriesLis = function(){
                 var obj = {
                     status:"1",
-                    productTypeName:"",
-                    parentId:$stateParams.productTypeOneId
+                    projectTypeName:"",
+                    parentId:$stateParams.projectTypeOneId
 
                 };
                 $scope.requestList.push(obj)

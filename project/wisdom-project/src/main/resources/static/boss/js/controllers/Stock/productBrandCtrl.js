@@ -15,7 +15,10 @@ angular.module('controllers',[]).controller('productBrandCtrl',
             };
             $scope.checkSeries=function (productTypeOneId) {
                 $state.go("addSeries",{productTypeOneId:productTypeOneId})
-            }
+            };
+            $scope.checkProduct=function (productTypeOneId) {
+                $state.go("productSetting",{productTypeOneId:productTypeOneId})
+            };
             SearchShopProductList.get({filterStr:''},function (date) {
                 $scope.productBrand = date.responseData.detailLevel
 

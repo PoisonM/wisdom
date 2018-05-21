@@ -259,4 +259,8 @@ define(['appBoss'], function (app) {
             return $resource(shop+"getShopInfo")
         }])
 
+       /*获取二级项目列表*/
+        .factory('TwoLevelProject',['$resource',function ($resource){
+            return $resource(projectInfo+"twoLevelProject")
+        }])
 });
