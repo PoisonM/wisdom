@@ -280,6 +280,7 @@ public class ProductController {
         //遍历缓存的一级产品
         for (Map.Entry entry : oneTypeMap.entrySet()) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
+            ArrayList<Object> helperList = new ArrayList<>();
             //承接二级产品
             HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
             ShopProductInfoDTO productInfoDTO = new ShopProductInfoDTO();
@@ -290,8 +291,8 @@ public class ProductController {
                 productInfoDTO = dto;
             }
 
-            helperMap.put(((ShopProductInfoDTO) entry.getValue()).getProductTypeOneName(), twoLevelMap);
-            helperMap.put(productInfoDTO, twoLevelMap);
+            helperMap.put("levelTwoDetail", twoLevelMap);
+            helperMap.put("levelOneDetail", productInfoDTO);
             levelList.add(helperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProduct集合是所有产品的列表
