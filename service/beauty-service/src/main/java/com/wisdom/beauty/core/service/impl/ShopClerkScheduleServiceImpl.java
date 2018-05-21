@@ -2,18 +2,25 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.ShopClerkScheduleCriteria;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
+import com.wisdom.beauty.api.dto.ShopScheduleSettingCriteria;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
 import com.wisdom.beauty.core.mapper.ExtShopClerkScheduleMapper;
 import com.wisdom.beauty.core.mapper.ShopClerkScheduleMapper;
+import com.wisdom.beauty.core.mapper.ShopScheduleSettingMapper;
 import com.wisdom.beauty.core.service.ShopClerkScheduleService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +40,9 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
 
     @Autowired
     public ExtShopClerkScheduleMapper extShopClerkScheduleMapper;
+
+    @Autowired
+    public ShopScheduleSettingMapper shopScheduleSettingMapper;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -93,20 +103,55 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
      */
     @Override
     public int updateShopClerkScheduleList(List<ShopClerkScheduleDTO> scheduleDTOS) {
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(1);
         map.put("list",scheduleDTOS);
         return extShopClerkScheduleMapper.batchUpdate(map);
     }
 
+    /**
+     * 获取某个店的排班设置信息
+     *
+     * @param shopScheduleSettingDTO
+     * @return
+     */
     @Override
     public List<ShopScheduleSettingDTO> getBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO) {
-        shopScheduleSettingDTO.setSysBossId(shopScheduleSettingDTO.getSysShopId());
-        return null;
+        logger.info("获取某个店的排班设置信息传入参数={}", "shopScheduleSettingDTO = [" + shopScheduleSettingDTO + "]");
+        ShopScheduleSettingCriteria criteria = new ShopScheduleSettingCriteria();
+        ShopScheduleSettingCriteria.Criteria c = criteria.createCriteria();
+        if (StringUtils.isNotBlank(shopScheduleSettingDTO.getSysShopId())) {
+            c.andSysShopIdEqualTo(shopScheduleSettingDTO.getSysShopId());
+        }
+        List<ShopScheduleSettingDTO> shopScheduleSettingDTOS = shopScheduleSettingMapper.selectByCriteria(criteria);
+        //如果排班为空,则自动生成
+        if (CommonUtils.objectIsEmpty(shopScheduleSettingDTOS)) {
+            ShopScheduleSettingDTO settingDTO = new ShopScheduleSettingDTO();
+            settingDTO.setId(IdGen.uuid());
+            settingDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
+            settingDTO.setCreateBy(UserUtils.getBossInfo().getId());
+            settingDTO.setStatus(CommonCodeEnum.ENABLED.getCode());
+            settingDTO.setCreateDate(new Date());
+            settingDTO.setSysBossId(UserUtils.getBossInfo().getId());
+            for (ScheduleTypeEnum scheduleTypeEnum : ScheduleTypeEnum.values()) {
+                settingDTO.setEndTime(scheduleTypeEnum.getDefaultEndTime());
+                settingDTO.setStartTime(scheduleTypeEnum.getDefaultStartTime());
+                settingDTO.setTypeName(scheduleTypeEnum.getCode());
+                shopScheduleSettingMapper.insertSelective(settingDTO);
+                shopScheduleSettingDTOS.add(settingDTO);
+            }
+        }
+        return shopScheduleSettingDTOS;
     }
 
+    /**
+     * 修改老板的排班设置信息
+     *
+     * @param shopScheduleSettingDTO
+     * @return
+     */
     @Override
-    public List<ShopScheduleSettingDTO> updateBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO) {
-        return null;
+    public int updateBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO) {
+        return shopScheduleSettingMapper.updateByPrimaryKey(shopScheduleSettingDTO);
     }
 
 

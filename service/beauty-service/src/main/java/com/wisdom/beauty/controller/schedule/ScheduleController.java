@@ -2,9 +2,11 @@ package com.wisdom.beauty.controller.schedule;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
+import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
+import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
@@ -255,6 +257,48 @@ public class ScheduleController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("获取某个店某个美容师某天的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 
+        return responseDTO;
+    }
+
+
+    /**
+     * 查询某个店的排班信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getBossShopScheduleSetting", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    ResponseDTO<Object> getBossShopScheduleSetting() {
+        long currentTimeMillis = System.currentTimeMillis();
+        ShopScheduleSettingDTO settingDTO = new ShopScheduleSettingDTO();
+        settingDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
+        List<ShopScheduleSettingDTO> setting = shopClerkScheduleService.getBossShopScheduleSetting(settingDTO);
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(setting);
+        logger.info("批量更新某个店的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+
+    /**
+     * 更新某个店的排班信息
+     *
+     * @param requestDTO
+     * @return
+     */
+    @RequestMapping(value = "/updateBossShopScheduleSetting", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    ResponseDTO<Object> updateBossShopScheduleSetting(@RequestBody RequestDTO<ShopScheduleSettingDTO> requestDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        List<ShopScheduleSettingDTO> requestList = requestDTO.getRequestList();
+        for (ShopScheduleSettingDTO scheduleDTO : requestList) {
+            shopClerkScheduleService.updateBossShopScheduleSetting(scheduleDTO);
+        }
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("批量更新某个店的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
