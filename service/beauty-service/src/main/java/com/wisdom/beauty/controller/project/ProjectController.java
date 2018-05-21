@@ -150,14 +150,16 @@ public class ProjectController {
         for (Map.Entry entry : oneTypeMap.entrySet()) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
             //承接二级项目
-            HashMap<Object, Object> hashMap = new HashMap<>(16);
+            HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
+            ShopProjectInfoDTO productInfoDTO = new ShopProjectInfoDTO();
             for (ShopProjectInfoDTO dto : projectList) {
                 if (entry.getKey().equals(dto.getProjectTypeOneId())) {
-                    hashMap.put(dto.getProjectTypeTwoName(), dto);
+                    twoLevelMap.put(dto.getProjectTypeTwoName(), dto);
                 }
+                productInfoDTO = dto;
             }
-            helperMap.put(((ShopProjectInfoDTO) entry.getValue()).getProjectTypeOneName(), hashMap);
-//            helperMap.put("twoLevelSize", hashMap.size());
+            helperMap.put("levelTwoDetail", twoLevelMap);
+            helperMap.put("levelOneDetail", productInfoDTO);
             levelList.add(helperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表

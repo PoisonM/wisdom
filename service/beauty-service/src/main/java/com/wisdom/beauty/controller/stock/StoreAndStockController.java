@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
 import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.dto.ShopStockRecordDTO;
+import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.service.ShopCheckService;
@@ -256,7 +257,7 @@ public class StoreAndStockController {
      * @Author:zhanghuan
      * @Param:
      * @Return:
-     * @Description:  获取库存产品的详情
+     * @Description: 获取库存产品的详情
      * @Date:2018/5/19 10:45
      */
     @RequestMapping(value = "/getProductStockDetail", method = RequestMethod.GET)
@@ -264,7 +265,7 @@ public class StoreAndStockController {
     ResponseDTO<ShopStockResponseDTO> getProductStockDetail(@RequestParam String shopProcId) {
         long currentTimeMillis = System.currentTimeMillis();
 
-        ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
+        ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
         shopStockNumberDTO.setShopProcId(shopProcId);
         ShopStockResponseDTO shopStockResponseDTO = shopStockService.getProductStockDetail(shopStockNumberDTO);
 
@@ -274,64 +275,86 @@ public class StoreAndStockController {
         logger.info("getProductStockDetail方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
     /**
-    *@Author:zhanghuan
-    *@Param: 产品id   仓库id    实际数量
-    *@Return:
-    *@Description:  产品盘点
-    *@Date:2018/5/19 15:53
-    */
+     * @Author:zhanghuan
+     * @Param: 产品id   仓库id    实际数量
+     * @Return:
+     * @Description: 产品盘点
+     * @Date:2018/5/19 15:53
+     */
     @RequestMapping(value = "/checkProduct", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<Integer> checkProduct(ShopStockNumberDTO shopStockNumberDTO) {
+    ResponseDTO<Integer> checkProduct(@RequestBody ShopStockNumberDTO shopStockNumberDTO) {
         long currentTimeMillis = System.currentTimeMillis();
 
         Integer result = shopStockService.checkProduct(shopStockNumberDTO);
         ResponseDTO<Integer> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(result);
-        logger.info("checkProduct{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("checkProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
     /**
-    *@Author:zhanghuan
-    *@Param:
-    *@Return:
-    *@Description:  获取盘点记录列表
-    *@Date:2018/5/21 9:49
-    */
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 获取盘点记录列表
+     * @Date:2018/5/21 9:49
+     */
     @RequestMapping(value = "/getProductCheckRecord", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<List<ShopCheckRecordDTO>> getProductCheckRecord(@RequestParam String shopStoreId) {
         long currentTimeMillis = System.currentTimeMillis();
-        ShopCheckRecordDTO shopCheckRecordDTO=new ShopCheckRecordDTO();
+        ShopCheckRecordDTO shopCheckRecordDTO = new ShopCheckRecordDTO();
         shopCheckRecordDTO.setShopStoreId(shopStoreId);
         List<ShopCheckRecordDTO> list = shopCheckService.getProductCheckRecordList(shopCheckRecordDTO);
         ResponseDTO<List<ShopCheckRecordDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(list);
-        logger.info("getProductCheckRecord{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("getProductCheckRecord方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
     /**
-    *@Author:zhanghuan
-    *@Param:
-    *@Return:
-    *@Description: 获取产品的盘点记录详情
-    *@Date:2018/5/21 10:59
-    */
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 获取产品的盘点记录详情
+     * @Date:2018/5/21 10:59
+     */
     @RequestMapping(value = "/getProductCheckRecordDeatil", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String ,Object>> getProductCheckRecordDeatil(@RequestParam String shopProcId,@RequestParam String shopStockNumberId) {
+    ResponseDTO<Map<String, Object>> getProductCheckRecordDeatil(@RequestParam String shopProcId, @RequestParam String shopStockNumberId) {
         long currentTimeMillis = System.currentTimeMillis();
-        ShopCheckRecordDTO shopCheckRecordDTO=new ShopCheckRecordDTO();
+        ShopCheckRecordDTO shopCheckRecordDTO = new ShopCheckRecordDTO();
         shopCheckRecordDTO.setShopProcId(shopProcId);
         shopCheckRecordDTO.setShopStockNumberId(shopStockNumberId);
-        Map<String ,Object> map = shopCheckService.getProductCheckRecordDeatil(shopCheckRecordDTO);
-        ResponseDTO<Map<String ,Object>> responseDTO = new ResponseDTO<>();
+        Map<String, Object> map = shopCheckService.getProductCheckRecordDeatil(shopCheckRecordDTO);
+        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(map);
-        logger.info("getProductCheckRecordDeatil{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("getProductCheckRecordDeatil方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 平仓
+     * @Date:2018/5/21 15:24
+     */
+    @RequestMapping(value = "/doClosePosition", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<Integer> doClosePosition(@RequestBody ShopClosePositionRequestDTO shopClosePositionRequestDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Integer result = shopCheckService.doClosePosition(shopClosePositionRequestDTO);
+        ResponseDTO<Integer> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(result);
+        logger.info("doClosePositio方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

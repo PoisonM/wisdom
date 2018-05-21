@@ -290,8 +290,8 @@ public class ProductController {
                 productInfoDTO = dto;
             }
 
-            helperMap.put(((ShopProductInfoDTO) entry.getValue()).getProductTypeOneName(), twoLevelMap);
-            helperMap.put(productInfoDTO, twoLevelMap);
+            helperMap.put("levelTwoDetail", twoLevelMap);
+            helperMap.put("levelOneDetail", productInfoDTO);
             levelList.add(helperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProduct集合是所有产品的列表

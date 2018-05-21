@@ -18,6 +18,9 @@ public class ShopCheckRecordDTO extends BaseEntity implements Serializable {
     //
     private String shopBossId;
 
+    //平仓记录的id
+    private String shopClosePositionId;
+
     //产品库存数量id
     private String shopStockNumberId;
 
@@ -65,6 +68,14 @@ public class ShopCheckRecordDTO extends BaseEntity implements Serializable {
 
     public void setShopBossId(String shopBossId) {
         this.shopBossId = shopBossId;
+    }
+
+    public String getShopClosePositionId() {
+        return shopClosePositionId;
+    }
+
+    public void setShopClosePositionId(String shopClosePositionId) {
+        this.shopClosePositionId = shopClosePositionId;
     }
 
     public String getShopStockNumberId() {
