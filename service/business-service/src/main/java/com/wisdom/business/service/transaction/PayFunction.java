@@ -426,23 +426,36 @@ public class PayFunction {
 
         String isImportLevel = ConfigConstant.LEVE_IMPORT;
 
-        if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
+        UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
+        nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
+        List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+        UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
+        String userType = null;
+        if (userInfoDTO.getUserType().equalsIgnoreCase(ConfigConstant.businessB1)) {
+            userType = ConfigConstant.LEVE_IMPORT_B;
+        } else if (userInfoDTO.getUserType().equalsIgnoreCase(ConfigConstant.businessA1)) {
+            userType = ConfigConstant.LEVE_IMPORT_A;
+        }
+
+        if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount < ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
 
             //记录此单是用户升级单
-            isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+            if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B)) {
+                isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+            }
 
         } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
 
             //记录此单是用户升级单
-            isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+            if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
+                isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+            }
         }
 
         try{
             AccountDTO accountDTO = new AccountDTO();
             accountDTO.setSysUserId(parentUserId);
-            UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
-            nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
-            List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+
 
             if(permanentReward>=0){
 
@@ -459,7 +472,7 @@ public class PayFunction {
                     this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
                 }
 
-                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
+                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(userInfoDTO.getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
 
             }
 
