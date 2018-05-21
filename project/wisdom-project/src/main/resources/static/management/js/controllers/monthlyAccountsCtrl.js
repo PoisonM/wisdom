@@ -195,7 +195,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                     }
 
                                     MonthlyBalanceLis[i].userType = MonthlyBalanceLis[i].userType.substring(9,10)+"级";
-
+                                    MonthlyBalanceLis[i].nextUserType = MonthlyBalanceLis[i].nextUserType.substring(9,10)+"级";
 
                                     $scope.orderIdFun(MonthlyBalanceLis);
                                     $scope.MonthlyBalanceLis = MonthlyBalanceLis;

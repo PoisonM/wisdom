@@ -80,7 +80,7 @@ public class LoginServiceImpl implements LoginService{
                     List<UserInfoDTO> userInfoDTOList1 = userMapper.getUserByInfo(userInfoDTO1);
                     if(userInfoDTOList1!=null&&userInfoDTOList1.size()>0){
                         for(UserInfoDTO user : userInfoDTOList1){
-                            if(!user.getUserType().equals("finance-1")){
+                            if(!user.getUserType().equals("finance-1") && !"operation-1".equals(user.getUserType()) && !"manager-1".equals(user.getUserType())){
                                 return "phoneNotUse";
                             }
                         }
