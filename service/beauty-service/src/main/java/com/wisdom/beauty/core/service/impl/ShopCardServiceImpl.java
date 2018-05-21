@@ -4,7 +4,6 @@ import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
@@ -145,7 +144,7 @@ public class ShopCardServiceImpl implements ShopCardService {
         extShopRechargeCardDTO.setCreateDate(new Date());
         String currentShopId = UserUtils.getBossInfo().getCurrentShopId();
         extShopRechargeCardDTO.setSysShopId(currentShopId);
-        extShopRechargeCardDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
+        extShopRechargeCardDTO.setCreateBy(UserUtils.getBossInfo().getId());
         List<String> imageUrls = extShopRechargeCardDTO.getImageUrls();
         if (CommonUtils.objectIsNotEmpty(imageUrls)) {
             extShopRechargeCardDTO.setImageUrl(imageUrls.get(0));
@@ -158,6 +157,36 @@ public class ShopCardServiceImpl implements ShopCardService {
         useScope(extShopRechargeCardDTO);
         return insert;
     }
+
+
+    /**
+     * 修改充值卡信息
+     *
+     * @param extShopRechargeCardDTO
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateRechargeCardInfo(ExtShopRechargeCardDTO extShopRechargeCardDTO) {
+        //保存图片信息
+        if (CommonUtils.objectIsNotEmpty(extShopRechargeCardDTO.getImageUrls())) {
+            extShopRechargeCardDTO.setImageUrl(extShopRechargeCardDTO.getImageUrls().get(0));
+        } else {
+            extShopRechargeCardDTO.setImageUrl("");
+        }
+        mongoUtils.saveImageUrl(extShopRechargeCardDTO.getImageUrls(), extShopRechargeCardDTO.getId());
+        int update = shopRechargeCardMapper.updateByPrimaryKey(extShopRechargeCardDTO);
+        //删除充值卡适用范围信息
+        ShopProjectProductCardRelationCriteria criteria = new ShopProjectProductCardRelationCriteria();
+        ShopProjectProductCardRelationCriteria.Criteria c = criteria.createCriteria();
+        c.andShopRechargeCardIdEqualTo(extShopRechargeCardDTO.getId());
+        shopProjectProductCardRelationMapper.deleteByCriteria(criteria);
+        //保存项目的适用范围
+        useScope(extShopRechargeCardDTO);
+        logger.info("保存充值卡信息执行结果={}", update > 0 ? "成功" : "失败");
+        return update;
+    }
+
 
     /**
      * 充值卡适用范围
@@ -194,32 +223,5 @@ public class ShopCardServiceImpl implements ShopCardService {
                 shopProjectProductCardRelationMapper.insertSelective(relationDTO);
             }
         }
-    }
-
-    /**
-     * 修改充值卡信息
-     *
-     * @param extShopRechargeCardDTO
-     * @return
-     */
-    @Override
-    public int updateRechargeCardInfo(ExtShopRechargeCardDTO extShopRechargeCardDTO) {
-        //保存图片信息
-        if (CommonUtils.objectIsNotEmpty(extShopRechargeCardDTO.getImageUrls())) {
-            extShopRechargeCardDTO.setImageUrl(extShopRechargeCardDTO.getImageUrls().get(0));
-        } else {
-            extShopRechargeCardDTO.setImageUrl("");
-        }
-        mongoUtils.saveImageUrl(extShopRechargeCardDTO.getImageUrls(), extShopRechargeCardDTO.getId());
-        int update = shopRechargeCardMapper.updateByPrimaryKey(extShopRechargeCardDTO);
-        //删除充值卡适用范围信息
-        ShopProjectProductCardRelationCriteria criteria = new ShopProjectProductCardRelationCriteria();
-        ShopProjectProductCardRelationCriteria.Criteria c = criteria.createCriteria();
-        c.andShopRechargeCardIdEqualTo(extShopRechargeCardDTO.getId());
-        shopProjectProductCardRelationMapper.deleteByCriteria(criteria);
-        //保存项目的适用范围
-        useScope(extShopRechargeCardDTO);
-        logger.info("保存充值卡信息执行结果={}", update > 0 ? "成功" : "失败");
-        return 0;
     }
 }
