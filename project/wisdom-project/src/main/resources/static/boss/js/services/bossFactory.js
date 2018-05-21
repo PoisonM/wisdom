@@ -13,8 +13,9 @@ var consume = '/beauty/consume/';
 var cardInfo  = '/beauty/cardInfo/';
 var projectInfo  = '/beauty/projectInfo/';
 var productInfo  = '/beauty/productInfo/';
-var productTypeInfo  = '/beauty/productTypeInfo/';
+var productTypeInfo = '/beauty/productTypeInfo/';
 var projectType='/beauty/projectType/';
+var shop='/beauty/shop/';
 
 
 define(['appBoss'], function (app) {
@@ -235,8 +236,27 @@ define(['appBoss'], function (app) {
         .factory('UpdateTwoLevelProjectType',['$resource',function ($resource){
             return $resource(projectType+"updateTwoLevelProjectType")
         }])
-        /* 获取二级项目列表*/
+        /* 获取二级产品列表*/
         .factory('TwoLevelProduct',['$resource',function ($resource){
             return $resource(productInfo+"twoLevelProduct")
         }])
+ /*美容院设置*/
+        /* 查询美容院设置*/
+        .factory('GetBossShopInfo',['$resource',function ($resource){
+            return $resource(shop+"getBossShopInfo")
+        }])
+        /* 保存美容院设置*/
+        .factory('UpdateShopInfo',['$resource',function ($resource){
+            return $resource(shop+"updateShopInfo")
+        }])
+/*编辑分店*/
+        /* 查询分店列表*/
+        .factory('GetBossAllShopList',['$resource',function ($resource){
+            return $resource(shop+"getBossAllShopList")
+        }])
+        /* 查询某个门店*/
+        .factory('GetShopInfo',['$resource',function ($resource){
+            return $resource(shop+"getShopInfo")
+        }])
+
 });
