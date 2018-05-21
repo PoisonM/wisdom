@@ -280,7 +280,6 @@ public class ProductController {
         //遍历缓存的一级产品
         for (Map.Entry entry : oneTypeMap.entrySet()) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
-            ArrayList<Object> helperList = new ArrayList<>();
             //承接二级产品
             HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
             ShopProductInfoDTO productInfoDTO = new ShopProductInfoDTO();
