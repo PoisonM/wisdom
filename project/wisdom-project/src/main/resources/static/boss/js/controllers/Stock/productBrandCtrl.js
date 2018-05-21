@@ -7,4 +7,11 @@ angular.module('controllers',[]).controller('productBrandCtrl',
 
             $rootScope.title = "产品品牌";
 
+            $scope.addSeriesGo = function(){
+                $state.go("addSeries")
+            }
+            $scope.addBrandOneGo = function(){
+                $state.go("addBrandOne")
+            }
+
         }]);
