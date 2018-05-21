@@ -873,7 +873,7 @@ define(['appBoss'], function(app){
                     })
                 /*产品品牌设置*/
                     .state('productSetting', {
-                        url: '/productSetting',
+                        url: '/productSetting/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productSettingCtrl',
                         resolve: {
