@@ -281,13 +281,17 @@ public class ProductController {
         for (Map.Entry entry : oneTypeMap.entrySet()) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
             //承接二级产品
-            HashMap<Object, Object> hashMap = new HashMap<>(16);
+            HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
+            ShopProductInfoDTO productInfoDTO = new ShopProductInfoDTO();
             for (ShopProductInfoDTO dto : shopProductInfo) {
                 if (entry.getKey().equals(dto.getProductTypeOneId())) {
-                    hashMap.put(dto.getProductTypeTwoName(), dto);
+                    twoLevelMap.put(dto.getProductTypeTwoName(), dto);
                 }
+                productInfoDTO = dto;
             }
-            helperMap.put(((ShopProductInfoDTO) entry.getValue()).getProductTypeOneName(), hashMap);
+
+            helperMap.put(((ShopProductInfoDTO) entry.getValue()).getProductTypeOneName(), twoLevelMap);
+            helperMap.put(productInfoDTO, twoLevelMap);
             levelList.add(helperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProduct集合是所有产品的列表

@@ -10,6 +10,8 @@ public enum CommonCodeEnum {
     ALREADYBIND("alreadyBind", "非正常"),
     ADD("0", "添加"),
     DELETE("1", "删除"),
+    DISABLE("0", "启用"),
+    ENABLED("1", "不启用"),
     TRUE("true", "true");
 
     CommonCodeEnum(String code, String desc) {
