@@ -13,9 +13,8 @@ var consume = '/beauty/consume/';
 var cardInfo  = '/beauty/cardInfo/';
 var projectInfo  = '/beauty/projectInfo/';
 var productInfo  = '/beauty/productInfo/';
-var productTypeInfo = '/beauty/productTypeInfo/';
-
-
+var productTypeInfo  = '/beauty/productTypeInfo/';
+var projectType='/beauty/projectType/';
 
 
 define(['appBoss'], function (app) {
@@ -219,5 +218,25 @@ define(['appBoss'], function (app) {
             return $resource(productTypeInfo+"updateTwoLevelTypeInfo")
         }])
 
-
+    /*项目大类设置*/
+        /*查询项目类别信息*/
+        .factory('SearchShopProjectList',['$resource',function ($resource){
+            return $resource(projectInfo+"searchShopProjectList")
+        }])
+      /*添加项目类别接口*/
+        .factory('SaveShopProjectType',['$resource',function ($resource){
+            return $resource(projectType+"saveShopProjectType")
+        }])
+    /*修改项目类别*/
+        .factory('UpdateOneLevelProjectType',['$resource',function ($resource){
+            return $resource(projectType+"updateOneLevelProjectType")
+        }])
+    /*修改项目系列*/
+        .factory('UpdateTwoLevelProjectType',['$resource',function ($resource){
+            return $resource(projectType+"updateTwoLevelProjectType")
+        }])
+        /* 获取二级项目列表*/
+        .factory('TwoLevelProduct',['$resource',function ($resource){
+            return $resource(productInfo+"twoLevelProduct")
+        }])
 });

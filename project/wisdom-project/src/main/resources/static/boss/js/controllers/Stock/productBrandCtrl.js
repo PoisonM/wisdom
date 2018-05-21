@@ -13,8 +13,8 @@ angular.module('controllers',[]).controller('productBrandCtrl',
             $scope.addBrandOneGo = function(type,id){
                 $state.go("productSetting",{type:type,id:id});
             };
-            $scope.checkSeries=function () {
-                $state.go("addSeries")
+            $scope.checkSeries=function (productTypeOneId) {
+                $state.go("addSeries",{productTypeOneId:productTypeOneId})
             }
             SearchShopProductList.get({filterStr:''},function (date) {
                 $scope.productBrand = date.responseData.detailLevel
