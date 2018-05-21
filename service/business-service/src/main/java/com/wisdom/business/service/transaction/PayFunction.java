@@ -245,7 +245,7 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级单
-                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B)) {
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_B;
                         }
 
@@ -274,7 +274,7 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级单
-                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B)) {
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_B;
                         }
 
@@ -317,7 +317,7 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级单
-                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B)) {
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_B;
                         }
 
@@ -463,8 +463,9 @@ public class PayFunction {
         if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount < ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
 
             //记录此单是用户升级单
-            if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B)) {
+            if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                 isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+                logger.info("用户当前的等级={},升级记录为={}", userType, isImportLevel);
             }
 
         } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
