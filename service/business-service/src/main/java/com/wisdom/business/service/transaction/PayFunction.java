@@ -191,7 +191,7 @@ public class PayFunction {
             nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
             List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
             UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
-            String userType = null;
+            String userType = "";
             if (userInfoDTO.getUserType().equalsIgnoreCase(ConfigConstant.businessB1)) {
                 userType = ConfigConstant.LEVE_IMPORT_B;
             } else if (userInfoDTO.getUserType().equalsIgnoreCase(ConfigConstant.businessA1)) {
@@ -453,7 +453,7 @@ public class PayFunction {
         nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
         List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
         UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
-        String userType = null;
+        String userType = "";
         if (userInfoDTO.getUserType().equalsIgnoreCase(ConfigConstant.businessB1)) {
             userType = ConfigConstant.LEVE_IMPORT_B;
         } else if (userInfoDTO.getUserType().equalsIgnoreCase(ConfigConstant.businessA1)) {

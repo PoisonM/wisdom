@@ -121,7 +121,7 @@ public class IncomeService {
             return incomeRecordDTOS;
         }
 
-        //查询该订单用户提升等级信息
+        //查询该订单用户提升等级信息queryIncomeInfoByIncomeId
         for(IncomeRecordDTO income :incomeRecordDTOS){
            PromotionTransactionRelation promotionTransactionRelation =  promotionTransactionRelationMapper.getIsImportLevel(income.getTransactionId());
            if(promotionTransactionRelation!=null){
