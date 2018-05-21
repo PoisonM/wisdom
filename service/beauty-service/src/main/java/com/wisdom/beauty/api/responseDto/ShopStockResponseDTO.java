@@ -24,6 +24,9 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private  String productCode;
 	private  String productSpec;
 	private  BigDecimal productUnit;
+
+	/**实际库存数量*/
+	private Integer actualStockNumber;
      /** 出库数量 */
 	private Integer outStockNumber;
 	/** 本仓库存 */
@@ -172,5 +175,13 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 
 	public void setShopStoreName(String shopStoreName) {
 		this.shopStoreName = shopStoreName;
+	}
+
+	public Integer getActualStockNumber() {
+		return actualStockNumber;
+	}
+
+	public void setActualStockNumber(Integer actualStockNumber) {
+		this.actualStockNumber = actualStockNumber;
 	}
 }

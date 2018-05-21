@@ -306,11 +306,32 @@ public class StoreAndStockController {
         long currentTimeMillis = System.currentTimeMillis();
         ShopCheckRecordDTO shopCheckRecordDTO=new ShopCheckRecordDTO();
         shopCheckRecordDTO.setShopStoreId(shopStoreId);
-        List<ShopCheckRecordDTO> list = shopCheckService.getProductCheckRecord(shopCheckRecordDTO);
+        List<ShopCheckRecordDTO> list = shopCheckService.getProductCheckRecordList(shopCheckRecordDTO);
         ResponseDTO<List<ShopCheckRecordDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(list);
         logger.info("getProductCheckRecord{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取产品的盘点记录详情
+    *@Date:2018/5/21 10:59
+    */
+    @RequestMapping(value = "/getProductCheckRecordDeatil", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Map<String ,Object>> getProductCheckRecordDeatil(@RequestParam String shopProcId,@RequestParam String shopStockNumberId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ShopCheckRecordDTO shopCheckRecordDTO=new ShopCheckRecordDTO();
+        shopCheckRecordDTO.setShopProcId(shopProcId);
+        shopCheckRecordDTO.setShopStockNumberId(shopStockNumberId);
+        Map<String ,Object> map = shopCheckService.getProductCheckRecordDeatil(shopCheckRecordDTO);
+        ResponseDTO<Map<String ,Object>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(map);
+        logger.info("getProductCheckRecordDeatil{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }
