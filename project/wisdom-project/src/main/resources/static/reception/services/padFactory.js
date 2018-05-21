@@ -282,8 +282,8 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(beautyIP + '/cardInfo/rechargeCardSignConfirm')
     }])
     //图片上传
-    .factory('ImageUploadToOSS', ['$resource', function($resource) {
-        return $resource('http://47.100.246.201/system/file/imageUploadToOSS')
+    .factory('ImageBase64UploadToOSS', ['$resource', function($resource) {
+        return $resource('http://192.168.1.117/system-service/file/imageBase64UploadToOSS')
     }])
     //全量更新用户的订单
     .factory('UpdateShopUserOrderInfo', ['$resource', function($resource) {

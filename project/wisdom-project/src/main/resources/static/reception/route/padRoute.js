@@ -480,16 +480,16 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
-        .state('pad-web.left_nav.getPorduct', {
-            url: '/getPorduct',
-            templateUrl: root + '/cashier/getPorduct.html',
-            controller: 'getPorductCtrl',
+        .state('pad-web.left_nav.getProduct', {
+            url: '/getProduct',
+            templateUrl: root + '/cashier/getProduct.html',
+            controller: 'getProductCtrl',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "领取产品",
-                        files: [root + "cashier/getPorductCtrl.js",
-                            root + "cashier/getPorduct.css",
+                        files: [root + "cashier/getProductCtrl.js",
+                            root + "cashier/getProduct.css",
                         ]
                     })
                 }]

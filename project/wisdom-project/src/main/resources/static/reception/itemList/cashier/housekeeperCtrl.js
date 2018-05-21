@@ -26,15 +26,15 @@ PADWeb.controller('housekeeperCtrl', function($scope, $stateParams, ngDialog, Ge
     $scope.flagFn(true)
 
 
-    $scope.housekeeperCheck = function(a,id) {
+    $scope.housekeeperCheck = function(a, id) {
         $scope.select = a;
     }
 
     GetShopClerkList.get({
-        pageNo:"1",
-        pageSize:"1"
-    },function (data) {
-        if(data.result ==  "0x00001"){
+        pageNo: "1",
+        pageSize: "1"
+    }, function(data) {
+        if (data.result == "0x00001") {
             $scope.UserList = data.responseData
         }
     })
