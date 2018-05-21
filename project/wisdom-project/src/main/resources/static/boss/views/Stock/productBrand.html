@@ -1,10 +1,10 @@
 <ion-view class="bg">
     <ion-content>
         <div class="list">
-            <li class="item p10">
+            <li class="item p10" ng-click="checkProduct()">
                 <span STYLE="width: 2px;height: 20px;display: inline-block;background: #FF6666;"></span><span class="fs17 col33 ml10">产品</span><i class="ion ion-ios-arrow-right fr"></i>
             </li>
-            <li class="item p5" style="display: flex;flex-wrap: wrap">
+            <li class="item p5" style="display: flex;flex-wrap: wrap" ng-click="checkSeries()">
                   <span style="height: 23px;background: #F6F6F6;color: #333333;padding: 5px;border: 0 solid #E5E5E5;
 border-radius: 6px;margin: 5px;font-size: 11px;" ng-repeat="item in [1,2,3,4,5,6,7,8,9,10]">美白</span>
             </li>
