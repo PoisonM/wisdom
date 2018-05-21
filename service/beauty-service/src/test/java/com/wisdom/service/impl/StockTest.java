@@ -130,22 +130,32 @@ public class StockTest  {
         shopStockService.insertShopStockDTO(toJSONString);
     }
     @Test
-    public void  testUpdate(){
-        Map<String,Object> param=new HashedMap();
+    public void  testUpdate() throws Exception {
         ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
-        shopStockNumberDTO.setId("000000");
-        shopStockNumberDTO.setId("882");
-        shopStockNumberDTO.setStockNumber(999);
+        shopStockNumberDTO.setId("cf2819774590432f85f3ad27ca758ac1");
+        shopStockNumberDTO.setStockNumber(7587854);
+        shopStockNumberDTO.setShopProcId("123");
+        shopStockNumberDTO.setShopStoreId("65174281");
         ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
-        shopStockNumberDTO2.setId("883");
-        shopStockNumberDTO2.setId("00000220");
-        shopStockNumberDTO2.setStockNumber(999);
+        shopStockNumberDTO2.setId("ed04ff8418d4469fb5d3cef4f9c2c5d4");
+        shopStockNumberDTO2.setStockNumber(787878);
+        shopStockNumberDTO2.setShopProcId("123");
+        shopStockNumberDTO2.setShopStoreId("65174281");
         List<ShopStockNumberDTO> list=new ArrayList<>();
         list.add(shopStockNumberDTO);
         list.add(shopStockNumberDTO2);
-        param.put("list",list);
        // extShopStockNumberMapper.updateBatchShopStockNumber(param);
-        extShopStockNumberMapper.saveBatchShopStockNumber(list);
+
+        JSONArray json = JSONArray.fromObject(list);
+        String shopStockNumberDTOs = json.toString();//把json转换为String
+       // extShopStockNumberMapper.saveBatchShopStockNumber(list);
+        MvcResult result = mvc.perform(post("/stock/checkProduct").contentType(MediaType.APPLICATION_JSON).content(shopStockNumberDTOs))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
@@ -183,10 +193,15 @@ public class StockTest  {
     @Test
     public  void  pandian(){
         ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
-        shopStockNumberDTO.setShopProcId("6");
-        shopStockNumberDTO.setShopStoreId("651742081");
-        shopStockNumberDTO.setActualStockNumber(333433);
-        shopStockService.checkProduct(shopStockNumberDTO);
+        shopStockNumberDTO.setId("cf2819774590432f85f3ad27ca758ac1");
+        shopStockNumberDTO.setStockNumber(888);
+        ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
+        shopStockNumberDTO2.setId("ed04ff8418d4469fb5d3cef4f9c2c5d4");
+        shopStockNumberDTO2.setStockNumber(888);
+        List<ShopStockNumberDTO> list=new ArrayList<>();
+        list.add(shopStockNumberDTO);
+        list.add(shopStockNumberDTO2);
+        shopStockService.checkProduct(list);
     }
     @Test
     public  void  pingcang(){
