@@ -45,8 +45,8 @@ public class ShopRemindServiceImpl implements ShopRemindService {
             c.andSysBossIdEqualTo(shopRemindSettingDTO.getSysBossId());
         }
         List<ShopRemindSettingDTO> shopRemindSettingDTOS = shopRemindSettingMapper.selectByCriteria(criteria);
-        if (CommonUtils.objectIsEmpty(shopRemindSettingDTO)) {
-            return null;
+        if (CommonUtils.objectIsEmpty(shopRemindSettingDTOS)) {
+            return saveShopRemindSetting(shopRemindSettingDTO);
         } else {
             return shopRemindSettingDTOS.get(0);
         }
@@ -59,11 +59,12 @@ public class ShopRemindServiceImpl implements ShopRemindService {
      * @return
      */
     @Override
-    public int saveShopRemindSetting(ShopRemindSettingDTO shopRemindSettingDTO) {
+    public ShopRemindSettingDTO saveShopRemindSetting(ShopRemindSettingDTO shopRemindSettingDTO) {
         logger.info("保存老板端推送消息设置传入参数={}", "shopRemindSettingDTO = [" + shopRemindSettingDTO + "]");
         shopRemindSettingDTO.setId(IdGen.uuid());
         shopRemindSettingDTO.setStatus(CommonCodeEnum.ENABLED.getCode());
-        return shopRemindSettingMapper.insertSelective(shopRemindSettingDTO);
+        shopRemindSettingMapper.insertSelective(shopRemindSettingDTO);
+        return shopRemindSettingDTO;
     }
 
     /**
