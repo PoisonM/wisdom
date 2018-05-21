@@ -187,6 +187,17 @@ public class PayFunction {
             payRecordDTO.setStatus("1");
             List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
 
+            UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
+            nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
+            List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+            UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
+            String userType = null;
+            if (userInfoDTO.getUserType().equalsIgnoreCase(ConfigConstant.businessB1)) {
+                userType = ConfigConstant.LEVE_IMPORT_B;
+            } else if (userInfoDTO.getUserType().equalsIgnoreCase(ConfigConstant.businessA1)) {
+                userType = ConfigConstant.LEVE_IMPORT_A;
+            }
+
             //该交易的交易金额
             float expenseAmount = 0;
             for (PayRecordDTO payRecord : payRecordDTOList) {
@@ -219,7 +230,9 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级订单
-                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
+                            isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                        }
 
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
                         //用户升级成B时即时返利给父类的钱
@@ -232,7 +245,10 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级单
-                        isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B)) {
+                            isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+                        }
+
                     } else {
                         //用户即时提现返给父类的钱
                         returnMoney = expenseAmount * 2 / 100;
@@ -258,7 +274,9 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级单
-                        isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B)) {
+                            isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+                        }
 
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
 
@@ -271,7 +289,9 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级单
-                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
+                            isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                        }
                     } else {
 
                         //b的下级消费返5%的即时
@@ -297,7 +317,9 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级单
-                        isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B)) {
+                            isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+                        }
 
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
                         returnMoney = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 2 / 100;
@@ -309,7 +331,9 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级单
-                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
+                            isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                        }
                     } else {
                         returnMoney = expenseAmount * 2 / 100;
 
@@ -334,7 +358,9 @@ public class PayFunction {
                         amount = expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE;
 
                         //记录此单是用户升级单
-                        isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                        if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
+                            isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                        }
                     } else {
                         returnMoney = expenseAmount * 2 / 100;
 
@@ -364,9 +390,6 @@ public class PayFunction {
             }
             AccountDTO accountDTO = new AccountDTO();
             accountDTO.setSysUserId(parentUserId);
-            UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
-            nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
-            List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
 
             if (returnMoney >= 0) {
                 //将returnMoney去更新要返现的用户ID的account和income两个表的数据
@@ -390,7 +413,7 @@ public class PayFunction {
                     this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
                     logger.info("用户购买单号：{}，",instanceReturnMoneySignalDTO.getTransactionId());
                 }
-                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
+                WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(userInfoDTO.getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
             }
 
         } catch (Exception e) {
