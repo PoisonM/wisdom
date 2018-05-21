@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
+import com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO;
 import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.dto.ShopStockRecordDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
@@ -355,6 +356,27 @@ public class StoreAndStockController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(result);
         logger.info("doClosePositio方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 平仓详情
+     * @Date:2018/5/21 16:32
+     */
+    @RequestMapping(value = "/getShopClosePositionDetail", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<ShopClosePositionRecordDTO> getShopClosePositionDetail(@RequestParam String shopClosePositionId,
+                                                                       @RequestParam String productName,
+                                                                       @RequestParam String productTypeName) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ShopClosePositionRecordDTO shopClosePositionRecordDTO = shopCheckService.getShopClosePositionDetail(shopClosePositionId,productName,productTypeName);
+        ResponseDTO<ShopClosePositionRecordDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(shopClosePositionRecordDTO);
+        logger.info("getShopClosePositionDetail方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

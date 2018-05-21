@@ -11,6 +11,12 @@ import com.wisdom.beauty.api.dto.ShopRemindSettingDTO;
  */
 public interface ShopRemindService {
 
+    /**
+     * 查询提醒设置信息
+     *
+     * @param shopRemindSettingDTO
+     * @return
+     */
     ShopRemindSettingDTO getShopRemindSetting(ShopRemindSettingDTO shopRemindSettingDTO);
 
     /**
@@ -19,7 +25,7 @@ public interface ShopRemindService {
      * @param shopRemindSettingDTO
      * @return
      */
-    int saveShopRemindSetting(ShopRemindSettingDTO shopRemindSettingDTO);
+    ShopRemindSettingDTO saveShopRemindSetting(ShopRemindSettingDTO shopRemindSettingDTO);
 
     /**
      * 修改老板端推送消息设置

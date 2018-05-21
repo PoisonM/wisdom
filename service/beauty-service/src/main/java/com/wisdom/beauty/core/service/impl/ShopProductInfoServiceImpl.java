@@ -8,6 +8,7 @@ import com.wisdom.beauty.core.mapper.ShopProductTypeMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
 import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
@@ -345,6 +346,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		logger.info("更新产品类别列表传入参数={}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
 		if (CommonUtils.objectIsNotEmpty(shopProductTypeDTOS)) {
 			for (ShopProductTypeDTO dto : shopProductTypeDTOS) {
+                dto.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
 				//id为空则是新增
 				if (StringUtils.isBlank(dto.getId())) {
 					logger.info("主键为空，说明是新增记录={}", dto.getProductTypeName());

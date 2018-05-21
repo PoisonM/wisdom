@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service;
 
 
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
+import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 
 import java.util.List;
 
@@ -34,4 +35,20 @@ public interface ShopClerkScheduleService {
      * @return
      */
     int updateShopClerkScheduleList(List<ShopClerkScheduleDTO> scheduleDTOS);
+
+    /**
+     * 获取老板的排班设置信息
+     *
+     * @param shopScheduleSettingDTO
+     * @return
+     */
+    List<ShopScheduleSettingDTO> getBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO);
+
+    /**
+     * 修改老板的排班设置信息
+     *
+     * @param shopScheduleSettingDTO
+     * @return
+     */
+    List<ShopScheduleSettingDTO> updateBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO);
 }

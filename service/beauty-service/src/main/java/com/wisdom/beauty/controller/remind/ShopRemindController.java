@@ -1,19 +1,19 @@
 package com.wisdom.beauty.controller.remind;
 
+import com.wisdom.beauty.api.dto.ShopRemindSettingDTO;
 import com.wisdom.beauty.core.service.ShopRemindService;
-import com.wisdom.beauty.interceptor.LoginRequired;
-import com.wisdom.common.dto.beauty.ShopMemberAttendacneDTO;
+import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "remind")
@@ -24,14 +24,44 @@ public class ShopRemindController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    // 获取门店某天的业绩
-    @RequestMapping(value = "shopMemberAttendanceAnalyzeByDate", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
-    public @ResponseBody
-    ResponseDTO<List<ShopMemberAttendacneDTO>> shopMemberAttendanceAnalyzeByDate(
-            @RequestParam String shopId, @RequestParam String date) {
-        ResponseDTO<List<ShopMemberAttendacneDTO>> responseDTO = new ResponseDTO<>();
+    /**
+     * 查询某个店的设置信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getShopRemindSetting", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<Object> getShopRemindSetting() {
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        ShopRemindSettingDTO shopRemindSettingDTO = new ShopRemindSettingDTO();
+        shopRemindSettingDTO.setSysBossId(UserUtils.getBossInfo().getId());
+        ShopRemindSettingDTO shopRemindSetting = shopRemindService.getShopRemindSetting(shopRemindSettingDTO);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(shopRemindSetting);
+        logger.info("查询某个店的设置信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
 
+    /**
+     * 修改某个店的设置信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/updateShopRemindSetting", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<Object> updateShopRemindSetting(@RequestBody ShopRemindSettingDTO shopRemindSettingDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        if (StringUtils.isBlank(shopRemindSettingDTO.getId())) {
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
+        }
+        int setting = shopRemindService.updateShopRemindSetting(shopRemindSettingDTO);
+        responseDTO.setResult(setting > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        logger.info("查询某个店的设置信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
