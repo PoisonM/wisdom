@@ -37,7 +37,7 @@ public interface ShopClerkScheduleService {
     int updateShopClerkScheduleList(List<ShopClerkScheduleDTO> scheduleDTOS);
 
     /**
-     * 获取老板的排班设置信息
+     * 获取某个店的排班设置信息
      *
      * @param shopScheduleSettingDTO
      * @return
