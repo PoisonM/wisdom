@@ -6,16 +6,19 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
 import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.dto.ShopStockRecordDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
+import com.wisdom.beauty.core.service.ShopCheckService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +41,9 @@ public class StoreAndStockController {
 
     @Resource
     private ShopStockService shopStockService;
+
+    @Autowired
+    private ShopCheckService shopCheckService;
 
     /**
      * 根据条件查询仓库列表
@@ -285,6 +291,26 @@ public class StoreAndStockController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(result);
         logger.info("checkProduct{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:  获取盘点记录列表
+    *@Date:2018/5/21 9:49
+    */
+    @RequestMapping(value = "/getProductCheckRecord", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<List<ShopCheckRecordDTO>> getProductCheckRecord(@RequestParam String shopStoreId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ShopCheckRecordDTO shopCheckRecordDTO=new ShopCheckRecordDTO();
+        shopCheckRecordDTO.setShopStoreId(shopStoreId);
+        List<ShopCheckRecordDTO> list = shopCheckService.getProductCheckRecord(shopCheckRecordDTO);
+        ResponseDTO<List<ShopCheckRecordDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(list);
+        logger.info("getProductCheckRecord{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }
