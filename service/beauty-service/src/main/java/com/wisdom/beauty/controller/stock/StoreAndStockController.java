@@ -15,6 +15,8 @@ import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.service.ShopCheckService;
 import com.wisdom.beauty.util.UserUtils;
@@ -290,10 +292,10 @@ public class StoreAndStockController {
      */
     @RequestMapping(value = "/checkProduct", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<Integer> checkProduct(@RequestParam String shopStockNumberDTOs) {
+    ResponseDTO<Integer> checkProduct(@RequestParam String shopCheckRecordDTO) {
         long currentTimeMillis = System.currentTimeMillis();
-        ShopStockNumberDTO[] shopStockNumberDTOArry = (ShopStockNumberDTO[]) JSONArray.toArray(JSONArray.fromObject(shopStockNumberDTOs), ShopStockNumberDTO.class);
-        List<ShopStockNumberDTO> list = Arrays.asList(shopStockNumberDTOArry);
+        ShopCheckRecordDTO[] shopCheckRecordDTOArry = (ShopCheckRecordDTO[]) JSONArray.toArray(JSONArray.fromObject(shopCheckRecordDTO), ShopCheckRecordDTO.class);
+        List<ShopCheckRecordDTO> list = Arrays.asList(shopCheckRecordDTOArry);
         Integer result = shopStockService.checkProduct(list);
         ResponseDTO<Integer> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -332,7 +334,7 @@ public class StoreAndStockController {
      */
     @RequestMapping(value = "/getProductCheckRecordDeatil", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopCheckRecordResponseDTO>> getProductCheckRecordDeatil(@RequestParam String  flowNo) {
+    ResponseDTO<List<ShopCheckRecordResponseDTO>> getProductCheckRecordDeatil(@RequestParam String flowNo) {
         long currentTimeMillis = System.currentTimeMillis();
         List<ShopCheckRecordResponseDTO> list = shopCheckService.getProductCheckRecordDeatil(flowNo);
         ResponseDTO<List<ShopCheckRecordResponseDTO>> responseDTO = new ResponseDTO<>();
@@ -374,11 +376,31 @@ public class StoreAndStockController {
                                                                        @RequestParam String productName,
                                                                        @RequestParam String productTypeName) {
         long currentTimeMillis = System.currentTimeMillis();
-        ShopClosePositionRecordDTO shopClosePositionRecordDTO = shopCheckService.getShopClosePositionDetail(shopClosePositionId,productName,productTypeName);
+        ShopClosePositionRecordDTO shopClosePositionRecordDTO = shopCheckService.getShopClosePositionDetail(shopClosePositionId, productName, productTypeName);
         ResponseDTO<ShopClosePositionRecordDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopClosePositionRecordDTO);
         logger.info("getShopClosePositionDetail方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 跳转到产品盘点页面
+     * @Date:2018/5/22 14:39
+     */
+    @RequestMapping(value = "/products", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<Object> getProducts(@RequestBody String shopStoreId,@RequestBody List<String> products) {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        List<ShopProductInfoCheckResponseDTO> list = shopCheckService.getProductsCheckLit(shopStoreId,products);
+        responseDTO.setResponseData(list);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("getProducts方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

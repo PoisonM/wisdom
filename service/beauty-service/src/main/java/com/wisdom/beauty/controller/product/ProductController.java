@@ -303,16 +303,4 @@ public class ProductController {
         return responseDTO;
     }
 
-    @RequestMapping(value = "/products", method = RequestMethod.POST)
-    @ResponseBody
-    ResponseDTO<Object> getProducts(@RequestBody List<String> products) {
-        long currentTimeMillis = System.currentTimeMillis();
-
-        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        List<ShopProductInfoResponseDTO> list = shopProductInfoService.getProductInfoList(products);
-        responseDTO.setResponseData(list);
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("getProducts方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
-        return responseDTO;
-    }
 }
