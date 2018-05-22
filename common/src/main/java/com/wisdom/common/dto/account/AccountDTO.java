@@ -64,6 +64,11 @@ public class AccountDTO {
     private Float balanceDeny;
 
     /**
+     * 可提现金额
+     */
+    private String balanceYes;
+
+    /**
      * 用户在系统中的积分
      */
     @JSONField(name = "score")
@@ -139,6 +144,14 @@ public class AccountDTO {
 
     public void setBalanceDeny(Float balanceDeny) {
         this.balanceDeny = balanceDeny;
+    }
+
+    public String getBalanceYes() {
+        return balanceYes;
+    }
+
+    public void setBalanceYes(String balanceYes) {
+        this.balanceYes = balanceYes;
     }
 
     public Float getScore() {

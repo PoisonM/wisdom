@@ -109,6 +109,10 @@ angular.module('controllers',[]).controller('addressEditCtrl',
             $scope.deleteAddress=function () {
                 DeleteUserAddress.get({addressId:$stateParams.addressId}, function(data){
                     BusinessUtil.checkResponseData(data,"addressEdit&edit,"+$stateParams.addressId);
+                    /*解决删除地址还剩下一个地址，三级联动不好用的问题*/
+                    setTimeout(function () {
+                        window.location.reload();
+                    },1000);
                     if(data.result==Global.SUCCESS)
                     {
                         var alertPopup = $ionicPopup.alert({

@@ -26,7 +26,7 @@
                     <div class=" time_box" style="margin-bottom: 30px;">
                             <span class="bold agencyTime">时间：&nbsp&nbsp&nbsp</span>
 
-                            <input class="time MStart laydate-icon" id="MStart" ng-click="dataS('#MStart')" style="width:22%">&nbsp--&nbsp<input class="time MEnd laydate-icon" id="MEnd" ng-click="dataS('#MEnd')" style="width:22%">
+                            <input class="time MStart laydate-icon" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" style="width:22%">&nbsp--&nbsp<input class="time MEnd laydate-icon" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" style="width:22%">
                             <input type="button" value="搜索" class="search_btn top_1" ng-click="searchMonthlyBalance()" style=" width: 133px;margin-left: 30px;background: #4f8ffd; color: #fff;">
 
                     </div>

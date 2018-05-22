@@ -168,7 +168,7 @@ public class AccountController {
 		PageParamDTO<List<AccountDTO>> page = accountService.queryUserBalanceByParameters(phoneAndIdentify,isExportExcel,pageNo,pageSize);
 		if("Y".equals(isExportExcel)){
 			try{
-				String[] orderHeaders = {"用户ID","用户名","用户等级","手机号", "账户余额"};
+				String[] orderHeaders = {"用户ID","用户名","用户等级","手机号", "账户余额","不可提现余额","可提现余额"};
 				ExportExcel<ExportAccountExcelDTO> ex =new ExportExcel<>();
 				List<ExportAccountExcelDTO> excelList= new ArrayList<>();
 				for(AccountDTO accountDTO : page.getResponseData()){
@@ -178,6 +178,8 @@ public class AccountController {
 					exportAccountExcelDTO.setNickName(accountDTO.getNickName());
 					exportAccountExcelDTO.setSysUserId(accountDTO.getSysUserId());
 					exportAccountExcelDTO.setUserType(accountDTO.getUserType());
+					exportAccountExcelDTO.setBalanceDeny(accountDTO.getBalanceDeny());
+					exportAccountExcelDTO.setBalanceYes(accountDTO.getBalanceYes());
 					excelList.add(exportAccountExcelDTO);
 				}
 				ByteArrayInputStream in = ex.getWorkbookIn("账户余额EXCEL文档",orderHeaders, excelList);

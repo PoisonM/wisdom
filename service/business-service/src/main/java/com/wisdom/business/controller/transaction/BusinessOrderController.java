@@ -18,10 +18,7 @@ import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.OrderCopRelationDTO;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.UUIDUtil;
-import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.common.util.*;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,25 +73,42 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> createBusinessOrder(@RequestBody BusinessOrderDTO businessOrderDTO) {
-
+        RedisLock productAmountLock = new RedisLock("putNeedPayProductAmount");
+        //todo log
+        logger.info("锁前商品id=={}", businessOrderDTO.getBusinessProductId());
+        productAmountLock.lock();
+        logger.info("锁后商品id=={}", businessOrderDTO.getBusinessProductId());
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
-
-        String businessOrderId = transactionService.createBusinessOrder(businessOrderDTO);
-
-        if(businessOrderId.equals(StatusConstant.FAILURE))
+        try {
+            ProductDTO productDTO = productService.getBusinessProductInfo(businessOrderDTO.getBusinessProductId());
+            if (businessOrderDTO.getBusinessProductNum() > Integer.parseInt(productDTO.getProductAmount())) {
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("订单创建失败");
+            }
+            String businessOrderId = transactionService.createBusinessOrder(businessOrderDTO);
+            if(businessOrderId.equals(StatusConstant.FAILURE))
+            {
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("订单创建失败");
+            }
+            else if(businessOrderId.equals(StatusConstant.NO_USER_ADDRESS))
+            {
+                responseDTO.setResult(StatusConstant.NO_USER_ADDRESS);
+            }
+            else
+            {
+                responseDTO.setResponseData(businessOrderId);
+                responseDTO.setResult(StatusConstant.SUCCESS);
+                responseDTO.setErrorInfo("订单创建成功");
+            }
+        }catch (Exception e)
         {
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("订单创建失败");
+            e.printStackTrace();
+            throw e;
         }
-        else if(businessOrderId.equals(StatusConstant.NO_USER_ADDRESS))
+        finally
         {
-            responseDTO.setResult(StatusConstant.NO_USER_ADDRESS);
-        }
-        else
-        {
-            responseDTO.setResponseData(businessOrderId);
-            responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setErrorInfo("订单创建成功");
+            productAmountLock.unlock();
         }
 
         return responseDTO;
@@ -175,10 +189,18 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> updateBusinessOrderStatus(@RequestBody BusinessOrderDTO businessOrderDTO) {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("更改某个订单的状态orderId={}"+businessOrderDTO.getBusinessOrderId(), "orderStatus = [" + businessOrderDTO.getStatus() + "]");
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        if(null == businessOrderDTO.getStatus() || "".equals(businessOrderDTO.getStatus())){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("订单状态参数为空");
+            logger.info("更改某个订单的状态耗时{}毫秒", (System.currentTimeMillis() - startTime));
+            return responseDTO;
+        }
         try
         {
+            //查出库中订单数据
             BusinessOrderDTO newBusinessOrderDTO = transactionService.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
             newBusinessOrderDTO.setUpdateDate(new Date());
             newBusinessOrderDTO.setStatus(businessOrderDTO.getStatus());
@@ -189,6 +211,7 @@ public class BusinessOrderController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
+        logger.info("更改某个订单的状态耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -407,7 +430,7 @@ public class BusinessOrderController {
                     exportOrderExcelDTO.setProductSpec(businessOrderinfo.getProductSpec());
                     //exportOrderExcelDTO.setTaxpayerNumber(businessOrderDTO.getIdentifyNumber());
                     if(businessOrderinfo.getUserAddress()!=null){
-                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserAddress());
+                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
                     }else{
                         exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
                     }

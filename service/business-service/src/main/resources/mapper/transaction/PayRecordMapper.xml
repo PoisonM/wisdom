@@ -204,4 +204,36 @@
             pay.order_id=#{orderId}
             AND pay.status='1'
     </select>
+
+
+    <select id="findTransactionIdList" resultType="java.lang.String">
+        select
+            DISTINCT transaction_id
+        from
+            pay_record
+        <where>
+            <if test="sysUserId!= ''and sysUserId!=null">
+                and sys_user_id=#{sysUserId}
+            </if>
+            <if test="outTradeNo!= ''and outTradeNo!=null">
+                and out_trade_no=#{outTradeNo}
+            </if>
+            <if test="transactionId!= ''and transactionId!=null">
+                and transaction_id=#{transactionId}
+            </if>
+            <if test="orderId!= ''and orderId!=null">
+                and order_id=#{orderId}
+            </if>
+            <if test="status!= ''and status!=null">
+                and status=#{status}
+            </if>
+            <if test="openid!= ''and openid!=null">
+                and openid=#{openid}
+            </if>
+            <if test="invoice!= ''and invoice!=null">
+                and invoice=#{invoice}
+            </if>
+        </where>
+        ORDER BY pay_date
+    </select>
 </mapper>

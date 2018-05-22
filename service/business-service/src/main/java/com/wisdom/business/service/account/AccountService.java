@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.util.Formatter;
 import java.net.URLDecoder;
 import java.util.List;
+import java.text.DecimalFormat;
 
 @Service
 @Transactional(readOnly = false)
@@ -60,6 +62,9 @@ public class AccountService {
                 phoneAndIdentify,isExportExcel,pageStartNo,pageSize);
         String nickNameW ="";
         for(AccountDTO accountDTO : accountDTOList){
+            Formatter formatter = new Formatter();
+            String b = formatter.format("%.2f", (accountDTO.getBalance()-accountDTO.getBalanceDeny())).toString();
+            accountDTO.setBalanceYes(b);
             try {
                 if(accountDTO.getNickName()!=null){
                     nickNameW = accountDTO.getNickName().replaceAll("%", "%25");
@@ -106,18 +111,20 @@ public class AccountService {
     public List pagerUtil(List preyPageDate,List returnList,Integer pageStartNo, Integer pageSize){
 
         Integer total = preyPageDate.size();
-        int pageSum;
-        if(total%pageSize == 0){
-             pageSum = total/pageSize;
-        }else{
-             pageSum = total/pageSize+1;
-        }
-        if(pageSum >= pageStartNo){
-            for(int i=(pageStartNo-1)*pageSize;i<pageStartNo*pageSize;i++){
-                if(i<total){
-                    returnList.add(preyPageDate.get(i));
-                }else{
-                    break;
+        if(total!=0){
+            int pageSum;
+            if(total%pageSize == 0){
+                pageSum = total/pageSize;
+            }else{
+                pageSum = total/pageSize+1;
+            }
+            if(pageSum >= pageStartNo){
+                for(int i=(pageStartNo-1)*pageSize;i<pageStartNo*pageSize;i++){
+                    if(i<total){
+                        returnList.add(preyPageDate.get(i));
+                    }else{
+                        break;
+                    }
                 }
             }
         }

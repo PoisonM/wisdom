@@ -58,29 +58,19 @@ public class ExportIncomeRecordExcelDTO {
     @JSONField(name = "orderStatus")
     private String orderStatus;
 
-    /*public String getIncomeType() {
-        if("instance".equals(incomeType)){
-            return "即时返现";
-        }else if("month".equals(incomeType)){
-            return "月度提成";
-        }
-        return incomeType;
-    }*/
+    @JSONField(name = "parentRelation")
+    private String parentRelation;
 
-    /*public String getStatus() {
-        if("0".equals(status)){
-            return "不可提现";
-        }else if("1".equals(status)){
-            return "可提现";
-        }else if("2".equals(status)){
-            return "用户未确认收货";
-        }
-        return status;
-    }*/
+    //该交易流水与用户等级关系
+    private  String isImportLevel;
 
-   /* public void setStatus(String status) {
-        this.status = status;
-    }*/
+    public String getIsImportLevel() {
+        return isImportLevel;
+    }
+
+    public void setIsImportLevel(String isImportLevel) {
+        this.isImportLevel = isImportLevel;
+    }
 
     public String getSysUserId() {
         return sysUserId;
@@ -234,5 +224,20 @@ public class ExportIncomeRecordExcelDTO {
             return "C";
         }
         return userType;
+    }
+
+    public String getParentRelation() {
+        if("business-B-1".equals(parentRelation)){
+            return "直B关系";
+        }else if("business-A-1".equals(parentRelation)){
+            return "直A关系";
+        }else if("A1B1".equals(parentRelation)){
+            return "间接关系";
+        }
+        return parentRelation;
+    }
+
+    public void setParentRelation(String parentRelation) {
+        this.parentRelation = parentRelation;
     }
 }

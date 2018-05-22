@@ -9,11 +9,11 @@ angular.module('controllers',[]).controller('projectBrandCtrl',
             $scope.addSeriesGo = function(){
                 $state.go("projectSeries")
             };
-            $scope.addBrandOneGo = function(type,id){
-                $state.go("projectSetting",{type:type,id:id});
+            $scope.addBrandOneGo = function(type,id,projectTypeName,status){
+                $state.go("projectSetting",{type:type,id:id,projectTypeName:projectTypeName,status:status});
             };
-            $scope.checkSeries=function (projectTypeOneId) {
-                $state.go("projectSeries",{projectTypeOneId:projectTypeOneId})
+            $scope.checkSeries=function (id) {
+                $state.go("projectSeries",{id:id})
             };
             SearchShopProjectList.get({filterStr:'',useStyle:"2"},function (data) {
                 console.log(data.responseData.detailLevel);

@@ -19,6 +19,7 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                 price:"",
                 status:"",
                 firstUrl:"",
+                productAmount:"",
                 createDate:$filter("date")(Date.parse(new Date()),"yyyy-MM-dd HH:mm:ss"),
                 productDetail:{
                     listPic:[],
@@ -26,8 +27,7 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                     tag:[],
                     spec:[],
                     services:[],
-                    senderAddress:"",
-                    productAmount:""
+                    senderAddress:""
 
                 }
 
