@@ -2,14 +2,15 @@
     <!--顾客 项目 时长-->
     <div class="customerBox">
         <ul>
-            <li><span class="boxLift">顾客</span><a class="boxRight">{{param.selectCustomersObject.sysUserName}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectCustomersCtrl()"></a></li>
-            <li><span class="boxLift">项目</span><a class="boxRight">选择了{{param.ModifyAppointmentObject.productNum}}个项目<img src="images/bt_more.png" class="morePic ml20" ng-click="selectNewProduct()"></a></li>
-            <li><span class="boxLift">时长</span><a class="boxRight">{{param.ModifyAppointmentObject.appointPeriod}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectTimeLength()"></a></li>
+            <li ng-click="selectCustomersCtrl()"><span class="boxLift">顾客</span><a class="boxRight">{{param.selectCustomersObject.sysUserName}}<img src="images/bt_more.png" class="morePic ml20" ></a></li>
+            <li ng-click="selectNewProduct()"><span class="boxLift">项目</span><a class="boxRight">选择了{{param.ModifyAppointmentObject.productNum}}个项目<img src="images/bt_more.png" class="morePic ml20" ></a></li>
+            <!--<li ng-click="selectTimeLength()"><span class="boxLift">时长</span><a class="boxRight">{{param.ModifyAppointmentObject.appointPeriod}}<img src="images/bt_more.png" class="morePic ml20" ></a></li>-->
+            <li><span class="boxLift">时长</span><a class="boxRight">{{param.ModifyAppointmentObject.appointPeriod/60}}<img src="images/bt_more.png" class="morePic ml20" ></a></li>
         </ul>
     </div>
     <!--美容师 时间-->
     <div class="cosmetology">
-        <p><span class="boxLift">美容师</span><a class="boxRight">{{param.ModifyAppointmentObject.beauticianName}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectBeautician()"></a></span></p>
+        <p  ng-click="selectBeautician()"><span class="boxLift">美容师</span><a class="boxRight">{{param.ModifyAppointmentObject.beauticianName}}<img src="images/bt_more.png" class="morePic ml20"></a></span></p>
         <div class="cosmetologyMinute">
             <!--日期-->
             <ul class="dayList">

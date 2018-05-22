@@ -177,29 +177,7 @@ function detailsReservation($scope,ngDialog,GetUserProjectGroupList,GetUserProdu
 
 
 
-    /*选择时长*/
-    $scope.selectTimeLength = function(){
-        if($scope.param.selectCustomersObject.sysUserName == ""){
-            $scope.selectCustomersCtrl()
-        }else {
-            ngDialog.open({
-                template: 'timeLength',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function ($scope, $interval) {
-                    $scope.param.timeLengthIndex = -1;
-                    $scope.param.timeLengthArr = ["1", "1.5", "2", "2.5", "3", "3.5", "4"];
 
-                    $scope.close = function (status) {
-                        if(status == 0){
-                            $scope.param.ModifyAppointmentObject.time =""
-                        }
-                        $scope.closeThisDialog();
-                    };
-                }],
-                className: 'timeLength ngdialog-theme-custom'
-            });
-        }
-    };
 
     consumption && consumption($scope,ngDialog,SearchShopProjectList,SearchShopProductList,GetShopProjectGroups,GetRechargeCardList,ThreeLevelProject,productInfoThreeLevelProject,GetUserShopProjectList,ConsumeCourseCard,GetShopClerkList,FindArchives,GetShopProjectList);
 

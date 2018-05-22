@@ -1,4 +1,4 @@
-PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, $filter, ngDialog, $http, $timeout, ShopDayAppointmentInfoByDate, GetUserCardProjectList, GetAppointmentInfoById, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, UpdateAppointmentInfoById, FindArchives, GetShopProjectList, ShopWeekAppointmentInfoByDate, GetShopClerkScheduleList) {
+PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, $filter, ngDialog, $http, $timeout, ShopDayAppointmentInfoByDate, GetUserCardProjectList, GetAppointmentInfoById, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, UpdateAppointmentInfoById, FindArchives, GetShopProjectList, ShopWeekAppointmentInfoByDate, GetShopClerkScheduleList,SaveUserAppointInfo) {
     $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
 
@@ -13,6 +13,8 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
      ENDED("6", "已结束"); 灰色
      * */
     $scope.param = {
+        nowTime:new Date().getFullYear()+"-"+parseInt(new Date().getMonth()+1)+"-"+parseInt(new Date().getDate()),
+        newChangeContent:"修改预约",
         changeYuyueFlag: "",
         zhongjiList: {},
         hahaList: [],
@@ -265,7 +267,9 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
         /*侧边时间循环*/
     };
     $scope.scheduling = true;
-    $scope.time = function (time) {
+
+
+    /*$scope.time = function (time) {
         $scope.param.week = [];
         var time = time.replace("年", "-").replace("月", "-").replace("日", "");
         var now = new Date(time);
@@ -337,7 +341,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
             }
         };
 
-    };
+    };*/
     var dayAll = function () {
         ShopDayAppointmentInfoByDate.get({
             sysShopId: '3',
@@ -577,45 +581,44 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
 
     /*长按新建*/
     $scope.onHold = function (index1, index2, type) {
-        if (type == 6) {
-            $scope.param.index.index1 = index1;
-            $scope.param.index.index2 = index2;
-            $scope.param.ModifyAppointmentObject.status = "0";
-            $scope.param.appointmentObject.list[index1].status[index2] = 5;
-            $scope.param.appointmentObject.list[index1].sysUserName[index2] = "新建预约";
-            $scope.param.ModifyAppointmentObject.ModifyAppointmentData = "";
-            $scope.param.ModifyAppointmentObject.appointStartTime = ""
-            $scope.param.ModifyAppointmentObject.appointEndTime = ""
-            $scope.param.ModifyAppointmentObject.appointPeriod = ""
-            $scope.param.ModifyAppointmentObject.detail = ""
-            $scope.param.newProductObject.shopProjectId = ""
-            $scope.param.selectCustomersObject.sysUserId = ""
-            $scope.param.selectCustomersObject.sysUserName = ""
-            $scope.param.selectCustomersObject.sysUserPhone = ""
-            $scope.param.ModifyAppointmentObject.status = "";
-            $scope.param.ModifyAppointmentObject.productNum = "0";
-            ngDialog.open({
-                template: 'appointmentType',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function ($scope, $interval) {
-                    //$scope.param.bgBlack = true;
-                    $scope.close = function () {
-                        $scope.closeThisDialog();
-                        $scope.param.appointmentObject.list[index1].status[index2] = 6;
-                        $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
-                    };
-                }],
+        $scope.param.newChangeContent = "新建预约"
+        // $scope.param.index.index1 = index1;
+        // $scope.param.index.index2 = index2;
+        $scope.param.ModifyAppointmentObject.status = "0";
+        // $scope.param.appointmentObject.list[index1].status[index2] = 5;
+        // $scope.param.appointmentObject.list[index1].sysUserName[index2] = "新建预约";
+        $scope.param.ModifyAppointmentObject.ModifyAppointmentData = "";
+        $scope.param.ModifyAppointmentObject.appointStartTime = ""
+        $scope.param.ModifyAppointmentObject.appointEndTime = ""
+        $scope.param.ModifyAppointmentObject.appointPeriod = ""
+        $scope.param.ModifyAppointmentObject.detail = ""
+        $scope.param.newProductObject.shopProjectId = ""
+        $scope.param.selectCustomersObject.sysUserId = ""
+        $scope.param.selectCustomersObject.sysUserName = ""
+        $scope.param.selectCustomersObject.sysUserPhone = ""
+        $scope.param.ModifyAppointmentObject.status = "";
+        $scope.param.ModifyAppointmentObject.productNum = "0";
+        ngDialog.open({
+            template: 'appointmentType',
+            scope: $scope, //这样就可以传递参数
+            controller: ['$scope', '$interval', function ($scope, $interval) {
+                //$scope.param.bgBlack = true;
+                $scope.close = function () {
+                    $scope.closeThisDialog();
+                    // $scope.param.appointmentObject.list[index1].status[index2] = 6;
+                    // $scope.param.appointmentObject.list[index1].sysUserName[index2] = null;
+                };
+            }],
+            className: ' ngdialog-theme-default ngdialog-theme-custom',
+        })
 
-                className: ' ngdialog-theme-default ngdialog-theme-custom',
-
-            })
-        }
     };
     /*加载预约详情项目 根据预约主键查询预约项目*/
     $scope.detailsWrap = function (type, sysUserId, sysShopId, id) {
         if (type == undefined || sysUserId == undefined || sysShopId == undefined || id == undefined) {
             return
         }
+        $scope.param.newChangeContent = "修改预约"
         $scope.param.changeYuyueFlag = type//0才可以修改预约
         ngDialog.open({
             template: 'individual',
@@ -998,6 +1001,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
         $scope.selectCustomersFun()
 
     }
+    //选择顾客点击
     $scope.selectTheCustomer = function (index, sysUserName, sysUserId, sysUserPhone) {
         $scope.param.ModifyAppointmentObject.customerIndex = index;
         $scope.param.selectCustomersObject.sysUserName = sysUserName;
@@ -1019,17 +1023,14 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
         /*{useStyle:"0",
          filterStr:$scope.param.newProductObject.filterStr  //参数
          }*/
-        /*请求数据的位置*/
         GetUserProjectGroupList.get({
             cardStyle: "0",
-            sysUserId: "1"
+            sysUserId: $scope.param.selectCustomersObject.sysUserId
         }, function (data) {
             $scope.param.newProductObject.newProjectData = data.responseData;
         })
-
-
     };
-    $scope.newProjectFun()
+    // $scope.newProjectFun()
     var selfData = {
         "result": "0x00001",
         "errorInfo": null,
@@ -1119,7 +1120,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
                 template: 'newProduct',
                 scope: $scope, //这样就可以传递参数
                 controller: ['$scope', '$interval', function ($scope, $interval) {
-                    /*$scope.newProjectFun();*/
+                    $scope.newProjectFun();
                     $scope.close = function (status) {
                         if (status == 1) {
                             $scope.param.newProductObject.shopProjectIdArr = [];
@@ -1212,10 +1213,10 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
 
     /*选择美容师*/
     $scope.selectBeautician = function () {
-        if ($scope.param.selectCustomersObject.sysUserName == "") {
-            /*$scope.selectCustomersCtrl()*/
-
-        } else {
+        // if ($scope.param.selectCustomersObject.sysUserName == "") {
+        //     /*$scope.selectCustomersCtrl()*/
+        //
+        // } else {
             ngDialog.open({
                 template: 'selectBeautician',
                 scope: $scope, //这样就可以传递参数
@@ -1227,6 +1228,20 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
                     }, function (data) {
                         $scope.param.timeLength = data.responseData;
                     })
+
+
+                    //选中美容师并返回
+                    $scope.selectbeauticianIndex = function(index,beauticianName,beauticianId){
+                        $scope.param.beauticianIndex = index;
+                        $scope.param.ModifyAppointmentObject.beauticianName =beauticianName;
+                        $scope.param.ModifyAppointmentObject.beauticianId =beauticianId;
+                        /*setTimeout(function(){
+                            ngDialog.close("timeLength");
+                        },600)*/
+                        $scope.closeThisDialog();
+
+                    }
+
                     $scope.close = function (status) {
                         if (status == 0) {
                             /* $scope.param.ModifyAppointmentObject.beauticianName =""*/
@@ -1236,7 +1251,101 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
                 }],
                 className: 'selectBeautician ngdialog-theme-custom'
             });
+        // }
+    }
+    /*选择时长*/
+    $scope.selectTimeLength = function(){
+        //如果没有选择美容师先选择美容师
+        if($scope.param.selectCustomersObject.sysUserName == ""){
+            alert("请先选择顾客")
+            // $scope.selectCustomersCtrl()
+        }else {
+            ngDialog.open({
+                template: 'timeLength',
+                scope: $scope, //这样就可以传递参数
+                controller: ['$scope', '$interval', function ($scope, $interval) {
+                    $scope.param.timeLengthIndex = -1;
+                    $scope.param.timeLengthArr = ["1", "1.5", "2", "2.5", "3", "3.5", "4"];
+
+                    $scope.close = function (status) {
+                        if(status == 0){
+                            $scope.param.ModifyAppointmentObject.time =""
+                        }
+                        $scope.closeThisDialog();
+                    };
+                    // 选中时长并返回
+                    $scope.selectTimeLengthIndex = function(index,item){
+                        $scope.param.timeLengthPic = index;
+                        $scope.param.ModifyAppointmentObject.appointPeriod = item;
+                        $scope.closeThisDialog();
+                    }
+
+                }],
+                className: 'timeLength ngdialog-theme-custom'
+            });
         }
+    };
+
+    //保存.修改.取消.预约
+    $scope.newAppointment = function(){
+        $scope.param.appointmentNew = "yes";
+        ngDialog.open({
+            template: 'modifyingAppointment',
+            scope: $scope, //这样就可以传递参数
+            controller: ['$scope', '$interval', function($scope, $interval) {
+                $scope.param.cancellationFlag = false;
+                $scope.close = function(status) {
+                    if($scope.param.appointmentNew =="yes"){
+
+                        // $scope.param.appointmentObject.list[$scope.param.index.index1].status[$scope.param.index.index2] = 0;
+                        // $scope.param.appointmentObject.list[$scope.param.index.index1].sysUserName[$scope.param.index.index2] = null;
+                    }
+                    if(status == 1){//保存预约
+                        /*
+                        * appointStartTime:$scope.param.ModifyAppointmentObject.appointStartTime,
+                         appointEndTime:$scope.param.ModifyAppointmentObject.appointEndTime,
+                        *
+                        * */
+                        $scope.importData = {
+                            shopProjectId:$scope.param.newProductObject.shopProjectId,
+                            sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
+                            // appointStartTimeS:"2018-04-27 11:00:00",
+                            appointStartTimeS:new Date().format("yyyy-MM-dd")+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
+                            // appointStartTimeS:new Date().getFullYear()+"-"+parseInt(new Date().getMonth()+1)+"-"+parseInt(new Date().getDate())+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
+                            shopProjectName:$scope.param.newProductObject.shopProjectName,
+                            appointPeriod:$scope.param.ModifyAppointmentObject.appointPeriod,
+                            detail:$scope.param.ModifyAppointmentObject.detail,
+                            status:'0'
+                        }
+
+                        SaveUserAppointInfo.save($scope.importData,function (data) {
+                            if(data.result == "0x00001"){
+                                alert("预约成功")
+                                ngDialog.closeAll()
+                            }else {
+                                alert(data.errorInfo)
+                            }
+                            
+                        })
+                        if(status == 3){//取消预约
+                            UpdateAppointmentInfoById.get({
+                                shopAppointServiceId:id,
+                                status:0
+                            },function(data){
+                                if(data.result == "0x00001"){
+                                    alert("取消成功")
+                                    ngDialog.closeAll()
+                                }
+                            })
+                        }
+                        console.log($scope.shopAppointServiceDTO)
+
+                    }
+
+                };
+            }],
+            className: 'modifyingAppointment ngdialog-theme-custom'
+        });
     }
 
 
@@ -1246,9 +1355,28 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state, $stateParams, 
 
 
     detailsReservation && detailsReservation($scope, ngDialog, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, FindArchives, GetShopProjectList);
+    //预约详情
     individualTravelerAppointment && individualTravelerAppointment($scope, ngDialog, UpdateAppointmentInfoById, FindArchives, GetShopProjectList);
+    //周预约
     weeklyReservation && weeklyReservation($scope, ngDialog, FindArchives);
+    //选择点客排课
     appointmentTypeCtrl && appointmentTypeCtrl($scope, ngDialog, UpdateAppointmentInfoById, FindArchives);
     /*新建预约*/
     relatedStaffCtrl && relatedStaffCtrl($scope, ngDialog, GetShopClerkList, FindArchives)
 });
+
+Date.prototype.format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
