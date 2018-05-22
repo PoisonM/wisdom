@@ -129,7 +129,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	@Override
 	public int updateShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO) {
 		logger.info("更新用户与产品的关系传入参数={}", "shopUserProductRelationDTO = [" + shopUserProductRelationDTO + "]");
-		int update = shopUserProductRelationMapper.updateByPrimaryKey(shopUserProductRelationDTO);
+		int update = shopUserProductRelationMapper.updateByPrimaryKeySelective(shopUserProductRelationDTO);
 		logger.debug("更新用户与产品的关系,执行结果 {}", update > 0 ? "成功" : "失败");
 		return update;
 	}
