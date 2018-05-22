@@ -54,7 +54,7 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
     public String beautyUserLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception {
 
         //判断validateCode是否还有效
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -133,7 +133,7 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
     public String bossMobileLogin(LoginDTO loginDTO, String loginIP, String openId)
     {
         //判断validateCode是否还有效
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -141,7 +141,6 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysBossDTO sysBossDTO = new SysBossDTO();
         sysBossDTO.setUserOpenid(loginDTO.getUserPhone());
-
         SysBossCriteria sysBossCriteria = new SysBossCriteria();
         SysBossCriteria.Criteria c = sysBossCriteria.createCriteria();
         c.andUserOpenidEqualTo(loginDTO.getUserPhone());
@@ -178,7 +177,7 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
     @Override
     public String bossWebLogin(LoginDTO loginDTO, String loginIP)
     {
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -221,7 +220,7 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
     @Override
     public String ClerkMobileLogin(LoginDTO loginDTO, String loginIP, String openId) {
         //判断validateCode是否还有效
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -264,7 +263,7 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
     @Override
     public String ClerkWebLogin(LoginDTO loginDTO, String loginIP) {
 
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -298,34 +297,5 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
         String clerkInfoStr = gson.toJson(sysClerkDTO);
         JedisUtils.set(logintoken,clerkInfoStr, ConfigConstant.logintokenPeriod);
         return logintoken;
-    }
-
-    private String processValidateCode(LoginDTO loginDTO)
-    {
-        //判断validateCode是否还有效
-        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
-        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
-        List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
-        if(data==null)
-        {
-            return StatusConstant.VALIDATECODE_ERROR;
-        }
-        else
-        {
-            ValidateCodeDTO validateCodeDTO = data.get(0);
-            Date dateStr = validateCodeDTO.getCreateDate();
-              //判断验证码是否是最新的
-            if(!validateCodeDTO.getCode().equals(loginDTO.getCode())){
-                return StatusConstant.VALIDATECODE_ERROR;
-            }
-            long period =  (new Date()).getTime() - dateStr.getTime();
-
-            //验证码过了5分钟了
-            if(period>300000)
-            {
-                return  StatusConstant.VALIDATECODE_ERROR;
-            }
-        }
-        return StatusConstant.SUCCESS;
     }
 }

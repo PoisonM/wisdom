@@ -46,7 +46,7 @@ public class BusinessLoginServiceImpl implements BusinessLoginService {
     public String businessUserLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception {
 
         //判断validateCode是否还有效
-        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -137,34 +137,5 @@ public class BusinessLoginServiceImpl implements BusinessLoginService {
         }else{
             return StatusConstant.FAILURE;
         }
-    }
-
-    private String processValidateCode(LoginDTO loginDTO)
-    {
-        //判断validateCode是否还有效
-        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
-        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
-        List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
-        if(data==null)
-        {
-            return StatusConstant.VALIDATECODE_ERROR;
-        }
-        else
-        {
-            ValidateCodeDTO validateCodeDTO = data.get(0);
-            Date dateStr = validateCodeDTO.getCreateDate();
-              //判断验证码是否是最新的
-            if(!validateCodeDTO.getCode().equals(loginDTO.getCode())){
-                return StatusConstant.VALIDATECODE_ERROR;
-            }
-            long period =  (new Date()).getTime() - dateStr.getTime();
-
-            //验证码过了5分钟了
-            if(period>300000)
-            {
-                return  StatusConstant.VALIDATECODE_ERROR;
-            }
-        }
-        return StatusConstant.SUCCESS;
     }
 }
