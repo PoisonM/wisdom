@@ -13,6 +13,12 @@ var user = '/user/';
 
 var weixin = '/weixin/customer/';
 
+var projectInfo = '/beauty/projectInfo/';
+var appointInfo = '/beauty/appointmentInfo/';
+var clerkSchedule = '/beauty/clerkSchedule/';
+var mine = '/beauty/mine/';
+var cardInfo = '/beauty/cardInfo/'
+
 define(['appCustomer'], function (app) {
     app
 
@@ -21,6 +27,9 @@ define(['appCustomer'], function (app) {
         }])
         .factory('UserLogin',['$resource',function ($resource){
             return $resource(user + 'userLogin')
+        }])
+        .factory('BeautyUserLogin',['$resource',function ($resource){
+            return $resource(user + 'beautyUserLogin')
         }])
         .factory('UserLoginOut',['$resource',function ($resource){
             return $resource(user + 'userLoginOut')
@@ -204,5 +213,74 @@ define(['appCustomer'], function (app) {
               return $resource(account + 'isLogin');
          }])
 
+        //美容院用户侧接口
+        .factory('GetUserClientShopProjectList',['$resource',function ($resource){
+            return $resource(projectInfo + 'getUserClientShopProjectList')
+        }])
+        .factory('GetShopClerkList',['$resource',function ($resource){
+            return $resource(appointInfo + 'getShopClerkList')
+        }])
+        .factory('GetClerkScheduleInfo',['$resource',function ($resource){
+            return $resource(clerkSchedule + 'getClerkScheduleInfo')
+        }])
+        .factory('GetBeautyShopInfo',['$resource','$http','$q',function ($resource,$http,$q){
+                return {
+                    clerkInfo: function (clerkId) {
+                        lazyClerkDeferred = $q.defer();
+                        $http({
+                            url: user + 'clerkInfo/' + clerkId,
+                            method: 'GET'
+                        }).success(function (response, status, header, config, statusText) {
+                            //成功处理
+                            lazyClerkDeferred.resolve(response);
+                        });
+                        return lazyClerkDeferred.promise;
+                    },
+                    shopProjectInfo: function (shopProjectId) {
+                        lazyProjectDeferred = $q.defer();
+                        $http({
+                            url: '/beauty/projectInfo/' + shopProjectId,
+                            method: 'GET'
+                        }).success(function (response, status, header, config, statusText) {
+                            //成功处理
+                            lazyProjectDeferred.resolve(response);
+                        });
+                        return lazyProjectDeferred.promise;
+                    }
+                }
+        }])
+        .factory('SaveUserAppointInfo',['$resource',function ($resource){
+            return $resource(appointInfo + 'saveUserAppointInfo')
+        }])
+        .factory('GetAppointmentInfoById',['$resource',function ($resource){
+            return $resource(appointInfo + 'getAppointmentInfoById')
+        }])
+        .factory('GetMyAppointInfoList',['$resource',function ($resource){
+            return $resource(appointInfo + 'getMyAppointInfoList')
+        }])
+        .factory('GetUserClientInfo',['$resource',function ($resource){
+            return $resource(mine + 'getUserClientInfo')
+        }])
+        .factory('ChangeUserShop',['$resource',function ($resource){
+            return $resource(mine + 'changeUserShop')
+        }])
+        .factory('GetUserRechargeCardList',['$resource',function ($resource){
+            return $resource(cardInfo + 'getUserRechargeCardList')
+        }])
+        .factory('GetUserCourseProjectList',['$resource',function ($resource){
+            return $resource(projectInfo + 'getUserCourseProjectList')
+        }])
+        .factory('GetCurrentLoginUserInfo',['$resource',function ($resource){
+            return $resource(mine + 'getCurrentLoginUserInfo')
+        }])
+        .factory('GetProjectCardConsume',['$resource',function ($resource){
+            return $resource('/beauty/consume/consumeFlowNo')
+        }])
+        .factory('GetUserQrCode',['$resource',function ($resource){
+            return $resource(mine + 'getUserQrCode')
+        }])
+        .factory('GetProjectConsumes',['$resource',function ($resource){
+            return $resource('/beauty/consumes')
+        }])
 
 });

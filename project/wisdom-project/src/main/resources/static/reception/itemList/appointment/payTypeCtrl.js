@@ -1,12 +1,11 @@
 function payTypeCtrl ($scope,ngDialog){
-
     $scope.nextStepBtnConsumption = function(){
         $scope.ngDialog = ngDialog;
         ngDialog.open({
             template: 'consumptionNextStep',
             scope: $scope, //这样就可以传递参数
             controller: ['$scope', '$interval', function($scope, $interval) {
-                console.log($scope.$parent.content);
+
                 $scope.close = function() {
                     $scope.closeThisDialog();
                 };

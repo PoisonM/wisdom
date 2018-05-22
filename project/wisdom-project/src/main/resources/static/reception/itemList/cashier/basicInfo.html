@@ -1,27 +1,29 @@
 <div class="basicInfo-box">
     <div class="headPortrait-box fl clearfix">
-        <div class="headPortrait"><img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1522311638&di=3712f277b199303e7c7eb1df22e73f55&src=http://img5.xiazaizhijia.com/walls/20160708/1440x900_2f172c09d079701.jpg" alt=""></div>
+        <div class="headPortrait"><img ng-src="{{responseData.imageRul}}" alt=""></div>
     </div>
     <div class="basicInfo-content clearfix fl">
         <div class="basicInfo-content-first clearfix">
-            <span class="basicInfoName fl">安迪</span>
-            <span class="accountRecords fl">账户记录<b>＞</b></span>
+            <span class="basicInfoName fl">{{responseData.sysClerkName}}</span>
+            <span class="accountRecords fl" ng-click="goAccountRecords()">账户记录<b>＞</b></span>
         </div>
         <div class="basicInfo-content-second clearfix">
-            <span>会员：13260229910</span>
+            <span>会员：{{responseData1.member}}</span>
+            <span>未绑定</span>
+            <span ng-click="goBindMember()" class="bind">绑定</span>
         </div>
         <div class="basicInfo-content-third clearfix">
-            <span>总金额：<b>99999.99</b></span>
-            <span class="totalOwed">总欠款：<b>9999.99</b></span>
+            <span>总金额：<b>{{responseData1.sumAmount}}</b></span>
+            <span class="totalOwed">总欠款：<b>{{responseData1.arrears}}</b></span>
         </div>
         <div class="basicInfo-content-fourth clearfix">
             <span>档案生成：未知</span>
-            <span class="beautician">美容师：二傻子</span>
+            <span class="beautician">美容师：{{responseData1.sysClerkName}}</span>
         </div>
     </div>
     <div class="basicInfo-right">
-        <button>充值</button>
-        <button>消费</button>
-        <button>还欠款</button>
+        <button ng-click="goSelectRechargeType()">充值</button>
+        <button ng-click="goConsumptionList()">消费</button>
+        <button ng-click="goStillOwed()">还欠款</button>
     </div>
 </div>

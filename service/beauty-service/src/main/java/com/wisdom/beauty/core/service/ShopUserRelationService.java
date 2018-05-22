@@ -1,5 +1,10 @@
 package com.wisdom.beauty.core.service;
 
+import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
+
+import java.util.List;
+
 /**
  * ClassName: ShopUserRelationService
  *
@@ -17,4 +22,30 @@ public interface ShopUserRelationService {
      * @Date:2018/4/3 18:42
      */
     String isMember(String userId);
+
+    /**
+     * 用户绑定会员
+     *
+     * @param shopUserRelationDTO
+     * @return
+     */
+    int saveUserShopRelation(ShopUserRelationDTO shopUserRelationDTO);
+
+    /**
+     * @Author:Administrator
+     * @Param:
+     * @Return:
+     * @Description: 根据条件查询美容院
+     * @Date:2018/4/23 17:49
+     */
+    List<ShopUserRelationDTO> getShopListByCondition(ShopUserRelationDTO shopUserRelationDTO);
+
+    /**
+     * 查询某个用户与店的绑定关系
+     *
+     * @param openId
+     * @param shopId
+     * @return
+     */
+    ResponseDTO<String> userBinding(String openId, String shopId);
 }

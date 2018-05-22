@@ -1,4 +1,4 @@
-package com.wisdom.user.mapper;
+package com.wisdom.user.mapper.extMapper;
 
 import com.wisdom.common.dto.user.SysClerkCriteria;
 import com.wisdom.common.dto.user.SysClerkDTO;

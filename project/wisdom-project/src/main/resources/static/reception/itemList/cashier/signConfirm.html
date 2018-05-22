@@ -1,0 +1,66 @@
+<div class="signConfirmBox clearfix">
+    <div class="signConfirmLeft">
+        <div class="signConfirmLeftTitle clearfix">
+            <span class="signConfirmLeftTitleName">{{responseData.userName}}</span>
+            <span class="signConfirmLeftTitleType">明细</span>
+        </div>
+        <div class="signConfirmLeftContent">
+            <div class="signConfirmLeftContentTitle">充值</div>
+            <ul>
+                <li>
+                    <span class="name">充值类型</span>
+                    <span class="type">充值卡</span>
+                </li>
+                <li>
+                    <span class="name">名称</span>
+                    <span class="type">{{responseData.name}}</span>
+                </li>
+                <li>
+                    <span class="name">充值金额</span>
+                    <span class="type">¥{{responseData.amount}}</span>
+                </li>
+            </ul>
+            <div class="signConfirmLeftContentTitle">折扣</div>
+            <ul>
+                <li>
+                    <span class="name">单次折扣</span>
+                    <span class="type">{{responseData.timeDiscount*10}}折</span>
+                </li>
+                <li>
+                    <span class="name">疗程卡折扣</span>
+                    <span class="type">{{responseData.periodDiscount*10}}折</span>
+                </li>
+                <li>
+                    <span class="name">产品折扣</span>
+                    <span class="type">{{responseData.productDiscount*10}}折</span>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <span class="name">总金额</span>
+                    <span class="type">¥{{responseData.amount}}</span>
+                </li>
+            </ul>
+            <div class="signConfirmLeftContentTitle">支付明细</div>
+            <ul>
+                <li ng-if="responseData.payType==0">
+                    <span class="name">银行卡支付</span>
+                    <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
+                </li>
+                <li ng-if="responseData.payType==1">
+                    <span class="name">支付宝</span>
+                    <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
+                </li>
+                <li ng-if="responseData.payType==2">
+                    <span class="name">微信支付</span>
+                    <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="signConfirmRight">
+        <div class="signConfirmRightTitle">顾客签字</div>
+        <div class="signConfirmRightContent" id="signConfirmRight"></div>
+        <button class="okBtn" ng-click="clickOk()">确认</button>
+    </div>
+</div>

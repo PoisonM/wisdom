@@ -3,7 +3,6 @@ package com.wisdom.beauty.controller.account;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.service.SysUserAccountService;
-import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.slf4j.Logger;
@@ -59,7 +58,6 @@ public class AccountController {
      * @return
      */
 	@RequestMapping(value = "getCustomerConsumeRecord", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<List<ShopUserConsumeRecordDTO>> getCustomerConsumeRecord(@RequestParam String type,
@@ -77,7 +75,6 @@ public class AccountController {
      * @return
      */
 	@RequestMapping(value = "getCustomerConsumeRecordInfo", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<ShopUserConsumeRecordDTO> getCustomerConsumeRecord(@RequestParam String shopCustomerConsumeRecordId) {

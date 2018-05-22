@@ -3,7 +3,6 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.SysUserAccountMapper">
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.SysUserAccountDTO">
     <id column="id" property="id" jdbcType="VARCHAR"/>
-    <result column="flow_no" property="flowNo" jdbcType="VARCHAR"/>
     <result column="sum_amount" property="sumAmount" jdbcType="DECIMAL"/>
     <result column="arrears" property="arrears" jdbcType="DECIMAL"/>
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
@@ -74,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, flow_no, sum_amount, arrears, sys_shop_id, sys_boss_id, sys_user_id, account_number,
-    create_by, create_date, update_user, update_date
+    id, sum_amount, arrears, sys_shop_id, sys_boss_id, sys_user_id, account_number, create_by,
+    create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.SysUserAccountCriteria">
@@ -112,25 +111,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
-    insert into sys_user_account (id, flow_no, sum_amount,
-    arrears, sys_shop_id, sys_boss_id,
-    sys_user_id, account_number, create_by,
-    create_date, update_user, update_date
-    )
-    values (#{id,jdbcType=VARCHAR}, #{flowNo,jdbcType=VARCHAR}, #{sumAmount,jdbcType=DECIMAL},
-    #{arrears,jdbcType=DECIMAL}, #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR},
-    #{sysUserId,jdbcType=VARCHAR}, #{accountNumber,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
-    #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-    )
+    insert into sys_user_account (id, sum_amount, arrears,
+    sys_shop_id, sys_boss_id, sys_user_id,
+    account_number, create_by, create_date,
+    update_user, update_date)
+    values (#{id,jdbcType=VARCHAR}, #{sumAmount,jdbcType=DECIMAL}, #{arrears,jdbcType=DECIMAL},
+    #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR},
+    #{accountNumber,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
     insert into sys_user_account
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
-      </if>
-      <if test="flowNo != null">
-        flow_no,
       </if>
       <if test="sumAmount != null">
         sum_amount,
@@ -166,9 +160,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="flowNo != null">
-        #{flowNo,jdbcType=VARCHAR},
       </if>
       <if test="sumAmount != null">
         #{sumAmount,jdbcType=DECIMAL},
@@ -215,9 +206,6 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.flowNo != null">
-        flow_no = #{record.flowNo,jdbcType=VARCHAR},
-      </if>
       <if test="record.sumAmount != null">
         sum_amount = #{record.sumAmount,jdbcType=DECIMAL},
       </if>
@@ -256,7 +244,6 @@
   <update id="updateByCriteria" parameterType="map">
     update sys_user_account
     set id = #{record.id,jdbcType=VARCHAR},
-    flow_no = #{record.flowNo,jdbcType=VARCHAR},
       sum_amount = #{record.sumAmount,jdbcType=DECIMAL},
       arrears = #{record.arrears,jdbcType=DECIMAL},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
@@ -274,9 +261,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
     update sys_user_account
     <set>
-      <if test="flowNo != null">
-        flow_no = #{flowNo,jdbcType=VARCHAR},
-      </if>
       <if test="sumAmount != null">
         sum_amount = #{sumAmount,jdbcType=DECIMAL},
       </if>
@@ -312,8 +296,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
     update sys_user_account
-    set flow_no = #{flowNo,jdbcType=VARCHAR},
-    sum_amount = #{sumAmount,jdbcType=DECIMAL},
+    set sum_amount = #{sumAmount,jdbcType=DECIMAL},
       arrears = #{arrears,jdbcType=DECIMAL},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_boss_id = #{sysBossId,jdbcType=VARCHAR},

@@ -16,6 +16,8 @@ import java.util.List;
  * @since JDK 1.8
  */
 public class UserConsumeRecordResponseDTO extends BaseEntity {
+    //流水号
+    private  String flowNo;
     //总金额
     private BigDecimal sumAmount;
     //划卡和消费页面展示的名称
@@ -26,10 +28,30 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
     private String shopUserName;
     //前台
     private String sysShopClerkName;
+    //前台id
+    private String sysShopClerkId;
     //操作门店
     private String sysShopName;
-    //类型
+    //签字地址
+    private String signUrl;
+    //备注
+    private String detail;
+    private String goodType;
+    private String consumeType;
+    //用于返回前端判断消费还是充值字段
     private String type;
+    //支付方式  0:微信 1：支付宝 2:现金
+    private String payType;
+    //消费数量
+    private Integer consumeNumber;
+    //
+    private Float timeDiscount;
+
+    //
+    private Float periodDiscount;
+
+    //
+    private Float productDiscount;
     private List<ShopUserConsumeRecordDTO> userConsumeRecordList;
 
 
@@ -53,13 +75,6 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
         this.sysShopName = sysShopName;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
@@ -95,5 +110,101 @@ public class UserConsumeRecordResponseDTO extends BaseEntity {
 
     public void setUserConsumeRecordList(List<ShopUserConsumeRecordDTO> userConsumeRecordList) {
         this.userConsumeRecordList = userConsumeRecordList;
+    }
+
+    public String getFlowNo() {
+        return flowNo;
+    }
+
+    public void setFlowNo(String flowNo) {
+        this.flowNo = flowNo;
+    }
+
+    public String getSysShopClerkId() {
+        return sysShopClerkId;
+    }
+
+    public void setSysShopClerkId(String sysShopClerkId) {
+        this.sysShopClerkId = sysShopClerkId;
+    }
+
+    public String getGoodType() {
+        return goodType;
+    }
+
+    public void setGoodType(String goodType) {
+        this.goodType = goodType;
+    }
+
+    public String getConsumeType() {
+        return consumeType;
+    }
+
+    public void setConsumeType(String consumeType) {
+        this.consumeType = consumeType;
+    }
+
+    public String getSignUrl() {
+        return signUrl;
+    }
+
+    public void setSignUrl(String signUrl) {
+        this.signUrl = signUrl;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+
+    public Integer getConsumeNumber() {
+        return consumeNumber;
+    }
+
+    public void setConsumeNumber(Integer consumeNumber) {
+        this.consumeNumber = consumeNumber;
+    }
+
+    public Float getTimeDiscount() {
+        return timeDiscount;
+    }
+
+    public void setTimeDiscount(Float timeDiscount) {
+        this.timeDiscount = timeDiscount;
+    }
+
+    public Float getPeriodDiscount() {
+        return periodDiscount;
+    }
+
+    public void setPeriodDiscount(Float periodDiscount) {
+        this.periodDiscount = periodDiscount;
+    }
+
+    public Float getProductDiscount() {
+        return productDiscount;
+    }
+
+    public void setProductDiscount(Float productDiscount) {
+        this.productDiscount = productDiscount;
     }
 }

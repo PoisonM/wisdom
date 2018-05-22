@@ -70,7 +70,7 @@ public class ShopUserRechargeCardCriteria {
     }
 
     public void setLimitStart(int limitStart) {
-        this.limitStart = limitStart;
+        this.limitStart=limitStart;
     }
 
     public int getLimitStart() {
@@ -78,7 +78,7 @@ public class ShopUserRechargeCardCriteria {
     }
 
     public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
+        this.pageSize=pageSize;
     }
 
     public int getPageSize() {
@@ -546,6 +546,76 @@ public class ShopUserRechargeCardCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysClerkNameIsNull() {
+            addCriterion("sys_clerk_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameIsNotNull() {
+            addCriterion("sys_clerk_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameEqualTo(String value) {
+            addCriterion("sys_clerk_name =", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameNotEqualTo(String value) {
+            addCriterion("sys_clerk_name <>", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameGreaterThan(String value) {
+            addCriterion("sys_clerk_name >", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_name >=", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameLessThan(String value) {
+            addCriterion("sys_clerk_name <", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameLessThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_name <=", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameLike(String value) {
+            addCriterion("sys_clerk_name like", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameNotLike(String value) {
+            addCriterion("sys_clerk_name not like", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameIn(List<String> values) {
+            addCriterion("sys_clerk_name in", values, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameNotIn(List<String> values) {
+            addCriterion("sys_clerk_name not in", values, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameBetween(String value1, String value2) {
+            addCriterion("sys_clerk_name between", value1, value2, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameNotBetween(String value1, String value2) {
+            addCriterion("sys_clerk_name not between", value1, value2, "sysClerkName");
+            return (Criteria) this;
+        }
+
         public Criteria andSysShopIdIsNull() {
             addCriterion("sys_shop_id is null");
             return (Criteria) this;
@@ -686,63 +756,323 @@ public class ShopUserRechargeCardCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andDiscountIsNull() {
-            addCriterion("discount is null");
+        public Criteria andTimeDiscountIsNull() {
+            addCriterion("time_discount is null");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountIsNotNull() {
-            addCriterion("discount is not null");
+        public Criteria andTimeDiscountIsNotNull() {
+            addCriterion("time_discount is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountEqualTo(Float value) {
-            addCriterion("discount =", value, "discount");
+        public Criteria andTimeDiscountEqualTo(Float value) {
+            addCriterion("time_discount =", value, "timeDiscount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountNotEqualTo(Float value) {
-            addCriterion("discount <>", value, "discount");
+        public Criteria andTimeDiscountNotEqualTo(Float value) {
+            addCriterion("time_discount <>", value, "timeDiscount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountGreaterThan(Float value) {
-            addCriterion("discount >", value, "discount");
+        public Criteria andTimeDiscountGreaterThan(Float value) {
+            addCriterion("time_discount >", value, "timeDiscount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountGreaterThanOrEqualTo(Float value) {
-            addCriterion("discount >=", value, "discount");
+        public Criteria andTimeDiscountGreaterThanOrEqualTo(Float value) {
+            addCriterion("time_discount >=", value, "timeDiscount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountLessThan(Float value) {
-            addCriterion("discount <", value, "discount");
+        public Criteria andTimeDiscountLessThan(Float value) {
+            addCriterion("time_discount <", value, "timeDiscount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountLessThanOrEqualTo(Float value) {
-            addCriterion("discount <=", value, "discount");
+        public Criteria andTimeDiscountLessThanOrEqualTo(Float value) {
+            addCriterion("time_discount <=", value, "timeDiscount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountIn(List<Float> values) {
-            addCriterion("discount in", values, "discount");
+        public Criteria andTimeDiscountIn(List<Float> values) {
+            addCriterion("time_discount in", values, "timeDiscount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountNotIn(List<Float> values) {
-            addCriterion("discount not in", values, "discount");
+        public Criteria andTimeDiscountNotIn(List<Float> values) {
+            addCriterion("time_discount not in", values, "timeDiscount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountBetween(Float value1, Float value2) {
-            addCriterion("discount between", value1, value2, "discount");
+        public Criteria andTimeDiscountBetween(Float value1, Float value2) {
+            addCriterion("time_discount between", value1, value2, "timeDiscount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountNotBetween(Float value1, Float value2) {
-            addCriterion("discount not between", value1, value2, "discount");
+        public Criteria andTimeDiscountNotBetween(Float value1, Float value2) {
+            addCriterion("time_discount not between", value1, value2, "timeDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountIsNull() {
+            addCriterion("period_discount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountIsNotNull() {
+            addCriterion("period_discount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountEqualTo(Float value) {
+            addCriterion("period_discount =", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountNotEqualTo(Float value) {
+            addCriterion("period_discount <>", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountGreaterThan(Float value) {
+            addCriterion("period_discount >", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountGreaterThanOrEqualTo(Float value) {
+            addCriterion("period_discount >=", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountLessThan(Float value) {
+            addCriterion("period_discount <", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountLessThanOrEqualTo(Float value) {
+            addCriterion("period_discount <=", value, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountIn(List<Float> values) {
+            addCriterion("period_discount in", values, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountNotIn(List<Float> values) {
+            addCriterion("period_discount not in", values, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountBetween(Float value1, Float value2) {
+            addCriterion("period_discount between", value1, value2, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodDiscountNotBetween(Float value1, Float value2) {
+            addCriterion("period_discount not between", value1, value2, "periodDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountIsNull() {
+            addCriterion("product_discount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountIsNotNull() {
+            addCriterion("product_discount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountEqualTo(Float value) {
+            addCriterion("product_discount =", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountNotEqualTo(Float value) {
+            addCriterion("product_discount <>", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountGreaterThan(Float value) {
+            addCriterion("product_discount >", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountGreaterThanOrEqualTo(Float value) {
+            addCriterion("product_discount >=", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountLessThan(Float value) {
+            addCriterion("product_discount <", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountLessThanOrEqualTo(Float value) {
+            addCriterion("product_discount <=", value, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountIn(List<Float> values) {
+            addCriterion("product_discount in", values, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountNotIn(List<Float> values) {
+            addCriterion("product_discount not in", values, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountBetween(Float value1, Float value2) {
+            addCriterion("product_discount between", value1, value2, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductDiscountNotBetween(Float value1, Float value2) {
+            addCriterion("product_discount not between", value1, value2, "productDiscount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeIsNull() {
+            addCriterion("recharge_card_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeIsNotNull() {
+            addCriterion("recharge_card_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeEqualTo(String value) {
+            addCriterion("recharge_card_type =", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeNotEqualTo(String value) {
+            addCriterion("recharge_card_type <>", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeGreaterThan(String value) {
+            addCriterion("recharge_card_type >", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("recharge_card_type >=", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeLessThan(String value) {
+            addCriterion("recharge_card_type <", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeLessThanOrEqualTo(String value) {
+            addCriterion("recharge_card_type <=", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeLike(String value) {
+            addCriterion("recharge_card_type like", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeNotLike(String value) {
+            addCriterion("recharge_card_type not like", value, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeIn(List<String> values) {
+            addCriterion("recharge_card_type in", values, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeNotIn(List<String> values) {
+            addCriterion("recharge_card_type not in", values, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeBetween(String value1, String value2) {
+            addCriterion("recharge_card_type between", value1, value2, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRechargeCardTypeNotBetween(String value1, String value2) {
+            addCriterion("recharge_card_type not between", value1, value2, "rechargeCardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlIsNull() {
+            addCriterion("image_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlIsNotNull() {
+            addCriterion("image_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlEqualTo(String value) {
+            addCriterion("image_url =", value, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlNotEqualTo(String value) {
+            addCriterion("image_url <>", value, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlGreaterThan(String value) {
+            addCriterion("image_url >", value, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("image_url >=", value, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlLessThan(String value) {
+            addCriterion("image_url <", value, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlLessThanOrEqualTo(String value) {
+            addCriterion("image_url <=", value, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlLike(String value) {
+            addCriterion("image_url like", value, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlNotLike(String value) {
+            addCriterion("image_url not like", value, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlIn(List<String> values) {
+            addCriterion("image_url in", values, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlNotIn(List<String> values) {
+            addCriterion("image_url not in", values, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlBetween(String value1, String value2) {
+            addCriterion("image_url between", value1, value2, "imageUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andImageUrlNotBetween(String value1, String value2) {
+            addCriterion("image_url not between", value1, value2, "imageUrl");
             return (Criteria) this;
         }
 

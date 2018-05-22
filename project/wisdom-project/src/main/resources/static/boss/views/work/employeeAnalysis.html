@@ -1,0 +1,52 @@
+<ion-view class="bg">
+    <ion-content>
+        <!--日期部分-->
+        <div class="bgRgb">
+            <img src="images/work/date.png" class="dateImg" ><span class="date">2016-03-01</span><img src="images/work/drop-down.png" class="dropImg"><span  class="fs15 fr mr10">切换店铺</span>
+        </div>
+        <!---->
+        <div class="list employeeAnalysisBox">
+            <div class="row tc bgfff col33 p0 fs14">
+                <div class="col col-25 bre5e5"  >
+                    姓名
+                </div>
+                <div class="col col-25 bre5e5" style="position: relative;">
+                  业绩
+                    <p style="position: absolute;right: 17%;top: 30%">
+                        <img src="images/work/Above.png" alt="" style="width: 10px;height: 7px;margin-bottom: 1px">
+                        <img src="images/work/Below.png" alt="" style="width: 10px;height: 7px">
+                    </p>
+                </div>
+                <div class="col col-25 bre5e5" style="position: relative;">
+                    卡耗
+                    <p style="position: absolute;right: 17%;top: 30%">
+                        <img src="images/work/Above.png" alt="" style="width: 10px;height: 7px;margin-bottom: 1px">
+                        <img src="images/work/Below.png" alt="" style="width: 10px;height: 7px">
+                    </p>
+                </div>
+                <div class="col col-25" style="position: relative">
+                   耗卡
+                    <p style="position: absolute;right: 17%;top: 30%">
+                        <img src="images/work/Above.png" alt="" style="width: 10px;height: 7px;margin-bottom: 1px">
+                        <img src="images/work/Below.png" alt="" style="width: 10px;height: 7px">
+                    </p>
+                </div>
+            </div>
+            <!---->
+            <div class="row tc bgfff col33  p0 fs13"  style="border: 1px solid #e5e5e5" ng-repeat="item in [1,2,3,4]">
+                <div class="col col-25" style="border-right: 1px solid #e5e5e5">
+                    玛丽
+                </div>
+                <div class="col col-25 bre5e5" >
+                    2489.00
+                </div>
+                <div class="col col-25 br">
+                    5240.00
+                </div>
+                <div class="col col-25">
+                    6280.00
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

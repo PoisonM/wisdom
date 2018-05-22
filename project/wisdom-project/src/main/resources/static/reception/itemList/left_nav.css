@@ -1,4 +1,4 @@
-.left_nav{
+.left_nav {
     width: 100%;
     height: 100%;
     padding-left: 4.96875rem;
@@ -6,10 +6,12 @@
     font-family: PingFangSC-Regular;
     overflow: hidden;
 }
-.left_nav_price_list{
+
+.left_nav_price_list {
     padding-left: 1.546875rem;
 }
-.left_nav .left_nav_box{
+
+.left_nav .left_nav_box {
     width: 4.96875rem;
     height: 100%;
     position: absolute;
@@ -18,24 +20,28 @@
     bottom: 0rem;
     border-right: 1px solid #B4B4B4;
 }
-.left_nav .people_list .search{
+
+.left_nav .people_list .search {
     height: 0.6875rem;
     line-height: 0.6875rem;
     background-color: #dddddd;
     position: relative;
 }
-.left_nav .people_list .search input{
+
+.left_nav .people_list .search input {
     width: 3.96875rem;
     height: 0.53125rem;
     padding-left: 0.46875rem;
     border-radius: 0.0625rem;
     margin-left: 0.125rem;
 }
-.left_nav .people_list .search input::-webkit-input-placeholder{
+
+.left_nav .people_list .search input::-webkit-input-placeholder {
     font-size: 0.234375rem;
     color: #999999;
 }
-.left_nav .people_list .ser_ion{
+
+.left_nav .people_list .ser_ion {
     position: absolute;
     top: 0.21875rem;
     left: 0.25rem;
@@ -47,18 +53,21 @@
     background: url("../images/bt_search.png") no-repeat;
     background-size: 100% 100%;
 }
-.left_nav .people_list .cancel{
+
+.left_nav .people_list .cancel {
     margin-left: 0.15625rem;
     font-size: 0.234375rem;
     color: #A4A4A4;
 }
-.left_nav .people_list .list{
+
+.left_nav .people_list .list {
     width: 100%;
     background-color: #ffffff;
     overflow-y: scroll;
     height: 100%;
 }
-.left_nav .people_list .list .letter{
+
+.left_nav .people_list .list .letter {
     width: 100%;
     height: 0.4375rem;
     font-size: 0.265625rem;
@@ -66,44 +75,52 @@
     background: #F2F2F2;
     padding: 0 0.1875rem;
 }
-.left_nav .people_list ul li{
+
+.left_nav .people_list ul li {
     padding: 0 0.1875rem;
 }
-.left_nav .people_list .list .user_info{
+
+.left_nav .people_list .list .user_info {
     width: 100%;
     height: 0.9375rem;
     overflow: hidden;
     position: relative;
     border-bottom: 1px solid #E5E5E5;
 }
-.left_nav .people_list .list .select_sty{
-    background-color:#eeeeee;
+
+.left_nav .people_list .list .select_sty {
+    background-color: #eeeeee;
 }
-.left_nav .people_list .list .user_info .user_img{
+
+.left_nav .people_list .list .user_info .user_img {
     float: left;
     width: 0.65625rem;
     height: 0.65625rem;
     border-radius: 50%;
-    background-color:#E5E5E5;
+    background-color: #E5E5E5;
     margin-right: 0.109375rem;
     margin: 0.140625rem 0rem;
 }
-.left_nav .people_list .list .user_info .user_mobile{
+
+.left_nav .people_list .list .user_info .user_mobile {
     float: left;
     color: #333333;
     height: 100%;
     margin-left: 0.109375rem;
 }
-.left_nav .people_list .list .user_info .user_mobile .name{
+
+.left_nav .people_list .list .user_info .user_mobile .name {
     font-size: 0.21875rem;
     display: block;
     margin-top: 0.15625rem;
 }
-.left_nav .people_list .list .user_info .user_mobile .mobile{
+
+.left_nav .people_list .list .user_info .user_mobile .mobile {
     font-size: 0.1875rem;
     display: block;
 }
-.left_nav .people_list .list .user_info .user_more{
+
+.left_nav .people_list .list .user_info .user_more {
     position: absolute;
     right: 0.234375rem;
     top: 0.390625rem;
@@ -112,12 +129,16 @@
     height: 0.1875rem;
 }
 
+
+
 /*--------------*/
-.left_nav .price_list{
+
+.left_nav .price_list {
     width: 1.546875rem;
     background-color: #262535;
 }
-.left_nav .price_list ul li{
+
+.left_nav .price_list ul li {
     height: 1.546875rem;
     line-height: 1.546875rem;
     text-align: center;
@@ -128,7 +149,8 @@
     position: relative;
     padding-top: 0.3125rem;
 }
-.left_nav .price_list ul li i{
+
+.left_nav .price_list ul li i {
     position: absolute;
     top: 0.328125rem;
     left: 0.515625rem;
@@ -139,24 +161,28 @@
     background-size: 13.359375rem 10.609375rem;
     background-position: -7.234375rem -0.25rem;
 }
-.left_nav .price_list ul .select_price_type{
+
+.left_nav .price_list ul .select_price_type {
     background-color: #444564;
     color: #ffffff;
 }
-.left_nav .price_list ul .select_price_type i{
+
+.left_nav .price_list ul .select_price_type i {
     background-position-y: -1.140625rem !important;
 }
-.left_nav .price_list ul li:nth-child(1) i{
+
+.left_nav .price_list ul li:nth-child(1) i {
     background-position: -7.171875rem -0.25rem;
 }
-.left_nav .price_list ul li:nth-child(2) i{
+
+.left_nav .price_list ul li:nth-child(2) i {
     background-position: -8.515625rem -0.25rem;
 }
-.left_nav .price_list ul li:nth-child(3) i{
+
+.left_nav .price_list ul li:nth-child(3) i {
     background-position: -9.84375rem -0.25rem;
 }
-.left_nav .price_list ul li:nth-child(4) i{
+
+.left_nav .price_list ul li:nth-child(4) i {
     background-position: -11.21875rem -0.25rem;
 }
-
-

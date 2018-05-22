@@ -1,14 +1,146 @@
-<div class="dayAppointment H100">
+<div class="dayAppointment H100" ng-show="scheduling">
     <div class="header">
         <p class="timeArea">
-            <input  class="time  " id="orderPayStartTime"  ng-click="dataS('#orderPayStartTime')"  value="{{date}}">
+            <input class="time  " id="orderPayStartTime" ng-click="dataS('#orderPayStartTime')" value="{{date}}">
+        </p>
+        <p class="centerBtn">
+            <input type="button" class="appointmentDay {{param.btnActive[0]}} " value="日预约" ng-click="appointmentChange('day')">
+            <input type="button" class="appointmentWeek {{param.btnActive[1]}}" value="周预约" ng-click="appointmentChange('week')">
+        </p>
+        <p class="scheduling" data-ceshi="">
+            <span ng-click="goArrangeWorkList()">排班</span>
+        </p>
+    </div>
+    <!--<div id="divBox1"  style=" overflow: auto;height: 100%;width: 100%;float: left;" class="content H100 mt128" ng-show="param.dayFlag" >
+        &lt;!&ndash;<table>
+            <thead>
+                <tr>
+                    <td ng-repeat="item in param.appointmentObject.beautician" class="bgfff">
+                        <div>
+                            <p class="name">xia{{item}}</p>
+                            <p class="fs24 mt10 mb20">
+                                <img src="images/ic_point.png" class="mr12 ">
+                                {{param.appointmentObject.point[$index]}}
+                                <img src="images/ic_seg.png" class="seg ml20 mr20" >
+                                <img src="images/ic_row.png" class="mr12">
+                                <span>**</span>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td ng-if="$index == 0"></td>
+                    <td ng-if="$index != 0"></td>
+                </tr>
+            </tbody>
+        </table>&ndash;&gt;
+        &lt;!&ndash;user信息&ndash;&gt;
+        <div id="tbTest1">
+            <div class="nameLis nowarp bgfff w" ng-show="flag.upDownScrollFlag">
+                <ul class=" ml156 messLis ">
+                    <li id="tbLisiItem" ng-repeat="item in param.appointmentObject.beautician" class="bgfff" >
+                        <p class="name">xia{{item}}</p>
+                        <p class="fs24 mt10 mb20">
+                            <img src="images/ic_point.png" class="mr12 ">
+                            {{param.appointmentObject.point[$index]}}
+                            <img src="images/ic_seg.png" class="seg ml20 mr20" >
+                            <img src="images/ic_row.png" class="mr12">
+                            <span>**</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            &lt;!&ndash;content信息&ndash;&gt;
+            <div class="messLis  pt117rem" >
+                <div class="mt128 ">
+                    <div class="" style="position: relative;top:0px">
+                        <ul class="time " style="position: absolute;z-index: 100;background: #ffffff" >
+                            <li  ng-repeat="item in param.days" style="text-align: center" >{{item}}</li>
+                        </ul>
+                        <div class=" nowarp" style="margin-left:1.21875rem;">
+                            <div class=" list-group" ng-repeat="(index1,item) in param.appointmentObject.list"style="width:500px">
+                                <div class="appointmentLis">
+                                    <ul >
+                                        <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bge4faff':item1==0,'bgred':item1==5}" ng-click="detailsWrap(index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2])" ng-onhold="onHold(index1,index2,item1)">
+                                            <p ng-if="item1 == 5" class="colred fs34" style="line-height: 0.96875rem;text-align:center ">{{item.sysUserName[index2]}}</p>
+                                            <div ng-if="item1 != 5">
+                                                <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3,'colred':item1==0}" ng-if="item.textShowOrHide[$index]==1">{{item.sysUserName[index2]}}</p>
+                                                <p class="mt30" ng-if="item.textShowOrHide[$index]==1">
+                                                    <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 6">
+                                                    <span class="fs24">{{item.time[index2]}}</span>
+                                                    <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>-->
+    <div class="complex_table" id="divBox1" style=" overflow: auto;height: 100%;width: 100%;float: left;">
+        <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
+            <thead>
+                <tr>
+                    <td>
+                        <div></div>
+                    </td>
+                    <td ng-repeat="(key,value) in memeda">
+                        <div>{{key}}</div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key,value) in param.zhongjiList " class="border-bottom: 1px solid;">
+                    <td>
+                        <!-- data-val={{value}} -->
+                        <div>{{key}}</div>
+                    </td>
+                    <td ng-repeat="item in value">
+                        <div ng-repeat="index in item.appointmentInfo" ng-init="a_index=$index" style="height: 0px;">
+                            <div ng-if="(item.appointmentInfo[a_index].scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)">
+                                {{item.appointmentInfo[a_index].scheduling.split(',').indexOf(param.theOtherCode[key])!=-1}}
+                                <!-- data-item="{{item}}" -->
+                                <div ng-if="item.appointmentInfo[a_index].scheduling.split(',').indexOf(param.theOtherCode[key])!=-1">
+                                    <div>
+                                        <span>我有值</span>
+                                        <span>{{item.statusList.shopProjectName}}</span>
+                                        <span>{{item.statusList.status}}</span>
+                                    </div>
+                                </div>
+                                <div ng-if="item.appointmentInfo[a_index].scheduling.split(',').indexOf(param.theOtherCode[key])==-1">
+                                    <div>
+                                        <span>我没值</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--周预约-->
+    <div ng-include="'itemList/appointment/weeklyReservation.html'" ng-show="param.weekFlag " class="H100"></div>
+</div>
+<!--<div class="dayAppointment H100 " ng-show="scheduling">
+    <div class="header">
+        <p class="timeArea">
+            <input  class="time  " id="orderPayStartTimes"  ng-click="dataS('#orderPayStartTime')"  value="{{date}}">
         </p>
         <p class="centerBtn">
             <input type="button" class="appointmentDay {{param.btnActive[0]}} " value="日预约" ng-click="appointmentChange('day')" >
             <input type="button"  class="appointmentWeek {{param.btnActive[1]}}" value="周预约" ng-click="appointmentChange('week')">
         </p>
         <p class="scheduling">
-            <span>排班</span>
+            <span ng-click="scheduling">排班</span>
         </p>
     </div>
 
@@ -29,10 +161,8 @@
                 </li>
             </ul>
         </div>
-
         <div class="messLis  pt117rem  swiper-wrapper w " >
             <div class="swiper-slide d  mt128 ">
-
                 <div class="swiper-container2 " style="position: relative;top:0px">
                     <ul class="time " style="position: absolute;z-index: 100;background: #ffffff" >
                         <li  ng-repeat="item in param.days" style="text-align: center" >{{item}}</li>
@@ -41,102 +171,34 @@
                         <div class="swiper-slide list-group" ng-repeat="(index1,item) in param.appointmentObject.list"style="width:500px">
                             <div class="appointmentLis">
                                 <ul >
-                                <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bgred':item1==4}" ng-click="detailsWrap(index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2])" ng-onhold="onHold(index1,index2,item1)">
-                                    <p ng-if="item1 == 4" class="colred fs34" style="line-height: 0.96875rem;text-align:center ">{{item.sysUserName[index2]}}</p>
-                                    <div ng-if="item1 != 4">
-                                        <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3}" ng-if="item1 == item.status[$index+1]">{{item.sysUserName[index2]}}</p>
-                                        <p class="mt30" ng-if="item1 == item.status[$index+1]">
-                                            <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 0">
-                                            <span class="fs24">{{item.time[index2]}}</span>
-                                            <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
+                                    <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bge4faff':item1==0,'bgred':item1==5}" ng-click="detailsWrap(index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2])" ng-onhold="onHold(index1,index2,item1)">
+                                        <p ng-if="item1 == 5" class="colred fs34" style="line-height: 0.96875rem;text-align:center ">{{item.sysUserName[index2]}}</p>
+                                        <div ng-if="item1 != 5">
+                                            <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3,'colred':item1==0}" ng-if="item.textShowOrHide[$index]==1">{{item.sysUserName[index2]}}</p>
+                                            <p class="mt30" ng-if="item.textShowOrHide[$index]==1">
+                                                <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 6">
+                                                <span class="fs24">{{item.time[index2]}}</span>
+                                                <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                        </div>
-                    </div>
-            </div>
-
-            </div>
-            <div class="loadtip">上拉加载更多</div>
-            <div class="swiper-scrollbar"></div>
-        </div>
-
-    </div>
-   <!-- <div class="content H100 mt128  " ng-show="param.dayFlag" >
-
-
-
-        <div class="closMessLis day  mt128  " ng-show="true" >
-            <div class="time bgfff">
-                <ul >
-                    <li ng-repeat="item in param.days" style="text-align: center" >{{item}}</li>
-                </ul>
-            </div>
-            <div class="tab-head swiper-container2 ">
-                <div class="tab-head-item swiper-wrapper w ">
-                    <div class="swiper-slide d">
-                        <div class="nameLis ">
-                            <ul class="Htab-head ">
-                                <li ng-repeat="item in param.appointmentObject.beautician" class="Htab-head-item">
-                                    <p class="name">{{item}}</p>
-                                    <p class="fs24 mt10 mb20">
-                                        <img src="images/ic_point.png" class="mr12 ">
-                                        12
-                                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
-                                        <img src="images/ic_row.png" class="mr12">
-                                        12
-                                    </p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="appointmentLis clear">
-                            <ul  class=" tab-head">
-                                <li class="tab-head-item" ng-repeat="(index1,item) in param.appointmentObject.list">
-                                    <ul >
-                                        <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3}" ng-click="detailsWrap(index1,index2,item1)" >
-                                            <div ng-if="item1 == item.status[$index+1]">
-                                                <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3}">{{item.sysUserName[index2]}}</p>
-                                                <p class="mt30" >
-                                                    <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 0">
-                                                    <span class="fs24">{{item.time[index2]}}</span>
-                                                    <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
-                                                </p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                 </div>
 
             </div>
+            <div class="loadtip" style="text-align: center">上拉加载更多</div>
+            <div class="swiper-scrollbar"></div>
         </div>
 
-    </div>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--周预约-->
-    <div ng-include="'itemList/appointment/weeklyReservation.html'" ng-show="param.weekFlag " class="H100"></div>
-</div>
-
-  <div style="height:100%;width:100%;position: absolute;left:0;top:0;background: rgba(0, 0, 0, 0.4);z-index: 1000" ng-show="param.bgBlack"></div>
+    </div>
+</div>-->
+<div style="height:100%;width:100%;position: absolute;left:0;top:0;background: rgba(0, 0, 0, 0.4);z-index: 1000" ng-show="param.bgBlack"></div>
 <!--预约详情-->
 <script type="text/ng-template" id="detailsWrap">
-    <div class="detailsWrap br36 bgfff " >
+    <div class="detailsWrap br36 bgfff ">
         <div class="header btlr btrr">
             <p>预约详情</p>
             <span class="close"><img src="images/bt_shut%20down.png" ng-click = "close()"></span>
@@ -146,7 +208,7 @@
 </script>
 <!--修改预约-->
 <script type="text/ng-template" id="modifyingAppointment">
-    <div class=" br36 modifyingAppointment" >
+    <div class=" br36 modifyingAppointment">
         <div class="space-between h104 bgeee btrr btlr">
             <p class="W33">
                 <span class="ml30 colff6666 fs38 bold" ng-click="close(0)">取消</span>
@@ -163,10 +225,10 @@
 </script>
 <!--选择顾客-->
 <script type="text/ng-template" id="selectCustomersWrap">
-    <div class="br36 bgf5f5f5 b w758 addWraps" >
+    <div class="br36 bgf5f5f5 b w758 addWraps">
         <div class="customerTop  btrr btlr">
             <ul class="space-between btrr btlr">
-                <li class="pl W33 "><img  src="images/bt_back.png" class="backPic mr20" ng-click="close(0)"><span class="color6666">修改预约</span> </li>
+                <li class="pl W33 "><img src="images/bt_back.png" class="backPic mr20" ng-click="close(0)"><span class="color6666">修改预约</span> </li>
                 <li class="fc W33 center">选择顾客</li>
                 <li class="people pr pt W33"><img src="images/bt_add to.png" alt="" class="floatR ml30" ng-click="addCustomersCtrl()"></li>
             </ul>
@@ -176,7 +238,7 @@
 </script>
 <!--修改预约-添加客户-->
 <script type="text/ng-template" id="addCustomers">
-    <div class="br36 bgf5f5f5 b w758 addWraps" >
+    <div class="br36 bgf5f5f5 b w758 addWraps">
         <div class="headers btrr btlr">
             <ul>
                 <li class="checks" ng-click="close(0)"><span class="ml30">取消</span></li>
@@ -200,7 +262,7 @@
 </script>
 <!--修改预约--选择时长-->
 <script type="text/ng-template" id="timeLength">
-    <div class="br36 w758 bgf5f5f5 addWraps" >
+    <div class="br36 w758 bgf5f5f5 addWraps">
         <div class="space-between h104  btlr btrr bgeee">
             <P class="W33">
                 <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
@@ -214,7 +276,7 @@
 </script>
 <!--修改预约--选择美容师-->
 <script type="text/ng-template" id="selectBeautician">
-    <div class="br36 w758 bgf5f5f5 selectBeautician addWraps" >
+    <div class="br36 w758 bgf5f5f5 selectBeautician addWraps">
         <div class="space-between h104  btlr btrr bgeee">
             <P class="W33">
                 <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
@@ -233,11 +295,9 @@
         </div>
     </div>
 </script>
-
-
 <!--散客详情-->
 <script type="text/ng-template" id="individual">
-    <div class="individual w885 br36 b" >
+    <div class="individual w885 br36 b">
         <div class="space-between h104 bgeee btrr btlr">
             <p class="W33">
             </p>
@@ -251,20 +311,17 @@
         <div ng-include="'itemList/appointment/individualTravelerAppointment.html'" class=" bblr bbrr"></div>
     </div>
 </script>
-
-
 <!--消费-消费-->
 <script type="text/ng-template" id="consumption">
-    <div class="consumption w1344  bgf5f5f5 br36" >
+    <div class="consumption w1344  bgf5f5f5 br36">
         <div class="PopupwindowTitle colorWhite bgff6666">
-            <p class="cancel " >
-                <span class="marginLeft20" ng-click = "close()">取消</span>
+            <p class="cancel ">
+                <span class="marginLeft20" ng-click="close()">取消</span>
             </p>
             <p class="centerBtn ">
                 消费
             </p>
             <p class="scheduling ">
-
             </p>
         </div>
         <div ng-include="'itemList/appointment/consumption.html'" class="h1465"></div>
@@ -274,8 +331,8 @@
 <script type="text/ng-template" id="selectSingle">
     <div class=" bgf5f5f5 w1344  selectContent br36">
         <div class="PopupwindowTitle colorWhite bgff6666">
-            <p class="cancel " >
-                <img src="images/bt_back.png" ng-click ="close(0)">
+            <p class="cancel ">
+                <img src="images/bt_back.png" ng-click="close(0)">
                 <span>消费</span>
             </p>
             <p class="centerBtn ">
@@ -289,14 +346,13 @@
             <div ng-include="'itemList/appointment/search.html'"></div>
             <div ng-include="'itemList/appointment/selectSingle.html'"></div>
         </div>
-
     </div>
 </script>
 <!--消费-选择疗程卡-->
 <script type="text/ng-template" id="selectTreatmentCard">
-    <div class=" bgf5f5f5 w1344  selectContent br36" >
+    <div class=" bgf5f5f5 w1344  selectContent br36">
         <div class="PopupwindowTitle colorWhite bgff6666">
-            <p class="cancel" >
+            <p class="cancel">
                 <img src="images/bt_back.png" ng-click="close(0)">
                 <span>消费</span>
             </p>
@@ -304,21 +360,20 @@
                 选择疗程卡
             </p>
             <p class="scheduling ">
-                <span class="true" ng-click = "close(1)">完成</span>
+                <span class="true" ng-click="close(1)">完成</span>
             </p>
         </div>
         <div class="h1465">
             <div ng-include="'itemList/appointment/search.html'"></div>
             <div ng-include="'itemList/appointment/selectTreatmentCard.html'"></div>
         </div>
-
     </div>
 </script>
 <!--消费-选择产品-->
 <script type="text/ng-template" id="selectProduct">
-    <div class=" bgf5f5f5 w1344  selectContent br36" >
+    <div class=" bgf5f5f5 w1344  selectContent br36">
         <div class="PopupwindowTitle colorWhite bgff6666">
-            <p class="cancel" >
+            <p class="cancel">
                 <img src="images/bt_back.png" ng-click="close(0)">
                 <span>消费</span>
             </p>
@@ -333,14 +388,13 @@
             <div ng-include="'itemList/appointment/search.html'"></div>
             <div ng-include="'itemList/appointment/selectProduct.html'"></div>
         </div>
-
     </div>
 </script>
 <!--消费-选择套卡-->
 <script type="text/ng-template" id="collectionCard">
-    <div class=" bgf5f5f5 w1344  selectContent  br36" >
+    <div class=" bgf5f5f5 w1344  selectContent  br36">
         <div class="PopupwindowTitle colorWhite bgff6666">
-            <p class="cancel" >
+            <p class="cancel">
                 <img src="images/bt_back.png" ng-click="close(0)">
                 <span>消费</span>
             </p>
@@ -356,14 +410,13 @@
 </script>
 <!--余额充值-->
 <script type="text/ng-template" id="balancePrepaid">
-    <div class="btrr btlr bgf5f5f5 payType w1344 br36" >
+    <div class="btrr btlr bgf5f5f5 payType w1344 br36">
         <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
-            <p class="W33 colfff " >
-                <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="close()">
+            <p class="W33 colfff ">
+                <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close()">
                 <span>消费</span>
             </p>
             <p class="W33 center ">
-
             </p>
             <p class="W33 ">
             </p>
@@ -375,15 +428,15 @@
 <script type="text/ng-template" id="relatedStaff">
     <div class="scratchCard w1344 bgf5f5f5 br36">
         <div class="PopupwindowTitle colorWhite bgff6666">
-            <p class="cancel " >
-                <img src="images/bt_back.png"  ng-click="close(0)">
+            <p class="cancel ">
+                <img src="images/bt_back.png" ng-click="close(0)">
                 <span>消费</span>
             </p>
             <p class="centerBtn">
                 关联员工
             </p>
             <p class="scheduling ">
-                <span class="true" ng-click="close(1)">完成</span>
+                <span class="true" ng-click="close(1)" ng-click="finsh()">完成</span>
             </p>
         </div>
         <div ng-include="'itemList/appointment/relatedStaff.html'" class="h1465 bblr bbrr"></div>
@@ -393,27 +446,26 @@
 <script type="text/ng-template" id="giving">
     <div class="givingArea w1344  collectionCard bgf5f5f5 br36">
         <div class="PopupwindowTitle colorWhite bgff6666 ">
-            <p class="cancel " >
-                <img src="images/bt_back.png"  ng-click="close(0)">
+            <p class="cancel ">
+                <img src="images/bt_back.png" ng-click="close(0)">
                 <span>取消</span>
             </p>
             <p class="centerBtn ">
                 选择赠送
             </p>
             <p class="scheduling ">
-                <span class="true"  ng-click="close(1)">确认</span>
+                <span class="true" ng-click="close(1)">确认</span>
             </p>
         </div>
-        <div ng-include="'itemList/appointment/giving.html'"  class="h1465 bblr bbrr"></div>
+        <div ng-include="'itemList/appointment/giving.html'" class="h1465 bblr bbrr"></div>
     </div>
 </script>
-
 <!--消费-消费-下一步（记录支付）-->
 <script type="text/ng-template" id="consumptionNextStep">
-    <div class="btrr btlr bgf5f5f5 payType w1344 br36" >
+    <div class="btrr btlr bgf5f5f5 payType w1344 br36">
         <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
-            <p class="W33 colfff " >
-                <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="close(0)">
+            <p class="W33 colfff ">
+                <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
                 <span>消费</span>
             </p>
             <p class="W33 center ">
@@ -427,10 +479,10 @@
 </script>
 <!--优惠券-->
 <script type="text/ng-template" id="selectCoupons">
-    <div class="btrr btlr bgf5f5f5 payType w1344 br36" >
+    <div class="btrr btlr bgf5f5f5 payType w1344 br36">
         <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
-            <p class="W33 colfff " >
-                <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="close()">
+            <p class="W33 colfff ">
+                <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close()">
                 <span>消费</span>
             </p>
             <p class="W33 center ">
@@ -444,10 +496,10 @@
 </script>
 <!--选择银行卡-->
 <script type="text/ng-template" id="bank">
-    <div class="btrr btlr bgf5f5f5 payType w1344 br36" >
+    <div class="btrr btlr bgf5f5f5 payType w1344 br36">
         <div class="space-between fs34 h104 colfff bgff6666 btrr btlr">
-            <p class="W33 colfff " >
-                <img src="images/bt_back.png" class="ml30 mr10 backPic"  ng-click="close()">
+            <p class="W33 colfff ">
+                <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close()">
                 <span>消费</span>
             </p>
             <p class="W33 center ">
@@ -460,8 +512,7 @@
             <ul class="bgfff">
                 <li class="space-between h100 bte5" ng-repeat="item in [1,2,3]">
                     <p class="fs34 col333">
-                        <img src="images/bt_Single election_nor_.png" class="norPic ml30 mr20">
-                        中国工商银行
+                        <img src="images/bt_Single election_nor_.png" class="norPic ml30 mr20"> 中国工商银行
                     </p>
                     <p class="col888 fs30 mr30">手续费：3.77元</p>
                 </li>
@@ -473,7 +524,7 @@
 <script type="text/ng-template" id="scratchCard">
     <div class="scratchCard  w1344 bgf5f5f5 br36">
         <div class="PopupwindowTitle colorWhite bgff6666">
-            <p class="cancel " >
+            <p class="cancel ">
                 <span class="marginLeft20" ng-click="close(0)">取消</span>
             </p>
             <p class="centerBtn ">
@@ -483,15 +534,15 @@
                 <span class="true" ng-click="close(1)">添加更多</span>
             </p>
         </div>
-        <div ng-include="'itemList/appointment/scratchCard.html'"  class="h1465 bblr bbrr"></div>
+        <div ng-include="'itemList/appointment/scratchCard.html'" class="h1465 bblr bbrr"></div>
     </div>
 </script>
 <!--划卡 选择疗程卡-->
 <script type="text/ng-template" id="scratchCardSelectTreatmentCard">
-    <div class="trueScratchCard w1344 bgf5f5f5 br36" >
+    <div class="trueScratchCard w1344 bgf5f5f5 br36">
         <div class="PopupwindowTitle colorWhite bgff6666">
-            <p class="cancel" >
-                <img src="images/bt_back.png"  ng-click="close(0)">
+            <p class="cancel">
+                <img src="images/bt_back.png" ng-click="close(0)">
                 <span>划卡</span>
             </p>
             <p class="centerBtn ">
@@ -504,10 +555,8 @@
         <div ng-include="'itemList/appointment/CtreatmentCard.html'" class="h1012 bblr bbrr"></div>
     </div>
 </script>
-
-
 <!--日预约--新建预约-->
-<script type="text/ng-template" id="appointmentType" >
+<script type="text/ng-template" id="appointmentType">
     <div class="appointmentType btrr btlr  br36 detailsWrap w780">
         <div class="space-between h104 bgf5f5f5  btrr btlr">
             <p class="W33 fs34 ml30  colff6666 bold" ng-click="close()">取消</p>
@@ -516,14 +565,12 @@
         </div>
         <div ng-include="'itemList/appointment/appointmentType.html'" class=" bblr bbrr"></div>
     </div>
-
 </script>
-
 <!--周预约--预约列表-->
-<script type="text/ng-template" id="appointmentLis" >
-    <div class="trueAppointment appointmentLisArea" >
+<script type="text/ng-template" id="appointmentLis">
+    <div class="trueAppointment appointmentLisArea">
         <div class="PopupwindowTitle bgeeeeee">
-            <p >
+            <p>
             </p>
             <p class="centerBtn color333333 bold">
                 预约列表
@@ -534,12 +581,4 @@
         </div>
         <div ng-include="'itemList/appointment/appointmentLis.html'" class=" bblr bbrr"></div>
     </div>
-
 </script>
-
-
-
-
-
-
-

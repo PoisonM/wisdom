@@ -57,6 +57,30 @@ public class JedisUtils {
 	 * @param key 键
 	 * @return 值
 	 */
+	public static Object getStringObject(String key) {
+		Object value = null;
+		Jedis jedis = null;
+		try {
+			jedis = getResource();
+			if (jedis.exists(getBytesKey(key))) {
+				byte[] bytes = jedis.get(getBytesKey(key));
+				value = new String(bytes);
+				logger.debug("getObject {} = {}", key, value);
+			}
+		} catch (Exception e) {
+			logger.warn("getObject {} = {}", key, value, e);
+		} finally {
+			returnResource(jedis);
+		}
+		return value;
+	}
+
+	/**
+	 * 获取缓存
+	 *
+	 * @param key 键
+	 * @return 值
+	 */
 	public static Object getObject(String key) {
 		Object value = null;
 		Jedis jedis = null;

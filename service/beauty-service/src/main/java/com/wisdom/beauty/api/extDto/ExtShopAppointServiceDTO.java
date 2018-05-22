@@ -12,6 +12,40 @@ public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
 
    private Date searchEndTime;
 
+    private Float score;
+
+    //查询预约时间开始时间
+    private String appointStartTimeS;
+
+    //查询预约时间结束时间
+    private String appointEndTimeE;
+
+    private String clerkImage;
+
+    public String getClerkImage() {
+        return clerkImage;
+    }
+
+    public void setClerkImage(String clerkImage) {
+        this.clerkImage = clerkImage;
+    }
+
+    public String getAppointStartTimeS() {
+        return appointStartTimeS;
+    }
+
+    public void setAppointStartTimeS(String appointStartTimeS) {
+        this.appointStartTimeS = appointStartTimeS;
+    }
+
+    public String getAppointEndTimeE() {
+        return appointEndTimeE;
+    }
+
+    public void setAppointEndTimeE(String appointEndTimeE) {
+        this.appointEndTimeE = appointEndTimeE;
+    }
+
     public Date getSearchStartTime() {
         return searchStartTime;
     }
@@ -26,5 +60,13 @@ public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
 
     public void setSearchEndTime(Date searchEndTime) {
         this.searchEndTime = searchEndTime;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 }

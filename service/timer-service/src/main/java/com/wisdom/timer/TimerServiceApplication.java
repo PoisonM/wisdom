@@ -4,7 +4,6 @@ import com.wisdom.timer.client.WeixinServiceClient;
 import com.wisdom.timer.service.business.BusinessRunTimeService;
 import com.wisdom.common.util.SpringUtil;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -33,11 +32,19 @@ public class TimerServiceApplication {
 		BusinessRunTimeService businessRunTimeService = SpringUtil.getBean(BusinessRunTimeService.class);
 
 		//初始化时更新token
-		weixinServiceClient.updateUserWeixinToken();
+		//weixinServiceClient.updateUserWeixinToken();
+
+		weixinServiceClient.updateBeautyWeixinToken();
 //
 //		//初始化时处理未支付的订单
 //		businessRunTimeService.autoProcessNoPayRecordData();
 
+//		try {
+//			businessRunTimeService.autoMonthlyIncomeCalc();
+//			businessRunTimeService.autoProcessUserAccount();
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
 //
 //		try {
 //			/*businessRunTimeService.autoMonthlyIncomeCalc();*/

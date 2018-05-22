@@ -1,6 +1,7 @@
-PADWeb.controller('addRecordCtrl', function($scope, $stateParams, ngDialog) {
+PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetShopUserArchivesInfoByUserId,DeleteArchiveInfo) {
     console.log($scope);
 /*-------------------------------------------定义头部/左边信息--------------------------------*/
+    $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent="档案(9010)"
     $scope.$parent.$parent.param.headerCash.leftAddContent="添加档案"
     $scope.$parent.$parent.param.headerCash.backContent="今日收银记录"
@@ -30,6 +31,8 @@ PADWeb.controller('addRecordCtrl', function($scope, $stateParams, ngDialog) {
     $scope.param = {
         select_type:"",
         openSelectFlag:false,//选择页面开关
+        selectContentName:"",
+        selectContentPhone:"",
         selectContentSex:"",
         selectContentBirthday:"",
         selectContentAge:"",
@@ -38,6 +41,7 @@ PADWeb.controller('addRecordCtrl', function($scope, $stateParams, ngDialog) {
         selectContentHeight:"",
         selectContentSource:"",
     }
+
     /*---------------------------------方法-----------------------------------*/
     $scope.flagFn = function (backContent,title,bool) {
         $scope.$parent.$parent.param.headerCash.backContent = backContent
@@ -46,6 +50,50 @@ PADWeb.controller('addRecordCtrl', function($scope, $stateParams, ngDialog) {
     }
 
     $scope.flagFn("","添加档案",false)
+
+   
+
+    $scope.$parent.$parent.leftTipFn = function () {
+        $scope.ShopUserArchivesDTO = {
+            age	:$scope.param.selectContentAge,
+            birthday:$scope.param.selectContentBirthday,
+            bloodType:$scope.param.selectContentBlood,
+            channel:'大众点评',//渠道
+            constellation:$scope.param.selectContentConstellation,
+            detail:'这是个好用户',
+            height:$scope.param.selectContentHeight,
+            imageRul:'www.baidu.com',
+            phone:$scope.param.selectContentPhone,
+            sex:$scope.param.selectContentSex,
+            sysClerkId:'522b6755e0fd40fea026deebd242e098',
+            sysClerkName:"",
+            sysShopId:'11',
+            sysShopName:'汉方美容院',
+            sysUserName:$scope.param.selectContentName,
+            weight:$scope.param.selectContentHeight
+        }
+        if($scope.param.selectContentName == ""){
+            alert("请输入姓名")
+            return
+        }
+        if($scope.param.selectContentPhone == ""){
+            alert("请输入手机号")
+            return
+        }
+
+        var reg = /^0?1[3|4|5|8][0-9]\d{8}$/;
+        if(!reg.test($scope.param.selectContentPhone)){
+            return
+        }
+        SaveArchiveInfo.save($scope.ShopUserArchivesDTO,function (data) {
+            if(data.result == "0x00001"){
+                alert("保存成功")
+                $state.go("pad-web.left_nav.personalFile")
+            }else if(data.result == "0x00002"){
+                alert(data.responseData)
+            }
+        })
+    }
 
 
     //打开选择页面
@@ -75,4 +123,14 @@ PADWeb.controller('addRecordCtrl', function($scope, $stateParams, ngDialog) {
             $scope.param.selectContentSource = content
         }
     }
+
+    $scope.backHeaderCashFn = function () {
+        $scope.param.openSelectFlag = false
+    }
+
+    $scope.$parent.selectSty = function(id) {
+        $scope.$parent.param.selectSty = id
+        $state.go("pad-web.left_nav.personalFile")
+    }
+
 });

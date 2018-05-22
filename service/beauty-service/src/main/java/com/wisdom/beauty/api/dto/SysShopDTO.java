@@ -43,7 +43,7 @@ public class SysShopDTO extends BaseEntity implements Serializable {
     private String onServiceStatus;
 
     //简介
-    private String describe;
+    private String detail;
 
     //面积
     private Float area;
@@ -53,6 +53,18 @@ public class SysShopDTO extends BaseEntity implements Serializable {
 
     //结束营业时间
     private String closeDoorDate;
+
+    //某个店的唯一标识
+    private String shopId;
+
+    //
+    private String qrCodeUrl;
+
+    //
+    private String parentsId;
+
+    //0 表示美容院  1代表分店
+    private String type;
 
     //
     private String createBy;
@@ -164,12 +176,12 @@ public class SysShopDTO extends BaseEntity implements Serializable {
         this.onServiceStatus = onServiceStatus;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public Float getArea() {
@@ -194,6 +206,38 @@ public class SysShopDTO extends BaseEntity implements Serializable {
 
     public void setCloseDoorDate(String closeDoorDate) {
         this.closeDoorDate = closeDoorDate;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getQrCodeUrl() {
+        return qrCodeUrl;
+    }
+
+    public void setQrCodeUrl(String qrCodeUrl) {
+        this.qrCodeUrl = qrCodeUrl;
+    }
+
+    public String getParentsId() {
+        return parentsId;
+    }
+
+    public void setParentsId(String parentsId) {
+        this.parentsId = parentsId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getCreateBy() {

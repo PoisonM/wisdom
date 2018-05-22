@@ -41,6 +41,15 @@ public class WeixinUtil {
         String token = weixinTokenDTO.getToken();
         return token;
     }
+
+    public static String getBeautyToken()
+    {
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
+        WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
+        String token = weixinTokenDTO.getToken();
+        return token;
+    }
+
     /**
      * 获取jsp页面验证用的jsapi-ticket
      *
@@ -68,7 +77,7 @@ public class WeixinUtil {
                 backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
-    public static String getBossOauth2Url(String backUrl) {
+    public static String getBeautyOauth2Url(String backUrl) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
                 ConfigConstant.BOSS_CORPID + "&redirect_uri=" +
@@ -243,9 +252,9 @@ public class WeixinUtil {
     }
 
 
-    public static String getBossOpenId(HttpSession session, HttpServletRequest request) {
-
-        return null;
+    public static String getBeautyOpenId(HttpSession session, HttpServletRequest request) {
+        String openId = (String) session.getAttribute(ConfigConstant.BOSS_OPEN_ID);
+        return openId;
     }
 
     /**
@@ -268,32 +277,5 @@ public class WeixinUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    /**
-     *
-     * 获取openid
-     *
-     *
-     * */
-    public static  String getOpenId(String code){
-        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                "appid="+ ConfigConstant.USER_CORPID +
-                "&secret=" + ConfigConstant.USER_SECRET +
-                "&code="+ code +
-                "&grant_type=authorization_code";
-        WeixinUserBean weixinUserBean;
-        int countNum = 0;
-        do {
-            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
-            weixinUserBean = JsonUtil.getObjFromJsonStr(json, WeixinUserBean.class);
-            if (countNum++ > 3) {
-                break;
-            }
-        } while (weixinUserBean.getOpenid() == null);
-
-        String openId = weixinUserBean.getOpenid();
-        return openId;
     }
 }

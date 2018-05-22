@@ -34,7 +34,7 @@ import java.util.concurrent.Executors;
 public class UserInfoServiceImpl implements UserInfoService{
 
     @Autowired
-    private UserInfoMapper customerInfoMapper;
+    private UserInfoMapper userInfoMapper;
 
     @Autowired
     private BusinessServiceClient businessServiceClient;
@@ -47,7 +47,7 @@ public class UserInfoServiceImpl implements UserInfoService{
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
     public List<UserInfoDTO> getUserInfo(UserInfoDTO userInfoDTO) {
-        List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfo(userInfoDTO);
+        List<UserInfoDTO> userInfoDTOS = userInfoMapper.getUserByInfo(userInfoDTO);
         if(CommonUtils.objectIsEmpty(userInfoDTOS)){
             logger.info("查询的用户信息为空");
             return userInfoDTOS;
@@ -84,7 +84,7 @@ public class UserInfoServiceImpl implements UserInfoService{
         RedisLock redisLock = new RedisLock("userInfo"+userInfoDTO.getId());
         try{
             redisLock.lock();
-            customerInfoMapper.updateUserInfo(userInfoDTO);
+            userInfoMapper.updateUserInfo(userInfoDTO);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -96,8 +96,7 @@ public class UserInfoServiceImpl implements UserInfoService{
         RedisLock redisLock = new RedisLock("userInfo"+userInfoDTO.getId());
         try{
             redisLock.lock();
-
-            customerInfoMapper.insertUserInfo(userInfoDTO);
+            userInfoMapper.insertUserInfo(userInfoDTO);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -107,7 +106,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     public PageParamDTO<List<UserBusinessTypeDTO>> queryUserBusinessById(String sysUserId) {
         PageParamDTO<List<UserBusinessTypeDTO>> page = new  PageParamDTO<>();
-        List<UserBusinessTypeDTO> userBusinessTypeDTOList = customerInfoMapper.queryUserBusinessById(sysUserId);
+        List<UserBusinessTypeDTO> userBusinessTypeDTOList = userInfoMapper.queryUserBusinessById(sysUserId);
         page.setResponseData(userBusinessTypeDTOList);
         return page;
     }
@@ -118,9 +117,9 @@ public class UserInfoServiceImpl implements UserInfoService{
      */
     public PageParamDTO<List<UserInfoDTO>> queryUserInfoDTOByParameters(PageParamVoDTO<UserInfoDTO> pageParamVoDTO) {
         PageParamDTO<List<UserInfoDTO>> page = new  PageParamDTO<>();
-        int count = customerInfoMapper.queryUserInfoDTOCountByParameters(pageParamVoDTO);
+        int count = userInfoMapper.queryUserInfoDTOCountByParameters(pageParamVoDTO);
         page.setTotalCount(count);
-        List<UserInfoDTO> userInfoDTOList = customerInfoMapper.queryUserInfoDTOByParameters(pageParamVoDTO);
+        List<UserInfoDTO> userInfoDTOList = userInfoMapper.queryUserInfoDTOByParameters(pageParamVoDTO);
         for(UserInfoDTO userInfoDTO : userInfoDTOList){
             if(userInfoDTO.getLivingPeriod() != 0){
                 int outDay = (int) DateUtils.pastDays(userInfoDTO.getCreateDate());
@@ -153,7 +152,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     //根据用户id查询下级代理
     public List<UserInfoDTO> queryNextUserById(String sysUserId) {
-        List<UserInfoDTO> userInfoDTOList = customerInfoMapper.queryNextUserById(sysUserId);
+        List<UserInfoDTO> userInfoDTOList = userInfoMapper.queryNextUserById(sysUserId);
         for(UserInfoDTO userInfoDTO : userInfoDTOList){
             if(StringUtils.isNotBlank(userInfoDTO.getNickname())&&userInfoDTO.getNickname()!=""){
                 String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
@@ -186,7 +185,7 @@ public class UserInfoServiceImpl implements UserInfoService{
         }
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId(sysUserId);
-        List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfo(userInfoDTO);
+        List<UserInfoDTO> userInfoDTOS = userInfoMapper.getUserByInfo(userInfoDTO);
         if(userInfoDTOS.size()>0)
         {
             return userInfoDTOS.get(0);
@@ -197,7 +196,7 @@ public class UserInfoServiceImpl implements UserInfoService{
     }
     //根据parentId查询上级信息
     public List<UserInfoDTO> queryParentUserById(String parentUserId) {
-        List<UserInfoDTO> userInfoDTOS= customerInfoMapper.queryParentUserById(parentUserId);
+        List<UserInfoDTO> userInfoDTOS= userInfoMapper.queryParentUserById(parentUserId);
         for (UserInfoDTO userInfoDTO :userInfoDTOS) {
             if(userInfoDTO.getNickname() != null && userInfoDTO.getNickname() != ""){
                 try {
@@ -249,7 +248,7 @@ public class UserInfoServiceImpl implements UserInfoService{
         Map<String,Object> map=new HashMap<>(16);
         map.put("list",sysUserIds);
         map.put("searchFile",searchFile);
-        List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfoList(map);
+        List<UserInfoDTO> userInfoDTOS = userInfoMapper.getUserByInfoList(map);
         return  userInfoDTOS;
     }
 

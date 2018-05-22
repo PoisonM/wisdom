@@ -8,6 +8,8 @@ public class ConfigConstant {
 
 	public static final String USER_WEB_URL = Global.getConfig("USER_WEB_URL");
 
+	public static final String BOSS_WEB_URL = Global.getConfig("BOSS_WEB_URL");
+
 	public static final String OFFLINE_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("OFFLINE_PRODUCT_BUY_NOTIFY_URL");
 
 	public static final String TRAINING_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("TRAINING_PRODUCT_BUY_NOTIFY_URL");
@@ -105,6 +107,11 @@ public class ConfigConstant {
 
 	public static final String PAY_TEST_FLAG = Global.getConfig("PAY_TEST_FLAG");
 
+	public static final String shopBusiness = Global.getConfig("shopBusiness");
+
+	public static final String beautySource = "beauty";
+
+	public static final String businessSource = "business";
 /*	public static final float PERMANT_REWARD = Integer.parseInt(Global.getConfig("PERMANT_REWARD"));*/
 
 	public static final String LEVE_IMPORT_A = Global.getConfig("LEVE_IMPORT_A");

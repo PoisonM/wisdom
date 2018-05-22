@@ -1,6 +1,6 @@
 <div class="weekWrap H100 swiper-container3">
     <div class="init-loading list-group-item text-center" style="display: none">下拉可以刷新</div>
-     <div class="weekHeader" style="position: relative;z-index: 2;background: #ffffff;">
+     <div class="weekHeader" style="position: relative;z-index: 2;background: #ffffff;overflow-x: scroll">
          <ul>
              <li  ng-repeat="(key ,val) in param.week.weekData" >
                  {{key}}
@@ -13,31 +13,33 @@
             <div class="swiper-container2 ">
                 <div class="weekLeft" style="position: relative;z-index: 2;background: #ffffff;">
                     <ul>
-                        <li  ng-repeat="item in param.week" >
+                        <li  ng-repeat="item  in navLeftWeekTime" id="hNavLeft">
                             <div>
-                                <p class="weekLeftNumber">{{item}}<br>
-                                    <!--<span>周五</span><span>初五</span></p>-->
+
+                                <p class="weekLeftNumber">{{item.day}} <span>{{item.Lunar}}</span><br>
+                                    <span>{{item.week}}</span></p>
                             </div>
                         </li>
 
                     </ul>
                 </div>
-                <div class="swiper-wrapper nowarp">
-                    <div class="weekRight swiper-slide list-group" ng-repeat="(key ,val) in param.week.weekData">
+                <div class="swiper-wrapper nowarp weekMess">
+                    <div class="weekRight swiper-slide list-group" ng-repeat="(key ,val) in param.week.weekData" >
                         <ul>
-                            <li  ng-repeat="item in val" ng-click="weekLis(item)">
-                                <div>
-                                    <p ng-repeat="item1 in item.info"><span>{{item1.sysUserName}}</span>&nbsp;<span>{{item1.shopProjectName}}</span><span class="ml30">11:00</span></p>
+                            <li  ng-repeat="item in val" ng-click="weekLis(item)" >
+                                <div style="position:relative;height:100%">
+                                    <p ng-repeat="item1 in item.info"><span>{{item}}</span>&nbsp;<span>{{item}}</span><span class="ml30">11:00</span></p>
+                                    <p style="position: absolute;bottom: 0px">还有1条</p>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div >
 
             </div>
 
         </div>
-        <div class="loadtip">上拉加载更多</div>
+        <div class="loadtip" style="text-align: center">上拉加载更多</div>
         <div class="swiper-scrollbar"></div>
 
     </div>

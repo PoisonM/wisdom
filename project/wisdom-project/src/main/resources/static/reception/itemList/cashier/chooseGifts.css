@@ -1,0 +1,160 @@
+.chooseGifts-box {
+    width: 100%;
+    background: #fff;
+    overflow: scroll;
+}
+
+.chooseGifts-box .chooseGifts-tab {
+    width: 95%;
+    height: 40px;
+    line-height: 40px;
+    background: #FFFFFF;
+    border: 1px solid #FF6666;
+    border-radius: 4px;
+    margin: 14px auto 0;
+    overflow: hidden;
+}
+
+.chooseGifts-box .chooseGifts-tab span {
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #FF6666;
+    letter-spacing: 0;
+    width: 33.333%;
+    display: block;
+    float: left;
+    text-align: center;
+    border-right: 1px solid #FF6666;
+}
+
+.chooseGifts-box .chooseGifts-tab span:last-of-type {
+    border-right: none;
+}
+
+.chooseGifts-box .chooseGifts-tab span.select {
+    background: #FF6666;
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+}
+
+.chooseGifts-box .chooseGiftsContetn {}
+
+.chooseGifts-box .chooseGiftsContetn .treatmentCard {}
+
+.chooseGifts-box .chooseGiftsContetn .search {
+    height: 44px;
+    line-height: 44px;
+    background-color: #dddddd;
+    position: relative;
+}
+
+.chooseGifts-box .chooseGiftsContetn .search input {
+    width: 644px;
+    height: 34px;
+    padding-left: 27px;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .ser_ion {
+    position: absolute;
+    top: 0.21875rem;
+    left: 0.25rem;
+    display: block;
+    width: 0.234375rem;
+    height: 0.234375rem;
+    /*padding: 0.109375rem 0.09375rem;
+     */
+    background: url("../../images/bt_search.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+.chooseGifts-box .chooseGiftsContetn .cancel {
+    margin-left: 0.15625rem;
+    font-size: 0.234375rem;
+    color: #A4A4A4;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl {
+    width: 100%;
+    background: #fff;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsTitle {
+    background: #F2F2F2;
+    height: 28px;
+    line-height: 28px;
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #333333;
+    padding-left: 15px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li {
+    height: 45px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li input[type="radio"] {
+    display: block;
+    float: left;
+    margin: 16px 0px 0px 10px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li span {
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #333333;
+    letter-spacing: 0;
+    line-height: 45px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li span.name {
+    float: left;
+    margin-left: 16px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li span.numberTitle {
+    width: 68px;
+    height: 24px;
+    float: right;
+    margin-right: 12px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li span.price {
+    float: right;
+    margin-right: 196px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .chooseGiftsUl li input[type="text"] {
+    border: 1px solid #CECECE;
+    border-radius: 4px;
+    width: 80px;
+    height: 34px;
+    float: right;
+    margin: 5px 10px 0 0;
+}
+
+.chooseGifts-box .chooseGiftsContetn .prepaidCard {
+    width: 95%;
+    margin: 0 auto;
+    height: 42px;
+    line-height: 42px;
+}
+
+.chooseGifts-box .chooseGiftsContetn .prepaidCard span {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+.chooseGifts-box .chooseGiftsContetn .prepaidCard input {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #999999;
+    letter-spacing: 0;
+    margin-left: 20px;
+}
