@@ -204,6 +204,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UpdateAppointmentInfoById', ['$resource', function($resource) {
         return $resource(beautyIP + 'appointmentInfo/updateAppointmentInfoById')
     }])
+    //新建预约保存
+    .factory('SaveUserAppointInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'appointmentInfo/saveUserAppointInfo')
+    }])
     //查询某个店的项目列表
     .factory('GetShopProjectList', ['$resource', function($resource) {
         return $resource(beautyIP + 'projectInfo/getShopProjectList')

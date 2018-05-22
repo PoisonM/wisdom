@@ -8,6 +8,7 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         compileDateFlag:true
     }
     /*---------------*/
+
     
     $scope.compileDateFn = function () {
         if(new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月" == $scope.param.nowdate){
