@@ -294,7 +294,9 @@ public class ScheduleController {
         long currentTimeMillis = System.currentTimeMillis();
         List<ShopScheduleSettingDTO> requestList = requestDTO.getRequestList();
         for (ShopScheduleSettingDTO scheduleDTO : requestList) {
-            shopClerkScheduleService.updateBossShopScheduleSetting(scheduleDTO);
+            if (StringUtils.isNotBlank(scheduleDTO.getId())) {
+                shopClerkScheduleService.updateBossShopScheduleSetting(scheduleDTO);
+            }
         }
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);

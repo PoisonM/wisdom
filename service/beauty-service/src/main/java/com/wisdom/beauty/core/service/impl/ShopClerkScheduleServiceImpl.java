@@ -152,8 +152,9 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO) {
-        return shopScheduleSettingMapper.updateByPrimaryKey(shopScheduleSettingDTO);
+        return shopScheduleSettingMapper.updateByPrimaryKeySelective(shopScheduleSettingDTO);
     }
 
 
