@@ -12,10 +12,12 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
                 displayShopBox:false,
+                sysShopId:'',
+                sortBy:"",
+                sortRule:""
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
-            console.log($scope.param.date);
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -34,7 +36,9 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
+                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
+                    $scope.param.sortBy = "";
+                    $scope.param.sortRule = '';
                     $scope.getInfo();
                 }
             };
@@ -68,13 +72,16 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
 
             $scope.getInfo = function(){
                 GetClerkAchievementList.get({
-                    startTime:'2018-05-01 00:00:00',
-                    endTime:'2018-05-15 23:59:59'
+                    sysShopId:$scope.param.sysShopId,
+                    startTime:$scope.param.date +' 00:00:00',
+                    endTime:$scope.param.date +' 23:59:59',
+                    sortBy:$scope.param.sortBy,
+                    sortRule:$scope.param.sortRule
                 },function(data){
                       $scope.employeeAnalysis = data.responseData
                 })
             }
-            $scope.getInfo()
+            $scope.getInfo();
 
             $scope.tabShop=function () {
                 $scope.param.displayShopBox=true;
@@ -85,14 +92,14 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 });
             };
             $scope.choseShop = function(id){
-                GetClerkAchievementList.get({
-                    sysShopId:id,
-                    startTime:'2018-05-01 00:00:00',
-                    endTime:'2018-05-15 23:59:59'
-                },function(data){
-                    $scope.employeeAnalysis = data.responseData
-                       $scope.param.displayShopBox = false;
-                })
+                $scope.param.sysShopId = id;
+                $scope.getInfo();
+                $scope.param.displayShopBox = false;
+            }
+            $scope.sorting =function(sortBy,sortRule){
+                $scope.param.sortBy=sortBy;
+                $scope.param.sortRule=sortRule;
+                $scope.getInfo()
             }
 
-        }])
+        }]);

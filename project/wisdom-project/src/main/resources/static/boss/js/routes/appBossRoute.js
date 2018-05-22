@@ -639,7 +639,7 @@ define(['appBoss'], function(app){
                     })
                 /*修改门店*/
                     .state('amendStore', {
-                        url: '/amendStore',
+                        url: '/amendStore/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'amendStoreCtrl',
                         resolve: {
@@ -873,7 +873,7 @@ define(['appBoss'], function(app){
                     })
                 /*产品品牌设置*/
                     .state('productSetting', {
-                        url: '/productSetting',
+                        url: '/productSetting/:type,:productTypeOneId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productSettingCtrl',
                         resolve: {
@@ -894,6 +894,45 @@ define(['appBoss'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.productBrandCtrl',
                                     ['js/controllers/Stock/productBrandCtrl.js?ver='+ bossVersion],
                                     'views/Stock/productBrand.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                        /*项目大类设置*/
+                    .state('projectBrand', {
+                        url: '/projectBrand',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'projectBrandCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.projectBrandCtrl',
+                                    ['js/controllers/mine/projectBrandCtrl.js?ver='+ bossVersion],
+                                    'views/mine/projectBrand.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                        /*项目类别*/
+                    .state('projectSetting', {
+                        url: '/projectSetting',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'projectSettingCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.projectSettingCtrl',
+                                    ['js/controllers/mine/projectSettingCtrl.js?ver='+ bossVersion],
+                                    'views/mine/projectSetting.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                        /*修改系列*/
+                    .state('projectSeries', {
+                        url: '/projectSeries/:projectTypeOneId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'projectSeriesCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.projectSeriesCtrl',
+                                    ['js/controllers/mine/projectSeriesCtrl.js?ver='+ bossVersion],
+                                    'views/mine/projectSeries.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -1727,7 +1766,7 @@ define(['appBoss'], function(app){
                     })
                     /* addSeries 添加系列*/
                     .state('addSeries', {
-                        url: '/addSeries',
+                        url: '/addSeries/:productTypeOneId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'addSeriesCtrl',
                         resolve: {

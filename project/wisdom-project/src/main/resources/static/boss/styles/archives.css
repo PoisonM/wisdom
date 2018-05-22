@@ -5,7 +5,7 @@
 .item .col666{color:#666666;}
 .colff66{color: #ff6666}
 .item .colff66{color: #ff6666}
-.col888{color: #888888;}
+.col888{color: #888888; }
 .item .col888{color: #888888;}
 .col999{color: #999;}
 .item .col999{color: #999;}
@@ -80,8 +80,8 @@ img {display: inline-block}
 .minePic{width:20px;height:20px;}
 .scroll{height:100%;}
 .floatR{float:right;}
-.pd10{padding:0 15px;}
-
+.pd15{padding:0 15px;}
+.partialFiles .pd15{padding:0 15px;}
 .warningFile .list{top:48px;}
 .item p{font-size: 15px;}
 .item{border-color: #f6f6f6;}
@@ -123,6 +123,7 @@ img {display: inline-block}
 .settingKuPic{width:25px;height:25px;}
 .sb{display: flex;justify-content: space-between}
 .bbl{border-bottom: #E6E6E6 solid 1px}
+.btl{border-top: #E6E6E6 solid 1px}
 
 
 .b{font-weight: 900;}
@@ -132,6 +133,7 @@ img {display: inline-block}
 .Character{border:solid 1px gainsboro;color:#666666;}
 .commonType{border: 1px solid #DDDDDD;border-radius: 4px;font-size: 13px;color: #888888;}
 .activeType{border: 1px solid #FF6666;border-radius: 4px;font-size: 13px;color: #333;}
+.textL{text-align: right}
 
 
 
