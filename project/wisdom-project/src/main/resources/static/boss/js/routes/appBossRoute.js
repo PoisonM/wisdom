@@ -873,7 +873,7 @@ define(['appBoss'], function(app){
                     })
                 /*产品品牌设置*/
                     .state('productSetting', {
-                        url: '/productSetting/:type,:productTypeOneId',
+                        url: '/productSetting/:type,:productTypeOneId,:productTypeName,:status',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productSettingCtrl',
                         resolve: {
@@ -912,7 +912,7 @@ define(['appBoss'], function(app){
                     })
                         /*项目类别*/
                     .state('projectSetting', {
-                        url: '/projectSetting',
+                        url: '/projectSetting/:type,:projectTypeOneId,:projectTypeOneName,:status',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'projectSettingCtrl',
                         resolve: {

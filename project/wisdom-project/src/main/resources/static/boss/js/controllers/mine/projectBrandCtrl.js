@@ -9,8 +9,8 @@ angular.module('controllers',[]).controller('projectBrandCtrl',
             $scope.addSeriesGo = function(){
                 $state.go("projectSeries")
             };
-            $scope.addBrandOneGo = function(type,id){
-                $state.go("projectSetting",{type:type,id:id});
+            $scope.addBrandOneGo = function(type,projectTypeOneId,projectTypeOneName,status){
+                $state.go("projectSetting",{type:type,projectTypeOneId:projectTypeOneId,projectTypeOneName:projectTypeOneName,status:status});
             };
             $scope.checkSeries=function (projectTypeOneId) {
                 $state.go("projectSeries",{projectTypeOneId:projectTypeOneId})
