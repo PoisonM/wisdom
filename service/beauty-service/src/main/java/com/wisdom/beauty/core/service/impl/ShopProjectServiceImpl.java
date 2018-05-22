@@ -180,10 +180,6 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			criteria.andSysShopIdEqualTo(shopProjectInfoDTO.getSysShopId());
 		}
 
-		// if (StringUtils.isNotBlank(shopProjectInfoDTO.getStatus())) { 默认查询有效的
-		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
-		// }
-
 		if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
 			criteria.andProjectNameLike(shopProjectInfoDTO.getProjectName());
 		}
