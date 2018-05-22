@@ -124,6 +124,8 @@ public class ShopCheckServiceImpl implements ShopCheckService {
                 shopCheckRecordResponseDTO.setProductName(shopCheckRecord.getShopProcName());
                 shopCheckRecordResponseDTO.setStockNumber(shopCheckRecord.getStockNumber());
                 shopCheckRecordResponseDTO.setActualStockNumber(shopCheckRecord.getActualStockNumber());
+                shopCheckRecordResponseDTO.setId(shopCheckRecord.getId());
+                shopCheckRecordResponseDTO.setShopProcId(shopCheckRecord.getShopProcId());
                 devList.add(shopCheckRecordResponseDTO);
                 devShopCheckRecordResponseDTO.setShopCheckRecordResponseList(devList);
                 if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())){
@@ -137,6 +139,8 @@ public class ShopCheckServiceImpl implements ShopCheckService {
                 shopCheckRecordResponseDTO.setProductName(shopCheckRecord.getShopProcName());
                 shopCheckRecordResponseDTO.setStockNumber(shopCheckRecord.getStockNumber());
                 shopCheckRecordResponseDTO.setActualStockNumber(shopCheckRecord.getActualStockNumber());
+                shopCheckRecordResponseDTO.setId(shopCheckRecord.getId());
+                shopCheckRecordResponseDTO.setShopProcId(shopCheckRecord.getShopProcId());
                 List<ShopCheckRecordResponseDTO> shopCheckRecordResponseList=new ArrayList<>();
                 shopCheckRecordResponseList.add(shopCheckRecordResponseDTO);
                 shopCheckRecordResponseDTO2.setShopCheckRecordResponseList(shopCheckRecordResponseList);
