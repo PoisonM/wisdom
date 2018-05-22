@@ -219,8 +219,8 @@ public class ShopStockServiceImpl implements ShopStockService {
         ShopStockRecordCriteria criteria = new ShopStockRecordCriteria();
         ShopStockRecordCriteria.Criteria c = criteria.createCriteria();
 
-        if (StringUtils.isNotBlank(shopStockRecord.getShopBossId())) {
-            c.andShopBossIdEqualTo(shopStockRecord.getShopBossId());
+        if (StringUtils.isNotBlank(shopStockRecord.getSysBossCode())) {
+            c.andSysBossCodeEqualTo(shopStockRecord.getSysBossCode());
         }
         if (StringUtils.isNotBlank(shopStockRecord.getShopStoreId())) {
             c.andShopStoreIdEqualTo(shopStockRecord.getShopStoreId());
@@ -307,7 +307,7 @@ public class ShopStockServiceImpl implements ShopStockService {
         ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 
         ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
-        shopStockRecordDTO.setShopBossId(sysBossDTO.getId());
+        shopStockRecordDTO.setSysBossCode(sysBossDTO.getId());
         shopStockRecordDTO.setShopStoreId(shopStockDto.getShopStoreId());
         shopStockRecordDTO.setId(IdGen.uuid());
         shopStockRecordDTO.setCreateDate(new Date());
@@ -389,7 +389,7 @@ public class ShopStockServiceImpl implements ShopStockService {
             shopStockNumberDTO = new ShopStockNumberDTO();
             shopStockNumberDTO.setId(IdGen.uuid());
             shopStockNumberDTO.setStockNumber(addShopStockRequest.getStockNumber());
-            shopStockNumberDTO.setShopBossId(sysBossDTO.getId());
+            shopStockNumberDTO.setSysBossCode(sysBossDTO.getId());
             shopStockNumberDTO.setShopProcId(addShopStockRequest.getShopProcId());
             shopStockNumberDTO.setShopStoreId(addShopStockRequest.getShopStoreId());
             shopStockNumberDTO.setUpdateDate(new Date());

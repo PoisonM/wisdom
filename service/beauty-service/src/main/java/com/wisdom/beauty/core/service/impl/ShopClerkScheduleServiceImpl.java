@@ -132,7 +132,7 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
             settingDTO.setCreateBy(UserUtils.getBossInfo().getId());
             settingDTO.setStatus(CommonCodeEnum.ENABLED.getCode());
             settingDTO.setCreateDate(new Date());
-            settingDTO.setSysBossId(UserUtils.getBossInfo().getId());
+            settingDTO.setSysBossCode(UserUtils.getBossInfo().getId());
             for (ScheduleTypeEnum scheduleTypeEnum : ScheduleTypeEnum.values()) {
                 settingDTO.setEndTime(scheduleTypeEnum.getDefaultEndTime());
                 settingDTO.setId(IdGen.uuid());

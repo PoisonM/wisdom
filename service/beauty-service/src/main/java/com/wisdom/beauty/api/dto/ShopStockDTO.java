@@ -1,175 +1,176 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.wisdom.common.entity.BaseEntity;
+
 public class ShopStockDTO extends BaseEntity implements Serializable {
-	//
-	private String id;
+    //
+    private String id;
 
-	//bossID
-	private String shopBossId;
+    //boss编码
+    private String sysBossCode;
 
-	//入库记录id
-	private String shopStockRecordId;
+    //入库记录id
+    private String shopStockRecordId;
 
-	//仓库id
-	private String shopStoreId;
+    //仓库id
+    private String shopStoreId;
 
-	//单据号
-	private String flowNo;
+    //单据号
+    private String flowNo;
 
-	//出库数量
-	private Integer outStockNumber;
+    //出库数量
+    private Integer outStockNumber;
 
-	//库存数量
-	private Integer stockNumber;
+    //库存数量
+    private Integer stockNumber;
 
-	//
-	private String shopProcId;
+    //
+    private String shopProcId;
 
-	//
-	private String shopProcName;
+    //
+    private String shopProcName;
 
-	//生产日期
-	private Date productDate;
+    //生产日期
+    private Date productDate;
 
-	//库存单价（元）
-	private BigDecimal stockPrice;
+    //库存单价（元）
+    private BigDecimal stockPrice;
 
-	//
-	private String createBy;
+    //
+    private String createBy;
 
-	//
-	private Date createDate;
+    //
+    private Date createDate;
 
-	//
-	private String updateUser;
+    //
+    private String updateUser;
 
-	//
-	private Date updateDate;
+    //
+    private Date updateDate;
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getShopBossId() {
-		return shopBossId;
-	}
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
 
-	public void setShopBossId(String shopBossId) {
-		this.shopBossId = shopBossId;
-	}
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
+    }
 
-	public String getShopStockRecordId() {
-		return shopStockRecordId;
-	}
+    public String getShopStockRecordId() {
+        return shopStockRecordId;
+    }
 
-	public void setShopStockRecordId(String shopStockRecordId) {
-		this.shopStockRecordId = shopStockRecordId;
-	}
+    public void setShopStockRecordId(String shopStockRecordId) {
+        this.shopStockRecordId = shopStockRecordId;
+    }
 
-	public String getShopStoreId() {
-		return shopStoreId;
-	}
+    public String getShopStoreId() {
+        return shopStoreId;
+    }
 
-	public void setShopStoreId(String shopStoreId) {
-		this.shopStoreId = shopStoreId;
-	}
+    public void setShopStoreId(String shopStoreId) {
+        this.shopStoreId = shopStoreId;
+    }
 
-	public String getFlowNo() {
-		return flowNo;
-	}
+    public String getFlowNo() {
+        return flowNo;
+    }
 
-	public void setFlowNo(String flowNo) {
-		this.flowNo = flowNo;
-	}
+    public void setFlowNo(String flowNo) {
+        this.flowNo = flowNo;
+    }
 
-	public Integer getOutStockNumber() {
-		return outStockNumber;
-	}
+    public Integer getOutStockNumber() {
+        return outStockNumber;
+    }
 
-	public void setOutStockNumber(Integer outStockNumber) {
-		this.outStockNumber = outStockNumber;
-	}
+    public void setOutStockNumber(Integer outStockNumber) {
+        this.outStockNumber = outStockNumber;
+    }
 
-	public Integer getStockNumber() {
-		return stockNumber;
-	}
+    public Integer getStockNumber() {
+        return stockNumber;
+    }
 
-	public void setStockNumber(Integer stockNumber) {
-		this.stockNumber = stockNumber;
-	}
+    public void setStockNumber(Integer stockNumber) {
+        this.stockNumber = stockNumber;
+    }
 
-	public String getShopProcId() {
-		return shopProcId;
-	}
+    public String getShopProcId() {
+        return shopProcId;
+    }
 
-	public void setShopProcId(String shopProcId) {
-		this.shopProcId = shopProcId;
-	}
+    public void setShopProcId(String shopProcId) {
+        this.shopProcId = shopProcId;
+    }
 
-	public String getShopProcName() {
-		return shopProcName;
-	}
+    public String getShopProcName() {
+        return shopProcName;
+    }
 
-	public void setShopProcName(String shopProcName) {
-		this.shopProcName = shopProcName;
-	}
+    public void setShopProcName(String shopProcName) {
+        this.shopProcName = shopProcName;
+    }
 
-	public Date getProductDate() {
-		return productDate;
-	}
+    public Date getProductDate() {
+        return productDate;
+    }
 
-	public void setProductDate(Date productDate) {
-		this.productDate = productDate;
-	}
+    public void setProductDate(Date productDate) {
+        this.productDate = productDate;
+    }
 
-	public BigDecimal getStockPrice() {
-		return stockPrice;
-	}
+    public BigDecimal getStockPrice() {
+        return stockPrice;
+    }
 
-	public void setStockPrice(BigDecimal stockPrice) {
-		this.stockPrice = stockPrice;
-	}
+    public void setStockPrice(BigDecimal stockPrice) {
+        this.stockPrice = stockPrice;
+    }
 
-	public String getCreateBy() {
-		return createBy;
-	}
+    public String getCreateBy() {
+        return createBy;
+    }
 
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+    public Date getCreateDate() {
+        return createDate;
+    }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
-	public String getUpdateUser() {
-		return updateUser;
-	}
+    public String getUpdateUser() {
+        return updateUser;
+    }
 
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
 
-	public Date getUpdateDate() {
-		return updateDate;
-	}
+    public Date getUpdateDate() {
+        return updateDate;
+    }
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 }

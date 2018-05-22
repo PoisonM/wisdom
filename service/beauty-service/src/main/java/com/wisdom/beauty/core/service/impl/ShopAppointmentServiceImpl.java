@@ -95,8 +95,8 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         if(null != extShopAppointServiceDTO.getSearchStartTime() && null != extShopAppointServiceDTO.getSearchEndTime()){
             criteria.andAppointStartTimeBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
         }
-        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossId())) {
-            criteria.andSysBossIdEqualTo(extShopAppointServiceDTO.getSysBossId());
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossCode())) {
+            criteria.andSysBossCodeEqualTo(extShopAppointServiceDTO.getSysBossCode());
         }
 
         if (StringUtils.isNotBlank(status)) {
@@ -152,8 +152,8 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         if (null != extShopAppointServiceDTO.getSearchStartTime() && null != extShopAppointServiceDTO.getSearchEndTime()) {
             criteria.andAppointStartTimeBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
         }
-        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossId())) {
-            criteria.andSysBossIdEqualTo(extShopAppointServiceDTO.getSysBossId());
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossCode())) {
+            criteria.andSysBossCodeEqualTo(extShopAppointServiceDTO.getSysBossCode());
         }
 
         int appointServiceDTOS = shopAppointServiceMapper.countByCriteria(shopAppointServiceCriteria);

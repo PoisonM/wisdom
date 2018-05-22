@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable {
     //
@@ -34,8 +34,8 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //0：充值  1：消费 2、还欠款 3、退款
     private String consumeType;
 
-    //
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
 
     //美容院表主键
     private String sysShopId;
@@ -168,12 +168,12 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
         this.consumeType = consumeType;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysShopId() {

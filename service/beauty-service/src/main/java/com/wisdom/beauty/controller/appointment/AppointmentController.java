@@ -423,7 +423,7 @@ public class AppointmentController {
 		//如果userInfo为空，说明是pad端用户
 		if (null == userInfo) {
 			shopAppointServiceDTO.setCreateBy(clerkInfo.getSysUserId());
-			shopAppointServiceDTO.setSysBossId(clerkInfo.getSysBossId());
+			shopAppointServiceDTO.setSysBossCode(clerkInfo.getSysBossId());
 			if (StringUtils.isBlank(shopAppointServiceDTO.getSysClerkId())) {
 				shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
 			}
@@ -447,7 +447,7 @@ public class AppointmentController {
 			shopAppointServiceDTO.setSysShopName(userLoginShop.getSysShopName());
 			shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
 			shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
-			shopAppointServiceDTO.setSysBossId(userLoginShop.getSysBossId());
+			shopAppointServiceDTO.setSysBossCode(userLoginShop.getSysBossId());
 		}
 		if (StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
 			shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
@@ -574,7 +574,7 @@ public class AppointmentController {
 		//查询老板下的店铺信息
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
-		shopBossRelationDTO.setSysBossId(bossInfo.getId());
+		shopBossRelationDTO.setSysBossCode(bossInfo.getId());
 		List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.ShopBossRelationList(shopBossRelationDTO);
 
 		if (CommonUtils.objectIsEmpty(shopBossRelationDTO)) {
@@ -588,7 +588,7 @@ public class AppointmentController {
 			//hash缓存单个店的预约信息
 			HashMap<Object, Object> hashMap = new HashMap<>(16);
 			ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-			extShopAppointServiceDTO.setSysBossId(bossRelationDTO.getSysBossId());
+			extShopAppointServiceDTO.setSysBossCode(bossRelationDTO.getSysBossCode());
 			extShopAppointServiceDTO.setSysShopId(bossRelationDTO.getSysShopId());
 			extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
 			extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
@@ -660,7 +660,7 @@ public class AppointmentController {
 
 		//查询店铺下的预约信息
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		extShopAppointServiceDTO.setSysBossId(bossInfo.getId());
+		extShopAppointServiceDTO.setSysBossCode(bossInfo.getId());
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
 		extShopAppointServiceDTO.setSysClerkId(sysClerkId);
 		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
@@ -702,7 +702,7 @@ public class AppointmentController {
 
 		//查询店铺下的预约信息
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		extShopAppointServiceDTO.setSysBossId(bossInfo.getId());
+		extShopAppointServiceDTO.setSysBossCode(bossInfo.getId());
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
 		extShopAppointServiceDTO.setStatus(status);
 		extShopAppointServiceDTO.setSysClerkId(sysClerkId);

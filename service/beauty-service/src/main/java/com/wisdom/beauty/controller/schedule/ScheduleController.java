@@ -102,7 +102,7 @@ public class ScheduleController {
                     scheduleDTO.setCreateDate(new Date());
                     scheduleDTO.setScheduleType(ScheduleTypeEnum.ALL.getCode());
                     scheduleDTO.setSysClerkId(sysClerkDTO.getId());
-                    scheduleDTO.setSysBossId(sysClerkDTO.getSysBossId());
+                    scheduleDTO.setSysBossCode(sysClerkDTO.getSysBossId());
                     scheduleDTO.setSysClerkName(sysClerkDTO.getName());
                     clerkScheduleList.add(scheduleDTO);
                 }

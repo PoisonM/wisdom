@@ -167,7 +167,7 @@ public class StoreAndStockController {
         PageParamVoDTO<ShopStockRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
         SysBossDTO sysBossDTO = UserUtils.getBossInfo();
         ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
-        shopStockRecordDTO.setShopBossId(sysBossDTO.getId());
+        shopStockRecordDTO.setSysBossCode(sysBossDTO.getId());
         shopStockRecordDTO.setShopStoreId(shopStockRecordRequestDTO.getShopStoreId());
         shopStockRecordDTO.setStockStyle(shopStockRecordRequestDTO.getStockStyle());
 

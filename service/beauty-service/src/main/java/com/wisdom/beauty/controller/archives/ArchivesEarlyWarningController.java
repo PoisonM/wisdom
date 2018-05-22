@@ -72,7 +72,7 @@ public class ArchivesEarlyWarningController {
 
         //获取当前boss下的档案列表
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-        shopUserArchivesDTO.setSysBossId(bossInfoId);
+        shopUserArchivesDTO.setSysBossCode(bossInfoId);
         List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
         if (CommonUtils.objectIsEmpty(shopUserArchivesDTO)) {
             logger.info("获取当前boss下的档案列表为空");
@@ -95,7 +95,7 @@ public class ArchivesEarlyWarningController {
         ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
         extShopAppointServiceDTO.setSearchStartTime(calendar.getTime());
         extShopAppointServiceDTO.setSearchEndTime(currentDate);
-        extShopAppointServiceDTO.setSysBossId(bossInfoId);
+        extShopAppointServiceDTO.setSysBossCode(bossInfoId);
         List<ShopAppointServiceDTO> appointClerkInfoByCriteria = shopAppointmentService.getShopAppointClerkInfoByCriteria(extShopAppointServiceDTO);
         if (CommonUtils.objectIsEmpty(appointClerkInfoByCriteria)) {
             logger.info("获取当前boss下的预约列表为空");

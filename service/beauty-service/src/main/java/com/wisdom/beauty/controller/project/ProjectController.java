@@ -214,7 +214,7 @@ public class ProjectController {
         relationDTO.setSysUserId(sysUserId);
         relationDTO.setSysShopId(sysShopId);
         relationDTO.setUseStyle(cardStyle);
-        relationDTO.setSysBossId(sysBossId);
+        relationDTO.setSysBossCode(sysBossId);
         List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
         if (CommonUtils.objectIsEmpty(userProjectList)) {
             logger.debug("查询某个用户的卡片列表信息为空, {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");

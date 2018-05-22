@@ -146,7 +146,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         }
         if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossId())) {
 
-            criteria.andSysBossIdEqualTo(userConsumeRequestDTO.getSysBossId());
+            criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossId());
         }
         if (startDate != null && endDate != endDate) {
             criteria.andCreateDateBetween(start, end);
@@ -195,7 +195,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         rechargeCardDTO.setSurplusAmount(new BigDecimal(0));
         rechargeCardDTO.setCreateBy(shopUserArchivesDTO.getSysClerkId());
         rechargeCardDTO.setSysClerkName(shopUserArchivesDTO.getSysClerkName());
-        rechargeCardDTO.setSysBossId(shopUserArchivesDTO.getSysBossId());
+        rechargeCardDTO.setSysBossCode(shopUserArchivesDTO.getSysBossCode());
         rechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
         int updateRechargeCard = shopRechargeCardService.saveShopUserRechargeCardInfo(rechargeCardDTO);
         logger.info("生成用户的特殊卡{}", updateRechargeCard > 0 ? "成功" : "失败");
@@ -262,8 +262,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             c.andPhoneEqualTo(shopUserArchivesDTO.getPhone());
         }
 
-        if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysBossId())) {
-            c.andSysBossIdEqualTo(shopUserArchivesDTO.getSysBossId());
+        if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysBossCode())) {
+            c.andSysBossCodeEqualTo(shopUserArchivesDTO.getSysBossCode());
         }
 
         List<ShopUserArchivesDTO> shopUserArchivesDTOS = shopUserArchivesMapper.selectByCriteria(criteria);
@@ -337,7 +337,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             logger.error("查询的shopId为空{}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
             shopUserArchivesDTO.setShopid(shopInfoByPrimaryKey.getShopId());
         }
-        shopUserArchivesDTO.setSysBossId(sysBossId);
+        shopUserArchivesDTO.setSysBossCode(sysBossId);
         int info = saveShopUserArchivesInfo(shopUserArchivesDTO);
         logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");
 

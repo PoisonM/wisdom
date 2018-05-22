@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStockRecordDTO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR" />
-    <result column="shop_boss_id" property="shopBossId" jdbcType="VARCHAR" />
+    <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="stock_style" property="stockStyle" jdbcType="CHAR" />
     <result column="stock_type" property="stockType" jdbcType="CHAR" />
@@ -77,7 +77,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_store_id, shop_boss_id, name, stock_style, stock_type, oper_date, flow_no, 
+    id, shop_store_id, sys_boss_code, name, stock_style, stock_type, oper_date, flow_no, 
     manager_id, detail, oper_number, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopStockRecordCriteria" >
@@ -114,13 +114,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopStockRecordDTO" >
-    insert into shop_stock_record (id, shop_store_id, shop_boss_id, 
+    insert into shop_stock_record (id, shop_store_id, sys_boss_code, 
       name, stock_style, stock_type, 
       oper_date, flow_no, manager_id, 
       detail, oper_number, create_by, 
       create_date, update_user, update_date
       )
-    values (#{id,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, #{shopBossId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{stockStyle,jdbcType=CHAR}, #{stockType,jdbcType=CHAR}, 
       #{operDate,jdbcType=TIMESTAMP}, #{flowNo,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, 
       #{detail,jdbcType=VARCHAR}, #{operNumber,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
@@ -136,8 +136,8 @@
       <if test="shopStoreId != null" >
         shop_store_id,
       </if>
-      <if test="shopBossId != null" >
-        shop_boss_id,
+      <if test="sysBossCode != null" >
+        sys_boss_code,
       </if>
       <if test="name != null" >
         name,
@@ -183,8 +183,8 @@
       <if test="shopStoreId != null" >
         #{shopStoreId,jdbcType=VARCHAR},
       </if>
-      <if test="shopBossId != null" >
-        #{shopBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -239,8 +239,8 @@
       <if test="record.shopStoreId != null" >
         shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopBossId != null" >
-        shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      <if test="record.sysBossCode != null" >
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -287,7 +287,7 @@
     update shop_stock_record
     set id = #{record.id,jdbcType=VARCHAR},
       shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
-      shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       stock_style = #{record.stockStyle,jdbcType=CHAR},
       stock_type = #{record.stockType,jdbcType=CHAR},
@@ -310,8 +310,8 @@
       <if test="shopStoreId != null" >
         shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
       </if>
-      <if test="shopBossId != null" >
-        shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -355,7 +355,7 @@
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopStockRecordDTO" >
     update shop_stock_record
     set shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
-      shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       stock_style = #{stockStyle,jdbcType=CHAR},
       stock_type = #{stockType,jdbcType=CHAR},

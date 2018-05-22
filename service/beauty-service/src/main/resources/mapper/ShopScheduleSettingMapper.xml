@@ -3,7 +3,7 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopScheduleSettingMapper" >
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopScheduleSettingDTO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR" />
+    <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
     <result column="type_name" property="typeName" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="CHAR" />
@@ -73,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, sys_boss_id, sys_shop_id, type_name, status, start_time, end_time, create_by, 
+    id, sys_boss_code, sys_shop_id, type_name, status, start_time, end_time, create_by, 
     create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopScheduleSettingCriteria" >
@@ -110,11 +110,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopScheduleSettingDTO" >
-    insert into shop_schedule_setting (id, sys_boss_id, sys_shop_id, 
+    insert into shop_schedule_setting (id, sys_boss_code, sys_shop_id, 
       type_name, status, start_time, 
       end_time, create_by, create_date, 
       update_user, update_date)
-    values (#{id,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, 
       #{typeName,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{startTime,jdbcType=VARCHAR}, 
       #{endTime,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
@@ -125,8 +125,8 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="sysBossId != null" >
-        sys_boss_id,
+      <if test="sysBossCode != null" >
+        sys_boss_code,
       </if>
       <if test="sysShopId != null" >
         sys_shop_id,
@@ -160,8 +160,8 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="sysBossId != null" >
-        #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
         #{sysShopId,jdbcType=VARCHAR},
@@ -204,8 +204,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysBossId != null" >
-        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      <if test="record.sysBossCode != null" >
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="record.sysShopId != null" >
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
@@ -242,7 +242,7 @@
   <update id="updateByCriteria" parameterType="map" >
     update shop_schedule_setting
     set id = #{record.id,jdbcType=VARCHAR},
-      sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       type_name = #{record.typeName,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=CHAR},
@@ -259,8 +259,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopScheduleSettingDTO" >
     update shop_schedule_setting
     <set >
-      <if test="sysBossId != null" >
-        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
@@ -294,7 +294,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopScheduleSettingDTO" >
     update shop_schedule_setting
-    set sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+    set sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       type_name = #{typeName,jdbcType=VARCHAR},
       status = #{status,jdbcType=CHAR},

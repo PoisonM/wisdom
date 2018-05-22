@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserProjectRelationDTO extends BaseEntity implements Serializable {
     //
@@ -19,8 +19,8 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkId;
 
-    //
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
 
     //
     private String sysClerkName;
@@ -119,12 +119,12 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
         this.sysClerkId = sysClerkId;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysClerkName() {
