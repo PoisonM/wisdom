@@ -516,7 +516,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         ShopUserConsumeDTO consumeDTO = shopUserConsumeDTOS.get(0);
         relation.setId(consumeDTO.getConsumeId());
         relation = shopProductInfoService.getUserProductInfoList(relation).get(0);
-        relation.setSurplusAmount(relation.getSurplusAmount().subtract(consumeDTO.getConsumePrice()));
+//        relation.setSurplusAmount(relation.getSurplusAmount().subtract(consumeDTO.getConsumePrice()));
         relation.setSurplusTimes(relation.getSurplusTimes() - consumeDTO.getConsumeNum());
         shopProductInfoService.updateShopUserProductRelation(relation);
         return updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
