@@ -8,8 +8,6 @@ public class ConfigConstant {
 
 	public static final String USER_WEB_URL = Global.getConfig("USER_WEB_URL");
 
-	public static final String BOSS_WEB_URL = Global.getConfig("BOSS_WEB_URL");
-
 	public static final String OFFLINE_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("OFFLINE_PRODUCT_BUY_NOTIFY_URL");
 
 	public static final String TRAINING_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("TRAINING_PRODUCT_BUY_NOTIFY_URL");
@@ -93,11 +91,11 @@ public class ConfigConstant {
 
 	public static final String BOSS_OPEN_ID =  Global.getConfig("BOSS_OPEN_ID");
 
-    public static final String financeMember =  Global.getConfig("financeMember");
+	public static final String financeMember =  Global.getConfig("financeMember");
 
-    public static final String operationMember =  Global.getConfig("operationMember");
+	public static final String operationMember =  Global.getConfig("operationMember");
 
-    public static final int MAX_WITHDRAW_NUM = Integer.parseInt(Global.getConfig("MAX_WITHDRAW_NUM"));
+	public static final int MAX_WITHDRAW_NUM = Integer.parseInt(Global.getConfig("MAX_WITHDRAW_NUM"));
 
 	public static final int MAX_WITHDRAW_AMOUNT = Integer.parseInt(Global.getConfig("MAX_WITHDRAW_AMOUNT"));
 
@@ -107,9 +105,27 @@ public class ConfigConstant {
 
 	public static final String PAY_TEST_FLAG = Global.getConfig("PAY_TEST_FLAG");
 
-	public static final String shopBusiness = Global.getConfig("shopBusiness");
+/*	public static final float PERMANT_REWARD = Integer.parseInt(Global.getConfig("PERMANT_REWARD"));*/
 
-	public static final String beautySource = "beauty";
+	public static final String LEVE_IMPORT_A = Global.getConfig("LEVE_IMPORT_A");
 
-	public static final String businessSource = "business";
+	public static final String LEVE_IMPORT_B = Global.getConfig("LEVE_IMPORT_B");
+
+	public static final String LEVE_IMPORT = Global.getConfig("LEVE_IMPORT");
+
+	public static final String INCOME_TYPE_P = Global.getConfig("INCOME_TYPE_P");
+
+	public static final String INCOME_TYPE_I = Global.getConfig("INCOME_TYPE_I");
+
+	//即时审核状态
+	public static final String INCOME_UNAUDITED = Global.getConfig("INCOME_UNAUDITED");
+
+	public static final String INCOME_OPERATION = Global.getConfig("INCOME_OPERATION");
+
+	public static final String INCOME_FINANCE = Global.getConfig("INCOME_FINANCE");
+
+	public static final String INCOME_AUDITED = Global.getConfig("INCOME_AUDITED");
+
+	public static final String INCOME_AUDIT_REJECTION = Global.getConfig("INCOME_AUDIT_REJECTION");
+
 }
