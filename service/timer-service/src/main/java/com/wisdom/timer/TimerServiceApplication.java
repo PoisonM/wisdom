@@ -4,6 +4,7 @@ import com.wisdom.timer.client.WeixinServiceClient;
 import com.wisdom.timer.service.business.BusinessRunTimeService;
 import com.wisdom.common.util.SpringUtil;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -18,6 +19,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @MapperScan(basePackages = {"com.wisdom.timer.mapper"})
 public class TimerServiceApplication {
 
+	@Autowired
+	BusinessRunTimeService transactionRunTimeService;
+
 	public static void main(String[] args) {
 
 		ApplicationContext app = SpringApplication.run(TimerServiceApplication.class, args);
@@ -30,16 +34,6 @@ public class TimerServiceApplication {
 		//weixinServiceClient.updateUserWeixinToken();
 
 		weixinServiceClient.updateBeautyWeixinToken();
-//
-//		//初始化时处理未支付的订单
-//		businessRunTimeService.autoProcessNoPayRecordData();
-
-//		try {
-//			businessRunTimeService.autoMonthlyIncomeCalc();
-//			businessRunTimeService.autoProcessUserAccount();
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 }

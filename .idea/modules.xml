@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/service/beauty-service/beauty-service.iml" filepath="$PROJECT_DIR$/service/beauty-service/beauty-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service/business-service/business-service.iml" filepath="$PROJECT_DIR$/service/business-service/business-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/config/config.iml" filepath="$PROJECT_DIR$/config/config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/registry-center/registry-center.iml" filepath="$PROJECT_DIR$/registry-center/registry-center.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service/system-service/system-service.iml" filepath="$PROJECT_DIR$/service/system-service/system-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service/timer-service/timer-service.iml" filepath="$PROJECT_DIR$/service/timer-service/timer-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service/user-service/user-service.iml" filepath="$PROJECT_DIR$/service/user-service/user-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service/weixin-service/weixin-service.iml" filepath="$PROJECT_DIR$/service/weixin-service/weixin-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wisdom.iml" filepath="$PROJECT_DIR$/wisdom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project/wisdom-project/wisdom-project.iml" filepath="$PROJECT_DIR$/project/wisdom-project/wisdom-project.iml" />
+    </modules>
+  </component>
+</project>

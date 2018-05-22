@@ -39,6 +39,7 @@ public interface UserInfoMapper {
 
 	//根据用户id查询上级代理
     List<UserInfoDTO> queryParentUserById(@Param("parentUserId") String parentUserId);
+
 	//更加多个id查询用户信息集合
     List<UserInfoDTO> getUserByInfoList(Map<String,Object> userIdMap);
 }

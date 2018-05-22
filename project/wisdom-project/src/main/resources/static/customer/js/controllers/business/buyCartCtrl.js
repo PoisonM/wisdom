@@ -18,9 +18,11 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         var senderAddressList = [];
                         $scope.param.totalPayPrice = 0;
                         angular.forEach(data.responseData,function(value,index,array){
-                            $scope.param.totalPayPrice = $scope.param.totalPayPrice + parseInt(value.businessProductPrice)*parseInt(value.businessProductNum);
+                            if (value.productStatus == "1"){
+                                $scope.param.totalPayPrice = $scope.param.totalPayPrice + parseInt(value.businessProductPrice)*parseInt(value.businessProductNum);
+                            }
                             senderAddressList.push(value.senderAddress);
-                        })
+                        });
                         var uniqueSenderAddressList = unique(senderAddressList);
                         angular.forEach(uniqueSenderAddressList,function(value1,index,array){
                             $scope.param.unPaidOrder.push({
@@ -28,7 +30,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                 addressChecked:true,
                                 orderList: []
                             })
-                        })
+                        });
                         angular.forEach(data.responseData,function(value2,index,array){
                             angular.forEach($scope.param.unPaidOrder,function(value3,index,array){
                                 if(value3.senderAddress==value2.senderAddress)
@@ -39,16 +41,20 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                         productSpec : value2.productSpec,
                                         productPrice : value2.businessProductPrice,
                                         productNum : value2.businessProductNum,
+                                        productAmount:value2.productAmount,
                                         productId : value2.businessProductId,
                                         orderId : value2.businessOrderId,
+                                        productStatus:value2.productStatus,
                                         orderChecked:true
                                     })
                                 }
-                            })
+                            });
+                            /*测试用的*/
+                           /* $scope.param.unPaidOrder[0].orderList[0].productStatus='0';*/
                         })
                     }
                 })
-            }
+            };
 
             var unique = function(arr) {
                 var result = [], hash = {};
@@ -60,18 +66,20 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 }
 
                 return result;
-            }
+            };
 
             var reCalcTotalPayPrice = function() {
                 angular.forEach($scope.param.unPaidOrder,function(value,index,array){
                     angular.forEach(value.orderList,function(value1,index,array){
-                        if(value1.orderChecked)
+                        if(value1.orderChecked && value1.productStatus == "1")
                         {
                             $scope.param.totalPayPrice = $scope.param.totalPayPrice + parseInt(value1.productPrice)*parseInt(value1.productNum);
                         }
+                        console.log(value1.orderChecked);
+                        console.log(value1.productStatus)
                     })
                 })
-            }
+            };
 
             $scope.selectAllOrder = function() {
                 $scope.param.selectAll = !$scope.param.selectAll;
@@ -89,19 +97,22 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     angular.forEach($scope.param.unPaidOrder,function(value,index,array){
                         value.addressChecked = true;
                         angular.forEach(value.orderList,function(value1,index,array){
-                            value1.orderChecked=true;
-                        })
+                            if (value1.productStatus == "1"){
+                                value1.orderChecked=true;
+                            }
+                        });
+                        console.log(value.orderList)
                     })
                 }
                 $scope.param.totalPayPrice = 0;
                 reCalcTotalPayPrice();
-            }
+            };
 
             $scope.chooseOrder = function(item){
                 item.orderChecked = !item.orderChecked;
                 $scope.param.totalPayPrice = 0;
                 reCalcTotalPayPrice();
-            }
+            };
 
             $scope.chooseAddress = function(item){
                 item.addressChecked = !item.addressChecked;
@@ -129,7 +140,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 }
                 $scope.param.totalPayPrice = 0;
                 reCalcTotalPayPrice();
-            }
+            };
 
             var addButton = true;
             $scope.addProductNum = function(item){
@@ -141,9 +152,12 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         $scope.param.totalPayPrice = 0;
                         reCalcTotalPayPrice();
                         addButton = true;
-                    })
+                    });
+                    if(parseInt(item.productNum)>=parseInt(item.productAmount)){
+                        $("#greyBox").css("background","grey")
+                    }
                 }
-            }
+            };
 
             var minusButton =  true;
             $scope.minusProductNum = function(item){
@@ -164,8 +178,12 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                             minusButton = true;
                         })
                     }
+                     if(parseInt(item.productNum)-1<=parseInt(item.productAmount)){
+                         $("#greyBox").css("background","red")
+                    }
+
                 }
-            }
+            };
 
             //删除此订单
             $scope.delete=function(item2){
@@ -181,23 +199,44 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         $ionicLoading.hide();
                         $scope.param = {
                             unPaidOrder:[]
-                        }
+                        };
                         loadBuyCartInfo();
                     }
                 })
-            }
+            };
 
             $scope.goPay = function() {
                 var needPayOrderList = [];
+                var alertFlag = true;
                 angular.forEach($scope.param.unPaidOrder,function(value,index,array){
                     angular.forEach(value.orderList,function(value1,index,array){
-                        if(value1.orderChecked)
+                        if(value1.orderChecked&&value1.productStatus == "1")
                         {
                             needPayOrderList.push(value1);
+
+                        }
+                        if(value1.productStatus == "1"){
+                            alertFlag = false;
+                            return;
                         }
                     })
                 });
 
+                angular.forEach($scope.param.unPaidOrder,function(value,index,array){
+                    angular.forEach(value.orderList,function(value1,index,array){
+                        if(value1.productStatus == "0"&&alertFlag){
+                            alertFlag = false;
+                            alert("商品下架啦哟亲！");
+                        }
+                    })
+                });
+
+                for(var i =0;i<needPayOrderList.length;i++){
+                    if(needPayOrderList[i].productNum>parseInt(needPayOrderList[i].productAmount)){
+                        alert("库存不足~");
+                        return;
+                    }
+                }
                 //将needPayOrderList数据放入后台list中
                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
                     if(needPayOrderList=="")
@@ -208,15 +247,19 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     {
                         window.location.href = "orderPay.do?productType=offline&random="+Math.random();
                     }
+                    else if(data.result==Global.FAILURE){
+                        alert("库存不足~,购买失败");
+                        $state.go("shopHome");
+                    }
                 })
-            }
+            };
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.param = {
                     unPaidOrder:[],
                     totalPayPrice : 0,
                     selectAll:true
-                }
+                };
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
@@ -226,4 +269,4 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 });
                 loadBuyCartInfo();
             })
-}])
+}]);
