@@ -12,6 +12,7 @@ import com.wisdom.user.mapper.BeautyUserInfoMapper;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.BeautyUserInfoService;
 import com.wisdom.user.service.UserInfoService;
+import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,23 @@ public class BeautyUserInfoServiceImpl implements BeautyUserInfoService {
         threadExecutorCached.execute(processBeautyUserInfoSynchronize);
         
         return userInfoDTO;
+    }
+
+    @Override
+    public UserInfoDTO getBeautyUserInfoFromUserId(String userId) {
+
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setId(userId);
+        List<UserInfoDTO> userInfoDTOList = beautyUserInfoMapper.getBeautyUserByInfo(userInfoDTO);
+        if(userInfoDTOList.size()>0)
+        {
+            return userInfoDTOList.get(0);
+        }
+        else
+        {
+            return new UserInfoDTO();
+        }
+
     }
 
     private class processBeautyUserInfoSynchronize extends Thread {

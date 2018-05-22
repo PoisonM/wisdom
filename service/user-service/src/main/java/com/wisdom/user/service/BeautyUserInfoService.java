@@ -14,4 +14,5 @@ public interface BeautyUserInfoService {
 
     UserInfoDTO getBeautyUserInfoFromRedis();
 
+    UserInfoDTO getBeautyUserInfoFromUserId(String userId);
 }
