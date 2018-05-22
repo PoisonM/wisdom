@@ -43,6 +43,14 @@ public interface ShopProjectService {
     int updateUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
 
     /**
+     * 删除用户与项目的关系
+     *
+     * @param shopUserProjectRelationDTO
+     * @return
+     */
+    int deleteUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
+
+    /**
      * 查询某个店的项目列表信息
      *
      * @param shopProjectInfoDTO
