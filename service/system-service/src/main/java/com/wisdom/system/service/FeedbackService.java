@@ -22,7 +22,6 @@ public class FeedbackService {
 	private MongoTemplate mongoTemplate;
 
 	public SuggestionDto addSuggestion(String userId, String suggestion) {
-
 		SuggestionDto suggestionDto=new SuggestionDto();
 		suggestionDto.setUserId(userId);
 		suggestionDto.setSuggestion(suggestion);
