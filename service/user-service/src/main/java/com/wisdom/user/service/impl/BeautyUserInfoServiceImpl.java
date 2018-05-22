@@ -8,6 +8,7 @@ import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.*;
 import com.wisdom.user.client.BusinessServiceClient;
+import com.wisdom.user.mapper.BeautyUserInfoMapper;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.BeautyUserInfoService;
 import com.wisdom.user.service.UserInfoService;
@@ -33,7 +34,7 @@ import java.util.concurrent.Executors;
 public class BeautyUserInfoServiceImpl implements BeautyUserInfoService {
 
     @Autowired
-    private UserInfoMapper userInfoMapper;
+    private BeautyUserInfoMapper beautyUserInfoMapper;
 
 
     @Autowired
@@ -44,7 +45,7 @@ public class BeautyUserInfoServiceImpl implements BeautyUserInfoService {
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
     public List<UserInfoDTO> getBeautyUserInfo(UserInfoDTO userInfoDTO) {
-        List<UserInfoDTO> userInfoDTOS = userInfoMapper.getUserByInfo(userInfoDTO);
+        List<UserInfoDTO> userInfoDTOS = beautyUserInfoMapper.getBeautyUserByInfo(userInfoDTO);
         if(CommonUtils.objectIsEmpty(userInfoDTOS)){
             logger.info("查询的用户信息为空");
             return userInfoDTOS;
@@ -75,7 +76,7 @@ public class BeautyUserInfoServiceImpl implements BeautyUserInfoService {
         RedisLock redisLock = new RedisLock("userInfo"+userInfoDTO.getId());
         try{
             redisLock.lock();
-            userInfoMapper.updateUserInfo(userInfoDTO);
+            beautyUserInfoMapper.updateBeautyUserInfo(userInfoDTO);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -87,7 +88,7 @@ public class BeautyUserInfoServiceImpl implements BeautyUserInfoService {
         RedisLock redisLock = new RedisLock("userInfo"+userInfoDTO.getId());
         try{
             redisLock.lock();
-            userInfoMapper.insertUserInfo(userInfoDTO);
+            beautyUserInfoMapper.insertBeautyUserInfo(userInfoDTO);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -103,18 +104,18 @@ public class BeautyUserInfoServiceImpl implements BeautyUserInfoService {
         UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr,UserInfoDTO.class);
 
         //开启一个线程，主要用来同步userType信息到redis中
-        Runnable processUserInfoSynchronize = new processUserInfoSynchronize(token,userInfoDTO);
-        threadExecutorCached.execute(processUserInfoSynchronize);
+        Runnable processBeautyUserInfoSynchronize = new processBeautyUserInfoSynchronize(token,userInfoDTO);
+        threadExecutorCached.execute(processBeautyUserInfoSynchronize);
         
         return userInfoDTO;
     }
 
-    private class processUserInfoSynchronize extends Thread {
+    private class processBeautyUserInfoSynchronize extends Thread {
 
         private String logintoken;
         private UserInfoDTO userInfoDTO;
 
-        public processUserInfoSynchronize(String logintoken,UserInfoDTO userInfoDTO) {
+        public processBeautyUserInfoSynchronize(String logintoken,UserInfoDTO userInfoDTO) {
             this.logintoken = logintoken;
             this.userInfoDTO = userInfoDTO;
         }
