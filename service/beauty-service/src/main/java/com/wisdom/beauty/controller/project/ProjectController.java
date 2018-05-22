@@ -109,15 +109,15 @@ public class ProjectController {
         long currentTimeMillis = System.currentTimeMillis();
         String sysShopId = null;
 
-        if (null != sysShopId) {
+        if (StringUtils.isBlank(sysShopId)) {
             logger.info("pad端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
             SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
             sysShopId = clerkInfo.getSysShopId();
         }
-        if (null != sysShopId) {
+        if (StringUtils.isBlank(sysShopId)) {
             SysBossDTO bossInfo = UserUtils.getBossInfo();
             logger.info("boss端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
-            sysShopId = bossInfo.getParentShopId();
+            sysShopId = bossInfo.getCurrentShopId();
         }
 
         logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
