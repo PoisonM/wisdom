@@ -381,16 +381,19 @@ public class AppointmentController {
 		logger.info("获取某个店的店员列表传入参数={}", "pageNo = [" + pageNo + "], pageSize = [" + pageSize + "]");
 
 		ResponseDTO<List<SysClerkDTO>> responseDTO = new ResponseDTO<>();
-		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
 
 		String sysShopId = null;
 		//pad端
-		if (null != clerkInfo) {
+		if (StringUtils.isBlank(sysShopId)) {
+			logger.info("pad端登陆");
+			SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 			sysShopId = clerkInfo.getSysShopId();
 		}
 		//用户端
-		if (null != userInfo) {
+		if (StringUtils.isBlank(sysShopId)) {
+			logger.info("用户端登陆");
 			sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
 		}
 
