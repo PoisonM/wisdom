@@ -34,9 +34,6 @@ public class BusinessMessageQueueSender {
     private AmqpTemplate rabbitTemplate;
 
     @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Autowired
     private UserServiceClient userServiceClient;
 
     private static Gson gson = new Gson();
