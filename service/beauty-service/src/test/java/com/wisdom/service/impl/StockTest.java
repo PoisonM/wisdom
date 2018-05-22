@@ -8,6 +8,8 @@ import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
+import com.wisdom.beauty.core.mapper.ExtShopCheckRecordMapper;
 import com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.ShopCheckService;
@@ -64,6 +66,9 @@ public class StockTest  {
     private ExtShopUserConsumeRecordMapper extShopUserConsumeRecordMapper;
     @Autowired
     private ShopCheckService shopCheckService;
+
+    @Autowired
+    private ExtShopCheckRecordMapper extShopCheckRecordMapper;
 
     @Before
     public void setupMockMvc() throws Exception {
@@ -149,7 +154,7 @@ public class StockTest  {
         JSONArray json = JSONArray.fromObject(list);
         String shopStockNumberDTOs = json.toString();//把json转换为String
        // extShopStockNumberMapper.saveBatchShopStockNumber(list);
-        MvcResult result = mvc.perform(post("/stock/checkProduct").contentType(MediaType.APPLICATION_JSON).content(shopStockNumberDTOs))
+        MvcResult result = mvc.perform(post("/stock/products").contentType(MediaType.APPLICATION_JSON).content(shopStockNumberDTOs))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -201,7 +206,7 @@ public class StockTest  {
         List<ShopStockNumberDTO> list=new ArrayList<>();
         list.add(shopStockNumberDTO);
         list.add(shopStockNumberDTO2);
-        shopStockService.checkProduct(list);
+       // shopStockService.checkProduct(list);
     }
     @Test
     public  void  pingcang(){
@@ -212,5 +217,31 @@ public class StockTest  {
         shopClosePositionRequestDTO.setOriginalFlowNo("d");
         shopClosePositionRequestDTO.setShopCheckRecorId("222");
         shopCheckService.doClosePosition(shopClosePositionRequestDTO);
+    }
+    @Test
+    public  void  testExtShopCheckRecordMapper(){
+        List<ShopCheckRecordDTO> list=new ArrayList<>();
+        ShopCheckRecordDTO shopCheckRecordDTO=new ShopCheckRecordDTO();
+        ShopCheckRecordDTO shopCheckRecordDTO2=new ShopCheckRecordDTO();
+        shopCheckRecordDTO.setId("0909");
+        shopCheckRecordDTO2.setId("06565909");
+        shopCheckRecordDTO.setProductTypeOneName("06565909");
+        shopCheckRecordDTO2.setProductTypeOneName("06565909");
+        list.add(shopCheckRecordDTO2);
+        list.add(shopCheckRecordDTO);
+        extShopCheckRecordMapper.insertBatchCheckRecord(list);
+    }
+    @Test
+    public  void  testcheckproduct(){
+        String shopStoreId="651742081";
+        List<String> products=new ArrayList<>();
+
+        products.add("3");
+        products.add("5");
+        products.add("6");
+        List<ShopProductInfoCheckResponseDTO> list = shopCheckService.getProductsCheckLit(shopStoreId,products);
+        JSONArray json = JSONArray.fromObject(list);
+        String toJSONString = json.toString();//把json转换为String
+        System.out.print(list);
     }
 }

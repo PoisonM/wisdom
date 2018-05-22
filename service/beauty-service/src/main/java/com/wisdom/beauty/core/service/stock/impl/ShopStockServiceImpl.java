@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.StockStyleEnum;
 import com.wisdom.beauty.api.enums.StockTypeEnum;
+import com.wisdom.beauty.api.requestDto.ShopCheckRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
@@ -63,13 +64,18 @@ public class ShopStockServiceImpl implements ShopStockService {
 
     @Autowired
     private ShopStockBossRelationMapper shopStockBossRelationMapper;
+
     @Autowired
     private ExtShopStockMapper extShopStockMapper;
 
     @Autowired
     private ShopStockNumberMapper shopStockNumberMapper;
+
     @Autowired
     private ExtShopStockNumberMapper extShopStockNumberMapper;
+
+    @Autowired
+    private ExtShopCheckRecordMapper extShopCheckRecordMapper;
 
     /**
      * 查询仓库列表
@@ -426,6 +432,20 @@ public class ShopStockServiceImpl implements ShopStockService {
     }
 
     @Override
+    public List<ShopStockNumberDTO> getStockNumberList(String shopStoreId, List<String> shopProcIds) {
+        logger.info("getStockNumberList方法传入的参数shopStoreId={},shopProcIds={}", shopStoreId,shopProcIds);
+        ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
+        ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
+        if (CollectionUtils.isNotEmpty(shopProcIds)) {
+            c.andShopProcIdIn(shopProcIds);
+        }
+        if (StringUtils.isNotBlank(shopStoreId)) {
+            c.andShopStoreIdEqualTo(shopStoreId);
+        }
+       return shopStockNumberMapper.selectByCriteria(criteria);
+    }
+
+    @Override
     public int saveStockNumber(ShopStockNumberDTO shopStockNumberDTO) {
         return shopStockNumberMapper.insert(shopStockNumberDTO);
     }
@@ -619,8 +639,17 @@ public class ShopStockServiceImpl implements ShopStockService {
     }
 
     @Override
-    public int checkProduct(List<ShopStockNumberDTO> list) {
-        return  extShopStockNumberMapper.updateBatchShopStockNumber(list);
+    public int checkProduct(List<ShopCheckRecordDTO> list) {
+        //插入盘点记录
+        String flowNo=IdGen.uuid();
+        List<ShopCheckRecordDTO> shopCheckRecordDTOList=new ArrayList<>();
+        for (ShopCheckRecordDTO shopCheckRecordDTO:list){
+            shopCheckRecordDTO.setFlowNo(flowNo);
+            shopCheckRecordDTO.setCreateDate(new Date());
+            shopCheckRecordDTO.setUpdateDate(new Date());
+            shopCheckRecordDTOList.add(shopCheckRecordDTO);
+        }
+        return extShopCheckRecordMapper.insertBatchCheckRecord(shopCheckRecordDTOList);
     }
 
     private List<ShopStockNumberDTO> getShopStockNumberDTOList(ShopStockNumberDTO shopStockNumberDTO) {
