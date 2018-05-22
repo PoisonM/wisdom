@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -115,6 +116,7 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ShopScheduleSettingDTO> getBossShopScheduleSetting(ShopScheduleSettingDTO shopScheduleSettingDTO) {
         logger.info("获取某个店的排班设置信息传入参数={}", "shopScheduleSettingDTO = [" + shopScheduleSettingDTO + "]");
         ShopScheduleSettingCriteria criteria = new ShopScheduleSettingCriteria();
@@ -126,7 +128,6 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
         //如果排班为空,则自动生成
         if (CommonUtils.objectIsEmpty(shopScheduleSettingDTOS)) {
             ShopScheduleSettingDTO settingDTO = new ShopScheduleSettingDTO();
-            settingDTO.setId(IdGen.uuid());
             settingDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
             settingDTO.setCreateBy(UserUtils.getBossInfo().getId());
             settingDTO.setStatus(CommonCodeEnum.ENABLED.getCode());
@@ -134,6 +135,7 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
             settingDTO.setSysBossId(UserUtils.getBossInfo().getId());
             for (ScheduleTypeEnum scheduleTypeEnum : ScheduleTypeEnum.values()) {
                 settingDTO.setEndTime(scheduleTypeEnum.getDefaultEndTime());
+                settingDTO.setId(IdGen.uuid());
                 settingDTO.setStartTime(scheduleTypeEnum.getDefaultStartTime());
                 settingDTO.setTypeName(scheduleTypeEnum.getCode());
                 shopScheduleSettingMapper.insertSelective(settingDTO);
