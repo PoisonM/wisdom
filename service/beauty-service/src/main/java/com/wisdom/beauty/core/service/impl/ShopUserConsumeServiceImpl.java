@@ -515,8 +515,19 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         //更新用户与套卡与项目关系的关系表
         ShopUserConsumeDTO consumeDTO = shopUserConsumeDTOS.get(0);
         relation.setId(consumeDTO.getConsumeId());
+        //计算单件产品的价格
+        ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
+        shopUserProductRelationDTO.setId(consumeDTO.getConsumeId());
+        List<ShopUserProductRelationDTO> productInfoList = shopProductInfoService.getUserProductInfoList(shopUserProductRelationDTO);
+        ShopUserProductRelationDTO userProductRelationDTO = productInfoList.get(0);
+        BigDecimal onePrice = userProductRelationDTO.getInitAmount().divide(new BigDecimal(userProductRelationDTO.getInitTimes()), 2, ROUND_HALF_DOWN);
+        logger.info("单件产品的价格为={}", onePrice);
+        BigDecimal consumeAmount = onePrice.multiply(new BigDecimal(consumeDTO.getConsumeNum()));
+        consumeDTO.setConsumePrice(consumeAmount);
+        logger.info("领取产品价值={}", consumeAmount);
+
         relation = shopProductInfoService.getUserProductInfoList(relation).get(0);
-//        relation.setSurplusAmount(relation.getSurplusAmount().subtract(consumeDTO.getConsumePrice()));
+        relation.setSurplusAmount(relation.getSurplusAmount().subtract(consumeAmount));
         relation.setSurplusTimes(relation.getSurplusTimes() - consumeDTO.getConsumeNum());
         shopProductInfoService.updateShopUserProductRelation(relation);
         return updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
