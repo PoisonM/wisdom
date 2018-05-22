@@ -254,8 +254,8 @@ public class MineController {
             SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(bossInfo.getParentShopId());
             //查询当前美容院名称
             SysShopDTO shop = shopService.getShopInfoByPrimaryKey(bossInfo.getCurrentShopId());
-            extShopBossDTO.setCurrentBeautyShopName(beauty.getName());
-            extShopBossDTO.setCurrentShopName(shop.getName());
+            extShopBossDTO.setCurrentBeautyShopName(null != beauty ? beauty.getName() : "");
+            extShopBossDTO.setCurrentShopName(null != shop ? shop.getName() : "");
             responseDTO.setResponseData(extShopBossDTO);
             return responseDTO;
         }

@@ -25,7 +25,7 @@ public class BossInfoServiceImpl implements BossInfoService{
     @Override
     public int updateBossInfo(SysBossDTO sysBossDTO) {
         logger.info("更新老板信息传入参数={}", "sysBossDTO = [" + sysBossDTO + "]");
-        int update = sysBossMapper.updateByPrimaryKey(sysBossDTO);
+        int update = sysBossMapper.updateByPrimaryKeySelective(sysBossDTO);
         logger.info("更新老板信息更新结果={}", update > 0 ? "成功" : "失败");
         return update;
     }

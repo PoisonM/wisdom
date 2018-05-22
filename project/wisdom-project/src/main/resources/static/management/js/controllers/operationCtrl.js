@@ -49,8 +49,8 @@ angular.module('controllers',[]).controller('operationCtrl',
                         pageSize:$scope.pageSize,
                         requestData:{
                             status: $scope.status,
-                            productName:"",
-                            price:"",
+                            productName:$scope.productName,
+                            price:$scope.price,
                             type:"training"
                         },
                         isExportExcel:"Y"

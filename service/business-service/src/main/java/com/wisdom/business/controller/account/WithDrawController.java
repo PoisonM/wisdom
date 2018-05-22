@@ -78,7 +78,7 @@ public class WithDrawController {
 
 			//判断用户的提现次数
 			WithDrawRecordDTO withDrawRecord = new WithDrawRecordDTO();
-			withDrawRecord.setSysUserId(withDrawRecordDTO.getSysUserId());
+			withDrawRecord.setSysUserId(userInfoDTO.getId());
 			List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawService.getWithdrawRecordInfo(withDrawRecord);
 
 			int withDrawNum = 0;
@@ -103,7 +103,7 @@ public class WithDrawController {
 			if (RealNameResultEnum.MATCHING.getCode().equals(realNameInfoDTO.getCode()))
 			{
 				userInfoDTO.setIdentifyNumber(withDrawRecordDTO.getIdentifyNumber());
-				userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(), "utf-8"));
+				userInfoDTO.setNickname(userInfoDTO.getNickname());
 				userServiceClient.updateUserInfo(userInfoDTO);
 			}
 			else

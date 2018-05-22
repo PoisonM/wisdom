@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
 import com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -45,4 +46,12 @@ public interface ShopCheckService {
     *@Date:2018/5/21 16:00
     */
     ShopClosePositionRecordDTO getShopClosePositionDetail(String id,String productName,String productTypeName);
+    /**
+    *@Author:zhanmghuan
+    *@Param:
+    *@Return:
+    *@Description: 跳转盘点页面使用接口
+    *@Date:2018/5/22 14:37
+    */
+    List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> products);
 }

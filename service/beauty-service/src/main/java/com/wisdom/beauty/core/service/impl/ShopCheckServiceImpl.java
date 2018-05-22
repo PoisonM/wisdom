@@ -3,10 +3,7 @@ package com.wisdom.beauty.core.service.impl;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ClosePositionTypeEnum;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
-import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
-import com.wisdom.beauty.api.responseDto.ShopClosePositionResponseDTO;
-import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
-import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
+import com.wisdom.beauty.api.responseDto.*;
 import com.wisdom.beauty.core.mapper.ShopCheckRecordMapper;
 import com.wisdom.beauty.core.mapper.ShopClosePositionRecordMapper;
 import com.wisdom.beauty.core.mapper.ShopStockNumberMapper;
@@ -215,5 +212,38 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         shopClosePositionResponseDTO.setProductName(productName);
         shopClosePositionResponseDTO.setProductTypeName(productTypeName);
         return shopClosePositionResponseDTO;
+    }
+
+    @Override
+    public List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> products) {
+        //获取库存量
+        List<ShopStockNumberDTO> shopStockNumberDTOList= shopStockService.getStockNumberList(shopStoreId,products);
+        Map<String,Integer> map=new HashMap<>(16);
+        for(ShopStockNumberDTO shopStockNumberDTO:shopStockNumberDTOList){
+            map.put(shopStockNumberDTO.getShopProcId(),shopStockNumberDTO.getStockNumber());
+        }
+        List<ShopProductInfoResponseDTO> list = shopProductInfoService.getProductInfoList(products);
+        if(CollectionUtils.isEmpty(list)){
+            return  null;
+        }
+        List<ShopProductInfoCheckResponseDTO>  shopCheckRecordDTOList=new ArrayList<>();
+        ShopProductInfoCheckResponseDTO shopProductInfoCheckResponseDTO=new ShopProductInfoCheckResponseDTO();
+        for(ShopProductInfoResponseDTO shopProductInfoResponseDTO:list){
+            shopProductInfoCheckResponseDTO.setProductName(shopProductInfoResponseDTO.getProductName());
+            shopProductInfoCheckResponseDTO.setImageUrl(shopProductInfoResponseDTO.getImageUrl());
+            shopProductInfoCheckResponseDTO.setProductCode(shopProductInfoResponseDTO.getProductCode());
+            shopProductInfoCheckResponseDTO.setProductUnit(shopProductInfoResponseDTO.getProductUnit());
+            shopProductInfoCheckResponseDTO.setProductSpec(shopProductInfoResponseDTO.getProductSpec());
+            shopProductInfoCheckResponseDTO.setProductTypeOneId(shopProductInfoResponseDTO.getProductTypeOneId());
+            shopProductInfoCheckResponseDTO.setProductTypeOneName(shopProductInfoResponseDTO.getProductTypeOneName());
+            if(map.get(shopProductInfoResponseDTO.getId())!=null){
+                shopProductInfoCheckResponseDTO.setStockNumber(map.get(shopProductInfoResponseDTO.getId()));
+            }
+            //产品id
+            shopProductInfoCheckResponseDTO.setId(shopProductInfoResponseDTO.getId());
+            shopProductInfoCheckResponseDTO.setShopStoreId(shopStoreId);
+            shopCheckRecordDTOList.add(shopProductInfoCheckResponseDTO);
+        }
+        return shopCheckRecordDTOList;
     }
 }

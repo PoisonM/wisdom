@@ -26,17 +26,17 @@
                              </div>
                          </div>
                          <div class="product_name big time_box">
-                             <div>
+                             <div class="product_nameEara">
                                  <label class="bold" >
                                      申请时间：
                                  </label>
-                                 <input class="time applyStartTime laydate-icon" id="applyStartTime" ng-click="dataS('#applyStartTime');$event.stopPropagation()" >&nbsp--&nbsp<input  class="time applyEndTime laydate-icon" id="applyEndTime" ng-click="dataS('#applyEndTime');$event.stopPropagation()" >
+                                 <input class="time applyStartTime date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp--&nbsp<input  class="time applyEndTime date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >
                              </div>
-                             <div>
+                             <div class="product_nameEara">
                                  <label class="bold" value="withdraw">
                                  提现时间：
                              </label>
-                                 <input class="time updateStartTime laydate-icon-danlan" id="updateStartTime" ng-click="dataS('#updateStartTime');$event.stopPropagation()" >&nbsp--&nbsp<input class="time updateEndTime laydate-icon-danlan"  id="updateEndTime" ng-click="dataS('#updateEndTime');$event.stopPropagation()" >
+                                 <input class="time updateStartTime date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">&nbsp--&nbsp<input class="time updateEndTime date"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
                              </div>
                          </div>
                          <div class="product_searchEara">
@@ -54,9 +54,9 @@
                                  <th class="text-center" >昵称</th>
                                  <th class="text-center" >用户等级</th>
                                  <th class="text-center" >手机号</th>
-                                 <th class="text-center">持卡人姓名</th>
-                                 <th class="text-center">开户行地址</th>
-                                 <th class="text-center">银行卡号</th>
+                                 <!--<th class="text-center">持卡人姓名</th>-->
+                                <!-- <th class="text-center">开户行地址</th>
+                                 <th class="text-center">银行卡号</th>-->
                                  <th class="text-center" >身份证号</th>
                                  <th class="text-center">申请时间</th>
                                  <th class="text-center">提现时间</th>
@@ -72,9 +72,9 @@
                                  <td>{{item.nickName}}</td>
                                  <td>{{item.userType}}</td>
                                  <td>{{item.mobile}}</td>
-                                 <td>{{item.userName}}</td>
-                                 <td>{{item.bankCardAddress}}</td>
-                                 <td>{{item.bankCardNumber}}</td>
+                                <!-- <td>{{item.userName}}</td>-->
+                             <!--    <td>{{item.bankCardAddress}}</td>
+                                 <td>{{item.bankCardNumber}}</td>-->
                                  <td>{{item.identifyNumber}}</td>
                                  <td>{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                  <td>{{item.updateDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
