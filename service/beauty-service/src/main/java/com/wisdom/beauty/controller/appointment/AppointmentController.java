@@ -138,7 +138,7 @@ public class AppointmentController {
 
 			//查询某个美容师的预约列表
 			extShopAppointServiceDTO.setSysClerkId(SysClerkDTO.getId());
-			extShopAppointServiceDTO.setSysShopId(SysClerkDTO.getSysShopId());
+//			extShopAppointServiceDTO.setSysShopId(SysClerkDTO.getSysShopId());
 			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 
 			if (CommonUtils.objectIsEmpty(shopAppointServiceDTOS)) {
