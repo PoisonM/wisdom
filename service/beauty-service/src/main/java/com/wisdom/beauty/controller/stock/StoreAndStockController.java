@@ -14,6 +14,7 @@ import com.wisdom.beauty.api.dto.ShopStockRecordDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
+import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.service.ShopCheckService;
 import com.wisdom.beauty.util.UserUtils;
@@ -310,12 +311,12 @@ public class StoreAndStockController {
      */
     @RequestMapping(value = "/getProductCheckRecord", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopCheckRecordDTO>> getProductCheckRecord(@RequestParam String shopStoreId) {
+    ResponseDTO<List<ShopCheckRecordResponseDTO>> getProductCheckRecord(@RequestParam String shopStoreId) {
         long currentTimeMillis = System.currentTimeMillis();
         ShopCheckRecordDTO shopCheckRecordDTO = new ShopCheckRecordDTO();
         shopCheckRecordDTO.setShopStoreId(shopStoreId);
-        List<ShopCheckRecordDTO> list = shopCheckService.getProductCheckRecordList(shopCheckRecordDTO);
-        ResponseDTO<List<ShopCheckRecordDTO>> responseDTO = new ResponseDTO<>();
+        List<ShopCheckRecordResponseDTO> list = shopCheckService.getProductCheckRecordList(shopCheckRecordDTO);
+        ResponseDTO<List<ShopCheckRecordResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(list);
         logger.info("getProductCheckRecord方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
@@ -331,15 +332,12 @@ public class StoreAndStockController {
      */
     @RequestMapping(value = "/getProductCheckRecordDeatil", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String, Object>> getProductCheckRecordDeatil(@RequestParam String shopProcId, @RequestParam String shopStockNumberId) {
+    ResponseDTO<List<ShopCheckRecordResponseDTO>> getProductCheckRecordDeatil(@RequestParam String  flowNo) {
         long currentTimeMillis = System.currentTimeMillis();
-        ShopCheckRecordDTO shopCheckRecordDTO = new ShopCheckRecordDTO();
-        shopCheckRecordDTO.setShopProcId(shopProcId);
-        shopCheckRecordDTO.setShopStockNumberId(shopStockNumberId);
-        Map<String, Object> map = shopCheckService.getProductCheckRecordDeatil(shopCheckRecordDTO);
-        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
+        List<ShopCheckRecordResponseDTO> list = shopCheckService.getProductCheckRecordDeatil(flowNo);
+        ResponseDTO<List<ShopCheckRecordResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
-        responseDTO.setResponseData(map);
+        responseDTO.setResponseData(list);
         logger.info("getProductCheckRecordDeatil方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
