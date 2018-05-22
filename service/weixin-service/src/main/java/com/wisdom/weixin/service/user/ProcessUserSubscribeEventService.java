@@ -166,7 +166,6 @@ public class ProcessUserSubscribeEventService {
                 userInfoDTO.setDelFlag("0");
                 userInfoDTO.setLoginIp("");
                 userInfoDTO.setCreateDate(new Date());
-                userInfoDTO.setSource(ConfigConstant.businessSource);
                 userServiceClient.insertUserInfo(userInfoDTO);
 
                 //为用户新建一个账户
