@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
 import com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
+import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public interface ShopCheckService {
     *@Date:2018/5/21 9:50
     */
 
-    List<ShopCheckRecordDTO> getProductCheckRecordList(ShopCheckRecordDTO shopCheckRecordDTO);
+    List<ShopCheckRecordResponseDTO> getProductCheckRecordList(ShopCheckRecordDTO shopCheckRecordDTO);
     /**
     *@Author:zhanghuan
     *@Param:
@@ -27,7 +28,7 @@ public interface ShopCheckService {
     *@Description: 盘点记录详情
     *@Date:2018/5/21 10:10
     */
-    Map<String ,Object> getProductCheckRecordDeatil(ShopCheckRecordDTO shopCheckRecordDTO);
+    List<ShopCheckRecordResponseDTO> getProductCheckRecordDeatil(String flowNo);
     /**
     *@Author:平仓
     *@Param:

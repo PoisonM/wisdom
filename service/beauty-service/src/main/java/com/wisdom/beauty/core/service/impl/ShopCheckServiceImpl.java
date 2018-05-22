@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service.impl;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ClosePositionTypeEnum;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
+import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopClosePositionResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
@@ -23,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhanghuan on 2018/5/21.
@@ -50,7 +48,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
     @Autowired
     private ShopClosePositionRecordMapper shopClosePositionRecordMapper;
     @Override
-    public List<ShopCheckRecordDTO> getProductCheckRecordList(ShopCheckRecordDTO shopCheckRecordDTO) {
+    public List<ShopCheckRecordResponseDTO> getProductCheckRecordList(ShopCheckRecordDTO shopCheckRecordDTO) {
         if(shopCheckRecordDTO==null){
             logger.info("getProductCheckRecord方法传入的参数shopCheckRecordDTO为空");
             return null;
@@ -63,52 +61,97 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         if(StringUtils.isNotBlank(shopCheckRecordDTO.getShopStoreId())){
             criteria.andShopStoreIdEqualTo(shopCheckRecordDTO.getShopStoreId());
         }
-        return  shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
+
+        List<ShopCheckRecordDTO> list= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
+
+        Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
+        List<ShopCheckRecordResponseDTO> shopCheckRecordResponseDTOs=new ArrayList<>();
+        ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
+        for(ShopCheckRecordDTO shopCheckRecord:list){
+            shopCheckRecordResponseDTO=new ShopCheckRecordResponseDTO();
+            if(map.containsKey(shopCheckRecord.getFlowNo())){
+                shopCheckRecordResponseDTO=map.get(shopCheckRecord.getFlowNo());
+                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecordResponseDTO.getState())||
+                        ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())){
+                    //如果有一个盘点记录是未平仓的则设置为未处理
+                    shopCheckRecordResponseDTO.setState(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode());
+                }
+                //计算异常数
+                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getCreateDate())){
+                    shopCheckRecordResponseDTO.setExceptionNumber(shopCheckRecordResponseDTO.getExceptionNumber()+1);
+                }
+                map.put(shopCheckRecord.getFlowNo(),shopCheckRecordResponseDTO);
+
+            }else {
+
+                shopCheckRecordResponseDTO.setState(shopCheckRecord.getState());
+                shopCheckRecordResponseDTO.setCreateDate(shopCheckRecord.getCreateDate());
+                shopCheckRecordResponseDTO.setShopProcId(shopCheckRecord.getShopProcId());
+                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getCreateDate())){
+                    shopCheckRecordResponseDTO.setExceptionNumber(1);
+                }else {
+                    shopCheckRecordResponseDTO.setExceptionNumber(0);
+                }
+                map.put(shopCheckRecord.getFlowNo(),shopCheckRecordResponseDTO);
+            }
+            shopCheckRecordResponseDTOs.add(shopCheckRecordResponseDTO);
+
+        }
+        List values = Arrays.asList(map.values().toArray());
+        return values;
     }
 
     @Override
-    public Map<String ,Object> getProductCheckRecordDeatil(ShopCheckRecordDTO shopCheckRecordDTO) {
-        if(shopCheckRecordDTO==null){
-            logger.info("getProductCheckRecordDeatil方法传入的参数shopCheckRecordDTO为空");
+    public List<ShopCheckRecordResponseDTO> getProductCheckRecordDeatil(String flowNo) {
+        if(StringUtils.isBlank(flowNo)){
+            logger.info("getProductCheckRecordDeatil方法传入的参数flowNo为空");
             return null;
         }
-        logger.info("getProductCheckRecord方法传入的参数shopStockNumberId={}，productId={}",shopCheckRecordDTO.getShopStockNumberId(),shopCheckRecordDTO.getShopProcId());
-        //查询库存表
-        ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
-        ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
-        if (com.wisdom.common.util.StringUtils.isNotBlank(shopCheckRecordDTO.getShopStockNumberId())) {
-            c.andIdEqualTo(shopCheckRecordDTO.getShopStockNumberId());
+        //根据流水号查询盘点记录
+        ShopCheckRecordCriteria shopCheckRecordCriteria = new ShopCheckRecordCriteria();
+        ShopCheckRecordCriteria.Criteria c1 = shopCheckRecordCriteria.createCriteria();
+        c1.andFlowNoEqualTo(flowNo);
+        List<ShopCheckRecordDTO> shopCheckRecordDTOList= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
+        List<String> prodcuts=new ArrayList<>();
+        Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
+        ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
+        for(ShopCheckRecordDTO shopCheckRecord:shopCheckRecordDTOList){
+            prodcuts.add(shopCheckRecord.getShopProcId());
+            if(map.containsKey(shopCheckRecord.getProductTypeOneId())){
+                ShopCheckRecordResponseDTO devShopCheckRecordResponseDTO=map.get(shopCheckRecord.getProductTypeOneId());
+                List<ShopCheckRecordResponseDTO> devList=devShopCheckRecordResponseDTO.getShopCheckRecordResponseList();
+                shopCheckRecordResponseDTO=new ShopCheckRecordResponseDTO();
+                shopCheckRecordResponseDTO.setProductName(shopCheckRecord.getShopProcName());
+                shopCheckRecordResponseDTO.setStockNumber(shopCheckRecord.getStockNumber());
+                shopCheckRecordResponseDTO.setActualStockNumber(shopCheckRecord.getActualStockNumber());
+                devList.add(shopCheckRecordResponseDTO);
+                devShopCheckRecordResponseDTO.setShopCheckRecordResponseList(devList);
+                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())){
+                    devShopCheckRecordResponseDTO.setExceptionNumber(devShopCheckRecordResponseDTO.getExceptionNumber()+1);
+                }
+                devShopCheckRecordResponseDTO.setProductTypeNumber(devShopCheckRecordResponseDTO.getProductTypeNumber()+1);
+                map.put(shopCheckRecord.getProductTypeOneId(),devShopCheckRecordResponseDTO);
+            }else {
+                shopCheckRecordResponseDTO=new ShopCheckRecordResponseDTO();
+                ShopCheckRecordResponseDTO shopCheckRecordResponseDTO2=new ShopCheckRecordResponseDTO();
+                shopCheckRecordResponseDTO.setProductName(shopCheckRecord.getShopProcName());
+                shopCheckRecordResponseDTO.setStockNumber(shopCheckRecord.getStockNumber());
+                shopCheckRecordResponseDTO.setActualStockNumber(shopCheckRecord.getActualStockNumber());
+                List<ShopCheckRecordResponseDTO> shopCheckRecordResponseList=new ArrayList<>();
+                shopCheckRecordResponseList.add(shopCheckRecordResponseDTO);
+                shopCheckRecordResponseDTO2.setShopCheckRecordResponseList(shopCheckRecordResponseList);
+                shopCheckRecordResponseDTO2.setProductTypeOneName(shopCheckRecord.getProductTypeOneName());
+                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())){
+                    shopCheckRecordResponseDTO2.setExceptionNumber(1);
+                }else {
+                    shopCheckRecordResponseDTO2.setExceptionNumber(0);
+                }
+                shopCheckRecordResponseDTO2.setProductTypeNumber(1);
+                map.put(shopCheckRecord.getProductTypeOneId(),shopCheckRecordResponseDTO2);
+            }
         }
-        List<ShopStockNumberDTO> shopStockNumberDTOList= shopStockNumberMapper.selectByCriteria(criteria);
-        if(CollectionUtils.isEmpty(shopStockNumberDTOList)){
-            logger.info("shopStockNumberDTOList结果为空");
-            return null;
-        }
-        //根据产品id查询产品信息
-        ShopProductInfoResponseDTO shopProductInfoResponseDTO = shopProductInfoService.getProductDetail(shopCheckRecordDTO.getShopProcId());
-        if (shopProductInfoResponseDTO==null) {
-            logger.info("根据productId查询产品信息的结果shopProductInfoResponseDTO为空");
-        }
-        //该产品对应的品牌
-        String productTypeOneName=shopProductInfoResponseDTO.getProductTypeOneName();
-        //查询产品的系列
-        ShopProductTypeDTO shopProductTypeDTO=new ShopProductTypeDTO();
-        shopProductTypeDTO.setId(shopProductInfoResponseDTO.getProductTypeOneId());
-        List<ShopProductTypeDTO> shopProductTypeList=shopProductInfoService.getTwoLevelProductList(shopProductTypeDTO);
-        //根据产品id查询产品品牌以及品牌下的类别个数
-        ShopStockNumberDTO shopStockNumberDTO=shopStockNumberDTOList.get(0);
-        ShopStockResponseDTO shopStockResponseDTO=new ShopStockResponseDTO();
-        shopStockResponseDTO.setImageUrl(shopProductInfoResponseDTO.getImageUrl());
-        shopStockResponseDTO.setShopProcName(shopProductInfoResponseDTO.getProductName());
-        //库存数
-        shopStockResponseDTO.setStockNumber(shopStockNumberDTO.getStockNumber());
-        //库存实际数
-        shopStockResponseDTO.setActualStockNumber(shopStockNumberDTO.getActualStockNumber());
-        Map<String ,Object> map=new HashMap<>(16);
-        map.put("shopStockResponseDTO",shopStockResponseDTO);
-        map.put("productTypeOneName",productTypeOneName);
-        map.put("productTypeNumber",shopProductTypeList.size());
-        return  map;
+        List values = Arrays.asList(map.values().toArray());
+        return values;
     }
 
     @Override
