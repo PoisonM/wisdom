@@ -19,26 +19,26 @@ public class BeautyUserServiceController {
 
 	@RequestMapping(value = "/getBeautyUserInfo",method=RequestMethod.POST)
 	@ResponseBody
-	List<UserInfoDTO> getUserInfo(@RequestBody UserInfoDTO userInfoDTO){
+	List<UserInfoDTO> getBeautyUserInfo(@RequestBody UserInfoDTO userInfoDTO){
 		return beautyUserInfoService.getBeautyUserInfo(userInfoDTO);
 	}
 
-	@RequestMapping(value = "/getUserInfoFromUserId",method=RequestMethod.GET)
+	@RequestMapping(value = "/getBeautyUserInfoFromUserId",method=RequestMethod.GET)
 	@ResponseBody
-	UserInfoDTO getUserInfoFromUserId(@RequestParam(value="userId") String userId) {
+	UserInfoDTO getBeautyUserInfoFromUserId(@RequestParam(value="userId") String userId) {
 		return beautyUserInfoService.getBeautyUserInfoFromUserId(userId);
 	}
 
-	@RequestMapping(value = "/updateUserInfo",method=RequestMethod.POST)
+	@RequestMapping(value = "/updateBeautyUserInfo",method=RequestMethod.POST)
 	@ResponseBody
-	void updateUserInfo(@RequestBody UserInfoDTO userInfoDTO)
+	void updateBeautyUserInfo(@RequestBody UserInfoDTO userInfoDTO)
 	{
 		beautyUserInfoService.updateBeautyUserInfo(userInfoDTO);
 	}
 
-	@RequestMapping(value = "/insertUserInfo",method=RequestMethod.POST)
+	@RequestMapping(value = "/insertBeautyUserInfo",method=RequestMethod.POST)
 	@ResponseBody
-	void insertUserInfo(@RequestBody UserInfoDTO userInfoDTO)
+	void insertBeautyUserInfo(@RequestBody UserInfoDTO userInfoDTO)
 	{
 		beautyUserInfoService.insertBeautyUserInfo(userInfoDTO);
 	}
