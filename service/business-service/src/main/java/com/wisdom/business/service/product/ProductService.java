@@ -8,6 +8,8 @@ import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.persistence.Page;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.FrontUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -35,6 +37,8 @@ public class ProductService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public ProductDTO getBusinessProductInfo(String productId) {
         ProductDTO productDTO = productMapper.getBusinessProductInfo(productId);
         return productDTO;
@@ -56,7 +60,6 @@ public class ProductService {
             Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
             offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
-            productDTO.setProductAmount(offlineProductDTO.getProductAmount());
             productDTO.setProductDetail(offlineProductDTO);
             productDTO.setSellNum(sellNum);
         }
@@ -73,17 +76,17 @@ public class ProductService {
     public PageParamVoDTO<List<ProductDTO>> queryProductsByParameters(PageParamVoDTO<ProductDTO> pageParamVoDTO) {
         PageParamVoDTO<List<ProductDTO>> page = new  PageParamVoDTO<>();
         int count = productMapper.queryProductsCountByParameters(pageParamVoDTO);
+        logger.info("条件查询商品Count="+count);
         page.setTotalCount(count);
         List<ProductDTO> productDTOList = productMapper.queryProductsByParameters(pageParamVoDTO);
         for (ProductDTO productDTO : productDTOList){
             String sellNum = payRecordService.getSellNumByProductId(productDTO.getProductId());
             Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
-            offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
-            productDTO.setSellNum(sellNum);
-            if(offlineProductDTO != null){
-                productDTO.setProductAmount(offlineProductDTO.getProductAmount());
+            if(null != offlineProductDTO){
+                offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
             }
+            productDTO.setSellNum(sellNum);
             productDTO.setProductDetail(offlineProductDTO);
         }
         page.setResponseData(productDTOList);

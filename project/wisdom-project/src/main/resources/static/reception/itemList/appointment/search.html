@@ -3,17 +3,23 @@
     <div class="selectLift">
         <!--搜索框-->
         <div class="searchBox">
-            <input type="search" placeholder="请输入单次名称"  ng-model="param.serachContent"><span class="search" ng-click="searchConsumption()">搜索</span>
+            <input type="search" placeholder="请输入单次名称"  ng-model="param.consumptionObj.singleFilterStr"><span class="search" ng-click="searchConsumption()">搜索</span>
         </div>
-        <div ng-repeat="(index,item) in param.data">
-            <p class="h60 fs28 col666 bgeee pl20" >{{item.title}}</p>
-            <div class="bgfff">
-                <ul>
-                    <li class="h80 bte5 fs30 color333 pl30"   ng-class="{'active':param.index==index}" ng-repeat="(index2,item2) in item.content" ng-click="searchActive(index,index2)" >{{item2}}</li>
+        <div style="height:9.99rem;overflow-y: scroll;border-bottom-left-radius: 0.58125rem;">
+            <div ng-repeat="item  in param.consumptionObj.singleByshopId.detailLevel">
+                <div ng-repeat="(key,val) in item">
+                    <p class="h60 fs28 col666 bgeee pl20" >{{key}}</p>
+                    <div class="bgfff">
+                        <ul>
+                            <li class="h80 bte5 fs30 color333 pl30"   ng-class="{'active':param.index==index}" ng-repeat="(key,vals) in val"  ng-click="searchActive(vals.projectTypeOneId,vals.projectTypeTwoId)" >{{key}}</li>
 
-                </ul>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
         </div>
+
     </div>
 
 

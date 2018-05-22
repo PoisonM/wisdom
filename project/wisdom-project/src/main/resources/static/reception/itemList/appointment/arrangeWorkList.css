@@ -1,0 +1,362 @@
+.arrangeWorkList{
+    width: 100%;
+    height: 100%;
+}
+.arrangeWorkList .arrangeWorkList_content{
+    width: 100%;
+    height: 100%;
+}
+.arrangeWorkList .arrangeWorkList_header{
+    height: 0.6875rem;
+    line-height: 0.6875rem;
+    width: 100%;
+    background: #ff6666;
+    position: absolute;
+    top: 0px;
+}
+.arrangeWorkList .header_box{
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #ffffff;
+}
+.arrangeWorkList .arrangeWorkList_header div{
+    /*float: left;*/
+}
+.arrangeWorkList .header_left{
+    position: absolute;
+    left: 60px;
+    top: 0px;
+}
+.arrangeWorkList .header_middle{
+    width: 100%;
+}
+.arrangeWorkList .header_right{
+    position: absolute;
+    right: 20px;
+    top: 0px;
+}
+
+.arrangeWorkList .arrangeWorkList_content{
+    width: 100%;
+}
+.arrangeWorkList .arrangeWorkList_content .content_box{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.arrangeWorkList .float_top{
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    padding-left: 80px;
+    /*border: 1px solid pink;*/
+    background-color: #ffffff;
+    overflow-x: scroll;
+}
+.arrangeWorkList .float_top ul{
+    width: 4185px;
+    height: 100%;
+}
+.arrangeWorkList .float_top ul li{
+    line-height: 25px;
+    padding-top: 10px;
+    height: 100%;
+    width: 135px;
+    text-align: center;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+    border-left: 1px solid #cccccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*---测试---*/
+.arrangeWorkList .float_top_temp{
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    padding-left: 80px;
+    /*border: 1px solid pink;*/
+    background-color: #ffffff;
+}
+.arrangeWorkList .float_top_temp ul{
+    width: 4185px;
+    height: 100%;
+}
+.arrangeWorkList .float_top_temp ul li{
+    line-height: 25px;
+    padding-top: 10px;
+    height: 100%;
+    width: 135px;
+    text-align: center;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+    border-left: 1px solid #cccccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: #ffffff;
+}
+
+
+
+
+/*----*/
+.arrangeWorkList .float_top1{
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    padding-left: 80px;
+    /*border: 1px solid pink;*/
+    background-color: #ffffff;
+    overflow-x: scroll;
+}
+.arrangeWorkList .float_top1 ul{
+    width: 4185px;
+    height: 100%;
+}
+.arrangeWorkList .float_top1 ul li{
+    background-color: #ffffff;
+    line-height: 25px;
+    padding-top: 10px;
+    height: 100%;
+    width: 135px;
+    text-align: center;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+    border-left: 1px solid #cccccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+.arrangeWorkList .float_Left{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 80px;
+    height: 100%;
+    padding-top: 70px;
+    /*overflow-y: scroll;*/
+    background-color: #ffffff;
+}
+
+.arrangeWorkList .float_Left ul{
+    width: 100%;
+    height: auto;
+}
+.arrangeWorkList .float_Left ul li{
+    height: 72px;
+    line-height: 72px;
+    text-align: center;
+    border-bottom: 1px solid #cccccc;
+}
+
+
+/*--测试---*/
+.arrangeWorkList .float_Left_temp{
+    width: 80px;
+    height: 100%;
+    padding-top: 70px;
+    /*overflow-y: scroll;*/
+    background-color: #ffffff;
+}
+
+.arrangeWorkList .float_Left_temp ul{
+    width: 100%;
+    height: auto;
+}
+.arrangeWorkList .float_Left_temp ul li{
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    border-bottom: 1px solid #cccccc;
+}
+
+.arrangeWorkList .shadow_box{
+    width: 80px;
+    height: 72px;
+    background-color: #ffffff;
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    z-index: 99000;
+}
+
+
+.arrangeWorkList .reality_content{
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+.arrangeWorkList .reality_content .week_header{
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    padding-left: 80px;
+    /*border: 1px solid pink;*/
+
+}
+.arrangeWorkList .reality_content .week_header ul {
+    width: 4185px;
+    height: 100%;
+    background-color: #ffffff;
+}
+.arrangeWorkList .reality_content .week_header ul li{
+    line-height: 25px;
+    padding-top: 10px;
+    height: 100%;
+    width: 135px;
+    text-align: center;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+    border-right: 1px solid #cccccc;
+}
+.arrangeWorkList .reality_content .content_info{
+    width: 100%;
+}
+.arrangeWorkList .reality_content .content_info_box{
+    width: 4265px;
+    height: 72px;
+}
+.arrangeWorkList .reality_content .content_info_box div{
+    float: left;
+}
+
+.arrangeWorkList .reality_content .content_info_box .content_info_left{
+    width: 80px;
+    height: 100%;
+}
+
+
+.arrangeWorkList .reality_content .content_info_box .content_info_left ul li{
+    height: 72px;
+    line-height: 72px;
+    text-align: center;
+    background-color: #fff;
+    border-bottom: 1px solid #cccccc;
+}
+.arrangeWorkList .reality_content .content_info_box .content_info_item{
+    width: 135px;
+    height: 72px;
+    line-height:72px;
+    text-align: center;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+.arrangeWorkList .bg_all{
+    background-color: #FEC6C6;
+    color: #FB4646;
+}
+.arrangeWorkList .bg_morning{
+    background-color: #FCE6EE;
+    color: #EE4885;
+}
+.arrangeWorkList .bg_noon{
+    background-color: #F0E3FF;
+    color: #9C5CE6;
+}
+.arrangeWorkList .bg_night{
+    background-color: #E4FAFF;
+    color: #3BD5F9;
+}
+.arrangeWorkList .bg_no{
+    background-color: #E2E2E2;
+    color: #666666;
+}
+
+
+
+
+.arrangeWorkList table {
+    background-color: #ffffff !important;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+}
+.arrangeWorkList .table_box{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    float: left;
+}
+.arrangeWorkList .table_box .tb_test thead td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+    line-height: 25px;
+    padding-top: 10px;
+}
+.arrangeWorkList .table_box .tb_test thead td:nth-child(1) div{
+    width: 80px;
+    height: 72px;
+    line-height: 72px;
+}
+.arrangeWorkList .table_box .tb_test thead td:nth-child(1){
+    /*padding-left: 72px;*/
+}
+
+.arrangeWorkList .table_box .tb_test tbody td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+}
+.arrangeWorkList .table_box .tb_test tbody td:nth-child(1){
+    width: 80px;
+}
+.arrangeWorkList .table_box .tb_test tbody td:nth-child(1) div{
+    width: 80px;
+    height: 68px;
+    line-height: 68px;
+}
+
+.arrangeWorkList .table_box #ofix1_tb_header{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    float: left;
+}
+.arrangeWorkList .table_box #ofix1_tb_header thead td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+    line-height: 25px;
+    padding-top: 10px;
+}
+.arrangeWorkList .table_box #ofix1_tb_header thead td:nth-child(1){
+    padding-left: 80px;
+}
+
+
+.arrangeWorkList .table_box #ofix1_tb_left tbody td div{
+    width: 135px;
+    height: 72px;
+    line-height: 72px;
+}
+.arrangeWorkList .table_box #ofix1_tb_left tbody td:nth-child(1) div{
+    width: 80px;
+    height: 68px;
+    line-height: 25px;
+    padding-top: 10px;
+}
+
+

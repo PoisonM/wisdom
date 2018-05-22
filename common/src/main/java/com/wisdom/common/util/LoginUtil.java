@@ -33,8 +33,7 @@ public class LoginUtil {
     public static String processValidateCode(LoginDTO loginDTO)
     {
         //判断validateCode是否还有效
-        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()))
-                .addCriteria(Criteria.where("code").is(loginDTO.getCode()));
+        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
         if(data==null)
@@ -45,6 +44,10 @@ public class LoginUtil {
         {
             ValidateCodeDTO validateCodeDTO = data.get(0);
             Date dateStr = validateCodeDTO.getCreateDate();
+            //判断验证码是否是最新的
+            if(!validateCodeDTO.getCode().equals(loginDTO.getCode())){
+                return StatusConstant.VALIDATECODE_ERROR;
+            }
             long period =  (new Date()).getTime() - dateStr.getTime();
 
             //验证码过了5分钟了

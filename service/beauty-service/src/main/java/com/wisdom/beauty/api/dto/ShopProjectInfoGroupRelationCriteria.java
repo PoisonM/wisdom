@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -542,6 +543,126 @@ public class ShopProjectInfoGroupRelationCriteria {
 
         public Criteria andShopProjectInfoIdNotBetween(String value1, String value2) {
             addCriterion("shop_project_info_id not between", value1, value2, "shopProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesIsNull() {
+            addCriterion("shop_project_service_times is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesIsNotNull() {
+            addCriterion("shop_project_service_times is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesEqualTo(Integer value) {
+            addCriterion("shop_project_service_times =", value, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesNotEqualTo(Integer value) {
+            addCriterion("shop_project_service_times <>", value, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesGreaterThan(Integer value) {
+            addCriterion("shop_project_service_times >", value, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesGreaterThanOrEqualTo(Integer value) {
+            addCriterion("shop_project_service_times >=", value, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesLessThan(Integer value) {
+            addCriterion("shop_project_service_times <", value, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesLessThanOrEqualTo(Integer value) {
+            addCriterion("shop_project_service_times <=", value, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesIn(List<Integer> values) {
+            addCriterion("shop_project_service_times in", values, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesNotIn(List<Integer> values) {
+            addCriterion("shop_project_service_times not in", values, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesBetween(Integer value1, Integer value2) {
+            addCriterion("shop_project_service_times between", value1, value2, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectServiceTimesNotBetween(Integer value1, Integer value2) {
+            addCriterion("shop_project_service_times not between", value1, value2, "shopProjectServiceTimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceIsNull() {
+            addCriterion("shop_project_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceIsNotNull() {
+            addCriterion("shop_project_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceEqualTo(BigDecimal value) {
+            addCriterion("shop_project_price =", value, "shopProjectPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceNotEqualTo(BigDecimal value) {
+            addCriterion("shop_project_price <>", value, "shopProjectPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceGreaterThan(BigDecimal value) {
+            addCriterion("shop_project_price >", value, "shopProjectPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("shop_project_price >=", value, "shopProjectPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceLessThan(BigDecimal value) {
+            addCriterion("shop_project_price <", value, "shopProjectPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("shop_project_price <=", value, "shopProjectPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceIn(List<BigDecimal> values) {
+            addCriterion("shop_project_price in", values, "shopProjectPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceNotIn(List<BigDecimal> values) {
+            addCriterion("shop_project_price not in", values, "shopProjectPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("shop_project_price between", value1, value2, "shopProjectPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopProjectPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("shop_project_price not between", value1, value2, "shopProjectPrice");
             return (Criteria) this;
         }
 

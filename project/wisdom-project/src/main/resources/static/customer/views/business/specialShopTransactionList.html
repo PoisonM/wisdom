@@ -1,20 +1,22 @@
 <ion-view style="background: #f2f5f9">
     <ion-content>
-        <ion-refresher pulling-text="下拉获取更多收支明细" on-refresh="getMoreTransactionList()">
+        <ion-refresher pulling-text="下拉获取更多店铺交易明细" on-refresh="getMoreTransactionList()">
         </ion-refresher>
         <div class="list">
             <a class="item" ng-repeat="item in param.transactionList"
-               ui-sref="transactionDetail({'transactionId':item.transactionId,'type':item.transactionType})">
-                <p class="item-note">
-                    <span ng-if="item.transactionType=='withdraw'">-{{item.amount}}</span>
-                    <span ng-if="item.transactionType=='instance'||item.transactionType=='month'||item.transactionType=='recommend'||item.transactionType=='tripleMonth'">+{{item.amount}}</span>
+               ui-sref="specialTransactionDetail({'orderId':item.orderId})">
+                <p style="font-size: 0.24rem;color: #999999">
+                    <span>交易单号:</span>
+                    <span>{{item.orderId}}</span>
                 </p>
-                <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='instance'">即时返现</h1>
-                <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='month'">月度提成</h1>
-                <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='recommend'">推荐奖励</h1>
-                <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='withdraw'">提现</h1>
-                <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='tripleMonth'">活动奖励</h1>
-                <p style="font-size: 0.24rem;color: #999999">{{item.transactionDate|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                <p style="font-size: 0.24rem;color: #999999">
+                    <span>交易金额:</span>
+                    <span>{{item.account}}</span>
+                </p>
+                <p style="font-size: 0.24rem;color: #999999">
+                    <span>交易时间:</span>
+                    <span>{{item.createDate|date:'yyyy-MM-dd'}}</span>
+                </p>
             </a>
         </div>
     </ion-content>

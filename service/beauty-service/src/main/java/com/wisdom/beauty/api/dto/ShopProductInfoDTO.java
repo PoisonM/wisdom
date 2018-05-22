@@ -63,7 +63,7 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     //
     private Long productUnit;
 
-    //
+    //规格
     private String productSpec;
 
     //

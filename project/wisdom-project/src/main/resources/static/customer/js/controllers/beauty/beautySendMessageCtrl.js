@@ -5,8 +5,5 @@ angular.module('controllers',[]).controller('beautySendMessageCtrl',
     ['$scope','$rootScope','$stateParams','$state',
         function ($scope,$rootScope,$stateParams,$state) {
 
-        $scope.chooseProject = function() {
-            $state.go("beautyAppoint");
-        }
 
 }])

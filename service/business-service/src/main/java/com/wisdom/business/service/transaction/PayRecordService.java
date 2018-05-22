@@ -1,6 +1,7 @@
 package com.wisdom.business.service.transaction;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
+import com.wisdom.business.mapper.product.ProductMapper;
 import com.wisdom.business.mapper.transaction.PayRecordMapper;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
@@ -8,6 +9,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.account.PrePayInfoDTO;
 import com.wisdom.common.dto.product.InvoiceDTO;
+import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderDTO;
@@ -37,6 +39,8 @@ public class PayRecordService {
 
     @Autowired
     private PayRecordMapper payRecordMapper;
+    @Autowired
+    private ProductMapper productMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public PrePayInfoDTO getPrepayInfo(HttpServletRequest request, HttpSession session, String productType) {
@@ -64,13 +68,33 @@ public class PayRecordService {
 
             String value = JedisUtils.get(userInfoDTO.getId()+"needPay");
             NeedPayOrderListDTO needPayOrderListDTO = (new Gson()).fromJson(value, NeedPayOrderListDTO.class);
+
+            //
+//            for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
+//            {
+//                ProductDTO productDTO = productMapper.findProductById(needPayOrderDTO.getProductId());
+//                if(Integer.parseInt(productDTO.getProductAmount()) < Integer.parseInt(needPayOrderDTO.getProductNum())){
+//                    prePayInfoDTO.setResult(StatusConstant.FAILURE);
+//                    return prePayInfoDTO;
+//                }
+//            }
+            //
+
             Float payPrice = 0F;
             for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
             {
                 payPrice = payPrice + Float.valueOf(needPayOrderDTO.getProductPrice())*Float.valueOf(needPayOrderDTO.getProductNum());
             }
-            //prePayInfoMap.put("total_fee",(int)(payPrice*100)+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
-            prePayInfoMap.put("total_fee",1+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
+
+            if(ConfigConstant.PAY_TEST_FLAG.equals("true"))
+            {
+                prePayInfoMap.put("total_fee",1+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
+            }
+            else if(ConfigConstant.PAY_TEST_FLAG.equals("false"))
+            {
+                prePayInfoMap.put("total_fee",(int)(payPrice*100)+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
+            }
+
             prePayInfoMap.put("spbill_create_ip",request.getRemoteAddr());
 
             if(productType.equals("offline"))
@@ -212,5 +236,19 @@ public class PayRecordService {
 
     public List<PayRecordDTO> queryUserInfoByTransactionId(String transactionId) {
         return payRecordMapper.queryUserInfoByTransactionId(transactionId);
+    }
+
+    public List<PayRecordDTO> findOrderInfoForSpecial(String orderId) {
+        return payRecordMapper.findOrderInfoForSpecial(orderId);
+    }
+
+    /**
+     * 查询用户下的交易记录（去重）
+     * @param payRecordDTO
+     *
+     * */
+    public List<String> findTransactionIdList(PayRecordDTO payRecordDTO){
+
+        return payRecordMapper.findTransactionIdList(payRecordDTO);
     }
 }

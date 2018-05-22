@@ -118,7 +118,7 @@ define(['appManagement'], function(app){
                         }
                     })
                     .state('monthlyAccounts', {
-                        url: '/monthlyAccounts/:true/:MAccount/:startTime/:endTime/:pageNo/:status',
+                        url: '/monthlyAccounts/:true/:MAccount/:startTime/:endTime/:pageNo/:status/:checkStatus',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'monthlyAccountsCtrl',
                         resolve: {
@@ -130,7 +130,7 @@ define(['appManagement'], function(app){
                         }
                     })
                     .state('abschluss', {
-                        url: '/abschluss/:id/:time/:transactionId/:MAccount/:startTime/:endTime/:pageNo/:status',
+                        url: '/abschluss/:id/:time/:transactionId/:MAccount/:startTime/:endTime/:pageNo/:status/:checkStatus',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'abschlussCtrl',
                         resolve: {
@@ -310,6 +310,18 @@ define(['appManagement'], function(app){
                             }
                         }
                     })
+                     .state('recommend', {
+                            url: '/recommend/:id/:time/:transactionId/:MAccount/:startTime/:endTime/:pageNo/:status/:checkStatus',
+                            templateProvider: function() { return lazyDeferred.promise; },
+                            controller: 'recommendCtrl',
+                            resolve: {
+                                load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                    loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.recommendCtrl',
+                                        ['js/controllers/recommendCtrl.js?ver=' + managementVersion],
+                                        'js/views/recommend.html?ver=' + managementVersion);
+                                }
+                            }
+                        })
                 $urlRouterProvider.otherwise('home/%EF%BC%8F///')
             }])
 })

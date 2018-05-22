@@ -23,9 +23,13 @@
         <result column="mobile" property="mobile" jdbcType="VARCHAR" />
         <result column="pay_date" property="payDate" jdbcType="VARCHAR" />
         <result column="amount" property="amount" jdbcType="VARCHAR" />
-        <result column="user_name" property="userNameAddress" jdbcType="VARCHAR" />
-        <result column="user_phone" property="userPhoneAddress" jdbcType="VARCHAR" />
+        <result column="user_order_address_id" property="userOrderAddressId" jdbcType="VARCHAR" />
+        <result column="user_name_address" property="userNameAddress" jdbcType="VARCHAR" />
+        <result column="user_phone_address" property="userPhoneAddress" jdbcType="VARCHAR" />
         <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+        <result column="user_province_address" property="userProvinceAddress" jdbcType="VARCHAR" />
+        <result column="user_city_address" property="userCityAddress" jdbcType="VARCHAR" />
+        <result column="user_detail_address" property="userDetailAddress" jdbcType="VARCHAR" />
         <result column="product_id" property="businessProductId" jdbcType="VARCHAR" />
         <result column="name" property="businessProductName" jdbcType="VARCHAR" />
         <result column="brand" property="productBrand" jdbcType="VARCHAR" />
@@ -47,9 +51,12 @@
         <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
         <result column="product_num" property="productNum" jdbcType="VARCHAR" />
         <result column="status" property="orderStatus" jdbcType="VARCHAR" />
-        <result column="user_name" property="userName" jdbcType="VARCHAR" />
-        <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+        <result column="user_name_address" property="userNameAddress" jdbcType="VARCHAR" />
+        <result column="user_phone_address" property="userPhoneAddress" jdbcType="VARCHAR" />
         <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+        <result column="user_province_address" property="userProvinceAddress" jdbcType="VARCHAR" />
+        <result column="user_city_address" property="userCityAddress" jdbcType="VARCHAR" />
+        <result column="user_detail_address" property="userDetailAddress" jdbcType="VARCHAR" />
         <result column="amount" property="amount" jdbcType="VARCHAR" />
         <result column="invoice" property="invoice" jdbcType="VARCHAR" />
     </resultMap>
@@ -157,7 +164,7 @@
 
     <select id="getUserUnPayOrderInBuyCart"
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
-        select bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
+        select bor.order_id businessOrderId,bpr.product_id businessProductId,bpr.status AS productStatus,bpr.product_amount productAmount,opr.product_num businessProductNum,
         opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,bpr.price businessProductPrice from
         business_order bor, order_product_relation opr, business_product bpr
         where
@@ -167,14 +174,10 @@
 
     <select id="getBusinessOrderByOrderId"
             resultMap="BusinessOrderResultMap">
-        select * from
-        business_order
+        select o.*,o.order_id AS businessOrderId from
+        business_order o
         where
-        1=1
-        AND
-        <if test="orderId != null and orderId != ''">
-            order_id=#{orderId}
-        </if>
+             o.order_id=#{orderId}
     </select>
 
     <!-- 更新订单 -->
@@ -210,7 +213,7 @@
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
         select bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
         opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,bpr.price businessProductPrice,bor.status status,
-        bor.update_date updateDate
+        bor.update_date updateDate,bor.type type
         from
         business_order bor, order_product_relation opr, business_product bpr
         where
@@ -240,7 +243,7 @@
     <select id="getBusinessOrderList"
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
         SELECT
-        *
+        o.*,o.order_id AS businessOrderId
         FROM business_order o
         WHERE
         1=1
@@ -275,16 +278,16 @@
         SELECT
         COUNT(1)
         from business_order o
-        LEFT JOIN sys_user u on u.id = o.sys_user_id
-        LEFT JOIN pay_record p on o.order_id = p.order_id
+        LEFT JOIN sys_user u on u.id=o.sys_user_id
+        LEFT JOIN order_cop_relation r ON o.order_id=r.order_id
         LEFT JOIN (
-        select order_id,max(pay_date) pay_date
+        select sys_user_id,order_id,out_trade_no,`status`,openid,transaction_id,amount,pay_type,invoice,max(pay_date) pay_date
         from pay_record
         group by order_id
-        ) b ON p.pay_date=b.pay_date
-        WHERE 1=1 AND p.order_id=b.order_id
+        ) p ON o.order_id = p.order_id
+        WHERE 1=1
         <if test="param != null and param != ''">
-            AND (u.mobile=#{param} OR u.identify_number = #{param})
+            AND (u.mobile=#{param} OR o.order_id = #{param})
         </if>
         <if test='timeType == "1" '>
             AND p.pay_date BETWEEN #{startTime} AND #{endTime}
@@ -303,14 +306,13 @@
         <include refid="Base_BusinessOrder_list"/>,u.nickname,u.mobile,u.identify_number,p.transaction_id,p.pay_date,p.status AS pay_status,r.waybill_number
         from business_order o
         LEFT JOIN sys_user u on u.id=o.sys_user_id
-        LEFT JOIN pay_record p on o.order_id = p.order_id
         LEFT JOIN order_cop_relation r ON o.order_id=r.order_id
         LEFT JOIN (
-        select order_id,max(pay_date) pay_date
+        select sys_user_id,order_id,out_trade_no,`status`,openid,transaction_id,amount,pay_type,invoice,max(pay_date) pay_date
         from pay_record
         group by order_id
-        ) b ON p.pay_date=b.pay_date
-        WHERE 1=1 AND p.order_id=b.order_id
+        ) p ON o.order_id = p.order_id
+        WHERE 1=1
         <if test="param != null and param != ''">
             AND (u.mobile=#{param} OR o.order_id = #{param})
         </if>
@@ -365,7 +367,7 @@
 
     <select id="getBusinessOrderDetailInfoByOrderId"
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO">
-        select bor.sys_user_id sysUserId,bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
+        select bor.id,bor.sys_user_id sysUserId,bor.order_id businessOrderId,bpr.product_id businessProductId,bpr.product_amount productAmount,opr.product_num businessProductNum,
         opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,
         bpr.price businessProductPrice,bor.status status, bor.create_date createDate from
         business_order bor, order_product_relation opr, business_product bpr
@@ -432,7 +434,7 @@
             resultMap="BusinessOrderResultMap">
         SELECT ord.order_id,ord.update_date,ord.`status`,ord.type,usr.mobile,ord.user_order_address_id
         ,pay.amount,MAX(pay.pay_date) AS pay_date,pay.transaction_id
-        ,adr.user_name,adr.user_phone,CONCAT(province," ",city," ",detail_address) as userAddress
+        ,oar.user_name_address,oar.user_phone_address,oar.user_province_address,oar.user_city_address,oar.user_detail_address
         ,pro.`name`,pro.price,pro.product_id,pro.brand
         ,opr.product_spec,opr.product_num
         FROM business_order ord
@@ -440,7 +442,7 @@
         LEFT JOIN order_product_relation opr ON ord.order_id = opr.business_order_id
         LEFT JOIN business_product pro ON opr.business_product_id = pro.product_id
         LEFT JOIN pay_record pay ON ord.order_id = pay.order_id
-        LEFT JOIN user_order_address adr ON ord.user_order_address_id = adr.id
+        LEFT JOIN order_address_relation oar ON oar.business_order_id = ord.order_id
         WHERE
         ord.order_id = #{orderId}
     </select>
@@ -486,12 +488,14 @@
     <select id="selectExcelContent" resultMap="ExportOrderExcelMap">
         select
         ord.order_id,pro.product_id,pro.name,pro.brand,usr.id,usr.nickname,usr.mobile,pay.pay_date,pay.amount,pay.invoice,
-        opr.product_num,ord.status,opr.product_spec,ddr.user_name,ddr.user_phone,CONCAT(ddr.province," ",ddr.city," ",ddr.detail_address) as userAddress
+        opr.product_num,ord.status,opr.product_spec,
+        ddr.user_name_address,ddr.user_phone_address,CONCAT(ddr.user_province_address," ",ddr.user_city_address," ",ddr.user_detail_address) as userAddress
         FROM business_order ord,business_product pro,sys_user usr,pay_record pay,
-        order_product_relation opr,user_order_address ddr
+        order_product_relation opr,
+        order_address_relation ddr
         WHERE ord.sys_user_id = usr.id AND ord.order_id = opr.business_order_id
         AND opr.business_product_id = pro.product_id
-        AND ord.order_id = pay.order_id AND ord.user_order_address_id = ddr.id
+        AND ord.order_id = pay.order_id AND ord.order_id = ddr.business_order_id
         AND pro.type = "offline" AND ord.status = "1" AND pay.status="1"
         ORDER BY pay_date ASC
     </select>

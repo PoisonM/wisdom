@@ -39,6 +39,9 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
     //预约时长(分钟)
     private Integer appointPeriod;
 
+    //预约时长英文 ; 分割
+    private String appointPeriodDetail;
+
     //用户id
     private String sysUserId;
 
@@ -53,6 +56,9 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
 
     //捎句话
     private String detail;
+
+    //取消预约时间
+    private String appointmentCancleDate;
 
     //
     private String createBy;
@@ -156,6 +162,14 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
         this.appointPeriod = appointPeriod;
     }
 
+    public String getAppointPeriodDetail() {
+        return appointPeriodDetail;
+    }
+
+    public void setAppointPeriodDetail(String appointPeriodDetail) {
+        this.appointPeriodDetail = appointPeriodDetail;
+    }
+
     public String getSysUserId() {
         return sysUserId;
     }
@@ -194,6 +208,14 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public String getAppointmentCancleDate() {
+        return appointmentCancleDate;
+    }
+
+    public void setAppointmentCancleDate(String appointmentCancleDate) {
+        this.appointmentCancleDate = appointmentCancleDate;
     }
 
     public String getCreateBy() {

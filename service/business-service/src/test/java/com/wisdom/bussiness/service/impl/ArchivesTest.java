@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.UUID;
+
 /**
  * Created by 赵得良 on 21/09/2016.
  */
@@ -29,7 +31,10 @@ public class ArchivesTest {
 
     @Before
     public void setupMockMvc() throws Exception {
-        mvc = MockMvcBuilders.webAppContextSetup(context).build();
+       // mvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+
+
     }
 
 

@@ -4,6 +4,7 @@ import com.wisdom.timer.client.WeixinServiceClient;
 import com.wisdom.timer.service.business.BusinessRunTimeService;
 import com.wisdom.common.util.SpringUtil;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -20,6 +21,9 @@ import java.io.UnsupportedEncodingException;
 @MapperScan(basePackages = {"com.wisdom.timer.mapper"})
 public class TimerServiceApplication {
 
+	@Autowired
+	BusinessRunTimeService transactionRunTimeService;
+
 	public static void main(String[] args) {
 
 		ApplicationContext app = SpringApplication.run(TimerServiceApplication.class, args);
@@ -29,16 +33,9 @@ public class TimerServiceApplication {
 		BusinessRunTimeService businessRunTimeService = SpringUtil.getBean(BusinessRunTimeService.class);
 
 		//初始化时更新token
-		weixinServiceClient.updateUserWeixinToken();
-//
-//		//初始化时处理未支付的订单
-//		businessRunTimeService.autoProcessNoPayRecordData();
+		//weixinServiceClient.updateUserWeixinToken();
 
-//		try {
-//			businessRunTimeService.autoMonthlyIncomeCalc();
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
+		weixinServiceClient.updateBeautyWeixinToken();
 	}
 
 }

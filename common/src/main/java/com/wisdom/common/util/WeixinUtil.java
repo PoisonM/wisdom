@@ -1,24 +1,24 @@
 package com.wisdom.common.util;
 
 import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
-import com.wisdom.common.entity.*;
-import org.json.JSONArray;
+import com.wisdom.common.entity.AccessToken;
+import com.wisdom.common.entity.Article;
+import com.wisdom.common.entity.JsApiTicket;
+import com.wisdom.common.entity.WeixinUserBean;
 import org.json.JSONObject;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by baoweiw on 2015/7/27.
@@ -41,6 +41,15 @@ public class WeixinUtil {
         String token = weixinTokenDTO.getToken();
         return token;
     }
+
+    public static String getBeautyToken()
+    {
+        Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
+        WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
+        String token = weixinTokenDTO.getToken();
+        return token;
+    }
+
     /**
      * 获取jsp页面验证用的jsapi-ticket
      *
@@ -68,7 +77,7 @@ public class WeixinUtil {
                 backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
-    public static String getBossOauth2Url(String backUrl) {
+    public static String getBeautyOauth2Url(String backUrl) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
                 ConfigConstant.BOSS_CORPID + "&redirect_uri=" +
@@ -132,6 +141,41 @@ public class WeixinUtil {
       return result ;
     }
 
+    /**
+     * 调用多客服接口指定发送消息
+     *
+     * @param token   唯一票据
+     * @param openId  用户的唯一标示
+     * @param mediaId mediaId
+     */
+    public static String sendImagToWeixin(String token, String openId, String mediaId) {
+        String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
+        String result = "failure";
+        try {
+            String json = "{\n" +
+                    "    \"touser\":\"" + openId + "\",\n" +
+                    "    \"msgtype\":\"image\",\n" +
+                    "    \"image\":\n" +
+                    "    {\n" +
+                    "      \"media_id\":\"" + mediaId + "\"\n" +
+                    "    }\n" +
+                    "}";
+            String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
+            System.out.print(json + "--" + re);
+            if (re.contains("access_token is invalid")) {
+                //token已经失效，重新获取新的token
+                result = "tokenIsInvalid";
+            }
+            JSONObject obj = new JSONObject(re);
+            Integer resultStatus = (Integer) obj.get("errcode");
+            if (resultStatus != null && resultStatus == 0) {
+                result = "messageOk";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     /**
      * emoji表情转换(hex -> utf-16)
@@ -146,9 +190,6 @@ public class WeixinUtil {
 
     public static String getUserOpenId(HttpSession session, HttpServletRequest request) {
         String openId = (String) session.getAttribute(ConfigConstant.USER_OPEN_ID);
-        if (!StringUtils.isNotNull(openId)) {
-            openId = CookieUtils.getCookie(request, ConfigConstant.USER_OPEN_ID);
-        }
         return openId;
     }
 
@@ -211,9 +252,9 @@ public class WeixinUtil {
     }
 
 
-    public static String getBossOpenId(HttpSession session, HttpServletRequest request) {
-
-        return null;
+    public static String getBeautyOpenId(HttpSession session, HttpServletRequest request) {
+        String openId = (String) session.getAttribute(ConfigConstant.BOSS_OPEN_ID);
+        return openId;
     }
 
     /**

@@ -12,15 +12,13 @@ import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
+import com.wisdom.common.dto.transaction.OrderAddressRelationDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.OrderCopRelationDTO;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.UUIDUtil;
-import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.common.util.*;
 import com.wisdom.common.util.excel.ExportExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +41,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "transaction")
 public class BusinessOrderController {
-
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private TransactionService transactionService;
 
@@ -75,25 +73,42 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> createBusinessOrder(@RequestBody BusinessOrderDTO businessOrderDTO) {
-
+        RedisLock productAmountLock = new RedisLock("putNeedPayProductAmount");
+        //todo log
+        logger.info("锁前商品id=={}", businessOrderDTO.getBusinessProductId());
+        productAmountLock.lock();
+        logger.info("锁后商品id=={}", businessOrderDTO.getBusinessProductId());
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
-
-        String businessOrderId = transactionService.createBusinessOrder(businessOrderDTO);
-
-        if(businessOrderId.equals(StatusConstant.FAILURE))
+        try {
+            ProductDTO productDTO = productService.getBusinessProductInfo(businessOrderDTO.getBusinessProductId());
+            if (businessOrderDTO.getBusinessProductNum() > Integer.parseInt(productDTO.getProductAmount())) {
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("订单创建失败");
+            }
+            String businessOrderId = transactionService.createBusinessOrder(businessOrderDTO);
+            if(businessOrderId.equals(StatusConstant.FAILURE))
+            {
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("订单创建失败");
+            }
+            else if(businessOrderId.equals(StatusConstant.NO_USER_ADDRESS))
+            {
+                responseDTO.setResult(StatusConstant.NO_USER_ADDRESS);
+            }
+            else
+            {
+                responseDTO.setResponseData(businessOrderId);
+                responseDTO.setResult(StatusConstant.SUCCESS);
+                responseDTO.setErrorInfo("订单创建成功");
+            }
+        }catch (Exception e)
         {
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("订单创建失败");
+            e.printStackTrace();
+            throw e;
         }
-        else if(businessOrderId.equals(StatusConstant.NO_USER_ADDRESS))
+        finally
         {
-            responseDTO.setResult(StatusConstant.NO_USER_ADDRESS);
-        }
-        else
-        {
-            responseDTO.setResponseData(businessOrderId);
-            responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setErrorInfo("订单创建成功");
+            productAmountLock.unlock();
         }
 
         return responseDTO;
@@ -174,17 +189,29 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> updateBusinessOrderStatus(@RequestBody BusinessOrderDTO businessOrderDTO) {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("更改某个订单的状态orderId={}"+businessOrderDTO.getBusinessOrderId(), "orderStatus = [" + businessOrderDTO.getStatus() + "]");
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        if(null == businessOrderDTO.getStatus() || "".equals(businessOrderDTO.getStatus())){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("订单状态参数为空");
+            logger.info("更改某个订单的状态耗时{}毫秒", (System.currentTimeMillis() - startTime));
+            return responseDTO;
+        }
         try
         {
-            transactionService.updateBusinessOrder(businessOrderDTO);
+            //查出库中订单数据
+            BusinessOrderDTO newBusinessOrderDTO = transactionService.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
+            newBusinessOrderDTO.setUpdateDate(new Date());
+            newBusinessOrderDTO.setStatus(businessOrderDTO.getStatus());
+            transactionService.updateBusinessOrder(newBusinessOrderDTO);
             responseDTO.setResult(StatusConstant.SUCCESS);
         }
         catch (Exception e)
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
+        logger.info("更改某个订单的状态耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -193,6 +220,8 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> updateBusinessOrderAddress(@RequestParam("orderIds[]") List<String> orderIds, @RequestParam String orderAddressId) {
+        long startTime = System.currentTimeMillis();
+        logger.info("修改订单地址方法传入参数={}", "订单数量orderIdsSize = [" + orderIds.size() + "]", "订单地址id = [" + orderAddressId + "]");
 
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         try
@@ -202,6 +231,37 @@ public class BusinessOrderController {
                 BusinessOrderDTO businessOrderDTO = transactionService.getBusinessOrderByOrderId(orderId);
                 businessOrderDTO.setUserOrderAddressId(orderAddressId);
                 transactionService.updateBusinessOrder(businessOrderDTO);
+                //根据地址id查询地址
+                UserOrderAddressDTO userOrderAddressDTO =  userOrderAddressService.findUserAddressById(orderAddressId);
+                //查询此订单是否已有地址,如果有则不进行新增
+                List<OrderAddressRelationDTO> orderAddressRelationDTOs = userOrderAddressService.getOrderAddressRelationByOrderId(orderId);
+                if(0 == orderAddressRelationDTOs.size()){
+                    OrderAddressRelationDTO orderAddressRelationDTO1 = new OrderAddressRelationDTO();
+                    orderAddressRelationDTO1.setId(UUIDUtil.getUUID());
+                    orderAddressRelationDTO1.setBusinessOrderId(orderId);
+                    orderAddressRelationDTO1.setUserOrderAddressId(orderAddressId);
+                    orderAddressRelationDTO1.setUserNameAddress(userOrderAddressDTO.getUserName());
+                    orderAddressRelationDTO1.setUserPhoneAddress(userOrderAddressDTO.getUserPhone());
+                    orderAddressRelationDTO1.setUserProvinceAddress(userOrderAddressDTO.getProvince());
+                    orderAddressRelationDTO1.setUserCityAddress(userOrderAddressDTO.getCity());
+                    orderAddressRelationDTO1.setUserDetailAddress(userOrderAddressDTO.getDetailAddress());
+                    orderAddressRelationDTO1.setAddressCreateDate(new Date());
+                    orderAddressRelationDTO1.setAddressUpdateDate(new Date());
+                    logger.info("订单没有地址插入订单地址"+orderAddressRelationDTO1.toString());
+                    userOrderAddressService.addOrderAddressRelation(orderAddressRelationDTO1);
+                }else {
+                    OrderAddressRelationDTO orderAddressRelationDTO1 = new OrderAddressRelationDTO();
+                    orderAddressRelationDTO1.setBusinessOrderId(orderId);
+                    orderAddressRelationDTO1.setUserOrderAddressId(orderAddressId);
+                    orderAddressRelationDTO1.setUserNameAddress(userOrderAddressDTO.getUserName());
+                    orderAddressRelationDTO1.setUserPhoneAddress(userOrderAddressDTO.getUserPhone());
+                    orderAddressRelationDTO1.setUserProvinceAddress(userOrderAddressDTO.getProvince());
+                    orderAddressRelationDTO1.setUserCityAddress(userOrderAddressDTO.getCity());
+                    orderAddressRelationDTO1.setUserDetailAddress(userOrderAddressDTO.getDetailAddress());
+                    orderAddressRelationDTO1.setAddressUpdateDate(new Date());
+                    logger.info("订单已有地址修改订单地址"+orderAddressRelationDTO1.toString());
+                    userOrderAddressService.updateOrderAddressRelationByOrderId(orderAddressRelationDTO1);
+                }
             }
             responseDTO.setResult(StatusConstant.SUCCESS);
         }
@@ -209,6 +269,7 @@ public class BusinessOrderController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
+        logger.info("修改订单地址方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -328,7 +389,8 @@ public class BusinessOrderController {
     @ResponseBody
     ResponseDTO<PageParamVoDTO<List<BusinessOrderDTO>>>  queryBusinessOrderByParameters(@RequestBody PageParamVoDTO<BusinessOrderDTO> pageParamVoDTO) {
         ResponseDTO<PageParamVoDTO<List<BusinessOrderDTO>>> responseDTO = new ResponseDTO<>();
-        String startDate = "1990-01-01";//设定起始时间 0 1 2 为时间类型
+        //设定起始时间 0 1 2 为时间类型
+        String startDate = "1990-01-01";
         if (!"0".equals(pageParamVoDTO.getTimeType())){
             pageParamVoDTO.setStartTime("".equals(pageParamVoDTO.getStartTime()) ? startDate : pageParamVoDTO.getStartTime());
             pageParamVoDTO.setEndTime(CommonUtils.getEndDate(pageParamVoDTO.getEndTime()));
@@ -356,16 +418,25 @@ public class BusinessOrderController {
                     exportOrderExcelDTO.setMobile(businessOrderDTO.getMobile());
                     exportOrderExcelDTO.setOrderId(businessOrderDTO.getBusinessOrderId());
                     exportOrderExcelDTO.setOrderStatus(businessOrderDTO.getStatus());
-                    exportOrderExcelDTO.setPayDate(DateUtils.formatDate(businessOrderinfo.getPayDate(),"yyyy-MM-dd HH:mm:ss"));
+                    if(null!=businessOrderinfo.getPayDate()) {
+                        exportOrderExcelDTO.setPayDate(DateUtils.formatDate(businessOrderinfo.getPayDate(), "yyyy-MM-dd HH:mm:ss"));
+                    }else{
+                        exportOrderExcelDTO.setPayDate(null);
+                    }
                     exportOrderExcelDTO.setProductBrand(businessOrderinfo.getProductBrand());
                     exportOrderExcelDTO.setProductId(businessOrderinfo.getBusinessProductId());
                     exportOrderExcelDTO.setProductName(businessOrderinfo.getBusinessProductName());
                     exportOrderExcelDTO.setProductNum(businessOrderinfo.getBusinessProductNum()+"");
                     exportOrderExcelDTO.setProductSpec(businessOrderinfo.getProductSpec());
                     //exportOrderExcelDTO.setTaxpayerNumber(businessOrderDTO.getIdentifyNumber());
-                    exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserAddress());
-                    exportOrderExcelDTO.setUserName(businessOrderinfo.getUserNameAddress());
-                    exportOrderExcelDTO.setUserPhone(businessOrderinfo.getUserPhoneAddress());
+                    if(businessOrderinfo.getUserAddress()!=null){
+                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
+                    }else{
+                        exportOrderExcelDTO.setUserAddress(businessOrderinfo.getUserProvinceAddress()+businessOrderinfo.getUserDetailAddress());
+                    }
+
+                    exportOrderExcelDTO.setUserNameAddress(businessOrderinfo.getUserNameAddress());
+                    exportOrderExcelDTO.setUserPhoneAddress(businessOrderinfo.getUserPhoneAddress());
                     excelList.add(exportOrderExcelDTO);
                 }
                 //ByteArrayInputStream in = ex.getWorkbookIn("订单EXCEL文档",orderHeaders, page.getResponseData(),"yyy-MM-dd HH:mm:ss");

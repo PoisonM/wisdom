@@ -15,6 +15,7 @@ import com.wisdom.common.util.SpringUtil;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.weixin.WeixinServiceApplication;
+import com.wisdom.weixin.client.BeautyServiceClient;
 import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
 import net.sf.json.JSONObject;
@@ -52,6 +53,9 @@ public class WeixinTest {
     private BusinessServiceClient businessServiceClient;
 
     @Autowired
+    private BeautyServiceClient beautyServiceClient;
+
+    @Autowired
     private MongoTemplate mongoTemplate;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -59,6 +63,11 @@ public class WeixinTest {
     public void beforeTest() {
         ApplicationContext app = SpringApplication.run(WeixinServiceApplication.class, "");
         SpringUtil.setApplicationContext(app);
+    }
+
+    @Test
+    public void getUserBindingInfo() {
+        beautyServiceClient.getUserBindingInfo("oP0k_0S-a-U1z64qcVVCIaLWM52s", "20180514102629597");
     }
 
     @Test
@@ -166,7 +175,7 @@ public class WeixinTest {
      */
     @Test
     public void sendMessage() {
-        String token = "8_0hL_DJXjKE41QGVmT8Jq68RauQKpzvtTN8Y_8h7Q_UoDT2HMjB3PqyKoe0LcotS8Ql7esKG8arikQtQ928A7P17XJgiCJurYo5I7s2LulxRfumOmVcTaPfReQEW1VAApd9gPQswPbdrAm-vmBSSdABAJAA";
+        String token = "9_rPDvyUgMHL6I5DYMFRV1NL4Hi4o7NwP8GNtRsKnvGtR_sAP7VBR7bGNhXs0NaarubkE-Xlodwm9Ry_ni-LV6pIhtn9M0dlNF6Ynx4RRurETCqSNrQcKj8Rz0OBFcHYUg6RBImUBjVhzXeAfUQTFcAFAGJV";
         String tempId = "dz4_XwRKTzYietZlSsr_BWhGhQBJwv1J25ILuVdf7tY";
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setWeixinAttentionStatus("1");
@@ -178,10 +187,15 @@ public class WeixinTest {
     }
 
     @Test
-    public void testSend() {
-        String token = "8_Vf-ihtyji25Q3hIXaW7Dx8u5Z7BW_8aql3tIt9EqPYeNnkKe1bAtgNZ7SJCsnTPzMHsKGhHfFjhKGU7PAScLYNQpuFkkifoy5aKRccR-1gRFdRrl0LDp76CbLh5_9hwHdwMTm1QgjUqwwGfgHVCcAAAMAH";
-        String tempId = "QIEjNupAi7v9LmDWRrV2rdEcATYudwlRBKYj_mGf9WA";
-        withdrawalsSuccess2Weixin(tempId, "oP0k_0eZYfRQ6HPTMBlxcq9hSWog", token);
+    public void testSendImag() {
+        String token = "9_rPDvyUgMHL6I5DYMFRV1NL4Hi4o7NwP8GNtRsKnvGtR_sAP7VBR7bGNhXs0NaarubkE-Xlodwm9Ry_ni-LV6pIhtn9M0dlNF6Ynx4RRurETCqSNrQcKj8Rz0OBFcHYUg6RBImUBjVhzXeAfUQTFcAFAGJV";
+        String mediaId = "H7b3rZfbpwHiJQGNap3aVu6G8TUdDRJXhEquSeTEAxMsQOd5XSXZkjcBkrIW03Af";
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setWeixinAttentionStatus("1");
+        List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+        for (UserInfoDTO dto : userInfoDTOS) {
+            sendTextMeg(token, dto.getUserOpenid(), mediaId);
+        }
     }
 
     public int withdrawalsSuccess2Weixin(String tempId, String openid, String token) {
@@ -231,5 +245,88 @@ public class WeixinTest {
     }
 
 
+    public void sendTextMeg(String token, String openId, String mediaId) {
+        WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+    }
+
+    public class MyThread1 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
+
+        void MyThread1(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
+
+    public class MyThread2 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
+
+        void MyThread2(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
+
+    public class MyThread3 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
+
+        void MyThread3(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
+
+    public class MyThread4 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
+
+        void MyThread4(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
+
+    public class MyThread5 extends Thread {
+        private String token;
+        private String openId;
+        private String mediaId;
+
+        void MyThread5(String token, String openId, String mediaId) {
+            this.token = token;
+            this.openId = openId;
+            this.mediaId = mediaId;
+        }
+
+        public void run() {
+            WeixinUtil.sendImagToWeixin(token, openId, mediaId);
+        }
+    }
 
 }

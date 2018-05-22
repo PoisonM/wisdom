@@ -9,9 +9,8 @@ import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
 import com.wisdom.common.util.*;
-import com.wisdom.user.mapper.ExtSysClerkMapper;
+import com.wisdom.user.mapper.extMapper.ExtSysClerkMapper;
 import com.wisdom.user.mapper.SysBossMapper;
-import com.wisdom.user.mapper.SysClerkMapper;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -51,7 +52,7 @@ public class LoginServiceImpl implements LoginService{
     public String userLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception {
 
         //判断validateCode是否还有效
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -64,7 +65,6 @@ public class LoginServiceImpl implements LoginService{
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setUserOpenid(openId);
-            //userInfoDTO.setMobile(phone);
             List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
 
             if(userInfoDTOList.size()>0)
@@ -72,6 +72,16 @@ public class LoginServiceImpl implements LoginService{
                 userInfoDTO = userInfoDTOList.get(0);
                 if(userInfoDTO.getMobile()==null)
                 {
+                    UserInfoDTO userInfoDTO1 = new UserInfoDTO();
+                    userInfoDTO1.setMobile(loginDTO.getUserPhone());
+                    List<UserInfoDTO> userInfoDTOList1 = userMapper.getUserByInfo(userInfoDTO1);
+                    if(userInfoDTOList1!=null&&userInfoDTOList1.size()>0){
+                        for(UserInfoDTO user : userInfoDTOList1){
+                            if(!user.getUserType().equals("finance-1") && !"operation-1".equals(user.getUserType()) && !"manager-1".equals(user.getUserType())){
+                                return "phoneNotUse";
+                            }
+                        }
+                    }
                     //用户曾经绑定过手机号，更新用户登录信息
                     userInfoDTO.setMobile(loginDTO.getUserPhone());
                     userInfoDTO.setLoginDate(new Date());
@@ -83,14 +93,15 @@ public class LoginServiceImpl implements LoginService{
                     userInfoDTO.setLoginDate(new Date());
                     userInfoDTO.setLoginIp(loginIP);
                     userMapper.updateUserInfo(userInfoDTO);
-                }
+                }else if(!userInfoDTO.getMobile().equals(loginDTO.getUserPhone())){
+                        return "phoneIsError";
+                    }
                 else
                 {
                     return StatusConstant.WEIXIN_ATTENTION_ERROR;
                 }
 
-                userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
-
+                userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(),"utf-8"));
                 //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
                 logintoken = UUID.randomUUID().toString();
                 String userInfoStr = gson.toJson(userInfoDTO);
@@ -121,7 +132,6 @@ public class LoginServiceImpl implements LoginService{
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setMobile(userPhone);
         userInfoDTO.setPassword(code);
-        //userInfoDTO.setUserType("manager-1");
         List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
         if(userInfoDTOList.size()>0)
         {
@@ -139,14 +149,14 @@ public class LoginServiceImpl implements LoginService{
     public String bossMobileLogin(LoginDTO loginDTO, String loginIP, String openId)
     {
         //判断validateCode是否还有效
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
 
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysBossDTO sysBossDTO = new SysBossDTO();
-        sysBossDTO.setUserOpenid(openId);
+        sysBossDTO.setUserOpenid(loginDTO.getUserPhone());
         List<SysBossDTO> sysBossDTOList = sysBossMapper.getBossInfo(sysBossDTO);
         RedisLock redisLock = new RedisLock("bossInfo"+loginDTO.getUserPhone());
         try {
@@ -155,26 +165,11 @@ public class LoginServiceImpl implements LoginService{
             if(sysBossDTOList.size()>0)
             {
                 sysBossDTO = sysBossDTOList.get(0);
-                if(sysBossDTO.getMobile()==null)
-                {
-                    //用户曾经绑定过手机号，更新用户登录信息
-                    sysBossDTO.setMobile(loginDTO.getUserPhone());
-                    sysBossDTO.setLoginDate(new Date());
-                    sysBossDTO.setLoginIp(loginIP);
-                    sysBossMapper.updateBossInfo(sysBossDTO);
-                }
-                else if(sysBossDTO.getMobile().equals(loginDTO.getUserPhone()))
-                {
-                    sysBossDTO.setLoginDate(new Date());
-                    sysBossDTO.setLoginIp(loginIP);
-                    sysBossMapper.updateUserInfo(sysBossDTO);
-                }
-                else
-                {
-                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
-                }
+                sysBossDTO.setLoginDate(new Date());
+                sysBossDTO.setLoginIp(loginIP);
+                sysBossDTO.setUserOpenid(openId);
+                sysBossMapper.updateUserInfo(sysBossDTO);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -194,7 +189,7 @@ public class LoginServiceImpl implements LoginService{
     @Override
     public String bossWebLogin(LoginDTO loginDTO, String loginIP)
     {
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -209,20 +204,12 @@ public class LoginServiceImpl implements LoginService{
             if(sysBossDTOList.size()>0)
             {
                 sysBossDTO = sysBossDTOList.get(0);
-                if(sysBossDTO.getMobile()==null)
-                {
-                    //用户曾经绑定过手机号，更新用户登录信息
-                    sysBossDTO.setMobile(loginDTO.getUserPhone());
-                    sysBossDTO.setLoginDate(new Date());
-                    sysBossDTO.setLoginIp(loginIP);
-                    sysBossMapper.updateBossInfo(sysBossDTO);
-                }
-                else
-                {
-                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
-                }
+                //用户曾经绑定过手机号，更新用户登录信息
+                sysBossDTO.setMobile(loginDTO.getUserPhone());
+                sysBossDTO.setLoginDate(new Date());
+                sysBossDTO.setLoginIp(loginIP);
+                sysBossMapper.updateBossInfo(sysBossDTO);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -242,14 +229,14 @@ public class LoginServiceImpl implements LoginService{
     @Override
     public String ClerkMobileLogin(LoginDTO loginDTO, String loginIP, String openId) {
         //判断validateCode是否还有效
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
 
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysClerkDTO sysClerkDTO = new SysClerkDTO();
-        sysClerkDTO.setUserOpenid(openId);
+        sysClerkDTO.setMobile(loginDTO.getUserPhone());
         List<SysClerkDTO> sysClerkDTOList = extSysClerkMapper.getClerkInfo(sysClerkDTO);
         RedisLock redisLock = new RedisLock("clerkInfo" + loginDTO.getUserPhone());
         try {
@@ -258,26 +245,14 @@ public class LoginServiceImpl implements LoginService{
             if(sysClerkDTOList.size()>0)
             {
                 sysClerkDTO = sysClerkDTOList.get(0);
-                if(sysClerkDTO.getMobile()==null)
-                {
-                    //用户曾经绑定过手机号，更新用户登录信息
-                    sysClerkDTO.setMobile(loginDTO.getUserPhone());
-                    sysClerkDTO.setLoginDate(new Date());
-                    sysClerkDTO.setLoginIp(loginIP);
-                    extSysClerkMapper.updateClerkInfo(sysClerkDTO);
-                }
-                else if(sysClerkDTO.getMobile().equals(loginDTO.getUserPhone()))
-                {
-                    sysClerkDTO.setLoginDate(new Date());
-                    sysClerkDTO.setLoginIp(loginIP);
-                    extSysClerkMapper.updateClerkInfo(sysClerkDTO);
-                }
-                else
-                {
-                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
-                }
-            }
 
+                //用户曾经绑定过手机号，更新用户登录信息
+                sysClerkDTO.setMobile(loginDTO.getUserPhone());
+                sysClerkDTO.setLoginDate(new Date());
+                sysClerkDTO.setLoginIp(loginIP);
+                sysClerkDTO.setUserOpenid(openId);
+                extSysClerkMapper.updateClerkInfo(sysClerkDTO);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -297,7 +272,7 @@ public class LoginServiceImpl implements LoginService{
     @Override
     public String ClerkWebLogin(LoginDTO loginDTO, String loginIP) {
 
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             return StatusConstant.VALIDATECODE_ERROR;
         }
@@ -311,21 +286,12 @@ public class LoginServiceImpl implements LoginService{
             redisLock.lock();
             if(sysClerkDTOList.size()>0)
             {
-                sysClerkDTO = sysClerkDTOList.get(0);
-                if(sysClerkDTO.getMobile()==null)
-                {
-                    //用户曾经绑定过手机号，更新用户登录信息
-                    sysClerkDTO.setMobile(loginDTO.getUserPhone());
-                    sysClerkDTO.setLoginDate(new Date());
-                    sysClerkDTO.setLoginIp(loginIP);
-                    extSysClerkMapper.updateClerkInfo(sysClerkDTO);
-                }
-                else
-                {
-                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
-                }
+                //用户曾经绑定过手机号，更新用户登录信息
+                sysClerkDTO.setMobile(loginDTO.getUserPhone());
+                sysClerkDTO.setLoginDate(new Date());
+                sysClerkDTO.setLoginIp(loginIP);
+                extSysClerkMapper.updateClerkInfo(sysClerkDTO);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -340,5 +306,34 @@ public class LoginServiceImpl implements LoginService{
         String clerkInfoStr = gson.toJson(sysClerkDTO);
         JedisUtils.set(logintoken,clerkInfoStr, ConfigConstant.logintokenPeriod);
         return logintoken;
+    }
+
+    private String processValidateCode(LoginDTO loginDTO)
+    {
+        //判断validateCode是否还有效
+        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
+        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
+        List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
+        if(data==null)
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+        else
+        {
+            ValidateCodeDTO validateCodeDTO = data.get(0);
+            Date dateStr = validateCodeDTO.getCreateDate();
+              //判断验证码是否是最新的
+            if(!validateCodeDTO.getCode().equals(loginDTO.getCode())){
+                return StatusConstant.VALIDATECODE_ERROR;
+            }
+            long period =  (new Date()).getTime() - dateStr.getTime();
+
+            //验证码过了5分钟了
+            if(period>300000)
+            {
+                return  StatusConstant.VALIDATECODE_ERROR;
+            }
+        }
+        return StatusConstant.SUCCESS;
     }
 }

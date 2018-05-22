@@ -1,0 +1,82 @@
+<div class="selectRechargeCardBox clearfix">
+    <ul class="selectRechargeCardUl">
+        <li>
+            <div>{{responseData.name}}</div>
+        </li>
+        <li>
+            <div>充值金额</div>
+            <span><b class="fl">¥</b><input type="text" ng-model="responseData.amount"></span>
+        </li>
+    </ul>
+    <!-- <ul class="selectRechargeCardUl mt10" ng-click="goChooseGifts()">
+        <li>
+            <div>赠送</div>
+            <span>></span>
+        </li>
+    </ul> -->
+    <ul class="selectRechargeCardUl mt10">
+        <li>
+            <div>单次折扣</div>
+            <span><input type="text" ng-value="responseData.timeDiscount*100"></span>
+        </li>
+        <li>
+            <div>疗程卡折扣</div>
+            <span><input type="text" ng-value="responseData.periodDiscount*100"></span>
+        </li>
+        <li>
+            <div>产品折扣</div>
+            <span><input type="text" ng-value="responseData.productDiscount*100"></span>
+        </li>
+    </ul>
+    <ul class="selectRechargeCardUl mt10">
+        <li>
+            <div>总金额</div>
+            <span>{{responseData.amount}}</span>
+        </li>
+        <!-- <li>
+            <div>总欠款</div>
+            <span><b class="fl">¥</b><input type="text"></span>
+        </li> -->
+        <li>
+            <div>现金支付</div>
+            <span><b class="fl">¥</b><input type="text" ng-model="cashPay" ng-value="responseData.cashPay==null?'0.00':responseData.cashPay"></span>
+        </li>
+    </ul>
+    <ul class="selectRechargeCardUl mt10">
+        <li>
+            <div>剩余支付</div>
+            <span>{{responseData.amount-cashPay}}</span>
+        </li>
+    </ul>
+    <div class="selectRechargeCardTitle">其他支付方式</div>
+    <ul class="selectRechargeCardUl mt10">
+        <li ng-click="checkBoxChek(0)">
+            <div class="checkBox" ng-class="{'bgF6':responseData.payType == 0}">
+                <img src="images/checkImg.png" alt="">
+            </div>
+            <div>银行卡支付</div>
+        </li>
+        <li ng-click="checkBoxChek(1)">
+            <div class="checkBox" ng-class="{bgF6:(responseData.payType == 1)}">
+                <img src="images/checkImg.png" alt="">
+            </div>
+            <div>微信支付</div>
+        </li>
+        <li ng-click="checkBoxChek(2)">
+            <div class="checkBox" ng-class="{bgF6:(responseData.payType == 2)}">
+                <img src="images/checkImg.png" alt="">
+            </div>
+            <div>支付宝支付</div>
+        </li>
+    </ul>
+    <ul class="selectRechargeCardUl mt10" ng-click="goHousekeeper()">
+        <li>
+            <div>关联员工</div>
+            <span>></span>
+        </li>
+    </ul>
+    <img src="" alt="">
+    <div class="selectRechargeCardTitle">备注</div>
+    <textarea name="" rows="10" ng-model="responseData.detail"></textarea>
+    <button ng-click="goCustomerSignature()">确认</button>
+</div>

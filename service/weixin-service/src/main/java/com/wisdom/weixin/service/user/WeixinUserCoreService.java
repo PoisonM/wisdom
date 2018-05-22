@@ -119,7 +119,25 @@ public class WeixinUserCoreService {
         weixinShareDTO.setSysUserId(userInfoDTO.getId());
         weixinShareDTO.setUserPhone(userInfoDTO.getMobile());
         weixinShareDTO.setUserImage(userInfoDTO.getPhoto());
-        weixinShareDTO.setNickName(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+        if(StringUtils.isNotBlank(userInfoDTO.getNickname())){
+            String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+            while(true){
+                System.out.println("用户进行编码操作");
+                if(StringUtils.isNotBlank(nickNameW)){
+                    if(nickNameW.contains("%25")){
+                        nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                    }else{
+                        nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                        break;
+                    }
+                }else{
+                    break;
+                }
+            }
+            weixinShareDTO.setNickName(nickNameW);
+        }else{
+            weixinShareDTO.setNickName("亲爱的");
+        }
 
         //获取shareCode
         String shareCode = ConfigConstant.SHARE_CODE_VALUE + userInfoDTO.getMobile() + "_" + RandomNumberUtil.getFourRandom();
@@ -146,12 +164,13 @@ public class WeixinUserCoreService {
      * @param info
      * @return
      */
-    private String getUserQRCode(String info) {
+    public String getUserQRCode(String info) {
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
         String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
-        String jsonData="{\"expire_seconds\": 626400, \"action_name\": \"QR_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + info + "\"}}}";
+        //有效期改为2592000即30天
+        String jsonData = "{\"expire_seconds\": 2591000, \"action_name\": \"QR_STR_SCENE\",\"action_info\": {\"scene\": {\"scene_str\"" + ":\"" + info + "\"}}}";
         String reJson= WeixinUtil.post(url, jsonData,"POST");
         JSONObject jb=JSONObject.fromObject(reJson);
         String qrTicket = jb.getString("ticket");

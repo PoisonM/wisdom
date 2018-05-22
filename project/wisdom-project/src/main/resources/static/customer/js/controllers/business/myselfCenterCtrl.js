@@ -1,13 +1,14 @@
 angular.module('controllers',[]).controller('myselfCenterCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','$ionicLoading','GetSpecialBossCondition',
-        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,$ionicLoading,GetSpecialBossCondition) {
+    ['$scope','$rootScope','$stateParams','$state','GetUserAccountInfo','Global','$ionicLoading','GetSpecialBossCondition','GetUserIsBoss',
+        function ($scope,$rootScope,$stateParams,$state,GetUserAccountInfo,Global,$ionicLoading,GetSpecialBossCondition,GetUserIsBoss) {
             $rootScope.title = "个人中心";
 
             $scope.param = {
                 userLogin : false,
                 accountInfo:{},
                 specialShopOwner : false,
-                specialShopInfo : {}
+                specialShopInfo : {},
+                isShopKeeper : ''
             };
 
             $scope.$on('$ionicView.enter', function(){
@@ -33,8 +34,21 @@ angular.module('controllers',[]).controller('myselfCenterCtrl',
                         $scope.param.accountInfo.balance  = returnFloat($scope.param.accountInfo.balance);
                         $scope.param.accountInfo.todayIncome = returnFloat($scope.param.accountInfo.todayIncome);
                         $(".smallBox").show();
+                        console.log($scope.param.accountInfo);
                     }
                 })
+
+               GetUserIsBoss.get(function(data){
+
+                    if(data.result == Global.SUCCESS){
+                        if(data.responseData > 0){
+                             $scope.param.isShopKeeper = true;
+                        }else{
+                             $scope.param.isShopKeeper = false;
+                        }
+                    }
+
+                  })
 
                 GetSpecialBossCondition.get(function(data){
                     if(data.result==Global.SUCCESS)

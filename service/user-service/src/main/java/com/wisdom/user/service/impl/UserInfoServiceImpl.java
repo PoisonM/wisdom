@@ -6,13 +6,13 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.JedisUtils;
-import com.wisdom.common.util.RedisLock;
+import com.wisdom.common.util.*;
 import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.UserInfoService;
+import org.apache.ibatis.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,7 @@ import java.util.concurrent.Executors;
 public class UserInfoServiceImpl implements UserInfoService{
 
     @Autowired
-    private UserInfoMapper customerInfoMapper;
+    private UserInfoMapper userInfoMapper;
 
     @Autowired
     private BusinessServiceClient businessServiceClient;
@@ -41,12 +42,40 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Autowired
     protected MongoTemplate mongoTemplate;
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
     public List<UserInfoDTO> getUserInfo(UserInfoDTO userInfoDTO) {
-        List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfo(userInfoDTO);
+        List<UserInfoDTO> userInfoDTOS = userInfoMapper.getUserByInfo(userInfoDTO);
+        if(CommonUtils.objectIsEmpty(userInfoDTOS)){
+            logger.info("查询的用户信息为空");
+            return userInfoDTOS;
+        }
         for (UserInfoDTO user: userInfoDTOS) {
-            user.setNickname(CommonUtils.nameDecoder(user.getNickname()));
+            if(StringUtils.isNotBlank(user.getNickname())){
+                try{
+                    String nickNameW = user.getNickname().replaceAll("%", "%25");
+                    while(true){
+                        logger.info("用户进行编码操作");
+                        if(StringUtils.isNotBlank(nickNameW)){
+                            if(nickNameW.contains("%25")){
+                                nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                            }else{
+                                nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                                break;
+                            }
+                        }else{
+                            break;
+                        }
+                    }
+                    user.setNickname(nickNameW);
+                }catch(Throwable e ){
+                    logger.info("用户昵有特殊字符");
+                    String nickNameW ="特殊字符用户";
+                    user.setNickname(nickNameW);
+                }
+            }
         }
         return  userInfoDTOS;
     }
@@ -55,7 +84,7 @@ public class UserInfoServiceImpl implements UserInfoService{
         RedisLock redisLock = new RedisLock("userInfo"+userInfoDTO.getId());
         try{
             redisLock.lock();
-            customerInfoMapper.updateUserInfo(userInfoDTO);
+            userInfoMapper.updateUserInfo(userInfoDTO);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -67,8 +96,7 @@ public class UserInfoServiceImpl implements UserInfoService{
         RedisLock redisLock = new RedisLock("userInfo"+userInfoDTO.getId());
         try{
             redisLock.lock();
-
-            customerInfoMapper.insertUserInfo(userInfoDTO);
+            userInfoMapper.insertUserInfo(userInfoDTO);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -78,7 +106,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     public PageParamDTO<List<UserBusinessTypeDTO>> queryUserBusinessById(String sysUserId) {
         PageParamDTO<List<UserBusinessTypeDTO>> page = new  PageParamDTO<>();
-        List<UserBusinessTypeDTO> userBusinessTypeDTOList = customerInfoMapper.queryUserBusinessById(sysUserId);
+        List<UserBusinessTypeDTO> userBusinessTypeDTOList = userInfoMapper.queryUserBusinessById(sysUserId);
         page.setResponseData(userBusinessTypeDTOList);
         return page;
     }
@@ -89,9 +117,9 @@ public class UserInfoServiceImpl implements UserInfoService{
      */
     public PageParamDTO<List<UserInfoDTO>> queryUserInfoDTOByParameters(PageParamVoDTO<UserInfoDTO> pageParamVoDTO) {
         PageParamDTO<List<UserInfoDTO>> page = new  PageParamDTO<>();
-        int count = customerInfoMapper.queryUserInfoDTOCountByParameters(pageParamVoDTO);
+        int count = userInfoMapper.queryUserInfoDTOCountByParameters(pageParamVoDTO);
         page.setTotalCount(count);
-        List<UserInfoDTO> userInfoDTOList = customerInfoMapper.queryUserInfoDTOByParameters(pageParamVoDTO);
+        List<UserInfoDTO> userInfoDTOList = userInfoMapper.queryUserInfoDTOByParameters(pageParamVoDTO);
         for(UserInfoDTO userInfoDTO : userInfoDTOList){
             if(userInfoDTO.getLivingPeriod() != 0){
                 int outDay = (int) DateUtils.pastDays(userInfoDTO.getCreateDate());
@@ -102,7 +130,21 @@ public class UserInfoServiceImpl implements UserInfoService{
                     userInfoDTO.setLivingPeriod(-1);
                 }
             }
-            userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+            String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+            while(true){
+                if(nickNameW !=null&&nickNameW!=""){
+                    if(nickNameW.contains("%25")){
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
+                    }else{
+                        nickNameW = CommonUtils.nameDecoder(nickNameW);
+                        break;
+                    }
+                }else{
+                    break;
+                }
+
+            }
+            userInfoDTO.setNickname(nickNameW);
         }
         page.setResponseData(userInfoDTOList);
         return page;
@@ -110,30 +152,79 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     //根据用户id查询下级代理
     public List<UserInfoDTO> queryNextUserById(String sysUserId) {
-        List<UserInfoDTO> userInfoDTOList = customerInfoMapper.queryNextUserById(sysUserId);
+        List<UserInfoDTO> userInfoDTOList = userInfoMapper.queryNextUserById(sysUserId);
         for(UserInfoDTO userInfoDTO : userInfoDTOList){
-            userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+            if(StringUtils.isNotBlank(userInfoDTO.getNickname())&&userInfoDTO.getNickname()!=""){
+                String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+                while(true){
+                    logger.info("用户进行编码操作");
+                    if(StringUtils.isNotBlank(nickNameW)){
+                        if(nickNameW.contains("%25")){
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                        }else{
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                            break;
+                        }
+                    }else{
+                        break;
+                    }
+                }
+                userInfoDTO.setNickname(nickNameW);
+            }else{
+                userInfoDTO.setNickname("未知用户");
+            }
+
         }
         return userInfoDTOList;
     }
 
     public UserInfoDTO getUserInfoFromUserId(String sysUserId) {
+        UserInfoDTO dto = new UserInfoDTO();
+        if (StringUtils.isBlank(sysUserId)) {
+            return dto;
+        }
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId(sysUserId);
-        List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfo(userInfoDTO);
+        List<UserInfoDTO> userInfoDTOS = userInfoMapper.getUserByInfo(userInfoDTO);
         if(userInfoDTOS.size()>0)
         {
             return userInfoDTOS.get(0);
         }else
         {
-            return new UserInfoDTO();
+            return dto;
         }
     }
     //根据parentId查询上级信息
     public List<UserInfoDTO> queryParentUserById(String parentUserId) {
-        List<UserInfoDTO> userInfoDTOS= customerInfoMapper.queryParentUserById(parentUserId);
+        List<UserInfoDTO> userInfoDTOS= userInfoMapper.queryParentUserById(parentUserId);
         for (UserInfoDTO userInfoDTO :userInfoDTOS) {
-            userInfoDTO.setNickname(CommonUtils.nameDecoder(userInfoDTO.getNickname()));
+            if(userInfoDTO.getNickname() != null && userInfoDTO.getNickname() != ""){
+                try {
+                    if(userInfoDTO.getNickname() != null && userInfoDTO.getNickname() != ""){
+                        String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW!=null&&nickNameW!=""){
+                                if(nickNameW.contains("%25")){
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                }else{
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    break;
+                                }
+                            }else{
+                                break;
+                            }
+
+                        }
+                        userInfoDTO.setNickname(nickNameW);
+                    }else{
+                        userInfoDTO.setNickname("未知用户");
+                    }
+                } catch(Throwable e){
+                    logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                    userInfoDTO.setNickname("特殊符号用户");
+                }
+            }
+
         }
         return userInfoDTOS;
     }
@@ -157,7 +248,7 @@ public class UserInfoServiceImpl implements UserInfoService{
         Map<String,Object> map=new HashMap<>(16);
         map.put("list",sysUserIds);
         map.put("searchFile",searchFile);
-        List<UserInfoDTO> userInfoDTOS = customerInfoMapper.getUserByInfoList(map);
+        List<UserInfoDTO> userInfoDTOS = userInfoMapper.getUserByInfoList(map);
         return  userInfoDTOS;
     }
 

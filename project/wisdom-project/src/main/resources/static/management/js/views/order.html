@@ -40,11 +40,11 @@
                          </div>
                          <div class="product_name big order">
 
-                             <div style="margin-top:54px;">
+                             <div style=" margin-top: 80px; line-height: 31px;">
                                  <label class="bold" >
                                      付款时间：
                                  </label>
-                                 <input  class="time orderPayStartTime laydate-icon" id="orderPayStartTime"  ng-click="dataS('#orderPayStartTime')" >&nbsp--&nbsp<input   class="time orderPayEndTime laydate-icon" id="orderPayEndTime"  ng-click="dataS('#orderPayEndTime')" >
+                                 <input  class="time orderPayStartTime  date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"  >&nbsp--&nbsp<input   class="time orderPayEndTime date " onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"   >
                              </div>
                          </div>
                          <div class="product_searchEara">
@@ -66,7 +66,7 @@
                                      <th class="text-center" >付款时间</th>
                                      <th class="text-center" >当前状态时间</th>
                                      <th class="text-center" >状态</th>
-                                     <th class="text-center" style="width:16%;">操作</th>
+                                     <th class="text-center" style="width:18%;">操作</th>
                                  </tr>
                              </thead>
                              <tbody>

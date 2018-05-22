@@ -16,6 +16,12 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     //套卡表主键
     private String shopProjectGroupId;
 
+    //购买套卡的数量
+    private Integer shopProjectGroupNumber;
+
+    //
+    private BigDecimal shopGroupPuchasePrice;
+
     //
     private String sysUserId;
 
@@ -41,7 +47,13 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     private String sysClerkId;
 
     //
+    private String sysClerkName;
+
+    //
     private String sysBossId;
+
+    //折扣
+    private Float discount;
 
     //
     private String createBy;
@@ -79,6 +91,22 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setShopProjectGroupId(String shopProjectGroupId) {
         this.shopProjectGroupId = shopProjectGroupId;
+    }
+
+    public Integer getShopProjectGroupNumber() {
+        return shopProjectGroupNumber;
+    }
+
+    public void setShopProjectGroupNumber(Integer shopProjectGroupNumber) {
+        this.shopProjectGroupNumber = shopProjectGroupNumber;
+    }
+
+    public BigDecimal getShopGroupPuchasePrice() {
+        return shopGroupPuchasePrice;
+    }
+
+    public void setShopGroupPuchasePrice(BigDecimal shopGroupPuchasePrice) {
+        this.shopGroupPuchasePrice = shopGroupPuchasePrice;
     }
 
     public String getSysUserId() {
@@ -145,12 +173,28 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
         this.sysClerkId = sysClerkId;
     }
 
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
     public String getSysBossId() {
         return sysBossId;
     }
 
     public void setSysBossId(String sysBossId) {
         this.sysBossId = sysBossId;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
     }
 
     public String getCreateBy() {

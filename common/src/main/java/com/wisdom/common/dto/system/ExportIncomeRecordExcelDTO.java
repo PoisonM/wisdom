@@ -58,29 +58,19 @@ public class ExportIncomeRecordExcelDTO {
     @JSONField(name = "orderStatus")
     private String orderStatus;
 
-    /*public String getIncomeType() {
-        if("instance".equals(incomeType)){
-            return "即时返现";
-        }else if("month".equals(incomeType)){
-            return "月度提成";
-        }
-        return incomeType;
-    }*/
+    @JSONField(name = "parentRelation")
+    private String parentRelation;
 
-    /*public String getStatus() {
-        if("0".equals(status)){
-            return "不可提现";
-        }else if("1".equals(status)){
-            return "可提现";
-        }else if("2".equals(status)){
-            return "用户未确认收货";
-        }
-        return status;
-    }*/
+    //该交易流水与用户等级关系
+    private  String isImportLevel;
 
-   /* public void setStatus(String status) {
-        this.status = status;
-    }*/
+    public String getIsImportLevel() {
+        return isImportLevel;
+    }
+
+    public void setIsImportLevel(String isImportLevel) {
+        this.isImportLevel = isImportLevel;
+    }
 
     public String getSysUserId() {
         return sysUserId;
@@ -107,7 +97,7 @@ public class ExportIncomeRecordExcelDTO {
     }
 
     public String getUserType() {
-        return userType;
+        return userTypeUtil(userType);
     }
 
     public void setUserType(String userType) {
@@ -115,7 +105,7 @@ public class ExportIncomeRecordExcelDTO {
     }
 
     public String getUserTypeNow() {
-        return userTypeNow;
+        return userTypeUtil(userTypeNow);
     }
 
     public void setUserTypeNow(String userTypeNow) {
@@ -155,7 +145,7 @@ public class ExportIncomeRecordExcelDTO {
     }
 
     public String getNextUserType() {
-        return nextUserType;
+        return userTypeUtil(nextUserType);
     }
 
     public void setNextUserType(String nextUserType) {
@@ -163,7 +153,7 @@ public class ExportIncomeRecordExcelDTO {
     }
 
     public String getNextUserTypeNow() {
-        return nextUserTypeNow;
+        return userTypeUtil(nextUserTypeNow);
     }
 
     public void setNextUserTypeNow(String nextUserTypeNow) {
@@ -215,11 +205,39 @@ public class ExportIncomeRecordExcelDTO {
             return "待收货";
         }else if("5".equals(orderStatus)){
             return "已取消";
+        }else if("0".equals(orderStatus)){
+            return "未支付";
         }
-        return "无";
+        return orderStatus;
     }
 
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    private String userTypeUtil(String userType){
+        if("business-B-1".equals(userType)){
+            return "B";
+        }else if("business-A-1".equals(userType)){
+            return "A";
+        }else if("business-C-1".equals(userType)){
+            return "C";
+        }
+        return userType;
+    }
+
+    public String getParentRelation() {
+        if("business-B-1".equals(parentRelation)){
+            return "直B关系";
+        }else if("business-A-1".equals(parentRelation)){
+            return "直A关系";
+        }else if("A1B1".equals(parentRelation)){
+            return "间接关系";
+        }
+        return parentRelation;
+    }
+
+    public void setParentRelation(String parentRelation) {
+        this.parentRelation = parentRelation;
     }
 }

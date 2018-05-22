@@ -155,8 +155,11 @@ public class BusinessRunTimeService {
 
     public void autoProcessNoPayRecordData() {
 
-        Date dt1 = new Date((new Date()).getTime() - (long) ConfigConstant.AUTO_NOTIFY_PRODUCT_PAY * 24 * 60 * 60 * 1000);
-        Date dt2 = new Date((new Date()).getTime() - (long) ConfigConstant.AUTO_DELETE_BUSINESS_ORDER * 24 * 60 * 60 * 1000);
+        long autoNotifyProductPay = (long) ConfigConstant.AUTO_NOTIFY_PRODUCT_PAY * 60 * 1000;
+        long autoDeleteBusinessOrder = (long) ConfigConstant.AUTO_DELETE_BUSINESS_ORDER * 60 * 1000;
+        long nowTime = System.currentTimeMillis();
+        long MaxTime = 60 * 1000;
+        long MinTime = 0;
 
         String token = WeixinUtil.getUserToken();
 
@@ -168,9 +171,12 @@ public class BusinessRunTimeService {
         {
             for(BusinessOrderDTO businessOrder : businessOrderDTOList)
             {
-                if((businessOrder.getCreateDate().getTime()-dt1.getTime())<0)
+                //订单已下时间
+                long outTime = nowTime - (long)businessOrder.getCreateDate().getTime();
+                long time = outTime - autoNotifyProductPay;
+                //待付款超过10分钟
+                if(MinTime < time && time < MaxTime)
                 {
-
                     UserInfoDTO userInfoDTO = new UserInfoDTO();
                     userInfoDTO.setId(businessOrder.getSysUserId());
                     userInfoDTO.setDelFlag("0");
@@ -182,9 +188,10 @@ public class BusinessRunTimeService {
                                 businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
                     }
                 }
-                else if((businessOrder.getCreateDate().getTime()-dt2.getTime())<0)
+                else if(outTime > autoDeleteBusinessOrder)
                 {
-                    businessOrder.setStatus("del");
+                    //超时取消
+                    businessOrder.setStatus("6");
                     businessServiceClient.updateBusinessOrder(businessOrder);
                     PayRecordDTO payRecordDTO = new PayRecordDTO();
                     payRecordDTO.setSysUserId(businessOrder.getSysUserId());
@@ -266,27 +273,24 @@ public class BusinessRunTimeService {
             float returnMonthlyMoney_A = 0;
             float returnMonthlyMoney_B = 0;
 
-//            String startDate = "";
-//            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"26";
-//            if(DateUtils.getMonth().equals("01"))
-//            {
-//                int month = 11;
-//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-//                startDate = year + "-" + month + "-26";
-//            }
-//            else if(DateUtils.getMonth().equals("02"))
-//            {
-//                int month = 12;
-//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-//                startDate = year + "-" + month + "-26";
-//            }
-//            else{
-//                int month = Integer.parseInt(DateUtils.getMonth()) - 2;
-//                startDate = DateUtils.getYear() + "-" + month + "-26";
-//            }
-
-            String startDate = "2018-03-26";
-            String endDate = "2018-04-14";
+            String startDate = "";
+            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"15";
+            if(DateUtils.getMonth().equals("01"))
+            {
+                int month = 11;
+                int year = Integer.parseInt(DateUtils.getYear()) - 1;
+                startDate = year + "-" + month + "-15";
+            }
+            else if(DateUtils.getMonth().equals("02"))
+            {
+                int month = 12;
+                int year = Integer.parseInt(DateUtils.getYear()) - 1;
+                startDate = year + "-" + month + "-15";
+            }
+            else{
+                int month = Integer.parseInt(DateUtils.getMonth()) - 1;
+                startDate = DateUtils.getYear() + "-" + month + "-15";
+            }
 
             List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
 
@@ -336,8 +340,8 @@ public class BusinessRunTimeService {
                 incomeRecordDTO.setNextUserMobile("");
                 incomeRecordDTO.setParentRelation("");
                 businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+                WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
             }
-            WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
         }
     }
 
@@ -371,14 +375,15 @@ public class BusinessRunTimeService {
                     if(user.getUserType().equals(ConfigConstant.businessA1))
                     {
                         recommendANum = recommendANum + 1;
-                    }else if(user.getUserType().equals(ConfigConstant.businessB1))
+                    }
+                    else if(user.getUserType().equals(ConfigConstant.businessB1))
                     {
                         recommendBNum = recommendBNum + 1;
                     }
                 }
             }
 
-            if((recommendBNum+recommendANum)>=20)
+            if((recommendBNum+recommendANum)>=ConfigConstant.RECOMMEND_USER_NUM_REWARD)
             {
                 promoteAFlag = true;
             }
@@ -412,41 +417,60 @@ public class BusinessRunTimeService {
 
                 //sys_user表也需要更新
                 userInfo.setUserType(ConfigConstant.businessA1);
+                userInfo.setNickname(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
                 userServiceClient.updateUserInfo(userInfo);
 
-                //给用户495的即时奖励
-                AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
-                float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
-                accountDTO.setBalance(balance);
-                businessServiceClient.updateUserAccountInfo(accountDTO);
+                //给B的上一級用户495的即时奖励
+                if(StringUtils.isNotNull(userInfo.getParentUserId()))
+                {
+                    UserInfoDTO parentUserInfoDTO = new UserInfoDTO();
+                    parentUserInfoDTO.setId(userInfo.getParentUserId());
+                    List<UserInfoDTO> parentUserInfoList = userServiceClient.getUserInfo(parentUserInfoDTO);
 
-                IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                incomeRecordDTO.setId(UUID.randomUUID().toString());
-                incomeRecordDTO.setSysUserId(userInfo.getId());
-                incomeRecordDTO.setUserType(userInfo.getUserType());
-                incomeRecordDTO.setNextUserId("");
-                incomeRecordDTO.setNextUserType("");
-                incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
-                incomeRecordDTO.setTransactionAmount(0);
-                incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                incomeRecordDTO.setUpdateDate(new Date());
-                incomeRecordDTO.setCreateDate(new Date());
-                incomeRecordDTO.setStatus("0");
-                incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
-                incomeRecordDTO.setNextUserIdentifyNumber("");
-                incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
-                incomeRecordDTO.setNextUserNickName("");
-                incomeRecordDTO.setIncomeType("recommend");
-                incomeRecordDTO.setMobile(userInfo.getMobile());
-                incomeRecordDTO.setNextUserMobile("");
-                incomeRecordDTO.setParentRelation("");
+                    if(parentUserInfoList.size()>0)
+                    {
+                        parentUserInfoDTO = parentUserInfoList.get(0);
 
+                        if(ConfigConstant.businessA1.equals(parentUserInfoDTO.getUserType()))
+                        {
+                            AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(parentUserInfoDTO.getId());
+                            float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
+                            float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
+                            accountDTO.setBalance(balance);
+                            accountDTO.setBalanceDeny(balanceDeny);
+                            businessServiceClient.updateUserAccountInfo(accountDTO);
+
+                            IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+                            incomeRecordDTO.setId(UUID.randomUUID().toString());
+                            incomeRecordDTO.setSysUserId(parentUserInfoDTO.getId());
+                            incomeRecordDTO.setUserType(parentUserInfoDTO.getUserType());
+                            incomeRecordDTO.setNextUserId(userInfo.getId());
+                            incomeRecordDTO.setNextUserType(userInfo.getUserType());
+                            incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
+                            incomeRecordDTO.setTransactionAmount(0);
+                            incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+                            incomeRecordDTO.setUpdateDate(new Date());
+                            incomeRecordDTO.setCreateDate(new Date());
+                            incomeRecordDTO.setStatus("0");
+                            incomeRecordDTO.setIdentifyNumber(parentUserInfoDTO.getIdentifyNumber());
+                            incomeRecordDTO.setNextUserIdentifyNumber(userInfo.getIdentifyNumber());
+                            incomeRecordDTO.setNickName(URLEncoder.encode(parentUserInfoDTO.getNickname(), "utf-8"));
+                            incomeRecordDTO.setNextUserNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
+                            incomeRecordDTO.setIncomeType("recommend");
+                            incomeRecordDTO.setMobile(parentUserInfoDTO.getMobile());
+                            incomeRecordDTO.setNextUserMobile(userInfo.getMobile());
+                            incomeRecordDTO.setParentRelation(ConfigConstant.businessA1);
+                            businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+
+                        }
+                    }
+                }
                 Calendar calendar = Calendar.getInstance();
                 Date date = new Date();
                 calendar.setTime(date);
                 calendar.add(Calendar.YEAR, 1);
                 date = calendar.getTime();
-                WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(userInfo.getNickname(),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
+                WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(CommonUtils.nameDecoder(userInfo.getNickname()),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
             }
         }
     }
@@ -469,28 +493,8 @@ public class BusinessRunTimeService {
             List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
             if(userBusinessTypeDTOS.size()>0)
             {
-                break;
-            }
-
-            //根据transactionId查询orderId，根据orderId查询business_order
-            PayRecordDTO payRecordDTO = new PayRecordDTO();
-            payRecordDTO.setTransactionId(incomeRecord.getTransactionId());
-            List<PayRecordDTO> payRecordDTOList =  businessServiceClient.getUserPayRecordList(payRecordDTO);
-
-            if(payRecordDTOList.size()==0)
-            {
-                break;
-            }
-
-            //判断某笔交易下订单是否都已经收货
-            for(PayRecordDTO payRecord : payRecordDTOList)
-            {
-                BusinessOrderDTO businessOrderDTO = businessServiceClient.getBusinessOrderByOrderId(payRecord.getOrderId());
-                if(!businessOrderDTO.getStatus().equals("2")&&!businessOrderDTO.getStatus().equals("5"))//5代表已退货
-                {
-                    businessFlag = false;
-                    break;
-                }
+                businessFlag = false;
+                continue;
             }
 
             //判断此记录，是否财务和运营人员，都已经审核通过

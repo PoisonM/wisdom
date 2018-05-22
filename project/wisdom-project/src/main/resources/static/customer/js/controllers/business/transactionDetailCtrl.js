@@ -12,7 +12,7 @@ angular.module('controllers',[]).controller('transactionDetailCtrl',
             }
 
             $scope.$on('$ionicView.enter', function(){
-                GetUserTransactionDetail.get({transactionId:$scope.param.transactionId,transactionType:$scope.param.transactionId.transactionType},function(data){
+                GetUserTransactionDetail.get({"transactionId":$scope.param.transactionId,"transactionType":$scope.param.transactionType},function(data){
                     BusinessUtil.checkResponseData(data,"transactionDetail&"+$stateParams.transactionId+","+$stateParams.type);
                     $scope.param.transactionDetailData = data.responseData;
                     GetUserAccountInfo.get(function(data){

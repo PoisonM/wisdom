@@ -1,19 +1,25 @@
 package com.wisdom.beauty.controller.consume;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
-import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
+import com.wisdom.beauty.api.extDto.ShopConsumeDTO;
+import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +66,9 @@ public class UserConsumeController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Value("${test.msg}")
+    private String msg;
+
     /**
      * @Author:huan
      * @Param:
@@ -67,29 +76,24 @@ public class UserConsumeController {
      * @Description:
      * @Date:2018/4/9 19:05
      */
-    @RequestMapping(value = "/consumes", method = RequestMethod.GET)
+    @RequestMapping(value = "/consumes", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestParam String sysShopId,
-                                                                    @RequestParam String shopUserId,
-                                                                    @RequestParam String consumeType, int pageSize) {
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
 
         long startTime = System.currentTimeMillis();
-        PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
-        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-        shopUserConsumeRecordDTO.setSysUserId(shopUserId);
-        shopUserConsumeRecordDTO.setSysShopId(sysShopId);
-        shopUserConsumeRecordDTO.setConsumeType(consumeType);
+        userConsumeRequest.setGoodsTypeRequire(true);
 
-        pageParamVoDTO.setRequestData(shopUserConsumeRecordDTO);
+        pageParamVoDTO.setRequestData(userConsumeRequest);
         pageParamVoDTO.setPageNo(0);
-        pageParamVoDTO.setPageSize(pageSize);
+        pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecordList(pageParamVoDTO);
 
         ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
-        logger.info("findUserConsume方法耗时{}毫秒",(System.currentTimeMillis()-startTime));
+        logger.info("findUserConsume方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -100,165 +104,68 @@ public class UserConsumeController {
      * @Description: 根据业务流水查询具体某个消费信息记录
      * @Date:2018/4/10 11:20
      */
-    @RequestMapping(value = "/consume/{consumeFlowNo}", method = RequestMethod.GET)
+    @RequestMapping(value = "/consume/consumeFlowNo", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetail(@PathVariable String consumeFlowNo) {
+    ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetail(@RequestParam String consumeFlowNo) {
         long startTime = System.currentTimeMillis();
 
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecord(consumeFlowNo);
         ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
-        logger.info("findUserConsumeDetail方法耗时{}毫秒",(System.currentTimeMillis()-startTime));
+        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
-
     /**
-     * 用户充值操作，适用范围为消费单次卡、疗程卡、套卡、产品
-     *
-     * @param extShopUserConsumeRecordDTOS
+     * 根据消费主键查询消费详情
+     * @param consumeId
      * @return
      */
-    @RequestMapping(value = "userRechargeOperation", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
-    public
+    @RequestMapping(value = "/consume/{consumeId}", method = RequestMethod.GET)
     @ResponseBody
-    @Transactional
-    ResponseDTO<String> userRechargeOperation(@RequestBody List<ShopUserOrderDTO> extShopUserConsumeRecordDTOS) {
+    ResponseDTO<Object> findUserConsumeDetailInfo(@PathVariable("consumeId") String consumeId) {
+        long startTime = System.currentTimeMillis();
 
-//        long currentTimeMillis = System.currentTimeMillis();
-//        logger.info("传入参数={}", "shopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
-//
-//        ResponseDTO<String> responseDTO = new ResponseDTO<>();
-//
-//        if (CommonUtils.objectIsEmpty(extShopUserConsumeRecordDTOS)) {
-//            logger.debug("用户充值操作传入参数为空, {}", "shopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
-//            return null;
-//        }
-//        //生成唯一的交易流水号
-//        String transactionCodeNumber = getTransactionCodeNumber();
-//
-//        try {
-//            //遍历记录
-//            for (ExtShopUserConsumeRecordDTO dto : extShopUserConsumeRecordDTOS) {
-//                //虚拟商品类型
-//                String goodsType = dto.getGoodsType();
-//
-//                //获取用户的账户信息
-//                SysUserAccountDTO sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(dto.getSysUserId());
-//
-//                //如果是次卡、疗程卡相关操作
-//                if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType) || GoodsTypeEnum.TREATMENT_CARD.getCode().equals(goodsType)) {
-//
-//                    if (dto.getShopUserProjectRelationDTO() == null) {
-//                        logger.error("用户充值操作用户与卡的关系为空,{}", "ShopUserProjectRelationDTO = [" + dto.getShopUserProjectRelationDTO() + "]");
-//                        throw new RuntimeException();
-//                    }
-//                    //生成用户与项目的关系
-//                    ShopUserProjectRelationDTO shopUserRelationDTO = dto.getShopUserProjectRelationDTO();
-//                    shopUserRelationDTO.setCreateDate(new Date());
-//                    String uuid = IdGen.uuid();
-//                    shopUserRelationDTO.setId(uuid);
-//                    shopUserRelationDTO.setSysShopName(dto.getSysShopName());
-//                    //流水id
-//                    dto.setFlowId(uuid);
-//                    dto.setFlowName(GoodsTypeEnum.TIME_CARD.getDesc());
-//                    //如果用充值卡抵扣的话
-//                    if (null != dto.getShopUserRechargeCardDTO()) {
-//                        ShopUserRechargeCardDTO shopUserRechargeCardDTO = dto.getShopUserRechargeCardDTO();
-//                        if (StringUtils.isBlank(shopUserRechargeCardDTO.getId())) {
-//                            logger.error("用户充值操作,充值卡参数异常{}", "extShopUserConsumeRecordDTOS = [" + extShopUserConsumeRecordDTOS + "]");
-//                            throw new RuntimeException();
-//                        }
-//                        ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-//                        userConsumeRecordDTO.setFlowId(dto.getShopUserRechargeCardDTO().getId());
-//                        shopUserConsumeService.userConsumeRechargeCard(userConsumeRecordDTO);
-//                    }
-//                    shopProjectService.saveUserProjectRelation(shopUserRelationDTO);
-//                }
-//                //如果是套卡相关操作
-//                else if (GoodsTypeEnum.COLLECTION_CARD.getCode().equals(goodsType)) {
-//                    if (dto.getShopProjectGroupDTO() == null) {
-//                        logger.error("用户充值操作用户与卡的关系为空,{}", "ShopUserProjectRelationDTO = [" + dto.getShopUserProjectRelationDTO() + "]");
-//                        throw new RuntimeException();
-//                    }
-//                    ShopProjectGroupDTO shopProjectGroupDTO = dto.getShopProjectGroupDTO();
-//
-//                    //根据套卡id查询项目列表
-//                    ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
-//                    shopProjectInfoGroupRelationDTO.setShopProjectGroupId(shopProjectGroupDTO.getId());
-//                    shopProjectInfoGroupRelationDTO.setSysShopId(shopProjectInfoGroupRelationDTO.getSysShopId());
-//                    List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
-//
-//                    if (null == groupRelations) {
-//                        logger.error("根据项目套卡主键查询出来的项目列表为空，{}", groupRelations);
-//                        throw new RuntimeException();
-//                    }
-//                    //如果套卡能买多套
-//                    for (int i = 0; i < dto.getConsumeNumber(); i++) {
-//                        //生成用户跟套卡与项目的关系的关系
-//                        for (ShopProjectInfoGroupRelationDTO dt : groupRelations) {
-//                            //查询项目信息
-//                            ShopProjectInfoDTO shopProjectInfoDTO = redisUtils.getShopProjectInfoFromRedis(dt.getShopProjectInfoId());
-//                            ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
-//                            groupRelRelationDTO.setSysShopId(dto.getSysShopId());
-//                            groupRelRelationDTO.setSysUserId(dto.getSysUserId());
-//                            groupRelRelationDTO.setId(IdGen.uuid());
-//                            groupRelRelationDTO.setProjectInitAmount(shopProjectInfoDTO.getMarketPrice());
-//                            groupRelRelationDTO.setProjectInitTimes(shopProjectInfoDTO.getMaxContainTimes());
-//                            groupRelRelationDTO.setProjectSurplusAmount(shopProjectInfoDTO.getMarketPrice());
-//                            groupRelRelationDTO.setProjectSurplusTimes(shopProjectInfoDTO.getMaxContainTimes());
-//                            groupRelRelationDTO.setShopProjectGroupId(shopProjectGroupDTO.getId());
-//                            groupRelRelationDTO.setShopProjectGroupName(shopProjectGroupDTO.getProjectGroupName());
-//                            groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
-//                            groupRelRelationDTO.setSysBossId(shopProjectInfoDTO.getSysBossId());
-//                            shopProjectGroupService.saveShopUserProjectGroupRelRelation(groupRelRelationDTO);
-//                        }
-//                    }
-//                    dto.setFlowId(shopProjectGroupDTO.getId());
-//                    dto.setFlowName(GoodsTypeEnum.COLLECTION_CARD.getDesc());
-//                }
-//                //如果是产品相关
-//                else if (GoodsTypeEnum.PRODUCT.getCode().equals(goodsType)) {
-//                    //生成用户跟产品的关系
-//                    ShopUserProductRelationDTO userProductRelationDTO = dto.getShopUserProductRelationDTO();
-//                    String uuid = IdGen.uuid();
-//                    userProductRelationDTO.setId(uuid);
-//                    dto.setFlowId(uuid);
-//                    dto.setFlowName(GoodsTypeEnum.PRODUCT.getCode());
-//                }
-//                //dto.getPrice()为此次交易的总价格
-//                sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().add(dto.getPrice()));
-//
-//                //更新用户的账户信息
-//                try {
-//                    sysUserAccountDTO.setFlowNo(transactionCodeNumber);
-//                    sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
-//                } catch (Exception e) {
-//                    logger.error("更新账户信息失败，失败信息为{}" + e.getMessage(), e);
-//                    throw new RuntimeException();
-//                }
-//                //记录店员的流水信息
-//                shopClerkService.saveSysClerkFlowAccountInfo(dto);
-//
-//                dto.setFlowNo(transactionCodeNumber);
-//                dto.setOperDate(new Date());
-//                dto.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
-//                int record = shopUerConsumeRecordService.saveCustomerConsumeRecord(dto);
-//                logger.debug("保存用户充值或消费操作返回结果 {}", record > 0 ? "成功" : "失败");
-//            }
-//        } catch (Exception e) {
-//            logger.error("充值失败，失败原因为，{}" + e.getMessage(), e);
-//            responseDTO.setResult(StatusConstant.FAILURE);
-//            responseDTO.setResponseData("failure");
-//        }
-//        //保存用户的操作记录
-//        responseDTO.setResult(StatusConstant.SUCCESS);
-//        responseDTO.setResponseData("success");
-//        logger.info("用户充值操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
-//        return responseDTO;
-        return null;
+        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+        shopUserConsumeRecordDTO.setId(consumeId);
+        List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+
+        if (CommonUtils.objectIsNotEmpty(shopCustomerConsumeRecord)) {
+            shopUserConsumeRecordDTO = shopCustomerConsumeRecord.get(0);
+        }
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(shopUserConsumeRecordDTO);
+
+        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * @Param:
+     * @Return:
+     * @Description: 根据flowId查询具体某个消费信息记录
+     * @Date:2018/4/10 11:20
+     */
+    @RequestMapping(value = "/consume/getUserConsumeByFlowId", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getUserConsumeByFlowId(@RequestParam String flowId, @RequestParam(required = false) String consumeType) {
+        long startTime = System.currentTimeMillis();
+
+        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+        if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
+            flowId = "10b939362aca4680b1634718106cf840";
+        }
+        shopUserConsumeRecordDTO.setFlowId(flowId);
+        shopUserConsumeRecordDTO.setConsumeType(consumeType);
+        List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(shopCustomerConsumeRecord);
+
+        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
     }
 
     /**
@@ -303,7 +210,10 @@ public class UserConsumeController {
                 String goodsType = dto.getGoodsType();
 
                 //获取用户的账户信息
-                SysUserAccountDTO sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(dto.getSysUserId());
+                SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
+                sysUserAccountDTO.setSysUserId(dto.getSysUserId());
+                sysUserAccountDTO.setSysShopId(dto.getSysShopId());
+                sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
 
                 //如果是次卡、疗程卡相关操作
                 if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType) || GoodsTypeEnum.TREATMENT_CARD.getCode().equals(goodsType)) {
@@ -378,6 +288,83 @@ public class UserConsumeController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData("success");
         logger.info("用户充值操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 用户划疗程卡操作
+     *
+     * @param shopUserConsumeDTO
+     * @return
+     */
+    @RequestMapping(value = "/consumes/consumeCourseCard", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> consumeCourseCard(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("用户划疗程卡操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        int cardFlag = shopUserConsumeService.consumeCourseCard(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
+        //保存用户的操作记录
+        responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData("success");
+        logger.info("用户充值操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+
+    /**
+     * 用户划套卡下的子卡操作
+     *
+     * @param shopUserConsumeDTO
+     * @return
+     */
+    @RequestMapping(value = "/consumes/consumesDaughterCard", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> consumesDaughterCard(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("用户划套卡下的子卡操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        List<ShopUserConsumeDTO> userConsumeDTOT = shopUserConsumeDTO.getShopUserConsumeDTO();
+        int cardFlag = shopUserConsumeService.consumesDaughterCard(userConsumeDTOT, clerkInfo);
+        //保存用户的操作记录
+        responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData("success");
+        logger.info("用户划套卡下的子卡操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 用户领取产品
+     *
+     * @param shopUserConsumeDTO
+     * @return
+     */
+    @RequestMapping(value = "/consumes/consumesUserProduct", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> consumesUserProduct(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("用户领取产品操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        int cardFlag = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
+        //保存用户的操作记录
+        responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData("success");
+        logger.info("用户领取产品操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

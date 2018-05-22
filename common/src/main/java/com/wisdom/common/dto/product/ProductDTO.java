@@ -77,7 +77,7 @@ public class ProductDTO<T> {
      * 产品库存
      */
     @JSONField(name = "productAmount")
-    private int productAmount;
+    private String productAmount;
 
     /**
      * 产品销量
@@ -190,11 +190,11 @@ public class ProductDTO<T> {
         this.sellNum = sellNum;
     }
 
-    public int getProductAmount() {
+    public String getProductAmount() {
         return productAmount;
     }
 
-    public void setProductAmount(int productAmount) {
+    public void setProductAmount(String productAmount) {
         this.productAmount = productAmount;
     }
 }

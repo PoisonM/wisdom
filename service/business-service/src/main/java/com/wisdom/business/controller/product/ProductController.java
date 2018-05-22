@@ -15,8 +15,11 @@ import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.UUIDUtil;
 import com.wisdom.common.util.excel.ExportExcel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +49,8 @@ public class ProductController {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * 获取某个商品的基本信息
@@ -107,7 +113,6 @@ public class ProductController {
 					exportProductExcelDTO.setSecondType(productDTO.getSecondType());
 					exportProductExcelDTO.setStatus(productDTO.getStatus());
 					exportProductExcelDTO.setSellNum(productDTO.getSellNum());
-					//exportProductExcelDTO.setProductAmount(productDTO.getProductAmount());
 					excelList.add(exportProductExcelDTO);
 				}
 				ByteArrayInputStream in = ex.getWorkbookIn("视频EXCEL文档",orderHeaders, excelList);
@@ -138,7 +143,27 @@ public class ProductController {
 		ResponseDTO<ProductDTO> responseDTO = new ResponseDTO<>();
 		ProductDTO productDTO = productService.findProductById(productId);
 		responseDTO.setResponseData(productDTO);
-		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		return responseDTO;
+	}
+
+	/**
+	 * 根据id查询商品剩余特价时间
+	 * @param productId  商品id
+	 * @return
+	 */
+	@RequestMapping(value = "findProductBargainPriceTimeById", method = {RequestMethod.POST, RequestMethod.GET})
+	//@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<OfflineProductDTO> findProductBargainPriceTimeById(@RequestParam String productId) {
+
+		Query query = new Query().addCriteria(Criteria.where("productId").is(productId));
+		OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
+		offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
+		ResponseDTO<OfflineProductDTO> responseDTO = new ResponseDTO();
+		responseDTO.setResponseData(offlineProductDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
 
@@ -152,6 +177,7 @@ public class ProductController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamVoDTO<List<ProductDTO>>> queryProductsByParameters(@RequestBody PageParamVoDTO<ProductDTO> pageParamVoDTO) {
+		long startTime = System.currentTimeMillis();
 		ResponseDTO<PageParamVoDTO<List<ProductDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamVoDTO<List<ProductDTO>> page = productService.queryProductsByParameters(pageParamVoDTO);
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())){
@@ -172,21 +198,32 @@ public class ProductController {
 					exportProductExcelDTO.setSecondType(productDTO.getSecondType());
 					exportProductExcelDTO.setStatus(productDTO.getStatus());
 					exportProductExcelDTO.setSellNum(productDTO.getSellNum());
-					exportProductExcelDTO.setProductAmount(productDTO.getProductAmount());
+					exportProductExcelDTO.setProductAmount(Integer.parseInt(productDTO.getProductAmount()));
 					excelList.add(exportProductExcelDTO);
 				}
 				ByteArrayInputStream in = ex.getWorkbookIn("产品EXCEL文档",orderHeaders, excelList);
 				String url = CommonUtils.orderExcelToOSS(in);
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+				logger.info("条件导出商品Excel耗时{}毫秒", (System.currentTimeMillis() - startTime));
+				return responseDTO;
 			}catch (Exception e){
 				e.printStackTrace();
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			}
 			return responseDTO;
 		}
+		if( 0 == page.getResponseData().size()){
+			responseDTO.setResponseData(page);
+			responseDTO.setResult("未查出结果");
+			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			logger.info("条件查询商品未查出数据");
+			logger.info("条件查询商品耗时{}毫秒", (System.currentTimeMillis() - startTime));
+			return responseDTO;
+		}
 		responseDTO.setResponseData(page);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		logger.info("条件查询商品耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -228,7 +265,7 @@ public class ProductController {
 		String uuid = UUIDUtil.getUUID();
 		try {
 			productDTO.setId(uuid);
-			if(productDTO.getProductId() == null){
+			if(null == productDTO.getProductId()){
 				productDTO.setProductId(productId);
 				productDTO.getProductDetail().setProductId(productId);
 			}

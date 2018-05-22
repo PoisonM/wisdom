@@ -1,0 +1,221 @@
+.stillOwedBox {
+    width: 100%;
+    height: 100%;
+    background: #F5F5F5;
+    overflow: scroll;
+}
+
+.stillOwedBox .stillOwedTitle {
+    background: #EEEEEE;
+    font-size: 13px;
+    color: #888888;
+    letter-spacing: 0;
+    padding: 20px 0 6px 17px;
+    margin-top: 10px;
+}
+
+.stillOwedBox .stillOwedUl {
+    width: 100%;
+    background: #fff;
+}
+
+.stillOwedBox .stillOwedUl li {
+    height: 70px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.stillOwedBox .stillOwedUl li input {
+    display: block;
+    float: left;
+    margin: 16px 0px 0px 10px;
+}
+
+.stillOwedBox .stillOwedUl li p {
+    display: block;
+    margin-left: 15px;
+    float: left;
+    color: #999;
+}
+
+.stillOwedBox .stillOwedUl li div {
+    margin: 13px 0 0 16px;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+.stillOwedBox .stillOwedUl li span {
+    margin: -10px 16px 0 0;
+    float: right;
+    font-family: PingFangSC-Regular;
+    font-size: 11px;
+    color: #888888;
+    letter-spacing: 0;
+}
+
+.stillOwedBox .stillOwedUl li span input {
+    background: #F4F4F4;
+    border: 0 solid #EBEBEB;
+    width: 150px;
+    height: 32px;
+    margin: -6px 0 0 10px;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #888888;
+    letter-spacing: 0;
+    padding-left: 9px;
+}
+
+.stillOwedBox textarea {
+    width: 100%;
+}
+
+.stillOwedBox button {
+    background: #FF6666;
+    border-radius: 4px;
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #FCFCFC;
+    letter-spacing: 0.4px;
+    float: right;
+    margin: 41px 44px 0 0;
+    width: 180px;
+    height: 44px;
+}
+
+.checkBox {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 23px 8px;
+    float: left;
+    border: 1px solid #FF6666;
+}
+
+.checkBox img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.stillOwedBox .stillOwedContent {
+    width: 100%;
+    background: #fff;
+}
+
+.stillOwedBox .stillOwedContent li {
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.stillOwedBox .otherOperation li {
+    height: 45px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.stillOwedBox .otherOperation li input {
+    display: block;
+    float: left;
+    margin: 16px 0px 0px 10px;
+}
+
+.stillOwedBox .otherOperation li p {
+    display: block;
+    margin: 20px 0 0 20px;
+    float: left;
+    color: #999;
+}
+
+.stillOwedBox .otherOperation li div {
+    margin: 13px 0 0 16px;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+.stillOwedBox .otherOperation li span {
+    margin: 13px 16px 0 0;
+    float: right;
+    font-family: PingFangSC-Regular;
+    font-size: 11px;
+    color: #888888;
+    letter-spacing: 0;
+}
+
+.stillOwedBox .otherOperation li span input {
+    background: #F4F4F4;
+    border: 0 solid #EBEBEB;
+    width: 150px;
+    height: 32px;
+    margin: -6px 10px 0 10px;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #888888;
+    letter-spacing: 0;
+    padding-left: 9px;
+    text-align: center;
+}
+
+.stillOwedBox .otherOperation li span b {
+    font-size: 18px;
+    float: left;
+    line-height: 20px;
+}
+
+.stillOwedContent .contentBox {
+    background: #F5F5F5;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.stillOwedContent .contentBox .delete {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-style: 20px;
+    color: #FF6666;
+}
+
+.stillOwedContent .contentBox input {
+    border: 0 solid #EBEBEB;
+    width: 150px;
+    height: 32px;
+    margin: -6px 10px 0 10px;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #888888;
+    letter-spacing: 0;
+    padding-left: 9px;
+}
+
+.stillOwedContent .contentBox .name {
+    margin: 15px;
+    display: block;
+    font-size: 18px;
+}
+
+.stillOwedContent .contentBox .discount {
+    display: block;
+    margin: 10px 20px;
+}
+
+.stillOwedContent .contentBox .discountPrice {
+    margin: 0 0 10px 20px;
+}
+.stillOwedContent .otherOperation li .subtotal e{
+    float: left;
+}
+.stillOwedContent .otherOperation li .subtotal input{
+    width: 100px;
+    background:#ffffff;
+}
+.stillOwedBox .allPrice{
+    display: block;
+    width: 100%;
+    text-align: right;
+    padding-right: 25px;
+}

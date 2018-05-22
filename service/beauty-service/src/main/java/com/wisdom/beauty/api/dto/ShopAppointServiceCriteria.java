@@ -69,7 +69,7 @@ public class ShopAppointServiceCriteria {
     }
 
     public void setLimitStart(int limitStart) {
-        this.limitStart=limitStart;
+        this.limitStart = limitStart;
     }
 
     public int getLimitStart() {
@@ -77,7 +77,7 @@ public class ShopAppointServiceCriteria {
     }
 
     public void setPageSize(int pageSize) {
-        this.pageSize=pageSize;
+        this.pageSize = pageSize;
     }
 
     public int getPageSize() {
@@ -865,6 +865,76 @@ public class ShopAppointServiceCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andAppointPeriodDetailIsNull() {
+            addCriterion("appoint_period_detail is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailIsNotNull() {
+            addCriterion("appoint_period_detail is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailEqualTo(String value) {
+            addCriterion("appoint_period_detail =", value, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailNotEqualTo(String value) {
+            addCriterion("appoint_period_detail <>", value, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailGreaterThan(String value) {
+            addCriterion("appoint_period_detail >", value, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailGreaterThanOrEqualTo(String value) {
+            addCriterion("appoint_period_detail >=", value, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailLessThan(String value) {
+            addCriterion("appoint_period_detail <", value, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailLessThanOrEqualTo(String value) {
+            addCriterion("appoint_period_detail <=", value, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailLike(String value) {
+            addCriterion("appoint_period_detail like", value, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailNotLike(String value) {
+            addCriterion("appoint_period_detail not like", value, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailIn(List<String> values) {
+            addCriterion("appoint_period_detail in", values, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailNotIn(List<String> values) {
+            addCriterion("appoint_period_detail not in", values, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailBetween(String value1, String value2) {
+            addCriterion("appoint_period_detail between", value1, value2, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointPeriodDetailNotBetween(String value1, String value2) {
+            addCriterion("appoint_period_detail not between", value1, value2, "appointPeriodDetail");
+            return (Criteria) this;
+        }
+
         public Criteria andSysUserIdIsNull() {
             addCriterion("sys_user_id is null");
             return (Criteria) this;
@@ -1212,6 +1282,76 @@ public class ShopAppointServiceCriteria {
 
         public Criteria andDetailNotBetween(String value1, String value2) {
             addCriterion("detail not between", value1, value2, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateIsNull() {
+            addCriterion("appointment_cancle_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateIsNotNull() {
+            addCriterion("appointment_cancle_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateEqualTo(String value) {
+            addCriterion("appointment_cancle_date =", value, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateNotEqualTo(String value) {
+            addCriterion("appointment_cancle_date <>", value, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateGreaterThan(String value) {
+            addCriterion("appointment_cancle_date >", value, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateGreaterThanOrEqualTo(String value) {
+            addCriterion("appointment_cancle_date >=", value, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateLessThan(String value) {
+            addCriterion("appointment_cancle_date <", value, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateLessThanOrEqualTo(String value) {
+            addCriterion("appointment_cancle_date <=", value, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateLike(String value) {
+            addCriterion("appointment_cancle_date like", value, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateNotLike(String value) {
+            addCriterion("appointment_cancle_date not like", value, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateIn(List<String> values) {
+            addCriterion("appointment_cancle_date in", values, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateNotIn(List<String> values) {
+            addCriterion("appointment_cancle_date not in", values, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateBetween(String value1, String value2) {
+            addCriterion("appointment_cancle_date between", value1, value2, "appointmentCancleDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppointmentCancleDateNotBetween(String value1, String value2) {
+            addCriterion("appointment_cancle_date not between", value1, value2, "appointmentCancleDate");
             return (Criteria) this;
         }
 

@@ -12,6 +12,11 @@ import com.wisdom.beauty.api.dto.SysClerkFlowAccountDTO;
  */
 public interface ShopClerkService {
 
+    /**
+     * 记录店员的流水信息
+     *
+     * @param dto
+     */
     void saveSysClerkFlowAccountInfo(ShopUserConsumeRecordDTO dto);
 
     /**

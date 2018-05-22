@@ -1,5 +1,6 @@
 package com.wisdom.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
@@ -14,14 +15,25 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by 赵得良 on 21/09/2016.
@@ -30,8 +42,21 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BeautyServiceApplication.class)
+@AutoConfigureMockMvc
 @WebAppConfiguration
 public class AppointmentTest {
+
+
+    private MockMvc mvc;
+
+    @Autowired
+    private WebApplicationContext context;
+
+    @Before
+    public void setupMockMvc() {
+        mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        SpringUtil.setApplicationContext(context);
+    }
 
     @Autowired
     private ShopAppointServiceMapper shopAppointServiceMapper;
@@ -71,10 +96,35 @@ public class AppointmentTest {
     @Test
     public void saveAppointmentService() {
 
+        String a = UUID.randomUUID().toString();
         ShopAppointServiceDTO shopAppointServiceDTO = getShopAppointServiceDTO();
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         System.out.println("测试完毕");
     }
+
+    /**
+     * 保存用户的预约信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSaveAppointmentService() throws Exception {
+
+        ShopAppointServiceDTO shopAppointServiceDTO = getShopAppointServiceDTO();
+
+        String toJSONString = JSONObject.toJSONString(shopAppointServiceDTO);
+
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(get("/appointmentInfo/getShopClerkAppointmentInfo").param("searchDate", "2018-04-27").param("sysShopId", "11").param("sysClerkId", "cc03a01d060e4bb09e051788e8d9801b").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送post请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+
+    }
+
 
     @Test
     public void getAppointmentService() {
@@ -84,34 +134,72 @@ public class AppointmentTest {
     @Test
     public void getShopAppointInfoFromRedis() {
         ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
-        shopAppointServiceDTO.setId("6951d1561c5b4cae84fd72283e52a081");
+        shopAppointServiceDTO.setId("id_7");
         ShopAppointServiceDTO infoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceDTO.getId());
         System.out.println("infoFromRedis");
     }
 
+    @Test
+    public void findAppointNumByTime(){
+
+    }
+
     private ShopAppointServiceDTO getShopAppointServiceDTO() {
-        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
-        shopAppointServiceDTO.setId("id_8");
-        shopAppointServiceDTO.setAppointEndTime(DateUtils.StrToDate("2018-04-08 11:00:00", "datetime"));
+        ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
         shopAppointServiceDTO.setAppointPeriod(60);
-        shopAppointServiceDTO.setAppointStartTime(new Date());
-        shopAppointServiceDTO.setCreateBy(IdGen.uuid());
-        shopAppointServiceDTO.setCreateDate(DateUtils.StrToDate("2018-04-08 12:00:00", "datetime"));
-        shopAppointServiceDTO.setDetail("测试");
+        shopAppointServiceDTO.setAppointStartTimeS("2018-09-20 19:00");
         shopAppointServiceDTO.setShopProjectId(IdGen.uuid());
         shopAppointServiceDTO.setShopProjectName("面部保洁");
         shopAppointServiceDTO.setStatus("0");
-        shopAppointServiceDTO.setSysBossId(IdGen.uuid());
-        shopAppointServiceDTO.setSysClerkId("1");
-        shopAppointServiceDTO.setSysUserId(IdGen.uuid());
-        shopAppointServiceDTO.setSysClerkName("王五");
-        shopAppointServiceDTO.setUpdateUser(IdGen.uuid());
-        shopAppointServiceDTO.setSysShopName("汉方美容院");
-        shopAppointServiceDTO.setSysUserName("张欢");
-        shopAppointServiceDTO.setSysUserPhone("181812839893");
-        shopAppointServiceDTO.setSysShopId("3");
+        shopAppointServiceDTO.setSysClerkId("6ce974e11feb4deab74b553d3b3c5509");
         return shopAppointServiceDTO;
     }
+
+//    private ShopAppointServiceDTO getShopAppointServiceDTO() {
+//        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
+//        shopAppointServiceDTO.setId("id_8");
+//        shopAppointServiceDTO.setAppointEndTime(DateUtils.StrToDate("2018-04-08 11:00:00", "datetime"));
+//        shopAppointServiceDTO.setAppointPeriod(60);
+//        shopAppointServiceDTO.setAppointStartTime(new Date());
+//        shopAppointServiceDTO.setCreateBy(IdGen.uuid());
+//        shopAppointServiceDTO.setCreateDate(DateUtils.StrToDate("2018-04-08 12:00:00", "datetime"));
+//        shopAppointServiceDTO.setDetail("测试");
+//        shopAppointServiceDTO.setShopProjectId(IdGen.uuid());
+//        shopAppointServiceDTO.setShopProjectName("面部保洁");
+//        shopAppointServiceDTO.setStatus("0");
+//        shopAppointServiceDTO.setSysBossId(IdGen.uuid());
+//        shopAppointServiceDTO.setSysClerkId("1");
+//        shopAppointServiceDTO.setSysUserId(IdGen.uuid());
+//        shopAppointServiceDTO.setSysClerkName("王五");
+//        shopAppointServiceDTO.setUpdateUser(IdGen.uuid());
+//        shopAppointServiceDTO.setSysShopName("汉方美容院");
+//        shopAppointServiceDTO.setSysUserName("张欢");
+//        shopAppointServiceDTO.setSysUserPhone("181812839893");
+//        shopAppointServiceDTO.setSysShopId("3");
+//        return shopAppointServiceDTO;
+//    }
+
+
+    /**
+     * 删除档案信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testDeleteArchiveInfo() throws Exception {
+
+        MvcResult result = mvc.perform(get("/appointmentInfo/getAppointmentInfoById").param("shopAppointServiceId", "f83d378c34a747588570d1546b35469b"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    public static void main(String[] args) {
+        System.out.println("args = [" + args + "]");
+    }
+
 
 
 }

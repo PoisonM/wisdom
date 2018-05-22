@@ -1,0 +1,49 @@
+.prepaidRecordsBox {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+
+.prepaidRecordsBox .prepaidRecordsTitle {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0.45px;
+    padding: 6px 0 6px 17px;
+}
+
+.prepaidRecordsBox .prepaidRecordsUl {
+    width: 100%;
+    background: #fff;
+}
+
+.prepaidRecordsBox .prepaidRecordsUl li {
+    height: 70px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.prepaidRecordsBox .prepaidRecordsUl li div {
+    margin: 13px 0 9px 16px;
+    float: left;
+
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0.45px;
+}
+
+.prepaidRecordsBox .prepaidRecordsUl li div b {
+    font-family: PingFangSC-Regular;
+    font-size: 11px;
+    color: #333333;
+    letter-spacing: 0.45px;
+}
+
+.prepaidRecordsBox .prepaidRecordsUl li span {
+    margin: 21px 16px 13px 0;
+    float: right;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF6666;
+    letter-spacing: 0;
+}

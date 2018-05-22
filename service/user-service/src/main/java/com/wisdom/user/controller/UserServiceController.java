@@ -1,5 +1,7 @@
 package com.wisdom.user.controller;
 
+import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.user.service.RealNameAuthService;
@@ -65,4 +67,11 @@ public class UserServiceController {
 	RealNameInfoDTO verifyUserIdentify(@RequestParam(value="idCard") String idCard,@RequestParam(value="name") String name) {
 		return realNameAuthService.getRealNameInfoDTO(idCard,name);
 	}
+
+	@RequestMapping(value = "/queryUserInfoDTOByParameters",method=RequestMethod.POST)
+	@ResponseBody
+	PageParamDTO<List<UserInfoDTO>> queryUserInfoDTOByParameters(@RequestBody PageParamVoDTO<UserInfoDTO> pageParamVoDTO) {
+		return customerInfoService.queryUserInfoDTOByParameters(pageParamVoDTO);
+	}
+
 }

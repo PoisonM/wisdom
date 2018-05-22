@@ -1,41 +1,26 @@
- <div class="collectionCard">
+ <div class="collectionCard" style="height:10.67rem;overflow-y: scroll;border-bottom-right-radius: 0.58125rem;">
         <div class="searchBox">
-            <input type="search" placeholder="请输入套卡名称" >
-            <button>搜索</button>
+            <input type="search" placeholder="请输入套卡名称" ng-model="param.consumptionObj.singleFilterStr">
+            <button ng-click = "searchCollectionCard()">搜索</button>
         </div>
         <div class="cardLis">
             <ul class="height120">
-                <li>
+                <li ng-repeat="item in param.consumptionObj.collectionCardByShowId">
                     <div>
-                        <img src="images/bt_Single%20election_select.png">
+                        <img ng-src="{{selectCollectionCardDataPic[$index]}}" ng-click = "CollectionCardPic($index)">
                         <div class="detail">
-                            <p class="color333FS30">丽得姿</p>
+                            <p class="color333FS30">{{item.projectGroupName}}</p>
                             <p class="color999FS24">剩余两次</p>
                         </div>
                     </div>
                     <div class="money">
                         <div>
-                            <p class="color333FS30">￥98.00</p>
-                            <del class="color999FS24">168.00</del>
+                            <p class="color333FS30">￥{{item.discountPrice}}</p>
+                            <del class="color999FS24">{{item.marketPrice}}</del>
                         </div>
-
                     </div>
                 </li>
-                <li>
-                    <div><img src="images/bt_Single%20election_nor_.png">
-                        <div class="detail">
-                            <p class="color333FS30">丽得姿</p>
-                            <p class="color999FS24">剩余两次</p>
-                        </div>
-                    </div>
-                    <div class="money">
-                        <div>
-                            <p class="color333FS30">￥98.00</p>
-                            <del class="color999FS24">168.00</del>
-                        </div>
 
-                    </div>
-                </li>
             </ul>
         </div>
     </div>

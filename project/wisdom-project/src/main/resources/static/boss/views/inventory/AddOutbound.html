@@ -1,0 +1,74 @@
+<ion-view>
+    <ion-content class="partialFiles mb45 bgf6" scroll="true">
+        <div>
+            <div class="">
+                <ion-item class="pd10 h50 sb">
+                    <p class="fs16 col333">出库类型<span class="colff66">*</span></p>
+                    <p class="fs14 col999">
+
+                        <span ng-click="selectTheOutboundTypeGo()">  请选择<img src="images/more.png" class="more"></span>
+                    </p>
+                </ion-item>
+                <ion-item class="pd10 h50 sb">
+                    <p class="fs16 col333">单据号<span class="colff66"></span></p>
+                    <p class="fs14 col999">
+                        <span> </span>
+                    </p>
+                </ion-item>
+                <ion-item class="pd10 h50 sb">
+                    <p class="fs16 col333">领取人<span class="colff66">*</span></p>
+                    <p class="fs14 col999">
+                        <span ng-click="selFamilyGo()"> 请选择 <img src="images/more.png" class="more"></span>
+                    </p>
+                </ion-item>
+            </div>
+            <div class="sb bgfff" style="height:65px;">
+                <label class=" fs16 col333 ml15 mt10">简介</label>
+                <textarea class="  fs14 col999 mt10 mr15 pd10" style="border: 1px solid #CCCCCC;border-radius: 4px;height:50px;width:80%" placeholder="请输入产品的备注信息，最长不超过50个字">
+请输入产品的备注信息，最长不超过50个字
+                </textarea>
+            </div>
+            <div>
+                <div style="border:solid 1px #e6e6e6;border-radius: 6px;width:95%;margin: 10px auto 0;box-shadow: 0 2px 4px 0 rgba(153,153,153,0.20)" class="">
+                    <ion-list>
+                        <ion-item style="height:90px;border-radius:6px 6px 0 0" class="sb">
+                            <div style="display: flex">
+                                <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
+                                    <img src="">
+                                </p>
+                                <div class="ml10 mt10">
+                                    <P class="fs14 col333 ">健肤小喷</P>
+                                    <P class="fs12 col888 mt10">编号：</P>
+                                    <P class="fs12 col888">
+                                        <span>单位：件</span>
+                                        <span class="ml50">规格：1000g</span>
+                                    </P>
+                                </div>
+                            </div>
+                            <p >
+                                <img src="images/inventory/delTong.png" class=" mr10 mt20" style="width:25px;height:25px;">
+                            </p>
+                        </ion-item>
+                    </ion-list>
+                    <p class="h40 sb bbl" style="background: #F6F6F6;">
+                        <span class="ml20 fs14 col333">库存数量</span>
+                        <span class="mr20 fs14 col333">2</span>
+                    </p>
+                    <p class="h40 sb bbl" style="background: #F6F6F6;border-radius: 0 0 6px 6px;">
+                        <span class="ml20 fs14 col333">出库数量</span>
+                        <input type="text"class="mr20 fs14 col333" style="text-align: right">
+                    </p>
+                </div>
+            </div>
+
+            <p class="h45 bgfff fs14 center colff66" style="width:95%;margin:20px auto 0 ;">
+                <span ng-click="productInventoryGo('2')">选择更多产品出库</span><span class="col333">或者</span><span ng-click="productInventoryGo('3')">扫码出库</span>
+            </p>
+
+        </div>
+        </div>
+    </ion-content>
+    <div class="h45 bgff66 colfff fs15 tabs" ng-click="successfulInventoryGo()">
+        确认出库(1/30)
+    </div>
+</ion-view>
