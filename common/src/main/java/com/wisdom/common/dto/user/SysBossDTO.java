@@ -48,6 +48,12 @@ public class SysBossDTO extends BaseEntity implements Serializable {
     //关注状态
     private String weixinAttentionStatus;
 
+    //
+    private String weChat;
+
+    //
+    private String qq;
+
     //照片
     private String photo;
 
@@ -181,6 +187,22 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setWeixinAttentionStatus(String weixinAttentionStatus) {
         this.weixinAttentionStatus = weixinAttentionStatus;
+    }
+
+    public String getWeChat() {
+        return weChat;
+    }
+
+    public void setWeChat(String weChat) {
+        this.weChat = weChat;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
     }
 
     public String getPhoto() {

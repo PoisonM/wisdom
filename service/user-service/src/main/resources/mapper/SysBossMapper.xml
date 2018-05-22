@@ -16,6 +16,8 @@
     <result column="user_type" property="userType" jdbcType="VARCHAR"/>
     <result column="user_openid" property="userOpenid" jdbcType="VARCHAR"/>
     <result column="weixin_attention_status" property="weixinAttentionStatus" jdbcType="VARCHAR"/>
+    <result column="we_chat" property="weChat" jdbcType="VARCHAR"/>
+    <result column="qq" property="qq" jdbcType="VARCHAR"/>
     <result column="photo" property="photo" jdbcType="VARCHAR"/>
     <result column="login_ip" property="loginIp" jdbcType="VARCHAR"/>
     <result column="login_date" property="loginDate" jdbcType="TIMESTAMP"/>
@@ -85,7 +87,8 @@
   <sql id="Base_Column_List" >
     id, sys_user_id, parent_shop_id, current_shop_id, current_store_id, name, nickname,
     password, email, identify_number, mobile, user_type, user_openid, weixin_attention_status,
-    photo, login_ip, login_date, del_flag, id_front_image, id_back_image, address
+    we_chat, qq, photo, login_ip, login_date, del_flag, id_front_image, id_back_image,
+    address
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.common.dto.user.SysBossCriteria">
     select
@@ -125,18 +128,18 @@
     current_shop_id, current_store_id, name,
     nickname, password, email,
     identify_number, mobile, user_type,
-    user_openid, weixin_attention_status, photo,
-    login_ip, login_date, del_flag,
-    id_front_image, id_back_image, address
-    )
+    user_openid, weixin_attention_status, we_chat,
+    qq, photo, login_ip,
+    login_date, del_flag, id_front_image,
+    id_back_image, address)
     values (#{id,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{parentShopId,jdbcType=VARCHAR},
     #{currentShopId,jdbcType=VARCHAR}, #{currentStoreId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
     #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
     #{identifyNumber,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR},
-    #{userOpenid,jdbcType=VARCHAR}, #{weixinAttentionStatus,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR},
-    #{loginIp,jdbcType=VARCHAR}, #{loginDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR},
-    #{idFrontImage,jdbcType=VARCHAR}, #{idBackImage,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}
-    )
+    #{userOpenid,jdbcType=VARCHAR}, #{weixinAttentionStatus,jdbcType=VARCHAR}, #{weChat,jdbcType=VARCHAR},
+    #{qq,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, #{loginIp,jdbcType=VARCHAR},
+    #{loginDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR}, #{idFrontImage,jdbcType=VARCHAR},
+    #{idBackImage,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.common.dto.user.SysBossDTO">
     insert into sys_boss
@@ -182,6 +185,12 @@
       </if>
       <if test="weixinAttentionStatus != null">
         weixin_attention_status,
+      </if>
+      <if test="weChat != null">
+        we_chat,
+      </if>
+      <if test="qq != null">
+        qq,
       </if>
       <if test="photo != null">
         photo,
@@ -247,6 +256,12 @@
       </if>
       <if test="weixinAttentionStatus != null">
         #{weixinAttentionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="weChat != null">
+        #{weChat,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null">
+        #{qq,jdbcType=VARCHAR},
       </if>
       <if test="photo != null">
         #{photo,jdbcType=VARCHAR},
@@ -323,6 +338,12 @@
       <if test="record.weixinAttentionStatus != null">
         weixin_attention_status = #{record.weixinAttentionStatus,jdbcType=VARCHAR},
       </if>
+      <if test="record.weChat != null">
+        we_chat = #{record.weChat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null">
+        qq = #{record.qq,jdbcType=VARCHAR},
+      </if>
       <if test="record.photo != null">
         photo = #{record.photo,jdbcType=VARCHAR},
       </if>
@@ -365,6 +386,8 @@
     user_type = #{record.userType,jdbcType=VARCHAR},
     user_openid = #{record.userOpenid,jdbcType=VARCHAR},
     weixin_attention_status = #{record.weixinAttentionStatus,jdbcType=VARCHAR},
+    we_chat = #{record.weChat,jdbcType=VARCHAR},
+    qq = #{record.qq,jdbcType=VARCHAR},
     photo = #{record.photo,jdbcType=VARCHAR},
     login_ip = #{record.loginIp,jdbcType=VARCHAR},
     login_date = #{record.loginDate,jdbcType=TIMESTAMP},
@@ -418,6 +441,12 @@
       <if test="weixinAttentionStatus != null">
         weixin_attention_status = #{weixinAttentionStatus,jdbcType=VARCHAR},
       </if>
+      <if test="weChat != null">
+        we_chat = #{weChat,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null">
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
       <if test="photo != null">
         photo = #{photo,jdbcType=VARCHAR},
       </if>
@@ -457,6 +486,8 @@
     user_type = #{userType,jdbcType=VARCHAR},
     user_openid = #{userOpenid,jdbcType=VARCHAR},
     weixin_attention_status = #{weixinAttentionStatus,jdbcType=VARCHAR},
+    we_chat = #{weChat,jdbcType=VARCHAR},
+    qq = #{qq,jdbcType=VARCHAR},
     photo = #{photo,jdbcType=VARCHAR},
     login_ip = #{loginIp,jdbcType=VARCHAR},
     login_date = #{loginDate,jdbcType=TIMESTAMP},

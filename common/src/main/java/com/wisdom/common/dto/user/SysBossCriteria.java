@@ -1105,6 +1105,146 @@ public class SysBossCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andWeChatIsNull() {
+            addCriterion("we_chat is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatIsNotNull() {
+            addCriterion("we_chat is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatEqualTo(String value) {
+            addCriterion("we_chat =", value, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatNotEqualTo(String value) {
+            addCriterion("we_chat <>", value, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatGreaterThan(String value) {
+            addCriterion("we_chat >", value, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatGreaterThanOrEqualTo(String value) {
+            addCriterion("we_chat >=", value, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatLessThan(String value) {
+            addCriterion("we_chat <", value, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatLessThanOrEqualTo(String value) {
+            addCriterion("we_chat <=", value, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatLike(String value) {
+            addCriterion("we_chat like", value, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatNotLike(String value) {
+            addCriterion("we_chat not like", value, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatIn(List<String> values) {
+            addCriterion("we_chat in", values, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatNotIn(List<String> values) {
+            addCriterion("we_chat not in", values, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatBetween(String value1, String value2) {
+            addCriterion("we_chat between", value1, value2, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeChatNotBetween(String value1, String value2) {
+            addCriterion("we_chat not between", value1, value2, "weChat");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIsNull() {
+            addCriterion("qq is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIsNotNull() {
+            addCriterion("qq is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqEqualTo(String value) {
+            addCriterion("qq =", value, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqNotEqualTo(String value) {
+            addCriterion("qq <>", value, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqGreaterThan(String value) {
+            addCriterion("qq >", value, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqGreaterThanOrEqualTo(String value) {
+            addCriterion("qq >=", value, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqLessThan(String value) {
+            addCriterion("qq <", value, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqLessThanOrEqualTo(String value) {
+            addCriterion("qq <=", value, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqLike(String value) {
+            addCriterion("qq like", value, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqNotLike(String value) {
+            addCriterion("qq not like", value, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIn(List<String> values) {
+            addCriterion("qq in", values, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqNotIn(List<String> values) {
+            addCriterion("qq not in", values, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqBetween(String value1, String value2) {
+            addCriterion("qq between", value1, value2, "qq");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqNotBetween(String value1, String value2) {
+            addCriterion("qq not between", value1, value2, "qq");
+            return (Criteria) this;
+        }
+
         public Criteria andPhotoIsNull() {
             addCriterion("photo is null");
             return (Criteria) this;
