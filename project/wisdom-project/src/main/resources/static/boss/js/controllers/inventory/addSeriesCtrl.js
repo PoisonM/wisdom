@@ -18,12 +18,12 @@ angular.module('controllers',[]).controller('addSeriesCtrl',
 
             };
             TwoLevelProduct.get({
-               id:$stateParams.productTypeOneId
+               id:$stateParams.id
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.requestList = data.responseData;
                     for(var i=0;i<$scope.requestList.length;i++){
-                        $scope.requestList[i].parentId = $stateParams.productTypeOneId;
+                        $scope.requestList[i].parentId = $stateParams.id;
                         $scope.param.selTrue.push(false)
                     }
                 }
@@ -38,7 +38,7 @@ angular.module('controllers',[]).controller('addSeriesCtrl',
                 var obj = {
                     status:"1",
                     productTypeName:"",
-                    parentId:$stateParams.productTypeOneId
+                    parentId:$stateParams.id
 
                 };
                 $scope.requestList.push(obj)

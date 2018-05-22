@@ -873,7 +873,7 @@ define(['appBoss'], function(app){
                     })
                 /*产品品牌设置*/
                     .state('productSetting', {
-                        url: '/productSetting/:type,:productTypeOneId,:productTypeName,:status',
+                        url: '/productSetting/:type,:id,:productTypeName,:status',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productSettingCtrl',
                         resolve: {
@@ -912,7 +912,7 @@ define(['appBoss'], function(app){
                     })
                         /*项目类别*/
                     .state('projectSetting', {
-                        url: '/projectSetting/:type,:projectTypeOneId,:projectTypeOneName,:status',
+                        url: '/projectSetting/:type,:id,:projectTypeName,:status',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'projectSettingCtrl',
                         resolve: {
@@ -925,7 +925,7 @@ define(['appBoss'], function(app){
                     })
                         /*修改系列*/
                     .state('projectSeries', {
-                        url: '/projectSeries/:projectTypeOneId',
+                        url: '/projectSeries/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'projectSeriesCtrl',
                         resolve: {
@@ -1766,7 +1766,7 @@ define(['appBoss'], function(app){
                     })
                     /* addSeries 添加系列*/
                     .state('addSeries', {
-                        url: '/addSeries/:productTypeOneId',
+                        url: '/addSeries/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'addSeriesCtrl',
                         resolve: {

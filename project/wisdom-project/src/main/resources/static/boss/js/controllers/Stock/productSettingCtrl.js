@@ -9,7 +9,7 @@ angular.module('controllers',[]).controller('productSettingCtrl',
             $scope.param={
                 productTypeName:$stateParams.productTypeName,
                 editType : $stateParams.type,
-                id:$stateParams.productTypeOneId,
+                id:$stateParams.id,
                 status:''/*不启动*/
             };
 

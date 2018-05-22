@@ -1,12 +1,12 @@
 <ion-view class="bg">
     <ion-content>
         <div class="list" ng-repeat="item in productBrand">
-                <li class="item p10" ng-click="checkProduct('edit',item.levelOneDetail.productTypeOneId,item.levelOneDetail.productTypeName,item.levelOneDetail.status)" >
+                <li class="item p10" ng-click="checkProduct('edit',item.levelOneDetail.id,item.levelOneDetail.productTypeName,item.levelOneDetail.status)" >
                     <span style="width: 2px;height: 20px;display: inline-block;background: #FF6666;"></span>
                     <span class="fs17 col33 ml10">{{item.levelOneDetail.productTypeName}}</span>
                     <span class="fr col88 fs14" >{{item.levelOneDetail.status=='0'?'启用':'已禁用'}}<i class="ion ion-ios-arrow-right ml10"></i></span>
                 </li>
-                <li class="item p5" style="display: flex;flex-wrap: wrap" ng-click="checkSeries(item.levelOneDetail.productTypeOneId)">
+                <li class="item p5" style="display: flex;flex-wrap: wrap" ng-click="checkSeries(item.levelOneDetail.id)">
                   <span style="height: 23px;background: #F6F6F6;color: #333333;padding: 5px;border: 0 solid #E5E5E5;
 border-radius: 6px;margin: 5px;font-size: 11px;" ng-repeat="(keys,vals) in item.levelTwoDetail">{{keys}}</span>
                 </li>

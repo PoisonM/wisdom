@@ -10,9 +10,9 @@ angular.module('controllers',[]).controller('projectSettingCtrl',
 
             $rootScope.title = "产品品牌";
             $scope.param={
-                projectTypeName:$stateParams.projectTypeOneName,
+                projectTypeName:$stateParams.projectTypeName,
                 editType : $stateParams.type,
-                id:$stateParams.projectTypeOneId,
+                id:$stateParams.id,
                 status:""/*不启动*/
             };
             if($stateParams.status=="1"){/**/

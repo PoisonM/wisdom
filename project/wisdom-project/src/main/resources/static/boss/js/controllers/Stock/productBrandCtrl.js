@@ -10,11 +10,11 @@ angular.module('controllers',[]).controller('productBrandCtrl',
             $scope.addSeriesGo = function(){
                 $state.go("addSeries")
             };
-            $scope.checkSeries=function (productTypeOneId) {
-                $state.go("addSeries",{productTypeOneId:productTypeOneId})
+            $scope.checkSeries=function (id) {
+                $state.go("addSeries",{id:id})
             };
-            $scope.checkProduct=function (type,productTypeOneId,productTypeName,status) {
-                $state.go("productSetting",{type:type,productTypeOneId:productTypeOneId,productTypeName:productTypeName,status:status})
+            $scope.checkProduct=function (type,id,productTypeName,status) {
+                $state.go("productSetting",{type:type,id:id,productTypeName:productTypeName,status:status})
             };
             SearchShopProductList.get({filterStr:''},function (date) {
                 $scope.productBrand = date.responseData.detailLevel

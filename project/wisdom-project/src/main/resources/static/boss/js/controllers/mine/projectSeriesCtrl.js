@@ -18,13 +18,13 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
             };
 
             TwoLevelProject.get({
-                id:$stateParams.projectTypeOneId
+                id:$stateParams.id
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.requestList = data.responseData;
                     console.log($scope.requestList);
                     for(var i=0;i<$scope.requestList.length;i++){
-                        $scope.requestList[i].parentId = $stateParams.projectTypeOneId;
+                        $scope.requestList[i].parentId = $stateParams.id;
                         $scope.param.selTrue.push(false)
                     }
                 }
@@ -39,7 +39,7 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 var obj = {
                     status:"1",
                     projectTypeName:"",
-                    parentId:$stateParams.projectTypeOneId
+                    parentId:$stateParams.id
 
                 };
                 $scope.requestList.push(obj)
