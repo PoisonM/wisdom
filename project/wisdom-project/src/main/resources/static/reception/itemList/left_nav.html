@@ -1,22 +1,26 @@
 <div class="left_nav" ng-class="{'left_nav_price_list':mainLeftSwitch.priceListFlag == true}">
     <div ng-if = "mainLeftSwitch.peopleListFlag" class="left_nav_box people_list ">
         <div class="search">
-            <span class="ser_ion"></span>
-            <input type="text" placeholder="用户名或者手机号搜索">
-            <span class="cancel">取消</span>
+            <span ng-click="searchRecord()" class="ser_ion"></span>
+            <input ng-model="param.queryField" type="text" placeholder="用户名或者手机号搜索">
+            <span ng-click="cancelSearch()" class="cancel">取消</span>
         </div>
         <div class="list">
-            <div class="letter">A</div>
-            <ul>
-                <li ng-click="selectSty($index)" ng-class="{'select_sty':param.selectSty == $index}" ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="user_info">
-                    <div class="user_img"></div>
-                    <div class="user_mobile">
-                        <span class="name">安迪</span>
-                        <span class="mobile"><i></i>18701233453</span>
-                    </div>
-                    <div class="user_more"></div>
-                </li>
-            </ul>
+            <div ng-repeat="bigItem in info">
+                <div ng-repeat="(key,value) in bigItem">
+                    <div  class="letter">{{key}}</div>
+                    <ul>
+                        <li ng-repeat="item in value"  ng-click="selectSty(item.id,item.sysUserId,item.shopid)" ng-class="{'select_sty':param.selectSty == item.id}"  class="user_info">
+                            <div class="user_img"></div>
+                            <div class="user_mobile">
+                                <span class="name">{{item.sysClerkName}}</span>
+                                <span class="mobile"><i></i>{{item.phone}}</span>
+                            </div>
+                            <div class="user_more"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
     <!--价目表部分-->

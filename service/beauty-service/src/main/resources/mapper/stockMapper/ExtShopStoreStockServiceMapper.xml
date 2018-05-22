@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.beauty.core.mapper.stock.ExtStockServiceMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStoreDTO">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="sys_user_name" jdbcType="VARCHAR" property="sysUserName" />
+        <result column="store_role" jdbcType="CHAR" property="storeRole" />
+        <result column="store_manager_id" jdbcType="VARCHAR" property="storeManagerId" />
+        <result column="authority_status" jdbcType="CHAR" property="authorityStatus" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, name, sys_user_name, store_role, store_manager_id, authority_status, create_by,
+        create_date, update_user, update_date
+    </sql>
+
+    <!--查询仓库列表-->
+    <select id="findStoreList" resultType="com.wisdom.beauty.api.extDto.ExtShopStoreDTO">
+        select
+            count(1) sum,
+            <include refid="Base_Column_List"/>
+        from
+            shop_store shop, shop_stock_boss_relation  ssb
+        where
+            shop.id=ssb.shop_store_id
+            <if test="name != null">
+                and shop.name= #{name}
+            </if>
+            <if test="sysUserName != null">
+                and shop.sys_user_name= #{sysUserName}
+            </if>
+            <if test="storeRole != null">
+                and shop.store_role= #{storeRole}
+            </if>
+            <if test="createDateS != null and createDateE!=null">
+                and shop.create_date BETWEEN #{createDateS} AND #{createDateE}
+            </if>
+            ORDER BY shop.create_date
+            limit #{pageStartNo},#{pageSize}
+
+    </select>
+</mapper>

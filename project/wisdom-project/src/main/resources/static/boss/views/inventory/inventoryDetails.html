@@ -1,0 +1,63 @@
+<ion-view>
+    <ion-content class="partialFiles">
+        <P class="h45 bgfff bbl" ng-show="false">
+            <label class="fs16 col333 ml10">出库方式：</label>
+            <span class="fs14 col666"><img src="images/selTrue.png" class="selGray mr5">手动出库</span>
+            <span class="fs14 col666"><img src="images/selRed.png" class="selGray ml10 mr5">扫码出库</span>
+        </P>
+        <div class="h45 bgfff row">
+            <div class="col col-33 center" style="border-right: solid 1px #f6f6f6">
+                <p style="margin-top:-10px">客装产品 <img src="images/inventory/triangleRed.png" class="trianglePic ml20"></p>
+            </div>
+            <div class="col col-33 center" style="border-right: solid 1px #f6f6f6">
+                <p style="margin-top:-10px">院装产品<img src="images/inventory/triangleGray.png" class="trianglePic ml20"></p>
+            </div>
+            <div class="col col-33 center">
+                <p style="margin-top:-10px">易耗品<img src="images/inventory/triangleGray.png" class="trianglePic ml20"></p>
+            </div>
+        </div>
+        <div>
+            <ion-list>
+                <ion-item class="item-input" style="background: border-box;height: 40px; ">
+                        <span class="item-input-wrapper" style="margin-right:10px;height:30px;margin-left:10px;" >
+                                <i class="icon ion-ios-search placeholder-icon" ng-click="search()"></i>
+                                <input id="search" type="search" placeholder="搜索产品名称/产品编号" ng-model="searchCont.key" >
+                                <i class="icon ion-close-circled placeholder-icon" style="vertical-align: middle;"
+                                   on-tap="clearSearch()" ng-if="searchCont.key.length"></i>
+                        </span>
+                </ion-item>
+            </ion-list>
+        </div>
+        <div class="center" style="height:25px;line-height:25px;background: rgba(255,102,102,0.15); ">
+            <p class="fs12 col888 ml10">总成本：￥12789205.91</p>
+        </div>
+        <p class="h30 fs12 col888">
+            <span class="ml20">可丽金.全部.占用成本：</span><span class="colff66">￥69838.13</span>
+        </p>
+        <div>
+            <ion-list>
+                <ion-item class="" ng-repeat="item in [0,1,2,3,4]" style="width:95%;margin: 10px auto 0;border-radius:  6px;box-shadow: 0 2px 2px 0 rgba(102,102,102,0.24)" ng-click="productInventoryDetailsGo()">
+                    <div class="h30 row" style="background: #F9F9F9;">
+                        <p class="col col-60 " style="line-height: 12px;height:20px;"> 本仓库库存：<span class="colff66">8</span></p>
+                        <p class="col col-40 " style="line-height: 12px;height:20px;">库存总量：<span class="colff66">8</span></p>
+
+                    </div>
+                    <div style="display: flex;height:90px;border-radius: 0 0 6px 6px;"  >
+                        <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
+                            <img src="">
+                        </p>
+                        <div class="ml10 mt10">
+                            <P class="fs14 col333 ">健肤小喷</P>
+                            <P class="fs12 col888 mt10">编号：</P>
+                            <P class="fs12 col888">
+                                <span>单位：件</span>
+                                <span class="ml50">规格：1000g</span>
+                            </P>
+                        </div>
+                    </div>
+
+                </ion-item>
+            </ion-list>
+        </div>
+    </ion-content>
+</ion-view>

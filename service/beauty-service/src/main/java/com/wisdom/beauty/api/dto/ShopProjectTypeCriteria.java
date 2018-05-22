@@ -475,6 +475,76 @@ public class ShopProjectTypeCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysBossIdIsNull() {
+            addCriterion("sys_boss_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdIsNotNull() {
+            addCriterion("sys_boss_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdEqualTo(String value) {
+            addCriterion("sys_boss_id =", value, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdNotEqualTo(String value) {
+            addCriterion("sys_boss_id <>", value, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdGreaterThan(String value) {
+            addCriterion("sys_boss_id >", value, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_boss_id >=", value, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdLessThan(String value) {
+            addCriterion("sys_boss_id <", value, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdLessThanOrEqualTo(String value) {
+            addCriterion("sys_boss_id <=", value, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdLike(String value) {
+            addCriterion("sys_boss_id like", value, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdNotLike(String value) {
+            addCriterion("sys_boss_id not like", value, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdIn(List<String> values) {
+            addCriterion("sys_boss_id in", values, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdNotIn(List<String> values) {
+            addCriterion("sys_boss_id not in", values, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdBetween(String value1, String value2) {
+            addCriterion("sys_boss_id between", value1, value2, "sysBossId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossIdNotBetween(String value1, String value2) {
+            addCriterion("sys_boss_id not between", value1, value2, "sysBossId");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateByIsNull() {
             addCriterion("create_by is null");
             return (Criteria) this;

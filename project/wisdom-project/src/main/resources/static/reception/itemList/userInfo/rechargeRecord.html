@@ -8,11 +8,11 @@
     </div>
     <div class="rechargeRecord_content">
         <ul>
-            <li ng-repeat="item in [1,2,3,4]">
+            <li ng-repeat="item in dataList">
                 <div class="ifo">
-                    <span ng-class="{chesty:$index == 2}" >2018-03-29</span>
-                    <span>小喵喵</span>
-                    <span>9999</span>
+                    <span ng-class="{chesty:$index == 2}" >{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                    <span>{{item.shopUserName}}</span>
+                    <span>{{item.sumAmount}}</span>
                 </div>
                 <div class="go_set"></div>
             </li>

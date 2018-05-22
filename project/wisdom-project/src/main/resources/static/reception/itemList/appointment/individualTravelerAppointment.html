@@ -25,17 +25,17 @@
         </div>
 
         <div>
-            <p class=" mt30"><span class="redPoint ml30"></span><span class="fs38 color333 ml20 ">安迪</span><span class="giveContent fs32" ng-show="param.ModifyAppointment" ng-click ="modifyingAppointment()" ng-click ="modifyingAppointmentIndivdual()">修改预约</span></p>
+            <p class=" mt30"><span class="redPoint ml30"></span><span class="fs38 color333 ml20 ">{{param.week.details.sysUserName}}</span><span class="giveContent fs32" ng-show="param.ModifyAppointment" ng-click ="modifyingAppointment()">修改预约</span></p>
             <div class="contentTime mt44 space-between">
-                <P ><img src="images/ic_point.png" alt="" class=" w16 h16 ml60"> <span class="minute fs30">10:00~11:30</span></P>
-                <p class="fs32 mr60">美容师 <span class="fs28 color333">小云</span></p>
+                <P ><img src="images/ic_point.png" alt="" class=" w16 h16 ml60"> <span class="minute fs30">{{param.week.details.appointStartTime|date:'hh:mm'}}~{{param.week.details.appointEndTime|date:'hh:mm'}}</span></P>
+                <p class="fs32 mr60">美容师 <span class="fs28 color333">{{param.week.details.sysClerkName}}</span></p>
             </div>
 
             <!--按钮-->
             <div class="pb60 bte5">
                 <p class="space-around mt44">
                     <button class="btn br8 fs32 colff6666 bgfff" ng-click="startAppointmentIndivdual()" ng-class="{'startAppointmentActive':param.ModifyAppointment==false}">确定预约</button>
-                    <button class="btn br8 fs32 btnActive">开始服务</button>
+                    <button class="btn br8 fs32 btnActive" ng-click="startSevier()" ng-class="{'startAppointmentActive':seriverColor==false}">开始服务</button>
                 </p>
             </div>
         </div>

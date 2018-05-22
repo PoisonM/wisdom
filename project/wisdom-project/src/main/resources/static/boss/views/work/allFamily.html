@@ -1,0 +1,30 @@
+<ion-view class="bg">
+    <ion-content>
+        <!--日期部分-->
+        <div class="bgRgb">
+            <ionic-datepicker input-obj="datepickerObjectEnd">
+                <img src="images/work/date.png" class="dateImg" >
+                <span class="date">{{param.date}}</span>
+                <img src="images/work/drop-down.png" class="dropImg">
+            </ionic-datepicker>
+
+        </div>
+        <!--美容师 业绩 耗卡-->
+        <div class="list" ng-repeat="item in allFamily">
+            <p class="item" style="padding: 6px"><img ng-src="{{item.photo}}" style="display: inline-block;width: 48px;height: 48px;border-radius: 50%">
+                <span style="margin-left: 10px">{{item.sysShopClerkName}}</span>
+                <span style="margin-left: 10px;width:80px;height: 20px;display: inline-block;border: 1px solid rgb(255,102,102);border-radius: 8px;text-align: center;line-height: 20px;color:#ff6666;font-size: 12px">{{item.role}}</span>
+                <i style="float:right;font-size: 0.3rem;margin-top: 12px" class="ion ion-ios-arrow-right" ng-show="false"></i></p>
+            <div class="row" style="background: #FFFFFF;padding: 0px">
+                <div class="col col-50 col33 tc bre5e5">
+                    业绩
+                    <p>{{item.income}}</p>
+                </div>
+                <div class="col col-50 col33 tc">
+                    耗卡
+                    <p>{{item.expenditure}}</p>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

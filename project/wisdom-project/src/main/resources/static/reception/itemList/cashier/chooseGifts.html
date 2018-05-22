@@ -1,0 +1,89 @@
+<div class="chooseGifts-box clearfix">
+    <div class="chooseGifts-tab">
+        <span ng-click="tabclick(0)" ng-class="select=='0'?'select':''">疗程卡</span>
+        <span ng-click="tabclick(1)" ng-class="select=='1'?'select':''">套卡</span>
+        <span ng-click="tabclick(2)" ng-class="select=='2'?'select':''">充值卡</span>
+    </div>
+    <div class="chooseGiftsContetn">
+        <div class="treatmentCard" ng-if="select==0">
+            <div class="search">
+                <span class="ser_ion"></span>
+                <input type="text" placeholder="用户名或者手机号搜索">
+                <span class="cancel">取消</span>
+            </div>
+            <div class="chooseGiftsTitle">面部</div>
+            <ul class="chooseGiftsUl">
+                <li>
+                    <input type="radio" name="pay" id="">
+                    <span class="name">补水卡</span>
+                    <input type="text" class="number">
+                    <span class="numberTitle">赠送次数</span>
+                    <span class="price">99.00</span>
+                </li>
+                <li>
+                    <input type="radio" name="pay" id="">
+                    <span class="name">补水卡</span>
+                    <input type="text" class="number">
+                    <span class="numberTitle">赠送次数</span>
+                    <span class="price">99.00</span>
+                </li>
+                <li>
+                    <input type="radio" name="pay" id="">
+                    <span class="name">补水卡</span>
+                    <input type="text" class="number">
+                    <span class="numberTitle">赠送次数</span>
+                    <span class="price">99.00</span>
+                </li>
+                <li>
+                    <input type="radio" name="pay" id="">
+                    <span class="name">补水卡</span>
+                    <input type="text" class="number">
+                    <span class="numberTitle">赠送次数</span>
+                    <span class="price">99.00</span>
+                </li>
+                <li>
+                    <input type="radio" name="pay" id="">
+                    <span class="name">补水卡</span>
+                    <input type="text" class="number">
+                    <span class="numberTitle">赠送次数</span>
+                    <span class="price">99.00</span>
+                </li>
+            </ul>
+        </div>
+        <div class="recorderCard" ng-if="select==1">
+            <div class="search">
+                <span class="ser_ion"></span>
+                <input type="text" placeholder="用户名或者手机号搜索">
+                <span class="cancel">取消</span>
+            </div>
+            <div class="chooseGiftsTitle">面部</div>
+            <ul class="chooseGiftsUl">
+                <li>
+                    <input type="radio" name="pay" id="">
+                    <span class="name">补水卡</span>
+                    <input type="text" class="number">
+                    <span class="numberTitle">赠送次数</span>
+                    <span class="price">99.00</span>
+                </li>
+                <li>
+                    <input type="radio" name="pay" id="">
+                    <span class="name">补水卡</span>
+                    <input type="text" class="number">
+                    <span class="numberTitle">赠送次数</span>
+                    <span class="price">99.00</span>
+                </li>
+                <li>
+                    <input type="radio" name="pay" id="">
+                    <span class="name">补水卡</span>
+                    <input type="text" class="number">
+                    <span class="numberTitle">赠送次数</span>
+                    <span class="price">99.00</span>
+                </li>
+            </ul>
+        </div>
+        <div class="prepaidCard" ng-if="select==2">
+            <span>赠送金额</span>
+            <input type="text" placeholder="请输入优惠券金额">
+        </div>
+    </div>
+</div>

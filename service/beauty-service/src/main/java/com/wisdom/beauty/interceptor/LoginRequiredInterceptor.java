@@ -46,17 +46,23 @@ public class LoginRequiredInterceptor {
         // 判断该方法是否加了@LoginRequired 注解
         if(method.isAnnotationPresent(LoginRequired.class)){
             Map<String, String> tokenValue = getHeadersInfo(request);
-            String token = tokenValue.get("logintoken");
+
+            String userType = tokenValue.get("usertype");
+            String token = "";
+            if(userType==null||userType.equals(""))
+            {
+                token = tokenValue.get("logintoken");
+            }
+            else if(userType.equals("beautyUser")||userType.equals("beautyBoss")||userType.equals("beautyClerk"))
+            {
+                token = tokenValue.get("beautylogintoken");
+            }
+
             if(token==null||token.equals("")){
-                try {
-                    token=request.getSession().getAttribute("token").toString();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ResponseDTO<String> responseDto=new ResponseDTO<>();
-                    responseDto.setResult(StatusConstant.FAILURE);
-                    responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
-                    return responseDto;
-                }
+                ResponseDTO<String> responseDto=new ResponseDTO<>();
+                responseDto.setResult(StatusConstant.SUCCESS);
+                responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
+                return responseDto;
             }
 
             //验证token有效性
@@ -65,7 +71,7 @@ public class LoginRequiredInterceptor {
             if(userInfo==null)
             {
                 ResponseDTO<String> responseDto=new ResponseDTO<String>();
-                responseDto.setResult(StatusConstant.FAILURE);
+                responseDto.setResult(StatusConstant.SUCCESS);
                 responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
                 return responseDto;
             }

@@ -1,0 +1,43 @@
+<div class="stillOwedBox clearfix">
+    <div class="stillOwedTotalAmount">总金额：¥300.00</div>
+    <div class="stillOwedTitle">充值卡支付</div>
+    <ul class="stillOwedUl">
+        <li>
+            <div>余额（可用余额：¥137000.00）</div>
+            <span><b class="fl">¥</b><input type="text"></span>
+        </li>
+        <li>
+            <div>其中欠款</div>
+            <span><b class="fl">¥</b><input type="text"></span>
+        </li>
+        <li>
+            <div>现金支付</div>
+            <span><b class="fl">¥</b><input type="text"></span>
+        </li>
+    </ul>
+    <div class="stillOwedTitle">其他支付方式</div>
+    <ul class="stillOwedUl mt10">
+        <li ng-click="checkBoxChek($event)">
+            <div class="checkBox" ng-class="{bgF6:(theSelected.timeCard.timeCardIds.indexOf(item3.id)!='-1')}">
+                <img src="images/checkImg.png" alt="">
+            </div>
+            <div>银联支付</div>
+        </li>
+        <li ng-click="checkBoxChek($event)">
+            <div class="checkBox" ng-class="{bgF6:(theSelected.timeCard.timeCardIds.indexOf(item3.id)!='-1')}">
+                <img src="images/checkImg.png" alt="">
+            </div>
+            <div>微信支付</div>
+        </li>
+        <li ng-click="checkBoxChek($event)">
+            <div class="checkBox" ng-class="{bgF6:(theSelected.timeCard.timeCardIds.indexOf(item3.id)!='-1')}">
+                <img src="images/checkImg.png" alt="">
+            </div>
+            <div>支付宝支付</div>
+        </li>
+    </ul>
+    <img src="" alt="">
+    <div class="stillOwedTitle">备注</div>
+    <textarea name="" rows="10"></textarea>
+    <button ng-click="goSignConfirm()">确认</button>
+</div>

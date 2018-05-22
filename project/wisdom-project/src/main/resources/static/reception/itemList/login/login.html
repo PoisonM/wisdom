@@ -4,13 +4,13 @@
         <div class="information">
             <ul>
                 <li>
-                    <input type="text" placeholder="手机号">
+                    <input ng-model="param.phone" type="text" placeholder="手机号">
                 </li>
                 <li class="pos_re">
-                    <input type="text" placeholder="验证码">
-                    <span>获取</span>
+                    <input ng-model="param.code" type="text" placeholder="验证码">
+                    <span ng-click="getCode()">{{param.timeContent}}</span>
                 </li>
-                <li class="login_btn">
+                <li ng-click="login()" class="login_btn">
                     登录
                 </li>
             </ul>

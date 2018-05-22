@@ -1,7 +1,7 @@
  <div class="collectionCard" style="height:10.67rem;overflow-y: scroll;border-bottom-right-radius: 0.58125rem;">
         <div class="searchBox">
-            <input type="search" placeholder="请输入套卡名称" >
-            <button>搜索</button>
+            <input type="search" placeholder="请输入套卡名称" ng-model="param.consumptionObj.singleFilterStr">
+            <button ng-click = "searchCollectionCard()">搜索</button>
         </div>
         <div class="cardLis">
             <ul class="height120">

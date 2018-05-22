@@ -53,7 +53,7 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     private BigDecimal discountPrice;
 
     //最多包含次数
-    private Integer maxContainTimes;
+    private Integer serviceTimes;
 
     //回访天数
     private Integer visitDateTime;
@@ -204,12 +204,12 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
         this.discountPrice = discountPrice;
     }
 
-    public Integer getMaxContainTimes() {
-        return maxContainTimes;
+    public Integer getServiceTimes() {
+        return serviceTimes;
     }
 
-    public void setMaxContainTimes(Integer maxContainTimes) {
-        this.maxContainTimes = maxContainTimes;
+    public void setServiceTimes(Integer serviceTimes) {
+        this.serviceTimes = serviceTimes;
     }
 
     public Integer getVisitDateTime() {

@@ -1,158 +1,174 @@
 package com.wisdom.beauty.api.dto;
 
 import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
 
 public class ShopStockRecordDTO extends BaseEntity implements Serializable {
-    //
-    private String id;
+	//
+	private String id;
 
-    //库存表主键
-    private String shopStockId;
+	// 仓库id
+	private String shopStoreId;
 
-    //仓库名称
-    private String name;
+	// bossID
+	private String shopBossId;
 
-    //0、手动入库  1、扫码入库 2、手动出库 3、扫码出库
-    private String stockStyle;
+	// 仓库名称
+	private String name;
 
-    //0、采购入库 1、内部员工出库 2、顾客出库 3、赠送 4、报废 5、院用  6、退回供货商  7、下发到店
-    private String stockType;
+	// 0、手动入库 1、扫码入库 2、手动出库 3、扫码出库
+	private String stockStyle;
 
-    //操作时间
-    private Date operDate;
+	// 0、采购入库 1、内部员工出库 2、顾客出库 3、赠送 4、报废 5、院用 6、退回供货商 7、下发到店
+	private String stockType;
 
-    //单据号
-    private String flowNo;
+	// 操作时间
+	private Date operDate;
 
-    //操作人(库管id)
-    private String managerId;
+	// 单据号
+	private String flowNo;
 
-    //备注
-    private String detail;
+	// 操作人(库管id)
+	private String managerId;
 
-    //
-    private Integer operNumber;
+	// 备注
+	private String detail;
 
-    //
-    private String createBy;
+	//
+	private Integer operNumber;
 
-    //
-    private Date createDate;
+	//
+	private String createBy;
 
-    //
-    private String updateUser;
+	//
+	private Date createDate;
 
-    //
-    private Date updateDate;
+	//
+	private String updateUser;
 
-    private static final long serialVersionUID = 1L;
+	//
+	private Date updateDate;
 
-    public String getId() {
-        return id;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getShopStockId() {
-        return shopStockId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setShopStockId(String shopStockId) {
-        this.shopStockId = shopStockId;
-    }
+	public String getShopStoreId() {
+		return shopStoreId;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setShopStoreId(String shopStoreId) {
+		this.shopStoreId = shopStoreId;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getShopBossId() {
+		return shopBossId;
+	}
 
-    public String getStockStyle() {
-        return stockStyle;
-    }
+	public void setShopBossId(String shopBossId) {
+		this.shopBossId = shopBossId;
+	}
 
-    public void setStockStyle(String stockStyle) {
-        this.stockStyle = stockStyle;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getStockType() {
-        return stockType;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setStockType(String stockType) {
-        this.stockType = stockType;
-    }
+	public String getStockStyle() {
+		return stockStyle;
+	}
 
-    public Date getOperDate() {
-        return operDate;
-    }
+	public void setStockStyle(String stockStyle) {
+		this.stockStyle = stockStyle;
+	}
 
-    public void setOperDate(Date operDate) {
-        this.operDate = operDate;
-    }
+	public String getStockType() {
+		return stockType;
+	}
 
-    public String getFlowNo() {
-        return flowNo;
-    }
+	public void setStockType(String stockType) {
+		this.stockType = stockType;
+	}
 
-    public void setFlowNo(String flowNo) {
-        this.flowNo = flowNo;
-    }
+	public Date getOperDate() {
+		return operDate;
+	}
 
-    public String getManagerId() {
-        return managerId;
-    }
+	public void setOperDate(Date operDate) {
+		this.operDate = operDate;
+	}
 
-    public void setManagerId(String managerId) {
-        this.managerId = managerId;
-    }
+	public String getFlowNo() {
+		return flowNo;
+	}
 
- public String getDetail() {        return detail;    }    public void setDetail(String detail) {        this.detail = detail;    }
+	public void setFlowNo(String flowNo) {
+		this.flowNo = flowNo;
+	}
 
-    public Integer getOperNumber() {
-        return operNumber;
-    }
+	public String getManagerId() {
+		return managerId;
+	}
 
-    public void setOperNumber(Integer operNumber) {
-        this.operNumber = operNumber;
-    }
+	public void setManagerId(String managerId) {
+		this.managerId = managerId;
+	}
 
-    public String getCreateBy() {
-        return createBy;
-    }
+	public String getDetail() {
+		return detail;
+	}
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+	public Integer getOperNumber() {
+		return operNumber;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public void setOperNumber(Integer operNumber) {
+		this.operNumber = operNumber;
+	}
 
-    public String getUpdateUser() {
-        return updateUser;
-    }
+	public String getCreateBy() {
+		return createBy;
+	}
 
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
 
-    public Date getUpdateDate() {
-        return updateDate;
-    }
+	public Date getCreateDate() {
+		return createDate;
+	}
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getUpdateUser() {
+		return updateUser;
+	}
+
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 }

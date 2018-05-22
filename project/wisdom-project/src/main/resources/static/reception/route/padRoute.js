@@ -1,4 +1,4 @@
-var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize',"ngTouch"]);
+var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize', "ngTouch"]);
 
 PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterProvider",
     function($provide, $compileProvider, $controllerProvider, $filterProvider) {
@@ -207,6 +207,55 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.userInfo.usingHelp', {
+            url: '/usingHelp',
+            templateUrl: root + '/userInfo/usingHelp.html',
+            controller: 'usingHelpCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "使用帮助",
+                        files: [
+                            root + "userInfo/usingHelp.css",
+                            root + "userInfo/usingHelp.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.feedback', {
+            url: '/feedback',
+            templateUrl: root + '/userInfo/feedback.html',
+            controller: 'feedbackCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "意见反馈",
+                        files: [
+                            root + "userInfo/feedback.css",
+                            root + "userInfo/feedback.js",
+                        ]
+                    })
+                }]
+            }
+        })
+
+        .state('pad-web.userInfo.modificationData', {
+            url: '/modificationData',
+            templateUrl: root + '/userInfo/modificationData.html',
+            controller: 'modificationDataCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "修改资料",
+                        files: [
+                            root + "userInfo/modificationData.css",
+                            root + "userInfo/modificationData.js",
+                        ]
+                    })
+                }]
+            }
+        })
 
 
         .state('pad-web.left_nav.addRecord', {
@@ -220,6 +269,38 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         files: [
                             root + "addRecord/addRecord.css",
                             root + "addRecord/addRecord.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.addRecordDetail', {
+            url: '/addRecordDetail',
+            templateUrl: root + '/addRecord/addRecordDetail.html',
+            controller: 'addRecordDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "档案详情",
+                        files: [
+                            root + "addRecord/addRecordDetail.css",
+                            root + "addRecord/addRecordDetail.js",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.bindMember', {
+            url: '/bindMember/:shopId/:userId',
+            templateUrl: root + '/addRecord/bindMember.html',
+            controller: 'bindMemberCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "绑定用户",
+                        files: [
+                            root + "addRecord/bindMember.css",
+                            root + "addRecord/bindMember.js",
                         ]
                     })
                 }]
@@ -242,7 +323,253 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+        .state('pad-web.left_nav.accountDetails', {
+            url: '/accountDetails/:flowNo',
+            templateUrl: root + '/cashier/accountDetails.html',
+            controller: 'accountDetailsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "账户明细",
+                        files: [root + "cashier/accountDetailsCtrl.js",
+                            root + "cashier/accountDetails.css",
+                        ]
+                    })
+                }]
+            }
+        })
 
+        .state('pad-web.left_nav.selectRechargeType', {
+            url: '/selectRechargeType/:type',
+            templateUrl: root + '/cashier/selectRechargeType.html',
+            controller: 'selectRechargeTypeCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "选择充值卡",
+                        files: [root + "cashier/selectRechargeTypeCtrl.js",
+                            root + "cashier/selectRechargeType.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.selectRechargeCard', {
+            url: '/selectRechargeCard/:type',
+            templateUrl: root + '/cashier/selectRechargeCard.html',
+            controller: 'selectRechargeCardCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值卡充值详情",
+                        files: [root + "cashier/selectRechargeCardCtrl.js",
+                            root + "cashier/selectRechargeCard.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.chooseGifts', {
+            url: '/chooseGifts',
+            templateUrl: root + '/cashier/chooseGifts.html',
+            controller: 'chooseGiftsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "选择赠送",
+                        files: [root + "cashier/chooseGiftsCtrl.js",
+                            root + "cashier/chooseGifts.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.consumptionList', {
+            url: '/consumptionList',
+            templateUrl: root + '/cashier/consumptionList.html',
+            controller: 'consumptionListCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "消费",
+                        files: [root + "cashier/consumptionListCtrl.js",
+                            root + "cashier/consumptionList.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.makeSureOrder', {
+            url: '/makeSureOrder',
+            templateUrl: root + '/cashier/makeSureOrder.html',
+            controller: 'makeSureOrderCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "确认订单页",
+                        files: [root + "cashier/makeSureOrderCtrl.js",
+                            root + "cashier/makeSureOrder.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.sources', {
+            url: '/sources',
+            templateUrl: root + '/cashier/sources.html',
+            controller: 'sourcesCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "来源渠道",
+                        files: [root + "cashier/sourcesCtrl.js",
+                            root + "cashier/sources.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.signConfirm', {
+            url: '/signConfirm/:transactionId',
+            templateUrl: root + '/cashier/signConfirm.html',
+            controller: 'signConfirmCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "签字确认",
+                        files: [root + "cashier/signConfirmCtrl.js",
+                            root + "cashier/signConfirm.css",
+                            root + "cashier/flashcanvas.min.js",
+                            root + "cashier/jSignature.min.js",
+                            root + "cashier/flashcanvas.swf",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.confirmations', {
+            url: '/confirmations',
+            templateUrl: root + '/cashier/confirmations.html',
+            controller: 'confirmationsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "确认单",
+                        files: [root + "cashier/confirmationsCtrl.js",
+                            root + "cashier/confirmations.css",
+                            root + "cashier/flashcanvas.min.js",
+                            root + "cashier/jSignature.min.js",
+                            root + "cashier/flashcanvas.swf",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.housekeeper', {
+            url: '/housekeeper',
+            templateUrl: root + '/cashier/housekeeper.html',
+            controller: 'housekeeperCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "关联员工",
+                        files: [root + "cashier/housekeeperCtrl.js",
+                            root + "cashier/housekeeper.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.getPorduct', {
+            url: '/getPorduct',
+            templateUrl: root + '/cashier/getPorduct.html',
+            controller: 'getPorductCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "领取产品",
+                        files: [root + "cashier/getPorductCtrl.js",
+                            root + "cashier/getPorduct.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.orderList', {
+            url: '/orderList',
+            templateUrl: root + '/cashier/orderList.html',
+            controller: 'orderListCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "订单页",
+                        files: [root + "cashier/orderListCtrl.js",
+                            root + "cashier/orderList.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.prepaidRecords', {
+            url: '/prepaidRecords',
+            templateUrl: root + '/cashier/prepaidRecords.html',
+            controller: 'prepaidRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值记录",
+                        files: [root + "cashier/prepaidRecordsCtrl.js",
+                            root + "cashier/prepaidRecords.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.drawCardRecords', {
+            url: '/drawCardRecords',
+            templateUrl: root + '/cashier/drawCardRecords.html',
+            controller: 'drawCardRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "划卡记录",
+                        files: [root + "cashier/drawCardRecordsCtrl.js",
+                            root + "cashier/drawCardRecords.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.stillOwed', {
+            url: '/stillOwed',
+            templateUrl: root + '/cashier/stillOwed.html',
+            controller: 'stillOwedCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值记录",
+                        files: [root + "cashier/stillOwedCtrl.js",
+                            root + "cashier/stillOwed.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.accountRecords', {
+            url: '/accountRecords',
+            templateUrl: root + '/cashier/accountRecords.html',
+            controller: 'accountRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "账户记录",
+                        files: [root + "cashier/accountRecordsCtrl.js",
+                            root + "cashier/accountRecords.css",
+                        ]
+                    })
+                }]
+            }
+        })
         .state('pad-web.left_nav.appointment', {
             url: '/appointmentLis',
             templateUrl: root + '/appointment/appointmentLis.html',
@@ -266,7 +593,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "选择套卡",
-                        files: [root + "appointment/collectionCard.js",
+                        files: [root + "appointment/collectionCardCtrl.js",
                             root + "appointment/style.css",
                         ]
                     })
@@ -311,7 +638,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "关联员工",
-                        files: [root + "appointment/relatedStaff.js",
+                        files: [root + "appointment/relatedStaffCtrl.js",
                             root + "appointment/style.css",
                         ]
                     })
@@ -515,7 +842,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.projectDetails', {
-            url: '/projectDetails',
+            url: '/projectDetails/:id',
             templateUrl: root + '/priceList/projectDetails.html',
             controller: 'projectDetailsCtrl',
             resolve: {
@@ -547,7 +874,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.productDetails', {
-            url: '/productDetails',
+            url: '/productDetails/:id',
             templateUrl: root + '/priceList/productDetails.html',
             controller: 'productDetailsCtrl',
             resolve: {
@@ -579,7 +906,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.cardDetails', {
-            url: '/cardDetails',
+            url: '/cardDetails/:id',
             templateUrl: root + '/priceList/cardDetails.html',
             controller: 'cardDetailsCtrl',
             resolve: {
@@ -611,7 +938,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.rechargeableDetails', {
-            url: '/rechargeableDetails',
+            url: '/rechargeableDetails/:shopRechargeCardId',
             templateUrl: root + '/priceList/rechargeableDetails.html',
             controller: 'rechargeableDetailsCtrl',
             resolve: {
@@ -673,6 +1000,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/balancePrepaid.css",
                             root + "appointment/givingCtrl.js",
                             root + "appointment/scratchCardCtrl.js",
+                            root + "appointment/selectTreatmentCard.js",
                             root + "appointment/individualTravelerAppointment.css",
                             root + "appointment/individualTravelerAppointmentCtrl.js",
                             root + "appointment/postion.css",
@@ -691,10 +1019,11 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "appointment/selectCoupons.css",
                             root + "appointment/balancePrepaidCtrl.js",
                             root + "appointment/relatedStaffCtrl.js",
-                            root+"appointment/dropload.css",
+                            root + "appointment/collectionCardCtrl.js",
+                            root + "appointment/dropload.css",
                             root + "../libs/angular-touch.js",
                             root + "../libs/swiper-3.4.0.min.js",
-                            /*root + "../styles/swiper-3.4.0.min.css",*/
+                            //root + "../styles/swiper-3.4.0.min.css",
                             root + "../libs/zepto.min.js",
 
                         ]
@@ -712,6 +1041,38 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "预约类型",
                         files: [root + "appointment/appointmentTypeCtrl.js",
                             root + "appointment/appointmentType.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.arrangeWorkList', {
+            url: '/arrangeWorkList',
+            templateUrl: root + '/appointment/arrangeWorkList.html',
+            controller: 'arrangeWorkListCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "排班列表",
+                        files: [root + "appointment/arrangeWorkList.js",
+                            root + "appointment/arrangeWorkList.css",
+                            "libs/fixedTab.js"
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.compileWorkList', {
+            url: '/compileWorkList/:time',
+            templateUrl: root + '/appointment/compileWorkList.html',
+            controller: 'compileWorkListCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "编辑排班",
+                        files: [root + "appointment/compileWorkList.js",
+                            root + "appointment/compileWorkList.css",
+                            "libs/fixedTab.js"
                         ]
                     })
                 }]
@@ -797,9 +1158,8 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                     })
                 }]
             }
-        })
-    ;
+        });
 
-    $urlRouterProvider.otherwise('pad-web/left_nav/demo');
+    $urlRouterProvider.otherwise('pad-web/userInfo/todayPerformance');
     $httpProvider.interceptors.push('httpInterceptor');
 });

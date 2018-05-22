@@ -1,9 +1,7 @@
 package com.wisdom.beauty.core.mapper;
 
-import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
-import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
-import com.wisdom.beauty.api.dto.ShopProjectProductCardRelation;
 import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationCriteria;
+import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
 import com.wisdom.common.entity.BaseDao;
 import com.wisdom.common.persistence.annotation.MyBatisDao;
 import org.springframework.stereotype.Repository;
@@ -21,6 +19,6 @@ import java.util.List;
 
 @MyBatisDao
 @Repository
-public interface ExtShopProjectProductCardRelationMapper extends BaseDao<ShopProjectProductCardRelation, ShopProjectProductCardRelationCriteria, String> {
-    List<ShopProjectProductCardRelation> selectdiscountInfoByCriteria(ShopProjectProductCardRelationCriteria shopProjectProductCardRelationCriteria);
+public interface ExtShopProjectProductCardRelationMapper extends BaseDao<ShopProjectProductCardRelationDTO, ShopProjectProductCardRelationCriteria, String> {
+    List<ShopProjectProductCardRelationDTO> selectdiscountInfoByCriteria(ShopProjectProductCardRelationCriteria shopProjectProductCardRelationCriteria);
 }

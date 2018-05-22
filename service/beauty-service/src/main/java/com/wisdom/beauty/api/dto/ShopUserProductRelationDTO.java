@@ -25,6 +25,12 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkId;
 
+    //
+    private String sysBossId;
+
+    //
+    private String sysClerkName;
+
     //产品待领取的数量
     private Integer waitReceiveNumber;
 
@@ -37,11 +43,17 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     //剩余数量
     private Integer surplusTimes;
 
+    //
+    private BigDecimal purchasePrice;
+
     //初始金额
     private BigDecimal initAmount;
 
     //剩余金额
     private BigDecimal surplusAmount;
+
+    //折扣
+    private Float discount;
 
     //1 赠送 0不赠送
     private String isSend;
@@ -108,6 +120,22 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
         this.sysClerkId = sysClerkId;
     }
 
+    public String getSysBossId() {
+        return sysBossId;
+    }
+
+    public void setSysBossId(String sysBossId) {
+        this.sysBossId = sysBossId;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
     public Integer getWaitReceiveNumber() {
         return waitReceiveNumber;
     }
@@ -140,6 +168,14 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
         this.surplusTimes = surplusTimes;
     }
 
+    public BigDecimal getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(BigDecimal purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
+
     public BigDecimal getInitAmount() {
         return initAmount;
     }
@@ -154,6 +190,14 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
 
     public void setSurplusAmount(BigDecimal surplusAmount) {
         this.surplusAmount = surplusAmount;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
     }
 
     public String getIsSend() {

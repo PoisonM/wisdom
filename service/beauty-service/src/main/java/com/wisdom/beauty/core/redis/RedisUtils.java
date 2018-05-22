@@ -1,14 +1,27 @@
 package com.wisdom.beauty.core.redis;
 
+import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
+import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
+import com.wisdom.beauty.client.UserServiceClient;
+import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.core.service.ShopUserRelationService;
+import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,10 +36,31 @@ public class RedisUtils {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Resource
+    private ShopProjectService shopProjectService;
+
     /**
      * 预约详情缓存时常，30天
      */
     private int appointCacheSeconds = 1296000;
+
+    @Resource
+    private ShopAppointmentService appointmentService;
+
+    @Resource
+    private ShopUserRelationService shopUserRelationService;
+
+    @Resource
+    private UserServiceClient userServiceClient;
+
+    @Value("${test.msg}")
+    private String msg;
+
+
+    /**
+     * 预约详情缓存时常，10天
+     */
+    private int projectInfoCacheSeconds = 10 * 24 * 60 * 60;
 
     /**
      * 保存预约详情
@@ -43,6 +77,7 @@ public class RedisUtils {
 
         //保存预约信息
         JedisUtils.setObject(shopAppointServiceDTO.getId(),shopAppointServiceDTO,appointCacheSeconds);
+
         //保存美容师与预约的关系 格式 zadd shopId_clerkId createDate appointmentId
         String key = new StringBuffer(shopAppointServiceDTO.getSysShopId()).append("_").
                 append(shopAppointServiceDTO.getSysClerkId()).toString();
@@ -57,7 +92,23 @@ public class RedisUtils {
      */
     public ShopAppointServiceDTO getShopAppointInfoFromRedis(String appointmentId) {
         logger.info("获取用户的预约详情传入参数={}", "appointmentId = [" + appointmentId + "]");
-        return (ShopAppointServiceDTO) JedisUtils.getObject(appointmentId);
+
+        ShopAppointServiceDTO shopAppointServiceDTO = (ShopAppointServiceDTO) JedisUtils.getObject(appointmentId);
+
+        if (msg.equals("true")) {
+            shopAppointServiceDTO = null;
+        }
+        //redis中没有查出数据，再次缓存到redis中
+        if (null == shopAppointServiceDTO) {
+            shopAppointServiceDTO = new ShopAppointServiceDTO();
+            shopAppointServiceDTO.setId(appointmentId);
+            shopAppointServiceDTO = appointmentService.getShopAppointService(shopAppointServiceDTO);
+            if (null != shopAppointServiceDTO) {
+                saveShopAppointInfoToRedis(shopAppointServiceDTO);
+            }
+        }
+
+        return shopAppointServiceDTO;
     }
 
     /**
@@ -88,10 +139,121 @@ public class RedisUtils {
     }
 
     /**
-     * 查询用户的项目信息
+     * 根据项目主键查询项目信息
      */
     public ShopProjectInfoDTO getShopProjectInfoFromRedis(String projectInfoId) {
-        return (ShopProjectInfoDTO) JedisUtils.getObject(projectInfoId);
+        ShopProjectInfoDTO shopProjectInfoDTO = (ShopProjectInfoDTO) JedisUtils.getObject(projectInfoId);
+
+        if (null == shopProjectInfoDTO) {
+            shopProjectInfoDTO = new ShopProjectInfoDTO();
+            shopProjectInfoDTO.setId(projectInfoId);
+            List<ShopProjectInfoDTO> projectList = shopProjectService.getShopCourseProjectList(shopProjectInfoDTO);
+            if (CommonUtils.objectIsEmpty(projectList)) {
+                logger.error("根据项目主键查询项目信息为空");
+                throw new ServiceException("根据项目主键查询项目信息为空");
+            }
+            shopProjectInfoDTO = projectList.get(0);
+            //保存到redis
+            saveShopProjectInfoToRedis(shopProjectInfoDTO);
+            return shopProjectInfoDTO;
+        }
+
+        return shopProjectInfoDTO;
     }
 
+    /**
+     * 缓存项目信息
+     *
+     * @param shopProjectInfoDTO
+     */
+    public void saveShopProjectInfoToRedis(ShopProjectInfoDTO shopProjectInfoDTO) {
+        JedisUtils.setObject(shopProjectInfoDTO.getId(), shopProjectInfoDTO, projectInfoCacheSeconds);
+    }
+
+    /**
+     * 获取用户当前登陆的店铺信息
+     */
+    public ShopUserLoginDTO getUserLoginShop(String sysUserId) {
+
+        logger.info("获取用户当前登陆的店铺信息传入参数={}", "sysUserId = [" + sysUserId + "]");
+
+        ShopUserLoginDTO userLoginDTO = (ShopUserLoginDTO) JedisUtils.getObject("shop_" + sysUserId);
+
+        //获取用户登陆信息
+        if (null == userLoginDTO) {
+            ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
+            shopUserRelationDTO.setSysUserId(sysUserId);
+            List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService.getShopListByCondition(shopUserRelationDTO);
+            //不为空，初始化关联一个店铺
+            if (CommonUtils.objectIsNotEmpty(shopListByCondition)) {
+                ShopUserRelationDTO relationDTO = shopListByCondition.get(0);
+                ShopUserLoginDTO loginDTO = new ShopUserLoginDTO();
+                loginDTO.setSysShopId(relationDTO.getSysShopId());
+                loginDTO.setSysShopName(relationDTO.getSysShopName());
+                loginDTO.setSysUserId(sysUserId);
+                loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
+                JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
+                return loginDTO;
+            } else if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
+                ShopUserLoginDTO loginDTO = new ShopUserLoginDTO();
+                loginDTO.setSysShopId("1");
+                loginDTO.setSysShopName("汉方美业");
+                loginDTO.setSysUserId(sysUserId);
+                loginDTO.setSysShopPhoto("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E7%BE%8E%E5%AE%B9%E5%BA%97.png");
+                JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
+                return loginDTO;
+            }
+        }
+        return userLoginDTO;
+    }
+
+    /**
+     * 更改用户当前登陆的店铺信息
+     */
+    public ShopUserLoginDTO updateUserLoginShop(String sysUserId, String sysShopId) {
+
+        logger.info("获取用户当前登陆的店铺信息传入参数={}", "sysUserId = [" + sysUserId + "]");
+
+        ShopUserLoginDTO userLoginDTO = (ShopUserLoginDTO) JedisUtils.getObject("shop_" + sysUserId);
+
+        ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
+        shopUserRelationDTO.setSysUserId(sysUserId);
+        List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService.getShopListByCondition(shopUserRelationDTO);
+
+        if (CommonUtils.objectIsNotEmpty(shopListByCondition)) {
+            for (ShopUserRelationDTO relationDTO : shopListByCondition) {
+                if (relationDTO.getSysShopId().equalsIgnoreCase(sysShopId)) {
+                    ShopUserLoginDTO loginDTO = new ShopUserLoginDTO();
+                    loginDTO.setSysShopId(relationDTO.getSysShopId());
+                    loginDTO.setSysShopName(relationDTO.getSysShopName());
+                    loginDTO.setSysUserId(sysUserId);
+                    loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
+                    JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
+                }
+            }
+        }
+        return userLoginDTO;
+    }
+
+    /**
+     * 根据clerkId获取店铺信息
+     */
+    public SysClerkDTO getSysClerkDTO(String sysClerkId) {
+
+        logger.info("从redis中获取店员的相关信息传入参数={}", "sysClerkId = [" + sysClerkId + "]");
+
+        Object object = JedisUtils.getObject(sysClerkId);
+
+        if (CommonUtils.objectIsEmpty(object)) {
+
+            logger.info("redis中未获取到店员相关信息传入参数={}", sysClerkId);
+            List<SysClerkDTO> clerkInfoByClerkId = userServiceClient.getClerkInfoByClerkId(sysClerkId);
+            if (CommonUtils.objectIsNotEmpty(clerkInfoByClerkId)) {
+                JedisUtils.setObject(sysClerkId, clerkInfoByClerkId.get(0), appointCacheSeconds);
+                return clerkInfoByClerkId.get(0);
+            }
+        }
+
+        return (SysClerkDTO) object;
+    }
 }

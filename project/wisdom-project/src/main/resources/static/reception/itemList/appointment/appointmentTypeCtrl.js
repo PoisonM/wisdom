@@ -1,4 +1,5 @@
-function appointmentTypeCtrl($scope, ngDialog){
+function appointmentTypeCtrl($scope, ngDialog,UpdateAppointmentInfoById,FindArchives){
+    $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.newAppointment = function(){
         $scope.param.appointmentNew = "yes";
         ngDialog.open({
@@ -24,11 +25,19 @@ function appointmentTypeCtrl($scope, ngDialog){
                             sysUserName:$scope.param.selectCustomersObject.sysUserName,
                             sysUserPhone:$scope.param.selectCustomersObject.sysUserPhone,
                             status:$scope.param.ModifyAppointmentObject.status
-                        }
-                        console.log( $scope.shopAppointServiceDTO)
+                        };
+                    if(status == 3){
+                        UpdateAppointmentInfoById.get({
+                            shopAppointServiceId:id,
+                            status:0
+                        },function(data){
+
+                        })
+                    }
+                        console.log($scope.shopAppointServiceDTO)
 
                     }
-                     ngDialog.closeAll()
+                    /* ngDialog.closeAll()*/
                 };
             }],
             className: 'modifyingAppointment ngdialog-theme-custom'

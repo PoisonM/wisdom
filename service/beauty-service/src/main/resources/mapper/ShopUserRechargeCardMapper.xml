@@ -8,9 +8,14 @@
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR" />
     <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
+    <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
     <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR" />
-    <result column="discount" property="discount" jdbcType="REAL" />
+    <result column="time_discount" property="timeDiscount" jdbcType="REAL"/>
+    <result column="period_discount" property="periodDiscount" jdbcType="REAL"/>
+    <result column="product_discount" property="productDiscount" jdbcType="REAL"/>
+    <result column="recharge_card_type" property="rechargeCardType" jdbcType="CHAR"/>
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR"/>
     <result column="detail" property="detail" jdbcType="VARCHAR" />
     <result column="discount_desc" property="discountDesc" jdbcType="VARCHAR" />
     <result column="surplus_amount" property="surplusAmount" jdbcType="DECIMAL" />
@@ -79,8 +84,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_recharge_card_id, shop_recharge_card_name, sys_user_id, sys_user_name, sys_clerk_id, 
-    sys_shop_id, sys_boss_id, discount, detail, discount_desc, surplus_amount, init_amount, 
+    id, shop_recharge_card_id, shop_recharge_card_name, sys_user_id, sys_user_name, sys_clerk_id,
+    sys_clerk_name, sys_shop_id, sys_boss_id, time_discount, period_discount, product_discount,
+    recharge_card_type, image_url, detail, discount_desc, surplus_amount, init_amount,
     create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria" >
@@ -119,16 +125,20 @@
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO" >
     insert into shop_user_recharge_card (id, shop_recharge_card_id, shop_recharge_card_name, 
       sys_user_id, sys_user_name, sys_clerk_id, 
-      sys_shop_id, sys_boss_id, discount, 
-      detail, discount_desc, surplus_amount, 
-      init_amount, create_by, create_date, 
-      update_user, update_date)
+      sys_clerk_name, sys_shop_id, sys_boss_id,
+    time_discount, period_discount, product_discount,
+    recharge_card_type, image_url, detail,
+    discount_desc, surplus_amount, init_amount,
+    create_by, create_date, update_user,
+    update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopRechargeCardId,jdbcType=VARCHAR}, #{shopRechargeCardName,jdbcType=VARCHAR}, 
       #{sysUserId,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, 
-      #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{discount,jdbcType=REAL}, 
-      #{detail,jdbcType=VARCHAR}, #{discountDesc,jdbcType=VARCHAR}, #{surplusAmount,jdbcType=DECIMAL}, 
-      #{initAmount,jdbcType=DECIMAL}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+      #{sysClerkName,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR},
+    #{timeDiscount,jdbcType=REAL}, #{periodDiscount,jdbcType=REAL}, #{productDiscount,jdbcType=REAL},
+    #{rechargeCardType,jdbcType=CHAR}, #{imageUrl,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR},
+    #{discountDesc,jdbcType=VARCHAR}, #{surplusAmount,jdbcType=DECIMAL}, #{initAmount,jdbcType=DECIMAL},
+    #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
+    #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO" >
     insert into shop_user_recharge_card
@@ -151,14 +161,29 @@
       <if test="sysClerkId != null" >
         sys_clerk_id,
       </if>
+      <if test="sysClerkName != null" >
+        sys_clerk_name,
+      </if>
       <if test="sysShopId != null" >
         sys_shop_id,
       </if>
       <if test="sysBossId != null" >
         sys_boss_id,
       </if>
-      <if test="discount != null" >
-        discount,
+      <if test="timeDiscount != null">
+        time_discount,
+      </if>
+      <if test="periodDiscount != null">
+        period_discount,
+      </if>
+      <if test="productDiscount != null">
+        product_discount,
+      </if>
+      <if test="rechargeCardType != null">
+        recharge_card_type,
+      </if>
+      <if test="imageUrl != null">
+        image_url,
       </if>
       <if test="detail != null" >
         detail,
@@ -204,14 +229,29 @@
       <if test="sysClerkId != null" >
         #{sysClerkId,jdbcType=VARCHAR},
       </if>
+      <if test="sysClerkName != null" >
+        #{sysClerkName,jdbcType=VARCHAR},
+      </if>
       <if test="sysShopId != null" >
         #{sysShopId,jdbcType=VARCHAR},
       </if>
       <if test="sysBossId != null" >
         #{sysBossId,jdbcType=VARCHAR},
       </if>
-      <if test="discount != null" >
-        #{discount,jdbcType=REAL},
+      <if test="timeDiscount != null">
+        #{timeDiscount,jdbcType=REAL},
+      </if>
+      <if test="periodDiscount != null">
+        #{periodDiscount,jdbcType=REAL},
+      </if>
+      <if test="productDiscount != null">
+        #{productDiscount,jdbcType=REAL},
+      </if>
+      <if test="rechargeCardType != null">
+        #{rechargeCardType,jdbcType=CHAR},
+      </if>
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="detail != null" >
         #{detail,jdbcType=VARCHAR},
@@ -266,14 +306,29 @@
       <if test="record.sysClerkId != null" >
         sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       </if>
+      <if test="record.sysClerkName != null" >
+        sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
+      </if>
       <if test="record.sysShopId != null" >
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
       <if test="record.sysBossId != null" >
         sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
       </if>
-      <if test="record.discount != null" >
-        discount = #{record.discount,jdbcType=REAL},
+      <if test="record.timeDiscount != null">
+        time_discount = #{record.timeDiscount,jdbcType=REAL},
+      </if>
+      <if test="record.periodDiscount != null">
+        period_discount = #{record.periodDiscount,jdbcType=REAL},
+      </if>
+      <if test="record.productDiscount != null">
+        product_discount = #{record.productDiscount,jdbcType=REAL},
+      </if>
+      <if test="record.rechargeCardType != null">
+        recharge_card_type = #{record.rechargeCardType,jdbcType=CHAR},
+      </if>
+      <if test="record.imageUrl != null">
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.detail != null" >
         detail = #{record.detail,jdbcType=VARCHAR},
@@ -312,9 +367,14 @@
       sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+      sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
-      discount = #{record.discount,jdbcType=REAL},
+    time_discount = #{record.timeDiscount,jdbcType=REAL},
+    period_discount = #{record.periodDiscount,jdbcType=REAL},
+    product_discount = #{record.productDiscount,jdbcType=REAL},
+    recharge_card_type = #{record.rechargeCardType,jdbcType=CHAR},
+    image_url = #{record.imageUrl,jdbcType=VARCHAR},
       detail = #{record.detail,jdbcType=VARCHAR},
       discount_desc = #{record.discountDesc,jdbcType=VARCHAR},
       surplus_amount = #{record.surplusAmount,jdbcType=DECIMAL},
@@ -345,14 +405,29 @@
       <if test="sysClerkId != null" >
         sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       </if>
+      <if test="sysClerkName != null" >
+        sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
+      </if>
       <if test="sysShopId != null" >
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       </if>
       <if test="sysBossId != null" >
         sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
       </if>
-      <if test="discount != null" >
-        discount = #{discount,jdbcType=REAL},
+      <if test="timeDiscount != null">
+        time_discount = #{timeDiscount,jdbcType=REAL},
+      </if>
+      <if test="periodDiscount != null">
+        period_discount = #{periodDiscount,jdbcType=REAL},
+      </if>
+      <if test="productDiscount != null">
+        product_discount = #{productDiscount,jdbcType=REAL},
+      </if>
+      <if test="rechargeCardType != null">
+        recharge_card_type = #{rechargeCardType,jdbcType=CHAR},
+      </if>
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="detail != null" >
         detail = #{detail,jdbcType=VARCHAR},
@@ -388,9 +463,14 @@
       sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
+      sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
-      discount = #{discount,jdbcType=REAL},
+    time_discount = #{timeDiscount,jdbcType=REAL},
+    period_discount = #{periodDiscount,jdbcType=REAL},
+    product_discount = #{productDiscount,jdbcType=REAL},
+    recharge_card_type = #{rechargeCardType,jdbcType=CHAR},
+    image_url = #{imageUrl,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},
       discount_desc = #{discountDesc,jdbcType=VARCHAR},
       surplus_amount = #{surplusAmount,jdbcType=DECIMAL},
