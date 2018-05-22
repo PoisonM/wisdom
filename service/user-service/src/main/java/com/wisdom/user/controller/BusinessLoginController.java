@@ -3,7 +3,6 @@
  */
 package com.wisdom.user.controller;
 
-import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.user.UserInfoDTO;
@@ -11,7 +10,7 @@ import com.wisdom.common.util.SMSUtil;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.user.interceptor.LoginRequired;
-import com.wisdom.user.service.LoginService;
+import com.wisdom.user.service.BusinessLoginService;
 import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +27,7 @@ import java.util.List;
 public class BusinessLoginController {
 
     @Autowired
-    private LoginService loginService;
+    private BusinessLoginService businessLoginService;
 
     @Autowired
     private UserInfoService userInfoService;
@@ -65,7 +64,7 @@ public class BusinessLoginController {
         }
         String loginResult ="";
         try{
-             loginResult = loginService.userLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+             loginResult = businessLoginService.businessUserLogin(loginDTO, request.getRemoteAddr().toString(),openid);
         }catch(Exception e){
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("您输入的手机号与该微信登录平台手机号不符！");
@@ -112,7 +111,7 @@ public class BusinessLoginController {
         if(logintoken==null||logintoken.equals("")){
             logintoken = request.getSession().getAttribute("token").toString();
         }
-        String status = loginService.userLoginOut(logintoken,request,response,session);
+        String status = businessLoginService.businessUserLoginOut(logintoken,request,response,session);
         ResponseDTO<String> result = new ResponseDTO<>();
         result.setResult(StatusConstant.SUCCESS);
         result.setErrorInfo(status.equals(StatusConstant.LOGIN_OUT) ? "退出登录" : "保持在线");
@@ -127,7 +126,7 @@ public class BusinessLoginController {
                                      HttpSession session) throws Exception {
         ResponseDTO<String> result = new ResponseDTO<>();
 
-        String loginResult = loginService.managerLogin(loginDTO.getUserPhone(),loginDTO.getCode());
+        String loginResult = businessLoginService.managerLogin(loginDTO.getUserPhone(),loginDTO.getCode());
 
         if (loginResult.equals(StatusConstant.FAILURE))
         {

@@ -11,7 +11,8 @@ import com.wisdom.common.util.SMSUtil;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.user.interceptor.LoginRequired;
-import com.wisdom.user.service.LoginService;
+import com.wisdom.user.service.BeautyLoginService;
+import com.wisdom.user.service.BeautyUserInfoService;
 import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,10 +29,7 @@ import java.util.List;
 public class BeautyLoginController {
 
     @Autowired
-    private LoginService loginService;
-
-    @Autowired
-    private UserInfoService userInfoService;
+    private BeautyLoginService beautyLoginService;
 
     @RequestMapping(value = "beautyUserLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -50,7 +48,7 @@ public class BeautyLoginController {
             return result;
         }
 
-        String loginResult = loginService.userLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+        String loginResult = beautyLoginService.beautyUserLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
         {
@@ -91,12 +89,12 @@ public class BeautyLoginController {
         }
         else if(!(openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
         {
-            loginResult = loginService.bossMobileLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+            loginResult = beautyLoginService.bossMobileLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
         }
         else if((openid==null||openid.equals(""))&&!loginDTO.getSource().equals("mobile"))
         {
-            loginResult = loginService.bossWebLogin(loginDTO, request.getRemoteAddr().toString());
+            loginResult = beautyLoginService.bossWebLogin(loginDTO, request.getRemoteAddr().toString());
         }
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
@@ -133,12 +131,12 @@ public class BeautyLoginController {
         }
         else if(!(openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
         {
-            loginResult = loginService.ClerkMobileLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+            loginResult = beautyLoginService.ClerkMobileLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
         }
         else if((openid==null||openid.equals(""))&&!loginDTO.getSource().equals("mobile"))
         {
-            loginResult = loginService.ClerkWebLogin(loginDTO, request.getRemoteAddr().toString());
+            loginResult = beautyLoginService.ClerkWebLogin(loginDTO, request.getRemoteAddr().toString());
         }
 
         if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
