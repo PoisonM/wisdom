@@ -25,7 +25,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * FileName: productController
@@ -269,29 +268,29 @@ public class ProductController {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
 
-        //缓存一级
-        HashMap<String, ShopProductInfoDTO> oneTypeMap = new HashMap<>(16);
-        for (ShopProductInfoDTO dto : shopProductInfo) {
-            oneTypeMap.put(dto.getProductTypeOneId(), dto);
+        //查询某个店的一级产品
+        ShopProductTypeDTO typeDTO = new ShopProductTypeDTO();
+        typeDTO.setSysShopId(sysShopId);
+        List<ShopProductTypeDTO> oneLevelProductList = shopProductInfoService.getOneLevelProductList(typeDTO);
+        if (CommonUtils.objectIsEmpty(oneLevelProductList)) {
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
         }
-        logger.info("缓存一级产品={}", oneTypeMap);
 
         ArrayList<Object> levelList = new ArrayList<>();
         //遍历缓存的一级产品
-        for (Map.Entry entry : oneTypeMap.entrySet()) {
+        for (ShopProductTypeDTO shopProductTypeDTO : oneLevelProductList) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
             //承接二级产品
             HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
-            ShopProductInfoDTO productInfoDTO = new ShopProductInfoDTO();
             for (ShopProductInfoDTO dto : shopProductInfo) {
-                if (entry.getKey().equals(dto.getProductTypeOneId())) {
+                if (shopProductTypeDTO.getId().equals(dto.getProductTypeOneId())) {
                     twoLevelMap.put(dto.getProductTypeTwoName(), dto);
                 }
-                productInfoDTO = dto;
             }
 
             helperMap.put("levelTwoDetail", twoLevelMap);
-            helperMap.put("levelOneDetail", productInfoDTO);
+            helperMap.put("levelOneDetail", shopProductTypeDTO);
             levelList.add(helperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProduct集合是所有产品的列表
