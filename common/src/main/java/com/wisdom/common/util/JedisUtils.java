@@ -35,6 +35,9 @@ public class JedisUtils {
 	 * @return 值
 	 */
 	public static String get(String key) {
+		if (StringUtils.isBlank(key)) {
+			return null;
+		}
 		String value = null;
 		Jedis jedis = null;
 		try {
@@ -58,6 +61,9 @@ public class JedisUtils {
 	 * @return 值
 	 */
 	public static Object getStringObject(String key) {
+		if (StringUtils.isBlank(key)) {
+			return null;
+		}
 		Object value = null;
 		Jedis jedis = null;
 		try {
@@ -82,6 +88,9 @@ public class JedisUtils {
 	 * @return 值
 	 */
 	public static Object getObject(String key) {
+		if (StringUtils.isBlank(key)) {
+			return null;
+		}
 		Object value = null;
 		Jedis jedis = null;
 		try {

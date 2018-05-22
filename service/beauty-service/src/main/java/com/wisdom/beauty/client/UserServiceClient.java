@@ -1,5 +1,7 @@
 package com.wisdom.beauty.client;
 
+import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -19,6 +21,14 @@ public interface UserServiceClient {
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST)
     List<UserInfoDTO> getUserInfo(@RequestBody UserInfoDTO userInfoDTO);
 
+    /**
+     * 更新老板信息
+     *
+     * @param sysBossDTO
+     * @return
+     */
+    @RequestMapping(value = "/updateBossInfo", method = RequestMethod.POST)
+    ResponseDTO<Object> updateBossInfo(@RequestBody SysBossDTO sysBossDTO);
     /**
      * 获取店员、美容师相关信息
      *

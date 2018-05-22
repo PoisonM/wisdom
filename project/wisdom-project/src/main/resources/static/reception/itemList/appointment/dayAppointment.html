@@ -1,7 +1,8 @@
 <div class="dayAppointment H100" ng-show="scheduling">
     <div class="header">
         <p class="timeArea">
-            <input class="time  " id="orderPayStartTime" ng-click="dataS('#orderPayStartTime')" value="{{date}}">
+            <!--<input class="time  " id="orderPayStartTime" ng-click="dataS('#orderPayStartTime')" value="{{date}}">-->
+            <input class="time" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
         </p>
         <p class="centerBtn">
             <input type="button" class="appointmentDay {{param.btnActive[0]}} " value="日预约" ng-click="appointmentChange('day')">
@@ -98,29 +99,29 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="(key,value) in param.zhongjiList " class="border-bottom: 1px solid;">
-                    <td>
+                <tr ng-repeat="(key,value) in param.zhongjiList " >
+                    <td class="tiem_node">
                         <!-- data-val={{value}} -->
                         <div>{{key}}</div>
                     </td>
-                    <td ng-repeat="item in value">
-                        <div ng-repeat="index in item.appointmentInfo" ng-init="a_index=$index" style="height: 0px;">
-                            <div ng-if="(item.appointmentInfo[a_index].scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)">
-                                {{item.appointmentInfo[a_index].scheduling.split(',').indexOf(param.theOtherCode[key])!=-1}}
-                                <!-- data-item="{{item}}" -->
-                                <div ng-if="item.appointmentInfo[a_index].scheduling.split(',').indexOf(param.theOtherCode[key])!=-1">
+                    <td ng-repeat="item in value" class="">
+                        <div class="td_box" style="position: relative">
+                            <!--<span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0','bgFFE6E6':indexItem.status=='1','bgE1F8FF':indexItem.status=='2','bgF3F3F3':indexItem.status=='3','bgF3F3F3':indexItem.status=='4','bgE1F8FF':indexItem.status=='5','bgF3F3F3':indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">-->
+                            <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
+                                <!--{{index.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1}}-->
+                                <div class="havedata">
                                     <div>
-                                        <span>我有值</span>
-                                        <span>{{item.statusList.shopProjectName}}</span>
-                                        <span>{{item.statusList.status}}</span>
+                                        <span>{{indexItem.shopProjectName}}</span>
+                                        <span>{{indexItem.status}}</span>
                                     </div>
                                 </div>
-                                <div ng-if="item.appointmentInfo[a_index].scheduling.split(',').indexOf(param.theOtherCode[key])==-1">
-                                    <div>
-                                        <span>我没值</span>
-                                    </div>
+                            </span>
+                            <span  ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}"   data-stra="{{indexItem.status}}" ng-click="detailsWrap()" ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])==-1)">
+                                <!--{{index.scheduling.split(',').indexOf(param.theOtherCode[key])==-1}}-->
+                                <div class="nodata">
+                                    <span style="text-indent:-99999px;display: block">我没值</span>
                                 </div>
-                            </div>
+                            </span>
                         </div>
                     </td>
                 </tr>

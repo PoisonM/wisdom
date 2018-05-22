@@ -6,34 +6,20 @@
                 筛选
             </p>
             <ion-list>
-                <ion-item style="height:100px;width:90%;background: url('images/treatmentCardRed.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;" ng-repeat="item in [0,1,2]" ng-click="goTreatmentCard()">
+                <ion-item style="height:100px;width:90%;background: url('images/treatmentCardRed.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;"  ng-click="goTreatmentCard(item.sysUserId)" ng-repeat="item in treatmentCard">
                     <p class="fs15 colfff ml10" style="margin-top:7px;" >
-                        面部项目演示
+                        {{item.sysShopProjectName}}
                     </p>
                     <p class="fs13 colfff ml10" style="margin-top:7px;">
-                        <span style="display: inline-block;width:130px;">金额：1280.00元</span>
-                        <span>剩余：9/40</span>
+                        <span style="display: inline-block;width:130px;">金额：{{item.sysShopProjectPurchasePrice}}元</span>
+                        <span>剩余：{{item.sysShopProjectInitTimes}}/{{item.sysShopProjectSurplusTimes}}</span>
                     </p>
                     <p class="fs12 colfff ml10" style="margin-top:15px;">
                         <label>备注</label>
                         <input type="text">
                     </p>
                 </ion-item>
-                <ion-item style="height:100px;width:90%;background: url('images/treatmentCardGray.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;position: relative;" ng-click="goTreatmentCard()">
-                    <p class="fs15 colfff ml10" style="margin-top:7px;">
-                        面部项目演示
-                    </p>
-                    <p class="fs13 colfff ml10" style="margin-top:7px;">
-                        <span style="display: inline-block;width:130px;">金额：1280.00元</span>
-                        <span>剩余：9/40</span>
-                    </p>
-                    <p class="fs12 colfff ml10" style="margin-top:15px;">
-                        <label>备注</label>
-                        <input type="text">
-                    </p>
-                    <img src="images/fei.png" class="overPic" style="position: absolute;top:10px;right:10px;">
-                </ion-item>
-                <ion-item style="height:112px;width:90%;background: url('images/treatmentCardGray.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;position: relative;" ng-click="goTreatmentCard()">
+                <ion-item style="height:112px;width:90%;background: url('images/treatmentCardGray.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;position: relative;" ng-click="goTreatmentCard()" ng-show="false">
                     <p class="fs15 colfff ml10" style="margin-top:7px;">
                         面部项目演示
                     </p>
@@ -52,6 +38,7 @@
                 </ion-item>
             </ion-list>
         </div>
+        <!--筛选-->
         <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100;display: none"></div>
         <div style="position: absolute;right:0;top:0;z-index: 101;width:80%;height:100%;display: none"class="bgf6">
             <p class=" bgfff">

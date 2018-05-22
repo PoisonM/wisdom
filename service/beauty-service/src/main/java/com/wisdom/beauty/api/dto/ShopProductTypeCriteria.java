@@ -475,73 +475,73 @@ public class ShopProductTypeCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdIsNull() {
-            addCriterion("sys_boss_id is null");
+        public Criteria andParentShopIdIsNull() {
+            addCriterion("parent_shop_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdIsNotNull() {
-            addCriterion("sys_boss_id is not null");
+        public Criteria andParentShopIdIsNotNull() {
+            addCriterion("parent_shop_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdEqualTo(String value) {
-            addCriterion("sys_boss_id =", value, "sysBossId");
+        public Criteria andParentShopIdEqualTo(String value) {
+            addCriterion("parent_shop_id =", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdNotEqualTo(String value) {
-            addCriterion("sys_boss_id <>", value, "sysBossId");
+        public Criteria andParentShopIdNotEqualTo(String value) {
+            addCriterion("parent_shop_id <>", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdGreaterThan(String value) {
-            addCriterion("sys_boss_id >", value, "sysBossId");
+        public Criteria andParentShopIdGreaterThan(String value) {
+            addCriterion("parent_shop_id >", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdGreaterThanOrEqualTo(String value) {
-            addCriterion("sys_boss_id >=", value, "sysBossId");
+        public Criteria andParentShopIdGreaterThanOrEqualTo(String value) {
+            addCriterion("parent_shop_id >=", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdLessThan(String value) {
-            addCriterion("sys_boss_id <", value, "sysBossId");
+        public Criteria andParentShopIdLessThan(String value) {
+            addCriterion("parent_shop_id <", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdLessThanOrEqualTo(String value) {
-            addCriterion("sys_boss_id <=", value, "sysBossId");
+        public Criteria andParentShopIdLessThanOrEqualTo(String value) {
+            addCriterion("parent_shop_id <=", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdLike(String value) {
-            addCriterion("sys_boss_id like", value, "sysBossId");
+        public Criteria andParentShopIdLike(String value) {
+            addCriterion("parent_shop_id like", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdNotLike(String value) {
-            addCriterion("sys_boss_id not like", value, "sysBossId");
+        public Criteria andParentShopIdNotLike(String value) {
+            addCriterion("parent_shop_id not like", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdIn(List<String> values) {
-            addCriterion("sys_boss_id in", values, "sysBossId");
+        public Criteria andParentShopIdIn(List<String> values) {
+            addCriterion("parent_shop_id in", values, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdNotIn(List<String> values) {
-            addCriterion("sys_boss_id not in", values, "sysBossId");
+        public Criteria andParentShopIdNotIn(List<String> values) {
+            addCriterion("parent_shop_id not in", values, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdBetween(String value1, String value2) {
-            addCriterion("sys_boss_id between", value1, value2, "sysBossId");
+        public Criteria andParentShopIdBetween(String value1, String value2) {
+            addCriterion("parent_shop_id between", value1, value2, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdNotBetween(String value1, String value2) {
-            addCriterion("sys_boss_id not between", value1, value2, "sysBossId");
+        public Criteria andParentShopIdNotBetween(String value1, String value2) {
+            addCriterion("parent_shop_id not between", value1, value2, "parentShopId");
             return (Criteria) this;
         }
 

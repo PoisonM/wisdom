@@ -81,7 +81,7 @@ public class PayTest {
     public void userPayOpe() throws Exception {
 
         ShopUserPayDTO shopUserPayDTO = new ShopUserPayDTO();
-        shopUserPayDTO.setOrderId("20180424200819402");
+        shopUserPayDTO.setOrderId("20180510175636866");
         shopUserPayDTO.setPayType(PayTypeEnum.ALI_PAY.getCode());
         shopUserPayDTO.setShopUserArchivesId("1");
         shopUserPayDTO.setCashPayPrice("1000");

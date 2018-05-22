@@ -114,6 +114,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
     private void updateRechargeCardInfo(ShopUserOrderDTO shopUserOrderDTO, String orderId, ShopUserOrderDTO alreadyOrderDTO) {
         //充值卡主键
         String userRechargeId;
+        //再次查询保证取到最新的订单
+        Query query = new Query(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
+        alreadyOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
 
         //消费界面用户选择不同的充值卡，也就是用户更新充值卡操作
         if (null != shopUserOrderDTO.getShopUserRechargeCardDTO() && StringUtils.isNotBlank(shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId())) {

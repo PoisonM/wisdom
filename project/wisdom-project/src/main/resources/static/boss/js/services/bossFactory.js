@@ -1,5 +1,3 @@
-
-/*var user = '/user/';*/
 var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
@@ -8,10 +6,16 @@ var  earlyWarning =  '/beauty/earlyWarning/';
 var  archives =  '/beauty/archives/';
 var clerkSchedule='/beauty/clerkSchedule/';
 var shopBossRelation ='/beauty/shopBossRelation/';
-var user ='/user/'
-var analyze = '/beauty/analyze/'
-
-/*http://47.100.246.201*/
+var user ='/user/';
+var analyze = '/beauty/analyze/';
+var consumes = '/beauty/consumes/';
+var consume = '/beauty/consume/';
+var cardInfo  = '/beauty/cardInfo/';
+var projectInfo  = '/beauty/projectInfo/';
+var productInfo  = '/beauty/productInfo/';
+var productTypeInfo = '/beauty/productTypeInfo/';
+var projectType='/beauty/projectType/';
+var shop='/beauty/shop/';
 
 
 define(['appBoss'], function (app) {
@@ -117,6 +121,21 @@ define(['appBoss'], function (app) {
         .factory('GetIncomeExpenditureAnalysisDetailList',['$resource',function ($resource){
             return $resource(analyze+"getIncomeExpenditureAnalysisDetailList")
         }])
+        /*所有店近7 日现金收入趋势  某个店的也是这个*/
+        .factory('GetCashEarningsTendency',['$resource',function ($resource){
+            return $resource(analyze+"getCashEarningsTendency")
+        }])
+/*员工分析*/
+        /*员工分析列表*/
+        .factory('GetClerkAchievementList',['$resource',function ($resource){
+            return $resource(analyze+"getClerkAchievementList")
+        }])
+
+        /*顾客到店*/
+        .factory('GetCustomerArriveList',['$resource',function ($resource){
+            return $resource(analyze+"getCustomerArriveList")
+        }])
+
 
 
   /*工作首页*/
@@ -135,6 +154,22 @@ define(['appBoss'], function (app) {
         .factory('Detail',['$resource',function ($resource){
             return $resource(archives+"detail/:id",{id:"@id"})
         }])
+        /*用户档案详情*/
+        .factory('Consumes',['$resource',function ($resource){
+            return $resource(consumes)
+        }])
+        /*用户档案详情*/
+        .factory('GetUserRechargeCardList',['$resource',function ($resource){
+            return $resource(cardInfo+'getUserRechargeCardList')
+        }])
+        /*获取疗程卡的消费记录*/
+        .factory('GetUserConsumeByFlowId',['$resource',function ($resource){
+            return $resource(consume+'getUserConsumeByFlowId')
+        }])
+
+
+
+
  /*行政管理*/
         /*查询老板的门店*/
         .factory('GetBossShopList',['$resource',function ($resource){
@@ -150,4 +185,82 @@ define(['appBoss'], function (app) {
             return $resource(clerkSchedule+"getShopClerkScheduleList")
         }])
 
+      /*获取用户的疗程卡界面*/
+        .factory('GetUserCourseProjectList',['$resource',function ($resource){
+            return $resource(projectInfo+"getUserCourseProjectList")
+        }])
+       /*获取用户的产品界面*/
+        .factory('GetUserProductList',['$resource',function ($resource){
+            return $resource(productInfo+"getUserProductList")
+        }])
+        /*获取用户的套卡界面*/
+        .factory('GetUserProjectGroupList',['$resource',function ($resource){
+            return $resource(projectInfo+"getUserProjectGroupList")
+        }])
+      /* 更新用户的档案信息*/
+        .factory('UpdateArchiveInfo',['$resource',function ($resource){
+            return $resource(archives+"updateArchiveInfo")
+        }])
+/*产品品牌*/
+        /* 查询某个店的产品信息*/
+        .factory('SearchShopProductList',['$resource',function ($resource){
+            return $resource(productInfo+"searchShopProductList")
+        }])
+        /* 添加产品品牌*/
+        .factory('SaveProductTypeInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"saveProductTypeInfo")
+        }])
+        /* 修改产品品牌*/
+        .factory('UpdateOneLevelTypeInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"updateOneLevelTypeInfo")
+        }])
+        /* 修改产品系列*/
+        .factory('UpdateTwoLevelTypeInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"updateTwoLevelTypeInfo")
+        }])
+
+    /*项目大类设置*/
+        /*查询项目类别信息*/
+        .factory('SearchShopProjectList',['$resource',function ($resource){
+            return $resource(projectInfo+"searchShopProjectList")
+        }])
+      /*添加项目类别接口*/
+        .factory('SaveShopProjectType',['$resource',function ($resource){
+            return $resource(projectType+"saveShopProjectType")
+        }])
+    /*修改项目类别*/
+        .factory('UpdateOneLevelProjectType',['$resource',function ($resource){
+            return $resource(projectType+"updateOneLevelProjectType")
+        }])
+    /*修改项目系列*/
+        .factory('UpdateTwoLevelProjectType',['$resource',function ($resource){
+            return $resource(projectType+"updateTwoLevelProjectType")
+        }])
+        /* 获取二级产品列表*/
+        .factory('TwoLevelProduct',['$resource',function ($resource){
+            return $resource(productInfo+"twoLevelProduct")
+        }])
+ /*美容院设置*/
+        /* 查询美容院设置*/
+        .factory('GetBossShopInfo',['$resource',function ($resource){
+            return $resource(shop+"getBossShopInfo")
+        }])
+        /* 保存美容院设置*/
+        .factory('UpdateShopInfo',['$resource',function ($resource){
+            return $resource(shop+"updateShopInfo")
+        }])
+/*编辑分店*/
+        /* 查询分店列表*/
+        .factory('GetBossAllShopList',['$resource',function ($resource){
+            return $resource(shop+"getBossAllShopList")
+        }])
+        /* 查询某个门店*/
+        .factory('GetShopInfo',['$resource',function ($resource){
+            return $resource(shop+"getShopInfo")
+        }])
+
+       /*获取二级项目列表*/
+        .factory('TwoLevelProject',['$resource',function ($resource){
+            return $resource(projectInfo+"twoLevelProject")
+        }])
 });

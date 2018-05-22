@@ -88,7 +88,7 @@ public class OrderTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/orderInfo/updateVirtualGoodsOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/userPay/updateShopUserOrderPayInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -98,16 +98,12 @@ public class OrderTest {
 
     private ShopUserOrderDTO getShopUserOrderDTO() {
         ShopUserOrderDTO shopUserOrderDTO = new ShopUserOrderDTO();
-        shopUserOrderDTO.setExprDate(new Date());
-        shopUserOrderDTO.setDetail("备注");
-        shopUserOrderDTO.setShopUserArchivesId("1");
         shopUserOrderDTO.setOrderId("20180510175636866");
-        shopUserOrderDTO.setOperation("0");
-        shopUserOrderDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
+
         //用户与项目关系
-        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
-        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
-        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
+//        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
+//        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
+//        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
 
 //
 //        //用户与产品
@@ -124,9 +120,22 @@ public class OrderTest {
 //        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
 
         ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
-        userRechargeCardDTO.setShopRechargeCardId("1");
-        userRechargeCardDTO.setShopRechargeCardName("充值卡啦");
-        shopUserOrderDTO.setShopUserRechargeCardDTO(userRechargeCardDTO);
+        userRechargeCardDTO.setId("用户的充值卡id");
+        userRechargeCardDTO.setInitAmount(new BigDecimal(1000));
+        userRechargeCardDTO.setShopRechargeCardName("开门红");
+        userRechargeCardDTO.setSurplusAmount(new BigDecimal(10));
+
+        ShopUserRechargeCardDTO userRechargeCardDTO2 = new ShopUserRechargeCardDTO();
+        userRechargeCardDTO2.setId("用户的充值卡id");
+        userRechargeCardDTO2.setInitAmount(new BigDecimal(1002));
+        userRechargeCardDTO2.setShopRechargeCardName("至尊");
+        userRechargeCardDTO2.setSurplusAmount(new BigDecimal(10));
+
+
+        List<ShopUserRechargeCardDTO> objects = new ArrayList<>();
+        objects.add(userRechargeCardDTO);
+        objects.add(userRechargeCardDTO2);
+        shopUserOrderDTO.setUserPayRechargeCardList(objects);
         //充值卡
         return shopUserOrderDTO;
     }

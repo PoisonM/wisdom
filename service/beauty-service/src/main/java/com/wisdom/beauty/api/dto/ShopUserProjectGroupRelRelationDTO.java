@@ -1,7 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
 import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,6 +23,9 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     //
     private String sysUserId;
+
+    //项目表主键
+    private String shopProjectInfoId;
 
     //套卡关系表id
     private String shopProjectInfoGroupRelationId;
@@ -115,6 +117,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setSysUserId(String sysUserId) {
         this.sysUserId = sysUserId;
+    }
+
+    public String getShopProjectInfoId() {
+        return shopProjectInfoId;
+    }
+
+    public void setShopProjectInfoId(String shopProjectInfoId) {
+        this.shopProjectInfoId = shopProjectInfoId;
     }
 
     public String getShopProjectInfoGroupRelationId() {

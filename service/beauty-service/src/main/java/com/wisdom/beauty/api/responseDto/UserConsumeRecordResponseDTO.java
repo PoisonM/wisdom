@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.responseDto;
 
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.common.entity.BaseEntity;
 
@@ -8,203 +9,94 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * ClassName: ${CLASS_NAME}
+ * ClassName: UserConsumeRecordResponseDTO
  *
  * @Author： huan
+ * 
  * @Description:
  * @Date:Created in 2018/4/9 19:26
  * @since JDK 1.8
  */
-public class UserConsumeRecordResponseDTO extends BaseEntity {
-    //流水号
-    private  String flowNo;
-    //总金额
-    private BigDecimal sumAmount;
-    //划卡和消费页面展示的名称
-    private String title;
-    //创建时间
-    private Date createDate;
-    //顾客
-    private String shopUserName;
-    //前台
-    private String sysShopClerkName;
-    //前台id
-    private String sysShopClerkId;
-    //操作门店
-    private String sysShopName;
-    //签字地址
-    private String signUrl;
-    //备注
-    private String detail;
-    private String goodType;
-    private String consumeType;
-    //用于返回前端判断消费还是充值字段
-    private String type;
-    //支付方式  0:微信 1：支付宝 2:现金
-    private String payType;
-    //消费数量
-    private Integer consumeNumber;
-    //
-    private Float timeDiscount;
+public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
+	//总金额
+	private BigDecimal sumAmount;
+	//划卡和消费页面展示的名称
+	private String title;
+	// 前台
+	private String sysShopClerkName;
+	// 前台id
+	private String sysShopClerkId;
+	// 用于返回前端判断消费还是充值字段
+	private String type;
+	//最多包含次数
+	private Integer includeTimes;
+    //包含项目
+	private List<ShopProjectInfoDTO> shopProjectInfoDTOList;
+	private List<UserConsumeRecordResponseDTO> userConsumeRecordResponseList;
 
-    //
-    private Float periodDiscount;
+	public String getSysShopClerkName() {
+		return sysShopClerkName;
+	}
 
-    //
-    private Float productDiscount;
-    private List<ShopUserConsumeRecordDTO> userConsumeRecordList;
+	public void setSysShopClerkName(String sysShopClerkName) {
+		this.sysShopClerkName = sysShopClerkName;
+	}
 
 
-    public Date getCreateDate() {
-        return createDate;
+	public String getSysShopClerkId() {
+		return sysShopClerkId;
+	}
+
+	public void setSysShopClerkId(String sysShopClerkId) {
+		this.sysShopClerkId = sysShopClerkId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+    public List<UserConsumeRecordResponseDTO> getUserConsumeRecordResponseList() {
+        return userConsumeRecordResponseList;
     }
 
-    public String getSysShopClerkName() {
-        return sysShopClerkName;
+    public void setUserConsumeRecordResponseList(List<UserConsumeRecordResponseDTO> userConsumeRecordResponseList) {
+        this.userConsumeRecordResponseList = userConsumeRecordResponseList;
     }
 
-    public void setSysShopClerkName(String sysShopClerkName) {
-        this.sysShopClerkName = sysShopClerkName;
-    }
+	public BigDecimal getSumAmount() {
+		return sumAmount;
+	}
 
-    public String getSysShopName() {
-        return sysShopName;
-    }
+	public void setSumAmount(BigDecimal sumAmount) {
+		this.sumAmount = sumAmount;
+	}
 
-    public void setSysShopName(String sysShopName) {
-        this.sysShopName = sysShopName;
-    }
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public List<ShopProjectInfoDTO> getShopProjectInfoDTOList() {
+		return shopProjectInfoDTOList;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setShopProjectInfoDTOList(List<ShopProjectInfoDTO> shopProjectInfoDTOList) {
+		this.shopProjectInfoDTOList = shopProjectInfoDTOList;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public Integer getIncludeTimes() {
+		return includeTimes;
+	}
 
-    public String getShopUserName() {
-        return shopUserName;
-    }
-
-    public void setShopUserName(String shopUserName) {
-        this.shopUserName = shopUserName;
-    }
-
-    public BigDecimal getSumAmount() {
-        return sumAmount;
-    }
-
-    public void setSumAmount(BigDecimal sumAmount) {
-        this.sumAmount = sumAmount;
-    }
-
-    public List<ShopUserConsumeRecordDTO> getUserConsumeRecordList() {
-        return userConsumeRecordList;
-    }
-
-    public void setUserConsumeRecordList(List<ShopUserConsumeRecordDTO> userConsumeRecordList) {
-        this.userConsumeRecordList = userConsumeRecordList;
-    }
-
-    public String getFlowNo() {
-        return flowNo;
-    }
-
-    public void setFlowNo(String flowNo) {
-        this.flowNo = flowNo;
-    }
-
-    public String getSysShopClerkId() {
-        return sysShopClerkId;
-    }
-
-    public void setSysShopClerkId(String sysShopClerkId) {
-        this.sysShopClerkId = sysShopClerkId;
-    }
-
-    public String getGoodType() {
-        return goodType;
-    }
-
-    public void setGoodType(String goodType) {
-        this.goodType = goodType;
-    }
-
-    public String getConsumeType() {
-        return consumeType;
-    }
-
-    public void setConsumeType(String consumeType) {
-        this.consumeType = consumeType;
-    }
-
-    public String getSignUrl() {
-        return signUrl;
-    }
-
-    public void setSignUrl(String signUrl) {
-        this.signUrl = signUrl;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getPayType() {
-        return payType;
-    }
-
-    public void setPayType(String payType) {
-        this.payType = payType;
-    }
-
-    public Integer getConsumeNumber() {
-        return consumeNumber;
-    }
-
-    public void setConsumeNumber(Integer consumeNumber) {
-        this.consumeNumber = consumeNumber;
-    }
-
-    public Float getTimeDiscount() {
-        return timeDiscount;
-    }
-
-    public void setTimeDiscount(Float timeDiscount) {
-        this.timeDiscount = timeDiscount;
-    }
-
-    public Float getPeriodDiscount() {
-        return periodDiscount;
-    }
-
-    public void setPeriodDiscount(Float periodDiscount) {
-        this.periodDiscount = periodDiscount;
-    }
-
-    public Float getProductDiscount() {
-        return productDiscount;
-    }
-
-    public void setProductDiscount(Float productDiscount) {
-        this.productDiscount = productDiscount;
-    }
+	public void setIncludeTimes(Integer includeTimes) {
+		this.includeTimes = includeTimes;
+	}
 }

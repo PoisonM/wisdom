@@ -1,6 +1,6 @@
 package com.wisdom.beauty.api.responseDto;
 
-import com.wisdom.common.entity.BaseEntity;
+import com.wisdom.beauty.api.dto.ShopStockDTO;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -9,60 +9,37 @@ import java.util.List;
 /**
  * Created by zhanghuan on 2018/5/2.
  */
-public class ShopStockResponseDTO extends BaseEntity {
-	private String id;
+public class ShopStockResponseDTO extends ShopStockDTO {
 
-	/** 仓库名称 */
-	private String name;
-
-	/** 单据号 */
-	private String flowNo;
-
-	/** 申请人 */
-	private String applayUser;
-
-	/** 状态 0、已入库 */
-	private String stockStatus;
-
-	/** 备注 */
-	private String detail;
-
-	/** 库存数量 */
-	private Integer stockNumber;
-
-	/** 产品名称 */
-	private String shopProcName;
-
-	/** 生产日期 */
-	private Date productDate;
-
-	/** 库存单价（元） */
-	private BigDecimal stockPrice;
-
-	/** 产品编号 */
-	private String productCode;
-
-	/** 产品单位 */
-	private Long productUnit;
-	/** 产品规格 */
-	private String productSpec;
 	/** 产品图片url */
 	// 入库时间
 	private Date operDate;
 	private String stockType;
-	private String[] imageUrl;
+	private List<String> imageUrl;
 	private  String productId;
+	private  String name;
+	private  String detail;
+	private  String applayUser;
+	private  String stockStatus;
+	private  String productCode;
+	private  String productSpec;
+	private  BigDecimal productUnit;
+
+	/**实际库存数量*/
+	private Integer actualStockNumber;
      /** 出库数量 */
 	private Integer outStockNumber;
+	/** 本仓库存 */
+	private Integer storeNumberSelf;
+	/** 库存总量 */
+	private Integer allStoreNumber;
+	/** 占用成本 */
+	private BigDecimal useCost;
+	/** 占用总成本 */
+	private BigDecimal allUseCost;
+	//仓库名字
+	private String shopStoreName;
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -72,12 +49,12 @@ public class ShopStockResponseDTO extends BaseEntity {
 		this.name = name;
 	}
 
-	public String getFlowNo() {
-		return flowNo;
+	public String getDetail() {
+		return detail;
 	}
 
-	public void setFlowNo(String flowNo) {
-		this.flowNo = flowNo;
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
 
 	public String getApplayUser() {
@@ -96,60 +73,12 @@ public class ShopStockResponseDTO extends BaseEntity {
 		this.stockStatus = stockStatus;
 	}
 
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-
-	public Integer getStockNumber() {
-		return stockNumber;
-	}
-
-	public void setStockNumber(Integer stockNumber) {
-		this.stockNumber = stockNumber;
-	}
-
-	public String getShopProcName() {
-		return shopProcName;
-	}
-
-	public void setShopProcName(String shopProcName) {
-		this.shopProcName = shopProcName;
-	}
-
-	public Date getProductDate() {
-		return productDate;
-	}
-
-	public void setProductDate(Date productDate) {
-		this.productDate = productDate;
-	}
-
-	public BigDecimal getStockPrice() {
-		return stockPrice;
-	}
-
-	public void setStockPrice(BigDecimal stockPrice) {
-		this.stockPrice = stockPrice;
-	}
-
 	public String getProductCode() {
 		return productCode;
 	}
 
 	public void setProductCode(String productCode) {
 		this.productCode = productCode;
-	}
-
-	public Long getProductUnit() {
-		return productUnit;
-	}
-
-	public void setProductUnit(Long productUnit) {
-		this.productUnit = productUnit;
 	}
 
 	public String getProductSpec() {
@@ -160,11 +89,19 @@ public class ShopStockResponseDTO extends BaseEntity {
 		this.productSpec = productSpec;
 	}
 
-	public String[] getImageUrl() {
+	public BigDecimal getProductUnit() {
+		return productUnit;
+	}
+
+	public void setProductUnit(BigDecimal productUnit) {
+		this.productUnit = productUnit;
+	}
+
+	public List<String> getImageUrl() {
 		return imageUrl;
 	}
 
-	public void setImageUrl(String[] imageUrl) {
+	public void setImageUrl(List<String> imageUrl) {
 		this.imageUrl = imageUrl;
 	}
 
@@ -200,11 +137,51 @@ public class ShopStockResponseDTO extends BaseEntity {
 		this.stockType = stockType;
 	}
 
-	public Integer getOutStockNumber() {
-		return outStockNumber;
+	public Integer getStoreNumberSelf() {
+		return storeNumberSelf;
 	}
 
-	public void setOutStockNumber(Integer outStockNumber) {
-		this.outStockNumber = outStockNumber;
+	public void setStoreNumberSelf(Integer storeNumberSelf) {
+		this.storeNumberSelf = storeNumberSelf;
+	}
+
+	public Integer getAllStoreNumber() {
+		return allStoreNumber;
+	}
+
+	public void setAllStoreNumber(Integer allStoreNumber) {
+		this.allStoreNumber = allStoreNumber;
+	}
+
+	public BigDecimal getUseCost() {
+		return useCost;
+	}
+
+	public void setUseCost(BigDecimal useCost) {
+		this.useCost = useCost;
+	}
+
+	public BigDecimal getAllUseCost() {
+		return allUseCost;
+	}
+
+	public void setAllUseCost(BigDecimal allUseCost) {
+		this.allUseCost = allUseCost;
+	}
+
+	public String getShopStoreName() {
+		return shopStoreName;
+	}
+
+	public void setShopStoreName(String shopStoreName) {
+		this.shopStoreName = shopStoreName;
+	}
+
+	public Integer getActualStockNumber() {
+		return actualStockNumber;
+	}
+
+	public void setActualStockNumber(Integer actualStockNumber) {
+		this.actualStockNumber = actualStockNumber;
 	}
 }

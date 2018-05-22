@@ -1,5 +1,5 @@
-var beautyIP = ' http://47.100.246.201/beauty/';
-var userIP = ' http://47.100.246.201/user/';
+var beautyIP = ' http://192.168.1.117/beauty/';
+var userIP = ' http://192.168.1.117/user/';
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
@@ -43,6 +43,14 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('Archives', ['$resource', function($resource) {
         return $resource(beautyIP + 'archives/:userId', { userId: '@id' })
     }])
+    //档案详情
+    .factory('ArchivesDetail', ['$resource', function($resource) {
+        return $resource(beautyIP + 'archives/detail/:id', { id: '@id' })
+    }])
+    //查询某用户档案信息
+    .factory('GetShopUserArchivesInfoByUserId', ['$resource', function($resource) {
+        return $resource(beautyIP + 'archives/getShopUserArchivesInfoByUserId')
+    }])
     //待领取汇总
     .factory('GetProductRecord', ['$resource', function($resource) {
         return $resource(beautyIP + 'mine/getProductRecord')
@@ -83,10 +91,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UpateClerkInfo', ['$resource', function($resource) {
         return $resource(userIP + 'upateClerkInfo')
     }])
-    //查询某用户档案信息
-    .factory('GetShopUserArchivesInfoByUserId', ['$resource', function($resource) {
-        return $resource(beautyIP + 'archives/getShopUserArchivesInfoByUserId')
-    }])
+
     //个人中心获取今日业绩
     .factory('GetClerkAchievement', ['$resource', function($resource) {
         return $resource(beautyIP + 'work/getClerkAchievement')
@@ -277,12 +282,20 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(beautyIP + '/cardInfo/rechargeCardSignConfirm')
     }])
     //图片上传
-    .factory('ImageUploadToOSS', ['$resource', function($resource) {
-        return $resource('http://47.100.246.201/system/file/imageUploadToOSS')
+    .factory('ImageBase64UploadToOSS', ['$resource', function($resource) {
+        return $resource('http://192.168.1.117/system-service/file/imageBase64UploadToOSS')
     }])
     //全量更新用户的订单
     .factory('UpdateShopUserOrderInfo', ['$resource', function($resource) {
         return $resource(beautyIP + '/orderInfo/updateShopUserOrderInfo')
+    }])
+    //用户支付接口
+    .factory('UserPayOpe', ['$resource', function($resource) {
+        return $resource(beautyIP + '/userPay/userPayOpe')
+    }])
+    //支付界面添加充值卡列表
+    .factory('UpdateShopUserOrderPayInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + '/userPay/updateShopUserOrderPayInfo')
     }])
 
 ;

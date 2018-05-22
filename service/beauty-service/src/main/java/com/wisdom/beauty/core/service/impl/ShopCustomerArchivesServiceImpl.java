@@ -22,6 +22,7 @@ import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -306,7 +307,6 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
             userInfoDTO.setCreateDate(new Date());
             userInfoDTO.setUserType(ConfigConstant.beautySource);
-            userInfoDTO.setSource(ConfigConstant.beautySource);
             userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
             logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
             userServiceClient.insertUserInfo(userInfoDTO);
@@ -344,5 +344,17 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
+    }
+
+    @Override
+    public List<ShopUserArchivesDTO> getArchivesList(List<String> userIds) {
+        logger.info("getArchivesList方法出入的参数userIds={}",userIds);
+        if(CollectionUtils.isEmpty(userIds)){
+            return  null;
+        }
+        ShopUserArchivesCriteria criteria = new ShopUserArchivesCriteria();
+        ShopUserArchivesCriteria.Criteria c = criteria.createCriteria();
+        c.andSysUserIdIn(userIds);
+        return  shopUserArchivesMapper.selectByCriteria(criteria);
     }
 }

@@ -76,6 +76,6 @@ angular.module('controllers',[]).controller('storeExpenditureCtrl',
 
 
                 })
-            }
+            };
             $scope.getInfo()
         }])

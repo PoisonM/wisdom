@@ -1,5 +1,6 @@
 package com.wisdom.beauty.controller.analyze;
 
+import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -45,7 +49,7 @@ public class CustomerContributionStatisticController {
 
     /**
      * @Author:zhanghuan
-     * @Param:
+     * @Param:  desc 降序   asc升序
      * @Return:
      * @Description:
      * @Date:2018/5/15 14:12
@@ -54,7 +58,9 @@ public class CustomerContributionStatisticController {
     @ResponseBody
     ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getClerkAchievementList(@RequestParam(required = false) String sysShopId,
                                                                                @RequestParam String startTime,
-                                                                               @RequestParam String endTime) {
+                                                                               @RequestParam String endTime,
+                                                                               @RequestParam(required = false)  String sortBy,
+                                                                               @RequestParam(required = false)  String sortRule) {
 
         long start = System.currentTimeMillis();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
@@ -68,10 +74,51 @@ public class CustomerContributionStatisticController {
         pageParamVoDTO.setStartTime(startTime);
         pageParamVoDTO.setEndTime(endTime);
         List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getClerkAchievementList(pageParamVoDTO);
+        Collections.sort(list, new Comparator<ExpenditureAndIncomeResponseDTO>() {
+            @Override
+            public int compare(ExpenditureAndIncomeResponseDTO o1, ExpenditureAndIncomeResponseDTO o2) {
+                if("asc".equals(sortRule)){
+                    if("expenditure".equals(sortBy)){
+                            BigDecimal i = o1.getExpenditure().subtract(o2.getExpenditure());
+                            return i.setScale(0,BigDecimal.ROUND_UP).intValue();
+                    }
+                    if("income".equals(sortBy)){
+                            BigDecimal i = o1.getIncome().subtract(o2.getIncome());
+                            return i.setScale(0,BigDecimal.ROUND_UP).intValue();
+                    }
+                    if("kahao".equals(sortBy)){
+
+                            BigDecimal i = o1.getKahao().subtract(o2.getKahao());
+                            return i.setScale(0,BigDecimal.ROUND_UP).intValue();
+                    }
+
+                }else {
+                    if("expenditure".equals(sortBy)){
+                            BigDecimal i = o2.getExpenditure().subtract(o1.getExpenditure());
+                            return i.setScale(0,BigDecimal.ROUND_UP).intValue();
+                    }
+                    if("income".equals(sortBy)){
+                            BigDecimal i = o2.getIncome().subtract(o1.getIncome());
+                            return i.setScale(0,BigDecimal.ROUND_UP).intValue();
+                    }
+                    if("kahao".equals(sortBy)){
+                            BigDecimal i = o2.getKahao().subtract(o1.getKahao());
+                            return i.setScale(0,BigDecimal.ROUND_UP).intValue();
+                    }
+                }
+                return 0;
+            }
+        });
         ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(list);
         logger.info("getCashEarningsTendency方法耗时{}毫秒", (System.currentTimeMillis() - start));
         return responseDTO;
+    }
+
+    public static void main(String[] args) {
+        BigDecimal d=new BigDecimal("0");
+        BigDecimal d2=new BigDecimal("0");
+       d.subtract(d2);
     }
 }

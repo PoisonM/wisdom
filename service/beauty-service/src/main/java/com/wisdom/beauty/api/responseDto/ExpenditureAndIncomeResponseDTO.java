@@ -40,15 +40,19 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	/**
 	 * 耗卡
 	 */
-	private BigDecimal expenditure;
+	private BigDecimal expenditure=new BigDecimal("0");
 	/**
 	 * 业绩
 	 */
-	private BigDecimal income;
+	private BigDecimal income=new BigDecimal("0");
 	/**
 	 * 日期
 	 */
 	private Date date;
+	/**
+	 * 创建时间
+	 */
+	private Date createDate;
 	/**
 	 * 格式化后的日期,例如2018-04-04
 	 */
@@ -73,7 +77,7 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	/**
 	 *卡耗
 	 */
-	private BigDecimal kahao;
+	private BigDecimal kahao=new BigDecimal("0");
 	/**
 	 *人次数
 	 */
@@ -90,6 +94,14 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	 * 新客
 	 */
 	private Integer shopNewUserNumber;
+	/**
+	 * 用户id
+	 */
+	private String  sysUserId;
+	/**
+	 * 到店次数，标记每个用户的到店次数
+	 */
+	private Integer  useArriveShopTime;
 	public BigDecimal getExpenditure() {
 		return expenditure;
 	}
@@ -248,5 +260,29 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
 	public void setShopNewUserNumber(Integer shopNewUserNumber) {
 		this.shopNewUserNumber = shopNewUserNumber;
+	}
+
+	public String getSysUserId() {
+		return sysUserId;
+	}
+
+	public void setSysUserId(String sysUserId) {
+		this.sysUserId = sysUserId;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Integer getUseArriveShopTime() {
+		return useArriveShopTime;
+	}
+
+	public void setUseArriveShopTime(Integer useArriveShopTime) {
+		this.useArriveShopTime = useArriveShopTime;
 	}
 }

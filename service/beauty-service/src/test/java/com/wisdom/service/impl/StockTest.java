@@ -5,12 +5,17 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
+import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
+import com.wisdom.beauty.core.mapper.ExtShopCheckRecordMapper;
 import com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
+import com.wisdom.beauty.core.service.ShopCheckService;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.SpringUtil;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
@@ -29,6 +34,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,6 +64,11 @@ public class StockTest  {
 
     @Autowired
     private ExtShopUserConsumeRecordMapper extShopUserConsumeRecordMapper;
+    @Autowired
+    private ShopCheckService shopCheckService;
+
+    @Autowired
+    private ExtShopCheckRecordMapper extShopCheckRecordMapper;
 
     @Before
     public void setupMockMvc() throws Exception {
@@ -123,22 +135,32 @@ public class StockTest  {
         shopStockService.insertShopStockDTO(toJSONString);
     }
     @Test
-    public void  testUpdate(){
-        Map<String,Object> param=new HashedMap();
+    public void  testUpdate() throws Exception {
         ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
-        shopStockNumberDTO.setId("000000");
-        shopStockNumberDTO.setId("882");
-        shopStockNumberDTO.setStockNumber(999);
+        shopStockNumberDTO.setId("cf2819774590432f85f3ad27ca758ac1");
+        shopStockNumberDTO.setStockNumber(7587854);
+        shopStockNumberDTO.setShopProcId("123");
+        shopStockNumberDTO.setShopStoreId("65174281");
         ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
-        shopStockNumberDTO2.setId("883");
-        shopStockNumberDTO2.setId("00000220");
-        shopStockNumberDTO2.setStockNumber(999);
+        shopStockNumberDTO2.setId("ed04ff8418d4469fb5d3cef4f9c2c5d4");
+        shopStockNumberDTO2.setStockNumber(787878);
+        shopStockNumberDTO2.setShopProcId("123");
+        shopStockNumberDTO2.setShopStoreId("65174281");
         List<ShopStockNumberDTO> list=new ArrayList<>();
         list.add(shopStockNumberDTO);
         list.add(shopStockNumberDTO2);
-        param.put("list",list);
        // extShopStockNumberMapper.updateBatchShopStockNumber(param);
-        extShopStockNumberMapper.saveBatchShopStockNumber(list);
+
+        JSONArray json = JSONArray.fromObject(list);
+        String shopStockNumberDTOs = json.toString();//把json转换为String
+       // extShopStockNumberMapper.saveBatchShopStockNumber(list);
+        MvcResult result = mvc.perform(post("/stock/products").contentType(MediaType.APPLICATION_JSON).content(shopStockNumberDTOs))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
@@ -149,5 +171,77 @@ public class StockTest  {
         criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
         criteria.andSysClerkIdEqualTo("11");
         Integer consumeNumber = extShopUserConsumeRecordMapper.selectUserConsumeNumber(recordCriteria);
+    }
+    @Test
+    public void testRedis(){
+        //JedisUtils.setObject("zhtest3", new Date(), 0);
+        //Object object=JedisUtils.getObject("zhtest3");
+        String DATE1="1995-11-12 15:21:00";
+        String DATE2="1996-01-01 15:21:00";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date dt1 = df.parse(DATE1);
+            Date dt2 = df.parse(DATE2);
+            if (dt1.getTime() > dt2.getTime()) {
+                System.out.println("dt1 在dt2前");
+
+            } else if (dt1.getTime() < dt2.getTime()) {
+                System.out.println("dt1在dt2后");
+            } else {
+
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @Test
+    public  void  pandian(){
+        ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
+        shopStockNumberDTO.setId("cf2819774590432f85f3ad27ca758ac1");
+        shopStockNumberDTO.setStockNumber(888);
+        ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
+        shopStockNumberDTO2.setId("ed04ff8418d4469fb5d3cef4f9c2c5d4");
+        shopStockNumberDTO2.setStockNumber(888);
+        List<ShopStockNumberDTO> list=new ArrayList<>();
+        list.add(shopStockNumberDTO);
+        list.add(shopStockNumberDTO2);
+       // shopStockService.checkProduct(list);
+    }
+    @Test
+    public  void  pingcang(){
+        ShopClosePositionRequestDTO shopClosePositionRequestDTO=new ShopClosePositionRequestDTO();
+        shopClosePositionRequestDTO.setShopProcId("6");
+        shopClosePositionRequestDTO.setShopStoreId("651742081");
+        shopClosePositionRequestDTO.setActualStockNumber(8585);
+        shopClosePositionRequestDTO.setOriginalFlowNo("d");
+        shopClosePositionRequestDTO.setShopCheckRecorId("222");
+        shopCheckService.doClosePosition(shopClosePositionRequestDTO);
+    }
+    @Test
+    public  void  testExtShopCheckRecordMapper(){
+        List<ShopCheckRecordDTO> list=new ArrayList<>();
+        ShopCheckRecordDTO shopCheckRecordDTO=new ShopCheckRecordDTO();
+        ShopCheckRecordDTO shopCheckRecordDTO2=new ShopCheckRecordDTO();
+        shopCheckRecordDTO.setId("0909");
+        shopCheckRecordDTO2.setId("06565909");
+        shopCheckRecordDTO.setProductTypeOneName("06565909");
+        shopCheckRecordDTO2.setProductTypeOneName("06565909");
+        list.add(shopCheckRecordDTO2);
+        list.add(shopCheckRecordDTO);
+        extShopCheckRecordMapper.insertBatchCheckRecord(list);
+    }
+    @Test
+    public  void  testcheckproduct(){
+        String shopStoreId="651742081";
+        List<String> products=new ArrayList<>();
+
+        products.add("3");
+        products.add("5");
+        products.add("6");
+        List<ShopProductInfoCheckResponseDTO> list = shopCheckService.getProductsCheckLit(shopStoreId,products);
+        JSONArray json = JSONArray.fromObject(list);
+        String toJSONString = json.toString();//把json转换为String
+        System.out.print(list);
     }
 }

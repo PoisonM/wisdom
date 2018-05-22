@@ -1,26 +1,32 @@
 package com.wisdom.beauty.controller.mine;
 
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopBossDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
+import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.client.WeixinServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
+import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -52,10 +58,17 @@ public class MineController {
     private RedisUtils redisUtils;
 
     @Autowired
+    private ShopService shopService;
+
+    @Autowired
     private WeixinServiceClient weixinServiceClient;
 
     @Resource
     private ShopUserRelationService shopUserRelationService;
+
+
+    @Resource
+    private UserServiceClient userServiceClient;
 
     @Value("${test.msg}")
     private String msg;
@@ -231,14 +244,48 @@ public class MineController {
     public ResponseDTO<Object> getCurrentLoginUserInfo() {
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        UserInfoDTO userInfo = UserUtils.getUserInfo();
-
-        if (null == userInfo) {
-            userInfo = UserUtils.getTestUserInfoDTO();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if (null != bossInfo) {
+            logger.info("老板端获取我的个人信息");
+            ExtShopBossDTO extShopBossDTO = new ExtShopBossDTO();
+            BeanUtils.copyProperties(bossInfo, extShopBossDTO);
+            //查询当前店铺名称
+            SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(bossInfo.getParentShopId());
+            //查询当前美容院名称
+            SysShopDTO shop = shopService.getShopInfoByPrimaryKey(bossInfo.getCurrentShopId());
+            extShopBossDTO.setCurrentBeautyShopName(beauty.getName());
+            extShopBossDTO.setCurrentShopName(shop.getName());
+            responseDTO.setResponseData(extShopBossDTO);
+            return responseDTO;
         }
-        responseDTO.setResponseData(userInfo);
+        UserInfoDTO userInfo = UserUtils.getUserInfo();
+        if (null != userInfo) {
+            logger.info("用户端获取我的个人信息");
+            responseDTO.setResponseData(userInfo);
+            return responseDTO;
+        }
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        if (null != clerkInfo) {
+            responseDTO.setResponseData(clerkInfo);
+            return responseDTO;
+        }
+        responseDTO.setResult(StatusConstant.FAILURE);
+        return responseDTO;
+    }
+
+    /**
+     * 修改老板个人信息
+     */
+    @RequestMapping(value = "/updateBossInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO<Object> updateBossInfo(@RequestBody ExtShopBossDTO extShopBossDTO) {
+        logger.info("修改老板个人信息传入参数={}", "extShopBossDTO = [" + extShopBossDTO + "]");
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        userServiceClient.updateBossInfo(extShopBossDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
+
 
 }
