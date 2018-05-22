@@ -139,27 +139,25 @@ public class ProjectController {
         }
 
         //缓存一级
-        HashMap<String, ShopProjectInfoDTO> oneTypeMap = new HashMap<>(16);
-        for (ShopProjectInfoDTO dto : projectList) {
-            oneTypeMap.put(dto.getProjectTypeOneId(), dto);
+        List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId);
+        if (CommonUtils.objectIsEmpty(shopProjectTypeDTOList)) {
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
         }
-        logger.info("缓存一级项目={}", oneTypeMap);
 
         ArrayList<Object> levelList = new ArrayList<>();
         //遍历缓存的一级项目
-        for (Map.Entry entry : oneTypeMap.entrySet()) {
+        for (ShopProjectTypeDTO shopProjectTypeDTO : shopProjectTypeDTOList) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
             //承接二级项目
             HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
-            ShopProjectInfoDTO productInfoDTO = new ShopProjectInfoDTO();
             for (ShopProjectInfoDTO dto : projectList) {
-                if (entry.getKey().equals(dto.getProjectTypeOneId())) {
+                if (shopProjectTypeDTO.getId().equals(dto.getProjectTypeOneId())) {
                     twoLevelMap.put(dto.getProjectTypeTwoName(), dto);
                 }
-                productInfoDTO = dto;
             }
             helperMap.put("levelTwoDetail", twoLevelMap);
-            helperMap.put("levelOneDetail", productInfoDTO);
+            helperMap.put("levelOneDetail", shopProjectTypeDTO);
             levelList.add(helperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表

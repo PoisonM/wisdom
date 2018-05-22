@@ -249,6 +249,10 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		criteria.andSysShopIdEqualTo(sysShopId);
 		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 		criteria.andParentIdIsNull();
+
+		ShopProjectTypeCriteria.Criteria or = shopProjectTypeCriteria.createCriteria();
+		or.andParentIdEqualTo("");
+		shopProjectTypeCriteria.or(or);
 		List<ShopProjectTypeDTO> list = shopProjectTypeMapper.selectByCriteria(shopProjectTypeCriteria);
 		return list;
 	}
