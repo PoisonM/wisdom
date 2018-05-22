@@ -154,26 +154,4 @@ public class BeautyLoginController {
         }
     }
 
-
-
-    /**
-     * 发送验证码
-     */
-    @RequestMapping(value = "getUserValidateCode", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    ResponseDTO getUserValidateCode(@RequestParam String mobile) {
-        ResponseDTO result = new ResponseDTO<>();
-        try
-        {
-            SMSUtil.sendUserValidateCode(mobile);
-            result.setResult(StatusConstant.SUCCESS);
-        }
-        catch (Exception e)
-        {
-            result.setResult(StatusConstant.FAILURE);
-        }
-        return result;
-    }
-
 }
