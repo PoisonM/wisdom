@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProductInfoMapper;
@@ -415,13 +416,18 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	 * @return
 	 */
 	@Override
-	public int saveProductInfo(ShopProductInfoDTO shopProductInfoDTO) {
+	public int saveProductInfo(ExtShopProductInfoDTO shopProductInfoDTO) {
 		shopProductInfoDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
 		shopProductInfoDTO.setId(IdGen.uuid());
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getEffectDate()) && shopProductInfoDTO.getQualityPeriod() > 0) {
 			shopProductInfoDTO.setInvalidDate(DateUtils.dateSubMonth(shopProductInfoDTO.getEffectDate(), shopProductInfoDTO.getQualityPeriod()));
 		}
 		int insertSelective = shopProductInfoMapper.insertSelective(shopProductInfoDTO);
+		//图片报错到mongodb
+		if (CommonUtils.objectIsNotEmpty(shopProductInfoDTO.getImageList())) {
+			shopProductInfoDTO.setProductUrl(shopProductInfoDTO.getImageList().get(0));
+		}
+		mongoUtils.saveImageUrl(shopProductInfoDTO.getImageList(), shopProductInfoDTO.getId());
 		logger.info("添加产品信息保存={}", insertSelective > 0 ? "成功" : "失败");
 		return insertSelective;
 	}

@@ -1,16 +1,21 @@
 package com.wisdom.beauty.api.extDto;
 
-import java.util.Date;
+import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 
-public class ExtShopProductInfoDTO {
+import java.util.List;
+
+public class ExtShopProductInfoDTO extends ShopProductInfoDTO {
     //返回码
     private String showapi_res_code;
     //返回错误信息
     private String showapi_res_error;
     //产品唯一编码
     private String code;
+    /**
+     * 图片详情
+     */
+    private List<String> imageList;
 
-    private Date createDate;
     //扫码后的对象
     private ExtShopScanProductInfoDTO showapi_res_body;
 
@@ -34,14 +39,6 @@ public class ExtShopProductInfoDTO {
         return code;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
     public void setCode(String code) {
         this.code = code;
     }
@@ -52,5 +49,13 @@ public class ExtShopProductInfoDTO {
 
     public void setShowapi_res_body(ExtShopScanProductInfoDTO showapi_res_body) {
         this.showapi_res_body = showapi_res_body;
+    }
+
+    public List<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 }

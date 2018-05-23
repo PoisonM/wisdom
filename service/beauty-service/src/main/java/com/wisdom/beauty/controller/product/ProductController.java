@@ -362,7 +362,7 @@ public class ProductController {
      */
     @RequestMapping(value = "/saveProductInfo", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<Object> saveProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
+    ResponseDTO<Object> saveProductInfo(@RequestBody ExtShopProductInfoDTO shopProductInfoDTO) {
         long currentTimeMillis = System.currentTimeMillis();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         logger.info("添加产品信息传入参数={}", "shopProductInfoDTO = [" + shopProductInfoDTO + "]");
