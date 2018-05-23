@@ -496,7 +496,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.getProduct', {
-            url: '/getProduct',
+            url: '/getProduct/:id',
             templateUrl: root + '/cashier/getProduct.html',
             controller: 'getProductCtrl',
             resolve: {

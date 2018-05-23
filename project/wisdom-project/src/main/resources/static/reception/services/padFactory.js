@@ -297,5 +297,13 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UpdateShopUserOrderPayInfo', ['$resource', function($resource) {
         return $resource(beautyIP + '/userPay/updateShopUserOrderPayInfo')
     }])
+    //用户领取产品
+    .factory('ConsumesUserProduct', ['$resource', function($resource) {
+        return $resource(beautyIP + '/consumes/consumesUserProduct')
+    }])
+    //查询用户某个产品详情
+    .factory('GetUserProductInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + '/productInfo/getUserProductInfo')
+    }])
 
 ;
