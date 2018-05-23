@@ -5,10 +5,7 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
-import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
-import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
-import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
-import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
+import com.wisdom.beauty.api.requestDto.*;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
 import com.wisdom.beauty.core.mapper.ExtShopCheckRecordMapper;
 import com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper;
@@ -266,6 +263,25 @@ public class StockTest  {
         String shopClosePositionReques= JSONObject.toJSONString(shopClosePositionRequestDTO);
         String shopClosePositionReques2= JSONObject.toJSONString(shopClosePositionRequestDTO2);*/
         MvcResult result = mvc.perform(post("/stock/setStorekeeper").contentType(MediaType.APPLICATION_JSON).content(shopClosePositionReques))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+    //测试跳转产品页面
+    @Test
+    public  void  testtiaozhuan() throws Exception {
+        List<String> productIds=new ArrayList<>();
+        productIds.add("3");
+        productIds.add("4");
+        StoreProductIdRequestDTO storeProductIdRequestDTO=new StoreProductIdRequestDTO();
+        storeProductIdRequestDTO.setShopStoreId("1");
+        storeProductIdRequestDTO.setProductIds(productIds);
+        String shopClosePositionReques= JSONObject.toJSONString(storeProductIdRequestDTO);
+
+        MvcResult result = mvc.perform(post("/stock/products").contentType(MediaType.APPLICATION_JSON).content(shopClosePositionReques))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

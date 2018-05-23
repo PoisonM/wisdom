@@ -8,10 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
-import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
-import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
-import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
+import com.wisdom.beauty.api.requestDto.*;
 import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
@@ -390,11 +387,13 @@ public class StoreAndStockController {
      */
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<Object> getProducts(@RequestBody String shopStoreId, @RequestBody List<String> products) {
+    ResponseDTO<Object> getProducts(@RequestBody StoreProductIdRequestDTO storeProductIdRequestDTO) {
         long currentTimeMillis = System.currentTimeMillis();
+        String shopStoreId=storeProductIdRequestDTO.getShopStoreId();
+        List<String> productIds=storeProductIdRequestDTO.getProductIds();
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        List<ShopProductInfoCheckResponseDTO> list = shopCheckService.getProductsCheckLit(shopStoreId, products);
+        List<ShopProductInfoCheckResponseDTO> list = shopCheckService.getProductsCheckLit(shopStoreId, productIds);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("getProducts方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
