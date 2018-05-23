@@ -182,7 +182,7 @@ public class ProjectController {
 //	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam String sysUserId, @RequestParam String cardStyle) {
+    ResponseDTO<List<ShopUserProjectRelationDTO>> getUserCourseProjectList(@RequestParam(required = false) String sysUserId, @RequestParam(required = false) String cardStyle, @RequestParam(required = false) String id) {
         long currentTimeMillis = System.currentTimeMillis();
         logger.info("查询某个用户的卡片列表信息传入参数={}", "sysUserId = [" + sysUserId + "], cardStyle = [" + cardStyle + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
@@ -215,6 +215,7 @@ public class ProjectController {
         relationDTO.setSysShopId(sysShopId);
         relationDTO.setUseStyle(cardStyle);
         relationDTO.setSysBossCode(sysBossId);
+        relationDTO.setId(id);
         List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
         if (CommonUtils.objectIsEmpty(userProjectList)) {
             logger.debug("查询某个用户的卡片列表信息为空, {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
