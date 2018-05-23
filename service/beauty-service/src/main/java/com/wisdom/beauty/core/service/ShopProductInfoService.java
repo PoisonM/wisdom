@@ -132,4 +132,12 @@ public interface ShopProductInfoService {
      * @param shopProductTypeDTOS
      */
     int saveProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS);
+
+    /**
+     * 保存产品信息
+     *
+     * @param shopProductInfoDTO
+     * @return
+     */
+    int saveProductInfo(ShopProductInfoDTO shopProductInfoDTO);
 }

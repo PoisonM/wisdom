@@ -80,7 +80,7 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     private String productCode;
 
     //产品单位
-    private BigDecimal productUnit;
+    private String productUnit;
 
     //产品规格
     private String productSpec;
@@ -306,11 +306,11 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.productCode = productCode;
     }
 
-    public BigDecimal getProductUnit() {
+    public String getProductUnit() {
         return productUnit;
     }
 
-    public void setProductUnit(BigDecimal productUnit) {
+    public void setProductUnit(String productUnit) {
         this.productUnit = productUnit;
     }
 

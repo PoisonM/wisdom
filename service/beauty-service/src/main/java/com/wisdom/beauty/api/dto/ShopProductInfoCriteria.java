@@ -1766,52 +1766,62 @@ public class ShopProductInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitEqualTo(BigDecimal value) {
+        public Criteria andProductUnitEqualTo(String value) {
             addCriterion("product_unit =", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitNotEqualTo(BigDecimal value) {
+        public Criteria andProductUnitNotEqualTo(String value) {
             addCriterion("product_unit <>", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitGreaterThan(BigDecimal value) {
+        public Criteria andProductUnitGreaterThan(String value) {
             addCriterion("product_unit >", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andProductUnitGreaterThanOrEqualTo(String value) {
             addCriterion("product_unit >=", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitLessThan(BigDecimal value) {
+        public Criteria andProductUnitLessThan(String value) {
             addCriterion("product_unit <", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andProductUnitLessThanOrEqualTo(String value) {
             addCriterion("product_unit <=", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitIn(List<BigDecimal> values) {
+        public Criteria andProductUnitLike(String value) {
+            addCriterion("product_unit like", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitNotLike(String value) {
+            addCriterion("product_unit not like", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitIn(List<String> values) {
             addCriterion("product_unit in", values, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitNotIn(List<BigDecimal> values) {
+        public Criteria andProductUnitNotIn(List<String> values) {
             addCriterion("product_unit not in", values, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andProductUnitBetween(String value1, String value2) {
             addCriterion("product_unit between", value1, value2, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andProductUnitNotBetween(String value1, String value2) {
             addCriterion("product_unit not between", value1, value2, "productUnit");
             return (Criteria) this;
         }

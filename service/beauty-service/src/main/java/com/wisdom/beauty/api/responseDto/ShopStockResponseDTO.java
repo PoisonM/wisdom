@@ -23,7 +23,7 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private  String stockStatus;
 	private  String productCode;
 	private  String productSpec;
-	private  BigDecimal productUnit;
+	private String productUnit;
 
 	/**实际库存数量*/
 	private Integer actualStockNumber;
@@ -89,11 +89,11 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 		this.productSpec = productSpec;
 	}
 
-	public BigDecimal getProductUnit() {
+	public String getProductUnit() {
 		return productUnit;
 	}
 
-	public void setProductUnit(BigDecimal productUnit) {
+	public void setProductUnit(String productUnit) {
 		this.productUnit = productUnit;
 	}
 

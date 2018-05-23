@@ -354,4 +354,23 @@ public class ProductController {
         return responseDTO;
     }
 
+    /**
+     * 添加产品信息
+     *
+     * @param shopProductInfoDTO
+     * @return
+     */
+    @RequestMapping(value = "/saveProductInfo", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<Object> saveProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        logger.info("添加产品信息传入参数={}", "shopProductInfoDTO = [" + shopProductInfoDTO + "]");
+        int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
+        responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData(productInfo);
+        logger.info("扫码入库方法耗时={}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
 }

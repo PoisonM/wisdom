@@ -11,6 +11,7 @@ import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -18,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -39,9 +39,6 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 	@Autowired
 	private ShopProductInfoMapper shopProductInfoMapper;
-
-	@Autowired
-	private MongoTemplate mongoTemplate;
 
     @Autowired
     private MongoUtils mongoUtils;
@@ -409,6 +406,24 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		shopProductTypeDTOS.setId(IdGen.uuid());
 		shopProductTypeMapper.insertSelective(shopProductTypeDTOS);
 		return 0;
+	}
+
+	/**
+	 * 添加产品信息
+	 *
+	 * @param shopProductInfoDTO
+	 * @return
+	 */
+	@Override
+	public int saveProductInfo(ShopProductInfoDTO shopProductInfoDTO) {
+		shopProductInfoDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
+		shopProductInfoDTO.setId(IdGen.uuid());
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getEffectDate()) && shopProductInfoDTO.getQualityPeriod() > 0) {
+			shopProductInfoDTO.setInvalidDate(DateUtils.dateSubMonth(shopProductInfoDTO.getEffectDate(), shopProductInfoDTO.getQualityPeriod()));
+		}
+		int insertSelective = shopProductInfoMapper.insertSelective(shopProductInfoDTO);
+		logger.info("添加产品信息保存={}", insertSelective > 0 ? "成功" : "失败");
+		return insertSelective;
 	}
 
 }

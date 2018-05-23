@@ -602,4 +602,26 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		String last = format.format(ca.getTime())+" 23:59:59";
 		return last;
 	}
+
+    /***
+     * 日期月份减一个月
+     *
+     * @param datetime
+     *            日期(2014-11)
+     * @return 2014-10
+     */
+    public static String dateSubMonth(String datetime, int month) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(datetime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+        cl.add(Calendar.MONTH, month);
+        date = cl.getTime();
+        return sdf.format(date);
+    }
 }
