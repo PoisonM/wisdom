@@ -343,9 +343,6 @@ public class AppointmentController {
 		long timeMillis = System.currentTimeMillis();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
-		if (null == userInfo && CommonCodeEnum.TRUE.getCode().equals(msg)) {
-			userInfo = UserUtils.getTestUserInfoDTO();
-		}
 		ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		shopAppointServiceDTO.setSysUserId(userInfo.getId());
 		shopAppointServiceDTO.setStatus(status);
@@ -454,7 +451,7 @@ public class AppointmentController {
 		}
 		if (StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
 			shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
-			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000);
+			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000l);
 			shopAppointServiceDTO.setAppointEndTime(afterDate);
 		}
 		//根据预约时间查询当前美容师有没有被占用
@@ -505,7 +502,7 @@ public class AppointmentController {
 
 		if (StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
 			shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
-			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000);
+			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000l);
 			shopAppointServiceDTO.setAppointEndTime(afterDate);
 		}
 		//根据预约时间查询当前美容师有没有被占用
