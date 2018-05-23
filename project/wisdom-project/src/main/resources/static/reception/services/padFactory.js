@@ -108,6 +108,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetAppointmentInfoById', ['$resource', function($resource) {
         return $resource(beautyIP + 'appointmentInfo/getAppointmentInfoById', { appointmentId: '@id' })
     }])
+    //修改预约详情
+    .factory('UpdateUserAppointInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'appointmentInfo/updateUserAppointInfo')
+    }])
 
     //项目的接口
     .factory('OneLevelProject', ['$resource', function($resource) {
@@ -219,6 +223,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     //查询美容师的排班信息
     .factory('GetShopClerkScheduleList', ['$resource', function($resource) {
         return $resource(beautyIP + 'clerkSchedule/getShopClerkScheduleList')
+    }])
+    //获取某个美容师排班信息
+    .factory('GetClerkScheduleInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'clerkSchedule/getClerkScheduleInfo')
     }])
 
 

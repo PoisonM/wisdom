@@ -994,8 +994,8 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                     return $ocLazyLoad.load({
                         name: "日预约",
                         files: [root + "appointment/dayAppointment.js",
-                            root + "appointment/laydate.css",
-                            root + "appointment/laydate.js",
+                            // root + "appointment/laydate.css",
+                            // root + "appointment/laydate.js",
                             root + "appointment/dayAppointment.css",
                             root + "appointment/consumptionCtrl.js",
                             root + "appointment/style.css",

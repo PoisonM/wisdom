@@ -1,30 +1,36 @@
  function modifyingAppointmentPage ($scope,ngDialog,FindArchives,GetShopProjectList){
-     /*选择时间*/
+    /* //选择时间
+     /!*选择时间*!/
      $scope.param.dayTime=[];
      $scope.param.curDate=new Date();
      $scope.bgf5f5f5 = "bgf5f5f5";
-     var date={
-         "startTime": "07:00",
-         "endTime": "21:00",
-         "scheduling":"20,21,22"
+     $scope.param.codeNum = []//所有节点
+     $scope.param.schedulingArr = []//所有节点
+     $scope.dates={
+         startTime: "00:00",
+         endTime: "23:00",
+         scheduling:"",
      };
-     /* var a = $filter("date")(Date.parse($scope.param.ModifyAppointmentObject.appointStartTime),"yyyy-MM-dd");
-      console.log(a);*/
+     for(key in $scope.param.code){
+         $scope.param.codeNum.push(key)
+     }
+     /!* var a = $filter("date")(Date.parse($scope.param.ModifyAppointmentObject.appointStartTime),"yyyy-MM-dd");
+      console.log(a);*!/
      $scope.param.ModifyAppointmentObject.hoursType=[];
      $scope.param.ModifyAppointmentObject.hoursTime=[];
      for(var i=0;i<$scope.param.code.length;i++){
          $scope.param.ModifyAppointmentObject.hoursType[i]="0";
          for(key in $scope.param.code[i] ){
-             for (var k = 0;k <date.scheduling.split(",").length; k++) {
-                 if(date.scheduling.split(",")[k]==key){
+             for (var k = 0;k <$scope.dates.scheduling.split(",").length; k++) {
+                 if($scope.dates.scheduling.split(",")[k]==key){
                      $scope.param.ModifyAppointmentObject.hoursType[i]="1";
                  }
              }
              $scope.param.ModifyAppointmentObject.hoursTime[i] = $scope.param.code[i][key];
-             if($scope.param.code[i][key] == date.startTime ){
+             if($scope.param.code[i][key] == $scope.dates.startTime ){
                  var a= i;
              }
-             if($scope.param.code[i][key] == date.endTime ){
+             if($scope.param.code[i][key] == $scope.dates.endTime ){
                  var b= i;
              }
          }
@@ -36,7 +42,7 @@
          nextDate = new Date($scope.param.curDate.getTime() +  24*60*60*1000*i); //后一天
          $scope.param.dayTime.push(nextDate)
      }
-     /*默认选择时间段*/
+     /!*默认选择时间段*!/
      if($scope.param.ModifyAppointmentObject.appointStartTime ==""){
          var time=$scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
          $scope.timeLength = $scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
@@ -65,12 +71,12 @@
          $scope.param.ModifyAppointmentObject.appointEndTime=timeIntervalArr[timeIntervalArr.length-1]
      }
 
-     /*选择时间（天为单位）*/
+     /!*选择时间（天为单位）*!/
      $scope.selectDayTime = function(index){
          $scope.bgff6666 = 'bgff6666';
          $scope.index = index;
      };
-     /*选择时间（半小时为单位）*/
+     /!*选择时间（半小时为单位）*!/
      $scope.selectTime = function(index,NoOrYes){
          var timeIntervalArr = [];
          $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(a,b+1);
@@ -101,7 +107,7 @@
          $scope.param.ModifyAppointmentObject.appointStartTime=timeIntervalArr[0];
          $scope.param.ModifyAppointmentObject.appointEndTime=timeIntervalArr[timeIntervalArr.length-1]
 
-     };
+     };*/
 
      selectCustomersCtrl && selectCustomersCtrl($scope,ngDialog,FindArchives);/*选择顾客*/
      selectProductCtrl && selectProductCtrl($scope,ngDialog,GetShopProjectList);
