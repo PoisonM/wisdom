@@ -1,4 +1,4 @@
-PADWeb.controller('getPorductCtrl', function($scope, $stateParams, $state, ngDialog, Archives) {
+PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDialog, Archives, GetUserProductInfo, ConsumesUserProduct) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
@@ -28,9 +28,24 @@ PADWeb.controller('getPorductCtrl', function($scope, $stateParams, $state, ngDia
         $state.go('pad-web.left_nav.housekeeper')
     }
     $scope.goConfirmations = function() {
-        $state.go('pad-web.confirmations')
+        ConsumesUserProduct.save({
+            shopUserConsumeDTO: [{
+                clerkId: $scope.getproduct.id,
+                consumeId: '',
+                consumeNum: 1,
+                consumePrice: '',
+                sysUserId: '110',
+            }]
+        }, function(data) {
+            $state.go('pad-web.confirmations')
+        })
     }
     $scope.checkBoxChek = function(e) {
         $(e.target).children('.checkBox').css('background', '#FF6666')
     }
+    GetUserProductInfo.get({
+        userProductInfoId: $state.params.id
+    }, function(data) {
+        $scope.getproduct = data.responseData;
+    })
 });

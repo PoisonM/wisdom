@@ -176,6 +176,7 @@ public class UserUtils {
         sysBossDTO.setNickname("赵得良");
         sysBossDTO.setId("11");
         sysBossDTO.setCurrentShopId("11");
+        sysBossDTO.setSysBossCode("11");
         return sysBossDTO;
     }
 

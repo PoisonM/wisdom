@@ -1,9 +1,9 @@
 package com.wisdom.common.dto.user;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class SysBossDTO extends BaseEntity implements Serializable {
     //
@@ -17,6 +17,9 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     //
     private String currentShopId;
+
+    //
+    private String sysBossCode;
 
     //
     private String currentStoreId;
@@ -107,6 +110,14 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setCurrentShopId(String currentShopId) {
         this.currentShopId = currentShopId;
+    }
+
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
+
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getCurrentStoreId() {
