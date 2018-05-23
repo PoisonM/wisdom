@@ -9,6 +9,9 @@ public class ShopStoreDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
+    //
+    private String sysBossCode;
+
     //仓库名称
     private String name;
 
@@ -44,6 +47,14 @@ public class ShopStoreDTO extends BaseEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
+
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getName() {

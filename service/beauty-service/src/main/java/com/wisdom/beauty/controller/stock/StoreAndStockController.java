@@ -7,10 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
-import com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO;
-import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
-import com.wisdom.beauty.api.dto.ShopStockRecordDTO;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
@@ -22,6 +19,7 @@ import com.wisdom.beauty.core.service.ShopCheckService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
@@ -54,27 +52,24 @@ public class StoreAndStockController {
     private ShopCheckService shopCheckService;
 
     /**
-     * 根据条件查询仓库列表
+     * 查询仓库列表
      *
-     * @param pageParamDTO 分页对象
+     * @param
      * @return
      */
-    @RequestMapping(value = "findStoreList", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "findStoreList", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseDTO<PageParamDTO<List<ExtShopStoreDTO>>> findStoreList(
-            @RequestBody PageParamDTO<ExtShopStoreDTO> pageParamDTO) {
+    ResponseDTO<List<ShopStoreDTO>> findStoreList() {
 
         long startTime = System.currentTimeMillis();
-        logger.info("开始查询仓库列表..........查询条件为：{}", pageParamDTO.getRequestData());
-
-        ResponseDTO<PageParamDTO<List<ExtShopStoreDTO>>> responseDTO = new ResponseDTO<>();
-
+        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
         // 执行查询
-        PageParamDTO<List<ExtShopStoreDTO>> page = shopStockService.findStoreListS(pageParamDTO);
+        List<ShopStoreDTO>  list = shopStockService.findStoreList(sysBossDTO.getSysBossCode());
 
-        responseDTO.setResponseData(page);
+        ResponseDTO<List<ShopStoreDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(list);
 
         logger.info("根据条件查询仓库列表" + "耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
@@ -203,7 +198,7 @@ public class StoreAndStockController {
 
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopStockResponseDTO);
-        logger.info("getShopStockRecordList方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("getShopStockRecordDetail方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -227,7 +222,7 @@ public class StoreAndStockController {
         ResponseDTO<ShopStockResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopStockResponseDTO);
-        logger.info("addStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("getProductInfoAndStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

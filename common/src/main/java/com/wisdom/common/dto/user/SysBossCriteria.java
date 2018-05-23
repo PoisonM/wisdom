@@ -69,7 +69,7 @@ public class SysBossCriteria {
     }
 
     public void setLimitStart(int limitStart) {
-        this.limitStart = limitStart;
+        this.limitStart=limitStart;
     }
 
     public int getLimitStart() {
@@ -77,7 +77,7 @@ public class SysBossCriteria {
     }
 
     public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
+        this.pageSize=pageSize;
     }
 
     public int getPageSize() {
@@ -402,6 +402,76 @@ public class SysBossCriteria {
 
         public Criteria andCurrentShopIdNotBetween(String value1, String value2) {
             addCriterion("current_shop_id not between", value1, value2, "currentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeIsNull() {
+            addCriterion("sys_boss_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeIsNotNull() {
+            addCriterion("sys_boss_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeEqualTo(String value) {
+            addCriterion("sys_boss_code =", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeNotEqualTo(String value) {
+            addCriterion("sys_boss_code <>", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeGreaterThan(String value) {
+            addCriterion("sys_boss_code >", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_boss_code >=", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeLessThan(String value) {
+            addCriterion("sys_boss_code <", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeLessThanOrEqualTo(String value) {
+            addCriterion("sys_boss_code <=", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeLike(String value) {
+            addCriterion("sys_boss_code like", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeNotLike(String value) {
+            addCriterion("sys_boss_code not like", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeIn(List<String> values) {
+            addCriterion("sys_boss_code in", values, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeNotIn(List<String> values) {
+            addCriterion("sys_boss_code not in", values, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeBetween(String value1, String value2) {
+            addCriterion("sys_boss_code between", value1, value2, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeNotBetween(String value1, String value2) {
+            addCriterion("sys_boss_code not between", value1, value2, "sysBossCode");
             return (Criteria) this;
         }
 
