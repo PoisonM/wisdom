@@ -425,7 +425,7 @@ public class AppointmentController {
 		//如果userInfo为空，说明是pad端用户
 		if (null == userInfo) {
 			shopAppointServiceDTO.setCreateBy(clerkInfo.getSysUserId());
-			shopAppointServiceDTO.setSysBossCode(clerkInfo.getSysBossId());
+			shopAppointServiceDTO.setSysBossCode(clerkInfo.getSysBossCode());
 			if (StringUtils.isBlank(shopAppointServiceDTO.getSysClerkId())) {
 				shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
 			}

@@ -50,7 +50,7 @@ public class UserUtils {
         SysClerkDTO clerkInfo = getClerkInfo();
         if (null != clerkInfo) {
             System.out.println("获取clerk信息");
-            extUserDTO.setSysBossId(clerkInfo.getSysBossId());
+            extUserDTO.setSysBossCode(clerkInfo.getSysBossCode());
             extUserDTO.setSysShopId(clerkInfo.getSysShopId());
             extUserDTO.setSysClerkName(clerkInfo.getName());
             return extUserDTO;
@@ -190,7 +190,7 @@ public class UserUtils {
         clerkDTO.setWeixinAttentionStatus("1");
         clerkDTO.setSysUserId("3");
         clerkDTO.setSysBossName("王老板");
-        clerkDTO.setSysBossId("sys_boss_id");
+        clerkDTO.setSysBossCode("sys_boss_id");
         clerkDTO.setName("陈莺梦");
         clerkDTO.setId("clerkId1");
         clerkDTO.setSysShopId("11");

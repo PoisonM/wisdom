@@ -9,7 +9,7 @@ public class ExtUserDTO extends BaseEntity implements Serializable {
     //用户sysUserId
     private String sysUserId;
 
-    private String sysBossId;
+    private String sysBossCode;
 
     private String sysShopId;
 
@@ -71,12 +71,12 @@ public class ExtUserDTO extends BaseEntity implements Serializable {
         this.sysUserId = sysUserId;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysShopId() {
