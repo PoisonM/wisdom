@@ -9,7 +9,7 @@ public class ShopRemindSettingDTO extends BaseEntity implements Serializable {
     private String id;
 
     //
-    private String sysBossId;
+    private String sysBossCode;
 
     //0 开启  1关闭
     private String status;
@@ -25,11 +25,11 @@ public class ShopRemindSettingDTO extends BaseEntity implements Serializable {
     }
 
     public String getSysBossId() {
-        return sysBossId;
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossId(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getStatus() {

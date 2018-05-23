@@ -3,7 +3,7 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopRemindSettingMapper">
     <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopRemindSettingDTO">
         <id column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="CHAR"/>
     </resultMap>
     <sql id="Example_Where_Clause">
@@ -67,7 +67,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, sys_boss_id, status
+    id, sys_boss_code, status
   </sql>
     <select id="selectByCriteria" resultMap="BaseResultMap"
             parameterType="com.wisdom.beauty.api.dto.ShopRemindSettingCriteria">
@@ -104,9 +104,9 @@
         </if>
     </delete>
     <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopRemindSettingDTO">
-    insert into shop_remind_setting (id, sys_boss_id, status
+    insert into shop_remind_setting (id, sys_boss_code, status
       )
-    values (#{id,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}
+    values (#{id,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopRemindSettingDTO">
@@ -115,8 +115,8 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="sysBossId != null">
-                sys_boss_id,
+            <if test="sysBossCode != null">
+                sys_boss_code,
             </if>
             <if test="status != null">
                 status,
@@ -126,8 +126,8 @@
             <if test="id != null">
                 #{id,jdbcType=VARCHAR},
             </if>
-            <if test="sysBossId != null">
-                #{sysBossId,jdbcType=VARCHAR},
+            <if test="sysBossCode != null">
+                #{sysBossCode,jdbcType=VARCHAR},
             </if>
             <if test="status != null">
                 #{status,jdbcType=CHAR},
@@ -147,8 +147,8 @@
             <if test="record.id != null">
                 id = #{record.id,jdbcType=VARCHAR},
             </if>
-            <if test="record.sysBossId != null">
-                sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+            <if test="record.sysBossCode != null">
+                sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
             </if>
             <if test="record.status != null">
                 status = #{record.status,jdbcType=CHAR},
@@ -161,7 +161,7 @@
     <update id="updateByCriteria" parameterType="map">
         update shop_remind_setting
         set id = #{record.id,jdbcType=VARCHAR},
-        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
         status = #{record.status,jdbcType=CHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -170,8 +170,8 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopRemindSettingDTO">
         update shop_remind_setting
         <set>
-            <if test="sysBossId != null">
-                sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+            <if test="sysBossCode != null">
+                sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
             </if>
             <if test="status != null">
                 status = #{status,jdbcType=CHAR},
@@ -181,7 +181,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopRemindSettingDTO">
     update shop_remind_setting
-    set sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+    set sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       status = #{status,jdbcType=CHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>

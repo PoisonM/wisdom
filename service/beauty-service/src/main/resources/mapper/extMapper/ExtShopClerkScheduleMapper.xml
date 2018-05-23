@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopClerkScheduleDTO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
-    <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR" />
+    <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
     <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
     <result column="schedule_type" property="scheduleType" jdbcType="CHAR" />
@@ -71,18 +71,18 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, sys_clerk_id, sys_boss_id, sys_shop_id, sys_clerk_name, schedule_type, schedule_date, 
+    id, sys_clerk_id, sys_boss_code, sys_shop_id, sys_clerk_name, schedule_type, schedule_date,
     create_date, create_by
   </sql>
 
   <insert id="insertBatch" >
-    insert into shop_clerk_schedule (id, sys_clerk_id, sys_boss_id, 
+    insert into shop_clerk_schedule (id, sys_clerk_id, sys_boss_code,
       sys_shop_id, sys_clerk_name, schedule_type, 
       schedule_date, create_date, create_by
       )
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=VARCHAR}, #{item.sysClerkId,jdbcType=VARCHAR}, #{item.sysBossId,jdbcType=VARCHAR},
+      (#{item.id,jdbcType=VARCHAR}, #{item.sysClerkId,jdbcType=VARCHAR}, #{item.sysBossCode,jdbcType=VARCHAR},
       #{item.sysShopId,jdbcType=VARCHAR}, #{item.sysClerkName,jdbcType=VARCHAR}, #{item.scheduleType,jdbcType=CHAR},
       #{item.scheduleDate,jdbcType=TIMESTAMP}, #{item.createDate,jdbcType=TIMESTAMP}, #{item.createBy,jdbcType=TIMESTAMP})
     </foreach>
@@ -92,7 +92,7 @@
     <foreach collection="list" separator=";" item="record">
       update shop_clerk_schedule
       set sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
-      sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       schedule_type = #{record.scheduleType,jdbcType=CHAR},

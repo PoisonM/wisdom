@@ -81,7 +81,7 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
             logger.info("getAllShopIncomeExpenditure方法出入的参数为空");
             return null;
         }
-        logger.info("getAllShopIncomeExpenditure方法出入的参数 sysBossId={}", userConsumeRequestDTO.getSysBossId());
+        logger.info("getAllShopIncomeExpenditure方法出入的参数 sysBossCode={}", userConsumeRequestDTO.getSysBossId());
         //查询boos下所有美容院
         ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
         shopBossRelationDTO.setSysBossCode(userConsumeRequestDTO.getSysBossId());

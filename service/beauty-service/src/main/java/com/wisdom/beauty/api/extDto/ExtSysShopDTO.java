@@ -3,7 +3,7 @@ package com.wisdom.beauty.api.extDto;
 import com.wisdom.beauty.api.dto.SysShopDTO;
 
 public class ExtSysShopDTO extends SysShopDTO {
-    private String sysBossId;
+    private String sysBossCode;
     //0为特殊账户
     private String type;
 
@@ -18,10 +18,10 @@ public class ExtSysShopDTO extends SysShopDTO {
     }
 
     public String getSysBossId() {
-        return sysBossId;
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossId(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 }

@@ -5,7 +5,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="sys_clerk_id" jdbcType="VARCHAR" property="sysClerkId" />
     <result column="sys_shop_id" jdbcType="VARCHAR" property="sysShopId" />
-    <result column="sys_boss_id" jdbcType="VARCHAR" property="sysBossId" />
+    <result column="sys_boss_code" jdbcType="VARCHAR" property="sysBossCode" />
     <result column="sys_boss_name" jdbcType="VARCHAR" property="sysBossName" />
     <result column="schedule_setting_id" jdbcType="VARCHAR" property="scheduleSettingId" />
     <result column="scheduling_date" jdbcType="TIMESTAMP" property="schedulingDate" />
@@ -73,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sys_clerk_id, sys_shop_id, sys_boss_id, sys_boss_name, schedule_setting_id, scheduling_date, 
+    id, sys_clerk_id, sys_shop_id, sys_boss_code, sys_boss_name, schedule_setting_id, scheduling_date,
     create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopBossScheduleSettingRelationCriteria" resultMap="BaseResultMap">
@@ -111,11 +111,11 @@
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopBossScheduleSettingRelationDTO">
     insert into shop_boss_schedule_setting_relation (id, sys_clerk_id, sys_shop_id, 
-      sys_boss_id, sys_boss_name, schedule_setting_id, 
+      sys_boss_code, sys_boss_name, schedule_setting_id,
       scheduling_date, create_by, create_date, 
       update_user, update_date)
     values (#{id,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, 
-      #{sysBossId,jdbcType=VARCHAR}, #{sysBossName,jdbcType=VARCHAR}, #{scheduleSettingId,jdbcType=VARCHAR}, 
+      #{sysBossCode,jdbcType=VARCHAR}, #{sysBossName,jdbcType=VARCHAR}, #{scheduleSettingId,jdbcType=VARCHAR},
       #{schedulingDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
@@ -131,8 +131,8 @@
       <if test="sysShopId != null">
         sys_shop_id,
       </if>
-      <if test="sysBossId != null">
-        sys_boss_id,
+      <if test="sysBossCode != null">
+        sys_boss_code,
       </if>
       <if test="sysBossName != null">
         sys_boss_name,
@@ -166,8 +166,8 @@
       <if test="sysShopId != null">
         #{sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="sysBossId != null">
-        #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null">
+        #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="sysBossName != null">
         #{sysBossName,jdbcType=VARCHAR},
@@ -210,8 +210,8 @@
       <if test="record.sysShopId != null">
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysBossId != null">
-        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      <if test="record.sysBossCode != null">
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="record.sysBossName != null">
         sys_boss_name = #{record.sysBossName,jdbcType=VARCHAR},
@@ -244,7 +244,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
-      sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       sys_boss_name = #{record.sysBossName,jdbcType=VARCHAR},
       schedule_setting_id = #{record.scheduleSettingId,jdbcType=VARCHAR},
       scheduling_date = #{record.schedulingDate,jdbcType=TIMESTAMP},
@@ -265,8 +265,8 @@
       <if test="sysShopId != null">
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="sysBossId != null">
-        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null">
+        sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="sysBossName != null">
         sys_boss_name = #{sysBossName,jdbcType=VARCHAR},
@@ -296,7 +296,7 @@
     update shop_boss_schedule_setting_relation
     set sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
-      sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       sys_boss_name = #{sysBossName,jdbcType=VARCHAR},
       schedule_setting_id = #{scheduleSettingId,jdbcType=VARCHAR},
       scheduling_date = #{schedulingDate,jdbcType=TIMESTAMP},

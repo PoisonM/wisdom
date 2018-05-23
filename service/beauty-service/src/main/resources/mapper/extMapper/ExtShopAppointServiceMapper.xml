@@ -9,7 +9,7 @@
         <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
         <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
         <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR"/>
-        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
         <result column="appoint_start_time" property="appointStartTime" jdbcType="TIMESTAMP"/>
         <result column="appoint_end_time" property="appointEndTime" jdbcType="TIMESTAMP"/>
         <result column="appoint_period" property="appointPeriod" jdbcType="INTEGER"/>
@@ -85,7 +85,7 @@
     </sql>
     <sql id="Base_Column_List">
         id, shop_project_id, shop_project_name, sys_shop_id, sys_shop_name, sys_clerk_id,
-        sys_clerk_name, sys_boss_id, appoint_start_time, appoint_end_time, appoint_period,
+        sys_clerk_name, sys_boss_code, appoint_start_time, appoint_end_time, appoint_period,
         sys_user_id, sys_user_name, sys_user_phone, status, detail, create_by, create_date,
         update_user, update_date
     </sql>

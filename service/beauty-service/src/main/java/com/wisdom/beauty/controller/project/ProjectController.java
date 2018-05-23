@@ -188,7 +188,7 @@ public class ProjectController {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         UserInfoDTO userInfo = UserUtils.getUserInfo();
         String sysShopId = "";
-        String sysBossId = "";
+        String sysBossCode = "";
         //pad端登陆
         if (null != clerkInfo) {
             logger.info("pad端操作");
@@ -204,7 +204,7 @@ public class ProjectController {
         if (null != userInfo) {
             logger.info("用户端操作");
             SysBossDTO bossInfo = UserUtils.getBossInfo();
-            sysBossId = bossInfo.getId();
+            sysBossCode = bossInfo.getId();
         }
 
         logger.info("传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
@@ -214,7 +214,7 @@ public class ProjectController {
         relationDTO.setSysUserId(sysUserId);
         relationDTO.setSysShopId(sysShopId);
         relationDTO.setUseStyle(cardStyle);
-        relationDTO.setSysBossCode(sysBossId);
+        relationDTO.setSysBossCode(sysBossCode);
         relationDTO.setId(id);
         List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
         if (CommonUtils.objectIsEmpty(userProjectList)) {

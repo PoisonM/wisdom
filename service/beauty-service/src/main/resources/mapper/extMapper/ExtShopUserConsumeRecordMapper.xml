@@ -11,7 +11,7 @@
         <result column="consume_number" property="consumeNumber" jdbcType="INTEGER"/>
         <result column="goods_type" property="goodsType" jdbcType="CHAR"/>
         <result column="consume_type" property="consumeType" jdbcType="CHAR"/>
-        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
         <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
         <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
         <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
@@ -90,7 +90,7 @@
     </sql>
     <sql id="Base_Column_List">
     id, flow_id, flow_name, flow_no, sys_user_id, sys_user_name, consume_number, goods_type,
-    consume_type, sys_boss_id, sys_shop_id, sys_shop_name, sys_clerk_id, sys_clerk_name,
+    consume_type, sys_boss_code, sys_shop_id, sys_shop_name, sys_clerk_id, sys_clerk_name,
     price, discount, oper_date, pay_type, sign_url, detail, status, create_by, create_date,
     update_user, update_date
   </sql>

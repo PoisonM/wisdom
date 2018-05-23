@@ -32,7 +32,7 @@ public class UserConsumeRequestDTO extends BaseEntity  {
     /**
      * BossId
      */
-    private String sysBossId;
+    private String sysBossCode;
 
     /**
      * 美容院表主键
@@ -91,11 +91,11 @@ public class UserConsumeRequestDTO extends BaseEntity  {
     }
 
     public String getSysBossId() {
-        return sysBossId;
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossId(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysShopId() {
