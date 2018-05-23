@@ -102,7 +102,7 @@ public class ScheduleController {
                     scheduleDTO.setCreateDate(new Date());
                     scheduleDTO.setScheduleType(ScheduleTypeEnum.ALL.getCode());
                     scheduleDTO.setSysClerkId(sysClerkDTO.getId());
-                    scheduleDTO.setSysBossId(sysClerkDTO.getSysBossId());
+                    scheduleDTO.setSysBossCode(sysClerkDTO.getSysBossCode());
                     scheduleDTO.setSysClerkName(sysClerkDTO.getName());
                     clerkScheduleList.add(scheduleDTO);
                 }
@@ -174,14 +174,14 @@ public class ScheduleController {
     }
 
     /**
-     * 获取某个店某个美容师某天的排班信息
+     * 获取某个店某个美容师某天的可预约信息
      */
     @RequestMapping(value = "/getClerkScheduleInfo", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    ResponseDTO<Object> getClerkScheduleInfo(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate, @RequestParam String clerkId) {
+    ResponseDTO<Object> getClerkScheduleInfo(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate, @RequestParam String clerkId, @RequestParam(required = false) String appointmentId) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        logger.info("获取某个店某个美容师某天的排班信息传入参数={}", "searchDate = [" + searchDate + "]");
+        logger.info("获取某个店某个美容师某天的可预约信息传入参数={}", "searchDate = [" + searchDate + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         ShopClerkScheduleDTO shopClerkScheduleDTO = new ShopClerkScheduleDTO();
         //登陆相关-待补充
@@ -194,7 +194,7 @@ public class ScheduleController {
         List<ShopClerkScheduleDTO> clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
         if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
             responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setResponseData("美容师的排班信息为空，没有初始化！");
+            responseDTO.setResponseData("美容师的可预约信息为空，没有初始化！");
             return responseDTO;
         }
         shopClerkScheduleDTO = clerkScheduleList.get(0);
@@ -210,6 +210,10 @@ public class ScheduleController {
         extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(DateUtils.DateToStr(searchDate, "date") + " 23:59:59", "datetime"));
         extShopAppointServiceDTO.setSysClerkId(clerkId);
         extShopAppointServiceDTO.setSysShopId(sysShopId);
+        if (StringUtils.isNotBlank(appointmentId)) {
+            extShopAppointServiceDTO.setId(appointmentId);
+        }
+
         List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
         StringBuffer filterStr = null;
         //缓存预约过的时间
@@ -219,7 +223,7 @@ public class ScheduleController {
             filterStr = new StringBuffer();
         }
 
-        //可预约时间 = 当前美容师的排班时间段 - 预约过的时间
+        //构建预约过的时间
         if (CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)) {
             for (int i = 0; i < shopAppointServiceDTOS.size(); i++) {
                 filterStr.append(CommonUtils.getArrayNo(DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointStartTime(), "time"),
@@ -230,7 +234,7 @@ public class ScheduleController {
             }
 
         }
-
+        //可预约时间 = 当前美容师的排班时间段 - 预约过的时间
         if (null != filterStr && filterStr.length() > 0 && null != responseStr && responseStr.length() > 0) {
             //转为字符数组，方便过滤
             String[] filter = filterStr.toString().split(",");
@@ -255,7 +259,7 @@ public class ScheduleController {
 
         responseDTO.setResponseData(responseStr);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("获取某个店某个美容师某天的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("获取某个店某个美容师某天的可预约信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 
         return responseDTO;
     }

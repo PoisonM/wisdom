@@ -11,17 +11,17 @@
     <result column="consume_number" property="consumeNumber" jdbcType="INTEGER" />
     <result column="goods_type" property="goodsType" jdbcType="CHAR" />
     <result column="consume_type" property="consumeType" jdbcType="CHAR" />
-    <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR" />
+    <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
     <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR" />
     <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
     <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="before_price" property="beforePrice" jdbcType="DECIMAL"/>
+    <result column="before_price" property="beforePrice" jdbcType="DECIMAL" />
     <result column="discount" property="discount" jdbcType="DECIMAL" />
-    <result column="time_discount" property="timeDiscount" jdbcType="REAL"/>
-    <result column="period_discount" property="periodDiscount" jdbcType="REAL"/>
-    <result column="product_discount" property="productDiscount" jdbcType="REAL"/>
+    <result column="time_discount" property="timeDiscount" jdbcType="REAL" />
+    <result column="period_discount" property="periodDiscount" jdbcType="REAL" />
+    <result column="product_discount" property="productDiscount" jdbcType="REAL" />
     <result column="oper_date" property="operDate" jdbcType="TIMESTAMP" />
     <result column="pay_type" property="payType" jdbcType="CHAR" />
     <result column="sign_url" property="signUrl" jdbcType="VARCHAR" />
@@ -92,9 +92,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, flow_id, flow_name, flow_no, sys_user_id, sys_user_name, consume_number, goods_type, 
-    consume_type, sys_boss_id, sys_shop_id, sys_shop_name, sys_clerk_id, sys_clerk_name,
-    price, before_price, discount, time_discount, period_discount, product_discount,
-    oper_date, pay_type, sign_url, detail, status, create_by, create_date, update_user,
+    consume_type, sys_boss_code, sys_shop_id, sys_shop_name, sys_clerk_id, sys_clerk_name, 
+    price, before_price, discount, time_discount, period_discount, product_discount, 
+    oper_date, pay_type, sign_url, detail, status, create_by, create_date, update_user, 
     update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria" >
@@ -134,23 +134,23 @@
     insert into shop_user_consume_record (id, flow_id, flow_name, 
       flow_no, sys_user_id, sys_user_name, 
       consume_number, goods_type, consume_type, 
-      sys_boss_id, sys_shop_id, sys_shop_name, 
-      sys_clerk_id, sys_clerk_name, price,
-    before_price, discount, time_discount,
-    period_discount, product_discount, oper_date,
-    pay_type, sign_url, detail,
-    status, create_by, create_date,
-    update_user, update_date)
+      sys_boss_code, sys_shop_id, sys_shop_name, 
+      sys_clerk_id, sys_clerk_name, price, 
+      before_price, discount, time_discount, 
+      period_discount, product_discount, oper_date, 
+      pay_type, sign_url, detail, 
+      status, create_by, create_date, 
+      update_user, update_date)
     values (#{id,jdbcType=VARCHAR}, #{flowId,jdbcType=VARCHAR}, #{flowName,jdbcType=VARCHAR}, 
       #{flowNo,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, 
       #{consumeNumber,jdbcType=INTEGER}, #{goodsType,jdbcType=CHAR}, #{consumeType,jdbcType=CHAR}, 
-      #{sysBossId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, 
-      #{sysClerkId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
-    #{beforePrice,jdbcType=DECIMAL}, #{discount,jdbcType=DECIMAL}, #{timeDiscount,jdbcType=REAL},
-    #{periodDiscount,jdbcType=REAL}, #{productDiscount,jdbcType=REAL}, #{operDate,jdbcType=TIMESTAMP},
-    #{payType,jdbcType=CHAR}, #{signUrl,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR},
-    #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+      #{sysBossCode,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, 
+      #{sysClerkId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{beforePrice,jdbcType=DECIMAL}, #{discount,jdbcType=DECIMAL}, #{timeDiscount,jdbcType=REAL}, 
+      #{periodDiscount,jdbcType=REAL}, #{productDiscount,jdbcType=REAL}, #{operDate,jdbcType=TIMESTAMP}, 
+      #{payType,jdbcType=CHAR}, #{signUrl,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO" >
     insert into shop_user_consume_record
@@ -182,8 +182,8 @@
       <if test="consumeType != null" >
         consume_type,
       </if>
-      <if test="sysBossId != null" >
-        sys_boss_id,
+      <if test="sysBossCode != null" >
+        sys_boss_code,
       </if>
       <if test="sysShopId != null" >
         sys_shop_id,
@@ -200,19 +200,19 @@
       <if test="price != null" >
         price,
       </if>
-      <if test="beforePrice != null">
+      <if test="beforePrice != null" >
         before_price,
       </if>
       <if test="discount != null" >
         discount,
       </if>
-      <if test="timeDiscount != null">
+      <if test="timeDiscount != null" >
         time_discount,
       </if>
-      <if test="periodDiscount != null">
+      <if test="periodDiscount != null" >
         period_discount,
       </if>
-      <if test="productDiscount != null">
+      <if test="productDiscount != null" >
         product_discount,
       </if>
       <if test="operDate != null" >
@@ -271,8 +271,8 @@
       <if test="consumeType != null" >
         #{consumeType,jdbcType=CHAR},
       </if>
-      <if test="sysBossId != null" >
-        #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
         #{sysShopId,jdbcType=VARCHAR},
@@ -289,19 +289,19 @@
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
-      <if test="beforePrice != null">
+      <if test="beforePrice != null" >
         #{beforePrice,jdbcType=DECIMAL},
       </if>
       <if test="discount != null" >
         #{discount,jdbcType=DECIMAL},
       </if>
-      <if test="timeDiscount != null">
+      <if test="timeDiscount != null" >
         #{timeDiscount,jdbcType=REAL},
       </if>
-      <if test="periodDiscount != null">
+      <if test="periodDiscount != null" >
         #{periodDiscount,jdbcType=REAL},
       </if>
-      <if test="productDiscount != null">
+      <if test="productDiscount != null" >
         #{productDiscount,jdbcType=REAL},
       </if>
       <if test="operDate != null" >
@@ -369,8 +369,8 @@
       <if test="record.consumeType != null" >
         consume_type = #{record.consumeType,jdbcType=CHAR},
       </if>
-      <if test="record.sysBossId != null" >
-        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      <if test="record.sysBossCode != null" >
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="record.sysShopId != null" >
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
@@ -387,19 +387,19 @@
       <if test="record.price != null" >
         price = #{record.price,jdbcType=DECIMAL},
       </if>
-      <if test="record.beforePrice != null">
+      <if test="record.beforePrice != null" >
         before_price = #{record.beforePrice,jdbcType=DECIMAL},
       </if>
       <if test="record.discount != null" >
         discount = #{record.discount,jdbcType=DECIMAL},
       </if>
-      <if test="record.timeDiscount != null">
+      <if test="record.timeDiscount != null" >
         time_discount = #{record.timeDiscount,jdbcType=REAL},
       </if>
-      <if test="record.periodDiscount != null">
+      <if test="record.periodDiscount != null" >
         period_discount = #{record.periodDiscount,jdbcType=REAL},
       </if>
-      <if test="record.productDiscount != null">
+      <if test="record.productDiscount != null" >
         product_discount = #{record.productDiscount,jdbcType=REAL},
       </if>
       <if test="record.operDate != null" >
@@ -445,17 +445,17 @@
       consume_number = #{record.consumeNumber,jdbcType=INTEGER},
       goods_type = #{record.goodsType,jdbcType=CHAR},
       consume_type = #{record.consumeType,jdbcType=CHAR},
-      sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
-    before_price = #{record.beforePrice,jdbcType=DECIMAL},
+      before_price = #{record.beforePrice,jdbcType=DECIMAL},
       discount = #{record.discount,jdbcType=DECIMAL},
-    time_discount = #{record.timeDiscount,jdbcType=REAL},
-    period_discount = #{record.periodDiscount,jdbcType=REAL},
-    product_discount = #{record.productDiscount,jdbcType=REAL},
+      time_discount = #{record.timeDiscount,jdbcType=REAL},
+      period_discount = #{record.periodDiscount,jdbcType=REAL},
+      product_discount = #{record.productDiscount,jdbcType=REAL},
       oper_date = #{record.operDate,jdbcType=TIMESTAMP},
       pay_type = #{record.payType,jdbcType=CHAR},
       sign_url = #{record.signUrl,jdbcType=VARCHAR},
@@ -496,8 +496,8 @@
       <if test="consumeType != null" >
         consume_type = #{consumeType,jdbcType=CHAR},
       </if>
-      <if test="sysBossId != null" >
-        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
@@ -514,19 +514,19 @@
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
-      <if test="beforePrice != null">
+      <if test="beforePrice != null" >
         before_price = #{beforePrice,jdbcType=DECIMAL},
       </if>
       <if test="discount != null" >
         discount = #{discount,jdbcType=DECIMAL},
       </if>
-      <if test="timeDiscount != null">
+      <if test="timeDiscount != null" >
         time_discount = #{timeDiscount,jdbcType=REAL},
       </if>
-      <if test="periodDiscount != null">
+      <if test="periodDiscount != null" >
         period_discount = #{periodDiscount,jdbcType=REAL},
       </if>
-      <if test="productDiscount != null">
+      <if test="productDiscount != null" >
         product_discount = #{productDiscount,jdbcType=REAL},
       </if>
       <if test="operDate != null" >
@@ -569,17 +569,17 @@
       consume_number = #{consumeNumber,jdbcType=INTEGER},
       goods_type = #{goodsType,jdbcType=CHAR},
       consume_type = #{consumeType,jdbcType=CHAR},
-      sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
       sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
-    before_price = #{beforePrice,jdbcType=DECIMAL},
+      before_price = #{beforePrice,jdbcType=DECIMAL},
       discount = #{discount,jdbcType=DECIMAL},
-    time_discount = #{timeDiscount,jdbcType=REAL},
-    period_discount = #{periodDiscount,jdbcType=REAL},
-    product_discount = #{productDiscount,jdbcType=REAL},
+      time_discount = #{timeDiscount,jdbcType=REAL},
+      period_discount = #{periodDiscount,jdbcType=REAL},
+      product_discount = #{productDiscount,jdbcType=REAL},
       oper_date = #{operDate,jdbcType=TIMESTAMP},
       pay_type = #{payType,jdbcType=CHAR},
       sign_url = #{signUrl,jdbcType=VARCHAR},

@@ -4,23 +4,14 @@ import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.LoginDTO;
-import com.wisdom.common.dto.system.ValidateCodeDTO;
-import com.wisdom.common.dto.user.SysBossCriteria;
-import com.wisdom.common.dto.user.SysBossDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.dto.user.*;
 import com.wisdom.common.util.*;
 import com.wisdom.user.mapper.BeautyUserInfoMapper;
 import com.wisdom.user.mapper.SysBossMapper;
-import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.mapper.extMapper.ExtSysClerkMapper;
 import com.wisdom.user.service.BeautyLoginService;
-import com.wisdom.user.service.BusinessLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -228,7 +219,11 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysClerkDTO sysClerkDTO = new SysClerkDTO();
         sysClerkDTO.setMobile(loginDTO.getUserPhone());
-        List<SysClerkDTO> sysClerkDTOList = extSysClerkMapper.getClerkInfo(sysClerkDTO);
+
+        SysClerkCriteria sysClerkCriteria = new SysClerkCriteria();
+        SysClerkCriteria.Criteria c = sysClerkCriteria.createCriteria();
+        c.andMobileEqualTo(loginDTO.getUserPhone());
+        List<SysClerkDTO> sysClerkDTOList = extSysClerkMapper.selectByCriteria(sysClerkCriteria);
         RedisLock redisLock = new RedisLock("clerkInfo" + loginDTO.getUserPhone());
         try {
             redisLock.lock();
@@ -242,7 +237,7 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
                 sysClerkDTO.setLoginDate(new Date());
                 sysClerkDTO.setLoginIp(loginIP);
                 sysClerkDTO.setUserOpenid(openId);
-                extSysClerkMapper.updateClerkInfo(sysClerkDTO);
+                extSysClerkMapper.updateByPrimaryKeySelective(sysClerkDTO);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -271,7 +266,10 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
         //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
         SysClerkDTO sysClerkDTO = new SysClerkDTO();
         sysClerkDTO.setMobile(loginDTO.getUserPhone());
-        List<SysClerkDTO> sysClerkDTOList = extSysClerkMapper.getClerkInfo(sysClerkDTO);
+        SysClerkCriteria sysClerkCriteria = new SysClerkCriteria();
+        SysClerkCriteria.Criteria c = sysClerkCriteria.createCriteria();
+        c.andMobileEqualTo(loginDTO.getUserPhone());
+        List<SysClerkDTO> sysClerkDTOList = extSysClerkMapper.selectByCriteria(sysClerkCriteria);
         RedisLock redisLock = new RedisLock("clerkInfo" + loginDTO.getUserPhone());
         try {
             redisLock.lock();
@@ -281,7 +279,7 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
                 sysClerkDTO.setMobile(loginDTO.getUserPhone());
                 sysClerkDTO.setLoginDate(new Date());
                 sysClerkDTO.setLoginIp(loginIP);
-                extSysClerkMapper.updateClerkInfo(sysClerkDTO);
+                extSysClerkMapper.updateByCriteriaSelective(sysClerkDTO, sysClerkCriteria);
             }
         } catch (Exception e) {
             e.printStackTrace();

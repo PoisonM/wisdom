@@ -188,7 +188,7 @@ public class ConsumeTest {
         consumeRecordDTO.setSysUserName("安迪苏瓦");
         consumeRecordDTO.setSysShopName("汉方美业");
         consumeRecordDTO.setSysClerkName("张小芳");
-        consumeRecordDTO.setSysBossId(uuid);
+        consumeRecordDTO.setSysBossCode(uuid);
         consumeRecordDTO.setPrice(new BigDecimal(5728));
         consumeRecordDTO.setSignUrl("www.baidu.com");
         consumeRecordDTO.setPayType(PayTypeEnum.ALI_PAY.getCode());

@@ -155,7 +155,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
 		// 设置查询条件
 		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
-		criteria.andSysBossIdEqualTo(userConsumeRequestDTO.getSysBossId());
+		criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossId());
 		String startDate = pageParamVoDTO.getStartTime();
 		String endDate = pageParamVoDTO.getEndTime();
 		criteria.andCreateDateBetween(DateUtils.StrToDate(startDate, "datetime"),
@@ -302,7 +302,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ExpenditureAndIncomeResponseDTO response = null;
 		// 获取bossid下的所有美容店
 		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
-		shopBossRelationDTO.setSysBossId(userConsumeRequest.getSysBossId());
+		shopBossRelationDTO.setSysBossCode(userConsumeRequest.getSysBossId());
 		List<ShopBossRelationDTO> shopBossRelationList = shopBossService.ShopBossRelationList(shopBossRelationDTO);
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationList) {
 			response = new ExpenditureAndIncomeResponseDTO();
@@ -457,7 +457,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossId())) {
-			criteria.andSysBossIdEqualTo(userConsumeRequest.getSysBossId());
+			criteria.andSysBossCodeEqualTo(userConsumeRequest.getSysBossId());
 		}
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
@@ -478,7 +478,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		or.andConsumeTypeEqualTo(ConsumeTypeEnum.RECHARGE.getCode());
 		or.andGoodsTypeEqualTo(GoodsTypeEnum.TIME_CARD.getCode());
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossId())) {
-			or.andSysBossIdEqualTo(userConsumeRequest.getSysBossId());
+			or.andSysBossCodeEqualTo(userConsumeRequest.getSysBossId());
 		}
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
 			or.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
@@ -509,7 +509,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.RECHARGE.getCode());
 
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossId())) {
-			criteria.andSysBossIdEqualTo(userConsumeRequest.getSysBossId());
+			criteria.andSysBossCodeEqualTo(userConsumeRequest.getSysBossId());
 		}
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
@@ -709,7 +709,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		}
 		// boss下所有的店
 		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
-		shopBossRelationDTO.setSysBossId(userConsumeRequestDTO.getSysBossId());
+		shopBossRelationDTO.setSysBossCode(userConsumeRequestDTO.getSysBossId());
 		List<ShopBossRelationDTO> shopBossRelationList = shopBossService.ShopBossRelationList(shopBossRelationDTO);
 		if (CollectionUtils.isEmpty(shopBossRelationList)) {
 			return null;
@@ -747,7 +747,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		// 新客
 		PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO = new PageParamVoDTO();
 		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-		shopUserArchivesDTO.setSysBossId(userConsumeRequestDTO.getSysBossId());
+		shopUserArchivesDTO.setSysBossCode(userConsumeRequestDTO.getSysBossId());
 		shopCustomerArchivesDTO.setRequestData(shopUserArchivesDTO);
 		shopCustomerArchivesDTO.setStartTime(pageParamVoDTO.getStartTime());
 		shopCustomerArchivesDTO.setEndTime(pageParamVoDTO.getEndTime());
@@ -852,7 +852,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		if ("3".equals(condition)) {
 			PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO = new PageParamVoDTO();
 			ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-			shopUserArchivesDTO.setSysBossId(userConsumeRequestDTO.getSysBossId());
+			shopUserArchivesDTO.setSysBossCode(userConsumeRequestDTO.getSysBossId());
 			shopUserArchivesDTO.setSysShopId(userConsumeRequestDTO.getSysShopId());
 			shopCustomerArchivesDTO.setRequestData(shopUserArchivesDTO);
 			shopCustomerArchivesDTO.setStartTime(pageParamVoDTO.getStartTime());

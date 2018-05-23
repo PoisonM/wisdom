@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
     //
@@ -28,8 +28,8 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
     //店员id
     private String sysClerkId;
 
-    //老板主键
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
 
     //类型 0：充值  1：消费 2、还欠款 3、退款 4、划卡
     private String type;
@@ -119,12 +119,12 @@ public class SysClerkFlowAccountDTO extends BaseEntity implements Serializable {
         this.sysClerkId = sysClerkId;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getType() {

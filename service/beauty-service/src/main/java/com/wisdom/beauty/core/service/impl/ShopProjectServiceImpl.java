@@ -159,6 +159,31 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		return update;
 	}
 
+    /**
+     * 删除用户与项目的关系
+     *
+     * @param shopUserProjectRelationDTO
+     * @return
+     */
+    @Override
+    public int deleteUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
+
+        if (shopUserProjectRelationDTO == null) {
+            logger.info("删除用户与项目的关系传入参数为空");
+            return 0;
+        }
+
+        if (StringUtils.isBlank(shopUserProjectRelationDTO.getShopAppointmentId())) {
+            logger.error("删除用户与项目的关系的主键为空", shopUserProjectRelationDTO.getShopAppointmentId());
+            return 0;
+        }
+        ShopUserProjectRelationCriteria criteria = new ShopUserProjectRelationCriteria();
+        ShopUserProjectRelationCriteria.Criteria c = criteria.createCriteria();
+        c.andShopAppointmentIdEqualTo(shopUserProjectRelationDTO.getShopAppointmentId());
+        int update = shopUserProjectRelationMapper.deleteByCriteria(criteria);
+        return update;
+    }
+
 	/**
 	 * 查询某个店的项目列表信息
 	 *

@@ -73,8 +73,8 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
         if (StringUtils.isNotBlank(sysClerkDTO.getSysShopId())) {
             criteria.andSysShopIdEqualTo(sysClerkDTO.getSysShopId());
         }
-        if (StringUtils.isNotBlank(sysClerkDTO.getSysBossId())) {
-            criteria.andSysBossIdEqualTo(sysClerkDTO.getSysBossId());
+        if (StringUtils.isNotBlank(sysClerkDTO.getSysBossCode())) {
+            criteria.andSysBossCodeEqualTo(sysClerkDTO.getSysBossCode());
         }
         // 排序
         sysClerkCriteria.setOrderByClause("create_date");

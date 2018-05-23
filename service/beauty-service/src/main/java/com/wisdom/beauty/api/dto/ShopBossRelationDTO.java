@@ -1,8 +1,8 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopBossRelationDTO extends BaseEntity implements Serializable {
     //
@@ -15,7 +15,7 @@ public class ShopBossRelationDTO extends BaseEntity implements Serializable {
     private String sysShopName;
 
     //
-    private String sysBossId;
+    private String sysBossCode;
 
     //
     private String sysBossName;
@@ -49,12 +49,12 @@ public class ShopBossRelationDTO extends BaseEntity implements Serializable {
         this.sysShopName = sysShopName;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysBossName() {

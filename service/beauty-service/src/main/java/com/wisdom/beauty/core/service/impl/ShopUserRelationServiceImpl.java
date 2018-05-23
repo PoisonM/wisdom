@@ -111,9 +111,9 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         ShopUserRelationCriteria criteria = new ShopUserRelationCriteria();
         ShopUserRelationCriteria.Criteria c = criteria.createCriteria();
 
-        if (StringUtils.isNotBlank(shopUserRelationDTO.getSysBossId())) {
-            logger.info("getShopListByCondition方法传入的参数bossId={}", shopUserRelationDTO.getSysBossId());
-            c.andSysBossIdEqualTo(shopUserRelationDTO.getSysBossId());
+        if (StringUtils.isNotBlank(shopUserRelationDTO.getSysBossCode())) {
+            logger.info("getShopListByCondition方法传入的参数bossId={}", shopUserRelationDTO.getSysBossCode());
+            c.andSysBossCodeEqualTo(shopUserRelationDTO.getSysBossCode());
         }
 
         if (StringUtils.isNotBlank(shopUserRelationDTO.getSysUserId())) {

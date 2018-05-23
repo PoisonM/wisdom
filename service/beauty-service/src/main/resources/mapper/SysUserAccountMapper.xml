@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wisdom.beauty.core.mapper.SysUserAccountMapper">
-  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.SysUserAccountDTO">
-    <id column="id" property="id" jdbcType="VARCHAR"/>
-    <result column="sum_amount" property="sumAmount" jdbcType="DECIMAL"/>
-    <result column="arrears" property="arrears" jdbcType="DECIMAL"/>
-    <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
-    <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
-    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
-    <result column="account_number" property="accountNumber" jdbcType="VARCHAR"/>
-    <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
-    <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+<mapper namespace="com.wisdom.beauty.core.mapper.SysUserAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.SysUserAccountDTO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sum_amount" property="sumAmount" jdbcType="DECIMAL" />
+    <result column="arrears" property="arrears" jdbcType="DECIMAL" />
+    <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
+    <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+    <result column="account_number" property="accountNumber" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" suffix=")" prefixOverrides="and">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -43,25 +43,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" suffix=")" prefixOverrides="and">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -72,235 +72,233 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List">
-    id, sum_amount, arrears, sys_shop_id, sys_boss_id, sys_user_id, account_number, create_by,
-    create_date, update_user, update_date
+  <sql id="Base_Column_List" >
+    id, sum_amount, arrears, sys_shop_id, sys_boss_code, sys_user_id, account_number, 
+    create_by, create_date, update_user, update_date
   </sql>
-  <select id="selectByCriteria" resultMap="BaseResultMap"
-          parameterType="com.wisdom.beauty.api.dto.SysUserAccountCriteria">
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.SysUserAccountCriteria" >
     select
-    <if test="distinct">
+    <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
     from sys_user_account
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null">
+    <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
-    <if test="limitStart >= 0">
+    <if test="limitStart >= 0" >
       limit ${limitStart},${pageSize}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from sys_user_account
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_user_account
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.SysUserAccountCriteria">
+  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.SysUserAccountCriteria" >
     delete from sys_user_account
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
-    insert into sys_user_account (id, sum_amount, arrears,
-    sys_shop_id, sys_boss_id, sys_user_id,
-    account_number, create_by, create_date,
-    update_user, update_date)
-    values (#{id,jdbcType=VARCHAR}, #{sumAmount,jdbcType=DECIMAL}, #{arrears,jdbcType=DECIMAL},
-    #{sysShopId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR},
-    #{accountNumber,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO" >
+    insert into sys_user_account (id, sum_amount, arrears, 
+      sys_shop_id, sys_boss_code, sys_user_id, 
+      account_number, create_by, create_date, 
+      update_user, update_date)
+    values (#{id,jdbcType=VARCHAR}, #{sumAmount,jdbcType=DECIMAL}, #{arrears,jdbcType=DECIMAL}, 
+      #{sysShopId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, 
+      #{accountNumber,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO" >
     insert into sys_user_account
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         id,
       </if>
-      <if test="sumAmount != null">
+      <if test="sumAmount != null" >
         sum_amount,
       </if>
-      <if test="arrears != null">
+      <if test="arrears != null" >
         arrears,
       </if>
-      <if test="sysShopId != null">
+      <if test="sysShopId != null" >
         sys_shop_id,
       </if>
-      <if test="sysBossId != null">
-        sys_boss_id,
+      <if test="sysBossCode != null" >
+        sys_boss_code,
       </if>
-      <if test="sysUserId != null">
+      <if test="sysUserId != null" >
         sys_user_id,
       </if>
-      <if test="accountNumber != null">
+      <if test="accountNumber != null" >
         account_number,
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null" >
         create_by,
       </if>
-      <if test="createDate != null">
+      <if test="createDate != null" >
         create_date,
       </if>
-      <if test="updateUser != null">
+      <if test="updateUser != null" >
         update_user,
       </if>
-      <if test="updateDate != null">
+      <if test="updateDate != null" >
         update_date,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="sumAmount != null">
+      <if test="sumAmount != null" >
         #{sumAmount,jdbcType=DECIMAL},
       </if>
-      <if test="arrears != null">
+      <if test="arrears != null" >
         #{arrears,jdbcType=DECIMAL},
       </if>
-      <if test="sysShopId != null">
+      <if test="sysShopId != null" >
         #{sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="sysBossId != null">
-        #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        #{sysBossCode,jdbcType=VARCHAR},
       </if>
-      <if test="sysUserId != null">
+      <if test="sysUserId != null" >
         #{sysUserId,jdbcType=VARCHAR},
       </if>
-      <if test="accountNumber != null">
+      <if test="accountNumber != null" >
         #{accountNumber,jdbcType=VARCHAR},
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null" >
         #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
+      <if test="createDate != null" >
         #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateUser != null">
+      <if test="updateUser != null" >
         #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
+      <if test="updateDate != null" >
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.SysUserAccountCriteria"
-          resultType="java.lang.Integer">
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.SysUserAccountCriteria" resultType="java.lang.Integer" >
     select count(1) from sys_user_account
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByCriteriaSelective" parameterType="map">
+  <update id="updateByCriteriaSelective" parameterType="map" >
     update sys_user_account
-    <set>
-      <if test="record.id != null">
+    <set >
+      <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.sumAmount != null">
+      <if test="record.sumAmount != null" >
         sum_amount = #{record.sumAmount,jdbcType=DECIMAL},
       </if>
-      <if test="record.arrears != null">
+      <if test="record.arrears != null" >
         arrears = #{record.arrears,jdbcType=DECIMAL},
       </if>
-      <if test="record.sysShopId != null">
+      <if test="record.sysShopId != null" >
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysBossId != null">
-        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      <if test="record.sysBossCode != null" >
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysUserId != null">
+      <if test="record.sysUserId != null" >
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       </if>
-      <if test="record.accountNumber != null">
+      <if test="record.accountNumber != null" >
         account_number = #{record.accountNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.createBy != null">
+      <if test="record.createBy != null" >
         create_by = #{record.createBy,jdbcType=VARCHAR},
       </if>
-      <if test="record.createDate != null">
+      <if test="record.createDate != null" >
         create_date = #{record.createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updateUser != null">
+      <if test="record.updateUser != null" >
         update_user = #{record.updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="record.updateDate != null">
+      <if test="record.updateDate != null" >
         update_date = #{record.updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByCriteria" parameterType="map">
+  <update id="updateByCriteria" parameterType="map" >
     update sys_user_account
     set id = #{record.id,jdbcType=VARCHAR},
       sum_amount = #{record.sumAmount,jdbcType=DECIMAL},
       arrears = #{record.arrears,jdbcType=DECIMAL},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
-      sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
-    sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
+      sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       account_number = #{record.accountNumber,jdbcType=VARCHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       update_user = #{record.updateUser,jdbcType=VARCHAR},
       update_date = #{record.updateDate,jdbcType=TIMESTAMP}
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO" >
     update sys_user_account
-    <set>
-      <if test="sumAmount != null">
+    <set >
+      <if test="sumAmount != null" >
         sum_amount = #{sumAmount,jdbcType=DECIMAL},
       </if>
-      <if test="arrears != null">
+      <if test="arrears != null" >
         arrears = #{arrears,jdbcType=DECIMAL},
       </if>
-      <if test="sysShopId != null">
+      <if test="sysShopId != null" >
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="sysBossId != null">
-        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       </if>
-      <if test="sysUserId != null">
+      <if test="sysUserId != null" >
         sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       </if>
-      <if test="accountNumber != null">
+      <if test="accountNumber != null" >
         account_number = #{accountNumber,jdbcType=VARCHAR},
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null" >
         create_by = #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
+      <if test="createDate != null" >
         create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateUser != null">
+      <if test="updateUser != null" >
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
+      <if test="updateDate != null" >
         update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO">
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.SysUserAccountDTO" >
     update sys_user_account
     set sum_amount = #{sumAmount,jdbcType=DECIMAL},
       arrears = #{arrears,jdbcType=DECIMAL},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
-      sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
-    sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
+      sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       account_number = #{accountNumber,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

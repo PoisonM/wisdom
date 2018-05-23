@@ -47,8 +47,8 @@ public class ShopBossServiceImpl implements ShopBossService {
 
         ShopBossRelationCriteria shopBossRelationCriteria = new ShopBossRelationCriteria();
         ShopBossRelationCriteria.Criteria criteria = shopBossRelationCriteria.createCriteria();
-        if (StringUtils.isNotBlank(shopBossRelationDTO.getSysBossId())) {
-            criteria.andSysBossIdEqualTo(shopBossRelationDTO.getSysBossId());
+        if (StringUtils.isNotBlank(shopBossRelationDTO.getSysBossCode())) {
+            criteria.andSysBossCodeEqualTo(shopBossRelationDTO.getSysBossCode());
         }
 
         List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossRelationMapper.selectByCriteria(shopBossRelationCriteria);

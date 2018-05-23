@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopClerkScheduleDTO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
-    <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR" />
+    <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
     <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
     <result column="schedule_type" property="scheduleType" jdbcType="CHAR" />
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, sys_clerk_id, sys_boss_id, sys_shop_id, sys_clerk_name, schedule_type, schedule_date, 
+    id, sys_clerk_id, sys_boss_code, sys_shop_id, sys_clerk_name, schedule_type, schedule_date, 
     create_date, create_by
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopClerkScheduleCriteria" >
@@ -108,11 +108,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopClerkScheduleDTO" >
-    insert into shop_clerk_schedule (id, sys_clerk_id, sys_boss_id, 
+    insert into shop_clerk_schedule (id, sys_clerk_id, sys_boss_code, 
       sys_shop_id, sys_clerk_name, schedule_type, 
       schedule_date, create_date, create_by
       )
-    values (#{id,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, 
       #{sysShopId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, #{scheduleType,jdbcType=CHAR}, 
       #{scheduleDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=TIMESTAMP}
       )
@@ -126,8 +126,8 @@
       <if test="sysClerkId != null" >
         sys_clerk_id,
       </if>
-      <if test="sysBossId != null" >
-        sys_boss_id,
+      <if test="sysBossCode != null" >
+        sys_boss_code,
       </if>
       <if test="sysShopId != null" >
         sys_shop_id,
@@ -155,8 +155,8 @@
       <if test="sysClerkId != null" >
         #{sysClerkId,jdbcType=VARCHAR},
       </if>
-      <if test="sysBossId != null" >
-        #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
         #{sysShopId,jdbcType=VARCHAR},
@@ -193,8 +193,8 @@
       <if test="record.sysClerkId != null" >
         sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysBossId != null" >
-        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      <if test="record.sysBossCode != null" >
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="record.sysShopId != null" >
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
@@ -223,7 +223,7 @@
     update shop_clerk_schedule
     set id = #{record.id,jdbcType=VARCHAR},
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
-      sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       schedule_type = #{record.scheduleType,jdbcType=CHAR},
@@ -240,8 +240,8 @@
       <if test="sysClerkId != null" >
         sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       </if>
-      <if test="sysBossId != null" >
-        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
@@ -267,7 +267,7 @@
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopClerkScheduleDTO" >
     update shop_clerk_schedule
     set sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
-      sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       schedule_type = #{scheduleType,jdbcType=CHAR},

@@ -74,13 +74,13 @@
      $scope.selectTime = function(index,NoOrYes){
          var timeIntervalArr = [];
          $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(a,b+1);
-         if($scope.param.ModifyAppointmentObject.appointPeriod == ""){
+         if($scope.param.ModifyAppointmentObject.appointPeriod/60 == ""){
              $scope.selectTimeLength()
          }
          if(NoOrYes == 1)return;
          $scope.bgff9b9b = 'bgff9b9b';
          $scope.index1 = index;
-         var time=$scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
+         var time=$scope.param.ModifyAppointmentObject.appointPeriod/60/1/0.5;
          for(var i=index;i<time+index;i++){
              if($scope.param.selectedTime[i] ==1){
                  alert("请重新选择时间");
@@ -96,9 +96,6 @@
                          }
                      }
                  }
-
-
-
              }
          }
          $scope.param.ModifyAppointmentObject.appointStartTime=timeIntervalArr[0];

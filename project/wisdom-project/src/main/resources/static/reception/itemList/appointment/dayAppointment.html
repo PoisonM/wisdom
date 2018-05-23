@@ -2,11 +2,11 @@
     <div class="header">
         <p class="timeArea">
             <!--<input class="time  " id="orderPayStartTime" ng-click="dataS('#orderPayStartTime')" value="{{date}}">-->
-            <input class="time" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
+            <input class="time" readonly ng-model="param.nowTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
         </p>
         <p class="centerBtn">
-            <input type="button" class="appointmentDay {{param.btnActive[0]}} " value="日预约" ng-click="appointmentChange('day')">
-            <input type="button" class="appointmentWeek {{param.btnActive[1]}}" value="周预约" ng-click="appointmentChange('week')">
+            <div class="appointmentDay {{param.btnActive[0]}} " value="日预约" ng-click="appointmentChange('day')"></div>
+            <div class="appointmentWeek {{param.btnActive[1]}}" value="周预约" ng-click="appointmentChange('week')"></div>
         </p>
         <p class="scheduling" data-ceshi="">
             <span ng-click="goArrangeWorkList()">排班</span>
@@ -104,7 +104,7 @@
                         <!-- data-val={{value}} -->
                         <div>{{key}}</div>
                     </td>
-                    <td ng-repeat="item in value" class="">
+                    <td  ng-onhold ="onHold()" ng-repeat="item in value" class="">
                         <div class="td_box" style="position: relative">
                             <!--<span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0','bgFFE6E6':indexItem.status=='1','bgE1F8FF':indexItem.status=='2','bgF3F3F3':indexItem.status=='3','bgF3F3F3':indexItem.status=='4','bgE1F8FF':indexItem.status=='5','bgF3F3F3':indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">-->
                             <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
@@ -215,7 +215,7 @@
                 <span class="ml30 colff6666 fs38 bold" ng-click="close(0)">取消</span>
             </p>
             <p class="center fs38 color333 W33 bold">
-                修改预约
+                {{param.newChangeContent}}
             </p>
             <p class="scheduling W33">
                 <span class="floatR mr30 fs38 colff6666 bold" ng-click="close(1)">保存</span>
@@ -229,7 +229,7 @@
     <div class="br36 bgf5f5f5 b w758 addWraps">
         <div class="customerTop  btrr btlr">
             <ul class="space-between btrr btlr">
-                <li class="pl W33 "><img src="images/bt_back.png" class="backPic mr20" ng-click="close(0)"><span class="color6666">修改预约</span> </li>
+                <li class="pl W33 "><img src="images/bt_back.png" class="backPic mr20" ng-click="close(0)"><span class="color6666">{{param.newChangeContent}}</span> </li><!--标注-->
                 <li class="fc W33 center">选择顾客</li>
                 <li class="people pr pt W33"><img src="images/bt_add to.png" alt="" class="floatR ml30" ng-click="addCustomersCtrl()"></li>
             </ul>
@@ -267,7 +267,7 @@
         <div class="space-between h104  btlr btrr bgeee">
             <P class="W33">
                 <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
-                <span class="colff6666 fs34">修改预约</span>
+                <span class="colff6666 fs34">{{param.newChangeContent}}</span>
             </P>
             <P class="fs38 color333 center W33 bold">选择时长</P>
             <P class="W33"></P>
@@ -281,14 +281,14 @@
         <div class="space-between h104  btlr btrr bgeee">
             <P class="W33">
                 <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
-                <span class="colff6666 fs34">修改预约</span>
+                <span class="colff6666 fs34">{{param.newChangeContent}}</span>
             </P>
             <P class="fs38 color333 center W33 bold">选择美容师</P>
             <P class="W33"></P>
         </div>
         <div class="bgfff modifyingWrap bblr bbrr">
             <ul>
-                <li class="h100 col333 fs32  bte5 space-between bgfff" ng-repeat="item in param.timeLength" ng-click="selectbeauticianIndex($index,item.name)">
+                <li class="h100 col333 fs32  bte5 space-between bgfff" ng-repeat="item in param.timeLength" ng-click="selectbeauticianIndex($index,item.name,item.id)">
                     <span class="ml30"> {{item.name}}</span>
                     <img src="images/redTrue.png" class="redTrue mr30" ng-show="param.beauticianIndex==$index">
                 </li>
