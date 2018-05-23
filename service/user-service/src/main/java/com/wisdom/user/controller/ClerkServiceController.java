@@ -96,7 +96,7 @@ public class ClerkServiceController {
 
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 		SysClerkDTO sysClerkDTO = new SysClerkDTO();
-		sysClerkDTO.setSysBossId(sysBossId);
+		sysClerkDTO.setSysBossCode(sysBossId);
 		sysClerkDTO.setSysShopId(sysShopId);
 		PageParamVoDTO<SysClerkDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		pageParamVoDTO.setRequestData(sysClerkDTO);

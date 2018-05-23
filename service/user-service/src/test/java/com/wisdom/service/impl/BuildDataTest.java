@@ -60,7 +60,7 @@ public class BuildDataTest {
             sysClerkDTO.setSysShopId("3");
             sysClerkDTO.setId(IdGen.uuid());
             sysClerkDTO.setName(RandomValue.getChineseName());
-            sysClerkDTO.setSysBossId("11");
+            sysClerkDTO.setSysBossCode("11");
             sysClerkDTO.setSysUserId(IdGen.uuid());
             sysClerkDTO.setSysBossName(RandomValue.getChineseName());
             sysClerkDTO.setSysShopName("汉方美容店");
