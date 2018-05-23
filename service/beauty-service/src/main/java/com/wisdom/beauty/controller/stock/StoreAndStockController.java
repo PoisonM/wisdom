@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
@@ -22,6 +23,7 @@ import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +65,9 @@ public class StoreAndStockController {
     ResponseDTO<List<ShopStoreDTO>> findStoreList() {
 
         long startTime = System.currentTimeMillis();
-        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
+        SysBossDTO sysBossDTO = UserUtils.getBossInfo();
         // 执行查询
-        List<ShopStoreDTO>  list = shopStockService.findStoreList(sysBossDTO.getSysBossCode());
+        List<ShopStoreDTO> list = shopStockService.findStoreList(sysBossDTO.getSysBossCode());
 
         ResponseDTO<List<ShopStoreDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -388,14 +390,68 @@ public class StoreAndStockController {
      */
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<Object> getProducts(@RequestBody String shopStoreId,@RequestBody List<String> products) {
+    ResponseDTO<Object> getProducts(@RequestBody String shopStoreId, @RequestBody List<String> products) {
         long currentTimeMillis = System.currentTimeMillis();
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        List<ShopProductInfoCheckResponseDTO> list = shopCheckService.getProductsCheckLit(shopStoreId,products);
+        List<ShopProductInfoCheckResponseDTO> list = shopCheckService.getProductsCheckLit(shopStoreId, products);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("getProducts方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * @Author:zhanghuan
+     * @Param: 仓库id 仓库管理员Id
+     * @Return:
+     * @Description: 仓库管理员设置
+     * @Date:2018/5/23 14:28
+     */
+    @RequestMapping(value = "/setStorekeeper", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<Object> setStorekeeper(@RequestBody SetStorekeeperRequestDTO setStorekeeperRequestDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        String[] storeManagerIds=setStorekeeperRequestDTO.getStoreManagerIds();
+        String[] storeManagerNames=setStorekeeperRequestDTO.getStoreManagerNames();
+        String shopStoreId=setStorekeeperRequestDTO.getShopStoreId();
+        String storeManagerId="";
+        for(String storeManager: storeManagerIds){
+            storeManagerId=storeManagerId+storeManager+",";
+        }
+        if(StringUtils.isNotBlank(storeManagerId)){
+            storeManagerId=storeManagerId.substring(0,storeManagerId.length() - 1);
+        }
+        String storeManagerName="";
+        for(String storeManager: storeManagerNames){
+            storeManagerName=storeManagerName+storeManager+",";
+        }
+        if(StringUtils.isNotBlank(storeManagerName)){
+            storeManagerName=storeManagerName.substring(0,storeManagerName.length() - 1);
+        }
+        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
+        ShopStoreDTO shopStoreDTO=new ShopStoreDTO();
+        shopStoreDTO.setId(shopStoreId);
+        shopStoreDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+        shopStoreDTO.setStoreManagerId(storeManagerId);
+        shopStoreDTO.setSysUserName(storeManagerName);
+        int result = shopStockService.setStorekeeper(shopStoreDTO);
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(result);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("setStorekeeper方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+    @RequestMapping(value = "/getStoreManager", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getStoreManager(@RequestParam String id) {
+        long currentTimeMillis = System.currentTimeMillis();
+        String result = shopStockService.getStoreManager(id);
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResponseData(result);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("getStoreManager方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

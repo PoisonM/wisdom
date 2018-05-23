@@ -5,6 +5,7 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
+import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
@@ -31,6 +32,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
@@ -243,5 +245,32 @@ public class StockTest  {
         JSONArray json = JSONArray.fromObject(list);
         String toJSONString = json.toString();//把json转换为String
         System.out.print(list);
+    }
+    @Test
+    public  void  testSetStorekeeper() throws Exception {
+         String[] storeManagerIdsq={"1","2"};
+         String[] storeManagerNamesq={"TEST1","TEST2"};
+         String id="1";
+        SetStorekeeperRequestDTO setStorekeeperRequestDTO=new SetStorekeeperRequestDTO();
+        setStorekeeperRequestDTO.setShopStoreId(id);
+        setStorekeeperRequestDTO.setStoreManagerIds(storeManagerIdsq);
+        setStorekeeperRequestDTO.setStoreManagerNames(storeManagerNamesq);
+        String shopClosePositionReques= JSONObject.toJSONString(setStorekeeperRequestDTO);
+        /*对象转json字符串
+        ShopClosePositionRequestDTO shopClosePositionRequestDTO=new ShopClosePositionRequestDTO();
+        shopClosePositionRequestDTO.setShopCheckRecorId("1");
+        shopClosePositionRequestDTO.setStockNumber(33);
+        ShopClosePositionRequestDTO shopClosePositionRequestDTO2=new ShopClosePositionRequestDTO();
+        shopClosePositionRequestDTO2.setShopCheckRecorId("2");
+        shopClosePositionRequestDTO2.setStockNumber(33);
+        String shopClosePositionReques= JSONObject.toJSONString(shopClosePositionRequestDTO);
+        String shopClosePositionReques2= JSONObject.toJSONString(shopClosePositionRequestDTO2);*/
+        MvcResult result = mvc.perform(post("/stock/setStorekeeper").contentType(MediaType.APPLICATION_JSON).content(shopClosePositionReques))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
     }
 }

@@ -24,6 +24,22 @@ public interface ShopStockService {
 	 */
 
 	List<ShopStoreDTO> findStoreList(String sysBossCode);
+	/**
+	*@Author:zhanghuan
+	*@Param:  仓库ID
+	*@Return:
+	*@Description: 库管设置
+	*@Date:2018/5/23 11:53
+	*/
+	int setStorekeeper(ShopStoreDTO shopStoreDTO);
+	/**
+	*@Author:zhanghuan
+	*@Param:
+	*@Return:
+	*@Description: 获取某个仓库的库管人
+	*@Date:2018/5/23 15:42
+	*/
+	String getStoreManager(String id);
 
 	/**
 	 * 插入一条出/入库记录

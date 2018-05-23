@@ -6,9 +6,11 @@ package com.wisdom.user.controller;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.user.service.ClerkInfoService;
+import com.wisdom.user.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -150,5 +152,28 @@ public class ClerkServiceController {
 
 		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
         return  responseDTO;
+	}
+	/**
+	*@Author:zhanghuan
+	*@Param:
+	*@Return:
+	*@Description: 获取老板名下所有店员信息，不分页，不根据时间查询
+	*@Date:2018/5/23 15:11
+	*/
+	@RequestMapping(value = "/getBossClerkInfoList", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	List<SysClerkDTO> getClerkInfoList() {
+
+		long time = System.currentTimeMillis();
+		SysBossDTO sysBossDTO=UserUtils.getBossInfo();;
+		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+		SysClerkDTO sysClerkDTO = new SysClerkDTO();
+		sysClerkDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysClerkDTO);
+
+		listResponseDTO.setResponseData(clerkInfo);
+		listResponseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("getBossClerkInfoList获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - time));
+		return clerkInfo;
 	}
 }

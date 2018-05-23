@@ -75,6 +75,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	@Autowired
 	private ExtShopCheckRecordMapper extShopCheckRecordMapper;
+
     @Autowired
     private ShopStoreMapper shopStoreMapper;
 
@@ -95,6 +96,35 @@ public class ShopStockServiceImpl implements ShopStockService {
         c.andSysBossCodeEqualTo(sysBossCode);
 	    return  shopStoreMapper.selectByCriteria(shopStoreCriteria);
 
+	}
+
+	@Override
+	public int setStorekeeper(ShopStoreDTO shopStoreDTO) {
+		if(shopStoreDTO==null){
+			logger.info("参数shopStoreDTO为空");
+			return  0;
+		}
+		return   shopStoreMapper.updateByPrimaryKeySelective(shopStoreDTO);
+	}
+
+	@Override
+	public String getStoreManager(String id) {
+		logger.info("getStoreManager方法传入的参数id={}");
+		ShopStoreCriteria shopStoreCriteria=new ShopStoreCriteria();
+		ShopStoreCriteria.Criteria c=shopStoreCriteria.createCriteria();
+		c.andIdEqualTo(id);
+		List<ShopStoreDTO>  list=shopStoreMapper.selectByCriteria(shopStoreCriteria);
+		if(CollectionUtils.isEmpty(list)){
+			logger.info("查询结果list为空");
+			return  null;
+		}
+		ShopStoreDTO shopStoreDTO= list.get(0);
+		String storeManagerName=shopStoreDTO.getSysUserName();
+		if(StringUtils.isBlank(storeManagerName)){
+			logger.info("storeManagerName为空");
+			return  null;
+		}
+		return storeManagerName;
 	}
 
 	/**
