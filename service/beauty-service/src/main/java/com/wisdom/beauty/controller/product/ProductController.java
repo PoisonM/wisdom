@@ -328,7 +328,7 @@ public class ProductController {
         ExtShopScanProductInfoDTO extShopScanProductInfoDTO = scanShopProductInfo.getShowapi_res_body();
         if (null != extShopScanProductInfoDTO) {
             //查询出来的信息转换为产品对象
-            ShopProductInfoDTO productInfoDTO = new ShopProductInfoDTO();
+            ExtShopProductInfoDTO productInfoDTO = new ExtShopProductInfoDTO();
             productInfoDTO.setProductName(extShopScanProductInfoDTO.getGoodsName());
             productInfoDTO.setManuName(extShopScanProductInfoDTO.getManuName());
             productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
@@ -347,6 +347,9 @@ public class ProductController {
                 productInfoDTO.setProductSpec(m.replaceAll("").trim());
                 productInfoDTO.setProductSpecUnit(spec.replaceAll("\\d+", ""));
             }
+            List<String> imageList = new ArrayList<>();
+            imageList.add(extShopScanProductInfoDTO.getImg());
+            productInfoDTO.setImageList(imageList);
             responseDTO.setResponseData(productInfoDTO);
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
