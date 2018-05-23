@@ -1,16 +1,12 @@
 package com.wisdom.beauty.core.service.stock.impl;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.StockStyleEnum;
 import com.wisdom.beauty.api.enums.StockTypeEnum;
-import com.wisdom.beauty.api.requestDto.ShopCheckRecordRequestDTO;
+import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
@@ -25,17 +21,14 @@ import com.wisdom.common.util.StringUtils;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
 import com.wisdom.beauty.core.mapper.stock.ExtStockServiceMapper;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
-import com.wisdom.common.dto.system.PageParamDTO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,8 +69,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 	@Autowired
 	private ExtShopCheckRecordMapper extShopCheckRecordMapper;
 
-    @Autowired
-    private ShopStoreMapper shopStoreMapper;
+	@Autowired
+	private ShopStoreMapper shopStoreMapper;
 
 	/**
 	 * 查询仓库列表
@@ -87,42 +80,65 @@ public class ShopStockServiceImpl implements ShopStockService {
 	 */
 	@Override
 	public List<ShopStoreDTO> findStoreList(String sysBossCode) {
-        logger.info("findStoreList方法传入的参数sysBossCode={}",sysBossCode);
-        if(StringUtils.isBlank(sysBossCode)){
-            return null;
-        }
-        ShopStoreCriteria shopStoreCriteria=new ShopStoreCriteria();
-        ShopStoreCriteria.Criteria c=shopStoreCriteria.createCriteria();
-        c.andSysBossCodeEqualTo(sysBossCode);
-	    return  shopStoreMapper.selectByCriteria(shopStoreCriteria);
+		logger.info("findStoreList方法传入的参数sysBossCode={}", sysBossCode);
+		if (StringUtils.isBlank(sysBossCode)) {
+			return null;
+		}
+		ShopStoreCriteria shopStoreCriteria = new ShopStoreCriteria();
+		ShopStoreCriteria.Criteria c = shopStoreCriteria.createCriteria();
+		c.andSysBossCodeEqualTo(sysBossCode);
+		return shopStoreMapper.selectByCriteria(shopStoreCriteria);
 
 	}
 
 	@Override
-	public int setStorekeeper(ShopStoreDTO shopStoreDTO) {
-		if(shopStoreDTO==null){
-			logger.info("参数shopStoreDTO为空");
-			return  0;
+	public int setStorekeeper(SetStorekeeperRequestDTO setStorekeeperRequestDTO) {
+		if (setStorekeeperRequestDTO == null) {
+			logger.info("参数setStorekeeperRequestDTO为空");
+			return 0;
 		}
-		return   shopStoreMapper.updateByPrimaryKeySelective(shopStoreDTO);
+		String[] storeManagerIds = setStorekeeperRequestDTO.getStoreManagerIds();
+		String[] storeManagerNames = setStorekeeperRequestDTO.getStoreManagerNames();
+		String shopStoreId = setStorekeeperRequestDTO.getShopStoreId();
+		String storeManagerId = "";
+		for (String storeManager : storeManagerIds) {
+			storeManagerId = storeManagerId + storeManager + ",";
+		}
+		if (org.apache.commons.lang3.StringUtils.isNotBlank(storeManagerId)) {
+			storeManagerId = storeManagerId.substring(0, storeManagerId.length() - 1);
+		}
+		String storeManagerName = "";
+		for (String storeManager : storeManagerNames) {
+			storeManagerName = storeManagerName + storeManager + ",";
+		}
+		if (org.apache.commons.lang3.StringUtils.isNotBlank(storeManagerName)) {
+			storeManagerName = storeManagerName.substring(0, storeManagerName.length() - 1);
+		}
+		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+		ShopStoreDTO shopStoreDTO = new ShopStoreDTO();
+		shopStoreDTO.setId(shopStoreId);
+		shopStoreDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+		shopStoreDTO.setStoreManagerId(storeManagerId);
+		shopStoreDTO.setSysUserName(storeManagerName);
+		return shopStoreMapper.updateByPrimaryKeySelective(shopStoreDTO);
 	}
 
 	@Override
 	public String getStoreManager(String id) {
 		logger.info("getStoreManager方法传入的参数id={}");
-		ShopStoreCriteria shopStoreCriteria=new ShopStoreCriteria();
-		ShopStoreCriteria.Criteria c=shopStoreCriteria.createCriteria();
+		ShopStoreCriteria shopStoreCriteria = new ShopStoreCriteria();
+		ShopStoreCriteria.Criteria c = shopStoreCriteria.createCriteria();
 		c.andIdEqualTo(id);
-		List<ShopStoreDTO>  list=shopStoreMapper.selectByCriteria(shopStoreCriteria);
-		if(CollectionUtils.isEmpty(list)){
+		List<ShopStoreDTO> list = shopStoreMapper.selectByCriteria(shopStoreCriteria);
+		if (CollectionUtils.isEmpty(list)) {
 			logger.info("查询结果list为空");
-			return  null;
+			return null;
 		}
-		ShopStoreDTO shopStoreDTO= list.get(0);
-		String storeManagerName=shopStoreDTO.getSysUserName();
-		if(StringUtils.isBlank(storeManagerName)){
+		ShopStoreDTO shopStoreDTO = list.get(0);
+		String storeManagerName = shopStoreDTO.getSysUserName();
+		if (StringUtils.isBlank(storeManagerName)) {
 			logger.info("storeManagerName为空");
-			return  null;
+			return null;
 		}
 		return storeManagerName;
 	}

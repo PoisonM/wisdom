@@ -413,30 +413,8 @@ public class StoreAndStockController {
     ResponseDTO<Object> setStorekeeper(@RequestBody SetStorekeeperRequestDTO setStorekeeperRequestDTO) {
         long currentTimeMillis = System.currentTimeMillis();
 
-        String[] storeManagerIds=setStorekeeperRequestDTO.getStoreManagerIds();
-        String[] storeManagerNames=setStorekeeperRequestDTO.getStoreManagerNames();
-        String shopStoreId=setStorekeeperRequestDTO.getShopStoreId();
-        String storeManagerId="";
-        for(String storeManager: storeManagerIds){
-            storeManagerId=storeManagerId+storeManager+",";
-        }
-        if(StringUtils.isNotBlank(storeManagerId)){
-            storeManagerId=storeManagerId.substring(0,storeManagerId.length() - 1);
-        }
-        String storeManagerName="";
-        for(String storeManager: storeManagerNames){
-            storeManagerName=storeManagerName+storeManager+",";
-        }
-        if(StringUtils.isNotBlank(storeManagerName)){
-            storeManagerName=storeManagerName.substring(0,storeManagerName.length() - 1);
-        }
-        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
-        ShopStoreDTO shopStoreDTO=new ShopStoreDTO();
-        shopStoreDTO.setId(shopStoreId);
-        shopStoreDTO.setSysBossCode(sysBossDTO.getSysBossCode());
-        shopStoreDTO.setStoreManagerId(storeManagerId);
-        shopStoreDTO.setSysUserName(storeManagerName);
-        int result = shopStockService.setStorekeeper(shopStoreDTO);
+
+        int result = shopStockService.setStorekeeper(setStorekeeperRequestDTO);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(result);
         responseDTO.setResult(StatusConstant.SUCCESS);

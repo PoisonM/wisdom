@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
+import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopCheckRecordRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -31,7 +32,7 @@ public interface ShopStockService {
 	*@Description: 库管设置
 	*@Date:2018/5/23 11:53
 	*/
-	int setStorekeeper(ShopStoreDTO shopStoreDTO);
+	int setStorekeeper(SetStorekeeperRequestDTO setStorekeeperRequestDTO);
 	/**
 	*@Author:zhanghuan
 	*@Param:
