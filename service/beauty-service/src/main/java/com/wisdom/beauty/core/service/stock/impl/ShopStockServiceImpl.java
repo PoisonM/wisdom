@@ -545,6 +545,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		}
 		logger.info("getStockDetailList方法出入的参数:productTypeTwoId={},shopStoreId={}",
 				shopStockNumberDTO.getProductTypeTwoId(), shopStockNumberDTO.getShopStoreId());
+
 		ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
 		ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
 		if (StringUtils.isNotBlank(shopStockNumberDTO.getProductTypeTwoId())) {
@@ -587,7 +588,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		ShopStockNumberDTO stock = new ShopStockNumberDTO();
 		stock.setProductTypeTwoId(shopStockNumberDTO.getProductTypeTwoId());
 		List<ShopStockNumberDTO> allStoreNumbers = this.getShopStockNumberDTOList(stock);
-		Map<String, Integer> allStoreNumberMap = new HashMap<>();
+		Map<String, Integer> allStoreNumberMap = new HashMap<>(16);
 		for (ShopStockNumberDTO shopStockNumber : allStoreNumbers) {
 			if (allStoreNumberMap.containsKey(shopStockNumber.getShopProcId())) {
 				Integer allStoreNumber = allStoreNumberMap.get(shopStockNumber.getShopProcId());
