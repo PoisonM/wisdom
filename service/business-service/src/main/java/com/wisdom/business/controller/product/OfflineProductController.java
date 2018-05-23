@@ -44,12 +44,15 @@ public class OfflineProductController {
 	ResponseDTO<List<ProductDTO>> getOfflineProductList(@RequestBody PageParamDTO pageParamDTO,
 														HttpSession session,
 														HttpServletRequest request) {
+		long startTime = System.currentTimeMillis();
+		logger.info("获取微商城的产品列表==={}开始" , startTime);
 		ResponseDTO<List<ProductDTO>> responseDTO = new ResponseDTO<>();
 		logger.info("获取微商城的产品列表===" + pageParamDTO);
 		List<ProductDTO> productDTOList = offlineProductService.findOfflineProductList(pageParamDTO);
 		logger.info("查询到的微商城商品列表===" + productDTOList);
 		responseDTO.setResponseData(productDTOList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("获取微商城的产品列表,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -59,10 +62,14 @@ public class OfflineProductController {
 	ResponseDTO<List<ProductDTO>> GetSpecialProductList(@RequestBody PageParamDTO pageParamDTO,
 														HttpSession session,
 														HttpServletRequest request) {
+		long startTime = System.currentTimeMillis();
+		logger.info("获取微商城的Special产品列表==={}开始" , startTime);
 		ResponseDTO<List<ProductDTO>> responseDTO = new ResponseDTO<>();
 		List<ProductDTO> productDTOList = offlineProductService.findSpecialOfflineProductList(pageParamDTO);
+		logger.info("获取微商城的Special产品列表Size==={}" , productDTOList.size());
 		responseDTO.setResponseData(productDTOList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("获取微商城的Special产品列表,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -79,12 +86,15 @@ public class OfflineProductController {
 	public
 	@ResponseBody
 	ResponseDTO<ProductDTO<OfflineProductDTO>> getOfflineProductDetail(@RequestParam String productId) {
+		long startTime = System.currentTimeMillis();
+		logger.info("获取微商城的某个商品详情==={}开始" , startTime);
 		ResponseDTO<ProductDTO<OfflineProductDTO>> responseDTO = new ResponseDTO<>();
 		logger.info("获取微商城的某个商品详情===" + productId);
 		ProductDTO<OfflineProductDTO> offlineProductDTO = offlineProductService.getOfflineProductDetailById(productId);
 		logger.info("得到微商城的某个商品详情===" + offlineProductDTO);
 		responseDTO.setResponseData(offlineProductDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("获取微商城的某个商品详情,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 }

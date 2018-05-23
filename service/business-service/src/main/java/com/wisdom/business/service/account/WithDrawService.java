@@ -71,25 +71,30 @@ public class WithDrawService {
             if (withDrawRecordDTOS.get(0).getStatus().equals("0")) {
 
                 withDrawMapper.updateWithdrawById(withdrawId, status);
-                if ("2".equals(status)) {//拒绝提现,提现金额返还余额
+                //拒绝提现,提现金额返还余额
+                if ("2".equals(status)) {
+                    logger.info("拒绝提现,提现金额返还余额");
                     AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(withDrawRecordDTO.getSysUserId());
-                    Float money = accountDTO.getBalance();//用户余额
-                    Float balance = withDrawRecordDTO.getMoneyAmount();//提现金额
+                    //用户余额
+                    Float money = accountDTO.getBalance();
+                    //提现金额
+                    Float balance = withDrawRecordDTO.getMoneyAmount();
                     Float f = money + balance;
+                    logger.info("拒绝提现,提现金额返还余额,用户余额=={},提现金额=={},返还金额=={}",money,balance,f);
                     accountDTO.setBalance(f);
                     accountMapper.updateUserAccountInfo(accountDTO);
                     //发送提现失败消息模板
+                    logger.info("拒绝提现,发送提现失败消息模板");
                     WeixinTemplateMessageUtil.sendWithDrawTemplateFailureMessage(String.valueOf(moneyAmount), time, token, "", openid);
                     HashMap<String, String> result = new HashMap<String, String>();
                     result.put("result","success");
                     result.put("message","执行成功");
                     redisLock.unlock();
                     return result;
-
                 } else {
-
                     try {
                         //将钱打入用户零钱账户
+                        logger.info("将钱打入用户零钱账户");
                         returnMoneyToUser(moneyAmount, request, openid, token);
                         HashMap<String, String> result = new HashMap<String, String>();
                         result.put("result","success");
@@ -97,6 +102,7 @@ public class WithDrawService {
                         redisLock.unlock();
                         return result;
                     } catch (Exception e) {
+                        logger.info("公司公众号帐户余额不足，请联系财务人员");
                         logger.info(e.getMessage());
                         withDrawMapper.updateWithdrawById(withdrawId, "0");
                         HashMap<String, String> result = new HashMap<String, String>();
@@ -113,7 +119,6 @@ public class WithDrawService {
                 redisLock.unlock();
                 return result;
             }
-
         }else{
             HashMap<String, String> result = new HashMap<String, String>();
             result.put("result","failure");
@@ -121,7 +126,6 @@ public class WithDrawService {
             redisLock.unlock();
             return result;
         }
-
     }
 
 
@@ -258,6 +262,7 @@ public class WithDrawService {
     public void deFrozenWithDrawRecord(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) throws Exception {
         withDrawMapper.updateWithdrawById(withDrawRecordDTO.getWithdrawId(),"1");
         String token = WeixinUtil.getUserToken();
+        logger.info("提现用户token==={}" , token);
         returnMoneyToUser(withDrawRecordDTO.getMoneyAmount(),request,withDrawRecordDTO.getUserOpenId(),token);
     }
 

@@ -40,7 +40,7 @@ import java.text.SimpleDateFormat;
 @Controller
 @RequestMapping(value = "income")
 public class IncomeController {
-	Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private IncomeService incomeService;
@@ -82,15 +82,17 @@ public class IncomeController {
 
 		//如果checkStauts不为空 则说明用户查询已审核或未审核状态
 		if (StringUtils.isNotBlank(checkStatus)) {
+			logger.info("佣金审核状态已审核或未审核==={}",checkStatus);
 			UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 			if(userInfoDTO == null){
-				logger.info("条件查询用户佣金奖励从Redis获取用户信息失败={}");
+				logger.info("条件查询用户佣金奖励从Redis获取用户信息为null");
 				responseDTO.setResult("获取用户信息失败");
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
 				return responseDTO;
 			}
 			//插入操作人的类型,运营人员/财务人员,根据此条件查询相应结果
 			pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
+			logger.info("佣金操作人类型==={}",userInfoDTO.getUserType());
 		}
 
 		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeRecordByPageParam(pageParamVoDTO);
@@ -101,8 +103,10 @@ public class IncomeController {
 
 		if (StringUtils.isNotBlank(checkStatus)) {
 			count = incomeService.getIncomeRecordCountByIncomeManagement(pageParamVoDTO);
+			logger.info("根据审核状态已审核或未审核==={},查出结果Count=={}",checkStatus,count);
 		}else {
 			count = incomeService.getIncomeRecordCountByPageParam(pageParamVoDTO);
+			logger.info("审核状态为空,查出佣金数据Count=={}",count);
 		}
 		logger.info("根据条件查询用户奖励总数Count" + count);
 		Map<String,Object> map=new HashMap<>(16);
@@ -127,7 +131,7 @@ public class IncomeController {
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> queryIncomeInfoByIncomeId(@RequestParam String incomeId) {
 		long startTime = System.currentTimeMillis();
-		logger.info("根据id查询用户奖励参数={}", "incomeId = [" + incomeId + "]");
+		logger.info("根据id查询用户奖励详情参数={}", "incomeId = [" + incomeId + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		Map<String,Object> map=new HashMap<>(16);
 
@@ -143,9 +147,10 @@ public class IncomeController {
 		if(CommonUtils.objectIsEmpty(incomeRecordDTOS)){
 			logger.info("佣金下拉详情订单数据businessOrder数据为空");
 		}
-
-		map.put("user",incomeRecordDTOS);//收益和消费人
-		map.put("IncomeList",businessOrderDTOS);//订单
+		//收益和消费人
+		map.put("user",incomeRecordDTOS);
+		//订单
+		map.put("IncomeList",businessOrderDTOS);
 		responseDTO.setResult("根据id查询用户奖励详情成功");
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
@@ -164,12 +169,13 @@ public class IncomeController {
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> checkIncomeRecordManagement(@RequestParam String incomeRecordId,String status) {
 		long startTime = System.currentTimeMillis();
-		//logger.info("佣金奖励审核传入参数={}", "incomeRecordId = [" + incomeRecordId + "],status = [" + status + "]");
+		logger.info("佣金奖励审核传入参数,incomeRecordId={},status={}",incomeRecordId, status);
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if("".equals(incomeRecordId) || incomeRecordId == null){
+			logger.info("佣金审核接口传入参数incomeRecordId为空");
 			responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			responseDTO.setResult("incomeRecordId为空");
-			logger.info("佣金审核接口传入参数incomeRecordId为空");
+			return responseDTO;
 		}
 		//获取登录人信息
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
@@ -189,7 +195,6 @@ public class IncomeController {
 		IncomeRecordManagementDTO incomeRecordManagementDTO1 =new IncomeRecordManagementDTO();
 		incomeRecordManagementDTO1.setIncomeRecordId(incomeRecordId);
 		incomeRecordManagementDTO1.setUserType(userInfoDTO.getUserType());
-//		incomeRecordManagementDTO1.setSysUserId(userInfoDTO.getId());
 		List<IncomeRecordManagementDTO> incomeRecordManagementDTOS = incomeRecordManagementService.getIncomeRecordManagement(incomeRecordManagementDTO1);
 
 		//如已有审核记录
@@ -226,7 +231,7 @@ public class IncomeController {
 		incomeRecordManagementService.insertIncomeRecordManagement(incomeRecordManagementDTO);
 		responseDTO.setResult("审核成功");
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		logger.info("佣金奖励审核耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 	/**
@@ -253,6 +258,7 @@ public class IncomeController {
 		}
 		//如果checkStauts不为空 则说明用户查询已审核或未审核状态
 		if (StringUtils.isNotBlank(checkStatus)) {
+			logger.info("佣金即时导表审核状态=={}",checkStatus);
 			UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 			if(userInfoDTO == null){
 				logger.info("佣金导表从Redis获取用户信息失败={}");
@@ -262,6 +268,7 @@ public class IncomeController {
 			}
 			//插入操作人的类型,运营人员/财务人员,根据此条件查询相应结果
 			pageParamVoDTO.getRequestData().setCheckUserType(userInfoDTO.getUserType());
+			logger.info("佣金即时导表操作人=={}",userInfoDTO.getUserType());
 		}
 		List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeService.exportExcelIncomeRecord(pageParamVoDTO);
 		try {
@@ -274,10 +281,11 @@ public class IncomeController {
 			if ("".equals(url) && url == null){
 				logger.info("佣金奖励Excel 获取OSSUrl为空");
 			}
+			logger.info("佣金奖励导出Url=={}",url);
 			responseDTO.setResult(url);
 			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-			//return responseDTO;
 		} catch (Exception e) {
+			logger.error("佣金即时导表New异常，异常信息为，{}"+e.getMessage(),e);
 			e.printStackTrace();
 			responseDTO.setErrorInfo(StatusConstant.FAILURE);
 		}
@@ -299,7 +307,7 @@ public class IncomeController {
 		long startTime = System.currentTimeMillis();
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if(pageParamVoDTO.getRequestData() == null){
-			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
+			logger.info("查询月度奖励详情传入RequestData对象为null");
 		}
 		List<MonthTransactionRecordDTO> selfList1 = new ArrayList<>();
 		List<MonthTransactionRecordDTO> nextList1 = new ArrayList<>();
@@ -395,6 +403,7 @@ public class IncomeController {
 						} else {
 							int count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) + 1;
 							helperMap.put(excelDTO.getTransactionId(), String.valueOf(count));
+							logger.info("月度奖励详情导出Excel重复transaction=={}",excelDTO.getTransactionId());
 						}
 					}
 
@@ -408,16 +417,15 @@ public class IncomeController {
 					}
 				}
 
-
 				ByteArrayInputStream in = ex.getWorkbookIn("账单EXCEL文档", orderHeaders, excelList);
 				String url = CommonUtils.orderExcelToOSS(in);
+				logger.info("月度奖励详情导出Url=={}",url);
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-				//return responseDTO;
 			} catch (Exception e) {
+				logger.error("月度详情导出Excel异常，异常信息为，{}"+e.getMessage(),e);
 				responseDTO.setResult("月度详情导出Excel异常");
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
-				logger.error("月度详情导出Excel异常");
 				e.printStackTrace();
 			}
 		}
@@ -437,7 +445,7 @@ public class IncomeController {
 	ResponseDTO<Map<String,Object>> selectSelfMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
 		long startTime = System.currentTimeMillis();
 		if(pageParamVoDTO.getRequestData() == null){
-			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
+			logger.info("查询月度奖励详情传入对象为null");
 		}
 		List<MonthTransactionRecordDTO> selfList1 = new ArrayList<>();
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
@@ -445,6 +453,7 @@ public class IncomeController {
 
 		pageParamVoDTO.getRequestData().setParentRelation("self");
 		int selfCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		logger.info("月度本人详情数据selfList数据Count=={}",selfCount);
 		List<MonthTransactionRecordDTO> selfList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
 		if(CommonUtils.objectIsEmpty(selfList)) logger.info("月度本人详情数据selfList数据为空");
 		for(MonthTransactionRecordDTO monthTransactionRecordDTO : selfList){
@@ -479,7 +488,7 @@ public class IncomeController {
 	ResponseDTO<Map<String,Object>> selectNextMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
 		long startTime = System.currentTimeMillis();
 		if(pageParamVoDTO.getRequestData() == null){
-			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
+			logger.info("查询月度奖励详情传入对象RequestData为null");
 		}
 		List<MonthTransactionRecordDTO> nextList1 = new ArrayList<>();
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
@@ -487,6 +496,7 @@ public class IncomeController {
 
 		pageParamVoDTO.getRequestData().setParentRelation("other");
 		int nextCount = incomeService.queryMonthRecordCountByParentRelation(pageParamVoDTO);
+		logger.info("月度本人详情数据nextList数据Count=={}",nextCount);
 		List<MonthTransactionRecordDTO> nextList = incomeService.queryMonthRecordByParentRelation(pageParamVoDTO);
 		if(CommonUtils.objectIsEmpty(nextList)){
 			logger.info("月度下级详情数据selfList数据为空");
@@ -569,10 +579,12 @@ public class IncomeController {
 
 		UserInfoDTO userInfoP = new UserInfoDTO();
 		UserInfoDTO userInfoG = new UserInfoDTO();
+		logger.info("查询店主推荐下级列表用户id==={}",pageParamVoDTO.getRequestData().getSysUserId() );
 		userInfoP = userServiceClient.getUserInfoFromUserId(pageParamVoDTO.getRequestData().getSysUserId());
 		if(userInfoP!=null){
 			if(userInfoP.getParentUserId()!=null){
 				userInfoG = userServiceClient.getUserInfoFromUserId(userInfoP.getParentUserId());
+				logger.info("查询店主推荐下级列表父级id==={}",userInfoP.getParentUserId());
 			}
 		}
 
@@ -610,7 +622,6 @@ public class IncomeController {
 				String[] orderHeaders = {"昵称","手机号", "用户当前等级","上级级昵称","上级手机号", "上级用户当前等级","下级昵称","下级手机号", "下级用户当前等级","升级支付时间", "升级订单id",
 						"升级交易流水号", "升级订单金额"};
 				ExportExcel<ExportNextUserInfoExcelDTO> ex = new ExportExcel<>();
-
 				HashMap<String, String> helperMap = new HashMap<>(16);
 				if (CommonUtils.objectIsNotEmpty(exportNextUserInfoExcelDTOS)) {
 					for (ExportNextUserInfoExcelDTO excelDTO : exportNextUserInfoExcelDTOS) {
@@ -619,39 +630,36 @@ public class IncomeController {
 						} else {
 							int count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) + 1;
 							helperMap.put(excelDTO.getTransactionId(), String.valueOf(count));
+							logger.info("查询店主推荐下级列表重复transaction==={}",excelDTO.getTransactionId());
 						}
 					}
-
 					for (ExportNextUserInfoExcelDTO excelDTO : exportNextUserInfoExcelDTOS) {
 						Integer count = Integer.parseInt(helperMap.get(excelDTO.getTransactionId()));
 						if (count > 1) {
 							excelDTO.setAmount(0);
+							logger.info("查询店主推荐下级列表Amount被置为0此条transaction==={}",excelDTO.getTransactionId());
 							int number = Integer.parseInt(helperMap.get(excelDTO.getTransactionId())) - 1;
 							helperMap.put(excelDTO.getTransactionId(), String.valueOf(number));
 						}
 					}
 				}
 
-
 				ByteArrayInputStream in = ex.getWorkbookIn("账单EXCEL文档", orderHeaders, exportNextUserInfoExcelDTOS);
 				String url = CommonUtils.orderExcelToOSS(in);
 				if ("".equals(url) && url == null){
 					logger.info("佣金奖励Excel 获取OSSUrl为空");
 				}
+				logger.error("佣金奖励导出数据Url==={}",url);
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-
 			} catch (Exception e) {
-				responseDTO.setResult("月度详情导出Excel异常");
+				logger.error("佣金奖励Excel异常，异常信息为，{}"+e.getMessage(),e);
+				responseDTO.setResult("佣金奖励Excel异常");
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
-				logger.error("月度详情导出Excel异常");
 				e.printStackTrace();
 			}
 		}
-
-
 		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
-
 		responseDTO.setResponseData(page);
 		return responseDTO;
 
