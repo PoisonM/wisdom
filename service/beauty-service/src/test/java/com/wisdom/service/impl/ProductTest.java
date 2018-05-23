@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,7 +70,12 @@ public class ProductTest {
 //                .andExpect(status().isOk())// 模拟向testRest发送get请求
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
 //                .andReturn();// 返回执行请求的结果
-//        System.out.println(result.getResponse().getContentAsString());
+
+        MvcResult result = mvc.perform(get("/productInfo/getProductInfoByScanCode").param("code", "6938166920785"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+        System.out.println(result.getResponse().getContentAsString());
     }
 
     /**

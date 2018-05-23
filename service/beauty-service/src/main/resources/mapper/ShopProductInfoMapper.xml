@@ -15,7 +15,12 @@
     <result column="product_function" property="productFunction" jdbcType="VARCHAR" />
     <result column="qr_code_url" property="qrCodeUrl" jdbcType="VARCHAR" />
     <result column="product_type" property="productType" jdbcType="CHAR" />
+    <result column="manu_address" property="manuAddress" jdbcType="VARCHAR"/>
     <result column="quality_period" property="qualityPeriod" jdbcType="INTEGER" />
+    <result column="manu_name" property="manuName" jdbcType="VARCHAR"/>
+    <result column="trade_mark" property="tradeMark" jdbcType="VARCHAR"/>
+    <result column="effect_date" property="effectDate" jdbcType="VARCHAR"/>
+    <result column="Invalid_date" property="invalidDate" jdbcType="VARCHAR"/>
     <result column="product_warning_day" property="productWarningDay" jdbcType="INTEGER" />
     <result column="product_warning_num" property="productWarningNum" jdbcType="INTEGER" />
     <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
@@ -23,6 +28,8 @@
     <result column="product_code" property="productCode" jdbcType="VARCHAR" />
     <result column="product_unit" property="productUnit" jdbcType="DECIMAL" />
     <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
+    <result column="product_spec_unit" property="productSpecUnit" jdbcType="VARCHAR"/>
+    <result column="note" property="note" jdbcType="VARCHAR"/>
     <result column="introduce" property="introduce" jdbcType="VARCHAR" />
     <result column="is_display" property="isDisplay" jdbcType="CHAR" />
     <result column="status" property="status" jdbcType="CHAR" />
@@ -91,10 +98,11 @@
   </sql>
   <sql id="Base_Column_List" >
     id, sys_shop_id, parent_shop_id, product_name, product_type_one_name, product_type_one_id, 
-    product_type_two_name, product_type_two_id, product_url, product_position, product_function, 
-    qr_code_url, product_type, quality_period, product_warning_day, product_warning_num, 
-    market_price, discount_price, product_code, product_unit, product_spec, introduce, 
-    is_display, status, create_by, create_date, update_user, update_date
+    product_type_two_name, product_type_two_id, product_url, product_position, product_function,
+    qr_code_url, product_type, manu_address, quality_period, manu_name, trade_mark, effect_date,
+    Invalid_date, product_warning_day, product_warning_num, market_price, discount_price,
+    product_code, product_unit, product_spec, product_spec_unit, note, introduce, is_display,
+    status, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopProductInfoCriteria" >
     select
@@ -133,23 +141,27 @@
     insert into shop_product_info (id, sys_shop_id, parent_shop_id, 
       product_name, product_type_one_name, product_type_one_id, 
       product_type_two_name, product_type_two_id, product_url, 
-      product_position, product_function, qr_code_url, 
-      product_type, quality_period, product_warning_day, 
-      product_warning_num, market_price, discount_price, 
-      product_code, product_unit, product_spec, 
-      introduce, is_display, status, 
-      create_by, create_date, update_user, 
-      update_date)
+      product_position, product_function, qr_code_url,
+    product_type, manu_address, quality_period,
+    manu_name, trade_mark, effect_date,
+    Invalid_date, product_warning_day, product_warning_num,
+    market_price, discount_price, product_code,
+    product_unit, product_spec, product_spec_unit,
+    note, introduce, is_display,
+    status, create_by, create_date,
+    update_user, update_date)
     values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{parentShopId,jdbcType=VARCHAR}, 
       #{productName,jdbcType=VARCHAR}, #{productTypeOneName,jdbcType=VARCHAR}, #{productTypeOneId,jdbcType=VARCHAR}, 
       #{productTypeTwoName,jdbcType=VARCHAR}, #{productTypeTwoId,jdbcType=VARCHAR}, #{productUrl,jdbcType=VARCHAR}, 
-      #{productPosition,jdbcType=VARCHAR}, #{productFunction,jdbcType=VARCHAR}, #{qrCodeUrl,jdbcType=VARCHAR}, 
-      #{productType,jdbcType=CHAR}, #{qualityPeriod,jdbcType=INTEGER}, #{productWarningDay,jdbcType=INTEGER}, 
-      #{productWarningNum,jdbcType=INTEGER}, #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
-      #{productCode,jdbcType=VARCHAR}, #{productUnit,jdbcType=DECIMAL}, #{productSpec,jdbcType=VARCHAR}, 
-      #{introduce,jdbcType=VARCHAR}, #{isDisplay,jdbcType=CHAR}, #{status,jdbcType=CHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+      #{productPosition,jdbcType=VARCHAR}, #{productFunction,jdbcType=VARCHAR}, #{qrCodeUrl,jdbcType=VARCHAR},
+    #{productType,jdbcType=CHAR}, #{manuAddress,jdbcType=VARCHAR}, #{qualityPeriod,jdbcType=INTEGER},
+    #{manuName,jdbcType=VARCHAR}, #{tradeMark,jdbcType=VARCHAR}, #{effectDate,jdbcType=VARCHAR},
+    #{invalidDate,jdbcType=VARCHAR}, #{productWarningDay,jdbcType=INTEGER}, #{productWarningNum,jdbcType=INTEGER},
+    #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, #{productCode,jdbcType=VARCHAR},
+    #{productUnit,jdbcType=DECIMAL}, #{productSpec,jdbcType=VARCHAR}, #{productSpecUnit,jdbcType=VARCHAR},
+    #{note,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{isDisplay,jdbcType=CHAR},
+    #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProductInfoDTO" >
     insert into shop_product_info
@@ -193,8 +205,23 @@
       <if test="productType != null" >
         product_type,
       </if>
+      <if test="manuAddress != null">
+        manu_address,
+      </if>
       <if test="qualityPeriod != null" >
         quality_period,
+      </if>
+      <if test="manuName != null">
+        manu_name,
+      </if>
+      <if test="tradeMark != null">
+        trade_mark,
+      </if>
+      <if test="effectDate != null">
+        effect_date,
+      </if>
+      <if test="invalidDate != null">
+        Invalid_date,
       </if>
       <if test="productWarningDay != null" >
         product_warning_day,
@@ -216,6 +243,12 @@
       </if>
       <if test="productSpec != null" >
         product_spec,
+      </if>
+      <if test="productSpecUnit != null">
+        product_spec_unit,
+      </if>
+      <if test="note != null">
+        note,
       </if>
       <if test="introduce != null" >
         introduce,
@@ -279,8 +312,23 @@
       <if test="productType != null" >
         #{productType,jdbcType=CHAR},
       </if>
+      <if test="manuAddress != null">
+        #{manuAddress,jdbcType=VARCHAR},
+      </if>
       <if test="qualityPeriod != null" >
         #{qualityPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="manuName != null">
+        #{manuName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeMark != null">
+        #{tradeMark,jdbcType=VARCHAR},
+      </if>
+      <if test="effectDate != null">
+        #{effectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="invalidDate != null">
+        #{invalidDate,jdbcType=VARCHAR},
       </if>
       <if test="productWarningDay != null" >
         #{productWarningDay,jdbcType=INTEGER},
@@ -302,6 +350,12 @@
       </if>
       <if test="productSpec != null" >
         #{productSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpecUnit != null">
+        #{productSpecUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
       </if>
       <if test="introduce != null" >
         #{introduce,jdbcType=VARCHAR},
@@ -374,8 +428,23 @@
       <if test="record.productType != null" >
         product_type = #{record.productType,jdbcType=CHAR},
       </if>
+      <if test="record.manuAddress != null">
+        manu_address = #{record.manuAddress,jdbcType=VARCHAR},
+      </if>
       <if test="record.qualityPeriod != null" >
         quality_period = #{record.qualityPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="record.manuName != null">
+        manu_name = #{record.manuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeMark != null">
+        trade_mark = #{record.tradeMark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.effectDate != null">
+        effect_date = #{record.effectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invalidDate != null">
+        Invalid_date = #{record.invalidDate,jdbcType=VARCHAR},
       </if>
       <if test="record.productWarningDay != null" >
         product_warning_day = #{record.productWarningDay,jdbcType=INTEGER},
@@ -397,6 +466,12 @@
       </if>
       <if test="record.productSpec != null" >
         product_spec = #{record.productSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productSpecUnit != null">
+        product_spec_unit = #{record.productSpecUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
       </if>
       <if test="record.introduce != null" >
         introduce = #{record.introduce,jdbcType=VARCHAR},
@@ -439,7 +514,12 @@
       product_function = #{record.productFunction,jdbcType=VARCHAR},
       qr_code_url = #{record.qrCodeUrl,jdbcType=VARCHAR},
       product_type = #{record.productType,jdbcType=CHAR},
+    manu_address = #{record.manuAddress,jdbcType=VARCHAR},
       quality_period = #{record.qualityPeriod,jdbcType=INTEGER},
+    manu_name = #{record.manuName,jdbcType=VARCHAR},
+    trade_mark = #{record.tradeMark,jdbcType=VARCHAR},
+    effect_date = #{record.effectDate,jdbcType=VARCHAR},
+    Invalid_date = #{record.invalidDate,jdbcType=VARCHAR},
       product_warning_day = #{record.productWarningDay,jdbcType=INTEGER},
       product_warning_num = #{record.productWarningNum,jdbcType=INTEGER},
       market_price = #{record.marketPrice,jdbcType=DECIMAL},
@@ -447,6 +527,8 @@
       product_code = #{record.productCode,jdbcType=VARCHAR},
       product_unit = #{record.productUnit,jdbcType=DECIMAL},
       product_spec = #{record.productSpec,jdbcType=VARCHAR},
+    product_spec_unit = #{record.productSpecUnit,jdbcType=VARCHAR},
+    note = #{record.note,jdbcType=VARCHAR},
       introduce = #{record.introduce,jdbcType=VARCHAR},
       is_display = #{record.isDisplay,jdbcType=CHAR},
       status = #{record.status,jdbcType=CHAR},
@@ -497,8 +579,23 @@
       <if test="productType != null" >
         product_type = #{productType,jdbcType=CHAR},
       </if>
+      <if test="manuAddress != null">
+        manu_address = #{manuAddress,jdbcType=VARCHAR},
+      </if>
       <if test="qualityPeriod != null" >
         quality_period = #{qualityPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="manuName != null">
+        manu_name = #{manuName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeMark != null">
+        trade_mark = #{tradeMark,jdbcType=VARCHAR},
+      </if>
+      <if test="effectDate != null">
+        effect_date = #{effectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="invalidDate != null">
+        Invalid_date = #{invalidDate,jdbcType=VARCHAR},
       </if>
       <if test="productWarningDay != null" >
         product_warning_day = #{productWarningDay,jdbcType=INTEGER},
@@ -520,6 +617,12 @@
       </if>
       <if test="productSpec != null" >
         product_spec = #{productSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpecUnit != null">
+        product_spec_unit = #{productSpecUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
       </if>
       <if test="introduce != null" >
         introduce = #{introduce,jdbcType=VARCHAR},
@@ -559,7 +662,12 @@
       product_function = #{productFunction,jdbcType=VARCHAR},
       qr_code_url = #{qrCodeUrl,jdbcType=VARCHAR},
       product_type = #{productType,jdbcType=CHAR},
+    manu_address = #{manuAddress,jdbcType=VARCHAR},
       quality_period = #{qualityPeriod,jdbcType=INTEGER},
+    manu_name = #{manuName,jdbcType=VARCHAR},
+    trade_mark = #{tradeMark,jdbcType=VARCHAR},
+    effect_date = #{effectDate,jdbcType=VARCHAR},
+    Invalid_date = #{invalidDate,jdbcType=VARCHAR},
       product_warning_day = #{productWarningDay,jdbcType=INTEGER},
       product_warning_num = #{productWarningNum,jdbcType=INTEGER},
       market_price = #{marketPrice,jdbcType=DECIMAL},
@@ -567,6 +675,8 @@
       product_code = #{productCode,jdbcType=VARCHAR},
       product_unit = #{productUnit,jdbcType=DECIMAL},
       product_spec = #{productSpec,jdbcType=VARCHAR},
+    product_spec_unit = #{productSpecUnit,jdbcType=VARCHAR},
+    note = #{note,jdbcType=VARCHAR},
       introduce = #{introduce,jdbcType=VARCHAR},
       is_display = #{isDisplay,jdbcType=CHAR},
       status = #{status,jdbcType=CHAR},

@@ -4,8 +4,10 @@ import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
+import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
+import com.wisdom.beauty.api.extDto.ExtShopScanProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
-import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
+import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -22,9 +24,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * FileName: productController
@@ -39,8 +44,9 @@ public class ProductController {
 
     @Resource
     private ShopProductInfoService shopProductInfoService;
+
     @Autowired
-    private ShopCustomerProductRelationService shopCustomerProductRelationService;
+    private MongoUtils mongoUtils;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -300,6 +306,51 @@ public class ProductController {
         responseDTO.setResult(StatusConstant.SUCCESS);
 
         logger.info("查询某个店的产品列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+
+    /**
+     * 扫码入库
+     *
+     * @param code
+     * @return
+     */
+    @RequestMapping(value = "/getProductInfoByScanCode", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getProductInfoByScanCode(@RequestParam String code) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("传入参数={}", "code = [" + code + "]");
+        ResponseDTO responseDTO = new ResponseDTO();
+        ExtShopProductInfoDTO scanShopProductInfo = mongoUtils.getScanShopProductInfo(code);
+        logger.info("扫码入库查询出来的数据为={}", "scanShopProductInfo = [" + scanShopProductInfo + "]");
+        ExtShopScanProductInfoDTO extShopScanProductInfoDTO = scanShopProductInfo.getShowapi_res_body();
+        if (null != extShopScanProductInfoDTO) {
+            //查询出来的信息转换为产品对象
+            ShopProductInfoDTO productInfoDTO = new ShopProductInfoDTO();
+            productInfoDTO.setProductName(extShopScanProductInfoDTO.getGoodsName());
+            productInfoDTO.setManuName(extShopScanProductInfoDTO.getManuName());
+            productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
+            productInfoDTO.setProductUrl(extShopScanProductInfoDTO.getImg());
+            productInfoDTO.setNote(extShopScanProductInfoDTO.getNote());
+            productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
+            String price = extShopScanProductInfoDTO.getPrice();
+            if (StringUtils.isNotBlank(price)) {
+                productInfoDTO.setMarketPrice(new BigDecimal(price));
+            }
+            String spec = extShopScanProductInfoDTO.getSpec();
+            if (StringUtils.isNotBlank(spec)) {
+                String regEx = "[^0-9]";
+                Pattern p = Pattern.compile(regEx);
+                Matcher m = p.matcher(spec);
+                productInfoDTO.setProductSpec(m.replaceAll("").trim());
+                productInfoDTO.setProductSpecUnit(spec.replaceAll("\\d+", ""));
+            }
+            responseDTO.setResponseData(productInfoDTO);
+        }
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("扫码入库方法耗时={}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
