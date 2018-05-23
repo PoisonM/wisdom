@@ -320,7 +320,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         String sysShopId = null;
         //pad端登陆
         if (null != clerkInfo) {
-            sysBossId = clerkInfo.getSysBossId();
+            sysBossId = clerkInfo.getSysBossCode();
             sysShopId = clerkInfo.getSysShopId();
         }
         if (null != bossInfo) {

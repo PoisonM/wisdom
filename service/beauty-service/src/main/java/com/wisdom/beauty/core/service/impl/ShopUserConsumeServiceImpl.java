@@ -200,7 +200,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setSysShopName(archivesInfo.getSysShopName());
                 userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
                 userConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
-                userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossId());
+                userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
                 userConsumeRecordDTO.setPrice(dto.getSurplusAmount());
                 userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
                 userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
@@ -317,7 +317,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     dto.setId(uuid);
                     dto.setSysShopName(dto.getSysShopName());
                     dto.setSysShopId(clerkInfo.getSysShopId());
-                    dto.setSysBossCode(clerkInfo.getSysBossId());
+                    dto.setSysBossCode(clerkInfo.getSysBossCode());
                     //单个项目的价格 = 总金额/购买了多少个
                     BigDecimal price = dto.getSysShopProjectInitAmount();
                     BigDecimal divide = dto.getSysShopProjectPurchasePrice().divide(dto.getSysShopProjectInitAmount(), 2, ROUND_HALF_DOWN);
@@ -376,7 +376,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 dto.setId(uuid);
                 dto.setSysShopId(clerkInfo.getSysShopId());
                 dto.setSysShopName(clerkInfo.getSysShopName());
-                dto.setSysBossCode(clerkInfo.getSysBossId());
+                dto.setSysBossCode(clerkInfo.getSysBossCode());
                 dto.setSurplusTimes(dto.getInitTimes());
                 dto.setSurplusAmount(dto.getInitAmount());
                 BigDecimal divide = dto.getPurchasePrice().divide(dto.getInitAmount(), 2, ROUND_HALF_DOWN);
@@ -452,7 +452,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             consumeRecordDTO.setSysShopName(clerkInfo.getSysShopName());
             consumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
             consumeRecordDTO.setSysClerkId(clerkInfo.getId());
-            consumeRecordDTO.setSysBossCode(clerkInfo.getSysBossId());
+            consumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
             consumeRecordDTO.setFlowName(shopUserProjectRelationDTO.getSysShopProjectName());
             consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
             consumeRecordDTO.setOperDate(new Date());
@@ -556,7 +556,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setSysShopName(clerkInfo.getSysShopName());
         consumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
         consumeRecordDTO.setSysClerkId(clerkInfo.getId());
-        consumeRecordDTO.setSysBossCode(clerkInfo.getSysBossId());
+        consumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
         consumeRecordDTO.setFlowName(consumeRecordDTO.getFlowName());
         consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
         consumeRecordDTO.setOperDate(new Date());
@@ -611,7 +611,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         userConsumeRecordDTO.setSysShopName(archivesInfo.getSysShopName());
         userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
         userConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
-        userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossId());
+        userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
         userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
         userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
         logger.info("订单号={}，生成充值记录,{}", shopUserOrderDTO.getOrderId(), userConsumeRecordDTO);
@@ -685,7 +685,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             rechargeCardDTO.setSurplusAmount(new BigDecimal(rechargeAmount));
             rechargeCardDTO.setCreateBy(clerkInfo.getId());
             rechargeCardDTO.setSysClerkName(clerkInfo.getName());
-            rechargeCardDTO.setSysBossCode(clerkInfo.getSysBossId());
+            rechargeCardDTO.setSysBossCode(clerkInfo.getSysBossCode());
             rechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.COMMON.getCode());
             int updateRechargeCard = shopRechargeCardService.saveShopUserRechargeCardInfo(rechargeCardDTO);
             logger.info("充值卡充值操作传入参数执行结果={}", updateRechargeCard > 0 ? "成功" : "失败");
@@ -712,7 +712,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         shopUserConsumeRecordDTO.setSysShopId(orderDTO.getSysShopId());
         shopUserConsumeRecordDTO.setDetail(shopUserConsumeRecordDTO.getDetail());
         shopUserConsumeRecordDTO.setSignUrl(orderDTO.getSignUrl());
-        shopUserConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossId());
+        shopUserConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
         shopUserConsumeRecordDTO.setStatus(shopUserConsumeRecordDTO.getStatus());
         shopUserConsumeRecordDTO.setOperDate(new Date());
         shopUserConsumeRecordDTO.setConsumeNumber(1);
