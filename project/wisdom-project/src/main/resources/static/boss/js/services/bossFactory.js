@@ -18,6 +18,7 @@ var projectType='/beauty/projectType/';
 var shop='/beauty/shop/';
 
 
+
 define(['appBoss'], function (app) {
     app
 
@@ -263,4 +264,23 @@ define(['appBoss'], function (app) {
         .factory('TwoLevelProject',['$resource',function ($resource){
             return $resource(projectInfo+"twoLevelProject")
         }])
+    /*删除修改产品*/
+        /*获取客装产品列表*/
+        .factory('GetShopProductLevelInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"getShopProductLevelInfo")
+        }])
+        /*查询产品的详细信息*/
+        .factory('ProductInfoMess',['$resource',function ($resource){
+            return $resource(productInfo+"/:productId",{ productId: '@productId' })
+        }])
+        /*查询产品的详细信息*/
+        .factory('UpdateProductInfo',['$resource',function ($resource){
+            return $resource(productInfo+"updateProductInfo")
+        }])
+        /*添加产品*/
+        .factory('SaveProductInfo',['$resource',function ($resource){
+            return $resource(productInfo+"saveProductInfo")
+        }])
+
+
 });
