@@ -417,15 +417,17 @@ public class JedisUtils {
 	 * @return
 	 */
 	public static Set<String> zRangeByScore(String key, String min, String max) {
+		logger.info("开始时间");
 		Set<String> result = null;
 		Jedis jedis = null;
 		try {
 			jedis = getResource();
+			logger.info("获取资源");
 			result = jedis.zrangeByScore(key, min, max);
 
-			logger.debug("setSet {} = {} = {}", key, min,max);
+			logger.info("结束时间");
 		} catch (Exception e) {
-			logger.warn("setSet {} = {}  = {}", key, min,max);
+			logger.info("结束时间");
 		} finally {
 			returnResource(jedis);
 		}

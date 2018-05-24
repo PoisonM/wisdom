@@ -39,9 +39,9 @@
                         <ion-item class="item-input" style="background: border-box;height: 40px; ">
                         <span class="item-input-wrapper" style="margin-right:10px;height:30px;margin-left:10px;" >
                                 <i class="icon ion-ios-search placeholder-icon" ng-click="search()"></i>
-                                <input id="search" type="search" placeholder="搜索产品名称/产品编号" ng-model="searchCont.key" >
+                                <input id="search" type="search" placeholder="搜索产品名称/产品编号" ng-model="param.searchContent" >
                                 <i class="icon ion-close-circled placeholder-icon" style="vertical-align: middle;"
-                                   on-tap="clearSearch()" ng-if="searchCont.key.length"></i>
+                                   on-tap="clearSearch()" ng-if="param.searchContent.length"></i>
                         </span>
                         </ion-item>
                     </ion-list>
@@ -52,17 +52,19 @@
                 </div>
                 <div>
                     <ion-list>
-                        <ion-item style="height:90px;width:95%;margin: 0px auto 10px; border-radius: 6px; box-shadow: 0 2px 4px 0 rgba(153,153,153,0.20)" class="sb " ng-repeat="item in [0,1,2,3,4]" ng-click="selProduct($index)">
+                        <ion-item style="height:90px;width:95%;margin: 0px auto 10px; border-radius: 6px; box-shadow: 0 2px 4px 0 rgba(153,153,153,0.20)" class="sb " ng-repeat="item in param.detailProductList"
+                                  ng-click="selProduct($index)"
+                                  ng-if="param.type==item.productType">
                             <div style="display: flex">
                                 <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
-                                    <img src="">
+                                    <img ng-src="{{item.productUrl}}">
                                 </p>
                                 <div class="ml10 mt10">
-                                    <P class="fs14 col333 ">健肤小喷</P>
-                                    <P class="fs12 col888 mt10">编号：</P>
+                                    <P class="fs14 col333 ">{{item.productTypeOneName+item.productName}}</P>
+                                    <P class="fs12 col888 mt10">编号：{{item.productCode}}</P>
                                     <P class="fs12 col888">
-                                        <span>单位：件</span>
-                                        <span class="ml50">规格：1000g</span>
+                                        <span>单位：{{item.productUnit}}</span>
+                                        <span class="ml50">规格：{{item.productSpec}}</span>
                                     </P>
                                 </div>
                             </div>
