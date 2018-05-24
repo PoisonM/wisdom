@@ -85,7 +85,7 @@ public class BeautyUserServiceController {
      * @Description:
      * @Date:2018/5/24 17:09
      */
-    @RequestMapping(value = "/getUserInfoListFromUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "/beauty/getUserInfoListFromUserId", method = RequestMethod.GET)
     @ResponseBody
     List<UserInfoDTO> getUserInfoFromUserId(@RequestParam String[] userIds,
                                             @RequestParam(required = false) String searchFile) {

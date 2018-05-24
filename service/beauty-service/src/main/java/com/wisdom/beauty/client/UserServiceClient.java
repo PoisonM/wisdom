@@ -85,7 +85,7 @@ public interface UserServiceClient {
 	 * @Description: 根据多个userid查询
 	 * @Date:2018/4/18 14:15
 	 */
-	@RequestMapping(value = "/getUserInfoListFromUserId", method = RequestMethod.GET)
+	@RequestMapping(value = "/beauty/getUserInfoListFromUserId", method = RequestMethod.GET)
 	List<UserInfoDTO> getUserInfoListFromUserId(@RequestParam(value = "userIds") String[] userIds,
 			                                    @RequestParam(required = false, value = "searchFile") String searchFile);
 }
