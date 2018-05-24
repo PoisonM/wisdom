@@ -211,12 +211,21 @@ public class AppointmentController {
 			Date loopDate = startTime;
 			ArrayList<Object> arrayList = new ArrayList<>();
 
+			//过滤作用
+			Set<String> filterSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
+					DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(endTime));
+
 			while (loopDate.getTime() < endTime.getTime()) {
 
 				HashMap<Object, Object> map = new HashMap<>(16);
+
 				//获取美容师在某一时间段内的预约主键列表
-				Set<String> stringSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
-						DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate));
+				Set<String> stringSet = null;
+				//如果filterSet不为空则说明当前美容师在查询时间段有预约信息
+				if (CommonUtils.objectIsNotEmpty(filterSet)) {
+					stringSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
+							DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate));
+				}
 
 				logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getName(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
 
