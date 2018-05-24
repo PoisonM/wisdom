@@ -188,8 +188,8 @@ public class AppointmentController {
 																   @RequestParam String startDate, @RequestParam String endDate) {
 		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 		Date startTime = DateUtils.StrToDate(startDate, "datetime");
-		Date endTime = DateUtils.StrToDate(endDate + " 23:59:59", "datetime");
-
+		Date endTime = DateUtils.StrToDate(endDate, "datetime");
+		endTime = DateUtils.dateInc(endTime);
 
 		String preLog = "根据时间查询某个美容店周预约列表";
 		long start = System.currentTimeMillis();
