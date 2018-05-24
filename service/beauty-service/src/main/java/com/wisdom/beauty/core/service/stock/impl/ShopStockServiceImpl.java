@@ -288,8 +288,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 			Date endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
 			c.andCreateDateBetween(startDate, endDate);
 		}
-
-		criteria.setPageSize(pageParamVoDTO.getPageSize());
+        if(pageParamVoDTO.getPaging()){
+			criteria.setPageSize(pageParamVoDTO.getPageSize());
+			criteria.setLimitStart(pageParamVoDTO.getPageNo());
+		}
 
 		return shopStockRecordMapper.selectByCriteria(criteria);
 
