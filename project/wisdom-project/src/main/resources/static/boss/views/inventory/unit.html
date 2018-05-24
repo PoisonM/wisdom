@@ -5,8 +5,8 @@
                  <ion-item class="h45">
                      <p class="ml10">个</p>
                  </ion-item>
-                 <ion-item class="h45" ng-repeat="item in [0,1,2,3]">
-                     <p class="ml10">瓶</p>
+                 <ion-item class="h45" ng-repeat="item in param.unit" >
+                     <p class="ml10"  ng-click="unit(item)">{{item}}</p>
                  </ion-item>
              </ion-list>
          </div>
