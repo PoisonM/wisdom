@@ -2,7 +2,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo) {
             $rootScope.title = "添加产品";
-            $scope.selFlag =''
+            $scope.selFlag ='';
             $scope.param ={
                 productType:"0",
                 productTypeOneName:"",

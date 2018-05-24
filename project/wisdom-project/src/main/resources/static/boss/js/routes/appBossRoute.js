@@ -444,7 +444,7 @@ define(['appBoss'], function(app){
                     })
                 /*选择类别*/
                     .state('selectionCategory', {
-                        url: '/selectionCategory',
+                        url: '/selectionCategory/:add/:mod/:projectId/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectionCategoryCtrl',
                         resolve: {
@@ -613,7 +613,7 @@ define(['appBoss'], function(app){
                     })
                 /*添加项目*/
                     .state('addProject', {
-                        url: '/addProject',
+                        url: '/addProject/:typeId,:name,:seriesId,:seriesName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'addProjectCtrl',
                         resolve: {
@@ -624,9 +624,22 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*选择项目系列*/
+                    .state('addProjectSeries', {
+                        url: '/addProjectSeries/:typeId/:add/:mod/:projectId/:name/:seriesId/:seriesName',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'addProjectSeriesCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addProjectSeriesCtrl',
+                                    ['js/controllers/mine/addProjectSeriesCtrl.js?ver='+ bossVersion],
+                                    'views/mine/addProjectSeries.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                 /*修改项目*/
                     .state('modifyProject', {
-                        url: '/modifyProject',
+                        url: '/modifyProject/:projectId,:typeId,:name,:seriesId,:seriesName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'modifyProjectCtrl',
                         resolve: {
