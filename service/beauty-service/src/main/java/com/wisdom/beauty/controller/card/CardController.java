@@ -18,6 +18,7 @@ import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
@@ -221,12 +222,20 @@ public class CardController {
 			@RequestParam(required = false) String projectGroupName, int pageSize) {
 
 		long currentTimeMillis = System.currentTimeMillis();
-		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
-		PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		ShopProjectGroupDTO shopProjectGroupDTO = new ShopProjectGroupDTO();
-		shopProjectGroupDTO.setSysShopId(sysClerkDTO.getSysShopId());
-		shopProjectGroupDTO.setProjectGroupName(projectGroupName);
-
+		String sysShopId = null;
+		if (StringUtils.isBlank(sysShopId)) {
+			SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+			shopProjectGroupDTO.setSysShopId(sysClerkDTO.getSysShopId());
+		}
+		if (StringUtils.isBlank(sysShopId)) {
+			SysBossDTO bossInfo = UserUtils.getBossInfo();
+			shopProjectGroupDTO.setSysShopId(bossInfo.getCurrentShopId());
+		}
+		PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		if (StringUtils.isNotBlank(projectGroupName)) {
+			shopProjectGroupDTO.setProjectGroupName(projectGroupName);
+		}
 		pageParamVoDTO.setRequestData(shopProjectGroupDTO);
 		pageParamVoDTO.setPageNo(0);
 		pageParamVoDTO.setPageSize(pageSize);
