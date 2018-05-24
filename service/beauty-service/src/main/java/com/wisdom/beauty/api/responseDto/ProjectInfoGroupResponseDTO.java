@@ -44,7 +44,7 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 	/** 是否过期 */
 	private  Boolean  overdue;
 	/** 是否启用 */
-	private  Boolean  status;
+	private  String  status;
 
 	public String getProjectGroupName() {
 		return projectGroupName;
@@ -136,11 +136,11 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 		this.overdue = overdue;
 	}
 
-	public Boolean getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 }
