@@ -1,5 +1,6 @@
 package com.wisdom.beauty.core.service.stock;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -186,5 +187,13 @@ public interface ShopStockService {
 	 * @Date:2018/5/19 14:33
 	 */
 	int checkProduct(List<ShopCheckRecordDTO> list);
+	/**
+	*@Author:zhanghuan
+	*@Param:
+	*@Return:
+	*@Description: 获取某个仓库的总成本
+	*@Date:2018/5/24 10:29
+	*/
+	Map<String,Object> getCost(String shopStoreId,String productTypeTwoId);
 
 }
