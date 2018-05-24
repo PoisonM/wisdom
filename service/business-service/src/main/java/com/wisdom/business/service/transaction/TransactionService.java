@@ -116,7 +116,7 @@ public class TransactionService {
     }
 
     public List<BusinessOrderDTO> getBusinessOrderListByUserIdAndStatus(String userId, String status) {
-        logger.info("获取某个用户所有的订单=="+userId);
+        logger.info("根据状态获取某个用户所有的订单=="+userId);
         List<BusinessOrderDTO> businessOrderDTOList = new ArrayList<>();
         if(status.equals("all"))
         {
@@ -267,6 +267,7 @@ public class TransactionService {
         PageParamVoDTO<List<BusinessOrderDTO>> page = new  PageParamVoDTO<>();
         int count = transactionMapper.queryBusinessOrderCountByParameters(pageParamVoDTO);
         List<BusinessOrderDTO> businessOrderDTODTOList = transactionMapper.queryBusinessOrderByParameters(pageParamVoDTO);
+        logger.info("条件查询订单Count==={}结果集Size==={}" , count,businessOrderDTODTOList.size());
         for(BusinessOrderDTO businessOrderDTO : businessOrderDTODTOList){
             businessOrderDTO.setNickName(CommonUtils.nameDecoder(businessOrderDTO.getNickName()));
             String nickNameW ="";
@@ -307,6 +308,7 @@ public class TransactionService {
         page.setPageSize(pageParamVoDTO.getPageSize());
         int count = transactionMapper.queryAllBusinessOrderCount(pageParamVoDTO);
         List<BusinessOrderDTO> businessOrderDTOList = transactionMapper.queryAllBusinessOrders(pageParamVoDTO.getPageStartNo(),page.getPageSize(),pageParamVoDTO.getIsExportExcel());
+        logger.info("查询所有订单Count==={}结果集List==={}" ,count ,businessOrderDTOList.size());
         for(BusinessOrderDTO businessOrderDTO : businessOrderDTOList){
             if(businessOrderDTO.getNickName() != null && businessOrderDTO.getNickName() != ""){
                 try {
@@ -366,6 +368,7 @@ public class TransactionService {
         List<ExportOrderExcelDTO> productDTOList = transactionMapper.selectExcelContent();
         for (ExportOrderExcelDTO exportOrderExcelDTO : productDTOList) {
             //修改订单为已发货
+            logger.info("修改订单{}为已发货",exportOrderExcelDTO.getOrderId());
             businessOrderDTO.setBusinessOrderId(exportOrderExcelDTO.getOrderId());
             businessOrderDTO.setStatus("4");
             businessOrderDTO.setUpdateDate(new Date());

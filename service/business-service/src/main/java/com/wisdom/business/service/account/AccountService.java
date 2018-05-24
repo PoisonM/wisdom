@@ -33,7 +33,7 @@ public class AccountService {
     }
 
     public PageParamDTO<List<AccountDTO>> queryAllUserBalance(PageParamDTO pageParamDTO) {
-
+        logger.info("查询所有用户账户余额");
         String currentPage = String.valueOf(pageParamDTO.getPageNo());
         String pageSize = String.valueOf(pageParamDTO.getPageSize());
         Page<AccountDTO> page = FrontUtils.generatorPage(currentPage, pageSize);
@@ -51,7 +51,7 @@ public class AccountService {
     }
 
     public PageParamDTO<List<AccountDTO>> queryUserBalanceByParameters(String phoneAndIdentify,String isExportExcel, Integer pageNo, Integer pageSize) {
-
+        logger.info("根据条件查询用户账户余额");
         PageParamDTO<List<AccountDTO>> page = new  PageParamDTO<>();
         page.setPageNo(pageNo);
         page.setPageSize(pageSize);

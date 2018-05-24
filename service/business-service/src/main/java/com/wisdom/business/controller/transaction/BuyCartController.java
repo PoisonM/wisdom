@@ -6,6 +6,8 @@ import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "transaction")
 public class BuyCartController {
-
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private BuyCartService buyCartService;
 
@@ -40,9 +42,12 @@ public class BuyCartController {
     public
     @ResponseBody
     ResponseDTO addProduct2BuyCart(@RequestParam String productId, @RequestParam String productSpec,@RequestParam int productNum) {
+        long startTime = System.currentTimeMillis();
+        logger.info("将货品加入用户的购物车==={}开始",startTime);
         ResponseDTO responseDTO = new ResponseDTO<>();
         String result = buyCartService.addOfflineProduct2BuyCart(productId,productSpec,productNum);
         responseDTO.setResult(result);
+        logger.info("将货品加入用户的购物车,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -51,6 +56,9 @@ public class BuyCartController {
     public
     @ResponseBody
     ResponseDTO minusProduct2BuyCart(@RequestParam String productId, @RequestParam String productSpec) {
+        long startTime = System.currentTimeMillis();
+        logger.info("购物车减少商品数量==={}开始",startTime);
+        logger.info("减少购物车中商品数=={},商品规格=={}",productId,productSpec);
         ResponseDTO responseDTO = new ResponseDTO<>();
         try
         {
@@ -61,6 +69,7 @@ public class BuyCartController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
+        logger.info("购物车减少商品数量,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -77,6 +86,8 @@ public class BuyCartController {
     public
     @ResponseBody
     ResponseDTO<String> getProductNumFromBuyCart() {
+        long startTime = System.currentTimeMillis();
+        logger.info("获取用户购物车中的商品总数==={}开始",startTime);
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         try
         {
@@ -85,8 +96,10 @@ public class BuyCartController {
         }
         catch (Exception e)
         {
+            logger.error("获取用户购物车中的商品总数异常,异常信息为{}"+e.getMessage(),e);
             responseDTO.setResult(StatusConstant.FAILURE);
         }
+        logger.info("获取用户购物车中的商品总数,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -104,10 +117,14 @@ public class BuyCartController {
     public
     @ResponseBody
     ResponseDTO<List<BusinessOrderDTO>> buyCart() {
+        long startTime = System.currentTimeMillis();
+        logger.info("获取用户购物车中的信息==={}开始",startTime);
         ResponseDTO<List<BusinessOrderDTO>> responseDTO = new ResponseDTO<>();
         List<BusinessOrderDTO> businessOrderDTOList = buyCartService.getUserUnPayOrderInBuyCart();
+        logger.info("获取用户购物车中的信息Size==={}",businessOrderDTOList.size());
         responseDTO.setResponseData(businessOrderDTOList);
         responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("获取用户购物车中的信息,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 

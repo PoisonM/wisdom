@@ -73,11 +73,13 @@ public class PayFunction {
 
     @Transactional(rollbackFor = Exception.class)
     public void processPayStatus(List<PayRecordDTO> payRecordDTOList) throws ClientException {
+        logger.info("处理支付状态processPayStatus");
         try {
             float totalMoney = 0;
             String productName = "";
             String token = WeixinUtil.getUserToken();
             String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
+            logger.info("处理支付状态token={},url={}",token,url);
             String userId = "";
             for (PayRecordDTO payRecordDTO : payRecordDTOList) {
                 //修改payRecord的订单状态，表示已支付
@@ -88,6 +90,7 @@ public class PayFunction {
                 totalMoney = totalMoney + payRecordDTO.getAmount();
 
                 //修改business_order的状态，表示已支付
+                logger.info("修改payRecord,business_order=={}的状态，表示已支付",payRecordDTO.getOrderId());
                 BusinessOrderDTO businessOrderDTO = transactionService.getBusinessOrderDetailInfoByOrderId(payRecordDTO.getOrderId());
                 businessOrderDTO.setStatus("1");
                 businessOrderDTO.setUpdateDate(new Date());
@@ -101,6 +104,7 @@ public class PayFunction {
                 Query query = new Query(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId()));
                 SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO = mongoTemplate.findOne(query, SpecialShopBusinessOrderDTO.class, "specialShopBusinessOrder");
                 if (specialShopBusinessOrderDTO != null) {
+                    logger.info("购买的是跨境商品");
                     String shopId = specialShopBusinessOrderDTO.getShopId();
                     query = new Query(Criteria.where("shopId").is(shopId));
                     SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query, SpecialShopInfoDTO.class, "specialShopInfo");
@@ -108,10 +112,12 @@ public class PayFunction {
                     userInfoDTO.setMobile(specialShopInfoDTO.getShopBossMobile());
                     List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
                     if (userInfoDTOList.size() > 0) {
+                        logger.info("直接给店主={}发送推送消息",businessOrderDTO, userInfoDTOList.get(0).getUserOpenid());
                         WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(token, payRecordDTO.getAmount() + "元", businessOrderDTO, userInfoDTOList.get(0).getUserOpenid(), specialShopInfoDTO);
                         SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(), payRecordDTO.getAmount() + "元", businessOrderDTO, specialShopInfoDTO);
                     } else {
                         //直接给店主发送短信
+                        logger.info("直接给店主={}发送短信",specialShopInfoDTO.getShopBossMobile());
                         SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(), payRecordDTO.getAmount() + "元", businessOrderDTO, specialShopInfoDTO);
                     }
                 }
@@ -126,6 +132,7 @@ public class PayFunction {
             }
             WeixinTemplateMessageUtil.sendOrderPaySuccessTemplateWXMessage((int) totalMoney + "元", productName, token, url, userInfoDTO.getUserOpenid());
         } catch (Exception e) {
+            logger.error("处理支付状态processPayStatus异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
         }
     }
@@ -134,10 +141,12 @@ public class PayFunction {
     public void promoteUserBusinessTypeForExpenseSecond(UserInfoDTO userInfoDTO, String businessType, int livingPeriod) {
 
         //sys_user表也需要更新
+        logger.info("更新sys_user表用户=={},等级=={},时效={}",userInfoDTO.getMobile(),businessType,livingPeriod);
         userInfoDTO.setUserType(businessType);
         userServiceClient.updateUserInfo(userInfoDTO);
 
         //更新user_business_type表的数据
+        logger.info("更新user_business_type表的数据,把老级别变为失效");
         //1、把老级别变为失效
         UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
         userBusinessTypeDTO.setSysUserId(userInfoDTO.getId());
@@ -156,6 +165,7 @@ public class PayFunction {
         }
 
         //2、级别更新创建新的记录
+        logger.info("级别更新创建新的记录UserBusinessType表");
         userBusinessTypeDTO = new UserBusinessTypeDTO();
         userBusinessTypeDTO.setId(UUID.randomUUID().toString());
         userBusinessTypeDTO.setParentUserId(userInfoDTO.getParentUserId());
@@ -503,7 +513,7 @@ public class PayFunction {
     }
 
     public void recordMonthTransaction(String userId, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO, float amount, String parentRelation) throws UnsupportedEncodingException {
-
+        logger.info("进行月度流水统计,用户id={},金额amount={},关系={}",userId,amount,parentRelation);
         MonthTransactionRecordDTO monthTransactionRecordDTO = new MonthTransactionRecordDTO();
         monthTransactionRecordDTO.setId(UUID.randomUUID().toString());
         monthTransactionRecordDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
