@@ -237,6 +237,7 @@ public class CardController {
 			shopProjectGroupDTO.setProjectGroupName(projectGroupName);
 		}
 		pageParamVoDTO.setRequestData(shopProjectGroupDTO);
+		pageParamVoDTO.setPaging(true);
 		pageParamVoDTO.setPageNo(0);
 		pageParamVoDTO.setPageSize(pageSize);
 		// 查询数据

@@ -63,10 +63,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     @Override
     public List<ProjectInfoGroupResponseDTO> getShopProjectGroupList(PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO) {
         ShopProjectGroupDTO shopProjectGroupDTO = pageParamVoDTO.getRequestData();
-        logger.info("getArchivesList方法传入的参数,sysShopId={},projectGroupName={}", shopProjectGroupDTO.getSysShopId(),
+        logger.info("getShopProjectGroupList方法传入的参数,sysShopId={},projectGroupName={}", shopProjectGroupDTO.getSysShopId(),
                 shopProjectGroupDTO.getProjectGroupName());
         if (StringUtils.isBlank(shopProjectGroupDTO.getSysShopId())) {
-            logger.info("getArchivesList方法传入的参数sysShopId为空");
+            logger.info("getShopProjectGroupList方法传入的参数sysShopId为空");
             throw new ServiceException("SysShopId为空");
         }
         ShopProjectGroupCriteria criteria = new ShopProjectGroupCriteria();
@@ -75,8 +75,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         // 排序
         criteria.setOrderByClause("create_date");
         // 分页
-        criteria.setLimitStart(pageParamVoDTO.getPageNo());
-        criteria.setPageSize(pageParamVoDTO.getPageSize());
+        if(pageParamVoDTO.getPaging()){
+            criteria.setLimitStart(pageParamVoDTO.getPageNo());
+            criteria.setPageSize(pageParamVoDTO.getPageSize());
+        }
         // 参数
         c.andSysShopIdEqualTo(shopProjectGroupDTO.getSysShopId());
         if (StringUtils.isNotBlank(shopProjectGroupDTO.getProjectGroupName())) {
