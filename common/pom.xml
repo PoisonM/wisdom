@@ -264,8 +264,10 @@
 					<!--配置为执行-->
 					<classifier>exec</classifier>
 				</configuration>
+				<version>1.5.4.RELEASE</version>
 			</plugin>
 		</plugins>
 	</build>
+
 
 </project>
