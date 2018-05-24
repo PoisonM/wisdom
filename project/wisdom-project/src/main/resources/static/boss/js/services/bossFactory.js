@@ -261,5 +261,9 @@ define(['appBoss'], function (app) {
         .factory('GetShopProductLevelInfo',['$resource',function ($resource){
             return $resource(productTypeInfo+"getShopProductLevelInfo")
         }])
+        .factory('ShopStockRecordDetail',['$resource',function ($resource){
+            return $resource(stock+"shopStockRecordDetail")
+        }])
+
 
 });

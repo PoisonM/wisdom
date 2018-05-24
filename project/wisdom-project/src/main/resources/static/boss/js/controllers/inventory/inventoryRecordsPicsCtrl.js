@@ -10,6 +10,7 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                 endTime: BossUtil.getNowFormatDate(),/*显示值*/
                 startValue:BossUtil.getNowFormatDate(),/*传值*/
                 endtValue:BossUtil.getNowFormatDate(),/*传值*/
+                inventoryRecordsPics : []
             }
             $scope.param.startTime=$scope.param.startTime.replace(/00/g,'');
             $scope.param.startTime=$scope.param.startTime.replace(/:/g,'');
@@ -43,6 +44,7 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                     $scope.getInfo();
                 }
             };
+
             //主体对象
             $scope.datepickerObjectStart = {
                 titleLabel: '选择日期',  //可选
@@ -106,12 +108,12 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                     pageSize:100
                 }
                 ShopStockRecordList.save($scope.shopStockRecordRequestDTO,function(data){
-                    $scope.inventoryRecordsPics = data.responseData
+                    $scope.param.inventoryRecordsPics = data.responseData;
                 })
             }
             $scope.getInfo()
 
-            $scope.entryDetailsGo=function(){
-                $state.go('entryDetails')
+            $scope.entryDetailsGo=function(entryId){
+                $state.go('entryDetails',{entryId:entryId})
             }
         }])

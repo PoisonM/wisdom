@@ -1662,7 +1662,7 @@ define(['appBoss'], function(app){
                     })
                 /*entryDetails 入库单详情*/
                     .state('entryDetails', {
-                        url: '/entryDetails',
+                        url: '/entryDetails/:entryId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'entryDetailsCtrl',
                         resolve: {
