@@ -26,6 +26,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -91,6 +94,24 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         for (ShopProjectGroupDTO s : groupDTOS) {
             ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = new ProjectInfoGroupResponseDTO();
             BeanUtils.copyProperties(s, projectInfoGroupResponseDTO);
+            if(StringUtils.isNotBlank(projectInfoGroupResponseDTO.getExpirationDate())&&"0".equals(projectInfoGroupResponseDTO.getExpirationDate())){
+                projectInfoGroupResponseDTO.setOverdue(false);
+            }else {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                //产品有效期
+                Date expirationDate=null;
+                try {
+                     expirationDate = df.parse(projectInfoGroupResponseDTO.getExpirationDate());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (expirationDate.getTime() > System.currentTimeMillis()) {
+                    projectInfoGroupResponseDTO.setOverdue(true);
+
+                } else {
+                    projectInfoGroupResponseDTO.setOverdue(false);
+                }
+            }
             projectInfoGroupResponseDTO.setImageUrl(mongoUtils.getImageUrl(s.getId()));
             response.add(projectInfoGroupResponseDTO);
         }

@@ -41,6 +41,8 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 	private List<ShopProjectInfoDTO> list;
 	/** 图片地址URL */
     private List<String> imageUrl;
+	/** 是否过期 */
+	private  Boolean  overdue;
 
 	public String getProjectGroupName() {
 		return projectGroupName;
@@ -122,5 +124,13 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 
 	public void setExpirationDate(String expirationDate) {
 		this.expirationDate = expirationDate;
+	}
+
+	public Boolean getOverdue() {
+		return overdue;
+	}
+
+	public void setOverdue(Boolean overdue) {
+		this.overdue = overdue;
 	}
 }
