@@ -161,7 +161,7 @@ public class ProductTypeController {
             LinkedHashMap<String, ShopProductInfoDTO> oneMap = new LinkedHashMap<>(16);
             logger.info("开始缓存一级产品品牌");
             for (ShopProductInfoDTO dto : detailProductList) {
-                oneMap.put(dto.getProductTypeOneName(), dto);
+                oneMap.put(dto.getProductTypeOneId(), dto);
             }
 
             List<Object> oneLevelList = new ArrayList<>();
@@ -169,17 +169,17 @@ public class ProductTypeController {
                 oneLevelList.add(entry.getValue());
             }
             responseMap.put("oneLevelList", oneLevelList);
+
+
             //缓存选中的二级产品品牌，如果levelTwo，默认取oneMap中的第一条作为查询结果
             logger.info("开始缓存二级产品品牌,levelOneId={}", levelOneId);
             HashMap<Object, Object> twoMap = new HashMap<>(16);
-            if (StringUtils.isBlank(levelOneId)) {
-                levelOneId = ((ShopProductInfoDTO) oneLevelList.get(0)).getProductTypeOneId();
+            for (ShopProductInfoDTO dto : detailProductList) {
+                twoMap.put(dto.getProductTypeTwoId(), dto);
             }
             List<Object> twoLevelList = new ArrayList<>();
-            for (ShopProductInfoDTO dto : detailProductList) {
-                if (dto.getProductTypeOneId().equals(levelOneId)) {
-                    twoLevelList.add(dto);
-                }
+            for (Map.Entry entry : twoMap.entrySet()) {
+                twoLevelList.add(entry.getValue());
             }
             responseMap.put("twoLevelList", twoLevelList);
         }
