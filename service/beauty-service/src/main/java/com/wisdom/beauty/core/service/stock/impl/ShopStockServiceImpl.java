@@ -537,7 +537,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
-	public List<ShopStockResponseDTO> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO) {
+	public Map<String,Object> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO) {
 		ShopStockNumberDTO shopStockNumberDTO = pageParamVoDTO.getRequestData();
 		if (shopStockNumberDTO == null) {
 			logger.info("getStockDetailList方法传入的参数shopStockNumberDTO为空");
@@ -615,6 +615,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 				// 规格
 				shopStockResponseDTO
 						.setProductSpec(productInfoMap.get(shopStockNumber.getShopProcId()).getProductSpec());
+				// 产品图片
+				shopStockResponseDTO
+						.setProductImage(productInfoMap.get(shopStockNumber.getShopProcId()).getProductUrl());
 				// 库存总量
 				shopStockResponseDTO.setAllStoreNumber(allStoreNumberMap.get(shopStockNumber.getShopProcId()));
 			}
@@ -623,7 +626,11 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 			shopStockResponses.add(shopStockResponseDTO);
 		}
-		return shopStockResponses;
+		Map<String,Object> responseMap=new HashMap<>(16);
+		responseMap.put("allUseCost",1);
+		responseMap.put("useCost",1);
+		responseMap.put("responseMap",shopStockResponses);
+		return responseMap;
 	}
 
 	@Override

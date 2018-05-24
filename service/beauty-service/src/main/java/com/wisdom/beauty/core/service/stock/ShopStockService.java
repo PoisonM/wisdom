@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service.stock;
 
 import java.util.List;
+import java.util.Map;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
@@ -166,7 +167,7 @@ public interface ShopStockService {
 	 * @Description: 获取库存详情
 	 * @Date:2018/5/18 15:28
 	 */
-	List<ShopStockResponseDTO> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO);
+	Map<String,Object> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO);
 
 	/**
 	 * @Author:zhanghuan

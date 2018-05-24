@@ -233,7 +233,7 @@ public class StoreAndStockController {
 	 */
 	@RequestMapping(value = "/getStockDetailList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ShopStockResponseDTO>> getStockDetailList(@RequestParam String shopStoreId,
+	ResponseDTO<Map<String,Object>> getStockDetailList(@RequestParam String shopStoreId,
 			                                                   @RequestParam(required = false) String productTypeTwoId,
                                                                int pageSize) {
 		long currentTimeMillis = System.currentTimeMillis();
@@ -246,11 +246,11 @@ public class StoreAndStockController {
 		pageParamVoDTO.setPageSize(pageSize);
 		pageParamVoDTO.setPageNo(0);
 		pageParamVoDTO.setRequestData(shopStockNumberDTO);
-		List<ShopStockResponseDTO> list = shopStockService.getStockDetailList(pageParamVoDTO);
+		Map<String,Object> map = shopStockService.getStockDetailList(pageParamVoDTO);
 
-		ResponseDTO<List<ShopStockResponseDTO>> responseDTO = new ResponseDTO<>();
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(list);
+		responseDTO.setResponseData(map);
 		logger.info("getStockDetailList方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
