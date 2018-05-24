@@ -476,11 +476,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public int consumesDaughterCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
+    public String consumesDaughterCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
 
         if (CommonUtils.objectIsEmpty(shopUserConsumeDTOS)) {
             logger.info("用户划疗程卡传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTOS + "], clerkInfo = [" + clerkInfo + "]");
-            return 0;
+            return null;
         }
         String transactionCodeNumber = DateUtils.DateToStr(new Date(), "dateMillisecond");
 
@@ -503,11 +503,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public int consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
+    public String consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
 
         if (CommonUtils.objectIsEmpty(shopUserConsumeDTOS)) {
             logger.info("用户领取产品传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTOS + "], clerkInfo = [" + clerkInfo + "]");
-            return 0;
+            return null;
         }
         String transactionCodeNumber = DateUtils.DateToStr(new Date(), "dateMillisecond");
 
@@ -536,7 +536,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
     }
 
-    private int updateUserAccountDTO(SysClerkDTO clerkInfo, String transactionCodeNumber, ShopUserConsumeDTO consumeDTO) {
+    private String updateUserAccountDTO(SysClerkDTO clerkInfo, String transactionCodeNumber, ShopUserConsumeDTO consumeDTO) {
         // 更新用户的账户信息
         SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
         sysUserAccountDTO.setSysUserId(consumeDTO.getSysUserId());
@@ -567,7 +567,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setPrice(consumeRecordDTO.getPrice());
         consumeRecordDTO.setCreateDate(new Date());
         consumeRecordDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
-        return shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
+        shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
+        return consumeRecordDTO.getId();
     }
 
     /**
