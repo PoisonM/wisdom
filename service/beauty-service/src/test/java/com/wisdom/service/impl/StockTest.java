@@ -273,15 +273,13 @@ public class StockTest  {
     //测试跳转产品页面
     @Test
     public  void  testtiaozhuan() throws Exception {
-        List<String> productIds=new ArrayList<>();
-        productIds.add("3");
-        productIds.add("4");
-        StoreProductIdRequestDTO storeProductIdRequestDTO=new StoreProductIdRequestDTO();
-        storeProductIdRequestDTO.setShopStoreId("1");
-        storeProductIdRequestDTO.setProductIds(productIds);
-        String shopClosePositionReques= JSONObject.toJSONString(storeProductIdRequestDTO);
+        ShopStockRecordRequestDTO shopStockRecordRequestDTO=new ShopStockRecordRequestDTO();
+        shopStockRecordRequestDTO.setShopStoreId("11");
+        shopStockRecordRequestDTO.setStockStyle("5");
+        shopStockRecordRequestDTO.setPageSize(8);
+        String shopClosePositionReques= JSONObject.toJSONString(shopStockRecordRequestDTO);
 
-        MvcResult result = mvc.perform(post("/stock/products").contentType(MediaType.APPLICATION_JSON).content(shopClosePositionReques))
+        MvcResult result = mvc.perform(post("/stock/shopStockRecordList").contentType(MediaType.APPLICATION_JSON).content(shopClosePositionReques))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
