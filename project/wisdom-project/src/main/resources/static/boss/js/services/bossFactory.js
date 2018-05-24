@@ -13,10 +13,10 @@ var consume = '/beauty/consume/';
 var cardInfo  = '/beauty/cardInfo/';
 var projectInfo  = '/beauty/projectInfo/';
 var productInfo  = '/beauty/productInfo/';
-var productTypeInfo = '/beauty/productTypeInfo/';
+var productTypeInfo  = '/beauty/productTypeInfo/';
 var projectType='/beauty/projectType/';
+var remind='/beauty/remind/';
 var shop='/beauty/shop/';
-
 
 
 define(['appBoss'], function (app) {
@@ -283,4 +283,28 @@ define(['appBoss'], function (app) {
         }])
 
 
+      /*查询提醒设置*/
+        .factory('GetShopRemindSetting',['$resource',function ($resource){
+            return $resource(remind+"getShopRemindSetting")
+        }])
+       /*修改提醒设置*/
+        .factory('UpdateShopRemindSetting',['$resource',function ($resource){
+            return $resource(remind+"updateShopRemindSetting")
+        }])
+      /*选择分类*/
+        .factory('OneLevelProject',['$resource',function ($resource){
+            return $resource(projectInfo+"oneLevelProject")
+        }])
+        /*添加项目*/
+        .factory('SaveProjectInfo',['$resource',function ($resource){
+            return $resource(projectInfo+"saveProjectInfo")
+        }])
+         /*修改项目*/
+        .factory('UpdateProjectInfo',['$resource',function ($resource){
+            return $resource(projectInfo+"updateProjectInfo")
+        }])
+        /*单个项目详情*/
+        .factory('ProjectInfo',['$resource',function ($resource){
+            return $resource(projectInfo+"/:id", { id: '@id' })
+        }])
 });
