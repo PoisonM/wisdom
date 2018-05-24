@@ -31,7 +31,7 @@ public class TimerServiceApplication {
 		BusinessRunTimeService businessRunTimeService = SpringUtil.getBean(BusinessRunTimeService.class);
 
 		//初始化时更新token
-		//weixinServiceClient.updateUserWeixinToken();
+		weixinServiceClient.updateUserWeixinToken();
 
 		weixinServiceClient.updateBeautyWeixinToken();
 	}
