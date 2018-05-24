@@ -422,6 +422,7 @@ public class JedisUtils {
 		Jedis jedis = null;
 		try {
 			jedis = getResource();
+			logger.info("获取资源");
 			result = jedis.zrangeByScore(key, min, max);
 
 			logger.info("结束时间");
