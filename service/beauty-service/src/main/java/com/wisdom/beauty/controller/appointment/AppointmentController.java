@@ -514,7 +514,7 @@ public class AppointmentController {
 
 		if (StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
 			shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
-			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000l);
+			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000L);
 			shopAppointServiceDTO.setAppointEndTime(afterDate);
 		}
 		//根据预约时间查询当前美容师有没有被占用
@@ -622,7 +622,7 @@ public class AppointmentController {
 		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
 		ResponseDTO<HashMap<String, String>> responseDTO = new ResponseDTO<>();
 		//判断查询是否成功
-		if (shopAppointmentNum.get("resultCode").equals("success")) {
+		if (("success").equals(shopAppointmentNum.get("resultCode"))) {
 			responseDTO.setResult(StatusConstant.SUCCESS);
 		} else {
 			responseDTO.setResult(StatusConstant.FAILURE);

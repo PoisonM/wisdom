@@ -87,7 +87,7 @@ public interface ShopStockService {
 	 * @Description: 根据条件获取库存
 	 * @Date:2018/5/3 14:40
 	 */
-	List<ShopStockDTO> getShopStockList(ShopStockDTO ShopStockDTO);
+	List<ShopStockDTO> getShopStockList(ShopStockDTO shopStockDTO);
 
 	/**
 	 * @Author:zhanghuan
