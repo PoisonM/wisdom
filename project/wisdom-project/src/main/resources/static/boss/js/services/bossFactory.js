@@ -2,8 +2,8 @@ var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
 var consume = '/beauty/consume/';
-var  earlyWarning =  '/beauty/earlyWarning/';
-var  archives =  '/beauty/archives/';
+var earlyWarning =  '/beauty/earlyWarning/';
+var archives =  '/beauty/archives/';
 var clerkSchedule='/beauty/clerkSchedule/';
 var shopBossRelation ='/beauty/shopBossRelation/';
 var user ='/user/';
@@ -74,12 +74,6 @@ define(['appBoss'], function (app) {
         .factory('SaveClerkInfo',['$resource',function ($resource){
             return $resource(user + 'saveClerkInfo')
         }])
-
-
-
-
-
-
 
 /*综合分析*/
         /*根据时间查询某个美容院的耗卡和业绩*/
@@ -263,4 +257,9 @@ define(['appBoss'], function (app) {
         .factory('TwoLevelProject',['$resource',function ($resource){
             return $resource(projectInfo+"twoLevelProject")
         }])
+
+        .factory('GetShopProductLevelInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"getShopProductLevelInfo")
+        }])
+
 });
