@@ -57,7 +57,7 @@ public interface ShopUerConsumeRecordService {
      * @param shopUserConsumeRecordDTO
      * @return
      */
-    int updateConumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+    int updateConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
     /**
     *@Author:zhanghuan
     *@Param:

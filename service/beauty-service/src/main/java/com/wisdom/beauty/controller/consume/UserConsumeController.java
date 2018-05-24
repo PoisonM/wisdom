@@ -118,6 +118,28 @@ public class UserConsumeController {
     }
 
     /**
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 更新消费记录，签字确认
+     * @Date:2018/4/10 11:20
+     */
+    @RequestMapping(value = "/consume/updateConsumeRecord", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<UserConsumeRecordResponseDTO> updateConsumeRecord(@RequestParam String consumeId, @RequestParam String image) {
+        logger.info("更新消费记录，签字确认传入参数={}", "consumeId = [" + consumeId + "], image = [" + image + "]");
+        long startTime = System.currentTimeMillis();
+        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+        shopUserConsumeRecordDTO.setId(consumeId);
+        shopUserConsumeRecordDTO.setSignUrl(image);
+        int record = shopUerConsumeRecordService.updateConsumeRecord(shopUserConsumeRecordDTO);
+        ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(record > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        logger.info("更新消费记录，签字确认方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
      * 根据消费主键查询消费详情
      * @param consumeId
      * @return
@@ -335,10 +357,10 @@ public class UserConsumeController {
         ResponseDTO responseDTO = new ResponseDTO();
 
         List<ShopUserConsumeDTO> userConsumeDTOT = shopUserConsumeDTO.getShopUserConsumeDTO();
-        int cardFlag = shopUserConsumeService.consumesDaughterCard(userConsumeDTOT, clerkInfo);
+        String cardFlag = shopUserConsumeService.consumesDaughterCard(userConsumeDTOT, clerkInfo);
         //保存用户的操作记录
-        responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        responseDTO.setResponseData("success");
+        responseDTO.setResult(cardFlag != null ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData(cardFlag);
         logger.info("用户划套卡下的子卡操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
@@ -360,10 +382,10 @@ public class UserConsumeController {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
 
-        int cardFlag = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
+        String cardFlag = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
         //保存用户的操作记录
-        responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        responseDTO.setResponseData("success");
+        responseDTO.setResult(cardFlag != null ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData(cardFlag);
         logger.info("用户领取产品操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
