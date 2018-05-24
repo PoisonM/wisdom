@@ -67,17 +67,17 @@ public class ProductTest {
 //        MvcResult result = mvc.perform(get("/productTypeInfo/saveProductTypeInfo").param("productTypeName", "产品类别").param("status", "0"))
 //                .andExpect(status().isOk())// 模拟向testRest发送get请求
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
-//                .andReturn();// 返回执行请求的结果
+//                .andReturn();// 返回执行请求的结果 .param("productType", "0").param("levelOneId", "1")
 
-//        MvcResult result = mvc.perform(get("/productTypeInfo/getShopProductLevelInfo").param("productType", "0").param("levelOneId", "1"))
-//                .andExpect(status().isOk())// 模拟向testRest发送get请求
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
-//                .andReturn();// 返回执行请求的结果
-
-        MvcResult result = mvc.perform(get("/productInfo/getProductInfoByScanCode").param("code", "6938166920785"))
+        MvcResult result = mvc.perform(get("/productTypeInfo/getShopProductLevelInfo"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
+
+//        MvcResult result = mvc.perform(get("/productInfo/getProductInfoByScanCode").param("code", "6938166920785"))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
         System.out.println(result.getResponse().getContentAsString());
     }
 
