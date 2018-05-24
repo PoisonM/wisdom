@@ -16,9 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * FileName: ProductTypeController
@@ -163,21 +161,27 @@ public class ProductTypeController {
             LinkedHashMap<String, ShopProductInfoDTO> oneMap = new LinkedHashMap<>(16);
             logger.info("开始缓存一级产品品牌");
             for (ShopProductInfoDTO dto : detailProductList) {
-                oneMap.put(dto.getProductTypeOneName(), dto);
+                oneMap.put(dto.getProductTypeOneId(), dto);
             }
-            responseMap.put("oneMap", oneMap);
+
+            List<Object> oneLevelList = new ArrayList<>();
+            for (Map.Entry entry : oneMap.entrySet()) {
+                oneLevelList.add(entry.getValue());
+            }
+            responseMap.put("oneLevelList", oneLevelList);
+
+
             //缓存选中的二级产品品牌，如果levelTwo，默认取oneMap中的第一条作为查询结果
             logger.info("开始缓存二级产品品牌,levelOneId={}", levelOneId);
             HashMap<Object, Object> twoMap = new HashMap<>(16);
-            if (StringUtils.isBlank(levelOneId)) {
-                levelOneId = oneMap.entrySet().iterator().next().getValue().getProductTypeOneId();
-            }
             for (ShopProductInfoDTO dto : detailProductList) {
-                if (dto.getProductTypeOneId().equals(levelOneId)) {
-                    twoMap.put(dto.getProductTypeTwoName(), dto);
-                }
+                twoMap.put(dto.getProductTypeTwoId(), dto);
             }
-            responseMap.put("twoMap", twoMap);
+            List<Object> twoLevelList = new ArrayList<>();
+            for (Map.Entry entry : twoMap.entrySet()) {
+                twoLevelList.add(entry.getValue());
+            }
+            responseMap.put("twoLevelList", twoLevelList);
         }
 
         responseMap.put("detailProductList", detailProductList);
