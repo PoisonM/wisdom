@@ -210,6 +210,9 @@ public class AppointmentController {
 
 			Date loopDate = startTime;
 			ArrayList<Object> arrayList = new ArrayList<>();
+			if("34c061c294d544a7bd58752ce71b5e17".equalsIgnoreCase(clerkDTO.getId())){
+				System.out.println("sysShopId = [" + sysShopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
+			}
 
 			//过滤作用
 			Set<String> filterSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
@@ -227,7 +230,7 @@ public class AppointmentController {
 							DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate));
 				}
 
-				logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getName(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
+				logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getId(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
 
 				if (CommonUtils.objectIsEmpty(stringSet)) {
 					loopDate = DateUtils.dateInc(loopDate);
