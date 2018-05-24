@@ -233,12 +233,12 @@ public class AppointmentController {
 				logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getId(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
 
 				if (CommonUtils.objectIsEmpty(stringSet)) {
-					loopDate = DateUtils.dateInc(loopDate);
 					map.put("info", "");
 					map.put("week", DateUtils.getWeek(loopDate));
 					map.put("day", DateUtils.getDay(loopDate));
 					map.put("Lunar", LunarUtils.getChinaDayString(new LunarUtils(loopDate).day));
 					arrayList.add(map);
+					loopDate = DateUtils.dateInc(loopDate);
 					continue;
 				}
 				//遍历预约主键获取预约详细信息
