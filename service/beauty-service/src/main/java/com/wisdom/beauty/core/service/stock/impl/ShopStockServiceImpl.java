@@ -21,14 +21,12 @@ import com.wisdom.common.util.StringUtils;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.collections.map.ListOrderedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.wisdom.beauty.core.mapper.stock.ExtStockServiceMapper;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,9 +40,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShopStockServiceImpl implements ShopStockService {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	@Autowired
-	private ExtStockServiceMapper extStockServiceMapper;
 
 	@Autowired
 	private ShopStockRecordMapper shopStockRecordMapper;
@@ -105,14 +100,14 @@ public class ShopStockServiceImpl implements ShopStockService {
 		for (String storeManager : storeManagerIds) {
 			storeManagerId = storeManagerId + storeManager + ",";
 		}
-		if (org.apache.commons.lang3.StringUtils.isNotBlank(storeManagerId)) {
+		if (StringUtils.isNotBlank(storeManagerId)) {
 			storeManagerId = storeManagerId.substring(0, storeManagerId.length() - 1);
 		}
 		String storeManagerName = "";
 		for (String storeManager : storeManagerNames) {
 			storeManagerName = storeManagerName + storeManager + ",";
 		}
-		if (org.apache.commons.lang3.StringUtils.isNotBlank(storeManagerName)) {
+		if (StringUtils.isNotBlank(storeManagerName)) {
 			storeManagerName = storeManagerName.substring(0, storeManagerName.length() - 1);
 		}
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
@@ -288,7 +283,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			Date endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
 			c.andCreateDateBetween(startDate, endDate);
 		}
-        if(pageParamVoDTO.getPaging()){
+		if (pageParamVoDTO.getPaging()) {
 			criteria.setPageSize(pageParamVoDTO.getPageSize());
 			criteria.setLimitStart(pageParamVoDTO.getPageNo());
 		}
@@ -551,6 +546,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 		ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
 		ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
+		// 查询条件
 		if (StringUtils.isNotBlank(shopStockNumberDTO.getProductTypeTwoId())) {
 			c.andProductTypeTwoIdEqualTo(shopStockNumberDTO.getProductTypeTwoId());
 		}
@@ -568,8 +564,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 			return null;
 		}
 		// 遍历shopStockNumberDTOs
-		// map用户存储，key=产品ID value=ShopStockNumberDTO
 		Map<String, ShopStockNumberDTO> map = new HashMap<>(16);
+		// map用户存储，key=产品ID value=ShopStockNumberDTO
 		List<String> productIds = new ArrayList<>();
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumberDTOs) {
 			productIds.add(shopStockNumber.getShopProcId());
@@ -630,9 +626,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockResponses.add(shopStockResponseDTO);
 		}
 		Map<String, Object> responseMap = new HashMap<>(16);
-		Map<String, Object> costMap = this.getCost(shopStockNumberDTO.getShopStoreId(),shopStockNumberDTO.getProductTypeTwoId());
-		responseMap.put("allUseCost", costMap==null?0:costMap.get("allUseCost"));
-		responseMap.put("useCost", costMap==null?0:costMap.get("useCost"));
+		Map<String, Object> costMap = this.getCost(shopStockNumberDTO.getShopStoreId(),
+				shopStockNumberDTO.getProductTypeTwoId());
+		responseMap.put("allUseCost", costMap == null ? 0 : costMap.get("allUseCost"));
+		responseMap.put("useCost", costMap == null ? 0 : costMap.get("useCost"));
 		responseMap.put("responseMap", shopStockResponses);
 		return responseMap;
 	}
@@ -717,7 +714,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
-	public Map<String,Object> getCost(String shopStoreId, String productTypeTwoId) {
+	public Map<String, Object> getCost(String shopStoreId, String productTypeTwoId) {
 		logger.info("getAllUseCost方法传入的参数shopStoreId={}", shopStoreId);
 		if (StringUtils.isBlank(shopStoreId)) {
 			return null;
@@ -754,9 +751,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 				allUseCost = allUseCost.add(cost);
 			}
 		}
-		Map<String,Object> map=new HashMap<>();
-		map.put("allUseCost",allUseCost);
-		map.put("useCost",useCost);
+		Map<String, Object> map = new HashMap<>();
+		map.put("allUseCost", allUseCost);
+		map.put("useCost", useCost);
 		return map;
 	}
 

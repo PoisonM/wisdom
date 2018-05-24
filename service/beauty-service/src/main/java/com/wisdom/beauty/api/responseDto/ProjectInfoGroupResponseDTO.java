@@ -43,6 +43,8 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
     private List<String> imageUrl;
 	/** 是否过期 */
 	private  Boolean  overdue;
+	/** 是否启用 */
+	private  Boolean  status;
 
 	public String getProjectGroupName() {
 		return projectGroupName;
