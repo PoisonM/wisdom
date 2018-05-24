@@ -234,7 +234,7 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/getStockDetailList", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<List<ShopStockResponseDTO>> getStockDetailList(@RequestParam String shopStoreId,
-			                                                   @RequestParam String productTypeTwoId,
+			                                                   @RequestParam(required = false) String productTypeTwoId,
                                                                int pageSize) {
 		long currentTimeMillis = System.currentTimeMillis();
 
