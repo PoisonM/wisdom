@@ -255,19 +255,19 @@
 
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<!--配置为执行-->
-					<classifier>exec</classifier>
-				</configuration>
-				<version>1.5.4.RELEASE</version>
-			</plugin>
-		</plugins>
-	</build>
+    <!--<build>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>org.springframework.boot</groupId>-->
+    <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+    <!--<configuration>-->
+    <!--&lt;!&ndash;配置为执行&ndash;&gt;-->
+    <!--<classifier>exec</classifier>-->
+    <!--</configuration>-->
+    <!--<version>1.5.4.RELEASE</version>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+    <!--</build>-->
 
 
 </project>
