@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
@@ -117,16 +118,16 @@ public class AppointmentController {
 		if (shopScheduleSettingInfo == null) {
 			logger.error("查询某个店的排班信息为空,美容店主键为{}", "sysShopId = [" + sysShopId + "]");
 			//早晚班默认值
-			responseMap.put("startTime", "09:00");
-			responseMap.put("endTime", "23:00");
+			responseMap.put("startTime", ScheduleTypeEnum.ALL.getDefaultStartTime());
+			responseMap.put("endTime", ScheduleTypeEnum.ALL.getDefaultEndTime());
 		} else {
 			for (ShopScheduleSettingDTO settingDTO : shopScheduleSettingInfo) {
-				if ("3".equals(settingDTO.getTypeName())) {
+				if (ScheduleTypeEnum.ALL.getCode().equals(settingDTO.getTypeName())) {
 					responseMap.put("startTime", settingDTO.getStartTime());
 					responseMap.put("endTime", settingDTO.getEndTime());
 				} else {
-					responseMap.put("startTime", "09:00");
-					responseMap.put("endTime", "23:00");
+					responseMap.put("startTime", ScheduleTypeEnum.ALL.getDefaultStartTime());
+					responseMap.put("endTime", ScheduleTypeEnum.ALL.getDefaultEndTime());
 				}
 			}
 		}
@@ -199,6 +200,7 @@ public class AppointmentController {
 		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
 		if (judgeNull(responseDTO, preLog, clerkInfo)) {
+			logger.info(preLog + "耗时{}毫秒", (System.currentTimeMillis() - start));
 			return responseDTO;
 		}
 		logger.debug(preLog + "根据时间查询当前店下所有美容师个数为 {}", clerkInfo.size());
