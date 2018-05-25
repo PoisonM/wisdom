@@ -46,7 +46,7 @@ public class PayRecordService {
 
     @Transactional(rollbackFor = Exception.class)
     public PrePayInfoDTO getPrepayInfo(HttpServletRequest request, HttpSession session, String productType) {
-        logger.info("获取统一支付接口参数");
+        logger.info("Service == 获取统一支付接口参数request={},session={},productType={}",request,session,productType);
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 
         RedisLock redisLock = new RedisLock("payRecord" + userInfoDTO.getId());
@@ -202,17 +202,17 @@ public class PayRecordService {
         }
         catch (JDOMException e)
         {
-            logger.info("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
+            logger.error("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
         }
         catch (IOException e)
         {
-            logger.info("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
+            logger.error("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
         }
         catch (Exception e)
         {
-            logger.info("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
+            logger.error("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
             throw e;
         }
@@ -256,7 +256,6 @@ public class PayRecordService {
      *
      * */
     public List<String> findTransactionIdList(PayRecordDTO payRecordDTO){
-
         return payRecordMapper.findTransactionIdList(payRecordDTO);
     }
 }

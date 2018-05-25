@@ -62,7 +62,7 @@ public class TransactionService {
     Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
     public void updateBusinessOrder(BusinessOrderDTO businessOrderDTO){
-        logger.info("更新订单=="+businessOrderDTO);
+        logger.info("service == 更新订单=="+businessOrderDTO);
 
         if(null != businessOrderDTO.getStatus() && !"".equals(businessOrderDTO.getStatus())) {
             if(StringUtils.isNull(businessOrderDTO.getBusinessOrderId())){
@@ -116,7 +116,7 @@ public class TransactionService {
     }
 
     public List<BusinessOrderDTO> getBusinessOrderListByUserIdAndStatus(String userId, String status) {
-        logger.info("根据状态获取某个用户所有的订单=="+userId);
+        logger.info("service == 根据状态获取某个用户所有的订单=="+userId);
         List<BusinessOrderDTO> businessOrderDTOList = new ArrayList<>();
         if(status.equals("all"))
         {
@@ -132,7 +132,7 @@ public class TransactionService {
     //返回订单的ID号
     @Transactional(rollbackFor = Exception.class)
     public String createBusinessOrder(BusinessOrderDTO businessOrderDTO){
-
+        logger.info("service -- 创建订单返回订单的ID号,createBusinessOrder方法执行,");
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 
 
@@ -209,10 +209,13 @@ public class TransactionService {
      * @return
      */
     public PageParamDTO<List<PayRecordDTO>> queryPayRecordsByParameters(PageParamVoDTO<ProductDTO> pageParamVoDTO) {
+        logger.info("service -- 根据条件查询提成信息,queryPayRecordsByParameters,方法执行");
+
         PageParamDTO<List<PayRecordDTO>> page = new  PageParamDTO<>();
         int count = payRecordMapper.queryPayRecordCountByParameters(pageParamVoDTO);
         page.setTotalCount(count);
         List<PayRecordDTO> PayRecordDTOList = payRecordMapper.queryPayRecordsByParameters(pageParamVoDTO);
+        logger.info("service -- 根据条件查询提成信息Count={},List={}",count,PayRecordDTOList.size());
 
         for(PayRecordDTO payRecordDTO : PayRecordDTOList){
             try {
@@ -247,6 +250,8 @@ public class TransactionService {
     }
 
     public BusinessOrderDTO getTrainingBusinessOrder(BusinessOrderDTO businessOrderDTO) {
+        logger.info("service -- 获取视频订单,getTrainingBusinessOrder,方法执行");
+
         businessOrderDTO.setType("training");
         List<BusinessOrderDTO> businessOrderDTOList = transactionMapper.getTrainingBusinessOrder(businessOrderDTO);
         if(businessOrderDTOList.size()==0)
@@ -264,6 +269,8 @@ public class TransactionService {
      * @return
      */
     public PageParamVoDTO<List<BusinessOrderDTO>> queryBusinessOrderByParameters(PageParamVoDTO pageParamVoDTO) {
+        logger.info("service -- 条件查询订单,queryBusinessOrderByParameters方法执行,");
+
         PageParamVoDTO<List<BusinessOrderDTO>> page = new  PageParamVoDTO<>();
         int count = transactionMapper.queryBusinessOrderCountByParameters(pageParamVoDTO);
         List<BusinessOrderDTO> businessOrderDTODTOList = transactionMapper.queryBusinessOrderByParameters(pageParamVoDTO);
@@ -285,7 +292,6 @@ public class TransactionService {
                         }else{
                             break;
                         }
-
                     }
                 }else{
                     nickNameW = "未知用户";
@@ -303,6 +309,8 @@ public class TransactionService {
 
     //查询所有订单
     public PageParamDTO<List<BusinessOrderDTO>> queryAllBusinessOrders(PageParamVoDTO<BusinessOrderDTO> pageParamVoDTO) {
+        logger.info("service -- 查询所有订单,queryAllBusinessOrders,方法执行");
+
         PageParamDTO<List<BusinessOrderDTO>> page = new  PageParamDTO<>();
         page.setPageNo(pageParamVoDTO.getPageNo());
         page.setPageSize(pageParamVoDTO.getPageSize());
@@ -325,7 +333,6 @@ public class TransactionService {
                             }else{
                                 break;
                             }
-
                         }
                         businessOrderDTO.setNickName(nickNameW);
                     }else{
@@ -364,6 +371,8 @@ public class TransactionService {
      * @return
      */
     public List<ExportOrderExcelDTO> selectExcelContent() {
+        logger.info("service -- 查询导出订单Excel信息,selectExcelContent,方法执行");
+
         BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
         List<ExportOrderExcelDTO> productDTOList = transactionMapper.selectExcelContent();
         for (ExportOrderExcelDTO exportOrderExcelDTO : productDTOList) {
@@ -394,7 +403,6 @@ public class TransactionService {
                         }else{
                             break;
                         }
-
                     }
                     exportOrderExcelDTO.setNickName(nickNameW);
                 }else{
@@ -430,7 +438,7 @@ public class TransactionService {
      * @param addAndLose add为增加,lose为减少
      */
     public void updateOfflineProductAmount(ProductDTO productDTO,BusinessOrderDTO businessOrderDTO,String addAndLose) {
-        logger.info("根据订单商品数量修改相应的商品库存,商品id为:"+productDTO.getProductId()+"添加还是减少:"+addAndLose);
+        logger.info("service == 根据订单商品数量修改相应的商品库存,商品id为:"+productDTO.getProductId()+"添加还是减少:"+addAndLose);
         Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("add"));
         OfflineProductAmountRecordDTO offlineProductAmountRecordDTO1 = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
         if(null == offlineProductAmountRecordDTO1) {
@@ -444,9 +452,7 @@ public class TransactionService {
             offlineProductAmountRecordDTO.setCreateTime(new Date());
             offlineProductAmountRecordDTO.setTag("");
             try {
-
                 ProductDTO productDTO1 = productMapper.findProductById(productDTO.getProductId());
-
                 int oldProductAmount = Integer.parseInt(productDTO1.getProductAmount());
                 int newProductAmount = Integer.parseInt(productDTO.getProductAmount());
                 int addAmount = oldProductAmount + newProductAmount;
@@ -472,7 +478,7 @@ public class TransactionService {
                     }
                 }
             } catch (Exception e) {
-                logger.info("修改商品库存失败,商品id为:" + productDTO.getProductId());
+                logger.error("修改商品库存失败,商品id为:" + productDTO.getProductId());
                 e.printStackTrace();
             }
         }

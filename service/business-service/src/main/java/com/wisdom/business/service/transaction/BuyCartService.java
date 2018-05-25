@@ -58,7 +58,6 @@ public class BuyCartService {
     @Transactional(rollbackFor = Exception.class)
     public String addOfflineProduct2BuyCart(String productId, String productSpec,int num) {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-
         logger.info("用户=={}将货品id=={}规格=={}数量=={}加入用户的购物车==={}",userInfoDTO.getMobile(),productId,productSpec,num);
 
         //判断用户是否已经将此商品加入过购物车，如果已经加入过，则直接增加订单中，产品的数量
@@ -166,7 +165,7 @@ public class BuyCartService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteOrderFromBuyCart(String orderId) {
 
-        logger.info("减少购物车中的订单"+orderId);
+        logger.info("service == 减少购物车中的订单"+orderId);
 
         RedisLock redisLock = new RedisLock("businessOrder"+orderId);
         try
