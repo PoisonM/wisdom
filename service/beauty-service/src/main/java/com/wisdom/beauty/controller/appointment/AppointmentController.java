@@ -189,7 +189,7 @@ public class AppointmentController {
 		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 		Date startTime = DateUtils.StrToDate(startDate, "datetime");
 		Date endTime = DateUtils.StrToDate(endDate, "datetime");
-
+		endTime = DateUtils.dateInc(endTime);
 
 		String preLog = "根据时间查询某个美容店周预约列表";
 		long start = System.currentTimeMillis();
@@ -210,23 +210,35 @@ public class AppointmentController {
 
 			Date loopDate = startTime;
 			ArrayList<Object> arrayList = new ArrayList<>();
+			if("34c061c294d544a7bd58752ce71b5e17".equalsIgnoreCase(clerkDTO.getId())){
+				System.out.println("sysShopId = [" + sysShopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
+			}
+
+			//过滤作用
+			Set<String> filterSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
+					DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(endTime));
 
 			while (loopDate.getTime() < endTime.getTime()) {
 
 				HashMap<Object, Object> map = new HashMap<>(16);
-				//获取美容师在某一时间段内的预约主键列表
-				Set<String> stringSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
-						DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate));
 
-				logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getName(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
+				//获取美容师在某一时间段内的预约主键列表
+				Set<String> stringSet = null;
+				//如果filterSet不为空则说明当前美容师在查询时间段有预约信息
+				if (CommonUtils.objectIsNotEmpty(filterSet)) {
+					stringSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
+							DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate));
+				}
+
+				logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getId(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
 
 				if (CommonUtils.objectIsEmpty(stringSet)) {
-					loopDate = DateUtils.dateInc(loopDate);
 					map.put("info", "");
 					map.put("week", DateUtils.getWeek(loopDate));
 					map.put("day", DateUtils.getDay(loopDate));
 					map.put("Lunar", LunarUtils.getChinaDayString(new LunarUtils(loopDate).day));
 					arrayList.add(map);
+					loopDate = DateUtils.dateInc(loopDate);
 					continue;
 				}
 				//遍历预约主键获取预约详细信息
@@ -343,9 +355,6 @@ public class AppointmentController {
 		long timeMillis = System.currentTimeMillis();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
-		if (null == userInfo && CommonCodeEnum.TRUE.getCode().equals(msg)) {
-			userInfo = UserUtils.getTestUserInfoDTO();
-		}
 		ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		shopAppointServiceDTO.setSysUserId(userInfo.getId());
 		shopAppointServiceDTO.setStatus(status);
@@ -454,7 +463,7 @@ public class AppointmentController {
 		}
 		if (StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
 			shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
-			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000);
+			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000l);
 			shopAppointServiceDTO.setAppointEndTime(afterDate);
 		}
 		//根据预约时间查询当前美容师有没有被占用
@@ -505,7 +514,7 @@ public class AppointmentController {
 
 		if (StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
 			shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
-			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000);
+			Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000L);
 			shopAppointServiceDTO.setAppointEndTime(afterDate);
 		}
 		//根据预约时间查询当前美容师有没有被占用
@@ -613,7 +622,7 @@ public class AppointmentController {
 		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
 		ResponseDTO<HashMap<String, String>> responseDTO = new ResponseDTO<>();
 		//判断查询是否成功
-		if (shopAppointmentNum.get("resultCode").equals("success")) {
+		if (("success").equals(shopAppointmentNum.get("resultCode"))) {
 			responseDTO.setResult(StatusConstant.SUCCESS);
 		} else {
 			responseDTO.setResult(StatusConstant.FAILURE);

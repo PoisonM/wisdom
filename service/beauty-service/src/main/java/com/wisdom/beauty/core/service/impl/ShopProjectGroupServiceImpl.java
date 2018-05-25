@@ -26,6 +26,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,10 +66,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     @Override
     public List<ProjectInfoGroupResponseDTO> getShopProjectGroupList(PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO) {
         ShopProjectGroupDTO shopProjectGroupDTO = pageParamVoDTO.getRequestData();
-        logger.info("getArchivesList方法传入的参数,sysShopId={},projectGroupName={}", shopProjectGroupDTO.getSysShopId(),
+        logger.info("getShopProjectGroupList方法传入的参数,sysShopId={},projectGroupName={}", shopProjectGroupDTO.getSysShopId(),
                 shopProjectGroupDTO.getProjectGroupName());
         if (StringUtils.isBlank(shopProjectGroupDTO.getSysShopId())) {
-            logger.info("getArchivesList方法传入的参数sysShopId为空");
+            logger.info("getShopProjectGroupList方法传入的参数sysShopId为空");
             throw new ServiceException("SysShopId为空");
         }
         ShopProjectGroupCriteria criteria = new ShopProjectGroupCriteria();
@@ -75,8 +78,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         // 排序
         criteria.setOrderByClause("create_date");
         // 分页
-        criteria.setLimitStart(pageParamVoDTO.getPageNo());
-        criteria.setPageSize(pageParamVoDTO.getPageSize());
+        if(pageParamVoDTO.getPaging()){
+            criteria.setLimitStart(pageParamVoDTO.getPageNo());
+            criteria.setPageSize(pageParamVoDTO.getPageSize());
+        }
         // 参数
         c.andSysShopIdEqualTo(shopProjectGroupDTO.getSysShopId());
         if (StringUtils.isNotBlank(shopProjectGroupDTO.getProjectGroupName())) {
@@ -89,6 +94,24 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         for (ShopProjectGroupDTO s : groupDTOS) {
             ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = new ProjectInfoGroupResponseDTO();
             BeanUtils.copyProperties(s, projectInfoGroupResponseDTO);
+            if(StringUtils.isNotBlank(projectInfoGroupResponseDTO.getExpirationDate())&&"0".equals(projectInfoGroupResponseDTO.getExpirationDate())){
+                projectInfoGroupResponseDTO.setOverdue(false);
+            }else {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                //产品有效期
+                Date expirationDate=null;
+                try {
+                     expirationDate = df.parse(projectInfoGroupResponseDTO.getExpirationDate());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (expirationDate.getTime() > System.currentTimeMillis()) {
+                    projectInfoGroupResponseDTO.setOverdue(true);
+
+                } else {
+                    projectInfoGroupResponseDTO.setOverdue(false);
+                }
+            }
             projectInfoGroupResponseDTO.setImageUrl(mongoUtils.getImageUrl(s.getId()));
             response.add(projectInfoGroupResponseDTO);
         }

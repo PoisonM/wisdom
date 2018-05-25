@@ -23,8 +23,9 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private  String stockStatus;
 	private  String productCode;
 	private  String productSpec;
-	private  BigDecimal productUnit;
-
+	private String productUnit;
+    /**产品图片*/
+	private String productImage;
 	/**实际库存数量*/
 	private Integer actualStockNumber;
      /** 出库数量 */
@@ -89,11 +90,11 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 		this.productSpec = productSpec;
 	}
 
-	public BigDecimal getProductUnit() {
+	public String getProductUnit() {
 		return productUnit;
 	}
 
-	public void setProductUnit(BigDecimal productUnit) {
+	public void setProductUnit(String productUnit) {
 		this.productUnit = productUnit;
 	}
 
@@ -183,5 +184,13 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 
 	public void setActualStockNumber(Integer actualStockNumber) {
 		this.actualStockNumber = actualStockNumber;
+	}
+
+	public String getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(String productImage) {
+		this.productImage = productImage;
 	}
 }

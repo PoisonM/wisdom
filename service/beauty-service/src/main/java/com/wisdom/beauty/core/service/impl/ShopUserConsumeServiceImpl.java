@@ -235,6 +235,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 if (null == dto.getProjectInitTimes()) {
                     dto.setProjectInitTimes(1);
                 }
+                //查询套卡信息
+                ShopProjectGroupDTO shopProjectGroupDTO = shopProjectGroupService.getShopProjectGroupDTO(dto.getShopProjectGroupId());
                 //用户一次性购买多个
                 for (int i = 0; i < dto.getProjectInitTimes(); i++) {
                     //购买一个套卡的金额
@@ -259,10 +261,13 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                         groupRelRelationDTO.setSysShopId(clerkInfo.getSysShopId());
                         groupRelRelationDTO.setSysUserId(archivesInfo.getSysUserId());
                         groupRelRelationDTO.setId(IdGen.uuid());
-                        groupRelRelationDTO.setShopProjectGroupId(dto.getId());
+                        groupRelRelationDTO.setShopProjectGroupId(shopProjectGroupDTO.getId());
                         groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
                         groupRelRelationDTO.setProjectSurplusTimes(dt.getShopProjectServiceTimes());
                         groupRelRelationDTO.setProjectSurplusAmount(dt.getShopProjectPrice());
+                        groupRelRelationDTO.setShopProjectInfoName(dt.getShopProjectInfoName());
+                        groupRelRelationDTO.setShopGroupPuchasePrice(shopProjectGroupDTO.getMarketPrice());
+                        groupRelRelationDTO.setShopProjectGroupName(shopProjectGroupDTO.getProjectGroupName());
                         logger.info("订单号={}，生成用户跟套卡的关系的关系记录={}", orderId, groupRelRelationDTO);
                         shopProjectGroupService.saveShopUserProjectGroupRelRelation(groupRelRelationDTO);
                     }
@@ -475,11 +480,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public int consumesDaughterCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
+    public String consumesDaughterCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
 
         if (CommonUtils.objectIsEmpty(shopUserConsumeDTOS)) {
             logger.info("用户划疗程卡传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTOS + "], clerkInfo = [" + clerkInfo + "]");
-            return 0;
+            return null;
         }
         String transactionCodeNumber = DateUtils.DateToStr(new Date(), "dateMillisecond");
 
@@ -502,11 +507,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public int consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
+    public String consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
 
         if (CommonUtils.objectIsEmpty(shopUserConsumeDTOS)) {
             logger.info("用户领取产品传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTOS + "], clerkInfo = [" + clerkInfo + "]");
-            return 0;
+            return null;
         }
         String transactionCodeNumber = DateUtils.DateToStr(new Date(), "dateMillisecond");
 
@@ -535,7 +540,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
     }
 
-    private int updateUserAccountDTO(SysClerkDTO clerkInfo, String transactionCodeNumber, ShopUserConsumeDTO consumeDTO) {
+    private String updateUserAccountDTO(SysClerkDTO clerkInfo, String transactionCodeNumber, ShopUserConsumeDTO consumeDTO) {
         // 更新用户的账户信息
         SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
         sysUserAccountDTO.setSysUserId(consumeDTO.getSysUserId());
@@ -566,7 +571,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setPrice(consumeRecordDTO.getPrice());
         consumeRecordDTO.setCreateDate(new Date());
         consumeRecordDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
-        return shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
+        shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
+        return consumeRecordDTO.getId();
     }
 
     /**

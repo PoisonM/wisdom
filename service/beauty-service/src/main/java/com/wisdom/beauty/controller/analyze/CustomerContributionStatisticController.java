@@ -1,6 +1,5 @@
 package com.wisdom.beauty.controller.analyze;
 
-import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
@@ -114,11 +113,5 @@ public class CustomerContributionStatisticController {
         responseDTO.setResponseData(list);
         logger.info("getCashEarningsTendency方法耗时{}毫秒", (System.currentTimeMillis() - start));
         return responseDTO;
-    }
-
-    public static void main(String[] args) {
-        BigDecimal d=new BigDecimal("0");
-        BigDecimal d2=new BigDecimal("0");
-       d.subtract(d2);
     }
 }

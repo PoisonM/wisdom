@@ -140,7 +140,7 @@ public class AppointmentTest {
     @Test
     public void getShopAppointInfoFromRedis() {
         ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
-        shopAppointServiceDTO.setId("id_7");
+        shopAppointServiceDTO.setId("fcdda9aa39c14f39b08e687ceccf18a4");
         ShopAppointServiceDTO infoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceDTO.getId());
         System.out.println("infoFromRedis");
     }

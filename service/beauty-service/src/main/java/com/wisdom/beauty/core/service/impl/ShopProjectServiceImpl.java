@@ -330,7 +330,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
         List<ShopProjectInfoResponseDTO> responseDTOS = new ArrayList<>();
         //查询图片信息
-        if (CommonUtils.objectIsEmpty(list)) {
+        if (CommonUtils.objectIsNotEmpty(list)) {
             for (ShopProjectInfoDTO dto : list) {
                 ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = new ShopProjectInfoResponseDTO();
                 BeanUtils.copyProperties(dto, shopProjectInfoResponseDTO);

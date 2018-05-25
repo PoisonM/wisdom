@@ -1,13 +1,12 @@
 package com.wisdom.beauty.core.service.stock;
 
 import java.util.List;
+import java.util.Map;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
-import com.wisdom.beauty.api.requestDto.ShopCheckRecordRequestDTO;
+import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.system.PageParamDTO;
 
 /**
  * FileName: ShopStockService
@@ -24,6 +23,24 @@ public interface ShopStockService {
 	 */
 
 	List<ShopStoreDTO> findStoreList(String sysBossCode);
+
+	/**
+	 * @Author:zhanghuan
+	 * @Param: 仓库ID
+	 * @Return:
+	 * @Description: 库管设置
+	 * @Date:2018/5/23 11:53
+	 */
+	int setStorekeeper(SetStorekeeperRequestDTO setStorekeeperRequestDTO);
+
+	/**
+	 * @Author:zhanghuan
+	 * @Param:
+	 * @Return:
+	 * @Description: 获取某个仓库的库管人
+	 * @Date:2018/5/23 15:42
+	 */
+	String getStoreManager(String id);
 
 	/**
 	 * 插入一条出/入库记录
@@ -68,7 +85,7 @@ public interface ShopStockService {
 	 * @Description: 根据条件获取库存
 	 * @Date:2018/5/3 14:40
 	 */
-	List<ShopStockDTO> getShopStockList(ShopStockDTO ShopStockDTO);
+	List<ShopStockDTO> getShopStockList(ShopStockDTO shopStockDTO);
 
 	/**
 	 * @Author:zhanghuan
@@ -149,7 +166,7 @@ public interface ShopStockService {
 	 * @Description: 获取库存详情
 	 * @Date:2018/5/18 15:28
 	 */
-	List<ShopStockResponseDTO> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO);
+	Map<String, Object> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO);
 
 	/**
 	 * @Author:zhanghuan
@@ -168,5 +185,14 @@ public interface ShopStockService {
 	 * @Date:2018/5/19 14:33
 	 */
 	int checkProduct(List<ShopCheckRecordDTO> list);
+
+	/**
+	 * @Author:zhanghuan
+	 * @Param:
+	 * @Return:
+	 * @Description: 获取某个仓库的总成本
+	 * @Date:2018/5/24 10:29
+	 */
+	Map<String, Object> getCost(String shopStoreId, String productTypeTwoId);
 
 }

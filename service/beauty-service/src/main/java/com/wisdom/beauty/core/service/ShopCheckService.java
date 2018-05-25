@@ -53,5 +53,5 @@ public interface ShopCheckService {
     *@Description: 跳转盘点页面使用接口
     *@Date:2018/5/22 14:37
     */
-    List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> products);
+    List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> productIds);
 }

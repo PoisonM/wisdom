@@ -351,7 +351,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	 * @return
 	 */
 	@Override
-	public int updateConumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
+	public int updateConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
 		logger.info("更新用户的消费记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
 		return shopUserConsumeRecordMapper.updateByPrimaryKeySelective(shopUserConsumeRecordDTO);
 	}

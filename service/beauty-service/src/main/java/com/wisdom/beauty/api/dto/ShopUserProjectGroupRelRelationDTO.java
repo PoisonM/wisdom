@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
+import com.wisdom.common.entity.BaseEntity;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Serializable {
     //
@@ -27,6 +27,9 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     //项目表主键
     private String shopProjectInfoId;
+
+    //
+    private String shopProjectInfoName;
 
     //套卡关系表id
     private String shopProjectInfoGroupRelationId;
@@ -126,6 +129,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setShopProjectInfoId(String shopProjectInfoId) {
         this.shopProjectInfoId = shopProjectInfoId;
+    }
+
+    public String getShopProjectInfoName() {
+        return shopProjectInfoName;
+    }
+
+    public void setShopProjectInfoName(String shopProjectInfoName) {
+        this.shopProjectInfoName = shopProjectInfoName;
     }
 
     public String getShopProjectInfoGroupRelationId() {

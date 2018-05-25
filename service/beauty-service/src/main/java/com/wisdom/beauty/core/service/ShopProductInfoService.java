@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -132,4 +133,12 @@ public interface ShopProductInfoService {
      * @param shopProductTypeDTOS
      */
     int saveProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS);
+
+    /**
+     * 保存产品信息
+     *
+     * @param shopProductInfoDTO
+     * @return
+     */
+    int saveProductInfo(ExtShopProductInfoDTO shopProductInfoDTO);
 }

@@ -195,72 +195,72 @@ public class ShopRemindSettingCriteria {
         }
 
         public Criteria andSysBossIdIsNull() {
-            addCriterion("sys_boss_id is null");
+            addCriterion("sys_boss_code is null");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdIsNotNull() {
-            addCriterion("sys_boss_id is not null");
+            addCriterion("sys_boss_code is not null");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdEqualTo(String value) {
-            addCriterion("sys_boss_id =", value, "sysBossId");
+            addCriterion("sys_boss_code =", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdNotEqualTo(String value) {
-            addCriterion("sys_boss_id <>", value, "sysBossId");
+            addCriterion("sys_boss_code <>", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdGreaterThan(String value) {
-            addCriterion("sys_boss_id >", value, "sysBossId");
+            addCriterion("sys_boss_code >", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdGreaterThanOrEqualTo(String value) {
-            addCriterion("sys_boss_id >=", value, "sysBossId");
+            addCriterion("sys_boss_code >=", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdLessThan(String value) {
-            addCriterion("sys_boss_id <", value, "sysBossId");
+            addCriterion("sys_boss_code <", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdLessThanOrEqualTo(String value) {
-            addCriterion("sys_boss_id <=", value, "sysBossId");
+            addCriterion("sys_boss_code <=", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdLike(String value) {
-            addCriterion("sys_boss_id like", value, "sysBossId");
+            addCriterion("sys_boss_code like", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdNotLike(String value) {
-            addCriterion("sys_boss_id not like", value, "sysBossId");
+            addCriterion("sys_boss_code not like", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdIn(List<String> values) {
-            addCriterion("sys_boss_id in", values, "sysBossId");
+            addCriterion("sys_boss_code in", values, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdNotIn(List<String> values) {
-            addCriterion("sys_boss_id not in", values, "sysBossId");
+            addCriterion("sys_boss_code not in", values, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdBetween(String value1, String value2) {
-            addCriterion("sys_boss_id between", value1, value2, "sysBossId");
+            addCriterion("sys_boss_code between", value1, value2, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andSysBossIdNotBetween(String value1, String value2) {
-            addCriterion("sys_boss_id not between", value1, value2, "sysBossId");
+            addCriterion("sys_boss_code not between", value1, value2, "sysBossCode");
             return (Criteria) this;
         }
 

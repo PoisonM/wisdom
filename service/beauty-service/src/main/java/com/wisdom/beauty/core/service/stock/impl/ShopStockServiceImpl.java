@@ -1,16 +1,12 @@
 package com.wisdom.beauty.core.service.stock.impl;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.StockStyleEnum;
 import com.wisdom.beauty.api.enums.StockTypeEnum;
-import com.wisdom.beauty.api.requestDto.ShopCheckRecordRequestDTO;
+import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
@@ -25,17 +21,13 @@ import com.wisdom.common.util.StringUtils;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
-import com.wisdom.beauty.core.mapper.stock.ExtStockServiceMapper;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
-import com.wisdom.common.dto.system.PageParamDTO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,9 +40,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShopStockServiceImpl implements ShopStockService {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	@Autowired
-	private ExtStockServiceMapper extStockServiceMapper;
 
 	@Autowired
 	private ShopStockRecordMapper shopStockRecordMapper;
@@ -75,8 +64,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	@Autowired
 	private ExtShopCheckRecordMapper extShopCheckRecordMapper;
-    @Autowired
-    private ShopStoreMapper shopStoreMapper;
+
+	@Autowired
+	private ShopStoreMapper shopStoreMapper;
 
 	/**
 	 * 查询仓库列表
@@ -86,15 +76,67 @@ public class ShopStockServiceImpl implements ShopStockService {
 	 */
 	@Override
 	public List<ShopStoreDTO> findStoreList(String sysBossCode) {
-        logger.info("findStoreList方法传入的参数sysBossCode={}",sysBossCode);
-        if(StringUtils.isBlank(sysBossCode)){
-            return null;
-        }
-        ShopStoreCriteria shopStoreCriteria=new ShopStoreCriteria();
-        ShopStoreCriteria.Criteria c=shopStoreCriteria.createCriteria();
-        c.andSysBossCodeEqualTo(sysBossCode);
-	    return  shopStoreMapper.selectByCriteria(shopStoreCriteria);
+		logger.info("findStoreList方法传入的参数sysBossCode={}", sysBossCode);
+		if (StringUtils.isBlank(sysBossCode)) {
+			return null;
+		}
+		ShopStoreCriteria shopStoreCriteria = new ShopStoreCriteria();
+		ShopStoreCriteria.Criteria c = shopStoreCriteria.createCriteria();
+		c.andSysBossCodeEqualTo(sysBossCode);
+		return shopStoreMapper.selectByCriteria(shopStoreCriteria);
 
+	}
+
+	@Override
+	public int setStorekeeper(SetStorekeeperRequestDTO setStorekeeperRequestDTO) {
+		if (setStorekeeperRequestDTO == null) {
+			logger.info("参数setStorekeeperRequestDTO为空");
+			return 0;
+		}
+		String[] storeManagerIds = setStorekeeperRequestDTO.getStoreManagerIds();
+		String[] storeManagerNames = setStorekeeperRequestDTO.getStoreManagerNames();
+		String shopStoreId = setStorekeeperRequestDTO.getShopStoreId();
+		String storeManagerId = "";
+		for (String storeManager : storeManagerIds) {
+			storeManagerId = storeManagerId + storeManager + ",";
+		}
+		if (StringUtils.isNotBlank(storeManagerId)) {
+			storeManagerId = storeManagerId.substring(0, storeManagerId.length() - 1);
+		}
+		String storeManagerName = "";
+		for (String storeManager : storeManagerNames) {
+			storeManagerName = storeManagerName + storeManager + ",";
+		}
+		if (StringUtils.isNotBlank(storeManagerName)) {
+			storeManagerName = storeManagerName.substring(0, storeManagerName.length() - 1);
+		}
+		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+		ShopStoreDTO shopStoreDTO = new ShopStoreDTO();
+		shopStoreDTO.setId(shopStoreId);
+		shopStoreDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+		shopStoreDTO.setStoreManagerId(storeManagerId);
+		shopStoreDTO.setSysUserName(storeManagerName);
+		return shopStoreMapper.updateByPrimaryKeySelective(shopStoreDTO);
+	}
+
+	@Override
+	public String getStoreManager(String id) {
+		logger.info("getStoreManager方法传入的参数id={}");
+		ShopStoreCriteria shopStoreCriteria = new ShopStoreCriteria();
+		ShopStoreCriteria.Criteria c = shopStoreCriteria.createCriteria();
+		c.andIdEqualTo(id);
+		List<ShopStoreDTO> list = shopStoreMapper.selectByCriteria(shopStoreCriteria);
+		if (CollectionUtils.isEmpty(list)) {
+			logger.info("查询结果list为空");
+			return null;
+		}
+		ShopStoreDTO shopStoreDTO = list.get(0);
+		String storeManagerName = shopStoreDTO.getSysUserName();
+		if (StringUtils.isBlank(storeManagerName)) {
+			logger.info("storeManagerName为空");
+			return null;
+		}
+		return storeManagerName;
 	}
 
 	/**
@@ -241,8 +283,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 			Date endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
 			c.andCreateDateBetween(startDate, endDate);
 		}
-
-		criteria.setPageSize(pageParamVoDTO.getPageSize());
+		if (pageParamVoDTO.getPaging()) {
+			criteria.setPageSize(pageParamVoDTO.getPageSize());
+			criteria.setLimitStart(pageParamVoDTO.getPageNo());
+		}
 
 		return shopStockRecordMapper.selectByCriteria(criteria);
 
@@ -491,7 +535,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
-	public List<ShopStockResponseDTO> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO) {
+	public Map<String, Object> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO) {
 		ShopStockNumberDTO shopStockNumberDTO = pageParamVoDTO.getRequestData();
 		if (shopStockNumberDTO == null) {
 			logger.info("getStockDetailList方法传入的参数shopStockNumberDTO为空");
@@ -499,8 +543,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 		}
 		logger.info("getStockDetailList方法出入的参数:productTypeTwoId={},shopStoreId={}",
 				shopStockNumberDTO.getProductTypeTwoId(), shopStockNumberDTO.getShopStoreId());
+
 		ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
 		ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
+		// 查询条件
 		if (StringUtils.isNotBlank(shopStockNumberDTO.getProductTypeTwoId())) {
 			c.andProductTypeTwoIdEqualTo(shopStockNumberDTO.getProductTypeTwoId());
 		}
@@ -518,8 +564,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 			return null;
 		}
 		// 遍历shopStockNumberDTOs
-		// map用户存储，key=产品ID value=ShopStockNumberDTO
 		Map<String, ShopStockNumberDTO> map = new HashMap<>(16);
+		// map用户存储，key=产品ID value=ShopStockNumberDTO
 		List<String> productIds = new ArrayList<>();
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumberDTOs) {
 			productIds.add(shopStockNumber.getShopProcId());
@@ -541,7 +587,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		ShopStockNumberDTO stock = new ShopStockNumberDTO();
 		stock.setProductTypeTwoId(shopStockNumberDTO.getProductTypeTwoId());
 		List<ShopStockNumberDTO> allStoreNumbers = this.getShopStockNumberDTOList(stock);
-		Map<String, Integer> allStoreNumberMap = new HashMap<>();
+		Map<String, Integer> allStoreNumberMap = new HashMap<>(16);
 		for (ShopStockNumberDTO shopStockNumber : allStoreNumbers) {
 			if (allStoreNumberMap.containsKey(shopStockNumber.getShopProcId())) {
 				Integer allStoreNumber = allStoreNumberMap.get(shopStockNumber.getShopProcId());
@@ -568,6 +614,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 				// 规格
 				shopStockResponseDTO
 						.setProductSpec(productInfoMap.get(shopStockNumber.getShopProcId()).getProductSpec());
+				// 产品图片
+				shopStockResponseDTO
+						.setProductImage(productInfoMap.get(shopStockNumber.getShopProcId()).getProductUrl());
 				// 库存总量
 				shopStockResponseDTO.setAllStoreNumber(allStoreNumberMap.get(shopStockNumber.getShopProcId()));
 			}
@@ -576,7 +625,13 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 			shopStockResponses.add(shopStockResponseDTO);
 		}
-		return shopStockResponses;
+		Map<String, Object> responseMap = new HashMap<>(16);
+		Map<String, Object> costMap = this.getCost(shopStockNumberDTO.getShopStoreId(),
+				shopStockNumberDTO.getProductTypeTwoId());
+		responseMap.put("allUseCost", costMap == null ? 0 : costMap.get("allUseCost"));
+		responseMap.put("useCost", costMap == null ? 0 : costMap.get("useCost"));
+		responseMap.put("responseMap", shopStockResponses);
+		return responseMap;
 	}
 
 	@Override
@@ -656,6 +711,50 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopCheckRecordDTOList.add(shopCheckRecordDTO);
 		}
 		return extShopCheckRecordMapper.insertBatchCheckRecord(shopCheckRecordDTOList);
+	}
+
+	@Override
+	public Map<String, Object> getCost(String shopStoreId, String productTypeTwoId) {
+		logger.info("getAllUseCost方法传入的参数shopStoreId={}", shopStoreId);
+		if (StringUtils.isBlank(shopStoreId)) {
+			return null;
+		}
+		ShopStockNumberCriteria shopStockNumberCriteria = new ShopStockNumberCriteria();
+		ShopStockNumberCriteria.Criteria c = shopStockNumberCriteria.createCriteria();
+		c.andShopStoreIdEqualTo(shopStoreId);
+		List<ShopStockNumberDTO> shopStockNumbers = shopStockNumberMapper.selectByCriteria(shopStockNumberCriteria);
+		if (CollectionUtils.isEmpty(shopStockNumbers)) {
+			logger.info("查询的结果shopStockNumbers为空");
+			return null;
+		}
+		BigDecimal allUseCost = null;
+		BigDecimal useCost = null;
+		for (ShopStockNumberDTO shopStockNumber : shopStockNumbers) {
+			if (StringUtils.isNotBlank(productTypeTwoId)) {
+				if (productTypeTwoId.equals(shopStockNumber.getProductTypeTwoId())) {
+					BigDecimal useCostDev = shopStockNumber.getStockPrice()
+							.multiply(new BigDecimal(shopStockNumber.getStockNumber()));
+
+					if (useCost == null) {
+						useCost = useCostDev;
+					} else {
+						useCost = allUseCost.add(useCostDev);
+					}
+				}
+			}
+			BigDecimal cost = shopStockNumber.getStockPrice()
+					.multiply(new BigDecimal(shopStockNumber.getStockNumber()));
+
+			if (allUseCost == null) {
+				allUseCost = cost;
+			} else {
+				allUseCost = allUseCost.add(cost);
+			}
+		}
+		Map<String, Object> map = new HashMap<>();
+		map.put("allUseCost", allUseCost);
+		map.put("useCost", useCost);
+		return map;
 	}
 
 	private List<ShopStockNumberDTO> getShopStockNumberDTOList(ShopStockNumberDTO shopStockNumberDTO) {

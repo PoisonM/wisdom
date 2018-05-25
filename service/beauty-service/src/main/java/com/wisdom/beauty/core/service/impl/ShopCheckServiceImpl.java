@@ -215,14 +215,14 @@ public class ShopCheckServiceImpl implements ShopCheckService {
     }
 
     @Override
-    public List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> products) {
+    public List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> productIds) {
         //获取库存量
-        List<ShopStockNumberDTO> shopStockNumberDTOList= shopStockService.getStockNumberList(shopStoreId,products);
+        List<ShopStockNumberDTO> shopStockNumberDTOList= shopStockService.getStockNumberList(shopStoreId,productIds);
         Map<String,Integer> map=new HashMap<>(16);
         for(ShopStockNumberDTO shopStockNumberDTO:shopStockNumberDTOList){
             map.put(shopStockNumberDTO.getShopProcId(),shopStockNumberDTO.getStockNumber());
         }
-        List<ShopProductInfoResponseDTO> list = shopProductInfoService.getProductInfoList(products);
+        List<ShopProductInfoResponseDTO> list = shopProductInfoService.getProductInfoList(productIds);
         if(CollectionUtils.isEmpty(list)){
             return  null;
         }

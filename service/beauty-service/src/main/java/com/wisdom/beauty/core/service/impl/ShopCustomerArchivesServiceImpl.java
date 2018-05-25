@@ -316,15 +316,15 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
-        String sysBossId = null;
+        String sysBossCode = null;
         String sysShopId = null;
         //pad端登陆
         if (null != clerkInfo) {
-            sysBossId = clerkInfo.getSysBossCode();
+            sysBossCode = clerkInfo.getSysBossCode();
             sysShopId = clerkInfo.getSysShopId();
         }
         if (null != bossInfo) {
-            sysBossId = bossInfo.getId();
+            sysBossCode = bossInfo.getId();
         }
 
         shopUserArchivesDTO.setSysUserId(userInfoDTO.getId());
@@ -337,7 +337,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             logger.error("查询的shopId为空{}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
             shopUserArchivesDTO.setShopid(shopInfoByPrimaryKey.getShopId());
         }
-        shopUserArchivesDTO.setSysBossCode(sysBossId);
+        shopUserArchivesDTO.setSysBossCode(sysBossCode);
         int info = saveShopUserArchivesInfo(shopUserArchivesDTO);
         logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");
 

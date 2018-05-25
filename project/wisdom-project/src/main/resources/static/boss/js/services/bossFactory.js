@@ -2,8 +2,8 @@ var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
 var consume = '/beauty/consume/';
-var  earlyWarning =  '/beauty/earlyWarning/';
-var  archives =  '/beauty/archives/';
+var earlyWarning =  '/beauty/earlyWarning/';
+var archives =  '/beauty/archives/';
 var clerkSchedule='/beauty/clerkSchedule/';
 var shopBossRelation ='/beauty/shopBossRelation/';
 var user ='/user/';
@@ -13,8 +13,9 @@ var consume = '/beauty/consume/';
 var cardInfo  = '/beauty/cardInfo/';
 var projectInfo  = '/beauty/projectInfo/';
 var productInfo  = '/beauty/productInfo/';
-var productTypeInfo = '/beauty/productTypeInfo/';
+var productTypeInfo  = '/beauty/productTypeInfo/';
 var projectType='/beauty/projectType/';
+var remind='/beauty/remind/';
 var shop='/beauty/shop/';
 
 
@@ -74,12 +75,6 @@ define(['appBoss'], function (app) {
         .factory('SaveClerkInfo',['$resource',function ($resource){
             return $resource(user + 'saveClerkInfo')
         }])
-
-
-
-
-
-
 
 /*综合分析*/
         /*根据时间查询某个美容院的耗卡和业绩*/
@@ -262,5 +257,57 @@ define(['appBoss'], function (app) {
        /*获取二级项目列表*/
         .factory('TwoLevelProject',['$resource',function ($resource){
             return $resource(projectInfo+"twoLevelProject")
+        }])
+
+        .factory('GetShopProductLevelInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"getShopProductLevelInfo")
+        }])
+        .factory('ShopStockRecordDetail',['$resource',function ($resource){
+            return $resource(stock+"shopStockRecordDetail")
+        }])
+
+
+    /*删除修改产品*/
+        /*获取客装产品列表*/
+        .factory('GetShopProductLevelInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"getShopProductLevelInfo")
+        }])
+        /*查询产品的详细信息*/
+        .factory('ProductInfoMess',['$resource',function ($resource){
+            return $resource(productInfo+"/:productId",{ productId: '@productId' })
+        }])
+        /*查询产品的详细信息*/
+        .factory('UpdateProductInfo',['$resource',function ($resource){
+            return $resource(productInfo+"updateProductInfo")
+        }])
+        /*添加产品*/
+        .factory('SaveProductInfo',['$resource',function ($resource){
+            return $resource(productInfo+"saveProductInfo")
+        }])
+
+
+      /*查询提醒设置*/
+        .factory('GetShopRemindSetting',['$resource',function ($resource){
+            return $resource(remind+"getShopRemindSetting")
+        }])
+       /*修改提醒设置*/
+        .factory('UpdateShopRemindSetting',['$resource',function ($resource){
+            return $resource(remind+"updateShopRemindSetting")
+        }])
+      /*选择分类*/
+        .factory('OneLevelProject',['$resource',function ($resource){
+            return $resource(projectInfo+"oneLevelProject")
+        }])
+        /*添加项目*/
+        .factory('SaveProjectInfo',['$resource',function ($resource){
+            return $resource(projectInfo+"saveProjectInfo")
+        }])
+         /*修改项目*/
+        .factory('UpdateProjectInfo',['$resource',function ($resource){
+            return $resource(projectInfo+"updateProjectInfo")
+        }])
+        /*单个项目详情*/
+        .factory('ProjectInfo',['$resource',function ($resource){
+            return $resource(projectInfo+"/:id", { id: '@id' })
         }])
 });

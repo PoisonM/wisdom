@@ -29,8 +29,10 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 	/** 折扣价格 */
 	private Long discountPrice;
 
-	/** 有效期 */
-	private Date validDate;
+	/**生效日期*/
+	private String effectiveDate;
+	/**有效期*/
+	private String expirationDate;
 
 	/** 套卡说明 */
 	private String detail;
@@ -39,6 +41,10 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 	private List<ShopProjectInfoDTO> list;
 	/** 图片地址URL */
     private List<String> imageUrl;
+	/** 是否过期 */
+	private  Boolean  overdue;
+	/** 是否启用 */
+	private  String  status;
 
 	public String getProjectGroupName() {
 		return projectGroupName;
@@ -72,13 +78,7 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 		this.discountPrice = discountPrice;
 	}
 
-	public Date getValidDate() {
-		return validDate;
-	}
 
-	public void setValidDate(Date validDate) {
-		this.validDate = validDate;
-	}
 
 	public String getDetail() {
 		return detail;
@@ -110,5 +110,37 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(String effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
+	public String getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(String expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
+	public Boolean getOverdue() {
+		return overdue;
+	}
+
+	public void setOverdue(Boolean overdue) {
+		this.overdue = overdue;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }
