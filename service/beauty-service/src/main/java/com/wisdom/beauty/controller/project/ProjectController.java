@@ -413,7 +413,7 @@ public class ProjectController {
     }
 
     /**
-     * 查询某店的项目列表
+     * 查询某店的项目列表  返回一级和三级
      *
      * @return
      */
@@ -470,6 +470,70 @@ public class ProjectController {
         responseDTO.setResult(StatusConstant.SUCCESS);
 
         logger.info("查询某店的项目列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 查询返回二级和三级某店的项目列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "getShopTwoLevelProjectList", method = {RequestMethod.POST, RequestMethod.GET})
+//	@LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<Object> getShopTwoLevelProjectList(@RequestParam(required = false) String pageNo, @RequestParam(required = false) String pageSize, @RequestParam(required = false) String filterStr) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = clerkInfo.getSysShopId();
+        logger.info("查询返回二级和三级某店的项目列表传入参数={}", "pageNo = [" + pageNo + "], pageSize = [" + pageSize + "], filterStr = [" + filterStr + "]");
+
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+
+        ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
+        shopProjectInfoDTO.setSysShopId(sysShopId);
+        if (StringUtils.isNotBlank(filterStr)) {
+            shopProjectInfoDTO.setProjectName(filterStr);
+        }
+        List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
+        if (CommonUtils.objectIsEmpty(projectList)) {
+            logger.debug("查询返回二级和三级某店的项目列表的项目列表，个数为空");
+            responseDTO.setErrorInfo("查询结果为空！");
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
+        }
+
+        //缓存二级项目map
+        HashMap<String, ShopProjectInfoDTO> twoTypeMap = new HashMap<>(16);
+        for (ShopProjectInfoDTO infoDTO : projectList) {
+            twoTypeMap.put(infoDTO.getProjectTypeTwoId(), infoDTO);
+        }
+
+        List<Map> arrayList = new ArrayList<>();
+        //查询一级项目下的三级项目
+        for (Map.Entry entry : twoTypeMap.entrySet()) {
+            Map<Object, Object> levelMap = new HashMap<>();
+            List<ShopProjectInfoDTO> threeProjectList = new ArrayList();
+            for (ShopProjectInfoDTO infoDTO : projectList) {
+                if (infoDTO.getProjectTypeTwoId().equals(entry.getKey())) {
+                    threeProjectList.add(infoDTO);
+                }
+            }
+            levelMap.put("twoLevel", entry.getValue());
+            levelMap.put("threeProjectList", threeProjectList);
+            arrayList.add(levelMap);
+        }
+
+        if (CommonUtils.objectIsEmpty(projectList)) {
+            logger.debug("查询返回二级和三级某店的项目列表查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
+            responseDTO.setResult(StatusConstant.FAILURE);
+        }
+
+        responseDTO.setResponseData(arrayList);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+
+        logger.info("查询返回二级和三级某店的项目列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
