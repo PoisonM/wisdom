@@ -6,18 +6,14 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                 startDate : BossUtil.getNowFormatDate(),
                 date: [],
                 index:""
-            }
+            };
+            console.log($rootScope.shopInfo.entryShopProductList);
             $scope.param.dateValue = new Date($scope.param.dateValue).getTime();
             console.log(new Date($scope.param.dateValue));
             for(var i=0;i<$scope.param.date.length;i++){
                 $scope.param.date[i]=$scope.param.date.replace(/00/g,'');
                 $scope.param.date[i]=$scope.param.date.replace(/:/g,'');
             }
-
-
-/*日期插件*/
-
-
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -35,11 +31,10 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             $scope.selDate = function(index){
                 $scope.param.index = index;
             }
-            var datePickerCallbacke = function (val) {
+            var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
                     $scope.shopStock[$scope.param.index].productDate = new Date(val).getTime();
-
                     $scope.param.date[$scope.param.index] = $filter('date')(val, 'yyyy-MM-dd')
                 }
             };
@@ -65,7 +60,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
                     console.log(val)
-                    datePickerCallbacke(val);
+                    datePickerCallback(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
