@@ -8,6 +8,7 @@ import com.wisdom.beauty.core.mapper.ExtShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopRechargeCardMapper;
 import com.wisdom.beauty.core.mapper.ShopUserRechargeCardMapper;
+import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -17,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 	private ExtShopProjectProductCardRelationMapper extShopProjectProductCardRelationMapper;
 
 	@Autowired
-	private MongoTemplate mongoTemplate;
+	private MongoUtils mongoUtils;
 
 	@Override
 	public List<ShopRechargeCardOrderDTO> getShopRechargeCardList(PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO) {
@@ -118,7 +118,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = new ShopRechargeCardResponseDTO();
 		BeanUtils.copyProperties(shopRechargeCardDTO, shopRechargeCardResponseDTO);
-
+		shopRechargeCardResponseDTO.setImageUrls(mongoUtils.getImageUrl(shopRechargeCardDTO.getId()));
 		return shopRechargeCardResponseDTO;
 	}
 
