@@ -99,6 +99,10 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
     }
     $scope.tabclick(0);
 
+    $scope.goConsumptionList = function(type,id) {
+        $state.go('pad-web.left_nav.drawCardConsumption',{type:type,id:id});
+    };
+
     $scope.goGetProduct = function(id) {
         $state.go('pad-web.left_nav.getProduct', { id: id })
     }

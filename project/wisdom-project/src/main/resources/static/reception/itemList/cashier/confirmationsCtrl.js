@@ -36,5 +36,5 @@ PADWeb.controller('confirmationsCtrl', function($scope, $stateParams, $state, ng
     $(img).appendTo($('#signimg'))
     //将数据显示在文本框
     $('#text').val(data)
-
+    $scope.shopProjectInfoName = $state.params.shopProjectInfoName;
 });

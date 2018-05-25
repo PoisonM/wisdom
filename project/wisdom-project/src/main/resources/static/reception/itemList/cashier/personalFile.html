@@ -36,12 +36,12 @@
                     </div>
                     <div>
                         <div ng-repeat="item1Sm in item1.projectList" class="recorderCardContent clearfix">
-                            <span class="recorderCardContentName">{{item1Sm.shopProjectGroupName}}</span>
+                            <span class="recorderCardContentName">{{item1Sm.shopProjectInfoName}}</span>
                             <div class="useNub">
                                 <span class="recorderCardContentUsed">{{item1Sm.projectSurplusTimes}}</span>
                                 <span class="recorderCardContentTotal">/{{item1Sm.projectInitTimes}}</span>
                             </div>
-                            <button ng-click="goConsumptionList()">划卡</button>
+                            <button ng-click="goConsumptionList('2',item1Sm.id)">划卡</button>
                         </div>
                     </div>
                 </div>

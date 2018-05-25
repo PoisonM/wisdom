@@ -36,15 +36,15 @@
             <input placeholder="请输入名称" type="text">
             <span>搜索</span>
         </div>
-        <ul>
-            <div ng-repeat="(key1,item1) in secondCategory">
-                <div ng-repeat="(key2,item2) in item1">
-                    <div class="consumptionListUlTitle">{{key2}}</div>
-                    <li ng-repeat="(key3,item3) in item2" ng-if="select!=2" ng-click="getThreeCategories(item3.projectTypeOneId,item3.projectTypeTwoId)">{{key3}}</li>
-                    <li ng-repeat="(key3,item3) in item2" ng-if="select==2" ng-click="getProductInfoThreeLevelProject(item3.productTypeOneId,item3.productTypeTwoId)">{{key3}}</li>
+        <div style="overflow: scroll;height: 100%;">
+            <ul>
+                <div ng-repeat="(key1,item1) in secondCategory">
+                    <div class="consumptionListUlTitle">{{item1.levelOneDetail.projectTypeName}}</div>
+                    <li ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select!=2" ng-click="getThreeCategories(item2.projectTypeOneId,item2.projectTypeTwoId)">{{key2}}</li>
+                    <li ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select==2" ng-click="getProductInfoThreeLevelProject(item2.productTypeOneId,item2.productTypeTwoId)">{{key2}}</li>
                 </div>
-            </div>
-        </ul>
+            </ul>
+        </div>
     </div>
     <div class="consumptionListContent" ng-class="{true: '', false: 'isThird'}[consumptionListUlShow]">
         <ul>

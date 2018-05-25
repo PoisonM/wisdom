@@ -30,9 +30,6 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId, Ar
     $scope.goSelectRechargeType = function() {
         $state.go('pad-web.left_nav.selectRechargeType');
     };
-    $scope.goConsumptionList = function() {
-        $state.go('pad-web.consumptionList');
-    };
     $scope.goBindMember = function() {
         $state.go('pad-web.bindMember', {
             shopId: $scope.param.shopId,
