@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.requestDto;
 
+import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.math.BigDecimal;
@@ -8,11 +9,11 @@ import java.util.Date;
 /**
  * Created by zhanghuan on 2018/5/7.
  */
-public class ShopStockRequestDTO extends BaseEntity {
+public class ShopStockRequestDTO extends ShopProductInfoDTO {
 	private  String id;
 
 	/** bossID */
-	private String shopBossId;
+	private String shopBossCode;
 
 	/** 入库记录id */
 	private String shopStockRecordId;
@@ -51,11 +52,11 @@ public class ShopStockRequestDTO extends BaseEntity {
 	private String stockType;
 
 	public String getShopBossId() {
-		return shopBossId;
+		return shopBossCode;
 	}
 
-	public void setShopBossId(String shopBossId) {
-		this.shopBossId = shopBossId;
+	public void setShopBossId(String shopBossCode) {
+		this.shopBossCode = shopBossCode;
 	}
 
 	public String getShopStockRecordId() {

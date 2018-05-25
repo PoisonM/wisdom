@@ -10,6 +10,7 @@
     <result column="current_store_id" property="currentStoreId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="CHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
@@ -87,7 +88,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, sys_user_id, parent_shop_id, current_shop_id, sys_boss_code, current_store_id, 
-    name, nickname, password, email, identify_number, mobile, user_type, user_openid, 
+    name, nickname, sex, password, email, identify_number, mobile, user_type, user_openid, 
     weixin_attention_status, we_chat, qq, photo, login_ip, login_date, del_flag, id_front_image, 
     id_back_image, address
   </sql>
@@ -127,7 +128,7 @@
   <insert id="insert" parameterType="com.wisdom.common.dto.user.SysBossDTO" >
     insert into sys_boss (id, sys_user_id, parent_shop_id, 
       current_shop_id, sys_boss_code, current_store_id, 
-      name, nickname, password, 
+      name, nickname, sex, password, 
       email, identify_number, mobile, 
       user_type, user_openid, weixin_attention_status, 
       we_chat, qq, photo, 
@@ -136,7 +137,7 @@
       )
     values (#{id,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{parentShopId,jdbcType=VARCHAR}, 
       #{currentShopId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{currentStoreId,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{password,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{identifyNumber,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
       #{userType,jdbcType=VARCHAR}, #{userOpenid,jdbcType=VARCHAR}, #{weixinAttentionStatus,jdbcType=VARCHAR}, 
       #{weChat,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, 
@@ -170,6 +171,9 @@
       </if>
       <if test="nickname != null" >
         nickname,
+      </if>
+      <if test="sex != null" >
+        sex,
       </if>
       <if test="password != null" >
         password,
@@ -244,6 +248,9 @@
       </if>
       <if test="nickname != null" >
         #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
       </if>
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
@@ -329,6 +336,9 @@
       <if test="record.nickname != null" >
         nickname = #{record.nickname,jdbcType=VARCHAR},
       </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=CHAR},
+      </if>
       <if test="record.password != null" >
         password = #{record.password,jdbcType=VARCHAR},
       </if>
@@ -392,6 +402,7 @@
       current_store_id = #{record.currentStoreId,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       nickname = #{record.nickname,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=CHAR},
       password = #{record.password,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
       identify_number = #{record.identifyNumber,jdbcType=VARCHAR},
@@ -435,6 +446,9 @@
       </if>
       <if test="nickname != null" >
         nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=CHAR},
       </if>
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
@@ -496,6 +510,7 @@
       current_store_id = #{currentStoreId,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=CHAR},
       password = #{password,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       identify_number = #{identifyNumber,jdbcType=VARCHAR},

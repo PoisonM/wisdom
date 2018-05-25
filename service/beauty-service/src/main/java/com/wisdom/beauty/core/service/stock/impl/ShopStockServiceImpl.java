@@ -333,6 +333,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public int insertShopStockDTO(String shopStockRequest) {
+		logger.info("insertShopStockDTO方法入参shopStockRequest={}",shopStockRequest);
 		if (StringUtils.isBlank(shopStockRequest)) {
 			logger.info("insertShopStockDTO方法出入的参数shopStockRequest为空");
 		}
