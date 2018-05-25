@@ -305,8 +305,6 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             userInfoDTO.setId(IdGen.uuid());
             userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
             userInfoDTO.setCreateDate(new Date());
-            userInfoDTO.setUserType(ConfigConstant.beautySource);
-            userInfoDTO.setSource(ConfigConstant.beautySource);
             userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
             logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
             userServiceClient.insertUserInfo(userInfoDTO);
