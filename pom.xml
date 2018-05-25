@@ -71,7 +71,18 @@
 
 	<build>
 		<outputDirectory>${project.basedir}/target/classes/</outputDirectory>
-
+		<!--<resources>-->
+		<!--<resource>-->
+		<!--<directory>src/main/resources</directory>-->
+		<!--<filtering>true</filtering>-->
+		<!--<excludes>-->
+		<!--<exclude>application.properties</exclude>-->
+		<!--<exclude>application-dev.properties</exclude>-->
+		<!--<exclude>application-pro.properties</exclude>-->
+		<!--<exclude>application-test.properties</exclude>-->
+		<!--</excludes>-->
+		<!--</resource>-->
+		<!--</resources>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
