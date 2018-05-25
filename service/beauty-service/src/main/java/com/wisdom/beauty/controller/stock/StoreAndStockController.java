@@ -85,8 +85,9 @@ public class StoreAndStockController {
 		long currentTimeMillis = System.currentTimeMillis();
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-		shopStockService.insertShopStockDTO(shopStock);
+		String id=shopStockService.insertShopStockDTO(shopStock);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(id);
 		logger.info("addStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
