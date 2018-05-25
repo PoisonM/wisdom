@@ -336,9 +336,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 		if (StringUtils.isBlank(shopStockRequest)) {
 			logger.info("insertShopStockDTO方法出入的参数shopStockRequest为空");
 		}
-		ShopStockRequestDTO[] ss = (ShopStockRequestDTO[]) JSONArray.toArray(JSONArray.fromObject(shopStockRequest),
+		ShopStockRequestDTO[] shopStockRequestDTOArray = (ShopStockRequestDTO[]) JSONArray.toArray(JSONArray.fromObject(shopStockRequest),
 				ShopStockRequestDTO.class);
-		List<ShopStockRequestDTO> shopStockRequestDTO = Arrays.asList(ss);
+		List<ShopStockRequestDTO> shopStockRequestDTO = Arrays.asList(shopStockRequestDTOArray);
 		if (CollectionUtils.isEmpty(shopStockRequestDTO)) {
 			logger.info("转换出来的集合shopStocks为空");
 			return 0;
@@ -355,9 +355,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockRecordDTO.setFlowNo(shopStockDto.getFlowNo());
 		shopStockRecordDTO.setStockStyle(shopStockDto.getStockType());
 		shopStockRecordDTO.setDetail(shopStockDto.getDetail());
-		// 待定这个人是谁
-		shopStockRecordDTO.setManagerId(shopStockDto.getApplayUser());
-		// 插入StockRecord,并且返回id
+		shopStockRecordDTO.setManagerId(sysBossDTO.getId());
 		// 判断是出库还是入库
 		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())
 				|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
@@ -369,16 +367,21 @@ public class ShopStockServiceImpl implements ShopStockService {
 			// 此时是出库
 			shopStockRecordDTO.setStockType(shopStockDto.getStockType());
 		}
+		shopStockRecordDTO.setCreateDate(new Date());
+		shopStockRecordDTO.setUpdateDate(new Date());
 		this.insertStockRecord(shopStockRecordDTO);
 		// 记录插入结束
 		List<ShopStockDTO> shopStockDTOList = new ArrayList<>();
 		List<String> productIds = new ArrayList<>();
 		ShopStockDTO shopStockDTO = null;
 		Map<String, ShopStockRequestDTO> map = new HashedMap();
+		//遍历传入过来的集合参数
 		for (ShopStockRequestDTO shopStock : shopStockRequestDTO) {
 			shopStockDTO = new ShopStockDTO();
 			BeanUtils.copyProperties(shopStock, shopStockDTO);
 			shopStockDTO.setId(IdGen.uuid());
+			shopStockDTO.setCreateDate(new Date());
+			shopStockDTO.setUpdateDate(new Date());
 			shopStock.setShopBossId(sysBossDTO.getId());
 			// 将record表总的id放入shopStockDTO中
 			shopStockDTO.setShopStockRecordId(shopStockRecordDTO.getId());
@@ -395,7 +398,6 @@ public class ShopStockServiceImpl implements ShopStockService {
 		// 需要更新的List集合
 		List<ShopStockNumberDTO> updateShopStockNumber = new ArrayList<>();
 
-		ShopStockNumberDTO shopStockNumberDTO = null;
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumberDTOs) {
 			if (map.get(shopStockNumber.getShopProcId()) != null) {
 				// 需要更新的
@@ -425,7 +427,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			logger.info("values为空不需要更新");
 			return 1;
 		}
-		ShopStockNumberDTO shopStockNumber = null;
+		ShopStockNumberDTO shopStockNumberDTO = null;
 		for (ShopStockRequestDTO addShopStockRequest : values) {
 			shopStockNumberDTO = new ShopStockNumberDTO();
 			shopStockNumberDTO.setId(IdGen.uuid());
