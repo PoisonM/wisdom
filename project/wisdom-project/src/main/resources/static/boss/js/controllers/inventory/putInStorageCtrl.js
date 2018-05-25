@@ -16,6 +16,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 selectProductTypeOneId:'',
                 selectProductList:'',
             };
+            $rootScope.shopInfo.entryShopProductList = [];
 
             GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
                 $scope.param.detailProductList = data.responseData.detailProductList;
@@ -63,6 +64,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             }
 
             $scope.selProduct = function (domIndex) {
+                $rootScope.shopInfo.entryShopProductList = [];
                 if($scope.param.type=='0')
                 {
                     $scope.param.selectProductList = '客装产品';
@@ -86,16 +88,15 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 } else {
                     $scope.param.ids.push(domIndex);
                 }
-                console.log($scope.param.ids);
                 angular.forEach($scope.param.ids,function (val,index) {
                     angular.forEach($scope.param.detailProductList,function (val1,index1) {
                         if(val==index1)
                         {
                             $scope.param.selectProductList = $scope.param.selectProductList+','+val1.productTypeTwoName;
+                            $rootScope.shopInfo.entryShopProductList.push(val1);
                         }
                     })
                 })
-                console.log($scope.param.selectProductList);
             };
 
             $scope.inventoryRecordsPicsGo = function(){
