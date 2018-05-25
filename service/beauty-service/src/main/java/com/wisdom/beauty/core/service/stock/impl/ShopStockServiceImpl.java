@@ -332,7 +332,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public int insertShopStockDTO(String shopStockRequest) {
+	public String insertShopStockDTO(String shopStockRequest) {
 		logger.info("insertShopStockDTO方法入参shopStockRequest={}",shopStockRequest);
 		if (StringUtils.isBlank(shopStockRequest)) {
 			logger.info("insertShopStockDTO方法出入的参数shopStockRequest为空");
@@ -342,7 +342,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		List<ShopStockRequestDTO> shopStockRequestDTO = Arrays.asList(shopStockRequestDTOArray);
 		if (CollectionUtils.isEmpty(shopStockRequestDTO)) {
 			logger.info("转换出来的集合shopStocks为空");
-			return 0;
+			return null;
 		}
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		// 记录插入
@@ -426,7 +426,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		List<ShopStockNumberDTO> saveShopStockNumber = new ArrayList<>();
 		if (CollectionUtils.isEmpty(values)) {
 			logger.info("values为空不需要更新");
-			return 1;
+			return null;
 		}
 		ShopStockNumberDTO shopStockNumberDTO = null;
 		for (ShopStockRequestDTO addShopStockRequest : values) {
@@ -440,7 +440,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockNumberDTO.setCreateDate(new Date());
 			saveShopStockNumber.add(shopStockNumberDTO);
 		}
-		return this.batchAddShopStockNumber(saveShopStockNumber);
+		this.batchAddShopStockNumber(saveShopStockNumber);
+		return  shopStockRecordDTO.getId();
 	}
 
 	@Override

@@ -94,7 +94,7 @@ public interface ShopStockService {
 	 * @Description: 批量插入ShopStockDTO, 接收json字符串数组，然后换成java对象
 	 * @Date:2018/5/3 16:47
 	 */
-	int insertShopStockDTO(String shopStockDTOs);
+	String insertShopStockDTO(String shopStockDTOs);
 
 	/**
 	 * @Author:zhanghuan
