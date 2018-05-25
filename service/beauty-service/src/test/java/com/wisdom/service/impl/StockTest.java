@@ -111,7 +111,7 @@ public class StockTest  {
 
     @Test
     public  void test(){
-        /*String json =  "[{\"id\":\"133223\",\"shopBossId\":\"20\"},{\"id\":\"3232\",\"shopBossId\":\"20\"}]";
+        /*String json =  "[{\"id\":\"133223\",\"shopBossCode\":\"20\"},{\"id\":\"3232\",\"shopBossCode\":\"20\"}]";
         shopStockService.insertShopStockDTO(json);*/
         List<ShopStockRequestDTO> list = new ArrayList<>();
         ShopStockRequestDTO shopStockDTO = new ShopStockRequestDTO();

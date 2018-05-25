@@ -3,7 +3,7 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopStockBossRelationMapper">
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStockBossRelationDTO">
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="shop_boss_id" jdbcType="VARCHAR" property="shopBossId" />
+    <result column="shop_boss_code" jdbcType="VARCHAR" property="shopBossCode" />
     <result column="shop_store_id" jdbcType="VARCHAR" property="shopStoreId" />
     <result column="shop_stock_id" jdbcType="VARCHAR" property="shopStockId" />
     <result column="shop_proc_id" jdbcType="VARCHAR" property="shopProcId" />
@@ -74,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, shop_boss_id, shop_store_id, shop_stock_id, shop_proc_id, shop_store_name, shop_boss_name, 
+    id, shop_boss_code, shop_store_id, shop_stock_id, shop_proc_id, shop_store_name, shop_boss_name,
     shop_proc_name, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationCriteria" resultMap="BaseResultMap">
@@ -111,12 +111,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationDTO">
-    insert into shop_stock_boss_relation (id, shop_boss_id, shop_store_id, 
+    insert into shop_stock_boss_relation (id, shop_boss_code, shop_store_id,
       shop_stock_id, shop_proc_id, shop_store_name, 
       shop_boss_name, shop_proc_name, create_by, 
       create_date, update_user, update_date
       )
-    values (#{id,jdbcType=VARCHAR}, #{shopBossId,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{shopBossCode,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR},
       #{shopStockId,jdbcType=VARCHAR}, #{shopProcId,jdbcType=VARCHAR}, #{shopStoreName,jdbcType=VARCHAR}, 
       #{shopBossName,jdbcType=VARCHAR}, #{shopProcName,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
@@ -128,8 +128,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="shopBossId != null">
-        shop_boss_id,
+      <if test="shopBossCode != null">
+        shop_boss_code,
       </if>
       <if test="shopStoreId != null">
         shop_store_id,
@@ -166,8 +166,8 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="shopBossId != null">
-        #{shopBossId,jdbcType=VARCHAR},
+      <if test="shopBossCode != null">
+        #{shopBossCode,jdbcType=VARCHAR},
       </if>
       <if test="shopStoreId != null">
         #{shopStoreId,jdbcType=VARCHAR},
@@ -213,8 +213,8 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopBossId != null">
-        shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      <if test="record.shopBossCode != null">
+        shop_boss_code = #{record.shopBossCode,jdbcType=VARCHAR},
       </if>
       <if test="record.shopStoreId != null">
         shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
@@ -254,7 +254,7 @@
   <update id="updateByCriteria" parameterType="map">
     update shop_stock_boss_relation
     set id = #{record.id,jdbcType=VARCHAR},
-      shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      shop_boss_code = #{record.shopBossCode,jdbcType=VARCHAR},
       shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
       shop_stock_id = #{record.shopStockId,jdbcType=VARCHAR},
       shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
@@ -272,8 +272,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationDTO">
     update shop_stock_boss_relation
     <set>
-      <if test="shopBossId != null">
-        shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+      <if test="shopBossCode != null">
+        shop_boss_code = #{shopBossCode,jdbcType=VARCHAR},
       </if>
       <if test="shopStoreId != null">
         shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
@@ -310,7 +310,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopStockBossRelationDTO">
     update shop_stock_boss_relation
-    set shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+    set shop_boss_code = #{shopBossCode,jdbcType=VARCHAR},
       shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
       shop_stock_id = #{shopStockId,jdbcType=VARCHAR},
       shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
