@@ -30,6 +30,9 @@ public class SysBossDTO extends BaseEntity implements Serializable {
     //昵称
     private String nickname;
 
+    //性别
+    private String sex;
+
     //密码
     private String password;
 
@@ -142,6 +145,14 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getPassword() {

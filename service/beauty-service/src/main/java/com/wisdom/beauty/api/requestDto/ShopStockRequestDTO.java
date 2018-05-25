@@ -13,7 +13,7 @@ public class ShopStockRequestDTO extends ShopProductInfoDTO {
 	private  String id;
 
 	/** bossID */
-	private String shopBossId;
+	private String shopBossCode;
 
 	/** 入库记录id */
 	private String shopStockRecordId;
@@ -52,11 +52,11 @@ public class ShopStockRequestDTO extends ShopProductInfoDTO {
 	private String stockType;
 
 	public String getShopBossId() {
-		return shopBossId;
+		return shopBossCode;
 	}
 
-	public void setShopBossId(String shopBossId) {
-		this.shopBossId = shopBossId;
+	public void setShopBossId(String shopBossCode) {
+		this.shopBossCode = shopBossCode;
 	}
 
 	public String getShopStockRecordId() {
