@@ -1,9 +1,12 @@
 package com.wisdom.user.service.impl;
 
-import com.google.gson.Gson;
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.*;
+import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.JedisUtils;
+import com.wisdom.common.util.RedisLock;
+import com.wisdom.common.util.StringUtils;
 import com.wisdom.user.mapper.BeautyUserInfoMapper;
 import com.wisdom.user.service.BeautyUserInfoService;
 import org.slf4j.Logger;

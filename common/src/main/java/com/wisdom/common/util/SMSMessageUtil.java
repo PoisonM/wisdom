@@ -1,5 +1,6 @@
 package com.wisdom.common.util;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.aliyun.oss.ClientException;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
@@ -9,7 +10,6 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import com.google.gson.Gson;
 import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 
