@@ -431,7 +431,7 @@ define(['appBoss'], function(app){
                     /*选择系列*/
 
                     .state('selectionSeries', {
-                        url: '/selectionSeries',
+                        url: '/selectionSeries/:productTypeOneId/:id,:type',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectionSeriesCtrl',
                         resolve: {
@@ -444,7 +444,7 @@ define(['appBoss'], function(app){
                     })
                 /*选择类别*/
                     .state('selectionCategory', {
-                        url: '/selectionCategory',
+                        url: '/selectionCategory/:add/:mod/:projectId/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectionCategoryCtrl',
                         resolve: {
@@ -613,7 +613,7 @@ define(['appBoss'], function(app){
                     })
                 /*添加项目*/
                     .state('addProject', {
-                        url: '/addProject',
+                        url: '/addProject/:typeId,:name,:seriesId,:seriesName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'addProjectCtrl',
                         resolve: {
@@ -624,9 +624,22 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*选择项目系列*/
+                    .state('addProjectSeries', {
+                        url: '/addProjectSeries/:typeId/:add/:mod/:projectId/:name/:seriesId/:seriesName',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'addProjectSeriesCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addProjectSeriesCtrl',
+                                    ['js/controllers/mine/addProjectSeriesCtrl.js?ver='+ bossVersion],
+                                    'views/mine/addProjectSeries.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                 /*修改项目*/
                     .state('modifyProject', {
-                        url: '/modifyProject',
+                        url: '/modifyProject/:projectId,:typeId,:name,:seriesId,:seriesName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'modifyProjectCtrl',
                         resolve: {
@@ -1338,7 +1351,7 @@ define(['appBoss'], function(app){
                     })
                     /*specifications   规格*/
                     .state('specifications', {
-                        url: '/specifications',
+                        url: '/specifications/:id/:type,:productSpec',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'specificationsCtrl',
                         resolve: {
@@ -1473,8 +1486,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*unit  单位*/
                     .state('unit', {
-                        url: '/unit',
+                        url: '/unit/:id,:type',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'unitCtrl',
                         resolve: {
@@ -1485,8 +1499,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* efficacy 功效*/
                     .state('efficacy', {
-                        url: '/efficacy',
+                        url: '/efficacy/:productFunc/:id,:type',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'efficacyCtrl',
                         resolve: {
@@ -1727,7 +1742,7 @@ define(['appBoss'], function(app){
                     })
                 /*applicableParts 适用部位*/
                     .state('applicableParts', {
-                        url: '/applicableParts',
+                        url: '/applicableParts/:id,:type',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'applicablePartsCtrl',
                         resolve: {
@@ -1779,7 +1794,7 @@ define(['appBoss'], function(app){
                     })
                 /*addProduct  添加产品*/
                     .state('addProduct', {
-                        url: '/addProduct',
+                        url: '/addProduct/:oneId,:band,:series,:twoId,:spec,:unit,:parts,:func',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'addProductCtrl',
                         resolve: {
@@ -1792,7 +1807,7 @@ define(['appBoss'], function(app){
                     })
                 /*modifyProduct 修改产品*/
                     .state('modifyProduct', {
-                        url: '/modifyProduct',
+                        url: '/modifyProduct/:id/:band/:series/:spec,:unit,:parts,:func,:oneId,:twoId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'modifyProductCtrl',
                         resolve: {
@@ -1884,7 +1899,7 @@ define(['appBoss'], function(app){
                     })
                     /*selBrand 选择品牌*/
                     .state('selBrand', {
-                        url: '/selBrand',
+                        url: '/selBrand/:id,:type',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selBrandCtrl',
                         resolve: {
@@ -2017,16 +2032,16 @@ define(['appBoss'], function(app){
                  outboundOrderDetails 出库单详情
                  outboundRecords  出库记录
 
-                 unit  单位
-                 efficacy 功效
-                 specifications   规格
+
+
+
                  funArea 汉方美业
                  putInStoragePic 入库
                  outboundPic 出库
                  inventoryDetailsPic 库存详情
                  inventoryPic  盘点
                  settingPic 设置
-                 warehouseProducts  仓库产品
+
                  inventoryDetails库存详情
                  libraryTubeSetting 库管设置
 
@@ -2041,18 +2056,17 @@ define(['appBoss'], function(app){
                  inventoryRecordsPics 入库记录
                  sweepTheCodeIntoTheTreasury 扫码入库
                  automaticallyStorage 扫码自动入库
-                 applicableParts 适用部位
+
                  addEmployees 添加家人(员工)
 
 
                  addProduct  添加产品
-                 modifyProduct修改产品
                  inventorySetting  设置
                  addressBook 库存 通讯录导入
                  AddOutbound 新增出库
                  modifyLibrary修改(库)
                  chooseWarehouse 选择仓库
-                 selBrand 选择品牌
+
                  selSeries 选择系列
                  selectTheOutboundType 选择出库类型
                  productInventory 选择更多产品盘点
