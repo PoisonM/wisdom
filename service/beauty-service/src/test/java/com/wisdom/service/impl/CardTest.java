@@ -112,12 +112,12 @@ public class CardTest {
         product.add("1");
         product.add("2");
         product.add("3");
-        extShopRechargeCardDTO.setProductIds(product);
+//        extShopRechargeCardDTO.setProductIds(product);
         List<String> projectIds = new ArrayList<>();
         projectIds.add("1");
         projectIds.add("2");
         projectIds.add("3");
-        extShopRechargeCardDTO.setProjectIds(projectIds);
+//        extShopRechargeCardDTO.setProjectIds(projectIds);
 
         String toJSONString = JSONObject.toJSONString(extShopRechargeCardDTO);
 
@@ -127,7 +127,12 @@ public class CardTest {
 //                .andExpect(status().isOk())// 模拟向testRest发送get请求
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
 //                .andReturn();// 返回执行请求的结果
-        MvcResult result = mvc.perform(post("/cardInfo/updateRechargeCardInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+//        MvcResult result = mvc.perform(post("/cardInfo/updateRechargeCardInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的
+
+        MvcResult result = mvc.perform(post("/cardHelper/getGoodsUseScope").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -147,7 +152,12 @@ public class CardTest {
     @Test
     public void getShopUserRecentlyOrderInfo() throws Exception {
 
-        MvcResult result = mvc.perform(get("/cardInfo/rechargeCardSignConfirm").param("transactionId", "20180510170143457").param("imageUrl", "1"))
+//        MvcResult result = mvc.perform(get("/cardInfo/rechargeCardSignConfirm").param("transactionId", "20180510170143457").param("imageUrl", "1"))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+
+        MvcResult result = mvc.perform(get("/cardHelper/getGoodsUseScope").param("shopRechargeCardId", "2"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
