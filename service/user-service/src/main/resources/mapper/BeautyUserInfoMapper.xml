@@ -163,7 +163,7 @@
     <!-- 根据多个userId查询用户集合 -->
     <select id="getUserByInfoList"
             parameterType="com.wisdom.common.dto.user.UserInfoDTO"
-            resultMap="UserInfoResultMap">
+            resultMap="BeautyUserInfoResultMap">
         SELECT * FROM sys_user
         WHERE id in <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
         #{item}
