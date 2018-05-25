@@ -349,9 +349,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
+		String id=IdGen.uuid();
 		shopStockRecordDTO.setSysBossCode(sysBossDTO.getId());
 		shopStockRecordDTO.setShopStoreId(shopStockDto.getShopStoreId());
-		shopStockRecordDTO.setId(IdGen.uuid());
+		shopStockRecordDTO.setId(id);
 		shopStockRecordDTO.setCreateDate(new Date());
 		shopStockRecordDTO.setFlowNo(shopStockDto.getFlowNo());
 		shopStockRecordDTO.setStockStyle(shopStockDto.getStockType());
@@ -426,7 +427,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		List<ShopStockNumberDTO> saveShopStockNumber = new ArrayList<>();
 		if (CollectionUtils.isEmpty(values)) {
 			logger.info("values为空不需要更新");
-			return null;
+			return id;
 		}
 		ShopStockNumberDTO shopStockNumberDTO = null;
 		for (ShopStockRequestDTO addShopStockRequest : values) {
@@ -441,7 +442,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			saveShopStockNumber.add(shopStockNumberDTO);
 		}
 		this.batchAddShopStockNumber(saveShopStockNumber);
-		return  shopStockRecordDTO.getId();
+		return  id;
 	}
 
 	@Override
