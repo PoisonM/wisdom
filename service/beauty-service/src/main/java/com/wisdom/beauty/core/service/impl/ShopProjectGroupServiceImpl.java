@@ -102,14 +102,16 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
                 Date expirationDate=null;
                 try {
                      expirationDate = df.parse(projectInfoGroupResponseDTO.getExpirationDate());
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    logger.info("时间转换异常,异常信息"+e.getMessage(),e);
                 }
-                if (expirationDate.getTime() > System.currentTimeMillis()) {
-                    projectInfoGroupResponseDTO.setOverdue(true);
+                if(expirationDate!=null) {
+                    if (expirationDate.getTime() > System.currentTimeMillis()) {
+                        projectInfoGroupResponseDTO.setOverdue(true);
 
-                } else {
-                    projectInfoGroupResponseDTO.setOverdue(false);
+                    } else {
+                        projectInfoGroupResponseDTO.setOverdue(false);
+                    }
                 }
             }
             projectInfoGroupResponseDTO.setImageUrl(mongoUtils.getImageUrl(s.getId()));
