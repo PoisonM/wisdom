@@ -2,6 +2,8 @@ package com.wisdom.beauty.api.extDto;
 
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 
+import java.util.List;
+
 public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     //充值金额
@@ -41,6 +43,8 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     private String payType;
 
     private String userName;
+    //图片
+    private List<String> imageUrls;
 
     public String getSignUrl() {
         return signUrl;
@@ -128,5 +132,13 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     public void setRechargeAmount(String rechargeAmount) {
         this.rechargeAmount = rechargeAmount;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 }
