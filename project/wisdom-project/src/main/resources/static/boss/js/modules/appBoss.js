@@ -27,7 +27,8 @@ define(['angular'], function (angular) {
         }])
         .run(function($rootScope){
             $rootScope.shopInfo = {
-                shopId:'11'
+                shopId:'11',
+                entryShopProductList:[]
             };
         })
     return app;
