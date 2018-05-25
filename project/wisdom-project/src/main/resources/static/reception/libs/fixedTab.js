@@ -1,15 +1,15 @@
 
-// var ofixed_table_st = window.setTimeout;
-// window.setTimeout = function(fRef, mDelay) {
-//     if (typeof fRef == 'function') {
-//         var argu = Array.prototype.slice.call(arguments, 2);
-//         var f = (function() {
-//             fRef.apply(null, argu);
-//         });
-//         return ofixed_table_st(f, mDelay);
-//     }
-//     return ofixed_table_st(fRef, mDelay);
-// };
+var ofixed_table_st = window.setTimeout;
+window.setTimeout = function(fRef, mDelay) {
+    if (typeof fRef == 'function') {
+        var argu = Array.prototype.slice.call(arguments, 2);
+        var f = (function() {
+            fRef.apply(null, argu);
+        });
+        return ofixed_table_st(f, mDelay);
+    }
+    return ofixed_table_st(fRef, mDelay);
+};
 
 function oFixedTable(id, obj, _cfg){
     this.id = id;

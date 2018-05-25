@@ -317,5 +317,13 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetUserProductInfo', ['$resource', function($resource) {
         return $resource(beautyIP + '/productInfo/getUserProductInfo')
     }])
+    //查询用户套卡下的子卡的详细信息
+    .factory('GetShopUserProjectGroupRelRelationInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + '/projectInfo/getShopUserProjectGroupRelRelationInfo')
+    }])
+    //用户用户划套卡下的子卡操作
+    .factory('ConsumesDaughterCard', ['$resource', function($resource) {
+        return $resource(beautyIP + '/consumes/consumesDaughterCard')
+    }])
 
 ;

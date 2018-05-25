@@ -12,8 +12,6 @@ angular.module('controllers',[]).controller('addressManagementCtrl',
             });
             $scope.$on('$ionicView.enter', function(){
 
-                console.log(window.localStorage.getItem("productType"));
-
                 GetUserAddressList.get(function(data){
                     $ionicLoading.hide();
                     BusinessUtil.checkResponseData(data,"addressManagement");

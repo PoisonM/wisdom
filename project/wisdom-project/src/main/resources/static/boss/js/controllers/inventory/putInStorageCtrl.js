@@ -9,16 +9,43 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 ids: [],/*入库产品*/
                 detailProductList:[],
                 searchProductList:[],
-                searchContent :""
+                searchContent :"",
+                oneLevelList:[],
+                twoLevelList:[],
+                multiSelectFlag:false,
+                selectProductTypeOneId:'',
+                selectProductList:'',
             };
 
-            GetShopProductLevelInfo.get({},function(data){
+            GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
                 $scope.param.detailProductList = data.responseData.detailProductList;
+                $scope.param.oneLevelList = data.responseData.oneLevelList;
+                $scope.param.twoLevelList = data.responseData.twoLevelList;
             })
 
             $scope.changeBtn = function (type) {
-                $scope.param.type = type;
+                if($scope.param.type != type)
+                {
+                    $scope.param.selectProductTypeOneId = "";
+                    $scope.param.multiSelectFlag=false;
+                    $scope.param.type = type;
+                    $scope.param.selectProductList = '';
+                }
+                else
+                {
+                    $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
+                }
+                GetShopProductLevelInfo.get({productType:type},function(data){
+                    $scope.param.detailProductList = data.responseData.detailProductList;
+                    $scope.param.oneLevelList = data.responseData.oneLevelList;
+                    $scope.param.twoLevelList = data.responseData.twoLevelList;
+                })
             };
+            
+            $scope.chooseTwoLevelList = function (productTypeOneId) {
+                $scope.param.selectProductTypeOneId = productTypeOneId;
+            }
+            
             $scope.selNext = function () {
                 $scope.param.flag = true;
             };
@@ -36,6 +63,18 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             }
 
             $scope.selProduct = function (domIndex) {
+                if($scope.param.type=='0')
+                {
+                    $scope.param.selectProductList = '客装产品';
+                }
+                else if($scope.param.type=='1')
+                {
+                    $scope.param.selectProductList = '院装产品';
+                }
+                else if($scope.param.type=='2')
+                {
+                    $scope.param.selectProductList = '易耗品';
+                }
                 if ($scope.param.ids.indexOf(domIndex) != -1) {
                     var key = 0;
                     angular.forEach($scope.param.ids, function (val, index) {
@@ -47,6 +86,16 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 } else {
                     $scope.param.ids.push(domIndex);
                 }
+                console.log($scope.param.ids);
+                angular.forEach($scope.param.ids,function (val,index) {
+                    angular.forEach($scope.param.detailProductList,function (val1,index1) {
+                        if(val==index1)
+                        {
+                            $scope.param.selectProductList = $scope.param.selectProductList+','+val1.productTypeTwoName;
+                        }
+                    })
+                })
+                console.log($scope.param.selectProductList);
             };
 
             $scope.inventoryRecordsPicsGo = function(){
@@ -59,7 +108,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
 
             $scope.search = function(){
                 $scope.param.searchProductList = [];
-                GetShopProductLevelInfo.get({},function(data){
+                GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
                     angular.forEach($scope.param.detailProductList,function (value,key) {
                         if(value.productTypeOneName.indexOf($scope.param.searchContent)!=-1||
@@ -76,8 +125,20 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             $scope.clearSearch = function()
             {
                 $scope.param.searchContent = "";
-                GetShopProductLevelInfo.get({},function(data){
+                GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
+                    $scope.param.oneLevelList = data.responseData.oneLevelList;
+                    $scope.param.twoLevelList = data.responseData.twoLevelList;
+                })
+            }
+            
+            $scope.chooseProductList = function (productTypeTwoId) {
+                GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
+                    levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
+                    $scope.param.detailProductList = data.responseData.detailProductList;
+                    $scope.param.oneLevelList = data.responseData.oneLevelList;
+                    $scope.param.twoLevelList = data.responseData.twoLevelList;
+                    $scope.param.multiSelectFlag=false;
                 })
             }
 }])

@@ -463,7 +463,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.confirmations', {
-            url: '/confirmations',
+            url: '/confirmations/:consumeId/:shopProjectInfoName',
             templateUrl: root + '/cashier/confirmations.html',
             controller: 'confirmationsCtrl',
             resolve: {
@@ -490,6 +490,22 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "关联员工",
                         files: [root + "cashier/housekeeperCtrl.js",
                             root + "cashier/housekeeper.css",
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.drawCardConsumption', {
+            url: '/drawCardConsumption/:type/:id',
+            templateUrl: root + '/cashier/drawCardConsumption.html',
+            controller: 'drawCardConsumptionCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "划卡消费",
+                        files: [root + "cashier/drawCardConsumptionCtrl.js",
+                            root + "cashier/drawCardConsumption.css",
+                            root + "appointment/style.css",
                         ]
                     })
                 }]

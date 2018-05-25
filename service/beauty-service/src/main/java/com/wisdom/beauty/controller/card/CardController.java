@@ -198,9 +198,11 @@ public class CardController {
 		ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
 		shopRechargeCardDTO.setId(id);
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(shopRechargeCardDTO);
-
-		ShopRechargeCardOrderDTO shopRechargeCardOrderDTO = new ShopRechargeCardOrderDTO();
-		BeanUtils.copyProperties(shopRechargeCardResponseDTO, shopRechargeCardOrderDTO);
+		ShopRechargeCardOrderDTO shopRechargeCardOrderDTO=null;
+		if(shopRechargeCardResponseDTO!=null){
+			shopRechargeCardOrderDTO = new ShopRechargeCardOrderDTO();
+			BeanUtils.copyProperties(shopRechargeCardResponseDTO, shopRechargeCardOrderDTO);
+		}
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopRechargeCardOrderDTO);

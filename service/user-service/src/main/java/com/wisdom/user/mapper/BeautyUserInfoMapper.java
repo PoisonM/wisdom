@@ -3,11 +3,8 @@
  */
 package com.wisdom.user.mapper;
 
-import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.persistence.annotation.MyBatisDao;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.Map;
 
 /**
  * 用户DAO接口
+ * 
  * @author ThinkGem
  * @version 2014-05-16
  */
@@ -27,5 +25,8 @@ public interface BeautyUserInfoMapper {
 	void updateBeautyUserInfo(UserInfoDTO userInfoDTO);
 
 	void insertBeautyUserInfo(UserInfoDTO userInfoDTO);
+
+	// 更加多个id查询用户信息集合
+	List<UserInfoDTO> getUserByInfoList(Map<String, Object> userIdMap);
 
 }
