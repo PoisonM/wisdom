@@ -1,6 +1,6 @@
 package com.wisdom.user.service.impl;
 
-import com.google.gson.Gson;
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
@@ -10,7 +10,6 @@ import com.wisdom.common.util.*;
 import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.service.UserInfoService;
-import org.apache.ibatis.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

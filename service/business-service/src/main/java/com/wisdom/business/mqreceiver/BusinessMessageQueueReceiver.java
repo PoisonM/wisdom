@@ -1,10 +1,9 @@
 package com.wisdom.business.mqreceiver;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.aliyuncs.exceptions.ClientException;
-import com.google.gson.Gson;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.service.transaction.PayRecordService;
-import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
@@ -20,6 +19,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Component
@@ -34,7 +34,7 @@ public class BusinessMessageQueueReceiver {
     @Autowired
     private PayRecordService payRecordService;
 
-    private static Gson gson = new Gson();
+    Gson gson = new Gson();
 
     @RabbitListener(queues = "notifySpecialShopBossCustomerTransaction")
     @RabbitHandler
