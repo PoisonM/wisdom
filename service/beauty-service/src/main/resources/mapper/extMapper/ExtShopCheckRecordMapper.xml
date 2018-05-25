@@ -6,7 +6,7 @@
         <result column="flow_no" property="flowNo" jdbcType="VARCHAR" />
         <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR" />
         <result column="state" property="state" jdbcType="CHAR" />
-        <result column="shop_boss_code" property="shopBossCode" jdbcType="VARCHAR" />
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
         <result column="shop_close_position_id" property="shopClosePositionId" jdbcType="VARCHAR" />
         <result column="actual_stock_number" property="actualStockNumber" jdbcType="INTEGER" />
         <result column="stock_number" property="stockNumber" jdbcType="INTEGER" />
@@ -77,14 +77,14 @@
         </where>
     </sql>
     <sql id="Base_Column_List" >
-        id, flow_no, shop_store_id, state, shop_boss_code, shop_close_position_id, actual_stock_number,
+        id, flow_no, shop_store_id, state, sys_boss_code, shop_close_position_id, actual_stock_number,
         stock_number, shop_proc_name, shop_proc_id, product_type_one_name, product_type_one_Id,
         manager_id, create_date, update_date
     </sql>
     <!--批量插入-->
     <insert id="insertBatchCheckRecord" >
         insert into shop_check_record (id, flow_no, shop_store_id,
-        state, shop_boss_code, shop_close_position_id,
+        state, sys_boss_code, shop_close_position_id,
         actual_stock_number, stock_number, shop_proc_name,
         shop_proc_id, product_type_one_name, product_type_one_Id,
         manager_id, create_date, update_date
@@ -92,7 +92,7 @@
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.id,jdbcType=VARCHAR}, #{item.flowNo,jdbcType=VARCHAR}, #{item.shopStoreId,jdbcType=VARCHAR},
-            #{item.state,jdbcType=CHAR}, #{item.shopBossCode,jdbcType=VARCHAR}, #{item.shopClosePositionId,jdbcType=VARCHAR},
+            #{item.state,jdbcType=CHAR}, #{item.sysBossCode,jdbcType=VARCHAR}, #{item.shopClosePositionId,jdbcType=VARCHAR},
             #{item.actualStockNumber,jdbcType=INTEGER}, #{item.stockNumber,jdbcType=INTEGER}, #{item.shopProcName,jdbcType=VARCHAR},
             #{item.shopProcId,jdbcType=VARCHAR}, #{item.productTypeOneName,jdbcType=VARCHAR}, #{item.productTypeOneId,jdbcType=VARCHAR},
             #{item.managerId,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP}, #{item.updateDate,jdbcType=TIMESTAMP}

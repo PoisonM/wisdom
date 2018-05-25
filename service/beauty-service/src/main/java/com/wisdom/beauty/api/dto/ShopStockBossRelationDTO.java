@@ -10,7 +10,7 @@ public class ShopStockBossRelationDTO extends BaseEntity implements Serializable
     private String id;
 
     //
-    private String shopBossCode;
+    private String sysBossCode;
 
     //
     private String shopStoreId;
@@ -53,11 +53,11 @@ public class ShopStockBossRelationDTO extends BaseEntity implements Serializable
     }
 
     public String getShopBossId() {
-        return shopBossCode;
+        return sysBossCode;
     }
 
-    public void setShopBossId(String shopBossCode) {
-        this.shopBossCode = shopBossCode;
+    public void setShopBossId(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getShopStoreId() {
