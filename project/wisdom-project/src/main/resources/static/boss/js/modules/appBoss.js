@@ -28,7 +28,8 @@ define(['angular'], function (angular) {
         .run(function($rootScope){
             $rootScope.shopInfo = {
                 shopId:'11',
-                entryShopProductList:[]
+                entryShopProductList:[],
+                shopStoreId:''
             };
         })
     return app;

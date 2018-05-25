@@ -3,7 +3,6 @@ angular.module('controllers',[]).controller('successfulInventoryCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading) {
             $rootScope.title = "成功入库";
             $scope.entryDetailsGo = function(){
-                $state.go('entryDetails');
+                $state.go('entryDetails',{entryId:$stateParams.entryId});
             }
-
-        }])
+}])
