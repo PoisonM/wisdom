@@ -1,5 +1,6 @@
 package com.wisdom.beauty.core.service;
 
+import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 
@@ -54,4 +55,12 @@ public interface ShopCardService {
      * @return
      */
     int updateRechargeCardInfo(ExtShopRechargeCardDTO extShopRechargeCardDTO);
+
+    /**
+     * 根据虚拟商品id获取虚拟商品列表
+     *
+     * @param shopProjectProductCardRelationDTO
+     * @return
+     */
+    List<ShopProjectProductCardRelationDTO> getShopProjectProductCardRelationList(ShopProjectProductCardRelationDTO shopProjectProductCardRelationDTO);
 }

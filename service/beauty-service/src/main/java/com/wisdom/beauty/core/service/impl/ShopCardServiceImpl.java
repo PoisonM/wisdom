@@ -187,6 +187,30 @@ public class ShopCardServiceImpl implements ShopCardService {
         return update;
     }
 
+    /**
+     * 根据虚拟商品id获取虚拟商品列表
+     *
+     * @param relationDTO
+     * @return
+     */
+    @Override
+    public List<ShopProjectProductCardRelationDTO> getShopProjectProductCardRelationList(ShopProjectProductCardRelationDTO relationDTO) {
+
+        if (null == relationDTO) {
+            logger.error("根据虚拟商品id获取虚拟商品列表{}", "relationDTO = [" + relationDTO + "]");
+            return null;
+        }
+        ShopProjectProductCardRelationCriteria criteria = new ShopProjectProductCardRelationCriteria();
+        ShopProjectProductCardRelationCriteria.Criteria c = criteria.createCriteria();
+        if (StringUtils.isNotBlank(relationDTO.getShopRechargeCardId())) {
+            c.andShopRechargeCardIdEqualTo(relationDTO.getShopRechargeCardId());
+        }
+
+        List<ShopProjectProductCardRelationDTO> relationDTOList = shopProjectProductCardRelationMapper.selectByCriteria(criteria);
+        logger.info("根据虚拟商品id获取虚拟商品列表查询大小为={}", relationDTOList.size());
+        return relationDTOList;
+    }
+
 
     /**
      * 充值卡适用范围
@@ -194,14 +218,26 @@ public class ShopCardServiceImpl implements ShopCardService {
      * @param extShopRechargeCardDTO
      */
     private void useScope(ExtShopRechargeCardDTO extShopRechargeCardDTO) {
-        List<String> projectIds = extShopRechargeCardDTO.getProjectIds();
-        if (CommonUtils.objectIsNotEmpty(projectIds)) {
-            for (String string : projectIds) {
-                ShopProjectProductCardRelationDTO relationDTO = new ShopProjectProductCardRelationDTO();
-                String relationId = IdGen.uuid();
+        //保存单次卡的适用范围
+        List<ShopProjectProductCardRelationDTO> timesList = extShopRechargeCardDTO.getTimesList();
+        if (CommonUtils.objectIsNotEmpty(timesList)) {
+            for (ShopProjectProductCardRelationDTO relationDTO : timesList) {
                 relationDTO.setId(IdGen.uuid());
-                relationDTO.setShopRechargeCardId(relationId);
-                relationDTO.setShopGoodsTypeId(string);
+                relationDTO.setShopRechargeCardId(extShopRechargeCardDTO.getId());
+                relationDTO.setShopGoodsTypeId(relationDTO.getShopGoodsTypeId());
+                relationDTO.setGoodsType(GoodsTypeEnum.TIME_CARD.getCode());
+                relationDTO.setCreateDate(new Date());
+                relationDTO.setDiscount(extShopRechargeCardDTO.getPeriodDiscount());
+                shopProjectProductCardRelationMapper.insertSelective(relationDTO);
+            }
+        }
+        //保存疗程卡的适用范围
+        List<ShopProjectProductCardRelationDTO> periodList = extShopRechargeCardDTO.getPeriodList();
+        if (CommonUtils.objectIsNotEmpty(periodList)) {
+            for (ShopProjectProductCardRelationDTO relationDTO : periodList) {
+                relationDTO.setId(IdGen.uuid());
+                relationDTO.setShopRechargeCardId(extShopRechargeCardDTO.getId());
+                relationDTO.setShopGoodsTypeId(relationDTO.getShopGoodsTypeId());
                 relationDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
                 relationDTO.setCreateDate(new Date());
                 relationDTO.setDiscount(extShopRechargeCardDTO.getPeriodDiscount());
@@ -209,14 +245,12 @@ public class ShopCardServiceImpl implements ShopCardService {
             }
         }
         //保存产品的适用范围
-        List<String> productIds = extShopRechargeCardDTO.getProductIds();
-        if (CommonUtils.objectIsNotEmpty(productIds)) {
-            for (String string : productIds) {
-                ShopProjectProductCardRelationDTO relationDTO = new ShopProjectProductCardRelationDTO();
-                String relationId = IdGen.uuid();
+        List<ShopProjectProductCardRelationDTO> productList = extShopRechargeCardDTO.getProductList();
+        if (CommonUtils.objectIsNotEmpty(productList)) {
+            for (ShopProjectProductCardRelationDTO relationDTO : productList) {
                 relationDTO.setId(IdGen.uuid());
-                relationDTO.setShopRechargeCardId(relationId);
-                relationDTO.setShopGoodsTypeId(string);
+                relationDTO.setShopRechargeCardId(extShopRechargeCardDTO.getId());
+                relationDTO.setShopGoodsTypeId(relationDTO.getShopGoodsTypeId());
                 relationDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
                 relationDTO.setCreateDate(new Date());
                 relationDTO.setDiscount(extShopRechargeCardDTO.getPeriodDiscount());
