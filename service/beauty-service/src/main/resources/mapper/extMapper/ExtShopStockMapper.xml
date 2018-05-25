@@ -3,7 +3,7 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.ExtShopStockMapper">
     <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStockDTO">
         <id column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="shop_boss_code" property="shopBossCode" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
         <result column="shop_stock_record_id" property="shopStockRecordId" jdbcType="VARCHAR"/>
         <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR"/>
         <result column="flow_no" property="flowNo" jdbcType="VARCHAR"/>
@@ -81,20 +81,20 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-        id, shop_boss_code, shop_stock_record_id, shop_store_id, flow_no, applay_user, stock_status,
+        id, sys_boss_code, shop_stock_record_id, shop_store_id, flow_no, applay_user, stock_status,
         detail, stock_number, shop_proc_id, shop_proc_name, product_date, stock_price, create_by,
         create_date, update_user, update_date
     </sql>
     <!--批量插入-->
     <insert id="insertBatchShopStock" >
-        insert into shop_stock (id, shop_boss_code, shop_stock_record_id,
+        insert into shop_stock (id, sys_boss_code, shop_stock_record_id,
         shop_store_id, flow_no, stock_number,
         shop_proc_id, shop_proc_name, product_date,
         stock_price, create_by, create_date,
         update_user, update_date)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.id,jdbcType=VARCHAR}, #{item.shopBossCode,jdbcType=VARCHAR}, #{item.shopStockRecordId,jdbcType=VARCHAR},
+            (#{item.id,jdbcType=VARCHAR}, #{item.sysBossCode,jdbcType=VARCHAR}, #{item.shopStockRecordId,jdbcType=VARCHAR},
             #{item.shopStoreId,jdbcType=VARCHAR}, #{item.flowNo,jdbcType=VARCHAR}, #{item.stockNumber,jdbcType=INTEGER},
             #{item.shopProcId,jdbcType=VARCHAR}, #{item.shopProcName,jdbcType=VARCHAR}, #{item.productDate,jdbcType=TIMESTAMP},
             #{item.stockPrice,jdbcType=DECIMAL}, #{item.createBy,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP},
