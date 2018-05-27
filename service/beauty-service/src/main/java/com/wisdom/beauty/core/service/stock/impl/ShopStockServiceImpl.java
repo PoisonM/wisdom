@@ -735,6 +735,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 		BigDecimal allUseCost = null;
 		BigDecimal useCost = null;
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumbers) {
+			if(shopStockNumber.getStockPrice()==null){
+				//为空的时候，则继续循环
+				continue;
+			}
 			if (StringUtils.isNotBlank(productTypeTwoId)) {
 				if (productTypeTwoId.equals(shopStockNumber.getProductTypeTwoId())) {
 					BigDecimal useCostDev = shopStockNumber.getStockPrice()
