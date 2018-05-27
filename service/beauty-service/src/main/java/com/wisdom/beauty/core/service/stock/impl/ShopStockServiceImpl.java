@@ -680,6 +680,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			} else {
 				allUseCost = allUseCost.add(useCost);
 			}
+			shopStockResponse.setShopStoreName(shopStockNumber.getShopStoreName());
 			shopStockResponses.add(shopStockResponse);
 		}
 
@@ -691,7 +692,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			logger.info("getProductDetail方法获取的对象shopProductInfoResponses为空");
 			return null;
 		}
-		shopStockResponse.setImageUrl(shopProductInfoResponses.getImageUrl());
+		shopStockResponse.setProductImage(shopProductInfoResponses.getProductUrl());
 		shopStockResponse.setShopProcName(shopProductInfoResponses.getProductName());
 		shopStockResponse.setProductCode(shopProductInfoResponses.getProductCode());
 		// 单位
