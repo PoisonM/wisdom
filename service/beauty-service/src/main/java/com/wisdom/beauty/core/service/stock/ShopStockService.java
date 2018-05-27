@@ -184,7 +184,7 @@ public interface ShopStockService {
 	 * @Description: 产品盘点
 	 * @Date:2018/5/19 14:33
 	 */
-	int checkProduct(List<ShopCheckRecordDTO> list);
+	String checkProduct(List<ShopCheckRecordDTO> list);
 
 	/**
 	 * @Author:zhanghuan

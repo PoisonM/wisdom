@@ -31,6 +31,25 @@
             #{item.id,jdbcType=VARCHAR}
         </foreach>
     </update>
+    <!--根据条件是id批量更新-->
+    <update id="updateBatchShopStockNumberCondition" parameterType="java.util.List">
+        update shop_stock_number
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="stock_number =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    when shop_proc_id=#{item.shopProcId}  AND shop_store_id=#{item.shopStoreId} then #{item.stockNumber}
+                </foreach>
+            </trim>
+        </trim>
+        where shop_proc_id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.shopProcId,jdbcType=VARCHAR}
+        </foreach> AND
+        shop_store_id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.shopStoreId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
     <!--批量插入-->
     <insert id="saveBatchShopStockNumber">
         insert into shop_stock_number (id, shop_proc_id, shop_store_id,

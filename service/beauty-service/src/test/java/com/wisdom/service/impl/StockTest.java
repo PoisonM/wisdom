@@ -134,23 +134,21 @@ public class StockTest  {
         shopStockService.insertShopStockDTO(toJSONString);
     }
     @Test
-    public void  testUpdate() throws Exception {
+    public void  testUpdateorsaveStockNumber() throws Exception {
         ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
-        shopStockNumberDTO.setId("cf2819774590432f85f3ad27ca758ac1");
         shopStockNumberDTO.setStockNumber(7587854);
-        shopStockNumberDTO.setShopProcId("123");
-        shopStockNumberDTO.setShopStoreId("65174281");
+        shopStockNumberDTO.setShopProcId("7878");
+        shopStockNumberDTO.setShopStoreId("651742081");
         ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
-        shopStockNumberDTO2.setId("ed04ff8418d4469fb5d3cef4f9c2c5d4");
         shopStockNumberDTO2.setStockNumber(787878);
-        shopStockNumberDTO2.setShopProcId("123");
-        shopStockNumberDTO2.setShopStoreId("65174281");
+        shopStockNumberDTO2.setShopProcId("6");
+        shopStockNumberDTO2.setShopStoreId("98548");
         List<ShopStockNumberDTO> list=new ArrayList<>();
         list.add(shopStockNumberDTO);
         list.add(shopStockNumberDTO2);
-       // extShopStockNumberMapper.updateBatchShopStockNumber(param);
+        extShopStockNumberMapper.updateBatchShopStockNumber(list);
 
-        JSONArray json = JSONArray.fromObject(list);
+  /*      JSONArray json = JSONArray.fromObject(list);
         String shopStockNumberDTOs = json.toString();//把json转换为String
        // extShopStockNumberMapper.saveBatchShopStockNumber(list);
         MvcResult result = mvc.perform(post("/stock/products").contentType(MediaType.APPLICATION_JSON).content(shopStockNumberDTOs))
@@ -159,7 +157,7 @@ public class StockTest  {
                 .andReturn();// 返回执行请求的结果
 
 
-        System.out.println(result.getResponse().getContentAsString());
+        System.out.println(result.getResponse().getContentAsString());*/
     }
 
     @Test
@@ -195,17 +193,36 @@ public class StockTest  {
     }
 
     @Test
-    public  void  pandian(){
-        ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
-        shopStockNumberDTO.setId("cf2819774590432f85f3ad27ca758ac1");
-        shopStockNumberDTO.setStockNumber(888);
-        ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
-        shopStockNumberDTO2.setId("ed04ff8418d4469fb5d3cef4f9c2c5d4");
-        shopStockNumberDTO2.setStockNumber(888);
-        List<ShopStockNumberDTO> list=new ArrayList<>();
+    public  void  pandian() throws Exception {
+        ShopCheckRecordDTO shopStockNumberDTO=new ShopCheckRecordDTO();
+        shopStockNumberDTO.setProductTypeOneId("23");
+        shopStockNumberDTO.setProductTypeOneName("品牌名字");
+        shopStockNumberDTO.setStockNumber(111111);
+        shopStockNumberDTO.setActualStockNumber(55555);
+        shopStockNumberDTO.setShopProcId("66");
+        shopStockNumberDTO.setShopProcName("产品名字");
+        shopStockNumberDTO.setShopStoreId("8989876665f5");
+        ShopCheckRecordDTO shopStockNumberDTO2=new ShopCheckRecordDTO();
+        shopStockNumberDTO2.setProductTypeOneId("2322");
+        shopStockNumberDTO2.setProductTypeOneName("品牌名字");
+        shopStockNumberDTO2.setStockNumber(111111222);
+        shopStockNumberDTO2.setActualStockNumber(55555222);
+        shopStockNumberDTO2.setShopProcId("77");
+        shopStockNumberDTO2.setShopProcName("产品名字222");
+        shopStockNumberDTO2.setShopStoreId("8989876665f5222");
+        List<ShopCheckRecordDTO> list=new ArrayList<>();
         list.add(shopStockNumberDTO);
         list.add(shopStockNumberDTO2);
-       // shopStockService.checkProduct(list);
+        JSONArray json = JSONArray.fromObject(list);
+        String toJSONString = json.toString();//把json转换为String
+        MvcResult result = mvc.perform(post("/stock/checkProduct").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
+
     }
     @Test
     public  void  pingcang(){

@@ -706,17 +706,30 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
-	public int checkProduct(List<ShopCheckRecordDTO> list) {
+	public String checkProduct(List<ShopCheckRecordDTO> list) {
 		// 插入盘点记录
 		String flowNo = IdGen.uuid();
 		List<ShopCheckRecordDTO> shopCheckRecordDTOList = new ArrayList<>();
+        //更新库存使用的list
+		List<ShopStockNumberDTO> shopStockNumberDTOs=new ArrayList<>();
+		ShopStockNumberDTO shopStockNumberDTO=null;
 		for (ShopCheckRecordDTO shopCheckRecordDTO : list) {
+			shopStockNumberDTO=new ShopStockNumberDTO();
+			shopStockNumberDTO.setStockNumber(shopCheckRecordDTO.getActualStockNumber());
+			shopStockNumberDTO.setShopProcId(shopStockNumberDTO.getShopProcId());
+			shopStockNumberDTO.setShopStoreId(shopStockNumberDTO.getShopStoreId());
+			shopStockNumberDTOs.add(shopStockNumberDTO);
+			//拼装更新库存对象结束
+			shopCheckRecordDTO.setId(IdGen.uuid());
 			shopCheckRecordDTO.setFlowNo(flowNo);
 			shopCheckRecordDTO.setCreateDate(new Date());
 			shopCheckRecordDTO.setUpdateDate(new Date());
 			shopCheckRecordDTOList.add(shopCheckRecordDTO);
 		}
-		return extShopCheckRecordMapper.insertBatchCheckRecord(shopCheckRecordDTOList);
+		//更新该产品的库存
+		extShopStockNumberMapper.updateBatchShopStockNumberCondition(shopStockNumberDTOs);
+		extShopCheckRecordMapper.insertBatchCheckRecord(shopCheckRecordDTOList);
+		return  flowNo;
 	}
 
 	@Override
