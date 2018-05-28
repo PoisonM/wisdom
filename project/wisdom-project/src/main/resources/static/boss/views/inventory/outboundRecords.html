@@ -12,7 +12,7 @@
            </p>
            <div style="border:solid 1px #e6e6e6;border-radius: 6px;width:90%;margin:10px auto;box-shadow: 0 2px 4px 0 rgba(153,153,153,0.20)"  ng-repeat="item in outboundRecords">
                <ion-list>
-                   <ion-item style="height:90px;border-radius:6px " class="sb">
+                   <ion-item style="height:90px;border-radius:6px " class="sb" ng-click="outboundOrderDetailsGo(item.id)">
                        <div >
                            <div class="ml10 mt10">
                                <P class="fs14 col333 ">{{item.name}}</P>

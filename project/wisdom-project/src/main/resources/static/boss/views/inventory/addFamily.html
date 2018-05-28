@@ -18,19 +18,12 @@
                      </span>
                         <img src="images/more.png" class="more mr10" style="margin-top: 20px;" ng-click="selShop()">
                     </p>
-                    <div>
-
-                    </div>
-
                     <ul class="bgfff">
-                        <li class="h50  ml20 bbl" style="display: flex" ng-repeat="item in addFamily" ng-click="selEmployees($index)
-
-">
+                        <li class="h50  ml20 bbl" style="display: flex" ng-repeat="item in addFamily" ng-click="selEmployees($index)">
                             <span class="mr10">
                                  <i class="icon ion-ios-checkmark-outline" style="color:#FF6666;font-size:20px;" ng-if="param.index!=$index"></i>
                                  <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.index==$index"></i>
                             </span>
-
                             <p style="height:40px;line-height: 40px;width:40px;background: gainsboro;border-radius: 50%; "class="mt5" >
                                 <img ng-src="{{item.photo}}" style="height:40px;line-height: 40px;width:40px;border-radius: 50%; ">
                             </p>
@@ -41,7 +34,6 @@
 
                         </li>
                     </ul>
-
                 </div>
             </ion-list>
             <div style="position: absolute;height:100%;background:rgba(0,0,0,0.2);top:40px;width:100%;z-index: 1000" ng-show="param.flag" ng-click="all()">

@@ -358,6 +358,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockRecordDTO.setStockStyle(shopStockDto.getStockType());
 		shopStockRecordDTO.setDetail(shopStockDto.getDetail());
 		shopStockRecordDTO.setManagerId(sysBossDTO.getId());
+		shopStockRecordDTO.setReceiver(shopStockDto.getReceiver());
 		// 判断是出库还是入库
 		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())
 				|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
@@ -706,7 +707,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String checkProduct(List<ShopCheckRecordDTO> list) {
+		logger.info("checkProduct方法出入的参数list={}",list);
 		// 插入盘点记录
 		String flowNo = IdGen.uuid();
 		List<ShopCheckRecordDTO> shopCheckRecordDTOList = new ArrayList<>();
@@ -726,9 +729,13 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopCheckRecordDTO.setUpdateDate(new Date());
 			shopCheckRecordDTOList.add(shopCheckRecordDTO);
 		}
+        //插入盘点的记录
+		int insertResult=extShopCheckRecordMapper.insertBatchCheckRecord(shopCheckRecordDTOList);
+		logger.info("insertBatchCheckRecord方法更新的条数insertResult={}",insertResult);
 		//更新该产品的库存
-		extShopStockNumberMapper.updateBatchShopStockNumberCondition(shopStockNumberDTOs);
-		extShopCheckRecordMapper.insertBatchCheckRecord(shopCheckRecordDTOList);
+		int updateResult=extShopStockNumberMapper.updateBatchShopStockNumberCondition(shopStockNumberDTOs);
+		logger.info("updateBatchShopStockNumberCondition方法更新的条数updateResult={}",updateResult);
+;
 		return  flowNo;
 	}
 

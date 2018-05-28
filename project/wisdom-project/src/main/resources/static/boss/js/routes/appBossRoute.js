@@ -1449,7 +1449,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('outboundOrderDetails', {
-                        url: '/outboundOrderDetails',
+                        url: '/outboundOrderDetails/:outboundId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'outboundOrderDetailsCtrl',
                         resolve: {
