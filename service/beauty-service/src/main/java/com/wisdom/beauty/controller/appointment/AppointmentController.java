@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,7 +80,6 @@ public class AppointmentController {
 	 *
 	 * @param sysShopId
 	 * @param startDate
-	 * @param endDate
 	 * @return
 	 */
 	@RequestMapping(value = "shopDayAppointmentInfoByDate", method = {RequestMethod.POST, RequestMethod.GET})
@@ -87,7 +87,7 @@ public class AppointmentController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String, Object>> shopDayAppointmentInfoByDate(@RequestParam String sysShopId,
-																  @RequestParam String startDate, @RequestParam String endDate) {
+																  @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
 
 		String preLog = "根据时间查询某个美容店预约列表,";
 		long startTime = System.currentTimeMillis();
@@ -97,8 +97,8 @@ public class AppointmentController {
 
 		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(startDate, "datetime"));
-		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(endDate, "datetime"));
+		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(DateUtils.getDateStartTime(startDate), "datetimesec"));
+		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(DateUtils.getDateEndTime(startDate), "datetimesec"));
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
 
 		//根据时间查询当前店下所有美容师
