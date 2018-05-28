@@ -314,5 +314,8 @@ define(['appBoss'], function (app) {
         .factory('GetStockNumber',['$resource',function ($resource){
             return $resource(stock + "getStockNumber")
         }])
+        .factory('GetStockDetailList',['$resource',function ($resource){
+            return $resource(stock + "getStockDetailList")
+        }])
 
 });

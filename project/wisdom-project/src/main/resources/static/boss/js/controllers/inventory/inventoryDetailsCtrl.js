@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('inventoryDetailsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetShopProductLevelInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetShopProductLevelInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetShopProductLevelInfo','GetStockDetailList',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetShopProductLevelInfo,GetStockDetailList) {
             $rootScope.title = "仓库产品";
 
             $scope.param = {
