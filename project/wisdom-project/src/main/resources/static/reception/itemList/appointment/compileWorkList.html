@@ -27,7 +27,7 @@
             <tr ng-repeat="item4 in tempUser" data-par="{{$index}}">
                 <td ng-repeat="infoItem in item4.clerkSchInfo"
                     ng-click="checkedItem($parent.$index,$index,infoItem.id,infoItem.sysBossId,infoItem.sysClerkId,infoItem.sysClerkName,infoItem.scheduleDate,infoItem.sysShopId)"
-                    data-chi="{{$index}}">
+                    >
                     <div ng-if="$index == 0">{{item4.clerkInfo.name}}</div>
                     <div ng-if="$index != 0"
                          ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" >

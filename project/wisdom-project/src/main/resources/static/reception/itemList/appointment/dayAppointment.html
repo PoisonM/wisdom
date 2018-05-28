@@ -91,10 +91,23 @@
             <thead>
                 <tr>
                     <td>
-                        <div></div>
+                        <div style="height: 1.1rem;font-size: 0.25rem;color: #888888;width: 1.21875rem;"></div>
                     </td>
-                    <td ng-repeat="(key,value) in memeda">
-                        <div>{{key}}</div>
+                    <td data-cccc="{{value.appointmentInfo}}" ng-repeat="(key,value) in memeda">
+                        <div  class="mr_info">
+                            <p>{{key}}</p>
+                            <div class="info_num">
+                                <span>
+                                    <em>点</em>
+                                    <i>{{value.appointmentInfo.length}}</i>
+                                </span>
+                                <span>
+                                    <em>排</em>
+                                    <i>0</i>
+                                </span>
+                            </div>
+                        </div>
+
                     </td>
                 </tr>
             </thead>
@@ -104,15 +117,22 @@
                         <!-- data-val={{value}} -->
                         <div>{{key}}</div>
                     </td>
-                    <td  ng-onHold = "onHold()" ng-repeat="item in value" class="">
-                        <div class="td_box" style="position: relative">
+                    <td  ng-onHold = "onHold()" ng-repeat="item in value" class="bor_e5">
+                        <div class="td_box" style="position: relative;width: 100%">
                             <!--<span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0','bgFFE6E6':indexItem.status=='1','bgE1F8FF':indexItem.status=='2','bgF3F3F3':indexItem.status=='3','bgF3F3F3':indexItem.status=='4','bgE1F8FF':indexItem.status=='5','bgF3F3F3':indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">-->
                             <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
                                 <!--{{index.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1}}-->
                                 <div class="havedata">
                                     <div>
+                                        <!--<p>{{indexItem.sysUserName}}</p>
                                         <span>{{indexItem.shopProjectName}}</span>
-                                        <span>{{indexItem.status}}</span>
+                                        <span>{{indexItem.status}}</span>-->
+                                        <p class="user_name">{{indexItem.sysUserName}}</p>
+                                        <div class="user_info">
+                                            <em>点</em>
+                                            <span class="time">{{indexItem.appointStartTime | date: "HH:mm"}}</span>
+                                            <span class="pr_name">{{indexItem.shopProjectName}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </span>

@@ -45,9 +45,11 @@
             </div>
             <div>
                 <P class="fs12 col333 h30 mt10 ml20">产品信息</P>
-                <div style="border:solid 1px #e6e6e6;border-radius: 6px;width:90%;margin:auto;box-shadow: 0 2px 4px 0 rgba(153,153,153,0.20)">
+                <div style="border:solid 1px #e6e6e6;border-radius: 6px;
+                              width:90%;margin:auto;box-shadow: 0 2px 4px 0 rgba(153,153,153,0.20)"
+                              ng-repeat="item in param.shopEntryDetails.shopStockResponseDTO">
                     <ion-list>
-                        <ion-item style="height:90px;border-radius:6px 6px 0 0" class="sb" ng-repeat="item in param.shopEntryDetails.shopStockResponseDTO">
+                        <ion-item style="height:90px;border-radius:6px 6px 0 0" class="sb">
                             <div style="display: flex">
                                 <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
                                     <img ng-src="{{item.imageUrl}}">
@@ -61,9 +63,6 @@
                                     </P>
                                 </div>
                             </div>
-                            <!--<p >-->
-                               <!--<img src="images/inventory/modify.png" class="modifyPic mr10 mt10">-->
-                            <!--</p>-->
                         </ion-item>
                     </ion-list>
                     <p class="h40 sb bbl" style="background: #F6F6F6;">
@@ -80,7 +79,6 @@
                     </p>
                 </div>
             </div>
-
         </div>
         </div>
     </ion-content>

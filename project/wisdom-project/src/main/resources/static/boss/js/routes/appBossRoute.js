@@ -1424,7 +1424,7 @@ define(['appBoss'], function(app){
                     })
                     /*successfulInventory成功入库*/
                     .state('successfulInventory', {
-                        url: '/successfulInventory',
+                        url: '/successfulInventory/:entryId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'successfulInventoryCtrl',
                         resolve: {

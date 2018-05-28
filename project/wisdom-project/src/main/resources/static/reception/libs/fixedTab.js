@@ -19,7 +19,7 @@ function oFixedTable(id, obj, _cfg){
         fixHead: _cfg.fixHead || true,
         rows: _cfg.rows || 1,
         cols: _cfg.cols || 0,
-        background: _cfg.background || '#f1f1f1',
+        background: _cfg.background || '#ffffff',
         zindex: _cfg.zindex || 9999
     };
 

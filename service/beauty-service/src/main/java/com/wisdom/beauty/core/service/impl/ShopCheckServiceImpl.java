@@ -10,6 +10,7 @@ import com.wisdom.beauty.core.mapper.ShopStockNumberMapper;
 import com.wisdom.beauty.core.service.ShopCheckService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.IdGen;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +46,8 @@ public class ShopCheckServiceImpl implements ShopCheckService {
     @Autowired
     private ShopClosePositionRecordMapper shopClosePositionRecordMapper;
     @Override
-    public List<ShopCheckRecordResponseDTO> getProductCheckRecordList(ShopCheckRecordDTO shopCheckRecordDTO) {
+    public List<ShopCheckRecordResponseDTO> getProductCheckRecordList(PageParamVoDTO<ShopCheckRecordDTO> pageParamVoDTO) {
+        ShopCheckRecordDTO shopCheckRecordDTO=pageParamVoDTO.getRequestData();
         if(shopCheckRecordDTO==null){
             logger.info("getProductCheckRecord方法传入的参数shopCheckRecordDTO为空");
             return null;
@@ -58,7 +60,10 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         if(StringUtils.isNotBlank(shopCheckRecordDTO.getShopStoreId())){
             criteria.andShopStoreIdEqualTo(shopCheckRecordDTO.getShopStoreId());
         }
-
+        if(pageParamVoDTO.getPaging()){
+            shopCheckRecordCriteria.setLimitStart(pageParamVoDTO.getPageNo());
+            shopCheckRecordCriteria.setPageSize(pageParamVoDTO.getPageSize());
+        }
         List<ShopCheckRecordDTO> list= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
 
         Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
@@ -230,7 +235,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         ShopProductInfoCheckResponseDTO shopProductInfoCheckResponseDTO=new ShopProductInfoCheckResponseDTO();
         for(ShopProductInfoResponseDTO shopProductInfoResponseDTO:list){
             shopProductInfoCheckResponseDTO.setProductName(shopProductInfoResponseDTO.getProductName());
-            shopProductInfoCheckResponseDTO.setImageUrl(shopProductInfoResponseDTO.getImageUrl());
+            shopProductInfoCheckResponseDTO.setProductUrl(shopProductInfoResponseDTO.getProductUrl());
             shopProductInfoCheckResponseDTO.setProductCode(shopProductInfoResponseDTO.getProductCode());
             shopProductInfoCheckResponseDTO.setProductUnit(shopProductInfoResponseDTO.getProductUnit());
             shopProductInfoCheckResponseDTO.setProductSpec(shopProductInfoResponseDTO.getProductSpec());

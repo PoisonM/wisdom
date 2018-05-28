@@ -282,19 +282,19 @@ public class StoreAndStockController {
 	/**
 	 * @Author:zhanghuan
 	 * @Param: 产品id 仓库id 实际数量
-	 * @Return:
+	 * @Return:  盘点记录流水号
 	 * @Description: 产品盘点
 	 * @Date:2018/5/19 15:53
 	 */
 	@RequestMapping(value = "/checkProduct", method = RequestMethod.POST)
 	@ResponseBody
-	ResponseDTO<Integer> checkProduct(@RequestParam String shopCheckRecordDTO) {
+	ResponseDTO<String> checkProduct(@RequestBody String shopCheckRecordDTO) {
 		long currentTimeMillis = System.currentTimeMillis();
 		ShopCheckRecordDTO[] shopCheckRecordDTOArry = (ShopCheckRecordDTO[]) JSONArray
 				.toArray(JSONArray.fromObject(shopCheckRecordDTO), ShopCheckRecordDTO.class);
 		List<ShopCheckRecordDTO> list = Arrays.asList(shopCheckRecordDTOArry);
-		Integer result = shopStockService.checkProduct(list);
-		ResponseDTO<Integer> responseDTO = new ResponseDTO<>();
+		String result = shopStockService.checkProduct(list);
+		ResponseDTO<String> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(result);
 		logger.info("checkProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
@@ -310,11 +310,17 @@ public class StoreAndStockController {
 	 */
 	@RequestMapping(value = "/getProductCheckRecord", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ShopCheckRecordResponseDTO>> getProductCheckRecord(@RequestParam String shopStoreId) {
+	ResponseDTO<List<ShopCheckRecordResponseDTO>> getProductCheckRecord(@RequestParam String shopStoreId,
+																		int pageSize) {
 		long currentTimeMillis = System.currentTimeMillis();
 		ShopCheckRecordDTO shopCheckRecordDTO = new ShopCheckRecordDTO();
 		shopCheckRecordDTO.setShopStoreId(shopStoreId);
-		List<ShopCheckRecordResponseDTO> list = shopCheckService.getProductCheckRecordList(shopCheckRecordDTO);
+		PageParamVoDTO<ShopCheckRecordDTO> pageParamVoDTO=new PageParamVoDTO();
+		pageParamVoDTO.setPaging(true);
+		pageParamVoDTO.setPageNo(0);
+		pageParamVoDTO.setPageSize(pageSize);
+		pageParamVoDTO.setRequestData(shopCheckRecordDTO);
+		List<ShopCheckRecordResponseDTO> list = shopCheckService.getProductCheckRecordList(pageParamVoDTO);
 		ResponseDTO<List<ShopCheckRecordResponseDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(list);

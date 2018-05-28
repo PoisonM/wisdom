@@ -680,6 +680,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			} else {
 				allUseCost = allUseCost.add(useCost);
 			}
+			shopStockResponse.setShopStoreName(shopStockNumber.getShopStoreName());
 			shopStockResponses.add(shopStockResponse);
 		}
 
@@ -691,7 +692,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			logger.info("getProductDetail方法获取的对象shopProductInfoResponses为空");
 			return null;
 		}
-		shopStockResponse.setImageUrl(shopProductInfoResponses.getImageUrl());
+		shopStockResponse.setProductImage(shopProductInfoResponses.getProductUrl());
 		shopStockResponse.setShopProcName(shopProductInfoResponses.getProductName());
 		shopStockResponse.setProductCode(shopProductInfoResponses.getProductCode());
 		// 单位
@@ -705,17 +706,30 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
-	public int checkProduct(List<ShopCheckRecordDTO> list) {
+	public String checkProduct(List<ShopCheckRecordDTO> list) {
 		// 插入盘点记录
 		String flowNo = IdGen.uuid();
 		List<ShopCheckRecordDTO> shopCheckRecordDTOList = new ArrayList<>();
+        //更新库存使用的list
+		List<ShopStockNumberDTO> shopStockNumberDTOs=new ArrayList<>();
+		ShopStockNumberDTO shopStockNumberDTO=null;
 		for (ShopCheckRecordDTO shopCheckRecordDTO : list) {
+			shopStockNumberDTO=new ShopStockNumberDTO();
+			shopStockNumberDTO.setStockNumber(shopCheckRecordDTO.getActualStockNumber());
+			shopStockNumberDTO.setShopProcId(shopStockNumberDTO.getShopProcId());
+			shopStockNumberDTO.setShopStoreId(shopStockNumberDTO.getShopStoreId());
+			shopStockNumberDTOs.add(shopStockNumberDTO);
+			//拼装更新库存对象结束
+			shopCheckRecordDTO.setId(IdGen.uuid());
 			shopCheckRecordDTO.setFlowNo(flowNo);
 			shopCheckRecordDTO.setCreateDate(new Date());
 			shopCheckRecordDTO.setUpdateDate(new Date());
 			shopCheckRecordDTOList.add(shopCheckRecordDTO);
 		}
-		return extShopCheckRecordMapper.insertBatchCheckRecord(shopCheckRecordDTOList);
+		//更新该产品的库存
+		extShopStockNumberMapper.updateBatchShopStockNumberCondition(shopStockNumberDTOs);
+		extShopCheckRecordMapper.insertBatchCheckRecord(shopCheckRecordDTOList);
+		return  flowNo;
 	}
 
 	@Override
@@ -735,6 +749,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 		BigDecimal allUseCost = null;
 		BigDecimal useCost = null;
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumbers) {
+			if(shopStockNumber.getStockPrice()==null){
+				//为空的时候，则继续循环
+				continue;
+			}
 			if (StringUtils.isNotBlank(productTypeTwoId)) {
 				if (productTypeTwoId.equals(shopStockNumber.getProductTypeTwoId())) {
 					BigDecimal useCostDev = shopStockNumber.getStockPrice()
