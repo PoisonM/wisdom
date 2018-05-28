@@ -188,7 +188,7 @@ public class AppointmentController {
 	ResponseDTO<Map<String, Object>> shopWeekAppointmentInfoByDate(@RequestParam String sysShopId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
 		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 		Date startTime = DateUtils.StrToDate(DateUtils.getDateStartTime(startDate), "datetimesec");
-		Date endTime = DateUtils.dateIncDays(startTime, 8);
+		Date endTime = DateUtils.dateIncDays(startTime, 7);
 
 		String preLog = "根据时间查询某个美容店周预约列表";
 		long start = System.currentTimeMillis();
@@ -209,62 +209,52 @@ public class AppointmentController {
 		for (SysClerkDTO clerkDTO : clerkInfo) {
 
 			Date loopDate = startTime;
-			ArrayList<Object> arrayList = new ArrayList<>();
+			ArrayList<Object> oneClerkList = new ArrayList<>();
 			if("34c061c294d544a7bd58752ce71b5e17".equalsIgnoreCase(clerkDTO.getId())){
 				System.out.println("sysShopId = [" + sysShopId + "], startDate = [" + startDate + "]");
 			}
 
-			//过滤作用
-			Set<String> filterSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
-					DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(endTime));
+			//todo 查询某个美容师7天内的预约列表
+			ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+			extShopAppointServiceDTO.setSysShopId(sysShopId);
+			extShopAppointServiceDTO.setSearchStartTime(loopDate);
+			extShopAppointServiceDTO.setSearchEndTime(endTime);
+			extShopAppointServiceDTO.setSysClerkId(clerkDTO.getId());
+			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 
 			while (loopDate.getTime() < endTime.getTime()) {
 
 				HashMap<Object, Object> map = new HashMap<>(16);
-
-				//获取美容师在某一时间段内的预约主键列表
-				Set<String> stringSet = null;
-				//如果filterSet不为空则说明当前美容师在查询时间段有预约信息
-				if (CommonUtils.objectIsNotEmpty(filterSet)) {
-					stringSet = redisUtils.getAppointmentIdByShopClerk(redisUtils.getShopIdClerkIdKey(sysShopId, clerkDTO.getId()),
-							DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate));
-				}
-
-				logger.info("{}，在，{}，{}时间段的预约列表为{}", clerkDTO.getId(), DateUtils.getDateStartTime(loopDate), DateUtils.getDateEndTime(loopDate), stringSet);
-
-				if (CommonUtils.objectIsEmpty(stringSet)) {
-					map.put("info", "");
-					map.put("week", DateUtils.getWeek(loopDate));
-					map.put("day", DateUtils.getDay(loopDate));
-					map.put("Lunar", LunarUtils.getChinaDayString(new LunarUtils(loopDate).day));
-					arrayList.add(map);
-					loopDate = DateUtils.dateInc(loopDate);
-					continue;
-				}
-				//遍历预约主键获取预约详细信息
-				Iterator<String> it = stringSet.iterator();
-				List<ShopAppointServiceDTO> projectList = new ArrayList<>();
-				while (it.hasNext()) {
-					String appointmentId = it.next();
-					ShopAppointServiceDTO shopAppointServiceDTO = redisUtils.getShopAppointInfoFromRedis(appointmentId);
-					projectList.add(shopAppointServiceDTO);
-				}
-				map.put("info", projectList);
 				map.put("week", DateUtils.getWeek(loopDate));
 				map.put("day", DateUtils.getDay(loopDate));
-				map.put("Lunar", LunarUtils.getChinaDayString(new LunarUtils(loopDate).day));
+				try {
+					map.put("Lunar", LunarUtils.getChinaDayString(new LunarUtils(loopDate).day));
+				} catch (Exception e) {
+					logger.error("获取农历失败，失败原因为：" + e.getMessage(), e);
+				}
 
-				arrayList.add(map);
+				if (CommonUtils.objectIsEmpty(shopAppointServiceDTOS)) {
+					oneClerkList.add(map);
+					continue;
+				} else {
+					for (ShopAppointServiceDTO dto : shopAppointServiceDTOS) {
+						if (dto.getAppointStartTime().getTime() > DateUtils.getStartTime(loopDate).getTime() && dto.getAppointStartTime().getTime() < DateUtils.getEndTime(loopDate).getTime()) {
+							map.put("info", dto);
+						}
+					}
+				}
+				if (null == map.get("info")) {
+					map.put("info", "");
+				}
+				oneClerkList.add(map);
 				loopDate = DateUtils.dateInc(loopDate);
 			}
-
-			returnMap.put(clerkDTO.getName(), arrayList);
+			returnMap.put(clerkDTO.getName(), oneClerkList);
 		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(returnMap);
 		logger.info(preLog + "耗时{}毫秒", (System.currentTimeMillis() - start));
-
 		return responseDTO;
 	}
 
