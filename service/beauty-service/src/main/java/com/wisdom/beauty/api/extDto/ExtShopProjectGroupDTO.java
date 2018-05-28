@@ -1,12 +1,13 @@
 package com.wisdom.beauty.api.extDto;
 
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 
 import java.util.List;
 
 public class ExtShopProjectGroupDTO extends ShopProjectGroupDTO {
 
-    List<String> ShopProjectIds;
+    List<ShopProjectInfoDTO> ShopProjectIds;
 
     List<String> images;
 
@@ -18,11 +19,11 @@ public class ExtShopProjectGroupDTO extends ShopProjectGroupDTO {
         this.images = images;
     }
 
-    public List<String> getShopProjectIds() {
+    public List<ShopProjectInfoDTO> getShopProjectIds() {
         return ShopProjectIds;
     }
 
-    public void setShopProjectIds(List<String> shopProjectIds) {
+    public void setShopProjectIds(List<ShopProjectInfoDTO> shopProjectIds) {
         ShopProjectIds = shopProjectIds;
     }
 }
