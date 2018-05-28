@@ -300,4 +300,62 @@ public class ShopMemberAttendanceController {
 		return response;
 	}
 
+	/*
+	* 查询店员的业绩
+	* */
+	@RequestMapping(value = "/getShopConsumeAndRechargeForClerk", method = { RequestMethod.GET })
+	@ResponseBody
+	ResponseDTO<Map<String, String>> getShopConsumeAndRechargeForClerk(@RequestParam String startTime, @RequestParam String endTime) {
+
+		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		pageParamVoDTO.setStartTime(startTime);
+		pageParamVoDTO.setEndTime(endTime);
+		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+		userConsumeRequest.setSysClerkId(clerkInfo.getId());
+		pageParamVoDTO.setRequestData(userConsumeRequest);
+		Map<String, String> map = shopStatisticsAnalysisService.getShopConsumeAndRecharge(pageParamVoDTO);
+		BigDecimal income=new BigDecimal(map.get("consume")).add(new BigDecimal(map.get("recharge")));
+		BigDecimal expenditure=new BigDecimal(map.get("oneConsume")).add(new BigDecimal(map.get("scratchCard")));
+		BigDecimal kahao=new BigDecimal(map.get("cardConsume"));
+
+		map.put("income",income.toString());
+		map.put("expenditure",expenditure.toString());
+		map.put("kahao",kahao.toString());
+		ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
+		response.setResponseData(map);
+		response.setResult(StatusConstant.SUCCESS);
+		return response;
+	}
+
+	/**
+	 * @Author:zhanghuan
+	 * @Param:
+	 * @Return:
+	 * @Description: 业绩明细（员工端）
+	 * @Date:2018/5/7 15:35
+	 */
+	@RequestMapping(value = "/getClerkPerformance", method = { RequestMethod.GET })
+	@ResponseBody
+	ResponseDTO<List<UserConsumeRecordResponseDTO>> getClerkPerformance(
+			@RequestParam String startTime, @RequestParam String endTime) {
+		long start = System.currentTimeMillis();
+		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+		SysClerkDTO clerkDTO = UserUtils.getClerkInfo();
+		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		userConsumeRequest.setSysClerkId(clerkDTO.getSysUserId());
+		userConsumeRequest.setGoodsTypeRequire(true);
+		pageParamVoDTO.setRequestData(userConsumeRequest);
+		pageParamVoDTO.setStartTime(startTime);
+		pageParamVoDTO.setEndTime(endTime);
+		List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
+				.getShopCustomerConsumeRecordList(pageParamVoDTO);
+
+		ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(userConsumeRecordResponseDTO);
+		logger.info("findMineConsume方法耗时{}毫秒", (System.currentTimeMillis() - start));
+		return responseDTO;
+	}
+
 }
