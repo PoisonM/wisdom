@@ -248,8 +248,8 @@
 .dayAppointment .week_right_box .infoitem_sty ul li{
     height: 1.33rem;
     font-size: 0.24rem;
-    border-bottom: 1px solid;
-    border-right: 1px solid;
+    border-bottom: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
 }
 .dayAppointment .morapp{
     position: absolute;
@@ -309,4 +309,23 @@
 }
 .dayAppointment .havedata .user_info .pr_name{
 
+}
+.dayAppointment .week_box .week_left .radus_sty{
+    display: block;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: #ff6666;
+    color: #fff;
+    line-height: 24px;
+}
+.dayAppointment .week_box .week_left .radus_stypt{
+    display: block;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 24px;
 }

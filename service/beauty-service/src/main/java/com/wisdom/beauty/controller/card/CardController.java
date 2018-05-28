@@ -350,7 +350,7 @@ public class CardController {
 	ResponseDTO<Object> rechargeCardSignConfirm(@RequestParam String transactionId, @RequestParam String imageUrl) {
 		long currentTimeMillis = System.currentTimeMillis();
 
-		ResponseDTO<Object> responseDTO = shopUserConsumeService.rechargeRechargeCrad(transactionId, imageUrl);
+        ResponseDTO<Object> responseDTO = shopUserConsumeService.rechargeRechargeCard(transactionId, imageUrl);
 
 		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;

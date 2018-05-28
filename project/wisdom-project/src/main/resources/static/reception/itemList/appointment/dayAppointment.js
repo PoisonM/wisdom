@@ -8,6 +8,18 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo) {
     $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
+    //切换时间更新数据
+    laydate.render({
+        elem: '#test1',
+        done: function(value, date){
+            $scope.param.nowTime = value
+            if($scope.param.dayWeekFlag){
+                $scope.dayAll()
+            }else {
+                $scope.weekAll()
+            }
+        }
+    });
 
 
     /*
@@ -25,6 +37,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         //新建预约修改预约查询对应每个美容师可用时间
         mrLeisureTime:"",
         nowTime:new Date().getFullYear()+"-"+parseInt(new Date().getMonth()+1)+"-"+parseInt(new Date().getDate()),
+        endTime:"",
         newChangeContent:"修改预约",
         changeYuyueFlag: "",
         zhongjiList: {},
@@ -276,14 +289,19 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         day: [],
         /*侧边时间循环*/
     };
+
+
+
     $scope.scheduling = true;
     $scope.param.ModifyAppointmentObject.hoursTimeShow = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"]
     /*获取日预约列表*/
     $scope.dayAll = function () {
         ShopDayAppointmentInfoByDate.get({
             sysShopId: '3',
-            startDate: "2018-00-00 00:00:00",
-            endDate: "2019-00-00 00:00:00"
+            // startDate: "2018-00-00 00:00:00",
+            // endDate: "2019-00-00 00:00:00"
+            startDate: $scope.param.nowTime,
+            // endDate: ""
         }, function (data) {
             $scope.memeda = data.responseData;
             $scope.startTime = data.responseData.startTime;
@@ -369,29 +387,28 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
                         }
                     }
-
                 }
             }
 
 
-            //调用固定表头类
-            var tiemInt = setInterval(function () {
-                if ($("#tbTest1 thead tr td").length != 0) {
-                    var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
-                    clearTimeout(tiemInt)
-                }
-            }, 100)
+
 
 
         });
 
     }
+    //调用固定表头类
+    var tiemInt = setInterval(function () {
+        if ($("#tbTest1 thead tr td").length > 1) {
+            var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
+            clearTimeout(tiemInt)
+        }
+    }, 100)
     /*获取周预约列表*/
     $scope.weekAll = function () {
         ShopWeekAppointmentInfoByDate.get({
             sysShopId: "11",
-            startDate: "2018-05-21 00:00:00",
-            endDate: "  2018-05-28 00:00:00"
+            startDate: $scope.param.nowTime,
         }, function (data) {
             $scope.param.week.weekData = data.responseData;
             $scope.navLeftWeekTime = "";

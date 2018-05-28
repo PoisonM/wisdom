@@ -62,5 +62,5 @@ public interface ShopUserConsumeService {
      * @param imageUrl
      * @return
      */
-    ResponseDTO rechargeRechargeCrad(String transactionId, String imageUrl);
+    ResponseDTO rechargeRechargeCard(String transactionId, String imageUrl);
 }
