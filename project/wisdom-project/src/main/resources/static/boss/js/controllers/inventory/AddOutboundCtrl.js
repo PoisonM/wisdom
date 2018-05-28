@@ -1,35 +1,54 @@
 angular.module('controllers',[]).controller('AddOutboundCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading) {
-            $rootScope.title = "新增出库";
-            $scope.shopStock =[{
-                detail:"啊啊",/*备注*/
-                flowNo:"785489636598741258",/*订单号*/
-                productDate:"",/*产品生产日期	*/
-                setStockPrice:"12",/*进货单价*/
-                shopProcId:"7878",/*产品id*/
-                shopStoreId:"651742081",/*仓库id*/
-                stockNumber:"12",/*库存数量	*/
-                stockStyle:$stateParams.stockStyle,/*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
-                stockNumber:"1"/*0、采购入库 1、内部员工出库 2、顾客出库 3、赠送 4、报废 5、院用 6、退回供货商*/
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock) {
 
-            }];
+            $rootScope.title = "新增出库";
+
+            $scope.param = {
+                shopStock : [],
+                outOperationName : ''
+            }
+
+            $rootScope.shopInfo.outShopStockType = '';
+
+            angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
+                var value = {
+                    detail:"",
+                    productDate:val.effectDate,
+                    stockPrice:val.marketPrice,/*进货单价*/
+                    shopProcId:val.id,/*产品id*/
+                    shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
+                    stockNumber: "",
+                    productUrl : val.productUrl,
+                    productName: val.productName,
+                    productUnit: val.productUnit,
+                    productSpec: val.productSpec,
+                    stockStyle:$stateParams.stockStyle, /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
+                    stockType:$rootScope.shopInfo.outShopStockType,
+
+                }
+                $scope.param.shopStock.push(value);
+            })
+
             $scope.selectTheOutboundTypeGo = function(){
                 $state.go("selectTheOutboundType")
             }
+
             $scope.selFamilyGo = function(){
-                $state.go("addFamily")
+                $state.go("addFamily");
             };
+
             /*添加更多*/
             $scope.productInventoryGo = function(stockStyle){
                 $state.go('productInventory',{stockStyle:stockStyle})
             }
+
             /*确认出库*/
             $scope.successfulInventoryGo = function(){
-
-
-
-                $state.go('successfulInventory')
+                AddStock.save($scope.param.shopStock,function(data){
+                    if(data.result==Global.SUCCESS){
+                        $state.go("successfulInventory",{entryId:data.responseData})
+                    }
+                })
             }
-
         }])

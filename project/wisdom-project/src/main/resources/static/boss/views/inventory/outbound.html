@@ -37,6 +37,25 @@
                     </div>
                 </div>
             </div>
+            <div style="position:absolute;z-index: 999;width: 50%" ng-if="param.multiSelectFlag">
+                <ion-list>
+                    <ion-item style="width:100%;text-align:center;padding: 10px 20px"
+                              ng-click="chooseTwoLevelList(item.productTypeOneId)"
+                              ng-repeat="item in param.oneLevelList">
+                        {{item.productTypeOneName}}
+                    </ion-item>
+                </ion-list>
+            </div>
+            <div style="position:absolute;z-index: 999;margin-left:50%;width: 50%" ng-if="param.multiSelectFlag">
+                <ion-list>
+                    <ion-item style="width:100%;text-align:center;padding: 10px 20px;"
+                              ng-repeat="item in param.twoLevelList"
+                              ng-if="item.productTypeOneId==param.selectProductTypeOneId"
+                              ng-click="chooseProductList(item.productTypeTwoId)">
+                        {{item.productTypeTwoName}}
+                    </ion-item>
+                </ion-list>
+            </div>
             <div style="position:relative ">
                 <div>
                     <ion-list>
