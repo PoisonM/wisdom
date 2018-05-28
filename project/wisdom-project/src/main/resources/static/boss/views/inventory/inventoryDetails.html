@@ -1,20 +1,46 @@
 <ion-view>
     <ion-content class="partialFiles">
-        <P class="h45 bgfff bbl" ng-show="false">
-            <label class="fs16 col333 ml10">出库方式：</label>
-            <span class="fs14 col666"><img src="images/selTrue.png" class="selGray mr5">手动出库</span>
-            <span class="fs14 col666"><img src="images/selRed.png" class="selGray ml10 mr5">扫码出库</span>
-        </P>
         <div class="h45 bgfff row">
             <div class="col col-33 center" style="border-right: solid 1px #f6f6f6">
-                <p style="margin-top:-10px">客装产品 <img src="images/inventory/triangleRed.png" class="trianglePic ml20"></p>
+                <p style="margin-top:-10px" ng-class="{'colff66':param.type == 0}" ng-click="changeBtn(0);$event.stopPropagation()">
+                    客装产品
+                    <i class="icon ion-arrow-down-b" ng-if="param.multiSelectFlag"></i>
+                    <i class="icon ion-arrow-up-b" ng-if="!param.multiSelectFlag"></i>
+                </p>
             </div>
             <div class="col col-33 center" style="border-right: solid 1px #f6f6f6">
-                <p style="margin-top:-10px">院装产品<img src="images/inventory/triangleGray.png" class="trianglePic ml20"></p>
+                <p style="margin-top:-10px" ng-click="changeBtn(1)" ng-class="{'colff66':param.type == 1}">
+                    院装产品
+                    <i class="icon ion-arrow-down-b" ng-if="param.multiSelectFlag"></i>
+                    <i class="icon ion-arrow-up-b" ng-if="!param.multiSelectFlag"></i>
+                </p>
             </div>
             <div class="col col-33 center">
-                <p style="margin-top:-10px">易耗品<img src="images/inventory/triangleGray.png" class="trianglePic ml20"></p>
+                <p style="margin-top:-10px" ng-click="changeBtn(2)" ng-class="{'colff66':param.type == 2}">
+                    易耗品
+                    <i class="icon ion-arrow-down-b" ng-if="param.multiSelectFlag"></i>
+                    <i class="icon ion-arrow-up-b" ng-if="!param.multiSelectFlag"></i>
+                </p>
             </div>
+        </div>
+        <div style="position:absolute;z-index: 999;width: 50%" ng-if="param.multiSelectFlag">
+            <ion-list>
+                <ion-item style="width:100%;text-align:center;padding: 10px 20px"
+                          ng-click="chooseTwoLevelList(item.productTypeOneId)"
+                          ng-repeat="item in param.oneLevelList">
+                    {{item.productTypeOneName}}
+                </ion-item>
+            </ion-list>
+        </div>
+        <div style="position:absolute;z-index: 999;margin-left:50%;width: 50%" ng-if="param.multiSelectFlag">
+            <ion-list>
+                <ion-item style="width:100%;text-align:center;padding: 10px 20px;"
+                          ng-repeat="item in param.twoLevelList"
+                          ng-if="item.productTypeOneId==param.selectProductTypeOneId"
+                          ng-click="chooseProductList(item.productTypeTwoId)">
+                    {{item.productTypeTwoName}}
+                </ion-item>
+            </ion-list>
         </div>
         <div>
             <ion-list>
@@ -36,9 +62,10 @@
         </p>
         <div>
             <ion-list>
-                <ion-item class="" ng-repeat="item in [0,1,2,3,4]" style="width:95%;margin: 10px auto 0;border-radius:  6px;box-shadow: 0 2px 2px 0 rgba(102,102,102,0.24)" ng-click="productInventoryDetailsGo()">
+                <ion-item class="" ng-repeat="item in param.detailProductList" style="width:95%;margin: 10px auto 0;border-radius:  6px;box-shadow: 0 2px 2px 0 rgba(102,102,102,0.24)"
+                          ng-click="productInventoryDetailsGo()">
                     <div class="h30 row" style="background: #F9F9F9;">
-                        <p class="col col-60 " style="line-height: 12px;height:20px;"> 本仓库库存：<span class="colff66">8</span></p>
+                        <p class="col col-60 " style="line-height: 12px;height:20px;">本仓库库存：<span class="colff66">8</span></p>
                         <p class="col col-40 " style="line-height: 12px;height:20px;">库存总量：<span class="colff66">8</span></p>
 
                     </div>
