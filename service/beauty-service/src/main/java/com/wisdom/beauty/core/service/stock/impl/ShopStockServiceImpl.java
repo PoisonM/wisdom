@@ -6,6 +6,7 @@ import java.util.*;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.StockStyleEnum;
 import com.wisdom.beauty.api.enums.StockTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
@@ -408,8 +409,6 @@ public class ShopStockServiceImpl implements ShopStockService {
 		// 更新数量,如果shop_stock_number中没有数据插入。有则更新
 		// 根据产品查询
 		List<ShopStockNumberDTO> shopStockNumberDTOs = this.getShopStockNumberBy(productIds);
-		// 计算需要更新的产品
-		List<String> requireUpdate = new ArrayList<>();
 		// 需要更新的List集合
 		List<ShopStockNumberDTO> updateShopStockNumber = new ArrayList<>();
 
@@ -447,6 +446,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 			logger.info("values为空不需要更新");
 			return id;
 		}
+		//查询产品信息，用户获取到
+
 		ShopStockNumberDTO shopStockNumberDTO = null;
 		for (ShopStockRequestDTO addShopStockRequest : values) {
 			shopStockNumberDTO = new ShopStockNumberDTO();
@@ -559,7 +560,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
-	public Map<String, Object> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO) {
+	public Map<String, Object> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO, List<ShopProductInfoDTO> shopProductInfoDTOs) {
 		ShopStockNumberDTO shopStockNumberDTO = pageParamVoDTO.getRequestData();
 		if (shopStockNumberDTO == null) {
 			logger.info("getStockDetailList方法传入的参数shopStockNumberDTO为空");
@@ -587,25 +588,18 @@ public class ShopStockServiceImpl implements ShopStockService {
 			logger.info("getStockDetailList方法获取的结果shopStockNumberDTOs为空");
 			return null;
 		}
-		// 遍历shopStockNumberDTOs
-		Map<String, ShopStockNumberDTO> map = new HashMap<>(16);
+		// shopStockMap缓存库存列表
+		Map<String, ShopStockNumberDTO> shopStockMap = new HashMap<>(16);
 		// map用户存储，key=产品ID value=ShopStockNumberDTO
 		List<String> productIds = new ArrayList<>();
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumberDTOs) {
 			productIds.add(shopStockNumber.getShopProcId());
-			map.put(shopStockNumber.getShopProcId(), shopStockNumber);
+			shopStockMap.put(shopStockNumber.getShopProcId(), shopStockNumber);
 		}
-		// 根据多个productId查询产品信息
-		List<ShopProductInfoResponseDTO> shopProductInfoResponses = shopProductInfoService
-				.getProductInfoList(productIds);
-		if (CollectionUtils.isEmpty(shopProductInfoResponses)) {
-			logger.info("根据多个productId查询产品信息的结果shopProductInfoResponses为空");
-			return null;
-		}
-		// 遍历shopProductInfoResponses，并将其存入MAP中，key存放产品的id
-		Map<String, ShopProductInfoResponseDTO> productInfoMap = new HashMap<>(16);
-		for (ShopProductInfoResponseDTO shopProductInfoResponseDTO : shopProductInfoResponses) {
-			productInfoMap.put(shopProductInfoResponseDTO.getId(), shopProductInfoResponseDTO);
+		// productInfoMap 缓存产品列表 key=产品ID value=ShopProductInfoDTO
+		Map<String, ShopProductInfoDTO> productInfoMap = new HashMap<>(16);
+		for (ShopProductInfoDTO dto : shopProductInfoDTOs) {
+			productInfoMap.put(dto.getId(), dto);
 		}
 		// 计算库存总量
 		ShopStockNumberDTO stock = new ShopStockNumberDTO();
@@ -622,39 +616,25 @@ public class ShopStockServiceImpl implements ShopStockService {
 			}
 		}
 		// 再次遍历shopStockNumberDTOs
-		List<ShopStockResponseDTO> shopStockResponses = new ArrayList<>();
-		ShopStockResponseDTO shopStockResponseDTO = null;
+		List<ExtShopProductInfoDTO> extShopProductInfoDTOs = new ArrayList<>();
+		ExtShopProductInfoDTO extShopProductInfoDTO = null;
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumberDTOs) {
-			shopStockResponseDTO = new ShopStockResponseDTO();
+			extShopProductInfoDTO = new ExtShopProductInfoDTO();
 			if (productInfoMap.get(shopStockNumber.getShopProcId()) != null) {
-				shopStockResponseDTO.setImageUrl(productInfoMap.get(shopStockNumber.getShopProcId()).getImageUrl());
-				shopStockResponseDTO
-						.setShopProcName(productInfoMap.get(shopStockNumber.getShopProcId()).getProductName());
-				shopStockResponseDTO
-						.setProductCode(productInfoMap.get(shopStockNumber.getShopProcId()).getProductCode());
-				// 单位
-				shopStockResponseDTO
-						.setProductUnit(productInfoMap.get(shopStockNumber.getShopProcId()).getProductUnit());
-				// 规格
-				shopStockResponseDTO
-						.setProductSpec(productInfoMap.get(shopStockNumber.getShopProcId()).getProductSpec());
-				// 产品图片
-				shopStockResponseDTO
-						.setProductImage(productInfoMap.get(shopStockNumber.getShopProcId()).getProductUrl());
+				BeanUtils.copyProperties(productInfoMap.get(shopStockNumber.getShopProcId()),extShopProductInfoDTO);
 				// 库存总量
-				shopStockResponseDTO.setAllStoreNumber(allStoreNumberMap.get(shopStockNumber.getShopProcId()));
+				extShopProductInfoDTO.setAllStoreNumber(allStoreNumberMap.get(shopStockNumber.getShopProcId()));
 			}
 			// 本仓库存
-			shopStockResponseDTO.setStoreNumberSelf(shopStockNumber.getStockNumber());
-
-			shopStockResponses.add(shopStockResponseDTO);
+			extShopProductInfoDTO.setStoreNumberSelf(shopStockNumber.getStockNumber());
+			extShopProductInfoDTOs.add(extShopProductInfoDTO);
 		}
 		Map<String, Object> responseMap = new HashMap<>(16);
 		Map<String, Object> costMap = this.getCost(shopStockNumberDTO.getShopStoreId(),
 				shopStockNumberDTO.getProductTypeTwoId());
 		responseMap.put("allUseCost", costMap == null ? 0 : costMap.get("allUseCost"));
 		responseMap.put("useCost", costMap == null ? 0 : costMap.get("useCost"));
-		responseMap.put("responseMap", shopStockResponses);
+		responseMap.put("extShopProductInfoDTOs", extShopProductInfoDTOs);
 		return responseMap;
 	}
 

@@ -12,30 +12,32 @@ public class ExtShopProductInfoDTO extends ShopProductInfoDTO {
     //产品唯一编码
     private String code;
     //库存总量
-    private String allStoreNumber;
+    private Integer allStoreNumber;
     //本仓库库存量
-    private String storeNumberSelf;
+    private Integer storeNumberSelf;
     /**
      * 图片详情
      */
     private List<String> imageList;
 
+
+
     //扫码后的对象
     private ExtShopScanProductInfoDTO showapi_res_body;
 
-    public String getAllStoreNumber() {
+    public Integer getAllStoreNumber() {
         return allStoreNumber;
     }
 
-    public void setAllStoreNumber(String allStoreNumber) {
+    public void setAllStoreNumber(Integer allStoreNumber) {
         this.allStoreNumber = allStoreNumber;
     }
 
-    public String getStoreNumberSelf() {
+    public Integer getStoreNumberSelf() {
         return storeNumberSelf;
     }
 
-    public void setStoreNumberSelf(String storeNumberSelf) {
+    public void setStoreNumberSelf(Integer storeNumberSelf) {
         this.storeNumberSelf = storeNumberSelf;
     }
 
