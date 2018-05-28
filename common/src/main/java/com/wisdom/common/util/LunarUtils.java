@@ -133,6 +133,7 @@ public class LunarUtils {
         year = iYear;
 
         yearCyl = iYear - 1864;
+        System.out.println("date = [" + iYear + "]");
         leapMonth = leapMonth(iYear); //闰哪个月,1-12
         leap = false;
 
@@ -187,4 +188,15 @@ public class LunarUtils {
         return year + "年" + (leap ? "闰" : "") + chineseNumber[month - 1] + "月" + getChinaDayString(day);
     }
 
+    public static void main(String[] args) {
+        Date startTime = DateUtils.StrToDate("2018-05-23", "date");
+
+        LunarUtils lunarUtils = null;
+        try {
+            lunarUtils = new LunarUtils(startTime);
+        } catch (Exception e) {
+            System.out.println("获取农历失败，失败原因为： = [" + e.getMessage() + "]");
+        }
+        System.out.println("args = [" + args + "]");
+    }
 }

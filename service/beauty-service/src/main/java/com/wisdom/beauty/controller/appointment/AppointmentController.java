@@ -228,13 +228,15 @@ public class AppointmentController {
 				map.put("week", DateUtils.getWeek(loopDate));
 				map.put("day", DateUtils.getDay(loopDate));
 				try {
-					map.put("Lunar", LunarUtils.getChinaDayString(new LunarUtils(loopDate).day));
+                    LunarUtils lunarUtils = new LunarUtils(loopDate);
+                    map.put("Lunar", LunarUtils.getChinaDayString(lunarUtils.day));
 				} catch (Exception e) {
 					logger.error("获取农历失败，失败原因为：" + e.getMessage(), e);
 				}
 
 				if (CommonUtils.objectIsEmpty(shopAppointServiceDTOS)) {
 					oneClerkList.add(map);
+                    loopDate = DateUtils.dateInc(loopDate);
 					continue;
 				} else {
 					for (ShopAppointServiceDTO dto : shopAppointServiceDTOS) {
@@ -242,12 +244,12 @@ public class AppointmentController {
 							map.put("info", dto);
 						}
 					}
-				}
+                    loopDate = DateUtils.dateInc(loopDate);
+                }
 				if (null == map.get("info")) {
 					map.put("info", "");
 				}
 				oneClerkList.add(map);
-				loopDate = DateUtils.dateInc(loopDate);
 			}
 			returnMap.put(clerkDTO.getName(), oneClerkList);
 		}
