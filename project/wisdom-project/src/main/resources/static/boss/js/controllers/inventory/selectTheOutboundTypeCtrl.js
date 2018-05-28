@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('selectTheOutboundTypeCtrl',
             $rootScope.title = "选择出库类型";
             $scope.AddOutboundGo = function(stockType){
                 $rootScope.shopInfo.outShopStockType = stockType;
-                $state.go("AddOutbound")
+                console.log($rootScope.shopInfo.outShopStockType);
+                $state.go("AddOutbound");
             }
-
         }])

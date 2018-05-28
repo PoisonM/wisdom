@@ -272,10 +272,12 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/getBossShopScheduleSetting", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    ResponseDTO<Object> getBossShopScheduleSetting() {
+    ResponseDTO<Object> getBossShopScheduleSetting(@RequestParam(required = false) String sysShopId) {
         long currentTimeMillis = System.currentTimeMillis();
         ShopScheduleSettingDTO settingDTO = new ShopScheduleSettingDTO();
-        settingDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
+        if (StringUtils.isBlank(sysShopId)) {
+            settingDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
+        }
         List<ShopScheduleSettingDTO> setting = shopClerkScheduleService.getBossShopScheduleSetting(settingDTO);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);

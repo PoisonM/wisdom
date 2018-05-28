@@ -178,19 +178,17 @@ public class AppointmentController {
 	 *
 	 * @param sysShopId
 	 * @param startDate
-	 * @param endDate
+	 * @param startDate
 	 * @return
 	 */
 	@RequestMapping(value = "shopWeekAppointmentInfoByDate", method = {RequestMethod.POST, RequestMethod.GET})
 //	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO<Map<String, Object>> shopWeekAppointmentInfoByDate(@RequestParam String sysShopId,
-																   @RequestParam String startDate, @RequestParam String endDate) {
+	ResponseDTO<Map<String, Object>> shopWeekAppointmentInfoByDate(@RequestParam String sysShopId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
 		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
-		Date startTime = DateUtils.StrToDate(startDate, "datetime");
-		Date endTime = DateUtils.StrToDate(endDate, "datetime");
-		endTime = DateUtils.dateInc(endTime);
+		Date startTime = DateUtils.StrToDate(DateUtils.getDateStartTime(startDate), "datetimesec");
+		Date endTime = DateUtils.dateIncDays(startTime, 8);
 
 		String preLog = "根据时间查询某个美容店周预约列表";
 		long start = System.currentTimeMillis();
@@ -213,7 +211,7 @@ public class AppointmentController {
 			Date loopDate = startTime;
 			ArrayList<Object> arrayList = new ArrayList<>();
 			if("34c061c294d544a7bd58752ce71b5e17".equalsIgnoreCase(clerkDTO.getId())){
-				System.out.println("sysShopId = [" + sysShopId + "], startDate = [" + startDate + "], endDate = [" + endDate + "]");
+				System.out.println("sysShopId = [" + sysShopId + "], startDate = [" + startDate + "]");
 			}
 
 			//过滤作用
