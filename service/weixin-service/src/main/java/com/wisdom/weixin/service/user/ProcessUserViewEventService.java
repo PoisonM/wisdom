@@ -1,6 +1,8 @@
 package com.wisdom.weixin.service.user;
 
 import com.wisdom.common.entity.ReceiveXmlEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +15,14 @@ import java.util.concurrent.Executors;
 @Service
 @Transactional(readOnly = false)
 public class ProcessUserViewEventService {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
     public void processUserClickViewEvent(ReceiveXmlEntity xmlEntity)
     {
         //开启线程，将用户的openId存入session和cookie中
+        logger.info("开启线程，将用户的openId存入session和cookie中");
         Runnable processViewThread = new ProcessViewThread(xmlEntity);
         threadExecutorCached.execute(processViewThread);
     }

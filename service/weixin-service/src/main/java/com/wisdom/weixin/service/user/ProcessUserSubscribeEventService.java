@@ -16,6 +16,8 @@ import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -38,6 +40,7 @@ import java.util.concurrent.Executors;
 @Service
 @Transactional(readOnly = false)
 public class ProcessUserSubscribeEventService {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserServiceClient userServiceClient;
@@ -53,15 +56,20 @@ public class ProcessUserSubscribeEventService {
     //处理用户关注公众号事件
     public void processUserSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
+        long startTime = System.currentTimeMillis();
+        logger.info("处理用户关注公众号事件==={}开始" , startTime);
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
 
         //开启线程，处理用户是扫描关注的用户，还是搜索关注公众号的用户
+        logger.info("开启线程，处理用户token={}是扫描关注的用户，还是搜索关注公众号的用户==={}开始" ,token);
+
         Runnable processSubscribeThread = new ProcessSubscribeThread(token,xmlEntity);
         threadExecutorCached.execute(processSubscribeThread);
 
         //开启线程，给关注的用户推送微信消息
+        logger.info("开启线程，给关注的用户token={}推送微信消息==={}开始" ,token);
         Runnable sendSubscribeMessageThread = new SendSubscribeMessageThread(token, xmlEntity);
         threadExecutorCached.execute(sendSubscribeMessageThread);
     }
@@ -82,6 +90,7 @@ public class ProcessUserSubscribeEventService {
             String openId = xmlEntity.getFromUserName();
 
             //判断用户是否是扫码微商用户的二维码关注，
+            logger.info("判断用户openId={}是否是扫码微商用户的二维码关注",openId);
             String businessParentPhone = "";
             if(StringUtils.isNotNull(xmlEntity.getEventKey())&&xmlEntity.getEventKey().indexOf("mxbusinessshare_")!=-1){
                 businessParentPhone = xmlEntity.getEventKey().replace("mxbusinessshare_", "");
@@ -95,6 +104,7 @@ public class ProcessUserSubscribeEventService {
                 String specialShopId = codeArray[1];
 
                 //通过shopId查询出店铺名称
+                logger.info("通过shopId={}查询出店铺名称",specialShopId);
                 Query query = new Query(Criteria.where("shopId").is(specialShopId));
                 SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
 
@@ -269,6 +279,7 @@ public class ProcessUserSubscribeEventService {
     public void processUserUnSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
         //开启线程，处理用户的取消关注事件
+        logger.info("开启线程，处理用户的取消关注事件" );
         Runnable processUnSubscribeThread = new ProcessUnSubscribeThread(xmlEntity);
         threadExecutorCached.execute(processUnSubscribeThread);
     }
@@ -283,6 +294,7 @@ public class ProcessUserSubscribeEventService {
 
         @Override
         public void run() {
+            logger.info("开启线程，处理用户的取消关注事件==={}开始,修改sys_user表中微信关注状态" );
 
             //修改sys_user表中微信关注状态
             UserInfoDTO userInfoDTO = new UserInfoDTO();
@@ -303,6 +315,7 @@ public class ProcessUserSubscribeEventService {
             }
 
             //为用户的此次取消关注插入到mongodb记录中
+            logger.info("为用户的此次取消关注插入到mongodb记录中" );
             WeixinAttentionDTO weixinAttentionDTO = new WeixinAttentionDTO();
             weixinAttentionDTO.setDate(new Date());
             weixinAttentionDTO.setOpenid(xmlEntity.getFromUserName());

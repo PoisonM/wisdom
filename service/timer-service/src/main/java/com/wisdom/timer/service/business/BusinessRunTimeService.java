@@ -13,6 +13,8 @@ import com.wisdom.common.dto.transaction.MonthlyIncomeSignalDTO;
 import com.wisdom.common.util.*;
 import com.wisdom.timer.client.BusinessServiceClient;
 import com.wisdom.timer.client.UserServiceClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,7 +31,8 @@ import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REW
 
 @Service
 public class BusinessRunTimeService {
-    
+    Logger logger = LoggerFactory.getLogger(BusinessRunTimeService.class);
+
     @Autowired
     private BusinessServiceClient businessServiceClient;
 
@@ -41,16 +44,19 @@ public class BusinessRunTimeService {
 
     @Transactional(rollbackFor = Exception.class)
     public void autoConfirmReceiveProduct() {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("用户15天后，自动转为收到货物==={}开始" , startTime);
         //先获取所有用户已经完成支付，但是没有确认收货的订单
         BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
         businessOrderDTO.setStatus("1");
         businessOrderDTO.setType("offline");
         List<BusinessOrderDTO> businessOrderDTOList = businessServiceClient.getBusinessOrderList(businessOrderDTO);
+        logger.info("先获取所有用户已经完成支付，但是没有确认收货的订单List={}" ,businessOrderDTOList.size());
 
         //已经发货，但是用户没有确认收货的订单
         businessOrderDTO.setStatus("4");
         List<BusinessOrderDTO> businessOrderDTOList1 = businessServiceClient.getBusinessOrderList(businessOrderDTO);
+        logger.info("已经发货，但是用户没有确认收货的订单List={}" ,businessOrderDTOList1.size());
 
         businessOrderDTOList.addAll(businessOrderDTOList1);
 
@@ -67,6 +73,7 @@ public class BusinessRunTimeService {
                 RedisLock redisLock = new RedisLock("businessOrder"+businessOrder.getBusinessOrderId());
                 try{
                     redisLock.lock();
+                    logger.info("用户15天后，自动收货订单={}" ,businessOrder.getBusinessOrderId());
 
                     String sendProductDate = DateUtils.DateToStr(businessOrder.getUpdateDate());
                     businessOrder.setStatus("2");
@@ -84,20 +91,24 @@ public class BusinessRunTimeService {
                     {
                         WeixinTemplateMessageUtil.sendOrderConfirmReceiveTemplateWXMessage(businessOrder.getBusinessOrderId(), businessOrder.getBusinessProductName(),
                                 sendProductDate,autoReceiveProductDate,token,url,userInfoDTOList.get(0).getUserOpenid());
+                        logger.info("用户15天后，自动收货发送消息,用户openid={}" ,userInfoDTOList.get(0).getUserOpenid());
                     }
                 }
                 catch (Exception e) {
+                    logger.info("用户15天后，自动转为收到货物异常,异常信息为{}" +e.getMessage(),e);
                     throw e;
                 } finally {
                     redisLock.unlock();
                 }
             }
         }
+        logger.info("用户15天后，自动转为收到货物,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void autoProcessUserAccount() throws UnsupportedEncodingException {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("用户即时返现解冻和用户等级提升的批量处理==={}开始" , startTime);
         //查询用户消费的不可提现金额
         IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
         incomeRecordDTO.setStatus("0");
@@ -109,11 +120,13 @@ public class BusinessRunTimeService {
 
         //同级推荐提升逻辑
         this.promoteUserBusinessTypeForRecommend();
+        logger.info("用户即时返现解冻和用户等级提升的批量处理,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void autoMonthlyIncomeCalc() throws UnsupportedEncodingException {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("月度提成计算==={}开始" , startTime);
         //加入开关量，证明本月已经完成过月度提成了，不用再次计算
         Query query = new Query(Criteria.where("year").is(DateUtils.getYear())).addCriteria(Criteria.where("month").is(DateUtils.getMonth()));
         MonthlyIncomeSignalDTO monthlyIncomeSignalDTO = mongoTemplate.findOne(query,MonthlyIncomeSignalDTO.class,"monthlyIncomeSignal");
@@ -145,6 +158,7 @@ public class BusinessRunTimeService {
             update.set("onTimeFinish","true");
             mongoTemplate.updateFirst(query,update,"monthlyIncomeSignal");
         }
+        logger.info("月度提成计算,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -154,7 +168,8 @@ public class BusinessRunTimeService {
     }
 
     public void autoProcessNoPayRecordData() {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("每隔1分钟，将payRecord表中，状态为0的订单，进行状态调整处理,开始" , startTime);
         long autoNotifyProductPay = (long) ConfigConstant.AUTO_NOTIFY_PRODUCT_PAY * 60 * 1000;
         long autoDeleteBusinessOrder = (long) ConfigConstant.AUTO_DELETE_BUSINESS_ORDER * 60 * 1000;
         long nowTime = System.currentTimeMillis();
@@ -186,13 +201,16 @@ public class BusinessRunTimeService {
                         String url = ConfigConstant.USER_WEB_URL + "orderManagement/0";
                         WeixinTemplateMessageUtil.sendOrderNotPayTemplateWXMessage(DateUtils.DateToStr(businessOrder.getCreateDate()),
                                 businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
+                        logger.info("待付款订单={}超过10分钟={}给用户={}发送提醒消息",businessOrder.getBusinessOrderId(),time,userInfoDTOList.get(0).getMobile());
                     }
                 }
+                //超过20分钟
                 else if(outTime > autoDeleteBusinessOrder)
                 {
                     //超时取消
                     businessOrder.setStatus("6");
                     businessServiceClient.updateBusinessOrder(businessOrder);
+                    logger.info("待付款订单={}超过20分钟={}超时取消",businessOrder.getBusinessOrderId(),time);
                     PayRecordDTO payRecordDTO = new PayRecordDTO();
                     payRecordDTO.setSysUserId(businessOrder.getSysUserId());
                     payRecordDTO.setOrderId(businessOrder.getBusinessOrderId());
@@ -206,9 +224,12 @@ public class BusinessRunTimeService {
                 }
             }
         }
+        logger.info("每隔1分钟，将payRecord表中，状态为0的订单，进行状态调整处理,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
     public void frozenUserType(String userType) throws UnsupportedEncodingException {
+        long startTime = System.currentTimeMillis();
+        logger.info("完成用户的状态冻结的自动化操作==={}开始" , startTime);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserType(userType);
         userInfoDTO.setDelFlag("0");
@@ -244,6 +265,7 @@ public class BusinessRunTimeService {
             //用户在365天前已经是目前的等级了
             if (dt2.getTime() > dt1.getTime())
             {
+                logger.info("用户在365天前已经是目前的等级了,冻结此账户==={}开始",userBusinessTypeDTO.getSysUserId());
                 userBusinessTypeDTO.setStatus("2");//2表示为冻结状态
                 businessServiceClient.updateUserBusinessType(userBusinessTypeDTO);
             }
@@ -256,9 +278,10 @@ public class BusinessRunTimeService {
                 String openid = userInfo.getUserOpenid();
                 String url = ConfigConstant.USER_WEB_URL + "myselfCenter";
                 WeixinTemplateMessageUtil.sendBusinessMemberDeadlineTemplateWXMessage(name,expDate,token,url,openid);
+                logger.info("发送用户会员快到期提醒模板");
             }
         }
-
+        logger.info("完成用户的状态冻结的自动化操作,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
     public void monthlyIncomeCalc(String businessType) throws UnsupportedEncodingException {
@@ -346,6 +369,8 @@ public class BusinessRunTimeService {
     }
 
     public void promoteUserBusinessTypeForRecommend() throws UnsupportedEncodingException {
+        long startTime = System.currentTimeMillis();
+        logger.info("同级推荐提升逻辑==={}开始" , startTime);
         //根据B用户推荐20个B的逻辑，来实现用户等级提升
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setDelFlag("0");
@@ -382,6 +407,7 @@ public class BusinessRunTimeService {
                     }
                 }
             }
+            logger.info("推荐下级个数==={}" , recommendBNum);
 
             if((recommendBNum+recommendANum)>=ConfigConstant.RECOMMEND_USER_NUM_REWARD)
             {
@@ -390,6 +416,8 @@ public class BusinessRunTimeService {
 
             if(promoteAFlag)
             {
+                logger.info("把老级别变为失效==={}" , userInfo.getId());
+
                 //更新user_business_type表的数据
                 //1、把老级别变为失效
                 UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
@@ -413,9 +441,11 @@ public class BusinessRunTimeService {
                 userBusinessTypeDTO.setStatus("1");
                 userBusinessTypeDTO.setLivingPeriod(ConfigConstant.livingPeriodYear);
                 userBusinessTypeDTO.setCreateDate(new Date());
+                logger.info("级别更新创建新的记录SysUserId={}UserType={}LivingPeriod={}" , userInfo.getId(),ConfigConstant.businessA1,ConfigConstant.livingPeriodYear);
                 businessServiceClient.insertUserBusinessType(userBusinessTypeDTO);
 
                 //sys_user表也需要更新
+                logger.info("sys_user表也需要更新==={}" , userInfo.getId());
                 userInfo.setUserType(ConfigConstant.businessA1);
                 userInfo.setNickname(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
                 userServiceClient.updateUserInfo(userInfo);
@@ -423,6 +453,7 @@ public class BusinessRunTimeService {
                 //给B的上一級用户495的即时奖励
                 if(StringUtils.isNotNull(userInfo.getParentUserId()))
                 {
+                    logger.info("给B的上一級用户={}495的即时奖励" ,userInfo.getParentUserId());
                     UserInfoDTO parentUserInfoDTO = new UserInfoDTO();
                     parentUserInfoDTO.setId(userInfo.getParentUserId());
                     List<UserInfoDTO> parentUserInfoList = userServiceClient.getUserInfo(parentUserInfoDTO);
@@ -461,7 +492,6 @@ public class BusinessRunTimeService {
                             incomeRecordDTO.setNextUserMobile(userInfo.getMobile());
                             incomeRecordDTO.setParentRelation(ConfigConstant.businessA1);
                             businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
-
                         }
                     }
                 }
@@ -473,9 +503,12 @@ public class BusinessRunTimeService {
                 WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(CommonUtils.nameDecoder(userInfo.getNickname()),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
             }
         }
+        logger.info("同级推荐提升逻辑,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
     public void deFrozenUserReturnMoney(List<IncomeRecordDTO> incomeRecordDTOList, List<String> transactionIds) {
+        long startTime = System.currentTimeMillis();
+        logger.info("用户即时返现解冻==={}开始" , startTime);
         for(IncomeRecordDTO incomeRecord : incomeRecordDTOList)
         {
             if(!transactionIds.contains(incomeRecord.getTransactionId()))
@@ -493,6 +526,7 @@ public class BusinessRunTimeService {
             List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
             if(userBusinessTypeDTOS.size()>0)
             {
+                logger.info("incomeRecord记录中的这个用户={}的门店处于冻结状态" ,incomeRecord.getSysUserId());
                 businessFlag = false;
                 continue;
             }
@@ -503,10 +537,12 @@ public class BusinessRunTimeService {
             List<IncomeRecordManagementDTO> incomeRecordManagementDTOList = businessServiceClient.getIncomeRecordManagement(incomeRecordManagementDTO);
             if(incomeRecordManagementDTOList.size()!=2)
             {
+                logger.info("此记录={}，财务和运营人员，未审核通过" , incomeRecord.getId());
                 operationFlag = false;
             }
             else
             {
+
                 int incomeRecordManagementNum = 0;
                 for(IncomeRecordManagementDTO incomeRecordManagement:incomeRecordManagementDTOList)
                 {
@@ -521,6 +557,7 @@ public class BusinessRunTimeService {
                 }
                 if(incomeRecordManagementNum!=2)
                 {
+                    logger.info("此记录={}，财务和运营人员，未审核通过" , incomeRecord.getId());
                     operationFlag = false;
                 }
             }
@@ -535,12 +572,15 @@ public class BusinessRunTimeService {
 
                     //解冻用户的提成，先找出要解冻返现的用户账户，做资金解冻
                     float balanceDeny = incomeRecord.getAmount();
+                    logger.info("balanceDeny={}" , balanceDeny);
                     AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(incomeRecord.getSysUserId());
                     balanceDeny = accountDTO.getBalanceDeny() - balanceDeny;
+                    logger.info("balanceDeny={}" , balanceDeny);
                     if(balanceDeny==0)
                     {
                         balanceDeny = balanceDeny + (float)0.0001;
                     }
+                    logger.info("balanceDeny={}" , balanceDeny);
                     accountDTO.setBalanceDeny(balanceDeny);
                     accountDTO.setUpdateDate(new Date());
                     businessServiceClient.updateUserAccountInfo(accountDTO);
@@ -551,6 +591,7 @@ public class BusinessRunTimeService {
                 }
                 catch (Exception e)
                 {
+                    logger.info("解冻用户的提成，先找出要解冻返现的用户账户，做资金解冻异常,异常信息为={}" +e.getMessage(),e);
                     e.printStackTrace();
                     throw e;
                 }
@@ -559,6 +600,7 @@ public class BusinessRunTimeService {
                 }
             }
         }
+        logger.info("用户即时返现解冻,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
 }
