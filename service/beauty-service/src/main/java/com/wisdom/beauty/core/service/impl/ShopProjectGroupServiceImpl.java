@@ -195,8 +195,9 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
                 .selectByCriteria(criteria);
         if (CollectionUtils.isEmpty(shopProjectInfoGroupRelations)) {
             logger.info("shopProjectInfoGroupRelationMapper查询的结果shopProjectInfoGroupRelations为空");
+            return  null;
         }
-        List<String> shopProjectInfoIds = new ArrayList<>();
+            List<String> shopProjectInfoIds = new ArrayList<>();
 
         for (ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO : shopProjectInfoGroupRelations) {
             shopProjectInfoIds.add(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());

@@ -146,7 +146,7 @@ public class StockTest  {
         List<ShopStockNumberDTO> list=new ArrayList<>();
         list.add(shopStockNumberDTO);
         list.add(shopStockNumberDTO2);
-        extShopStockNumberMapper.updateBatchShopStockNumber(list);
+        extShopStockNumberMapper.updateBatchShopStockNumberCondition(list);
 
   /*      JSONArray json = JSONArray.fromObject(list);
         String shopStockNumberDTOs = json.toString();//把json转换为String
