@@ -716,8 +716,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 		for (ShopCheckRecordDTO shopCheckRecordDTO : list) {
 			shopStockNumberDTO=new ShopStockNumberDTO();
 			shopStockNumberDTO.setStockNumber(shopCheckRecordDTO.getActualStockNumber());
-			shopStockNumberDTO.setShopProcId(shopStockNumberDTO.getShopProcId());
-			shopStockNumberDTO.setShopStoreId(shopStockNumberDTO.getShopStoreId());
+			shopStockNumberDTO.setShopProcId(shopCheckRecordDTO.getShopProcId());
+			shopStockNumberDTO.setShopStoreId(shopCheckRecordDTO.getShopStoreId());
 			shopStockNumberDTOs.add(shopStockNumberDTO);
 			//拼装更新库存对象结束
 			shopCheckRecordDTO.setId(IdGen.uuid());

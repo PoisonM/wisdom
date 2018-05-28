@@ -5,7 +5,6 @@ import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
-import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoGroupRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -197,8 +195,9 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
                 .selectByCriteria(criteria);
         if (CollectionUtils.isEmpty(shopProjectInfoGroupRelations)) {
             logger.info("shopProjectInfoGroupRelationMapper查询的结果shopProjectInfoGroupRelations为空");
+            return  null;
         }
-        List<String> shopProjectInfoIds = new ArrayList<>();
+            List<String> shopProjectInfoIds = new ArrayList<>();
 
         for (ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO : shopProjectInfoGroupRelations) {
             shopProjectInfoIds.add(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
@@ -275,7 +274,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     @Transactional(rollbackFor = Exception.class)
     public int saveProjectGroupInfo(ExtShopProjectGroupDTO extShopProjectGroupDTO) {
 
-        List<String> shopProjectIds = extShopProjectGroupDTO.getShopProjectIds();
+        List<ShopProjectInfoDTO> shopProjectIds = extShopProjectGroupDTO.getShopProjectIds();
         //保存套卡
         String groupId = IdGen.uuid();
         String shopId = UserUtils.getBossInfo().getCurrentShopId();
@@ -319,7 +318,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         int update = shopProjectGroupMapper.updateByPrimaryKeySelective(extShopProjectGroupDTO);
         logger.info("修改套卡执行结果={}", update > 0 ? "成功" : "失败");
 
-        List<String> shopProjectIds = extShopProjectGroupDTO.getShopProjectIds();
+        List<ShopProjectInfoDTO> shopProjectIds = extShopProjectGroupDTO.getShopProjectIds();
         //查询此套卡与项目的关系
         ShopProjectInfoGroupRelationCriteria criteria = new ShopProjectInfoGroupRelationCriteria();
         ShopProjectInfoGroupRelationCriteria.Criteria c = criteria.createCriteria();
@@ -333,13 +332,8 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         return update;
     }
 
-    private void saveGroupProjectRelationInfo(ExtShopProjectGroupDTO extShopProjectGroupDTO, List<String> shopProjectIds, String groupId, String shopId) {
-        for (String string : shopProjectIds) {
-            ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(string);
-            if (null == projectDetail) {
-                logger.error("添加套卡查询项目信息为空，{}", "projectId = [" + string + "]");
-                throw new ServiceException("添加套卡查询项目信息为空");
-            }
+    private void saveGroupProjectRelationInfo(ExtShopProjectGroupDTO extShopProjectGroupDTO, List<ShopProjectInfoDTO> shopProjectIds, String groupId, String shopId) {
+        for (ShopProjectInfoDTO shopProjectInfoDTO : shopProjectIds) {
             //保存项目与套卡的关系
             ShopProjectInfoGroupRelationDTO relationDTO = new ShopProjectInfoGroupRelationDTO();
             relationDTO.setSysShopId(shopId);
@@ -347,10 +341,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             relationDTO.setId(IdGen.uuid());
             relationDTO.setProjectGroupName(extShopProjectGroupDTO.getProjectGroupName());
             relationDTO.setShopProjectGroupId(groupId);
-            relationDTO.setShopProjectInfoId(projectDetail.getId());
-            relationDTO.setShopProjectInfoName(projectDetail.getProjectName());
-            relationDTO.setShopProjectPrice(projectDetail.getMarketPrice());
-            relationDTO.setShopProjectServiceTimes(projectDetail.getServiceTimes());
+            relationDTO.setShopProjectInfoId(shopProjectInfoDTO.getId());
+            relationDTO.setShopProjectInfoName(shopProjectInfoDTO.getProjectName());
+            relationDTO.setShopProjectPrice(shopProjectInfoDTO.getMarketPrice());
+            relationDTO.setShopProjectServiceTimes(shopProjectInfoDTO.getServiceTimes());
             shopProjectInfoGroupRelationMapper.insertSelective(relationDTO);
         }
     }

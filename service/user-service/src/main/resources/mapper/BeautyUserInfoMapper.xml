@@ -161,7 +161,7 @@
     </insert>
 
     <!-- 根据多个userId查询用户集合 -->
-    <select id="getUserByInfoList"
+    <select id="getBeautyUserByInfoList"
             parameterType="com.wisdom.common.dto.user.UserInfoDTO"
             resultMap="BeautyUserInfoResultMap">
         SELECT * FROM sys_user
@@ -172,4 +172,5 @@
             and (mobile LIKE "%"#{searchFile}"%" or nickname LIKE  "%"#{searchFile}"%")
         </if>
     </select>
+
 </mapper>
