@@ -1056,7 +1056,8 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                             root + "../libs/swiper-3.4.0.min.js",
                             //root + "../styles/swiper-3.4.0.min.css",
                             root + "../libs/zepto.min.js",
-                            "libs/fixedTab.js"
+                            "libs/fixedTab.js",
+                            root + "appointment/laydate/laydate.js"
                         ]
                     })
                 }]

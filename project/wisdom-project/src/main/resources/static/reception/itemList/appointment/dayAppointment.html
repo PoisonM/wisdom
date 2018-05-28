@@ -1,8 +1,10 @@
 <div class="dayAppointment H100" ng-show="scheduling">
     <div class="header">
         <p class="timeArea">
-            <!--<input class="time  " id="orderPayStartTime" ng-click="dataS('#orderPayStartTime')" value="{{date}}">-->
-            <input class="time" readonly ng-model="param.nowTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
+            <!--<input
+                   id="timeChange" class="time" readonly ng-model="param.nowTime"
+                   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,onpicked:change});">-->
+            <input type="text" id="test1" class="time" readonly ng-model="param.nowTime">
         </p>
         <div class="centerBtn">
             <div class="appointmentDay {{param.btnActive[0]}} " ng-click="appointmentChange('day')">日预约</div>
@@ -12,6 +14,7 @@
             <span ng-click="goArrangeWorkList()">排班</span>
         </p>
     </div>
+
     <!--<div id="divBox1"  style=" overflow: auto;height: 100%;width: 100%;float: left;" class="content H100 mt128" ng-show="param.dayFlag" >
         &lt;!&ndash;<table>
             <thead>
@@ -165,8 +168,10 @@
                             <ul>
                                 <li  ng-repeat="item  in navLeftWeekTime" id="hNavLeft">
                                     <div>
-                                        <p class="weekLeftNumber">{{item.day}} <span>{{item.Lunar}}</span><br>
-                                            <span>{{item.week}}</span></p>
+                                        <p class="weekLeftNumber">{{item.day}}
+                                            <span>{{item.Lunar}}</span>
+                                            <span>{{item.week.replace("星期","周")}}</span>
+                                        </p>
                                     </div>
                                 </li>
 
@@ -197,10 +202,13 @@
             <div class="week_left">
                 <ul>
                     <li></li>
-                    <li ng-repeat="item in leftTimeList">
+                    <li  ng-repeat="item in leftTimeList">
                         <div>
-                            <p class="weekLeftNumber">{{item.day}} <span>{{item.Lunar}}</span><br>
-                                <span>{{item.week}}</span></p>
+                            <p class="weekLeftNumber">
+                                <span ng-class="{'radus_sty':$index == 0}" class="radus_stypt">{{item.day}}</span>
+                                <span>{{item.Lunar}}</span>
+                                <span>{{item.week.replace("星期","周")}}</span>
+                            </p>
                         </div>
                     </li>
                 </ul>
