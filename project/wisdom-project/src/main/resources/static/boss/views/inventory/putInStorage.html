@@ -14,7 +14,6 @@
                         <i class="icon ion-ios-checkmark-outline" style="color:#FF6666;font-size:20px;" ng-if="param.selType!='1'"></i>
                         <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.selType=='1'"></i>
                         扫码入库</span>
-
                     <p class="fs13 colff66 mr10 mt5 floatR mt10" style="border: 1px solid #FF6666;border-radius: 2px;padding:1px 10px;height:20px;line-height: 20px" ng-show="param.flag" ng-click="inventoryRecordsPicsGo()">入库记录</p>
                     </p>
                 </div>
@@ -80,7 +79,7 @@
                 </div>
                 <div>
                     <ion-list>
-                        <ion-item style="height:90px;width:95%;margin: 0px auto 10px; border-radius: 6px; box-shadow: 0 2px 4px 0 rgba(153,153,153,0.20)" class="sb " ng-repeat="item in param.detailProductList"
+                        <ion-item style="height:90px;width:95%;margin: 0px auto 10px; border-radius: 6px; box-shadow: 0 2px 4px 0 rgba(153,153,153,0.20)" class="sb" ng-repeat="item in param.detailProductList"
                                   ng-click="selProduct($index)">
                             <div style="display: flex">
                                 <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
@@ -101,22 +100,6 @@
                             </p>
                         </ion-item>
                     </ion-list>
-                </div>
-                <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100"  ng-show="param.flag"></div>
-                <div style="position: absolute;top:0;width:100%;z-index: 1000"  class="sb" ng-show="param.flag">
-                    <ul class="W33 col333 bgfff fs14">
-                        <li class="ml10 h40  col333 center bbl" ng-repeat="item in [0,1,2,3]" ng-click="selThree();$event.stopPropagation()">综合品牌</li>
-                    </ul>
-                    <ul style="width:77%;background: #F6F6F6;" class="fs14 col333">
-                        <li class="ml10 h40 sb" style="border-bottom: 1px solid #FFFFFF;" ng-click="threeMess();$event.stopPropagation()">
-                          <span>全部</span>
-                          <span class="mr10">(5)</span>
-                        </li>
-                        <li class="ml10 h40 sb" style="border-bottom: 1px solid #FFFFFF;" ng-click="threeMess();$event.stopPropagation()">
-                            <span>伊人</span>
-                            <span class="mr10">(1)</span>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
