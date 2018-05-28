@@ -310,4 +310,9 @@ define(['appBoss'], function (app) {
         .factory('ProjectInfo',['$resource',function ($resource){
             return $resource(projectInfo+"/:id", { id: '@id' })
         }])
+
+        .factory('GetStockNumber',['$resource',function ($resource){
+            return $resource(stock + "getStockNumber")
+        }])
+
 });
