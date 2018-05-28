@@ -214,7 +214,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             BeanUtils.copyProperties(shopProjectGroupDTO, projectInfoGroupResponseDTO);
             projectInfoGroupResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProjectGroupDTO.getId()));
         }
-        projectInfoGroupResponseDTO.setList(shopProjectInfos);
+        projectInfoGroupResponseDTO.setShopProjectInfoDTOS(shopProjectInfos);
         return projectInfoGroupResponseDTO;
     }
 
@@ -274,7 +274,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     @Transactional(rollbackFor = Exception.class)
     public int saveProjectGroupInfo(ExtShopProjectGroupDTO extShopProjectGroupDTO) {
 
-        List<ShopProjectInfoDTO> shopProjectIds = extShopProjectGroupDTO.getShopProjectIds();
+        List<ShopProjectInfoDTO> shopProjectIds = extShopProjectGroupDTO.getShopProjectInfoDTOS();
         //保存套卡
         String groupId = IdGen.uuid();
         String shopId = UserUtils.getBossInfo().getCurrentShopId();
@@ -318,7 +318,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         int update = shopProjectGroupMapper.updateByPrimaryKeySelective(extShopProjectGroupDTO);
         logger.info("修改套卡执行结果={}", update > 0 ? "成功" : "失败");
 
-        List<ShopProjectInfoDTO> shopProjectIds = extShopProjectGroupDTO.getShopProjectIds();
+        List<ShopProjectInfoDTO> shopProjectIds = extShopProjectGroupDTO.getShopProjectInfoDTOS();
         //查询此套卡与项目的关系
         ShopProjectInfoGroupRelationCriteria criteria = new ShopProjectInfoGroupRelationCriteria();
         ShopProjectInfoGroupRelationCriteria.Criteria c = criteria.createCriteria();

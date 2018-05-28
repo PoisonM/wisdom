@@ -3,7 +3,6 @@ package com.wisdom.beauty.api.responseDto;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.common.entity.BaseEntity;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +37,7 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 	private String detail;
 
 	/** 项目List */
-	private List<ShopProjectInfoDTO> list;
+	private List<ShopProjectInfoDTO> shopProjectInfoDTOS;
 	/** 图片地址URL */
     private List<String> imageUrl;
 	/** 是否过期 */
@@ -88,15 +87,15 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 		this.detail = detail;
 	}
 
-	public List<ShopProjectInfoDTO> getList() {
-		return list;
+	public List<ShopProjectInfoDTO> getShopProjectInfoDTOS() {
+		return shopProjectInfoDTOS;
 	}
 
-	public void setList(List<ShopProjectInfoDTO> list) {
-		this.list = list;
+	public void setShopProjectInfoDTOS(List<ShopProjectInfoDTO> shopProjectInfoDTOS) {
+		this.shopProjectInfoDTOS = shopProjectInfoDTOS;
 	}
 
-    public List<String> getImageUrl() {
+	public List<String> getImageUrl() {
 		return imageUrl;
 	}
 
