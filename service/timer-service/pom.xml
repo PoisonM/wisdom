@@ -41,12 +41,12 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-lang</artifactId>
-					<groupId>commons-lang</groupId>
-				</exclusion>
-			</exclusions>
+			<!--<exclusions>-->
+				<!--<exclusion>-->
+					<!--<artifactId>commons-lang</artifactId>-->
+					<!--<groupId>commons-lang</groupId>-->
+				<!--</exclusion>-->
+			<!--</exclusions>-->
 		</dependency>
 
 		<dependency>
