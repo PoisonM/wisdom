@@ -227,6 +227,7 @@ public class AppointmentController {
 				HashMap<Object, Object> map = new HashMap<>(16);
 				map.put("week", DateUtils.getWeek(loopDate));
 				map.put("day", DateUtils.getDay(loopDate));
+				map.put("info", "");
 				try {
                     LunarUtils lunarUtils = new LunarUtils(loopDate);
                     map.put("Lunar", LunarUtils.getChinaDayString(lunarUtils.day));
@@ -246,9 +247,6 @@ public class AppointmentController {
 					}
                     loopDate = DateUtils.dateInc(loopDate);
                 }
-				if (null == map.get("info")) {
-					map.put("info", "");
-				}
 				oneClerkList.add(map);
 			}
 			returnMap.put(clerkDTO.getName(), oneClerkList);

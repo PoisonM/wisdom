@@ -133,7 +133,6 @@ public class LunarUtils {
         year = iYear;
 
         yearCyl = iYear - 1864;
-        System.out.println("date = [" + iYear + "]");
         leapMonth = leapMonth(iYear); //闰哪个月,1-12
         leap = false;
 
