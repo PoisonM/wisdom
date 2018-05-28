@@ -345,20 +345,18 @@ public class ShopStockServiceImpl implements ShopStockService {
 			return null;
 		}
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
-		// 记录插入
+		// 入库记录插入
 		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
 		String id=IdGen.uuid();
-		shopStockRecordDTO.setSysBossCode(sysBossDTO.getId());
+		shopStockRecordDTO.setSysBossCode(sysBossDTO.getSysBossCode());
 		shopStockRecordDTO.setShopStoreId(shopStockDto.getShopStoreId());
 		shopStockRecordDTO.setId(id);
 		shopStockRecordDTO.setCreateDate(new Date());
 		shopStockRecordDTO.setFlowNo(shopStockDto.getFlowNo());
-		shopStockRecordDTO.setStockStyle(shopStockDto.getStockType());
 		shopStockRecordDTO.setDetail(shopStockDto.getDetail());
-		shopStockRecordDTO.setManagerId(sysBossDTO.getId());
-		shopStockRecordDTO.setReceiver(shopStockDto.getReceiver());
+		shopStockRecordDTO.setManagerId(sysBossDTO.getSysBossCode());
 		// 判断是出库还是入库
 		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())
 				|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
@@ -369,6 +367,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 				|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
 			// 此时是出库
 			shopStockRecordDTO.setStockType(shopStockDto.getStockType());
+			shopStockRecordDTO.setStockStyle(shopStockDto.getStockType());
+			shopStockRecordDTO.setReceiver(shopStockDto.getReceiver());
 		}
 		shopStockRecordDTO.setCreateDate(new Date());
 		shopStockRecordDTO.setUpdateDate(new Date());
@@ -388,6 +388,18 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStock.setShopBossId(sysBossDTO.getId());
 			// 将record表总的id放入shopStockDTO中
 			shopStockDTO.setShopStockRecordId(shopStockRecordDTO.getId());
+			//判断的出库还是入库
+			if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())
+					|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
+				// 此时是入库
+				shopStockDTO.setStockNumber(shopStock.getStockNumber());
+			}
+			if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())
+					|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
+				// 此时是出库
+				shopStockDTO.setOutStockNumber(shopStock.getStockNumber());
+			}
+			shopStockDTO.setSysBossCode(sysBossDTO.getSysBossCode());
 			shopStockDTOList.add(shopStockDTO);
 			productIds.add(shopStock.getShopProcId());
 			map.put(shopStock.getShopProcId(), shopStock);
@@ -422,6 +434,11 @@ public class ShopStockServiceImpl implements ShopStockService {
 				map.remove(shopStockNumber.getShopProcId());
 			}
 		}
+
+		//判断updateShopStockNumber是否为空，如果为空则不需要批量更新库存量
+		if(CollectionUtils.isNotEmpty(updateShopStockNumber)){
+			extShopStockNumberMapper.updateBatchShopStockNumberCondition(updateShopStockNumber);
+		}
 		// 获取需要插入的对象，然后遍历
 		Collection<ShopStockRequestDTO> values = map.values();
 		// 需要插入的List集合
@@ -438,6 +455,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockNumberDTO.setSysBossCode(sysBossDTO.getId());
 			shopStockNumberDTO.setShopProcId(addShopStockRequest.getShopProcId());
 			shopStockNumberDTO.setShopStoreId(addShopStockRequest.getShopStoreId());
+			shopStockNumberDTO.setProductTypeTwoId(addShopStockRequest.getProductTypeTwoId());
 			shopStockNumberDTO.setUpdateDate(new Date());
 			shopStockNumberDTO.setCreateDate(new Date());
 			saveShopStockNumber.add(shopStockNumberDTO);
