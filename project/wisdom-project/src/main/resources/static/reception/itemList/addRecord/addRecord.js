@@ -1,4 +1,5 @@
-PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetShopUserArchivesInfoByUserId,DeleteArchiveInfo) {
+PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo
+    ,GetShopUserArchivesInfoByUserId,DeleteArchiveInfo,ImageBase64UploadToOSS,ImageBase64UploadToOSS) {
     console.log($scope);
 /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
@@ -127,6 +128,52 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetSho
     $scope.backHeaderCashFn = function () {
         $scope.param.openSelectFlag = false
     }
+
+
+
+
+
+
+
+    $scope.reader = new FileReader();   //创建一个FileReader接口
+    $scope.thumb = "";      //用于存放图片的base64
+    $scope.img_upload = function(files) {
+        var file = files[0];
+        if(window.FileReader) {
+            var fr = new FileReader();
+            fr.onloadend = function(e) {
+                console.log(e)
+                $scope.thumb = e.target.result
+            };
+            fr.readAsDataURL(file);
+        }else {
+            alert("浏览器不支持")
+        }
+        ImageBase64UploadToOSS.save({imageStr:$scope.thumb},function (data) {
+
+        })
+
+
+    };
+
+   /* $scope.img_del = function(key) {    //删除，删除的时候thumb和form里面的图片数据都要删除，避免提交不必要的
+        var guidArr = [];
+        for(var p in $scope.thumb){
+            guidArr.push(p);
+        }
+        delete $scope.thumb[guidArr[key]];
+        delete $scope.form.image[guidArr[key]];
+    };
+    $scope.submit_form = function(){    //图片选择完毕后的提交，这个提交并没有提交前面的图片数据，只是提交用户操作完毕后，
+        // 到底要上传哪些，通过提交键名或者链接，后台来判断最终用户的选择,整个思路也是如此
+        $http({
+            method: 'post',
+            url: '/comm/test.php',
+            data:$scope.form,
+        }).success(function(data) {
+            console.log(data);
+        })
+    };*/
 
 
 });
