@@ -27,6 +27,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                 $scope.param.twoLevelList = data.responseData.twoLevelList;
                 $scope.param.allUseCost = data.responseData.allUseCost;
                 $scope.param.useCost = data.responseData.useCost;
+                console.log($scope.param.detailProductList);
             });
 
             $scope.changeBtn = function (type) {
@@ -91,8 +92,8 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                 })
             }
 
-            $scope.productInventoryDetailsGo = function(){
-                $state.go('productInventoryDetails')
+            $scope.productInventoryDetailsGo = function(shopProductId){
+                $state.go('productInventoryDetails',{shopProductId:shopProductId})
             }
 
             $scope.chooseProductList = function(productTypeTwoId,productTypeTwoName){
