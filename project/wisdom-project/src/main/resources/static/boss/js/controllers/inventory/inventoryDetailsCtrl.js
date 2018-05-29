@@ -16,13 +16,17 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                 multiSelectFlag:false,
                 selectProductTypeOneId:'',
                 selectProductList:'',
+                allUseCost:'',
+                useCost:'',
+                productTypeTwoName:''
             };
 
             GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,productType:$scope.param.type},function(data){
                 $scope.param.detailProductList = data.responseData.detailProductList;
                 $scope.param.oneLevelList = data.responseData.oneLevelList;
                 $scope.param.twoLevelList = data.responseData.twoLevelList;
-                console.log(data.responseData);
+                $scope.param.allUseCost = data.responseData.allUseCost;
+                $scope.param.useCost = data.responseData.useCost;
             });
 
             $scope.changeBtn = function (type) {
@@ -78,7 +82,8 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                 $state.go('productInventoryDetails')
             }
 
-            $scope.chooseProductList = function(productTypeTwoId){
+            $scope.chooseProductList = function(productTypeTwoId,productTypeTwoName){
+                $scope.param.productTypeTwoName = productTypeTwoName;
                 GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
@@ -87,4 +92,4 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                     $scope.param.multiSelectFlag=false;
                 })
             }
-        }])
+}])

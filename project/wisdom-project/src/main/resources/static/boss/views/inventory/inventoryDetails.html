@@ -37,7 +37,7 @@
                 <ion-item style="width:100%;text-align:center;padding: 10px 20px;"
                           ng-repeat="item in param.twoLevelList"
                           ng-if="item.productTypeOneId==param.selectProductTypeOneId"
-                          ng-click="chooseProductList(item.productTypeTwoId)">
+                          ng-click="chooseProductList(item.productTypeTwoId,item.productTypeTwoName)">
                     {{item.productTypeTwoName}}
                 </ion-item>
             </ion-list>
@@ -55,10 +55,10 @@
             </ion-list>
         </div>
         <div class="center" style="height:25px;line-height:25px;background: rgba(255,102,102,0.15); ">
-            <p class="fs12 col888 ml10">总成本：￥12789205.91</p>
+            <p class="fs12 col888 ml10">总成本：￥{{param.allUseCost}}</p>
         </div>
         <p class="h30 fs12 col888">
-            <span class="ml20">可丽金.全部.占用成本：</span><span class="colff66">￥69838.13</span>
+            <span class="ml20">{{param.productTypeTwoName}}.全部.占用成本：</span><span class="colff66">￥{{param.useCost}}</span>
         </p>
         <div>
             <ion-list>
