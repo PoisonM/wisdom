@@ -791,5 +791,73 @@ public class AppointmentController {
 		return responseDTO;
 	}
 
+	/**
+	 * 获取我的预约列表（员工端）
+	 * add by 盛小龙@2018.05.23
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "/getClerkAppointmentInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO<Object> getClerkAppointmentInfo(@RequestParam String searchDate) {
+		long currentTimeMillis = System.currentTimeMillis();
+		logger.info("获取某个店员的预约列表传入参数={}", "searchDate = [" + searchDate + "]");
+		SysClerkDTO clerkDTO = UserUtils.getClerkInfo();
+		//查询店铺下的预约信息
+		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+		extShopAppointServiceDTO.setSysClerkId(clerkDTO.getSysUserId());
+		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
+		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
+		//缓存返回结果
+		ArrayList<Object> arrayList = new ArrayList<>();
+
+		List<ShopAppointServiceDTO> list = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+		if (CommonUtils.objectIsNotEmpty(list)) {
+			for (ShopAppointServiceDTO serviceDTO : list) {
+				HashMap<Object, Object> hashMap = new HashMap<>(2);
+				hashMap.put("sysClerkInfo", redisUtils.getSysClerkDTO(serviceDTO.getSysClerkId()));
+				hashMap.put("appointmentInfo", serviceDTO);
+				hashMap.put("projectNumber", StringUtils.isBlank(serviceDTO.getShopProjectId()) ? "0" : serviceDTO.getShopProjectId().split(";").length);
+				arrayList.add(hashMap);
+			}
+		}
+
+		ResponseDTO responseDTO = new ResponseDTO();
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(arrayList);
+		logger.info("获取某个店员的预约列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+
+	/**
+	 * 获取客户的预约详情（员工端）
+	 * add by 盛小龙@2018.05.23
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "getClerkAppointmentInfoById", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO<ExtShopAppointServiceDTO> getClerkAppointmentInfoById(@RequestParam String shopAppointServiceId) {
+		long startTime = System.currentTimeMillis();
+		logger.info("获取某次预约详情传入参数={}", "shopAppointServiceId = [" + shopAppointServiceId + "]");
+		ResponseDTO<ExtShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
+		ShopAppointServiceDTO shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceId);
+		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+		if (null != shopAppointInfoFromRedis) {
+			BeanUtils.copyProperties(shopAppointInfoFromRedis, extShopAppointServiceDTO);
+			SysClerkDTO sysClerkDTO = redisUtils.getSysClerkDTO(extShopAppointServiceDTO.getSysClerkId());
+			UserInfoDTO userInfoDTO = userServiceClient .getUserInfoFromUserId(shopAppointInfoFromRedis.getSysUserId());
+			extShopAppointServiceDTO.setClerkImage(userInfoDTO.getPhoto());
+			//extShopAppointServiceDTO.setCustomType(userInfoDTO.getUserType());
+		}
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(extShopAppointServiceDTO);
+		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - startTime));
+
+		return responseDTO;
+	}
 
 }
