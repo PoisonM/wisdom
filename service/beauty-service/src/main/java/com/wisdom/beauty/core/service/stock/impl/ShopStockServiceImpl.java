@@ -1,8 +1,5 @@
 package com.wisdom.beauty.core.service.stock.impl;
 
-import java.math.BigDecimal;
-import java.util.*;
-
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.StockStyleEnum;
 import com.wisdom.beauty.api.enums.StockTypeEnum;
@@ -13,6 +10,7 @@ import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
@@ -27,10 +25,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.wisdom.beauty.core.service.stock.ShopStockService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * FileName: ShopStockServiceImpl
@@ -781,7 +780,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("allUseCost", allUseCost);
-		map.put("useCost", useCost);
+		map.put("useCost", StringUtils.isBlank(productTypeTwoId) ? allUseCost : useCost);
 		return map;
 	}
 
