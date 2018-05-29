@@ -5,11 +5,11 @@ import com.wisdom.beauty.api.dto.SysShopDTO;
 public class ExtSysShopDTO extends SysShopDTO {
     private String sysBossCode;
 
-    public String getSysBossId() {
+    public String getSysBossCode() {
         return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossCode) {
+    public void setSysBossCode(String sysBossCode) {
         this.sysBossCode = sysBossCode;
     }
 }
