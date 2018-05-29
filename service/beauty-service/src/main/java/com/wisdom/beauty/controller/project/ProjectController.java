@@ -234,10 +234,11 @@ public class ProjectController {
 			} else {
 				// 产品有效期
 				if (shopUserProjectRelationDTO.getInvalidDays().getTime() > System.currentTimeMillis()) {
-					shopUserProjectRelationResponse.setOverdue(true);
+                    //** 是否过期  0未过期 1过期
+					shopUserProjectRelationResponse.setOverdue("0");
 
 				} else {
-					shopUserProjectRelationResponse.setOverdue(false);
+					shopUserProjectRelationResponse.setOverdue("1");
 				}
 			}
 			shopUserProjectRelationResponseDTO.add(shopUserProjectRelationResponse);
