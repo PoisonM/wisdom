@@ -305,9 +305,17 @@ public class ProjectController {
 				// 套卡名称
 				String projectGroupName = null;
 				ArrayList<Object> arrayList = new ArrayList<>();
+				//是否被使用完，0已用完 1使用中
+				Integer surplusTimes=null;
 				for (ShopUserProjectGroupRelRelationDTO dto : userCollectionCardProjectList) {
 					if (entry.getKey().equals(dto.getShopProjectGroupId())) {
 						arrayList.add(dto);
+						if (surplusTimes==null){
+							surplusTimes=dto.getProjectSurplusTimes();
+						}else {
+							surplusTimes=surplusTimes+dto.getProjectSurplusTimes();
+						}
+
 						bigDecimal = bigDecimal.add(dto.getProjectInitAmount());
 						projectGroupName = dto.getShopProjectGroupName();
 					}
@@ -316,6 +324,7 @@ public class ProjectController {
 				map.put("projectList", arrayList);
 				map.put("totalAmount", bigDecimal);
 				map.put("projectGroupName", projectGroupName);
+				map.put("isUseUp", surplusTimes>0?"1":"0");
 				returnList.add(map);
 			}
 		}
