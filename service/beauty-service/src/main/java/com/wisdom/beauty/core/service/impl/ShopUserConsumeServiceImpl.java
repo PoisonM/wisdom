@@ -633,7 +633,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      * @return
      */
     @Override
-    public ResponseDTO rechargeRechargeCrad(String transactionId, String imageUrl) {
+    public ResponseDTO rechargeRechargeCard(String transactionId, String imageUrl) {
         logger.info("充值卡充值操作传入参数={}", "transactionId = [" + transactionId + "], imageUrl = [" + imageUrl + "]");
 
         ResponseDTO responseDTO = new ResponseDTO();

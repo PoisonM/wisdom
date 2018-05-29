@@ -1,37 +1,34 @@
 package com.wisdom.beauty.controller.stock;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.requestDto.*;
+import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
+import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
+import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
+import com.wisdom.beauty.api.requestDto.StoreProductIdRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
-import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.service.ShopCheckService;
+import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
-import com.wisdom.beauty.core.service.stock.ShopStockService;
-import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.system.PageParamDTO;
-import com.wisdom.common.dto.system.ResponseDTO;
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: AppointmentServiceImpl
@@ -247,7 +244,7 @@ public class StoreAndStockController {
 		pageParamVoDTO.setPageSize(pageSize);
 		pageParamVoDTO.setPageNo(0);
 		pageParamVoDTO.setRequestData(shopStockNumberDTO);
-		Map<String,Object> map = shopStockService.getStockDetailList(pageParamVoDTO);
+        Map<String, Object> map = shopStockService.getStockDetailList(pageParamVoDTO, new ArrayList<>());
 
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);

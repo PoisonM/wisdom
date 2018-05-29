@@ -87,7 +87,7 @@ public class ShopTest {
         String toJSONString = JSONObject.toJSONString(sysShopDTO);
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/shop/updateShopInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(get("/shop/updateShopInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -95,5 +95,22 @@ public class ShopTest {
         System.out.println(result.getResponse().getContentAsString());
     }
 
+    @Test
+    public void getTestShopConsumeAndRechargeForClerk() throws Exception{
+        MvcResult result = mvc.perform(get("/work/getShopConsumeAndRechargeForClerk").param("startTime", "2017-01-01 00:00:00:0000").param("endTime", "2017-01-01 23:59:59:9999"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void getClerkPerformance() throws Exception{
+        MvcResult result = mvc.perform(get("/work/getClerkPerformance").param("startTime", "2017-01-01 00:00:00:0000").param("endTime", "2017-01-01 23:59:59:9999"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+        System.out.println(result.getResponse().getContentAsString());
+    }
 
 }

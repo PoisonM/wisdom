@@ -675,6 +675,76 @@ public class ShopStockRecordCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andReceiverIsNull() {
+            addCriterion("receiver is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverIsNotNull() {
+            addCriterion("receiver is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverEqualTo(String value) {
+            addCriterion("receiver =", value, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNotEqualTo(String value) {
+            addCriterion("receiver <>", value, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverGreaterThan(String value) {
+            addCriterion("receiver >", value, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverGreaterThanOrEqualTo(String value) {
+            addCriterion("receiver >=", value, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverLessThan(String value) {
+            addCriterion("receiver <", value, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverLessThanOrEqualTo(String value) {
+            addCriterion("receiver <=", value, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverLike(String value) {
+            addCriterion("receiver like", value, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNotLike(String value) {
+            addCriterion("receiver not like", value, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverIn(List<String> values) {
+            addCriterion("receiver in", values, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNotIn(List<String> values) {
+            addCriterion("receiver not in", values, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverBetween(String value1, String value2) {
+            addCriterion("receiver between", value1, value2, "receiver");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNotBetween(String value1, String value2) {
+            addCriterion("receiver not between", value1, value2, "receiver");
+            return (Criteria) this;
+        }
+
         public Criteria andManagerIdIsNull() {
             addCriterion("manager_id is null");
             return (Criteria) this;

@@ -53,9 +53,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             $scope.all = function () {
                 $scope.param.flag = false;
             };
-            $scope.selThree = function () {
 
-            };
             $scope.threeMess = function () {
                 $scope.param.flag = false;
             };

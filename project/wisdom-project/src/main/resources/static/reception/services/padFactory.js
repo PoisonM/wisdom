@@ -1,5 +1,5 @@
-var beautyIP = ' http://192.168.1.117/beauty/';
-var userIP = ' http://192.168.1.117/user/';
+var beautyIP = ' http://localhost/beauty/';
+var userIP = ' http://localhost/user/';
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
@@ -295,7 +295,11 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //图片上传
     .factory('ImageBase64UploadToOSS', ['$resource', function($resource) {
-        return $resource('http://192.168.1.117/system-service/file/imageBase64UploadToOSS')
+        return $resource('http://localhost/system-service/file/imageBase64UploadToOSS')
+    }])
+    //普通图片上传
+    .factory('imageUploadToOSS', ['$resource', function($resource) {
+        return $resource('http://192.168.1.117/system-service/imageUploadToOSS')
     }])
     //全量更新用户的订单
     .factory('UpdateShopUserOrderInfo', ['$resource', function($resource) {

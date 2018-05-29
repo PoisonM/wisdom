@@ -175,7 +175,7 @@ public class ProjectTest {
         arrays.add("1");
 //        arrays.add("2");
 //        arrays.add("3");
-        extShopProjectGroupDTO.setShopProjectIds(arrays);
+//        extShopProjectGroupDTO.setShopProjectInfoDTOS(arrays);
         List<String> images = new ArrayList<>();
         images.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
         images.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");

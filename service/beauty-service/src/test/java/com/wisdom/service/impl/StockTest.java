@@ -83,19 +83,32 @@ public class StockTest  {
         List<ShopStockRequestDTO> list = new ArrayList<>();
         ShopStockRequestDTO shopStockRequestDTO = new ShopStockRequestDTO();
 
-        shopStockRequestDTO.setShopStoreId("651742081");
-        shopStockRequestDTO.setStockStyle("1");
-        shopStockRequestDTO.setShopProcId("7878");
-        shopStockRequestDTO.setFlowNo("785489636598741258");
-        shopStockRequestDTO.setDetail("我写的备注啦啦啦啦");
-        shopStockRequestDTO.setStockNumber(99);
+        shopStockRequestDTO.setShopStoreId("18610414171");
+        shopStockRequestDTO.setStockStyle("0");//入库
+        shopStockRequestDTO.setShopProcId("100");
+        shopStockRequestDTO.setFlowNo("flowNo18610414171");
+        shopStockRequestDTO.setDetail("入库的备注");
+        shopStockRequestDTO.setStockNumber(10);
         shopStockRequestDTO.setProductDate(new Date());
         shopStockRequestDTO.setStockPrice(new BigDecimal("88.88"));
+
+        ShopStockRequestDTO shopStockRequestDTO2 = new ShopStockRequestDTO();
+
+        shopStockRequestDTO2.setShopStoreId("18610414171");
+        shopStockRequestDTO2.setStockStyle("0");//入库
+        shopStockRequestDTO2.setShopProcId("101");
+        shopStockRequestDTO2.setFlowNo("flowNo18610414171-copy");
+        shopStockRequestDTO2.setDetail("入库的备注-copy");
+        shopStockRequestDTO2.setStockNumber(33);
+        shopStockRequestDTO2.setProductDate(new Date());
+        shopStockRequestDTO2.setStockPrice(new BigDecimal("33.88"));
+        //shopStockRequestDTO.setReceiver("张欢");
         //如果是入库则不需要出这个
         //shopStockRequestDTO.setStockType("0");
-        shopStockRequestDTO.setStockStyle("0");
+       // shopStockRequestDTO.setStockStyle("0");
 
         list.add(shopStockRequestDTO);
+        list.add(shopStockRequestDTO2);
 
         JSONArray json = JSONArray.fromObject(list);
         String toJSONString = json.toString();//把json转换为String
@@ -108,7 +121,50 @@ public class StockTest  {
 
         System.out.println(result.getResponse().getContentAsString());
     }
+    @Test
+    public void  testChuku() throws Exception {
 
+
+        List<ShopStockRequestDTO> list = new ArrayList<>();
+        ShopStockRequestDTO shopStockRequestDTO = new ShopStockRequestDTO();
+
+        shopStockRequestDTO.setShopStoreId("18610414171");
+        shopStockRequestDTO.setShopProcId("100");
+        shopStockRequestDTO.setFlowNo("flowNo18610414171");
+        shopStockRequestDTO.setDetail("出库的备注");
+        shopStockRequestDTO.setStockNumber(11);
+        shopStockRequestDTO.setProductDate(new Date());
+        shopStockRequestDTO.setStockPrice(new BigDecimal("88.88"));
+        shopStockRequestDTO.setReceiver("张欢");
+        shopStockRequestDTO.setStockType("1");
+        shopStockRequestDTO.setStockStyle("2");
+        ShopStockRequestDTO shopStockRequestDTO2 = new ShopStockRequestDTO();
+
+        shopStockRequestDTO2.setShopStoreId("18610414171");
+        shopStockRequestDTO2.setShopProcId("101");
+        shopStockRequestDTO2.setFlowNo("flowNo18610414171-copy");
+        shopStockRequestDTO2.setDetail("出库的备注-copy");
+        shopStockRequestDTO2.setStockNumber(12);
+        shopStockRequestDTO2.setProductDate(new Date());
+        shopStockRequestDTO2.setStockPrice(new BigDecimal("33.88"));
+        shopStockRequestDTO2.setReceiver("张欢");
+        shopStockRequestDTO2.setStockType("1");
+        shopStockRequestDTO2.setStockStyle("2");
+
+        list.add(shopStockRequestDTO);
+        list.add(shopStockRequestDTO2);
+
+        JSONArray json = JSONArray.fromObject(list);
+        String toJSONString = json.toString();//把json转换为String
+
+        MvcResult result = mvc.perform(post("/stock/addStock").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
     @Test
     public  void test(){
         /*String json =  "[{\"id\":\"133223\",\"sysBossCode\":\"20\"},{\"id\":\"3232\",\"sysBossCode\":\"20\"}]";
