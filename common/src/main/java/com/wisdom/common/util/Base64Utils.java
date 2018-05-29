@@ -119,6 +119,7 @@ public class Base64Utils {
      */
     public static InputStream getInputStream(String imgStr) throws Exception {
         imgStr = imgStr.replace("data:image/png;base64,", "");
+        imgStr = imgStr.replace("data:image/jpeg;base64,", "");
         imgStr = imgStr.replace("\"", "");
         BASE64Decoder decoder = new BASE64Decoder();
         InputStream inputStream = null;
@@ -132,11 +133,6 @@ public class Base64Utils {
                 }
             }
             inputStream = new ByteArrayInputStream(b);
-            OutputStream out = new FileOutputStream("D:\\et.png");
-
-            out.write(b);
-            out.flush();
-            out.close();
             return inputStream;
         } catch (IOException e) {
             e.printStackTrace();

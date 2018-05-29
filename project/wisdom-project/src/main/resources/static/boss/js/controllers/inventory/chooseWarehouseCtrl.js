@@ -9,7 +9,8 @@ angular.module('controllers',[]).controller('chooseWarehouseCtrl',
                 }
             })
 
-            $scope.funAreaGo = function(){
-                $state.go("funArea")
+            $scope.funAreaGo = function(shopStoreId){
+                $rootScope.shopInfo.shopStoreId = shopStoreId;
+                $state.go("funArea");
             }
         }])
