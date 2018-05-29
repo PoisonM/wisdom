@@ -12,6 +12,9 @@ angular.module('controllers',[]).controller('amendStoreCtrl',
                 }
 
             })
+           /* $scope.delPic = function(index){
+                $rootScope.settingAddsome.editedRecharge.imageUrls.splice(index,1)
+            }*/
             $scope.save = function () {
                 UpdateShopInfo.save($scope.amendStore,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){

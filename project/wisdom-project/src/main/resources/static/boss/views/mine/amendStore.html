@@ -3,11 +3,29 @@
         <div class="list col33">
             <li class="item sb"><span class="fs16">名称<span class="colff66">*</span></span><input ng-model="amendStore.name" class="textL fs15 col99"></li>
             <li class="item"><span class="fs16">电话<span class="colff66">*</span></span><input class="fr col99 textL" ng-model="amendStore.phone"></li>
-            <span class="fs16 bgfff disp" style="width: 100%;padding: 8px;border-bottom: 0px">图片</span>
-            <li class="item" style="position: relative">
-                <input type="file" style="opacity: 0;position: absolute;top: 50px;left: 44px;width: 40px;height: 40px;">
-                <img ng-src="{{amendStore.shopImageUrl}}" style="width: 105px;height: 105px;">
+            <li class="item"><span class="fs16">图片</span><span style="color: #3F3F3F;font-size: 16px;margin-left: 10px">(最多可上传6张)</span></li>
+
+            <li class="item" >
+                <ul style="" class="Htab-head">
+                    <li class="Htab-head-item " style="width:130px;position: relative;height:120px;" ng-repeat="item in [0,1,2,3]">
+                             <span  style="position: absolute;top: 0px;right: 5px;"  ng-click="delPic($index)">
+                                 <i class="ion-android-remove-circle colff66" ></i>
+                             </span>
+                        <input type="file" style="opacity: 0;position: absolute;top: 0px;left: 0px;width: 105px;height: 105px;" id="" disabled="disabled">
+                        <img ng-src="images/mine/addPhoto.png" style="width: 105px;height: 105px;" class="ml10 mt10">
+                    </li>
+                    <li class="Htab-head-item ml10 bgfff" style="width:130px;position: relative;height:120px;display: inline-block;text-align: left" >
+                        <div style="width:130px;position: relative;height:120px;display: inline-block">
+
+                            <input type="file" style="opacity: 0;position: absolute;top: 0px;left: 0px;width: 105px;height: 105px;" id="uploadPic" onchange="angular.element(this).scope().img_upload(this.files)">
+                            <img src="images/mine/addPhoto.png" style="width: 105px;height: 105px;" class="mt10">
+                        </div>
+
+                    </li>
+                </ul>
+
             </li>
+
 
             <li class="item"><span class="fs16">省市区<span class="colff66">*</span></span>
                 <p class="fr mr10 col99 fs14"><input ng-model="amendStore.province" style="width:50Px;"  class="textL"><input ng-model="amendStore.city" style="width:50Px;" class="textL"> </p></li>
