@@ -191,7 +191,7 @@ public class ProductTypeController {
 
         responseMap.put("detailProductList", detailProductList);
         //查询产品的库存信息
-        if (StringUtils.isNotBlank(levelTwoId) && StringUtils.isNotBlank(shopStoreId)) {
+        if (StringUtils.isNotBlank(shopStoreId)) {
             ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
             shopStockNumberDTO.setShopStoreId(shopStoreId);
             shopStockNumberDTO.setProductTypeTwoId(levelTwoId);
