@@ -46,7 +46,7 @@ PADWeb.controller("left_navCtrl", function($scope, $state,$stateParams, FindArch
             clearInterval(timeIn)
         }
      },100)
-    $scope.selectSty = function (id,shopid,sysShopId,sysUserId) {
+    $scope.selectSty = function (id,sysUserId,shopid,sysShopId) {
         $scope.param.selectSty = id
         $state.go("pad-web.left_nav.personalFile",{
             id:id,
