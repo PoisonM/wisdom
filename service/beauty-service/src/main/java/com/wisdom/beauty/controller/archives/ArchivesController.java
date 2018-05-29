@@ -232,7 +232,9 @@ public class ArchivesController {
     ResponseDTO<CustomerAccountResponseDto> findArchive(@PathVariable String userId) {
         long startTime = System.currentTimeMillis();
         ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
-        CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = clerkInfo.getSysShopId();
+        CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId, sysShopId);
         if (customerAccountResponseDto != null) {
             responseDTO.setResponseData(customerAccountResponseDto);
         }

@@ -14,6 +14,7 @@ import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.beauty.core.service.ShopUserConsumeService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -47,6 +48,7 @@ import java.util.List;
  * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "cardInfo")
 public class CardController {
 
