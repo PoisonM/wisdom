@@ -81,6 +81,8 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
     //
     private Date updateDate;
 
+    private String imageRul;
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -281,5 +283,13 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public void setImageRul(String imageRul) {
+        this.imageRul = imageRul;
+    }
+
+    public String getImageRul() {
+        return imageRul;
     }
 }
