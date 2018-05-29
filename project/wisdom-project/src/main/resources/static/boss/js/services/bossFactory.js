@@ -17,6 +17,7 @@ var productTypeInfo  = '/beauty/productTypeInfo/';
 var projectType='/beauty/projectType/';
 var remind='/beauty/remind/';
 var shop='/beauty/shop/';
+var  mine='/beauty/mine/';
 
 
 define(['appBoss'], function (app) {
@@ -309,6 +310,50 @@ define(['appBoss'], function (app) {
         /*单个项目详情*/
         .factory('ProjectInfo',['$resource',function ($resource){
             return $resource(projectInfo+"/:id", { id: '@id' })
+        }])
+       /*获取一级产品列表*/
+        .factory('OneLevelProduct',['$resource',function ($resource){
+            return $resource(productInfo+"oneLevelProduct")
+        }])
+       /*获取三级级项目列表*/
+        .factory('ThreeLevelProject',['$resource',function ($resource){
+            return $resource(projectInfo+"threeLevelProject")
+        }])
+      /*获取产品三级列表*/
+        .factory('ThreeLevelProduct',['$resource',function ($resource){
+            return $resource(productInfo+"threeLevelProduct")
+        }])
+     /*获取套卡列表*/
+        .factory('GetShopProjectGroups',['$resource',function ($resource){
+            return $resource(cardInfo+"getShopProjectGroups")
+        }])
+     /*获取充值卡列表*/
+        .factory('GetRechargeCardList',['$resource',function ($resource){
+            return $resource(cardInfo+"getRechargeCardList")
+        }])
+    /*查询我的信息*/
+        .factory('GetCurrentLoginUserInfo',['$resource',function ($resource){
+            return $resource(mine+"getCurrentLoginUserInfo")
+        }])
+     /*修改我的信息*/
+        .factory('UpdateBossInfo',['$resource',function ($resource){
+            return $resource(mine+"updateBossInfo")
+        }])
+    /*查询排班设置*/
+        .factory('GetBossShopScheduleSetting',['$resource',function ($resource){
+            return $resource(clerkSchedule+"getBossShopScheduleSetting")
+        }])
+    /*查询充值卡详细信息*/
+        .factory('CardInfo',['$resource',function ($resource){
+            return $resource(cardInfo+"/:id", { id: '@id' })
+        }])
+     /*查询套卡的详细信息*/
+        .factory('cardDetails',['$resource',function ($resource){
+            return $resource(cardInfo+"getShopProjectGroup/detail")
+        }])
+　　　/*保存用户档案信息*/
+        .factory('SaveArchiveInfo',['$resource',function ($resource){
+            return $resource(archives+"saveArchiveInfo")
         }])
 
         .factory('GetStockNumber',['$resource',function ($resource){

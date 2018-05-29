@@ -1,26 +1,20 @@
 <ion-view class="bg col33">
     <ion-content>
         <div>
-            <img src="images/work/photo.jpg" style="width:100%;height: 188px;">
+            <img ng-src="{{shopInfo.shopImageUrl}}" style="width:100%;height: 188px;">
         </div>
          <div class="list">
              <li class="item fs14">门店简介</li>
              <div class="fs13 bgfff p10">
-                 <p>汉方美容养生会所于2008年创立。致力于打造纯生态健康美
-                     丽女生。专业解决所有问题性受损肌肤。依靠中医经络学说，
-                     调理脏腑及亚健康身体。用独特脏腑点穴手法经络疏通手法，
-                     区别于普通按摩，独成一派，得到顾客一致好评！</p>
-                 <p><img src="images/mine/machine.png" style="width: 12px;;height: 13px;display: inline-block"><span class="ml5">座机—— 037164865588</span></p>
+                 <p>{{shopInfo.detail}}</p>
+                 <!--<p><img src="images/mine/machine.png" style="width: 12px;;height: 13px;display: inline-block"><span class="ml5">座机—— {{shopInfo.phone}}</span></p>-->
              </div>
          </div>
         <div class="list fs14">
-            <p class="item"><img src="images/mine/shopTell.png" style="width: 16px;;height: 16px;display: inline-block"><span class="ml5">门店电话 13803851161 </span></p>
-            <p class="item"><img src="images/mine/shopTime.png" style="width: 16px;;height: 16px;display: inline-block"><span class="ml5">营业时间 08:00 - 20:00 </span></p>
-            <p class="item"><span  style="width:30px;;height: 15px;display: inline-block;font-size: 8px!important;color: #FF6666;border-radius: 5px;border: 1px solid #FF6666;text-align: center;line-height: 15px">地址</span><span class="ml5">四川 成都 广州市</span></p>
+            <p class="item"><img src="images/mine/shopTell.png" style="width: 16px;;height: 16px;display: inline-block"><span class="ml5">门店电话&nbsp;&nbsp;{{shopInfo.phone}} </span></p>
+            <p class="item"><img src="images/mine/shopTime.png" style="width: 16px;;height: 16px;display: inline-block"><span class="ml5">营业时间 {{shopInfo.openDoorDate}} - {{shopInfo.closeDoorDate}} </span></p>
+            <p class="item"><span  style="width:30px;;height: 15px;display: inline-block;font-size: 8px!important;color: #FF6666;border-radius: 5px;border: 1px solid #FF6666;text-align: center;line-height: 15px">地址</span><span class="ml5">{{shopInfo.province+shopInfo.city+shopInfo.address}}</span></p>
         </div>
-        <div class="list">
-            <p class="item p10">房间列表</p>
-            <p class="item p10" ng-repeat="item in [1,2,3,4]">一帘幽梦</p>
-        </div>
+
     </ion-content>
 </ion-view>
