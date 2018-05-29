@@ -665,7 +665,7 @@ define(['appBoss'], function(app){
                     })
                 /*编辑充值卡*/
                     .state('editedRecharge', {
-                        url: '/editedRecharge',
+                        url: '/editedRecharge/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'editedRechargeCtrl',
                         resolve: {
@@ -678,7 +678,7 @@ define(['appBoss'], function(app){
                     })
                 /*编辑套卡*/
                     .state('editorCard', {
-                        url: '/editorCard',
+                        url: '/editorCard/:id,:url',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'editorCardCtrl',
                         resolve: {
@@ -1311,6 +1311,7 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* newUser 新建档案*/
                     .state('newUser', {
                         url: '/newUser/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1988,7 +1989,58 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-
+                    /*listOfItems 套卡  包含项目*/
+                    .state('listOfItems', {
+                        url: '/listOfItems/:id,:url',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'listOfItemsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.listOfItemsCtrl',
+                                    ['js/controllers/mine/listOfItemsCtrl.js?ver='+ bossVersion],
+                                    'views/mine/listOfItems.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*oneTime 单次折扣范围*/
+                    .state('oneTime', {
+                        url: '/oneTime/:url,:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'oneTimeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.oneTimeCtrl',
+                                    ['js/controllers/mine/oneTimeCtrl.js?ver='+ bossVersion],
+                                    'views/mine/oneTime.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*productScope 产品折扣范围*/
+                    .state('productScope', {
+                        url: '/productScope/:url,:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'productScopeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.productScopeCtrl',
+                                    ['js/controllers/mine/productScopeCtrl.js?ver='+ bossVersion],
+                                    'views/mine/productScope.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*treatment 疗程卡折扣范围*/
+                    .state('treatment', {
+                        url: '/treatment/:url,:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'treatmentCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.treatmentCtrl',
+                                    ['js/controllers/mine/treatmentCtrl.js?ver='+ bossVersion],
+                                    'views/mine/treatment.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
 
                 /*
                  orderdDtails 详情（订单）
@@ -2007,7 +2059,7 @@ define(['appBoss'], function(app){
 
                  drawCardRecords 划卡记录
                  drawCardRecordsDetail 划卡记录详情
-                 newUser新建档案
+
 
                  selShop  选择分店
                  membersMess会员信息
@@ -2047,7 +2099,7 @@ define(['appBoss'], function(app){
                  addEmployees 添加家人(员工)
 
 
-                 addProduct  添加产品
+
                  inventorySetting  设置
                  addressBook 库存 通讯录导入
                  AddOutbound 新增出库
