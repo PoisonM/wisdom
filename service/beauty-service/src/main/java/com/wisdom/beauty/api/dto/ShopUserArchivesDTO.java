@@ -1,9 +1,9 @@
 package com.wisdom.beauty.api.dto;
 
+import com.wisdom.common.entity.BaseEntity;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
     //
@@ -25,7 +25,7 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
     private String sysClerkName;
 
     //
-    private String imageRul;
+    private String imageUrl;
 
     //
     private String sysUserName;
@@ -131,12 +131,12 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
         this.sysClerkName = sysClerkName;
     }
 
-    public String getImageRul() {
-        return imageRul;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageRul(String imageRul) {
-        this.imageRul = imageRul;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getSysUserName() {

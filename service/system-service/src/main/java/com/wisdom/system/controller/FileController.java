@@ -102,10 +102,10 @@ public class FileController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+            responseDTO.setResult(StatusConstant.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            responseDTO.setErrorInfo(StatusConstant.FAILURE);
+            responseDTO.setResult(StatusConstant.FAILURE);
         } finally {
             if (null != inputStream) {
                 inputStream.close();
