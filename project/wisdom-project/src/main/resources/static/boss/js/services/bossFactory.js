@@ -362,5 +362,7 @@ define(['appBoss'], function (app) {
         .factory('GetStockDetailList',['$resource',function ($resource){
             return $resource(stock + "getStockDetailList")
         }])
-
+        .factory('GetProductStockDetail',['$resource',function ($resource){
+            return $resource(stock + "getProductStockDetail")
+        }])
 });

@@ -545,73 +545,73 @@ public class ShopUserArchivesCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andImageRulIsNull() {
-            addCriterion("image_rul is null");
+        public Criteria andImageUrlIsNull() {
+            addCriterion("image_url is null");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulIsNotNull() {
-            addCriterion("image_rul is not null");
+        public Criteria andImageUrlIsNotNull() {
+            addCriterion("image_url is not null");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulEqualTo(String value) {
-            addCriterion("image_rul =", value, "imageRul");
+        public Criteria andImageUrlEqualTo(String value) {
+            addCriterion("image_url =", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulNotEqualTo(String value) {
-            addCriterion("image_rul <>", value, "imageRul");
+        public Criteria andImageUrlNotEqualTo(String value) {
+            addCriterion("image_url <>", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulGreaterThan(String value) {
-            addCriterion("image_rul >", value, "imageRul");
+        public Criteria andImageUrlGreaterThan(String value) {
+            addCriterion("image_url >", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulGreaterThanOrEqualTo(String value) {
-            addCriterion("image_rul >=", value, "imageRul");
+        public Criteria andImageUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("image_url >=", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulLessThan(String value) {
-            addCriterion("image_rul <", value, "imageRul");
+        public Criteria andImageUrlLessThan(String value) {
+            addCriterion("image_url <", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulLessThanOrEqualTo(String value) {
-            addCriterion("image_rul <=", value, "imageRul");
+        public Criteria andImageUrlLessThanOrEqualTo(String value) {
+            addCriterion("image_url <=", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulLike(String value) {
-            addCriterion("image_rul like", value, "imageRul");
+        public Criteria andImageUrlLike(String value) {
+            addCriterion("image_url like", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulNotLike(String value) {
-            addCriterion("image_rul not like", value, "imageRul");
+        public Criteria andImageUrlNotLike(String value) {
+            addCriterion("image_url not like", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulIn(List<String> values) {
-            addCriterion("image_rul in", values, "imageRul");
+        public Criteria andImageUrlIn(List<String> values) {
+            addCriterion("image_url in", values, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulNotIn(List<String> values) {
-            addCriterion("image_rul not in", values, "imageRul");
+        public Criteria andImageUrlNotIn(List<String> values) {
+            addCriterion("image_url not in", values, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulBetween(String value1, String value2) {
-            addCriterion("image_rul between", value1, value2, "imageRul");
+        public Criteria andImageUrlBetween(String value1, String value2) {
+            addCriterion("image_url between", value1, value2, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulNotBetween(String value1, String value2) {
-            addCriterion("image_rul not between", value1, value2, "imageRul");
+        public Criteria andImageUrlNotBetween(String value1, String value2) {
+            addCriterion("image_url not between", value1, value2, "imageUrl");
             return (Criteria) this;
         }
 

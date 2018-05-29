@@ -238,11 +238,13 @@ public class AppointmentController {
                     loopDate = DateUtils.dateInc(loopDate);
 					continue;
 				} else {
+					List<ShopAppointServiceDTO> projectList = new ArrayList<>();
 					for (ShopAppointServiceDTO dto : shopAppointServiceDTOS) {
 						if (dto.getAppointStartTime().getTime() > DateUtils.getStartTime(loopDate).getTime() && dto.getAppointStartTime().getTime() < DateUtils.getEndTime(loopDate).getTime()) {
-							map.put("info", dto);
+							projectList.add(dto);
 						}
 					}
+					map.put("info", projectList);
                     loopDate = DateUtils.dateInc(loopDate);
                 }
 				oneClerkList.add(map);

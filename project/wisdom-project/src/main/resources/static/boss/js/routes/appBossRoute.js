@@ -964,7 +964,7 @@ define(['appBoss'], function(app){
                     })
                 /*产品库存详情*/
                     .state('productInventoryDetails', {
-                        url: '/productInventoryDetails',
+                        url: '/productInventoryDetails/:shopProductId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productInventoryDetailsCtrl',
                         resolve: {

@@ -1,5 +1,5 @@
-var beautyIP = ' http://localhost/beauty/';
-var userIP = ' http://localhost/user/';
+var beautyIP = ' http://192.168.1.117/beauty/';
+var userIP = ' http://192.168.1.117/user/';
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
@@ -328,6 +328,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     //用户用户划套卡下的子卡操作
     .factory('ConsumesDaughterCard', ['$resource', function($resource) {
         return $resource(beautyIP + '/consumes/consumesDaughterCard')
+    }])
+    //划卡签字确认
+    .factory('UpdateConsumeRecord', ['$resource', function($resource) {
+        return $resource(beautyIP + '/consume/updateConsumeRecord')
     }])
 
 ;

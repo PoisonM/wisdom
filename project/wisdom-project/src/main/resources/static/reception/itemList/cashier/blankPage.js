@@ -10,4 +10,6 @@ PADWeb.controller('blankPageCtrl', function($scope, $state, $stateParams, ngDial
     $scope.$parent.mainLeftSwitch.priceListFlag = false
     $scope.$parent.mainLeftSwitch.peopleListFlag = true
 
+    $scope.queryRecordList()
+
 });

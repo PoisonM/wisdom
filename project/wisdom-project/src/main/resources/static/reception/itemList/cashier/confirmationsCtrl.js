@@ -1,4 +1,4 @@
-PADWeb.controller('confirmationsCtrl', function($scope, $stateParams, $state, ngDialog, Archives) {
+PADWeb.controller('confirmationsCtrl', function($scope, $stateParams, $state, ngDialog, Archives, ImageBase64UploadToOSS, UpdateConsumeRecord) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.headerCash.leftContent = "档案(9010)"
     $scope.$parent.param.headerCash.leftAddContent = "添加档案"
@@ -37,4 +37,18 @@ PADWeb.controller('confirmationsCtrl', function($scope, $stateParams, $state, ng
     //将数据显示在文本框
     $('#text').val(data)
     $scope.shopProjectInfoName = $state.params.shopProjectInfoName;
+
+    $scope.$parent.$parent.leftTipFn = function() {
+        ImageBase64UploadToOSS.save({
+            imageStr: $("#signConfirmRight").jSignature("getData")
+        }, function(data) {
+            UpdateConsumeRecord.get({
+                consumeId: $state.params.consumeId,
+                image: data.responseData,
+            }, function(data) {
+                $state.go("pad-web.left_nav.personalFile");
+            })
+
+        })
+    }
 });

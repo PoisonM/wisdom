@@ -166,7 +166,8 @@ public interface ShopStockService {
 	 * @Description: 获取库存详情
 	 * @Date:2018/5/18 15:28
 	 */
-	Map<String, Object> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO, List<ShopProductInfoDTO> ShopProductInfoDTOs);
+	Map<String, Object> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO,
+			List<ShopProductInfoDTO> ShopProductInfoDTOs);
 
 	/**
 	 * @Author:zhanghuan
@@ -193,6 +194,5 @@ public interface ShopStockService {
 	 * @Description: 获取某个仓库的总成本
 	 * @Date:2018/5/24 10:29
 	 */
-	Map<String, Object> getCost(String shopStoreId, String productTypeTwoId);
-
+	Map<String, Object> getCost(String shopStoreId, Map<String, ShopProductInfoDTO> productInfoMap);
 }

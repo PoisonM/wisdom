@@ -37,7 +37,7 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
                 sysUserId: '110',
             }]
         }, function(data) {
-            $state.go('pad-web.confirmations')
+            $state.go('pad-web.confirmations', { consumeId: data.responseData, shopProjectInfoName: $scope.getproduct.shopProductName })
         })
     }
     $scope.checkBoxChek = function(e) {

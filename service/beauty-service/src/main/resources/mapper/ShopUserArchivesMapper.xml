@@ -8,7 +8,7 @@
     <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
     <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
     <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
-    <result column="image_rul" property="imageRul" jdbcType="VARCHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR"/>
     <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
@@ -87,7 +87,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, sys_shop_id, sys_shop_name, sys_clerk_id, sys_boss_code, sys_clerk_name, image_rul, 
+    id, sys_shop_id, sys_shop_name, sys_clerk_id, sys_boss_code, sys_clerk_name, image_url, 
     sys_user_name, phone, sys_user_id, sex, birthday, age, constellation, blood_type, 
     height, weight, sys_user_type, channel, shopId, detail, create_by, create_date, update_user, 
     update_date
@@ -126,18 +126,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO" >
-    insert into shop_user_archives (id, sys_shop_id, sys_shop_name, 
-      sys_clerk_id, sys_boss_code, sys_clerk_name, 
-      image_rul, sys_user_name, phone, 
+    insert into shop_user_archives (id, sys_shop_id, sys_shop_name,
+    sys_clerk_id, sys_boss_code, sys_clerk_name,
+    image_url, sys_user_name, phone,
       sys_user_id, sex, birthday, 
       age, constellation, blood_type, 
       height, weight, sys_user_type, 
       channel, shopId, detail, 
       create_by, create_date, update_user, 
       update_date)
-    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, 
-      #{sysClerkId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, 
-      #{imageRul,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR},
+    #{sysClerkId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR},
+    #{imageUrl,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
       #{sysUserId,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, 
       #{age,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, #{bloodType,jdbcType=VARCHAR}, 
       #{height,jdbcType=REAL}, #{weight,jdbcType=REAL}, #{sysUserType,jdbcType=VARCHAR}, 
@@ -166,8 +166,8 @@
       <if test="sysClerkName != null" >
         sys_clerk_name,
       </if>
-      <if test="imageRul != null" >
-        image_rul,
+      <if test="imageUrl != null">
+        image_url,
       </if>
       <if test="sysUserName != null" >
         sys_user_name,
@@ -243,8 +243,8 @@
       <if test="sysClerkName != null" >
         #{sysClerkName,jdbcType=VARCHAR},
       </if>
-      <if test="imageRul != null" >
-        #{imageRul,jdbcType=VARCHAR},
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="sysUserName != null" >
         #{sysUserName,jdbcType=VARCHAR},
@@ -329,8 +329,8 @@
       <if test="record.sysClerkName != null" >
         sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       </if>
-      <if test="record.imageRul != null" >
-        image_rul = #{record.imageRul,jdbcType=VARCHAR},
+      <if test="record.imageUrl != null">
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.sysUserName != null" >
         sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
@@ -399,7 +399,7 @@
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
-      image_rul = #{record.imageRul,jdbcType=VARCHAR},
+    image_url = #{record.imageUrl,jdbcType=VARCHAR},
       sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
       sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
@@ -440,8 +440,8 @@
       <if test="sysClerkName != null" >
         sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       </if>
-      <if test="imageRul != null" >
-        image_rul = #{imageRul,jdbcType=VARCHAR},
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="sysUserName != null" >
         sys_user_name = #{sysUserName,jdbcType=VARCHAR},
@@ -507,7 +507,7 @@
       sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
-      image_rul = #{imageRul,jdbcType=VARCHAR},
+    image_url = #{imageUrl,jdbcType=VARCHAR},
       sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       sys_user_id = #{sysUserId,jdbcType=VARCHAR},
