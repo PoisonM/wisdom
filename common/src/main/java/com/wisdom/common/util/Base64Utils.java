@@ -133,11 +133,6 @@ public class Base64Utils {
                 }
             }
             inputStream = new ByteArrayInputStream(b);
-            OutputStream out = new FileOutputStream("D:\\et.png");
-
-            out.write(b);
-            out.flush();
-            out.close();
             return inputStream;
         } catch (IOException e) {
             e.printStackTrace();
