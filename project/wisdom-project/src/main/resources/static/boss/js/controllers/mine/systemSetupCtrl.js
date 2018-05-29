@@ -5,8 +5,13 @@ angular.module('controllers',[]).controller('systemSetupCtrl',
     ['$scope','$rootScope','$stateParams','$state',
         function ($scope,$rootScope,$stateParams,$state) {
 
-            $rootScope.title = "系统设置";
-            $scope.clearSuccess=function () {
-                alert("清除成功")
+            $rootScope.title = "设置";
+            /*点击关于我们跳转到关于我们页面*/
+            $scope.aboutMineGo=function () {
+                $state.go("aboutMine")
+            };
+            /*点击退出登录*/
+            $scope.exitLogon=function () {
+                    $state.go("login")
             }
         }]);
