@@ -10,6 +10,7 @@
     <result column="stock_type" property="stockType" jdbcType="CHAR" />
     <result column="oper_date" property="operDate" jdbcType="TIMESTAMP" />
     <result column="flow_no" property="flowNo" jdbcType="VARCHAR" />
+    <result column="receiver" property="receiver" jdbcType="VARCHAR" />
     <result column="manager_id" property="managerId" jdbcType="VARCHAR" />
     <result column="detail" property="detail" jdbcType="VARCHAR" />
     <result column="oper_number" property="operNumber" jdbcType="INTEGER" />
@@ -78,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_store_id, sys_boss_code, name, stock_style, stock_type, oper_date, flow_no, 
-    manager_id, detail, oper_number, create_by, create_date, update_user, update_date
+    receiver, manager_id, detail, oper_number, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopStockRecordCriteria" >
     select
@@ -116,16 +117,16 @@
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopStockRecordDTO" >
     insert into shop_stock_record (id, shop_store_id, sys_boss_code, 
       name, stock_style, stock_type, 
-      oper_date, flow_no, manager_id, 
-      detail, oper_number, create_by, 
-      create_date, update_user, update_date
-      )
+      oper_date, flow_no, receiver, 
+      manager_id, detail, oper_number, 
+      create_by, create_date, update_user, 
+      update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{stockStyle,jdbcType=CHAR}, #{stockType,jdbcType=CHAR}, 
-      #{operDate,jdbcType=TIMESTAMP}, #{flowNo,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, 
-      #{detail,jdbcType=VARCHAR}, #{operNumber,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-      )
+      #{operDate,jdbcType=TIMESTAMP}, #{flowNo,jdbcType=VARCHAR}, #{receiver,jdbcType=VARCHAR}, 
+      #{managerId,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{operNumber,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopStockRecordDTO" >
     insert into shop_stock_record
@@ -153,6 +154,9 @@
       </if>
       <if test="flowNo != null" >
         flow_no,
+      </if>
+      <if test="receiver != null" >
+        receiver,
       </if>
       <if test="managerId != null" >
         manager_id,
@@ -200,6 +204,9 @@
       </if>
       <if test="flowNo != null" >
         #{flowNo,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        #{receiver,jdbcType=VARCHAR},
       </if>
       <if test="managerId != null" >
         #{managerId,jdbcType=VARCHAR},
@@ -257,6 +264,9 @@
       <if test="record.flowNo != null" >
         flow_no = #{record.flowNo,jdbcType=VARCHAR},
       </if>
+      <if test="record.receiver != null" >
+        receiver = #{record.receiver,jdbcType=VARCHAR},
+      </if>
       <if test="record.managerId != null" >
         manager_id = #{record.managerId,jdbcType=VARCHAR},
       </if>
@@ -293,6 +303,7 @@
       stock_type = #{record.stockType,jdbcType=CHAR},
       oper_date = #{record.operDate,jdbcType=TIMESTAMP},
       flow_no = #{record.flowNo,jdbcType=VARCHAR},
+      receiver = #{record.receiver,jdbcType=VARCHAR},
       manager_id = #{record.managerId,jdbcType=VARCHAR},
       detail = #{record.detail,jdbcType=VARCHAR},
       oper_number = #{record.operNumber,jdbcType=INTEGER},
@@ -328,6 +339,9 @@
       <if test="flowNo != null" >
         flow_no = #{flowNo,jdbcType=VARCHAR},
       </if>
+      <if test="receiver != null" >
+        receiver = #{receiver,jdbcType=VARCHAR},
+      </if>
       <if test="managerId != null" >
         manager_id = #{managerId,jdbcType=VARCHAR},
       </if>
@@ -361,6 +375,7 @@
       stock_type = #{stockType,jdbcType=CHAR},
       oper_date = #{operDate,jdbcType=TIMESTAMP},
       flow_no = #{flowNo,jdbcType=VARCHAR},
+      receiver = #{receiver,jdbcType=VARCHAR},
       manager_id = #{managerId,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},
       oper_number = #{operNumber,jdbcType=INTEGER},

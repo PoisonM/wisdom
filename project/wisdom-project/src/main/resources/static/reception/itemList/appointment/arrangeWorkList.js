@@ -61,12 +61,12 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         $scope.compileDateFn()
     }
     //调用固定表头类
-    /*var tiemInt = setInterval(function () {
+    var tiemInt = setInterval(function () {
         if($("#tbTest1 thead tr td").length != 0){
             var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
             clearTimeout(tiemInt)
         }
-    },100)*/
+    },100)
 
     $scope.tempTime = $scope.param.nowdate.replace("年","-").replace("月","-1")
     $scope.goCompileWorkList = function () {

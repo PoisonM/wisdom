@@ -30,6 +30,9 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
     //单据号
     private String flowNo;
 
+    //领取人
+    private String receiver;
+
     //操作人(库管id)
     private String managerId;
 
@@ -115,6 +118,14 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
 
     public void setFlowNo(String flowNo) {
         this.flowNo = flowNo;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getManagerId() {

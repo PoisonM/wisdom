@@ -16,12 +16,10 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.addFamily = data.responseData;
                 }
-
             })
             $scope.selEmployees = function(index){
                 $scope.param.index = index;
             }
-
 
             $scope.addEmployeesGo = function(){
                 $state.go('addEmployees')

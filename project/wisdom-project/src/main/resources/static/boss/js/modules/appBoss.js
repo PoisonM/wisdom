@@ -30,6 +30,7 @@ define(['angular'], function (angular) {
                 shopId:'11',
                 entryShopProductList:[],
                 outShopProductList:[],
+                outShopStockType : '',
                 shopStoreId:''
             };
         })

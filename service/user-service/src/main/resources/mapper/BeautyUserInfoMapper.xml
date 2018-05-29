@@ -36,9 +36,6 @@
         <if test="id != null and id !=''">
             and id=#{id}
         </if>
-        <if test="source != null and source !=''">
-            and source=#{source}
-        </if>
         <if test="nickname != null and nickname !=''">
             and nickname=#{nickname}
         </if>
@@ -125,7 +122,6 @@
     <insert id="insertBeautyUserInfo">
         INSERT INTO sys_user_beauty(
         id,
-        source,
         nickname,
         password,
         email,
@@ -142,7 +138,6 @@
         del_flag
         ) VALUES (
         #{id},
-        #{source},
         #{nickname},
         #{password},
         #{email},

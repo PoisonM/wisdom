@@ -101,7 +101,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             $scope.successfulInventoryGo=function(){
                 AddStock.save($scope.param.shopStock,function(data){
                     if(data.result==Global.SUCCESS){
-                        $state.go("successfulInventory",{entryId:data.responseData})
+                        $state.go("successfulInventory",{id:data.responseData,type:'inbound'})
                     }
                 })
             }

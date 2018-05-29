@@ -480,6 +480,32 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	}
 
 	/**
+	 * 获取某一天开始时间
+	 */
+	public static Date getStartTime(Date date) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
+	}
+
+	/**
+	 * 获取某一天开始时间
+	 */
+	public static Date getEndTime(Date date) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 999);
+		return calendar.getTime();
+	}
+
+	/**
 	 * 获取某一天结束时间
 	 */
 	public static String getDateEndTime(Date date) {
@@ -502,6 +528,19 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.add(Calendar.DATE, 1);
+		return cal.getTime();
+	}
+
+	/**
+	 * date增加指定天数
+	 *
+	 * @param date
+	 * @return
+	 */
+	public static Date dateIncDays(Date date, int number) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, number);
 		return cal.getTime();
 	}
 

@@ -50,6 +50,8 @@ public class ShopStockRequestDTO extends ShopProductInfoDTO {
 
 	/** 0、采购入库 1、内部员工出库 2、顾客出库 3、赠送 4、报废 5、院用 6、退回供货商 7、下发到店 */
 	private String stockType;
+	private String receiver;
+
 
 	public String getShopBossId() {
 		return sysBossCode;
@@ -161,5 +163,13 @@ public class ShopStockRequestDTO extends ShopProductInfoDTO {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
 	}
 }

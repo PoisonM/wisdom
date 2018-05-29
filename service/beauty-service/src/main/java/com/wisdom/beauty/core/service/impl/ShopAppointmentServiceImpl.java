@@ -62,6 +62,10 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
         }
 
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysClerkId())) {
+            criteria.andSysClerkIdEqualTo(extShopAppointServiceDTO.getSysClerkId());
+        }
+
         List<ShopAppointServiceDTO> appointServiceDTOS = extShopAppointServiceMapper.selectShopAppointClerkInfoByCriteria(shopAppointServiceCriteria);
         return appointServiceDTOS;
     }
