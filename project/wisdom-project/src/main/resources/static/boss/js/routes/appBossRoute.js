@@ -444,7 +444,7 @@ define(['appBoss'], function(app){
                     })
                 /*选择类别*/
                     .state('selectionCategory', {
-                        url: '/selectionCategory',
+                        url: '/selectionCategory/:add/:mod/:projectId/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectionCategoryCtrl',
                         resolve: {
@@ -613,7 +613,7 @@ define(['appBoss'], function(app){
                     })
                 /*添加项目*/
                     .state('addProject', {
-                        url: '/addProject',
+                        url: '/addProject/:typeId,:name,:seriesId,:seriesName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'addProjectCtrl',
                         resolve: {
@@ -624,9 +624,22 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*选择项目系列*/
+                    .state('addProjectSeries', {
+                        url: '/addProjectSeries/:typeId/:add/:mod/:projectId/:name/:seriesId/:seriesName',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'addProjectSeriesCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addProjectSeriesCtrl',
+                                    ['js/controllers/mine/addProjectSeriesCtrl.js?ver='+ bossVersion],
+                                    'views/mine/addProjectSeries.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                 /*修改项目*/
                     .state('modifyProject', {
-                        url: '/modifyProject',
+                        url: '/modifyProject/:projectId,:typeId,:name,:seriesId,:seriesName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'modifyProjectCtrl',
                         resolve: {
@@ -717,7 +730,7 @@ define(['appBoss'], function(app){
                     })
                 /*项目详情*/
                     .state('projectDetails', {
-                        url: '/projectDetails',
+                        url: '/projectDetails/:projectId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'projectDetailsCtrl',
                         resolve: {
@@ -728,9 +741,22 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*价目表产品详情页面*/
+                    .state('priceShopDetails', {
+                        url: '/priceShopDetails/:productId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'priceShopDetailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.priceShopDetailsCtrl',
+                                    ['js/controllers/mine/priceShopDetailsCtrl.js?ver='+ bossVersion],
+                                    'views/mine/priceShopDetails.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                 /*beauty分店*/
                     .state('branchShop', {
-                        url: '/branchShop',
+                        url: '/branchShop/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'branchShopCtrl',
                         resolve: {
@@ -743,7 +769,7 @@ define(['appBoss'], function(app){
                     })
                 /*套卡详情*/
                     .state('tcardDetails', {
-                        url: '/tcardDetails',
+                        url: '/tcardDetails/:cardId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'tcardDetailsCtrl',
                         resolve: {
@@ -808,7 +834,7 @@ define(['appBoss'], function(app){
                     })
                 /*充值卡详情*/
                     .state('rechargeDetails', {
-                        url: '/rechargeDetails',
+                        url: '/rechargeDetails/:rechargeId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'rechargeDetailsCtrl',
                         resolve: {
@@ -1313,7 +1339,7 @@ define(['appBoss'], function(app){
                     })
                     /* newUser 新建档案*/
                     .state('newUser', {
-                        url: '/newUser/:id',
+                        url: '/newUser/:id/:url',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newUserCtrl',
                         resolve: {

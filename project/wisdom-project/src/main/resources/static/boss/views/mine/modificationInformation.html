@@ -1,27 +1,37 @@
+<style>
+    input[checked="checked"]{
+        background: #FF6666;
+    }
+</style>
 <ion-view class="bg">
     <ion-content style="margin-bottom: 45px">
       <div class="list fs15">
-          <li class="item"><span class="col33 mt20 disp">头像</span><img src="" style="width: 80px;height: 80px;" class="fr mr20"></li>
-          <li class="item"><span class="col33">名字 <span class="colff66">*</span></span><span class="col66 fr mr20">美业邦</span></li>
-          <li class="item"><span class="col33">性别 </span><span class="col66 fr mr20">女 <i class="ion ion-ios-arrow-right fs17"></i></span></li>
-          <li class="item"><span class="col33 ">手机号码</span><span class="col66 fr mr20">13301658056</span></li>
-          <li class="item"><span class="col33 ">所在院名</span><span class="col66 fr mr20">汉方美业</span></li>
-          <li class="item"><span class="col33 ">所在店名</span><span class="col66 fr mr20">汉方美业</span></li>
-          <li class="item"><span class="col33 ">我的职务</span><span class="col66 fr mr20">院长</span></li>
-          <li class="item"><span class="col33 ">我的特长</span><span class="col66 fr mr20">0</span></li>
-          <li class="item"><span class="col33 ">我的微信</span><span class="col66 fr mr20" >13301658056</span></li>
+          <li class="item"><span class="col33 mt20 disp">头像</span><img ng-src="{{userInfo.photo}}" style="width: 80px;height: 80px;" class="fr mr20"></li>
           <label class="item item-input">
-              <span class="input-label">我的QQ</span>
-              <input type="text" placeholder="请输入我的QQ" class="tr">
+              <span class="input-label">名字</span>
+              <input type="text"  class="tr" ng-model="userInfo.nickname">
           </label>
+          <li class="item">
+              <span class="col33">性别 </span>
+              <span class="fr ">
+
+                    <input type="radio"   ng-checked="value == 1"   name="names" ng-click="female()" value="0"  style="width: 15px;height: 15px;border: 1px solid #FF6666;border-radius: 50%"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">女</span>
+              <input type="radio" name="names" ng-click="male()" value="1"  style="width: 15px;height: 15px;border: 1px solid #FF6666; border-radius: 50%;margin-left: 0.1rem"  ng-checked="value == 0"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">男</span>
+
+              </span>
+          </li>
+          <li class="item"><span class="col33 ">手机号码</span><span class="col66 fr mr20">{{userInfo.mobile}}</span></li>
+          <li class="item"><span class="col33 ">所在院名</span><span class="col66 fr mr20">{{userInfo.currentBeautyShopName}}</span></li>
+          <li class="item"><span class="col33 ">所在店名</span><span class="col66 fr mr20">{{userInfo.currentShopName}}</span></li>
+          <li class="item"><span class="col33 ">我的职务</span><span class="col66 fr mr20">院长</span></li>
           <label class="item item-input">
-              <span class="input-label">我的地址</span>
-              <input type="text" placeholder="请输入我的地址" class="tr" >
+              <span class="input-label">我的微信</span>
+              <input type="text" placeholder="请输入我的微信" class="tr" ng-model="userInfo.weChat">
           </label>
       </div>
         <div style="text-align: center">
             <button style="width:158px;height:39px;border-radius:0.46rem;color: #FFFFFF;background: #ff6666;font-size: 17px"
-                    class="button ">保存</button>
+                    class="button " ng-click="Preservation()">保存</button>
         </div>
     </ion-content>
 </ion-view>

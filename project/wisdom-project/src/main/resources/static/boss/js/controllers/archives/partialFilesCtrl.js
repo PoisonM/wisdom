@@ -50,7 +50,10 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
               });
               $scope.param.blackBox=false;
               $scope.param.fileBOx=false;
-          }
+          };
+            $scope.newUser=function () {
+                $state.go("newUser")
+            }
 
          $scope.distributionStart = function () {
               $scope.param.distributionStart = !$scope.param.distributionStart

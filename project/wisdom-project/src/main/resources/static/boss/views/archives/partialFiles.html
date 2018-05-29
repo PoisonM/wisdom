@@ -14,14 +14,11 @@
             </ion-list>
             <div style="position: relative;height:100%;">
                 <ion-list>
-                    <ion-item  style="background: #ffffff;" class="h45" >
-                        <p ui-sref="newUser">
-                            <img src="images/jia.png" class="img ml10 mr10" >
-                            新建
-                        </p>
-
+                    <ion-item  style="background: #ffffff;" class="h45" ng-click="newUser()">
+                        <img src="images/jia.png" class="img ml10 mr10" >
+                        新建
                     </ion-item>
-                    <ion-item  style="background: #fff;" class="h45" ng-click="distributionStart()">
+                    <ion-item  style="background: #fff;" class="h45">
                         <img src="images/pei.png" class="peiPic ml10 mr10">
                         分配
                     </ion-item>
@@ -37,17 +34,12 @@
                             <ion-item   class="h30 bge6 "  >
                                 <span class="ml10">{{key}}</span>
                             </ion-item>
-                            <ion-item  class="h60 bgfff row" ng-repeat="item in value" >
+                            <ion-item  class="h60 bgfff row" ng-repeat="item in value" ng-click="goActives(item.id)">
                                 <div class="col col-70" style="display: flex">
                                     <div class="sb" style="line-height: 49px;">
-                                        <span>
-                                            <i class="icon ion-android-radio-button-off" class="col888" style="color:#FF6666;font-size:20px;"  ></i>
-                                            <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ></i>
-                                        </span>
-
                                         <img ng-src="{{item.imageRul}}" style="height:42px;width:42px;border-radius: 50%;" class="ml10">
                                     </div>
-                                    <div class="ml10" ng-click="goActives(item.id)">
+                                    <div class="ml10">
                                         <p class="fs16">{{item.sysUserName}}</p>
                                         <p class="fs12 col666"> <img src="images/time.png" class="timePic mr5">上次到店时间：{{item.createDate|date:'yyyy-MM-dd'}}</p>
                                     </div>

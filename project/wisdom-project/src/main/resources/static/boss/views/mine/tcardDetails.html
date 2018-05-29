@@ -1,36 +1,37 @@
 <ion-view class="bg">
     <ion-content>
         <div>
-            <img src="images/work/photo.jpg" style="width:100%;height: 375px;">
+            <img ng-src="{{cardInfo.projectGroupUrl}}" style="width:100%;height: 375px;">
         </div>
         <div class="list">
             <ion-item  class=" bgfff row">
                 <div class="col col-80" >
-                    <p ><span class="fs16">补水</span></p >
+                    <p ><span class="fs16">{{cardInfo.projectGroupName}}</span></p >
                     <p class="fs11">
-                        <span class="Label4 fs11 colff disp tc">公开</span><span class="Label3 fs11 colff disp tc">未公开</span>
+                        <span class="fs11 colff disp tc" ng-class="cardInfo.status=='0'?'Label4':'Label3'">启用</span>
+                        <span class="fs11 colff disp tc ml5">不启用</span>
                     </p >
                 </div>
             </ion-item>
             <li class="item p10 fs14">
-                <p class="col33">市场价格：¥2500.00</p>
-                <p style="color: #FF6666!important;">优惠价格：¥2380.00/10次</p>
+                <p class="col33">市场价格：¥{{cardInfo.marketPrice}}</p>
+                <p style="color: #FF6666!important;">优惠价格：¥{{cardInfo.discountPrice}}</p>
                 <p class="col99 fs12">有效期：长期有效</p>
             </li>
         </div>
         <div class="list">
             <p class="item p10">包含项目</p>
-            <ion-item  class="row" ng-repeat="item in [1,2]">
+            <ion-item  class="row" ng-repeat="item in cardInfo.shopProjectInfoDTOS">
                 <div class="col col-20" style="line-height: 49px;">
-                    <p style="height:50px;width:75px;background: gainsboro;"></p >
+                    <img style="height:50px;width:75px;" ng-src="item.projectUrl
+"/>
                 </div>
-
                 <div class="col col-30 ml10" >
-                    <p class="fs15" style="color: #333333!important;">半永久纹眉</p >
-                    <p class="col88 fs13">价格：¥2680.00</p >
+                    <p class="fs15" style="color: #333333!important;">{{item.projectName}}</p >
+                    <p class="col88 fs13">价格：¥{{item.oncePrice*item.serviceTimes}}</p >
                 </div>
                 <div class="col col-30">
-                  <p class="fs13 fr mt10">11次</p>
+                  <p class="fs13 fr mt10">{{item.serviceTimes}}次</p>
                 </div>
                 <div class="col col-20">
                    <i class=" ion ion-ios-arrow-right fr mt10"></i>
@@ -38,8 +39,7 @@
             </ion-item>
         </div>
         <!--套卡说明-->
-        <div class="list">
             <p class="item fs14 col88 p10">套卡说明</p>
-        </div>
+            <textarea style="height:2rem;width:100%;font-size: 0.3rem;color: #333333;padding: 20px;" ng-model="cardInfo.detail"></textarea>
     </ion-content>
 </ion-view>
