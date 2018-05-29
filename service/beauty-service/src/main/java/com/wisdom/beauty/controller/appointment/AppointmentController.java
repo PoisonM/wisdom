@@ -227,7 +227,7 @@ public class AppointmentController {
 				map.put("info", "");
 				try {
                     LunarUtils lunarUtils = new LunarUtils(loopDate);
-                    map.put("Lunar", LunarUtils.getChinaDayString(lunarUtils.day));
+					map.put("lunar", LunarUtils.getChinaDayString(lunarUtils.day));
 				} catch (Exception e) {
 					logger.error("获取农历失败，失败原因为：" + e.getMessage(), e);
 				}
