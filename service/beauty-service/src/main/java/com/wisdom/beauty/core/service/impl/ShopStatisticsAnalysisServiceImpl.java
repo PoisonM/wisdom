@@ -883,7 +883,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 
 		for (ShopUserArchivesDTO shopUserArchivesDTO : shopUserArchivesDTOs) {
 			userInfoDTOResponseDTO=new UserInfoDTOResponseDTO();
-			userInfoDTOResponseDTO.setPhoto(shopUserArchivesDTO.getImageRul());
+			userInfoDTOResponseDTO.setPhoto(shopUserArchivesDTO.getImageUrl());
 			userInfoDTOResponseDTO.setNickname(shopUserArchivesDTO.getSysUserName());
 			userInfoDTOResponseDTO.setLastArriveTime(map.get(shopUserArchivesDTO.getSysUserId()).getCreateDate());
 			//查询redis是否存在记录,key是 "arrive"+shopId+userId

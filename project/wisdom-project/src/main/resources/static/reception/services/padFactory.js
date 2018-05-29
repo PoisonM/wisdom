@@ -329,5 +329,9 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('ConsumesDaughterCard', ['$resource', function($resource) {
         return $resource(beautyIP + '/consumes/consumesDaughterCard')
     }])
+    //划卡签字确认
+    .factory('UpdateConsumeRecord', ['$resource', function($resource) {
+        return $resource(beautyIP + '/consume/updateConsumeRecord')
+    }])
 
 ;

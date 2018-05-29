@@ -41,4 +41,7 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId, Ar
             id: $state.params.id
         })
     }
+    $scope.toConsumptionList = function() {
+        $state.go('pad-web.consumptionList');
+    }
 }
