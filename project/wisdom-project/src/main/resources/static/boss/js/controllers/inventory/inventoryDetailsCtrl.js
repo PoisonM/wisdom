@@ -18,10 +18,11 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                 selectProductList:'',
             };
 
-            GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
+            GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,productType:$scope.param.type},function(data){
                 $scope.param.detailProductList = data.responseData.detailProductList;
                 $scope.param.oneLevelList = data.responseData.oneLevelList;
                 $scope.param.twoLevelList = data.responseData.twoLevelList;
+                console.log(data.responseData);
             });
 
             $scope.changeBtn = function (type) {
@@ -36,7 +37,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                 {
                     $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
                 }
-                GetShopProductLevelInfo.get({productType:type},function(data){
+                GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,productType:type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
                     $scope.param.oneLevelList = data.responseData.oneLevelList;
                     $scope.param.twoLevelList = data.responseData.twoLevelList;
@@ -49,7 +50,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
 
             $scope.search = function(){
                 $scope.param.searchProductList = [];
-                GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
+                GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
                     angular.forEach($scope.param.detailProductList,function (value,key) {
                         if(value.productTypeOneName.indexOf($scope.param.searchContent)!=-1||
@@ -66,7 +67,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
             $scope.clearSearch = function()
             {
                 $scope.param.searchContent = "";
-                GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
+                GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
                     $scope.param.oneLevelList = data.responseData.oneLevelList;
                     $scope.param.twoLevelList = data.responseData.twoLevelList;
@@ -78,7 +79,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
             }
 
             $scope.chooseProductList = function(productTypeTwoId){
-                GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
+                GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
                     $scope.param.oneLevelList = data.responseData.oneLevelList;
