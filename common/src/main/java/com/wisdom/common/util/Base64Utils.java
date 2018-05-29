@@ -119,6 +119,7 @@ public class Base64Utils {
      */
     public static InputStream getInputStream(String imgStr) throws Exception {
         imgStr = imgStr.replace("data:image/png;base64,", "");
+        imgStr = imgStr.replace("data:image/jpeg;base64,", "");
         imgStr = imgStr.replace("\"", "");
         BASE64Decoder decoder = new BASE64Decoder();
         InputStream inputStream = null;
