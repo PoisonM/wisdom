@@ -14,6 +14,8 @@ import com.wisdom.user.mapper.SysBossMapper;
 import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.mapper.extMapper.ExtSysClerkMapper;
 import com.wisdom.user.service.BusinessLoginService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -33,6 +35,7 @@ import java.util.UUID;
 @Service
 @Transactional(readOnly = false)
 public class BusinessLoginServiceImpl implements BusinessLoginService {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserInfoMapper userMapper;
@@ -115,6 +118,7 @@ public class BusinessLoginServiceImpl implements BusinessLoginService {
     @Override
     public String businessUserLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         String openId = WeixinUtil.getUserOpenId(session,request);
+        logger.info("Service == businessUserLoginOut,openId={}方法执行" ,openId);
         JedisUtils.del(logintoken);
         session.removeAttribute(ConfigConstant.USER_OPEN_ID);
         CookieUtils.setCookie(response, ConfigConstant.USER_OPEN_ID, openId==null?"":openId,0,ConfigConstant.DOMAIN_VALUE);
