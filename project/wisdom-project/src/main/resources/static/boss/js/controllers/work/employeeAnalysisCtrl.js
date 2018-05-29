@@ -87,7 +87,6 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 $scope.param.displayShopBox=true;
                 $scope.param.displayShop=true;
                 GetBossShopList.get(function (data) {
-                    console.log(data);
                     $scope.shopList=data.responseData;
                 });
             };

@@ -10,7 +10,8 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                 flag: false,
                 productType:"",
                 levelOneId:"",
-                levelTwoId:""
+                levelTwoId:"",
+                twoLevelList:[]
             };
 
             $scope.modifyProductGo = function(id){
@@ -30,13 +31,22 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                 $scope.param.productType = type;
                 $scope.param.flag = true;
                 $scope.getInfo()
+                $scope.param.twoLevelList = $scope.warehouseProducts.twoLevelList
             };
             $scope.selTwo = function (productTypeOneId) {/*根据一级查询二级*/
                 $scope.param.levelOneId = productTypeOneId;
-                $scope.getInfo()
+                $scope.param.twoLevelList = []
+                for(var i=0;i<$scope.warehouseProducts.twoLevelList.length;i++){
+                    if( $scope.warehouseProducts.twoLevelList[i].productTypeOneId == productTypeOneId){
+                        $scope.param.twoLevelList.push($scope.warehouseProducts.twoLevelList[i])
+                    }
+
+                }
+                console.log( $scope.warehouseProducts.twoLevelList)
             }
             $scope.checkThree = function(productTypeTwoId){
-                $scope.param.levelTwoId =productTypeTwoId
+                $scope.param.levelTwoId =productTypeTwoId;
+                $scope.param.flag = false;
                 $scope.getInfo()
             }
 
@@ -47,7 +57,6 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.warehouseProducts = data.responseData;
-                    $scope.warehouseProducts.twoMap=[]
                 }
 
             })
@@ -60,7 +69,6 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.warehouseProducts = data.responseData
                         if($scope.param.levelOneId == ''){
-                            $scope.warehouseProducts.twoMap=[]
                         }
 
                     }

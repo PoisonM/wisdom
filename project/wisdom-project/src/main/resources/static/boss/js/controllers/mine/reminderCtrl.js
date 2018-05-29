@@ -2,9 +2,85 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('reminderCtrl',
-    ['$scope','$rootScope','$stateParams','$state',
-        function ($scope,$rootScope,$stateParams,$state) {
+    ['$scope','$rootScope','$stateParams','$state','GetBossShopScheduleSetting','UpdateBossShopScheduleSetting','GetBossShopList',
+        function ($scope,$rootScope,$stateParams,$state,GetBossShopScheduleSetting,UpdateBossShopScheduleSetting,GetBossShopList) {
 
             $rootScope.title = "提醒设置";
+            $scope.param = {
+                settingStatus:true,
+                statusArr:[],
+                displayShopBox:false,
+                sysShopId:''
+            }
+            $scope.getInfo= function(){
+                GetBossShopScheduleSetting.get({sysShopId:$scope.param.sysShopId},function (data) {
+                    $scope.reminder = data.responseData
+                    $scope.status()
+
+                })
+            }
+            $scope.getInfo()
+
+            $scope.settingStatus = function () {
+                if( $scope.param.settingStatus == true){
+                    for(var i =0;i<$scope.reminder.length;i++){
+                        $scope.reminder[i].status = '0'
+                    }
+                }else{
+                    for(var i =0;i<$scope.reminder.length;i++){
+                        $scope.reminder[i].status = '1'
+                    }
+                }
+                $scope.status()
+                
+            }
+            $scope.status = function () {
+                for(var i =0;i<$scope.reminder.length;i++){
+                    if($scope.reminder[i].status == '0'){
+                        $scope.param.statusArr[i] = true
+                    }else{
+                        $scope.param.statusArr[i] = false
+                    }
+
+                }
+            }
+            $scope.changeStatus = function(index){
+                if($scope.param.settingStatus == false){
+                    alert("排班功能未开启")
+
+                }else{
+                    if( $scope.param.statusArr[index] == false){
+                        $scope.reminder[index].status = '1'
+                    }else{
+                        console.log(index)
+                        $scope.reminder[index].status = '0'
+                    }
+
+                }
+                $scope.status()
+
+            }
+            $scope.tabShop=function () {
+                $scope.param.displayShopBox=!$scope.param.displayShopBox;
+                GetBossShopList.get(function (data) {
+                    $scope.shopList=data.responseData;
+                });
+            };
+            $scope.choseShop = function(id){
+                $scope.param.sysShopId = id;
+                $scope.getInfo()
+                $scope.param.displayShopBox = false;
+            }
+            $scope.dis = function () {
+                $scope.param.displayShopBox = false;
+            }
+            $scope.save = function () {
+                $scope.request ={
+                    requestList:$scope.reminder
+                }
+                UpdateBossShopScheduleSetting.save($scope.request,function(data){
+
+                })
+            }
 
         }]);
