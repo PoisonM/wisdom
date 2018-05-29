@@ -210,11 +210,8 @@ public class AppointmentController {
 
 			Date loopDate = startTime;
 			ArrayList<Object> oneClerkList = new ArrayList<>();
-			if("34c061c294d544a7bd58752ce71b5e17".equalsIgnoreCase(clerkDTO.getId())){
-				System.out.println("sysShopId = [" + sysShopId + "], startDate = [" + startDate + "]");
-			}
 
-			//todo 查询某个美容师7天内的预约列表
+            //查询某个美容师7天内的预约列表
 			ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
 			extShopAppointServiceDTO.setSysShopId(sysShopId);
 			extShopAppointServiceDTO.setSearchStartTime(loopDate);
@@ -230,7 +227,7 @@ public class AppointmentController {
 				map.put("info", "");
 				try {
                     LunarUtils lunarUtils = new LunarUtils(loopDate);
-                    map.put("Lunar", LunarUtils.getChinaDayString(lunarUtils.day));
+					map.put("lunar", LunarUtils.getChinaDayString(lunarUtils.day));
 				} catch (Exception e) {
 					logger.error("获取农历失败，失败原因为：" + e.getMessage(), e);
 				}
