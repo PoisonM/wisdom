@@ -57,7 +57,7 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDi
             RechargeCardSignConfirm.get({
                 transactionId: $state.params.transactionId,
                 //图片base64流是data
-                imageUrl: 'http://dizmix.com/upload/534bef3095584e9893511c45753e5c21_WechatIMG96.jpeg',
+                imageUrl: data.responseData,
             }, function(data) {
                 $state.go("pad-web.left_nav.personalFile");
             })
