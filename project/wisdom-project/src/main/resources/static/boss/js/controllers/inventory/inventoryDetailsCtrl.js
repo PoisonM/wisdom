@@ -18,7 +18,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                 selectProductList:'',
                 allUseCost:'',
                 useCost:'',
-                productTypeTwoName:''
+                productTypeName:'客装产品'
             };
 
             GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,productType:$scope.param.type},function(data){
@@ -46,6 +46,19 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                     $scope.param.oneLevelList = data.responseData.oneLevelList;
                     $scope.param.twoLevelList = data.responseData.twoLevelList;
                 })
+
+                if(type=='0')
+                {
+                    $scope.param.productTypeName = '客装产品';
+                }
+                else if(type=='1')
+                {
+                    $scope.param.productTypeName = '院装产品';
+                }
+                else if(type=='2')
+                {
+                    $scope.param.productTypeName = '易耗品';
+                }
             };
 
             $scope.chooseTwoLevelList = function (productTypeOneId) {
@@ -83,7 +96,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
             }
 
             $scope.chooseProductList = function(productTypeTwoId,productTypeTwoName){
-                $scope.param.productTypeTwoName = productTypeTwoName;
+                $scope.param.productTypeName = productTypeTwoName;
                 GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
