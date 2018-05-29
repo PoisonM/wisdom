@@ -126,8 +126,8 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO" >
-    insert into shop_user_archives (id, sys_shop_id, sys_shop_name, 
-      sys_clerk_id, sys_boss_code, sys_clerk_name,
+    insert into shop_user_archives (id, sys_shop_id, sys_shop_name,
+    sys_clerk_id, sys_boss_code, sys_clerk_name,
     image_url, sys_user_name, phone,
       sys_user_id, sex, birthday, 
       age, constellation, blood_type, 
@@ -135,8 +135,8 @@
       channel, shopId, detail, 
       create_by, create_date, update_user, 
       update_date)
-    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, 
-      #{sysClerkId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR},
+    #{sysClerkId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR},
     #{imageUrl,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
       #{sysUserId,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, 
       #{age,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, #{bloodType,jdbcType=VARCHAR}, 
