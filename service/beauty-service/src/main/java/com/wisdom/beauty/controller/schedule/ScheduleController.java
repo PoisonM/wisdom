@@ -393,7 +393,7 @@ public class ScheduleController {
         returnMap.put("responseList", helperList);
         responseDTO.setResponseData(returnMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("获取某个店的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        logger.info("获取某个店员的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
