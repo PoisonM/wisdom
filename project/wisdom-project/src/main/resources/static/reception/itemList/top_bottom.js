@@ -82,6 +82,11 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
     }
 
     $scope.backHeaderCashFn = function () {
-        window.history.back()
+        if($scope.param.headerCash.leftAddContent == "添加档案"){
+            // $state.go("pad-web.left_nav.addRecord")
+        }else {
+            window.history.back()
+        }
+
     }
 })
