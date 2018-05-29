@@ -571,9 +571,6 @@ public class ShopStockServiceImpl implements ShopStockService {
 		ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
 		ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
 		// 查询条件
-		if (StringUtils.isNotBlank(shopStockNumberDTO.getProductTypeTwoId())) {
-			c.andProductTypeTwoIdEqualTo(shopStockNumberDTO.getProductTypeTwoId());
-		}
 		if (StringUtils.isNotBlank(shopStockNumberDTO.getShopStoreId())) {
 			c.andShopStoreIdEqualTo(shopStockNumberDTO.getShopStoreId());
 		}
@@ -629,8 +626,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			extShopProductInfoDTOs.add(extShopProductInfoDTO);
 		}
 		Map<String, Object> responseMap = new HashMap<>(16);
-		Map<String, Object> costMap = this.getCost(shopStockNumberDTO.getShopStoreId(),
-				shopStockNumberDTO.getProductTypeTwoId());
+		Map<String, Object> costMap = this.getCost(shopStockNumberDTO.getShopStoreId(),productInfoMap);
 		responseMap.put("allUseCost", costMap == null ? 0 : costMap.get("allUseCost"));
 		responseMap.put("useCost", costMap == null ? 0 : costMap.get("useCost"));
 		responseMap.put("extShopProductInfoDTOs", extShopProductInfoDTOs);
@@ -697,6 +693,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockResponse.setProductUnit(shopProductInfoResponses.getProductUnit());
 		// 规格
 		shopStockResponse.setProductSpec(shopProductInfoResponses.getProductSpec());
+		shopStockResponse.setProductTypeOneName(shopProductInfoResponses.getProductTypeOneName());
+		shopStockResponse.setProductTypeTwoName(shopProductInfoResponses.getProductTypeTwoName());
 		shopStockResponse.setShopStockResponseDTO(shopStockResponses);
 		shopStockResponse.setAllUseCost(allUseCost);
 		shopStockResponse.setAllStoreNumber(allStoreNumber);
@@ -737,7 +735,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
-	public Map<String, Object> getCost(String shopStoreId, String productTypeTwoId) {
+	public Map<String, Object> getCost(String shopStoreId, Map<String, ShopProductInfoDTO> productInfoMap) {
 		logger.info("getAllUseCost方法传入的参数shopStoreId={}", shopStoreId);
 		if (StringUtils.isBlank(shopStoreId)) {
 			return null;
@@ -757,30 +755,28 @@ public class ShopStockServiceImpl implements ShopStockService {
 				//为空的时候，则继续循环
 				continue;
 			}
-			if (StringUtils.isNotBlank(productTypeTwoId)) {
-				if (productTypeTwoId.equals(shopStockNumber.getProductTypeTwoId())) {
-					BigDecimal useCostDev = shopStockNumber.getStockPrice()
+			if(shopStockNumber.getShopProcId().equals(productInfoMap.get(shopStockNumber.getShopProcId()))){
+                //计算所选择产品的占用成本
+				if (useCost == null) {
+					useCost = shopStockNumber.getStockPrice()
 							.multiply(new BigDecimal(shopStockNumber.getStockNumber()));
-
-					if (useCost == null) {
-						useCost = useCostDev;
-					} else {
-						useCost = allUseCost.add(useCostDev);
-					}
+				} else {
+					useCost = useCost.add(shopStockNumber.getStockPrice()
+							.multiply(new BigDecimal(shopStockNumber.getStockNumber())));
 				}
 			}
-			BigDecimal cost = shopStockNumber.getStockPrice()
-					.multiply(new BigDecimal(shopStockNumber.getStockNumber()));
-
+			//计算占用总成
 			if (allUseCost == null) {
-				allUseCost = cost;
+				allUseCost = shopStockNumber.getStockPrice()
+						.multiply(new BigDecimal(shopStockNumber.getStockNumber()));
 			} else {
-				allUseCost = allUseCost.add(cost);
+				allUseCost = allUseCost.add(shopStockNumber.getStockPrice()
+						.multiply(new BigDecimal(shopStockNumber.getStockNumber())));
 			}
 		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("allUseCost", allUseCost);
-		map.put("useCost", StringUtils.isBlank(productTypeTwoId) ? allUseCost : useCost);
+		map.put("useCost",  useCost);
 		return map;
 	}
 

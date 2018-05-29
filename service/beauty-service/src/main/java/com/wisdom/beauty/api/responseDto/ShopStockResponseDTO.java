@@ -40,6 +40,11 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private BigDecimal allUseCost;
 	//仓库名字
 	private String shopStoreName;
+	//产品一级类别id
+	private String productTypeOneName;
+
+	//二级类别名称
+	private String productTypeTwoName;
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
 
 	public String getName() {
@@ -192,5 +197,21 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 
 	public void setProductImage(String productImage) {
 		this.productImage = productImage;
+	}
+
+	public String getProductTypeTwoName() {
+		return productTypeTwoName;
+	}
+
+	public void setProductTypeTwoName(String productTypeTwoName) {
+		this.productTypeTwoName = productTypeTwoName;
+	}
+
+	public String getProductTypeOneName() {
+		return productTypeOneName;
+	}
+
+	public void setProductTypeOneName(String productTypeOneName) {
+		this.productTypeOneName = productTypeOneName;
 	}
 }
