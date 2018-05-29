@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.enums.IsUseUpEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.RelationIds;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
@@ -324,7 +325,7 @@ public class ProjectController {
 				map.put("projectList", arrayList);
 				map.put("totalAmount", bigDecimal);
 				map.put("projectGroupName", projectGroupName);
-				map.put("isUseUp", surplusTimes>0?"1":"0");
+				map.put("isUseUp", surplusTimes>0? IsUseUpEnum.USE_ING.getCode():IsUseUpEnum.USE_UP.getCode());
 				returnList.add(map);
 			}
 		}
