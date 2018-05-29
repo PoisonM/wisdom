@@ -27,6 +27,7 @@ import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.LunarUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -800,13 +801,16 @@ public class AppointmentController {
 	@RequestMapping(value = "/getClerkAppointmentInfo", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	ResponseDTO<Object> getClerkAppointmentInfo(@RequestParam String searchDate) {
+	ResponseDTO<Object> getClerkAppointmentInfo(@RequestParam String searchDate,@RequestParam(required = false) String appointType) {
 		long currentTimeMillis = System.currentTimeMillis();
 		logger.info("获取某个店员的预约列表传入参数={}", "searchDate = [" + searchDate + "]");
 		SysClerkDTO clerkDTO = UserUtils.getClerkInfo();
 		//查询店铺下的预约信息
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		extShopAppointServiceDTO.setSysClerkId(clerkDTO.getSysUserId());
+		if(StringUtils.isNotBlank(appointType)){
+            extShopAppointServiceDTO.setStatus(appointType);
+        }
 		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
 		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
 		//缓存返回结果
