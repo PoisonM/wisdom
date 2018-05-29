@@ -22,9 +22,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                 $scope.param.detailProductList = data.responseData.detailProductList;
                 $scope.param.oneLevelList = data.responseData.oneLevelList;
                 $scope.param.twoLevelList = data.responseData.twoLevelList;
-
-                console.log($scope.param.detailProductList);
-            })
+            });
 
             $scope.changeBtn = function (type) {
                 if($scope.param.type != type)
@@ -79,4 +77,13 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                 $state.go('productInventoryDetails')
             }
 
+            $scope.chooseProductList = function(productTypeTwoId){
+                GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
+                    levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
+                    $scope.param.detailProductList = data.responseData.detailProductList;
+                    $scope.param.oneLevelList = data.responseData.oneLevelList;
+                    $scope.param.twoLevelList = data.responseData.twoLevelList;
+                    $scope.param.multiSelectFlag=false;
+                })
+            }
         }])
