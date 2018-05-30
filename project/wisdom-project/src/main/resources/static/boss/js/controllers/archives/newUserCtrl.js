@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('newUserCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Detail','Global','UpdateArchiveInfo','SaveArchiveInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Detail,Global,UpdateArchiveInfo,SaveArchiveInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Detail','Global','UpdateArchiveInfo','SaveArchiveInfo','ImageBase64UploadToOSS',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Detail,Global,UpdateArchiveInfo,SaveArchiveInfo,ImageBase64UploadToOSS) {
             $rootScope.title = "";
             $scope.newUser={
                     sex:"女",
@@ -29,6 +29,32 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     }
                 });
             }
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $scope.newUser.imageUrl.push(data.responseData)
+                            }
+
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
+
             /*更新保存*/
             $scope.preservation=function () {
                 if($stateParams.id==""){

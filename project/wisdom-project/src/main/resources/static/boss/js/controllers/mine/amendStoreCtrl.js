@@ -6,7 +6,9 @@ angular.module('controllers',[]).controller('amendStoreCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetShopInfo,Global,UpdateShopInfo) {
 
             $rootScope.title = "修改门店";
-            GetShopInfo.get({},function(data){
+            GetShopInfo.get({
+                sysShopId:$stateParams.sysShopId
+            },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.amendStore = data.responseData
                 }

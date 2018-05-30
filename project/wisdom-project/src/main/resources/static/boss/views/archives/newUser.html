@@ -13,6 +13,7 @@
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">头像</p>
                     <p class="mr10">
+                        <input type="file" style="width:40px;height:40px;position: absolute;top:10px;opacity: 0" onchange="angular.element(this).scope().img_upload(this.files)">
                         <img ng-src="{{newUser.imageRul}}" style="width:40px;height:40px;border-radius: 5px;">
                     </p>
                 </ion-item>
