@@ -4,15 +4,11 @@ var account = '/business/account/';
 var withdraw = '/business/withdraw/';
 var transaction = '/business/transaction/';
 var userType = '/business/userType/';
-
 var bannerList = '/system/banner/';
 var suggest = '/system/feedback/';
-
 var customer  = '/user/customer/';
 var user = '/user/';
-
 var weixin = '/weixin/customer/';
-
 var projectInfo = '/beauty/projectInfo/';
 var appointInfo = '/beauty/appointmentInfo/';
 var clerkSchedule = '/beauty/clerkSchedule/';

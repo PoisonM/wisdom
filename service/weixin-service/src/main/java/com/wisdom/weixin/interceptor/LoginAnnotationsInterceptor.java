@@ -1,4 +1,4 @@
-package com.wisdom.system.interceptor;
+package com.wisdom.weixin.interceptor;
 
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -15,35 +15,36 @@ import javax.servlet.http.HttpServletRequest;
 
 @Aspect
 @Component
-public class LoginRequiredInterceptor {
+public class LoginAnnotationsInterceptor {
 
     /**
      * 定义拦截规则：拦截com.xjj.web.controller包下面的所有类中，有@RequestMapping注解的方法。
      */
-    @Pointcut("execution(* com.wisdom.system.controller..*(..)) && " +
+    @Pointcut("execution(* com.wisdom.weixin.controller..*(..)) && " +
             "@annotation(org.springframework.web.bind.annotation.RequestMapping)")
-    public void controllerMethodPointcut(){}
+    public void controllerMethodPointcut() {
+    }
 
     /**
      * 拦截器具体实现
+     *
      * @param pjp
      * @return JsonResult（被拦截方法的执行结果，或需要登录的错误提示。）
      */
-    @Around("controllerMethodPointcut()&& @annotation(com.wisdom.system.interceptor.LoginRequired)")
+    @Around("controllerMethodPointcut() && @target(com.wisdom.weixin.interceptor.LoginAnnotations)")
     public Object Interceptor(ProceedingJoinPoint pjp) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         ResponseDTO responseDTO = LoginUtil.processLoginInterceptor(request);
-       if(responseDTO.getResult().equals(StatusConstant.FAILURE))
-       {
-           return responseDTO;
-       }
-       else
-       {
-           return pjp.proceed();
-       }
+        if(responseDTO.getResult().equals(StatusConstant.FAILURE))
+        {
+            return responseDTO;
+        }
+        else
+        {
+            return pjp.proceed();
+        }
     }
-
 
 }

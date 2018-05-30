@@ -4,6 +4,7 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.JedisUtils;
+import com.wisdom.common.util.LoginUtil;
 import com.wisdom.common.util.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -36,50 +37,20 @@ public class LoginAnnotationsInterceptor {
      * @param pjp
      * @return JsonResult（被拦截方法的执行结果，或需要登录的错误提示。）
      */
-    @Around("controllerMethodPointcut() && target(com.wisdom.beauty.interceptor.LoginRequired) ")
+    @Around("controllerMethodPointcut() && @target(com.wisdom.beauty.interceptor.LoginAnnotations)")
     public Object Interceptor(ProceedingJoinPoint pjp) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        Map<String, String> tokenValue = getHeadersInfo(request);
 
-        String userType = tokenValue.get("usertype");
-        String token = "";
-        if (StringUtils.isBlank(userType)) {
-            token = tokenValue.get("logintoken");
-        } else if (userType.equals("beautyUser") || userType.equals("beautyBoss") || userType.equals("beautyClerk")) {
-            token = tokenValue.get("beautylogintoken");
+        ResponseDTO responseDTO = LoginUtil.processLoginInterceptor(request);
+        if(responseDTO.getResult().equals(StatusConstant.FAILURE))
+        {
+            return responseDTO;
         }
-
-        if (StringUtils.isBlank(token)) {
-            ResponseDTO<String> responseDto = new ResponseDTO<>();
-            responseDto.setResult(StatusConstant.SUCCESS);
-            responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
-            return responseDto;
+        else
+        {
+            return pjp.proceed();
         }
-
-        //验证token有效性
-        int loginTokenPeriod = ConfigConstant.logintokenPeriod;
-        String userInfo = JedisUtils.get(token);
-        if (null == userInfo) {
-            ResponseDTO<String> responseDto = new ResponseDTO<String>();
-            responseDto.setResult(StatusConstant.SUCCESS);
-            responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
-            return responseDto;
-        }
-        JedisUtils.set(token, userInfo, loginTokenPeriod);
-        return pjp.proceed();
-    }
-
-    //get request headers
-    private static Map<String, String> getHeadersInfo(HttpServletRequest request) {
-        HashMap<String, String> map = new HashMap<String, String>();
-        Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String key = (String) headerNames.nextElement();
-            String value = request.getHeader(key);
-            map.put(key, value);
-        }
-        return map;
     }
 
 }
