@@ -15,8 +15,8 @@
               <span class="col33">性别 </span>
               <span class="fr ">
 
-                    <input type="radio"   ng-checked="value == 1"   name="names" ng-click="female()" value="0"  style="width: 15px;height: 15px;border: 1px solid #FF6666;border-radius: 50%"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">女</span>
-              <input type="radio" name="names" ng-click="male()" value="1"  style="width: 15px;height: 15px;border: 1px solid #FF6666; border-radius: 50%;margin-left: 0.1rem"  ng-checked="value == 0"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">男</span>
+                    <input type="radio"   ng-checked="userInfo.sex == '女'"   name="names" ng-click="female()"   style="width: 15px;height: 15px;border: 1px solid #FF6666;border-radius: 50%"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">女</span>
+              <input type="radio" name="names" ng-click="male()"  style="width: 15px;height: 15px;border: 1px solid #FF6666; border-radius: 50%;margin-left: 0.1rem"  ng-checked="userInfo.sex == '男'"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">男</span>
 
               </span>
           </li>

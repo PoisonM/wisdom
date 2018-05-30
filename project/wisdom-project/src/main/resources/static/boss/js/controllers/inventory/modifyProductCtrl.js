@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('modifyProductCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ProductInfoMess','Global','UpdateProductInfo','$filter',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ProductInfoMess,Global,UpdateProductInfo,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ProductInfoMess','Global','UpdateProductInfo','$filter','ImageBase64UploadToOSS',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ProductInfoMess,Global,UpdateProductInfo,$filter,ImageBase64UploadToOSS) {
             $rootScope.title = "修改产品";
 
             $scope.param = {
@@ -60,14 +60,14 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
             },function (data) {
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.modifyProduct = data.responseData;
-                    $scope.style('oneId','productTypeOneId')
-                    $scope.style('twoId','productTypeTwoId')
-                    $scope.style('band','productTypeOneName')
-                    $scope.style('series','productTypeTwoName')
-                    $scope.style('spec','productSpec')
-                    $scope.style('unit','productUnit')
-                    $scope.style('parts','productPosition')
-                    $scope.style('func','productFunction')
+                    $scope.style('oneId','productTypeOneId');
+                    $scope.style('twoId','productTypeTwoId');
+                    $scope.style('band','productTypeOneName');
+                    $scope.style('series','productTypeTwoName');
+                    $scope.style('spec','productSpec');
+                    $scope.style('unit','productUnit');
+                    $scope.style('parts','productPosition');
+                    $scope.style('func','productFunction');
                     if($scope.modifyProduct.status =='0'){
                         $scope.param.status = true;
                     }else{
@@ -115,6 +115,40 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                 $state.go("efficacy",{id:$stateParams.id,productFunc:$scope.modifyProduct.productFunction})
                 localStorage.setItem('modifyProduct',JSON.stringify($scope.modifyProduct));
             }
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+                console.log(files)
+                if(files.length <=0)return
+                if($scope.modifyProduct.imageUrl.length>6){
+                    alert("图片上传不能大于6张")
+                    return
+                }
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $scope.modifyProduct.imageUrl.push(data.responseData)
+                            }
+
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
+            $scope.delPic = function(index){
+                $scope.modifyProduct.imageUrl.splice(index,1)
+            }
+
 
 
             $scope.save = function(type){

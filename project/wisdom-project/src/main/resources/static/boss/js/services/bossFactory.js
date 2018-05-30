@@ -1,14 +1,14 @@
+
 var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
 var consume = '/beauty/consume/';
-var earlyWarning =  '/beauty/earlyWarning/';
-var archives =  '/beauty/archives/';
+var  earlyWarning =  '/beauty/earlyWarning/';
+var  archives =  '/beauty/archives/';
 var shopBossRelation ='/beauty/shopBossRelation/';
 var user ='/user/';
 var analyze = '/beauty/analyze/';
 var consumes = '/beauty/consumes/';
-var consume = '/beauty/consume/';
 var cardInfo  = '/beauty/cardInfo/';
 var projectInfo  = '/beauty/projectInfo/';
 var productInfo  = '/beauty/productInfo/';
@@ -20,6 +20,7 @@ var cardHelper ='/beauty/cardHelper/';
 var clerkSchedule = '/beauty/clerkSchedule/';
 var  mine='/beauty/mine/';
 var remind='/beauty/remind/';
+var file = '/system-service/file/';
 
 
 define(['appBoss'], function (app) {
@@ -78,6 +79,12 @@ define(['appBoss'], function (app) {
         .factory('SaveClerkInfo',['$resource',function ($resource){
             return $resource(user + 'saveClerkInfo')
         }])
+
+
+
+
+
+
 
 /*综合分析*/
         /*根据时间查询某个美容院的耗卡和业绩*/
@@ -410,6 +417,19 @@ define(['appBoss'], function (app) {
         .factory('SaveArchiveInfo',['$resource',function ($resource){
             return $resource(archives+"saveArchiveInfo")
         }])
+        /*base64位图片上传*/
+        .factory('ImageBase64UploadToOSS',['$resource',function ($resource){
+            return $resource(file+"imageBase64UploadToOSS")
+        }])
+        /*老板切换店铺*/
+        .factory('BossSwitchShops',['$resource',function ($resource){
+            return $resource(shop+"bossSwitchShops")
+        }])
+
+
+
+
+
 
         .factory('GetStockNumber',['$resource',function ($resource){
             return $resource(stock + "getStockNumber")

@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('addrechargeCardCtrl',
-    ['$scope','$rootScope','$stateParams','$state','SaveRechargeCardInfo','Global',
-        function ($scope,$rootScope,$stateParams,$state,SaveRechargeCardInfo,Global) {
+    ['$scope','$rootScope','$stateParams','$state','SaveRechargeCardInfo','Global','ImageBase64UploadToOSS',
+        function ($scope,$rootScope,$stateParams,$state,SaveRechargeCardInfo,Global,ImageBase64UploadToOSS) {
 
             $rootScope.title = "添加充值卡";
             $scope.param={
@@ -25,7 +25,37 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
 
 
             }
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+                if($rootScope.settingAddsome.editedRecharge.imageUrls.length>6){
+                    alert("图片上传不能大于6张")
+                    return
+                }
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $rootScope.settingAddsome.editedRecharge.imageUrls.push(data.responseData)
+                            }
 
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
+            $scope.delPic = function(index){
+                $rootScope.settingAddsome.editedRecharge.imageUrls.splice(index,1)
+            }
             $scope. appear=function (index) {
                $scope.param.appearArr[index ] =!$scope.param.appearArr[index ]
             }

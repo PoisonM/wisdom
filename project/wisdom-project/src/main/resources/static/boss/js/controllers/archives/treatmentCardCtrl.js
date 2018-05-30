@@ -37,7 +37,7 @@ angular.module('controllers',[]).controller('treatmentCardCtrl',
             $scope.selTrue = function(){
                 $scope.param.flag = false;
 
-                $scope.treatmentCard = []
+                $scope.treatmentCard = [];
 
                 if($scope.param.overdue == '6'){
                     $scope.treatmentCard=$scope.arr

@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('modifyProjectCtrl',
-    ['$scope','$rootScope','$stateParams','$state','ProjectInfo','UpdateProjectInfo',
-        function ($scope,$rootScope,$stateParams,$state,ProjectInfo,UpdateProjectInfo) {
+    ['$scope','$rootScope','$stateParams','$state','ProjectInfo','UpdateProjectInfo','ImageBase64UploadToOSS','Global',
+        function ($scope,$rootScope,$stateParams,$state,ProjectInfo,UpdateProjectInfo,ImageBase64UploadToOSS,Global) {
 
             $rootScope.title = "修改项目";
             $scope.param={
@@ -60,7 +60,37 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                     console.log($scope.modifyList.cardType)
                 };
             });
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+                if($scope.modifyList.imageUrl.length>6){
+                    alert("图片上传不能大于6张")
+                    return
+                }
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $scope.modifyList.imageUrl.push(data.responseData)
+                            }
 
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
+            $scope.delPic = function(index){
+                $scope.modifyList.imageUrl.splice(index,1)
+            }
             /*点击保存调取接口*/
 
             $scope.Preservation=function () {

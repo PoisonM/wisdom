@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('editedRechargeCtrl',
-    ['$scope','$rootScope','$stateParams','$state','RechargeCardDetail','Global','$http','GetGoodsUseScope','UpdateRechargeCardInfo',
-        function ($scope,$rootScope,$stateParams,$state,RechargeCardDetail,Global,$http,GetGoodsUseScope,UpdateRechargeCardInfo) {
+    ['$scope','$rootScope','$stateParams','$state','RechargeCardDetail','Global','$http','GetGoodsUseScope','UpdateRechargeCardInfo','ImageBase64UploadToOSS',
+        function ($scope,$rootScope,$stateParams,$state,RechargeCardDetail,Global,$http,GetGoodsUseScope,UpdateRechargeCardInfo,ImageBase64UploadToOSS) {
 
             $rootScope.title = "编辑充值卡";
             $scope.param={
@@ -15,7 +15,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                 id:$stateParams.id
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $rootScope.settingAddsome.editedRecharge = data.responseData
+                    $rootScope.settingAddsome.editedRecharge = data.responseData;
                     if($rootScope.settingAddsome.editedRecharge.status == '0'){
                         $scope.param.status = true
                     }else{
@@ -24,10 +24,10 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                     GetGoodsUseScope.get({
                         shopRechargeCardId:$stateParams.id
                     },function (data) {
-                        $rootScope.settingAddsome.editedRecharge.timesList =data.responseData.timesList
-                        $rootScope.settingAddsome.editedRecharge.periodList =data.responseData.periodList
-                        $rootScope.settingAddsome.editedRecharge.productList =data.responseData.productList
-                        if($rootScope.settingAddsome.editedRecharge.productList.length>0){
+                        $rootScope.settingAddsome.editedRecharge.timesList =data.responseData.timesList;
+                        $rootScope.settingAddsome.editedRecharge.periodList =data.responseData.periodList;
+                        $rootScope.settingAddsome.editedRecharge.productList =data.responseData.productList;
+                       /* if($rootScope.settingAddsome.editedRecharge.productList.length>0){
                             $scope.param.appearArr[2]=true
                         }
                         if($rootScope.settingAddsome.editedRecharge.periodList.length>0){
@@ -35,14 +35,42 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                         }
                         if($rootScope.settingAddsome.editedRecharge.timesList.length>0){
                             $scope.param.appearArr[0]=true
-                        }
+                        }*/
 
                     })
 
                 }
-            })
+            });
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+                if($rootScope.settingAddsome.editedRecharge.imageUrls.length>6){
+                    alert("图片上传不能大于6张")
+                    return
+                }
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $rootScope.settingAddsome.editedRecharge.imageUrls.push(data.responseData)
+                            }
+
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
             $scope.delPic = function(index){
-                $scope.editedRecharge.imageUrls.splice(index,1)
+                $rootScope.settingAddsome.editedRecharge.imageUrls.splice(index,1)
             }
             $scope. appear=function (index) {
                 $scope.param.appearArr[index ] =!$scope.param.appearArr[index ]
@@ -58,6 +86,10 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                 }
             }
             $scope.save = function () {
+                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||($rootScope.settingAddsome.editedRecharge.timesList.length<=0&&$rootScope.settingAddsome.editedRecharge.timeDiscount!=''||( $rootScope.settingAddsome.editedRecharge.timesList.periodList>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.timesList.periodList<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!=''))||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
+                    alert("信息不完全")
+                    return
+                }
                 UpdateRechargeCardInfo.save($rootScope.settingAddsome.editedRecharge,function (data) {
                     if(data.result==Global.SUCCESS){
                         $state.go("basicSetting")

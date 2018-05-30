@@ -37,10 +37,19 @@
                 <p class="h50  ml15 bbl fs16">
                     图片<span class="col999">（最多可上传6张）</span>
                 </p>
-                <div style="height:130px;line-height: 130px;display: flex">
-                    <p style="height:105px;position: relative" class="ml15" ng-repeat="item in modifyProduct.imageUrl track  by $index">
-                        <input type="file" style="position: absolute;top:50%;left:50%;margin-top:-20px;margin-left: -20px;width:40px;height:40px;opacity: 0;">
-                        <img ng-src="{{item}}" class="uploadPic ">
+                <div style="height:130px;display: flex" class="Htab-head">
+                    <div  class=" Htab-head-item ml10" ng-repeat="item in modifyProduct.imageUrl track by $index">
+                        <p style="width:105px;height:105px;position: relative;text-align: left">
+                            <span  style="position: absolute;top: 0px;right: -14px;height:20px;"  ng-click="delPic($index)">
+                                 <i class="ion-android-remove-circle colff66" ></i>
+                             </span>
+                            <input type="file" style="position: absolute;top:50%;left:50%;margin-top:-20px;margin-left: -20px;width:40px;height:40px;opacity: 0;" disabled="disabled">
+                            <img ng-src="{{item}}" class="uploadPic mt10 ml10" style="width: 105px;height: 105px;">
+                        </p>
+                    </div>
+                    <p style="width:105px;height:105px;position: relative;text-align: left" class="ml15 Htab-head-item" >
+                        <input type="file" style="opacity: 0;position: absolute;top: 10px;left: 0px;width: 105px;height: 105px;" id=""  onchange="angular.element(this).scope().img_upload(this.files)" class="ml10">
+                        <img src="images/inventory/upload.png" class="uploadPic mt10 ml10 mr10" style="width: 105px;height: 105px;">
                     </p>
                 </div>
             </div>
