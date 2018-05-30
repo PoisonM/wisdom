@@ -1,7 +1,6 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
-import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 
@@ -61,5 +60,5 @@ public interface ShopUserRelationService {
     /**
      * 更新店铺信息
      */
-    int updateShopInfo(SysShopDTO sysShopDTO);
+    int updateShopInfo(ExtSysShopDTO sysShopDTO);
 }

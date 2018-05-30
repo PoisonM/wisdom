@@ -3,13 +3,13 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
-import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtSysShopMapper;
 import com.wisdom.beauty.core.mapper.ShopUserRelationMapper;
 import com.wisdom.beauty.core.mapper.SysShopMapper;
+import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -51,6 +51,8 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
 
     @Autowired
     private UserServiceClient userServiceClient;
+    @Autowired
+    private MongoUtils mongoUtils;
 
     @Override
     public String isMember(String userId) {
@@ -176,21 +178,32 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
             return null;
         }
         List<ExtSysShopDTO> extSysShopDTOS = extSysShopMapper.selectBossShopInfo(extSysShopDTO);
+        if (CommonUtils.objectIsNotEmpty(extSysShopDTO)) {
+            for (ExtSysShopDTO dto : extSysShopDTOS) {
+                dto.setImageList(mongoUtils.getImageUrl(dto.getId()));
+            }
+        }
         return extSysShopDTOS;
     }
 
     /**
      * 更新店铺信息
-     * @param sysShopDTO
+     * @param extSysShopDTO
      * @return
      */
     @Override
-    public int updateShopInfo(SysShopDTO sysShopDTO) {
-        if(null == sysShopDTO || StringUtils.isBlank(sysShopDTO.getId())){
-            logger.error("更新店铺信息传入信息有误，请核查，{}","sysShopDTO = [" + sysShopDTO + "]");
+    public int updateShopInfo(ExtSysShopDTO extSysShopDTO) {
+        if (null == extSysShopDTO || StringUtils.isBlank(extSysShopDTO.getId())) {
+            logger.error("更新店铺信息传入信息有误，请核查，{}", "extSysShopDTO = [" + extSysShopDTO + "]");
             return 0;
         }
-        int update = sysShopMapper.updateByPrimaryKeySelective(sysShopDTO);
+        if (null != extSysShopDTO.getImageList()) {
+            String o = (String) extSysShopDTO.getImageList().get(0);
+            extSysShopDTO.setShopImageUrl(o);
+        }
+
+        int update = sysShopMapper.updateByPrimaryKeySelective(extSysShopDTO);
+        mongoUtils.saveImageUrl(extSysShopDTO.getImageList(), extSysShopDTO.getId());
         return update;
     }
 }
