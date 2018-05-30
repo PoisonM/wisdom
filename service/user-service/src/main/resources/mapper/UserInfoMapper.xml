@@ -136,7 +136,6 @@
     <insert id="insertUserInfo">
         INSERT INTO sys_user(
         id,
-        source,
         nickname,
         password,
         email,
