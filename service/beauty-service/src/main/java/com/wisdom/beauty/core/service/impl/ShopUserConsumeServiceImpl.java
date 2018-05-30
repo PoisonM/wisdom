@@ -687,8 +687,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             rechargeCardDTO.setSysShopId(clerkInfo.getSysShopId());
             rechargeCardDTO.setSysUserId(orderDTO.getSysUserId());
             //总金额 = 充值金额
-            String rechargeAmount = orderDTO.getRechargeAmount();
-            rechargeCardDTO.setSurplusAmount(new BigDecimal(rechargeAmount));
+            BigDecimal rechargeAmount = orderDTO.getAmount();
+
+            rechargeCardDTO.setSurplusAmount(rechargeAmount);
             rechargeCardDTO.setCreateBy(clerkInfo.getId());
             rechargeCardDTO.setSysClerkName(clerkInfo.getName());
             rechargeCardDTO.setSysBossCode(clerkInfo.getSysBossCode());
