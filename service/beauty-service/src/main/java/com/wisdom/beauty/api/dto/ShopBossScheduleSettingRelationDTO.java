@@ -65,11 +65,11 @@ public class ShopBossScheduleSettingRelationDTO extends BaseEntity implements Se
         this.sysShopId = sysShopId;
     }
 
-    public String getSysBossId() {
+    public String getSysBossCode() {
         return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossCode) {
+    public void setSysBossCode(String sysBossCode) {
         this.sysBossCode = sysBossCode;
     }
 

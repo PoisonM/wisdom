@@ -158,7 +158,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
 		// 设置查询条件
 		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
-		criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossId());
+		criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
 		String startDate = pageParamVoDTO.getStartTime();
 		String endDate = pageParamVoDTO.getEndTime();
 		criteria.andCreateDateBetween(DateUtils.StrToDate(startDate, "datetime"),
@@ -254,7 +254,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	}
 
 	@Override
-	public List<ExpenditureAndIncomeResponseDTO> getShopExpenditureAndIncomeList(
+	public Map<String,Object> getShopExpenditureAndIncomeList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
 		logger.info("getShopExpenditureAndIncomeList方法传入的参数,sysShopId={},startTime={},endTime={}",
@@ -287,7 +287,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			return null;
 		}
 		Map<String, ExpenditureAndIncomeResponseDTO> map2 = new HashMap<>(16);
-		List<ExpenditureAndIncomeResponseDTO> responsesList = new ArrayList<>();
+
 		for (ExpenditureAndIncomeResponseDTO expenditure : expenditureAndIncomeResponses) {
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
 			if (map2.get(expenditure.getSysShopId()) == null) {
@@ -305,21 +305,40 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ExpenditureAndIncomeResponseDTO response = null;
 		// 获取bossid下的所有美容店
 		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
-		shopBossRelationDTO.setSysBossCode(userConsumeRequest.getSysBossId());
+		shopBossRelationDTO.setSysBossCode(userConsumeRequest.getSysBossCode());
 		List<ShopBossRelationDTO> shopBossRelationList = shopBossService.ShopBossRelationList(shopBossRelationDTO);
+		List<ExpenditureAndIncomeResponseDTO> responsesList = new ArrayList<>();
+		//所有美容院业绩总计
+		BigDecimal allIncome=null;
+		//所有美容店耗卡总计
+		BigDecimal allExpenditure=null;
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationList) {
 			response = new ExpenditureAndIncomeResponseDTO();
 			if (map.get(shopBossRelation.getSysShopId()) != null) {
-				response.setIncome(map.get(shopBossRelation.getSysShopId()).getExpenditure());
+				response.setIncome(map.get(shopBossRelation.getSysShopId()).getTotalPrice());
 			}
 			if (map2.get(shopBossRelation.getSysShopId()) != null) {
-				response.setExpenditure(map2.get(shopBossRelation.getSysShopId()).getExpenditure());
+				response.setExpenditure(map2.get(shopBossRelation.getSysShopId()).getTotalPrice());
 			}
 			response.setSysShopId(shopBossRelation.getSysShopId());
 			response.setSysShopName(shopBossRelation.getSysShopName());
 			responsesList.add(response);
+			if(allIncome==null){
+				allIncome=response.getIncome();
+			}else {
+				allIncome=allIncome.add(response.getIncome());
+			}
+			if(allExpenditure==null){
+				allExpenditure=response.getExpenditure();
+			}else {
+				allExpenditure=allExpenditure.add(response.getExpenditure());
+			}
 		}
-		return responsesList;
+		Map<String,Object> responseMap=new HashMap<>();
+		responseMap.put("responsesList",responsesList);
+		responseMap.put("allIncome",allIncome);
+		responseMap.put("allExpenditure",allExpenditure);
+		return responseMap;
 	}
 
 	@Override
@@ -377,7 +396,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	public List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
-		List<SysClerkDTO> sysClerkList = userServiceClient.getClerkInfoList(userConsumeRequest.getSysBossId(),
+		List<SysClerkDTO> sysClerkList = userServiceClient.getClerkInfoList(userConsumeRequest.getSysBossCode(),
 				pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime(), pageParamVoDTO.getPageSize());
 		if (CollectionUtils.isEmpty(sysClerkList)) {
 			logger.info("查询店员的结果为空");
@@ -459,8 +478,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		// 耗卡归为消费类
 		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 
-		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossId())) {
-			criteria.andSysBossCodeEqualTo(userConsumeRequest.getSysBossId());
+		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossCode())) {
+			criteria.andSysBossCodeEqualTo(userConsumeRequest.getSysBossCode());
 		}
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
@@ -480,8 +499,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		// 或操作
 		or.andConsumeTypeEqualTo(ConsumeTypeEnum.RECHARGE.getCode());
 		or.andGoodsTypeEqualTo(GoodsTypeEnum.TIME_CARD.getCode());
-		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossId())) {
-			or.andSysBossCodeEqualTo(userConsumeRequest.getSysBossId());
+		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossCode())) {
+			or.andSysBossCodeEqualTo(userConsumeRequest.getSysBossCode());
 		}
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
 			or.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
@@ -511,8 +530,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		// 业绩为充值类型
 		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.RECHARGE.getCode());
 
-		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossId())) {
-			criteria.andSysBossCodeEqualTo(userConsumeRequest.getSysBossId());
+		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossCode())) {
+			criteria.andSysBossCodeEqualTo(userConsumeRequest.getSysBossCode());
 		}
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(userConsumeRequest.getSysShopId());
@@ -599,7 +618,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	public List<ExpenditureAndIncomeResponseDTO> getClerkAchievementList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
-		List<SysClerkDTO> sysClerkList = userServiceClient.getClerkInfoList(userConsumeRequest.getSysBossId(),
+		List<SysClerkDTO> sysClerkList = userServiceClient.getClerkInfoList(userConsumeRequest.getSysBossCode(),
 				pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime(), pageParamVoDTO.getPageSize());
 		if (CollectionUtils.isEmpty(sysClerkList)) {
 			logger.info("查询店员的结果为空");
@@ -712,7 +731,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		}
 		// boss下所有的店
 		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
-		shopBossRelationDTO.setSysBossCode(userConsumeRequestDTO.getSysBossId());
+		shopBossRelationDTO.setSysBossCode(userConsumeRequestDTO.getSysBossCode());
 		List<ShopBossRelationDTO> shopBossRelationList = shopBossService.ShopBossRelationList(shopBossRelationDTO);
 		if (CollectionUtils.isEmpty(shopBossRelationList)) {
 			return null;
@@ -750,7 +769,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		// 新客
 		PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO = new PageParamVoDTO();
 		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-		shopUserArchivesDTO.setSysBossCode(userConsumeRequestDTO.getSysBossId());
+		shopUserArchivesDTO.setSysBossCode(userConsumeRequestDTO.getSysBossCode());
 		shopCustomerArchivesDTO.setRequestData(shopUserArchivesDTO);
 		shopCustomerArchivesDTO.setStartTime(pageParamVoDTO.getStartTime());
 		shopCustomerArchivesDTO.setEndTime(pageParamVoDTO.getEndTime());
@@ -859,7 +878,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		if ("3".equals(condition)) {
 			PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO = new PageParamVoDTO();
 			ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-			shopUserArchivesDTO.setSysBossCode(userConsumeRequestDTO.getSysBossId());
+			shopUserArchivesDTO.setSysBossCode(userConsumeRequestDTO.getSysBossCode());
 			shopUserArchivesDTO.setSysShopId(userConsumeRequestDTO.getSysShopId());
 			shopCustomerArchivesDTO.setRequestData(shopUserArchivesDTO);
 			shopCustomerArchivesDTO.setStartTime(pageParamVoDTO.getStartTime());
