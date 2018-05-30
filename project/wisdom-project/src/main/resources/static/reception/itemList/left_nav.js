@@ -10,17 +10,18 @@ PADWeb.controller("left_navCtrl", function($scope, $state,$stateParams, FindArch
     $scope.queryRecordList = function() {
         FindArchives.get({
             queryField: $scope.param.queryField,
-            pageSize: "10"
+            pageSize: "15"
         }, function(data) {
             if (data.result == "0x00001") {
                 $scope.dataList = [];
                 $scope.info = data.responseData.info
+                $scope.$parent.param.headerCash.leftContent = "档案("+data.responseData.data+")"
             }
         })
     }
 
     $scope.param = {
-        selectSty: "1",
+        selectSty: "",
         priceType: "xm",
         queryField: ""
     }
@@ -39,13 +40,6 @@ PADWeb.controller("left_navCtrl", function($scope, $state,$stateParams, FindArch
         $scope.queryRecordList()
     }
 
-
-    var timeIn = setInterval(function () {
-        if($(".user_info").length!=0){
-            // $(".user_info").eq(0).trigger("click");
-            clearInterval(timeIn)
-        }
-     },100)
     $scope.selectSty = function (id,sysUserId,shopid,sysShopId) {
         $scope.param.selectSty = id
         $state.go("pad-web.left_nav.personalFile",{
