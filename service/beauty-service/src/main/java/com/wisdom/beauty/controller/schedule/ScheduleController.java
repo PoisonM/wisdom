@@ -310,4 +310,91 @@ public class ScheduleController {
         return responseDTO;
     }
 
+    /**
+     * 获取某个店员的排班信息
+     *
+     * @param searchDate
+     * @return
+     */
+    @RequestMapping(value = "/getShopClerkScheduleListForClerk", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getShopClerkScheduleListForClerk(@RequestParam String searchDate) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("获取某个店员的排班信息传入参数={}", "searchDate = [" + searchDate + "]");
+
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        //获取店员信息
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        ArrayList<Object> helperList = new ArrayList<>();
+        ShopClerkScheduleDTO shopClerkScheduleDTO = new ShopClerkScheduleDTO();
+        shopClerkScheduleDTO.setSysClerkId(clerkInfo.getId());
+        //shopClerkScheduleDTO.setSysClerkId("0019b67c4b5845958655fdbc9d3bd205");
+        Date date = DateUtils.StrToDate(searchDate, "date");
+        shopClerkScheduleDTO.setScheduleDate(date);
+        //查询该店员的排班情况
+        List<ShopClerkScheduleDTO> clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
+        //获取某个月的所有天的集合
+
+        List<String> monthFullDay = DateUtils.getMonthFullDay(Integer.parseInt(DateUtils.getYear(date)), Integer.parseInt(DateUtils.getMonth(date)), 0);
+        //如果某个店的店员排班信息为空，则批量初始化
+        if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
+            logger.info("该店员的排班信息为空");
+            clerkScheduleList = new ArrayList<>();
+            for (String string : monthFullDay) {
+                ShopClerkScheduleDTO scheduleDTO = new ShopClerkScheduleDTO();
+                scheduleDTO.setId(IdGen.uuid());
+                scheduleDTO.setScheduleDate(DateUtils.StrToDate(string, "date"));
+                scheduleDTO.setSysShopId(clerkInfo.getSysShopId());
+                scheduleDTO.setCreateDate(new Date());
+                scheduleDTO.setScheduleType(ScheduleTypeEnum.ALL.getCode());
+                scheduleDTO.setSysClerkId(clerkInfo.getId());
+                scheduleDTO.setSysBossCode(clerkInfo.getSysBossCode());
+                scheduleDTO.setSysClerkName(clerkInfo.getName());
+                clerkScheduleList.add(scheduleDTO);
+            }
+            //批量插入
+            int number = shopClerkScheduleService.saveShopClerkScheduleList(clerkScheduleList);
+            logger.info("批量插入{}条数据",number);
+        }
+
+
+        HashMap<Object, Object> helperMap = new HashMap<>(16);
+        //clerkSchInfo存储某个美容师的所有排班信息
+        List<ShopClerkScheduleDTO> clerkSchInfo = new ArrayList<>();
+        for (ShopClerkScheduleDTO scheduleDTO : clerkScheduleList) {
+            if (clerkInfo.getId().equals(scheduleDTO.getSysClerkId())) {
+                clerkSchInfo.add(scheduleDTO);
+            }
+        }
+        Collections.sort(clerkSchInfo, new Comparator<ShopClerkScheduleDTO>() {
+            @Override
+            public int compare(ShopClerkScheduleDTO o1, ShopClerkScheduleDTO o2) {
+                Long i = o1.getScheduleDate().getTime() - o2.getScheduleDate().getTime();
+                return i.intValue();
+            }
+        });
+        helperMap.put("clerkSchInfo", clerkSchInfo);
+        helperMap.put("clerkInfo", clerkInfo);
+        helperList.add(helperMap);
+
+
+        HashMap<Object, Object> returnMap = new HashMap<>(16);
+        //界面顶部日期显示
+        ArrayList<Object> dateDetail = new ArrayList<>();
+        for (String string : monthFullDay) {
+            StringBuffer sb = new StringBuffer(string);
+            sb.append("||");
+            sb.append(DateUtils.getWeek(DateUtils.StrToDate(string, "date")));
+            dateDetail.add(sb.toString());
+        }
+
+        returnMap.put("dateDetail", dateDetail);
+        returnMap.put("responseList", helperList);
+        responseDTO.setResponseData(returnMap);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("获取某个店员的排班信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
 }

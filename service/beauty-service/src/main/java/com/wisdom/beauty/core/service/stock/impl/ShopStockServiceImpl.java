@@ -574,11 +574,6 @@ public class ShopStockServiceImpl implements ShopStockService {
 		if (StringUtils.isNotBlank(shopStockNumberDTO.getShopStoreId())) {
 			c.andShopStoreIdEqualTo(shopStockNumberDTO.getShopStoreId());
 		}
-		// 分页
-		if (pageParamVoDTO.getPaging()) {
-			criteria.setLimitStart(pageParamVoDTO.getPageNo());
-			criteria.setPageSize(pageParamVoDTO.getPageSize());
-		}
 		List<ShopStockNumberDTO> shopStockNumberDTOs = shopStockNumberMapper.selectByCriteria(criteria);
 		if (CollectionUtils.isEmpty(shopStockNumberDTOs)) {
 			logger.info("getStockDetailList方法获取的结果shopStockNumberDTOs为空");
@@ -598,9 +593,8 @@ public class ShopStockServiceImpl implements ShopStockService {
 			productInfoMap.put(dto.getId(), dto);
 		}
 		// 计算库存总量
-		ShopStockNumberDTO stock = new ShopStockNumberDTO();
-		stock.setProductTypeTwoId(shopStockNumberDTO.getProductTypeTwoId());
-		List<ShopStockNumberDTO> allStoreNumbers = this.getShopStockNumberDTOList(stock);
+		ShopStockNumberDTO stockNumber = new ShopStockNumberDTO();
+		List<ShopStockNumberDTO> allStoreNumbers = this.getShopStockNumberDTOList(stockNumber);
 		Map<String, Integer> allStoreNumberMap = new HashMap<>(16);
 		for (ShopStockNumberDTO shopStockNumber : allStoreNumbers) {
 			if (allStoreNumberMap.containsKey(shopStockNumber.getShopProcId())) {
@@ -611,18 +605,18 @@ public class ShopStockServiceImpl implements ShopStockService {
 				allStoreNumberMap.put(shopStockNumber.getShopProcId(), shopStockNumber.getStockNumber());
 			}
 		}
-		// 再次遍历shopStockNumberDTOs
+		// 遍历shopProductInfoDTOs
 		List<ExtShopProductInfoDTO> extShopProductInfoDTOs = new ArrayList<>();
 		ExtShopProductInfoDTO extShopProductInfoDTO = null;
-		for (ShopStockNumberDTO shopStockNumber : shopStockNumberDTOs) {
+		for (ShopProductInfoDTO shopProductInfoDTO : shopProductInfoDTOs) {
 			extShopProductInfoDTO = new ExtShopProductInfoDTO();
-			if (productInfoMap.get(shopStockNumber.getShopProcId()) != null) {
-				BeanUtils.copyProperties(productInfoMap.get(shopStockNumber.getShopProcId()),extShopProductInfoDTO);
-				// 库存总量
-				extShopProductInfoDTO.setAllStoreNumber(allStoreNumberMap.get(shopStockNumber.getShopProcId()));
-			}
+			BeanUtils.copyProperties(productInfoMap.get(shopProductInfoDTO.getId()),extShopProductInfoDTO);
+			// 库存总量
+			extShopProductInfoDTO.setAllStoreNumber(allStoreNumberMap.get(shopProductInfoDTO.getId()));
 			// 本仓库存
-			extShopProductInfoDTO.setStoreNumberSelf(shopStockNumber.getStockNumber());
+			if(shopStockMap.get(shopProductInfoDTO.getId())!=null) {
+				extShopProductInfoDTO.setStoreNumberSelf(shopStockMap.get(shopProductInfoDTO.getId()).getStockNumber());
+			}
 			extShopProductInfoDTOs.add(extShopProductInfoDTO);
 		}
 		Map<String, Object> responseMap = new HashMap<>(16);

@@ -129,7 +129,7 @@ public class ArchivesTest {
         shopUserArchivesDTO.setSysClerkName("小王");
         shopUserArchivesDTO.setSysClerkId(uuid);
         shopUserArchivesDTO.setSex("男");
-        //shopUserArchivesDTO.setImageRul("www.baidu.com");
+        shopUserArchivesDTO.setImageUrl("www.baidu.com");
         shopUserArchivesDTO.setHeight(179f);
         return shopUserArchivesDTO;
     }

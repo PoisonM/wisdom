@@ -30,6 +30,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo
 
 /*----------------------------------初始化参数------------------------------------------*/
     $scope.param = {
+        imgSrc:"",
         select_type:"",
         openSelectFlag:false,//选择页面开关
         selectContentName:"",
@@ -56,22 +57,21 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo
 
     $scope.$parent.$parent.leftTipFn = function () {
         $scope.ShopUserArchivesDTO = {
-            age	:$scope.param.selectContentAge,
-            birthday:$scope.param.selectContentBirthday,
-            bloodType:$scope.param.selectContentBlood,
-            channel:'大众点评',//渠道
-            constellation:$scope.param.selectContentConstellation,
-            detail:'这是个好用户',
-            height:$scope.param.selectContentHeight,
-            imageRul:'www.baidu.com',
-            phone:$scope.param.selectContentPhone,
-            sex:$scope.param.selectContentSex,
-            sysClerkId:'522b6755e0fd40fea026deebd242e098',
+            age	:$scope.param.selectContentAge,//年龄
+            birthday:$scope.param.selectContentBirthday,//生日
+            bloodType:$scope.param.selectContentBlood,//血型
+            channel:'',//渠道
+            constellation:$scope.param.selectContentConstellation,//星座
+            detail:'',//备注
+            height:$scope.param.selectContentHeight,//身高
+            imageUrl:$scope.param.imgSrc,//头像地址
+            phone:$scope.param.selectContentPhone,//手机号
+            sex:$scope.param.selectContentSex,//性别
+            sysClerkId:'',
             sysClerkName:"",
             sysShopId:'11',
             sysShopName:'汉方美容院',
             sysUserName:$scope.param.selectContentName,
-            weight:$scope.param.selectContentHeight
         }
         if($scope.param.selectContentName == ""){
             alert("请输入姓名")
@@ -84,12 +84,13 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo
 
         var reg = /^0?1[3|4|5|8][0-9]\d{8}$/;
         if(!reg.test($scope.param.selectContentPhone)){
+            alert("请输入正确手机号")
             return
         }
         SaveArchiveInfo.save($scope.ShopUserArchivesDTO,function (data) {
             if(data.result == "0x00001"){
                 alert("保存成功")
-                $state.go("pad-web.left_nav.personalFile")
+                $state.go("pad-web.left_nav.blankPage")
             }else if(data.result == "0x00002"){
                 alert(data.responseData)
             }
@@ -99,7 +100,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo
 
     //打开选择页面
     $scope.openSelect = function (type,content) {
-        $scope.flagFn("添加档案",content,true)
+        $scope.flagFn("添加档案",content,false)
         $scope.param.openSelectFlag = true
         $scope.param.select_type = type
     }
@@ -116,7 +117,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo
             $scope.param.selectContentAge = content
         }else if(type == "constellation"){
             $scope.param.selectContentConstellation = content
-        }else if(type == "blood"){
+        }else if(type == "bloodType"){
             $scope.param.selectContentBlood = content
         }else if(type == "height"){
             $scope.param.selectContentHeight = content
@@ -125,16 +126,8 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo
         }
     }
 
-    $scope.backHeaderCashFn = function () {
-        $scope.param.openSelectFlag = false
-    }
 
-
-
-
-
-
-
+    /*上传图片*/
     $scope.reader = new FileReader();   //创建一个FileReader接口
     $scope.thumb = "";      //用于存放图片的base64
     $scope.img_upload = function(files) {
@@ -149,8 +142,13 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo
         }else {
             alert("浏览器不支持")
         }
-        ImageBase64UploadToOSS.save({imageStr:$scope.thumb},function (data) {
+        debugger
+        console.log($scope.thumb)
+        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+            /*if(data.result == "0x00001"){
 
+            }*/
+            $scope.param.imgSrc = data.responseData//图片地址
         })
 
 
