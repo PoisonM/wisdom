@@ -73,8 +73,8 @@ angular.module('controllers',[]).controller('appointmentCtrl',
                         $scope.appointment = data.responseData;
                     }
                 })
-            }
-            $scope.getInfo()
+            };
+            $scope.getInfo();
 
 
             $scope.healthClubGo = function(id,name){

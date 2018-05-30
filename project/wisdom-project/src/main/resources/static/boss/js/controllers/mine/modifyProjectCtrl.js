@@ -4,7 +4,6 @@
 angular.module('controllers',[]).controller('modifyProjectCtrl',
     ['$scope','$rootScope','$stateParams','$state','ProjectInfo','UpdateProjectInfo',
         function ($scope,$rootScope,$stateParams,$state,ProjectInfo,UpdateProjectInfo) {
-
             $rootScope.title = "修改项目";
             $scope.param={
                 id:$stateParams.projectId,/*接受项目列表穿过的id*/
@@ -26,14 +25,13 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                 $state.go("addProjectSeries",{typeId:$stateParams.typeId,mod:"modifyProject",projectId:projectId});
                 localStorage.setItem('modifyList',JSON.stringify($scope.modifyList));
             };
-
             ProjectInfo.get({id:$scope.param.id},function (data) {
                 $scope.modifyList=data.responseData;
                 if($stateParams.name !=''){
                     $scope.modifyList =JSON.parse(localStorage.getItem('modifyList'));
                     $scope.modifyList.projectTypeOneName = $stateParams.name;
-                   /* localStorage.setItem('modifyList',JSON.stringify($scope.modifyList));*/
-
+                    console.log($scope.modifyList);
+                    /* localStorage.setItem('modifyList',JSON.stringify($scope.modifyList));*/
                 }
                 
                 if($stateParams.seriesName !=''){

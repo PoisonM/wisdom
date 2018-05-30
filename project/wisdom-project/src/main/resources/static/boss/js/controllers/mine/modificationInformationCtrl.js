@@ -6,14 +6,16 @@ angular.module('controllers',[]).controller('modificationInformationCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,UpdateBossInfo) {
 
             $rootScope.title = "修改资料";
-            $scope.value = 1;/*默认进来的就是女*/
+            $scope.userInfo={
+                sex:"女"
+            };
             /*点击女*/
             $scope.female=function () {
-                $scope.value = 1
+                $scope.userInfo.sex = '女'
             };
             /*点击男*/
             $scope.male=function () {
-                $scope.value = 0
+                $scope.userInfo.sex = '男'
             };
             /*查询我的信息*/
             GetCurrentLoginUserInfo.get(function (data) {

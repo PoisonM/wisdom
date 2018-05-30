@@ -75,7 +75,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                     datePickerCallbacke(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
-                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
+                closeOnSelect: true //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
 
            $scope.sel = function(){
