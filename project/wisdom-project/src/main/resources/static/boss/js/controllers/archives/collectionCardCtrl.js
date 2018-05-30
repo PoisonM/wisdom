@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('collectionCardCtrl',
             $rootScope.title = "套卡";
             $scope.param={
                 flag:false,
-                goodType:"6"
+                isUseUp:"6"
             };
             /*点击筛选*/
             $scope.sel = function(){
@@ -16,15 +16,31 @@ angular.module('controllers',[]).controller('collectionCardCtrl',
             };
             /*点击选择类型*/
             $scope.selType = function(type){
-                $scope.param.goodType = type
+                $scope.param.isUseUp = type
             };
             /*点击重置*/
             $scope.reset = function() {
-                $scope.param.goodType = '6'
+                $scope.param.isUseUp = '6'
             };
-            
+            /*调取套卡列表*/
             GetUserProjectGroupList.get({sysUserId:$stateParams.sysUserId},function (data) {
                 console.log(data);
                 $scope.collectionCar=data.responseData;
-            })
+                /*为啦便于筛选*/
+                $scope.arr=data.responseData;
+            });
+            /*点击确定*/
+            $scope.selTrue=function () {
+                $scope.param.flag = false;
+                $scope.collectionCar=[];
+                if($scope.param.isUseUp == '6'){
+                    $scope.collectionCar=$scope.arr
+                }else{
+                    for(var i=0;i<$scope.arr.length;i++){
+                        if($scope.arr[i].isUseUp ==$scope.param.isUseUp){
+                            $scope.collectionCar.push($scope.arr[i])
+                        }
+                    }
+                }
+            };
         }]);

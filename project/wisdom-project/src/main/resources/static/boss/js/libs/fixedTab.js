@@ -1,6 +1,6 @@
 
 var ofixed_table_st = window.setTimeout;
-window.setTimeout = function(fRef, mDelay) {
+/*window.setTimeout = function(fRef, mDelay) {
     if (typeof fRef == 'function') {
         var argu = Array.prototype.slice.call(arguments, 2);
         var f = (function() {
@@ -9,7 +9,7 @@ window.setTimeout = function(fRef, mDelay) {
         return ofixed_table_st(f, mDelay);
     }
     return ofixed_table_st(fRef, mDelay);
-};
+}*/;
 
 function oFixedTable(id, obj, _cfg){
     this.id = id;
