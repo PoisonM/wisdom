@@ -667,7 +667,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 throw new ServiceException("查询用户的充值卡为空");
             }
             //剩余金额 = 已存剩余金额 + 充值金额
-            shopUserRechargeInfo.setSurplusAmount(shopUserRechargeInfo.getSurplusAmount().add(new BigDecimal(orderDTO.getRechargeAmount())));
+            shopUserRechargeInfo.setSurplusAmount(shopUserRechargeInfo.getSurplusAmount().add(orderDTO.getAmount()));
             shopUserRechargeInfo.setTimeDiscount(orderDTO.getTimeDiscount());
             shopUserRechargeInfo.setProductDiscount(orderDTO.getPeriodDiscount());
             shopUserRechargeInfo.setProductDiscount(orderDTO.getProductDiscount());
