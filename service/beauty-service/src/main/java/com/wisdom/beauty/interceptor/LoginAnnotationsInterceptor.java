@@ -1,11 +1,8 @@
 package com.wisdom.beauty.interceptor;
 
-import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.LoginUtil;
-import com.wisdom.common.util.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,9 +12,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 @Aspect
 @Component
@@ -38,7 +32,7 @@ public class LoginAnnotationsInterceptor {
      * @return JsonResult（被拦截方法的执行结果，或需要登录的错误提示。）
      */
     @Around("controllerMethodPointcut() && @target(com.wisdom.beauty.interceptor.LoginRequired)")
-    public Object Interceptor(ProceedingJoinPoint pjp) throws Throwable {
+    public Object interceptor(ProceedingJoinPoint pjp) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 

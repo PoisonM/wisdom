@@ -34,7 +34,7 @@ public class LogInterceptor {
     }
 
     @Around("pointcut()")
-    public Object Interceptor(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object interceptor(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodInvocationProceedingJoinPoint methodPoint = (MethodInvocationProceedingJoinPoint) joinPoint;
         Field proxy = methodPoint.getClass().getDeclaredField("methodInvocation");
         proxy.setAccessible(true);
