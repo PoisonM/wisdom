@@ -104,7 +104,7 @@ public class LogInterceptor {
         } else {
             info("[返回数据]：NULL");
         }
-        return result.toString();
+        return result==null?null:result.toString();
     }
 
     protected final void error(String msg, Object... objects) {
