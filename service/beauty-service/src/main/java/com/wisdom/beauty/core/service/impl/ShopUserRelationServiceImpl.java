@@ -10,6 +10,7 @@ import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtSysShopMapper;
 import com.wisdom.beauty.core.mapper.ShopUserRelationMapper;
 import com.wisdom.beauty.core.mapper.SysShopMapper;
+import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -51,6 +52,8 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
 
     @Autowired
     private UserServiceClient userServiceClient;
+    @Autowired
+    private MongoUtils mongoUtils;
 
     @Override
     public String isMember(String userId) {
@@ -176,6 +179,11 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
             return null;
         }
         List<ExtSysShopDTO> extSysShopDTOS = extSysShopMapper.selectBossShopInfo(extSysShopDTO);
+        if (CommonUtils.objectIsNotEmpty(extSysShopDTO)) {
+            for (ExtSysShopDTO dto : extSysShopDTOS) {
+                dto.setImageList(mongoUtils.getImageUrl(dto.getId()));
+            }
+        }
         return extSysShopDTOS;
     }
 
