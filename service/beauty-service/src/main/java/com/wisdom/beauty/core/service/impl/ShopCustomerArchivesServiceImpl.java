@@ -133,7 +133,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             logger.info("userConsumeRequestDTO为空");
             return  0;
         }
-        logger.info("getShopBuildArchivesNumbers方法入参是ShopId={},bossId={},startTime={},endTime={}",userConsumeRequestDTO.getSysShopId(),userConsumeRequestDTO.getSysBossId(),pageParamVoDTO.getStartTime(),pageParamVoDTO.getEndTime());
+        logger.info("getShopBuildArchivesNumbers方法入参是ShopId={},bossId={},startTime={},endTime={}",userConsumeRequestDTO.getSysShopId(),userConsumeRequestDTO.getSysBossCode(),pageParamVoDTO.getStartTime(),pageParamVoDTO.getEndTime());
         String startDate=pageParamVoDTO.getStartTime();
         String endDate=pageParamVoDTO.getEndTime();
         Date start = DateUtils.StrToDate(startDate, "datetime");
@@ -144,9 +144,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysShopId())) {
             criteria.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
         }
-        if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossId())) {
+        if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossCode())) {
 
-            criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossId());
+            criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
         }
         if (startDate != null && endDate != endDate) {
             criteria.andCreateDateBetween(start, end);
