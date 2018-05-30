@@ -84,8 +84,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysClerkId())) {
 			c.andSysClerkIdEqualTo(userConsumeRequest.getSysClerkId());
 		}
-		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossId())) {
-			c.andSysBossCodeEqualTo(userConsumeRequest.getSysBossId());
+		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossCode())) {
+			c.andSysBossCodeEqualTo(userConsumeRequest.getSysBossCode());
 		}
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysUserId())) {
 			c.andSysUserIdEqualTo(userConsumeRequest.getSysUserId());
@@ -277,8 +277,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
 				userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
 				BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponse);
-				userConsumeRecordResponse
-						.setIncludeTimes(map.get(shopUserConsumeRecordDTO.getFlowId()).getSysShopProjectInitTimes());
+				if(map.get(shopUserConsumeRecordDTO.getFlowId())!=null){
+					userConsumeRecordResponse
+							.setIncludeTimes(map.get(shopUserConsumeRecordDTO.getFlowId()).getSysShopProjectInitTimes());
+				}
 				userConsumeRecordResponses.add(userConsumeRecordResponse);
 			}
 			userConsumeRecordResponseDTO.setSumAmount(totalAmount);

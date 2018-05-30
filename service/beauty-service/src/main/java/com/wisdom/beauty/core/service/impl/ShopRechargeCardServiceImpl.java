@@ -244,7 +244,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		List<ShopUserRechargeCardDTO> rechargeCardDTOS = shopUserRechargeCardMapper.selectByCriteria(criteria);
 
 		ShopUserRechargeCardDTO cardDTO = new ShopUserRechargeCardDTO();
-		if (CommonUtils.objectIsEmpty(rechargeCardDTOS)) {
+		if (CommonUtils.objectIsNotEmpty(rechargeCardDTOS)) {
 			cardDTO = rechargeCardDTOS.get(0);
 		}
 		return cardDTO;

@@ -174,7 +174,7 @@ public class AppointmentTest {
 //        shopAppointServiceDTO.setShopProjectId(IdGen.uuid());
 //        shopAppointServiceDTO.setShopProjectName("面部保洁");
 //        shopAppointServiceDTO.setStatus("0");
-//        shopAppointServiceDTO.setSysBossId(IdGen.uuid());
+//        shopAppointServiceDTO.setSysBossCode(IdGen.uuid());
 //        shopAppointServiceDTO.setSysClerkId("1");
 //        shopAppointServiceDTO.setSysUserId(IdGen.uuid());
 //        shopAppointServiceDTO.setSysClerkName("王五");

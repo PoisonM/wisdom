@@ -450,7 +450,7 @@ public class AppointmentController {
 			shopAppointServiceDTO.setSysShopName(userLoginShop.getSysShopName());
 			shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
 			shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
-			shopAppointServiceDTO.setSysBossCode(userLoginShop.getSysBossId());
+			shopAppointServiceDTO.setSysBossCode(userLoginShop.getSysBossCode());
 		}
 		if (StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
 			shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));

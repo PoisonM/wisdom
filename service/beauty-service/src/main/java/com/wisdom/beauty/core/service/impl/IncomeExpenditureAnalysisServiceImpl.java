@@ -42,7 +42,7 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
             return null;
         }
         logger.info("getBossIncomeExpenditure方法传入的参数,boosId={},startTime={},endTime={}",
-                userConsumeRequestDTO.getSysBossId(), pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime());
+                userConsumeRequestDTO.getSysBossCode(), pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime());
         // 获取的List是经过流水号去重后的结果
         List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getIncomeList(pageParamVoDTO);
         if (CollectionUtils.isEmpty(list)) {
@@ -81,10 +81,10 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
             logger.info("getAllShopIncomeExpenditure方法出入的参数为空");
             return null;
         }
-        logger.info("getAllShopIncomeExpenditure方法出入的参数 sysBossCode={}", userConsumeRequestDTO.getSysBossId());
+        logger.info("getAllShopIncomeExpenditure方法出入的参数 sysBossCode={}", userConsumeRequestDTO.getSysBossCode());
         //查询boos下所有美容院
         ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
-        shopBossRelationDTO.setSysBossCode(userConsumeRequestDTO.getSysBossId());
+        shopBossRelationDTO.setSysBossCode(userConsumeRequestDTO.getSysBossCode());
         List<ShopBossRelationDTO> shopBossRelationDTOList = shopBossService.ShopBossRelationList(shopBossRelationDTO);
         if (CollectionUtils.isEmpty(shopBossRelationDTOList)) {
             logger.info("shopBossRelationDTOList为空");

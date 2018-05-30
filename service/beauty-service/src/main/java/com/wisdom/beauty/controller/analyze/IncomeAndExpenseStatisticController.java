@@ -63,7 +63,7 @@ public class IncomeAndExpenseStatisticController {
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
-        userConsumeRequestDTO.setSysBossId(bossInfo.getId());
+        userConsumeRequestDTO.setSysBossCode(bossInfo.getId());
         if(StringUtils.isNotBlank(sysShopId)){
             userConsumeRequestDTO.setSysShopId(sysShopId);
         }
@@ -93,7 +93,7 @@ public class IncomeAndExpenseStatisticController {
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
-        userConsumeRequestDTO.setSysBossId(bossInfo.getId());
+        userConsumeRequestDTO.setSysBossCode(bossInfo.getId());
         pageParamVoDTO.setStartTime(startTime);
         pageParamVoDTO.setEndTime(endTime);
         pageParamVoDTO.setRequestData(userConsumeRequestDTO);
@@ -122,7 +122,7 @@ public class IncomeAndExpenseStatisticController {
         if(StringUtils.isNotBlank(sysShopId)){
           userConsumeRequestDTO.setSysShopId(sysShopId);
         }
-        userConsumeRequestDTO.setSysBossId(bossInfo.getId());
+        userConsumeRequestDTO.setSysBossCode(bossInfo.getId());
         pageParamVoDTO.setRequestData(userConsumeRequestDTO);
         List<ExpenditureAndIncomeResponseDTO> list=incomeExpenditureAnalysisService.getCashEarningsTendency(pageParamVoDTO);
         ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> responseDTO = new ResponseDTO<>();
@@ -147,7 +147,7 @@ public class IncomeAndExpenseStatisticController {
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
         userConsumeRequestDTO.setSysShopId(sysShopId);
-        userConsumeRequestDTO.setSysBossId(bossInfo.getId());
+        userConsumeRequestDTO.setSysBossCode(bossInfo.getId());
         pageParamVoDTO.setRequestData(userConsumeRequestDTO);
         pageParamVoDTO.setPaging(true);
         pageParamVoDTO.setPageNo(0);

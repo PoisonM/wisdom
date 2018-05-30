@@ -41,8 +41,8 @@ public class ShopRemindServiceImpl implements ShopRemindService {
         ShopRemindSettingCriteria criteria = new ShopRemindSettingCriteria();
         ShopRemindSettingCriteria.Criteria c = criteria.createCriteria();
 
-        if (StringUtils.isNotBlank(shopRemindSettingDTO.getSysBossId())) {
-            c.andSysBossIdEqualTo(shopRemindSettingDTO.getSysBossId());
+        if (StringUtils.isNotBlank(shopRemindSettingDTO.getSysBossCode())) {
+            c.andSysBossIdEqualTo(shopRemindSettingDTO.getSysBossCode());
         }
         List<ShopRemindSettingDTO> shopRemindSettingDTOS = shopRemindSettingMapper.selectByCriteria(criteria);
         if (CommonUtils.objectIsEmpty(shopRemindSettingDTOS)) {
