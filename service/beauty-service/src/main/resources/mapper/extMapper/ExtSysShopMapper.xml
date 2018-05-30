@@ -96,7 +96,7 @@
     </sql>
     <select id="selectBossShopInfo" resultMap="BaseResultMap"
             parameterType="com.wisdom.beauty.api.extDto.ExtSysShopDTO">
-        select * from shop_boss_relation sbr
+        select ss.* from shop_boss_relation sbr
         INNER JOIN sys_shop ss on ss.id = sbr.sys_shop_id
         where 1=1
         <if test="sysBossCode != null">
