@@ -91,7 +91,7 @@ public class LogInterceptor {
         } catch (Exception e) {
             error("[接口调用拦截器]打印方法执行参数异常：", e);
         }
-        return stringBuffer.deleteCharAt(stringBuffer.length() > 2 ? stringBuffer.length() - 1 : stringBuffer.length() - 0).append("}").toString();
+        return stringBuffer.deleteCharAt(stringBuffer.length() - 1).append("}").toString();
     }
 
     private String printResult(Object result) {
