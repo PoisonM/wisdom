@@ -277,8 +277,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
 				userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
 				BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponse);
-				userConsumeRecordResponse
-						.setIncludeTimes(map.get(shopUserConsumeRecordDTO.getFlowId()).getSysShopProjectInitTimes());
+				if(map.get(shopUserConsumeRecordDTO.getFlowId())!=null){
+					userConsumeRecordResponse
+							.setIncludeTimes(map.get(shopUserConsumeRecordDTO.getFlowId()).getSysShopProjectInitTimes());
+				}
 				userConsumeRecordResponses.add(userConsumeRecordResponse);
 			}
 			userConsumeRecordResponseDTO.setSumAmount(totalAmount);
