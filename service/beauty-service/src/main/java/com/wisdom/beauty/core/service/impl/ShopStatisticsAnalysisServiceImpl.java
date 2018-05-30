@@ -254,7 +254,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	}
 
 	@Override
-	public List<ExpenditureAndIncomeResponseDTO> getShopExpenditureAndIncomeList(
+	public Map<String,Object> getShopExpenditureAndIncomeList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
 		logger.info("getShopExpenditureAndIncomeList方法传入的参数,sysShopId={},startTime={},endTime={}",
@@ -287,7 +287,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			return null;
 		}
 		Map<String, ExpenditureAndIncomeResponseDTO> map2 = new HashMap<>(16);
-		List<ExpenditureAndIncomeResponseDTO> responsesList = new ArrayList<>();
+
 		for (ExpenditureAndIncomeResponseDTO expenditure : expenditureAndIncomeResponses) {
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
 			if (map2.get(expenditure.getSysShopId()) == null) {
@@ -307,19 +307,38 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
 		shopBossRelationDTO.setSysBossCode(userConsumeRequest.getSysBossCode());
 		List<ShopBossRelationDTO> shopBossRelationList = shopBossService.ShopBossRelationList(shopBossRelationDTO);
+		List<ExpenditureAndIncomeResponseDTO> responsesList = new ArrayList<>();
+		//所有美容院业绩总计
+		BigDecimal allIncome=null;
+		//所有美容店耗卡总计
+		BigDecimal allExpenditure=null;
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationList) {
 			response = new ExpenditureAndIncomeResponseDTO();
 			if (map.get(shopBossRelation.getSysShopId()) != null) {
-				response.setIncome(map.get(shopBossRelation.getSysShopId()).getExpenditure());
+				response.setIncome(map.get(shopBossRelation.getSysShopId()).getTotalPrice());
 			}
 			if (map2.get(shopBossRelation.getSysShopId()) != null) {
-				response.setExpenditure(map2.get(shopBossRelation.getSysShopId()).getExpenditure());
+				response.setExpenditure(map2.get(shopBossRelation.getSysShopId()).getTotalPrice());
 			}
 			response.setSysShopId(shopBossRelation.getSysShopId());
 			response.setSysShopName(shopBossRelation.getSysShopName());
 			responsesList.add(response);
+			if(allIncome==null){
+				allIncome=response.getIncome();
+			}else {
+				allIncome=allIncome.add(response.getIncome());
+			}
+			if(allExpenditure==null){
+				allExpenditure=response.getExpenditure();
+			}else {
+				allExpenditure=allExpenditure.add(response.getExpenditure());
+			}
 		}
-		return responsesList;
+		Map<String,Object> responseMap=new HashMap<>();
+		responseMap.put("responsesList",responsesList);
+		responseMap.put("allIncome",allIncome);
+		responseMap.put("allExpenditure",allExpenditure);
+		return responseMap;
 	}
 
 	@Override

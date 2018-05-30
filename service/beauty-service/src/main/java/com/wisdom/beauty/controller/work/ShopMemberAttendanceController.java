@@ -93,19 +93,19 @@ public class ShopMemberAttendanceController {
 	 */
 	@RequestMapping(value = "/getBossExpenditureAndIncome", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getBossExpenditureAndIncome(@RequestParam String startTime, @RequestParam String endTime) {
+	ResponseDTO<Map<String,Object>> getBossExpenditureAndIncome(@RequestParam String startTime, @RequestParam String endTime) {
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
-		userConsumeRequest.setSysBossCode(sysBossDTO.getId());
+		userConsumeRequest.setSysBossCode(sysBossDTO.getSysBossCode());
 
 		pageParamVoDTO.setRequestData(userConsumeRequest);
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
-		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService
+		Map<String,Object> map = shopStatisticsAnalysisService
 				.getShopExpenditureAndIncomeList(pageParamVoDTO);
-		ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> response = new ResponseDTO<>();
-		response.setResponseData(list);
+		ResponseDTO<Map<String,Object>> response = new ResponseDTO<>();
+		response.setResponseData(map);
 		response.setResult(StatusConstant.SUCCESS);
 		return response;
 	}
