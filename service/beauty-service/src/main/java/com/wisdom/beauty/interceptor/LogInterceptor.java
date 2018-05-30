@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  *
  * @author: 赵得良
  * Date:     2018/5/30 0030 17:55
- * Description: 美享-微商平台日志输出拦截器
+ * Description: 美享-微商平台日志输出
  */
 @Aspect
 @Component
@@ -47,17 +47,12 @@ public class LogInterceptor {
         Method method = invocation.getMethod();
         String methodName = method.getName();
         Object[] args = invocation.getArguments();
-
         info("[{}.{}]方法传入参数：{}", targetName, methodName, printArgs(args, method));
-
         try {
             long currentTimeMillis = System.currentTimeMillis();
-
             Object result = invocation.proceed();
-
             info("[{}.{}]方法执行完成，耗时：[{}]毫秒", targetName, methodName, (System.currentTimeMillis() - currentTimeMillis));
             info("[{}.{}]方法返回数据打印如下：{}", targetName, methodName, printResult(result));
-
             return result;
         } catch (Throwable throwable) {
             error("外部接口调用方法[{}.{}]异常：", targetName, methodName, throwable);
@@ -96,7 +91,6 @@ public class LogInterceptor {
         } catch (Exception e) {
             error("[接口调用拦截器]打印方法执行参数异常：", e);
         }
-
         return stringBuffer.deleteCharAt(stringBuffer.length() > 2 ? stringBuffer.length() - 1 : stringBuffer.length() - 0).append("}").toString();
     }
 
