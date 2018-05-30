@@ -5,12 +5,10 @@ var stock = '/beauty/stock/';
 var consume = '/beauty/consume/';
 var  earlyWarning =  '/beauty/earlyWarning/';
 var  archives =  '/beauty/archives/';
-var clerkSchedule='/beauty/clerkSchedule/';
 var shopBossRelation ='/beauty/shopBossRelation/';
 var user ='/user/';
 var analyze = '/beauty/analyze/';
 var consumes = '/beauty/consumes/';
-var consume = '/beauty/consume/';
 var cardInfo  = '/beauty/cardInfo/';
 var projectInfo  = '/beauty/projectInfo/';
 var productInfo  = '/beauty/productInfo/';
@@ -23,8 +21,7 @@ var clerkSchedule = '/beauty/clerkSchedule/';
 var  mine='/beauty/mine/';
 var remind='/beauty/remind/';
 var file = '/system-service/file/';
-var remind='/beauty/remind/';
-var file = '/system-service/file/';
+
 
 define(['appBoss'], function (app) {
     app
