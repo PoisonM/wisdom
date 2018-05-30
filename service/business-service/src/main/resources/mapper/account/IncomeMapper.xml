@@ -429,6 +429,7 @@
         FROM income_record
         WHERE
         sys_user_id = #{userId}
+        and amount != 0
         ORDER BY update_date DESC
         limit #{pageNo},#{pageSize}
     </select>

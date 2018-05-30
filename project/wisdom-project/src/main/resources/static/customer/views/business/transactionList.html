@@ -3,7 +3,7 @@
         <ion-refresher pulling-text="下拉获取更多收支明细" on-refresh="getMoreTransactionList()">
         </ion-refresher>
             <p style="font-size: 0.5rem;color: #999999" align="center" ng-if="param.transactionList==null">无更多交易明细！</p>
-            <div class="item" ng-repeat="item in param.transactionList">
+            <div class="list item" ng-repeat="item in param.transactionList">
                 <span ng-if="item.amount!=0">
                 <a ui-sref="transactionDetail({'transactionId':item.transactionId,'type':item.transactionType})">
                     <p class="item-note" ng-if="item.amount!=0">
