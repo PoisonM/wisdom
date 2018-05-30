@@ -6,10 +6,10 @@ import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.IncomeRecordManagementDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.transaction.MonthlyIncomeSignalDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.*;
 import com.wisdom.timer.client.BusinessServiceClient;
 import com.wisdom.timer.client.UserServiceClient;
@@ -22,10 +22,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
+import java.text.*;
 
 import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REWARD;
 
@@ -602,5 +604,412 @@ public class BusinessRunTimeService {
         }
         logger.info("用户即时返现解冻,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
+
+
+    /**
+     *手动跑月度
+     *
+     * @param
+     *
+     * @return
+     * */
+    @Transactional(rollbackFor = Exception.class)
+    public void monthlyIncomeCalcM(String businessType,Date startDateM ,Date endDateM,String isPullMessage)throws Exception{
+
+        if(businessType.equals("0")){
+            UserInfoDTO userInfoDTOA = new UserInfoDTO();
+            userInfoDTOA.setUserType(ConfigConstant.businessA1);
+            userInfoDTOA.setDelFlag("0");
+            List<UserInfoDTO> userInfoDTOListA = userServiceClient.getUserInfo(userInfoDTOA);
+            for(UserInfoDTO userInfo:userInfoDTOListA)
+            {
+                this.getOneDayMonthMoney(userInfo,startDateM,endDateM);
+            }
+
+            UserInfoDTO userInfoDTOB = new UserInfoDTO();
+            userInfoDTOB.setUserType(ConfigConstant.businessB1);
+            userInfoDTOB.setDelFlag("0");
+            List<UserInfoDTO> userInfoDTOListB = userServiceClient.getUserInfo(userInfoDTOB);
+            for(UserInfoDTO userInfo:userInfoDTOListB)
+            {
+                /*this.isProcessed(Integer.parseInt(year),month,day,userInfo,ConfigConstant.businessB1,isPullMessage);*/
+            }
+
+        }else if (businessType.equals("1")){
+            UserInfoDTO userInfoDTOA = new UserInfoDTO();
+            userInfoDTOA.setUserType(ConfigConstant.businessA1);
+            userInfoDTOA.setDelFlag("0");
+            List<UserInfoDTO> userInfoDTOListA = userServiceClient.getUserInfo(userInfoDTOA);
+            for(UserInfoDTO userInfo:userInfoDTOListA)
+            {
+                /*this.isProcessed(Integer.parseInt(year),month,day,userInfo,ConfigConstant.businessA1,isPullMessage);*/
+            }
+        }else if(businessType.equals("2")){
+            UserInfoDTO userInfoDTOB = new UserInfoDTO();
+            userInfoDTOB.setUserType(ConfigConstant.businessB1);
+            userInfoDTOB.setDelFlag("0");
+            List<UserInfoDTO> userInfoDTOListB = userServiceClient.getUserInfo(userInfoDTOB);
+            for(UserInfoDTO userInfo:userInfoDTOListB)
+            {
+                /*this.isProcessed(Integer.parseInt(year),month,day,userInfo,ConfigConstant.businessB1,isPullMessage);*/
+            }
+        }
+    }
+
+    /**
+     * 手动生成月度结算
+     *
+     *
+     * */
+
+    @Transactional(rollbackFor = Exception.class)
+    public void MTMonthlyIncomeCalc(String businessType,Date startDateM ,Date endDateM,String isPullMessage) throws Exception{
+
+        SimpleDateFormat sdfYear  = new SimpleDateFormat("yyyy");
+        SimpleDateFormat sdfmon  = new SimpleDateFormat("MM");
+        SimpleDateFormat sdfday  = new SimpleDateFormat("dd");
+        int startM = Integer.parseInt(sdfmon.format(startDateM));
+        int endM = Integer.parseInt(sdfmon.format(endDateM));
+        int startD = Integer.parseInt(sdfday.format(startDateM));
+        int endD = Integer.parseInt(sdfday.format(endDateM));
+        int startY = Integer.parseInt(sdfYear.format(startDateM));
+        int EndY = Integer.parseInt(sdfYear.format(endDateM));
+        //如果是同一年
+        if(startY==EndY){
+            if(startM == endM){
+                if(startD <= endD){
+                    for(int i =startD;i<=endD;i++){
+                        float returnMonthlyMoney = 0;
+                        //加入开关量，判断当天是否已经处理过
+                        StringBuilder sbM = new StringBuilder();
+                        StringBuilder sbD = new StringBuilder();
+                        if(startM<10){
+                            sbM.append("0").append(startM);
+                        }else{
+                            sbM.append(startM);
+                        }
+                        if(i<10){
+                            sbD.append("0").append(i);
+                        }else{
+                            sbD.append(i);
+                        }
+                        this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),businessType,isPullMessage);
+                    }
+                }
+            }else if(startM < endM){
+                for(int i =startM;i<=endM;i++){
+                    StringBuilder sbM = new StringBuilder();
+                    if(i<10){
+                        sbM.append("0").append(i);
+                    }else{
+                        sbM.append(i);
+                    }
+                    int days = this.getDays(String.valueOf(startY),String.valueOf(i));
+                    if(i == startM){
+                        for(int j = startD;j<=days;j++){
+                            float returnMonthlyMoney = 0;
+                            StringBuilder sbD = new StringBuilder();
+                            if(j<10){
+                                sbD.append("0").append(j);
+                            }else{
+                                sbD.append(j);
+                            }
+                           /* returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                        }
+                    }else if(i == endM){
+                        for(int j = 1;j<=endD;j++){
+                            float returnMonthlyMoney = 0;
+                            StringBuilder sbD = new StringBuilder();
+                            if(j<10){
+                                sbD.append("0").append(j);
+                            }else{
+                                sbD.append(j);
+                            }
+                            /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                        }
+                    }else{
+                        for(int j=1;j<=days;j++){
+                            float returnMonthlyMoney = 0;
+                            StringBuilder sbD = new StringBuilder();
+                            if(j<10){
+                                sbD.append("0").append(j);
+                            }else{
+                                sbD.append(j);
+                            }
+                           /* returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                        }
+                    }
+                }
+            }
+        }else if(startY < EndY){
+            for(int i=startY;i<=EndY;i++){
+                if(startY == i){
+                    for(int j = startM;j<=12;j++){
+                        StringBuilder sbM = new StringBuilder();
+                        if(j<10){
+                            sbM.append("0").append(j);
+                        }else{
+                            sbM.append(j);
+                        }
+                        int days = this.getDays(String.valueOf(startY),String.valueOf(i));
+                        if(j == startM){
+                            for(int m = startD;m<=days;m++){
+                                float returnMonthlyMoney = 0;
+                                StringBuilder sbD = new StringBuilder();
+                                if(m<10){
+                                    sbD.append("0").append(m);
+                                }else{
+                                    sbD.append(m);
+                                }
+                                /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                            }
+                        }else{
+                            for(int m=1;m<=days;m++){
+                                float returnMonthlyMoney = 0;
+                                StringBuilder sbD = new StringBuilder();
+                                if(m<10){
+                                    sbD.append("0").append(m);
+                                }else{
+                                    sbD.append(m);
+                                }
+                                /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                            }
+                        }
+                    }
+                }else if(i==EndY){
+                    for(int j= 1;j <= endM;j++){
+                        StringBuilder sbM = new StringBuilder();
+                        if(j<10){
+                            sbM.append("0").append(j);
+                        }else{
+                            sbM.append(j);
+                        }
+                        int days = this.getDays(String.valueOf(startY),String.valueOf(i));
+                        if(i == endM){
+                            for(int m = 1;m<=days;m++){
+                                float returnMonthlyMoney = 0;
+                                StringBuilder sbD = new StringBuilder();
+                                if(m<10){
+                                    sbD.append("0").append(m);
+                                }else{
+                                    sbD.append(m);
+                                }
+                              /*  returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                            }
+                        }else{
+                            for(int m=1;m<=endD;m++){
+                                float returnMonthlyMoney = 0;
+                                StringBuilder sbD = new StringBuilder();
+                                if(m<10){
+                                    sbD.append("0").append(m);
+                                }else{
+                                    sbD.append(m);
+                                }
+                                /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                            }
+                        }
+                    }
+                }else{
+                    for(int j=1; j<=12;j++){
+                        StringBuilder sbM = new StringBuilder();
+                        if(j<10){
+                            sbM.append("0").append(j);
+                        }else{
+                            sbM.append(j);
+                        }
+                        int days = this.getDays(String.valueOf(startY),String.valueOf(i));
+                        for(int m=1;m<=days;m++){
+                            float returnMonthlyMoney = 0;
+                            StringBuilder sbD = new StringBuilder();
+                            if(m<10){
+                                sbD.append("0").append(m);
+                            }else{
+                                sbD.append(m);
+                            }
+                            try {
+                                /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)), sbM.toString(), sbD.toString(), userInfo, businessType);*/
+                            }catch(Exception e){
+                                /*this.insertMonthlyIncomeError(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                            }
+                        }
+                    }
+                }
+            }
+        }
+      /*  if(returnMonthlyMoneyZ>0){
+            this.insertIncome(returnMonthlyMoneyZ,userInfo,isPullMessage);
+        }
+*/
+    }
+
+    /**
+     * 获取当前月份有多少天
+     *
+     * */
+    public Integer getDays(String years,String months){
+        Integer year = Integer.parseInt(years);
+        Integer mon = Integer.parseInt(months);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR,year);
+        cal.set(Calendar.MONTH,mon-1);
+        int maxDate = cal.getActualMaximum(Calendar.DATE);
+        return maxDate;
+    }
+
+    /**
+     * 处理月度（判断是否已经处理过了）
+     *
+     *
+     * */
+    @Transactional(rollbackFor = Exception.class)
+    public float isProcessed(Integer year ,String month,String day,String businessType,String isPullMessage)throws Exception{
+
+        float returnMonthlyMoney =0;
+        Query query = new Query(Criteria.where("year").is(year.toString())).addCriteria(Criteria.where("month").is(month.toString())).addCriteria(Criteria.where("day").is(day.toString())).addCriteria(Criteria.where("businessType").is(businessType));
+        MonthlyIncomeSignalDTO monthlyIncomeSignalDTO = mongoTemplate.findOne(query, MonthlyIncomeSignalDTO.class, "monthlyIncomeSignal");
+        SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        SimpleDateFormat sfe = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        StringBuilder sbs  = new StringBuilder();
+        sbs.append(year).append("-").append(month).append("-").append(day).append(" ").append("00:00:00");
+        StringBuilder sbe  = new StringBuilder();
+        sbe.append(year).append("-").append(month).append("-").append(day).append(" ").append("23:59:59");
+        if (monthlyIncomeSignalDTO == null) {
+            monthlyIncomeSignalDTO = new MonthlyIncomeSignalDTO();
+            monthlyIncomeSignalDTO.setYear(year.toString());
+            monthlyIncomeSignalDTO.setMonth(month.toString());
+            monthlyIncomeSignalDTO.setDay(day.toString());
+            monthlyIncomeSignalDTO.setBusinessType(businessType);
+            monthlyIncomeSignalDTO.setOnTimeFinish("false");
+            mongoTemplate.insert(monthlyIncomeSignalDTO, "monthlyIncomeSignal");
+
+            Date startDateM = sfs.parse(sbs.toString());
+            Date endDateM = sfe.parse(sbe.toString());
+            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,isPullMessage);
+
+            //操作完毕后，关闭信号量
+            Update update = new Update();
+            update.set("onTimeFinish", "true");
+            mongoTemplate.updateFirst(query, update, "monthlyIncomeSignal");
+        } else if (monthlyIncomeSignalDTO.getOnTimeFinish().equals("false")) {
+
+            Date startDateM =sfs.parse(sbs.toString());
+            Date endDateM = sfe.parse(sbe.toString());
+            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,isPullMessage);
+
+            //操作完毕后，关闭信号量
+            Update update = new Update();
+            update.set("onTimeFinish", "true");
+            mongoTemplate.updateFirst(query, update, "monthlyIncomeSignal");
+        }
+
+        return returnMonthlyMoney;
+    }
+
+    /**
+     * 计算一天的月度消费返利
+     *
+     * */
+    public float getOneDayMonthMoney(UserInfoDTO userInfo,Date startDateM,Date endDateM){
+
+        float returnMonthlyMoney = 0;
+        float returnMonthlyMoney_A = 0;
+        float returnMonthlyMoney_B = 0;
+
+        String startDate =  DateUtils.formatDate(startDateM,"yyyy-MM-dd HH-mm-ss");
+        String endDate = DateUtils.formatDate(endDateM,"yyyy-MM-dd 23:59:59");
+
+        List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
+
+        for(MonthTransactionRecordDTO monthTransactionRecordDTO:monthTransactionRecordDTOList)
+        {
+            if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessA1))
+            {
+                returnMonthlyMoney_A = returnMonthlyMoney_A + monthTransactionRecordDTO.getAmount();
+            }
+            else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessB1))
+            {
+                returnMonthlyMoney_B = returnMonthlyMoney_B + monthTransactionRecordDTO.getAmount();
+            }
+        }
+        if(returnMonthlyMoney_B>0||returnMonthlyMoney_A>0){
+            returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
+        }
+
+        return returnMonthlyMoney;
+    }
+
+    /***
+     * 记录月度返利详情
+     *
+     *
+     * */
+    public void insertIncome(float returnMonthlyMoney,UserInfoDTO userInfo,String isPullMessage){
+
+        //获取用户token值
+        String token = WeixinUtil.getUserToken();
+
+        AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
+        float balance = accountDTO.getBalance() + returnMonthlyMoney;
+        float balanceDeny = accountDTO.getBalanceDeny() + returnMonthlyMoney;
+        accountDTO.setBalance(balance);
+        accountDTO.setBalanceDeny(balanceDeny);
+        accountDTO.setUpdateDate(new Date());
+        businessServiceClient.updateUserAccountInfo(accountDTO);
+
+        IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+        incomeRecordDTO.setId(UUID.randomUUID().toString());
+        incomeRecordDTO.setSysUserId(userInfo.getId());
+        incomeRecordDTO.setUserType(userInfo.getUserType());
+        incomeRecordDTO.setNextUserId("");
+        incomeRecordDTO.setNextUserType("");
+        incomeRecordDTO.setAmount(returnMonthlyMoney);
+        incomeRecordDTO.setTransactionAmount(0);
+        incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+        incomeRecordDTO.setUpdateDate(new Date());
+        incomeRecordDTO.setCreateDate(new Date());
+        incomeRecordDTO.setStatus("0");
+        incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
+        incomeRecordDTO.setNextUserIdentifyNumber("");
+        incomeRecordDTO.setNickName(userInfo.getNickname());
+        incomeRecordDTO.setNextUserNickName("");
+        incomeRecordDTO.setIncomeType("month");
+        incomeRecordDTO.setMobile(userInfo.getMobile());
+        incomeRecordDTO.setNextUserMobile("");
+        incomeRecordDTO.setParentRelation("");
+        businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+
+        //是否发送微信消息
+        if(("1").equals(isPullMessage)&&returnMonthlyMoney>0){
+            WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
+        }
+
+    }
+
+    /**
+     * 插入出错信息
+     *
+     * */
+/*    public void insertMonthlyIncomeError(Integer year ,String month,String day ,UserInfoDTO userInfo ,String businessType){
+
+        MonthlyIncomeErrorDTO monthlyIncomeError = new MonthlyIncomeErrorDTO();
+        monthlyIncomeError.setYear(year.toString());
+        monthlyIncomeError.setMonth(month.toString());
+        monthlyIncomeError.setDay(day.toString());
+        monthlyIncomeError.setBusinessType(businessType);
+        monthlyIncomeError.setOnTimeFinish("false");
+        mongoTemplate.insert(monthlyIncomeError, "monthlyIncomeSignal");
+
+    }*/
+
+
+
+
+
+
+
+
+
+
+
 
 }
