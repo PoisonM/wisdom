@@ -1,10 +1,9 @@
-angular.module('controllers',[]).controller('beautyLoginCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserValidateCode','$interval',
-        'Global','BeautyUserLogin','$ionicPopup','BeautyUtil',
-        function ($scope,$rootScope,$stateParams,$state, GetUserValidateCode,$interval,
-                  Global,BeautyUserLogin,$ionicPopup,BeautyUtil) {
+angular.module('controllers',[]).controller('loginCtrl',
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserValidateCode','BossUtil',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserValidateCode,BossUtil) {
+            $rootScope.title = "登录";
 
-            $rootScope.title = "唯美邦登录";
+            $rootScope.title = "美享登录";
 
             $scope.param = {
                 userPhone:'',
@@ -36,7 +35,7 @@ angular.module('controllers',[]).controller('beautyLoginCtrl',
                         });
                     }
                 })
-          }
+            }
 
             $scope.userLogin = function(){
 
@@ -69,4 +68,4 @@ angular.module('controllers',[]).controller('beautyLoginCtrl',
                 }
             }
 
-        }])
+        }]);

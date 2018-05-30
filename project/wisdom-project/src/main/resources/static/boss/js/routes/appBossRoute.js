@@ -1424,15 +1424,15 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-                    .state('login', {
-                        url: '/login',
+                    .state('bossLogin', {
+                        url: '/bossLogin',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'loginCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.loginCtrl',
-                                    ['js/controllers/archives/loginCtrl.js?ver='+ bossVersion],
-                                    'views/archives/login.html?ver=' + bossVersion);
+                                    ['js/controllers/bossLoginCtrl.js?ver='+ bossVersion],
+                                    'views/bossLogin.html?ver=' + bossVersion);
                             }
                         }
                     })

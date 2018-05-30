@@ -4,16 +4,12 @@
 package com.wisdom.user.controller;
 
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.system.BeautyLoginResultDTO;
 import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.SMSUtil;
-import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.BeautyLoginService;
-import com.wisdom.user.service.BeautyUserInfoService;
-import com.wisdom.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 
 @Controller
@@ -31,35 +26,35 @@ public class BeautyLoginController {
     @Autowired
     private BeautyLoginService beautyLoginService;
 
-    @RequestMapping(value = "beautyUserLogin", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "beautyLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO<String> beautyUserLogin(@RequestBody LoginDTO loginDTO,
-                                  HttpServletRequest request,
-                                  HttpSession session) throws Exception {
-        ResponseDTO<String> result = new ResponseDTO<>();
+    ResponseDTO<BeautyLoginResultDTO> beautyLogin(@RequestBody LoginDTO loginDTO,
+                                                      HttpServletRequest request,
+                                                      HttpSession session) throws Exception {
+        ResponseDTO<BeautyLoginResultDTO> result = new ResponseDTO<>();
 
         //获取用户的基本信息 todo 需要完成注释部分的代码
         String openid = WeixinUtil.getBeautyOpenId(session,request);
-        if(openid==null||openid.equals(""))
-        {
-            result.setResult(StatusConstant.FAILURE);
-            result.setErrorInfo("没有openid，请在微信公众号中注册登录");
-            return result;
-        }
 
-        String loginResult = beautyLoginService.beautyUserLogin(loginDTO, request.getRemoteAddr().toString(),openid);
+        BeautyLoginResultDTO loginResult = beautyLoginService.beautyLogin(loginDTO, request.getRemoteAddr().toString(),openid);
 
-        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
+        if (loginResult.getResult().equals(StatusConstant.VALIDATECODE_ERROR))
         {
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("验证码输入不正确");
             return result;
         }
-        else if (loginResult.equals(StatusConstant.WEIXIN_ATTENTION_ERROR))
+        else if(loginResult.getResult().equals("phoneNotUse"))
         {
             result.setResult(StatusConstant.FAILURE);
-            result.setErrorInfo("请在关注公众号后，再绑定登录");
+            result.setErrorInfo("手机号不可用");
+            return result;
+        }
+        else if(loginResult.getResult().equals("phoneIsError"))
+        {
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("手机号不可用手机号错误");
             return result;
         }
         else
@@ -71,87 +66,35 @@ public class BeautyLoginController {
         }
     }
 
-    @RequestMapping(value = "bossLogin", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "beautyLoginOut", method = {RequestMethod.POST, RequestMethod.GET})
+    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<String> bossLogin(@RequestBody LoginDTO loginDTO,
-                                  HttpServletRequest request,
-                                  HttpSession session) throws Exception {
+    ResponseDTO<String> userLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        BeautyLoginResultDTO beautyLoginResultDTO = new BeautyLoginResultDTO();
+
+        String beautyUserLoginToken = request.getHeader("beautyUserLoginToken");
+        if(beautyUserLoginToken==null||beautyUserLoginToken.equals("")){
+            beautyUserLoginToken = request.getSession().getAttribute("beautyUserLoginToken").toString();
+        }
+        beautyLoginResultDTO.setBeautyUserLoginToken(beautyUserLoginToken);
+
+        String beautyBossLoginToken = request.getHeader("beautyBossLoginToken");
+        if(beautyBossLoginToken==null||beautyBossLoginToken.equals("")){
+            beautyBossLoginToken = request.getSession().getAttribute("beautyBossLoginToken").toString();
+        }
+        beautyLoginResultDTO.setBeautyBossLoginToken(beautyBossLoginToken);
+
+        String beautyClerkLoginToken = request.getHeader("beautyClerkLoginToken");
+        if(beautyClerkLoginToken==null||beautyClerkLoginToken.equals("")){
+            beautyClerkLoginToken = request.getSession().getAttribute("beautyClerkLoginToken").toString();
+        }
+        beautyLoginResultDTO.setBeautyClerkLoginToken(beautyClerkLoginToken);
+
+        String status = beautyLoginService.beautyLoginOut(beautyLoginResultDTO,request,response,session);
         ResponseDTO<String> result = new ResponseDTO<>();
-        String loginResult = "";
-
-        String openid = WeixinUtil.getBeautyOpenId(session,request);
-        if((openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
-        {
-            result.setResult(StatusConstant.FAILURE);
-            result.setErrorInfo("没有openid，请在微信公众号中注册登录");
-            return result;
-        }
-        else if(!(openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
-        {
-            loginResult = beautyLoginService.bossMobileLogin(loginDTO, request.getRemoteAddr().toString(),openid);
-
-        }
-        else if((openid==null||openid.equals(""))&&!loginDTO.getSource().equals("mobile"))
-        {
-            loginResult = beautyLoginService.bossWebLogin(loginDTO, request.getRemoteAddr().toString());
-        }
-
-        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
-        {
-            result.setResult(StatusConstant.FAILURE);
-            result.setErrorInfo("验证码输入不正确");
-            return result;
-        }
-        else
-        {
-            result.setResult(StatusConstant.SUCCESS);
-            result.setErrorInfo("调用成功");
-            result.setResponseData(loginResult);
-            return result;
-        }
-
+        result.setResult(StatusConstant.SUCCESS);
+        result.setErrorInfo(status.equals(StatusConstant.LOGIN_OUT) ? "退出登录" : "保持在线");
+        return result;
     }
-
-    @RequestMapping(value = "clerkLogin", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    ResponseDTO<String> clerkLogin(@RequestBody LoginDTO loginDTO,
-                                  HttpServletRequest request,
-                                  HttpSession session) throws Exception {
-        ResponseDTO<String> result = new ResponseDTO<>();
-        String loginResult = "";
-
-        String openid = WeixinUtil.getBeautyOpenId(session,request);
-        if((openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
-        {
-            result.setResult(StatusConstant.FAILURE);
-            result.setErrorInfo("没有openid，请在微信公众号中注册登录");
-            return result;
-        }
-        else if(!(openid==null||openid.equals(""))&&loginDTO.getSource().equals("mobile"))
-        {
-            loginResult = beautyLoginService.ClerkMobileLogin(loginDTO, request.getRemoteAddr().toString(),openid);
-
-        }
-        else if((openid==null||openid.equals(""))&&!loginDTO.getSource().equals("mobile"))
-        {
-            loginResult = beautyLoginService.ClerkWebLogin(loginDTO, request.getRemoteAddr().toString());
-        }
-
-        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
-        {
-            result.setResult(StatusConstant.FAILURE);
-            result.setErrorInfo("验证码输入不正确");
-            return result;
-        }
-        else
-        {
-            result.setResult(StatusConstant.SUCCESS);
-            result.setErrorInfo("调用成功");
-            result.setResponseData(loginResult);
-            return result;
-        }
-    }
-
 }

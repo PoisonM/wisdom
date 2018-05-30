@@ -1,4 +1,4 @@
-package com.wisdom.user.interceptor;
+package com.wisdom.system.interceptor;
 
 import org.springframework.web.bind.annotation.Mapping;
 
@@ -8,9 +8,9 @@ import java.lang.annotation.*;
  * Created by zbm84 on 2017/5/24.
  */
 
-@Target({ElementType.METHOD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Mapping
 @Documented
-public @interface LoginRequired {
+public @interface LoginAnnotations {
 }
