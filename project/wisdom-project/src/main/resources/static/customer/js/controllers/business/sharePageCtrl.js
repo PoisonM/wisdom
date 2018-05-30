@@ -54,6 +54,10 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                         if(imgNum == Object.keys($scope.param.imgs).length) drawImage();
                     }
                 }
+                if($stateParams.reload){
+                     $stateParams.reload=false;
+                     $window.location.reload();
+                }
             }
 
             $scope.$on('$ionicView.enter', function(){
