@@ -183,16 +183,16 @@ public class ShopController {
      */
     @RequestMapping(value = "/updateShopInfo", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<Object> updateShopInfo(@RequestBody SysShopDTO sysShopDTO) {
+    ResponseDTO<Object> updateShopInfo(@RequestBody ExtSysShopDTO extSysShopDTO) {
         long currentTimeMillis = System.currentTimeMillis();
-        logger.info("修改门店传入参数={}","sysShopDTO = [" + sysShopDTO + "]");
+        logger.info("修改门店传入参数={}", "sysShopDTO = [" + extSysShopDTO + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO();
-        if(StringUtils.isBlank(sysShopDTO.getId())){
+        if (StringUtils.isBlank(extSysShopDTO.getId())) {
             responseDTO.setResponseData("传入id为空");
             responseDTO.setResult(StatusConstant.FAILURE);
             return responseDTO;
         }
-        int info = shopUserRelationService.updateShopInfo(sysShopDTO);
+        int info = shopUserRelationService.updateShopInfo(extSysShopDTO);
         responseDTO.setResponseData(info>0?"成功":"失败");
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("修改门店耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
