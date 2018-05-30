@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.SysShopDTO;
+import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 
 import java.util.List;
 
@@ -19,12 +20,12 @@ public interface ShopService {
      * @param id
      * @return
      */
-    SysShopDTO getShopInfoByPrimaryKey(String id);
+    ExtSysShopDTO getShopInfoByPrimaryKey(String id);
 
     /**
      * 根据条件查询shop相关信息
      *
      * @return
      */
-    List<SysShopDTO> getShopInfo(SysShopDTO sysShopDTO);
+    List<ExtSysShopDTO> getShopInfo(SysShopDTO sysShopDTO);
 }
