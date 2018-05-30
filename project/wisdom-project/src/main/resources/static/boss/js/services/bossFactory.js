@@ -1,27 +1,27 @@
-var appointmentInfo = '/beauty/appointmentInfo/';
-var work = '/beauty/work/';
-var stock = '/beauty/stock/';
-var consume = '/beauty/consume/';
-var  earlyWarning =  '/beauty/earlyWarning/';
-var  archives =  '/beauty/archives/';
-var clerkSchedule='/beauty/clerkSchedule/';
-var shopBossRelation ='/beauty/shopBossRelation/';
-var user ='/user/';
-var analyze = '/beauty/analyze/';
-var consumes = '/beauty/consumes/';
-var consume = '/beauty/consume/';
-var cardInfo  = '/beauty/cardInfo/';
-var projectInfo  = '/beauty/projectInfo/';
-var productInfo  = '/beauty/productInfo/';
-var productTypeInfo = '/beauty/productTypeInfo/';
-var projectType='/beauty/projectType/';
-var shop='/beauty/shop/';
-var projectGroupInfo='/beauty/projectGroupInfo/';
-var cardHelper ='/beauty/cardHelper/';
-var clerkSchedule = '/beauty/clerkSchedule/';
-var  mine='/beauty/mine/';
-var remind='/beauty/remind/';
-var file = '/system-service/file/';
+var appointmentInfo = 'http://192.168.1.117/beauty/appointmentInfo/';
+var work = 'http://192.168.1.117/beauty/work/';
+var stock = 'http://192.168.1.117/beauty/stock/';
+var consume = 'http://192.168.1.117/beauty/consume/';
+var  earlyWarning =  'http://192.168.1.117/beauty/earlyWarning/';
+var  archives =  'http://192.168.1.117/beauty/archives/';
+var clerkSchedule='http://192.168.1.117/beauty/clerkSchedule/';
+var shopBossRelation ='http://192.168.1.117/beauty/shopBossRelation/';
+var user ='http://192.168.1.117/user/';
+var analyze = 'http://192.168.1.117/beauty/analyze/';
+var consumes = 'http://192.168.1.117/beauty/consumes/';
+var consume = 'http://192.168.1.117/beauty/consume/';
+var cardInfo  = 'http://192.168.1.117/beauty/cardInfo/';
+var projectInfo  = 'http://192.168.1.117/beauty/projectInfo/';
+var productInfo  = 'http://192.168.1.117/beauty/productInfo/';
+var productTypeInfo = 'http://192.168.1.117/beauty/productTypeInfo/';
+var projectType='http://192.168.1.117/beauty/projectType/';
+var shop='http://192.168.1.117/beauty/shop/';
+var projectGroupInfo='http://192.168.1.117/beauty/projectGroupInfo/';
+var cardHelper ='http://192.168.1.117/beauty/cardHelper/';
+var clerkSchedule = 'http://192.168.1.117/beauty/clerkSchedule/';
+var  mine='http://192.168.1.117/beauty/mine/';
+var remind='http://192.168.1.117/beauty/remind/';
+var file = 'http://192.168.1.117/system-service/file/';
 
 
 define(['appBoss'], function (app) {
@@ -413,6 +413,11 @@ define(['appBoss'], function (app) {
         .factory('ImageBase64UploadToOSS',['$resource',function ($resource){
             return $resource(file+"imageBase64UploadToOSS")
         }])
+        /*老板切换店铺*/
+        .factory('BossSwitchShops',['$resource',function ($resource){
+            return $resource(shop+"bossSwitchShops")
+        }])
+
 
 
 
