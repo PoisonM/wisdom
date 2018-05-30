@@ -7,12 +7,12 @@
 
             <li class="item" >
                 <ul style="" class="Htab-head">
-                    <li class="Htab-head-item " style="width:130px;position: relative;height:120px;" ng-repeat="item in [0,1,2,3]">
+                    <li class="Htab-head-item " style="width:130px;position: relative;height:120px;" ng-repeat="item in amendStore.imageList">
                              <span  style="position: absolute;top: 0px;right: 5px;"  ng-click="delPic($index)">
                                  <i class="ion-android-remove-circle colff66" ></i>
                              </span>
                         <input type="file" style="opacity: 0;position: absolute;top: 0px;left: 0px;width: 105px;height: 105px;" id="" disabled="disabled">
-                        <img ng-src="images/mine/addPhoto.png" style="width: 105px;height: 105px;" class="ml10 mt10">
+                        <img ng-src="{{item}}" style="width: 105px;height: 105px;" class="ml10 mt10">
                     </li>
                     <li class="Htab-head-item ml10 bgfff" style="width:130px;position: relative;height:120px;display: inline-block;text-align: left" >
                         <div style="width:130px;position: relative;height:120px;display: inline-block">

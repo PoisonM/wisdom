@@ -2,14 +2,47 @@
  * Created by Administrator on 2018/5/4.
  */
 angular.module('controllers',[]).controller('setInformationCtrl',
-    ['$scope','$rootScope','$stateParams','$state',
-        function ($scope,$rootScope,$stateParams,$state) {
+    ['$scope','$rootScope','$stateParams','$state','GetBossShopList','Global','BossSwitchShops',
+        function ($scope,$rootScope,$stateParams,$state,GetBossShopList,Global,BossSwitchShops) {
 
             $rootScope.title = "设置";
+            $scope.param={
+                flag:false
+            }
                /*点击基础资料设置*/
             $scope.basicSettingGo=function () {
-                $state.go("basicSetting")
+                GetBossShopList.get({},function(data){
+                    if(data.result==Global.SUCCESS&&data.responseData==null){
+                         alert('请先添加店铺')
+                    }else if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        GetBossShopList.get({
+                        },function(data){
+                            if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                                $scope.setInformation = data.responseData
+                                $scope.param.flag = true;
+
+                            }
+                        })
+
+                    }
+
+                })
+
             };
+            $scope.swichShop = function (sysShopId) {
+                BossSwitchShops.get({
+                    sysShopId:sysShopId
+                },function (data) {
+                    if(data.result==Global.SUCCESS) {
+                        $state.go("basicSetting")
+                        $scope.param.flag = false;
+                    }
+                })
+            }
+            $scope.dis = function () {
+                $scope.param.flag = false;
+            }
+
             /*点击系统设置*/
             $scope.systemSetupGo=function () {
                 $state.go("systemSetup")

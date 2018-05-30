@@ -65,7 +65,7 @@ angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
 
             $rootScope.title = "";
             $scope.getInfo = function(){
-                GetInComeExpenditureDetail.get({sysShopId:"11",startTime:$scope.param.date+" 00:00:00",
+                GetInComeExpenditureDetail.get({sysShopId:$stateParams.sysShopId,startTime:$scope.param.date+" 00:00:00",
                     endTime:$scope.param.date+" 23:59:59"},function (data) {
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.oneIncomeAnalysis = data.responseData
