@@ -1,9 +1,9 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
     //
@@ -27,8 +27,8 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
     //美容师名称
     private String sysClerkName;
 
-    //老板id
-    private String sysBossId;
+    //老板编码
+    private String sysBossCode;
 
     //预约开始时间
     private Date appointStartTime;
@@ -38,6 +38,9 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
 
     //预约时长(分钟)
     private Integer appointPeriod;
+
+    //预约时长英文 ; 分割
+    private String appointPeriodDetail;
 
     //用户id
     private String sysUserId;
@@ -54,6 +57,9 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
     //捎句话
     private String detail;
 
+    //取消预约时间
+    private String appointmentCancleDate;
+
     //
     private String createBy;
 
@@ -65,12 +71,6 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
 
     //
     private Date updateDate;
-
-    //查询预约时间开始时间
-    private String appointStartTimeS;
-
-    //查询预约时间结束时间
-    private String appointStartTimeE;
 
     private static final long serialVersionUID = 1L;
 
@@ -130,12 +130,12 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
         this.sysClerkName = sysClerkName;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public Date getAppointStartTime() {
@@ -160,6 +160,14 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
 
     public void setAppointPeriod(Integer appointPeriod) {
         this.appointPeriod = appointPeriod;
+    }
+
+    public String getAppointPeriodDetail() {
+        return appointPeriodDetail;
+    }
+
+    public void setAppointPeriodDetail(String appointPeriodDetail) {
+        this.appointPeriodDetail = appointPeriodDetail;
     }
 
     public String getSysUserId() {
@@ -202,6 +210,14 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
         this.detail = detail;
     }
 
+    public String getAppointmentCancleDate() {
+        return appointmentCancleDate;
+    }
+
+    public void setAppointmentCancleDate(String appointmentCancleDate) {
+        this.appointmentCancleDate = appointmentCancleDate;
+    }
+
     public String getCreateBy() {
         return createBy;
     }
@@ -232,21 +248,5 @@ public class ShopAppointServiceDTO extends BaseEntity implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
-    }
-
-    public String getAppointStartTimeS() {
-        return appointStartTimeS;
-    }
-
-    public void setAppointStartTimeS(String appointStartTimeS) {
-        this.appointStartTimeS = appointStartTimeS;
-    }
-
-    public String getAppointStartTimeE() {
-        return appointStartTimeE;
-    }
-
-    public void setAppointStartTimeE(String appointStartTimeE) {
-        this.appointStartTimeE = appointStartTimeE;
     }
 }

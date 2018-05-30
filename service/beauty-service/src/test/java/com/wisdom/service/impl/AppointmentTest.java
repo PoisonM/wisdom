@@ -29,7 +29,9 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -95,6 +97,7 @@ public class AppointmentTest {
     @Test
     public void saveAppointmentService() {
 
+        String a = UUID.randomUUID().toString();
         ShopAppointServiceDTO shopAppointServiceDTO = getShopAppointServiceDTO();
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         System.out.println("测试完毕");
@@ -114,8 +117,13 @@ public class AppointmentTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/appointmentInfo/saveUserAppointInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
-                .andExpect(status().isOk())// 模拟向testRest发送post请求
+//        MvcResult result = mvc.perform(get("/appointmentInfo/getShopClerkAppointmentInfo").param("searchDate", "2018-04-27").param("sysShopId", "11").param("sysClerkId", "cc03a01d060e4bb09e051788e8d9801b").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+//                .andExpect(status().isOk())// 模拟向testRest发送post请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+
+        MvcResult result = mvc.perform(post("/appointmentInfo/updateUserAppointInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
 
@@ -132,7 +140,7 @@ public class AppointmentTest {
     @Test
     public void getShopAppointInfoFromRedis() {
         ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
-        shopAppointServiceDTO.setId("6951d1561c5b4cae84fd72283e52a081");
+        shopAppointServiceDTO.setId("fcdda9aa39c14f39b08e687ceccf18a4");
         ShopAppointServiceDTO infoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceDTO.getId());
         System.out.println("infoFromRedis");
     }
@@ -143,28 +151,62 @@ public class AppointmentTest {
     }
 
     private ShopAppointServiceDTO getShopAppointServiceDTO() {
-        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
-        shopAppointServiceDTO.setId("id_8");
-        shopAppointServiceDTO.setAppointEndTime(DateUtils.StrToDate("2018-04-08 11:00:00", "datetime"));
+        ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
         shopAppointServiceDTO.setAppointPeriod(60);
-        shopAppointServiceDTO.setAppointStartTime(new Date());
-        shopAppointServiceDTO.setCreateBy(IdGen.uuid());
-        shopAppointServiceDTO.setCreateDate(DateUtils.StrToDate("2018-04-08 12:00:00", "datetime"));
-        shopAppointServiceDTO.setDetail("测试");
+        shopAppointServiceDTO.setAppointStartTimeS("2018-09-20 19:00");
         shopAppointServiceDTO.setShopProjectId(IdGen.uuid());
         shopAppointServiceDTO.setShopProjectName("面部保洁");
         shopAppointServiceDTO.setStatus("0");
-        shopAppointServiceDTO.setSysBossId(IdGen.uuid());
-        shopAppointServiceDTO.setSysClerkId("1");
-        shopAppointServiceDTO.setSysUserId(IdGen.uuid());
-        shopAppointServiceDTO.setSysClerkName("王五");
-        shopAppointServiceDTO.setUpdateUser(IdGen.uuid());
-        shopAppointServiceDTO.setSysShopName("汉方美容院");
-        shopAppointServiceDTO.setSysUserName("张欢");
-        shopAppointServiceDTO.setSysUserPhone("181812839893");
-        shopAppointServiceDTO.setSysShopId("3");
+        shopAppointServiceDTO.setSysClerkId("6ce974e11feb4deab74b553d3b3c5509");
+        shopAppointServiceDTO.setId("a4874cd4754748788e90f4a69ba5c382");
         return shopAppointServiceDTO;
     }
+
+//    private ShopAppointServiceDTO getShopAppointServiceDTO() {
+//        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
+//        shopAppointServiceDTO.setId("id_8");
+//        shopAppointServiceDTO.setAppointEndTime(DateUtils.StrToDate("2018-04-08 11:00:00", "datetime"));
+//        shopAppointServiceDTO.setAppointPeriod(60);
+//        shopAppointServiceDTO.setAppointStartTime(new Date());
+//        shopAppointServiceDTO.setCreateBy(IdGen.uuid());
+//        shopAppointServiceDTO.setCreateDate(DateUtils.StrToDate("2018-04-08 12:00:00", "datetime"));
+//        shopAppointServiceDTO.setDetail("测试");
+//        shopAppointServiceDTO.setShopProjectId(IdGen.uuid());
+//        shopAppointServiceDTO.setShopProjectName("面部保洁");
+//        shopAppointServiceDTO.setStatus("0");
+//        shopAppointServiceDTO.setSysBossId(IdGen.uuid());
+//        shopAppointServiceDTO.setSysClerkId("1");
+//        shopAppointServiceDTO.setSysUserId(IdGen.uuid());
+//        shopAppointServiceDTO.setSysClerkName("王五");
+//        shopAppointServiceDTO.setUpdateUser(IdGen.uuid());
+//        shopAppointServiceDTO.setSysShopName("汉方美容院");
+//        shopAppointServiceDTO.setSysUserName("张欢");
+//        shopAppointServiceDTO.setSysUserPhone("181812839893");
+//        shopAppointServiceDTO.setSysShopId("3");
+//        return shopAppointServiceDTO;
+//    }
+
+
+    /**
+     * 删除档案信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testDeleteArchiveInfo() throws Exception {
+
+        MvcResult result = mvc.perform(get("/appointmentInfo/getAppointmentInfoById").param("shopAppointServiceId", "f83d378c34a747588570d1546b35469b"))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    public static void main(String[] args) {
+        System.out.println("args = [" + args + "]");
+    }
+
 
 
 }

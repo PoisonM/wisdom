@@ -1,7 +1,10 @@
 package com.wisdom.beauty.core.service;
 
+import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -28,4 +31,36 @@ public interface ShopCardService {
      * @return
      */
     int updateUserRechargeCard(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
+
+    /**
+     * 获取充值卡总金额
+     *
+     * @param shopUserRechargeCardDTO
+     * @return
+     */
+    BigDecimal getUserRechargeCardSumAmount(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
+
+    /**
+     * 保存充值卡信息
+     *
+     * @param extShopRechargeCardDTO
+     * @return
+     */
+    int saveRechargeCardInfo(ExtShopRechargeCardDTO extShopRechargeCardDTO);
+
+    /**
+     * 修改充值卡信息
+     *
+     * @param extShopRechargeCardDTO
+     * @return
+     */
+    int updateRechargeCardInfo(ExtShopRechargeCardDTO extShopRechargeCardDTO);
+
+    /**
+     * 根据虚拟商品id获取虚拟商品列表
+     *
+     * @param shopProjectProductCardRelationDTO
+     * @return
+     */
+    List<ShopProjectProductCardRelationDTO> getShopProjectProductCardRelationList(ShopProjectProductCardRelationDTO shopProjectProductCardRelationDTO);
 }

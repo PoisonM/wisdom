@@ -7,11 +7,11 @@ angular.module('controllers',[]).controller('balanceCtrl',
             var pattern1 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 /*展示*/
             $scope.loadPageList = function(){
-                        if($scope.BalanceAounnt!=""){
+                        /*if($scope.BalanceAounnt!=""){
                             if(pattern.test($scope.BalanceAounnt) == false && pattern1.test($scope.BalanceAounnt)== false){
                                 $scope.BalanceAounnt='请填写正确的手机号或身份证号';
                                 return
-                        }}
+                        }}*/
 
                             QueryUserBalanceByParameters.get({
                                 phoneAndIdentify:$scope.BalanceAounnt,
@@ -21,6 +21,9 @@ angular.module('controllers',[]).controller('balanceCtrl',
                             },function(data){
                                 ManagementUtil.checkResponseData(data,"");
                                 if(data.result == Global.SUCCESS){
+                                    if( data.responseData.totalCount ==0){
+                                        alert("未查出相应结果");
+                                    }
                                     $scope.balanceLis = data.responseData.responseData;
                                     $scope.response = {};
                                     $scope.response.count = data.responseData.totalCount;
@@ -39,7 +42,6 @@ angular.module('controllers',[]).controller('balanceCtrl',
 /*搜索*/
 
             $scope.searchBalance = function(){
-                $scope.loadPageList()
                 $scope.choosePage(1)
                 }
 

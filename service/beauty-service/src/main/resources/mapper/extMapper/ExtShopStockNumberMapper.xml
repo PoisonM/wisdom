@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStockNumberDTO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR"/>
+        <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
+        <result column="stock_number" property="stockNumber" jdbcType="INTEGER"/>
+        <result column="actual_stock_number" property="actualStockNumber" jdbcType="INTEGER"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, shop_proc_id, shop_store_id, sys_boss_code, stock_number, actual_stock_number,
+        create_by, create_date, update_user, update_date
+    </sql>
+    <update id="updateBatchShopStockNumber" parameterType="java.util.List">
+        update shop_stock_number
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="stock_number =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    when id=#{item.id} then #{item.stockNumber}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.id,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+    <!--根据条件是id批量更新-->
+    <update id="updateBatchShopStockNumberCondition" parameterType="java.util.List">
+        update shop_stock_number
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="stock_number =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    when shop_proc_id=#{item.shopProcId}  AND shop_store_id=#{item.shopStoreId} then #{item.stockNumber}
+                </foreach>
+            </trim>
+        </trim>
+        where shop_proc_id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.shopProcId,jdbcType=VARCHAR}
+        </foreach> AND
+        shop_store_id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.shopStoreId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+    <!--批量插入-->
+    <insert id="saveBatchShopStockNumber">
+        insert into shop_stock_number (id, shop_proc_id, shop_store_id,
+        sys_boss_code, stock_number, actual_stock_number,
+        actual_stock_price, stock_price, create_by,
+        create_date, update_user, update_date
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.shopProcId,jdbcType=VARCHAR}, #{item.shopStoreId,jdbcType=VARCHAR},
+            #{item.sysBossCode,jdbcType=VARCHAR}, #{item.stockNumber,jdbcType=INTEGER}, #{item.actualStockNumber,jdbcType=INTEGER},
+            #{item.actualStockPrice,jdbcType=INTEGER}, #{item.stockPrice,jdbcType=DECIMAL}, #{item.createBy,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR}, #{item.updateDate,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

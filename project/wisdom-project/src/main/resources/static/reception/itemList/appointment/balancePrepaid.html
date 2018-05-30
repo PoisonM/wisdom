@@ -1,44 +1,19 @@
 
     <div class="balancePrepaid ">
         <ul class="bgfff">
-            <li class="bte5">
+            <li class="bte5" ng-repeat="item in param.consumptionObj.balancePrepaidCtrlData">
                 <div class=" mt44">
-                    <img src="images/bt_Single%20election_select.png" class="norPic ml30 mr20">
-                    <img src="images/VIP-.png" class="VIPPic" >
+                    <img  ng-src="{{balancePrepaidDataPic[$index]}}" class="norPic ml30 mr20" ng-click="showBalancePrepaidPic($index)">
+                    <img ng-src="{{item.imageUrl}}" class="VIPPic">
                 </div>
 
                 <div class="ml20 mt40">
-                    <p class="fs32 color333">余额卡</p>
-                    <p class="fs38 colff6666 mt44">剩余金额 99.<span class="fs34">00</span></p>
-                    <p class="fs20 col999">折扣：产品9.0折</p>
+                    <p class="fs32 color333">{{item.name}}</p>
+                    <p class="fs38 colff6666 mt44">剩余金额 {{item.amount}}.<span class="fs34">00</span></p>
+                    <p class="fs20 col999">折扣：产品{{item.discountDesc}}</p>
 
                 </div>
             </li>
-            <li class="bte5">
-                <div class=" mt44">
-                    <img src="images/bt_Single%20election_select.png" class="norPic ml30 mr20">
-                    <img src="images/VIP-.png" class="VIPPic" >
-                </div>
 
-                <div class="ml20 mt40">
-                    <p class="fs32 color333">余额卡</p>
-                    <p class="fs38 colff6666 mt44">剩余金额 99.<span class="fs34">00</span></p>
-                    <p class="fs20 col999">折扣：产品9.0折</p>
-
-                </div>
-            </li>
-            <li class="bte5">
-                <div class=" mt44">
-                    <img src="images/bt_Single%20election_select.png" class="norPic ml30 mr20">
-                    <img src="images/VIP-.png" class="VIPPic" >
-                </div>
-
-                <div class="ml20 mt40">
-                    <p class="fs32 color333">余额卡</p>
-                    <p class="fs38 colff6666 mt44">剩余金额 99.<span class="fs34">00</span></p>
-                    <p class="fs20 col999">折扣：产品9.0折</p>
-
-                </div>
-            </li>
         </ul>
     </div>

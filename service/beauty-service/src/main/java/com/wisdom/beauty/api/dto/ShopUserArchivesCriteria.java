@@ -405,6 +405,76 @@ public class ShopUserArchivesCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSysBossCodeIsNull() {
+            addCriterion("sys_boss_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeIsNotNull() {
+            addCriterion("sys_boss_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeEqualTo(String value) {
+            addCriterion("sys_boss_code =", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeNotEqualTo(String value) {
+            addCriterion("sys_boss_code <>", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeGreaterThan(String value) {
+            addCriterion("sys_boss_code >", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_boss_code >=", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeLessThan(String value) {
+            addCriterion("sys_boss_code <", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeLessThanOrEqualTo(String value) {
+            addCriterion("sys_boss_code <=", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeLike(String value) {
+            addCriterion("sys_boss_code like", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeNotLike(String value) {
+            addCriterion("sys_boss_code not like", value, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeIn(List<String> values) {
+            addCriterion("sys_boss_code in", values, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeNotIn(List<String> values) {
+            addCriterion("sys_boss_code not in", values, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeBetween(String value1, String value2) {
+            addCriterion("sys_boss_code between", value1, value2, "sysBossCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysBossCodeNotBetween(String value1, String value2) {
+            addCriterion("sys_boss_code not between", value1, value2, "sysBossCode");
+            return (Criteria) this;
+        }
+
         public Criteria andSysClerkNameIsNull() {
             addCriterion("sys_clerk_name is null");
             return (Criteria) this;
@@ -475,73 +545,73 @@ public class ShopUserArchivesCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andImageRulIsNull() {
-            addCriterion("image_rul is null");
+        public Criteria andImageUrlIsNull() {
+            addCriterion("image_url is null");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulIsNotNull() {
-            addCriterion("image_rul is not null");
+        public Criteria andImageUrlIsNotNull() {
+            addCriterion("image_url is not null");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulEqualTo(String value) {
-            addCriterion("image_rul =", value, "imageRul");
+        public Criteria andImageUrlEqualTo(String value) {
+            addCriterion("image_url =", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulNotEqualTo(String value) {
-            addCriterion("image_rul <>", value, "imageRul");
+        public Criteria andImageUrlNotEqualTo(String value) {
+            addCriterion("image_url <>", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulGreaterThan(String value) {
-            addCriterion("image_rul >", value, "imageRul");
+        public Criteria andImageUrlGreaterThan(String value) {
+            addCriterion("image_url >", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulGreaterThanOrEqualTo(String value) {
-            addCriterion("image_rul >=", value, "imageRul");
+        public Criteria andImageUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("image_url >=", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulLessThan(String value) {
-            addCriterion("image_rul <", value, "imageRul");
+        public Criteria andImageUrlLessThan(String value) {
+            addCriterion("image_url <", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulLessThanOrEqualTo(String value) {
-            addCriterion("image_rul <=", value, "imageRul");
+        public Criteria andImageUrlLessThanOrEqualTo(String value) {
+            addCriterion("image_url <=", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulLike(String value) {
-            addCriterion("image_rul like", value, "imageRul");
+        public Criteria andImageUrlLike(String value) {
+            addCriterion("image_url like", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulNotLike(String value) {
-            addCriterion("image_rul not like", value, "imageRul");
+        public Criteria andImageUrlNotLike(String value) {
+            addCriterion("image_url not like", value, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulIn(List<String> values) {
-            addCriterion("image_rul in", values, "imageRul");
+        public Criteria andImageUrlIn(List<String> values) {
+            addCriterion("image_url in", values, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulNotIn(List<String> values) {
-            addCriterion("image_rul not in", values, "imageRul");
+        public Criteria andImageUrlNotIn(List<String> values) {
+            addCriterion("image_url not in", values, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulBetween(String value1, String value2) {
-            addCriterion("image_rul between", value1, value2, "imageRul");
+        public Criteria andImageUrlBetween(String value1, String value2) {
+            addCriterion("image_url between", value1, value2, "imageUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImageRulNotBetween(String value1, String value2) {
-            addCriterion("image_rul not between", value1, value2, "imageRul");
+        public Criteria andImageUrlNotBetween(String value1, String value2) {
+            addCriterion("image_url not between", value1, value2, "imageUrl");
             return (Criteria) this;
         }
 
@@ -1352,6 +1422,76 @@ public class ShopUserArchivesCriteria {
 
         public Criteria andChannelNotBetween(String value1, String value2) {
             addCriterion("channel not between", value1, value2, "channel");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidIsNull() {
+            addCriterion("shopId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidIsNotNull() {
+            addCriterion("shopId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidEqualTo(String value) {
+            addCriterion("shopId =", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidNotEqualTo(String value) {
+            addCriterion("shopId <>", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidGreaterThan(String value) {
+            addCriterion("shopId >", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidGreaterThanOrEqualTo(String value) {
+            addCriterion("shopId >=", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidLessThan(String value) {
+            addCriterion("shopId <", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidLessThanOrEqualTo(String value) {
+            addCriterion("shopId <=", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidLike(String value) {
+            addCriterion("shopId like", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidNotLike(String value) {
+            addCriterion("shopId not like", value, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidIn(List<String> values) {
+            addCriterion("shopId in", values, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidNotIn(List<String> values) {
+            addCriterion("shopId not in", values, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidBetween(String value1, String value2) {
+            addCriterion("shopId between", value1, value2, "shopid");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopidNotBetween(String value1, String value2) {
+            addCriterion("shopId not between", value1, value2, "shopid");
             return (Criteria) this;
         }
 

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopStockMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStockDTO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
+        <result column="shop_stock_record_id" property="shopStockRecordId" jdbcType="VARCHAR"/>
+        <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR"/>
+        <result column="flow_no" property="flowNo" jdbcType="VARCHAR"/>
+        <result column="applay_user" property="applayUser" jdbcType="VARCHAR"/>
+        <result column="stock_status" property="stockStatus" jdbcType="CHAR"/>
+        <result column="detail" property="detail" jdbcType="VARCHAR"/>
+        <result column="stock_number" property="stockNumber" jdbcType="INTEGER"/>
+        <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR"/>
+        <result column="shop_proc_name" property="shopProcName" jdbcType="VARCHAR"/>
+        <result column="product_date" property="productDate" jdbcType="TIMESTAMP"/>
+        <result column="stock_price" property="stockPrice" jdbcType="DECIMAL"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, sys_boss_code, shop_stock_record_id, shop_store_id, flow_no, applay_user, stock_status,
+        detail, stock_number, shop_proc_id, shop_proc_name, product_date, stock_price, create_by,
+        create_date, update_user, update_date
+    </sql>
+    <!--批量插入-->
+    <insert id="insertBatchShopStock" >
+        insert into shop_stock (id, sys_boss_code, shop_stock_record_id,
+        shop_store_id, flow_no, stock_number,
+        shop_proc_id, shop_proc_name, product_date,
+        stock_price, create_by, create_date,
+        update_user, update_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.sysBossCode,jdbcType=VARCHAR}, #{item.shopStockRecordId,jdbcType=VARCHAR},
+            #{item.shopStoreId,jdbcType=VARCHAR}, #{item.flowNo,jdbcType=VARCHAR}, #{item.stockNumber,jdbcType=INTEGER},
+            #{item.shopProcId,jdbcType=VARCHAR}, #{item.shopProcName,jdbcType=VARCHAR}, #{item.productDate,jdbcType=TIMESTAMP},
+            #{item.stockPrice,jdbcType=DECIMAL}, #{item.createBy,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateUser,jdbcType=VARCHAR}, #{item.updateDate,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+
+</mapper>

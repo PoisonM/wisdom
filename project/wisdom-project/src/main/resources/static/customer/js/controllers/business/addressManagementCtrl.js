@@ -11,6 +11,7 @@ angular.module('controllers',[]).controller('addressManagementCtrl',
                 showDelay: 0
             });
             $scope.$on('$ionicView.enter', function(){
+
                 GetUserAddressList.get(function(data){
                     $ionicLoading.hide();
                     BusinessUtil.checkResponseData(data,"addressManagement");
@@ -52,6 +53,6 @@ angular.module('controllers',[]).controller('addressManagementCtrl',
             $scope.goBackLastPage = function(addressId)
             {
                 window.localStorage.setItem("buyOrderAddressId",addressId);
-                window.location.href = "orderPay.do?productType=offline&random="+Math.random();
+                window.location.href = "orderPay.do?productType="+window.localStorage.getItem("productType")+"&random="+Math.random();
             }
         }]);

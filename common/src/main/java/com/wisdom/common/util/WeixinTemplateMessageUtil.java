@@ -6,7 +6,6 @@ import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.entity.TemplateData;
 import com.wisdom.common.entity.WxTemplate;
 import net.sf.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +14,8 @@ import java.util.Map;
  * Created by wangbaowei on 15/11/30
  */
 public class WeixinTemplateMessageUtil {
+
+	public static final String businessA1 = Global.getConfig("businessA1");
 
     //订单未支付通知模板ID
     public static final String ORDER_NOT_PAY = Global.getConfig("ORDER_NOT_PAY");
@@ -63,6 +64,8 @@ public class WeixinTemplateMessageUtil {
 
 	protected static final String WITHDRAW_SUCCESS_NOTIFY = Global.getConfig("WITHDRAW_SUCCESS_NOTIFY");
 
+	protected static final String SPECIAL_PRODUCT_BUY_NOTIFY = Global.getConfig("SPECIAL_PRODUCT_BUY_NOTIFY");
+
 
     /**
 	 * 订单未支付通知模板 ORDER_NOT_PAY
@@ -82,9 +85,8 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-		//templateData.setValue("客官，您好！您的订单未支付，即将关闭。");
 		templateData.setValue("尊敬的用户，您好！！\n"+
-						"您的订单还未完成支付，请您在24小时之内完成支付，避免订单丢失！！");
+						"您的订单还未完成支付，请您在10分钟之内完成支付，避免订单丢失！！");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -926,7 +928,7 @@ public class WeixinTemplateMessageUtil {
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue(returnMoney+"元");
+		templateData.setValue(returnMoney);
 		m.put("keyword1", templateData);
 
 		templateData = new TemplateData();
@@ -954,7 +956,7 @@ public class WeixinTemplateMessageUtil {
 		WxTemplate t = new WxTemplate();
 		t.setTouser(userOpenid);
 		t.setTopcolor("#000000");
-		t.setTemplate_id(WITHDRAW_SUCCESS_NOTIFY);
+		t.setTemplate_id(SPECIAL_PRODUCT_BUY_NOTIFY);
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");

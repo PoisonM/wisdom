@@ -1,0 +1,137 @@
+<ion-view>
+    <ion-content class="partialFiles">
+        <div class="tabs-striped tabs-top tabs-background-light tabs-color-assertive">
+            <div style="height:48px;">
+                <div class="tabs" style="top:0;"  >
+                    <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='all']"
+                       ng-click="chooseTab('0')">
+                        <span class="fs15 colff66"> 划卡记录</span>
+                    </a>
+                    <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='0']"
+                       ng-click="chooseTab('1')">
+                        <span class="fs15 col333"> 操作记录</span>
+                    </a>
+                </div>
+            </div>
+
+            <div ng-show="param.flag">
+                <ion-list>
+                    <ion-item style="height:70px;" class="sb" ng-repeat="item in treatmentCardDtails" ng-click="drawCardRecordsDetailGO()">
+                        <div>
+                            <p class="fs15 col666 ml10 mt10">{{item.createDate|date:'yyyy-MM-dd'}}</p>
+                            <p class="fs15 col333 ml10">
+                                <span style="width:80px;display: inline-block">{{item.title}}  </span>
+                                <span style="width:50px;display: inline-block">{{item.consumeNumber}}次 </span>
+                                <span>{{item.sysShopClerkName}}({{item.sysShopName}})</span>
+                            </p>
+                        </div>
+                        <p class="mr10 fs16 col333" style="line-height: 70px">签字</p>
+
+                    </ion-item>
+                </ion-list>
+            </div>
+            <div ng-show="!param.flag">
+                <p class="h30 ml10">
+                    基础信息
+                </p>
+                <ion-list>
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml10">时间</p>
+                        <p class="mr10 col888">
+                            2018-01-26 16：32：28
+                        </p>
+                    </ion-item>
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml10">顾客</p>
+                        <p class="mr10 col888">
+                            阿敏
+                        </p>
+                    </ion-item>
+
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml10">操作门店</p>
+                        <p class="mr10 col888">
+                            美容院分店
+                        </p>
+                    </ion-item>
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml10">前台</p>
+                        <p class="mr10 col888">
+                            王萱萱
+                        </p>
+                    </ion-item>
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml10">类型</p>
+                        <p class="mr10 col888">
+                            店内消费
+                        </p>
+                    </ion-item>
+                </ion-list>
+                <p class="h50 ml10">疗程卡</p>
+                <ion-list>
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml10">水光针</p>
+                        <p class="mr10">
+                        </p>
+                    </ion-item>
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml20">包含次数</p>
+                        <p class="mr10 col888">
+                            6次
+                        </p>
+                    </ion-item>
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml20">价格</p>
+                        <p class="mr10 col888">
+                            ¥4888.00
+                        </p>
+                    </ion-item>
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml20">折扣</p>
+                        <p class="mr10 v">
+                            9.2折
+                        </p>
+                    </ion-item>
+                    <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                        <p class="ml20">数量</p>
+                        <p class="mr10 col888">
+                            1
+                        </p>
+                    </ion-item>
+
+                </ion-list>
+                <div class="mt20">
+                    <opn-list >
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                            <p class="ml10"> 总金额</p>
+                            <p class="mr10 col888">
+                                ￥4888.00
+                            </p>
+                        </ion-item>
+                    </opn-list>
+                </div>
+                <p class="h50 ml10">支付明细</p>
+                <div>
+                    <opn-list >
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                            <p class="ml10"> 余额</p>
+                            <p class="mr10 col888">
+                                ￥4888.00
+                            </p>
+                        </ion-item>
+                    </opn-list>
+                </div>
+                <p class="h50 ml10">顾客签字</p>
+                <div style="height:156px;" class="bgfff">
+
+                </div>
+                <p class="h50 ml10 fs14">备注</p>
+                <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff">
+
+            </textarea>
+
+
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,17 +1,17 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById',
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById) {
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById) {
             $rootScope.title = "美享99触屏版";
             $scope.param = {
                 bannerList:{},
                 productList:{},//特殊商品
                 product2List:[[]],//普通商品
                 promoteProduct:true,
-                promoteProductId:"88888888888",
+                promoteProductId:"MXT99-04",
                 rookieProduct:true,
                 rookieProductId:"201712101718100007",
                 redPackerFlagOne:false,
@@ -80,7 +80,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
 
                 //判断用户是否购买过新人大礼包产品
-                GetBusinessOrderByProductId.get({productId:$scope.param.promoteProductId},function(data){
+                /*GetBusinessOrderByProductId.get({productId:$scope.param.promoteProductId},function(data){
                     if(data.result==Global.SUCCESS)
                     {
                         $scope.param.promoteProduct = true;
@@ -89,7 +89,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     {
                         $scope.param.promoteProduct = false;
                     }
-                })
+                })*/
 
                 GetBusinessOrderByProductId.get({productId:$scope.param.rookieProductId},function(data){
                     if(data.result==Global.SUCCESS)
@@ -133,8 +133,9 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
             $scope.goPromoteProduct = function(item){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ADJ,item);
+                $state.go("offlineProductDetail",{productId:$scope.param.promoteProductId});
 
-                if($scope.param.promoteProduct&&$scope.param.promoteProductId==item)
+               /* if($scope.param.promoteProduct&&$scope.param.promoteProductId==item)
                 {
                     var alertPopup = $ionicPopup.alert({
                         template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">你已经购买过促销产品，不能再次购买</span>',
@@ -145,9 +146,9 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 {
                     $state.go("offlineProductDetail",{productId:$scope.param.promoteProductId});
 
-                }
+                }*/
 
-                if($scope.param.rookieProduct&&$scope.param.rookieProductId==item)
+               /* if($scope.param.rookieProduct&&$scope.param.rookieProductId==item)
                 {
                     var alertPopup = $ionicPopup.alert({
                         template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">你已经购买过促销产品，不能再次购买</span>',
@@ -158,9 +159,9 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 {
                     $state.go("offlineProductDetail",{productId:$scope.param.rookieProductId});
 
-                }
+                }*/
 
-            }
+            };
 
             $scope.redPackerClose = function () {
                 $scope.param.redPackerFlagOne = false;
@@ -199,13 +200,15 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 }
             }
 
-            FindProductById.get({
+            FindProductBargainPriceTimeById.get({
                 productId:'MXT99-02'
             },function (data) {
+
                 //当前时间
-                $scope.nowTime =convertDateFromString(data.responseData.productDetail.nowTime).getTime();
+                $scope.nowTime =convertDateFromString(data.responseData.nowTime).getTime();
                 //下架时间
-                $scope.soldOutTime = convertDateFromString( data.responseData.productDetail.soldOutTime).getTime();
+                $scope.soldOutTime = convertDateFromString( data.responseData.soldOutTime).getTime();
+
                 timeInterval($scope.nowTime,$scope.soldOutTime)
             })
             function timeInterval(nowTime,soldOutTime){

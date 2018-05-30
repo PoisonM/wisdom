@@ -14,7 +14,7 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     private String sysShopId;
 
     //
-    private String sysBossId;
+    private String parentShopId;
 
     //项目名称
     private String projectName;
@@ -34,7 +34,7 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     //0：客装 1：院装 2：易耗品
     private String productType;
 
-    //使用方式 0：疗程 1：单次
+    //使用方式 1：疗程0：单次
     private String useStyle;
 
     //卡类别 0：次卡 1：月卡 2：季卡：3：半年卡 4：年卡
@@ -53,7 +53,7 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     private BigDecimal discountPrice;
 
     //最多包含次数
-    private Integer maxContainTimes;
+    private Integer serviceTimes;
 
     //回访天数
     private Integer visitDateTime;
@@ -100,12 +100,12 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
         this.sysShopId = sysShopId;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getParentShopId() {
+        return parentShopId;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setParentShopId(String parentShopId) {
+        this.parentShopId = parentShopId;
     }
 
     public String getProjectName() {
@@ -204,12 +204,12 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
         this.discountPrice = discountPrice;
     }
 
-    public Integer getMaxContainTimes() {
-        return maxContainTimes;
+    public Integer getServiceTimes() {
+        return serviceTimes;
     }
 
-    public void setMaxContainTimes(Integer maxContainTimes) {
-        this.maxContainTimes = maxContainTimes;
+    public void setServiceTimes(Integer serviceTimes) {
+        this.serviceTimes = serviceTimes;
     }
 
     public Integer getVisitDateTime() {

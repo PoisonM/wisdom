@@ -16,8 +16,20 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     //套卡表主键
     private String shopProjectGroupId;
 
+    //购买套卡的数量
+    private Integer shopProjectGroupNumber;
+
+    //
+    private BigDecimal shopGroupPuchasePrice;
+
     //
     private String sysUserId;
+
+    //项目表主键
+    private String shopProjectInfoId;
+
+    //
+    private String shopProjectInfoName;
 
     //套卡关系表id
     private String shopProjectInfoGroupRelationId;
@@ -41,7 +53,10 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     private String sysClerkId;
 
     //
-    private String sysBossId;
+    private String sysClerkName;
+
+    //boss编码
+    private String sysBossCode;
 
     //折扣
     private Float discount;
@@ -84,12 +99,44 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
         this.shopProjectGroupId = shopProjectGroupId;
     }
 
+    public Integer getShopProjectGroupNumber() {
+        return shopProjectGroupNumber;
+    }
+
+    public void setShopProjectGroupNumber(Integer shopProjectGroupNumber) {
+        this.shopProjectGroupNumber = shopProjectGroupNumber;
+    }
+
+    public BigDecimal getShopGroupPuchasePrice() {
+        return shopGroupPuchasePrice;
+    }
+
+    public void setShopGroupPuchasePrice(BigDecimal shopGroupPuchasePrice) {
+        this.shopGroupPuchasePrice = shopGroupPuchasePrice;
+    }
+
     public String getSysUserId() {
         return sysUserId;
     }
 
     public void setSysUserId(String sysUserId) {
         this.sysUserId = sysUserId;
+    }
+
+    public String getShopProjectInfoId() {
+        return shopProjectInfoId;
+    }
+
+    public void setShopProjectInfoId(String shopProjectInfoId) {
+        this.shopProjectInfoId = shopProjectInfoId;
+    }
+
+    public String getShopProjectInfoName() {
+        return shopProjectInfoName;
+    }
+
+    public void setShopProjectInfoName(String shopProjectInfoName) {
+        this.shopProjectInfoName = shopProjectInfoName;
     }
 
     public String getShopProjectInfoGroupRelationId() {
@@ -148,12 +195,20 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
         this.sysClerkId = sysClerkId;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysClerkName() {
+        return sysClerkName;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
+
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public Float getDiscount() {

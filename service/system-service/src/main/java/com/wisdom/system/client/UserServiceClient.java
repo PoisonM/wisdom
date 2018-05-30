@@ -1,5 +1,7 @@
 package com.wisdom.system.client;
 
+import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,4 +22,6 @@ public interface UserServiceClient {
 
     @RequestMapping(value = "/updateUserInfo",method=RequestMethod.POST)
     void updateUserInfo(@RequestBody UserInfoDTO userInfoDTO);
+
+
 }

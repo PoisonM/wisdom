@@ -4,6 +4,7 @@
 package com.wisdom.business.mapper.transaction;
 
 import com.wisdom.common.dto.system.UserOrderAddressDTO;
+import com.wisdom.common.dto.transaction.OrderAddressRelationDTO;
 import com.wisdom.common.persistence.annotation.MyBatisDao;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -32,4 +33,10 @@ public interface UserOrderAddressMapper {
 	UserOrderAddressDTO findUserAddressById(@Param("addressId") String addressId);
 
 	UserOrderAddressDTO getUserOrderAddressByOrderId(@Param("orderId") String orderId);
+
+    void addOrderAddressRelation(OrderAddressRelationDTO orderAddressRelationDTO);
+
+	List<OrderAddressRelationDTO> getOrderAddressRelationByOrderId(@Param("orderId") String orderId);
+
+    void updateOrderAddressRelationByOrderId(OrderAddressRelationDTO orderAddressRelationDTO);
 }

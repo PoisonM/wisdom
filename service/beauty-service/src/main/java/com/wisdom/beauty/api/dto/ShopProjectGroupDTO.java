@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
@@ -19,13 +20,16 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
     private String projectGroupUrl;
 
     //市场价格
-    private Long marketPrice;
+    private BigDecimal marketPrice;
 
     //折扣价格
-    private Long discountPrice;
+    private BigDecimal discountPrice;
+
+    //生效日期
+    private String effectiveDate;
 
     //有效期
-    private Date validDate;
+    private String expirationDate;
 
     //套卡说明
     private String detail;
@@ -79,28 +83,36 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
         this.projectGroupUrl = projectGroupUrl;
     }
 
-    public Long getMarketPrice() {
+    public BigDecimal getMarketPrice() {
         return marketPrice;
     }
 
-    public void setMarketPrice(Long marketPrice) {
+    public void setMarketPrice(BigDecimal marketPrice) {
         this.marketPrice = marketPrice;
     }
 
-    public Long getDiscountPrice() {
+    public BigDecimal getDiscountPrice() {
         return discountPrice;
     }
 
-    public void setDiscountPrice(Long discountPrice) {
+    public void setDiscountPrice(BigDecimal discountPrice) {
         this.discountPrice = discountPrice;
     }
 
-    public Date getValidDate() {
-        return validDate;
+    public String getEffectiveDate() {
+        return effectiveDate;
     }
 
-    public void setValidDate(Date validDate) {
-        this.validDate = validDate;
+    public void setEffectiveDate(String effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public String getDetail() {

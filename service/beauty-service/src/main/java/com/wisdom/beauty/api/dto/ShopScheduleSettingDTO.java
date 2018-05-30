@@ -1,21 +1,21 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopScheduleSettingDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
-    //
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
 
     //
     private String sysShopId;
 
-    //早班，中班，晚班，全班
+    //0早班，1中班，2晚班，3全班
     private String typeName;
 
     //0:开启  1：关闭
@@ -49,12 +49,12 @@ public class ShopScheduleSettingDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysShopId() {

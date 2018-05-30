@@ -1,7 +1,10 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 
 import java.util.List;
 
@@ -15,7 +18,7 @@ import java.util.List;
 public interface ShopProjectService {
 
     /**
-     * 查询某个用户预约的项目列表
+     * 查询用户与项目的关系
      *
      * @param shopUserProjectRelationDTO
      * @return
@@ -24,12 +27,28 @@ public interface ShopProjectService {
 
 
     /**
+     * 根据用户与项目的关系主键列表查询用户与项目的关系
+     *
+     * @param relationId
+     * @return
+     */
+    List<ShopUserProjectRelationDTO> getUserShopProjectList(List<String> relationId);
+
+    /**
      * 更新用户与项目的关系
      *
      * @param shopUserProjectRelationDTO
      * @return
      */
     int updateUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
+
+    /**
+     * 删除用户与项目的关系
+     *
+     * @param shopUserProjectRelationDTO
+     * @return
+     */
+    int deleteUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
 
     /**
      * 查询某个店的项目列表信息
@@ -69,7 +88,7 @@ public interface ShopProjectService {
     *@Description: 获取三级项目列表
     *@Date:2018/4/10 16:21
     */
-    List<ShopProjectInfoDTO> getThreeLevelProjectList(PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO);
+    List<ShopProjectInfoResponseDTO> getThreeLevelProjectList(PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO);
     /**
     *@Author:huan
     *@Param:
@@ -77,7 +96,7 @@ public interface ShopProjectService {
     *@Description: 获取项目的详细信息
     *@Date:2018/4/10 16:59
     */
-    ShopProjectInfoDTO getProjectDetail(String id);
+    ShopProjectInfoResponseDTO getProjectDetail(String id);
 
     /**
      * 保存用户与项目的关系
@@ -103,4 +122,33 @@ public interface ShopProjectService {
      *@Date:2018/4/11 17:26
      */
     List<ShopProjectInfoDTO> getProjectDetails(List<String> ids);
+
+    /**
+     * 添加项目类别
+     */
+    int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO, SysBossDTO bossInfo);
+
+    /**
+     * 修改项目类别
+     *
+     * @param shopProjectTypeDTO
+     * @return
+     */
+    int updateProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO);
+
+    /**
+     * 修改项目
+     *
+     * @param shopProjectInfoDTO
+     * @return
+     */
+    int updateProjectInfo(ShopProjectInfoDTO shopProjectInfoDTO);
+
+    /**
+     * 保存项目
+     *
+     * @param extShopProjectInfoDTO
+     * @return
+     */
+    int saveProjectInfo(ExtShopProjectInfoDTO extShopProjectInfoDTO);
 }

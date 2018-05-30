@@ -11,7 +11,7 @@
         <result column="consume_number" property="consumeNumber" jdbcType="INTEGER"/>
         <result column="goods_type" property="goodsType" jdbcType="CHAR"/>
         <result column="consume_type" property="consumeType" jdbcType="CHAR"/>
-        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
         <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
         <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
         <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
@@ -90,7 +90,7 @@
     </sql>
     <sql id="Base_Column_List">
     id, flow_id, flow_name, flow_no, sys_user_id, sys_user_name, consume_number, goods_type,
-    consume_type, sys_boss_id, sys_shop_id, sys_shop_name, sys_clerk_id, sys_clerk_name,
+    consume_type, sys_boss_code, sys_shop_id, sys_shop_name, sys_clerk_id, sys_clerk_name,
     price, discount, oper_date, pay_type, sign_url, detail, status, create_by, create_date,
     update_user, update_date
   </sql>
@@ -122,6 +122,9 @@
         <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
+        <if test="distinct ==true">
+            group by sys_clerk_id
+        </if>
         <if test="limitStart >= 0">
             limit ${limitStart},${pageSize}
         </if>
@@ -129,18 +132,18 @@
     <select id="selectPriceListByCriteria" resultType="com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO"
             parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria">
         select
-        flow_no flowNo,SUM(price) expenditure,sys_shop_id sysShopId, sys_shop_name sysShopName
+        flow_no flowNo,SUM(price) totalPrice,sys_user_id sysUserId ,sys_shop_id sysShopId, sys_clerk_id sysShopClerkId,sys_shop_name sysShopName,DATE_FORMAT(create_date,'%Y-%m-%d') formateDate,pay_type payType,create_date createDate
         from shop_user_consume_record
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
+        GROUP  BY flow_no
         <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
         <if test="limitStart >= 0">
             limit ${limitStart},${pageSize}
         </if>
-        GROUP  BY flow_no
     </select>
 
 </mapper>

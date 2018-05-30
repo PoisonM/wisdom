@@ -3,9 +3,11 @@ package com.wisdom.beauty.api.extDto;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -36,14 +38,72 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //签字图片地址
     private String signUrl;
 
+    //0、商品类型为次卡；1、商品类型为疗程卡 ；2、商品类型为充值卡；3、商品类型为套卡 4、商品类型为产品
+    private String goodsType;
+
+    //0添加  1删除
+    private String operation;
+
+    //订单价格
+    private String orderPrice;
+
+    //可用余额
+    private BigDecimal availableBalance;
+
     //用户与项目关系
     private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
 
     //用户与产品
     private List<ShopUserProductRelationDTO> shopUserProductRelationDTOS;
 
+    //用户与充值卡的关系
+    private ShopUserRechargeCardDTO shopUserRechargeCardDTO;
+
+    //存储用户支付抵扣充值卡对象
+    private List<ShopUserRechargeCardDTO> userPayRechargeCardList;
+
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+
+    public List<ShopUserRechargeCardDTO> getUserPayRechargeCardList() {
+        return userPayRechargeCardList;
+    }
+
+    public void setUserPayRechargeCardList(List<ShopUserRechargeCardDTO> userPayRechargeCardList) {
+        this.userPayRechargeCardList = userPayRechargeCardList;
+    }
+
+    public BigDecimal getAvailableBalance() {
+        return availableBalance;
+    }
+
+    public void setAvailableBalance(BigDecimal availableBalance) {
+        this.availableBalance = availableBalance;
+    }
+
+    public String getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(String orderPrice) {
+        this.orderPrice = orderPrice;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public String getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType;
+    }
 
     public String getUserId() {
         return userId;
@@ -141,4 +201,11 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
         this.projectGroupRelRelationDTOS = projectGroupRelRelationDTOS;
     }
 
+    public ShopUserRechargeCardDTO getShopUserRechargeCardDTO() {
+        return shopUserRechargeCardDTO;
+    }
+
+    public void setShopUserRechargeCardDTO(ShopUserRechargeCardDTO shopUserRechargeCardDTO) {
+        this.shopUserRechargeCardDTO = shopUserRechargeCardDTO;
+    }
 }

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.user.mapper.UserInfoMapper">
+
+    <resultMap id="UserInfoResultMap" type="com.wisdom.common.dto.user.UserInfoDTO" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="TIMESTAMP" />
+        <result column="identify_number" property="identifyNumber" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="TINYINT" />
+        <result column="user_openid" property="userOpenid" jdbcType="TIMESTAMP" />
+        <result column="parent_user_id" property="parentUserId" jdbcType="VARCHAR" />
+        <result column="weixin_attention_status" property="weixinAttentionStatus" jdbcType="VARCHAR" />
+        <result column="photo" property="photo" jdbcType="VARCHAR" />
+        <result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+        <result column="login_date" property="loginDate" jdbcType="TIMESTAMP" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+        <result column="living_period" property="livingPeriod" jdbcType="INTEGER" />
+        <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="UserBusinessTypeResultMap" type="com.wisdom.common.dto.system.UserBusinessTypeDTO" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="parent_user_id" property="parentUserId" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="living_period" property="livingPeriod" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Product_List">
+        u.id,u.nickname,u.password,u.email,u.identify_number,u.mobile,u.user_type,u.user_openid,
+        u.parent_user_id,u.weixin_attention_status,u.photo,u.login_ip,u.login_date,u.create_date,u.del_flag
+    </sql>
+
+    <!-- 查询用户 -->
+    <select id="getUserByInfo"
+            parameterType="com.wisdom.common.dto.user.UserInfoDTO"
+            resultMap="UserInfoResultMap">
+        SELECT * FROM sys_user
+        where 1=1
+        <if test="id != null and id !=''">
+            and id=#{id}
+        </if>
+        <if test="source != null and source !=''">
+            and source=#{source}
+        </if>
+        <if test="nickname != null and nickname !=''">
+            and nickname=#{nickname}
+        </if>
+        <if test="password != null and password !=''">
+            and password=#{password}
+        </if>
+        <if test="email != null and email !=''">
+            and email=#{email}
+        </if>
+        <if test="identifyNumber != null and identifyNumber !=''">
+            and identify_number=#{identifyNumber}
+        </if>
+        <if test="mobile != null and mobile !=''">
+            and mobile=#{mobile}
+        </if>
+        <if test="userType != null and userType !=''">
+            and user_type=#{userType}
+        </if>
+        <if test="userOpenid != null and userOpenid !=''">
+            and user_openid=#{userOpenid}
+        </if>
+        <if test="parentUserId != null and parentUserId !=''">
+            and parent_user_id=#{parentUserId}
+        </if>
+        <if test="weixinAttentionStatus != null and weixinAttentionStatus !=''">
+            and weixin_attention_status=#{weixinAttentionStatus}
+        </if>
+        <if test="delFlag != null and delFlag !=''">
+            and del_flag=#{delFlag}
+        </if>
+    </select>
+
+    <!-- 更新用户 -->
+    <update id="updateUserInfo">
+        UPDATE sys_user SET
+        id = #{id}
+        <if test="nickname!= ''and nickname!=null">
+            ,nickname=#{nickname}
+        </if>
+        <if test="password!= ''and password!=null">
+            ,password=#{password}
+        </if>
+        <if test="email!= '' and email!=null">
+            ,email=#{email}
+        </if>
+        <if test="identifyNumber!= '' and identifyNumber!=null">
+            ,identify_number=#{identifyNumber}
+        </if>
+        <if test="mobile!= '' and mobile!=null">
+            ,mobile=#{mobile}
+        </if>
+        <if test="userType!= '' and userType!=null">
+            ,user_type=#{userType}
+        </if>
+        <if test="userOpenid!= '' and userOpenid!=null">
+            ,user_openid=#{userOpenid}
+        </if>
+        <if test="parentUserId!= '' and parentUserId!=null">
+            ,parent_user_id=#{parentUserId}
+        </if>
+        <if test="weixinAttentionStatus!= '' and weixinAttentionStatus!=null">
+            ,weixin_attention_status=#{weixinAttentionStatus}
+        </if>
+        <if test="photo!= '' and photo!=null">
+            ,photo=#{photo}
+        </if>
+        <if test="loginIp!= '' and loginIp!=null">
+            ,login_ip=#{loginIp}
+        </if>
+        <if test="loginDate!=null">
+            ,login_date=#{loginDate}
+        </if>
+        <if test="createDate!=null">
+            ,create_date=#{createDate}
+        </if>
+        <if test="delFlag!= '' and delFlag!=null">
+            ,del_flag=#{delFlag}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <!-- 插入用户 -->
+    <insert id="insertUserInfo">
+        INSERT INTO sys_user(
+        id,
+        source,
+        nickname,
+        password,
+        email,
+        identify_number,
+        mobile,
+        user_type,
+        user_openid,
+        parent_user_id,
+        weixin_attention_status,
+        photo,
+        login_ip,
+        login_date,
+        create_date,
+        del_flag
+        ) VALUES (
+        #{id},
+        #{source},
+        #{nickname},
+        #{password},
+        #{email},
+        #{identifyNumber},
+        #{mobile},
+        #{userType},
+        #{userOpenid},
+        #{parentUserId},
+        #{weixinAttentionStatus},
+        #{photo},
+        #{loginIp},
+        #{loginDate},
+        #{createDate},
+        #{delFlag}
+        )
+    </insert>
+
+    <!-- 查询用户 -->
+    <select id="getUserBusinessType"
+            parameterType="com.wisdom.common.dto.system.UserBusinessTypeDTO"
+            resultMap="UserBusinessTypeResultMap">
+        SELECT * FROM user_business_type
+        where 1=1
+        <if test="id != null and id !=''">
+            and id=#{id}
+        </if>
+        <if test="parentUserId != null and parentUserId !=''">
+            and parent_user_id=#{parentUserId}
+        </if>
+        <if test="sysUserId != null and sysUserId !=''">
+            and sys_user_id=#{sysUserId}
+        </if>
+        <if test="userType != null and userType !=''">
+            and user_type=#{userType}
+        </if>
+        <if test="livingPeriod != null and livingPeriod !=''">
+            and living_period=#{livingPeriod}
+        </if>
+        <if test="createDate !=null">
+            and create_date=#{createDate}
+        </if>
+        <if test="status != null and status !=''">
+            and status=#{status}
+        </if>
+    </select>
+
+    <!-- 插入用户 -->
+    <insert id="insertUserBusinessType">
+        INSERT INTO user_business_type(
+        id,
+        parent_user_id,
+        sys_user_id,
+        user_type,
+        create_date,
+        living_period,
+        status
+        ) VALUES (
+        #{id},
+        #{parentUserId},
+        #{sysUserId},
+        #{userType},
+        #{createDate},
+        #{livingPeriod},
+        #{status}
+        )
+    </insert>
+
+    <!-- 更新用户 -->
+    <update id="updateUserBusinessType">
+        UPDATE user_business_type SET
+        id = #{id}
+        <if test="parentUserId!= ''and parentUserId!=null">
+            ,parent_user_id=#{parentUserId}
+        </if>
+        <if test="sysUserId!= ''and sysUserId!=null">
+            ,sys_user_id=#{sysUserId}
+        </if>
+        <if test="userType!= ''and userType!=null">
+            ,user_type=#{userType}
+        </if>
+        <if test="createDate!=null">
+            ,create_date=#{createDate}
+        </if>
+        <if test="livingPeriod!=null">
+            ,living_period=#{livingPeriod}
+        </if>
+        <if test="status!= ''and status!=null">
+            ,status=#{status}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <!--根据id查询用户等级历史信息-->
+    <select id="queryUserBusinessById" resultMap="UserBusinessTypeResultMap">
+        SELECT *
+        FROM user_business_type
+        WHERE sys_user_id = #{sysUserId}
+    </select>
+
+    <!--条件查询用户Count-->
+    <select id="queryUserInfoDTOCountByParameters" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM sys_user u,user_business_type ub
+        WHERE 1=1 AND u.del_flag = "0" AND u.id = ub.sys_user_id AND ub.status != "0"
+        <if test="requestData.mobile != null and requestData.mobile != ''">
+            AND u.mobile=#{requestData.mobile}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND u.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="requestData.userType != null and requestData.userType != ''">
+            AND u.user_type LIKE "${requestData.userType}%"
+        </if>
+    </select>
+
+    <!--条件查询所有用户信息-->
+    <select id="queryUserInfoDTOByParameters" resultMap="UserInfoResultMap">
+        SELECT
+        u.id,u.nickname,u.password,u.email,u.identify_number,u.mobile,u.user_openid,
+        u.parent_user_id,u.weixin_attention_status,u.photo,u.login_ip,u.login_date,u.del_flag
+        ,ub.create_date AS begin_time,ub.living_period,u.user_type,ub.create_date
+        FROM sys_user u,user_business_type ub
+        WHERE 1=1 AND u.del_flag = "0" AND u.id = ub.sys_user_id AND ub.status != "0"
+        <if test="requestData.mobile != null and requestData.mobile != ''">
+            AND u.mobile=#{requestData.mobile}
+        </if>
+        <if test="startTime != ''and startTime != null  ">
+            AND u.create_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="requestData.userType != null and requestData.userType != ''">
+            AND u.user_type LIKE "${requestData.userType}%"
+        </if>
+        ORDER BY u.login_date DESC
+        limit #{pageStartNo},#{pageSize}
+    </select>
+
+    <!--根据id查询用户下级代理-->
+    <select id="queryNextUserById" resultMap="UserInfoResultMap">
+        SELECT *
+        FROM sys_user
+        WHERE parent_user_id = #{sysUserId}
+    </select>
+
+    <!--根据id查询用户上级代理-->
+    <select id="queryParentUserById" resultMap="UserInfoResultMap">
+        SELECT *
+        FROM sys_user
+        WHERE id = #{parentUserId}
+    </select>
+
+    <!-- 根据多个userId查询用户集合 -->
+    <select id="getUserByInfoList"
+            parameterType="com.wisdom.common.dto.user.UserInfoDTO"
+            resultMap="UserInfoResultMap">
+        SELECT * FROM sys_user
+            WHERE id in <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                         #{item}
+                        </foreach>
+        <if test="searchFile!= '' and searchFile!=null">
+            and (mobile LIKE "%"#{searchFile}"%" or nickname LIKE  "%"#{searchFile}"%")
+        </if>
+    </select>
+
+</mapper>

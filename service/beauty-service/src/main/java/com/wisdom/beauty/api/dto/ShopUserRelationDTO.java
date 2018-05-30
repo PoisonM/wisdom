@@ -1,9 +1,9 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserRelationDTO extends BaseEntity implements Serializable {
     //
@@ -21,14 +21,20 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
     //用户名称
     private String sysUserName;
 
-    //老板id
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
+
+    //美容院的唯一标识
+    private String shopId;
 
     //关系 0:绑定  1：未绑定
     private String status;
 
     //会员账号
     private String userAccountNo;
+
+    //
+    private String shopPhoto;
 
     //
     private String createBy;
@@ -84,12 +90,20 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.sysUserName = sysUserName;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
     }
 
     public String getStatus() {
@@ -106,6 +120,14 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
 
     public void setUserAccountNo(String userAccountNo) {
         this.userAccountNo = userAccountNo;
+    }
+
+    public String getShopPhoto() {
+        return shopPhoto;
+    }
+
+    public void setShopPhoto(String shopPhoto) {
+        this.shopPhoto = shopPhoto;
     }
 
     public String getCreateBy() {

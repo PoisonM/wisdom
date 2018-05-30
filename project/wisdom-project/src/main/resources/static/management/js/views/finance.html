@@ -22,26 +22,26 @@
                  <div class="product_eara">
                      <div class="product_name">
                          <div class="product_nameEara ">
-                             <label  for="financeName" class="bold">账单编号:</label>
+                             <label  for="financeName" class="bold">订单编号:</label>
                              <input type="text" class="product_search" ng-model="bills" id="financeName">
                          </div>
                          <div class="product_nameEara " >
-                             <label  for="orderNum" class="bold">订单编号:</label>
+                             <label  for="orderNum" class="bold">手机号:</label>
                              <input type="text" class="product_search" ng-model="order" id="orderNum">
                          </div>
                      </div>
                      <div class="product_name big">
-                         <div class="orderTime">
+                         <div class="orderTime product_nameEara">
                              <label class="bold">
                                  完成时间：
                              </label>
-                             <input  class="StreamNumberStart laydate-icon" id="StreamNumberStart" ng-click="dataS('#StreamNumberStart')" >&nbsp--&nbsp<input class="StreamNumberEnd laydate-icon" id="StreamNumberEnd" ng-click="dataS('#StreamNumberEnd')" >
+                             <input  class="StreamNumberStart date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp--&nbsp<input class="StreamNumberEnd date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"  >
                          </div>
-                         <div class="orderTime">
+                         <div class="orderTime product_nameEara">
                              <label class="bold">
                                  付款时间：
                              </label>
-                             <input  class="orderPayStart laydate-icon" id="orderPayStart" ng-click="dataS('#orderPayStart')" >&nbsp--&nbsp<input  class="orderPayEnd laydate-icon" id="orderPayEnd" ng-click="dataS('#orderPayEnd')" >
+                             <input  class="orderPayStart date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"  >&nbsp--&nbsp<input  class="orderPayEnd date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"  >
                          </div>
                      </div>
                      <div class="product_searchEara">

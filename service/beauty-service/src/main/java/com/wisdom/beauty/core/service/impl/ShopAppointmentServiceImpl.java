@@ -1,23 +1,23 @@
 package com.wisdom.beauty.core.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.enums.AppointStatusEnum;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.util.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * FileName: AppointmentServiceImpl
@@ -46,15 +46,26 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     @Override
     public List<ShopAppointServiceDTO> getShopAppointClerkInfoByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
-        if(null == extShopAppointServiceDTO || null == extShopAppointServiceDTO.getSearchStartTime() || null == extShopAppointServiceDTO.getSearchEndTime()){
+        if (null == extShopAppointServiceDTO) {
             logger.info("根据时间查询查询某个店的有预约号源的美容师列表,查询参数为空{}",extShopAppointServiceDTO);
             return null;
         }
 
         ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
         ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
-        criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
-        criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(),extShopAppointServiceDTO.getSearchEndTime());
+
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
+        }
+
+        if (null != extShopAppointServiceDTO.getSearchStartTime()) {
+            criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
+        }
+
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysClerkId())) {
+            criteria.andSysClerkIdEqualTo(extShopAppointServiceDTO.getSysClerkId());
+        }
+
         List<ShopAppointServiceDTO> appointServiceDTOS = extShopAppointServiceMapper.selectShopAppointClerkInfoByCriteria(shopAppointServiceCriteria);
         return appointServiceDTOS;
     }
@@ -67,26 +78,99 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     @Override
     public List<ShopAppointServiceDTO> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
-        if(null == extShopAppointServiceDTO || null == extShopAppointServiceDTO.getSearchStartTime() || null == extShopAppointServiceDTO.getSearchEndTime()){
+        if (null == extShopAppointServiceDTO) {
             logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空{}",extShopAppointServiceDTO);
             return null;
         }
 
         ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
         ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
+        String status = extShopAppointServiceDTO.getStatus();
+
         if(StringUtils.isNotBlank(extShopAppointServiceDTO.getSysShopId())){
             criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
         }
         if(StringUtils.isNotBlank(extShopAppointServiceDTO.getSysClerkId())){
             criteria.andSysClerkIdEqualTo(extShopAppointServiceDTO.getSysClerkId());
         }
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysUserId())) {
+            criteria.andSysUserIdEqualTo(extShopAppointServiceDTO.getSysUserId());
+        }
         if(null != extShopAppointServiceDTO.getSearchStartTime() && null != extShopAppointServiceDTO.getSearchEndTime()){
-            criteria.andCreateDateBetween(extShopAppointServiceDTO.getSearchStartTime(),extShopAppointServiceDTO.getSearchEndTime());
+            criteria.andAppointStartTimeBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
+        }
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossCode())) {
+            criteria.andSysBossCodeEqualTo(extShopAppointServiceDTO.getSysBossCode());
+        }
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getId())) {
+            List<String> values = new ArrayList<>();
+            values.add(extShopAppointServiceDTO.getId());
+            criteria.andIdNotIn(values);
+        }
+
+
+        if (StringUtils.isNotBlank(status)) {
+            //如果是进行中
+            if (AppointStatusEnum.ONGOING.getCode().equals(status)) {
+                ArrayList<String> arrayList = new ArrayList<>();
+                arrayList.add(AppointStatusEnum.NOT_STARTED.getCode());
+                arrayList.add(AppointStatusEnum.CONFIRM.getCode());
+                arrayList.add(AppointStatusEnum.ON_SERVICE.getCode());
+                criteria.andStatusIn(arrayList);
+            }
+            //如果是已结束
+            else if (AppointStatusEnum.ENDED.getCode().equals(status)) {
+                ArrayList<String> arrayList = new ArrayList<>();
+                arrayList.add(AppointStatusEnum.OVER.getCode());
+                arrayList.add(AppointStatusEnum.CANCEL.getCode());
+                criteria.andStatusIn(arrayList);
+            } else {
+                criteria.andStatusEqualTo(status);
+            }
         }
 
         List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
         return appointServiceDTOS;
     }
+
+    /**
+     * 根据时间查询某个店下的某个美容师的预约个数
+     *
+     * @param extShopAppointServiceDTO
+     * @return
+     */
+    @Override
+    public Integer getShopClerkAppointNumberByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
+
+        if (null == extShopAppointServiceDTO) {
+            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空{}", extShopAppointServiceDTO);
+            return null;
+        }
+
+        ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
+        ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
+
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(extShopAppointServiceDTO.getSysShopId());
+        }
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysClerkId())) {
+            criteria.andSysClerkIdEqualTo(extShopAppointServiceDTO.getSysClerkId());
+        }
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysUserId())) {
+            criteria.andSysUserIdEqualTo(extShopAppointServiceDTO.getSysUserId());
+        }
+        if (null != extShopAppointServiceDTO.getSearchStartTime() && null != extShopAppointServiceDTO.getSearchEndTime()) {
+            criteria.andAppointStartTimeBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
+        }
+        if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossCode())) {
+            criteria.andSysBossCodeEqualTo(extShopAppointServiceDTO.getSysBossCode());
+        }
+
+        int appointServiceDTOS = shopAppointServiceMapper.countByCriteria(shopAppointServiceCriteria);
+        logger.info("根据时间查询某个店下的某个美容师的预约个数={}", appointServiceDTOS);
+        return appointServiceDTOS;
+    }
+
 
     /**
      * 更新预约信息
@@ -110,19 +194,26 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
      * @Date:2018/4/8 14:26
      */
     @Override
-    public ShopAppointServiceDTO getShopAppointService(String userId) {
+    public ShopAppointServiceDTO getShopAppointService(ShopAppointServiceDTO shopAppointServiceDTO) {
 
-        logger.info("getShopAppointServiceDTO传入参数userId={}", userId);
-        if (StringUtils.isBlank(userId)) {
-            logger.debug(" 根据用户ID查询预约信息,{}", "userId = [" + userId + "]");
+        logger.info("getShopAppointServiceDTO传入参数userId={}", shopAppointServiceDTO);
+        if (null == shopAppointServiceDTO) {
+            logger.debug(" 根据用户ID查询预约信息,{}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
             return null;
         }
         ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
         ShopAppointServiceCriteria.Criteria criteria = shopAppointServiceCriteria.createCriteria();
-        criteria.andSysUserIdEqualTo(userId);
+
+        if (StringUtils.isNotBlank(shopAppointServiceDTO.getSysUserId())) {
+            criteria.andSysUserIdEqualTo(shopAppointServiceDTO.getSysUserId());
+        }
+
+        if (StringUtils.isNotBlank(shopAppointServiceDTO.getId())) {
+            criteria.andIdEqualTo(shopAppointServiceDTO.getId());
+        }
+
         shopAppointServiceCriteria.setOrderByClause("create_date");
         List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
-        ShopAppointServiceDTO shopAppointServiceDTO = null;
 
         if (CollectionUtils.isNotEmpty(appointServiceDTOS)) {
             shopAppointServiceDTO = appointServiceDTOS.get(0);
@@ -197,17 +288,17 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
      *  @autuor zhangchao
      * */
     @Override
-    public PageParamDTO<List<ShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ShopAppointServiceDTO> pageParamDTO){
+    public PageParamDTO<List<ExtShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO) {
 
 
         HashMap<String,String> shopAppointMap = new HashMap<>();
         shopAppointMap.put("sysShopId",pageParamDTO.getRequestData().getSysShopId());
         shopAppointMap.put("appointStartTimeS",pageParamDTO.getRequestData().getAppointStartTimeS());
-        shopAppointMap.put("appointStartTimeE",pageParamDTO.getRequestData().getAppointStartTimeE());
+        shopAppointMap.put("appointStartTimeE", pageParamDTO.getRequestData().getAppointEndTimeE());
         shopAppointMap.put("sysClerkId",pageParamDTO.getRequestData().getSysClerkId());
 
         //预约用户列表
-        List<ShopAppointServiceDTO> shopAppointUserInfoList = new ArrayList<>();
+        List<ExtShopAppointServiceDTO> shopAppointUserInfoList = new ArrayList<>();
         int sum = 0;
 
         try {
@@ -219,12 +310,11 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             logger.info(e.getMessage());
         }
 
-        PageParamDTO<List<ShopAppointServiceDTO>> page = new  PageParamDTO<>();
+        PageParamDTO<List<ExtShopAppointServiceDTO>> page = new PageParamDTO<>();
         page.setResponseData(shopAppointUserInfoList);
         page.setTotalCount(sum);
-        logger.info("店铺"+pageParamDTO.getRequestData().getSysShopId()+"下面店员"+pageParamDTO.getRequestData().getSysClerkId()+"在"+pageParamDTO.getRequestData().getAppointStartTimeS()+"到"+pageParamDTO.getRequestData().getAppointStartTimeE()+"的预约用户列表是"+shopAppointUserInfoList);
+        logger.info("店铺" + pageParamDTO.getRequestData().getSysShopId() + "下面店员" + pageParamDTO.getRequestData().getSysClerkId() + "在" + pageParamDTO.getRequestData().getAppointStartTimeS() + "到" + pageParamDTO.getRequestData().getAppointEndTimeE() + "的预约用户列表是" + shopAppointUserInfoList);
 
         return page;
     }
-
 }

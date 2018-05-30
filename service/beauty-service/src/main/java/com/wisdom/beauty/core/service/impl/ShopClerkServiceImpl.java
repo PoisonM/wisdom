@@ -45,7 +45,7 @@ public class ShopClerkServiceImpl implements ShopClerkService {
             clerkFlowAccountDTO.setId(IdGen.uuid());
             clerkFlowAccountDTO.setSignUrl(dto.getSignUrl());
             clerkFlowAccountDTO.setOperInfo(dto.getDetail());
-            clerkFlowAccountDTO.setSysBossId(dto.getSysBossId());
+            clerkFlowAccountDTO.setSysBossCode(dto.getSysBossCode());
             clerkFlowAccountDTO.setSysClerkId(dto.getSysClerkId());
             clerkFlowAccountDTO.setSysShopId(dto.getSysShopId());
             clerkFlowAccountDTO.setSysShopName(dto.getSysShopName());

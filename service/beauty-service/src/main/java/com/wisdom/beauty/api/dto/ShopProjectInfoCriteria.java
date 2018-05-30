@@ -266,73 +266,73 @@ public class ShopProjectInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdIsNull() {
-            addCriterion("sys_boss_id is null");
+        public Criteria andParentShopIdIsNull() {
+            addCriterion("parent_shop_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdIsNotNull() {
-            addCriterion("sys_boss_id is not null");
+        public Criteria andParentShopIdIsNotNull() {
+            addCriterion("parent_shop_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdEqualTo(String value) {
-            addCriterion("sys_boss_id =", value, "sysBossId");
+        public Criteria andParentShopIdEqualTo(String value) {
+            addCriterion("parent_shop_id =", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdNotEqualTo(String value) {
-            addCriterion("sys_boss_id <>", value, "sysBossId");
+        public Criteria andParentShopIdNotEqualTo(String value) {
+            addCriterion("parent_shop_id <>", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdGreaterThan(String value) {
-            addCriterion("sys_boss_id >", value, "sysBossId");
+        public Criteria andParentShopIdGreaterThan(String value) {
+            addCriterion("parent_shop_id >", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdGreaterThanOrEqualTo(String value) {
-            addCriterion("sys_boss_id >=", value, "sysBossId");
+        public Criteria andParentShopIdGreaterThanOrEqualTo(String value) {
+            addCriterion("parent_shop_id >=", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdLessThan(String value) {
-            addCriterion("sys_boss_id <", value, "sysBossId");
+        public Criteria andParentShopIdLessThan(String value) {
+            addCriterion("parent_shop_id <", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdLessThanOrEqualTo(String value) {
-            addCriterion("sys_boss_id <=", value, "sysBossId");
+        public Criteria andParentShopIdLessThanOrEqualTo(String value) {
+            addCriterion("parent_shop_id <=", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdLike(String value) {
-            addCriterion("sys_boss_id like", value, "sysBossId");
+        public Criteria andParentShopIdLike(String value) {
+            addCriterion("parent_shop_id like", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdNotLike(String value) {
-            addCriterion("sys_boss_id not like", value, "sysBossId");
+        public Criteria andParentShopIdNotLike(String value) {
+            addCriterion("parent_shop_id not like", value, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdIn(List<String> values) {
-            addCriterion("sys_boss_id in", values, "sysBossId");
+        public Criteria andParentShopIdIn(List<String> values) {
+            addCriterion("parent_shop_id in", values, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdNotIn(List<String> values) {
-            addCriterion("sys_boss_id not in", values, "sysBossId");
+        public Criteria andParentShopIdNotIn(List<String> values) {
+            addCriterion("parent_shop_id not in", values, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdBetween(String value1, String value2) {
-            addCriterion("sys_boss_id between", value1, value2, "sysBossId");
+        public Criteria andParentShopIdBetween(String value1, String value2) {
+            addCriterion("parent_shop_id between", value1, value2, "parentShopId");
             return (Criteria) this;
         }
 
-        public Criteria andSysBossIdNotBetween(String value1, String value2) {
-            addCriterion("sys_boss_id not between", value1, value2, "sysBossId");
+        public Criteria andParentShopIdNotBetween(String value1, String value2) {
+            addCriterion("parent_shop_id not between", value1, value2, "parentShopId");
             return (Criteria) this;
         }
 
@@ -1146,63 +1146,63 @@ public class ShopProjectInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesIsNull() {
-            addCriterion("max_contain_times is null");
+        public Criteria andServiceTimesIsNull() {
+            addCriterion("service_times is null");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesIsNotNull() {
-            addCriterion("max_contain_times is not null");
+        public Criteria andServiceTimesIsNotNull() {
+            addCriterion("service_times is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesEqualTo(Integer value) {
-            addCriterion("max_contain_times =", value, "maxContainTimes");
+        public Criteria andServiceTimesEqualTo(Integer value) {
+            addCriterion("service_times =", value, "serviceTimes");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesNotEqualTo(Integer value) {
-            addCriterion("max_contain_times <>", value, "maxContainTimes");
+        public Criteria andServiceTimesNotEqualTo(Integer value) {
+            addCriterion("service_times <>", value, "serviceTimes");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesGreaterThan(Integer value) {
-            addCriterion("max_contain_times >", value, "maxContainTimes");
+        public Criteria andServiceTimesGreaterThan(Integer value) {
+            addCriterion("service_times >", value, "serviceTimes");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesGreaterThanOrEqualTo(Integer value) {
-            addCriterion("max_contain_times >=", value, "maxContainTimes");
+        public Criteria andServiceTimesGreaterThanOrEqualTo(Integer value) {
+            addCriterion("service_times >=", value, "serviceTimes");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesLessThan(Integer value) {
-            addCriterion("max_contain_times <", value, "maxContainTimes");
+        public Criteria andServiceTimesLessThan(Integer value) {
+            addCriterion("service_times <", value, "serviceTimes");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesLessThanOrEqualTo(Integer value) {
-            addCriterion("max_contain_times <=", value, "maxContainTimes");
+        public Criteria andServiceTimesLessThanOrEqualTo(Integer value) {
+            addCriterion("service_times <=", value, "serviceTimes");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesIn(List<Integer> values) {
-            addCriterion("max_contain_times in", values, "maxContainTimes");
+        public Criteria andServiceTimesIn(List<Integer> values) {
+            addCriterion("service_times in", values, "serviceTimes");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesNotIn(List<Integer> values) {
-            addCriterion("max_contain_times not in", values, "maxContainTimes");
+        public Criteria andServiceTimesNotIn(List<Integer> values) {
+            addCriterion("service_times not in", values, "serviceTimes");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesBetween(Integer value1, Integer value2) {
-            addCriterion("max_contain_times between", value1, value2, "maxContainTimes");
+        public Criteria andServiceTimesBetween(Integer value1, Integer value2) {
+            addCriterion("service_times between", value1, value2, "serviceTimes");
             return (Criteria) this;
         }
 
-        public Criteria andMaxContainTimesNotBetween(Integer value1, Integer value2) {
-            addCriterion("max_contain_times not between", value1, value2, "maxContainTimes");
+        public Criteria andServiceTimesNotBetween(Integer value1, Integer value2) {
+            addCriterion("service_times not between", value1, value2, "serviceTimes");
             return (Criteria) this;
         }
 

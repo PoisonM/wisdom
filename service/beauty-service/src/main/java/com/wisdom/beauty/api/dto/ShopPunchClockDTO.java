@@ -1,9 +1,9 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopPunchClockDTO extends BaseEntity implements Serializable {
     //
@@ -21,8 +21,8 @@ public class ShopPunchClockDTO extends BaseEntity implements Serializable {
     //
     private String sysShopName;
 
-    //
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
 
     //
     private Date punchTime;
@@ -87,12 +87,12 @@ public class ShopPunchClockDTO extends BaseEntity implements Serializable {
         this.sysShopName = sysShopName;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public Date getPunchTime() {

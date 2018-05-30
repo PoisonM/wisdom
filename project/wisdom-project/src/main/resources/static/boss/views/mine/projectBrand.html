@@ -1,0 +1,20 @@
+<ion-view class="bg">
+    <ion-content>
+        <div class="list" ng-repeat="item in projectBrand">
+            <div ng-repeat=" item1 in item.levelTwoDetail">
+                <li class="item p10" ng-click="addBrandOneGo('edit',item.levelOneDetail.id,item.levelOneDetail.projectTypeName,item.levelOneDetail.status)">
+                    <span style="width: 2px;height: 20px;display: inline-block;background: #FF6666;"></span>
+                    <span class="fs17 col33 ml10">{{item.levelOneDetail.projectTypeName}}</span>
+                    <span class="fr col88 fs14" >{{item.levelOneDetail.status=='0'?'启用':'已禁用'}}<i class="ion ion-ios-arrow-right ml10"></i></span>
+                </li>
+                <li class="item p5" style="display: flex;flex-wrap: wrap" ng-click="checkSeries(item.levelOneDetail.id)">
+                  <span style="height: 23px;background: #F6F6F6;color: #333333;padding: 5px;border: 0 solid #E5E5E5;
+border-radius: 6px;margin: 5px;font-size: 11px;" ng-repeat="(keys,vals) in item.levelTwoDetail">{{keys}}</span>
+                </li>
+            </div>
+        </div>
+    </ion-content>
+    <div class="bar bar-footer bar-assertive"ng-click="addBrandOneGo('add','')">
+        <div class="title" >添加</div>
+    </div>
+</ion-view>

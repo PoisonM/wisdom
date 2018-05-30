@@ -18,11 +18,14 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
     //
     private String sysClerkId;
 
+    //boss编码
+    private String sysBossCode;
+
     //
     private String sysClerkName;
 
     //
-    private String imageRul;
+    private String imageUrl;
 
     //
     private String sysUserName;
@@ -59,6 +62,9 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
 
     //
     private String channel;
+
+    //
+    private String shopid;
 
     //
     private String detail;
@@ -109,6 +115,14 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
         this.sysClerkId = sysClerkId;
     }
 
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
+
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
+    }
+
     public String getSysClerkName() {
         return sysClerkName;
     }
@@ -117,12 +131,12 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
         this.sysClerkName = sysClerkName;
     }
 
-    public String getImageRul() {
-        return imageRul;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageRul(String imageRul) {
-        this.imageRul = imageRul;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getSysUserName() {
@@ -219,6 +233,14 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getShopid() {
+        return shopid;
+    }
+
+    public void setShopid(String shopid) {
+        this.shopid = shopid;
     }
 
     public String getDetail() {

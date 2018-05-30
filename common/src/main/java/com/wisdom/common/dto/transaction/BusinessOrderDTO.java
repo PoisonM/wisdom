@@ -19,6 +19,9 @@ public class BusinessOrderDTO {
     //订单编号ID
     @JSONField(name = "businessOrderId")
     private String businessOrderId;
+    //订单编号ID
+    @JSONField(name = "orderId")
+    private String orderId;
 
     //交易流水号
     @JSONField(name = "transactionId")
@@ -31,6 +34,10 @@ public class BusinessOrderDTO {
     //订单商品id
     @JSONField(name = "businessProductId")
     private String businessProductId;
+
+    //商品库存
+    @JSONField(name = "productAmount")
+    private String productAmount;
 
     //订单类型
     @JSONField(name = "type")
@@ -72,6 +79,9 @@ public class BusinessOrderDTO {
     //商品价格
     @JSONField(name = "businessProductPrice")
     private float businessProductPrice;
+    //商品状态
+    @JSONField(name = "productStatus")
+    private String productStatus;
 
     //此订单订单价格   ==pay表中的amount
     @JSONField(name = "amount")
@@ -88,6 +98,21 @@ public class BusinessOrderDTO {
     //收货地址
     @JSONField(name = "userAddress")
     private String userAddress;
+    /**
+     * 收货地址省份
+     */
+    @JSONField(name = "userProvinceAddress")
+    private String userProvinceAddress;
+    /**
+     * 收货地址城市
+     */
+    @JSONField(name = "userCityAddress")
+    private String userCityAddress;
+    /**
+     * 收货地址详情
+     */
+    @JSONField(name = "userDetailAddress")
+    private String userDetailAddress;
 
     //商品型号
     @JSONField(name = "productSpec")
@@ -338,5 +363,53 @@ public class BusinessOrderDTO {
 
     public void setProductBrand(String productBrand) {
         this.productBrand = productBrand;
+    }
+
+    public String getUserProvinceAddress() {
+        return userProvinceAddress;
+    }
+
+    public void setUserProvinceAddress(String userProvinceAddress) {
+        this.userProvinceAddress = userProvinceAddress;
+    }
+
+    public String getUserCityAddress() {
+        return userCityAddress;
+    }
+
+    public void setUserCityAddress(String userCityAddress) {
+        this.userCityAddress = userCityAddress;
+    }
+
+    public String getUserDetailAddress() {
+        return userDetailAddress;
+    }
+
+    public void setUserDetailAddress(String userDetailAddress) {
+        this.userDetailAddress = userDetailAddress;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getProductAmount() {
+        return productAmount;
+    }
+
+    public void setProductAmount(String productAmount) {
+        this.productAmount = productAmount;
+    }
+
+    public String getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(String productStatus) {
+        this.productStatus = productStatus;
     }
 }

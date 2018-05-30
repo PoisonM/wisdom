@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserProductRelationDTO extends BaseEntity implements Serializable {
     //
@@ -25,6 +25,12 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkId;
 
+    //boss编码
+    private String sysBossCode;
+
+    //
+    private String sysClerkName;
+
     //产品待领取的数量
     private Integer waitReceiveNumber;
 
@@ -37,13 +43,16 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
     //剩余数量
     private Integer surplusTimes;
 
+    //
+    private BigDecimal purchasePrice;
+
     //初始金额
     private BigDecimal initAmount;
 
     //剩余金额
     private BigDecimal surplusAmount;
 
-    //
+    //折扣
     private Float discount;
 
     //1 赠送 0不赠送
@@ -111,6 +120,22 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
         this.sysClerkId = sysClerkId;
     }
 
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
+
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
     public Integer getWaitReceiveNumber() {
         return waitReceiveNumber;
     }
@@ -141,6 +166,14 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
 
     public void setSurplusTimes(Integer surplusTimes) {
         this.surplusTimes = surplusTimes;
+    }
+
+    public BigDecimal getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(BigDecimal purchasePrice) {
+        this.purchasePrice = purchasePrice;
     }
 
     public BigDecimal getInitAmount() {

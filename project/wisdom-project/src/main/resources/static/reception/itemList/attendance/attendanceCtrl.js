@@ -1,4 +1,5 @@
 PADWeb.controller("attendanceCtrl", function($scope, $state, $stateParams,$filter) {
+    $scope.$parent.param.top_bottomSelect = "kaoqin";
     $scope.param = {
         now: $scope.now,/*月时间*/
         monthArr:[], /*整月时间*/

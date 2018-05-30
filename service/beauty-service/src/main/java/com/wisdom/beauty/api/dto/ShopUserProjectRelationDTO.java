@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserProjectRelationDTO extends BaseEntity implements Serializable {
     //
@@ -19,7 +19,13 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkId;
 
-    //使用方式 0：单次 1：疗程
+    //boss编码
+    private String sysBossCode;
+
+    //
+    private String sysClerkName;
+
+    //使用方式 0：疗程 1：单次
     private String useStyle;
 
     //美容院id
@@ -37,6 +43,9 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysShopProjectName;
 
+    //
+    private BigDecimal sysShopProjectPurchasePrice;
+
     //项目初始金额
     private BigDecimal sysShopProjectInitAmount;
 
@@ -49,13 +58,16 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //项目总次数
     private Integer sysShopProjectInitTimes;
 
+    //服务次数
+    private Integer serviceTime;
+
     //生效日期
     private Date effectiveDate;
 
     //有效天数
     private Integer effectiveDays;
 
-    //
+    //失效日期
     private Date invalidDays;
 
     //1 赠送 0不赠送
@@ -107,6 +119,22 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
         this.sysClerkId = sysClerkId;
     }
 
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
+
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
     public String getUseStyle() {
         return useStyle;
     }
@@ -155,6 +183,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
         this.sysShopProjectName = sysShopProjectName;
     }
 
+    public BigDecimal getSysShopProjectPurchasePrice() {
+        return sysShopProjectPurchasePrice;
+    }
+
+    public void setSysShopProjectPurchasePrice(BigDecimal sysShopProjectPurchasePrice) {
+        this.sysShopProjectPurchasePrice = sysShopProjectPurchasePrice;
+    }
+
     public BigDecimal getSysShopProjectInitAmount() {
         return sysShopProjectInitAmount;
     }
@@ -185,6 +221,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setSysShopProjectInitTimes(Integer sysShopProjectInitTimes) {
         this.sysShopProjectInitTimes = sysShopProjectInitTimes;
+    }
+
+    public Integer getServiceTime() {
+        return serviceTime;
+    }
+
+    public void setServiceTime(Integer serviceTime) {
+        this.serviceTime = serviceTime;
     }
 
     public Date getEffectiveDate() {

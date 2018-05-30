@@ -1,0 +1,12 @@
+<ion-view>
+    <ion-content class="partialFiles mb45 bgf6">
+        <div class="bgfff">
+            <p class="h45 ml10 bbl" ng-repeat="item in selBrand" ng-click="selBand(item.levelOneDetail.productTypeName,item.levelOneDetail.id)">
+                {{item.levelOneDetail.productTypeName}}
+            </p>
+        </div>
+    </ion-content>
+    <p class="center fs15 colfff bgff66 h45 tabs" ui-sref="productSetting({type:'add'})">
+        添加
+    </p>
+</ion-view>

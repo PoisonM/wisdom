@@ -2,6 +2,7 @@
     height: 100%;
     width: 100%;
     background: #F5F5F5;
+    overflow: scroll;
 }
 
 .personalFile-box .personalFile-top {
@@ -146,6 +147,7 @@
     border-radius: 10px;
     width: 95%;
     margin: 0 auto;
+    margin-bottom: 15px;
 }
 
 .personalFile-box .personalFile-content .treatment .recorderCard .recorderCardTopName {
@@ -280,6 +282,12 @@
     height: 95px;
     border-radius: 10px;
     margin: 22px 0 13px 36px;
+    float: left;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardInfo {
+    margin-left: 215px;
+    height: 130px;
 }
 
 .personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardName {
@@ -287,6 +295,42 @@
     font-size: 16px;
     color: #333333;
     letter-spacing: 0.4px;
+    margin: 21px 0 0 10px;
+    display: block;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardRAName {
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #FF6666;
+    letter-spacing: 0;
+    display: inline-block;
+    margin: 24px 0 0 10px;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardRAName b {
+    font-family: PingFangSC-Regular;
+    font-size: 19px;
+    color: #FF6666;
+    letter-spacing: 0.5px;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardTAName {
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #999999;
+    letter-spacing: 0;
+    display: inline-block;
+    margin: 24px 0 0 41px;
+}
+
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardTAName b {
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #999999;
+    letter-spacing: 0;
+    display: inline-block;
+    margin: 24px 0 0 10px;
 }
 
 .personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardNote {
@@ -310,4 +354,115 @@
     font-size: 11px;
     color: #999999;
     letter-spacing: 0.77px;
+}
+
+.personalFile-box .personalFile-content .treatment .singleCard {
+    margin-top: -35px;
+    background: #FFFFFF;
+}
+
+.personalFile-box .personalFile-content .treatment .singleCard ul {}
+
+.personalFile-box .personalFile-content .treatment .singleCard li {
+    height: 70px;
+    line-height: 70px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
+    border: 1px solid #E5E5E5;
+}
+
+.personalFile-box .personalFile-content .treatment .singleCard span.time {
+    padding-left: 15px;
+}
+
+.personalFile-box .personalFile-content .treatment .singleCard span.type {
+    margin-left: 24px;
+}
+
+.personalFile-box .personalFile-content .treatment .singleCard span.name {
+    margin-left: 50px;
+}
+
+.personalFile-box .personalFile-content .treatment .singleCard span.number {
+    margin-left: 65px;
+}
+
+.personalFile-box .personalFile-content .treatment .singleCard span.price {
+    margin-left: 45px;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard {
+    margin-top: -35px;
+    background: #FFFFFF;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard ul {}
+
+
+.personalFile-box .personalFile-content .treatment .productCard li {
+    height: 132px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+
+.personalFile-box .personalFile-content .treatment .productCard .left {
+    float: left;
+    padding: 21px 0 0 16px;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard .left span {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0.4px;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard .left p {
+    margin-top: 5px;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard .left .price {
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #999999;
+    letter-spacing: 0;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard .left .number {
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #888888;
+    letter-spacing: 0;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard .left .number b {
+    font-size: 17px;
+    color: #3A3A3A;
+    line-height: 18px;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard .left .price {
+    font-family: PingFangSC-Regular;
+    font-size: 11px;
+    color: #999999;
+    letter-spacing: 0;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard .right {
+    float: right;
+}
+
+.personalFile-box .personalFile-content .treatment .productCard .right button {
+    background: #FF6666;
+    border-radius: 4px;
+    width: 107px;
+    height: 30px;
+    margin: 51px 60px 0 0;
+    border: none;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FCFCFC;
+    letter-spacing: 0.4px;
 }

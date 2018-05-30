@@ -4,12 +4,14 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserProductRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -97,23 +99,23 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
         String[] strings = new String[idList.size()];
         String[] strs = idList.toArray(strings);
         //查询用户的信息
-//        List<UserInfoDTO> userInfoList = userServiceClient.getUserInfoListFromUserId(strs, searchFile);
-//        if (CollectionUtils.isEmpty(userInfoList)) {
-//
-//        }
-//        List<UserProductRelationResponseDTO> userProductRelationResponses = new ArrayList<>();
-//        UserProductRelationResponseDTO userProductRelationResponseDTO = null;
-//        for (UserInfoDTO userInfoDTO : userInfoList) {
-//            userProductRelationResponseDTO = new UserProductRelationResponseDTO();
-//            userProductRelationResponseDTO.setWaitReceiveNumber(map.get(userInfoDTO.getId()));
-//            userProductRelationResponseDTO.setMobile(userInfoDTO.getMobile());
-//            userProductRelationResponseDTO.setNickname(userInfoDTO.getNickname());
-//            userProductRelationResponses.add(userProductRelationResponseDTO);
-//        }
+        List<UserInfoDTO> userInfoList = userServiceClient.getUserInfoListFromUserId(strs, searchFile);
+        if (CollectionUtils.isEmpty(userInfoList)) {
+
+        }
+        List<UserProductRelationResponseDTO> userProductRelationResponses = new ArrayList<>();
+        UserProductRelationResponseDTO userProductRelationResponseDTO = null;
+        for (UserInfoDTO userInfoDTO : userInfoList) {
+            userProductRelationResponseDTO = new UserProductRelationResponseDTO();
+            userProductRelationResponseDTO.setWaitReceiveNumber(map.get(userInfoDTO.getId()));
+            userProductRelationResponseDTO.setMobile(userInfoDTO.getMobile());
+            userProductRelationResponseDTO.setNickname(userInfoDTO.getNickname());
+            userProductRelationResponses.add(userProductRelationResponseDTO);
+        }
         Map<String, Object> mapResponse = new HashMap<>();
-//        mapResponse.put("data", userProductRelationResponses);
-//        mapResponse.put("totalWaitReceiveNumber", totalWaitReceiveNumber);
-//        mapResponse.put("totalWaitReceivePeople", totalWaitReceivePeople);
+        mapResponse.put("data", userProductRelationResponses);
+        mapResponse.put("totalWaitReceiveNumber", totalWaitReceiveNumber);
+        mapResponse.put("totalWaitReceivePeople", totalWaitReceivePeople);
 
         return mapResponse;
     }
@@ -137,20 +139,20 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
         }
         List<String> list = new ArrayList<>();
         //key是产品id，value是产品信息
-        Map<String, ShopProductInfoDTO> map = new HashMap<>(16);
+        Map<String, ShopProductInfoResponseDTO> map = new HashMap<>(16);
         for (ShopUserProductRelationDTO shopUserProductRelation : shopUserProductRelations) {
             list.add(shopUserProductRelation.getShopProductId());
         }
 
-        List<ShopProductInfoDTO> shopProductInfos = shopProductInfoService.getProductInfoList(list);
-        for (ShopProductInfoDTO productInfo : shopProductInfos) {
+        List<ShopProductInfoResponseDTO> shopProductInfos = shopProductInfoService.getProductInfoList(list);
+        for (ShopProductInfoResponseDTO productInfo : shopProductInfos) {
             map.put(productInfo.getId(), productInfo);
         }
         List<UserProductRelationResponseDTO> responseList = new ArrayList<>();
         UserProductRelationResponseDTO userProductRelationResponseDTO = null;
         for (ShopUserProductRelationDTO shopUserProductRelation : shopUserProductRelations) {
             userProductRelationResponseDTO = new UserProductRelationResponseDTO();
-            ShopProductInfoDTO shopProductInfo = map.get(shopUserProductRelation.getId());
+            ShopProductInfoResponseDTO shopProductInfo = map.get(shopUserProductRelation.getId());
             if(shopProductInfo!=null) {
                 userProductRelationResponseDTO.setProductName(shopProductInfo.getProductName());
                 userProductRelationResponseDTO.setProductSpec(shopProductInfo.getProductSpec());

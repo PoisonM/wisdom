@@ -53,7 +53,7 @@ public class ArchivesTest {
     @Test
     public void testDeleteArchiveInfo() throws Exception {
 
-        MvcResult result = mvc.perform(get("/deleteArchiveInfo").param("archivesId", "1"))
+        MvcResult result = mvc.perform(get("/archives/findArchives").param("pageSize", "500"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -129,7 +129,7 @@ public class ArchivesTest {
         shopUserArchivesDTO.setSysClerkName("小王");
         shopUserArchivesDTO.setSysClerkId(uuid);
         shopUserArchivesDTO.setSex("男");
-        shopUserArchivesDTO.setImageRul("www.baidu.com");
+        shopUserArchivesDTO.setImageUrl("www.baidu.com");
         shopUserArchivesDTO.setHeight(179f);
         return shopUserArchivesDTO;
     }

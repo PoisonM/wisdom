@@ -1,11 +1,13 @@
 package com.wisdom.business.controller.transaction;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
+import com.aliyun.oss.ServiceException;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
 import com.wisdom.business.service.account.WithDrawService;
+import com.wisdom.business.service.product.ProductService;
 import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
@@ -13,14 +15,14 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.WithDrawRecordDTO;
+import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.*;
-import com.wisdom.common.util.CodeGenUtil;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.JedisUtils;
-import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.common.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -60,9 +62,12 @@ public class TransactionController {
 
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private UserServiceClient userServiceClient;
+    Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
     @LoginRequired
     @RequestMapping(value ="putNeedPayOrderListToRedis",method = {RequestMethod.POST, RequestMethod.GET})
@@ -70,24 +75,54 @@ public class TransactionController {
     public ResponseDTO putNeedPayOrderListToRedis(@RequestBody NeedPayOrderListDTO needPayOrderList) {
         ResponseDTO responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        RedisLock redisLock = new RedisLock("putNeedPayProductAmount");
         String needPayValue = (new Gson()).toJson(needPayOrderList);
         JedisUtils.del(userInfoDTO.getId()+"needPay");
         JedisUtils.set(userInfoDTO.getId()+"needPay",needPayValue,60*5);
 
-        //将商品放入未支付订单列表
-        for(NeedPayOrderDTO needPayOrderDTO:needPayOrderList.getNeedPayOrderList())
-        {
-            try {
-                BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
-                businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
-                businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
-                businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
-                businessOrderDTO.setStatus("0");
-                businessOrderDTO.setUpdateDate(new Date());
-                transactionService.updateBusinessOrder(businessOrderDTO);
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            //todo log
+            //logger.info("锁前订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
+            redisLock.lock();
+            //todo log
+            //logger.info("锁下订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
+            //将商品放入未支付订单列表
+            for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
+                    BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
+                    businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
+                    businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
+                    //todo log
+                    logger.info("查询订单前订单号=={}",needPayOrderDTO.getOrderId());
+                    businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
+                    if("3".equals(businessOrderDTO.getStatus())){
+                        //todo log
+                        logger.info("状态3进入订单号=={}",needPayOrderDTO.getOrderId());
+                        logger.info("状态3进入订单状态=={}",businessOrderDTO.getStatus());
+                        logger.info("状态3进入商品数量=={}",needPayOrderDTO.getProductNum());
+                        ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
+                        logger.info("状态3进入查出库中商品库存=={}",productDTO.getProductAmount());
+                        if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
+                            //todo log
+                            logger.info("商品数量大于商品库存订单号=={}",needPayOrderDTO.getOrderId());
+                            responseDTO.setErrorInfo("库存不足");
+                            responseDTO.setResult(StatusConstant.FAILURE);
+                            return responseDTO;
+                        }
+                    }
+                    //todo log
+                    logger.info("状态3判断通过订单号=={}",needPayOrderDTO.getOrderId());
+                    businessOrderDTO.setStatus("0");
+                    businessOrderDTO.setUpdateDate(new Date());
+                    transactionService.updateBusinessOrder(businessOrderDTO);
             }
+        }catch (Throwable e)
+        {
+            e.printStackTrace();
+            throw new ServiceException("");
+        }
+        finally
+        {
+            redisLock.unlock();
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
@@ -153,7 +188,11 @@ public class TransactionController {
         });
 
         responseDTO.setResult(StatusConstant.SUCCESS);
-        responseDTO.setResponseData(transactionDTOList);
+        if(transactionDTOList!=null&&transactionDTOList.size()>0){
+            responseDTO.setResponseData(transactionDTOList);
+        }else{
+            responseDTO.setResponseData(null);
+        }
         return responseDTO;
     }
 
@@ -162,6 +201,7 @@ public class TransactionController {
     @ResponseBody
     public ResponseDTO<TransactionDTO> getUserTransactionDetail(@RequestParam String transactionId, @RequestParam String transactionType) {
         ResponseDTO<TransactionDTO> responseDTO = new ResponseDTO();
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 
         if(transactionType.equals("withdraw"))
         {
@@ -183,22 +223,31 @@ public class TransactionController {
         }
         else
         {
-            IncomeRecordDTO incomeRecordDTO = incomeService.getIncomeRecordDetail(transactionId);
-            if(incomeRecordDTO==null)
-            {
-                responseDTO.setResult(StatusConstant.FAILURE);
+
+            IncomeRecordDTO incomeRecordDTOValue  = new IncomeRecordDTO();
+            incomeRecordDTOValue.setSysUserId(userInfoDTO.getId());
+            incomeRecordDTOValue.setTransactionId(transactionId);
+            incomeRecordDTOValue.setIncomeType(transactionType);
+            List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getUserIncomeRecordInfo(incomeRecordDTOValue);
+            if(incomeRecordDTOS!=null&&incomeRecordDTOS.size()>0){
+                IncomeRecordDTO incomeRecordDTO = incomeRecordDTOS.get(0);
+                if(incomeRecordDTO==null)
+                {
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                }
+                else
+                {
+                    TransactionDTO transactionDTO = new TransactionDTO();
+                    transactionDTO.setTransactionType(incomeRecordDTO.getIncomeType());
+                    transactionDTO.setAmount(incomeRecordDTO.getAmount());
+                    transactionDTO.setTransactionDate(incomeRecordDTO.getUpdateDate());
+                    transactionDTO.setTransactionId(incomeRecordDTO.getTransactionId());
+                    transactionDTO.setTransactionStatus(incomeRecordDTO.getStatus());
+                    responseDTO.setResponseData(transactionDTO);
+                    responseDTO.setResult(StatusConstant.SUCCESS);
+                }
             }
-            else
-            {
-                TransactionDTO transactionDTO = new TransactionDTO();
-                transactionDTO.setTransactionType(incomeRecordDTO.getIncomeType());
-                transactionDTO.setAmount(incomeRecordDTO.getAmount());
-                transactionDTO.setTransactionDate(incomeRecordDTO.getUpdateDate());
-                transactionDTO.setTransactionId(incomeRecordDTO.getTransactionId());
-                transactionDTO.setTransactionStatus(incomeRecordDTO.getStatus());
-                responseDTO.setResponseData(transactionDTO);
-                responseDTO.setResult(StatusConstant.SUCCESS);
-            }
+
         }
 
         return responseDTO;

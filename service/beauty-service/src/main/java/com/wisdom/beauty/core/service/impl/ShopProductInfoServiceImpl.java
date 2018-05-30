@@ -1,24 +1,28 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProductInfoMapper;
 import com.wisdom.beauty.core.mapper.ShopProductTypeMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
+import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * FileName: ShopProductInfoServiceImpl
@@ -37,11 +41,45 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	@Autowired
 	private ShopProductInfoMapper shopProductInfoMapper;
 
+    @Autowired
+    private MongoUtils mongoUtils;
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	/**
+	 * 根据条件查询产品列表
+	 *
+	 * @param shopProductInfoDTO
+	 * @return
+	 */
 	@Override
-	public ShopProductInfoDTO getShopProductInfo(String id) {
-		return null;
+	public List<ShopProductInfoDTO> getShopProductInfo(ShopProductInfoDTO shopProductInfoDTO) {
+		if (CommonUtils.objectIsEmpty(shopProductInfoDTO)) {
+			logger.info("根据条件查询产品列表传入参数为空");
+			return null;
+		}
+		ShopProductInfoCriteria shopProductInfoCriteria = new ShopProductInfoCriteria();
+		ShopProductInfoCriteria.Criteria criteria = shopProductInfoCriteria.createCriteria();
+
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getSysShopId())) {
+			criteria.andSysShopIdEqualTo(shopProductInfoDTO.getSysShopId());
+		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductTypeOneId())) {
+			criteria.andProductTypeOneIdEqualTo(shopProductInfoDTO.getProductTypeOneId());
+		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductTypeTwoId())) {
+			criteria.andProductTypeTwoIdEqualTo(shopProductInfoDTO.getProductTypeTwoId());
+		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductType())) {
+			criteria.andProductTypeEqualTo(shopProductInfoDTO.getProductType());
+		}
+
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductName())) {
+			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");
+		}
+
+		List<ShopProductInfoDTO> shopProductInfoDTOS = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
+		return shopProductInfoDTOS;
 	}
 
 	/**
@@ -55,7 +93,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 			ShopUserProductRelationDTO shopUserProductRelationDTO) {
 
 		if (shopUserProductRelationDTO == null) {
-            logger.error("获取用户的产品信息为空");
+			logger.error("获取用户的产品信息为空");
 			return null;
 		}
 		ShopUserProductRelationCriteria shopUserProductRelationCriteria = new ShopUserProductRelationCriteria();
@@ -89,57 +127,64 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	@Override
 	public int updateShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO) {
 		logger.info("更新用户与产品的关系传入参数={}", "shopUserProductRelationDTO = [" + shopUserProductRelationDTO + "]");
-		int update = shopUserProductRelationMapper.updateByPrimaryKey(shopUserProductRelationDTO);
+		int update = shopUserProductRelationMapper.updateByPrimaryKeySelective(shopUserProductRelationDTO);
 		logger.debug("更新用户与产品的关系,执行结果 {}", update > 0 ? "成功" : "失败");
 		return update;
 	}
 
-    /**
-     * @Author:huan
-     * @Param: sysShopId
-     * @Return:
-     * @Description: 获取一级产品列表
-     * @Date:2018/4/10 15:59
-     */
-    @Override
-    public List<ShopProductTypeDTO> getOneLevelProductList(String sysShopId) {
-        logger.info("getOneLevelProjectList传入的参数,sysShopId={}", sysShopId);
-        if (StringUtils.isBlank(sysShopId)) {
-            logger.info("getOneLevelProjectList传入的参数sysShopId为空");
-            return null;
-        }
-        ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
-        ShopProductTypeCriteria.Criteria criteria = shopProductTypeCriteria.createCriteria();
-        criteria.andSysShopIdEqualTo(sysShopId);
-        criteria.andParentIdIsNull();
-        List<ShopProductTypeDTO> list = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
-        return list;
-    }
+	/**
+	 * @Author:huan
+	 * @Param: sysShopId
+	 * @Return:
+	 * @Description: 获取一级产品列表
+	 * @Date:2018/4/10 15:59
+	 */
+	@Override
+	public List<ShopProductTypeDTO> getOneLevelProductList(ShopProductTypeDTO shopProductTypeDTO) {
+		logger.info("getOneLevelProjectList传入的参数,sysShopId={},productType={}", shopProductTypeDTO.getSysShopId(),shopProductTypeDTO.getProductType());
+		if (shopProductTypeDTO==null||StringUtils.isBlank(shopProductTypeDTO.getSysShopId())) {
+			logger.info("getOneLevelProjectList传入的参数sysShopId为空");
+			return null;
+		}
+		ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
+		ShopProductTypeCriteria.Criteria criteria = shopProductTypeCriteria.createCriteria();
+		criteria.andSysShopIdEqualTo(shopProductTypeDTO.getSysShopId());
+		criteria.andParentIdIsNull();
+		if(StringUtils.isNotBlank(shopProductTypeDTO.getProductType())){
+			criteria.andProductTypeEqualTo(shopProductTypeDTO.getProductType());
+		}
+		List<ShopProductTypeDTO> list = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
+		return list;
+	}
 
-    /**
-     * @Author:huan
-     * @Param:
-     * @Return:
-     * @Description: 获取二级产品列表
-     * @Date:2018/4/10 16:15
-     */
-    @Override
-    public List<ShopProductTypeDTO> getTwoLevelProductList(ShopProductTypeDTO shopProductTypeDTO) {
-        logger.info("getTwoLevelProductList传入的参数,id={}", shopProductTypeDTO.getId());
+	/**
+	 * @Author:huan
+	 * @Param:
+	 * @Return:
+	 * @Description: 获取二级产品列表
+	 * @Date:2018/4/10 16:15
+	 */
+	@Override
+	public List<ShopProductTypeDTO> getTwoLevelProductList(ShopProductTypeDTO shopProductTypeDTO) {
+		logger.info("getTwoLevelProductList传入的参数,id={}", shopProductTypeDTO.getId());
 
-        if (StringUtils.isBlank(shopProductTypeDTO.getId())) {
-            logger.info("getTwoLevelProductList传入的参数id为空");
-            return null;
-        }
-        ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
-        ShopProductTypeCriteria.Criteria criteria = shopProductTypeCriteria.createCriteria();
-        criteria.andParentIdEqualTo(shopProductTypeDTO.getId());
-        List<ShopProductTypeDTO> list = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
-        return list;
-    }
+		if (StringUtils.isBlank(shopProductTypeDTO.getId())) {
+			logger.info("getTwoLevelProductList传入的参数id为空");
+			return null;
+		}
+		ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
+		ShopProductTypeCriteria.Criteria criteria = shopProductTypeCriteria.createCriteria();
+		criteria.andParentIdEqualTo(shopProductTypeDTO.getId());
+		if(StringUtils.isNotBlank(shopProductTypeDTO.getProductType())){
+			criteria.andProductTypeEqualTo(shopProductTypeDTO.getProductType());
+		}
+		List<ShopProductTypeDTO> list = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
+		return list;
+	}
 
 	@Override
-	public List<ShopProductInfoDTO> getThreeLevelProductList(PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO) {
+	public List<ShopProductInfoResponseDTO> getThreeLevelProductList(
+			PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO) {
 		ShopProductInfoDTO shopProductInfoDTO = pageParamVoDTO.getRequestData();
 		logger.info("getThreeLevelProjectList传入的参数,sysShopId={},productTypeOneId={},productTypeTwoId={}",
 				shopProductInfoDTO.getSysShopId(), shopProductInfoDTO.getProductTypeOneId(),
@@ -168,11 +213,19 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");
 		}
 		List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
-		return list;
+
+		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
+		for (ShopProductInfoDTO shopProductInfo : list) {
+			ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
+			BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
+            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
+			respon.add(shopProductInfoResponseDTO);
+		}
+		return respon;
 	}
 
 	@Override
-	public ShopProductInfoDTO getProductDetail(String id) {
+	public ShopProductInfoResponseDTO getProductDetail(String id) {
 		logger.info("getProductDetail传入的参数,id={}", id);
 
 		if (StringUtils.isBlank(id)) {
@@ -187,11 +240,17 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 			logger.info("getProductDetail返回的结果为空");
 			return null;
 		}
-		return list.get(0);
+
+		ShopProductInfoDTO shopProductInfo = list.get(0);
+		ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
+        BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
+        shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
+		return shopProductInfoResponseDTO;
+
 	}
 
 	@Override
-	public List<ShopProductInfoDTO> getProductInfoList(List<String> ids) {
+	public List<ShopProductInfoResponseDTO> getProductInfoList(List<String> ids) {
 		logger.info("getProductInfoList传入的参数,ids={}", ids);
 
 		if (CollectionUtils.isEmpty(ids)) {
@@ -202,64 +261,175 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 		criteria.andIdIn(ids);
 		List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
-		return list;
+
+		ShopProductInfoResponseDTO shopProductInfoResponseDTO =null;
+		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
+		for (ShopProductInfoDTO shopProductInfo : list) {
+			shopProductInfoResponseDTO= new ShopProductInfoResponseDTO();
+			BeanUtils.copyProperties(shopProductInfo,shopProductInfoResponseDTO);
+            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
+			respon.add(shopProductInfoResponseDTO);
+		}
+		return respon;
 	}
 
 	@Override
-    public List<ProductTypeResponseDTO> getAllProducts(String sysShopId) {
-        logger.info("getAllProducts方法传入参数sysShopId={}", sysShopId);
-        List<ShopProductTypeDTO> oneLevelProductList = this.getOneLevelProductList(sysShopId);
+	public List<ProductTypeResponseDTO> getAllProducts(String sysShopId) {
+		logger.info("getAllProducts方法传入参数sysShopId={}", sysShopId);
+		ShopProductTypeDTO shopProductType=new ShopProductTypeDTO();
+		shopProductType.setSysShopId(sysShopId);
+		List<ShopProductTypeDTO> oneLevelProductList = this.getOneLevelProductList(shopProductType);
 
-        // 查询ParentId不为空的产品类型，即二级产品
-        ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
-        ShopProductTypeCriteria.Criteria criteria = shopProductTypeCriteria.createCriteria();
-        criteria.andParentIdIsNotNull();
-        List<ShopProductTypeDTO> twoLevelProductList = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
-        Map<String, List<ProductTypeResponseDTO>> map = new HashMap<>(16);
+		// 查询ParentId不为空的产品类型，即二级产品
+		ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
+		ShopProductTypeCriteria.Criteria criteria = shopProductTypeCriteria.createCriteria();
+		criteria.andParentIdIsNotNull();
+		List<ShopProductTypeDTO> twoLevelProductList = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
+		Map<String, List<ProductTypeResponseDTO>> map = new HashMap<>(16);
 
-        List<ProductTypeResponseDTO> list = null;
-        ProductTypeResponseDTO productTypeResponse = null;
-        for (ShopProductTypeDTO shopProductTypeDTO : twoLevelProductList) {
-            productTypeResponse=new ProductTypeResponseDTO();
-            if (map.get(shopProductTypeDTO.getParentId()) == null) {
-                list=new ArrayList<>();
-                productTypeResponse.setProductTypeName(shopProductTypeDTO.getProductTypeName());
-                list.add(productTypeResponse);
-                map.put(shopProductTypeDTO.getParentId(), list);
-            }else {
-                productTypeResponse.setProductTypeName(shopProductTypeDTO.getProductTypeName());
-                map.get(shopProductTypeDTO.getParentId()).add(productTypeResponse);
-            }
+		List<ProductTypeResponseDTO> list = null;
+		ProductTypeResponseDTO productTypeResponse = null;
+		for (ShopProductTypeDTO shopProductTypeDTO : twoLevelProductList) {
+			productTypeResponse = new ProductTypeResponseDTO();
+			if (map.get(shopProductTypeDTO.getParentId()) == null) {
+				list = new ArrayList<>();
+				productTypeResponse.setProductTypeName(shopProductTypeDTO.getProductTypeName());
+				list.add(productTypeResponse);
+				map.put(shopProductTypeDTO.getParentId(), list);
+			} else {
+				productTypeResponse.setProductTypeName(shopProductTypeDTO.getProductTypeName());
+				map.get(shopProductTypeDTO.getParentId()).add(productTypeResponse);
+			}
 
-        }
-        ProductTypeResponseDTO productTypeResponseDTO = null;
-        List<ProductTypeResponseDTO> productTypeRespons=new ArrayList<>();
-        for(ShopProductTypeDTO shopProductTypeDTO:oneLevelProductList){
-            productTypeResponseDTO=new ProductTypeResponseDTO();
-            productTypeResponseDTO.setProductTypeName(shopProductTypeDTO.getProductTypeName());
-            productTypeResponseDTO.setProductTypeResponses(map.get(shopProductTypeDTO.getId()));
-            productTypeRespons.add(productTypeResponseDTO);
-        }
-        return productTypeRespons;
-    }
+		}
+		ProductTypeResponseDTO productTypeResponseDTO = null;
+		List<ProductTypeResponseDTO> productTypeRespons = new ArrayList<>();
+		for (ShopProductTypeDTO shopProductTypeDTO : oneLevelProductList) {
+			productTypeResponseDTO = new ProductTypeResponseDTO();
+			productTypeResponseDTO.setProductTypeName(shopProductTypeDTO.getProductTypeName());
+			productTypeResponseDTO.setProductTypeResponses(map.get(shopProductTypeDTO.getId()));
+			productTypeRespons.add(productTypeResponseDTO);
+		}
+		return productTypeRespons;
+	}
 
-    /**
-     * 保存用户与产品的关系
-     *
-     * @param shopUserProductRelationDTO
-     * @return
-     */
-    @Override
-    public int saveShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO) {
+	/**
+	 * 保存用户与产品的关系
+	 *
+	 * @param shopUserProductRelationDTO
+	 * @return
+	 */
+	@Override
+	public int saveShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO) {
 
-        if (CommonUtils.objectIsEmpty(shopUserProductRelationDTO)) {
-            logger.debug("保存用户与产品的关系传入参数为空 {}", "shopUserProductRelationDTO = [" + shopUserProductRelationDTO + "]");
-            return 0;
-        }
+		if (CommonUtils.objectIsEmpty(shopUserProductRelationDTO)) {
+			logger.debug("保存用户与产品的关系传入参数为空 {}", "shopUserProductRelationDTO = [" + shopUserProductRelationDTO + "]");
+			return 0;
+		}
 
-        int insertFlag = shopUserProductRelationMapper.insertSelective(shopUserProductRelationDTO);
+		int insertFlag = shopUserProductRelationMapper.insertSelective(shopUserProductRelationDTO);
 
-        return insertFlag;
-    }
+		return insertFlag;
+	}
+
+	/**
+	 * 更新产品类别列表
+	 *
+	 * @param shopProductTypeDTOS
+	 * @return
+	 */
+	@Override
+	public int updateProductTypeListInfo(List<ShopProductTypeDTO> shopProductTypeDTOS) {
+		int returnFlag = 0;
+		logger.info("更新产品类别列表传入参数={}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+		if (CommonUtils.objectIsNotEmpty(shopProductTypeDTOS)) {
+			for (ShopProductTypeDTO dto : shopProductTypeDTOS) {
+                dto.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
+				//id为空则是新增
+				if (StringUtils.isBlank(dto.getId())) {
+					logger.info("主键为空，说明是新增记录={}", dto.getProductTypeName());
+					returnFlag = saveProductTypeInfo(dto);
+				} else {
+					logger.info("主键不为空，说明是修改记录={}", dto.getProductTypeName());
+					returnFlag = updateProductTypeInfo(dto);
+				}
+			}
+		}
+		return returnFlag;
+	}
+
+	/**
+	 * 更新产品类别
+	 *
+	 * @param shopProductTypeDTOS
+	 * @return
+	 */
+	@Override
+	public int updateProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS) {
+		if (CommonUtils.objectIsEmpty(shopProductTypeDTOS) || StringUtils.isBlank(shopProductTypeDTOS.getId())) {
+			logger.error("{}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+			return 0;
+		}
+		shopProductTypeDTOS.setUpdateDate(new Date());
+		return shopProductTypeMapper.updateByPrimaryKeySelective(shopProductTypeDTOS);
+	}
+
+	/**
+	 * 更新产品信息
+	 *
+	 * @param shopProductInfoDTO
+	 * @return
+	 */
+	@Override
+	public int updateProductInfo(ShopProductInfoDTO shopProductInfoDTO) {
+		if (CommonUtils.objectIsEmpty(shopProductInfoDTO) || StringUtils.isBlank(shopProductInfoDTO.getId())) {
+			logger.error("{}", "shopProductInfoDTO = [" + shopProductInfoDTO + "]");
+			return 0;
+		}
+		shopProductInfoDTO.setUpdateDate(new Date());
+		return shopProductInfoMapper.updateByPrimaryKeySelective(shopProductInfoDTO);
+	}
+
+	/**
+	 * 添加某个店的某个产品类别
+	 *
+	 * @param shopProductTypeDTOS
+	 */
+	@Override
+	public int saveProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS) {
+
+		logger.info("添加某个店的某个产品类别传入参数={}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+		if (CommonUtils.objectIsEmpty(shopProductTypeDTOS)) {
+			logger.error("添加某个店的某个产品类别{}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+			return 0;
+		}
+		shopProductTypeDTOS.setCreateDate(new Date());
+		shopProductTypeDTOS.setId(IdGen.uuid());
+		shopProductTypeMapper.insertSelective(shopProductTypeDTOS);
+		return 0;
+	}
+
+	/**
+	 * 添加产品信息
+	 *
+	 * @param shopProductInfoDTO
+	 * @return
+	 */
+	@Override
+	public int saveProductInfo(ExtShopProductInfoDTO shopProductInfoDTO) {
+		shopProductInfoDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
+		shopProductInfoDTO.setId(IdGen.uuid());
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getEffectDate()) && shopProductInfoDTO.getQualityPeriod() > 0) {
+			shopProductInfoDTO.setInvalidDate(DateUtils.dateSubMonth(shopProductInfoDTO.getEffectDate(), shopProductInfoDTO.getQualityPeriod()));
+		}
+		int insertSelective = shopProductInfoMapper.insertSelective(shopProductInfoDTO);
+		//图片报错到mongodb
+		if (CommonUtils.objectIsNotEmpty(shopProductInfoDTO.getImageList())) {
+			shopProductInfoDTO.setProductUrl(shopProductInfoDTO.getImageList().get(0));
+		}
+		mongoUtils.saveImageUrl(shopProductInfoDTO.getImageList(), shopProductInfoDTO.getId());
+		logger.info("添加产品信息保存={}", insertSelective > 0 ? "成功" : "失败");
+		return insertSelective;
+	}
 
 }

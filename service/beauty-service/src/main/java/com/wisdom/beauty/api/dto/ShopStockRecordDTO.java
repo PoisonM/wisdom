@@ -1,16 +1,19 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopStockRecordDTO extends BaseEntity implements Serializable {
     //
     private String id;
 
-    //库存表主键
-    private String shopStockId;
+    //仓库id
+    private String shopStoreId;
+
+    //boss编码
+    private String sysBossCode;
 
     //仓库名称
     private String name;
@@ -26,6 +29,9 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
 
     //单据号
     private String flowNo;
+
+    //领取人
+    private String receiver;
 
     //操作人(库管id)
     private String managerId;
@@ -58,12 +64,20 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public String getShopStockId() {
-        return shopStockId;
+    public String getShopStoreId() {
+        return shopStoreId;
     }
 
-    public void setShopStockId(String shopStockId) {
-        this.shopStockId = shopStockId;
+    public void setShopStoreId(String shopStoreId) {
+        this.shopStoreId = shopStoreId;
+    }
+
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
+
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getName() {
@@ -106,6 +120,14 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
         this.flowNo = flowNo;
     }
 
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
     public String getManagerId() {
         return managerId;
     }
@@ -114,7 +136,13 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
         this.managerId = managerId;
     }
 
- public String getDetail() {        return detail;    }    public void setDetail(String detail) {        this.detail = detail;    }
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     public Integer getOperNumber() {
         return operNumber;

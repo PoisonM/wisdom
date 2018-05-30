@@ -19,7 +19,7 @@ public interface SysUserAccountService {
       *@Description: 获取用户在美容院的账户信息
      *@Date:2018/4/8 17:03
      */
-     CustomerAccountResponseDto getSysAccountListByUserId(String userId);
+     CustomerAccountResponseDto getSysAccountListByUserId(String userId, String sysShopId);
 
     /**
      * 获取用户的账户信息

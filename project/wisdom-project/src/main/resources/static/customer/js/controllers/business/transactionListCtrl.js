@@ -14,6 +14,7 @@ angular.module('controllers',[]).controller('transactionListCtrl',
                 GetTransactionList.save({pageNo:$scope.param.pageNo,pageSize:$scope.param.pageSize},function(data){
                     BusinessUtil.checkResponseData(data,"transactionList");
                     $scope.param.transactionList = data.responseData;
+
                 })
             });
 

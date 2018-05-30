@@ -3,6 +3,7 @@ package com.wisdom.beauty.api.dto;
 import com.wisdom.common.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ShopProductInfoDTO extends BaseEntity implements Serializable {
@@ -11,6 +12,9 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
 
     //
     private String sysShopId;
+
+    //
+    private String parentShopId;
 
     //产品名称
     private String productName;
@@ -42,8 +46,23 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     //产品类型 0：客装 1：院装 2：易耗品
     private String productType;
 
+    //生产地址
+    private String manuAddress;
+
     //保质期（月）
     private Integer qualityPeriod;
+
+    //生产厂家
+    private String manuName;
+
+    //商标
+    private String tradeMark;
+
+    //
+    private String effectDate;
+
+    //
+    private String invalidDate;
 
     //产品有效期预警（天）
     private Integer productWarningDay;
@@ -52,19 +71,25 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     private Integer productWarningNum;
 
     //市场价格
-    private Long marketPrice;
+    private BigDecimal marketPrice;
 
     //优惠价格
-    private Long discountPrice;
+    private BigDecimal discountPrice;
 
-    //
+    //产品编号
     private String productCode;
 
-    //
-    private Long productUnit;
+    //产品单位
+    private String productUnit;
 
-    //
+    //产品规格
     private String productSpec;
+
+    //规格单位
+    private String productSpecUnit;
+
+    //产品备注
+    private String note;
 
     //
     private String introduce;
@@ -103,6 +128,14 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
 
     public void setSysShopId(String sysShopId) {
         this.sysShopId = sysShopId;
+    }
+
+    public String getParentShopId() {
+        return parentShopId;
+    }
+
+    public void setParentShopId(String parentShopId) {
+        this.parentShopId = parentShopId;
     }
 
     public String getProductName() {
@@ -185,12 +218,52 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.productType = productType;
     }
 
+    public String getManuAddress() {
+        return manuAddress;
+    }
+
+    public void setManuAddress(String manuAddress) {
+        this.manuAddress = manuAddress;
+    }
+
     public Integer getQualityPeriod() {
         return qualityPeriod;
     }
 
     public void setQualityPeriod(Integer qualityPeriod) {
         this.qualityPeriod = qualityPeriod;
+    }
+
+    public String getManuName() {
+        return manuName;
+    }
+
+    public void setManuName(String manuName) {
+        this.manuName = manuName;
+    }
+
+    public String getTradeMark() {
+        return tradeMark;
+    }
+
+    public void setTradeMark(String tradeMark) {
+        this.tradeMark = tradeMark;
+    }
+
+    public String getEffectDate() {
+        return effectDate;
+    }
+
+    public void setEffectDate(String effectDate) {
+        this.effectDate = effectDate;
+    }
+
+    public String getInvalidDate() {
+        return invalidDate;
+    }
+
+    public void setInvalidDate(String invalidDate) {
+        this.invalidDate = invalidDate;
     }
 
     public Integer getProductWarningDay() {
@@ -209,19 +282,19 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.productWarningNum = productWarningNum;
     }
 
-    public Long getMarketPrice() {
+    public BigDecimal getMarketPrice() {
         return marketPrice;
     }
 
-    public void setMarketPrice(Long marketPrice) {
+    public void setMarketPrice(BigDecimal marketPrice) {
         this.marketPrice = marketPrice;
     }
 
-    public Long getDiscountPrice() {
+    public BigDecimal getDiscountPrice() {
         return discountPrice;
     }
 
-    public void setDiscountPrice(Long discountPrice) {
+    public void setDiscountPrice(BigDecimal discountPrice) {
         this.discountPrice = discountPrice;
     }
 
@@ -233,11 +306,11 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.productCode = productCode;
     }
 
-    public Long getProductUnit() {
+    public String getProductUnit() {
         return productUnit;
     }
 
-    public void setProductUnit(Long productUnit) {
+    public void setProductUnit(String productUnit) {
         this.productUnit = productUnit;
     }
 
@@ -247,6 +320,22 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
 
     public void setProductSpec(String productSpec) {
         this.productSpec = productSpec;
+    }
+
+    public String getProductSpecUnit() {
+        return productSpecUnit;
+    }
+
+    public void setProductSpecUnit(String productSpecUnit) {
+        this.productSpecUnit = productSpecUnit;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getIntroduce() {

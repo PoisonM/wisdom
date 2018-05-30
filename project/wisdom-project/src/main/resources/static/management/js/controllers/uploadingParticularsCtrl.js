@@ -26,7 +26,7 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                 productId:$stateParams.productId
             },function(data){
                 ManagementUtil.checkResponseData(data,"");
-                if(data.errorInfo == Global.SUCCESS){
+                if(data.result == Global.SUCCESS){
                     $scope.uploadingPar = data.responseData;
                     $scope.param.productName=$scope.uploadingPar.productName;
                     $scope.param.brand=$scope.uploadingPar.brand;
@@ -333,9 +333,7 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                 $scope.param.productName=$scope.uploadingPar.productName;
                 $scope.param.brand=$scope.uploadingPar.brand;
                 $scope.param.secondType=$scope.uploadingPar.secondType;
-                $scope.param.productDetail.senderAddress =  $scope.uploadingPar.productDetail.senderAddress;
-
-                    if($scope.param.productName ==""||$scope.param.brand$scope.param.brand==""||$scope.param.secondType==""||$scope.param.productDetail.senderAddress==""||status==""||price==""||typelisText.length<=0||listPicArr.length<=0||detailPicArr.length<=0||$scope.uploadingPar.firstUrl==""||typelisText.length<=0||description ==""||$scope.uploadingPar.productDetail.productAmount==""){
+                    if($scope.param.productName ==""||$scope.param.brand==""||$scope.param.secondType==""||status==""||price==""||typelisText.length<=0||listPicArr.length<=0||detailPicArr.length<=0||$scope.uploadingPar.firstUrl==""||typelisText.length<=0||description ==""){
                         $scope.mess=true;
                         return
                     }
@@ -357,6 +355,7 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                         firstUrl:$scope.uploadingPar.firstUrl,
                         price:price,
                         status:status,
+                        productAmount:$scope.uploadingPar.productAmount,
                         productDetail:{
                             createDate:$stateParams.createDate,
                             tag:tagArr,
@@ -365,12 +364,9 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                             detailPic:$scope.uploadingPar.productDetail.detailPic,
                             listPic:$scope.uploadingPar.productDetail.listPic,
                             senderAddress:$scope.param.productDetail.senderAddress,
-                            productId:$stateParams.productId,
-                            productAmount:$scope.uploadingPar.productDetail.productAmount
-
+                            productId:$stateParams.productId
                         }
                     };
-
                     UpdateProductByParameters.save(ProductDTO,function(data){
                         ManagementUtil.checkResponseData(data,"");
                         if(data.result == Global.SUCCESS){

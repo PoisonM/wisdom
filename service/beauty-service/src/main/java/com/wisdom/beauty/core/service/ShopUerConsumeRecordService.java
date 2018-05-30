@@ -35,6 +35,14 @@ public interface ShopUerConsumeRecordService {
     UserConsumeRecordResponseDTO getShopCustomerConsumeRecord(String consumeFlowNo);
 
     /**
+     * 根据条件查询消费记录
+     *
+     * @param shopUserConsumeRecordDTO
+     * @return
+     */
+    List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+
+    /**
      * 保存用户消费或充值记录
      *
      * @param shopUserConsumeRecordDTO
@@ -49,6 +57,22 @@ public interface ShopUerConsumeRecordService {
      * @param shopUserConsumeRecordDTO
      * @return
      */
-    int updateConumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+    int updateConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 根据消费类型和多个sysClerkId查询消费记录集合
+    *@Date:2018/4/26 9:51
+    */
+    List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(String consumeType,List<String> sysClerkIds);
+    /**
+    *@Author:zhanghuan
+    *@Param:   bossId  ，shopId
+    *@Return: List<ShopUserConsumeRecordDTO>
+    *@Description:
+    *@Date:2018/5/10 19:24
+    */
+    //List<ShopUserConsumeRecordDTO> getConsumeRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
 }

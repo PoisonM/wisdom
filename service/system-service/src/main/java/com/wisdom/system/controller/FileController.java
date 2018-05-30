@@ -5,20 +5,18 @@ package com.wisdom.system.controller;
 
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.util.Base64Utils;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.OSSObjectTool;
 import com.wisdom.system.interceptor.LoginRequired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,6 +75,41 @@ public class FileController {
         }catch (Exception e){
             e.printStackTrace();
             responseDTO.setErrorInfo(StatusConstant.FAILURE);
+        }
+        return responseDTO;
+    }
+
+    /**
+     * 图片上传
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/imageBase64UploadToOSS", method = {RequestMethod.POST, RequestMethod.GET})
+//    @LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO imageBase64UploadToOSS(@RequestBody String imageStr) throws IOException {
+        ResponseDTO responseDTO = new ResponseDTO<>();
+        InputStream inputStream = null;
+        try {
+            inputStream = Base64Utils.getInputStream(imageStr);
+            try {
+                String fileName = DateUtils.DateToStr(new Date(), "dateMillisecond");
+                MultipartFile multipartFile = new MockMultipartFile(DateUtils.DateToStr(new Date(), "dateMillisecond"), inputStream);
+                String url = OSSObjectTool.imageUploadToOSS(multipartFile, "mx-beauty", fileName, ".png");
+                responseDTO.setResponseData(url);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            responseDTO.setResult(StatusConstant.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDTO.setResult(StatusConstant.FAILURE);
+        } finally {
+            if (null != inputStream) {
+                inputStream.close();
+            }
         }
         return responseDTO;
     }

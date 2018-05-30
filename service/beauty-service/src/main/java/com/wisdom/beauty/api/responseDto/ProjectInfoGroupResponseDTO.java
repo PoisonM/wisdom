@@ -3,7 +3,6 @@ package com.wisdom.beauty.api.responseDto;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.common.entity.BaseEntity;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,6 +15,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 public class ProjectInfoGroupResponseDTO extends BaseEntity {
+	private  String id;
 	/** 套卡名称 */
 	private String projectGroupName;
 
@@ -28,14 +28,22 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 	/** 折扣价格 */
 	private Long discountPrice;
 
-	/** 有效期 */
-	private Date validDate;
+	/**生效日期*/
+	private String effectiveDate;
+	/**有效期*/
+	private String expirationDate;
 
 	/** 套卡说明 */
 	private String detail;
 
 	/** 项目List */
-	private List<ShopProjectInfoDTO> list;
+	private List<ShopProjectInfoDTO> shopProjectInfoDTOS;
+	/** 图片地址URL */
+    private List<String> imageUrl;
+	/** 是否过期 */
+	private  Boolean  overdue;
+	/** 是否启用 */
+	private  String  status;
 
 	public String getProjectGroupName() {
 		return projectGroupName;
@@ -69,13 +77,7 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 		this.discountPrice = discountPrice;
 	}
 
-	public Date getValidDate() {
-		return validDate;
-	}
 
-	public void setValidDate(Date validDate) {
-		this.validDate = validDate;
-	}
 
 	public String getDetail() {
 		return detail;
@@ -85,12 +87,59 @@ public class ProjectInfoGroupResponseDTO extends BaseEntity {
 		this.detail = detail;
 	}
 
-	public List<ShopProjectInfoDTO> getList() {
-		return list;
+	public List<ShopProjectInfoDTO> getShopProjectInfoDTOS() {
+		return shopProjectInfoDTOS;
 	}
 
-	public void setList(List<ShopProjectInfoDTO> list) {
-		this.list = list;
+	public void setShopProjectInfoDTOS(List<ShopProjectInfoDTO> shopProjectInfoDTOS) {
+		this.shopProjectInfoDTOS = shopProjectInfoDTOS;
 	}
 
+	public List<String> getImageUrl() {
+		return imageUrl;
+	}
+
+    public void setImageUrl(List<String> imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(String effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
+	public String getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(String expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
+	public Boolean getOverdue() {
+		return overdue;
+	}
+
+	public void setOverdue(Boolean overdue) {
+		this.overdue = overdue;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

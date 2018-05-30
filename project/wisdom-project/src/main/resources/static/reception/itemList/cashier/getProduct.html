@@ -1,0 +1,19 @@
+<div class="stillOwedBox clearfix">
+    <div class="stillOwedPorduct clearfix">
+        <span class="name">{{getproduct.shopProductName}}</span>
+        <span class="number">购买数量 <b>{{getproduct.initTimes}}</b></span>
+        <span class="number">已退数量<b>0</b></span>
+        <span class="number">未领取数量<b>{{getproduct.surplusTimes}}</b></span>
+    </div>
+    <div class="stillOwedTitle"></div>
+    <ul class="stillOwedUl mt10" ng-click="goHousekeeper()">
+        <li>
+            <div>关联员工</div>
+            <span>></span>
+        </li>
+    </ul>
+    <img src="" alt="">
+    <div class="stillOwedTitle">备注</div>
+    <textarea name="" rows="10" ng-model="getproduct.detail"></textarea>
+    <button ng-click="goConfirmations()">确认</button>
+</div>

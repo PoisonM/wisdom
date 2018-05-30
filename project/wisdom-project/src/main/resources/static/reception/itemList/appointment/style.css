@@ -73,8 +73,8 @@ img, a { display: inline-block; }
 .height100Num li { height: 0.77344rem; line-height: 0.78125rem; border-bottom: solid 1px #e5e5e5; }
 .height100Num li .reduction, .height100Num li .addBtn { width: 0.35938rem; height: 0.42188rem; border: solid 1px #cccccc; padding: 0; }
 .height100Num li .reduction { border-bottom-left-radius: 0.01563rem; border-top-left-radius: 0.01563rem; }
-.height100Num li .addBtn { border-bottom-right-radius: 0.01563rem; border-top-right-radius: 0.01563rem; margin-left: -7px; border-left: none; }
-.height100Num li input { width: 0.54688rem; border: solid 1px #cccccc; margin-left: -5px; border-left: none; text-align: center; }
+.height100Num li .addBtn { border-bottom-right-radius: 0.01563rem; border-top-right-radius: 0.01563rem; margin-left: -6px; border-left: none; }
+.height100Num li input { width: 0.54688rem; border: solid 1px #cccccc; margin-left: -4px; border-left: none; text-align: center; }
 
 .nextStepBtn { width: 3.125rem; height: 0.71875rem; border-radius: 0.125rem; margin-right: 0.46875rem; background: #ff6666; color: #ffffff; font-size: 0.28125rem; margin-top: 0.23438rem; }
 
@@ -142,13 +142,13 @@ margin-left:px2rem(1110/2);*/ }
 .collectionCard  .searchBox button { font-size: 0.23438rem; color: #666666; width: 0.68438rem; text-align: center; }
 .collectionCard  .cardLis { background: #ffffff; }
 
-.consumption .btnsLisArea { height: 1.46875rem; background: #ffffff; }
+.consumption .btnsLisArea { height: 1.46875rem; background: #ffffff;margin-bottom: 0.156rem; }
 .consumption .btnsLisArea .btnLis { width: 6.03125rem; margin: 0 auto; }
 .consumption .btnsLisArea .btnLis ul { display: flex; }
 .consumption .btnsLisArea .btnLis ul li { width: 25%; text-align: center; }
 .consumption .btnsLisArea .btnLis ul li img { margin-top: 0.1875rem; width: 0.6875rem; height: 0.6875rem; }
 .consumption .btnsLisArea .btnLis ul li a { display: block; margin-top: 0.11719rem; }
-.consumption .content .discount { margin-top: 0.15625rem; padding-left: 0.23438rem; background: #ffffff; }
+.consumption .content .discount { padding-left: 0.23438rem; background: #ffffff; }
 .consumption .content .discount .type { padding-top: 0.15625rem; }
 .consumption .content .discount .type p { margin-bottom: 0.11719rem; }
 .consumption .content .discount .top-up { height: 1.09375rem; line-height: 1.09375rem; }

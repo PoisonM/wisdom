@@ -1,5 +1,6 @@
 package com.wisdom.common.util;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.aliyun.oss.ClientException;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
@@ -14,6 +15,7 @@ import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class SMSMessageUtil {
 
@@ -115,14 +117,17 @@ public class SMSMessageUtil {
         request.setSignName("美享99");
 
         //必填:短信模板-可在短信控制台中找到
-        request.setTemplateCode("SMS_133005606");
+        request.setTemplateCode("SMS_133975359");
 
         //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
-        request.setTemplateParam("{\"date\":\"" + DateUtils.DateToStr(businessOrderDTO.getCreateDate()) + "\"}");
-        request.setTemplateParam("{\"shop\":\"" + specialShopInfoDTO.getShopName() + "\"}");
-        request.setTemplateParam("{\"shopName\":\"" + businessOrderDTO.getBusinessProductName() + "\"}");
-        request.setTemplateParam("{\"number\":\"" + businessOrderDTO.getBusinessProductNum() + "\"}");
-        request.setTemplateParam("{\"amount\":\"" + amount + "\"}");
+        HashMap<String,String> mapValue = new HashMap<>();
+        mapValue.put("date",DateUtils.DateToStr(businessOrderDTO.getCreateDate()));
+        mapValue.put("shop",specialShopInfoDTO.getShopName());
+        mapValue.put("shopName",businessOrderDTO.getBusinessProductName());
+        mapValue.put("number",String.valueOf(businessOrderDTO.getBusinessProductNum()));
+        mapValue.put("amount",amount);
+        String str = new Gson().toJson(mapValue);
+        request.setTemplateParam(str);
 
         //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
         request.setOutId("shortMessageSpecialProductTransaction");

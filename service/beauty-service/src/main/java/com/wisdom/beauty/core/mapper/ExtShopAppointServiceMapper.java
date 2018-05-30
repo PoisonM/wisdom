@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.mapper;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.entity.BaseDao;
 import com.wisdom.common.persistence.annotation.MyBatisDao;
@@ -32,5 +33,5 @@ public interface ExtShopAppointServiceMapper extends BaseDao<ShopAppointServiceD
      *  @return  店员下某一个时间段的用户列表
      *  @autur zhangchao
      * */
-    List<ShopAppointServiceDTO>  findUserInfoForShopAppointByTime(PageParamDTO<ShopAppointServiceDTO> pageParamDTO);
+    List<ExtShopAppointServiceDTO> findUserInfoForShopAppointByTime(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO);
 }

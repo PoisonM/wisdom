@@ -3,7 +3,9 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
+import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
@@ -21,10 +23,10 @@ public interface ShopProductInfoService {
      * @Author:huan
      * @Param:
      * @Return:
-     * @Description: 根据产品id获取产品的详细信息
+     * @Description: 根据条件查询产品列表
      * @Date:2018/4/3 19:35
      */
-    ShopProductInfoDTO getShopProductInfo(String id);
+    List<ShopProductInfoDTO> getShopProductInfo(ShopProductInfoDTO shopProductInfoDTO);
 
     /**
      * 获取用户的产品信息
@@ -49,7 +51,7 @@ public interface ShopProductInfoService {
      * @Description: 获取一级产品列表
      * @Date:2018/4/10 15:59
      */
-    List<ShopProductTypeDTO> getOneLevelProductList(String sysShopId);
+    List<ShopProductTypeDTO> getOneLevelProductList(ShopProductTypeDTO shopProductTypeDTO);
 
     /**
      * @Author:huan
@@ -67,7 +69,7 @@ public interface ShopProductInfoService {
      * @Description: 获取三级产品列表
      * @Date:2018/4/10 16:21
      */
-    List<ShopProductInfoDTO> getThreeLevelProductList(PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO);
+    List<ShopProductInfoResponseDTO> getThreeLevelProductList(PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO);
 
     /**
      * @Author:huan
@@ -76,7 +78,7 @@ public interface ShopProductInfoService {
      * @Description: 获取产品的详细信息
      * @Date:2018/4/10 16:59
      */
-    ShopProductInfoDTO getProductDetail(String id);
+    ShopProductInfoResponseDTO getProductDetail(String id);
 
     /**
      * @Author:huan
@@ -85,7 +87,7 @@ public interface ShopProductInfoService {
      * @Description: 根据多个id 查询产品信息
      * @Date:2018/4/18 19:30
      */
-    List<ShopProductInfoDTO> getProductInfoList(List<String> ids);
+    List<ShopProductInfoResponseDTO> getProductInfoList(List<String> ids);
     /**
     *@Author:huan
     *@Param:
@@ -102,4 +104,41 @@ public interface ShopProductInfoService {
      * @return
      */
     int saveShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO);
+
+    /**
+     * 更新某个店的产品类别列表
+     *
+     * @param shopProductTypeDTOS
+     */
+    int updateProductTypeListInfo(List<ShopProductTypeDTO> shopProductTypeDTOS);
+
+    /**
+     * 更新某个店的某个产品类别
+     *
+     * @param shopProductTypeDTOS
+     */
+    int updateProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS);
+
+    /**
+     * 更新产品信息
+     *
+     * @param shopProductInfoDTO
+     * @return
+     */
+    int updateProductInfo(ShopProductInfoDTO shopProductInfoDTO);
+
+    /**
+     * 添加某个店的某个产品类别
+     *
+     * @param shopProductTypeDTOS
+     */
+    int saveProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS);
+
+    /**
+     * 保存产品信息
+     *
+     * @param shopProductInfoDTO
+     * @return
+     */
+    int saveProductInfo(ExtShopProductInfoDTO shopProductInfoDTO);
 }

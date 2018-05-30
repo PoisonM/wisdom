@@ -10,7 +10,7 @@ angular.module('controllers',[]).controller('operationUploadingCtrl',
                  description:"",
                  firstUrl:"",
                  price:'',
-                 productName:'拓客新思维',
+                 productName:'',
                  secondType:'系统课程',
                  type:"training",
                  status: status.options[status.selectedIndex].value,
@@ -20,7 +20,7 @@ angular.module('controllers',[]).controller('operationUploadingCtrl',
                         name:'第一课',
                         list:[{
                             name:"第一节",
-                            duration:'2分15秒',
+                            duration:'0分0秒',
                             url:'123'
                         }]
                     }]}

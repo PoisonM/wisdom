@@ -12,41 +12,7 @@ angular.module('controllers',[]).controller('orderCtrl',
             $scope.status = "";
             var pageTrue = true;
 
- /*日期插件*/
-            $scope.dataS =  function(id){
-                !function(id){
-                    laydate.skin('danlan');
-                    laydate({elem: id});
-                }();
 
-                //日期范围限制
-                var start = {
-                    elem: '#start',
-                    format: 'YYYY-MM-DD',
-                    min: laydate.now(), //设定最小日期为当前日期
-                    max: '2099-06-16', //最大日期
-                    istime: true,
-                    istoday: false,
-                    choose: function(datas){
-                        end.min = datas; //开始日选好后，重置结束日的最小日期
-                        end.start = datas //将结束日的初始值设定为开始日
-                    }
-                };
-
-                var end = {
-                    elem: '#end',
-                    format: 'YYYY-MM-DD',
-                    min: laydate.now(),
-                    max: '2099-06-16',
-                    istime: true,
-                    istoday: false,
-                    choose: function(datas){
-                        start.max = datas; //结束日选好后，充值开始日的最大日期
-                    }
-                };
-                laydate(start);
-                laydate(end);
-            };
 
 /*展示所有*/
 /*订单状态，
@@ -112,6 +78,9 @@ angular.module('controllers',[]).controller('orderCtrl',
                             QueryBusinessOrderByParameters.save($scope.PageParamVoDTO,function(data){
                                 ManagementUtil.checkResponseData(data,"");
                                 if(data.result == Global.SUCCESS){
+                                    if( data.responseData.totalCount ==0){
+                                        alert("未查出相应结果");
+                                    }
                                     theSame(data);
                                     $scope.mum = false;
                                 }else{
@@ -144,7 +113,10 @@ angular.module('controllers',[]).controller('orderCtrl',
                         }else if(orderLis[i].status == "4"){
                             orderLis[i].status = "待收货"
                         }else if(orderLis[i].status == "del"){
-                            orderLis[i].status = "订单已删除"                                                                           }
+                            orderLis[i].status = "订单已删除"
+                        }else if(orderLis[i].status == "6"){
+                            orderLis[i].status = "超时取消"
+                        }
                     }
                     $scope.orderLis =orderLis;
                     $scope.orderLis = data.responseData.responseData;
@@ -168,7 +140,6 @@ angular.module('controllers',[]).controller('orderCtrl',
             };
 /*搜索*/
             $scope.searchOrder = function(){
-                $scope.loadPageList();
                 $scope.choosePage(1)
             };
  /*导出列表*/
@@ -218,18 +189,18 @@ angular.module('controllers',[]).controller('orderCtrl',
             };
 
  /*输入运单号*/
-            $scope.waybillNumFlag = false;
+                      $scope.waybillNumFlag = false;
             $scope.orderCopRelationDTO = {
                 orderId:"",
                 waybillNumber:"",
                 transactionId:""
             };
-             $scope.waybillNum = function(businessOrderId,transactionId,num){
-                 $scope.waybillNumFlag=!$scope.waybillNumFlag;
-                 $scope.orderCopRelationDTO.orderId = businessOrderId;
-                 $scope.orderCopRelationDTO.transactionId = transactionId;
-                 $scope.orderCopRelationDTO.waybillNumber = num;
-             };
+            $scope.waybillNum = function(businessOrderId,transactionId,num){
+                $scope.waybillNumFlag=!$scope.waybillNumFlag;
+                $scope.orderCopRelationDTO.orderId = businessOrderId;
+                $scope.orderCopRelationDTO.transactionId = transactionId;
+                $scope.orderCopRelationDTO.waybillNumber = num;
+            };
             $scope.waybillNumSave = function(){
                 if($scope.orderCopRelationDTO.waybillNumber ==""){alert("运单号不能为空");return};
                 $scope.waybillNumFlag = false;
@@ -238,7 +209,7 @@ angular.module('controllers',[]).controller('orderCtrl',
                     if(data.result == Global.SUCCESS){
                         $scope.orderCopRelationDTO.waybillNumber = "";
                         $scope.loadPageList();
-                         alert(data.errorInfo)
+                        alert(data.errorInfo)
                     }else{
                         alert(data.errorInfo)
                     }
@@ -248,6 +219,5 @@ angular.module('controllers',[]).controller('orderCtrl',
             $scope.bgAll = function(){
                 $scope.waybillNumFlag = false;
             }
-
         }]);
 

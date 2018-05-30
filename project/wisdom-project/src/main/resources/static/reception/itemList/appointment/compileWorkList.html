@@ -1,0 +1,58 @@
+<div class="compileWorkList">
+    <div class="compileWorkList_header">
+        <div class="header_box">
+            <div class="header_left">
+                <!--2018年05月04日-->
+            </div>
+            <div class="header_middle">月排班{{nowDate}}</div>
+            <div ng-click="save()" class="header_right">
+                保存
+            </div>
+        </div>
+    </div>
+
+    <div class="table_box" id="divBox1"  style=" overflow: auto;height: 100%;width: 100%;float: left;">
+        <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
+            <thead>
+            <tr>
+                <td ng-repeat="item1 in tempWeek">
+                    <div>
+                        {{item1[0]}}
+                        </br>{{item1[1]}}
+                    </div>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item4 in tempUser" data-par="{{$index}}">
+                <td ng-repeat="infoItem in item4.clerkSchInfo"
+                    ng-click="checkedItem($parent.$index,$index,infoItem.id,infoItem.sysBossId,infoItem.sysClerkId,infoItem.sysClerkName,infoItem.scheduleDate,infoItem.sysShopId)"
+                    >
+                    <div ng-if="$index == 0">{{item4.clerkInfo.name}}</div>
+                    <div ng-if="$index != 0"
+                         ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" >
+                        <span ng-if="infoItem.scheduleType == 3">全</span>
+                        <span ng-if="infoItem.scheduleType == 0">早</span>
+                        <span ng-if="infoItem.scheduleType == 1">中</span>
+                        <span ng-if="infoItem.scheduleType == 2">晚</span>
+                        <span ng-if="infoItem.scheduleType == 4">休</span>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="shadow_box"></div>
+    </div>
+
+    <div class="compileWorkList_footer">
+        <div class="footer_box">
+            <ul>
+                <li ng-click="changeType(0)"><span ng-class="{'tempType1':tempType == 0}"></span ng-class="{'tempType1':tempType == 0}"><em>早</em></li>
+                <li ng-click="changeType(1)"><span ng-class="{'tempType2':tempType == 1}"></span ng-class="{'tempType2':tempType == 1}"><em>中</em></li>
+                <li ng-click="changeType(2)"><span ng-class="{'tempType3':tempType == 2}"></span ng-class="{'tempType3':tempType == 2}"><em>晚</em></li>
+                <li ng-click="changeType(3)"><span ng-class="{'tempType4':tempType == 3}"></span ng-class="{'tempType4':tempType == 3}"><em>全</em></li>
+                <li ng-click="changeType(4)"><span ng-class="{'tempType5':tempType == 4}"></span ng-class="{'tempType5':tempType == 4}"><em>休</em></li>
+            </ul>
+        </div>
+    </div>
+</div>

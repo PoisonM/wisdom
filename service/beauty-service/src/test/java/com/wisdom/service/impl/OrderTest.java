@@ -5,6 +5,7 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
@@ -87,7 +88,7 @@ public class OrderTest {
 
         System.out.println(toJSONString);
 
-        MvcResult result = mvc.perform(post("/orderInfo/saveShopUserOrderInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/userPay/updateShopUserOrderPayInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -97,27 +98,45 @@ public class OrderTest {
 
     private ShopUserOrderDTO getShopUserOrderDTO() {
         ShopUserOrderDTO shopUserOrderDTO = new ShopUserOrderDTO();
-        shopUserOrderDTO.setExprDate(new Date());
-        shopUserOrderDTO.setDetail("备注");
-        shopUserOrderDTO.setShopUserArchivesId("1");
+        shopUserOrderDTO.setOrderId("20180510175636866");
+
         //用户与项目关系
-        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
-        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
-        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
+//        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = new ArrayList<>();
+//        buildShopUserProjectRelationDTO(shopUserProjectRelationDTOS);
+//        shopUserOrderDTO.setShopUserProjectRelationDTOS(shopUserProjectRelationDTOS);
 
-
-        //用户与产品
-        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
-        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
-        shopUserProductRelationDTOS.add(productRelationDTO);
-        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
+//
+//        //用户与产品
+//        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = new ArrayList<>();
+//        ShopUserProductRelationDTO productRelationDTO = getShopUserProductRelationDTO();
+//        shopUserProductRelationDTOS.add(productRelationDTO);
+//        shopUserOrderDTO.setShopUserProductRelationDTOS(shopUserProductRelationDTOS);
 
 
         //套卡
-        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = new ArrayList<>();
-        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = getShopUserProjectGroupRelRelationDTO();
-        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
-        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
+//        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = new ArrayList<>();
+//        ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = getShopUserProjectGroupRelRelationDTO();
+//        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
+//        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
+
+        ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
+        userRechargeCardDTO.setId("用户的充值卡id");
+        userRechargeCardDTO.setInitAmount(new BigDecimal(1000));
+        userRechargeCardDTO.setShopRechargeCardName("开门红");
+        userRechargeCardDTO.setSurplusAmount(new BigDecimal(10));
+
+        ShopUserRechargeCardDTO userRechargeCardDTO2 = new ShopUserRechargeCardDTO();
+        userRechargeCardDTO2.setId("用户的充值卡id");
+        userRechargeCardDTO2.setInitAmount(new BigDecimal(1002));
+        userRechargeCardDTO2.setShopRechargeCardName("至尊");
+        userRechargeCardDTO2.setSurplusAmount(new BigDecimal(10));
+
+
+        List<ShopUserRechargeCardDTO> objects = new ArrayList<>();
+        objects.add(userRechargeCardDTO);
+        objects.add(userRechargeCardDTO2);
+        shopUserOrderDTO.setUserPayRechargeCardList(objects);
+        //充值卡
         return shopUserOrderDTO;
     }
 
@@ -151,6 +170,7 @@ public class OrderTest {
         groupRelRelationDTO.setProjectSurplusAmount(new BigDecimal(1000));
         groupRelRelationDTO.setSysClerkId("110");
         groupRelRelationDTO.setShopProjectGroupName("综合啦");
+        groupRelRelationDTO.setId("201804242008s9402");
         groupRelRelationDTO.setShopProjectGroupId("101");
         groupRelRelationDTO.setDiscount(0.23f);
         groupRelRelationDTO.setProjectInitTimes(10);
@@ -164,6 +184,7 @@ public class OrderTest {
         productRelationDTO.setDiscount(0.75f);
         productRelationDTO.setInitAmount(new BigDecimal("100"));
         productRelationDTO.setInitTimes(20);
+        productRelationDTO.setId("20180424200829402");
         productRelationDTO.setSysClerkId("101");
         productRelationDTO.setShopProductId("101");
         productRelationDTO.setShopProductName("迪奥");
@@ -182,6 +203,7 @@ public class OrderTest {
         relationDTO.setSysShopProjectId("1");
         relationDTO.setSysUserId("1");
         relationDTO.setSysShopProjectName("美白");
+        relationDTO.setId("20180424200819402");
         relationDTO.setEffectiveDate(new Date());
         relationDTO.setInvalidDays(new Date());
         relationDTO.setUseStyle(GoodsTypeEnum.TREATMENT_CARD.getCode());

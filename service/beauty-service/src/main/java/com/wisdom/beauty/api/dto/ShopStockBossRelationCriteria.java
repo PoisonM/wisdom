@@ -196,72 +196,72 @@ public class ShopStockBossRelationCriteria {
         }
 
         public Criteria andShopBossIdIsNull() {
-            addCriterion("shop_boss_id is null");
+            addCriterion("sys_boss_code is null");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdIsNotNull() {
-            addCriterion("shop_boss_id is not null");
+            addCriterion("sys_boss_code is not null");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdEqualTo(String value) {
-            addCriterion("shop_boss_id =", value, "shopBossId");
+            addCriterion("sys_boss_code =", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdNotEqualTo(String value) {
-            addCriterion("shop_boss_id <>", value, "shopBossId");
+            addCriterion("sys_boss_code <>", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdGreaterThan(String value) {
-            addCriterion("shop_boss_id >", value, "shopBossId");
+            addCriterion("sys_boss_code >", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdGreaterThanOrEqualTo(String value) {
-            addCriterion("shop_boss_id >=", value, "shopBossId");
+            addCriterion("sys_boss_code >=", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdLessThan(String value) {
-            addCriterion("shop_boss_id <", value, "shopBossId");
+            addCriterion("sys_boss_code <", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdLessThanOrEqualTo(String value) {
-            addCriterion("shop_boss_id <=", value, "shopBossId");
+            addCriterion("sys_boss_code <=", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdLike(String value) {
-            addCriterion("shop_boss_id like", value, "shopBossId");
+            addCriterion("sys_boss_code like", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdNotLike(String value) {
-            addCriterion("shop_boss_id not like", value, "shopBossId");
+            addCriterion("sys_boss_code not like", value, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdIn(List<String> values) {
-            addCriterion("shop_boss_id in", values, "shopBossId");
+            addCriterion("sys_boss_code in", values, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdNotIn(List<String> values) {
-            addCriterion("shop_boss_id not in", values, "shopBossId");
+            addCriterion("sys_boss_code not in", values, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdBetween(String value1, String value2) {
-            addCriterion("shop_boss_id between", value1, value2, "shopBossId");
+            addCriterion("sys_boss_code between", value1, value2, "sysBossCode");
             return (Criteria) this;
         }
 
         public Criteria andShopBossIdNotBetween(String value1, String value2) {
-            addCriterion("shop_boss_id not between", value1, value2, "shopBossId");
+            addCriterion("sys_boss_code not between", value1, value2, "sysBossCode");
             return (Criteria) this;
         }
 

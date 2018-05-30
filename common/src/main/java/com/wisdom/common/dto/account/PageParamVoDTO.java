@@ -40,6 +40,9 @@ public class PageParamVoDTO<T> {
     //是否导出Excel   Y: 是  N: 否
     @JSONField(name = "isExportExcel")
     private String isExportExcel;
+    //是否分页
+    @JSONField(name = "paging")
+    private Boolean paging=false;
 
     public int getPageNo() {
         return pageNo;
@@ -127,5 +130,13 @@ public class PageParamVoDTO<T> {
 
     public void setIsExportExcel(String isExportExcel) {
         this.isExportExcel = isExportExcel;
+    }
+
+    public Boolean getPaging() {
+        return paging;
+    }
+
+    public void setPaging(Boolean paging) {
+        this.paging = paging;
     }
 }

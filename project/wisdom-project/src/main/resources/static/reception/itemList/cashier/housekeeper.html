@@ -1,0 +1,9 @@
+<div class="sourcesBox clearfix">
+    <ul class="sourcesUl">
+        <li ng-repeat="item in UserList" ng-click="housekeeperCheck($index,item.id)">
+            <div>
+                <b class="checkRadio" ng-class="{check:select == $index}"></b>{{item.name}}({{item.mobile}}）
+            </div>
+        </li>
+    </ul>
+</div>

@@ -13,6 +13,7 @@
 		<result column="price" property="price" jdbcType="REAL" />
 		<result column="status" property="status" jdbcType="VARCHAR" />
 		<result column="second_type" property="secondType" jdbcType="VARCHAR" />
+		<result column="product_amount" property="productAmount" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<resultMap id="BusinessOrderResultMap" type="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
@@ -27,7 +28,7 @@
 	</resultMap>
 
 	<sql id="Base_Product_List">
-		p.id,p.name,p.product_id,p.brand,p.type,p.description,p.first_url,p.price,p.status,p.create_date,p.second_type
+		p.id,p.name,p.product_id,p.brand,p.type,p.description,p.first_url,p.price,p.status,p.create_date,p.second_type,p.product_amount
 	</sql>
 
 	<select id="getBusinessProductInfo"
@@ -35,15 +36,7 @@
 		select * from
 		business_product
 		where
-		1=1
-		AND
-		<!--<if test="type != null and type != ''">-->
-			<!--type=#{type}-->
-		<!--</if>-->
-		<!--AND-->
-		<if test="productId != null and productId != ''">
 			product_id=#{productId}
-		</if>
 	</select>
 
 	<select id="findOfflineProductList"
@@ -106,10 +99,13 @@
 		FROM business_product p
 		WHERE 1=1
 		<if test="requestData.productName != null and requestData.productName != ''">
-			AND p.name = #{requestData.productName}
+			AND p.name LIKE "%${requestData.productName}%"
 		</if>
 		<if test="requestData.productId != null and requestData.productId != ''">
 			AND p.product_id = #{requestData.productId}
+		</if>
+		<if test="requestData.price != null and requestData.price != ''">
+			AND p.price = ${requestData.price}
 		</if>
 		<if test="requestData.type != null and requestData.type != ''">
 			AND p.type = #{requestData.type}
@@ -164,8 +160,11 @@
 	<update id="updateProductByParameters">
 		UPDATE business_product
 		SET
+		<if test="productId != ''and productId != null">
+			product_id=#{productId}
+		</if>
 		<if test="productName != ''and productName != null">
-			name=#{productName}
+			,name=#{productName}
 		</if>
 		<if test="brand != ''and brand != null">
 			,brand=#{brand}
@@ -185,8 +184,11 @@
 		<if test="secondType != ''and secondType != null">
 			,second_type=#{secondType}
 		</if>
-		WHERE 1=1
-		AND product_id = #{productId}
+		<if test="productAmount != ''and productAmount != null">
+			,product_amount=#{productAmount}
+		</if>
+		WHERE
+		product_id = #{productId}
 	</update>
 
 	<!--编辑商品-上架-->

@@ -1,0 +1,113 @@
+.selectRechargeTypeBox {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+
+.selectRechargeTypeTitle {
+    background: #fff;
+    height: 69px;
+    width: 706px;
+    margin: 30px 0;
+}
+
+.selectRechargeTypeTitle span {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0.47px;
+    margin: 14px 0 0 15px;
+    display: block;
+    float: left;
+    width: 80%;
+}
+
+.selectRechargeTypeTitle p {
+    font-family: PingFangSC-Regular;
+    font-size: 11px;
+    color: #999999;
+    letter-spacing: 1px;
+    display: block;
+    margin: 6px 0 0 15px;
+    float: left;
+}
+
+.selectRechargeTypeTitle .checkDiv {
+    border: 1px solid #FF6666;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin: 30px 0 0 17px;
+    float: left;
+}
+
+.selectRechargeTypeBox .selectRechargeTypeUl {}
+
+.selectRechargeTypeBox .selectRechargeTypeUl li {
+    height: 128px;
+    background: #fff;
+}
+
+.selectRechargeTypeBox .selectRechargeTypeUl li>img {
+    width: 164px;
+    height: 96px;
+    border-radius: 10px;
+    margin: 22px 0 0 11px;
+    float: left;
+}
+
+.selectRechargeTypeBox .selectRechargeTypeUl li .checkDiv {
+    border: 1px solid #FF6666;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin: 63px 0 0 12px;
+    float: left;
+}
+
+.selectRechargeTypeBox .selectRechargeTypeUl li .name {
+    display: inline-block;
+    margin: 22px 0 0 10px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 1px;
+}
+
+.selectRechargeTypeBox .selectRechargeTypeUl li .price {
+    margin: 22px 0 0 10px;
+    display: inline-block;
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #FF6666;
+    letter-spacing: 0;
+}
+
+.selectRechargeTypeBox .selectRechargeTypeUl li .discount {
+    display: inline-block;
+    margin: 7px 0 0 11px;
+    font-family: PingFangSC-Regular;
+    font-size: 11px;
+    color: #999999;
+    letter-spacing: 1px;
+}
+
+.selectRechargeTypeBox .checkBox {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 53px 8px;
+    float: left;
+    border: 1px solid #FF6666;
+}
+
+.selectRechargeTypeBox .checkBox img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.bgF6 {
+    background: #FF6666;
+}

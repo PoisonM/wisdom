@@ -31,6 +31,14 @@ public interface ShopAppointmentService {
     List<ShopAppointServiceDTO> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO);
 
     /**
+     * 根据时间查询某个店下的某个美容师的预约个数
+     *
+     * @param extShopAppointServiceDTO
+     * @return
+     */
+    Integer getShopClerkAppointNumberByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO);
+
+    /**
      * 更新预约信息
      *
      * @param shopAppointServiceDTO
@@ -44,7 +52,7 @@ public interface ShopAppointmentService {
      *@Description: 根据用户ID查询预约信息
      *@Date:2018/4/8 14:26
      */
-    ShopAppointServiceDTO getShopAppointService(String userId);
+    ShopAppointServiceDTO getShopAppointService(ShopAppointServiceDTO shopAppointServiceDTO);
 
 
     /**
@@ -64,7 +72,7 @@ public interface ShopAppointmentService {
      *  @return  shopAppointUserInfoList 预约用户列表
      *  @autur zhangchao
      * */
-    PageParamDTO<List<ShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ShopAppointServiceDTO> pageParamDTO);
+    PageParamDTO<List<ExtShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO);
     /**
      * 保存用户的预约信息
      */

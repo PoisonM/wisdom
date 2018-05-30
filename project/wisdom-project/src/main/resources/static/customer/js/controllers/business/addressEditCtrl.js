@@ -65,7 +65,9 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                             UpdateUserAddress.save($scope.param.userAddressInfo, function(data) {
                                 if(Global.SUCCESS==data.result)
                                 {
-                                    window.history.go(-2);
+                                    // window.history.go(-2);
+                                    window.location.href = "orderPay.do?productType="+window.localStorage.getItem("productType")+"&random="+Math.random();
+
                                    /* $state.go("addressManagement");*/
                                 }
                             })
@@ -84,8 +86,10 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                             AddUserAddress.save($scope.param.userAddressInfo, function(data) {
                                 if(Global.SUCCESS==data.result)
                                 {
-                                    window.history.go(-2);
-                                   /* $state.go("addressManagement");*/
+                                    // window.history.go(-2);
+                                    window.location.href = "orderPay.do?productType="+window.localStorage.getItem("productType")+"&random="+Math.random();
+
+                                    /* $state.go("addressManagement");*/
                                 }
                             });
 
@@ -105,13 +109,18 @@ angular.module('controllers',[]).controller('addressEditCtrl',
             $scope.deleteAddress=function () {
                 DeleteUserAddress.get({addressId:$stateParams.addressId}, function(data){
                     BusinessUtil.checkResponseData(data,"addressEdit&edit,"+$stateParams.addressId);
+                    /*解决删除地址还剩下一个地址，三级联动不好用的问题*/
+                    setTimeout(function () {
+                        window.location.reload();
+                    },1000);
                     if(data.result==Global.SUCCESS)
                     {
                         var alertPopup = $ionicPopup.alert({
                             template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">成功删除地址</span>',
                             okText:'确定'
                         });
-                        $state.go("addressManagement",{routePath:$rootScope.routePath});
+                        $state.go("addressManagement");
+                       /* $state.go("addressManagement",{routePath:$rootScope.routePath});*/
                     }else{
                         var alertPopup = $ionicPopup.alert({
                             template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">删除地址失败</span>',
@@ -121,18 +130,17 @@ angular.module('controllers',[]).controller('addressEditCtrl',
                 })
             };
 
-                !function () {
-                    var $target = $('#J_Address');
-                    $target.citySelect();
-                    console.log( $target.citySelect);
-                    $target.on('click', function (event) {
-                        event.stopPropagation();
-                        $target.citySelect('open');
-                    });
-                    $target.on('done.ydui.cityselect', function (ret) {
-                        $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
-                    });
-                }();
-
+            !function () {
+                var $target = $('#J_Address');
+                $target.citySelect();
+                console.log( $target.citySelect);
+                $target.on('click', function (event) {
+                    event.stopPropagation();
+                    $target.citySelect('open');
+                });
+                $target.on('done.ydui.cityselect', function (ret) {
+                    $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                });
+            }();
 
         }]);

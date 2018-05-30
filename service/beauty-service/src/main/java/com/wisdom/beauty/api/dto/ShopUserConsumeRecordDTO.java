@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable {
     //
@@ -15,9 +15,6 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
 
     //单次卡为当前项目id,疗程卡也为当前项目名称,产品为当前产品名称,充值卡为的当前充值卡名称
     private String flowName;
-
-    //订单表主键
-    private String orderId;
 
     //消费流水号
     private String flowNo;
@@ -34,11 +31,11 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //0、商品类型为次卡；1、商品类型为疗程卡 ；2、商品类型为充值卡；3、商品类型为套卡 4、商品类型为产品 
     private String goodsType;
 
-    //0：充值  1：消费 2、还欠款 3、退款 4、划卡
+    //0：充值  1：消费 2、还欠款 3、退款
     private String consumeType;
 
-    //
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
 
     //美容院表主键
     private String sysShopId;
@@ -55,8 +52,20 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //总价格
     private BigDecimal price;
 
+    //
+    private BigDecimal beforePrice;
+
     //消费折扣
     private BigDecimal discount;
+
+    //
+    private Float timeDiscount;
+
+    //
+    private Float periodDiscount;
+
+    //
+    private Float productDiscount;
 
     //操作日期
     private Date operDate;
@@ -70,7 +79,7 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     //备注
     private String detail;
 
-    //是否有效
+    //是否有效 0 有效  1无效
     private String status;
 
     //
@@ -159,12 +168,12 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
         this.consumeType = consumeType;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysShopId() {
@@ -207,12 +216,44 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
         this.price = price;
     }
 
+    public BigDecimal getBeforePrice() {
+        return beforePrice;
+    }
+
+    public void setBeforePrice(BigDecimal beforePrice) {
+        this.beforePrice = beforePrice;
+    }
+
     public BigDecimal getDiscount() {
         return discount;
     }
 
     public void setDiscount(BigDecimal discount) {
         this.discount = discount;
+    }
+
+    public Float getTimeDiscount() {
+        return timeDiscount;
+    }
+
+    public void setTimeDiscount(Float timeDiscount) {
+        this.timeDiscount = timeDiscount;
+    }
+
+    public Float getPeriodDiscount() {
+        return periodDiscount;
+    }
+
+    public void setPeriodDiscount(Float periodDiscount) {
+        this.periodDiscount = periodDiscount;
+    }
+
+    public Float getProductDiscount() {
+        return productDiscount;
+    }
+
+    public void setProductDiscount(Float productDiscount) {
+        this.productDiscount = productDiscount;
     }
 
     public Date getOperDate() {

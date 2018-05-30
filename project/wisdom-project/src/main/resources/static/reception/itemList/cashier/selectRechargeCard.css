@@ -2,6 +2,7 @@
     width: 100%;
     height: 100%;
     background: #F5F5F5;
+    overflow: scroll;
 }
 
 .selectRechargeCardBox .selectRechargeCardTitle {
@@ -75,4 +76,24 @@
     margin: 41px 44px 0 0;
     width: 180px;
     height: 44px;
+}
+
+.checkBox {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 23px 8px;
+    float: left;
+    border: 1px solid #FF6666;
+}
+
+.bgF6 {
+    background: #FF6666;
+}
+
+.checkBox img {
+    width: 100%;
+    height: 100%;
+    display: block;
 }

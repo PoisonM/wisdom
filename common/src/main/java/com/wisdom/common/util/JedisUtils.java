@@ -35,6 +35,9 @@ public class JedisUtils {
 	 * @return 值
 	 */
 	public static String get(String key) {
+		if (StringUtils.isBlank(key)) {
+			return null;
+		}
 		String value = null;
 		Jedis jedis = null;
 		try {
@@ -57,7 +60,37 @@ public class JedisUtils {
 	 * @param key 键
 	 * @return 值
 	 */
+	public static Object getStringObject(String key) {
+		if (StringUtils.isBlank(key)) {
+			return null;
+		}
+		Object value = null;
+		Jedis jedis = null;
+		try {
+			jedis = getResource();
+			if (jedis.exists(getBytesKey(key))) {
+				byte[] bytes = jedis.get(getBytesKey(key));
+				value = new String(bytes);
+				logger.debug("getObject {} = {}", key, value);
+			}
+		} catch (Exception e) {
+			logger.warn("getObject {} = {}", key, value, e);
+		} finally {
+			returnResource(jedis);
+		}
+		return value;
+	}
+
+	/**
+	 * 获取缓存
+	 *
+	 * @param key 键
+	 * @return 值
+	 */
 	public static Object getObject(String key) {
+		if (StringUtils.isBlank(key)) {
+			return null;
+		}
 		Object value = null;
 		Jedis jedis = null;
 		try {
@@ -384,15 +417,17 @@ public class JedisUtils {
 	 * @return
 	 */
 	public static Set<String> zRangeByScore(String key, String min, String max) {
+		logger.info("开始时间");
 		Set<String> result = null;
 		Jedis jedis = null;
 		try {
 			jedis = getResource();
+			logger.info("获取资源");
 			result = jedis.zrangeByScore(key, min, max);
 
-			logger.debug("setSet {} = {} = {}", key, min,max);
+			logger.info("结束时间");
 		} catch (Exception e) {
-			logger.warn("setSet {} = {}  = {}", key, min,max);
+			logger.info("结束时间");
 		} finally {
 			returnResource(jedis);
 		}

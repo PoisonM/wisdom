@@ -1,0 +1,106 @@
+<ion-view class="bg">
+    <ion-content style="margin-bottom: 45px">
+        <!--日期部分-->
+        <div class="bgRgb">
+            <ionic-datepicker input-obj="datepickerObjectEnd">
+                <img src="images/work/date.png" class="dateImg" >
+                <span class="date">{{param.date}}</span>
+                <img src="images/work/drop-down.png" class="dropImg">
+            </ionic-datepicker>
+
+            <span class="fs15 fr pr10 colfff" ng-click="allFamilyGo()">全部家人</span>
+
+        </div>
+        <!--业绩耗卡-->
+        <div class="list">
+            <div class="item">
+                <div class="list comprehensiveBox" style="position: relative;border-radius: 10px;">
+                    <div class="row comprehensiveBox1">
+                        <div class=" comprehensiveBox2 col col-50">
+                            业绩
+                            <p class="colff">{{beautyAll.income}}</p>
+                        </div>
+                        <div class=" comprehensiveBox2 col col-50" >
+                            耗卡
+                            <p class="colff">{{beautyAll.expenditure}}</p>
+                        </div>
+                    </div>
+                    <div class="" style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #FF6666" ui-sref="sevenDayCharts({id:param.sysShopId})"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;" >近7日趋势图</div>
+                </div>
+            </div>
+        </div>
+        <!--来源分析-->
+        <p style="font-size: 14px;margin-left: 18px;color: #333333;margin-top: -9px;margin-bottom: 5px;">来源分析</p>
+        <!--业绩-->
+        <div class="list" ng-click="detailedPerformanceGo()">
+            <p class="item" style="padding: 8px"><span>业绩</span>
+                <span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.income}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
+            <div class="row row-wrap" style="background: #ffffff;color: #333333;text-align: center;padding: 0px">
+                <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
+                    <img src="images/work/recharge.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
+                    充值
+                    <p style="margin-top: 5px">{{beautyAll.recharge}}</p>
+                </div>
+                <div class="col col-50"  style="padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
+                    <img src="images/work/Arrears.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
+                    消费
+                    <p style="margin-top: 5px">{{beautyAll.consume}}</p>
+                </div>
+                <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;position: relative">
+                    <img src="images/work/consumption.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
+                    还欠款
+                    <p style="margin-top: 5px">******</p>
+                </div>
+                <div class="col col-50"  style="padding-top: 10px;position: relative">
+                    <img src="images/work/refund.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
+                    退款
+                    <p style="margin-top: 5px">******</p>
+                </div>
+            </div>
+        </div>
+        <!--耗卡-->
+        <div class="list" ng-click="detailedPerformanceGo()">
+            <p class="item" style="padding: 8px"><span>耗卡</span>
+                <span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.expenditure}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
+            <div class="row row-wrap" style="background: #ffffff;color: #333333;text-align: center;padding: 0px">
+                <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
+                    <img src="images/work/Delimitcard.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
+                    划卡
+                    <p style="margin-top: 5px">{{beautyAll.scratchCard}}</p>
+                </div>
+                <div class="col col-50"  style="padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
+                    <img src="images/work/void.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
+                    划卡作废
+                    <p style="margin-top: 5px">******</p>
+                </div>
+                <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;position: relative">
+                    <img src="images/work/singleConsumption.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
+                    <p style="margin-left: 0.8rem">单次消费耗卡</p>
+                    <p style="margin-top: 5px">{{beautyAll.oneConsume}}</p>
+                </div>
+                <div class="col col-50"  style="padding-top: 10px;position: relative">
+                    <img src="images/work/refund.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%;">
+                    <p style="margin-left: 1.1rem">退单次消费耗卡</p>
+                    <p style="margin-top: 5px;">******</p>
+                </div>
+            </div>
+        </div>
+        <!--卡耗-->
+        <div class="list" ng-click="detailedPerformanceGo()">
+            <p class="item" style="padding: 8px"><span>卡耗</span><span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.kahao}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
+            <div class="row" style="background: #ffffff;color: #333333;text-align: center;padding: 0px">
+                <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
+
+                    <img src="images/work/Arrears.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
+                    消费
+                    <p style="margin-top: 5px">{{beautyAll.cardConsume}}</p>
+                </div>
+                <div class="col col-50"  style="padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
+                    <img src="images/work/refund.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
+                    退款
+                    <p style="margin-top: 5px">****</p>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

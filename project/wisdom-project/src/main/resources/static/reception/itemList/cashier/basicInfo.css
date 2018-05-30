@@ -117,3 +117,11 @@
     margin-top: 10px;
     border: none;
 }
+
+.basicInfo-box .basicInfo-content-second .bind {
+    border: 1px solid #FF6666;
+    padding: 0px 5px;
+    margin-left: 5px;
+    color: #ff6666 !important;
+    border-radius: 3px;
+}

@@ -8,7 +8,12 @@ angular.module('customerGlobal',[])
         TOKEN_ERROR: '0x00006',
         PARAM_ERROR: '0x00007',
         LOGIN_SUCCESS_SECOND : '0x00008',
-        NO_USER_ADDRESS : '0x00011'
+        NO_USER_ADDRESS : '0x00011',
+        userType:{
+            BEAUTY_USER:"beautyUser",
+            BEAUTY_BOSS:"beautyBoss",
+            BEAUTY_CLERK:"beautyClerk"
+        }
     })
     .constant("LogGlobal", {
         BUSINESS_HOME : "0x001",
@@ -141,6 +146,66 @@ angular.module('customerGlobal',[])
                             console.log(data);
                         })
                     }
+                }
+            };
+        }])
+    .factory('BeautyUtil', ['Global','$ionicPopup','$state',
+        function(Global,$ionicPopup,$state) {
+            return {
+                setUserType: function(userType) {
+                    window.localStorage.removeItem("userType");
+                    window.localStorage.setItem("userType",userType);
+                },
+                checkResponseData: function(data,redirectParam) {
+                    if(data.result==Global.FAILURE)
+                    {
+                        if(data.errorInfo==Global.TOKEN_ERROR){
+                            $state.go("beautyLogin",{redirectUrl:redirectParam})
+                        }
+                    }
+                },
+                getNowFormatDate:function() {
+                    var date = new Date();
+                    var seperator1 = "-";
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {
+                        month = "0" + month;
+                    }
+                    if (strDate >= 0 && strDate <= 9) {
+                        strDate = "0" + strDate;
+                    }
+                    var currentdate = year + seperator1 + month + seperator1 + strDate;
+                    return currentdate;
+                },
+                getAddDate:function(date,days){
+                    var d=new Date(date);
+                    d.setDate(d.getDate()+days);
+                    var month=d.getMonth()+1;
+                    var day = d.getDate();
+                    if(month<10){
+                        month = "0"+month;
+                    }
+                    if(day<10){
+                        day = "0"+day;
+                    }
+                    var val = d.getFullYear()+"-"+month+"-"+day;
+                    return val;
+                },
+                getAddDateIndex:function(date,days){
+                    var d=new Date(date);
+                    d.setDate(d.getDate()+days);
+                    var month=d.getMonth()+1;
+                    var day = d.getDate();
+                    if(month<10){
+                        month = "0"+month;
+                    }
+                    if(day<10){
+                        day = "0"+day;
+                    }
+                    var val = month+"/"+day;
+                    return val;
                 }
             };
         }])

@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('offlineProductDetailCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetOfflineProductDetail',
         'AddProduct2BuyCart','BusinessUtil','GetProductNumFromBuyCart','$ionicPopup',
-        '$ionicSlideBoxDelegate','CreateBusinessOrder','PutNeedPayOrderListToRedis','Global','$ionicLoading',"$interval",'LoginGlobal','$timeout',
+        '$ionicSlideBoxDelegate','CreateBusinessOrder','PutNeedPayOrderListToRedis','Global','$ionicLoading',"$interval",'LoginGlobal','$timeout','IsLogin',
         function ($scope,$rootScope,$stateParams,$state,GetOfflineProductDetail,
                   AddProduct2BuyCart,BusinessUtil,GetProductNumFromBuyCart,$ionicPopup,
-                  $ionicSlideBoxDelegate,CreateBusinessOrder,PutNeedPayOrderListToRedis,Global,$ionicLoading,$interval,LoginGlobal,$timeout) {
+                  $ionicSlideBoxDelegate,CreateBusinessOrder,PutNeedPayOrderListToRedis,Global,$ionicLoading,$interval,LoginGlobal,$timeout,IsLogin) {
 
             $rootScope.title = "美享99产品详情";
 
@@ -15,44 +15,51 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
             $scope.myObj = {
                 background:"red",
                 padding: "5px 20px",
-            }
+            };
 
             $scope.showFlag = function (type) {
                 $scope.model = type;
                 if(!type){
                     $scope.param.checkFlag=""
                 }
-            }
+            };
 
             $scope.confirmProductSpec = function(spec) {
                 $scope.param.checkFlag = spec
-            }
+            };
 
             $scope.concealment=function () {
                 $scope.showFlag(false);
                 $scope.param.checkFlag = "";
                 $scope.param.productNum = 1
-            }
+            };
 
             $scope.chooseSpec = function () {
                 $scope.model = true
-            }
+            };
 
             $scope.viewInstructions=function(){
                 $scope.explain= true;
-            }
+            };
 
             $scope.know=function(){
                 $scope.explain=false;
             };
 
             $scope.addBuyCart = function(){
+                /*根据商品状态来判断商品是否为下架商品*/
+                if($scope.param.product.status == "0"){
+                    return;
+                }
                 if($scope.model){
                     BusinessUtil.twoParameters(LoginGlobal.MX_SC_AGW,$stateParams.productId);
                     if($scope.param.product.productDetail.spec.length == 1){
                         $scope.param.checkFlag = $scope.param.product.productDetail.spec[0]
                     }
-
+                    if($scope.param.productNum>$scope.param.product.productAmount){
+                        alert("库存不足~");
+                        return;
+                    }
                     //没有选择属性
                     if($scope.param.checkFlag=="")
                     {
@@ -79,9 +86,13 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 }else{
                     $scope.model = true
                 }
-            }
+            };
 
             $scope.goPay = function(){
+                /*根据商品状态来判断商品是否为下架商品*/
+                if($scope.param.product.status == "0"){
+                    return;
+                }
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ACJ,$stateParams.productId);
 
                 if($scope.model){
@@ -92,9 +103,15 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     {
                         $scope.model=true;
                     }
+                    /*根据商品数量跟库存的对比，数量大于库存及库存不足，结束这一步*/
+                    if($scope.param.productNum>$scope.param.product.productAmount){
+                        alert("库存不足~");
+                        return;
+                    }
                     else
                     {
                         showToast("加载中");
+
                         //先将此商品生成订单
                         CreateBusinessOrder.save({businessProductId:$scope.param.product.productId,
                             productSpec:$scope.param.checkFlag,
@@ -103,7 +120,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                             BusinessUtil.checkResponseData(data,'offlineProductDetail&'+$scope.param.product.productId);
                             if(data.result==Global.FAILURE)
                             {
-                                showToast("请先登录账号")
+                                showToast("交易失败");
                                 hideToast()
                             }
                             else
@@ -124,9 +141,10 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
                                     if(data.result==Global.SUCCESS)
                                     {
+                                        hideToast()
                                         $scope.showFlag(false);
-                                        $scope.param.checkFlag = ""
-                                        $scope.param.productNum = 1
+                                        $scope.param.checkFlag = "";
+                                        $scope.param.productNum = 1;
                                         if($scope.param.product.type=='offline')
                                         {
                                             window.location.href = "orderPay.do?productType=" + $scope.param.product.type + "&random="+Math.random();
@@ -137,21 +155,29 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                                 + "&specialShopId=" + $rootScope.specialShopId
                                                 + "&random="+Math.random();
                                         }
+                                    }else if(data.result==Global.FAILURE){
+                                        alert("购买失败");
+                                        hideToast()
+                                        $scope.showFlag(false);
                                     }
+
                                 })
                             }
-
                         })
 
                     }
                 }else{
                     $scope.model = true
                 }
-            }
+            };
 
             $scope.addProductNum = function(){
                 $scope.param.productNum= $scope.param.productNum+1;
-            }
+                if($scope.param.productNum>$scope.param.product.productAmount){
+                    $("#Car").css("background","grey");
+                    $("#goPay").css("background","grey");
+                }
+            };
 
             $scope.minusProductNum = function(){
                 if($scope.param.productNum>1){
@@ -159,18 +185,34 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 }else{
                     $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");
                 }
-            }
-            
+                if($scope.param.productNum<=$scope.param.product.productAmount){
+                    $("#Car").css("background","#fca1a8");
+                    $("#goPay").css("background","red");
+                }
+            };
+
             var showToast = function (content) {
                 $ionicLoading.show({
                     template: content
                 });
-            }
+            };
 
             var hideToast = function () {
                 $timeout(function () {
                     $ionicLoading.hide();
                 }, 1000);
+            };
+
+            $scope.loginCart = function(){
+                IsLogin.save(function(data){
+                    if(data.responseData=="failure"){
+                        showToast("请先登录账号");
+                        hideToast();
+                        $state.go("login");
+                    }else{
+                        $state.go("buyCart");
+                    }
+                })
             };
 
             $scope.$on('$ionicView.enter', function(){
@@ -193,6 +235,13 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 GetOfflineProductDetail.get({productId:$stateParams.productId},function(data){
                     $ionicLoading.hide();
                     $scope.param.product = data.responseData;
+                    /*测试*/
+                   /* $scope.param.product.status = "0";*/
+                    /* $scope.param.product.productAmount=$scope.param.product.productAmount-1;*/
+                   if($scope.param.product.status == "0"){
+                       $("#add").css("background","grey");
+                       $("#go").css("background","grey");
+                   }
                     $ionicSlideBoxDelegate.update();
                     $ionicSlideBoxDelegate.loop(true);
                     $interval(function(){

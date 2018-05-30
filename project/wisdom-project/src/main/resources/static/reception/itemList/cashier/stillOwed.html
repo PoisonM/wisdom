@@ -11,20 +11,26 @@
     </ul>
     <div class="stillOwedTitle">其他支付方式</div>
     <ul class="stillOwedUl mt10">
-        <li>
-            <input type="radio" name="pay" id="">
+        <li ng-click="checkBoxChek($event)">
+            <div class="checkBox">
+                <img src="images/checkImg.png" alt="">
+            </div>
             <div>银联支付</div>
         </li>
-        <li>
-            <input type="radio" name="pay" id="">
+        <li ng-click="checkBoxChek($event)">
+            <div class="checkBox">
+                <img src="images/checkImg.png" alt="">
+            </div>
             <div>微信支付</div>
         </li>
-        <li>
-            <input type="radio" name="pay" id="">
+        <li ng-click="checkBoxChek($event)">
+            <div class="checkBox">
+                <img src="images/checkImg.png" alt="">
+            </div>
             <div>支付宝支付</div>
         </li>
     </ul>
-    <ul class="stillOwedUl mt10">
+    <ul class="stillOwedUl mt10" ng-click="goHousekeeper()">
         <li>
             <div>关联员工</div>
             <span>></span>
@@ -33,5 +39,5 @@
     <img src="" alt="">
     <div class="stillOwedTitle">备注</div>
     <textarea name="" rows="10"></textarea>
-    <button>确认</button>
+    <button ng-click="goSignConfirm()">确认</button>
 </div>

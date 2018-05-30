@@ -475,6 +475,76 @@ public class ShopProjectTypeCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andParentShopIdIsNull() {
+            addCriterion("parent_shop_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdIsNotNull() {
+            addCriterion("parent_shop_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdEqualTo(String value) {
+            addCriterion("parent_shop_id =", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdNotEqualTo(String value) {
+            addCriterion("parent_shop_id <>", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdGreaterThan(String value) {
+            addCriterion("parent_shop_id >", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdGreaterThanOrEqualTo(String value) {
+            addCriterion("parent_shop_id >=", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdLessThan(String value) {
+            addCriterion("parent_shop_id <", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdLessThanOrEqualTo(String value) {
+            addCriterion("parent_shop_id <=", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdLike(String value) {
+            addCriterion("parent_shop_id like", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdNotLike(String value) {
+            addCriterion("parent_shop_id not like", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdIn(List<String> values) {
+            addCriterion("parent_shop_id in", values, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdNotIn(List<String> values) {
+            addCriterion("parent_shop_id not in", values, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdBetween(String value1, String value2) {
+            addCriterion("parent_shop_id between", value1, value2, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdNotBetween(String value1, String value2) {
+            addCriterion("parent_shop_id not between", value1, value2, "parentShopId");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateByIsNull() {
             addCriterion("create_by is null");
             return (Criteria) this;

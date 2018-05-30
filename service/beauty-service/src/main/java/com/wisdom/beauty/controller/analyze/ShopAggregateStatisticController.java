@@ -1,33 +1,19 @@
 package com.wisdom.beauty.controller.analyze;
 
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
-import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.account.AccountDTO;
-import com.wisdom.common.dto.account.IncomeRecordDTO;
-import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.account.PayRecordDTO;
-import com.wisdom.common.dto.beauty.BeautyShopDTO;
 import com.wisdom.common.dto.beauty.ShopAchievementDTO;
-import com.wisdom.common.dto.product.ProductDTO;
-import com.wisdom.common.dto.system.*;
-import com.wisdom.common.dto.transaction.BusinessOrderDTO;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.excel.ExportExcel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import com.wisdom.common.dto.system.ResponseDTO;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "analyze")
 public class ShopAggregateStatisticController {
 

@@ -22,6 +22,9 @@ public class ShopProductTypeDTO extends BaseEntity implements Serializable {
     private String productType;
 
     //
+    private String parentShopId;
+
+    //
     private String status;
 
     //
@@ -76,6 +79,14 @@ public class ShopProductTypeDTO extends BaseEntity implements Serializable {
 
     public void setProductType(String productType) {
         this.productType = productType;
+    }
+
+    public String getParentShopId() {
+        return parentShopId;
+    }
+
+    public void setParentShopId(String parentShopId) {
+        this.parentShopId = parentShopId;
     }
 
     public String getStatus() {

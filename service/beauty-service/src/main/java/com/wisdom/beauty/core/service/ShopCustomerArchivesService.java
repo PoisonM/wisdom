@@ -1,9 +1,11 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,12 +38,10 @@ public interface ShopCustomerArchivesService {
     /**
      * 查询某个店某一时间段建档的个数
      *
-     * @param shopId
-     * @param startDate
-     * @param endDate
+     * @param pageParamVoDTO
      * @return
      */
-    int getShopBuildArchivesNumbers(String shopId, Date startDate, Date endDate);
+    int getShopBuildArchivesNumbers(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * 保存用户的建档案信息
@@ -73,7 +73,23 @@ public interface ShopCustomerArchivesService {
      * @param shopUserArchivesDTO
      * @return
      */
-    ShopUserArchivesDTO getShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO);
+    List<ShopUserArchivesDTO> getShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO);
 
+
+    /**
+     * 保存用户档案接口
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param: userIds
+    *@Return:
+    *@Description:根据多个userId获取档案列表
+    *@Date:2018/5/18 11:48
+    */
+    List<ShopUserArchivesDTO> getArchivesList(List<String>  userIds);
 
 }

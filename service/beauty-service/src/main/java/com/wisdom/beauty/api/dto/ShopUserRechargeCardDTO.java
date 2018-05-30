@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable {
     //
@@ -25,14 +25,29 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
     //
     private String sysClerkId;
 
+    //
+    private String sysClerkName;
+
     //美容店id
     private String sysShopId;
 
-    //老板表主键
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
+
+    //次卡折扣
+    private Float timeDiscount;
+
+    //疗程卡折扣
+    private Float periodDiscount;
+
+    //产品折扣
+    private Float productDiscount;
+
+    //0 特殊账户
+    private String rechargeCardType;
 
     //
-    private Float discount;
+    private String imageUrl;
 
     //备注
     private String detail;
@@ -108,6 +123,14 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
         this.sysClerkId = sysClerkId;
     }
 
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
     public String getSysShopId() {
         return sysShopId;
     }
@@ -116,20 +139,52 @@ public class ShopUserRechargeCardDTO extends BaseEntity implements Serializable 
         this.sysShopId = sysShopId;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
-    public Float getDiscount() {
-        return discount;
+    public Float getTimeDiscount() {
+        return timeDiscount;
     }
 
-    public void setDiscount(Float discount) {
-        this.discount = discount;
+    public void setTimeDiscount(Float timeDiscount) {
+        this.timeDiscount = timeDiscount;
+    }
+
+    public Float getPeriodDiscount() {
+        return periodDiscount;
+    }
+
+    public void setPeriodDiscount(Float periodDiscount) {
+        this.periodDiscount = periodDiscount;
+    }
+
+    public Float getProductDiscount() {
+        return productDiscount;
+    }
+
+    public void setProductDiscount(Float productDiscount) {
+        this.productDiscount = productDiscount;
+    }
+
+    public String getRechargeCardType() {
+        return rechargeCardType;
+    }
+
+    public void setRechargeCardType(String rechargeCardType) {
+        this.rechargeCardType = rechargeCardType;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getDetail() {

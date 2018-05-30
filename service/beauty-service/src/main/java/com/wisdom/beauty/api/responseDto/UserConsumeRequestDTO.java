@@ -11,8 +11,9 @@ import com.wisdom.common.entity.BaseEntity;
  * @Date:Created in 2018/4/8 11:00
  * @since JDK 1.8
  */
-public class UserConsumeRequestDTO extends BaseEntity {
+public class UserConsumeRequestDTO extends BaseEntity  {
 
+    private String id;
     /**
      * 用户表主键
      */
@@ -31,7 +32,7 @@ public class UserConsumeRequestDTO extends BaseEntity {
     /**
      * BossId
      */
-    private String sysBossId;
+    private String sysBossCode;
 
     /**
      * 美容院表主键
@@ -50,7 +51,20 @@ public class UserConsumeRequestDTO extends BaseEntity {
     /**
      * 请求来源，用于区分是否需要设置goodsType条件
      */
-    private Boolean goodsTypeRequire;
+    private Boolean goodsTypeRequire=false;
+    /**
+     * 是否需要去重
+     */
+    private Boolean disticRequire=false;
+    private int pageSize ; //每页的条目
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getSysUserId() {
         return sysUserId;
@@ -77,11 +91,11 @@ public class UserConsumeRequestDTO extends BaseEntity {
     }
 
     public String getSysBossId() {
-        return sysBossId;
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossId(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysShopId() {
@@ -114,5 +128,21 @@ public class UserConsumeRequestDTO extends BaseEntity {
 
     public void setGoodsTypeRequire(Boolean goodsTypeRequire) {
         this.goodsTypeRequire = goodsTypeRequire;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Boolean getDisticRequire() {
+        return disticRequire;
+    }
+
+    public void setDisticRequire(Boolean disticRequire) {
+        this.disticRequire = disticRequire;
     }
 }

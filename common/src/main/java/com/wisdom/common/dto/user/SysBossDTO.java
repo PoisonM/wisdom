@@ -1,21 +1,37 @@
 package com.wisdom.common.dto.user;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
 
-public class SysBossDTO extends BaseEntity implements Serializable {
+import com.wisdom.common.entity.BaseEntity;
 
+public class SysBossDTO extends BaseEntity implements Serializable {
+    //
     private String id;
 
     //user表主键
     private String sysUserId;
 
+    //
+    private String parentShopId;
+
+    //
+    private String currentShopId;
+
+    //
+    private String sysBossCode;
+
+    //
+    private String currentStoreId;
+
+    //
     private String name;
 
     //昵称
     private String nickname;
+
+    //性别
+    private String sex;
 
     //密码
     private String password;
@@ -37,6 +53,12 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     //关注状态
     private String weixinAttentionStatus;
+
+    //
+    private String weChat;
+
+    //
+    private String qq;
 
     //照片
     private String photo;
@@ -77,6 +99,38 @@ public class SysBossDTO extends BaseEntity implements Serializable {
         this.sysUserId = sysUserId;
     }
 
+    public String getParentShopId() {
+        return parentShopId;
+    }
+
+    public void setParentShopId(String parentShopId) {
+        this.parentShopId = parentShopId;
+    }
+
+    public String getCurrentShopId() {
+        return currentShopId;
+    }
+
+    public void setCurrentShopId(String currentShopId) {
+        this.currentShopId = currentShopId;
+    }
+
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
+
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
+    }
+
+    public String getCurrentStoreId() {
+        return currentStoreId;
+    }
+
+    public void setCurrentStoreId(String currentStoreId) {
+        this.currentStoreId = currentStoreId;
+    }
+
     public String getName() {
         return name;
     }
@@ -91,6 +145,14 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getPassword() {
@@ -147,6 +209,22 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setWeixinAttentionStatus(String weixinAttentionStatus) {
         this.weixinAttentionStatus = weixinAttentionStatus;
+    }
+
+    public String getWeChat() {
+        return weChat;
+    }
+
+    public void setWeChat(String weChat) {
+        this.weChat = weChat;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
     }
 
     public String getPhoto() {
