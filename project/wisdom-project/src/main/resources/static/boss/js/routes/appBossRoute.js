@@ -1425,7 +1425,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('bossLogin', {
-                        url: '/bossLogin',
+                        url: '/bossLogin/:redirectUrl',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'loginCtrl',
                         resolve: {
