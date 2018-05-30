@@ -91,7 +91,7 @@ public class LogInterceptor {
         } catch (Exception e) {
             error("[接口调用拦截器]打印方法执行参数异常：", e);
         }
-        return stringBuffer.deleteCharAt(stringBuffer.length() > 2 ? stringBuffer.length() - 1 : stringBuffer.length() - 0).append("}").toString();
+        return stringBuffer.deleteCharAt(stringBuffer.length() - 1).append("}").toString();
     }
 
     private String printResult(Object result) {
@@ -104,7 +104,7 @@ public class LogInterceptor {
         } else {
             info("[返回数据]：NULL");
         }
-        return result.toString();
+        return result==null?null:result.toString();
     }
 
     protected final void error(String msg, Object... objects) {
