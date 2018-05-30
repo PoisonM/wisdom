@@ -177,6 +177,7 @@ public class UserUtils {
         sysBossDTO.setId("11");
         sysBossDTO.setCurrentShopId("11");
         sysBossDTO.setSysBossCode("11");
+        sysBossDTO.setSex("M");
         return sysBossDTO;
     }
 
