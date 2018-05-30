@@ -60,7 +60,7 @@ public class CustomerArriveStatisticController {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 
-		userConsumeRequestDTO.setSysBossId(bossInfo.getId());
+		userConsumeRequestDTO.setSysBossCode(bossInfo.getId());
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);

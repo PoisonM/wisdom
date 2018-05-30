@@ -84,8 +84,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysClerkId())) {
 			c.andSysClerkIdEqualTo(userConsumeRequest.getSysClerkId());
 		}
-		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossId())) {
-			c.andSysBossCodeEqualTo(userConsumeRequest.getSysBossId());
+		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossCode())) {
+			c.andSysBossCodeEqualTo(userConsumeRequest.getSysBossCode());
 		}
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysUserId())) {
 			c.andSysUserIdEqualTo(userConsumeRequest.getSysUserId());

@@ -38,7 +38,7 @@ public class ShopRemindController {
         long currentTimeMillis = System.currentTimeMillis();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         ShopRemindSettingDTO shopRemindSettingDTO = new ShopRemindSettingDTO();
-        shopRemindSettingDTO.setSysBossId(UserUtils.getBossInfo().getId());
+        shopRemindSettingDTO.setSysBossCode(UserUtils.getBossInfo().getId());
         ShopRemindSettingDTO shopRemindSetting = shopRemindService.getShopRemindSetting(shopRemindSettingDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopRemindSetting);
