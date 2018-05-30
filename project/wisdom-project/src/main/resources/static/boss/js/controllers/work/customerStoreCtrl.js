@@ -67,8 +67,8 @@ angular.module('controllers',[]).controller('customerStoreCtrl',
 
             $scope.getInfo = function () {
                 GetCustomerArriveList.get({
-                    startTime:'2018-05-01 2000:00:00',
-                    endTime:"2018-05-15 2000:00:00"
+                    startTime:$scope.param.date+' 00:00:00',
+                    endTime:$scope.param.date+ " 23:59:59"
                 },function(data){
                       $scope.customerStore = data.responseData
                 })
