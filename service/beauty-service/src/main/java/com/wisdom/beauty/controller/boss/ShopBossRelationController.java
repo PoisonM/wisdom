@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.boss;
 
 import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.core.service.ShopBossService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -22,6 +23,7 @@ import java.util.List;
  * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "shopBossRelation")
 public class ShopBossRelationController {
 

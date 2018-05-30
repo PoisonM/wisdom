@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -35,6 +36,7 @@ import java.util.regex.Pattern;
  * @since JDK 1.8
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "earlyWarning")
 public class ArchivesEarlyWarningController {
 

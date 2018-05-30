@@ -15,6 +15,7 @@ import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -44,6 +45,7 @@ import java.util.*;
  * @since JDK 1.8
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "mine")
 public class MineController {
     Logger logger = LoggerFactory.getLogger(this.getClass());

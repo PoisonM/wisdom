@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
@@ -33,6 +34,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "shop")
 public class ShopController {
 

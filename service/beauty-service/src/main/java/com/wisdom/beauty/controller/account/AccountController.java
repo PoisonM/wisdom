@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.account;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.service.SysUserAccountService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -23,6 +24,7 @@ import java.util.List;
  * Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "accountInfo")
 public class AccountController {
 

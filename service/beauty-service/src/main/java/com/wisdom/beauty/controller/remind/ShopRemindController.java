@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.remind;
 
 import com.wisdom.beauty.api.dto.ShopRemindSettingDTO;
 import com.wisdom.beauty.core.service.ShopRemindService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "remind")
 public class ShopRemindController {
 

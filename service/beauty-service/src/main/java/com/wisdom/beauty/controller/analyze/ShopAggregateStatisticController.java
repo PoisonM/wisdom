@@ -1,14 +1,19 @@
 package com.wisdom.beauty.controller.analyze;
 
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.dto.beauty.ShopAchievementDTO;
-import com.wisdom.common.dto.system.*;
+import com.wisdom.common.dto.system.ResponseDTO;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "analyze")
 public class ShopAggregateStatisticController {
 

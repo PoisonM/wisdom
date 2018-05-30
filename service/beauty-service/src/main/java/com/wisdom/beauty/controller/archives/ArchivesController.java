@@ -11,6 +11,7 @@ import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -45,6 +46,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "archives")
 public class ArchivesController {
 

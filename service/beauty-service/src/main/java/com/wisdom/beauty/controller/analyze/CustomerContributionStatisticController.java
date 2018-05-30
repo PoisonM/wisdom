@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.analyze;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -26,6 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "analyze")
 public class CustomerContributionStatisticController {
 

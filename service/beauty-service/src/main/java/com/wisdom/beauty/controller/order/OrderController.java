@@ -10,6 +10,7 @@ import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopOrderService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -42,6 +43,7 @@ import java.util.List;
  * Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "orderInfo")
 public class OrderController {
 

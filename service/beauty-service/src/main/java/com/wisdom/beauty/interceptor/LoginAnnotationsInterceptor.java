@@ -34,9 +34,9 @@ public class LoginAnnotationsInterceptor {
      * 拦截器具体实现
      *
      * @param pjp
-     * @return JsonResult（被拦截方法的执行结果，或需要登录的错误提示。）
+     * @return JsonResult（被拦截方法的执行结果，或需要登录的错误提示。） && target(com.wisdom.beauty.interceptor.LoginAnnotations)
      */
-    @Around("controllerMethodPointcut() && target(com.wisdom.beauty.interceptor.LoginAnnotations)")
+    @Around("controllerMethodPointcut()")
     public Object Interceptor(ProceedingJoinPoint pjp) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

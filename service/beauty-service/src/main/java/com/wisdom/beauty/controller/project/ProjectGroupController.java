@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,7 @@ import java.util.HashMap;
  * Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "projectGroupInfo")
 public class ProjectGroupController {
 

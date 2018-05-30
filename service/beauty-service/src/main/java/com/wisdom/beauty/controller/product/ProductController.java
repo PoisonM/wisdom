@@ -9,6 +9,7 @@ import com.wisdom.beauty.api.extDto.ExtShopScanProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -39,6 +40,7 @@ import java.util.regex.Pattern;
  * Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "productInfo")
 public class ProductController {
 

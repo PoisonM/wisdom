@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -29,6 +30,7 @@ import java.util.*;
  * Description: 产品类别相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "productTypeInfo")
 public class ProductTypeController {
 

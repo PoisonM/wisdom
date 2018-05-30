@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -30,6 +31,7 @@ import java.util.List;
  * Description: 项目类别
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "projectType")
 public class ProjectTypeController {
 

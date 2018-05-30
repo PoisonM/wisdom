@@ -1,9 +1,9 @@
 package com.wisdom.beauty.controller.analyze;
 
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.IncomeExpenditureAnalysisService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -11,7 +11,6 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.beauty.ShopAchievementDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "analyze")
 public class IncomeAndExpenseStatisticController {
     Logger logger = LoggerFactory.getLogger(this.getClass());

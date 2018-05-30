@@ -1,5 +1,6 @@
 package com.wisdom.beauty.controller.analyze;
 
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.common.dto.beauty.ShopMemberAchievementDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "analyze")
 public class ShopMemberStatisticController {
 

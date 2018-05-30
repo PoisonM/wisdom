@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.card;
 import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.core.service.ShopCardService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -26,6 +27,7 @@ import java.util.List;
  * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "cardHelper")
 public class CardHelperController {
 

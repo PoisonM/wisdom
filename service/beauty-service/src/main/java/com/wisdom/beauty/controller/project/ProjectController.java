@@ -11,6 +11,7 @@ import com.wisdom.beauty.api.responseDto.ShopUserProjectRelationResponseDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -28,8 +29,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -38,6 +37,7 @@ import java.util.*;
  * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "projectInfo")
 public class ProjectController {
 
