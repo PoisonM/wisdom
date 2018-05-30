@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/2.
  */
 angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetExpenditureAndIncome','BossUtil','Global','$filter','GetBossExpenditureAndIncome',
-        function ($scope,$rootScope,$stateParams,$state,GetExpenditureAndIncome,BossUtil,Global,$filter,GetBossExpenditureAndIncome) {
+    ['$scope','$rootScope','$stateParams','$state','BossUtil','Global','$filter','GetBossExpenditureAndIncome',
+        function ($scope,$rootScope,$stateParams,$state,BossUtil,Global,$filter,GetBossExpenditureAndIncome) {
 
             $rootScope.title = "综合分析";
 
@@ -65,14 +65,12 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
             };
 
             $scope.getInfo = function(){
-                GetExpenditureAndIncome.get({sysShopId:$rootScope.shopInfo.shopId,
-                    startTime:$scope.param.date+" 00:00:00",endTime:$scope.param.date+" 23:59:59"},function (data) {
+                GetBossExpenditureAndIncome.get({
+                    startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59"},function (data) {
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {
-                        $scope.param.income = data.responseData[0].income;
-                        $scope.param.expenditure = data.responseData[0].expenditure;
-                        $scope.param.date = data.responseData[0].formateDate;
                         $scope.comprehensive = data.responseData;
+
                     }
                 });
             }
