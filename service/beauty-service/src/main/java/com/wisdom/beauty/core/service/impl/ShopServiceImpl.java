@@ -76,8 +76,9 @@ public class ShopServiceImpl implements ShopService {
         List<ExtSysShopDTO> extSysShopDTOS = null;
         if (CommonUtils.objectIsNotEmpty(sysShopDTOS)) {
             extSysShopDTOS = new ArrayList<>();
-            ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
+            ExtSysShopDTO extSysShopDTO = null;
             for (SysShopDTO shopDTO : sysShopDTOS) {
+                extSysShopDTO = new ExtSysShopDTO();
                 BeanUtils.copyProperties(shopDTO, extSysShopDTO);
                 extSysShopDTO.setImageList(mongoUtils.getImageUrl(shopDTO.getId()));
                 extSysShopDTOS.add(extSysShopDTO);
