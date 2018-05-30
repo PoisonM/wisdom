@@ -724,12 +724,12 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		List<ExpenditureAndIncomeResponseDTO> consumeNumberList = extShopUserConsumeRecordMapper
 				.selectPriceListByCriteria(numberCriteria);
 		Map<String, Integer> map = new HashedMap(16);
-		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : consumeNumberList) {
-			if (map.get(expenditureAndIncomeResponseDTO.getSysShopId()) == null) {
-				map.put(expenditureAndIncomeResponseDTO.getSysShopId(), 1);
+		for (ExpenditureAndIncomeResponseDTO dto : consumeNumberList) {
+			if (map.get(dto.getSysShopId()) == null) {
+				map.put(dto.getSysShopId(), 1);
 			} else {
-				Integer consumeTime = map.get(expenditureAndIncomeResponseDTO.getSysShopId());
-				map.put(expenditureAndIncomeResponseDTO.getSysShopId(), consumeTime + 1);
+				Integer consumeTime = map.get(dto.getSysShopId());
+				map.put(dto.getSysShopId(), consumeTime + 1);
 			}
 		}
 
@@ -779,7 +779,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			if (totalConsumeNumber == null) {
 				totalConsumeNumber = map.get(shopBossRelation.getSysShopId());
 			} else {
-				totalConsumeNumber = totalConsumeNumber + map.get(shopBossRelation.getSysShopId());
+				if(map.get(shopBossRelation.getSysShopId())!=null){
+					totalConsumeNumber = totalConsumeNumber + map.get(shopBossRelation.getSysShopId());
+				}
 			}
 			if (totalShopNewUserNumber == null) {
 				totalShopNewUserNumber = newCustomerMap.get(shopBossRelation.getSysShopId());
@@ -789,7 +791,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			if (totalConsumeTime == null) {
 				totalConsumeTime = timeMap.get(shopBossRelation.getSysShopId());
 			} else {
-				totalConsumeTime = totalConsumeTime + timeMap.get(shopBossRelation.getSysShopId());
+				if(timeMap.get(shopBossRelation.getSysShopId())!=null){
+					totalConsumeTime = totalConsumeTime + timeMap.get(shopBossRelation.getSysShopId());
+				}
 			}
 			responseDTOList.add(expenditureAndIncomeResponseDTO);
 		}
