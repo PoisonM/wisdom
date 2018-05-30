@@ -415,7 +415,7 @@ public class BusinessRunTimeService {
                 userBusinessTypeDTO.setCreateDate(new Date());
                 businessServiceClient.insertUserBusinessType(userBusinessTypeDTO);
 
-                //sys_user表也需要更新
+                //sys_user表需要更新
                 userInfo.setUserType(ConfigConstant.businessA1);
                 userInfo.setNickname(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
                 userServiceClient.updateUserInfo(userInfo);
