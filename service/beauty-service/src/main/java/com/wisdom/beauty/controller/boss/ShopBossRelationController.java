@@ -47,7 +47,7 @@ public class ShopBossRelationController {
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ShopBossRelationDTO bossRelationDTO = new ShopBossRelationDTO();
         bossRelationDTO.setSysBossCode(bossInfo.getId());
-        List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.ShopBossRelationList(bossRelationDTO);
+        List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.shopBossRelationList(bossRelationDTO);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopBossRelationDTOS);

@@ -36,7 +36,7 @@ public class ShopBossServiceImpl implements ShopBossService {
      * @return
      */
     @Override
-    public List<ShopBossRelationDTO> ShopBossRelationList(ShopBossRelationDTO shopBossRelationDTO) {
+    public List<ShopBossRelationDTO> shopBossRelationList(ShopBossRelationDTO shopBossRelationDTO) {
 
         logger.info("根据条件查询boss相关信息传入参数={}", "shopBossRelationDTO = [" + shopBossRelationDTO + "]");
 

@@ -14,6 +14,7 @@ import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
@@ -96,26 +97,28 @@ public class ShopStockServiceImpl implements ShopStockService {
 		String[] storeManagerIds = setStorekeeperRequestDTO.getStoreManagerIds();
 		String[] storeManagerNames = setStorekeeperRequestDTO.getStoreManagerNames();
 		String shopStoreId = setStorekeeperRequestDTO.getShopStoreId();
-		String storeManagerId = "";
+		StringBuffer storeManagerId = new StringBuffer();
+
 		for (String storeManager : storeManagerIds) {
-			storeManagerId = storeManagerId + storeManager + ",";
+			storeManagerId.append(storeManager).append(",");
 		}
-		if (StringUtils.isNotBlank(storeManagerId)) {
-			storeManagerId = storeManagerId.substring(0, storeManagerId.length() - 1);
+		if (StringUtils.isNotBlank(storeManagerId.toString())) {
+			storeManagerId.deleteCharAt(shopStoreId.length() - 1);
 		}
-		String storeManagerName = "";
+		StringBuffer storeManagerName = new StringBuffer();
+
 		for (String storeManager : storeManagerNames) {
-			storeManagerName = storeManagerName + storeManager + ",";
+			storeManagerName.append(storeManager).append(",");
 		}
-		if (StringUtils.isNotBlank(storeManagerName)) {
-			storeManagerName = storeManagerName.substring(0, storeManagerName.length() - 1);
+		if (StringUtils.isNotBlank(storeManagerName.toString())) {
+			storeManagerName.deleteCharAt(storeManagerName.length() - 1);
 		}
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		ShopStoreDTO shopStoreDTO = new ShopStoreDTO();
 		shopStoreDTO.setId(shopStoreId);
 		shopStoreDTO.setSysBossCode(sysBossDTO.getSysBossCode());
-		shopStoreDTO.setStoreManagerId(storeManagerId);
-		shopStoreDTO.setSysUserName(storeManagerName);
+		shopStoreDTO.setStoreManagerId(storeManagerId.toString());
+		shopStoreDTO.setSysUserName(storeManagerName.toString());
 		return shopStoreMapper.updateByPrimaryKeySelective(shopStoreDTO);
 	}
 
@@ -200,9 +203,12 @@ public class ShopStockServiceImpl implements ShopStockService {
 		}
 		// 存放key是产品主键，value是产品对象
 		Map<String, ShopProductInfoResponseDTO> map = new HashedMap();
-		for (ShopProductInfoResponseDTO shopProductInfoResponse : shopProductInfos) {
-			map.put(shopProductInfoResponse.getId(), shopProductInfoResponse);
+		if (CommonUtils.objectIsNotEmpty(shopProductInfos)) {
+			for (ShopProductInfoResponseDTO shopProductInfoResponse : shopProductInfos) {
+				map.put(shopProductInfoResponse.getId(), shopProductInfoResponse);
+			}
 		}
+
 		List<ShopStockResponseDTO> shopStockResponses = new ArrayList<>();
 		ShopStockResponseDTO shopStockResponseDTO = null;
 		for (ShopStockDTO shopStock : shopStockList) {

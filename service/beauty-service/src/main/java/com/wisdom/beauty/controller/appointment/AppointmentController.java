@@ -641,7 +641,7 @@ public class AppointmentController {
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
 		shopBossRelationDTO.setSysBossCode(bossInfo.getId());
-		List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.ShopBossRelationList(shopBossRelationDTO);
+		List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.shopBossRelationList(shopBossRelationDTO);
 
 		if (CommonUtils.objectIsEmpty(shopBossRelationDTO)) {
 			responseDTO.setResult(StatusConstant.SUCCESS);

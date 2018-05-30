@@ -141,7 +141,6 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	 */
 	@Override
 	public List<ShopProductTypeDTO> getOneLevelProductList(ShopProductTypeDTO shopProductTypeDTO) {
-		logger.info("getOneLevelProjectList传入的参数,sysShopId={},productType={}", shopProductTypeDTO.getSysShopId(),shopProductTypeDTO.getProductType());
 		if (shopProductTypeDTO==null||StringUtils.isBlank(shopProductTypeDTO.getSysShopId())) {
 			logger.info("getOneLevelProjectList传入的参数sysShopId为空");
 			return null;

@@ -1,9 +1,15 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.dto.ShopCheckRecordCriteria;
+import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
+import com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO;
+import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.enums.ClosePositionTypeEnum;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
-import com.wisdom.beauty.api.responseDto.*;
+import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopClosePositionResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopCheckRecordMapper;
 import com.wisdom.beauty.core.mapper.ShopClosePositionRecordMapper;
 import com.wisdom.beauty.core.mapper.ShopStockNumberMapper;
@@ -89,6 +95,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
                 shopCheckRecordResponseDTO.setState(shopCheckRecord.getState());
                 shopCheckRecordResponseDTO.setCreateDate(shopCheckRecord.getCreateDate());
                 shopCheckRecordResponseDTO.setShopProcId(shopCheckRecord.getShopProcId());
+                //todo 待修复
                 if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getCreateDate())){
                     shopCheckRecordResponseDTO.setExceptionNumber(1);
                 }else {

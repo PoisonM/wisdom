@@ -314,6 +314,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 Integer sysShopProjectInitTimes = dto.getSysShopProjectInitTimes();
                 if (null == sysShopProjectInitTimes) {
                     dto.setSysShopProjectInitTimes(1);
+                    return;
                 }
                 //项目有可能购买多个
                 for (int i = 0; i < sysShopProjectInitTimes; i++) {

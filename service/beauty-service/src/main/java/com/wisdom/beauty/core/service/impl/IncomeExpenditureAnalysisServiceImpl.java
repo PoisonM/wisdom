@@ -1,6 +1,5 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.sun.org.apache.xerces.internal.dom.PSVIAttrNSImpl;
 import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.api.enums.PayTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
@@ -9,7 +8,6 @@ import com.wisdom.beauty.core.service.IncomeExpenditureAnalysisService;
 import com.wisdom.beauty.core.service.ShopBossService;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
@@ -19,7 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhanghuan on 2018/5/10.
@@ -85,7 +86,7 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
         //查询boos下所有美容院
         ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
         shopBossRelationDTO.setSysBossCode(userConsumeRequestDTO.getSysBossCode());
-        List<ShopBossRelationDTO> shopBossRelationDTOList = shopBossService.ShopBossRelationList(shopBossRelationDTO);
+        List<ShopBossRelationDTO> shopBossRelationDTOList = shopBossService.shopBossRelationList(shopBossRelationDTO);
         if (CollectionUtils.isEmpty(shopBossRelationDTOList)) {
             logger.info("shopBossRelationDTOList为空");
             return null;

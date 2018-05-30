@@ -77,7 +77,6 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		}
 
 		List<ShopRechargeCardDTO> list = shopRechargeCardMapper.selectByCriteria(shopRechargeCardCriteria);
-		List<String> ids = new ArrayList<>();
 		// 遍历list,将折扣信息和充值卡信息放入到新的list中
 		List<ShopRechargeCardOrderDTO> shopRechargeCardResponseDTOs = new ArrayList<>();
 		for (ShopRechargeCardDTO shopRechargeCard : list) {

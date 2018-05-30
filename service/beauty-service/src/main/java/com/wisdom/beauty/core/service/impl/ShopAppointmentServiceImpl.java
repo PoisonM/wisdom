@@ -267,12 +267,6 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             resultMap.put("resultMessage", "查询存在问题，请联系支撑人员");
             return resultMap;
         }
-        //判断是具体到店员还是店铺仅用于打印日志区分
-        if(sysClerkId!=null&&sysClerkId!=""){
-            logger.info("店铺"+sysShopId+"下面店员"+sysClerkId+"在"+appointStartTimeS+"到"+appointStartTimeE+"的预约数量是"+shopAppointNum);
-        }else{
-            logger.info("店铺"+sysShopId+"在"+appointStartTimeS+"到"+appointStartTimeE+"的预约数量是"+shopAppointNum);
-        }
 
         String resultMessage  = String.valueOf(shopAppointNum);
         resultMap.put("resultCode","success");
