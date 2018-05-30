@@ -67,8 +67,10 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : userConsumeRecordResponses) {
 			if (totalAmount == null) {
 				totalAmount = expenditureAndIncomeResponseDTO.getTotalPrice();
+			}else {
+				totalAmount=totalAmount.add(expenditureAndIncomeResponseDTO.getTotalPrice());
 			}
-			totalAmount.add(expenditureAndIncomeResponseDTO.getTotalPrice());
+
 		}
 		return totalAmount;
 	}
@@ -86,8 +88,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : userConsumeRecordResponses) {
 			if (totalAmount == null) {
 				totalAmount = expenditureAndIncomeResponseDTO.getTotalPrice();
+			}else {
+				totalAmount=totalAmount.add(expenditureAndIncomeResponseDTO.getTotalPrice());
 			}
-			totalAmount.add(expenditureAndIncomeResponseDTO.getTotalPrice());
 		}
 		return totalAmount;
 	}
