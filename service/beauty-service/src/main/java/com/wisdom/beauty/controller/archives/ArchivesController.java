@@ -100,6 +100,7 @@ public class ArchivesController {
             shopUserArchivesDTO.setSysBossCode(UserUtils.getBossInfo().getId());
         }
         pageParamVoDTO.setRequestData(shopUserArchivesDTO);
+        pageParamVoDTO.setPaging(true);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
         //查询数据
@@ -117,7 +118,7 @@ public class ArchivesController {
             HashMap<Object, Object> hashMap = new HashMap<>(16);
             ArrayList<Object> arrayList = new ArrayList<>();
             for (ShopUserArchivesDTO archivesDTO : shopUserArchivesDTOS) {
-                if (a == PinYinSort.ToPinYinString(archivesDTO.getSysUserName()).charAt(0)) {
+                if (a == PinYinSort.ToPinYinString(archivesDTO.getSysUserName()).toLowerCase().charAt(0)) {
                     arrayList.add(archivesDTO);
                 }
             }
@@ -306,5 +307,6 @@ public class ArchivesController {
         logger.info("查询某个用户与店的绑定关系耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
+
 
 }
