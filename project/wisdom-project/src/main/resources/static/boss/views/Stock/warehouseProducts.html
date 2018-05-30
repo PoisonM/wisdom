@@ -30,14 +30,16 @@
                 </div>
             </ion-item>
             <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100"  ng-show="param.flag"></div>
-            <div style="position: absolute;top:0;width:100%;z-index: 1000"  class="sb" ng-show="param.flag">
-                <ul class="W33 col333 bgfff fs14">
-                    <li class="ml10 h40  col333 center bbl" ng-repeat="(key,val) in warehouseProducts.oneMap" ng-click="selTwo(val.productTypeOneId);$event.stopPropagation()">{{key}}</li>
+            <div style="position: absolute;top:0;width:100%;z-index: 1000"  class="sb bgf6" ng-show="param.flag">
+                <ul class="W33 col333  fs14">
+                    <li class=" h40  col333 center bbl bgfff" ng-repeat="item in warehouseProducts.oneLevelList" ng-click="selTwo(item.productTypeOneId);$event.stopPropagation()">
+                        <span class="ml10">{{item.productName}}</span>
+                    </li>
                 </ul>
                 <ul style="width:77%;background: #F6F6F6;" class="fs14 col333">
-                    <li class="ml10 h40 sb" style="border-bottom: 1px solid #FFFFFF;" ng-click="checkThree(val.productTypeTwoId);$event.stopPropagation()" ng-repeat="(key,val) in warehouseProducts.twoMap">
-                        <span>{{key}}</span>
-                        <span class="mr10">(5)</span>
+                    <li class="ml10 h40 sb" style="border-bottom: 1px solid #FFFFFF;" ng-click="checkThree(val.productTypeTwoId);$event.stopPropagation()" ng-repeat="item in param.twoLevelList">
+                        <span>{{item.productTypeTwoName}}</span>
+
                     </li>
 
                 </ul>

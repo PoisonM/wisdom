@@ -1,3 +1,26 @@
+var appointmentInfo = 'http://192.168.1.117/beauty/appointmentInfo/';
+var work = 'http://192.168.1.117/beauty/work/';
+var stock = 'http://192.168.1.117/beauty/stock/';
+var consume = 'http://192.168.1.117/beauty/consume/';
+var  earlyWarning =  'http://192.168.1.117/beauty/earlyWarning/';
+var  archives =  'http://192.168.1.117/beauty/archives/';
+var clerkSchedule='http://192.168.1.117/beauty/clerkSchedule/';
+var shopBossRelation ='http://192.168.1.117/beauty/shopBossRelation/';
+var user ='http://192.168.1.117/user/';
+var analyze = 'http://192.168.1.117/beauty/analyze/';
+var consumes = 'http://192.168.1.117/beauty/consumes/';
+var consume = 'http://192.168.1.117/beauty/consume/';
+var cardInfo  = 'http://192.168.1.117/beauty/cardInfo/';
+var projectInfo  = 'http://192.168.1.117/beauty/projectInfo/';
+var productInfo  = 'http://192.168.1.117/beauty/productInfo/';
+var productTypeInfo = 'http://192.168.1.117/beauty/productTypeInfo/';
+var projectType='http://192.168.1.117/beauty/projectType/';
+var shop='http://192.168.1.117/beauty/shop/';
+var projectGroupInfo='http://192.168.1.117/beauty/projectGroupInfo/';
+var cardHelper ='http://192.168.1.117/beauty/cardHelper/';
+var clerkSchedule = 'http://192.168.1.117/beauty/clerkSchedule/';
+var  mine='http://192.168.1.117/beauty/mine/';
+var remind='http://192.168.1.117/beauty/remind/';
 var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
 var stock = '/beauty/stock/';
@@ -285,7 +308,60 @@ define(['appBoss'], function (app) {
         .factory('SaveProductInfo',['$resource',function ($resource){
             return $resource(productInfo+"saveProductInfo")
         }])
-
+/*套卡*/
+        /*获取套卡列表*/
+        .factory('GetShopProjectGroups',['$resource',function ($resource){
+            return $resource(cardInfo+"getShopProjectGroups")
+        }])
+        /*查询套卡的详细信息*/
+        .factory('GetShopProjectGroupDetail',['$resource',function ($resource){
+            return $resource(cardInfo+"getShopProjectGroup/detail")
+        }])
+        /*查询套卡的详细信息*/
+        .factory('SearchShopProjectList',['$resource',function ($resource){
+            return $resource(projectInfo+"searchShopProjectList")
+        }])
+        /*获取充值卡列表*/
+        .factory('GetRechargeCardList',['$resource',function ($resource){
+            return $resource(cardInfo+"getRechargeCardList")
+        }])
+        /*查询充值卡详细信息*/
+        .factory('RechargeCardDetail',['$resource',function ($resource){
+            return $resource(cardInfo+":id",{ id: '@id' })
+        }])
+        /*查询某店二级和三级的项目列表*/
+        .factory('GetShopTwoLevelProjectList',['$resource',function ($resource){
+            return $resource(projectInfo+'getShopTwoLevelProjectList')
+        }])
+        /*编辑后保存套卡*/
+        .factory('UpdateProjectGroupInfo',['$resource',function ($resource){
+            return $resource(projectGroupInfo+'updateProjectGroupInfo')
+        }])
+        /*编辑后保存套卡*/
+        .factory('SaveProjectGroupInfo',['$resource',function ($resource){
+            return $resource(projectGroupInfo+'saveProjectGroupInfo')
+        }])
+        /*查询充值卡的适用范围*/
+        .factory('GetGoodsUseScope',['$resource',function ($resource){
+            return $resource(cardHelper+'getGoodsUseScope')
+        }])
+/*排班提醒*/
+        /*查询排班设置*/
+        .factory('GetBossShopScheduleSetting',['$resource',function ($resource){
+            return $resource(clerkSchedule+'getBossShopScheduleSetting')
+        }])
+        /*修改排班设置*/
+        .factory('UpdateBossShopScheduleSetting',['$resource',function ($resource){
+            return $resource(clerkSchedule+'updateBossShopScheduleSetting')
+        }])
+        /*添加充值卡*/
+        .factory('SaveRechargeCardInfo',['$resource',function ($resource){
+            return $resource(cardInfo+'saveRechargeCardInfo')
+        }])
+        /*保存充值卡 update*/
+        .factory('UpdateRechargeCardInfo',['$resource',function ($resource){
+            return $resource(cardInfo+'updateRechargeCardInfo')
+        }])
 
       /*查询提醒设置*/
         .factory('GetShopRemindSetting',['$resource',function ($resource){

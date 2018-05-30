@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('treatmentCardCtrl',
             $rootScope.title = "疗程卡";
             $scope.param={
                 flag:false,
-                goodType:"6"
+                overdue:"6"
             };
             /*点击筛选*/
             $scope.sel = function(){
@@ -16,20 +16,38 @@ angular.module('controllers',[]).controller('treatmentCardCtrl',
             };
             /*点击选择类型*/
             $scope.selType = function(type){
-                $scope.param.goodType = type
+                $scope.param.overdue = type
             };
             /*点击重置*/
             $scope.reset = function() {
-                $scope.param.goodType = '6'
+                $scope.param.overdue = '6'
             };
-            console.log($stateParams.sysUserId);
+            /*调取疗程卡页面数据*/
             GetUserCourseProjectList.get({cardStyle:"1",sysUserId:$stateParams.sysUserId},function (data) {
                 console.log(data);
                 $scope.treatmentCard=data.responseData;
+                $scope.arr = data.responseData;
 
             });
+            /*点击疗程卡列表跳转到划卡页面*/
             $scope.goTreatmentCard=function (sysUserId) {
-                console.log(1);
                 $state.go("treatmentCardDtails",{sysUserId:sysUserId})
+            };
+            /*点击确定按钮*/
+            $scope.selTrue = function(){
+                $scope.param.flag = false;
+
+                $scope.treatmentCard = []
+
+                if($scope.param.overdue == '6'){
+                    $scope.treatmentCard=$scope.arr
+                }else{
+                    for(var i=0;i<$scope.arr.length;i++){
+                        if($scope.arr[i].overdue ==$scope.param.overdue){
+                            $scope.treatmentCard.push($scope.arr[i])
+                        }
+                    }
+                }
+
             };
         }]);

@@ -8,7 +8,8 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                 pageNo:"1",
                 queryField:"",
                 blackBox:false,
-                fileBOx:false
+                fileBOx:false,
+                distributionStart:false /*选择档案的多选框*/
             };
             $scope.searchCont = "";
             FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
@@ -53,5 +54,11 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
             $scope.newUser=function () {
                 $state.go("newUser")
             }
+
+         $scope.distributionStart = function () {
+              $scope.param.distributionStart = !$scope.param.distributionStart
+             
+         }
+          
 
         }]);
