@@ -8,7 +8,8 @@
                 <ion-item style="height:80px;margin-top: 10px">
                     <div class="sb mt10">
                         <p class="fs16 col333 ml10">{{item.projectGroupName}}</p>
-                        <p class="fs15 col666 mr10">金额：{{item.marketPrice}}元 </p>
+                        <p class="fs15 col666 mr10" style="position: relative">金额：{{item.marketPrice}}元 </p>
+                        <img src="images/out.png" style="width: 50px;height: 50px;position: absolute;top: 10px;right: 10px" ng-if="item.isUseUp=='0'">
                     </div>
                     <p class="fs14 col666 ml10 sb">
                         <span class="mt5">备注：</span>
@@ -32,16 +33,13 @@
                 <p class="fs15 col666 bgfff bbl pb5 h40"><span class="ml10 ">状态</span></p>
                 <div class="row row-wrap bgfff">
                     <p class="col col-33 " >
-                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('6')" ng-class="{'activeType':param.goodType=='6'}">全部</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('6')" ng-class="{'activeType':param.isUseUp=='6'}">全部</a>
                     </p>
                     <p class="col col-33 ">
-                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('7')" ng-class="{'activeType':param.goodType=='7'}">消费</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('1')" ng-class="{'activeType':param.isUseUp=='1'}">使用中</a>
                     </p>
                     <p class="col col-33 ">
-                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('2')" ng-class="{'activeType':param.goodType=='2'}">充值</a>
-                    </p>
-                    <p class="col col-33 ">
-                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('3')" ng-class="{'activeType':param.goodType=='3'}">已退</a>
+                        <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('0')" ng-class="{'activeType':param.isUseUp=='0'}">已用完</a>
                     </p>
                 </div>
             </div>

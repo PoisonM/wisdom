@@ -1,8 +1,8 @@
 angular.module('controllers',[]).controller('addProductCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global) {
             $rootScope.title = "添加产品";
-            $scope.selFlag ='';
+            $scope.selFlag =true
             $scope.param ={
                 productType:"0",
                 productTypeOneName:"",
@@ -144,13 +144,15 @@ angular.module('controllers',[]).controller('addProductCtrl',
                 }else{
                     $scope.param.status = '1';
                 }
-                /*if($scope.param.productTypeOneName == ""||$scope.param.productTypeTwoName ==""||$scope.param.productName ==""||$scope.param.marketPrice ==""||$scope.param.discountPrice ==""||$scope.param.productSpec ==""||$scope.param.productUnit ==""||$scope.param.effectDate ==""||$scope.param.qualityPeriod ==""||$scope.param.productWarningDay ==""||$scope.param.productWarningNum ==""){
+                if($scope.param.productTypeOneName == ""||$scope.param.productTypeTwoName ==""||$scope.param.productName ==""||$scope.param.marketPrice ==""||$scope.param.discountPrice ==""||$scope.param.productSpec ==""||$scope.param.productUnit ==""||$scope.param.effectDate ==""||$scope.param.qualityPeriod ==""||$scope.param.productWarningDay ==""||$scope.param.productWarningNum ==""){
                     alert('信息不完全')
-                }*/
+                }
                 localStorage.removeItem('param');
                 console.log($scope.param);
                 SaveProductInfo.save($scope.param,function(data){
-
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $state.go("basicSetting")
+                    }
                 })
             }
 

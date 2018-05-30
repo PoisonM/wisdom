@@ -44,6 +44,14 @@ angular.module('bossGlobal',[])
                         }
                     }
                 },
+                noShop: function(data) {
+                    if(data.result==Global.SUCCESS)
+                    {
+                        if(data.errorInfo==Global.TOKEN_ERROR){
+                            $state.go("login")
+                        }
+                    }
+                },
                 getNowFormatDate:function() {
                     var date = new Date();
                     var seperator1 = "-";
