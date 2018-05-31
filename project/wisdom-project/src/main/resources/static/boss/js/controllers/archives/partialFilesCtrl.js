@@ -4,14 +4,13 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
             $rootScope.title = "全院档案";
             $scope.param={
                 sysShopId:"11",
-                pageSize:"1",
+                pageSize:"100",
                 pageNo:"1",
                 queryField:"",
                 blackBox:false,
                 fileBOx:false,
                 distributionStart:false /*选择档案的多选框*/
             };
-            $scope.searchCont = "";
             FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
                 if(data.result == "0x00001"){
                     $scope.fileList = [];
@@ -53,12 +52,29 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
           };
             $scope.newUser=function () {
                 $state.go("newUser")
-            }
+            };
 
          $scope.distributionStart = function () {
               $scope.param.distributionStart = !$scope.param.distributionStart
              
-         }
-          
-
+         };
+         /*点击放大镜根绝姓名搜索*/
+          $scope.search=function () {
+              FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
+                  if(data.result == "0x00001"){
+                      $scope.fileList = [];
+                      $scope.info = data.responseData.info;
+                  }
+              });
+          };
+          /*取消搜索*/
+          $scope.clearSearch=function () {
+              $scope.param.queryField="";
+              FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
+                  if(data.result == "0x00001"){
+                      $scope.fileList = [];
+                      $scope.info = data.responseData.info;
+                  }
+              });
+          }
         }]);

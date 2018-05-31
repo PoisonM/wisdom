@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('addProjectCtrl',
-    ['$scope','$rootScope','$stateParams','$state','SaveProjectInfo',
-        function ($scope,$rootScope,$stateParams,$state,SaveProjectInfo) {
+    ['$scope','$rootScope','$stateParams','$state','SaveProjectInfo','ImageBase64UploadToOSS','Global',
+        function ($scope,$rootScope,$stateParams,$state,SaveProjectInfo,ImageBase64UploadToOSS,Global) {
 
             $rootScope.title = "添加项目";
             $scope.selFlag ='';
@@ -69,6 +69,38 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                 console.log($scope.extShopProjectInfoDTO.cardType )
 
             };
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+                if( $scope.extShopProjectInfoDTO.imageList.length>6){
+                    alert("图片上传不能大于6张")
+                    return
+                }
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $scope.extShopProjectInfoDTO.imageList.push(data.responseData)
+                            }
+
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
+            $scope.delPic = function(index){
+                $scope.extShopProjectInfoDTO.imageList.splice(index,1)
+            }
+
          /*添加保存*/
             $scope.Preservation=function () {
                 if($scope.selFlag ==true){

@@ -1339,7 +1339,7 @@ define(['appBoss'], function(app){
                     })
                     /* newUser 新建档案*/
                     .state('newUser', {
-                        url: '/newUser/:id/:url',
+                        url: '/newUser/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newUserCtrl',
                         resolve: {
