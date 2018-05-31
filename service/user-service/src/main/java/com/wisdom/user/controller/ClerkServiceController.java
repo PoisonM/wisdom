@@ -117,12 +117,16 @@ public class ClerkServiceController {
 	 * @Description: 根据clerkId查询店员信息
 	 * @Date:2018/4/28 9:40
 	 */
-	@RequestMapping(value = "/clerkInfo", method = RequestMethod.GET)
+	@RequestMapping(value = "/clerkInfo/{clerkId}", method = RequestMethod.GET)
 	@ResponseBody
-	List<SysClerkDTO> getClerkInfoByClerkId() {
+	List<SysClerkDTO> getClerkInfoByClerkId(@PathVariable String clerkId) {
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
-		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+
+		logger.info("获取店员列表信息传入参数shopId = {}", clerkId);
+		SysClerkDTO sysClerkDTO = new SysClerkDTO();
+		sysClerkDTO.setId(clerkId);
 		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysClerkDTO);
+
 		listResponseDTO.setResponseData(clerkInfo);
 		listResponseDTO.setResult(StatusConstant.SUCCESS);
 		return clerkInfo;
