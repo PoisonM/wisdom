@@ -312,21 +312,18 @@ public class ScheduleController {
     @ResponseBody
     ResponseDTO<Object> getShopClerkScheduleListForClerk(@RequestParam String searchDate) {
 
-        logger.info("获取某个店员的排班信息传入参数={}", "searchDate = [" + searchDate + "]");
-
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         //获取店员信息
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ArrayList<Object> helperList = new ArrayList<>();
         ExtShopClerkScheduleDTO shopClerkScheduleDTO = new ExtShopClerkScheduleDTO();
         shopClerkScheduleDTO.setSysClerkId(clerkInfo.getId());
-        //shopClerkScheduleDTO.setSysClerkId("0019b67c4b5845958655fdbc9d3bd205");
         Date date = DateUtils.StrToDate(searchDate, "date");
         shopClerkScheduleDTO.setScheduleDate(date);
         //查询该店员的排班情况
         List<ShopClerkScheduleDTO> clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
-        //获取某个月的所有天的集合
 
+        //获取某个月的所有天的集合
         List<String> monthFullDay = DateUtils.getMonthFullDay(Integer.parseInt(DateUtils.getYear(date)), Integer.parseInt(DateUtils.getMonth(date)), 0);
         //如果某个店的店员排班信息为空，则批量初始化
         if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
@@ -349,7 +346,6 @@ public class ScheduleController {
             logger.info("批量插入{}条数据",number);
         }
 
-
         HashMap<Object, Object> helperMap = new HashMap<>(16);
         //clerkSchInfo存储某个美容师的所有排班信息
         List<ShopClerkScheduleDTO> clerkSchInfo = new ArrayList<>();
@@ -369,7 +365,6 @@ public class ScheduleController {
         helperMap.put("clerkInfo", clerkInfo);
         helperList.add(helperMap);
 
-
         HashMap<Object, Object> returnMap = new HashMap<>(16);
         //界面顶部日期显示
         ArrayList<Object> dateDetail = new ArrayList<>();
@@ -379,7 +374,6 @@ public class ScheduleController {
             sb.append(DateUtils.getWeek(DateUtils.StrToDate(string, "date")));
             dateDetail.add(sb.toString());
         }
-
         returnMap.put("dateDetail", dateDetail);
         returnMap.put("responseList", helperList);
         responseDTO.setResponseData(returnMap);

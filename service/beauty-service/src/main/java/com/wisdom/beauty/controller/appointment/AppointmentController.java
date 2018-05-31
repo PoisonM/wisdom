@@ -189,14 +189,12 @@ public class AppointmentController {
 		Date endTime = DateUtils.dateIncDays(startTime, 7);
 
 		String preLog = "根据时间查询某个美容店周预约列表";
-		long start = System.currentTimeMillis();
 		logger.info(preLog + "美容店主键为={}", sysShopId);
 
 		//根据时间查询当前店下所有美容师
 		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
 
 		if (judgeNull(responseDTO, preLog, clerkInfo)) {
-			logger.info(preLog + "耗时{}毫秒", (System.currentTimeMillis() - start));
 			return responseDTO;
 		}
 		logger.debug(preLog + "根据时间查询当前店下所有美容师个数为 {}", clerkInfo.size());
@@ -251,7 +249,6 @@ public class AppointmentController {
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(returnMap);
-		logger.info(preLog + "耗时{}毫秒", (System.currentTimeMillis() - start));
 		return responseDTO;
 	}
 
