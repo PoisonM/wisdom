@@ -20,7 +20,6 @@ define(['angular'], function (angular) {
                             config.headers.logintoken = window.localStorage.getItem("logintoken");
                         }
 
-                        console.log(window.localStorage.getItem("beautyUserLoginToken"));
                         if(window.localStorage.getItem("beautyUserLoginToken")!=undefined
                             &&window.localStorage.getItem("beautyUserLoginToken")!=null){
                             config.headers.beautyuserlogintoken = window.localStorage.getItem("beautyUserLoginToken");

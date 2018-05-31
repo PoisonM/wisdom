@@ -58,8 +58,8 @@ angular.module('controllers',[]).controller('beautyLoginCtrl',
                         {
                             if(data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)
                             {
-                                window.localStorage.removeItem("beautyuserlogintoken");
-                                window.localStorage.setItem("beautyuserlogintoken",data.responseData.beautyUserLoginToken);
+                                window.localStorage.removeItem("beautyUserLoginToken");
+                                window.localStorage.setItem("beautyUserLoginToken",data.responseData.beautyUserLoginToken);
                             }
                             if(data.responseData.beautyBossLoginToken!=Global.TOKEN_ERROR)
                             {
