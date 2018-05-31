@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
+import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ public interface ShopClerkScheduleService {
 
     /**
      * 根据条件查询排班信息
-     * @param shopClerkScheduleDTO
+     * @param extShopClerkScheduleDTO
      * @return
      */
-    List<ShopClerkScheduleDTO> getShopClerkScheduleList(ShopClerkScheduleDTO shopClerkScheduleDTO);
+    List<ShopClerkScheduleDTO> getShopClerkScheduleList(ExtShopClerkScheduleDTO extShopClerkScheduleDTO);
 
     /**
      * 批量生成店员的排班信息

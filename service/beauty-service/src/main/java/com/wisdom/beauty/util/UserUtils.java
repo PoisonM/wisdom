@@ -192,7 +192,7 @@ public class UserUtils {
         clerkDTO.setWeixinAttentionStatus("1");
         clerkDTO.setSysUserId("3");
         clerkDTO.setSysBossName("王老板");
-        clerkDTO.setSysBossCode("sys_boss_code");
+        clerkDTO.setSysBossCode("11");
         clerkDTO.setName("陈莺梦");
         clerkDTO.setId("clerkId1");
         clerkDTO.setSysShopId("11");
