@@ -55,13 +55,12 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                     }
                 }
                 if($stateParams.reload){
-                     $stateParams.reload=false;
-                     $window.location.reload();
+                    $stateParams.reload=false;
+                    $state.reload('app.toMenu');
                 }
             }
 
             $scope.$on('$ionicView.enter', function(){
-
                 GetQRCodeURL.get(function (data) {
                     BusinessUtil.checkResponseData(data,'sharePage');
                     $scope.param.weixinShareInfo = data.responseData;
