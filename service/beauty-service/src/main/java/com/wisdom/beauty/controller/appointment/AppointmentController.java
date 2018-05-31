@@ -724,6 +724,15 @@ public class AppointmentController {
 		extShopAppointServiceDTO.setStatus(status);
 		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
 		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
+
+		if (StringUtils.isBlank(extShopAppointServiceDTO.getSysShopId())) {
+			SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+			extShopAppointServiceDTO.setSysShopId(clerkInfo.getSysShopId());
+		}
+		if (StringUtils.isBlank(extShopAppointServiceDTO.getSysClerkId())) {
+			SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+			extShopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
+		}
 		//缓存返回结果
 		ArrayList<Object> arrayList = new ArrayList<>();
 
