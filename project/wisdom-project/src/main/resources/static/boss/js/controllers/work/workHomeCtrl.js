@@ -10,6 +10,7 @@ angular.module('controllers',[]).controller('workHomeCtrl',
             BossUtil.setUserType(Global.userType.BEAUTY_BOSS);
 
             GetBossAchievement.get({},function(data){
+                console.log(data);
                 BossUtil.checkResponseData(data,'workHome');
                 if(data.result==Global.SUCCESS&&data.responseData!=null)
                 {

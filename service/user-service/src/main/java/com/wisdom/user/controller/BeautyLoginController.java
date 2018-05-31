@@ -32,6 +32,7 @@ public class BeautyLoginController {
     ResponseDTO<BeautyLoginResultDTO> beautyLogin(@RequestBody LoginDTO loginDTO,
                                                       HttpServletRequest request,
                                                       HttpSession session) throws Exception {
+
         ResponseDTO<BeautyLoginResultDTO> result = new ResponseDTO<>();
 
         //获取用户的基本信息 todo 需要完成注释部分的代码

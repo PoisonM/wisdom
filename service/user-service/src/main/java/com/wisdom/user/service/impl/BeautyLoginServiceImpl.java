@@ -46,6 +46,9 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
     public BeautyLoginResultDTO beautyLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception {
 
         BeautyLoginResultDTO beautyLoginResultDTO = new BeautyLoginResultDTO();
+        beautyLoginResultDTO.setBeautyClerkLoginToken(StatusConstant.TOKEN_ERROR);
+        beautyLoginResultDTO.setBeautyBossLoginToken(StatusConstant.TOKEN_ERROR);
+        beautyLoginResultDTO.setBeautyUserLoginToken(StatusConstant.TOKEN_ERROR);
 
         //判断validateCode是否还有效
         if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
@@ -165,6 +168,7 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
             redisLock.unlock();
         }
 
+        beautyLoginResultDTO.setResult(StatusConstant.SUCCESS);
         return beautyLoginResultDTO;
     }
 
