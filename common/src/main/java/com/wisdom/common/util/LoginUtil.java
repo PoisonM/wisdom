@@ -23,9 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
-/**
- * Created by baoweiw on 2015/7/27.
- */
+
 public class LoginUtil {
 
     private static MongoTemplate mongoTemplate = (MongoTemplate) SpringUtil.getBean(MongoTemplate.class);
@@ -99,84 +97,64 @@ public class LoginUtil {
             String beautyClerkLoginToken = "";
             if(userType.equals("beautyUser"))
             {
-                beautyUserLoginToken = tokenValue.get("beautyUserLoginToken");
+                beautyUserLoginToken = tokenValue.get("beautyuserlogintoken");
 
-                if(checkLoginToken(beautyUserLoginToken).getErrorInfo().equals(StatusConstant.TOKEN_ERROR))
+                if(StatusConstant.TOKEN_ERROR.equals(checkLoginToken(beautyUserLoginToken).getErrorInfo()))
                 {
                     return checkLoginToken(beautyUserLoginToken);
                 }
 
                 //验证token有效性
-                int loginTokenPeriod = ConfigConstant.logintokenPeriod;
                 String beautyUserInfo = JedisUtils.get(beautyUserLoginToken);
-                if(beautyUserInfo==null)
-                {
-                    responseDto.setResult(StatusConstant.FAILURE);
-                    responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
-                    return responseDto;
-                }
-                else
-                {
-                    responseDto.setResult(StatusConstant.SUCCESS);
-                    JedisUtils.set(beautyUserLoginToken,beautyUserInfo,loginTokenPeriod);
-                    return responseDto;
-                }
+                return checkLoginInfo(beautyUserInfo,beautyUserLoginToken,responseDto);
+
             }
             else if(userType.equals("beautyBoss"))
             {
-                beautyBossLoginToken = tokenValue.get("beautyBossLoginToken");
+                beautyBossLoginToken = tokenValue.get("beautybosslogintoken");
 
-                if(checkLoginToken(beautyBossLoginToken).getErrorInfo().equals(StatusConstant.TOKEN_ERROR))
+                if(StatusConstant.TOKEN_ERROR.equals(checkLoginToken(beautyBossLoginToken).getErrorInfo()))
                 {
                     return checkLoginToken(beautyBossLoginToken);
                 }
 
                 //验证token有效性
-                int loginTokenPeriod = ConfigConstant.logintokenPeriod;
                 String bossInfo = JedisUtils.get(beautyBossLoginToken);
-                if(bossInfo==null)
-                {
-                    responseDto.setResult(StatusConstant.FAILURE);
-                    responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
-                    return responseDto;
-                }
-                else
-                {
-                    responseDto.setResult(StatusConstant.SUCCESS);
-                    JedisUtils.set(beautyBossLoginToken,bossInfo,loginTokenPeriod);
-                    return responseDto;
-                }
+                return checkLoginInfo(bossInfo,beautyBossLoginToken,responseDto);
             }
             else if(userType.equals("beautyClerk"))
             {
-                beautyClerkLoginToken = tokenValue.get("beautyClerkLoginToken");
+                beautyClerkLoginToken = tokenValue.get("beautyclerklogintoken");
 
-                if(checkLoginToken(beautyClerkLoginToken).getErrorInfo().equals(StatusConstant.TOKEN_ERROR))
+                if(StatusConstant.TOKEN_ERROR.equals(checkLoginToken(beautyClerkLoginToken).getErrorInfo()))
                 {
                     return checkLoginToken(beautyClerkLoginToken);
                 }
 
                 //验证token有效性
-                int loginTokenPeriod = ConfigConstant.logintokenPeriod;
                 String clerkInfo = JedisUtils.get(beautyClerkLoginToken);
-                if(clerkInfo==null)
-                {
-                    responseDto.setResult(StatusConstant.FAILURE);
-                    responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
-                    return responseDto;
-                }
-                else
-                {
-                    responseDto.setResult(StatusConstant.SUCCESS);
-                    JedisUtils.set(beautyClerkLoginToken,clerkInfo,loginTokenPeriod);
-                    return responseDto;
-                }
+                return checkLoginInfo(clerkInfo,beautyClerkLoginToken,responseDto);
             }
             else
             {
                 responseDto.setResult(StatusConstant.FAILURE);
                 return responseDto;
             }
+        }
+    }
+
+    private static ResponseDTO checkLoginInfo(String userLoginInfo, String userLoginToken, ResponseDTO<String> responseDto) {
+        if(userLoginInfo==null)
+        {
+            responseDto.setResult(StatusConstant.FAILURE);
+            responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
+            return responseDto;
+        }
+        else
+        {
+            responseDto.setResult(StatusConstant.SUCCESS);
+            JedisUtils.set(userLoginToken,userLoginInfo,ConfigConstant.logintokenPeriod);
+            return responseDto;
         }
     }
 

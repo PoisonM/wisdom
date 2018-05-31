@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('loginCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserValidateCode','BossUtil',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserValidateCode,BossUtil) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserValidateCode','BossUtil','$interval','Global','BossUserLogin',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserValidateCode,BossUtil,$interval,Global,BossUserLogin) {
             $rootScope.title = "登录";
 
             $rootScope.title = "美享登录";
@@ -48,13 +48,30 @@ angular.module('controllers',[]).controller('loginCtrl',
                 }
                 else
                 {
-                    BeautyUserLogin.save({userPhone:$scope.param.userPhone,code:$scope.param.validateCode},function(data){
+                    BossUserLogin.save({userPhone:$scope.param.userPhone,code:$scope.param.validateCode},function(data){
+                        console.log(data);
                         if(data.result==Global.FAILURE)
                         {
                             alert(data.errorInfo);
                         }
                         else
                         {
+                            if(data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)
+                            {
+                                window.localStorage.removeItem("beautyUserLoginToken");
+                                window.localStorage.setItem("beautyUserLoginToken",data.responseData.beautyUserLoginToken);
+                            }
+                            if(data.responseData.beautyBossLoginToken!=Global.TOKEN_ERROR)
+                            {
+                                window.localStorage.removeItem("beautyBossLoginToken");
+                                window.localStorage.setItem("beautyBossLoginToken",data.responseData.beautyBossLoginToken);
+                            }
+                            if(data.responseData.beautyClerkLoginToken!=Global.TOKEN_ERROR)
+                            {
+                                window.localStorage.removeItem("beautyClerkLoginToken");
+                                window.localStorage.setItem("beautyClerkLoginToken",data.responseData.beautyClerkLoginToken);
+                            }
+
                             if($stateParams.redirectUrl=='')
                             {
                                 window.location.href = "";
