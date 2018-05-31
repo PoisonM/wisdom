@@ -16,7 +16,10 @@ angular.module('controllers',[]).controller('pricesCtrl',
                 projectTypeOneId:"",//一级项目id
                 projectTypeTwoId:"",//二级项目id
                 pageSize:"10",/*页面大小*/
-                productTypeName:""/*产品名字*/
+                productTypeName:"",/*产品名字*/
+
+                oneName:'',
+                twoName:''
             };
             $scope.changeBtn = function (type) {
                 $scope.param.type = type;
@@ -36,8 +39,44 @@ angular.module('controllers',[]).controller('pricesCtrl',
                      })
                  }
             };
+            OneLevelProject.get(function (data) {
+                $scope.projectList=data.responseData;
+                console.log(data)
+                $scope.param.projectTypeOneId=data.responseData[0].id;
+                $scope.param.oneName=data.responseData[0].projectTypeName;
+                TwoLevelProject.get({id:$scope.param.projectTypeOneId},function (data) {
+                    $scope.project2List=data.responseData;
+                    $scope.param.projectTypeTwoId=data.responseData[0].id;
+                    $scope.param.twoName=data.responseData[0].projectTypeName;
+                    console.log(data)
+                    ThreeLevelProject.get({
+                        projectTypeOneId:$scope.param.projectTypeOneId,
+                        pageSize:$scope.param.pageSize,
+                        ProjectTypeTwoId:$scope.param.projectTypeTwoId
+                    },function (data) {
+                        $scope.threeList=data.responseData;
+                        for(var i=0;i< $scope.threeList.length;i++){
+                            if($scope.threeList[i].cardType=="1"){
+                                $scope.threeList[i].cardType="月卡"
+                            }
+                            if($scope.threeList[i].cardType=="2"){
+                                $scope.threeList[i].cardType="季卡"
+                            }
+                            if($scope.threeList[i].cardType=="3"){
+                                $scope.threeList[i].cardType="半年卡"
+                            }
+                            if($scope.threeList[i].cardType=="4"){
+                                $scope.threeList[i].cardType="年卡"
+                            }
+                        }
+
+                    })
+                })
+            });
             $scope.selNext = function (type) {
                 $scope.param.flag = true;
+                $scope.param.type= type
+                $scope.project2List=[]
                 /*调取一级列表*/
                 if(type=="0"){
                     OneLevelProject.get(function (data) {
@@ -52,27 +91,32 @@ angular.module('controllers',[]).controller('pricesCtrl',
                 }
             };
             /*点击一级列表调取二级列表*/
-            $scope.clickFirst=function (index,id,type) {
+            $scope.clickFirst=function (index,id,type,projectTypeName,productTypeName) {
                 $scope.param.typeIndex = index;/*点击一级列表改变背景色*/
                 if(type=="0"){
                     $scope.param.projectTypeOneId=id;
                     TwoLevelProject.get({id:id},function (data) {
                         $scope.project2List=data.responseData;
-                        console.log(data)
+                       $scope.param.oneName = projectTypeName
                     })
                 }else {
                     $scope.param.productTypeOneId=id;
                     TwoLevelProduct.get({id:id},function (data) {
                         $scope.project2List=data.responseData;
-                        console.log(data)
+                        $scope.param.oneName = productTypeName
                     })
                 }
 
             };
+            $scope.dis = function () {
+                $scope.param.flag = false;
+            }
             /*点击二级*/
-            $scope.clickTwo = function (id,type) {
+            $scope.clickTwo = function (id,type,projectTypeName,productTypeName) {
                 $scope.param.flag = false;
                 if(type=="0"){
+                    console.log(projectTypeName);
+                    $scope.param.twoName = projectTypeName
                      ThreeLevelProject.get({
                          projectTypeOneId:$scope.param.projectTypeOneId,
                          pageSize:$scope.param.pageSize,
@@ -96,6 +140,7 @@ angular.module('controllers',[]).controller('pricesCtrl',
 
                      })
                 }else {
+                    $scope.param.twoName = productTypeName
                     ThreeLevelProduct.get({
                         productTypeOneId:$scope.param.productTypeOneId,
                         pageSize:$scope.param.pageSize,

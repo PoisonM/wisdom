@@ -2,14 +2,14 @@
     <ion-content>
         <div class="h45 bgfff row fs14 bbl">
             <div class="col col-25 center" style="border-right: solid 1px #f6f6f6">
-                <p style="margin-top:-10px" ng-class="{'colff66':param.type == 0}" >
-                    <span ng-click="changeBtn(0)">项目</span>
-                    <img  ng-click="selNext('0')" src="{{param.type==0?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20"></p>
+                <p style="margin-top:-10px" ng-class="{'colff66':param.type == 0}" ng-click="selNext('0')">
+                    <span >项目</span>
+                    <img   src="{{param.type==0?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20"></p>
             </div>
             <div class="col col-25 center" style="border-right: solid 1px #f6f6f6">
-                <p style="margin-top:-10px" ng-class="{'colff66':param.type == 1}">
-                    <span  ng-click="changeBtn(1)">产品</span>
-                    <img src="{{param.type==1?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ng-click="selNext('1')"></p>
+                <p style="margin-top:-10px" ng-class="{'colff66':param.type == 1}" ng-click="selNext('1')">
+                    <span  >产品</span>
+                    <img src="{{param.type==1?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ></p>
             </div>
             <div class="col col-25 center" style="border-right: solid 1px #f6f6f6">
                 <p style="margin-top:-10px" ng-click="changeBtn(2)" ng-class="{'colff66':param.type == 2}">套卡</p>
@@ -19,8 +19,8 @@
             </div>
         </div>
        <!--点击下面的商品展示-->
-        <div class="sb h30">
-            <p class="fs12 col888 ml10">项目.面部</p>
+        <div class="sb h30"  ng-if="param.type==0||param.type==1">
+            <p class="fs12 col888 ml10"><span ng-if="param.type=='0'">项目</span><span ng-if="param.type=='1'">产品</span> . {{param.oneName}} . {{param.twoName}}</p>
         </div>
         <div class="list"  ng-repeat="item in threeList" ng-if="param.type=='0'" ng-click="projectDetails(item.id)">
             <ion-item  class="row" >
@@ -95,17 +95,17 @@
             </ion-item>
         </div>
         <!--点击项目  产品显示的内容-->
-        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100"  ng-show="param.flag"></div>
+        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100"  ng-show="param.flag" ng-click="dis()"></div>
         <div style="position: absolute;top:45px;width:100%;z-index: 1000"  class="sb" ng-show="param.flag">
             <ul class=" col333 fs14 " style="width: 50%;overflow-y: scroll;background: #f0f0f0">
-                <li class="h40  col333 center " ng-repeat="item in projectList" ng-click="clickFirst($index,item.id,param.type);"   ng-class="{'bgfff': param.typeIndex == $index}">
+                <li class="h40  col333 center " ng-repeat="item in projectList" ng-click="clickFirst($index,item.id,param.type,item.projectTypeName,item.productTypeName);"   ng-class="{'bgfff': param.typeIndex == $index}">
                     <span ng-if="param.type=='0'">{{item.projectTypeName}}</span>
                     <span ng-if="param.type=='1'">{{item.productTypeName}}</span>
                     <i style="float:right;font-size: 0.3rem;margin-top: 10px;margin-right: 10px" class="ion ion-ios-arrow-right"></i>
                 </li>
             </ul>
             <ul style="width:77%;background: #FFFFFF;" class="fs14 col333">
-                <li class="ml10 h40 sb" style="border-bottom: 1px solid #FFFFFF;" ng-click="clickTwo(item.id,param.type);" ng-repeat="item in project2List">
+                <li class="ml10 h40 sb" style="border-bottom: 1px solid #FFFFFF;" ng-click="clickTwo(item.id,param.type,item.projectTypeName,item.productTypeName);" ng-repeat="item in project2List">
                     <span ng-if="param.type=='0'">{{item.projectTypeName}}</span>
                     <span ng-if="param.type=='1'">{{item.productTypeName}}</span>
                 </li>
