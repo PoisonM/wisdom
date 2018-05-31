@@ -120,7 +120,6 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         ShopCheckRecordCriteria shopCheckRecordCriteria = new ShopCheckRecordCriteria();
         ShopCheckRecordCriteria.Criteria c1 = shopCheckRecordCriteria.createCriteria();
         c1.andFlowNoEqualTo(flowNo);
-        // todo 待修复
         List<ShopCheckRecordDTO> shopCheckRecordDTOList= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
         Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
         ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
