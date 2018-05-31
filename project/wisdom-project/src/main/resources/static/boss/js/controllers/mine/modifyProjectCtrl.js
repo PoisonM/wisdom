@@ -7,57 +7,33 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
 
             $rootScope.title = "修改项目";
             $scope.param={
-                id:$stateParams.projectId,/*接受项目列表穿过的id*/
+                projectId:$stateParams.projectId,/*接受项目列表穿过的id*/
                 cardBox:true,
                 secondary:"",
                 timeLength:"",
-                status:$stateParams.status
             };
-            if($stateParams.status=="1"){/**/
-                $scope.param.status=false
-            }else {
-                $scope.param.status=true
+
+            $scope.selectionCategoryGO = function () {
+                $state.go("selectionCategory",{projectId:$scope.param.projectId,url:'modifyProject'})
             }
-            $scope.selectionCategoryGO=function (projectId) {
-                $state.go("selectionCategory",{mod:"modifyProject",projectId:projectId});
-                localStorage.setItem('modifyList',JSON.stringify($scope.modifyList));
-            };
-            $scope.projectSeries=function (projectId) {
-                $state.go("addProjectSeries",{typeId:$stateParams.typeId,mod:"modifyProject",projectId:projectId});
-                localStorage.setItem('modifyList',JSON.stringify($scope.modifyList));
-            };
+            $scope.addProjectSeriesGo = function () {
+                $state.go("addProjectSeries",{projectId:$scope.param.projectId,url:'modifyProject'})
+            }
 
-            ProjectInfo.get({id:$scope.param.id},function (data) {
-                $scope.modifyList=data.responseData;
-                if($stateParams.name !=''){
-                    $scope.modifyList =JSON.parse(localStorage.getItem('modifyList'));
-                    $scope.modifyList.projectTypeOneName = $stateParams.name;
-                   /* localStorage.setItem('modifyList',JSON.stringify($scope.modifyList));*/
-
-                }
-                
-                if($stateParams.seriesName !=''){
-                    $scope.modifyList =JSON.parse(localStorage.getItem('modifyList'));
-                    $scope.modifyList.projectTypeTwoName = $stateParams.seriesName;
-                   /* localStorage.setItem('modifyList',JSON.stringify($scope.modifyList));*/
-                }
-                if($stateParams.typeId !=''){
-                    $scope.modifyList =JSON.parse(localStorage.getItem('modifyList'));
-                    $scope.modifyList.projectTypeOneId = $stateParams.typeId;
-                  /*  localStorage.setItem('modifyList',JSON.stringify($scope.modifyList));*/
-                }
-                if($stateParams.seriesId !=''){
-                    $scope.modifyList =JSON.parse(localStorage.getItem('modifyList'));
-                    $scope.modifyList.projectTypeTwoId = $stateParams.seriesId;
-                    localStorage.setItem('modifyList',JSON.stringify($scope.modifyList));
+            ProjectInfo.get({id:$scope.param.projectId},function (data) {
+                $scope.settingAddsome.project=data.responseData;
+                if($rootScope.settingAddsome.project.status=="1"){
+                    $scope.param.status=false
+                }else {
+                    $scope.param.status=true
                 }
 
                 $scope.secondaryCard=function (type,timeLength) {
                     if(type !='-1') {
-                        $scope.modifyList.cardType = type;
+                        $rootScope.settingAddsome.project.cardType = type;
                         $scope.param.timeLength = timeLength
                     }
-                    console.log($scope.modifyList.cardType)
+
                 };
             });
             /*上传图片*/
@@ -75,7 +51,7 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $scope.modifyList.imageUrl.push(data.responseData)
+                                $rootScope.settingAddsome.project.imageUrl.push(data.responseData)
                             }
 
                         })
@@ -89,20 +65,21 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
 
             };
             $scope.delPic = function(index){
-                $scope.modifyList.imageUrl.splice(index,1)
+                $rootScope.imageUrl.splice(index,1)
             }
             /*点击保存调取接口*/
 
             $scope.Preservation=function () {
                 if($scope.param.status==true){/*如果为true显示不启动，反之启动*/
-                    $scope.param.status="1"
+                    $rootScope.settingAddsome.project.status="0"
                 }else {
-                    $scope.param.status="0"
+                    $rootScope.settingAddsome.project.status ='1'
                 }
-                /*console.log($scope.modifyList);*/
-                UpdateProjectInfo.save($scope.modifyList,function (data) {
+                if($rootScope.settingAddsome.project.projectTypeOneName ==''||$rootScope.settingAddsome.project.projectTypeTwoName ==''||$rootScope.settingAddsome.project.projectName ==''||$rootScope.settingAddsome.project.projectDuration ==''||$rootScope.settingAddsome.project.oncePrice ==''||$rootScope.settingAddsome.project.discountPrice ==''){
+                    alert("请检查信息")
+                }
+                UpdateProjectInfo.save($scope.settingAddsome.project,function (data) {
                     if(data.result=="0x00001"){
-                        localStorage.removeItem('modifyProduct');
                       $state.go("projectList")
                     }
                 })

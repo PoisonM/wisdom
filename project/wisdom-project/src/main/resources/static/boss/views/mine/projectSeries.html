@@ -3,7 +3,7 @@
         <div>
 
             <ion-list>
-                <ion-item class="h45 sb" ng-repeat="item in requestList" ng-if="item.status == '1'">
+                <ion-item class="h45 sb" ng-repeat="item in requestList" ng-if="item.status == '0'">
                     <p class="col333 fs16">
                         <img src="images/del.png" class="delPic ml10 " ng-click="selBtnShow($index)">
                         <input type="text" placeholder="添加系列名称" class="fs16 cl888 mt5 ml10" style="width:200px;display: inline-block;" ng-model="item.projectTypeName">

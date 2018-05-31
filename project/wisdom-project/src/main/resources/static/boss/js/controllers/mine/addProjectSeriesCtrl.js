@@ -6,16 +6,15 @@ angular.module('controllers',[]).controller('addProjectSeriesCtrl',
         function ($scope,$rootScope,$stateParams,$state,TwoLevelProject) {
 
             $rootScope.title = "";
-            console.log($stateParams.typeId);
-            $scope.param={
-                id:$stateParams.typeId/*一级项目id*/
-            };
-            TwoLevelProject.get({id:$scope.param.id},function (data) {
+
+            TwoLevelProject.get({id:$scope.settingAddsome.project.projectTypeOneId},function (data) {
                 $scope.seriesList=data.responseData;
-               console.log( $scope.seriesList)
             });
             $scope.selectSeries=function (seriesId,seriesName) {
-                $state.go($stateParams.add||$stateParams.mod,{seriesId:seriesId,seriesName:seriesName,projectId:$stateParams.projectId})
+                $rootScope.settingAddsome.project.projectTypeTwoId=seriesId
+                $rootScope.settingAddsome.project.projectTypeTwoName=seriesName
+                $state.go($stateParams.url,{projectId:$stateParams.projectId})
+
             }
             
         }]);
