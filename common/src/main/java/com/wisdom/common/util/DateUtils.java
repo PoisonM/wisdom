@@ -259,7 +259,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @Exception 发生异常
 	 */
 	public static int dayForWeek(String pTime) throws Exception {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
 		c.setTime(format.parse(pTime));
 		int dayForWeek = 0;

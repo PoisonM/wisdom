@@ -754,6 +754,9 @@ public class JedisUtils {
 	public static long del(String key) {
 		long result = 0;
 		Jedis jedis = null;
+		if(StringUtils.isBlank(key)){
+			return 0;
+		}
 		try {
 			jedis = getResource();
 			if (jedis.exists(key)){
