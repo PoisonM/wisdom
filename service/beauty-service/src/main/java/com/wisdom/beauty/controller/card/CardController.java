@@ -341,7 +341,7 @@ public class CardController {
 	ResponseDTO<Object> saveRechargeCardInfo(@RequestBody ExtShopRechargeCardDTO extShopRechargeCardDTO) {
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		int info = cardService.saveRechargeCardInfo(extShopRechargeCardDTO);
-		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 		return responseDTO;
 	}
 
@@ -360,7 +360,7 @@ public class CardController {
 			return responseDTO;
 		}
 		int info = cardService.updateRechargeCardInfo(extShopRechargeCardDTO);
-		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 		return responseDTO;
 	}
 }

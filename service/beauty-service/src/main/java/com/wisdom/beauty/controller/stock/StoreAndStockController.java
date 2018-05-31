@@ -192,9 +192,7 @@ public class StoreAndStockController {
 	@ResponseBody
 	ResponseDTO<ShopStockResponseDTO> getProductInfoAndStock(@RequestParam String shopStoreId,
 			@RequestParam String shopProcId) {
-		ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
-		shopStockNumberDTO.setShopStoreId(shopStoreId);
-		shopStockNumberDTO.setShopProcId(shopProcId);
+
 		ShopStockResponseDTO shopStockResponseDTO = shopStockService.getProductInfoAndStock(shopStoreId, shopProcId);
 
 		ResponseDTO<ShopStockResponseDTO> responseDTO = new ResponseDTO<>();

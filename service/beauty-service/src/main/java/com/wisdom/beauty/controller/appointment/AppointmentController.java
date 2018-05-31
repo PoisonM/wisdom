@@ -801,10 +801,8 @@ public class AppointmentController {
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		if (null != shopAppointInfoFromRedis) {
 			BeanUtils.copyProperties(shopAppointInfoFromRedis, extShopAppointServiceDTO);
-			SysClerkDTO sysClerkDTO = redisUtils.getSysClerkDTO(extShopAppointServiceDTO.getSysClerkId());
 			UserInfoDTO userInfoDTO = userServiceClient .getUserInfoFromUserId(shopAppointInfoFromRedis.getSysUserId());
 			extShopAppointServiceDTO.setClerkImage(userInfoDTO.getPhoto());
-			//extShopAppointServiceDTO.setCustomType(userInfoDTO.getUserType());
 		}
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(extShopAppointServiceDTO);

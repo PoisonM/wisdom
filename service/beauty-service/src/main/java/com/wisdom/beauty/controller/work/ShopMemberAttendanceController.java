@@ -273,9 +273,6 @@ public class ShopMemberAttendanceController {
 		pageParamVoDTO.setEndTime(endTime);
 		//设置是否去重的条件
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamDistic = new PageParamVoDTO();
-		UserConsumeRequestDTO userConsumeRequestDistic = new UserConsumeRequestDTO();
-		userConsumeRequestDistic.setSysBossCode(sysBossDTO.getId());
-		userConsumeRequestDistic.setDisticRequire(true);
 		pageParamDistic.setStartTime(startTime);
 		pageParamDistic.setEndTime(endTime);
 		pageParamDistic.setRequestData(userConsumeRequestDTO);
