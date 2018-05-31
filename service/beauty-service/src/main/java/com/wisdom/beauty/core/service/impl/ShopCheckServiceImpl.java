@@ -122,11 +122,9 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         c1.andFlowNoEqualTo(flowNo);
         // todo 待修复
         List<ShopCheckRecordDTO> shopCheckRecordDTOList= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
-        List<String> prodcuts=new ArrayList<>();
         Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
         ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
         for(ShopCheckRecordDTO shopCheckRecord:shopCheckRecordDTOList){
-            prodcuts.add(shopCheckRecord.getShopProcId());
             if(map.containsKey(shopCheckRecord.getProductTypeOneId())){
                 ShopCheckRecordResponseDTO devShopCheckRecordResponseDTO=map.get(shopCheckRecord.getProductTypeOneId());
                 List<ShopCheckRecordResponseDTO> devList=devShopCheckRecordResponseDTO.getShopCheckRecordResponseList();
