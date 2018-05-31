@@ -79,7 +79,13 @@
                             <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommend'" ng-show="false">筛选已完成的订单</button>
                         </div>
 
-                        <div  class = "statusBar" style="float:right" ng-if="status=='month'" >
+                        <div class="product_name big time_box">
+                            <div style="margin-top: 84px;line-height: 31px;">
+                                <span class="bold agencyTime">时间：</span>
+                                <input class="time MStartMonth date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp;--&nbsp;<input class="time MEndMonth date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
+                            </div>
+                        </div>
+                        <div  class = "statusBar" style="float:right" ng-if="status=='month'">
                             <button class="order_lis simulateBtn" ng-click="monthlyIncomeSignal()">生成月度账单</button>
                         </div>
 

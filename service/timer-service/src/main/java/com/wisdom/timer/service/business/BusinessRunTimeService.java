@@ -9,6 +9,7 @@ import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.transaction.MonthlyIncomeSignalDTO;
+import com.wisdom.common.dto.transaction.MonthlyIncomeErrorDTO;
 import com.wisdom.common.dto.transaction.IncomeMonthDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.*;
@@ -613,20 +614,23 @@ public class BusinessRunTimeService {
      * @param
      *
      * */
-    @Transactional(rollbackFor = Exception.class)
-    public void monthlyIncomeCalcM(String businessType,Date startDateM ,Date endDateM,String isPullMessage,Date startRangeM ,Date endRangeM)throws Exception{
+    public void monthlyIncomeCalcM(String businessType,Date startDateM ,Date endDateM,Date startRangeM ,Date endRangeM)throws Exception{
 
-            UserInfoDTO userInfoDTOA = new UserInfoDTO();
-            userInfoDTOA.setUserType(businessType);
-            userInfoDTOA.setDelFlag("0");
-            List<UserInfoDTO> userInfoDTOListA = userServiceClient.getUserInfo(userInfoDTOA);
-            for(UserInfoDTO userInfo:userInfoDTOListA) {
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setUserType(businessType);
+            userInfoDTO.setDelFlag("0");
+            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+            for(UserInfoDTO userInfo:userInfoDTOList) {
                 float returnMoney = this.getOneDayMonthMoney(userInfo,startDateM,endDateM);
                 if(returnMoney>0){
-                    this.insertIncome(returnMoney,userInfo,isPullMessage,startRangeM,endRangeM);
+                    try{
+                        this.insertIncome(returnMoney,userInfo,startRangeM,endRangeM);
+                    }catch (Exception e){
+                        logger.info("用户"+userInfo.getMobile()+"startDateM"+"-"+"endDateM"+"插入月度返利表出问题");
+                        this.insertMonthlyIncomeError(startDateM,userInfo,businessType);
+                    }
                 }
             }
-
     }
 
     /**
@@ -634,28 +638,32 @@ public class BusinessRunTimeService {
      *
      *
      * */
-
-    @Transactional(rollbackFor = Exception.class)
     public void MTMonthlyIncomeCalc(String businessType,Date startDateM ,Date endDateM,String isPullMessage) throws Exception{
 
+
+        logger.info("准备处理"+startDateM+"到"+endDateM+"时间段"+businessType+"的月度");
+
+        //将时间分成年月日
         SimpleDateFormat sdfYear  = new SimpleDateFormat("yyyy");
-        SimpleDateFormat sdfmon  = new SimpleDateFormat("MM");
-        SimpleDateFormat sdfday  = new SimpleDateFormat("dd");
-        int startM = Integer.parseInt(sdfmon.format(startDateM));
-        int endM = Integer.parseInt(sdfmon.format(endDateM));
-        int startD = Integer.parseInt(sdfday.format(startDateM));
-        int endD = Integer.parseInt(sdfday.format(endDateM));
+        SimpleDateFormat sdfMon  = new SimpleDateFormat("MM");
+        SimpleDateFormat sdfDay  = new SimpleDateFormat("dd");
+        int startM = Integer.parseInt(sdfMon.format(startDateM));
+        int endM = Integer.parseInt(sdfMon.format(endDateM));
+        int startD = Integer.parseInt(sdfDay.format(startDateM));
+        int endD = Integer.parseInt(sdfDay.format(endDateM));
         int startY = Integer.parseInt(sdfYear.format(startDateM));
         int EndY = Integer.parseInt(sdfYear.format(endDateM));
-        //如果是同一年
+
+        //判断是否跨年
         if(startY==EndY){
+            //判断是否 跨月份
             if(startM == endM){
                 if(startD <= endD){
                     for(int i =startD;i<=endD;i++){
-                        float returnMonthlyMoney = 0;
-                        //加入开关量，判断当天是否已经处理过
+
                         StringBuilder sbM = new StringBuilder();
                         StringBuilder sbD = new StringBuilder();
+
                         if(startM<10){
                             sbM.append("0").append(startM);
                         }else{
@@ -666,13 +674,15 @@ public class BusinessRunTimeService {
                         }else{
                             sbD.append(i);
                         }
+
+                        //0代表着A类型和B类型都进行月度处理 1代表着A类型2代表着B类型
                         if(businessType.equals("0")){
-                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                         }else if(businessType.equals("1")){
-                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
                         }else if(businessType.equals("2")){
-                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                         }
 
                     }
@@ -695,12 +705,12 @@ public class BusinessRunTimeService {
                                 sbD.append(j);
                             }
                             if(businessType.equals("0")){
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                             }else if(businessType.equals("1")){
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
                             }else if(businessType.equals("2")){
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                             }
                         }
                     }else if(i == endM){
@@ -712,12 +722,12 @@ public class BusinessRunTimeService {
                                 sbD.append(j);
                             }
                             if(businessType.equals("0")){
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                             }else if(businessType.equals("1")){
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
                             }else if(businessType.equals("2")){
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                             }
                         }
                     }else{
@@ -729,12 +739,12 @@ public class BusinessRunTimeService {
                                 sbD.append(j);
                             }
                             if(businessType.equals("0")){
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                             }else if(businessType.equals("1")){
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
                             }else if(businessType.equals("2")){
-                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                             }
                         }
                     }
@@ -760,12 +770,12 @@ public class BusinessRunTimeService {
                                     sbD.append(m);
                                 }
                                 if(businessType.equals("0")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                                 }else if(businessType.equals("1")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
                                 }else if(businessType.equals("2")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                                 }
                             }
                         }else{
@@ -777,12 +787,12 @@ public class BusinessRunTimeService {
                                     sbD.append(m);
                                 }
                                 if(businessType.equals("0")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                                 }else if(businessType.equals("1")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
                                 }else if(businessType.equals("2")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                                 }
                             }
                         }
@@ -805,12 +815,12 @@ public class BusinessRunTimeService {
                                     sbD.append(m);
                                 }
                                 if(businessType.equals("0")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                                 }else if(businessType.equals("1")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
                                 }else if(businessType.equals("2")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                                 }
                             }
                         }else{
@@ -822,12 +832,12 @@ public class BusinessRunTimeService {
                                     sbD.append(m);
                                 }
                                 if(businessType.equals("0")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                                 }else if(businessType.equals("1")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
                                 }else if(businessType.equals("2")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                                 }
                             }
                         }
@@ -848,17 +858,13 @@ public class BusinessRunTimeService {
                             }else{
                                 sbD.append(m);
                             }
-                            try {
-                                if(businessType.equals("0")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
-                                }else if(businessType.equals("1")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
-                                }else if(businessType.equals("2")){
-                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
-                                }
-                            }catch(Exception e){
-                                /*this.insertMonthlyIncomeError(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                            if(businessType.equals("0")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
+                            }else if(businessType.equals("1")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,startDateM ,endDateM);
+                            }else if(businessType.equals("2")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,startDateM ,endDateM);
                             }
                         }
                     }
@@ -888,19 +894,24 @@ public class BusinessRunTimeService {
      *
      *
      * */
-    @Transactional(rollbackFor = Exception.class)
-    public float isProcessed(Integer year ,String month,String day,String businessType,String isPullMessage, Date startRangeM ,Date endRangeM)throws Exception{
+    public float isProcessed(Integer year ,String month,String day,String businessType, Date startRangeM ,Date endRangeM)throws Exception{
 
         float returnMonthlyMoney =0;
+
+        //按照类型和时间（具体到天加限制）
         Query query = new Query(Criteria.where("year").is(year.toString())).addCriteria(Criteria.where("month").is(month.toString())).addCriteria(Criteria.where("day").is(day.toString())).addCriteria(Criteria.where("businessType").is(businessType));
         MonthlyIncomeSignalDTO monthlyIncomeSignalDTO = mongoTemplate.findOne(query, MonthlyIncomeSignalDTO.class, "monthlyIncomeSignal");
+
+        //将范围处理成时间一天的范围
         SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
         SimpleDateFormat sfe = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
         StringBuilder sbs  = new StringBuilder();
         sbs.append(year).append("-").append(month).append("-").append(day).append(" ").append("00:00:00");
         StringBuilder sbe  = new StringBuilder();
         sbe.append(year).append("-").append(month).append("-").append(day).append(" ").append("23:59:59");
+
         if (monthlyIncomeSignalDTO == null) {
+
             monthlyIncomeSignalDTO = new MonthlyIncomeSignalDTO();
             monthlyIncomeSignalDTO.setYear(year.toString());
             monthlyIncomeSignalDTO.setMonth(month.toString());
@@ -911,7 +922,7 @@ public class BusinessRunTimeService {
 
             Date startDateM = sfs.parse(sbs.toString());
             Date endDateM = sfe.parse(sbe.toString());
-            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,isPullMessage,startRangeM,endRangeM);
+            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,startRangeM,endRangeM);
 
             //操作完毕后，关闭信号量
             Update update = new Update();
@@ -921,7 +932,7 @@ public class BusinessRunTimeService {
 
             Date startDateM =sfs.parse(sbs.toString());
             Date endDateM = sfe.parse(sbe.toString());
-            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,isPullMessage,startRangeM,endRangeM);
+            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,startRangeM,endRangeM);
 
             //操作完毕后，关闭信号量
             Update update = new Update();
@@ -943,7 +954,7 @@ public class BusinessRunTimeService {
         float returnMonthlyMoney_B = 0;
 
         String startDate =  DateUtils.formatDate(startDateM,"yyyy-MM-dd HH-mm-ss");
-        String endDate = DateUtils.formatDate(endDateM,"yyyy-MM-dd 23:59:59");
+        String endDate = DateUtils.formatDate(endDateM,"yyyy-MM-dd HH-mm-ss");
 
         List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
 
@@ -970,13 +981,15 @@ public class BusinessRunTimeService {
      *
      *
      * */
-    public void insertIncome(float returnMonthlyMoney,UserInfoDTO userInfo,String isPullMessage,Date startRangeM ,Date endRangeM){
+    @Transactional(rollbackFor = Exception.class)
+    public void insertIncome(float returnMonthlyMoney,UserInfoDTO userInfo,Date startRangeM ,Date endRangeM)throws Exception{
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         StringBuilder sb = new StringBuilder();
         sb.append(sdf.format(startRangeM)).append("-").append(sdf.format(endRangeM));
         String timeRangeId = sb.toString();
 
+        //更新用户余额和不可提现余额
         AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
         float balance = accountDTO.getBalance() + returnMonthlyMoney;
         float balanceDeny = accountDTO.getBalanceDeny() + returnMonthlyMoney;
@@ -985,6 +998,7 @@ public class BusinessRunTimeService {
         accountDTO.setUpdateDate(new Date());
         businessServiceClient.updateUserAccountInfo(accountDTO);
 
+        //查询当前用户的当前时间范围的月度是否开始计算
         Query query = new Query(Criteria.where("timeRangeId").is(timeRangeId)).addCriteria(Criteria.where("sysUserId").is(userInfo.getId()));
         IncomeMonthDTO incomeMonthDTO = mongoTemplate.findOne(query, IncomeMonthDTO.class, "incomeMonth");
         if(incomeMonthDTO==null){
@@ -1030,17 +1044,25 @@ public class BusinessRunTimeService {
      * 插入出错信息
      *
      * */
-/*    public void insertMonthlyIncomeError(Integer year ,String month,String day ,UserInfoDTO userInfo ,String businessType){
+
+    public void insertMonthlyIncomeError(Date date,UserInfoDTO userInfo ,String businessType){
+
+        SimpleDateFormat sdfYear  = new SimpleDateFormat("yyyy");
+        SimpleDateFormat sdfMon  = new SimpleDateFormat("MM");
+        SimpleDateFormat sdfDay  = new SimpleDateFormat("dd");
 
         MonthlyIncomeErrorDTO monthlyIncomeError = new MonthlyIncomeErrorDTO();
-        monthlyIncomeError.setYear(year.toString());
-        monthlyIncomeError.setMonth(month.toString());
-        monthlyIncomeError.setDay(day.toString());
+        monthlyIncomeError.setYear(sdfYear.format(date).toString());
+        monthlyIncomeError.setMonth(sdfMon.format(date).toString());
+        monthlyIncomeError.setDay(sdfDay.format(date).toString());
         monthlyIncomeError.setBusinessType(businessType);
-        monthlyIncomeError.setOnTimeFinish("false");
-        mongoTemplate.insert(monthlyIncomeError, "monthlyIncomeSignal");
+        monthlyIncomeError.setStatus("0");
+        monthlyIncomeError.setSysUserId(userInfo.getId());
 
-    }*/
+        mongoTemplate.insert(monthlyIncomeError, "MonthlyIncomeError");
+
+    }
+
 
     /**
      * 发送微信消息
@@ -1067,10 +1089,13 @@ public class BusinessRunTimeService {
             IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
             incomeRecordDTO.setId(incomeMonthDTO.getIncomeId());
             if(incomeMonthDTO!=null){
-
                 List<IncomeRecordDTO> incomeRecordDTOList = businessServiceClient.getUserIncomeRecordInfo(incomeRecordDTO);
-                if(("1").equals(isPullMessage)&&incomeRecordDTOList.get(0).getAmount()>0){
-                    WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),incomeRecordDTOList.get(0).getAmount()+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
+                if(incomeRecordDTOList!=null){
+
+                    logger.info("用户"+userInfo.getMobile()+"在时间"+timeRangeId+"的月度返利为"+incomeRecordDTOList.get(0).getAmount());
+                    if(("1").equals(isPullMessage)&&incomeRecordDTOList.get(0).getAmount()>0){
+                       // WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),incomeRecordDTOList.get(0).getAmount()+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
+                    }
                 }
             }
 

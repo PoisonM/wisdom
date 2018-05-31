@@ -1,6 +1,7 @@
 package com.wisdom.business.controller.account;
 
 import com.wisdom.business.client.UserServiceClient;
+import com.wisdom.business.client.TimeServiceClient;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.account.IncomeRecordManagementService;
 import com.wisdom.business.service.account.IncomeService;
@@ -53,6 +54,9 @@ public class IncomeController {
 
 	@Autowired
 	private UserServiceClient userServiceClient;
+
+	@Autowired
+	private TimeServiceClient timeServiceClient;
 
 	/**
 	 * 根据条件查询用户佣金奖励new
@@ -665,5 +669,21 @@ public class IncomeController {
 
 	}
 
+	/**
+	 * 手动生成月度
+	 * @param
+	 *
+	 * */
+	@RequestMapping(value = "MonthlyIncomeSignalMT", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	void MonthlyIncomeSignalMT(@RequestParam("businessType") String businessType, @RequestParam("startDateM") Date startDateM, @RequestParam("endDateM") Date endDateM, @RequestParam("isPullMessage") String isPullMessage){
+
+		try{
+			timeServiceClient.MTMonthlyIncomeCalc(businessType,startDateM,endDateM,isPullMessage);
+		}catch (Exception e){
+			logger.info(e.getMessage());
+		}
+	}
 
 }

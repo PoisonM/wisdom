@@ -178,4 +178,9 @@ define(['appManagement'], function (app) {
         .factory('ExportNextUserInfoControl',['$resource',function ($resource){
             return $resource(income + 'exportNextUserInfoControl');
         }])
+
+        //手动生成月度
+        .factory('MonthlyIncomeSignalMT',['$resource',function ($resource){
+            return $resource(income + 'MonthlyIncomeSignalMT');
+        }])
 });
