@@ -255,8 +255,8 @@ public class ProcessUserSubscribeEventService {
                         " 送 新人三重礼，价值845元         \n" +
                         " 送 快速拓客课程，价值1920元 \n" +
                         " \n" +"猛戳<a href=\\\"http://mx99.kpbeauty.com.cn/customer#/shopHome/\\\">做店主～(￣▽￣～)</a>~ \n"+ " \n" +
-                        "点击【我要赚钱】☞ <a href=\\\"http://mx99.kpbeauty.com.cn/customer#/shareHome/\\\">分享赚钱</a> ~\n" +
-                        "点击【用户指南】☞ <a href=\\\"https://mp.weixin.qq.com/s/B8f8hmCWz3T2xUwpRvz-iQ/\\\">了解赚钱</a> ~\n" +
+                        "点击【我要赚钱】☞ <a href=\\\"http://mx99.kpbeauty.com.cn/customer#/shareHome\\\">分享赚钱</a> ~\n" +
+                        "点击【用户指南】☞ <a href=\\\"https://mp.weixin.qq.com/s/B8f8hmCWz3T2xUwpRvz-iQ\\\">了解赚钱</a> ~\n" +
                         "学习课程请点击【微课堂】，并加导师微信：mx99xx001";
                 WeixinUtil.sendMsgToWeixin(token,xmlEntity.getFromUserName(),content);
             }
