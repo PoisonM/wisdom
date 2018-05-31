@@ -41,13 +41,5 @@ public class BeautyServiceImplTest {
         shopAppointServiceMapper.insert(shopAppointServiceDTO);
 
     }
-    @Test
-    public  void  te(){
-        String a="33";
-        String b="11";
-        String c="1";
-       Float s= shopRechargeCardService.getDiscount(a,b,c);
-        System.out.print(s);
-    }
 
 }

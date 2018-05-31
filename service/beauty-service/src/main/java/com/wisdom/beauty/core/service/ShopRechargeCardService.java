@@ -39,23 +39,6 @@ public interface ShopRechargeCardService {
     ShopRechargeCardResponseDTO getShopRechargeCard(ShopRechargeCardDTO shopRechargeCardDTO);
 
     /**
-     * @Author:huan
-     * @Param: queryCriteria :项目id或者产品id  rechargeCardId:套卡id type 类型
-     * @Return:
-     * @Description: 根据产品id或者项目Id查询折扣信息
-     * @Date:2018/4/12 11:33
-     */
-    Float getDiscount(String queryCriteria, String rechargeCardId, String type);
-    /**
-    *@Author:huan
-    *@Param:  充值卡id
-    *@Return:  map  key--充值卡id   value---map
-    *@Description: 获取折扣信息
-    *@Date:2018/4/16 18:29
-    */
-    Map<String,Map<String,Object>>getDiscount(List<String> rechargeCardIds);
-
-    /**
      * 更新用户的充值卡信息
      *
      * @param shopUserRechargeCardDTO

@@ -95,8 +95,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
                 shopCheckRecordResponseDTO.setState(shopCheckRecord.getState());
                 shopCheckRecordResponseDTO.setCreateDate(shopCheckRecord.getCreateDate());
                 shopCheckRecordResponseDTO.setShopProcId(shopCheckRecord.getShopProcId());
-                //todo 待修复
-                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getCreateDate())){
+                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())){
                     shopCheckRecordResponseDTO.setExceptionNumber(1);
                 }else {
                     shopCheckRecordResponseDTO.setExceptionNumber(0);
