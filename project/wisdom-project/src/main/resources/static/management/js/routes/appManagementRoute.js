@@ -77,7 +77,7 @@ define(['appManagement'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homeCtrl',
                                     ['js/controllers/homeCtrl.js?ver=' + managementVersion],
-                                    'js/views/home.html?ver=' + managementVersion);
+                                    'js/views/bossHome.html?ver=' + managementVersion);
                             }
                         }
                     })
@@ -322,6 +322,18 @@ define(['appManagement'], function(app){
                                 }
                             }
                         })
+                    .state('bossHome', {
+                        url: '/bossHome',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'bossHomeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.bossHomeCtrl',
+                                    ['js/controllers/beauty/bossHomeCtrl.js?ver=' + managementVersion],
+                                    'js/views/beauty/bossHome.html?ver=' + managementVersion);
+                            }
+                        }
+                    })
                 $urlRouterProvider.otherwise('home/%EF%BC%8F///')
             }])
 })
