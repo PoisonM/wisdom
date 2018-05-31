@@ -119,12 +119,10 @@ public class ClerkServiceController {
 	 */
 	@RequestMapping(value = "/clerkInfo", method = RequestMethod.GET)
 	@ResponseBody
-	@LoginRequired
 	List<SysClerkDTO> getClerkInfoByClerkId() {
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysClerkDTO);
-
 		listResponseDTO.setResponseData(clerkInfo);
 		listResponseDTO.setResult(StatusConstant.SUCCESS);
 		return clerkInfo;

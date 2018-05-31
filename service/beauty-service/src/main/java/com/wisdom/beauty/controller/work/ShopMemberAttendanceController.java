@@ -152,7 +152,8 @@ public class ShopMemberAttendanceController {
 	 */
 	@RequestMapping(value = "/getClerkAchievement", method = { RequestMethod.GET })
 	@ResponseBody
-	ResponseDTO<Map<String, String>> getClerkAchievement(@RequestParam String sysClerkId) {
+	@LoginRequired
+	ResponseDTO<Map<String, String>> getClerkAchievement() {
 
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		if (sysClerkDTO == null) {
@@ -161,7 +162,7 @@ public class ShopMemberAttendanceController {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 		userConsumeRequestDTO.setSysShopId(sysClerkDTO.getSysShopId());
-		userConsumeRequestDTO.setSysClerkId(sysClerkId);
+		userConsumeRequestDTO.setSysClerkId(sysClerkDTO.getId());
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		String startTime = DateUtils.getStartTime();
 		String endTime = DateUtils.getEndTime();
@@ -169,7 +170,7 @@ public class ShopMemberAttendanceController {
 		pageParamVoDTO.setEndTime(endTime);
 		BigDecimal income = shopStatisticsAnalysisService.getPerformance(pageParamVoDTO);
 		BigDecimal expenditure = shopStatisticsAnalysisService.getExpenditure(pageParamVoDTO);
-		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(sysClerkId, startTime, endTime);
+		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(sysClerkDTO.getId(), startTime, endTime);
 		Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(pageParamVoDTO);
 
 		Map<String, String> map = new HashMap<>(16);
