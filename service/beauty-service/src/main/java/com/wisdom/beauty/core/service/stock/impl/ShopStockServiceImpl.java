@@ -589,9 +589,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		// shopStockMap缓存库存列表
 		Map<String, ShopStockNumberDTO> shopStockMap = new HashMap<>(16);
 		// map用户存储，key=产品ID value=ShopStockNumberDTO
-		List<String> productIds = new ArrayList<>();
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumberDTOs) {
-			productIds.add(shopStockNumber.getShopProcId());
 			shopStockMap.put(shopStockNumber.getShopProcId(), shopStockNumber);
 		}
 		// productInfoMap 缓存产品列表 key=产品ID value=ShopProductInfoDTO

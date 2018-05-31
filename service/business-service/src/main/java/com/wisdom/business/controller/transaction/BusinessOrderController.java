@@ -191,13 +191,11 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> updateBusinessOrderStatus(@RequestBody BusinessOrderDTO businessOrderDTO) {
-        ();
         logger.info("更改某个订单的状态orderId={}"+businessOrderDTO.getBusinessOrderId(), "orderStatus = [" + businessOrderDTO.getStatus() + "]");
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         if(null == businessOrderDTO.getStatus() || "".equals(businessOrderDTO.getStatus())){
             responseDTO.setResult(StatusConstant.FAILURE);
             responseDTO.setErrorInfo("订单状态参数为空");
-            logger.info("更改某个订单的状态耗时{}毫秒", (System.currentTimeMillis() - startTime));
             return responseDTO;
         }
         try
@@ -213,7 +211,6 @@ public class BusinessOrderController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
-        logger.info("更改某个订单的状态耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -222,7 +219,6 @@ public class BusinessOrderController {
     public
     @ResponseBody
     ResponseDTO<String> updateBusinessOrderAddress(@RequestParam("orderIds[]") List<String> orderIds, @RequestParam String orderAddressId) {
-        ();
         logger.info("修改订单地址方法传入参数={}", "订单数量orderIdsSize = [" + orderIds.size() + "]", "订单地址id = [" + orderAddressId + "]");
 
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
@@ -271,7 +267,6 @@ public class BusinessOrderController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
-        logger.info("修改订单地址方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 

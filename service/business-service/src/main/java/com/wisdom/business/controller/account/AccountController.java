@@ -289,8 +289,6 @@ public class AccountController {
 	@ResponseBody
 	ResponseDTO<List<SpecialShopBusinessOrderDTO>> findShopKeeperOrderS(@RequestBody PageParamVoDTO<SpecialShopBusinessOrderDTO> pageParamVoDTO){
 		logger.info("用户获取账户信息===" + new Date());
-
-        ();
 		//获取当前登录用户信息
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		String phone = userInfoDTO.getMobile();
@@ -349,8 +347,6 @@ public class AccountController {
 
 		logger.info("返回结果为：{}",responeList);
 
-		logger.info("获取该店铺订单列表耗时{}毫秒", (System.currentTimeMillis() - startTime));
-
 		ResponseDTO<List<SpecialShopBusinessOrderDTO>> responseDTO = new ResponseDTO<>();
 		if(responeList!=null&&responeList.size()>0){
 
@@ -378,12 +374,7 @@ public class AccountController {
 	ResponseDTO<List<PayRecordDTO>> findOrderByTransactionId(@RequestParam String orderId){
 
 		logger.info("交易订单号为={}",orderId);
-        ();
-
 		List<PayRecordDTO>  payRecordDTOS = payRecordService.findOrderInfoForSpecial(orderId);
-
-		logger.info("获取该交易流水号下订单列表耗时{}毫秒", (System.currentTimeMillis() - startTime));
-
 		Float paySum=(float)0;
 		if(payRecordDTOS!=null&&payRecordDTOS.size()>0){
 			for(int i =0;i<payRecordDTOS.size();i++){

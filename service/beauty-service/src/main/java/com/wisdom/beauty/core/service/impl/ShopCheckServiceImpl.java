@@ -73,6 +73,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         List<ShopCheckRecordDTO> list= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
 
         Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
+        // todo 待修复
         List<ShopCheckRecordResponseDTO> shopCheckRecordResponseDTOs=new ArrayList<>();
         ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
         for(ShopCheckRecordDTO shopCheckRecord:list){
@@ -85,7 +86,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
                     shopCheckRecordResponseDTO.setState(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode());
                 }
                 //计算异常数
-                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getCreateDate())){
+                if (ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())) {
                     shopCheckRecordResponseDTO.setExceptionNumber(shopCheckRecordResponseDTO.getExceptionNumber()+1);
                 }
                 map.put(shopCheckRecord.getFlowNo(),shopCheckRecordResponseDTO);
@@ -119,6 +120,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         ShopCheckRecordCriteria shopCheckRecordCriteria = new ShopCheckRecordCriteria();
         ShopCheckRecordCriteria.Criteria c1 = shopCheckRecordCriteria.createCriteria();
         c1.andFlowNoEqualTo(flowNo);
+        // todo 待修复
         List<ShopCheckRecordDTO> shopCheckRecordDTOList= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
         List<String> prodcuts=new ArrayList<>();
         Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();

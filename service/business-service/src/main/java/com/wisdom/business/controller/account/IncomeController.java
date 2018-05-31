@@ -64,7 +64,6 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> getIncomeRecordByPageParam(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-        ();
 		logger.info("根据状态查询返利数据传入参数={}", "pageParamVoDTO = [" + pageParamVoDTO + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		int count = 0;
@@ -112,7 +111,6 @@ public class IncomeController {
 		responseDTO.setResponseData(map);
 		responseDTO.setResult("根据条件查询用户佣金奖励成功");
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -126,7 +124,6 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> queryIncomeInfoByIncomeId(@RequestParam String incomeId) {
-        ();
 		logger.info("根据id查询用户奖励参数={}", "incomeId = [" + incomeId + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		Map<String,Object> map=new HashMap<>(16);
@@ -149,7 +146,6 @@ public class IncomeController {
 		responseDTO.setResult("根据id查询用户奖励详情成功");
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 	/**
@@ -163,7 +159,6 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> checkIncomeRecordManagement(@RequestParam String incomeRecordId,String status) {
-        ();
 		//logger.info("佣金奖励审核传入参数={}", "incomeRecordId = [" + incomeRecordId + "],status = [" + status + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if("".equals(incomeRecordId) || incomeRecordId == null){
@@ -226,7 +221,6 @@ public class IncomeController {
 		incomeRecordManagementService.insertIncomeRecordManagement(incomeRecordManagementDTO);
 		responseDTO.setResult("审核成功");
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 	/**
@@ -239,8 +233,6 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> exportExcelIncomeRecord(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-        ();
-		logger.info("根据状态查询返利数据传入参数={}", "pageParamVoDTO = [" + pageParamVoDTO + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		//设定起始时间
 		String startDate = "1990-01-01";
@@ -281,8 +273,6 @@ public class IncomeController {
 			e.printStackTrace();
 			responseDTO.setErrorInfo(StatusConstant.FAILURE);
 		}
-
-		logger.info("导表耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -296,7 +286,6 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> exportExcelMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-        ();
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if(pageParamVoDTO.getRequestData() == null){
 			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
@@ -422,7 +411,6 @@ public class IncomeController {
 			}
 		}
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 	/**
@@ -435,7 +423,6 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> selectSelfMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-        ();
 		if(pageParamVoDTO.getRequestData() == null){
 			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
 		}
@@ -464,7 +451,6 @@ public class IncomeController {
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 	/**
@@ -477,7 +463,6 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> selectNextMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-        ();
 		if(pageParamVoDTO.getRequestData() == null){
 			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
 		}
@@ -507,7 +492,6 @@ public class IncomeController {
 		map.put("nextList",nextList1);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -522,7 +506,6 @@ public class IncomeController {
 	public
 	@ResponseBody
     ResponseDTO<PageParamDTO<List<IncomeRecordDTOExt>>>  findNextUserInfoControl(@RequestBody PageParamVoDTO<PayRecordDTO> pageParamVoDTO){
-        ();
 
 		UserInfoDTO userInfoDTO = new UserInfoDTO();
 		userInfoDTO.setParentUserId(pageParamVoDTO.getRequestData().getSysUserId());
@@ -534,7 +517,6 @@ public class IncomeController {
 		PageParamDTO<List<IncomeRecordDTOExt>> page = incomeService.findNextUserInfo(userPageParamVoDTO);
 
 		ResponseDTO<PageParamDTO<List<IncomeRecordDTOExt>>> responseDTO = new ResponseDTO<>();
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 
 		responseDTO.setResponseData(page);
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -552,7 +534,6 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamDTO<List<IncomeRecordDTOExt>>>  exportNextUserInfoControl(@RequestBody PageParamVoDTO<PayRecordDTO> pageParamVoDTO){
-        ();
 
 		UserInfoDTO userInfoDTO = new UserInfoDTO();
 		userInfoDTO.setParentUserId(pageParamVoDTO.getRequestData().getSysUserId());
@@ -648,9 +629,6 @@ public class IncomeController {
 				e.printStackTrace();
 			}
 		}
-
-
-		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 
 		responseDTO.setResponseData(page);
 		return responseDTO;

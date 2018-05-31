@@ -174,7 +174,7 @@ public class ProductController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamVoDTO<List<ProductDTO>>> queryProductsByParameters(@RequestBody PageParamVoDTO<ProductDTO> pageParamVoDTO) {
-        ();
+
 		ResponseDTO<PageParamVoDTO<List<ProductDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamVoDTO<List<ProductDTO>> page = productService.queryProductsByParameters(pageParamVoDTO);
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())){
@@ -202,7 +202,6 @@ public class ProductController {
 				String url = CommonUtils.orderExcelToOSS(in);
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-				logger.info("条件导出商品Excel耗时{}毫秒", (System.currentTimeMillis() - startTime));
 				return responseDTO;
 			}catch (Exception e){
 				e.printStackTrace();
@@ -215,12 +214,10 @@ public class ProductController {
 			responseDTO.setResult("未查出结果");
 			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 			logger.info("条件查询商品未查出数据");
-			logger.info("条件查询商品耗时{}毫秒", (System.currentTimeMillis() - startTime));
 			return responseDTO;
 		}
 		responseDTO.setResponseData(page);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-		logger.info("条件查询商品耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
