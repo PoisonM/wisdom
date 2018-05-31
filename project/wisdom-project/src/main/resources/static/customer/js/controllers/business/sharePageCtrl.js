@@ -35,7 +35,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 $scope.param.ctx.font = '36px microsoft #FFF100';
                 $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,328,150);*/
                 //二维码
-                $scope.param.ctx.drawImage($scope.param.imgs.qrCode, $scope.param.canvas.width*0.4, $scope.param.canvas.height*0.78 , $scope.param.canvas.width*0.23, calcHeight($scope.param.imgs.qrCode, $scope.param.canvas.width*0.23));
+                $scope.param.ctx.drawImage($scope.param.imgs.qrCode, $scope.param.canvas.width*0.38, $scope.param.canvas.height*0.76 , $scope.param.canvas.width*0.23, calcHeight($scope.param.imgs.qrCode, $scope.param.canvas.width*0.23));
 
                 //获取base64格式的src
                 var imgSrc = $scope.param.canvas.toDataURL('image/jpg');
@@ -79,7 +79,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
 
                     //设置宽高
                     //想获取高清图请*2，一般的直接等于Width就行
-                    var Height = 1200;
+                    var Height = 1102;
                     var Width = 750;
 
                     //$scope.param.canvas绘制需要的对象
