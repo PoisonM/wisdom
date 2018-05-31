@@ -713,16 +713,26 @@ public class AppointmentController {
 	@RequestMapping(value = "/getShopAppointmentInfoByStatus", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	ResponseDTO<Object> getShopAppointmentInfoByStatus(@RequestParam String searchDate, @RequestParam String sysShopId, @RequestParam String sysClerkId, @RequestParam String status) {
-
-		SysBossDTO bossInfo = UserUtils.getBossInfo();
+	ResponseDTO<Object> getShopAppointmentInfoByStatus(@RequestParam String searchDate, @RequestParam(required = false) String sysShopId, @RequestParam(required = false) String sysClerkId, @RequestParam(required = false) String status) {
 
 		//查询店铺下的预约信息
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		extShopAppointServiceDTO.setSysBossCode(bossInfo.getId());
-		extShopAppointServiceDTO.setSysShopId(sysShopId);
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
+		if (null != bossInfo) {
+			logger.info("老板端用户");
+			extShopAppointServiceDTO.setSysBossCode(bossInfo.getId());
+			extShopAppointServiceDTO.setSysShopId(sysShopId);
+			extShopAppointServiceDTO.setSysClerkId(sysClerkId);
+		}
+
+		if (StringUtils.isBlank(sysClerkId)) {
+			logger.info("员工端用户");
+			SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+			extShopAppointServiceDTO.setSysShopId(clerkInfo.getSysShopId());
+			extShopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
+		}
+
 		extShopAppointServiceDTO.setStatus(status);
-		extShopAppointServiceDTO.setSysClerkId(sysClerkId);
 		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
 		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
 		//缓存返回结果
@@ -744,47 +754,6 @@ public class AppointmentController {
 		responseDTO.setResponseData(arrayList);
 		return responseDTO;
 	}
-
-	/**
-	 * 获取我的预约列表（员工端）
-	 * add by 盛小龙@2018.05.23
-	 *
-	 * @return
-	 */
-	@RequestMapping(value = "/getClerkAppointmentInfo", method = {RequestMethod.POST, RequestMethod.GET})
-	public
-	@ResponseBody
-	ResponseDTO<Object> getClerkAppointmentInfo(@RequestParam String searchDate,@RequestParam(required = false) String appointType) {
-
-		SysClerkDTO clerkDTO = UserUtils.getClerkInfo();
-		//查询店铺下的预约信息
-		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		extShopAppointServiceDTO.setSysClerkId(clerkDTO.getSysUserId());
-		if(StringUtils.isNotBlank(appointType)){
-            extShopAppointServiceDTO.setStatus(appointType);
-        }
-		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
-		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
-		//缓存返回结果
-		ArrayList<Object> arrayList = new ArrayList<>();
-
-		List<ShopAppointServiceDTO> list = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
-		if (CommonUtils.objectIsNotEmpty(list)) {
-			for (ShopAppointServiceDTO serviceDTO : list) {
-				HashMap<Object, Object> hashMap = new HashMap<>(2);
-				hashMap.put("sysClerkInfo", redisUtils.getSysClerkDTO(serviceDTO.getSysClerkId()));
-				hashMap.put("appointmentInfo", serviceDTO);
-				hashMap.put("projectNumber", StringUtils.isBlank(serviceDTO.getShopProjectId()) ? "0" : serviceDTO.getShopProjectId().split(";").length);
-				arrayList.add(hashMap);
-			}
-		}
-
-		ResponseDTO responseDTO = new ResponseDTO();
-		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(arrayList);
-		return responseDTO;
-	}
-
 
 	/**
 	 * 获取客户的预约详情（员工端）
