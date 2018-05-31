@@ -7,17 +7,21 @@
 
             <li class="item" >
                 <ul style="" class="Htab-head">
-                    <li class="Htab-head-item " style="width:130px;position: relative;height:120px;" ng-repeat="item in amendStore.imageList">
-                             <span  style="position: absolute;top: 0px;right: 5px;"  ng-click="delPic($index)">
+                    <li class="Htab-head-item " style="width:130px;height:120px;" ng-repeat="item in amendStore.imageList">
+                        <div style="width: 105px;height: 105px;position: relative;">
+                             <span  style="position: absolute;top: 0px;right: -15px;"  ng-click="delPic($index)">
                                  <i class="ion-android-remove-circle colff66" ></i>
                              </span>
-                        <input type="file" style="opacity: 0;position: absolute;top: 0px;left: 0px;width: 105px;height: 105px;" id="" disabled="disabled">
-                        <img ng-src="{{item}}" style="width: 105px;height: 105px;" class="ml10 mt10">
+                            <input type="file" style="opacity: 0;position: absolute;top: 10px;left: 10px;width: 105px;height: 105px;" id="" disabled="disabled">
+                            <img ng-src="{{item}}" style="width: 105px;height: 105px;" class="ml10 mt10">
+                        </div>
+
+
                     </li>
                     <li class="Htab-head-item ml10 bgfff" style="width:130px;position: relative;height:120px;display: inline-block;text-align: left" >
                         <div style="width:130px;position: relative;height:120px;display: inline-block">
 
-                            <input type="file" style="opacity: 0;position: absolute;top: 0px;left: 0px;width: 105px;height: 105px;" id="uploadPic" onchange="angular.element(this).scope().img_upload(this.files)">
+                            <input type="file" style="opacity: 0;position: absolute;top: 0px;left: 0px;width: 105px;height: 105px;" class="mt10" onchange="angular.element(this).scope().img_upload(this.files)">
                             <img src="images/mine/addPhoto.png" style="width: 105px;height: 105px;" class="mt10">
                         </div>
 

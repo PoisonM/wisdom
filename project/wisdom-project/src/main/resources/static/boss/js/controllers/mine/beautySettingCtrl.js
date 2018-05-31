@@ -47,6 +47,9 @@ angular.module('controllers',[]).controller('beautySettingCtrl',
                     alert("请检查信息")
                     return
                 }
+                if($scope.beautySetting.phone.length>15){
+                    alert("请重新填写客服电话")
+                }
                 UpdateShopInfo.save($scope.beautySetting,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")
