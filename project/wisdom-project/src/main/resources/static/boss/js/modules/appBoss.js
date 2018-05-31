@@ -15,9 +15,21 @@ define(['angular'], function (angular) {
                             config.headers.usertype = Global.userType.BEAUTY_BOSS;
                         }
 
-                        if(window.localStorage.getItem("beautyBossLoginToken")!=undefined){
-                            config.headers.beautyBossLoginToken = window.localStorage.getItem("beautyBossLoginToken");
+                        if(window.localStorage.getItem("beautyUserLoginToken")!=undefined
+                            &&window.localStorage.getItem("beautyUserLoginToken")!=null){
+                            config.headers.beautyuserlogintoken = window.localStorage.getItem("beautyUserLoginToken");
                         }
+
+                        if(window.localStorage.getItem("beautyBossLoginToken")!=undefined
+                            &&window.localStorage.getItem("beautyBossLoginToken")!=null){
+                            config.headers.beautybosslogintoken = window.localStorage.getItem("beautyBossLoginToken");
+                        }
+
+                        if(window.localStorage.getItem("beautyClerkLoginToken")!=undefined
+                            &&window.localStorage.getItem("beautyClerkLoginToken")!=null){
+                            config.headers.beautyclerklogintoken = window.localStorage.getItem("beautyClerkLoginToken");
+                        }
+
                         return config;
                     }
                 }

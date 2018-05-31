@@ -73,7 +73,7 @@ public class ScheduleController {
             sysShopId = clerkInfo.getSysShopId();
         }
         ArrayList<Object> helperList = new ArrayList<>();
-        ShopClerkScheduleDTO shopClerkScheduleDTO = new ShopClerkScheduleDTO();
+        ExtShopClerkScheduleDTO shopClerkScheduleDTO = new ExtShopClerkScheduleDTO();
         shopClerkScheduleDTO.setSysShopId(sysShopId);
         shopClerkScheduleDTO.setScheduleDate(searchDate);
         //查询某个店的排班信息
@@ -180,7 +180,7 @@ public class ScheduleController {
 
         logger.info("获取某个店某个美容师某天的可预约信息传入参数={}", "searchDate = [" + searchDate + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        ShopClerkScheduleDTO shopClerkScheduleDTO = new ShopClerkScheduleDTO();
+        ExtShopClerkScheduleDTO shopClerkScheduleDTO = new ExtShopClerkScheduleDTO();
         //登陆相关-待补充
 //        String sysShopId = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId()).getSysShopId();
         String sysShopId = "11";
@@ -194,10 +194,10 @@ public class ScheduleController {
             responseDTO.setResponseData("美容师的可预约信息为空，没有初始化！");
             return responseDTO;
         }
-        shopClerkScheduleDTO = clerkScheduleList.get(0);
+        ShopClerkScheduleDTO scheduleDTO = clerkScheduleList.get(0);
 
-        String startTime = ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultStartTime();
-        String endTime = ScheduleTypeEnum.judgeValue(shopClerkScheduleDTO.getScheduleType()).getDefaultEndTime();
+        String startTime = ScheduleTypeEnum.judgeValue(scheduleDTO.getScheduleType()).getDefaultStartTime();
+        String endTime = ScheduleTypeEnum.judgeValue(scheduleDTO.getScheduleType()).getDefaultEndTime();
         //存储当前美容师的排班时间段
         String responseStr = CommonUtils.getArrayNo(startTime, endTime);
 
@@ -318,7 +318,7 @@ public class ScheduleController {
         //获取店员信息
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ArrayList<Object> helperList = new ArrayList<>();
-        ShopClerkScheduleDTO shopClerkScheduleDTO = new ShopClerkScheduleDTO();
+        ExtShopClerkScheduleDTO shopClerkScheduleDTO = new ExtShopClerkScheduleDTO();
         shopClerkScheduleDTO.setSysClerkId(clerkInfo.getId());
         //shopClerkScheduleDTO.setSysClerkId("0019b67c4b5845958655fdbc9d3bd205");
         Date date = DateUtils.StrToDate(searchDate, "date");
@@ -383,6 +383,39 @@ public class ScheduleController {
         returnMap.put("dateDetail", dateDetail);
         returnMap.put("responseList", helperList);
         responseDTO.setResponseData(returnMap);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
+
+
+    /**
+     * 查询某个店员某天的排班信息
+     *
+     * @param searchDate
+     * @return
+     */
+    @RequestMapping(value = "/getClerkScheduleOneDayInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    ResponseDTO<Object> getClerkScheduleOneDayInfo(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate) throws Exception {
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        ExtShopClerkScheduleDTO extShopClerkScheduleDTO = new ExtShopClerkScheduleDTO();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        if (null != clerkInfo) {
+            logger.info("员工端");
+            extShopClerkScheduleDTO.setSysClerkId(clerkInfo.getId());
+            extShopClerkScheduleDTO.setSysShopId(clerkInfo.getSysShopId());
+            extShopClerkScheduleDTO.setSearchStartDate(DateUtils.getStartTime(searchDate));
+        }
+        List<ShopClerkScheduleDTO> shopClerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(extShopClerkScheduleDTO);
+        if (CommonUtils.objectIsNotEmpty(shopClerkScheduleList)) {
+            HashMap<Object, Object> hashMap = new HashMap<>(3);
+            ShopClerkScheduleDTO scheduleDTO = shopClerkScheduleList.get(0);
+            hashMap.put("week", DateUtils.getDayWeek(DateUtils.dayForWeek(DateUtils.DateToStr(searchDate, "date"))));
+            hashMap.put("searchDate", DateUtils.DateToStr(searchDate, "date"));
+            hashMap.put("scheduleDate", ScheduleTypeEnum.judgeValue(scheduleDTO.getScheduleType()).getDesc());
+            hashMap.put("infoDetail", scheduleDTO);
+            responseDTO.setResponseData(hashMap);
+        }
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }

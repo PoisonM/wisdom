@@ -9,6 +9,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.ClerkInfoService;
 import com.wisdom.user.util.UserUtils;
 import org.slf4j.Logger;

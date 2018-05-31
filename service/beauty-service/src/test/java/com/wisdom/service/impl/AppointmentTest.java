@@ -131,12 +131,6 @@ public class AppointmentTest {
 
     }
 
-
-    @Test
-    public void getAppointmentService() {
-        redisUtils.getAppointmentIdByShopClerk("48940be00e634bae86006c4519263906_8f4bbff4c1404136a521350c08e31483","20180000000000","20190000000000");
-    }
-
     @Test
     public void getShopAppointInfoFromRedis() {
         ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();

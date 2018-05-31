@@ -8,6 +8,7 @@ import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.common.dto.system.PageParamDTO;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -98,6 +99,9 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         }
         if(null != extShopAppointServiceDTO.getSearchStartTime() && null != extShopAppointServiceDTO.getSearchEndTime()){
             criteria.andAppointStartTimeBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
+        }
+        if (null != extShopAppointServiceDTO.getAppointStartTimeS() && null != extShopAppointServiceDTO.getAppointEndTimeE()) {
+            criteria.andAppointStartTimeBetween(DateUtils.StrToDate(extShopAppointServiceDTO.getAppointStartTimeS(), "datetime"), DateUtils.StrToDate(extShopAppointServiceDTO.getAppointEndTimeE(), "datetime"));
         }
         if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossCode())) {
             criteria.andSysBossCodeEqualTo(extShopAppointServiceDTO.getSysBossCode());
