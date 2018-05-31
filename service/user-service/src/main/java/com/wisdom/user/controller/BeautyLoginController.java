@@ -8,11 +8,13 @@ import com.wisdom.common.dto.system.BeautyLoginResultDTO;
 import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.WeixinUtil;
-import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.BeautyLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,7 +70,6 @@ public class BeautyLoginController {
     }
 
     @RequestMapping(value = "beautyLoginOut", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
     public
     @ResponseBody
     ResponseDTO<String> userLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
