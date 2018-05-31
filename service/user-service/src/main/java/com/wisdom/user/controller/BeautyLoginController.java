@@ -75,21 +75,12 @@ public class BeautyLoginController {
         BeautyLoginResultDTO beautyLoginResultDTO = new BeautyLoginResultDTO();
 
         String beautyUserLoginToken = request.getHeader("beautyUserLoginToken");
-        if(beautyUserLoginToken==null||beautyUserLoginToken.equals("")){
-            beautyUserLoginToken = request.getSession().getAttribute("beautyUserLoginToken").toString();
-        }
         beautyLoginResultDTO.setBeautyUserLoginToken(beautyUserLoginToken);
 
         String beautyBossLoginToken = request.getHeader("beautyBossLoginToken");
-        if(beautyBossLoginToken==null||beautyBossLoginToken.equals("")){
-            beautyBossLoginToken = request.getSession().getAttribute("beautyBossLoginToken").toString();
-        }
         beautyLoginResultDTO.setBeautyBossLoginToken(beautyBossLoginToken);
 
         String beautyClerkLoginToken = request.getHeader("beautyClerkLoginToken");
-        if(beautyClerkLoginToken==null||beautyClerkLoginToken.equals("")){
-            beautyClerkLoginToken = request.getSession().getAttribute("beautyClerkLoginToken").toString();
-        }
         beautyLoginResultDTO.setBeautyClerkLoginToken(beautyClerkLoginToken);
 
         String status = beautyLoginService.beautyLoginOut(beautyLoginResultDTO,request,response,session);
