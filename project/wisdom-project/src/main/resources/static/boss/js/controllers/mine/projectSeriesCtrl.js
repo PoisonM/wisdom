@@ -35,12 +35,12 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 $scope.param.selTrue[index] =!$scope.param.selTrue[index]
             };
             $scope.sel = function(index){
-                $scope.requestList[index].status = '0'
+                $scope.requestList[index].status = '1'
             };
             $scope.addSeriesLis = function(){
 
                 var obj = {
-                    status:"1",
+                    status:"0",
                     projectTypeName:"",
                     parentId:$stateParams.id
 
