@@ -4,7 +4,7 @@ var systemService = 'http://192.168.1.117/system-service/';
 var appointmentInfo = "http://localhost:9051/appointmentInfo/";
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
-            request: function(config) {
+            /*request: function(config) {
                 config.headers = config.headers || {};
                 if (localStorage.getItem("token") != undefined) {
                     config.headers['user_login_token'] = localStorage.getItem("token");
@@ -15,7 +15,31 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
             response: function(res) {
                 return res;
             },
-            responseError: function(err) {}
+            responseError: function(err) {}*/
+            request: function(config){
+                config.headers = config.headers || {};
+                if(window.location.href.indexOf("pad-web")!=-1) {
+                    config.headers.usertype = "beautyClerk";
+                }
+
+                if(window.localStorage.getItem("beautyUserLoginToken")!=undefined
+                    &&window.localStorage.getItem("beautyUserLoginToken")!=null){
+                    config.headers.beautyuserlogintoken = window.localStorage.getItem("beautyUserLoginToken");
+                }
+
+                if(window.localStorage.getItem("beautyBossLoginToken")!=undefined
+                    &&window.localStorage.getItem("beautyBossLoginToken")!=null){
+                    config.headers.beautybosslogintoken = window.localStorage.getItem("beautyBossLoginToken");
+                }
+
+                if(window.localStorage.getItem("beautyClerkLoginToken")!=undefined
+                    &&window.localStorage.getItem("beautyClerkLoginToken")!=null){
+                    config.headers.beautyclerklogintoken = window.localStorage.getItem("beautyClerkLoginToken");
+                }
+
+                return config;
+            },
+
         };
     }])
     /**
@@ -25,9 +49,16 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetUserValidateCode', ['$resource', function($resource) {
         return $resource(userIP + 'getUserValidateCode')
     }])
-    //登录
+    /*//登录
     .factory('ClerkLogin', ['$resource', function($resource) {
         return $resource(userIP + 'clerkLogin')
+    }])*/
+    //登录
+    .factory('BeautyLogin',['$resource',function ($resource){
+        return $resource(userIP + 'beautyLogin')
+    }])
+    .factory('BeautyLoginOut',['$resource',function ($resource){
+        return $resource(userIP + 'beautyLoginOut')
     }])
     //获取用户二维码
     .factory('getBeautyQRCode', ['$resource', function($resource) {
