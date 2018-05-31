@@ -55,9 +55,6 @@ public class PayController {
     @ResponseBody
     ResponseDTO<ShopUserOrderDTO> userPayOpe(@RequestBody ShopUserPayDTO shopUserPayDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-
-        logger.info("用户支付接口传入参数={}", "shopUserPayDTO = [" + shopUserPayDTO.toString() + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
 
@@ -68,7 +65,6 @@ public class PayController {
 
         responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 
-        logger.info("用户支付接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -84,8 +80,6 @@ public class PayController {
     @ResponseBody
     ResponseDTO<String> paySignConfirm(@RequestBody ShopUserPayDTO shopUserPayDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("更新用户的订单信息传入参数={}", "shopUserPayDTO = [" + shopUserPayDTO.toString() + "]");
         ResponseDTO responseDTO = new ResponseDTO<String>();
 
         //mongodb中更新订单的状态
@@ -97,7 +91,6 @@ public class PayController {
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -113,8 +106,6 @@ public class PayController {
     @ResponseBody
     ResponseDTO<String> updateShopUserOrderPayInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("pad端支付界面选择充值卡抵扣传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
         ResponseDTO responseDTO = new ResponseDTO<String>();
 
         //mongodb中更新订单的状态
@@ -125,7 +116,6 @@ public class PayController {
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

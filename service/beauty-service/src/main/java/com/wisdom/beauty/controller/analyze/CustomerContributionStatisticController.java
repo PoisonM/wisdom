@@ -64,7 +64,6 @@ public class CustomerContributionStatisticController {
                                                                                @RequestParam(required = false)  String sortBy,
                                                                                @RequestParam(required = false)  String sortRule) {
 
-        long start = System.currentTimeMillis();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
@@ -117,7 +116,6 @@ public class CustomerContributionStatisticController {
         ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(list);
-        logger.info("getCashEarningsTendency方法耗时{}毫秒", (System.currentTimeMillis() - start));
         return responseDTO;
     }
 }

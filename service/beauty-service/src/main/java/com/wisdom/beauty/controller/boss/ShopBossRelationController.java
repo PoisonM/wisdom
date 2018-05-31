@@ -42,8 +42,6 @@ public class ShopBossRelationController {
     // @LoginRequired
     public @ResponseBody
     ResponseDTO<Object> getBossShopList() {
-
-        long currentTimeMillis = System.currentTimeMillis();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ShopBossRelationDTO bossRelationDTO = new ShopBossRelationDTO();
         bossRelationDTO.setSysBossCode(bossInfo.getId());
@@ -51,8 +49,6 @@ public class ShopBossRelationController {
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopBossRelationDTOS);
-
-        logger.info("获取某个老板的店铺信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

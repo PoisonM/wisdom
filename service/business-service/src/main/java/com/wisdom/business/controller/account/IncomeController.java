@@ -28,8 +28,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
-import java.util.*;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 直播板块
@@ -64,7 +64,7 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> getIncomeRecordByPageParam(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-		long startTime = System.currentTimeMillis();
+        ();
 		logger.info("根据状态查询返利数据传入参数={}", "pageParamVoDTO = [" + pageParamVoDTO + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		int count = 0;
@@ -126,7 +126,7 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> queryIncomeInfoByIncomeId(@RequestParam String incomeId) {
-		long startTime = System.currentTimeMillis();
+        ();
 		logger.info("根据id查询用户奖励参数={}", "incomeId = [" + incomeId + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		Map<String,Object> map=new HashMap<>(16);
@@ -163,7 +163,7 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> checkIncomeRecordManagement(@RequestParam String incomeRecordId,String status) {
-		long startTime = System.currentTimeMillis();
+        ();
 		//logger.info("佣金奖励审核传入参数={}", "incomeRecordId = [" + incomeRecordId + "],status = [" + status + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if("".equals(incomeRecordId) || incomeRecordId == null){
@@ -239,7 +239,7 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> exportExcelIncomeRecord(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-		long startTime = System.currentTimeMillis();
+        ();
 		logger.info("根据状态查询返利数据传入参数={}", "pageParamVoDTO = [" + pageParamVoDTO + "]");
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		//设定起始时间
@@ -296,7 +296,7 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> exportExcelMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-		long startTime = System.currentTimeMillis();
+        ();
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		if(pageParamVoDTO.getRequestData() == null){
 			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
@@ -435,7 +435,7 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> selectSelfMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-		long startTime = System.currentTimeMillis();
+        ();
 		if(pageParamVoDTO.getRequestData() == null){
 			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
 		}
@@ -477,7 +477,7 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> selectNextMonthTransactionRecordByUserId(@RequestBody PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-		long startTime = System.currentTimeMillis();
+        ();
 		if(pageParamVoDTO.getRequestData() == null){
 			logger.info("查询月度奖励详情传入对象为null={}", "RequestData.sysUserId = [" + pageParamVoDTO.getRequestData().getSysUserId() + "]");
 		}
@@ -522,7 +522,7 @@ public class IncomeController {
 	public
 	@ResponseBody
     ResponseDTO<PageParamDTO<List<IncomeRecordDTOExt>>>  findNextUserInfoControl(@RequestBody PageParamVoDTO<PayRecordDTO> pageParamVoDTO){
-		long startTime = System.currentTimeMillis();
+        ();
 
 		UserInfoDTO userInfoDTO = new UserInfoDTO();
 		userInfoDTO.setParentUserId(pageParamVoDTO.getRequestData().getSysUserId());
@@ -552,7 +552,7 @@ public class IncomeController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamDTO<List<IncomeRecordDTOExt>>>  exportNextUserInfoControl(@RequestBody PageParamVoDTO<PayRecordDTO> pageParamVoDTO){
-		long startTime = System.currentTimeMillis();
+        ();
 
 		UserInfoDTO userInfoDTO = new UserInfoDTO();
 		userInfoDTO.setParentUserId(pageParamVoDTO.getRequestData().getSysUserId());

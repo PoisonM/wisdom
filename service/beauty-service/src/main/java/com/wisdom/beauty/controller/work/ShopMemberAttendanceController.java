@@ -229,8 +229,6 @@ public class ShopMemberAttendanceController {
 	@ResponseBody
 	ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(
 			@RequestBody UserConsumeRequestDTO userConsumeRequest) {
-		long startTime = System.currentTimeMillis();
-
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -247,7 +245,6 @@ public class ShopMemberAttendanceController {
 		ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(userConsumeRecordResponseDTO);
-		logger.info("findMineConsume方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -344,7 +341,6 @@ public class ShopMemberAttendanceController {
 	@ResponseBody
 	ResponseDTO<List<UserConsumeRecordResponseDTO>> getClerkPerformance(
 			@RequestParam String startTime, @RequestParam String endTime) {
-		long start = System.currentTimeMillis();
 		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
 		SysClerkDTO clerkDTO = UserUtils.getClerkInfo();
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -359,7 +355,6 @@ public class ShopMemberAttendanceController {
 		ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(userConsumeRecordResponseDTO);
-		logger.info("findMineConsume方法耗时{}毫秒", (System.currentTimeMillis() - start));
 		return responseDTO;
 	}
 

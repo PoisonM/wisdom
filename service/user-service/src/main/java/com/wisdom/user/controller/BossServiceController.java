@@ -36,7 +36,7 @@ public class BossServiceController {
     @RequestMapping(value = "updateBossInfo", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     ResponseDTO<Object> updateBossInfo(@RequestBody SysBossDTO sysBossDTO) {
-        long startTime = System.currentTimeMillis();
+        ();
         ResponseDTO responseDTO = new ResponseDTO();
         logger.info("更新老板信息传入参数={}", "sysBossDTO = [" + sysBossDTO + "]");
         int bossInfo = bossInfoService.updateBossInfo(sysBossDTO);

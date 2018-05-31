@@ -83,9 +83,7 @@ public class CardController {
 	public @ResponseBody
 	ResponseDTO<Object> getUserRechargeCardList(
 			@RequestParam String sysUserId, @RequestParam(required = false) String sysShopId) {
-        long currentTimeMillis = System.currentTimeMillis();
 
-        logger.info("查询某个用户的充值卡列表信息传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
         if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
@@ -119,7 +117,6 @@ public class CardController {
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(hashMap);
 
-        logger.info("查询某个用户的充值卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -134,13 +131,10 @@ public class CardController {
     public @ResponseBody
     ResponseDTO<BigDecimal> getUserRechargeSumAmount(@RequestParam String sysUserId) {
 
-        logger.info("查询某个用户的充值卡总金额传入参数={}", "sysUserId = [" + sysUserId + "]");
-        long currentTimeMillis = System.currentTimeMillis();
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<BigDecimal> responseDTO = new ResponseDTO<>();
 
         if (StringUtils.isBlank(sysUserId)) {
-            logger.debug("传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + clerkInfo.getSysShopId() + "]");
             responseDTO.setResult(StatusConstant.FAILURE);
             return responseDTO;
         }
@@ -151,7 +145,6 @@ public class CardController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(sumAmount);
 
-        logger.info("查询某个用户的充值卡总金额耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -166,7 +159,6 @@ public class CardController {
 	@ResponseBody
 	ResponseDTO<Object> findRechargeCardList(@RequestParam(required = false) String name,
 											 int pageSize) {
-		long currentTimeMillis = System.currentTimeMillis();
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
@@ -181,7 +173,6 @@ public class CardController {
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(list);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("查询充值卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -195,7 +186,6 @@ public class CardController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Object> findRechargeCard(@PathVariable String id) {
-		long currentTimeMillis = System.currentTimeMillis();
 		// 查询数据
 		ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
 		shopRechargeCardDTO.setId(id);
@@ -209,7 +199,6 @@ public class CardController {
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopRechargeCardOrderDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("查询某个充值卡信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -225,7 +214,6 @@ public class CardController {
 	ResponseDTO<List<ProjectInfoGroupResponseDTO>> findShopProjectGroupList(
 			@RequestParam(required = false) String projectGroupName, int pageSize) {
 
-		long currentTimeMillis = System.currentTimeMillis();
 		ShopProjectGroupDTO shopProjectGroupDTO = new ShopProjectGroupDTO();
 		String sysShopId = null;
 		if (StringUtils.isBlank(sysShopId)) {
@@ -250,7 +238,6 @@ public class CardController {
 		ResponseDTO<List<ProjectInfoGroupResponseDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(list);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -264,15 +251,12 @@ public class CardController {
 	@RequestMapping(value = "/getShopProjectGroup/detail", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<ProjectInfoGroupResponseDTO> findShopProjectGroupListe(@RequestParam String id) {
-		long currentTimeMillis = System.currentTimeMillis();
-
 		ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = shopProjectGroupService
 				.getShopProjectInfoGroupRelation(id);
 
 		ResponseDTO<ProjectInfoGroupResponseDTO> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(projectInfoGroupResponseDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -286,8 +270,6 @@ public class CardController {
 	@RequestMapping(value = "/getShopUserRechargeInfo", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Object> getShopUserRechargeInfo(@RequestParam String id) {
-		long currentTimeMillis = System.currentTimeMillis();
-		logger.info("查询用户的某个充值卡信息传入参数={}", "id = [" + id + "]");
 		ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
 		userRechargeCardDTO.setId(id);
 		ShopUserRechargeCardDTO shopUserRechargeInfo = shopRechargeCardService.getShopUserRechargeInfo(userRechargeCardDTO);
@@ -296,7 +278,6 @@ public class CardController {
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(extShopUserRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -310,15 +291,12 @@ public class CardController {
 	@RequestMapping(value = "/userRechargeConfirm", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> userRechargeConfirm(@RequestBody ShopRechargeCardOrderDTO extShopUserRechargeCardDTO) {
-		long currentTimeMillis = System.currentTimeMillis();
-		logger.info("充值卡充值确认接口传入参数={}", "extShopUserRechargeCardDTO = [" + extShopUserRechargeCardDTO + "]");
 		extShopUserRechargeCardDTO.setTransactionId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
 		extShopUserRechargeCardDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
 		mongoTemplate.save(extShopUserRechargeCardDTO, "extShopUserRechargeCardDTO");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(extShopUserRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -331,13 +309,11 @@ public class CardController {
 	@RequestMapping(value = "/searchRechargeConfirm", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Object> searchRechargeConfirm(@RequestParam String transactionId) {
-		long currentTimeMillis = System.currentTimeMillis();
 		Query query = new Query(Criteria.where("transactionId").is(transactionId));
 		ShopRechargeCardOrderDTO shopUserRechargeCardDTO = mongoTemplate.findOne(query, ShopRechargeCardOrderDTO.class, "extShopUserRechargeCardDTO");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopUserRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -350,11 +326,7 @@ public class CardController {
 	@RequestMapping(value = "/rechargeCardSignConfirm", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Object> rechargeCardSignConfirm(@RequestParam String transactionId, @RequestParam String imageUrl) {
-		long currentTimeMillis = System.currentTimeMillis();
-
         ResponseDTO<Object> responseDTO = shopUserConsumeService.rechargeRechargeCard(transactionId, imageUrl);
-
-		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -367,12 +339,9 @@ public class CardController {
 	@RequestMapping(value = "/saveRechargeCardInfo", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> saveRechargeCardInfo(@RequestBody ExtShopRechargeCardDTO extShopRechargeCardDTO) {
-		long currentTimeMillis = System.currentTimeMillis();
-		logger.info("新增充值卡信息传入参数={}", "extShopRechargeCardDTO = [" + extShopRechargeCardDTO + "]");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		int info = cardService.saveRechargeCardInfo(extShopRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("新增充值卡信息执行结果={}，新增充值卡信息信息耗时{}毫秒", info > 0 ? "成功" : "失败", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -385,7 +354,6 @@ public class CardController {
 	@RequestMapping(value = "/updateRechargeCardInfo", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> updateRechargeCardInfo(@RequestBody ExtShopRechargeCardDTO extShopRechargeCardDTO) {
-		long currentTimeMillis = System.currentTimeMillis();
 		ResponseDTO<Object> responseDTO = new ResponseDTO();
 		if (StringUtils.isBlank(extShopRechargeCardDTO.getId())) {
 			responseDTO.setResult(StatusConstant.FAILURE);
@@ -393,7 +361,6 @@ public class CardController {
 		}
 		int info = cardService.updateRechargeCardInfo(extShopRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("更新充值卡信息执行结果={}，新增充值卡信息信息耗时{}毫秒", info > 0 ? "成功" : "失败", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 }

@@ -82,7 +82,6 @@ public class UserConsumeController {
     @ResponseBody
     ResponseDTO<List<UserConsumeRecordResponseDTO>> findUserConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
 
-        long startTime = System.currentTimeMillis();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
         userConsumeRequest.setGoodsTypeRequire(true);
@@ -95,7 +94,7 @@ public class UserConsumeController {
         ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
-        logger.info("findUserConsume方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+
         return responseDTO;
     }
 
@@ -109,13 +108,11 @@ public class UserConsumeController {
     @RequestMapping(value = "/consume/consumeFlowNo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetail(@RequestParam String consumeFlowNo) {
-        long startTime = System.currentTimeMillis();
 
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecord(consumeFlowNo);
         ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
-        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -129,15 +126,12 @@ public class UserConsumeController {
     @RequestMapping(value = "/consume/updateConsumeRecord", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<UserConsumeRecordResponseDTO> updateConsumeRecord(@RequestParam String consumeId, @RequestParam String image) {
-        logger.info("更新消费记录，签字确认传入参数={}", "consumeId = [" + consumeId + "], image = [" + image + "]");
-        long startTime = System.currentTimeMillis();
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
         shopUserConsumeRecordDTO.setId(consumeId);
         shopUserConsumeRecordDTO.setSignUrl(image);
         int record = shopUerConsumeRecordService.updateConsumeRecord(shopUserConsumeRecordDTO);
         ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(record > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        logger.info("更新消费记录，签字确认方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -149,7 +143,6 @@ public class UserConsumeController {
     @RequestMapping(value = "/consume/{consumeId}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> findUserConsumeDetailInfo(@PathVariable("consumeId") String consumeId) {
-        long startTime = System.currentTimeMillis();
 
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
         shopUserConsumeRecordDTO.setId(consumeId);
@@ -162,7 +155,6 @@ public class UserConsumeController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopUserConsumeRecordDTO);
 
-        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -175,7 +167,6 @@ public class UserConsumeController {
     @RequestMapping(value = "/consume/getUserConsumeByFlowId", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> getUserConsumeByFlowId(@RequestParam String flowId, @RequestParam(required = false) String consumeType) {
-        long startTime = System.currentTimeMillis();
 
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
         if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
@@ -188,7 +179,6 @@ public class UserConsumeController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopCustomerConsumeRecord);
 
-        logger.info("findUserConsumeDetail方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -205,13 +195,9 @@ public class UserConsumeController {
     @Transactional
     ResponseDTO<String> userConsumeOperation(@RequestBody List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("用户消费操作传入参数={}", "shopUserConsumeRecordDTOS = [" + shopUserConsumeRecordDTOS + "]");
-
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
         if (CommonUtils.objectIsEmpty(shopUserConsumeRecordDTOS)) {
-            logger.debug("用户消费操作传入参数为空, {}", "shopUserConsumeRecordDTOS = [" + shopUserConsumeRecordDTOS + "]");
             return null;
         }
         //生成唯一的交易流水号
@@ -311,7 +297,6 @@ public class UserConsumeController {
         //保存用户的操作记录
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData("success");
-        logger.info("用户充值操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -327,8 +312,6 @@ public class UserConsumeController {
     @ResponseBody
     ResponseDTO<String> consumeCourseCard(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("用户划疗程卡操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
 
@@ -336,7 +319,6 @@ public class UserConsumeController {
         //保存用户的操作记录
         responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData("success");
-        logger.info("用户充值操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -353,8 +335,6 @@ public class UserConsumeController {
     @ResponseBody
     ResponseDTO<String> consumesDaughterCard(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("用户划套卡下的子卡操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
 
@@ -363,7 +343,7 @@ public class UserConsumeController {
         //保存用户的操作记录
         responseDTO.setResult(cardFlag != null ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData(cardFlag);
-        logger.info("用户划套卡下的子卡操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+
         return responseDTO;
     }
 
@@ -379,8 +359,6 @@ public class UserConsumeController {
     @ResponseBody
     ResponseDTO<String> consumesUserProduct(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("用户领取产品操作传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTO + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
 
@@ -388,7 +366,6 @@ public class UserConsumeController {
         //保存用户的操作记录
         responseDTO.setResult(cardFlag != null ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData(cardFlag);
-        logger.info("用户领取产品操作耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

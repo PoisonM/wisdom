@@ -52,8 +52,6 @@ public class ProductTypeController {
     @RequestMapping(value = "/saveProductTypeInfo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> saveProductTypeInfo(@RequestParam String productTypeName, @RequestParam String status) {
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("添加产品一级类别信息传入参数={}", "productTypeName = [" + productTypeName + "], status = [" + status + "]");
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if (judgeBossCurrentShop(responseDTO, bossInfo)) {
@@ -64,7 +62,6 @@ public class ProductTypeController {
         shopProductTypeDTO.setProductTypeName(productTypeName);
         int updateInfo = shopProductInfoService.saveProductTypeInfo(shopProductTypeDTO);
         responseDTO.setResult(updateInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        logger.info("更新产品一级类别信息方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -78,9 +75,6 @@ public class ProductTypeController {
     @RequestMapping(value = "/updateOneLevelTypeInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<Object> updateOneLevelTypeInfo(@RequestBody ShopProductTypeDTO shopProductTypeDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
-
-        logger.info("更新产品一级类别信息传入参数={}", "shopProductTypeDTO = [" + shopProductTypeDTO + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if (null == shopProductTypeDTO || StringUtils.isBlank(shopProductTypeDTO.getId())) {
             logger.error("更新产品一级类别信息传入参数异常");
@@ -91,7 +85,6 @@ public class ProductTypeController {
 
         int updateInfo = shopProductInfoService.updateProductTypeInfo(shopProductTypeDTO);
         responseDTO.setResult(updateInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        logger.info("更新产品一级类别信息方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -104,9 +97,6 @@ public class ProductTypeController {
     @RequestMapping(value = "/updateTwoLevelTypeInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<Object> updateTwoLevelTypeInfo(@RequestBody RequestDTO<ShopProductTypeDTO> dtoRequestDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
-
-        logger.info("更新产品二级级类别信息传入参数={}", "dtoRequestDTO = [" + dtoRequestDTO + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if (null == dtoRequestDTO || CommonUtils.objectIsEmpty(dtoRequestDTO) || CommonUtils.objectIsEmpty(dtoRequestDTO.getRequestList())) {
             logger.error("更新产品二级类别信息传入参数异常");
@@ -118,7 +108,6 @@ public class ProductTypeController {
 
         int updateInfo = shopProductInfoService.updateProductTypeListInfo(shopProductTypeDTOS);
         responseDTO.setResult(updateInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        logger.info("更新产品二级类别信息方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -137,9 +126,6 @@ public class ProductTypeController {
     ResponseDTO<Object> getShopProductLevelInfo(@RequestParam(required = false) String productType, @RequestParam(required = false) String levelOneId,
                                                 @RequestParam(required = false) String levelTwoId, @RequestParam(required = false) String pageNo,
                                                 @RequestParam(required = false) String pageSize, @RequestParam(required = false) String shopStoreId) {
-
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("根据产品类型查询一级二级产品传入参数={}", "productType = [" + productType + "], levelOneId = [" + levelOneId + "], levelTwoId = [" + levelTwoId + "]");
 
         ResponseDTO responseDTO = new ResponseDTO();
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
@@ -210,7 +196,6 @@ public class ProductTypeController {
 
         responseDTO.setResponseData(responseMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("根据产品类型查询一级二级产品耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

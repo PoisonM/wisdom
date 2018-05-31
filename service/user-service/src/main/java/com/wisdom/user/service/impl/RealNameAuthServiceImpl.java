@@ -39,7 +39,7 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
      */
     @Override
     public RealNameInfoDTO getRealNameInfoDTO(String idCard, String name) {
-        long currentTimeMillis = System.currentTimeMillis();
+        ();
         logger.info("用户实名认证接口传入参数={}", "idCard = [" + idCard + "], name = [" + name + "]");
 
         //根据身份证号到mongo查询RealNameInfoDTO对象

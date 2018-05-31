@@ -41,7 +41,7 @@ public class ClerkServiceController {
 	@ResponseBody
 	List<SysClerkDTO> getClerkInfo(@RequestParam(value = "shopId") String shopId) {
 
-		long startTime = System.currentTimeMillis();
+		();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 
 		logger.info("获取店员列表信息传入参数shopId = {}", shopId);
@@ -70,7 +70,7 @@ public class ClerkServiceController {
 	@ResponseBody
 	ResponseDTO<Object>  saveClerkInfo(@RequestBody SysClerkDTO sysClerkDTO) {
 
-		long startTime = System.currentTimeMillis();
+		();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 		clerkInfoService.saveSysClerk(sysClerkDTO);
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
@@ -126,7 +126,7 @@ public class ClerkServiceController {
 	@ResponseBody
 	List<SysClerkDTO> getClerkInfoByClerkId(@PathVariable String clerkId) {
 
-		long startTime = System.currentTimeMillis();
+		();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 
 		logger.info("获取店员列表信息传入参数shopId = {}", clerkId);
@@ -144,7 +144,7 @@ public class ClerkServiceController {
 	@RequestMapping(value = "/upateClerkInfo", method = RequestMethod.POST)
 	@ResponseBody
     ResponseDTO<String>  updateClerkInfo(@RequestBody SysClerkDTO sysClerkDTO) {
-		long timeMillis = System.currentTimeMillis();
+		();
 		int info = clerkInfoService.updateSysClerk(sysClerkDTO);
 
 		ResponseDTO<String> responseDTO = new ResponseDTO<>();
