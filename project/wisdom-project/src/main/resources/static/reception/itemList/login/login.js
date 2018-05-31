@@ -1,4 +1,4 @@
-PADWeb.controller('loginCtrl', function ($scope, $stateParams, ngDialog, ClerkLogin, GetUserValidateCode) {
+PADWeb.controller('loginCtrl', function ($scope, $stateParams, ngDialog, BeautyLogin, GetUserValidateCode) {
 
     /*------------------------------------------头部开关--------------------------------------------------*/
 
@@ -11,12 +11,14 @@ PADWeb.controller('loginCtrl', function ($scope, $stateParams, ngDialog, ClerkLo
         timeContent:"获取",
         codeFlag:true
     }
-    if($scope.codeFlag){
-        if($scope.param.phone == ""){
-            alert("请输入手机号")
-            return
-        }
+    // if($scope.codeFlag){
+
         $scope.getCode = function () {
+            if($scope.param.phone == ""){
+                alert("请输入手机号")
+                return
+            }
+
             $scope.codeFlag = false
             $scope.param.timeContent = 60
             GetUserValidateCode.get({mobile: $scope.param.phone}, function (data) {
@@ -32,7 +34,7 @@ PADWeb.controller('loginCtrl', function ($scope, $stateParams, ngDialog, ClerkLo
                 }
             })
         }
-    }
+    // }
 
 
     $scope.login = function () {
@@ -44,13 +46,26 @@ PADWeb.controller('loginCtrl', function ($scope, $stateParams, ngDialog, ClerkLo
             alert("请输入验证码")
             return
         }
-        ClerkLogin.save({
+        BeautyLogin.save({
             userPhone: $scope.param.phone,
             code: $scope.param.code
         }, function (data) {
             if (data.result == "0x00001") {
-                window.localStorage.removeItem("beautylogintoken");
-                window.localStorage.setItem("beautylogintoken", data.responseData);
+                if(data.responseData.beautyUserLoginToken!="0x00006")
+                {
+                    window.localStorage.removeItem("beautyUserLoginToken");
+                    window.localStorage.setItem("beautyUserLoginToken",data.responseData.beautyUserLoginToken);
+                }
+                if(data.responseData.beautyBossLoginToken!="0x00006")
+                {
+                    window.localStorage.removeItem("beautyBossLoginToken");
+                    window.localStorage.setItem("beautyBossLoginToken",data.responseData.beautyBossLoginToken);
+                }
+                if(data.responseData.beautyClerkLoginToken!="0x00006")
+                {
+                    window.localStorage.removeItem("beautyClerkLoginToken");
+                    window.localStorage.setItem("beautyClerkLoginToken",data.responseData.beautyClerkLoginToken);
+                }
             }
         })
     }
