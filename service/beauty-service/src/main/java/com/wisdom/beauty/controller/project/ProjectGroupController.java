@@ -41,7 +41,7 @@ public class ProjectGroupController {
      * @return
      */
     @RequestMapping(value = "saveProjectGroupInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<HashMap<Object, Object>> saveProjectGroupInfo(@RequestBody ExtShopProjectGroupDTO shopProjectGroupDTO) {
@@ -62,7 +62,7 @@ public class ProjectGroupController {
      * @return
      */
     @RequestMapping(value = "updateProjectGroupInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<Object> updateProjectGroupInfo(@RequestBody ExtShopProjectGroupDTO shopProjectGroupDTO) {

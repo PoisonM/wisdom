@@ -85,7 +85,6 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "shopDayAppointmentInfoByDate", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Map<String, Object>> shopDayAppointmentInfoByDate(@RequestParam String sysShopId,
@@ -182,7 +181,6 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "shopWeekAppointmentInfoByDate", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Map<String, Object>> shopWeekAppointmentInfoByDate(@RequestParam String sysShopId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
@@ -274,7 +272,6 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "getAppointmentInfoById", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<ExtShopAppointServiceDTO> getAppointmentInfoById(@RequestParam String shopAppointServiceId) {
@@ -303,7 +300,6 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "updateAppointmentInfoById", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<ShopAppointServiceDTO> updateAppointmentInfoById(@RequestParam String shopAppointServiceId, @RequestParam String status) {
@@ -328,7 +324,6 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "getMyAppointInfoList", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Object> getMyAppointInfoList(@RequestParam String status) {
@@ -360,7 +355,6 @@ public class AppointmentController {
 	 * @return
 	 */
 	@RequestMapping(value = "getShopClerkList", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<List<SysClerkDTO>> getShopClerkList(@RequestParam String pageNo, @RequestParam String pageSize) {
@@ -392,7 +386,6 @@ public class AppointmentController {
 	 * 保存用户的预约信息
 	 */
 	@RequestMapping(value = "saveUserAppointInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Map> saveUserAppointInfo(@RequestBody ExtShopAppointServiceDTO shopAppointServiceDTO) {
@@ -471,7 +464,6 @@ public class AppointmentController {
 	 * 修改用户的预约信息
 	 */
 	@RequestMapping(value = "updateUserAppointInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Map> updateUserAppointInfo(@RequestBody ExtShopAppointServiceDTO shopAppointServiceDTO) {

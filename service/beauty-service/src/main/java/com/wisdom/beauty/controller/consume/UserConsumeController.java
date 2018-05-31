@@ -189,7 +189,7 @@ public class UserConsumeController {
      * @return
      */
     @RequestMapping(value = "userConsumeOperation", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     @Transactional
@@ -307,7 +307,7 @@ public class UserConsumeController {
      * @return
      */
     @RequestMapping(value = "/consumes/consumeCourseCard", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> consumeCourseCard(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
@@ -330,7 +330,7 @@ public class UserConsumeController {
      * @return
      */
     @RequestMapping(value = "/consumes/consumesDaughterCard", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> consumesDaughterCard(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
@@ -354,7 +354,7 @@ public class UserConsumeController {
      * @return
      */
     @RequestMapping(value = "/consumes/consumesUserProduct", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> consumesUserProduct(@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {

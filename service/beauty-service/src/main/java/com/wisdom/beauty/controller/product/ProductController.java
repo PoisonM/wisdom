@@ -226,7 +226,7 @@ public class ProductController {
      * @return
      */
     @RequestMapping(value = "searchShopProductList", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr) {

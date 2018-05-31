@@ -50,7 +50,7 @@ public class PayController {
      * @return
      */
     @RequestMapping(value = "userPayOpe", method = {RequestMethod.POST})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<ShopUserOrderDTO> userPayOpe(@RequestBody ShopUserPayDTO shopUserPayDTO) {
@@ -75,7 +75,7 @@ public class PayController {
      * @return
      */
     @RequestMapping(value = "paySignConfirm", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> paySignConfirm(@RequestBody ShopUserPayDTO shopUserPayDTO) {
@@ -101,7 +101,7 @@ public class PayController {
      * @return
      */
     @RequestMapping(value = "updateShopUserOrderPayInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> updateShopUserOrderPayInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
