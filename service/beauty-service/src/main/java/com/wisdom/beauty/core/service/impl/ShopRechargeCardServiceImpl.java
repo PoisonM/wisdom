@@ -135,7 +135,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 				.createCriteria();
 
 		criteria.andShopRechargeCardIdEqualTo(rechargeCardId);
-		// 判断type是否为空，为空的时候使用在不需要更具产品Id或者项目id作为查询条件
+		//todo 待修复 此判断没看出有什么用and注释错别字  判断type是否为空，为空的时候使用在不需要更具产品Id或者项目id作为查询条件
 		if (StringUtils.isNotBlank(type)) {
 			// 如果是产品类型的
 			if (GoodsTypeEnum.PRODUCT.getCode().equals(type)) {

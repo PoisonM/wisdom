@@ -47,7 +47,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     public List<ShopAppointServiceDTO> getShopAppointClerkInfoByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
         if (null == extShopAppointServiceDTO) {
-            logger.info("根据时间查询查询某个店的有预约号源的美容师列表,查询参数为空{}",extShopAppointServiceDTO);
+            logger.info("根据时间查询查询某个店的有预约号源的美容师列表,查询参数为空");
             return null;
         }
 
@@ -79,7 +79,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     public List<ShopAppointServiceDTO> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
         if (null == extShopAppointServiceDTO) {
-            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空{}",extShopAppointServiceDTO);
+            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空");
             return null;
         }
 
@@ -143,7 +143,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     public Integer getShopClerkAppointNumberByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
         if (null == extShopAppointServiceDTO) {
-            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空{}", extShopAppointServiceDTO);
+            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空");
             return null;
         }
 
@@ -198,7 +198,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
 
         logger.info("getShopAppointServiceDTO传入参数userId={}", shopAppointServiceDTO);
         if (null == shopAppointServiceDTO) {
-            logger.debug(" 根据用户ID查询预约信息,{}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
+            logger.debug(" 根据用户ID查询预约信息为空");
             return null;
         }
         ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();

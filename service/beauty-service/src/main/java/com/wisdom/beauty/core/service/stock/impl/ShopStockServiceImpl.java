@@ -755,6 +755,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 				//为空的时候，则继续循环
 				continue;
 			}
+			//todo 待修复  Call to String.equals(com.wisdom.beauty.api.dto.ShopProductInfoDTO)
 			if(shopStockNumber.getShopProcId().equals(productInfoMap.get(shopStockNumber.getShopProcId()))){
                 //计算所选择产品的占用成本
 				if (useCost == null) {

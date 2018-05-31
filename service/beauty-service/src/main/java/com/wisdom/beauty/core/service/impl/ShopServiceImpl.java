@@ -62,7 +62,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public List<ExtSysShopDTO> getShopInfo(SysShopDTO sysShopDTO) {
         if (null == sysShopDTO) {
-            logger.error("根据条件查询shop相关信息{}", "sysShopDTO = [" + sysShopDTO + "]");
+            logger.error("根据条件查询shop相关信息传入参数为空");
             return null;
         }
 

@@ -233,8 +233,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO) {
 
 		if (shopUserProjectGroupRelRelationDTO == null) {
-			logger.error("查询某个用户的所有套卡项目列表传入参数,{}",
-					"shopUserProjectGroupRelRelationDTO = [" + shopUserProjectGroupRelRelationDTO + "]");
+			logger.error("查询某个用户的所有套卡项目列表传入参数");
 			return null;
 		}
 
@@ -394,8 +393,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		logger.info("根据条件查询套卡与项目的关系列表,传入参数={}",
 				"shopProjectInfoGroupRelationDTO = [" + shopProjectInfoGroupRelationDTO + "]");
 		if (shopProjectInfoGroupRelationDTO == null) {
-			logger.error("根据条件查询套卡与项目的关系列表传入参数为空，{}",
-					"shopProjectInfoGroupRelationDTO = [" + shopProjectInfoGroupRelationDTO + "]");
+			logger.error("根据条件查询套卡与项目的关系列表传入参数为空");
 			return null;
 		}
 
@@ -439,7 +437,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	@Override
 	public int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO, SysBossDTO bossInfo) {
 		if (null == shopProjectTypeDTO) {
-			logger.error("添加项目类别传入参数异常={}", "shopProjectTypeDTO = [" + shopProjectTypeDTO + "]");
+			logger.error("添加项目类别传入参数异常，参数为空");
 			return 0;
 		}
 		shopProjectTypeDTO.setId(IdGen.uuid());
@@ -492,7 +490,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     @Transactional(rollbackFor = Exception.class)
     public int saveProjectInfo(ExtShopProjectInfoDTO extShopProjectInfoDTO) {
         if (null == extShopProjectInfoDTO) {
-            logger.error("保存项目={}", "extShopProjectInfoDTO = [" + extShopProjectInfoDTO + "]");
+			logger.error("保存项目传入参数为空");
             return 0;
         }
         if (CommonUtils.objectIsNotEmpty(extShopProjectInfoDTO.getImageList())) {
