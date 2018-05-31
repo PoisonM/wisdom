@@ -39,55 +39,87 @@ angular.module('controllers',[]).controller('pricesCtrl',
                      })
                  }
             };
-            OneLevelProject.get(function (data) {
-                $scope.projectList=data.responseData;
-                console.log(data)
-                $scope.param.projectTypeOneId=data.responseData[0].id;
-                $scope.param.oneName=data.responseData[0].projectTypeName;
-                TwoLevelProject.get({id:$scope.param.projectTypeOneId},function (data) {
-                    $scope.project2List=data.responseData;
-                    $scope.param.projectTypeTwoId=data.responseData[0].id;
-                    $scope.param.twoName=data.responseData[0].projectTypeName;
-                    console.log(data)
-                    ThreeLevelProject.get({
-                        projectTypeOneId:$scope.param.projectTypeOneId,
-                        pageSize:$scope.param.pageSize,
-                        ProjectTypeTwoId:$scope.param.projectTypeTwoId
-                    },function (data) {
-                        $scope.threeList=data.responseData;
-                        for(var i=0;i< $scope.threeList.length;i++){
-                            if($scope.threeList[i].cardType=="1"){
-                                $scope.threeList[i].cardType="月卡"
+            $scope.getInfoProject = function () {
+                OneLevelProject.get(function (data) {
+                    $scope.projectList=data.responseData;
+                    $scope.param.projectTypeOneId=data.responseData[0].id;
+                    $scope.param.oneName=data.responseData[0].projectTypeName;
+                    TwoLevelProject.get({id:$scope.param.projectTypeOneId},function (data) {
+                        $scope.project2List=data.responseData;
+                        $scope.param.projectTypeTwoId=data.responseData[0].id;
+                        $scope.param.twoName=data.responseData[0].projectTypeName;
+                        console.log(data)
+                        ThreeLevelProject.get({
+                            projectTypeOneId:$scope.param.projectTypeOneId,
+                            pageSize:$scope.param.pageSize,
+                            ProjectTypeTwoId:$scope.param.projectTypeTwoId
+                        },function (data) {
+                            $scope.threeList=data.responseData;
+                            for(var i=0;i< $scope.threeList.length;i++){
+                                if($scope.threeList[i].cardType=="1"){
+                                    $scope.threeList[i].cardType="月卡"
+                                }
+                                if($scope.threeList[i].cardType=="2"){
+                                    $scope.threeList[i].cardType="季卡"
+                                }
+                                if($scope.threeList[i].cardType=="3"){
+                                    $scope.threeList[i].cardType="半年卡"
+                                }
+                                if($scope.threeList[i].cardType=="4"){
+                                    $scope.threeList[i].cardType="年卡"
+                                }
                             }
-                            if($scope.threeList[i].cardType=="2"){
-                                $scope.threeList[i].cardType="季卡"
-                            }
-                            if($scope.threeList[i].cardType=="3"){
-                                $scope.threeList[i].cardType="半年卡"
-                            }
-                            if($scope.threeList[i].cardType=="4"){
-                                $scope.threeList[i].cardType="年卡"
-                            }
-                        }
 
+                        })
                     })
-                })
-            });
+                });
+            }
+            $scope.getInfoProduct = function () {
+                OneLevelProduct.get(function (data) {
+                    $scope.projectList=data.responseData;
+                    $scope.param.productTypeOneId=data.responseData[0].id;
+                    $scope.param.oneName=data.responseData[0].productTypeName;
+                    TwoLevelProduct.get({id:$scope.param.projectTypeOneId},function (data) {
+                        $scope.project2List=data.responseData;
+                        $scope.param.productTypeTwoId=data.responseData[0].id;
+                        $scope.param.twoName=data.responseData[0].productTypeName;
+                        console.log(data)
+                        ThreeLevelProduct.get({
+                            productTypeOneId:$scope.param.productTypeOneId,
+                            pageSize:$scope.param.pageSize,
+                            productTypeTwoId:$scope.param.productTypeTwoId
+                        },function (data) {
+                            $scope.threeList=data.responseData;
+                            for(var i=0;i< $scope.threeList.length;i++){
+                                if($scope.threeList[i].cardType=="1"){
+                                    $scope.threeList[i].cardType="月卡"
+                                }
+                                if($scope.threeList[i].cardType=="2"){
+                                    $scope.threeList[i].cardType="季卡"
+                                }
+                                if($scope.threeList[i].cardType=="3"){
+                                    $scope.threeList[i].cardType="半年卡"
+                                }
+                                if($scope.threeList[i].cardType=="4"){
+                                    $scope.threeList[i].cardType="年卡"
+                                }
+                            }
+
+                        })
+                    })
+                });
+            }
+            $scope.getInfoProject()
+
             $scope.selNext = function (type) {
                 $scope.param.flag = true;
                 $scope.param.type= type
                 $scope.project2List=[]
                 /*调取一级列表*/
                 if(type=="0"){
-                    OneLevelProject.get(function (data) {
-                        $scope.projectList=data.responseData;
-                        console.log(data)
-                    });
+                    $scope.getInfoProject()
                 }else{
-                    OneLevelProduct.get(function (data) {
-                        $scope.projectList=data.responseData;
-                        console.log(data)
-                    })
+                    $scope.getInfoProduct()
                 }
             };
             /*点击一级列表调取二级列表*/

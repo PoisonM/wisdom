@@ -61,21 +61,26 @@
         <div class="list"  ng-repeat="item in threeList" ng-if="param.type=='2'" ng-click="tcardDetails(item.id)">
             <ion-item  class="row" >
                 <div class="col col-20" style="line-height: 49px;">
-                    <img style="height:50px;width:75px;margin-top: 20px" ng-src="{{item.projectUrl}}"/>
-                </div>
-                <div class="col col-30 ml10" >
-                    <p class="fs15" style="color: #333333!important;">
-                        <span>{{item.projectGroupName}}</span>
+                    <p style="height:64px;width:82px;background: gainsboro;margin-top:5px;">
+                        <img  ng-src="{{item.projectGroupUrl}}" style="height:64px;width:82px;">
                     </p >
-                    <p class="fs15" style="color: #333333!important;">市场价格：¥{{item.marketPrice}}</p >
-                    <p class=" fs13" style="color: #ff6666!important;">优惠价格价格：¥{{item.discountPrice}}</p >
                 </div>
-                <div class="col col-20">
-                    <span style="width: 40px;height: 17px;display: inline-block;background: #FF6666;color: #ffffff;text-align: center;border-radius: 10px;font-size: 10px" ng-if="param.type=='0'">{{item.cardType}}</span>
-                    <i class=" ion ion-ios-arrow-right fr" style="margin-top: 40px"></i>
+                <div class="col col-55 ml20" >
+                    <p class="fs15" style="color: #333333!important;"><span>{{item.projectGroupName}}</span></p >
+                    <p class="fs15" style="color: #333333!important;">市场价格：¥{{item.marketPrice}}</p >
+                    <p class=" fs13" style="color: #ff6666!important;">优惠价格：¥{{item.discountPrice}}</p >
+                </div>
+                <div class="col col-25 ">
+
+                    <img src="images/mine/overdue.png" style="width:50px;height:50px;" class="ml20 mt10 " ng-if="item.overdue == false">
+                    <img src="images/more.png" class="more fr" style="margin-top:30px;">
+
+
+                    <p ng-if="item.status != '0'&& item.overdue == true" style="position: absolute;bottom: 0;right:30px;"> 已禁用</p>
                 </div>
             </ion-item>
-            <p ng-if="param.type=='2'" class="item">有效期：长期有效</p>
+            <p ng-if="param.type=='2'" class="item">有效期：{{item.effectiveDate}} - {{item.expirationDate}}</p>
+            <p ng-if="param.type=='2'&& item.expirationDate == '0'" class="item">有效期：长期有效</p>
         </div>
         <div class="list"  ng-repeat="item in threeList" ng-if="param.type=='3'" ng-click="rechargeDetails(item.id)">
             <ion-item  class="row" >
