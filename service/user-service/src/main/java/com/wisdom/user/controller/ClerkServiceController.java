@@ -9,6 +9,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.ClerkInfoService;
 import com.wisdom.user.util.UserUtils;
 import org.slf4j.Logger;
@@ -116,14 +117,12 @@ public class ClerkServiceController {
 	 * @Description: 根据clerkId查询店员信息
 	 * @Date:2018/4/28 9:40
 	 */
-	@RequestMapping(value = "/clerkInfo/{clerkId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/clerkInfo", method = RequestMethod.GET)
 	@ResponseBody
-	List<SysClerkDTO> getClerkInfoByClerkId(@PathVariable String clerkId) {
+	@LoginRequired
+	List<SysClerkDTO> getClerkInfoByClerkId() {
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
-
-		logger.info("获取店员列表信息传入参数shopId = {}", clerkId);
-		SysClerkDTO sysClerkDTO = new SysClerkDTO();
-		sysClerkDTO.setId(clerkId);
+		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysClerkDTO);
 
 		listResponseDTO.setResponseData(clerkInfo);
