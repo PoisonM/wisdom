@@ -82,8 +82,6 @@ public class ArchivesController {
     @ResponseBody
     ResponseDTO<Map<String, Object>> findArchives(@RequestParam(required = false) String queryField, @RequestParam(required = false) String sysShopId, @RequestParam(required = false) String pageNo, @RequestParam(required = false) int pageSize) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("获取档案列表或某个店的用户列表传入参数={}", "queryField = [" + queryField + "], sysShopId = [" + sysShopId + "], pageNo = [" + pageNo + "]");
         ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
@@ -136,7 +134,6 @@ public class ArchivesController {
         responseDTO.setResponseData(map);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
-        logger.info("获取档案列表或某个店的用户列表,耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -149,11 +146,9 @@ public class ArchivesController {
     @RequestMapping(value = "/saveArchiveInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("保存用户档案接口传入参数={}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+
         ResponseDTO<String> responseDTO = shopCustomerArchivesService.saveArchiveInfo(shopUserArchivesDTO);
 
-        logger.info("保存用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -167,14 +162,10 @@ public class ArchivesController {
     @RequestMapping(value = "/updateArchiveInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<String> updateArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
-
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         shopCustomerArchivesService.updateShopUserArchivesInfo(shopUserArchivesDTO);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
-
-        logger.info("更新用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -187,14 +178,10 @@ public class ArchivesController {
     @RequestMapping(value = "/deleteArchiveInfo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<String> deleteArchiveInfo(@RequestParam String archivesId) {
-        long currentTimeMillis = System.currentTimeMillis();
-
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         shopCustomerArchivesService.deleteShopUserArchivesInfo(archivesId);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
-
-        logger.info("删除用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -207,10 +194,7 @@ public class ArchivesController {
     @RequestMapping(value = "/getShopUserArchivesInfoByUserId", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> getShopUserArchivesInfoByUserId(@RequestParam String sysUserId) {
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("查询某个用户的档案信息传入参数={}", "sysUserId = [" + sysUserId + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysUserId(sysUserId);
@@ -218,8 +202,6 @@ public class ArchivesController {
         List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
         responseDTO.setResponseData(shopUserArchivesInfo);
         responseDTO.setResult(StatusConstant.SUCCESS);
-
-        logger.info("删除用户档案接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -233,7 +215,6 @@ public class ArchivesController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<CustomerAccountResponseDto> findArchive(@PathVariable String userId) {
-        long startTime = System.currentTimeMillis();
         ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         String sysShopId = clerkInfo.getSysShopId();
@@ -242,7 +223,6 @@ public class ArchivesController {
             responseDTO.setResponseData(customerAccountResponseDto);
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findArchive方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -256,7 +236,6 @@ public class ArchivesController {
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> findArchiveById(@PathVariable String id) {
-        long startTime = System.currentTimeMillis();
         PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
@@ -284,8 +263,6 @@ public class ArchivesController {
             responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setResponseData(extShopUserArchivesDTO);
         }
-
-        logger.info("findArchiveById方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -298,13 +275,7 @@ public class ArchivesController {
     @RequestMapping(value = "/userBinding", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<String> userBinding(@RequestParam String openId, @RequestParam String shopId) {
-
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("查询某个用户与店的绑定关系传入参数={}", "openId = [" + openId + "], shopId = [" + shopId + "]");
-
         ResponseDTO<String> responseDTO = shopUserRelationService.userBinding(openId, shopId);
-
-        logger.info("查询某个用户与店的绑定关系耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

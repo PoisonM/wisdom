@@ -21,6 +21,29 @@ var clerkSchedule = '/beauty/clerkSchedule/';
 var  mine='/beauty/mine/';
 var remind='/beauty/remind/';
 
+var appointmentInfo = '/beauty/appointmentInfo/';
+var work = '/beauty/work/';
+var stock = '/beauty/stock/';
+var consume = '/beauty/consume/';
+var  earlyWarning =  '/beauty/earlyWarning/';
+var  archives =  '/beauty/archives/';
+var shopBossRelation ='/beauty/shopBossRelation/';
+var user ='/user/';
+var analyze = '/beauty/analyze/';
+var consumes = '/beauty/consumes/';
+var cardInfo  = '/beauty/cardInfo/';
+var projectInfo  = '/beauty/projectInfo/';
+var productInfo  = '/beauty/productInfo/';
+var productTypeInfo = '/beauty/productTypeInfo/';
+var projectType='/beauty/projectType/';
+var shop='/beauty/shop/';
+var projectGroupInfo='/beauty/projectGroupInfo/';
+var cardHelper ='/beauty/cardHelper/';
+var clerkSchedule = '/beauty/clerkSchedule/';
+var  mine='/beauty/mine/';
+var remind='/beauty/remind/';
+var file = '/system-service/file/';
+
 
 define(['appBoss'], function (app) {
     app
@@ -420,4 +443,17 @@ define(['appBoss'], function (app) {
         .factory('GetProductStockDetail',['$resource',function ($resource){
             return $resource(stock + "getProductStockDetail")
         }])
+        /*base64位图片上传*/
+        .factory('ImageBase64UploadToOSS',['$resource',function ($resource){
+            return $resource(file+"imageBase64UploadToOSS")
+        }])
+        /*老板切换店铺*/
+        .factory('BossSwitchShops',['$resource',function ($resource){
+            return $resource(shop+"bossSwitchShops")
+        }])
+
+
+
+
+
 });

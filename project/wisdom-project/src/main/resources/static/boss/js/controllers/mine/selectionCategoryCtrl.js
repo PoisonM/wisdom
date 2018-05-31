@@ -4,7 +4,7 @@
 angular.module('controllers',[]).controller('selectionCategoryCtrl',
     ['$scope','$rootScope','$stateParams','$state','OneLevelProject',
         function ($scope,$rootScope,$stateParams,$state,OneLevelProject) {
-
+            console.log($rootScope.xixixix);
             $rootScope.title = "选择类别";
            /* $scope.param={
                 projectId:$stateParams.projectId

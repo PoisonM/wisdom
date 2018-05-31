@@ -86,7 +86,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
     @Override
     public int saveUserShopRelation(ShopUserRelationDTO shopUserRelationDTO) {
         if (null == shopUserRelationDTO) {
-            logger.error("用户绑定会员传入参数为空，{}", "shopUserRelationDTO = [" + shopUserRelationDTO + "]");
+            logger.error("用户绑定会员传入参数为空");
             return 0;
         }
         List<ShopUserRelationDTO> shopListByCondition = getShopListByCondition(shopUserRelationDTO);

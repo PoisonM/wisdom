@@ -148,7 +148,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 
             criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
         }
-        if (startDate != null && endDate != endDate) {
+        if (startDate != null && endDate != null) {
             criteria.andCreateDateBetween(start, end);
         }
 

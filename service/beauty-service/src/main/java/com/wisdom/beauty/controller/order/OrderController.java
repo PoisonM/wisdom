@@ -65,13 +65,11 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "getShopUserRecentlyOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String sysUserId, @RequestParam(required = false) String orderId) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("查询用户最近一次订单信息传入参数={}", "shopUserArchivesId = [" + sysUserId + "]");
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
 
@@ -99,7 +97,6 @@ public class OrderController {
 
         responseDTO.setResponseData(shopUserOrderDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -109,13 +106,11 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "saveShopUserOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> saveShopUserOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("保存用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
         if(null == shopUserOrderDTO || StringUtils.isBlank(shopUserOrderDTO.getUserId())){
             logger.error("保存用户的订单信息传入参数为空");
             return null;
@@ -144,7 +139,6 @@ public class OrderController {
         responseDTO.setResponseData(searchOrderInfo.getOrderId());
         responseDTO.setResult(StatusConstant.SUCCESS);
 
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -155,13 +149,11 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "updateShopUserOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> updateShopUserOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("更新用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
         ResponseDTO responseDTO = new ResponseDTO<String>();
 
         //mongodb中更新订单的状态
@@ -177,7 +169,6 @@ public class OrderController {
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -188,16 +179,13 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "updateVirtualGoodsOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> updateVirtualGoodsOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("更新订单虚拟商品的信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
         ResponseDTO responseDTO = shopOrderService.updateShopUserOrderInfo(shopUserOrderDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData("更新成功");
-        logger.info("更新订单虚拟商品的信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -208,13 +196,11 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "getConsumeDisplayIds", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> getConsumeDisplayIds(@RequestParam String orderId) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("更新用户的订单信息传入参数={}", "orderId = [" + orderId + "]");
         ResponseDTO responseDTO = new ResponseDTO<String>();
 
         Query query = new Query(Criteria.where("orderId").is(orderId));
@@ -278,7 +264,6 @@ public class OrderController {
         }
         responseDTO.setResponseData(returnMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

@@ -31,7 +31,7 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
+                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
                     $scope.getInfo();
                 }
             };
@@ -61,17 +61,12 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
-
-
             $scope.getInfo=function(){
                 ShopDayAppointmentInfoByDate.get({
-                    startDate:$scope.param.date+" 00:00:00",
-                    endDate:$scope.param.date+" 23:59:59",
-                    sysShopId:$stateParams.sysShopId
+                    startDate:$scope.param.date.replace(/(^\s*)|(\s*$)/g, ""),sysShopId:$stateParams.sysShopId
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $scope.beautySalon = data.responseData;
-                        console.log($scope.beautySalon )
                         delete $scope.beautySalon.startTime;
                         delete $scope.beautySalon.endTime;
                     }

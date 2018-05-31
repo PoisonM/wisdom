@@ -61,7 +61,6 @@ public class ArchivesEarlyWarningController {
     @ResponseBody
     ResponseDTO<Object> getEarlyWarningList(@RequestParam String queryType, @RequestParam(required = false) String pageNo, @RequestParam(required = false) String pageSize) {
 
-        logger.info("档案预警接口传入参数={}", "queryType = [" + queryType + "], pageNo = [" + pageNo + "], pageSize = [" + pageSize + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         if (null == bossInfo) {

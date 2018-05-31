@@ -58,8 +58,6 @@ public class IncomeAndExpenseStatisticController {
                                                           @RequestParam String startTime,
                                                           @RequestParam String endTime) {
 
-        long start = System.currentTimeMillis();
-
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
@@ -74,7 +72,6 @@ public class IncomeAndExpenseStatisticController {
         ResponseDTO<Map<String, BigDecimal>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(map);
-        logger.info("getInComeExpenditureDetail方法耗时{}毫秒", (System.currentTimeMillis() - start));
         return responseDTO;
     }
     /**

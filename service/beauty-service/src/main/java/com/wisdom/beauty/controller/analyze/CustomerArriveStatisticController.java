@@ -54,8 +54,6 @@ public class CustomerArriveStatisticController {
 	ResponseDTO<Map<String,Object>> getCustomerArriveList(@RequestParam String startTime,
 																			 @RequestParam String endTime) {
 
-
-		long start = System.currentTimeMillis();
 		SysBossDTO bossInfo = UserUtils.getBossInfo();
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
@@ -68,7 +66,6 @@ public class CustomerArriveStatisticController {
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
-		logger.info("getCustomerArriveList方法耗时{}毫秒", (System.currentTimeMillis() - start));
 		return responseDTO;
 	}
 	/**

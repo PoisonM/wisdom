@@ -14,7 +14,7 @@ angular.module('controllers',[]).controller('appointmentCtrl',
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
-            console.log($scope.param.date);
+            console.log($scope.param.date.indexOf(''));
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -73,8 +73,8 @@ angular.module('controllers',[]).controller('appointmentCtrl',
                         $scope.appointment = data.responseData;
                     }
                 })
-            }
-            $scope.getInfo()
+            };
+            $scope.getInfo();
 
 
             $scope.healthClubGo = function(id,name){

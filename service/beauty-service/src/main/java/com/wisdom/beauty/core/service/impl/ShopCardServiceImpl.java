@@ -62,7 +62,7 @@ public class ShopCardServiceImpl implements ShopCardService {
         logger.info("获取用户的充值卡信息传入参数={}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
 
         if (shopUserRechargeCardDTO == null) {
-            logger.debug("获取用户的充值卡信息参数为空， {}", "shopUserRechargeCardDTO = [" + shopUserRechargeCardDTO + "]");
+            logger.debug("获取用户的充值卡信息参数为空");
             return null;
         }
 
@@ -84,8 +84,6 @@ public class ShopCardServiceImpl implements ShopCardService {
         shopUserRechargeCardCriteria.setOrderByClause("recharge_card_type asc");
 
         List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS = shopUserRechargeCardMapper.selectByCriteria(shopUserRechargeCardCriteria);
-
-        logger.debug("查询某个用户的充值卡列表，查询结果大小为 {}", "size = [" + shopUserRechargeCardDTOS == null ? "0" : shopUserRechargeCardDTOS.size() + "]");
 
         return shopUserRechargeCardDTOS;
     }
@@ -197,7 +195,7 @@ public class ShopCardServiceImpl implements ShopCardService {
     public List<ShopProjectProductCardRelationDTO> getShopProjectProductCardRelationList(ShopProjectProductCardRelationDTO relationDTO) {
 
         if (null == relationDTO) {
-            logger.error("根据虚拟商品id获取虚拟商品列表{}", "relationDTO = [" + relationDTO + "]");
+            logger.error("根据虚拟商品id获取虚拟商品列表");
             return null;
         }
         ShopProjectProductCardRelationCriteria criteria = new ShopProjectProductCardRelationCriteria();

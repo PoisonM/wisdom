@@ -43,7 +43,6 @@ public class AccountController {
     @RequestMapping(value = "/findShopUserInfo/{userId}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<CustomerAccountResponseDto> findShopUserInfo(@PathVariable String userId) {
-        long startTime = System.currentTimeMillis();
         ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 		CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId,clerkInfo.getSysShopId());
@@ -51,7 +50,6 @@ public class AccountController {
             responseDTO.setResponseData(customerAccountResponseDto);
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findArchive方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 

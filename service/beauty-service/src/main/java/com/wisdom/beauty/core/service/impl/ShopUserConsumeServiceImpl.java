@@ -250,7 +250,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
 
                     if (null == groupRelations) {
-                        logger.error("订单号={}，根据项目套卡主键查询出来的项目列表为空，{}", orderId, groupRelations);
+                        logger.error("订单号={}，根据项目套卡主键查询出来的项目列表传入参数为空");
                         throw new RuntimeException();
                     }
 
@@ -314,6 +314,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 Integer sysShopProjectInitTimes = dto.getSysShopProjectInitTimes();
                 if (null == sysShopProjectInitTimes) {
                     dto.setSysShopProjectInitTimes(1);
+                    return;
                 }
                 //项目有可能购买多个
                 for (int i = 0; i < sysShopProjectInitTimes; i++) {
@@ -663,7 +664,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             userRechargeCardDTO.setShopRechargeCardId(orderDTO.getId());
             ShopUserRechargeCardDTO shopUserRechargeInfo = shopRechargeCardService.getShopUserRechargeInfo(userRechargeCardDTO);
             if (null == shopUserRechargeInfo) {
-                logger.error("针对特殊卡进行更新操作交易号，{}，查询用户的充值卡={}", orderDTO, shopUserRechargeInfo);
+                logger.error("针对特殊卡进行更新操作交易号，{}，查询用户的充值卡为空", orderDTO);
                 throw new ServiceException("查询用户的充值卡为空");
             }
             //剩余金额 = 已存剩余金额 + 充值金额

@@ -35,14 +35,12 @@ public class ShopRemindController {
     public
     @ResponseBody
     ResponseDTO<Object> getShopRemindSetting() {
-        long currentTimeMillis = System.currentTimeMillis();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         ShopRemindSettingDTO shopRemindSettingDTO = new ShopRemindSettingDTO();
         shopRemindSettingDTO.setSysBossCode(UserUtils.getBossInfo().getId());
         ShopRemindSettingDTO shopRemindSetting = shopRemindService.getShopRemindSetting(shopRemindSettingDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopRemindSetting);
-        logger.info("查询某个店的设置信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -55,7 +53,6 @@ public class ShopRemindController {
     public
     @ResponseBody
     ResponseDTO<Object> updateShopRemindSetting(@RequestBody ShopRemindSettingDTO shopRemindSettingDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if (StringUtils.isBlank(shopRemindSettingDTO.getId())) {
             responseDTO.setResult(StatusConstant.SUCCESS);
@@ -63,7 +60,6 @@ public class ShopRemindController {
         }
         int setting = shopRemindService.updateShopRemindSetting(shopRemindSettingDTO);
         responseDTO.setResult(setting > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        logger.info("查询某个店的设置信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

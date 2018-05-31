@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('addProductCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global','ImageBase64UploadToOSS',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS) {
             $rootScope.title = "添加产品";
             $scope.selFlag =true
             $scope.param ={
@@ -134,6 +134,37 @@ angular.module('controllers',[]).controller('addProductCtrl',
                 $state.go("efficacy",{type:'add',productFunc:$scope.param.productFunction})
                 localStorage.setItem('param',JSON.stringify($scope.param));
             }
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+                if($scope.param.imageUrl.length>6){
+                    alert("图片上传不能大于6张")
+                    return
+                }
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $scope.param.imageUrl.push(data.responseData)
+                            }
+
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
+            $scope.delPic = function(index){
+                $scope.param.imageUrl.splice(index,1)
+            }
 
 
 
@@ -148,7 +179,6 @@ angular.module('controllers',[]).controller('addProductCtrl',
                     alert('信息不完全')
                 }
                 localStorage.removeItem('param');
-                console.log($scope.param);
                 SaveProductInfo.save($scope.param,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")

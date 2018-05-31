@@ -63,9 +63,6 @@ public class ProjectController {
 	public @ResponseBody ResponseDTO<HashMap<Object, Object>> getUserCardProjectList(
 			@RequestParam String appointmentId) {
 
-		long startTime = System.currentTimeMillis();
-
-		logger.info("查询某个用户的卡片列表信息传入参数={}", "appointment = [" + appointmentId + "]");
 		ResponseDTO<HashMap<Object, Object>> responseDTO = new ResponseDTO<>();
 
 		ShopUserProjectRelationDTO ShopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
@@ -92,8 +89,6 @@ public class ProjectController {
 		returnMap.put("punchCard", consumeList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(returnMap);
-
-		logger.info("查询某个用户的卡片列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -106,8 +101,6 @@ public class ProjectController {
 	// @LoginRequired
 	public @ResponseBody ResponseDTO<HashMap<String, Object>> searchShopProjectList(@RequestParam String useStyle,
 			@RequestParam String filterStr) {
-
-		long currentTimeMillis = System.currentTimeMillis();
 		String sysShopId = null;
 
 		if (StringUtils.isBlank(sysShopId)) {
@@ -166,8 +159,6 @@ public class ProjectController {
 		returnMap.put("detailProject", projectList);
 		responseDTO.setResponseData(returnMap);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-
-		logger.info("查询某个店的疗程卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -184,8 +175,7 @@ public class ProjectController {
 	public @ResponseBody ResponseDTO<List<ShopUserProjectRelationResponseDTO>> getUserCourseProjectList(
 			@RequestParam(required = false) String sysUserId, @RequestParam(required = false) String cardStyle,
 			@RequestParam(required = false) String id) {
-		long currentTimeMillis = System.currentTimeMillis();
-		logger.info("查询某个用户的卡片列表信息传入参数={}", "sysUserId = [" + sysUserId + "], cardStyle = [" + cardStyle + "]");
+
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
 		String sysShopId = "";
@@ -247,7 +237,6 @@ public class ProjectController {
 		responseDTO.setResponseData(shopUserProjectRelationResponseDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 
-		logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -261,7 +250,6 @@ public class ProjectController {
 	// @LoginRequired
 	public @ResponseBody ResponseDTO<List<HashMap<String, Object>>> getUserProjectGroupList(
 			@RequestParam String sysUserId) {
-		long currentTimeMillis = System.currentTimeMillis();
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 		String sysShopId = clerkInfo.getSysShopId();
 
@@ -331,7 +319,6 @@ public class ProjectController {
 		}
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(returnList);
-		logger.info("查询某个用户的套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -345,7 +332,6 @@ public class ProjectController {
 	@RequestMapping(value = "/oneLevelProject", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<List<ShopProjectTypeDTO>> findOneLevelProject() {
-		long currentTimeMillis = System.currentTimeMillis();
 		String sysShopId = null;
 		if (StringUtils.isBlank(sysShopId)) {
 			SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
@@ -359,7 +345,6 @@ public class ProjectController {
 		List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysShopId);
 		responseDTO.setResponseData(list);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -373,7 +358,6 @@ public class ProjectController {
 	@RequestMapping(value = "/twoLevelProject", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<List<ShopProjectTypeDTO>> findTwoLevelProject(@RequestParam String id) {
-		long currentTimeMillis = System.currentTimeMillis();
 		ShopProjectTypeDTO shopProjectTypeDTO = new ShopProjectTypeDTO();
 		shopProjectTypeDTO.setId(id);
 		// 查询数据
@@ -382,7 +366,6 @@ public class ProjectController {
 		ResponseDTO<List<ShopProjectTypeDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(list);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("findTwoLevelProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -399,7 +382,6 @@ public class ProjectController {
 			@RequestParam String ProjectTypeTwoId, @RequestParam(required = false) String projectName,
 			@RequestParam int pageSize) {
 
-		long currentTimeMillis = System.currentTimeMillis();
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
@@ -418,7 +400,6 @@ public class ProjectController {
 		ResponseDTO<List<ShopProjectInfoResponseDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(list);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("findThreeLevelProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -432,14 +413,12 @@ public class ProjectController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<ShopProjectInfoResponseDTO> findDetailProject(@PathVariable String id) {
-		long currentTimeMillis = System.currentTimeMillis();
 		// 查询数据
 		ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = projectService.getProjectDetail(id);
 
 		ResponseDTO<ShopProjectInfoResponseDTO> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopProjectInfoResponseDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("findDetailProject方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -453,11 +432,8 @@ public class ProjectController {
 	public @ResponseBody ResponseDTO<List<Object>> getShopProjectList(@RequestParam String pageNo,
 			@RequestParam String pageSize, @RequestParam String filterStr) {
 
-		long currentTimeMillis = System.currentTimeMillis();
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 		String sysShopId = clerkInfo.getSysShopId();
-		logger.info("查询某店的项目列表传入参数={}",
-				"pageNo = [" + pageNo + "], pageSize = [" + pageSize + "], filterStr = [" + filterStr + "]");
 
 		ResponseDTO<List<Object>> responseDTO = new ResponseDTO<>();
 
@@ -499,8 +475,6 @@ public class ProjectController {
 
 		responseDTO.setResponseData(arrayList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-
-		logger.info("查询某店的项目列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -514,12 +488,8 @@ public class ProjectController {
 	public @ResponseBody ResponseDTO<Object> getShopTwoLevelProjectList(@RequestParam(required = false) String pageNo,
 			@RequestParam(required = false) String pageSize, @RequestParam(required = false) String filterStr) {
 
-		long currentTimeMillis = System.currentTimeMillis();
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 		String sysShopId = clerkInfo.getSysShopId();
-		logger.info("查询返回二级和三级某店的项目列表传入参数={}",
-				"pageNo = [" + pageNo + "], pageSize = [" + pageSize + "], filterStr = [" + filterStr + "]");
-
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
 		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
@@ -563,8 +533,6 @@ public class ProjectController {
 
 		responseDTO.setResponseData(arrayList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-
-		logger.info("查询返回二级和三级某店的项目列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -578,10 +546,8 @@ public class ProjectController {
 	public @ResponseBody ResponseDTO<Object> getUserClientShopProjectList(@RequestParam String pageNo,
 			@RequestParam String pageSize) {
 
-		long currentTimeMillis = System.currentTimeMillis();
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 		String sysShopId = clerkInfo.getSysShopId();
-		logger.info("用户端-查询某店的项目列表传入参数={}", "pageNo = [" + pageNo + "], pageSize = [" + pageSize + "]");
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
@@ -595,8 +561,6 @@ public class ProjectController {
 
 		responseDTO.setResponseData(projectList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-
-		logger.info("用户端-查询某店的项目列表耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -607,8 +571,6 @@ public class ProjectController {
 	public @ResponseBody ResponseDTO<List<ShopUserProjectRelationDTO>> getUserShopProjectList(
 			@RequestBody RelationIds<String> relationIds) {
 
-		long currentTimeMillis = System.currentTimeMillis();
-
 		ResponseDTO<List<ShopUserProjectRelationDTO>> responseDTO = new ResponseDTO<>();
 
 		List<ShopUserProjectRelationDTO> userShopProjectList = projectService
@@ -617,7 +579,6 @@ public class ProjectController {
 		responseDTO.setResponseData(userShopProjectList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 
-		logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -628,8 +589,6 @@ public class ProjectController {
 			RequestMethod.GET })
 	public @ResponseBody ResponseDTO<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelationInfo(
 			@RequestParam String shopUserProjectGroupRelRelationId) {
-
-		long currentTimeMillis = System.currentTimeMillis();
 
 		ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
 		shopUserProjectGroupRelRelationDTO.setId(shopUserProjectGroupRelRelationId);
@@ -643,7 +602,6 @@ public class ProjectController {
 				.setResponseData(null == relRelation ? new ShopUserProjectGroupRelRelationDTO() : relRelation.get(0));
 		responseDTO.setResult(StatusConstant.SUCCESS);
 
-		logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -652,8 +610,6 @@ public class ProjectController {
 	 */
 	@RequestMapping(value = "saveProjectInfo", method = { RequestMethod.POST, RequestMethod.GET })
 	public @ResponseBody ResponseDTO<Object> saveProjectInfo(@RequestBody ExtShopProjectInfoDTO extShopProjectInfoDTO) {
-
-		long currentTimeMillis = System.currentTimeMillis();
 		ResponseDTO responseDTO = new ResponseDTO();
 
 		SysBossDTO bossInfo = UserUtils.getBossInfo();
@@ -679,8 +635,6 @@ public class ProjectController {
 				extShopProjectInfoDTO.getOncePrice().multiply(new BigDecimal(extShopProjectInfoDTO.getServiceTimes())));
 		int info = projectService.saveProjectInfo(extShopProjectInfoDTO);
 		responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-
-		logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -690,8 +644,6 @@ public class ProjectController {
 	@RequestMapping(value = "updateProjectInfo", method = { RequestMethod.POST, RequestMethod.GET })
 	public @ResponseBody ResponseDTO<Object> updateProjectInfo(
 			@RequestBody ExtShopProjectInfoDTO extShopProjectInfoDTO) {
-
-		long currentTimeMillis = System.currentTimeMillis();
 		ResponseDTO responseDTO = new ResponseDTO();
 
 		SysBossDTO bossInfo = UserUtils.getBossInfo();
@@ -706,8 +658,6 @@ public class ProjectController {
 		extShopProjectInfoDTO.setUpdateDate(new Date());
 		int info = projectService.updateProjectInfo(extShopProjectInfoDTO);
 		responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-
-		logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
