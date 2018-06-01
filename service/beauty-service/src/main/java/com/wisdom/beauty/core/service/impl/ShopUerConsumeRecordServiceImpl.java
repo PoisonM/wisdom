@@ -209,12 +209,14 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			flowIds.add(shopUserConsumeRecordDTO.getFlowId());
 			consumeTypes.add(shopUserConsumeRecordDTO.getConsumeType());
 			goodsTypes.add(shopUserConsumeRecordDTO.getGoodsType());
-			if (totalAmount == null) {
-				totalAmount = shopUserConsumeRecordDTO.getPrice()
-						.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber()?0:shopUserConsumeRecordDTO.getConsumeNumber()));
-			} else {
-				totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice()
-						.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber()?0:shopUserConsumeRecordDTO.getConsumeNumber())));
+			if(null != shopUserConsumeRecordDTO.getPrice()){
+				if (totalAmount == null) {
+					totalAmount = shopUserConsumeRecordDTO.getPrice()
+							.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber()?0:shopUserConsumeRecordDTO.getConsumeNumber()));
+				} else {
+					totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice()
+							.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber()?0:shopUserConsumeRecordDTO.getConsumeNumber())));
+				}
 			}
 		}
 		if (consumeTypes.contains(ConsumeTypeEnum.RECHARGE.getCode())) {
