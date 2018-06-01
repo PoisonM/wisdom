@@ -472,10 +472,14 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	 * @return
 	 */
 	@Override
-	public int updateProjectInfo(ShopProjectInfoDTO shopProjectInfoDTO) {
+	public int updateProjectInfo(ExtShopProjectInfoDTO shopProjectInfoDTO) {
 		if (CommonUtils.objectIsEmpty(shopProjectInfoDTO)) {
 			logger.error("更新项目信息传入参数有误={}", "shopProjectInfoDTO = [" + shopProjectInfoDTO + "]");
 			return 0;
+		}
+		//保存图片信息
+		if (CommonUtils.objectIsNotEmpty(shopProjectInfoDTO.getImageList())) {
+			mongoUtils.saveImageUrl(shopProjectInfoDTO.getImageList(), shopProjectInfoDTO.getId());
 		}
 		return shopProjectInfoMapper.updateByPrimaryKeySelective(shopProjectInfoDTO);
 	}
