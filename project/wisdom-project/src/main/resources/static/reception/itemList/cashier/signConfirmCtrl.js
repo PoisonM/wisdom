@@ -56,6 +56,7 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDi
         ImageBase64UploadToOSS.save({ imageStr: $("#signConfirmRight").jSignature("getData") }, function(data) {
             RechargeCardSignConfirm.get({
                 transactionId: $state.params.transactionId,
+                //orderId: $state.params.orderId,
                 //图片base64流是data
                 imageUrl: data.responseData,
             }, function(data) {

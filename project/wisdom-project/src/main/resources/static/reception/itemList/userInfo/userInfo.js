@@ -14,9 +14,11 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
         $scope.$parent.mainSwitch.headerCashAllFlag = bool
         $scope.$parent.mainSwitch.headerPriceListAllFlag = !bool
         $scope.$parent.mainSwitch.headerLoginFlag = !bool
-        $scope.$parent.mainSwitch.headerCashFlag.leftFlag = bool,
-            $scope.$parent.mainSwitch.headerCashFlag.middleFlag = bool,
+        $scope.$parent.mainSwitch.headerCashFlag.leftFlag = bool
+            $scope.$parent.mainSwitch.headerCashFlag.middleFlag = bool
             $scope.$parent.mainSwitch.headerCashFlag.rightFlag = bool
+        $scope.$parent.mainSwitch.footerBoxFlag = true
+
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
