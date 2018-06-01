@@ -353,7 +353,7 @@ public class IncomeController {
 						exportIncomeRecordExcelDTO.setSysUserId(monthTransactionRecordDTO.getUserId());
 						exportIncomeRecordExcelDTO.setNickName(monthTransactionRecordDTO.getNickName());
 						exportIncomeRecordExcelDTO.setMobile(monthTransactionRecordDTO.getMobile());
-						exportIncomeRecordExcelDTO.setAmount(monthTransactionRecordDTO.getAmount());
+						exportIncomeRecordExcelDTO.setAmount(monthTransactionRecordDTO.getAmountMoney());
 						exportIncomeRecordExcelDTO.setNextUserId(monthTransactionRecordDTO.getNextUserId());
 						exportIncomeRecordExcelDTO.setNextUserMobile(monthTransactionRecordDTO.getNextUserMobile());
 						exportIncomeRecordExcelDTO.setNextUserNickName(monthTransactionRecordDTO.getNextUserNickName());
@@ -373,7 +373,7 @@ public class IncomeController {
 						exportIncomeRecordExcelDTO.setSysUserId(monthTransactionRecordDTO.getUserId());
 						exportIncomeRecordExcelDTO.setNickName(monthTransactionRecordDTO.getNickName());
 						exportIncomeRecordExcelDTO.setMobile(monthTransactionRecordDTO.getMobile());
-						exportIncomeRecordExcelDTO.setAmount(monthTransactionRecordDTO.getAmount());
+						exportIncomeRecordExcelDTO.setAmount(monthTransactionRecordDTO.getAmountMoney());
 						exportIncomeRecordExcelDTO.setNextUserId(monthTransactionRecordDTO.getNextUserId());
 						exportIncomeRecordExcelDTO.setNextUserMobile(monthTransactionRecordDTO.getNextUserMobile());
 						exportIncomeRecordExcelDTO.setNextUserNickName(monthTransactionRecordDTO.getNextUserNickName());
