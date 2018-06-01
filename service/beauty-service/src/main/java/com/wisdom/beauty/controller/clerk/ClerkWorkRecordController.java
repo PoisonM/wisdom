@@ -93,7 +93,7 @@ public class ClerkWorkRecordController {
      *                  耗卡明细:consumeType 1 goodsType 1
      *                          consumeType 1 goodsType 3
      *                          consumeType 0 goodsType 0
-     *                  卡耗明细:consumeType 1 goodsType2
+         *                  卡耗明细:consumeType 1 goodsType2
      * @Date:2018/5/31 15:32
      */
     @RequestMapping(value = "/getClerkPerformanceList", method = RequestMethod.GET)
