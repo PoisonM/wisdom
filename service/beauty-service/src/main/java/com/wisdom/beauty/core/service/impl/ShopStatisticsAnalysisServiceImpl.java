@@ -900,7 +900,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			}*/
 			Map<String,Object>  responseMap=new HashedMap();
 			responseMap.put("shopNewUserNumber",archivesList==null?0:archivesList.size());//新客
-			//return  responseMap;
+			return  responseMap;
 		}
 		//查询档案列表
 		List<String> userIdList=new ArrayList<>(userIds);
