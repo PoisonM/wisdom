@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     //
@@ -39,6 +39,9 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
 
     //卡类别 0：次卡 1：月卡 2：季卡：3：半年卡 4：年卡
     private String cardType;
+
+    //自购买之日起至effective_number_month个月有效
+    private Integer effectiveNumberMonth;
 
     //项目图片url
     private String projectUrl;
@@ -170,6 +173,14 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
 
     public void setCardType(String cardType) {
         this.cardType = cardType;
+    }
+
+    public Integer getEffectiveNumberMonth() {
+        return effectiveNumberMonth;
+    }
+
+    public void setEffectiveNumberMonth(Integer effectiveNumberMonth) {
+        this.effectiveNumberMonth = effectiveNumberMonth;
     }
 
     public String getProjectUrl() {

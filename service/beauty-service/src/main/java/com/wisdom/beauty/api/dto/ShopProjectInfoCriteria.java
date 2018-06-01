@@ -896,6 +896,66 @@ public class ShopProjectInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andEffectiveNumberMonthIsNull() {
+            addCriterion("effective_number_month is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthIsNotNull() {
+            addCriterion("effective_number_month is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthEqualTo(Integer value) {
+            addCriterion("effective_number_month =", value, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthNotEqualTo(Integer value) {
+            addCriterion("effective_number_month <>", value, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthGreaterThan(Integer value) {
+            addCriterion("effective_number_month >", value, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthGreaterThanOrEqualTo(Integer value) {
+            addCriterion("effective_number_month >=", value, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthLessThan(Integer value) {
+            addCriterion("effective_number_month <", value, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthLessThanOrEqualTo(Integer value) {
+            addCriterion("effective_number_month <=", value, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthIn(List<Integer> values) {
+            addCriterion("effective_number_month in", values, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthNotIn(List<Integer> values) {
+            addCriterion("effective_number_month not in", values, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthBetween(Integer value1, Integer value2) {
+            addCriterion("effective_number_month between", value1, value2, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveNumberMonthNotBetween(Integer value1, Integer value2) {
+            addCriterion("effective_number_month not between", value1, value2, "effectiveNumberMonth");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectUrlIsNull() {
             addCriterion("project_url is null");
             return (Criteria) this;
