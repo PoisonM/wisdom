@@ -480,6 +480,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		//保存图片信息
 		if (CommonUtils.objectIsNotEmpty(shopProjectInfoDTO.getImageList())) {
 			mongoUtils.saveImageUrl(shopProjectInfoDTO.getImageList(), shopProjectInfoDTO.getId());
+			shopProjectInfoDTO.setProjectUrl(shopProjectInfoDTO.getImageList().get(0));
 		}
 		return shopProjectInfoMapper.updateByPrimaryKeySelective(shopProjectInfoDTO);
 	}
