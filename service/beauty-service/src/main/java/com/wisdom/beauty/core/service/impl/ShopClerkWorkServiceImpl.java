@@ -14,7 +14,6 @@ import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.IdGen;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
@@ -213,13 +212,6 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 
 	@Override
 	public int saveClerkWorkRecord(List<ShopClerkWorkRecordDTO> shopClerkWorkRecordDTOs) {
-       List<ShopClerkWorkRecordDTO> list=new ArrayList<>();
-
-        for(ShopClerkWorkRecordDTO shopClerkWorkRecordDTO:shopClerkWorkRecordDTOs){
-            shopClerkWorkRecordDTO.setId(IdGen.uuid());
-            shopClerkWorkRecordDTO.setCreateDate(new Date());
-            shopClerkWorkRecordDTO.setUpdateDate(new Date());
-        }
        return extShopClerkWorkRecordMapper.insertBatchClerkRecord(shopClerkWorkRecordDTOs);
 	}
 }

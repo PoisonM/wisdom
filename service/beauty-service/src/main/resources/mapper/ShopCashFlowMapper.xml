@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopCashFlowMapper">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopCashFlowDTO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="flow_no" property="flowNo" jdbcType="VARCHAR"/>
+        <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
+        <result column="pay_type" property="payType" jdbcType="CHAR"/>
+        <result column="pay_type_amount" property="payTypeAmount" jdbcType="DECIMAL"/>
+        <result column="balance_amount" property="balanceAmount" jdbcType="DECIMAL"/>
+        <result column="recharge_card_amount" property="rechargeCardAmount" jdbcType="DECIMAL"/>
+        <result column="cash_amount" property="cashAmount" jdbcType="DECIMAL"/>
+        <result column="owe_amount" property="oweAmount" jdbcType="DECIMAL"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, flow_no, sys_shop_id, sys_boss_code, pay_type, pay_type_amount, balance_amount, 
+    recharge_card_amount, cash_amount, owe_amount, create_date, create_by, update_date, 
+    update_by
+  </sql>
+    <select id="selectByCriteria" resultMap="BaseResultMap"
+            parameterType="com.wisdom.beauty.api.dto.ShopCashFlowCriteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from shop_cash_flow
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart >= 0">
+            limit ${limitStart},${pageSize}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from shop_cash_flow
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shop_cash_flow
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopCashFlowCriteria">
+        delete from shop_cash_flow
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopCashFlowDTO">
+    insert into shop_cash_flow (id, flow_no, sys_shop_id, 
+      sys_boss_code, pay_type, pay_type_amount, 
+      balance_amount, recharge_card_amount, cash_amount, 
+      owe_amount, create_date, create_by, 
+      update_date, update_by)
+    values (#{id,jdbcType=VARCHAR}, #{flowNo,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, 
+      #{sysBossCode,jdbcType=VARCHAR}, #{payType,jdbcType=CHAR}, #{payTypeAmount,jdbcType=DECIMAL}, 
+      #{balanceAmount,jdbcType=DECIMAL}, #{rechargeCardAmount,jdbcType=DECIMAL}, #{cashAmount,jdbcType=DECIMAL}, 
+      #{oweAmount,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopCashFlowDTO">
+        insert into shop_cash_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="flowNo != null">
+                flow_no,
+            </if>
+            <if test="sysShopId != null">
+                sys_shop_id,
+            </if>
+            <if test="sysBossCode != null">
+                sys_boss_code,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+            <if test="payTypeAmount != null">
+                pay_type_amount,
+            </if>
+            <if test="balanceAmount != null">
+                balance_amount,
+            </if>
+            <if test="rechargeCardAmount != null">
+                recharge_card_amount,
+            </if>
+            <if test="cashAmount != null">
+                cash_amount,
+            </if>
+            <if test="oweAmount != null">
+                owe_amount,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="flowNo != null">
+                #{flowNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sysShopId != null">
+                #{sysShopId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysBossCode != null">
+                #{sysBossCode,jdbcType=VARCHAR},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=CHAR},
+            </if>
+            <if test="payTypeAmount != null">
+                #{payTypeAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="balanceAmount != null">
+                #{balanceAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="rechargeCardAmount != null">
+                #{rechargeCardAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="cashAmount != null">
+                #{cashAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="oweAmount != null">
+                #{oweAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopCashFlowCriteria"
+            resultType="java.lang.Integer">
+        select count(1) from shop_cash_flow
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByCriteriaSelective" parameterType="map">
+        update shop_cash_flow
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.flowNo != null">
+                flow_no = #{record.flowNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sysShopId != null">
+                sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sysBossCode != null">
+                sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.payType != null">
+                pay_type = #{record.payType,jdbcType=CHAR},
+            </if>
+            <if test="record.payTypeAmount != null">
+                pay_type_amount = #{record.payTypeAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.balanceAmount != null">
+                balance_amount = #{record.balanceAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.rechargeCardAmount != null">
+                recharge_card_amount = #{record.rechargeCardAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.cashAmount != null">
+                cash_amount = #{record.cashAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.oweAmount != null">
+                owe_amount = #{record.oweAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.createDate != null">
+                create_date = #{record.createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateDate != null">
+                update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByCriteria" parameterType="map">
+        update shop_cash_flow
+        set id = #{record.id,jdbcType=VARCHAR},
+        flow_no = #{record.flowNo,jdbcType=VARCHAR},
+        sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
+        pay_type = #{record.payType,jdbcType=CHAR},
+        pay_type_amount = #{record.payTypeAmount,jdbcType=DECIMAL},
+        balance_amount = #{record.balanceAmount,jdbcType=DECIMAL},
+        recharge_card_amount = #{record.rechargeCardAmount,jdbcType=DECIMAL},
+        cash_amount = #{record.cashAmount,jdbcType=DECIMAL},
+        owe_amount = #{record.oweAmount,jdbcType=DECIMAL},
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+        update_by = #{record.updateBy,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopCashFlowDTO">
+        update shop_cash_flow
+        <set>
+            <if test="flowNo != null">
+                flow_no = #{flowNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sysShopId != null">
+                sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysBossCode != null">
+                sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType,jdbcType=CHAR},
+            </if>
+            <if test="payTypeAmount != null">
+                pay_type_amount = #{payTypeAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="balanceAmount != null">
+                balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="rechargeCardAmount != null">
+                recharge_card_amount = #{rechargeCardAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="cashAmount != null">
+                cash_amount = #{cashAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="oweAmount != null">
+                owe_amount = #{oweAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopCashFlowDTO">
+    update shop_cash_flow
+    set flow_no = #{flowNo,jdbcType=VARCHAR},
+      sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+      sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=CHAR},
+      pay_type_amount = #{payTypeAmount,jdbcType=DECIMAL},
+      balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+      recharge_card_amount = #{rechargeCardAmount,jdbcType=DECIMAL},
+      cash_amount = #{cashAmount,jdbcType=DECIMAL},
+      owe_amount = #{oweAmount,jdbcType=DECIMAL},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
