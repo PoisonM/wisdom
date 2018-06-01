@@ -1156,66 +1156,6 @@ public class ShopUserConsumeRecordCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andBeforePriceIsNull() {
-            addCriterion("before_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceIsNotNull() {
-            addCriterion("before_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceEqualTo(BigDecimal value) {
-            addCriterion("before_price =", value, "beforePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceNotEqualTo(BigDecimal value) {
-            addCriterion("before_price <>", value, "beforePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceGreaterThan(BigDecimal value) {
-            addCriterion("before_price >", value, "beforePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("before_price >=", value, "beforePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceLessThan(BigDecimal value) {
-            addCriterion("before_price <", value, "beforePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("before_price <=", value, "beforePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceIn(List<BigDecimal> values) {
-            addCriterion("before_price in", values, "beforePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceNotIn(List<BigDecimal> values) {
-            addCriterion("before_price not in", values, "beforePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("before_price between", value1, value2, "beforePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBeforePriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("before_price not between", value1, value2, "beforePrice");
-            return (Criteria) this;
-        }
-
         public Criteria andDiscountIsNull() {
             addCriterion("discount is null");
             return (Criteria) this;
