@@ -30,7 +30,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
             GetUserCourseProjectList.get({
                 sysUserId: 1,
                 sysShopId: 1,
-                cardStyle: 0
+                cardStyle: 1
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("疗程卡:" + data)
@@ -71,7 +71,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
             GetUserCourseProjectList.get({
                 sysUserId: 1,
                 sysShopId: 1,
-                cardStyle: 1
+                cardStyle: 0
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("单次:" + data)
@@ -99,8 +99,8 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
     }
     $scope.tabclick(0);
 
-    $scope.goConsumptionList = function(type,id) {
-        $state.go('pad-web.left_nav.drawCardConsumption',{type:type,id:id});
+    $scope.goConsumptionList = function(type, id) {
+        $state.go('pad-web.left_nav.drawCardConsumption', { type: type, id: id });
     };
 
     $scope.goGetProduct = function(id) {
