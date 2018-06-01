@@ -115,6 +115,10 @@ public class JedisUtils {
 	 * @return
 	 */
 	public static String set(String key, String value, int cacheSeconds) {
+		if(StringUtils.isBlank(key)){
+			logger.debug("set {} = {}", key, value);
+			return null;
+		}
 		String result = null;
 		Jedis jedis = null;
 		try {
