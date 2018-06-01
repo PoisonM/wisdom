@@ -798,6 +798,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			expenditureAndIncomeResponseDTO.setShopNewUserNumber(newCustomerMap.get(shopBossRelation.getSysShopId()));// 新客
 			expenditureAndIncomeResponseDTO.setConsumeNumber(map.get(shopBossRelation.getSysShopId()));// 人头数
 			expenditureAndIncomeResponseDTO.setConsumeTime(timeMap.get(shopBossRelation.getSysShopId()));// 次数
+			expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());
 			if (totalConsumeNumber == null) {
 				totalConsumeNumber = map.get(shopBossRelation.getSysShopId());
 			} else {
