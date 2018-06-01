@@ -33,4 +33,12 @@ public interface ShopClerkWorkService {
      * @Date:2018/5/31 11:23
      */
     Map<String, String> getShopConsumeAndRecharge(PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 批量插入员工工作记录
+    *@Date:2018/6/1 9:50
+    */
+    int saveClerkWorkRecord(List<ShopClerkWorkRecordDTO> shopClerkWorkRecordDTOs);
 }

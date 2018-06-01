@@ -107,10 +107,12 @@ public class ArchivesEarlyWarningController {
         Iterator<ShopUserArchivesDTO> iterator = shopUserArchivesInfo.iterator();
         while (iterator.hasNext()) {
             ShopUserArchivesDTO archivesDTO = iterator.next();
+            boolean removeFlag = false;
             for (ShopAppointServiceDTO serviceDTO : appointClerkInfoByCriteria) {
                 if (StringUtils.isNotBlank(archivesDTO.getSysUserId()) && StringUtils.isNotBlank(serviceDTO.getSysUserId())
-                        && archivesDTO.getSysUserId().equals(serviceDTO.getSysUserId())) {
+                        && archivesDTO.getSysUserId().equals(serviceDTO.getSysUserId()) && !removeFlag) {
                     iterator.remove();
+                    removeFlag = true;
                 }
                 archivesDTO.setUpdateDate(serviceDTO.getAppointStartTime());
             }

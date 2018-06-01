@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,5 +52,30 @@ public class ClerkTest {
         pageParamVoDTO.setRequestData(shopClerkWorkRecordDTO);
         //List<ShopClerkWorkRecordResponseDTO> w=shopClerkWorkService.getShopCustomerConsumeRecordList(pageParamVoDTO);
     }
-
+    @Test
+    public  void  testSave(){
+        List<ShopClerkWorkRecordDTO> shopClerkWorkRecordDTOs=new ArrayList<>();
+        ShopClerkWorkRecordDTO shopClerkWorkRecordDTO=new ShopClerkWorkRecordDTO();
+        shopClerkWorkRecordDTO.setGoodsType("0");
+        shopClerkWorkRecordDTO.setGoodsType("1");
+        shopClerkWorkRecordDTO.setFlowNo("99999999");
+        shopClerkWorkRecordDTO.setSysClerkId("9898");
+        shopClerkWorkRecordDTO.setSysShopId("987788");
+        ShopClerkWorkRecordDTO shopClerkWorkRecordDTO2=new ShopClerkWorkRecordDTO();
+        shopClerkWorkRecordDTO2.setGoodsType("0");
+        shopClerkWorkRecordDTO2.setGoodsType("1");
+        shopClerkWorkRecordDTO2.setFlowNo("77777777");
+        shopClerkWorkRecordDTO2.setSysClerkId("9898");
+        shopClerkWorkRecordDTO2.setSysShopId("987788");
+        ShopClerkWorkRecordDTO shopClerkWorkRecordDTO3=new ShopClerkWorkRecordDTO();
+        shopClerkWorkRecordDTO3.setGoodsType("0");
+        shopClerkWorkRecordDTO3.setGoodsType("1");
+        shopClerkWorkRecordDTO3.setFlowNo("66666666666");
+        shopClerkWorkRecordDTO3.setSysClerkId("9898");
+        shopClerkWorkRecordDTO3.setSysShopId("987788");
+        shopClerkWorkRecordDTOs.add(shopClerkWorkRecordDTO);
+        shopClerkWorkRecordDTOs.add(shopClerkWorkRecordDTO2);
+        shopClerkWorkRecordDTOs.add(shopClerkWorkRecordDTO3);
+        shopClerkWorkService.saveClerkWorkRecord(shopClerkWorkRecordDTOs);
+    }
 }
