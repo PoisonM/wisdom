@@ -369,6 +369,15 @@ public class IncomeService {
                 logger.info("service -- 月度奖励详情queryMonthRecordByParentRelation方法转换nickName失败" );
                 e.printStackTrace();
             }
+            IncomeRecordDTO incomeRecord = new IncomeRecordDTO();
+            incomeRecord.setTransactionId(monthTransactionRecordDTO.getTransactionId());
+            incomeRecord.setSysUserId(monthTransactionRecordDTO.getUserId());
+            List<IncomeRecordDTO> incomeRecordDTOS = incomeMapper.getUserIncomeInfo(incomeRecord);
+            float amountMoney = 0;
+            for(IncomeRecordDTO incomeRecordDTO:incomeRecordDTOS){
+                amountMoney = amountMoney+incomeRecordDTO.getAmount();
+            }
+            monthTransactionRecordDTO.setAmountMoney(amountMoney);
             UserInfoDTO selfUserInfoDTO = userServiceClient.getUserInfoFromUserId(monthTransactionRecordDTO.getUserId());
             UserInfoDTO nextUserInfoDTO = userServiceClient.getUserInfoFromUserId(monthTransactionRecordDTO.getNextUserId());
             monthTransactionRecordDTO.setUserTypeNow(selfUserInfoDTO.getUserType());
