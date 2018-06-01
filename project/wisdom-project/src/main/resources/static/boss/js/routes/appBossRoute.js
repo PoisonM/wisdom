@@ -1345,8 +1345,8 @@ define(['appBoss'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.newUserCtrl',
-                                    ['js/controllers/archives/newUserCtrl.js?ver='+ bossVersion],
-                                    'views/archives/newUser.html?ver=' + bossVersion);
+                                    ['js/controllers/archives/employeeNewUserCtrl.js?ver='+ bossVersion],
+                                    'views/archives/employeeNewUser.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -2067,7 +2067,380 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                /*员工端路由*/
+                /*员工端首页*/
+                    .state('employeeWorkHome', {
+                        url: '/employeeWorkHome',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeWorkHomeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeWorkHomeCtrl',
+                                    ['js/controllers/employee/employeeWorkHomeCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeWorkHome.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*员工端综合分析*/
+                    .state('employeeComprehensive', {
+                        url: '/employeeComprehensive',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeComprehensiveCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeComprehensiveCtrl',
+                                    ['js/controllers/employee/employeeComprehensiveCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeComprehensive.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*员工端排班*/
+                    .state('employeeScheduling', {
+                        url: '/employeeScheduling',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeSchedulingCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeSchedulingCtrl',
+                                    ['js/controllers/employee/employeeSchedulingCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeScheduling.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*员工预约*/
+                    .state('employeeCanceled', {
+                        url: '/employeeCanceled',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeCanceledCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeCanceledCtrl',
+                                    ['js/controllers/employee/employeeCanceledCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeCanceled.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /**/
+                    .state('employeeConfirmed', {
+                        url: '/employeeConfirmed',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeConfirmedCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeConfirmedCtrl',
+                                    ['js/controllers/employee/employeeConfirmedCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeConfirmed.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*点击已取消预约*/
+                    .state('employeeReservation', {
+                        url: '/employeeReservation',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeReservationCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeReservationCtrl',
+                                    ['js/controllers/employee/employeeReservationCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeReservation.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*取消详情页面*/
 
+                    .state('employeeCancelDetails', {
+                        url: '/employeeCancelDetails',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeCancelDetailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeCancelDetailsCtrl',
+                                    ['js/controllers/employee/employeeCancelDetailsCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeCancelDetails.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*员工端我的*/
+                    .state('employeeMyself', {
+                        url: '/employeeMyself',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeMyselfCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeMyselfCtrl',
+                                    ['js/controllers/employee/employeeMyselfCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeMyself.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*员工端我的点击设置*/
+                    .state('employeeSet', {
+                        url: '/employeeSet',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeSetCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeSetCtrl',
+                                    ['js/controllers/employee/employeeSetCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeSet.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*点击员工端头像*/
+                    .state('employeeInformation', {
+                        url: '/employeeInformation',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeInformationCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeInformationCtrl',
+                                    ['js/controllers/employee/employeeInformationCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeInformation.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*员工端我的门店*/
+                    .state('employeeMyStore', {
+                        url: '/employeeMyStore',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeMyStoreCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeMyStoreCtrl',
+                                    ['js/controllers/employee/employeeMyStoreCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeMyStore.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*点击我的门店 进入到员工我的门店*/
+                    .state('employeeBranchShop', {
+                        url: '/employeeBranchShop',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeBranchShopCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeBranchShopCtrl',
+                                    ['js/controllers/employee/employeeBranchShopCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeBranchShop.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /*员工端档案*/
+                    .state('employeePartialFiles', {
+                        url: '/employeePartialFiles',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeePartialFilesCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeePartialFilesCtrl',
+                                    ['js/controllers/employee/employeePartialFilesCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeePartialFiles.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /* newUser 新建档案*/
+                    .state('employeeNewUser', {
+                        url: '/employeeNewUser/:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeNewUserCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeNewUserCtrl',
+                                    ['js/controllers/employee/employeeNewUserCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeNewUser.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*employeeWarningFile 预警档案*/
+                    .state('employeeWarningFile', {
+                        url: '/employeeWarningFile',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeWarningFileCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeWarningFileCtrl',
+                                    ['js/controllers/employee/employeeWarningFileCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeWarningFile.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+
+                    .state('employeeArchives', {
+                        url: '/employeeArchives/:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeArchivesCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeArchivesCtrl',
+                                    ['js/controllers/employee/employeeArchivesCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeArchives.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    .state('employeeTreatmentCard', {
+                        url: '/employeeTreatmentCard/:sysUserId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeTreatmentCardCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeTreatmentCardCtrl',
+                                    ['js/controllers/employee/employeeTreatmentCardCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeTreatmentCard.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+
+                    .state('employeeTreatmentCardDtails', {
+                        url: '/employeeTreatmentCardDtails/:sysUserId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeTreatmentCardDtailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeTreatmentCardDtailsCtrl',
+                                    ['js/controllers/employee/employeeTreatmentCardDtailsCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeTreatmentCardDtails.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    .state('employeeCollectionCard', {
+                        url: '/employeeCollectionCard/:sysUserId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeCollectionCardCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeCollectionCardCtrl',
+                                    ['js/controllers/employee/employeeCollectionCardCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeCollectionCard.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+
+                    .state('employeeAccountRecords', {
+                        url: '/employeeAccountRecords/:sysUserId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeAccountRecordsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeAccountRecordsCtrl',
+                                    ['js/controllers/employee/employeeAccountRecordsCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeAccountRecords.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    .state('employeeRecordCashier', {
+                        url: '/employeeRecordCashier/:sysUserId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeRecordCashierCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeRecordCashierCtrl',
+                                    ['js/controllers/employee/employeeRecordCashierCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeRecordCashier.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*employeeDetailsOfCashier  收银详情*/
+                    .state('employeeDetailsOfCashier', {
+                        url: '/employeeDetailsOfCashier/:flowNo',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeDetailsOfCashierCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeDetailsOfCashierCtrl',
+                                    ['js/controllers/employee/employeeDetailsOfCashierCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeDetailsOfCashier.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    .state('employeeDrawCardRecords', {
+                        url: '/employeeDrawCardRecords/:sysUserId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeDrawCardRecordsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeDrawCardRecordsCtrl',
+                                    ['js/controllers/employee/employeeDrawCardRecordsCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeDrawCardRecords.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    .state('employeeDrawCardRecordsDetail', {
+                        url: '/employeeDrawCardRecordsDetail/:flowNo',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeDrawCardRecordsDetailCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeDrawCardRecordsDetailCtrl',
+                                    ['js/controllers/employee/employeeDrawCardRecordsDetailCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeDrawCardRecordsDetail.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    .state('employeeProduct', {
+                        url: '/employeeProduct/:sysUserId/:sysShopId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeProductCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeProductCtrl',
+                                    ['js/controllers/employee/employeeProductCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeProduct.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    .state('employeeProductDtails', {
+                        url: '/employeeProductDtails',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeProductDtailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeProductDtailsCtrl',
+                                    ['js/controllers/employee/employeeProductDtailsCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeProductDtails.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /* employeeRefillCard  充值卡*/
+                    .state('employeeRefillCard', {
+                        url: '/employeeRefillCard/:sysShopId/:sysUserId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeRefillCardCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeRefillCardCtrl',
+                                    ['js/controllers/employee/employeeRefillCardCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeRefillCard.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*employeeAccountDetails 账户明细*/
+                    .state('employeeAccountDetails', {
+                        url: '/employeeAccountDetails/:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeAccountDetailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeAccountDetailsCtrl',
+                                    ['js/controllers/employee/employeeAccountDetailsCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeAccountDetails.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*employeeBalanceRecord 欠款记录*/
+                    .state('employeeBalanceRecord', {
+                        url: '/employeeBalanceRecord',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeBalanceRecordCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeBalanceRecordCtrl',
+                                    ['js/controllers/employee/employeeBalanceRecordCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeBalanceRecord.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                
+                /**/
                 /*
                  orderdDtails 详情（订单）
                  payDtails详情（支付)
@@ -2136,6 +2509,6 @@ define(['appBoss'], function(app){
                  selectTheOutboundType 选择出库类型
                  productInventory 选择更多产品盘点
                  productPutInStorageMore  选择更多产品入库*/
-                $urlRouterProvider.otherwise('/workHome')
+                 $urlRouterProvider.otherwise('/workHome')
             }])
 })

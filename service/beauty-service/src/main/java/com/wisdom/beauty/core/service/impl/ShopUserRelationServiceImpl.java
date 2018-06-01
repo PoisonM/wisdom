@@ -203,7 +203,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         }
 
         int update = sysShopMapper.updateByPrimaryKeySelective(extSysShopDTO);
-        mongoUtils.saveImageUrl(extSysShopDTO.getImageList(), extSysShopDTO.getId());
+        mongoUtils.updateImageUrl(extSysShopDTO.getImageList(), extSysShopDTO.getId());
         return update;
     }
 }

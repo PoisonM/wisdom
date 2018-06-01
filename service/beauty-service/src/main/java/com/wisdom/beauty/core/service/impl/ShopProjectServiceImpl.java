@@ -333,7 +333,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             for (ShopProjectInfoDTO dto : list) {
                 ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = new ShopProjectInfoResponseDTO();
                 BeanUtils.copyProperties(dto, shopProjectInfoResponseDTO);
-                shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(dto.getId()));
+                shopProjectInfoResponseDTO.setImageList(mongoUtils.getImageUrl(dto.getId()));
                 responseDTOS.add(shopProjectInfoResponseDTO);
 			}
 		}
@@ -362,7 +362,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 		BeanUtils.copyProperties(shopProjectInfoDTO, shopProjectInfoResponseDTO);
 
-        shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
+        shopProjectInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
 		return shopProjectInfoResponseDTO;
 	}
 
@@ -472,10 +472,15 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	 * @return
 	 */
 	@Override
-	public int updateProjectInfo(ShopProjectInfoDTO shopProjectInfoDTO) {
+	public int updateProjectInfo(ExtShopProjectInfoDTO shopProjectInfoDTO) {
 		if (CommonUtils.objectIsEmpty(shopProjectInfoDTO)) {
 			logger.error("更新项目信息传入参数有误={}", "shopProjectInfoDTO = [" + shopProjectInfoDTO + "]");
 			return 0;
+		}
+		//保存图片信息
+		if (CommonUtils.objectIsNotEmpty(shopProjectInfoDTO.getImageList())) {
+			mongoUtils.saveImageUrl(shopProjectInfoDTO.getImageList(), shopProjectInfoDTO.getId());
+			shopProjectInfoDTO.setProjectUrl(shopProjectInfoDTO.getImageList().get(0));
 		}
 		return shopProjectInfoMapper.updateByPrimaryKeySelective(shopProjectInfoDTO);
 	}

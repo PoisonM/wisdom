@@ -7,6 +7,7 @@ import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
+import com.wisdom.beauty.core.service.ShopClerkWorkService;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
@@ -15,6 +16,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.IdGen;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +44,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 	@Autowired
 	private ShopUserConsumeRecordMapper shopUserConsumeRecordMapper;
+	@Autowired
+	private ShopClerkWorkService shopClerkWorkService;
 
 	@Autowired
 	private ShopProjectGroupService shopProjectGroupService;
@@ -209,12 +213,14 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			flowIds.add(shopUserConsumeRecordDTO.getFlowId());
 			consumeTypes.add(shopUserConsumeRecordDTO.getConsumeType());
 			goodsTypes.add(shopUserConsumeRecordDTO.getGoodsType());
-			if (totalAmount == null) {
-				totalAmount = shopUserConsumeRecordDTO.getPrice()
-						.multiply(new BigDecimal(shopUserConsumeRecordDTO.getConsumeNumber()));
-			} else {
-				totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice()
-						.multiply(new BigDecimal(shopUserConsumeRecordDTO.getConsumeNumber())));
+			if(null != shopUserConsumeRecordDTO.getPrice()){
+				if (totalAmount == null) {
+					totalAmount = shopUserConsumeRecordDTO.getPrice()
+							.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber()?0:shopUserConsumeRecordDTO.getConsumeNumber()));
+				} else {
+					totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice()
+							.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber()?0:shopUserConsumeRecordDTO.getConsumeNumber())));
+				}
 			}
 		}
 		if (consumeTypes.contains(ConsumeTypeEnum.RECHARGE.getCode())) {
@@ -342,9 +348,37 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		logger.info("保存用户消费或充值记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
 
 		int insert = shopUserConsumeRecordMapper.insert(shopUserConsumeRecordDTO);
-
+		saveShopClerkWorkRecord(shopUserConsumeRecordDTO.getSysClerkId(), shopUserConsumeRecordDTO);
 		return insert;
 	}
+
+	/**
+	 * 生成店员流水记录
+	 *
+	 * @param sysClerkId
+	 * @param consumeRecordDTO
+	 */
+	private void saveShopClerkWorkRecord(String sysClerkId, ShopUserConsumeRecordDTO consumeRecordDTO) {
+		if (com.wisdom.common.util.StringUtils.isNotBlank(sysClerkId)) {
+			String[] clerks = sysClerkId.split(";");
+			List<ShopClerkWorkRecordDTO> recordDTOS = new ArrayList<>();
+			for (String clerk : clerks) {
+				ShopClerkWorkRecordDTO recordDTO = new ShopClerkWorkRecordDTO();
+				recordDTO.setPrice(consumeRecordDTO.getPrice());
+				recordDTO.setId(IdGen.uuid());
+				recordDTO.setPayType(consumeRecordDTO.getPayType());
+				recordDTO.setFlowNo(consumeRecordDTO.getFlowNo());
+				recordDTO.setSysClerkId(clerk);
+				recordDTO.setGoodsType(consumeRecordDTO.getGoodsType());
+				recordDTO.setSysShopId(consumeRecordDTO.getSysShopId());
+				recordDTO.setCreateDate(new Date());
+				recordDTO.setConsumeRecordId(consumeRecordDTO.getId());
+				recordDTOS.add(recordDTO);
+			}
+			shopClerkWorkService.saveClerkWorkRecord(recordDTOS);
+		}
+	}
+
 
 	/**
 	 * 更新用户的消费记录

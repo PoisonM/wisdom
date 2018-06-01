@@ -156,7 +156,7 @@ public class UserUtils {
      * @return
      */
     public static Map<String, String> getHeadersInfo(HttpServletRequest request) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(6);
         Enumeration headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String key = (String) headerNames.nextElement();

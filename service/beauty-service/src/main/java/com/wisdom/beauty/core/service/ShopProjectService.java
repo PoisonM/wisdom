@@ -142,7 +142,7 @@ public interface ShopProjectService {
      * @param shopProjectInfoDTO
      * @return
      */
-    int updateProjectInfo(ShopProjectInfoDTO shopProjectInfoDTO);
+    int updateProjectInfo(ExtShopProjectInfoDTO shopProjectInfoDTO);
 
     /**
      * 保存项目

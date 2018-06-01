@@ -136,7 +136,9 @@
 .scheduling table tbody tr td div{
     line-height: 50px;
 }
-
+.scheduling table tbody tr td .employeeBox{
+    line-height: 20px;
+}
 .scheduling .list td img{width: 20px;height: 20px;margin: auto}
 .scheduling  #ofix1_tb_header thead td:nth-child(1){
     padding-left: 55px;

@@ -4,6 +4,7 @@ PADWeb.controller("left_navCtrl", function($scope, $state,$stateParams, FindArch
         peopleListFlag: false,
         priceListFlag: true
     }
+    $scope.$parent.mainSwitch.footerBoxFlag = true
 
 
     //获取档案列表

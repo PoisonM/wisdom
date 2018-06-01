@@ -37,6 +37,16 @@ public class ShopUserPayDTO {
 
     private String detail;
 
+    private String oweAmount;
+
+    public String getOweAmount() {
+        return oweAmount;
+    }
+
+    public void setOweAmount(String oweAmount) {
+        this.oweAmount = oweAmount;
+    }
+
     public String getBalancePay() {
         return balancePay;
     }

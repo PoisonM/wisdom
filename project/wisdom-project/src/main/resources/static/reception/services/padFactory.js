@@ -1,7 +1,6 @@
-var beautyIP = '/beauty/';
-var userIP = '/user/';
-var systemService = '/system-service/';
-var appointmentInfo = "http://localhost:9051/appointmentInfo/";
+var beautyIP = 'http://192.168.1.117/beauty/';
+var userIP = 'http://192.168.1.117/user/';
+var systemService = 'http://192.168.1.117/system-service/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
             /*request: function(config) {
@@ -67,10 +66,6 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     //http轮询
     .factory('getUserScanInfo', ['$resource', function($resource) {
         return $resource(beautyIP + 'shop/getUserScanInfo')
-    }])
-
-    .factory('ShopDayAppointmentInfoByDate', ['$resource', function($resource) {
-        return $resource(appointmentInfo + 'shopDayAppointmentInfoByDate')
     }])
     .factory('Archives', ['$resource', function($resource) {
         return $resource(beautyIP + 'archives/:userId', { userId: '@id' })
