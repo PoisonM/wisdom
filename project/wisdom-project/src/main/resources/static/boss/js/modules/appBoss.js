@@ -46,6 +46,13 @@ define(['angular'], function (angular) {
                 outShopStockType : '',
                 shopStoreId:''
             };
+            $rootScope.settingAddsome={
+                editedRecharge:'',/*充值卡信息*/
+                editorCard:'',/*套卡信息*/
+                extShopProjectInfoDTO:'',/*项目信息*/
+                product:"",/*产品信息*/
+                productId:''/*用于查询产品详情*/
+            }
         })
     return app;
 });
