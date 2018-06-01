@@ -10,12 +10,9 @@ angular.module('controllers',[]).controller('selBrandCtrl',
                 }
             })
             $scope.selBand = function(name,oneId){
-                if($stateParams.type== 'add'){
-                    $state.go('addProduct',{id:$stateParams.id, band:name,oneId:oneId})
-                }else{
-                    $state.go('modifyProduct',{id:$stateParams.id, band:name,oneId:oneId})
-                }
-
+                    $state.go($stateParams.url)
+                    $rootScope.settingAddsome.product.productTypeOneName=name
+                    $rootScope.settingAddsome.product.productTypeOneId=oneId
             }
 
         }])

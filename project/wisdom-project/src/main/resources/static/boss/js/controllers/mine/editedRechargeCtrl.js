@@ -27,7 +27,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                         $rootScope.settingAddsome.editedRecharge.timesList =data.responseData.timesList;
                         $rootScope.settingAddsome.editedRecharge.periodList =data.responseData.periodList;
                         $rootScope.settingAddsome.editedRecharge.productList =data.responseData.productList;
-                       /* if($rootScope.settingAddsome.editedRecharge.productList.length>0){
+                        if($rootScope.settingAddsome.editedRecharge.productList.length>0){
                             $scope.param.appearArr[2]=true
                         }
                         if($rootScope.settingAddsome.editedRecharge.periodList.length>0){
@@ -35,7 +35,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                         }
                         if($rootScope.settingAddsome.editedRecharge.timesList.length>0){
                             $scope.param.appearArr[0]=true
-                        }*/
+                        }
 
                     })
 

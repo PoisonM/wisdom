@@ -6,7 +6,11 @@
 <ion-view class="bg">
     <ion-content style="margin-bottom: 45px">
       <div class="list fs15">
-          <li class="item"><span class="col33 mt20 disp">头像</span><img ng-src="{{userInfo.photo}}" style="width: 80px;height: 80px;" class="fr mr20"></li>
+          <li class="item" style="position: relative;">
+              <span class="col33 mt20 disp">头像</span>
+              <input type="file" style="width: 80px;height: 80px;position: absolute;right: 16px;top: 15px;opacity: 0;" onchange="angular.element(this).scope().img_upload(this.files)">
+              <img ng-src="{{userInfo.photo}}" style="width: 80px;height: 80px;" class="fr ">
+          </li>
           <label class="item item-input">
               <span class="input-label">名字</span>
               <input type="text"  class="tr" ng-model="userInfo.nickname">

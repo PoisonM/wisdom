@@ -6,7 +6,6 @@ angular.module('controllers',[]).controller('addSeriesCtrl',
                 selTrue:[]
             };
             $scope.productBrandGo = function () {
-                console.log(1)
                 var requestList = {
                     requestList:$scope.requestList
                 };

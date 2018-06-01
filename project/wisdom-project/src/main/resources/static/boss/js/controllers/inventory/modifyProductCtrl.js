@@ -25,7 +25,7 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.modifyProduct.effectDate = $filter('date')(val, 'yyyy-MM-dd')
+                    $rootScope.settingAddsome.product.effectDate = $filter('date')(val, 'yyyy-MM-dd')
 
                 }
             };
@@ -55,65 +55,54 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
-            ProductInfoMess.get({
-                productId:$stateParams.id
-            },function (data) {
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $scope.modifyProduct = data.responseData;
-                    $scope.style('oneId','productTypeOneId');
-                    $scope.style('twoId','productTypeTwoId');
-                    $scope.style('band','productTypeOneName');
-                    $scope.style('series','productTypeTwoName');
-                    $scope.style('spec','productSpec');
-                    $scope.style('unit','productUnit');
-                    $scope.style('parts','productPosition');
-                    $scope.style('func','productFunction');
-                    if($scope.modifyProduct.status =='0'){
-                        $scope.param.status = true;
-                    }else{
-                        $scope.param.status = false;
+            if( $stateParams.id !=''){
+                $rootScope.settingAddsome.productId = $stateParams.id
+
+                ProductInfoMess.get({
+                    productId:$rootScope.settingAddsome.productId
+                },function (data) {
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $rootScope.settingAddsome.product = data.responseData;
+                        if($rootScope.settingAddsome.product.status =='0'){
+                            $scope.param.status = true;
+                        }else{
+                            $scope.param.status = false;
+                        }
                     }
-                }
-            })
-            $scope.selProductType = function(type){
-                $scope.modifyProduct.productType = type
+                })
             }
 
-            $scope.style = function(routeStyle,dataStyle){
-                if($stateParams[routeStyle] !=""){
-                    $scope.modifyProduct =JSON.parse(localStorage.getItem('modifyProduct'));
-                    $scope.modifyProduct[dataStyle] =$stateParams[routeStyle];
-                }
+
+            $scope.selProductType = function(type){
+                $rootScope.settingAddsome.product.productType = type
             }
+
             /*选择品牌*/
             $scope.selBrandGo = function () {
-                $state.go('selBrand',{id:$stateParams.id});
-                localStorage.setItem('modifyProduct',JSON.stringify($scope.modifyProduct));
+                $state.go('selBrand',{url:'modifyProduct'});
             }
             /*选择系列*/
             $scope.selectionSeriesGo=function(){
-                $state.go("selectionSeries",{id:$stateParams.id,productTypeOneId:$scope.modifyProduct.productTypeOneId})
-                localStorage.setItem('modifyProduct',JSON.stringify($scope.modifyProduct));
+                $state.go("selectionSeries",{url:'modifyProduct'})
             }
             /*选择规格*/
             $scope.specificationsGo = function(){
-                $state.go("specifications",{id:$stateParams.id,productSpec:$scope.modifyProduct.productSpec})
-                localStorage.setItem('modifyProduct',JSON.stringify($scope.modifyProduct));
+                $state.go("specifications",{url:'modifyProduct'})
+
             }
             /*选择单位*/
             $scope.unitGo = function(){
-                $state.go("unit",{id:$stateParams.id})
-                localStorage.setItem('modifyProduct',JSON.stringify($scope.modifyProduct));
+                $state.go("unit",{url:'modifyProduct'})
             }
             /*适用部位*/
             $scope.applicablePartsGo = function(){
-                $state.go("applicableParts",{id:$stateParams.id})
-                localStorage.setItem('modifyProduct',JSON.stringify($scope.modifyProduct));
+                $state.go("applicableParts",{url:'modifyProduct'})
+
             }
             /*选择功效*/
             $scope.efficacyGo = function(){
-                $state.go("efficacy",{id:$stateParams.id,productFunc:$scope.modifyProduct.productFunction})
-                localStorage.setItem('modifyProduct',JSON.stringify($scope.modifyProduct));
+                $state.go("efficacy",{url:'modifyProduct'})
+
             }
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
@@ -121,7 +110,7 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
             $scope.img_upload = function(files) {
                 console.log(files)
                 if(files.length <=0)return
-                if($scope.modifyProduct.imageUrl.length>6){
+                if($rootScope.settingAddsome.product.imageUrl.length>6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -132,7 +121,7 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $scope.modifyProduct.imageUrl.push(data.responseData)
+                                $rootScope.settingAddsome.product.imageUrl.push(data.responseData)
                             }
 
                         })
@@ -146,22 +135,22 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
 
             };
             $scope.delPic = function(index){
-                $scope.modifyProduct.imageUrl.splice(index,1)
+                $rootScope.settingAddsome.product.imageUrl.splice(index,1)
             }
 
 
 
             $scope.save = function(type){
                 if(type=="0"){
-                    $scope.modifyProduct.status = '1';
+                    $rootScope.settingAddsome.product.status = '1';
                 }else{
                     if($scope.param.status ==true){
-                        $scope.modifyProduct.status = '0';
+                        $rootScope.settingAddsome.product.status = '0';
                     }else{
-                        $scope.modifyProduct.status = '1';
+                        $rootScope.settingAddsome.product.status = '1';
                     }
                 }
-                UpdateProductInfo.save($scope.modifyProduct,function(data){
+                UpdateProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS){
                         localStorage.removeItem('modifyProduct');
 

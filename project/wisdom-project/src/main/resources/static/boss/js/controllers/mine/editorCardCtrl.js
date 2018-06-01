@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('editorCardCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopProjectGroupDetail','Global','$filter','UpdateProjectGroupInfo',
-        function ($scope,$rootScope,$stateParams,$state,GetShopProjectGroupDetail,Global,$filter,UpdateProjectGroupInfo) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopProjectGroupDetail','Global','$filter','UpdateProjectGroupInfo','ImageBase64UploadToOSS',
+        function ($scope,$rootScope,$stateParams,$state,GetShopProjectGroupDetail,Global,$filter,UpdateProjectGroupInfo,ImageBase64UploadToOSS) {
 
             $rootScope.title = "编辑套卡";
             $scope.param = {
@@ -93,7 +93,37 @@ angular.module('controllers',[]).controller('editorCardCtrl',
 
             }
             date()
-            
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+                if($rootScope.settingAddsome.editorCard.imageUrl == null){
+                    $rootScope.settingAddsome.editorCard.imageUrl=[]
+                }
+                if($rootScope.settingAddsome.editorCard.imageUrl.length>6){
+                    alert("图片上传不能大于6张")
+                    return
+                }
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $rootScope.settingAddsome.editorCard.imageUrl.push(data.responseData)
+                            }
+
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
             $scope.delPic = function (index) {
                 $rootScope.settingAddsome.editorCard.imageUrl.splice(index,1)
             };

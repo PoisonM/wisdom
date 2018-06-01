@@ -7,12 +7,12 @@ angular.module('controllers',[]).controller('addProjectSeriesCtrl',
 
             $rootScope.title = "";
 
-            TwoLevelProject.get({id:$scope.settingAddsome.project.projectTypeOneId},function (data) {
+            TwoLevelProject.get({id:$scope.settingAddsome.extShopProjectInfoDTO.projectTypeOneId},function (data) {
                 $scope.seriesList=data.responseData;
             });
             $scope.selectSeries=function (seriesId,seriesName) {
-                $rootScope.settingAddsome.project.projectTypeTwoId=seriesId
-                $rootScope.settingAddsome.project.projectTypeTwoName=seriesName
+                $rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoId=seriesId
+                $rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName=seriesName
                 $state.go($stateParams.url,{projectId:$stateParams.projectId})
 
             }

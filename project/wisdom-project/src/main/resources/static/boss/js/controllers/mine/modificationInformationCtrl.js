@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('modificationInformationCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetCurrentLoginUserInfo','UpdateBossInfo',
-        function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,UpdateBossInfo) {
+    ['$scope','$rootScope','$stateParams','$state','GetCurrentLoginUserInfo','UpdateBossInfo','ImageBase64UploadToOSS','Global',
+        function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,UpdateBossInfo,ImageBase64UploadToOSS,Global) {
 
             $rootScope.title = "修改资料";
             $scope.userInfo={
@@ -21,6 +21,30 @@ angular.module('controllers',[]).controller('modificationInformationCtrl',
             GetCurrentLoginUserInfo.get(function (data) {
                 $scope.userInfo=data.responseData;
             });
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $scope.userInfo.photo=data.responseData
+                            }
+
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
             /*修改我的信息*/
             $scope.Preservation=function () {
                 /*查询到的所有内容全部保存到修改的接口*/

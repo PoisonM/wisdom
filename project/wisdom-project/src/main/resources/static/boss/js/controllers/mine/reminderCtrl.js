@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('reminderCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetBossShopScheduleSetting','UpdateBossShopScheduleSetting','GetBossShopList',
-        function ($scope,$rootScope,$stateParams,$state,GetBossShopScheduleSetting,UpdateBossShopScheduleSetting,GetBossShopList) {
+    ['$scope','$rootScope','$stateParams','$state','GetBossShopScheduleSetting','UpdateBossShopScheduleSetting','GetBossShopList','Global',
+        function ($scope,$rootScope,$stateParams,$state,GetBossShopScheduleSetting,UpdateBossShopScheduleSetting,GetBossShopList,Global) {
 
             $rootScope.title = "提醒设置";
             $scope.param = {
@@ -79,6 +79,9 @@ angular.module('controllers',[]).controller('reminderCtrl',
                     requestList:$scope.reminder
                 }
                 UpdateBossShopScheduleSetting.save($scope.request,function(data){
+                    if(data.result==Global.SUCCESS){
+                        $state.go("basicSetting")
+                    }
 
                 })
             }

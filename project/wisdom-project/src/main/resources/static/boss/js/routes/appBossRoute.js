@@ -374,7 +374,7 @@ define(['appBoss'], function(app){
                     })
                 /*美容院分店*/
                     .state('beautyBranch', {
-                        url: '/beautyBranch',
+                        url: '/beautyBranch/:sysShopId,:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'beautyBranchCtrl',
                         resolve: {
@@ -431,7 +431,7 @@ define(['appBoss'], function(app){
                     /*选择系列*/
 
                     .state('selectionSeries', {
-                        url: '/selectionSeries/:productTypeOneId/:id,:type',
+                        url: '/selectionSeries/:url',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectionSeriesCtrl',
                         resolve: {
@@ -1365,7 +1365,7 @@ define(['appBoss'], function(app){
                     })
                     /*specifications   规格*/
                     .state('specifications', {
-                        url: '/specifications/:id/:type,:productSpec',
+                        url: '/specifications/:url',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'specificationsCtrl',
                         resolve: {
@@ -1502,7 +1502,7 @@ define(['appBoss'], function(app){
                     })
                     /*unit  单位*/
                     .state('unit', {
-                        url: '/unit/:id,:type',
+                        url: '/unit/:url',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'unitCtrl',
                         resolve: {
@@ -1515,7 +1515,7 @@ define(['appBoss'], function(app){
                     })
                     /* efficacy 功效*/
                     .state('efficacy', {
-                        url: '/efficacy/:productFunc/:id,:type',
+                        url: '/efficacy/:url',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'efficacyCtrl',
                         resolve: {
@@ -1756,7 +1756,7 @@ define(['appBoss'], function(app){
                     })
                 /*applicableParts 适用部位*/
                     .state('applicableParts', {
-                        url: '/applicableParts/:id,:type',
+                        url: '/applicableParts/:url',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'applicablePartsCtrl',
                         resolve: {
@@ -1913,7 +1913,7 @@ define(['appBoss'], function(app){
                     })
                     /*selBrand 选择品牌*/
                     .state('selBrand', {
-                        url: '/selBrand/:id,:type',
+                        url: '/selBrand/:url',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selBrandCtrl',
                         resolve: {

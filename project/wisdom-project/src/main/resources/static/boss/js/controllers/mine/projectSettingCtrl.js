@@ -26,8 +26,8 @@ angular.module('controllers',[]).controller('projectSettingCtrl',
                 console.log(status)
                 if($scope.param.editType=="add"){
 
-                    SaveShopProjectType.get({projectTypeName:$scope.param.projectTypeName,status:status},function (data) {
-                        if(data.result=="0x00002"){
+                    SaveShopProjectType.save({projectTypeName:$scope.param.projectTypeName,status:status},function (data) {
+                        if(data.result=="0x00001"){
                             $state.go("projectBrand")
                         }
                     });

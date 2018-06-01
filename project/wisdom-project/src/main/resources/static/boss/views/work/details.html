@@ -198,7 +198,7 @@
                     <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                         <p class="ml10 fs15 col333"> 总金额</p>
                         <p class="mr10 col888">
-                            ￥4888.00
+                            ￥{{details.sumAmount}}
                         </p>
                     </ion-item>
                 </opn-list>
@@ -210,7 +210,7 @@
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10"> 微信</p>
                             <p class="mr10 col888">
-                                ￥4888.00
+                                ***￥4888.00
                             </p>
                         </ion-item>
                     </opn-list>
@@ -218,12 +218,12 @@
             </div>
 
             <p class="h50 ml10">顾客签字</p>
-            <div style="height:156px;" class="bgfff">
+            <div style="height:156px;background: url('{{details.signUrl}}');background-size: contain;background-position: center center" class="bgfff" >
 
             </div>
             <p class="h50 ml10 fs14">备注</p>
-            <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff">
-
+            <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff" >
+                 {{details.detail}}
             </textarea>
 
 

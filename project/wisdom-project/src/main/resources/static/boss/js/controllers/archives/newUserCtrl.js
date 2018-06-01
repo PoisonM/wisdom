@@ -43,7 +43,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $scope.newUser.imageUrl.push(data.responseData)
+                                $scope.newUser.imageUrl=data.responseData
                             }
 
                         })
@@ -56,6 +56,12 @@ angular.module('controllers',[]).controller('newUserCtrl',
 
 
             };
+            $scope.pho = function () {
+                if(!(/^1[34578]\d{9}$/.test($scope.newUser.phone))){
+                    alert("手机号格式不正确")
+                }
+
+            }
 
             /*更新保存*/
             $scope.preservation=function () {
@@ -74,7 +80,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     /*修改档案更新保存*/
                     UpdateArchiveInfo.save($scope.userInformation,function (data) {
                         if(Global.SUCCESS=data.result){
-                            $state.go("archives")
+                            $state.go("archives",{id:$stateParams.id})
                         }
                     });
                 }

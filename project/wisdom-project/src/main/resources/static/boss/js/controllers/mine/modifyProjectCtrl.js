@@ -21,8 +21,8 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
             }
 
             ProjectInfo.get({id:$scope.param.projectId},function (data) {
-                $scope.settingAddsome.project=data.responseData;
-                if($rootScope.settingAddsome.project.status=="1"){
+                $scope.settingAddsome.extShopProjectInfoDTO=data.responseData;
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.status=="1"){
                     $scope.param.status=false
                 }else {
                     $scope.param.status=true
@@ -30,7 +30,7 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
 
                 $scope.secondaryCard=function (type,timeLength) {
                     if(type !='-1') {
-                        $rootScope.settingAddsome.project.cardType = type;
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.cardType = type;
                         $scope.param.timeLength = timeLength
                     }
 
@@ -40,7 +40,7 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($scope.modifyList.imageUrl.length>6){
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.imageList.length>6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -51,7 +51,7 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $rootScope.settingAddsome.project.imageUrl.push(data.responseData)
+                                $rootScope.settingAddsome.extShopProjectInfoDTO.imageList.push(data.responseData)
                             }
 
                         })
@@ -65,20 +65,20 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
 
             };
             $scope.delPic = function(index){
-                $rootScope.imageUrl.splice(index,1)
+                $rootScope.settingAddsome.extShopProjectInfoDTO.imageList.splice(index,1)
             }
             /*点击保存调取接口*/
 
             $scope.Preservation=function () {
                 if($scope.param.status==true){/*如果为true显示不启动，反之启动*/
-                    $rootScope.settingAddsome.project.status="0"
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.status="0"
                 }else {
-                    $rootScope.settingAddsome.project.status ='1'
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.status ='1'
                 }
-                if($rootScope.settingAddsome.project.projectTypeOneName ==''||$rootScope.settingAddsome.project.projectTypeTwoName ==''||$rootScope.settingAddsome.project.projectName ==''||$rootScope.settingAddsome.project.projectDuration ==''||$rootScope.settingAddsome.project.oncePrice ==''||$rootScope.settingAddsome.project.discountPrice ==''){
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==''){
                     alert("请检查信息")
                 }
-                UpdateProjectInfo.save($scope.settingAddsome.project,function (data) {
+                UpdateProjectInfo.save($scope.settingAddsome.extShopProjectInfoDTO,function (data) {
                     if(data.result=="0x00001"){
                       $state.go("projectList")
                     }

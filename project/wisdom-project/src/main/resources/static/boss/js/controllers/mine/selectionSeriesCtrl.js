@@ -11,18 +11,17 @@ angular.module('controllers',[]).controller('selectionSeriesCtrl',
                 id:$stateParams.id
             }
             TwoLevelProduct.get({
-               id:$stateParams.productTypeOneId
+               id:$rootScope.settingAddsome.product.productTypeOneId
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.selectionSeries = data.responseData
                 }
             })
             $scope.series = function (productTypeName,id) {
-                if($stateParams.type=='add'){
-                    $state.go('addProduct',{series:productTypeName,id:$scope.param.id,twoId:id})
-                }else{
-                    $state.go('modifyProduct',{series:productTypeName,id:$scope.param.id,twoId:id})
-                }
+                $state.go($stateParams.url)
+                $rootScope.settingAddsome.product.productTypeTwoName =productTypeName
+                $rootScope.settingAddsome.product.productTypeTwoId =id
+
             }
 
         }]);

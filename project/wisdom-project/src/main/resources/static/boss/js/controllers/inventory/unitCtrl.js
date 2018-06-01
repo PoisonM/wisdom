@@ -9,12 +9,8 @@ angular.module('controllers',[]).controller('unitCtrl',
                 ]
             }
             $scope.unit = function (unitName) {
-                if($stateParams.type =='add'){
-                    $state.go('addProduct',{unit:unitName})
-                }else{
-                    $state.go('modifyProduct',{unit:unitName,id:$stateParams.id})
-                }
-
+                $state.go($stateParams.url)
+                $rootScope.settingAddsome.product.productUnit =unitName
             }
 
         }])

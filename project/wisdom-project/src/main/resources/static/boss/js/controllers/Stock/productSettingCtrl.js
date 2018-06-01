@@ -29,14 +29,14 @@ angular.module('controllers',[]).controller('productSettingCtrl',
 
                      SaveProductTypeInfo.get({productTypeName:$scope.param.productTypeName,status:$stateParams.status},function (data) {
                          console.log(data);
-                         if(data.result=="0x00002"){
+                         if(data.result=="0x00001"){
                              $state.go("productBrand")
                          }
                      });
                  }else if($scope.param.editType=="edit"){
 
                      UpdateOneLevelTypeInfo.save({id:$scope.param.id,productTypeName:$scope.param.productTypeName,status:$stateParams.status},function (data) {
-                         if(data.result=="0x00002"){
+                         if(data.result=="0x00001"){
                              $state.go("productBrand")
                          }
                       })

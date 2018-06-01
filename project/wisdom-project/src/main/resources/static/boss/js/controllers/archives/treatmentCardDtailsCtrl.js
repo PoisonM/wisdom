@@ -5,12 +5,15 @@ angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
             $scope.param={
                 flag:true,
                 sysUserId	:$stateParams.sysUserId
+
             };
             $scope.chooseTab = function (type) {
                 if(type =="0"){
                     $scope.param.flag = true
+                    $scope.getInfo()
                 }else{
                     $scope.param.flag = false;
+                    $scope.getInfo()
                 }
             };
             var userConsumeRequest={
@@ -19,11 +22,14 @@ angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
                 pageSize:"10",
                 sysUserId	: $scope.param.sysUserId
             };
-            Consumes.save(userConsumeRequest,function (data) {
-                 $scope.treatmentCardDtails=data.responseData;
-                console.log( $scope.treatmentCardDtails);
+            $scope.getInfo = function () {
+                Consumes.save(userConsumeRequest,function (data) {
+                    $scope.treatmentCardDtails=data.responseData;
+                    console.log( $scope.treatmentCardDtails);
 
-            });
+                });
+            }
+            $scope.getInfo()
             /*点击顾客签字*/
             $scope.drawCardRecordsDetailGO=function () {
              $state.go("drawCardRecordsDetail")

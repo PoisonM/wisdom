@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('efficacyCtrl',
             $rootScope.title = "功效";
 
             $scope.param = {
-                productFunc:$stateParams.productFunc,
+                productFunc:$rootScope.settingAddsome.product.productFunction,
                 func:"",
                 funcList:["补水",'美白','保湿','淡斑']
             }
@@ -14,13 +14,9 @@ angular.module('controllers',[]).controller('efficacyCtrl',
                 }else{
                     var func = $scope.param.productFunc
                 }
-                if($stateParams.type == 'add'){
-                    $state.go("addProduct",{func:func,id:$stateParams.id})
-                }else{
-                    $state.go("modifyProduct",{func:func,id:$stateParams.id})
-                }
-
-            }
+                $state.go($stateParams.url);
+                $rootScope.settingAddsome.product.productFunction = func
+            };
             $scope.selFunc = function(name){
                 if($scope.param.productFunc.search(name) != -1){
                     var a = $scope.param.productFunc.split(";")

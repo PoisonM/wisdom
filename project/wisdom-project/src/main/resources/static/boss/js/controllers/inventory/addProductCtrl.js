@@ -3,7 +3,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS) {
             $rootScope.title = "添加产品";
             $scope.selFlag =true
-            $scope.param ={
+            $rootScope.settingAddsome.product ={
                 productType:"0",
                 productTypeOneName:"",
                 productTypeOneId:"",
@@ -27,25 +27,9 @@ angular.module('controllers',[]).controller('addProductCtrl',
 
             }
 
-            $scope.style = function(routeStyle,dataStyle){
-                if($stateParams[routeStyle] !=""){
-                    $scope.param =JSON.parse(localStorage.getItem('param'));
-                    $scope.param[dataStyle] =$stateParams[routeStyle];
-                }
-            };
-
-            $scope.style('oneId','productTypeOneId')
-            $scope.style('band','productTypeOneName')
-            $scope.style('twoId','productTypeTwoId')
-            $scope.style('series','productTypeTwoName')
-            $scope.style('spec','productSpec')
-            $scope.style('unit','productUnit')
-            $scope.style('parts','productPosition')
-            $scope.style('func','productFunction')
 
 
-
-            if($scope. param.status =='0'){
+            if($rootScope.settingAddsome.product.status =='0'){
                 $scope.selFlag = true
             }else{
                 $scope.selFlag = false
@@ -69,7 +53,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.effectDate = $filter('date')(val, 'yyyy-MM-dd')
+                    $rootScope.settingAddsome.product.effectDate = $filter('date')(val, 'yyyy-MM-dd')
                 }
             };
             //主体对象
@@ -102,43 +86,41 @@ angular.module('controllers',[]).controller('addProductCtrl',
 
 
             $scope.selProductType = function(type){
-                $scope.param.productType = type
+                $rootScope.settingAddsome.product.productType = type
             }
             /*选择品牌*/
             $scope.selBrandGo = function () {
-                $state.go('selBrand',{type:'add'});
-                localStorage.setItem('param',JSON.stringify($scope.param));
+                $state.go('selBrand',{url:'addProduct'});
             }
             /*选择系列*/
             $scope.selectionSeriesGo=function(){
-                $state.go("selectionSeries",{type:'add',productTypeOneId:$scope.param.productTypeOneId})
-                localStorage.setItem('param',JSON.stringify($scope.param));
+                $state.go("selectionSeries",{url:'addProduct'})
             }
             /*选择规格*/
             $scope.specificationsGo = function(){
-                $state.go("specifications",{type:'add',productSpec:$scope.param.productSpec})
-                localStorage.setItem('param',JSON.stringify($scope.param));
+                $state.go("specifications",{url:'addProduct'})
+
             }
             /*选择单位*/
             $scope.unitGo = function(){
-                $state.go("unit",{type:'add'})
-                localStorage.setItem('param',JSON.stringify($scope.param));
+                $state.go("unit",{url:'addProduct'})
+               ;
             }
             /*适用部位*/
             $scope.applicablePartsGo = function(){
-                $state.go("applicableParts",{type:'add'})
-                localStorage.setItem('param',JSON.stringify($scope.param));
+                $state.go("applicableParts",{url:'addProduct'})
+
             }
             /*选择功效*/
             $scope.efficacyGo = function(){
-                $state.go("efficacy",{type:'add',productFunc:$scope.param.productFunction})
-                localStorage.setItem('param',JSON.stringify($scope.param));
+                $state.go("efficacy",{url:'addProduct'})
+
             }
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($scope.param.imageUrl.length>6){
+                if($rootScope.settingAddsome.product.imageUrl.length>6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -149,7 +131,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $scope.param.imageUrl.push(data.responseData)
+                                $rootScope.settingAddsome.product.imageUrl.push(data.responseData)
                             }
 
                         })
@@ -163,7 +145,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
 
             };
             $scope.delPic = function(index){
-                $scope.param.imageUrl.splice(index,1)
+                $rootScope.settingAddsome.product.imageUrl.splice(index,1)
             }
 
 
@@ -171,15 +153,15 @@ angular.module('controllers',[]).controller('addProductCtrl',
 
             $scope.save = function(){
                 if($scope.selFlag ==true){
-                    $scope.param.status = '0';
+                    $rootScope.settingAddsome.product.status = '0';
                 }else{
-                    $scope.param.status = '1';
+                    $rootScope.settingAddsome.product.status = '1';
                 }
-                if($scope.param.productTypeOneName == ""||$scope.param.productTypeTwoName ==""||$scope.param.productName ==""||$scope.param.marketPrice ==""||$scope.param.discountPrice ==""||$scope.param.productSpec ==""||$scope.param.productUnit ==""||$scope.param.effectDate ==""||$scope.param.qualityPeriod ==""||$scope.param.productWarningDay ==""||$scope.param.productWarningNum ==""){
+                if($rootScope.settingAddsome.product.productTypeOneName == ""||$rootScope.settingAddsome.product.productTypeTwoName ==""||$rootScope.settingAddsome.product.productName ==""||$rootScope.settingAddsome.product.marketPrice ==""||$rootScope.settingAddsome.product.discountPrice ==""||$rootScope.settingAddsome.product.productSpec ==""||$rootScope.settingAddsome.product.productUnit ==""||$rootScope.settingAddsome.product.effectDate ==""||$rootScope.settingAddsome.product.qualityPeriod ==""||$rootScope.settingAddsome.product.productWarningDay ==""||$rootScope.settingAddsome.product.productWarningNum ==""){
                     alert('信息不完全')
                 }
-                localStorage.removeItem('param');
-                SaveProductInfo.save($scope.param,function(data){
+
+                SaveProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")
                     }

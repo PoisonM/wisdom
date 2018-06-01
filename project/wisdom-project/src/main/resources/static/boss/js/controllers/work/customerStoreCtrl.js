@@ -1,6 +1,4 @@
-/**
- * Created by Administrator on 2018/5/2.
- */
+
 angular.module('controllers',[]).controller('customerStoreCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetCustomerArriveList','$filter','BossUtil',
         function ($scope,$rootScope,$stateParams,$state,GetCustomerArriveList,$filter,BossUtil) {

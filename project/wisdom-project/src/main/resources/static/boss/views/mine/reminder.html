@@ -14,7 +14,7 @@
       </div>
         <div>
             <div class="list" ng-repeat="item in reminder">
-                    <li class="item item-toggle">
+                    <li class="item item-toggle" ng-if=" item.typeName!=null">
                         <span ng-if="item.typeName == '0'">早班</span>
                         <span ng-if="item.typeName == '1'">中班</span>
                         <span ng-if="item.typeName == '2'">晚班</span>
@@ -27,7 +27,7 @@
                             </div>
                         </label>
                     </li>
-                    <li class="item"><span>上班时间 <input type="text" ng-model="item.startTime" style="width:50px;display: inline-block"></span><span class="fr mr10">下班时间 <input type="text" ng-model="item.endTime" style="width:50px;display: inline-block"></span></li>
+                    <li class="item" ng-if=" item.typeName!=null"><span>上班时间 <input type="text" ng-model="item.startTime" style="width:50px;display: inline-block"></span><span class="fr mr10">下班时间 <input type="text" ng-model="item.endTime" style="width:50px;display: inline-block"></span></li>
 
 
             </div>

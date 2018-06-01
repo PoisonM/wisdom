@@ -1,9 +1,7 @@
-/**
- * Created by Administrator on 2018/5/5.
- */
+
 angular.module('controllers',[]).controller('addCardsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$filter','SaveProjectGroupInfo',
-        function ($scope,$rootScope,$stateParams,$state,$filter,SaveProjectGroupInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$filter','SaveProjectGroupInfo','ImageBase64UploadToOSS','Global',
+        function ($scope,$rootScope,$stateParams,$state,$filter,SaveProjectGroupInfo,ImageBase64UploadToOSS,Global) {
 
             $scope.param = {
                 status:true,
@@ -13,7 +11,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
             $rootScope.settingAddsome.editorCard = {
                 projectGroupName:'',
                 shopProjectInfoDTOS:null,
-                imageUrl:['baidu'],
+                imageUrl:[],
                 marketPrice:"",
                 discountPrice:'',
                 expirationDate:$filter('date')(new Date(), 'yyyy-MM-dd'),
@@ -27,10 +25,39 @@ angular.module('controllers',[]).controller('addCardsCtrl',
             }
             $scope.delList = function(index){
                 $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.splice(index,1)
+                $scope.numMarkerPrice()
             }
+            /*上传图片*/
+            $scope.reader = new FileReader();   //创建一个FileReader接口
+            $scope.thumb = "";      //用于存放图片的base64
+            $scope.img_upload = function(files) {
+                if($rootScope.settingAddsome.editorCard.imageUrl.length>6){
+                    alert("图片上传不能大于6张")
+                    return
+                }
+                var file = files[0];
+                if(window.FileReader) {
+                    var fr = new FileReader();
+                    fr.onloadend = function(e) {
+                        $scope.thumb = e.target.result
+                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                                $rootScope.settingAddsome.editorCard.imageUrl.push(data.responseData)
+                            }
+
+                        })
+                    };
+                    fr.readAsDataURL(file);
+
+                }else {
+                    alert("浏览器不支持")
+                }
+
+
+            };
             $scope.delPic = function (index) {
                 $rootScope.settingAddsome.editorCard.imageUrl.splice(index,1)
-                $scope.numMarkerPrice()
+
             };
             $scope.expirationDate = function(){
                 $scope.settingAddsome.editorCard.expirationDate ='0'
@@ -115,7 +142,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                     return
                 }
                 SaveProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                    if(data.result==Global.SUCCESS){
                         $status.go("basicSetting")
                     }
                 })

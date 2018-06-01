@@ -1,15 +1,15 @@
 <ion-view>
-    <ion-content class="partialFiles">
+    <ion-content class="partialFiles bgf6">
         <div class="tabs-striped tabs-top tabs-background-light tabs-color-assertive">
             <div style="height:48px;">
                 <div class="tabs" style="top:0;"  >
                     <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='all']"
                        ng-click="chooseTab('0')">
-                        <span class="fs15 colff66"> 划卡记录</span>
+                        <span class="fs15 col333" ng-class="{'colff66':param.flag==true}"> 划卡记录</span>
                     </a>
                     <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='0']"
                        ng-click="chooseTab('1')">
-                        <span class="fs15 col333"> 操作记录</span>
+                        <span class="fs15 col333" ng-class="{'colff66':param.flag!=true}"> 操作记录</span>
                     </a>
                 </div>
             </div>

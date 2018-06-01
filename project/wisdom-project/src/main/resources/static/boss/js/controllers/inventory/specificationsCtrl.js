@@ -7,9 +7,9 @@ angular.module('controllers',[]).controller('specificationsCtrl',
                 num:"",
                 spec:""
             }
-            if($stateParams.productSpec !=''){
-                var num = $stateParams.productSpec.replace(/[^0-9]/ig,"");
-                var spec = $stateParams.productSpec.replace(/[^a-z]+/ig,"");
+            if($rootScope.settingAddsome.product.productSpec !=''){
+                var num = $rootScope.settingAddsome.product.productSpec.replace(/[^0-9]/ig,"");
+                var spec = $rootScope.settingAddsome.product.productSpec.replace(/[^a-z]+/ig,"");
                 $scope.param.num =num;
                 $scope.param.spec =spec;
             }
@@ -20,11 +20,8 @@ angular.module('controllers',[]).controller('specificationsCtrl',
                 $scope.param.num = $scope.param.num.replace(/[^\d]/g,'')
             }
             $scope.save=function () {
-                if($stateParams.type =='add'){
-                    $state.go("addProduct",{id:$stateParams.id,spec:$scope.param.num+$scope.param.spec})
-                }else{
-                    $state.go("modifyProduct",{id:$stateParams.id,spec:$scope.param.num+$scope.param.spec})
-                }
+                    $state.go($stateParams.url)
+                    $rootScope.settingAddsome.product.productSpec = $scope.param.num+$scope.param.spec
 
             }
 

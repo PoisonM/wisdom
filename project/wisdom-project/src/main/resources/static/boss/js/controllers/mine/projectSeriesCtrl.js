@@ -33,7 +33,7 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
             });
             $scope.selBtnShow = function(index){
                 $scope.param.selTrue[index] =!$scope.param.selTrue[index]
-            };
+              };
             $scope.sel = function(index){
                 $scope.requestList[index].status = '1'
             };

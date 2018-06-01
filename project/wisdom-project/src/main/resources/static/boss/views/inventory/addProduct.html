@@ -6,9 +6,9 @@
                 <ion-item class="pd15 h50 sb">
                     <span class="fs16 col333">产品类型</span>
                     <p class="fs14 col666">
-                        <span class="mr10" ng-click="selProductType('0')"><img  ng-src="{{param.productType =='0'?'images/seltrue.png':'images/selRed.png'}}" class="selGray "> 客装</span>
-                        <span class="mr10" ng-click="selProductType('1')"><img ng-src="{{param.productType =='1'?'images/seltrue.png':'images/selRed.png'}}"  class="selGray "> 院装</span>
-                        <span ng-click="selProductType('2')"><img ng-src="{{param.productType =='2'?'images/seltrue.png':'images/selRed.png'}}"  class="selGray"> 易耗品</span>
+                        <span class="mr10" ng-click="selProductType('0')"><img  ng-src="{{settingAddsome.product.productType =='0'?'images/seltrue.png':'images/selRed.png'}}" class="selGray "> 客装</span>
+                        <span class="mr10" ng-click="selProductType('1')"><img ng-src="{{settingAddsome.product.productType =='1'?'images/seltrue.png':'images/selRed.png'}}"  class="selGray "> 院装</span>
+                        <span ng-click="selProductType('2')"><img ng-src="{{settingAddsome.product.productType =='2'?'images/seltrue.png':'images/selRed.png'}}"  class="selGray"> 易耗品</span>
                     </p>
                 </ion-item>
             </ion-list>
@@ -17,19 +17,19 @@
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">选择品牌<span class="colff66">*</span></p>
                     <p class="fs14 col999"  ng-click="selBrandGo()">
-                        <input type="text" class="textL" ng-model="param.productTypeOneName" placeholder="请选择产品品牌" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span>  <img src="images/more.png" class="more"></span>
+                        <input type="text" class="textL" ng-model="settingAddsome.product.productTypeOneName" placeholder="请选择产品品牌" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span>  <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">选择系列<span class="colff66">*</span></p>
                     <p class="fs14 col999" ng-click="selectionSeriesGo()">
-                        <span> <input type="text" class="textL" ng-model="param.productTypeTwoName" placeholder="请选择产品系列" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"> <img src="images/more.png" class="more"></span>
+                        <span> <input type="text" class="textL" ng-model="settingAddsome.product.productTypeTwoName" placeholder="请选择产品系列" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"> <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">产品名称<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                        <input type="text" class="textL" ng-model="param.productName" placeholder="请输入名称">
+                        <input type="text" class="textL" ng-model="settingAddsome.product.productName" placeholder="请输入名称">
                     </p>
                 </ion-item>
             </ion-list>
@@ -38,7 +38,7 @@
                     图片<span class="col999">（最多可上传6张）</span>
                 </p>
                 <div style="height:130px;" class="Htab-head">
-                    <div  class=" Htab-head-item ml10" ng-repeat="item in param.imageUrl track by $index">
+                    <div  class=" Htab-head-item ml10" ng-repeat="item in settingAddsome.product.imageUrl track by $index">
                         <p style="width:105px;height:105px;position: relative;text-align: left">
                             <span  style="position: absolute;top: 0px;right: -14px;height:20px;"  ng-click="delPic($index)">
                                  <i class="ion-android-remove-circle colff66" ></i>
@@ -58,13 +58,13 @@
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">市场价<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                        <input type="text" ng-model="param.marketPrice" class="textL" placeholder="请输入市场价">
+                        <input type="text" ng-model="settingAddsome.product.marketPrice" class="textL" placeholder="请输入市场价">
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">优惠价格<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                        <input type="text" ng-model="param.discountPrice" class="textL" placeholder="请输入优惠价">
+                        <input type="text" ng-model="settingAddsome.product.discountPrice" class="textL" placeholder="请输入优惠价">
                     </p>
                 </ion-item>
             </ion-list>
@@ -73,25 +73,25 @@
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">产品编号<span class="colff66"></span></p>
                     <p class="fs14 col999">
-                        <input type="text" ng-model="param.productCode" class="textL" placeholder="请输入编码">
+                        <input type="text" ng-model="settingAddsome.product.productCode" class="textL" placeholder="请输入编码">
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">规格<span class="colff66">*</span></p>
                     <p class="fs14 col999" ng-click="specificationsGo()">
-                        <input type="text" class="textL" ng-model="param.productSpec" placeholder="请选择规格" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span> <img src="images/more.png" class="more"></span>
+                        <input type="text" class="textL" ng-model="settingAddsome.product.productSpec" placeholder="请选择规格" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span> <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">单位<span class="colff66">*</span></p>
                     <p class="fs14 col999" ng-click="unitGo()">
-                        <input type="text" class="textL" ng-model="param.productUnit" placeholder="请选择单位" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span> <img src="images/more.png" class="more"></span>
+                        <input type="text" class="textL" ng-model="settingAddsome.product.productUnit" placeholder="请选择单位" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span> <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">适用部位<span class="colff66"></span></p>
                     <p class="fs14 col999"  ng-click="applicablePartsGo()">
-                        <input type="text" class="textL" ng-model="param.productPosition" placeholder="请选择适用部位" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span>  <img src="images/more.png" class="more"></span>
+                        <input type="text" class="textL" ng-model="settingAddsome.product.productPosition" placeholder="请选择适用部位" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span>  <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
                 <ion-item class="pd15 ">
@@ -102,7 +102,7 @@
                         </p>
                     </div>
                     <div style="display: flex;flex-flow: wrap;">
-                        <span style="display: inline-block;padding: 0 7px;border-radius:4px;border:solid 1px #FF6666;height:20px;line-height: 20px;color: #FF6666;margin-bottom: 10px;margin-right:10px; "class="fs14" ng-repeat="ceshiItem in (param.productFunction.split(';'))" ng-hide="param.productFunction==''">{{ceshiItem}}</span>
+                        <span style="display: inline-block;padding: 0 7px;border-radius:4px;border:solid 1px #FF6666;height:20px;line-height: 20px;color: #FF6666;margin-bottom: 10px;margin-right:10px; "class="fs14" ng-repeat="ceshiItem in (settingAddsome.product.productFunction.split(';'))" ng-hide="settingAddsome.product.productFunction==''">{{ceshiItem}}</span>
                     </div>
 
                 </ion-item>
@@ -117,7 +117,7 @@
                     <p class="fs16 col333">生产日期<span class="colff66">*</span></p>
                     <p class="fs14 col999">
                         <ionic-datepicker input-obj="datepickerObjectEnd">
-                            <span> {{param.effectDate}}<img src="images/more.png" class="more"></span>
+                            <span> {{settingAddsome.product.effectDate}}<img src="images/more.png" class="more"></span>
                         </ionic-datepicker>
 
                     </p>
@@ -125,19 +125,19 @@
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">保质期(月)<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                        <input type="text" ng-model="param.qualityPeriod" class="textL" placeholder="请输入保质期">
+                        <input type="text" ng-model="settingAddsome.product.qualityPeriod" class="textL" placeholder="请输入保质期">
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">产品有效预警器(天)<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                        <input type="text" ng-model="param.productWarningDay" class="textL" placeholder="请输入有效预警天数">
+                        <input type="text" ng-model="settingAddsome.product.productWarningDay" class="textL" placeholder="请输入有效预警天数">
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">库存预警数量<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                        <input type="text" ng-model="param.productWarningNum" class="textL" placeholder="请输入库存预警数量">
+                        <input type="text" ng-model="settingAddsome.product.productWarningNum" class="textL" placeholder="请输入库存预警数量">
                     </p>
                 </ion-item>
             </ion-list>
@@ -163,7 +163,7 @@
             </ul>
             <div class="sb bgfff" style="height:95px;">
                 <label class=" fs16 col333 ml15 mt10">简介</label>
-                <textarea class="  fs14 col999 mt10 mr15 pd15" style="border: 1px solid #CCCCCC;border-radius: 4px;height:80px;width:80%" placeholder="请输入产品的备注信息，最长不超过50个字" ng-model="param.introduce">
+                <textarea class="  fs14 col999 mt10 mr15 pd15" style="border: 1px solid #CCCCCC;border-radius: 4px;height:80px;width:80%" placeholder="请输入产品的备注信息，最长不超过50个字" ng-model="settingAddsome.product.introduce">
                 </textarea>
             </div>
         </div>
