@@ -9,6 +9,7 @@ import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.transaction.MonthlyIncomeSignalDTO;
+import com.wisdom.common.dto.transaction.IncomeMonthDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.*;
 import com.wisdom.timer.client.BusinessServiceClient;
@@ -26,8 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.text.*;
 
 import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REWARD;
 
@@ -611,49 +612,21 @@ public class BusinessRunTimeService {
      *
      * @param
      *
-     * @return
      * */
     @Transactional(rollbackFor = Exception.class)
-    public void monthlyIncomeCalcM(String businessType,Date startDateM ,Date endDateM,String isPullMessage)throws Exception{
+    public void monthlyIncomeCalcM(String businessType,Date startDateM ,Date endDateM,String isPullMessage,Date startRangeM ,Date endRangeM)throws Exception{
 
-        if(businessType.equals("0")){
             UserInfoDTO userInfoDTOA = new UserInfoDTO();
-            userInfoDTOA.setUserType(ConfigConstant.businessA1);
+            userInfoDTOA.setUserType(businessType);
             userInfoDTOA.setDelFlag("0");
             List<UserInfoDTO> userInfoDTOListA = userServiceClient.getUserInfo(userInfoDTOA);
-            for(UserInfoDTO userInfo:userInfoDTOListA)
-            {
-                this.getOneDayMonthMoney(userInfo,startDateM,endDateM);
+            for(UserInfoDTO userInfo:userInfoDTOListA) {
+                float returnMoney = this.getOneDayMonthMoney(userInfo,startDateM,endDateM);
+                if(returnMoney>0){
+                    this.insertIncome(returnMoney,userInfo,isPullMessage,startRangeM,endRangeM);
+                }
             }
 
-            UserInfoDTO userInfoDTOB = new UserInfoDTO();
-            userInfoDTOB.setUserType(ConfigConstant.businessB1);
-            userInfoDTOB.setDelFlag("0");
-            List<UserInfoDTO> userInfoDTOListB = userServiceClient.getUserInfo(userInfoDTOB);
-            for(UserInfoDTO userInfo:userInfoDTOListB)
-            {
-                /*this.isProcessed(Integer.parseInt(year),month,day,userInfo,ConfigConstant.businessB1,isPullMessage);*/
-            }
-
-        }else if (businessType.equals("1")){
-            UserInfoDTO userInfoDTOA = new UserInfoDTO();
-            userInfoDTOA.setUserType(ConfigConstant.businessA1);
-            userInfoDTOA.setDelFlag("0");
-            List<UserInfoDTO> userInfoDTOListA = userServiceClient.getUserInfo(userInfoDTOA);
-            for(UserInfoDTO userInfo:userInfoDTOListA)
-            {
-                /*this.isProcessed(Integer.parseInt(year),month,day,userInfo,ConfigConstant.businessA1,isPullMessage);*/
-            }
-        }else if(businessType.equals("2")){
-            UserInfoDTO userInfoDTOB = new UserInfoDTO();
-            userInfoDTOB.setUserType(ConfigConstant.businessB1);
-            userInfoDTOB.setDelFlag("0");
-            List<UserInfoDTO> userInfoDTOListB = userServiceClient.getUserInfo(userInfoDTOB);
-            for(UserInfoDTO userInfo:userInfoDTOListB)
-            {
-                /*this.isProcessed(Integer.parseInt(year),month,day,userInfo,ConfigConstant.businessB1,isPullMessage);*/
-            }
-        }
     }
 
     /**
@@ -693,7 +666,15 @@ public class BusinessRunTimeService {
                         }else{
                             sbD.append(i);
                         }
-                        this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),businessType,isPullMessage);
+                        if(businessType.equals("0")){
+                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                        }else if(businessType.equals("1")){
+                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                        }else if(businessType.equals("2")){
+                            this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                        }
+
                     }
                 }
             }else if(startM < endM){
@@ -707,36 +688,54 @@ public class BusinessRunTimeService {
                     int days = this.getDays(String.valueOf(startY),String.valueOf(i));
                     if(i == startM){
                         for(int j = startD;j<=days;j++){
-                            float returnMonthlyMoney = 0;
                             StringBuilder sbD = new StringBuilder();
                             if(j<10){
                                 sbD.append("0").append(j);
                             }else{
                                 sbD.append(j);
                             }
-                           /* returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                            if(businessType.equals("0")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                            }else if(businessType.equals("1")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                            }else if(businessType.equals("2")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                            }
                         }
                     }else if(i == endM){
                         for(int j = 1;j<=endD;j++){
-                            float returnMonthlyMoney = 0;
                             StringBuilder sbD = new StringBuilder();
                             if(j<10){
                                 sbD.append("0").append(j);
                             }else{
                                 sbD.append(j);
                             }
-                            /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                            if(businessType.equals("0")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                            }else if(businessType.equals("1")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                            }else if(businessType.equals("2")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                            }
                         }
                     }else{
                         for(int j=1;j<=days;j++){
-                            float returnMonthlyMoney = 0;
                             StringBuilder sbD = new StringBuilder();
                             if(j<10){
                                 sbD.append("0").append(j);
                             }else{
                                 sbD.append(j);
                             }
-                           /* returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                            if(businessType.equals("0")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                            }else if(businessType.equals("1")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                            }else if(businessType.equals("2")){
+                                this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                            }
                         }
                     }
                 }
@@ -754,25 +753,37 @@ public class BusinessRunTimeService {
                         int days = this.getDays(String.valueOf(startY),String.valueOf(i));
                         if(j == startM){
                             for(int m = startD;m<=days;m++){
-                                float returnMonthlyMoney = 0;
                                 StringBuilder sbD = new StringBuilder();
                                 if(m<10){
                                     sbD.append("0").append(m);
                                 }else{
                                     sbD.append(m);
                                 }
-                                /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                                if(businessType.equals("0")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("1")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("2")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }
                             }
                         }else{
                             for(int m=1;m<=days;m++){
-                                float returnMonthlyMoney = 0;
                                 StringBuilder sbD = new StringBuilder();
                                 if(m<10){
                                     sbD.append("0").append(m);
                                 }else{
                                     sbD.append(m);
                                 }
-                                /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                                if(businessType.equals("0")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("1")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("2")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }
                             }
                         }
                     }
@@ -787,25 +798,37 @@ public class BusinessRunTimeService {
                         int days = this.getDays(String.valueOf(startY),String.valueOf(i));
                         if(i == endM){
                             for(int m = 1;m<=days;m++){
-                                float returnMonthlyMoney = 0;
                                 StringBuilder sbD = new StringBuilder();
                                 if(m<10){
                                     sbD.append("0").append(m);
                                 }else{
                                     sbD.append(m);
                                 }
-                              /*  returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                                if(businessType.equals("0")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("1")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("2")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }
                             }
                         }else{
                             for(int m=1;m<=endD;m++){
-                                float returnMonthlyMoney = 0;
                                 StringBuilder sbD = new StringBuilder();
                                 if(m<10){
                                     sbD.append("0").append(m);
                                 }else{
                                     sbD.append(m);
                                 }
-                                /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
+                                if(businessType.equals("0")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("1")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("2")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }
                             }
                         }
                     }
@@ -819,7 +842,6 @@ public class BusinessRunTimeService {
                         }
                         int days = this.getDays(String.valueOf(startY),String.valueOf(i));
                         for(int m=1;m<=days;m++){
-                            float returnMonthlyMoney = 0;
                             StringBuilder sbD = new StringBuilder();
                             if(m<10){
                                 sbD.append("0").append(m);
@@ -827,7 +849,14 @@ public class BusinessRunTimeService {
                                 sbD.append(m);
                             }
                             try {
-                                /*returnMonthlyMoney = this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)), sbM.toString(), sbD.toString(), userInfo, businessType);*/
+                                if(businessType.equals("0")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("1")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessA1,isPullMessage,startDateM ,endDateM);
+                                }else if(businessType.equals("2")){
+                                    this.isProcessed(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),ConfigConstant.businessB1,isPullMessage,startDateM ,endDateM);
+                                }
                             }catch(Exception e){
                                 /*this.insertMonthlyIncomeError(Integer.parseInt(sdfYear.format(startDateM)),sbM.toString(),sbD.toString(),userInfo,businessType);*/
                             }
@@ -836,10 +865,7 @@ public class BusinessRunTimeService {
                 }
             }
         }
-      /*  if(returnMonthlyMoneyZ>0){
-            this.insertIncome(returnMonthlyMoneyZ,userInfo,isPullMessage);
-        }
-*/
+        this.sendWeixinMessage(businessType,startDateM,endDateM,isPullMessage);
     }
 
     /**
@@ -847,6 +873,7 @@ public class BusinessRunTimeService {
      *
      * */
     public Integer getDays(String years,String months){
+
         Integer year = Integer.parseInt(years);
         Integer mon = Integer.parseInt(months);
         Calendar cal = Calendar.getInstance();
@@ -862,7 +889,7 @@ public class BusinessRunTimeService {
      *
      * */
     @Transactional(rollbackFor = Exception.class)
-    public float isProcessed(Integer year ,String month,String day,String businessType,String isPullMessage)throws Exception{
+    public float isProcessed(Integer year ,String month,String day,String businessType,String isPullMessage, Date startRangeM ,Date endRangeM)throws Exception{
 
         float returnMonthlyMoney =0;
         Query query = new Query(Criteria.where("year").is(year.toString())).addCriteria(Criteria.where("month").is(month.toString())).addCriteria(Criteria.where("day").is(day.toString())).addCriteria(Criteria.where("businessType").is(businessType));
@@ -884,7 +911,7 @@ public class BusinessRunTimeService {
 
             Date startDateM = sfs.parse(sbs.toString());
             Date endDateM = sfe.parse(sbe.toString());
-            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,isPullMessage);
+            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,isPullMessage,startRangeM,endRangeM);
 
             //操作完毕后，关闭信号量
             Update update = new Update();
@@ -894,7 +921,7 @@ public class BusinessRunTimeService {
 
             Date startDateM =sfs.parse(sbs.toString());
             Date endDateM = sfe.parse(sbe.toString());
-            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,isPullMessage);
+            this.monthlyIncomeCalcM(businessType,startDateM,endDateM,isPullMessage,startRangeM,endRangeM);
 
             //操作完毕后，关闭信号量
             Update update = new Update();
@@ -943,10 +970,12 @@ public class BusinessRunTimeService {
      *
      *
      * */
-    public void insertIncome(float returnMonthlyMoney,UserInfoDTO userInfo,String isPullMessage){
+    public void insertIncome(float returnMonthlyMoney,UserInfoDTO userInfo,String isPullMessage,Date startRangeM ,Date endRangeM){
 
-        //获取用户token值
-        String token = WeixinUtil.getUserToken();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        StringBuilder sb = new StringBuilder();
+        sb.append(sdf.format(startRangeM)).append("-").append(sdf.format(endRangeM));
+        String timeRangeId = sb.toString();
 
         AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
         float balance = accountDTO.getBalance() + returnMonthlyMoney;
@@ -956,31 +985,43 @@ public class BusinessRunTimeService {
         accountDTO.setUpdateDate(new Date());
         businessServiceClient.updateUserAccountInfo(accountDTO);
 
-        IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-        incomeRecordDTO.setId(UUID.randomUUID().toString());
-        incomeRecordDTO.setSysUserId(userInfo.getId());
-        incomeRecordDTO.setUserType(userInfo.getUserType());
-        incomeRecordDTO.setNextUserId("");
-        incomeRecordDTO.setNextUserType("");
-        incomeRecordDTO.setAmount(returnMonthlyMoney);
-        incomeRecordDTO.setTransactionAmount(0);
-        incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-        incomeRecordDTO.setUpdateDate(new Date());
-        incomeRecordDTO.setCreateDate(new Date());
-        incomeRecordDTO.setStatus("0");
-        incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
-        incomeRecordDTO.setNextUserIdentifyNumber("");
-        incomeRecordDTO.setNickName(userInfo.getNickname());
-        incomeRecordDTO.setNextUserNickName("");
-        incomeRecordDTO.setIncomeType("month");
-        incomeRecordDTO.setMobile(userInfo.getMobile());
-        incomeRecordDTO.setNextUserMobile("");
-        incomeRecordDTO.setParentRelation("");
-        businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+        Query query = new Query(Criteria.where("timeRangeId").is(timeRangeId)).addCriteria(Criteria.where("sysUserId").is(userInfo.getId()));
+        IncomeMonthDTO incomeMonthDTO = mongoTemplate.findOne(query, IncomeMonthDTO.class, "incomeMonth");
+        if(incomeMonthDTO==null){
+            IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+            incomeRecordDTO.setId(UUID.randomUUID().toString());
+            incomeRecordDTO.setSysUserId(userInfo.getId());
+            incomeRecordDTO.setUserType(userInfo.getUserType());
+            incomeRecordDTO.setNextUserId("");
+            incomeRecordDTO.setNextUserType("");
+            incomeRecordDTO.setAmount(returnMonthlyMoney);
+            incomeRecordDTO.setTransactionAmount(0);
+            incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
+            incomeRecordDTO.setUpdateDate(new Date());
+            incomeRecordDTO.setCreateDate(new Date());
+            incomeRecordDTO.setStatus("0");
+            incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
+            incomeRecordDTO.setNextUserIdentifyNumber("");
+            incomeRecordDTO.setNickName(userInfo.getNickname());
+            incomeRecordDTO.setNextUserNickName("");
+            incomeRecordDTO.setIncomeType("month");
+            incomeRecordDTO.setMobile(userInfo.getMobile());
+            incomeRecordDTO.setNextUserMobile("");
+            incomeRecordDTO.setParentRelation("");
+            businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
 
-        //是否发送微信消息
-        if(("1").equals(isPullMessage)&&returnMonthlyMoney>0){
-            WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
+            IncomeMonthDTO incomeMonth = new IncomeMonthDTO();
+            incomeMonth.setIncomeId(incomeRecordDTO.getId());
+            incomeMonth.setTimeRangeId(timeRangeId);
+            incomeMonth.setSysUserId(userInfo.getId());
+            mongoTemplate.insert(incomeMonthDTO, "incomeMonth");
+        }else{
+            IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+            incomeRecordDTO.setId(incomeMonthDTO.getIncomeId());
+            List<IncomeRecordDTO> incomeRecordDTOList = businessServiceClient.getUserIncomeRecordInfo(incomeRecordDTO);
+            float amount = incomeRecordDTOList.get(0).getAmount()+returnMonthlyMoney;
+            incomeRecordDTO.setAmount(amount);
+            businessServiceClient.updateIncomeInfo(incomeRecordDTO);
         }
 
     }
@@ -1000,6 +1041,43 @@ public class BusinessRunTimeService {
         mongoTemplate.insert(monthlyIncomeError, "monthlyIncomeSignal");
 
     }*/
+
+    /**
+     * 发送微信消息
+     *
+     *
+     * */
+    public void sendWeixinMessage(String businessType,Date startRangeM ,Date endRangeM,String isPullMessage){
+
+        String token = WeixinUtil.getUserToken();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        StringBuilder sb = new StringBuilder();
+        sb.append(sdf.format(startRangeM)).append("-").append(sdf.format(endRangeM));
+        String timeRangeId = sb.toString();
+
+        UserInfoDTO userInfoDTOA = new UserInfoDTO();
+        userInfoDTOA.setUserType(businessType);
+        userInfoDTOA.setDelFlag("0");
+        List<UserInfoDTO> userInfoDTOListA = userServiceClient.getUserInfo(userInfoDTOA);
+        for(UserInfoDTO userInfo:userInfoDTOListA) {
+
+            Query query = new Query(Criteria.where("timeRangeId").is(timeRangeId)).addCriteria(Criteria.where("sysUserId").is(userInfo.getId()));
+            IncomeMonthDTO incomeMonthDTO = mongoTemplate.findOne(query, IncomeMonthDTO.class, "incomeMonth");
+            IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+            incomeRecordDTO.setId(incomeMonthDTO.getIncomeId());
+            if(incomeMonthDTO!=null){
+
+                List<IncomeRecordDTO> incomeRecordDTOList = businessServiceClient.getUserIncomeRecordInfo(incomeRecordDTO);
+                if(("1").equals(isPullMessage)&&incomeRecordDTOList.get(0).getAmount()>0){
+                    WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),incomeRecordDTOList.get(0).getAmount()+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
+                }
+            }
+
+        }
+
+
+    }
 
 
 
