@@ -333,7 +333,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             for (ShopProjectInfoDTO dto : list) {
                 ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = new ShopProjectInfoResponseDTO();
                 BeanUtils.copyProperties(dto, shopProjectInfoResponseDTO);
-                shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(dto.getId()));
+                shopProjectInfoResponseDTO.setImageList(mongoUtils.getImageUrl(dto.getId()));
                 responseDTOS.add(shopProjectInfoResponseDTO);
 			}
 		}
@@ -362,7 +362,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 		BeanUtils.copyProperties(shopProjectInfoDTO, shopProjectInfoResponseDTO);
 
-        shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
+        shopProjectInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
 		return shopProjectInfoResponseDTO;
 	}
 
