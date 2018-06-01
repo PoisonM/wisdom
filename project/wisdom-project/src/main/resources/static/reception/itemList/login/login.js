@@ -5,6 +5,7 @@ PADWeb.controller('loginCtrl', function ($scope,$state,$stateParams, ngDialog, B
     $scope.$parent.mainSwitch.headerLoginFlag = true
     $scope.$parent.mainSwitch.headerReservationAllFlag = false
     $scope.$parent.mainSwitch.headerCashAllFlag = false
+    $scope.$parent.mainSwitch.footerBoxFlag = false
     $scope.param = {
         code: "",
         phone: "",
