@@ -43,7 +43,8 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
     }
 
     GetShopUserRecentlyOrderInfo.get({
-        sysUserId: 110
+        sysUserId: 110,
+        orderId: $state.params.orderId,
     }, function(data) {
         $scope.responseData = data.responseData;
     })

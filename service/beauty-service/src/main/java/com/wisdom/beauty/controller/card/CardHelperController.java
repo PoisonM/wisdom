@@ -48,8 +48,6 @@ public class CardHelperController {
     @ResponseBody
     ResponseDTO<Object> getGoodsUseScope(@RequestParam String shopRechargeCardId) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("getGoodsUseScope传入参数={}", "shopRechargeCardId = [" + shopRechargeCardId + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         List<ShopProjectProductCardRelationDTO> timesList = new ArrayList<>();
         List<ShopProjectProductCardRelationDTO> periodList = new ArrayList<>();
@@ -80,7 +78,6 @@ public class CardHelperController {
 
         responseDTO.setResponseData(responseMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("getGoodsUseScope耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

@@ -39,7 +39,6 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
      */
     @Override
     public RealNameInfoDTO getRealNameInfoDTO(String idCard, String name) {
-        long currentTimeMillis = System.currentTimeMillis();
         logger.info("用户实名认证接口传入参数={}", "idCard = [" + idCard + "], name = [" + name + "]");
 
         //根据身份证号到mongo查询RealNameInfoDTO对象
@@ -77,7 +76,6 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
         realNameInfoDTO.setName(name);
         //远程查回来的数据保存到mongo
         mongoTemplate.save(realNameInfoDTO, "realNameInfoDTO");
-        logger.info("用户实名认证接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return realNameInfoDTO;
     }
 

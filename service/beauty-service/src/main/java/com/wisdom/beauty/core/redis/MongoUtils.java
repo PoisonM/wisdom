@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -48,6 +49,13 @@ public class MongoUtils {
         imageUrl.setUrl(list);
         mongoTemplate.save(imageUrl, "imageUrl");
     }
+    public void updateImageUrl(List<String> list, String imageId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("imageId").is(imageId));
+        Update update = Update.update("url", list);
+        mongoTemplate.updateFirst(query, update, ImageUrl.class);
+    }
+
 
     /**
      * 查询图片信息

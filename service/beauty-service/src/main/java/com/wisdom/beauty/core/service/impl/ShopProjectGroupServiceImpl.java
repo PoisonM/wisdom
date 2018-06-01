@@ -95,7 +95,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             if(StringUtils.isNotBlank(projectInfoGroupResponseDTO.getExpirationDate())&&"0".equals(projectInfoGroupResponseDTO.getExpirationDate())){
                 projectInfoGroupResponseDTO.setOverdue(false);
             }else {
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 //产品有效期
                 Date expirationDate=null;
                 try {

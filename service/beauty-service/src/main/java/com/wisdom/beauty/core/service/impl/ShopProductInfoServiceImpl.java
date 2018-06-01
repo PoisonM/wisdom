@@ -141,7 +141,6 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	 */
 	@Override
 	public List<ShopProductTypeDTO> getOneLevelProductList(ShopProductTypeDTO shopProductTypeDTO) {
-		logger.info("getOneLevelProjectList传入的参数,sysShopId={},productType={}", shopProductTypeDTO.getSysShopId(),shopProductTypeDTO.getProductType());
 		if (shopProductTypeDTO==null||StringUtils.isBlank(shopProductTypeDTO.getSysShopId())) {
 			logger.info("getOneLevelProjectList传入的参数sysShopId为空");
 			return null;
@@ -423,7 +422,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 			shopProductInfoDTO.setInvalidDate(DateUtils.dateSubMonth(shopProductInfoDTO.getEffectDate(), shopProductInfoDTO.getQualityPeriod()));
 		}
 		int insertSelective = shopProductInfoMapper.insertSelective(shopProductInfoDTO);
-		//图片报错到mongodb
+		//图片保存 到mongodb
 		if (CommonUtils.objectIsNotEmpty(shopProductInfoDTO.getImageList())) {
 			shopProductInfoDTO.setProductUrl(shopProductInfoDTO.getImageList().get(0));
 		}

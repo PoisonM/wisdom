@@ -10,7 +10,6 @@ import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.PinYinSort;
 import com.wisdom.common.util.StringUtils;
@@ -61,20 +60,23 @@ public class ArchivesEarlyWarningController {
     @ResponseBody
     ResponseDTO<Object> getEarlyWarningList(@RequestParam String queryType, @RequestParam(required = false) String pageNo, @RequestParam(required = false) String pageSize) {
 
-        logger.info("档案预警接口传入参数={}", "queryType = [" + queryType + "], pageNo = [" + pageNo + "], pageSize = [" + pageSize + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        SysBossDTO bossInfo = UserUtils.getBossInfo();
-        if (null == bossInfo) {
-            logger.error("获取到的boss信息为空");
+        String bossCode = UserUtils.getBossInfo().getSysBossCode();
+
+        if (StringUtils.isBlank(bossCode)) {
+            bossCode = UserUtils.getClerkInfo().getSysBossCode();
+        }
+
+        if (StringUtils.isBlank(bossCode)) {
+            logger.error("获取到的店铺信息为空");
             responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("获取的boss信息为空！");
+            responseDTO.setErrorInfo("获取到的店铺信息为空！");
             return responseDTO;
         }
-        String bossInfoId = bossInfo.getId();
 
         //获取当前boss下的档案列表
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-        shopUserArchivesDTO.setSysBossCode(bossInfoId);
+        shopUserArchivesDTO.setSysBossCode(bossCode);
         List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
         if (CommonUtils.objectIsEmpty(shopUserArchivesDTO)) {
             logger.info("获取当前boss下的档案列表为空");
@@ -97,7 +99,7 @@ public class ArchivesEarlyWarningController {
         ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
         extShopAppointServiceDTO.setSearchStartTime(calendar.getTime());
         extShopAppointServiceDTO.setSearchEndTime(currentDate);
-        extShopAppointServiceDTO.setSysBossCode(bossInfoId);
+        extShopAppointServiceDTO.setSysBossCode(bossCode);
         List<ShopAppointServiceDTO> appointClerkInfoByCriteria = shopAppointmentService.getShopAppointClerkInfoByCriteria(extShopAppointServiceDTO);
         if (CommonUtils.objectIsEmpty(appointClerkInfoByCriteria)) {
             logger.info("获取当前boss下的预约列表为空");
@@ -108,10 +110,12 @@ public class ArchivesEarlyWarningController {
         Iterator<ShopUserArchivesDTO> iterator = shopUserArchivesInfo.iterator();
         while (iterator.hasNext()) {
             ShopUserArchivesDTO archivesDTO = iterator.next();
+            boolean removeFlag = false;
             for (ShopAppointServiceDTO serviceDTO : appointClerkInfoByCriteria) {
                 if (StringUtils.isNotBlank(archivesDTO.getSysUserId()) && StringUtils.isNotBlank(serviceDTO.getSysUserId())
-                        && archivesDTO.getSysUserId().equals(serviceDTO.getSysUserId())) {
+                        && archivesDTO.getSysUserId().equals(serviceDTO.getSysUserId()) && !removeFlag) {
                     iterator.remove();
+                    removeFlag = true;
                 }
                 archivesDTO.setUpdateDate(serviceDTO.getAppointStartTime());
             }

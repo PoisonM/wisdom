@@ -1,6 +1,5 @@
 package com.wisdom.business.controller.product;
 
-import com.mongodb.Mongo;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.product.ProductService;
 import com.wisdom.business.service.product.TrainingProductService;
@@ -8,10 +7,8 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.ProductDTO;
-import com.wisdom.common.dto.product.TrainingProductDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.ExportProductExcelDTO;
-import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.CommonUtils;
@@ -177,7 +174,7 @@ public class ProductController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamVoDTO<List<ProductDTO>>> queryProductsByParameters(@RequestBody PageParamVoDTO<ProductDTO> pageParamVoDTO) {
-		long startTime = System.currentTimeMillis();
+
 		ResponseDTO<PageParamVoDTO<List<ProductDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamVoDTO<List<ProductDTO>> page = productService.queryProductsByParameters(pageParamVoDTO);
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())){
@@ -205,7 +202,6 @@ public class ProductController {
 				String url = CommonUtils.orderExcelToOSS(in);
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-				logger.info("条件导出商品Excel耗时{}毫秒", (System.currentTimeMillis() - startTime));
 				return responseDTO;
 			}catch (Exception e){
 				e.printStackTrace();
@@ -218,12 +214,10 @@ public class ProductController {
 			responseDTO.setResult("未查出结果");
 			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 			logger.info("条件查询商品未查出数据");
-			logger.info("条件查询商品耗时{}毫秒", (System.currentTimeMillis() - startTime));
 			return responseDTO;
 		}
 		responseDTO.setResponseData(page);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-		logger.info("条件查询商品耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 

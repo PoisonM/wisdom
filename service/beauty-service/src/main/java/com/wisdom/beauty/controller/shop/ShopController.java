@@ -57,10 +57,8 @@ public class ShopController {
     @RequestMapping(value = "/getShopInfo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> getShopInfo(@RequestParam(required = false) String sysShopId) {
-        long currentTimeMillis = System.currentTimeMillis();
 
         ResponseDTO<Object> responseDTO = new ResponseDTO();
-        logger.info("查询某个店的信息传入参数={}", "sysShopId = [" + sysShopId + "]");
         if (StringUtils.isBlank(sysShopId)) {
             SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
             sysShopId = clerkInfo.getSysShopId();
@@ -68,7 +66,6 @@ public class ShopController {
         SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
         responseDTO.setResponseData(shopInfoByPrimaryKey);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询某个店的信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -78,7 +75,6 @@ public class ShopController {
     @RequestMapping(value = "/getUserScanInfo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> getUserScanInfo(@RequestParam String sysUserId, @RequestParam String shopId) {
-        long currentTimeMillis = System.currentTimeMillis();
         logger.info("查询某个用户是否扫码绑定传入参数={}", "sysUserId = [" + sysUserId + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO();
         if (StringUtils.isNotBlank(shopId) && StringUtils.isNotBlank(sysUserId)) {
@@ -107,7 +103,6 @@ public class ShopController {
             }
         }
         responseDTO.setResult(StatusConstant.FAILURE);
-        logger.info("查询某个用户是否扫码绑定耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -117,7 +112,6 @@ public class ShopController {
     @RequestMapping(value = "/getBossShopInfo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> getBossShopInfo() {
-        long currentTimeMillis = System.currentTimeMillis();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ResponseDTO<Object> responseDTO = new ResponseDTO();
         ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
@@ -126,7 +120,6 @@ public class ShopController {
         List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
         responseDTO.setResponseData(CommonUtils.objectIsEmpty(bossShopInfo) ? new ExtSysShopDTO() : bossShopInfo.get(0));
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -136,7 +129,6 @@ public class ShopController {
     @RequestMapping(value = "/getBossAllShopList", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> getBossAllShopList() {
-        long currentTimeMillis = System.currentTimeMillis();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ResponseDTO<Object> responseDTO = new ResponseDTO();
         ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
@@ -149,7 +141,6 @@ public class ShopController {
         }
         responseDTO.setResponseData(bossShopInfo);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -162,7 +153,6 @@ public class ShopController {
     @RequestMapping(value = "/bossSwitchShops", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> bossSwitchShops(@RequestParam String sysShopId) {
-        long currentTimeMillis = System.currentTimeMillis();
         ResponseDTO responseDTO = new ResponseDTO();
         if (StringUtils.isBlank(sysShopId)) {
             responseDTO.setResponseData("传入的sysShopId为空");
@@ -174,7 +164,6 @@ public class ShopController {
         UserUtils.bossSwitchShops(bossInfo);
 
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -184,7 +173,6 @@ public class ShopController {
     @RequestMapping(value = "/updateShopInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<Object> updateShopInfo(@RequestBody ExtSysShopDTO extSysShopDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
         logger.info("修改门店传入参数={}", "sysShopDTO = [" + extSysShopDTO + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO();
         if (StringUtils.isBlank(extSysShopDTO.getId())) {
@@ -195,7 +183,6 @@ public class ShopController {
         int info = shopUserRelationService.updateShopInfo(extSysShopDTO);
         responseDTO.setResponseData(info>0?"成功":"失败");
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("修改门店耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

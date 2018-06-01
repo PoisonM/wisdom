@@ -4,18 +4,25 @@
            <li class="item"><span class="fs16">名称<span class="colff66">*</span></span><input class="fr fs15" ng-model="beautySetting.name" style="text-align: right"></li>
            <li class="item" style="position: relative"><span class="fs16">图片</span>
                <input type="file" style="opacity: 0;position: absolute;top: 15px;right: 15px;width: 126px;height: 79px;" onchange="angular.element(this).scope().img_upload(this.files,'shopImageUrl')">
-               <img ng-src="{{beautySetting.shopImageUrl}}" style="width: 126px;height: 79px;float: right"></li>
+               <p style="width: 126px;height: 79px;float: right;background: url('{{beautySetting.shopImageUrl}}');background-size: contain;background-repeat: no-repeat;background-position: right">
+
+               </p>
+               <img ng-src="{{}}" style=""></li>
        </div>
         <div class="list">
             <li class="item"><span class="fs16">客服电话<span class="colff66">*</span></span>
-                <input class="fr fs15" ng-model="beautySetting.phone" style="text-align: right"></li>
+                <input class="fr fs15" ng-model="beautySetting.phone"  style="text-align: right"></li>
             <li class="item"><span class="fs16">省市区<span class="colff66">*</span></span>
                 <input  class="fr" ng-model="beautySetting.city" style="width:50px;">
                 <input  class="fr" ng-model="beautySetting.province" style="width:50px;">
 
 
-            <li class="item" style="position: relative"><span class="fs16">总部地址<span class="colff66">*</span></span><span></span><input type="text" placeholder="请输入你的地址"  class="fr col66 tr mr20" ng-model="beautySetting.address"><img
-                    src="images/mine/postionb.png"style="width: 13px;height: 18px;position: absolute;top: 25px;right: 10px;"></li>
+            <li class="item row" style="position: relative"><span class="fs16 col col20">总部地址<span class="colff66">*</span></span><span></span>
+            <p class="col col-80">
+               <img  src="images/mine/postionb.png" style="width: 13px;height: 18px;" class="fr mt10 mr10">
+                <input type="text" placeholder="请输入你的地址"  class="fr col66 tr mr20" ng-model="beautySetting.address" style="width:70%;">
+            </p>
+            </li>
         </div>
         <div class="list">
            <li class="item bbl">

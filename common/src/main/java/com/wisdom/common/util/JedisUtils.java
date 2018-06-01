@@ -115,6 +115,10 @@ public class JedisUtils {
 	 * @return
 	 */
 	public static String set(String key, String value, int cacheSeconds) {
+		if(StringUtils.isBlank(key)){
+			logger.debug("set {} = {}", key, value);
+			return null;
+		}
 		String result = null;
 		Jedis jedis = null;
 		try {
@@ -754,6 +758,9 @@ public class JedisUtils {
 	public static long del(String key) {
 		long result = 0;
 		Jedis jedis = null;
+		if(StringUtils.isBlank(key)){
+			return 0;
+		}
 		try {
 			jedis = getResource();
 			if (jedis.exists(key)){

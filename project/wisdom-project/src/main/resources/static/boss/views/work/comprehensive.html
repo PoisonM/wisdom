@@ -15,11 +15,11 @@
                     <div class="row comprehensiveBox1">
                         <div class=" comprehensiveBox2 col col-50">
                             业绩
-                            <p class="colff">{{param.income}}</p>
+                            <p class="colff">{{comprehensive.allIncome}}</p>
                         </div>
                         <div class=" comprehensiveBox2 col col-50" >
                             耗卡
-                            <p class="colff">{{param.expenditure}}</p>
+                            <p class="colff">{{comprehensive.allExpenditure}}</p>
                         </div>
                     </div>
                     <div  style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #FF6666"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;">近7日趋势图</div>
@@ -27,7 +27,7 @@
             </a>
         </div>
         <!--唯美度美容养生会所-->
-        <div class="list" ng-repeat="item in comprehensive" ng-click="beautyAllGo(item.sysShopId)">
+        <div class="list" ng-repeat="item in comprehensive.responsesList" ng-click="beautyAllGo(item.sysShopId)">
             <p class="item"><span>{{item.sysShopName}}</span><i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></p>
            <div class="row bgfff col33 tc p0">
                <div class="col col-50 bre5e5 pt10">

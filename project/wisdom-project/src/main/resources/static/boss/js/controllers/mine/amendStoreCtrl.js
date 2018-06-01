@@ -51,6 +51,13 @@ angular.module('controllers',[]).controller('amendStoreCtrl',
             }
 
             $scope.save = function () {
+                if($scope.amendStore.name=='' || $scope.amendStore.phone==''|| $scope.amendStore.province==''|| $scope.amendStore.city==''|| $scope.amendStore.address==''|| $scope.amendStore.area==''){
+                    alert("请检查信息")
+                    return
+                }
+                if($scope.amendStore.phone.length>15){
+                    alert("请重新输入电话")
+                }
                 UpdateShopInfo.save($scope.amendStore,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")

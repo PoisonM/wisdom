@@ -1,4 +1,5 @@
-PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialog, GetProductRecord, GetClerkAchievement, ClerkInfo) {
+PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialog
+    , GetProductRecord, GetClerkAchievement, ClerkInfo,BeautyLoginOut) {
     /*-------------------------------------------定义头部信息|----------------------------------------------*/
     $scope.$parent.param.top_bottomSelect = "wo";
     $scope.$parent.param.headerCash.leftContent = "我"
@@ -13,9 +14,11 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
         $scope.$parent.mainSwitch.headerCashAllFlag = bool
         $scope.$parent.mainSwitch.headerPriceListAllFlag = !bool
         $scope.$parent.mainSwitch.headerLoginFlag = !bool
-        $scope.$parent.mainSwitch.headerCashFlag.leftFlag = bool,
-            $scope.$parent.mainSwitch.headerCashFlag.middleFlag = bool,
+        $scope.$parent.mainSwitch.headerCashFlag.leftFlag = bool
+            $scope.$parent.mainSwitch.headerCashFlag.middleFlag = bool
             $scope.$parent.mainSwitch.headerCashFlag.rightFlag = bool
+        $scope.$parent.mainSwitch.footerBoxFlag = true
+
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
@@ -26,10 +29,15 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
 
     /*-----------------------------------------------接口---------------------------------------------------*/
     GetClerkAchievement.get({
-        sysClerkId: 11
+        // sysClerkId: 11
     }, function(data) {
         if (data.result == "0x00001") {
             $scope.todayPerformance = data.responseData
+        }else if(data.result == "0x00002"){//判断店员是否
+            alert("登录已经失效,请重新登录")
+            setTimeout(function () {
+                $state.go("pad-web.login")
+            },1000)
         }
     })
     /*个人信息*/
@@ -89,5 +97,18 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
             'height': 106,
             'border-radius': 10,
         });
+    }
+    
+    
+    $scope.loginOut = function () {
+        BeautyLoginOut.get({},function (data) {
+            alert("退出成功")
+            window.localStorage.removeItem("beautyUserLoginToken")
+            window.localStorage.removeItem("beautyBossLoginToken")
+            window.localStorage.removeItem("beautyClerkLoginToken")
+            setTimeout(function () {
+                $state.go("pad-web.login")
+            },1000)
+        })
     }
 });

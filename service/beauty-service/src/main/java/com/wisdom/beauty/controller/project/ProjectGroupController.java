@@ -41,21 +41,17 @@ public class ProjectGroupController {
      * @return
      */
     @RequestMapping(value = "saveProjectGroupInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<HashMap<Object, Object>> saveProjectGroupInfo(@RequestBody ExtShopProjectGroupDTO shopProjectGroupDTO) {
 
-        long startTime = System.currentTimeMillis();
-
-        logger.info("保存用户的套卡信息传入参数={}", "shopProjectGroupDTO = [" + shopProjectGroupDTO + "]");
         ResponseDTO<HashMap<Object, Object>> responseDTO = new ResponseDTO<>();
 
         int groupInfo = shopProjectGroupService.saveProjectGroupInfo(shopProjectGroupDTO);
 
         responseDTO.setResult(groupInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 
-        logger.info("存用户的套卡信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -66,12 +62,11 @@ public class ProjectGroupController {
      * @return
      */
     @RequestMapping(value = "updateProjectGroupInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<Object> updateProjectGroupInfo(@RequestBody ExtShopProjectGroupDTO shopProjectGroupDTO) {
 
-        long startTime = System.currentTimeMillis();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if (StringUtils.isBlank(shopProjectGroupDTO.getId())) {
             logger.error("编辑用户的套卡信息主键为空{}", "shopProjectGroupDTO = [" + shopProjectGroupDTO + "]");
@@ -85,7 +80,6 @@ public class ProjectGroupController {
 
         responseDTO.setResult(groupInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 
-        logger.info("编辑用户的套卡信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 

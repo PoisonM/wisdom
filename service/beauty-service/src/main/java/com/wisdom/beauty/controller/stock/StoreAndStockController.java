@@ -58,7 +58,6 @@ public class StoreAndStockController {
 	@RequestMapping(value = "findStoreList", method = RequestMethod.GET)
 	public @ResponseBody ResponseDTO<List<ShopStoreDTO>> findStoreList() {
 
-		long startTime = System.currentTimeMillis();
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		// 执行查询
 		List<ShopStoreDTO> list = shopStockService.findStoreList(sysBossDTO.getSysBossCode());
@@ -66,8 +65,6 @@ public class StoreAndStockController {
 		ResponseDTO<List<ShopStoreDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(list);
-
-		logger.info("根据条件查询仓库列表" + "耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -81,13 +78,10 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/addStock", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> addStock(@RequestBody String shopStock) {
-		long currentTimeMillis = System.currentTimeMillis();
-
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		String id=shopStockService.insertShopStockDTO(shopStock);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(id);
-		logger.info("addStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -101,13 +95,9 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/updateStockNumber", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> updateStockNumber(@RequestBody ShopStockNumberDTO shopStockNumberDTO) {
-		long currentTimeMillis = System.currentTimeMillis();
-
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-
 		shopStockService.updateStockNumber(shopStockNumberDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("updateStockNumber方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -121,8 +111,6 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/getStockNumber", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Map<String, Object>> getStockNumber(@RequestParam String shopStoreId, @RequestParam String shopProcId) {
-		long currentTimeMillis = System.currentTimeMillis();
-
 		ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
 		shopStockNumberDTO.setShopStoreId(shopStoreId);
 		shopStockNumberDTO.setShopProcId(shopProcId);
@@ -139,7 +127,6 @@ public class StoreAndStockController {
 		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
-		logger.info("addStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -154,8 +141,6 @@ public class StoreAndStockController {
 	@ResponseBody
 	ResponseDTO<List<ShopStockRecordDTO>> getShopStockRecordList(
 			@RequestBody ShopStockRecordRequestDTO shopStockRecordRequestDTO) {
-		long currentTimeMillis = System.currentTimeMillis();
-
 		PageParamVoDTO<ShopStockRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
@@ -173,7 +158,6 @@ public class StoreAndStockController {
 		ResponseDTO<List<ShopStockRecordDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(list);
-		logger.info("getShopStockRecordList方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -187,7 +171,6 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/shopStockRecordDetail", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<ShopStockResponseDTO> getShopStockRecordDetail(@RequestParam String id) {
-		long currentTimeMillis = System.currentTimeMillis();
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
 		shopStockRecordDTO.setId(id);
 		ShopStockResponseDTO shopStockResponseDTO = shopStockService.getShopStock(shopStockRecordDTO);
@@ -195,7 +178,6 @@ public class StoreAndStockController {
 
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(shopStockResponseDTO);
-		logger.info("getShopStockRecordDetail方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -210,17 +192,12 @@ public class StoreAndStockController {
 	@ResponseBody
 	ResponseDTO<ShopStockResponseDTO> getProductInfoAndStock(@RequestParam String shopStoreId,
 			@RequestParam String shopProcId) {
-		long currentTimeMillis = System.currentTimeMillis();
 
-		ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
-		shopStockNumberDTO.setShopStoreId(shopStoreId);
-		shopStockNumberDTO.setShopProcId(shopProcId);
 		ShopStockResponseDTO shopStockResponseDTO = shopStockService.getProductInfoAndStock(shopStoreId, shopProcId);
 
 		ResponseDTO<ShopStockResponseDTO> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(shopStockResponseDTO);
-		logger.info("getProductInfoAndStock方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -236,8 +213,6 @@ public class StoreAndStockController {
 	ResponseDTO<Map<String,Object>> getStockDetailList(@RequestParam String shopStoreId,
 			                                                   @RequestParam(required = false) String productTypeTwoId,
                                                                int pageSize) {
-		long currentTimeMillis = System.currentTimeMillis();
-
 		ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
 		shopStockNumberDTO.setShopStoreId(shopStoreId);
 		shopStockNumberDTO.setProductTypeTwoId(productTypeTwoId);
@@ -251,7 +226,6 @@ public class StoreAndStockController {
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
-		logger.info("getStockDetailList方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -265,8 +239,6 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/getProductStockDetail", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<ShopStockResponseDTO> getProductStockDetail(@RequestParam String shopProcId) {
-		long currentTimeMillis = System.currentTimeMillis();
-
 		ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
 		shopStockNumberDTO.setShopProcId(shopProcId);
 		ShopStockResponseDTO shopStockResponseDTO = shopStockService.getProductStockDetail(shopStockNumberDTO);
@@ -274,7 +246,6 @@ public class StoreAndStockController {
 		ResponseDTO<ShopStockResponseDTO> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(shopStockResponseDTO);
-		logger.info("getProductStockDetail方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -288,7 +259,6 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/checkProduct", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<String> checkProduct(@RequestBody String shopCheckRecordDTO) {
-		long currentTimeMillis = System.currentTimeMillis();
 		ShopCheckRecordDTO[] shopCheckRecordDTOArry = (ShopCheckRecordDTO[]) JSONArray
 				.toArray(JSONArray.fromObject(shopCheckRecordDTO), ShopCheckRecordDTO.class);
 		List<ShopCheckRecordDTO> list = Arrays.asList(shopCheckRecordDTOArry);
@@ -296,7 +266,6 @@ public class StoreAndStockController {
 		ResponseDTO<String> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(result);
-		logger.info("checkProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -311,7 +280,6 @@ public class StoreAndStockController {
 	@ResponseBody
 	ResponseDTO<List<ShopCheckRecordResponseDTO>> getProductCheckRecord(@RequestParam String shopStoreId,
 																		int pageSize) {
-		long currentTimeMillis = System.currentTimeMillis();
 		ShopCheckRecordDTO shopCheckRecordDTO = new ShopCheckRecordDTO();
 		shopCheckRecordDTO.setShopStoreId(shopStoreId);
 		PageParamVoDTO<ShopCheckRecordDTO> pageParamVoDTO=new PageParamVoDTO();
@@ -323,7 +291,6 @@ public class StoreAndStockController {
 		ResponseDTO<List<ShopCheckRecordResponseDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(list);
-		logger.info("getProductCheckRecord方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -337,12 +304,10 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/getProductCheckRecordDeatil", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<List<ShopCheckRecordResponseDTO>> getProductCheckRecordDeatil(@RequestParam String flowNo) {
-		long currentTimeMillis = System.currentTimeMillis();
 		List<ShopCheckRecordResponseDTO> list = shopCheckService.getProductCheckRecordDeatil(flowNo);
 		ResponseDTO<List<ShopCheckRecordResponseDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(list);
-		logger.info("getProductCheckRecordDeatil方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -356,12 +321,10 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/doClosePosition", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Integer> doClosePosition(@RequestBody ShopClosePositionRequestDTO shopClosePositionRequestDTO) {
-		long currentTimeMillis = System.currentTimeMillis();
 		Integer result = shopCheckService.doClosePosition(shopClosePositionRequestDTO);
 		ResponseDTO<Integer> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(result);
-		logger.info("doClosePositio方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -376,13 +339,11 @@ public class StoreAndStockController {
 	@ResponseBody
 	ResponseDTO<ShopClosePositionRecordDTO> getShopClosePositionDetail(@RequestParam String shopClosePositionId,
 			@RequestParam String productName, @RequestParam String productTypeName) {
-		long currentTimeMillis = System.currentTimeMillis();
 		ShopClosePositionRecordDTO shopClosePositionRecordDTO = shopCheckService
 				.getShopClosePositionDetail(shopClosePositionId, productName, productTypeName);
 		ResponseDTO<ShopClosePositionRecordDTO> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(shopClosePositionRecordDTO);
-		logger.info("getShopClosePositionDetail方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -396,7 +357,6 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/products", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> getProducts(@RequestBody StoreProductIdRequestDTO storeProductIdRequestDTO) {
-		long currentTimeMillis = System.currentTimeMillis();
 		String shopStoreId = storeProductIdRequestDTO.getShopStoreId();
 		List<String> productIds = storeProductIdRequestDTO.getProductIds();
 
@@ -404,7 +364,6 @@ public class StoreAndStockController {
 		List<ShopProductInfoCheckResponseDTO> list = shopCheckService.getProductsCheckLit(shopStoreId, productIds);
 		responseDTO.setResponseData(list);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("getProducts方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
@@ -418,25 +377,21 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/setStorekeeper", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> setStorekeeper(@RequestBody SetStorekeeperRequestDTO setStorekeeperRequestDTO) {
-		long currentTimeMillis = System.currentTimeMillis();
 
 		int result = shopStockService.setStorekeeper(setStorekeeperRequestDTO);
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(result);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("setStorekeeper方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 
 	@RequestMapping(value = "/getStoreManager", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Object> getStoreManager(@RequestParam String id) {
-		long currentTimeMillis = System.currentTimeMillis();
 		String result = shopStockService.getStoreManager(id);
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(result);
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("getStoreManager方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 }

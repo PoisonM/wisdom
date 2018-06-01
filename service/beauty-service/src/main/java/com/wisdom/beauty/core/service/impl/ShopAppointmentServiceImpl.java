@@ -8,6 +8,7 @@ import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.common.dto.system.PageParamDTO;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     public List<ShopAppointServiceDTO> getShopAppointClerkInfoByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
         if (null == extShopAppointServiceDTO) {
-            logger.info("根据时间查询查询某个店的有预约号源的美容师列表,查询参数为空{}",extShopAppointServiceDTO);
+            logger.info("根据时间查询查询某个店的有预约号源的美容师列表,查询参数为空");
             return null;
         }
 
@@ -79,7 +80,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     public List<ShopAppointServiceDTO> getShopClerkAppointListByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
         if (null == extShopAppointServiceDTO) {
-            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空{}",extShopAppointServiceDTO);
+            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空");
             return null;
         }
 
@@ -98,6 +99,9 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         }
         if(null != extShopAppointServiceDTO.getSearchStartTime() && null != extShopAppointServiceDTO.getSearchEndTime()){
             criteria.andAppointStartTimeBetween(extShopAppointServiceDTO.getSearchStartTime(), extShopAppointServiceDTO.getSearchEndTime());
+        }
+        if (null != extShopAppointServiceDTO.getAppointStartTimeS() && null != extShopAppointServiceDTO.getAppointEndTimeE()) {
+            criteria.andAppointStartTimeBetween(DateUtils.StrToDate(extShopAppointServiceDTO.getAppointStartTimeS(), "datetime"), DateUtils.StrToDate(extShopAppointServiceDTO.getAppointEndTimeE(), "datetime"));
         }
         if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossCode())) {
             criteria.andSysBossCodeEqualTo(extShopAppointServiceDTO.getSysBossCode());
@@ -143,7 +147,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     public Integer getShopClerkAppointNumberByCriteria(ExtShopAppointServiceDTO extShopAppointServiceDTO) {
 
         if (null == extShopAppointServiceDTO) {
-            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空{}", extShopAppointServiceDTO);
+            logger.info("根据时间查询某个店下的某个美容师的预约列表,查询参数为空");
             return null;
         }
 
@@ -198,7 +202,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
 
         logger.info("getShopAppointServiceDTO传入参数userId={}", shopAppointServiceDTO);
         if (null == shopAppointServiceDTO) {
-            logger.debug(" 根据用户ID查询预约信息,{}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
+            logger.debug(" 根据用户ID查询预约信息为空");
             return null;
         }
         ShopAppointServiceCriteria shopAppointServiceCriteria = new ShopAppointServiceCriteria();
@@ -266,12 +270,6 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             resultMap.put("resultCode", "fail");
             resultMap.put("resultMessage", "查询存在问题，请联系支撑人员");
             return resultMap;
-        }
-        //判断是具体到店员还是店铺仅用于打印日志区分
-        if(sysClerkId!=null&&sysClerkId!=""){
-            logger.info("店铺"+sysShopId+"下面店员"+sysClerkId+"在"+appointStartTimeS+"到"+appointStartTimeE+"的预约数量是"+shopAppointNum);
-        }else{
-            logger.info("店铺"+sysShopId+"在"+appointStartTimeS+"到"+appointStartTimeE+"的预约数量是"+shopAppointNum);
         }
 
         String resultMessage  = String.valueOf(shopAppointNum);

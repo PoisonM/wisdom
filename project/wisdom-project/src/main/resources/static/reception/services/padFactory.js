@@ -1,9 +1,9 @@
-var beautyIP = ' http://192.168.1.117/beauty/';
-var userIP = ' http://192.168.1.117/user/';
-var appointmentInfo = "http://localhost:9051/appointmentInfo/";
+var beautyIP = 'http://192.168.1.117/beauty/';
+var userIP = 'http://192.168.1.117/user/';
+var systemService = 'http://192.168.1.117/system-service/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
-            request: function(config) {
+            /*request: function(config) {
                 config.headers = config.headers || {};
                 if (localStorage.getItem("token") != undefined) {
                     config.headers['user_login_token'] = localStorage.getItem("token");
@@ -14,7 +14,31 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
             response: function(res) {
                 return res;
             },
-            responseError: function(err) {}
+            responseError: function(err) {}*/
+            request: function(config){
+                config.headers = config.headers || {};
+                if(window.location.href.indexOf("pad-web")!=-1) {
+                    config.headers.usertype = "beautyClerk";
+                }
+
+                if(window.localStorage.getItem("beautyUserLoginToken")!=undefined
+                    &&window.localStorage.getItem("beautyUserLoginToken")!=null){
+                    config.headers.beautyuserlogintoken = window.localStorage.getItem("beautyUserLoginToken");
+                }
+
+                if(window.localStorage.getItem("beautyBossLoginToken")!=undefined
+                    &&window.localStorage.getItem("beautyBossLoginToken")!=null){
+                    config.headers.beautybosslogintoken = window.localStorage.getItem("beautyBossLoginToken");
+                }
+
+                if(window.localStorage.getItem("beautyClerkLoginToken")!=undefined
+                    &&window.localStorage.getItem("beautyClerkLoginToken")!=null){
+                    config.headers.beautyclerklogintoken = window.localStorage.getItem("beautyClerkLoginToken");
+                }
+
+                return config;
+            },
+
         };
     }])
     /**
@@ -24,9 +48,16 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetUserValidateCode', ['$resource', function($resource) {
         return $resource(userIP + 'getUserValidateCode')
     }])
-    //登录
+    /*//登录
     .factory('ClerkLogin', ['$resource', function($resource) {
         return $resource(userIP + 'clerkLogin')
+    }])*/
+    //登录
+    .factory('BeautyLogin',['$resource',function ($resource){
+        return $resource(userIP + 'beautyLogin')
+    }])
+    .factory('BeautyLoginOut',['$resource',function ($resource){
+        return $resource(userIP + 'beautyLoginOut')
     }])
     //获取用户二维码
     .factory('getBeautyQRCode', ['$resource', function($resource) {
@@ -35,10 +66,6 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     //http轮询
     .factory('getUserScanInfo', ['$resource', function($resource) {
         return $resource(beautyIP + 'shop/getUserScanInfo')
-    }])
-
-    .factory('ShopDayAppointmentInfoByDate', ['$resource', function($resource) {
-        return $resource(appointmentInfo + 'shopDayAppointmentInfoByDate')
     }])
     .factory('Archives', ['$resource', function($resource) {
         return $resource(beautyIP + 'archives/:userId', { userId: '@id' })
@@ -295,11 +322,11 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //图片上传
     .factory('ImageBase64UploadToOSS', ['$resource', function($resource) {
-        return $resource('http://localhost/system-service/file/imageBase64UploadToOSS')
+        return $resource(systemService+'file/imageBase64UploadToOSS')
     }])
     //普通图片上传
     .factory('imageUploadToOSS', ['$resource', function($resource) {
-        return $resource('http://192.168.1.117/system-service/imageUploadToOSS')
+        return $resource(systemService+'imageUploadToOSS')
     }])
     //全量更新用户的订单
     .factory('UpdateShopUserOrderInfo', ['$resource', function($resource) {

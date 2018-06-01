@@ -20,8 +20,10 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
             TwoLevelProject.get({
                 id:$stateParams.id
             },function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
+                if(data.result==Global.SUCCESS){
                     $scope.requestList = data.responseData;
+                    if(data.responseData==null){$scope.requestList=[]}
+
                     console.log($scope.requestList);
                     for(var i=0;i<$scope.requestList.length;i++){
                         $scope.requestList[i].parentId = $stateParams.id;
@@ -33,11 +35,12 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 $scope.param.selTrue[index] =!$scope.param.selTrue[index]
             };
             $scope.sel = function(index){
-                $scope.requestList[index].status = '0'
+                $scope.requestList[index].status = '1'
             };
             $scope.addSeriesLis = function(){
+
                 var obj = {
-                    status:"1",
+                    status:"0",
                     projectTypeName:"",
                     parentId:$stateParams.id
 

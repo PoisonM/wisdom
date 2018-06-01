@@ -233,8 +233,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO) {
 
 		if (shopUserProjectGroupRelRelationDTO == null) {
-			logger.error("查询某个用户的所有套卡项目列表传入参数,{}",
-					"shopUserProjectGroupRelRelationDTO = [" + shopUserProjectGroupRelRelationDTO + "]");
+			logger.error("查询某个用户的所有套卡项目列表传入参数");
 			return null;
 		}
 
@@ -334,7 +333,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
             for (ShopProjectInfoDTO dto : list) {
                 ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = new ShopProjectInfoResponseDTO();
                 BeanUtils.copyProperties(dto, shopProjectInfoResponseDTO);
-                shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(dto.getId()));
+                shopProjectInfoResponseDTO.setImageList(mongoUtils.getImageUrl(dto.getId()));
                 responseDTOS.add(shopProjectInfoResponseDTO);
 			}
 		}
@@ -363,7 +362,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 		BeanUtils.copyProperties(shopProjectInfoDTO, shopProjectInfoResponseDTO);
 
-        shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
+        shopProjectInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
 		return shopProjectInfoResponseDTO;
 	}
 
@@ -394,8 +393,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		logger.info("根据条件查询套卡与项目的关系列表,传入参数={}",
 				"shopProjectInfoGroupRelationDTO = [" + shopProjectInfoGroupRelationDTO + "]");
 		if (shopProjectInfoGroupRelationDTO == null) {
-			logger.error("根据条件查询套卡与项目的关系列表传入参数为空，{}",
-					"shopProjectInfoGroupRelationDTO = [" + shopProjectInfoGroupRelationDTO + "]");
+			logger.error("根据条件查询套卡与项目的关系列表传入参数为空");
 			return null;
 		}
 
@@ -439,7 +437,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	@Override
 	public int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO, SysBossDTO bossInfo) {
 		if (null == shopProjectTypeDTO) {
-			logger.error("添加项目类别传入参数异常={}", "shopProjectTypeDTO = [" + shopProjectTypeDTO + "]");
+			logger.error("添加项目类别传入参数异常，参数为空");
 			return 0;
 		}
 		shopProjectTypeDTO.setId(IdGen.uuid());
@@ -474,10 +472,15 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	 * @return
 	 */
 	@Override
-	public int updateProjectInfo(ShopProjectInfoDTO shopProjectInfoDTO) {
+	public int updateProjectInfo(ExtShopProjectInfoDTO shopProjectInfoDTO) {
 		if (CommonUtils.objectIsEmpty(shopProjectInfoDTO)) {
 			logger.error("更新项目信息传入参数有误={}", "shopProjectInfoDTO = [" + shopProjectInfoDTO + "]");
 			return 0;
+		}
+		//保存图片信息
+		if (CommonUtils.objectIsNotEmpty(shopProjectInfoDTO.getImageList())) {
+			mongoUtils.saveImageUrl(shopProjectInfoDTO.getImageList(), shopProjectInfoDTO.getId());
+			shopProjectInfoDTO.setProjectUrl(shopProjectInfoDTO.getImageList().get(0));
 		}
 		return shopProjectInfoMapper.updateByPrimaryKeySelective(shopProjectInfoDTO);
 	}
@@ -492,7 +495,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     @Transactional(rollbackFor = Exception.class)
     public int saveProjectInfo(ExtShopProjectInfoDTO extShopProjectInfoDTO) {
         if (null == extShopProjectInfoDTO) {
-            logger.error("保存项目={}", "extShopProjectInfoDTO = [" + extShopProjectInfoDTO + "]");
+			logger.error("保存项目传入参数为空");
             return 0;
         }
         if (CommonUtils.objectIsNotEmpty(extShopProjectInfoDTO.getImageList())) {

@@ -64,18 +64,15 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId) {
 
-        long currentTimeMillis = System.currentTimeMillis();
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         String sysShopId = clerkInfo.getSysShopId();
 
-        logger.info("查询某个用户的产品列表信息传入参数={}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
         ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
         if (StringUtils.isBlank(sysShopId) || StringUtils.isBlank(sysUserId)) {
             responseDTO.setResult(StatusConstant.FAILURE);
             responseDTO.setErrorInfo(BusinessErrorCode.NULL_PROPERTIES.getCode());
             return responseDTO;
         }
-
         ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
         shopUserProductRelationDTO.setSysShopId(sysShopId);
         shopUserProductRelationDTO.setSysUserId(sysUserId);
@@ -84,7 +81,6 @@ public class ProductController {
         responseDTO.setResponseData(userProductInfoList);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
-        logger.info("查询某个用户的产品列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -98,14 +94,11 @@ public class ProductController {
     @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<ShopProductInfoResponseDTO> getProduct(@PathVariable String productId) {
-        long currentTimeMillis = System.currentTimeMillis();
         //查询数据
         ShopProductInfoResponseDTO shopProductInfoResponseDTO = shopProductInfoService.getProductDetail(productId);
-
         ResponseDTO<ShopProductInfoResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(shopProductInfoResponseDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("getProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
 
     }
@@ -120,7 +113,6 @@ public class ProductController {
     @RequestMapping(value = "/oneLevelProduct", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct() {
-        long currentTimeMillis = System.currentTimeMillis();
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
         ShopProductTypeDTO shopProductTypeDTO=new ShopProductTypeDTO();
@@ -128,7 +120,6 @@ public class ProductController {
         List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(shopProductTypeDTO);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findOneLevelProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -142,16 +133,13 @@ public class ProductController {
     @RequestMapping(value = "/twoLevelProduct", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<List<ShopProductTypeDTO>> findTwoLevelProduct(@RequestParam String id) {
-        long currentTimeMillis = System.currentTimeMillis();
         ShopProductTypeDTO shopProductTypeDTO = new ShopProductTypeDTO();
         shopProductTypeDTO.setId(id);
         //查询数据
         List<ShopProductTypeDTO> list = shopProductInfoService.getTwoLevelProductList(shopProductTypeDTO);
-
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findTwoLevelProduct方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -164,7 +152,6 @@ public class ProductController {
     @RequestMapping(value = "/getUserProductInfo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<ShopUserProductRelationDTO> getUserProductInfo(@RequestParam String userProductInfoId) {
-        long currentTimeMillis = System.currentTimeMillis();
 
         ResponseDTO<ShopUserProductRelationDTO> responseDTO = new ResponseDTO<>();
         //查询数据
@@ -178,7 +165,6 @@ public class ProductController {
 
         responseDTO.setResponseData(productInfoList.get(0));
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("获取产品详情方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -191,13 +177,11 @@ public class ProductController {
     @RequestMapping(value = "/updateProductInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<Object> updateProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         int info = shopProductInfoService.updateProductInfo(shopProductInfoDTO);
 
         responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        logger.info("获取产品详情方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -215,7 +199,6 @@ public class ProductController {
                                                                 @RequestParam(required = false) String productName,
                                                                 @RequestParam int pageSize) {
 
-        long currentTimeMillis = System.currentTimeMillis();
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
@@ -230,11 +213,10 @@ public class ProductController {
         pageParamVoDTO.setPageSize(pageSize);
         //查询数据
         List<ShopProductInfoResponseDTO> list = shopProductInfoService.getThreeLevelProductList(pageParamVoDTO);
-
         ResponseDTO<List<ShopProductInfoResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findThreeLevelProduct方法耗时={}毫秒", System.currentTimeMillis() - currentTimeMillis);
+
         return responseDTO;
     }
 
@@ -244,12 +226,11 @@ public class ProductController {
      * @return
      */
     @RequestMapping(value = "searchShopProductList", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr) {
 
-        long currentTimeMillis = System.currentTimeMillis();
         String sysShopId = null;
         if (StringUtils.isBlank(sysShopId)) {
             logger.info("pad端查询某个店的产品传入参数={}", "filterStr = [" + filterStr + "]");
@@ -307,7 +288,6 @@ public class ProductController {
         responseDTO.setResponseData(returnMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
-        logger.info("查询某个店的产品列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -322,8 +302,6 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<Object> getProductInfoByScanCode(@RequestParam String code) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("传入参数={}", "code = [" + code + "]");
         ResponseDTO responseDTO = new ResponseDTO();
         ExtShopProductInfoDTO scanShopProductInfo = mongoUtils.getScanShopProductInfo(code);
         logger.info("扫码入库查询出来的数据为={}", "scanShopProductInfo = [" + scanShopProductInfo + "]");
@@ -355,7 +333,6 @@ public class ProductController {
             responseDTO.setResponseData(productInfoDTO);
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("扫码入库方法耗时={}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -368,13 +345,10 @@ public class ProductController {
     @RequestMapping(value = "/saveProductInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<Object> saveProductInfo(@RequestBody ExtShopProductInfoDTO shopProductInfoDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        logger.info("添加产品信息传入参数={}", "shopProductInfoDTO = [" + shopProductInfoDTO + "]");
         int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
         responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData(productInfo);
-        logger.info("扫码入库方法耗时={}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

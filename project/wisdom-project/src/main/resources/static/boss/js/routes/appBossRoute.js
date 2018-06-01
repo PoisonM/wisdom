@@ -444,7 +444,7 @@ define(['appBoss'], function(app){
                     })
                 /*选择类别*/
                     .state('selectionCategory', {
-                        url: '/selectionCategory/:add/:mod/:projectId/:name',
+                        url: '/selectionCategory/:projectId,:url',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectionCategoryCtrl',
                         resolve: {
@@ -626,7 +626,7 @@ define(['appBoss'], function(app){
                     })
                     /*选择项目系列*/
                     .state('addProjectSeries', {
-                        url: '/addProjectSeries/:typeId/:add/:mod/:projectId/:name/:seriesId/:seriesName',
+                        url: '/addProjectSeries/:projectId,:url,:oneId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'addProjectSeriesCtrl',
                         resolve: {
@@ -639,7 +639,7 @@ define(['appBoss'], function(app){
                     })
                 /*修改项目*/
                     .state('modifyProject', {
-                        url: '/modifyProject/:projectId,:typeId,:name,:seriesId,:seriesName',
+                        url: '/modifyProject/:projectId,:seriesId,:seriesName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'modifyProjectCtrl',
                         resolve: {

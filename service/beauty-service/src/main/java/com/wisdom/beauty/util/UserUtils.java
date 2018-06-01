@@ -156,7 +156,7 @@ public class UserUtils {
      * @return
      */
     public static Map<String, String> getHeadersInfo(HttpServletRequest request) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(6);
         Enumeration headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String key = (String) headerNames.nextElement();
@@ -192,7 +192,7 @@ public class UserUtils {
         clerkDTO.setWeixinAttentionStatus("1");
         clerkDTO.setSysUserId("3");
         clerkDTO.setSysBossName("王老板");
-        clerkDTO.setSysBossCode("sys_boss_code");
+        clerkDTO.setSysBossCode("11");
         clerkDTO.setName("陈莺梦");
         clerkDTO.setId("clerkId1");
         clerkDTO.setSysShopId("11");

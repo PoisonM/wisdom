@@ -24,11 +24,14 @@ define(['appCustomer'], function (app) {
         .factory('UserLogin',['$resource',function ($resource){
             return $resource(user + 'userLogin')
         }])
-        .factory('BeautyUserLogin',['$resource',function ($resource){
-            return $resource(user + 'beautyUserLogin')
-        }])
         .factory('UserLoginOut',['$resource',function ($resource){
             return $resource(user + 'userLoginOut')
+        }])
+        .factory('BeautyUserLogin',['$resource',function ($resource){
+            return $resource(user + 'beautyLogin')
+        }])
+        .factory('BeautyUserLoginOut',['$resource',function ($resource){
+            return $resource(user + 'beautyLoginOut')
         }])
         .factory('GetUserInfo',['$resource',function ($resource){
             return $resource(customer + 'getUserInfo')

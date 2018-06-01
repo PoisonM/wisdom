@@ -13,8 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 @Service("shopClerkAchievementService")
 public class ShopClerkAchievementServiceImpl implements ShopClerkAchievementService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -26,8 +27,6 @@ public class ShopClerkAchievementServiceImpl implements ShopClerkAchievementServ
             SysClerkDTO clerkDTO = UserUtils.getClerkInfo();
             UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
             userConsumeRequest.setSysClerkId(clerkDTO.getSysUserId());
-            String start = startTime + " 00:00:00";
-            String end = endTime + " 23:59:59";
             pageParamVoDTO.setStartTime(startTime);
             pageParamVoDTO.setEndTime(endTime);
             pageParamVoDTO.setRequestData(userConsumeRequest);
@@ -46,9 +45,12 @@ public class ShopClerkAchievementServiceImpl implements ShopClerkAchievementServ
                     // 如果map中的key没有shopId,则直接将业绩值放入value
                     map.put(expenditureAndIncomeResponse.getFormateDate(), expenditureAndIncomeResponse);
                 } else {
-                    // 取出key是ship的值，计算value中的值
-                    map.get(expenditureAndIncomeResponse.getFormateDate()).getTotalPrice()
-                            .add(expenditureAndIncomeResponse.getTotalPrice());
+                    //取出key是ship的值，计算value中的值
+                    if(map.get(expenditureAndIncomeResponse.getFormateDate()).getTotalPrice()!=null){
+                        expenditureAndIncomeResponseDTO.setTotalPrice(map.get(expenditureAndIncomeResponse.getFormateDate()).getTotalPrice().add(expenditureAndIncomeResponse.getTotalPrice()));
+                        map.put(expenditureAndIncomeResponse.getFormateDate(),expenditureAndIncomeResponseDTO);
+                    }
+
                 }
                 expenditureAndIncomeResponseDTO = null;
             }
@@ -69,7 +71,8 @@ public class ShopClerkAchievementServiceImpl implements ShopClerkAchievementServ
                     if (map2.get(expenditure.getFormateDate()) != null
                             && map2.get(expenditure.getFormateDate()).getExpenditure() != null
                             && expenditure.getExpenditure() != null) {
-                        map2.get(expenditure.getFormateDate()).getTotalPrice().add(expenditure.getTotalPrice());
+                        expenditureAndIncomeResponseDTO.setTotalPrice(map2.get(expenditure.getFormateDate()).getTotalPrice().add(expenditure.getTotalPrice()));
+                        map2.put(expenditure.getFormateDate(),expenditureAndIncomeResponseDTO);
                     }
                 }
             }

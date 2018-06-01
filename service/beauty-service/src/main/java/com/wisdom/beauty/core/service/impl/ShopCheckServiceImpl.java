@@ -1,9 +1,15 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.dto.ShopCheckRecordCriteria;
+import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
+import com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO;
+import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.enums.ClosePositionTypeEnum;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
-import com.wisdom.beauty.api.responseDto.*;
+import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopClosePositionResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopCheckRecordMapper;
 import com.wisdom.beauty.core.mapper.ShopClosePositionRecordMapper;
 import com.wisdom.beauty.core.mapper.ShopStockNumberMapper;
@@ -67,6 +73,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         List<ShopCheckRecordDTO> list= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
 
         Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
+        // todo 待修复
         List<ShopCheckRecordResponseDTO> shopCheckRecordResponseDTOs=new ArrayList<>();
         ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
         for(ShopCheckRecordDTO shopCheckRecord:list){
@@ -79,7 +86,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
                     shopCheckRecordResponseDTO.setState(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode());
                 }
                 //计算异常数
-                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getCreateDate())){
+                if (ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())) {
                     shopCheckRecordResponseDTO.setExceptionNumber(shopCheckRecordResponseDTO.getExceptionNumber()+1);
                 }
                 map.put(shopCheckRecord.getFlowNo(),shopCheckRecordResponseDTO);
@@ -89,7 +96,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
                 shopCheckRecordResponseDTO.setState(shopCheckRecord.getState());
                 shopCheckRecordResponseDTO.setCreateDate(shopCheckRecord.getCreateDate());
                 shopCheckRecordResponseDTO.setShopProcId(shopCheckRecord.getShopProcId());
-                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getCreateDate())){
+                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())){
                     shopCheckRecordResponseDTO.setExceptionNumber(1);
                 }else {
                     shopCheckRecordResponseDTO.setExceptionNumber(0);
@@ -114,11 +121,9 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         ShopCheckRecordCriteria.Criteria c1 = shopCheckRecordCriteria.createCriteria();
         c1.andFlowNoEqualTo(flowNo);
         List<ShopCheckRecordDTO> shopCheckRecordDTOList= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
-        List<String> prodcuts=new ArrayList<>();
         Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
         ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
         for(ShopCheckRecordDTO shopCheckRecord:shopCheckRecordDTOList){
-            prodcuts.add(shopCheckRecord.getShopProcId());
             if(map.containsKey(shopCheckRecord.getProductTypeOneId())){
                 ShopCheckRecordResponseDTO devShopCheckRecordResponseDTO=map.get(shopCheckRecord.getProductTypeOneId());
                 List<ShopCheckRecordResponseDTO> devList=devShopCheckRecordResponseDTO.getShopCheckRecordResponseList();

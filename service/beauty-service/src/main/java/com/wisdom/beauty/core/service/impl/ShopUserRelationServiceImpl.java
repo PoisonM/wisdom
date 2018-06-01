@@ -86,7 +86,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
     @Override
     public int saveUserShopRelation(ShopUserRelationDTO shopUserRelationDTO) {
         if (null == shopUserRelationDTO) {
-            logger.error("用户绑定会员传入参数为空，{}", "shopUserRelationDTO = [" + shopUserRelationDTO + "]");
+            logger.error("用户绑定会员传入参数为空");
             return 0;
         }
         List<ShopUserRelationDTO> shopListByCondition = getShopListByCondition(shopUserRelationDTO);
@@ -203,7 +203,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         }
 
         int update = sysShopMapper.updateByPrimaryKeySelective(extSysShopDTO);
-        mongoUtils.saveImageUrl(extSysShopDTO.getImageList(), extSysShopDTO.getId());
+        mongoUtils.updateImageUrl(extSysShopDTO.getImageList(), extSysShopDTO.getId());
         return update;
     }
 }
