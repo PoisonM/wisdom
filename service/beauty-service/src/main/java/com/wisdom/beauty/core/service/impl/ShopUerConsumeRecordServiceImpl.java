@@ -211,10 +211,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			goodsTypes.add(shopUserConsumeRecordDTO.getGoodsType());
 			if (totalAmount == null) {
 				totalAmount = shopUserConsumeRecordDTO.getPrice()
-						.multiply(new BigDecimal(shopUserConsumeRecordDTO.getConsumeNumber()));
+						.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber()?0:shopUserConsumeRecordDTO.getConsumeNumber()));
 			} else {
 				totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice()
-						.multiply(new BigDecimal(shopUserConsumeRecordDTO.getConsumeNumber())));
+						.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber()?0:shopUserConsumeRecordDTO.getConsumeNumber())));
 			}
 		}
 		if (consumeTypes.contains(ConsumeTypeEnum.RECHARGE.getCode())) {
