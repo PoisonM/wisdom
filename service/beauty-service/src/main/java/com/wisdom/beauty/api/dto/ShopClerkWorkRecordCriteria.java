@@ -196,6 +196,76 @@ public class ShopClerkWorkRecordCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andFlowIdIsNull() {
+            addCriterion("flow_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdIsNotNull() {
+            addCriterion("flow_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdEqualTo(String value) {
+            addCriterion("flow_id =", value, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdNotEqualTo(String value) {
+            addCriterion("flow_id <>", value, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdGreaterThan(String value) {
+            addCriterion("flow_id >", value, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdGreaterThanOrEqualTo(String value) {
+            addCriterion("flow_id >=", value, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdLessThan(String value) {
+            addCriterion("flow_id <", value, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdLessThanOrEqualTo(String value) {
+            addCriterion("flow_id <=", value, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdLike(String value) {
+            addCriterion("flow_id like", value, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdNotLike(String value) {
+            addCriterion("flow_id not like", value, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdIn(List<String> values) {
+            addCriterion("flow_id in", values, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdNotIn(List<String> values) {
+            addCriterion("flow_id not in", values, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdBetween(String value1, String value2) {
+            addCriterion("flow_id between", value1, value2, "flowId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlowIdNotBetween(String value1, String value2) {
+            addCriterion("flow_id not between", value1, value2, "flowId");
+            return (Criteria) this;
+        }
+
         public Criteria andConsumeRecordIdIsNull() {
             addCriterion("consume_record_id is null");
             return (Criteria) this;
@@ -403,6 +473,76 @@ public class ShopClerkWorkRecordCriteria {
 
         public Criteria andSysClerkIdNotBetween(String value1, String value2) {
             addCriterion("sys_clerk_id not between", value1, value2, "sysClerkId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameIsNull() {
+            addCriterion("sys_clerk_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameIsNotNull() {
+            addCriterion("sys_clerk_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameEqualTo(String value) {
+            addCriterion("sys_clerk_name =", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameNotEqualTo(String value) {
+            addCriterion("sys_clerk_name <>", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameGreaterThan(String value) {
+            addCriterion("sys_clerk_name >", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_name >=", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameLessThan(String value) {
+            addCriterion("sys_clerk_name <", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameLessThanOrEqualTo(String value) {
+            addCriterion("sys_clerk_name <=", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameLike(String value) {
+            addCriterion("sys_clerk_name like", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameNotLike(String value) {
+            addCriterion("sys_clerk_name not like", value, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameIn(List<String> values) {
+            addCriterion("sys_clerk_name in", values, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameNotIn(List<String> values) {
+            addCriterion("sys_clerk_name not in", values, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameBetween(String value1, String value2) {
+            addCriterion("sys_clerk_name between", value1, value2, "sysClerkName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysClerkNameNotBetween(String value1, String value2) {
+            addCriterion("sys_clerk_name not between", value1, value2, "sysClerkName");
             return (Criteria) this;
         }
 

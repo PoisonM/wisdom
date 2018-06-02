@@ -33,6 +33,8 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
     //包含项目
 	private List<ShopProjectInfoDTO> shopProjectInfoDTOList;
 	private List<UserConsumeRecordResponseDTO> userConsumeRecordResponseList;
+	//店员集合
+	private List<String> sysClerkNameList;
 
 	public String getSysShopClerkName() {
 		return sysShopClerkName;
@@ -98,5 +100,13 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
 
 	public void setIncludeTimes(Integer includeTimes) {
 		this.includeTimes = includeTimes;
+	}
+
+	public List<String> getSysClerkNameList() {
+		return sysClerkNameList;
+	}
+
+	public void setSysClerkNameList(List<String> sysClerkNameList) {
+		this.sysClerkNameList = sysClerkNameList;
 	}
 }

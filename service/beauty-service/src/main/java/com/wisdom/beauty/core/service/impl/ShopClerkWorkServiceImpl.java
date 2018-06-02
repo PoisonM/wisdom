@@ -212,6 +212,19 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 
 	@Override
 	public int saveClerkWorkRecord(List<ShopClerkWorkRecordDTO> shopClerkWorkRecordDTOs) {
-       return extShopClerkWorkRecordMapper.insertBatchClerkRecord(shopClerkWorkRecordDTOs);
+		return extShopClerkWorkRecordMapper.insertBatchClerkRecord(shopClerkWorkRecordDTOs);
+	}
+
+	@Override
+	public List<ShopClerkWorkRecordDTO> getShopClerkList(List<String> flowIds) {
+		logger.info("getShopClerkList方法传入的参数flowIds={}",flowIds);
+		if(CollectionUtils.isEmpty(flowIds)){
+			logger.info("getShopClerkList方法传入的参数flowIds为空");
+			return  null;
+		}
+		ShopClerkWorkRecordCriteria criteria = new ShopClerkWorkRecordCriteria();
+		ShopClerkWorkRecordCriteria.Criteria c = criteria.createCriteria();
+		c.andFlowIdIn(flowIds);
+		return  shopClerkWorkRecordMapper.selectByCriteria(criteria);
 	}
 }

@@ -3,9 +3,11 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopClerkWorkRecordMapper" >
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopClerkWorkRecordDTO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="consume_record_id" property="consumeRecordId" jdbcType="VARCHAR"/>
+    <result column="flow_id" property="flowId" jdbcType="VARCHAR" />
+    <result column="consume_record_id" property="consumeRecordId" jdbcType="VARCHAR" />
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
     <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
+    <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
     <result column="flow_no" property="flowNo" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="goods_type" property="goodsType" jdbcType="CHAR" />
@@ -75,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, consume_record_id, sys_shop_id, sys_clerk_id, flow_no, price, goods_type, consume_type,
-    pay_type, create_by, update_user, create_date, update_date
+    id, flow_id, consume_record_id, sys_shop_id, sys_clerk_id, sys_clerk_name, flow_no, 
+    price, goods_type, consume_type, pay_type, create_by, update_user, create_date, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopClerkWorkRecordCriteria" >
     select
@@ -112,16 +114,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopClerkWorkRecordDTO" >
-    insert into shop_clerk_work_record (id, consume_record_id, sys_shop_id,
-    sys_clerk_id, flow_no, price,
-    goods_type, consume_type, pay_type,
-    create_by, update_user, create_date,
-    update_date)
-    values (#{id,jdbcType=VARCHAR}, #{consumeRecordId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR},
-    #{sysClerkId,jdbcType=VARCHAR}, #{flowNo,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
-    #{goodsType,jdbcType=CHAR}, #{consumeType,jdbcType=CHAR}, #{payType,jdbcType=CHAR},
-    #{createBy,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-    #{updateDate,jdbcType=TIMESTAMP})
+    insert into shop_clerk_work_record (id, flow_id, consume_record_id, 
+      sys_shop_id, sys_clerk_id, sys_clerk_name, 
+      flow_no, price, goods_type, 
+      consume_type, pay_type, create_by, 
+      update_user, create_date, update_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{flowId,jdbcType=VARCHAR}, #{consumeRecordId,jdbcType=VARCHAR}, 
+      #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, 
+      #{flowNo,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{goodsType,jdbcType=CHAR}, 
+      #{consumeType,jdbcType=CHAR}, #{payType,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateUser,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopClerkWorkRecordDTO" >
     insert into shop_clerk_work_record
@@ -129,7 +133,10 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="consumeRecordId != null">
+      <if test="flowId != null" >
+        flow_id,
+      </if>
+      <if test="consumeRecordId != null" >
         consume_record_id,
       </if>
       <if test="sysShopId != null" >
@@ -137,6 +144,9 @@
       </if>
       <if test="sysClerkId != null" >
         sys_clerk_id,
+      </if>
+      <if test="sysClerkName != null" >
+        sys_clerk_name,
       </if>
       <if test="flowNo != null" >
         flow_no,
@@ -170,7 +180,10 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="consumeRecordId != null">
+      <if test="flowId != null" >
+        #{flowId,jdbcType=VARCHAR},
+      </if>
+      <if test="consumeRecordId != null" >
         #{consumeRecordId,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
@@ -178,6 +191,9 @@
       </if>
       <if test="sysClerkId != null" >
         #{sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkName != null" >
+        #{sysClerkName,jdbcType=VARCHAR},
       </if>
       <if test="flowNo != null" >
         #{flowNo,jdbcType=VARCHAR},
@@ -220,7 +236,10 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.consumeRecordId != null">
+      <if test="record.flowId != null" >
+        flow_id = #{record.flowId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.consumeRecordId != null" >
         consume_record_id = #{record.consumeRecordId,jdbcType=VARCHAR},
       </if>
       <if test="record.sysShopId != null" >
@@ -228,6 +247,9 @@
       </if>
       <if test="record.sysClerkId != null" >
         sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysClerkName != null" >
+        sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       </if>
       <if test="record.flowNo != null" >
         flow_no = #{record.flowNo,jdbcType=VARCHAR},
@@ -264,9 +286,11 @@
   <update id="updateByCriteria" parameterType="map" >
     update shop_clerk_work_record
     set id = #{record.id,jdbcType=VARCHAR},
-    consume_record_id = #{record.consumeRecordId,jdbcType=VARCHAR},
+      flow_id = #{record.flowId,jdbcType=VARCHAR},
+      consume_record_id = #{record.consumeRecordId,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+      sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       flow_no = #{record.flowNo,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       goods_type = #{record.goodsType,jdbcType=CHAR},
@@ -283,7 +307,10 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopClerkWorkRecordDTO" >
     update shop_clerk_work_record
     <set >
-      <if test="consumeRecordId != null">
+      <if test="flowId != null" >
+        flow_id = #{flowId,jdbcType=VARCHAR},
+      </if>
+      <if test="consumeRecordId != null" >
         consume_record_id = #{consumeRecordId,jdbcType=VARCHAR},
       </if>
       <if test="sysShopId != null" >
@@ -291,6 +318,9 @@
       </if>
       <if test="sysClerkId != null" >
         sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysClerkName != null" >
+        sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       </if>
       <if test="flowNo != null" >
         flow_no = #{flowNo,jdbcType=VARCHAR},
@@ -324,9 +354,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopClerkWorkRecordDTO" >
     update shop_clerk_work_record
-    set consume_record_id = #{consumeRecordId,jdbcType=VARCHAR},
-    sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+    set flow_id = #{flowId,jdbcType=VARCHAR},
+      consume_record_id = #{consumeRecordId,jdbcType=VARCHAR},
+      sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
+      sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       flow_no = #{flowNo,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       goods_type = #{goodsType,jdbcType=CHAR},

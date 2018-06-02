@@ -68,11 +68,10 @@ public interface ShopUerConsumeRecordService {
     List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(String consumeType,List<String> sysClerkIds);
     /**
     *@Author:zhanghuan
-    *@Param:   bossId  ，shopId
-    *@Return: List<ShopUserConsumeRecordDTO>
-    *@Description:
-    *@Date:2018/5/10 19:24
+    *@Param:
+    *@Return:
+    *@Description: 根据疗程卡和套卡Id获取疗程的划卡记录
+    *@Date:2018/6/1 18:10
     */
-    //List<ShopUserConsumeRecordDTO> getConsumeRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
-
+    List<UserConsumeRecordResponseDTO> getTreatmentAndGroupCardRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 }

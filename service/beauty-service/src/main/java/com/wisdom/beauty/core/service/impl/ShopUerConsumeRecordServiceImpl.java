@@ -53,6 +53,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	@Autowired
 	private ShopProjectService shopProjectService;
 
+
 	@Override
 	public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
@@ -330,6 +331,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getConsumeType())) {
 			c.andConsumeTypeEqualTo(shopUserConsumeRecordDTO.getConsumeType());
 		}
+		if(StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowId())){
+           c.andFlowIdEqualTo(shopUserConsumeRecordDTO.getFlowId());
+		}
 		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper
 				.selectByCriteria(criteria);
 
@@ -431,6 +435,72 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		logger.info("getShopCustomerConsumeRecordList执行完成");
 		List values = Arrays.asList(map.values().toArray());
 		return values;
+	}
+
+	@Override
+	public List<UserConsumeRecordResponseDTO> getTreatmentAndGroupCardRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+		UserConsumeRequestDTO userConsumeRequestDTO=pageParamVoDTO.getRequestData();
+		if(userConsumeRequestDTO==null){
+			logger.info("getTreatmentCardRecord方法出入参数userConsumeRequestDTO为空");
+			return  null;
+		}
+		logger.info("getTreatmentCardRecord传入的参数FlowId={}",userConsumeRequestDTO.getFlowId());
+
+		ShopUserConsumeRecordDTO shopUserConsumeRecordDTO=new ShopUserConsumeRecordDTO();
+		shopUserConsumeRecordDTO.setFlowId(userConsumeRequestDTO.getFlowId());
+		List<ShopUserConsumeRecordDTO> list=this.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+		if(CollectionUtils.isEmpty(list)){
+			logger.info("list结果返回为空");
+			return  null;
+		}
+		List<String> flowIds=new ArrayList<>();
+		for(ShopUserConsumeRecordDTO shopUserConsumeRecord:list){
+			flowIds.add(shopUserConsumeRecord.getFlowId());
+
+		}
+		//根据flowIds集合查询店员list
+		List<ShopClerkWorkRecordDTO> shopClerkWorkRecordDTOs= shopClerkWorkService.getShopClerkList(flowIds);
+		Map<String,List<String>> map=null;
+		if(CollectionUtils.isEmpty(shopClerkWorkRecordDTOs)){
+			logger.info("查询shopClerkWorkRecordDTO结果为空");
+		}else {
+			//如果获取到店员list，则做存入map中，key使用消费记录id,value使用员工姓名集合
+			map=new HashMap<>();
+			for (ShopClerkWorkRecordDTO shopClerkWorkRecordDTO :shopClerkWorkRecordDTOs){
+				if(map.containsKey(shopClerkWorkRecordDTO.getConsumeRecordId())){
+					List<String> devClerkList=map.get(shopClerkWorkRecordDTO.getConsumeRecordId());
+					devClerkList.add(shopClerkWorkRecordDTO.getSysClerkName());
+					map.put(shopClerkWorkRecordDTO.getConsumeRecordId(),devClerkList);
+				}else {
+					List<String> devClerkList=new ArrayList<>();
+					devClerkList.add(shopClerkWorkRecordDTO.getSysClerkName());
+					map.put(shopClerkWorkRecordDTO.getConsumeRecordId(),devClerkList);
+				}
+			}
+		}
+		//遍历list
+		List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTOs=new ArrayList<>();
+		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO=null;
+		for(ShopUserConsumeRecordDTO shopUserConsumeRecord:list){
+			if(ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getConsumeType())){
+					if(GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType()) ||
+							GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())){
+						userConsumeRecordResponseDTO=new UserConsumeRecordResponseDTO();
+						userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
+						userConsumeRecordResponseDTO.setFlowName(shopUserConsumeRecord.getFlowName());
+						userConsumeRecordResponseDTO.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
+						userConsumeRecordResponseDTO.setSignUrl(shopUserConsumeRecord.getSignUrl());
+						userConsumeRecordResponseDTO.setSysShopName(shopUserConsumeRecord.getSysShopName());
+						if(map!=null){
+							userConsumeRecordResponseDTO.setSysClerkNameList(map.get(shopUserConsumeRecord.getId()));
+						}
+						userConsumeRecordResponseDTOs.add(userConsumeRecordResponseDTO);
+
+					}
+			}
+
+		}
+		return userConsumeRecordResponseDTOs;
 	}
 
 }

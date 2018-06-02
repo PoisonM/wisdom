@@ -1,14 +1,17 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.wisdom.common.entity.BaseEntity;
+
 public class ShopClerkWorkRecordDTO extends BaseEntity implements Serializable {
     //主键id
     private String id;
+
+    //
+    private String flowId;
 
     //消费记录表主键
     private String consumeRecordId;
@@ -18,6 +21,9 @@ public class ShopClerkWorkRecordDTO extends BaseEntity implements Serializable {
 
     //店员id
     private String sysClerkId;
+
+    //店员名字
+    private String sysClerkName;
 
     //消费流水号
     private String flowNo;
@@ -56,6 +62,14 @@ public class ShopClerkWorkRecordDTO extends BaseEntity implements Serializable {
         this.id = id;
     }
 
+    public String getFlowId() {
+        return flowId;
+    }
+
+    public void setFlowId(String flowId) {
+        this.flowId = flowId;
+    }
+
     public String getConsumeRecordId() {
         return consumeRecordId;
     }
@@ -78,6 +92,14 @@ public class ShopClerkWorkRecordDTO extends BaseEntity implements Serializable {
 
     public void setSysClerkId(String sysClerkId) {
         this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
     }
 
     public String getFlowNo() {

@@ -212,6 +212,25 @@ public class UserConsumeController {
         responseDTO.setResponseData(cardFlag);
         return responseDTO;
     }
+    /**
+     * @Param:
+     * @Return:
+     * @Description: 根据疗程卡Id获取疗程和套卡的划卡记录
+     * @Date:2018/4/10 11:20
+     */
+    @RequestMapping(value = "/consume/treatmentAndGroupCardRecordList", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO< List<UserConsumeRecordResponseDTO>> getUserConsumeByFlowId(@RequestParam String flowId) {
 
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO=new PageParamVoDTO();
+        UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
+        userConsumeRequestDTO.setFlowId(flowId);
+        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        List<UserConsumeRecordResponseDTO> list = shopUerConsumeRecordService.getTreatmentAndGroupCardRecord(pageParamVoDTO);
+        ResponseDTO< List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(list);
+        return responseDTO;
+    }
 
 }
