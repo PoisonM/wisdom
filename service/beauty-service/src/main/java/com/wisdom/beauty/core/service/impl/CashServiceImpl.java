@@ -4,13 +4,17 @@ import com.wisdom.beauty.api.dto.ShopCashFlowCriteria;
 import com.wisdom.beauty.api.dto.ShopCashFlowDTO;
 import com.wisdom.beauty.core.mapper.ShopCashFlowMapper;
 import com.wisdom.beauty.core.service.CashService;
+import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -80,6 +84,12 @@ public class CashServiceImpl implements CashService {
         if (StringUtils.isNotBlank(shopCashFlowDTO.getFlowNo())) {
             c.andFlowNoEqualTo(shopCashFlowDTO.getFlowNo());
         }
+        if(StringUtils.isNotBlank(shopCashFlowDTO.getSysBossCode())){
+            c.andSysBossCodeEqualTo(shopCashFlowDTO.getSysBossCode());
+        }
+        if(StringUtils.isNotBlank(shopCashFlowDTO.getSysShopId())){
+            c.andSysShopIdEqualTo(shopCashFlowDTO.getSysShopId());
+        }
         return criteria;
     }
 
@@ -92,5 +102,33 @@ public class CashServiceImpl implements CashService {
     @Override
     public int saveShopCashFlow(ShopCashFlowDTO shopCashFlowDTO) {
         return shopCashFlowMapper.insertSelective(shopCashFlowDTO);
+    }
+
+    @Override
+    public List<ShopCashFlowDTO> getShopCashFlowList(PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO) {
+        ShopCashFlowDTO shopCashFlowDTO=pageParamVoDTO.getRequestData();
+        if(shopCashFlowDTO==null){
+            return  null;
+        }
+        ShopCashFlowCriteria criteria = new ShopCashFlowCriteria();
+        ShopCashFlowCriteria.Criteria c = criteria.createCriteria();
+        if(StringUtils.isNotBlank(shopCashFlowDTO.getSysBossCode())){
+            c.andSysBossCodeEqualTo(shopCashFlowDTO.getSysBossCode());
+        }
+        if(StringUtils.isNotBlank(shopCashFlowDTO.getSysShopId())){
+            c.andSysShopIdEqualTo(shopCashFlowDTO.getSysShopId());
+        }
+        // 分页
+        if (pageParamVoDTO.getPaging()) {
+            criteria.setLimitStart(pageParamVoDTO.getPageNo());
+            criteria.setPageSize(pageParamVoDTO.getPageSize());
+        }
+        if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
+                && StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+            Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+            Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+            c.andCreateDateBetween(startTime, endTime);
+        }
+        return  shopCashFlowMapper.selectByCriteria(criteria);
     }
 }
