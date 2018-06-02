@@ -74,4 +74,12 @@ public interface ShopUerConsumeRecordService {
     *@Date:2018/6/1 18:10
     */
     List<UserConsumeRecordResponseDTO> getTreatmentAndGroupCardRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:  获取用的划卡记录
+    *@Date:2018/6/2 14:08
+    */
+    List<UserConsumeRecordResponseDTO> getUserStampCardRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 }

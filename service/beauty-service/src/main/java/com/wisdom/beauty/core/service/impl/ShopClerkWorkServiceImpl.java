@@ -227,4 +227,17 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 		c.andFlowIdIn(flowIds);
 		return  shopClerkWorkRecordMapper.selectByCriteria(criteria);
 	}
+
+	@Override
+	public List<ShopClerkWorkRecordDTO> getShopClerkByConsumeRecordId(List<String> consumeRecordIds) {
+		logger.info("getShopClerkByConsumeRecordId方法传入的参数consumeRecordId={}",consumeRecordIds);
+		if(CollectionUtils.isEmpty(consumeRecordIds)){
+			logger.info("getShopClerkByConsumeRecordId方法传入的参数consumeRecordIds为空");
+			return  null;
+		}
+		ShopClerkWorkRecordCriteria criteria = new ShopClerkWorkRecordCriteria();
+		ShopClerkWorkRecordCriteria.Criteria c = criteria.createCriteria();
+		c.andConsumeRecordIdIn(consumeRecordIds);
+		return  shopClerkWorkRecordMapper.selectByCriteria(criteria);
+	}
 }

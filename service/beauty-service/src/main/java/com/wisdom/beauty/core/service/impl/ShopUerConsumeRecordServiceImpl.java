@@ -503,4 +503,70 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		return userConsumeRecordResponseDTOs;
 	}
 
+	@Override
+	public List<UserConsumeRecordResponseDTO> getUserStampCardRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+		UserConsumeRequestDTO userConsumeRequestDTO=pageParamVoDTO.getRequestData();
+		if(userConsumeRequestDTO==null){
+			logger.info("getUserStampCardRecord方法出入参数userConsumeRequestDTO为空");
+			return  null;
+		}
+		logger.info("getUserStampCardRecord传入的参数sysUserId={}",userConsumeRequestDTO.getSysUserId());
+
+		ShopUserConsumeRecordDTO shopUserConsumeRecordDTO=new ShopUserConsumeRecordDTO();
+		shopUserConsumeRecordDTO.setSysUserId(userConsumeRequestDTO.getSysUserId());
+		List<ShopUserConsumeRecordDTO> list=this.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+		if(CollectionUtils.isEmpty(list)){
+			logger.info("list结果返回为空");
+			return  null;
+		}
+		List<String> consumeRecordIds=new ArrayList<>();
+		for(ShopUserConsumeRecordDTO shopUserConsumeRecord:list){
+			consumeRecordIds.add(shopUserConsumeRecord.getId());
+
+		}
+		//根据consumeRecordIds集合查询店员list
+		List<ShopClerkWorkRecordDTO> shopClerkWorkRecordDTOs= shopClerkWorkService.getShopClerkByConsumeRecordId(consumeRecordIds);
+		Map<String,List<String>> map=null;
+		if(CollectionUtils.isEmpty(shopClerkWorkRecordDTOs)){
+			logger.info("查询shopClerkWorkRecordDTO结果为空");
+		}else {
+			//如果获取到店员list，则做存入map中，key使用消费记录id,value使用员工姓名集合
+			map=new HashMap<>();
+			for (ShopClerkWorkRecordDTO shopClerkWorkRecordDTO :shopClerkWorkRecordDTOs){
+				if(map.containsKey(shopClerkWorkRecordDTO.getConsumeRecordId())){
+					List<String> devClerkList=map.get(shopClerkWorkRecordDTO.getConsumeRecordId());
+					devClerkList.add(shopClerkWorkRecordDTO.getSysClerkName());
+					map.put(shopClerkWorkRecordDTO.getConsumeRecordId(),devClerkList);
+				}else {
+					List<String> devClerkList=new ArrayList<>();
+					devClerkList.add(shopClerkWorkRecordDTO.getSysClerkName());
+					map.put(shopClerkWorkRecordDTO.getConsumeRecordId(),devClerkList);
+				}
+			}
+		}
+		//遍历list
+		List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTOs=new ArrayList<>();
+		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO=null;
+		for(ShopUserConsumeRecordDTO shopUserConsumeRecord:list){
+			if(ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getConsumeType())){
+				if(GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType()) ||
+						GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())){
+					userConsumeRecordResponseDTO=new UserConsumeRecordResponseDTO();
+					userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
+					userConsumeRecordResponseDTO.setFlowName(shopUserConsumeRecord.getFlowName());
+					userConsumeRecordResponseDTO.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
+					userConsumeRecordResponseDTO.setSignUrl(shopUserConsumeRecord.getSignUrl());
+					userConsumeRecordResponseDTO.setSysShopName(shopUserConsumeRecord.getSysShopName());
+					if(map!=null){
+						userConsumeRecordResponseDTO.setSysClerkNameList(map.get(shopUserConsumeRecord.getId()));
+					}
+					userConsumeRecordResponseDTOs.add(userConsumeRecordResponseDTO);
+
+				}
+			}
+
+		}
+		return userConsumeRecordResponseDTOs;
+	}
+
 }

@@ -232,5 +232,25 @@ public class UserConsumeController {
         responseDTO.setResponseData(list);
         return responseDTO;
     }
+    /**
+     * @Param:
+     * @Return:
+     * @Description: 获取用户的的划卡记录
+     * @Date:2018/4/10 11:20
+     */
+    @RequestMapping(value = "/consume/userStampCardRecordList", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO< List<UserConsumeRecordResponseDTO>> getUserStampCardRecord(@RequestParam String sysUserId) {
+
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO=new PageParamVoDTO();
+        UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
+        userConsumeRequestDTO.setSysUserId(sysUserId);
+        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        List<UserConsumeRecordResponseDTO> list = shopUerConsumeRecordService.getUserStampCardRecord(pageParamVoDTO);
+        ResponseDTO< List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(list);
+        return responseDTO;
+    }
 
 }

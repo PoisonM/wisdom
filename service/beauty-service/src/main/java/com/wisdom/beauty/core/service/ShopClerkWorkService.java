@@ -51,4 +51,12 @@ public interface ShopClerkWorkService {
      * @Date:2018/6/2 9:55
      */
     List<ShopClerkWorkRecordDTO> getShopClerkList(List<String> flowIds);
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据多个consumeRecordId查询员工集合
+     * @Date:2018/6/2 9:才
+     */
+    List<ShopClerkWorkRecordDTO> getShopClerkByConsumeRecordId(List<String> consumeRecordIds);
 }
