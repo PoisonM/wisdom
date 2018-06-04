@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/4.
  */
 angular.module('controllers',[]).controller('myselfCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetCurrentLoginUserInfo',
-        function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo) {
+    ['$scope','$rootScope','$stateParams','$state','GetCurrentLoginUserInfo','BossUtil',
+        function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,BossUtil) {
 
             $rootScope.title = "我的";
             /*点击头像跳转*/
@@ -20,7 +20,7 @@ angular.module('controllers',[]).controller('myselfCtrl',
             };
             /*查询我的信息*/
             GetCurrentLoginUserInfo.get(function (data) {
+                BossUtil.checkResponseData(data,'myself');
                 $scope.userInfo=data.responseData;
-                console.log(data)
             })
         }]);

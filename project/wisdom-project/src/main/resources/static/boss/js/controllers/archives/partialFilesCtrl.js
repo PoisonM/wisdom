@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('partialFilesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','FindArchives','GetBossShopList',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,FindArchives,GetBossShopList) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','FindArchives','GetBossShopList','BossUtil',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,FindArchives,GetBossShopList,BossUtil) {
             $rootScope.title = "全院档案";
             $scope.param={
                 sysShopId:"11",
@@ -11,7 +11,9 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                 fileBOx:false,
                 distributionStart:false /*选择档案的多选框*/
             };
-            FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
+            FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,
+                pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
+                BossUtil.checkResponseData(data,'partialFiles');
                 if(data.result == "0x00001"){
                     $scope.fileList = [];
                     $scope.info = data.responseData.info;

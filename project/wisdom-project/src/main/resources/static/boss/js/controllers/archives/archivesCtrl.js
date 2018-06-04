@@ -1,11 +1,12 @@
 angular.module('controllers',[]).controller('archivesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Detail',"Global",
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Detail,Global) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Detail',"Global",'BossUtil',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Detail,Global,BossUtil) {
             $rootScope.title = "档案";
 
             Detail.get({
                id:$stateParams.id
             },function(data){
+                BossUtil.checkResponseData(data,'archives&'+$stateParams.id);
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.archives = data.responseData
                 }
