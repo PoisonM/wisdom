@@ -491,6 +491,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 						userConsumeRecordResponseDTO.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
 						userConsumeRecordResponseDTO.setSignUrl(shopUserConsumeRecord.getSignUrl());
 						userConsumeRecordResponseDTO.setSysShopName(shopUserConsumeRecord.getSysShopName());
+						userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
 						if(map!=null){
 							userConsumeRecordResponseDTO.setSysClerkNameList(map.get(shopUserConsumeRecord.getId()));
 						}
@@ -557,6 +558,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					userConsumeRecordResponseDTO.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
 					userConsumeRecordResponseDTO.setSignUrl(shopUserConsumeRecord.getSignUrl());
 					userConsumeRecordResponseDTO.setSysShopName(shopUserConsumeRecord.getSysShopName());
+					userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
 					if(map!=null){
 						userConsumeRecordResponseDTO.setSysClerkNameList(map.get(shopUserConsumeRecord.getId()));
 					}
