@@ -112,43 +112,48 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 		}
 		// 查询
 		List<ShopCashFlowDTO> shopCashFlowDTOs = cashService.getShopCashFlowList(pageParamVoDTO);
-		Map<String, BigDecimal> map = new HashedMap();
-		Map<String, BigDecimal> map2 = new HashedMap();
-		// 循环list,将shopId放入map作为key,expenditureAndIncomeResponseDTO作为value,
-		for (ShopCashFlowDTO shopCashFlow : shopCashFlowDTOs) {
-			// 计算现金收入
-			if (shopCashFlow.getCashAmount() != null) {
-				if (map.containsKey(shopCashFlow.getSysShopId())) {
-					BigDecimal cashEarnings = map.get(shopCashFlow.getSysShopId());
-					map.put(shopCashFlow.getSysShopId(), cashEarnings.add(shopCashFlow.getCashAmount()));
+		Map<String, BigDecimal> cashAmountMap = null;
+		Map<String, BigDecimal> payTypeAmountMap = null;
+		if (CollectionUtils.isNotEmpty(shopCashFlowDTOs)) {
+			cashAmountMap = new HashedMap();
+			payTypeAmountMap = new HashedMap();
+			// 循环list,将shopId放入map作为key,金额作为value,
+			for (ShopCashFlowDTO shopCashFlow : shopCashFlowDTOs) {
+				// 计算现金收入
+				if (shopCashFlow.getCashAmount() != null) {
+					if (cashAmountMap.containsKey(shopCashFlow.getSysShopId())) {
+						BigDecimal cashEarnings = cashAmountMap.get(shopCashFlow.getSysShopId());
+						cashAmountMap.put(shopCashFlow.getSysShopId(), cashEarnings.add(shopCashFlow.getCashAmount()));
 
-				} else {
-					map.put(shopCashFlow.getSysShopId(), shopCashFlow.getCashAmount());
-				}
-			}
-			// 计算总收入
-			if (StringUtils.isNotBlank(shopCashFlow.getPayType())) {
-				if (map2.containsKey(shopCashFlow.getSysShopId())) {
-					BigDecimal totalInCome = map2.get(shopCashFlow.getSysShopId());
-					if (map.get(shopCashFlow.getSysShopId()) != null) {
-						totalInCome = totalInCome.add(map.get(shopCashFlow.getSysShopId()));
+					} else {
+						cashAmountMap.put(shopCashFlow.getSysShopId(), shopCashFlow.getCashAmount());
 					}
-					map2.put(shopCashFlow.getSysShopId(), totalInCome.add(shopCashFlow.getPayTypeAmount()));
-
-				} else {
-					map2.put(shopCashFlow.getSysShopId(), shopCashFlow.getPayTypeAmount());
 				}
-			}
+				// 计算总收入
+				if (StringUtils.isNotBlank(shopCashFlow.getPayType())) {
+					if (payTypeAmountMap.containsKey(shopCashFlow.getSysShopId())) {
+						BigDecimal totalInCome = payTypeAmountMap.get(shopCashFlow.getSysShopId());
+						if (cashAmountMap.get(shopCashFlow.getSysShopId()) != null) {
+							totalInCome = totalInCome.add(cashAmountMap.get(shopCashFlow.getSysShopId()));
+						}
+						payTypeAmountMap.put(shopCashFlow.getSysShopId(),
+								totalInCome.add(shopCashFlow.getPayTypeAmount()));
 
+					} else {
+						payTypeAmountMap.put(shopCashFlow.getSysShopId(), shopCashFlow.getPayTypeAmount());
+					}
+				}
+
+			}
 		}
 		// 循环美容院shopBossRelationDTOList
 		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponses = new ArrayList<>();
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationDTOList) {
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
-			if (map.get(shopBossRelation.getSysShopId()) != null) {
-				expenditureAndIncomeResponseDTO.setCashEarnings(map.get(shopBossRelation.getSysShopId()));
-				expenditureAndIncomeResponseDTO.setAllEarnings(map.get(shopBossRelation.getSysShopId()));
+			if (cashAmountMap.get(shopBossRelation.getSysShopId()) != null) {
+				expenditureAndIncomeResponseDTO.setCashEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
+				expenditureAndIncomeResponseDTO.setAllEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
 			}
 			expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());
 			expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());

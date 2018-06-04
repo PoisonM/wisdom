@@ -293,6 +293,8 @@ public class ProjectController {
 				BigDecimal bigDecimal = new BigDecimal(0);
 				// 套卡名称
 				String projectGroupName = null;
+				//套卡id
+				String shopProjectGroupId=null;
 				ArrayList<Object> arrayList = new ArrayList<>();
 				//是否被使用完，0已用完 1使用中
 				Integer surplusTimes=null;
@@ -307,12 +309,14 @@ public class ProjectController {
 
 						bigDecimal = bigDecimal.add(dto.getProjectInitAmount());
 						projectGroupName = dto.getShopProjectGroupName();
+						shopProjectGroupId=dto.getShopProjectGroupId();
 					}
 				}
 				map.put("marketPrice", shopProjectGroupDTO.getMarketPrice());
 				map.put("projectList", arrayList);
 				map.put("totalAmount", bigDecimal);
 				map.put("projectGroupName", projectGroupName);
+				map.put("shopProjectGroupId", shopProjectGroupId);
 				map.put("isUseUp", surplusTimes>0? IsUseUpEnum.USE_ING.getCode():IsUseUpEnum.USE_UP.getCode());
 				returnList.add(map);
 			}
