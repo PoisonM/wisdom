@@ -707,10 +707,14 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		for (SysClerkDTO sysClerkDTO : sysClerkList) {
 			expenditureAndIncomeResponse = new ExpenditureAndIncomeResponseDTO();
 			if (map.get(sysClerkDTO.getId()) != null) {
-				expenditureAndIncomeResponse.setIncome(map.get(sysClerkDTO.getId()).getTotalPrice());
+				if(map.get(sysClerkDTO.getId()).getTotalPrice()!=null){
+					expenditureAndIncomeResponse.setIncome(map.get(sysClerkDTO.getId()).getTotalPrice());
+				}
 			}
 			if (map2.get(sysClerkDTO.getId()) != null) {
-				expenditureAndIncomeResponse.setExpenditure(map2.get(sysClerkDTO.getId()).getTotalPrice());
+				if(map2.get(sysClerkDTO.getId()).getTotalPrice()!=null) {
+					expenditureAndIncomeResponse.setExpenditure(map2.get(sysClerkDTO.getId()).getTotalPrice());
+				}
 				expenditureAndIncomeResponse.setServiceNumber(map2.get(sysClerkDTO.getId()).getServiceNumber());
 			}
 			if (map3.get(sysClerkDTO.getId()) != null) {
