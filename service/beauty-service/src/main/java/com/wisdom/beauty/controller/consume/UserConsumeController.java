@@ -218,7 +218,7 @@ public class UserConsumeController {
      * @Description: 根据疗程卡Id获取疗程和套卡的划卡记录
      * @Date:2018/4/10 11:20
      */
-    @RequestMapping(value = "/consume/treatmentAndGroupCardRecordList", method = RequestMethod.GET)
+        @RequestMapping(value = "/consume/treatmentAndGroupCardRecordList", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO< List<UserConsumeRecordResponseDTO>> getUserConsumeByFlowId(@RequestParam String flowId) {
 

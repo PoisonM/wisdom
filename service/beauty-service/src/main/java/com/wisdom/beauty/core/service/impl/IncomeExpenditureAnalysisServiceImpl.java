@@ -65,19 +65,20 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 					cashAmount = cashAmount.add(shopCashFlow.getCashAmount());
 				}
 			}
-			if (!map.containsKey(shopCashFlow.getPayType()) && StringUtils.isNotBlank(shopCashFlow.getPayType())) {
-				map.put(shopCashFlow.getPayType(), shopCashFlow.getPayTypeAmount());
+			if (!map.containsKey(shopCashFlow.getPayType())) {
+				if (StringUtils.isNotBlank(shopCashFlow.getPayType())) {
+					map.put(shopCashFlow.getPayType(), shopCashFlow.getPayTypeAmount());
+				}
 			} else {
 				if (StringUtils.isNotBlank(shopCashFlow.getPayType())) {
 					BigDecimal price = map.get(shopCashFlow.getPayType());
-					if (price != null) {
-						BigDecimal totalPrice = price.add(shopCashFlow.getPayTypeAmount());
-						map.put(shopCashFlow.getPayType(), totalPrice);
+					if (price != null && shopCashFlow.getPayTypeAmount() != null) {
+						map.put(shopCashFlow.getPayType(), price.add(shopCashFlow.getPayTypeAmount()));
 					}
 				}
 			}
 		}
-
+		logger.info("map的返回值map={}", map);
 		BigDecimal bankIncome = map.get(PayTypeEnum.BANK_PAY.getCode()) == null ? new BigDecimal("0")
 				: map.get(PayTypeEnum.BANK_PAY.getCode());
 		BigDecimal wechatInCome = map.get(PayTypeEnum.WECHAT_PAY.getCode()) == null ? new BigDecimal("0")
@@ -170,8 +171,8 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 		for (int i = 0; i < 7; i++) {
 			Calendar calendar = new GregorianCalendar();
 			calendar.setTime(new Date());
-			calendar.add(calendar.DATE,i-7);//把日期往后增加一天.整数往后推,负数往前移动
-			String putDate = sdf.format(calendar.getTime()); //增加一天后的日期
+			calendar.add(calendar.DATE, i - 7);// 把日期往后增加一天.整数往后推,负数往前移动
+			String putDate = sdf.format(calendar.getTime()); // 增加一天后的日期
 			sevenDayList.add(putDate);
 		}
 		// 查询七日数据
@@ -184,7 +185,7 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 		// 循环list,将shopId放入map作为key,expenditureAndIncomeResponseDTO作为value,
 		for (ShopCashFlowDTO shopCashFlow : shopCashFlowDTOs) {
 			if (shopCashFlow.getCashAmount() != null) {
-				String formateDate =DateUtils.DateToStr(shopCashFlow.getCreateDate(),"date");
+				String formateDate = DateUtils.DateToStr(shopCashFlow.getCreateDate(), "date");
 				if (map.containsKey(formateDate)) {
 					BigDecimal cashEarnings = map.get(formateDate);
 					map.put(formateDate, cashEarnings.add(shopCashFlow.getCashAmount()));
