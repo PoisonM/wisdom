@@ -120,6 +120,8 @@ public class ProductService {
         update.set("services",productDTO.getProductDetail().getServices());
         update.set("spec",productDTO.getProductDetail().getSpec());
         update.set("detailPic",productDTO.getProductDetail().getDetailPic());
+        update.set("productMarketPrice",productDTO.getProductDetail().getProductMarketPrice());
+        update.set("productSalesVolume",productDTO.getProductDetail().getProductSalesVolume());
         update.set("senderAddress",productDTO.getProductDetail().getSenderAddress());
         update.set("productAmount",productDTO.getProductDetail().getProductAmount());
         mongoTemplate.updateFirst(query,update,"offlineProduct");

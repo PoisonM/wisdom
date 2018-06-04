@@ -31,7 +31,6 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                     $scope.param.productName=$scope.uploadingPar.productName;
                     $scope.param.brand=$scope.uploadingPar.brand;
                     $scope.param.secondType=$scope.uploadingPar.secondType;
-                    $scope.param.productDetail.senderAddress =  $scope.uploadingPar.productDetail.senderAddress;
 
                    if(data.responseData.productDetail){
                        pic(data,"#particulars_viewPic","detailPic");
@@ -288,6 +287,7 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
             /*保存*/
             $scope.mess = false;
             $scope.save = function(){
+                debugger
                     if($scope.hintPic1 ==""||$scope.hintPic2 ==""||$scope.hintPic3==""){
                         $scope.mess = true;
                         return;
@@ -364,7 +364,9 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                             detailPic:$scope.uploadingPar.productDetail.detailPic,
                             listPic:$scope.uploadingPar.productDetail.listPic,
                             senderAddress:$scope.param.productDetail.senderAddress,
-                            productId:$stateParams.productId
+                            productId:$stateParams.productId,
+                            productSalesVolume:$scope.uploadingPar.productDetail.productSalesVolume,
+                            productMarketPrice:$scope.uploadingPar.productDetail.productMarketPrice
                         }
                     };
                     UpdateProductByParameters.save(ProductDTO,function(data){

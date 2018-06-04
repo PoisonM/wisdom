@@ -265,7 +265,7 @@ public class ProductController {
 		String uuid = UUIDUtil.getUUID();
 		try {
 			productDTO.setId(uuid);
-			if(null == productDTO.getProductId()){
+			if("".equals(productDTO.getProductId()) || null == productDTO.getProductId()){
 				productDTO.setProductId(productId);
 				productDTO.getProductDetail().setProductId(productId);
 			}

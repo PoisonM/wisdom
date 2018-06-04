@@ -49,10 +49,28 @@
                             <input type="number" id="price" class="uploading_product_name_search price" ng-model="ProductDTO.price">
                         </div>
                         <div class="uploading_product_name">
+                            <label for="price">
+                                市场零售价:
+                            </label>
+                            <input type="number" id="productMarketPrice" class="uploading_product_name_search price" ng-model="ProductDTO.productDetail.productMarketPrice">
+                        </div>
+                        <div class="uploading_product_name">
+                            <label for="price">
+                                展示销量:
+                            </label>
+                            <input type="number" id="productSalesVolume" class="uploading_product_name_search price" ng-model="ProductDTO.productDetail.productSalesVolume">
+                        </div>
+                        <div class="uploading_product_name">
                             <label for="num">
                                 库存:
                             </label>
                             <input type="text" id="num" class="uploading_product_name_search price" ng-model="ProductDTO.productAmount">
+                        </div>
+                        <div class="uploading_product_name">
+                            <label for="num">
+                                类型:
+                            </label>
+                            <input type="text" id="" class="uploading_product_name_search price" ng-model="ProductDTO.type">
                         </div>
                         <div class="name_row blank">
                             <label for="introduction" style="vertical-align: top">简介:</label>
@@ -81,14 +99,14 @@
                         <div class="name_row blank typelis">
                             <label>型号：</label>
                             <span ng-repeat="item in ProductDTO.productDetail.spec" ng-click="delType(item,$index);$event.stopPropagation()" ng-model="colName">{{item}}</span>
-                            <button class="model_btn" ng-click="type();$event.stopPropagation()">添加型号</button>
+                            <button class="model_btn" ng-click="type();$event.stopPropagation()">添加规格</button>
                         </div>
                         <div class="add_type" ng-show="flag" ng-click="void();$event.stopPropagation()">
-                            <p><label for="col">颜色</label><input type="text" id="col" class="col"></p>
+                            <p><label for="col">规格</label><input type="text" id="col" class="col"></p>
                             <p><input type="button" value="确定" class="type_btn" ng-click="typeTrue()"></p>
                         </div>
                         <div class="add_type del_type" ng-show="flagDel" ng-click="void();$event.stopPropagation()">
-                            <p><label for="col1">颜色</label><input type="text" id="col1" class="col" readonly="readonly" ng-model="colName"></p>
+                            <p><label for="col1">规格</label><input type="text" id="col1" class="col" readonly="readonly" ng-model="colName"></p>
                             <p><input type="button" value="确定删除" class="typeDel_btn" ng-click="typeDelTrue()"></p>
                         </div>
                        <!-- <div class="name_row">
@@ -115,15 +133,12 @@
 
                         </div>
                         <div class="name_row">
-                            <label for="address">发货地:</label>
-                            <select id="address" class="product_type addresss">
-                                <option value="北京地区发货">北京地区发货</option>
-                                <option value="深圳地区发货">深圳地区发货</option>
-                            </select>
+                            <label>发货地:</label>
+                                <input type="text" id="senderAddress" class="uploading_product_name_search price"  ng-model="ProductDTO.productDetail.senderAddress">
                         </div>
                         <div class="save">
                             <button class="save_btn" ng-click="upload()">保存</button>
-                            <p style="color:red;text-align: center" ng-show="mess">请检查信息</p>
+                            <p style="color:red;text-align: center" ng-show="mess">有必填信息未填写</p>
                         </div>
                     </div>
                 </div>
