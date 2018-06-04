@@ -1,5 +1,6 @@
 package com.wisdom.business.client;
 
+import com.wisdom.business.hystric.UserServiceHystric;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.user.RealNameInfoDTO;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient("user-service")
+@FeignClient(value="user-service",fallback = UserServiceHystric.class)
 public interface UserServiceClient {
 
     //project2

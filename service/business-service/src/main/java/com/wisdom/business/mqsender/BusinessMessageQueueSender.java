@@ -1,6 +1,5 @@
 package com.wisdom.business.mqsender;
 
-
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
