@@ -60,30 +60,42 @@ public interface ShopProjectGroupService {
      * @Date:2018/4/11 16:57
      */
     ProjectInfoGroupResponseDTO getShopProjectInfoGroupRelation(String id);
+
     /**
-    *@Author:huan
-    *@Param:
-    *@Return:
-    *@Description: 根据ID查询套卡信息
-    *@Date:2018/4/17 11:32
-    */
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 根据ID查询套卡信息
+     * @Date:2018/4/17 11:32
+     */
     ShopProjectGroupDTO getShopProjectGroupDTO(String id);
+
     /**
-    *@Author:zhanghuan
-    *@Param:
-    *@Return:
-    *@Description: 根据多个主键id查询信息
-    *@Date:2018/5/17 9:22
-    */
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据多个主键id查询信息
+     * @Date:2018/5/17 9:22
+     */
     List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(List<String> ids);
+
     /**
-     *@Author:zhanghuan
-     *@Param:
-     *@Return:
-     *@Description: 根据多个套卡id查询信息
-     *@Date:2018/5/17 9:22
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据多个套卡id查询信息
+     * @Date:2018/5/17 9:22
      */
     List<ShopProjectInfoGroupRelationDTO> getShopProjectInfoGroupRelation(List<String> ids);
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description:
+     * @Date:2018/6/4 15:51
+     */
+    List<ShopProjectInfoGroupRelationDTO> getShopProjectInfoGroupRelationById(String id);
 
     /**
      * 添加套卡

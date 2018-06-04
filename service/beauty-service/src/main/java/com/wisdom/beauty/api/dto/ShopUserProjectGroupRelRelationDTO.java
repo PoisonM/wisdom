@@ -1,14 +1,17 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.wisdom.common.entity.BaseEntity;
+
 public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Serializable {
     //
     private String id;
+
+    //消费记录id
+    private String consumeRecordId;
 
     //套卡表名称
     private String shopProjectGroupName;
@@ -81,6 +84,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getConsumeRecordId() {
+        return consumeRecordId;
+    }
+
+    public void setConsumeRecordId(String consumeRecordId) {
+        this.consumeRecordId = consumeRecordId;
     }
 
     public String getShopProjectGroupName() {

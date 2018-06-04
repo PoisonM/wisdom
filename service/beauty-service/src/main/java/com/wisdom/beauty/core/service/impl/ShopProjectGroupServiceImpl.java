@@ -264,6 +264,19 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         return shopProjectInfoGroupRelationMapper.selectByCriteria(relationCriteria);
     }
 
+    @Override
+    public List<ShopProjectInfoGroupRelationDTO> getShopProjectInfoGroupRelationById(String id) {
+        logger.info("getShopProjectInfoGroupRelationById方法出入的参数id={}",id );
+        if(StringUtils.isBlank(id)){
+            return  null;
+        }
+        ShopProjectInfoGroupRelationCriteria relationCriteria = new ShopProjectInfoGroupRelationCriteria();
+        ShopProjectInfoGroupRelationCriteria.Criteria criteria = relationCriteria.createCriteria();
+        criteria.andShopProjectGroupIdEqualTo(id);
+
+        return shopProjectInfoGroupRelationMapper.selectByCriteria(relationCriteria);
+    }
+
     /**
      * 添加套卡
      *

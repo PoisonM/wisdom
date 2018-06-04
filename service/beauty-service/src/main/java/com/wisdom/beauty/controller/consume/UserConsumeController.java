@@ -84,6 +84,23 @@ public class UserConsumeController {
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
         return responseDTO;
     }
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 根据消费记录id查询具体某个消费信息记录
+    *@Date:2018/6/4 14:52
+    */
+    @RequestMapping(value = "/consume/id", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetailById(@RequestParam String id) {
+
+        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService.getUserConsumeRecord(id);
+        ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(userConsumeRecordResponseDTO);
+        return responseDTO;
+    }
 
     /**
      * @Author:huan

@@ -3,13 +3,14 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper" >
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="consume_record_id" property="consumeRecordId" jdbcType="VARCHAR" />
     <result column="shop_project_group_name" property="shopProjectGroupName" jdbcType="VARCHAR" />
     <result column="shop_project_group_id" property="shopProjectGroupId" jdbcType="VARCHAR" />
     <result column="shop_project_group_number" property="shopProjectGroupNumber" jdbcType="INTEGER" />
     <result column="shop_group_puchase_price" property="shopGroupPuchasePrice" jdbcType="DECIMAL" />
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="shop_project_info_id" property="shopProjectInfoId" jdbcType="VARCHAR" />
-    <result column="shop_project_info_name" property="shopProjectInfoName" jdbcType="VARCHAR"/>
+    <result column="shop_project_info_name" property="shopProjectInfoName" jdbcType="VARCHAR" />
     <result column="shop_project_info_group_relation_id" property="shopProjectInfoGroupRelationId" jdbcType="VARCHAR" />
     <result column="project_init_times" property="projectInitTimes" jdbcType="INTEGER" />
     <result column="project_surplus_times" property="projectSurplusTimes" jdbcType="INTEGER" />
@@ -84,11 +85,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_project_group_name, shop_project_group_id, shop_project_group_number, shop_group_puchase_price,
-    sys_user_id, shop_project_info_id, shop_project_info_name, shop_project_info_group_relation_id,
-    project_init_times, project_surplus_times, project_init_amount, project_surplus_amount,
-    sys_shop_id, sys_clerk_id, sys_clerk_name, sys_boss_code, discount, create_by, create_date,
-    update_user, update_date
+    id, consume_record_id, shop_project_group_name, shop_project_group_id, shop_project_group_number, 
+    shop_group_puchase_price, sys_user_id, shop_project_info_id, shop_project_info_name, 
+    shop_project_info_group_relation_id, project_init_times, project_surplus_times, project_init_amount, 
+    project_surplus_amount, sys_shop_id, sys_clerk_id, sys_clerk_name, sys_boss_code, 
+    discount, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationCriteria" >
     select
@@ -124,30 +125,35 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO" >
-    insert into shop_user_project_group_rel_relation (id, shop_project_group_name, shop_project_group_id, 
-      shop_project_group_number, shop_group_puchase_price,
-    sys_user_id, shop_project_info_id, shop_project_info_name,
-    shop_project_info_group_relation_id, project_init_times,
-    project_surplus_times, project_init_amount,
-    project_surplus_amount, sys_shop_id, sys_clerk_id,
-    sys_clerk_name, sys_boss_code, discount,
-    create_by, create_date, update_user,
-    update_date)
-    values (#{id,jdbcType=VARCHAR}, #{shopProjectGroupName,jdbcType=VARCHAR}, #{shopProjectGroupId,jdbcType=VARCHAR}, 
-      #{shopProjectGroupNumber,jdbcType=INTEGER}, #{shopGroupPuchasePrice,jdbcType=DECIMAL},
-    #{sysUserId,jdbcType=VARCHAR}, #{shopProjectInfoId,jdbcType=VARCHAR}, #{shopProjectInfoName,jdbcType=VARCHAR},
-    #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR}, #{projectInitTimes,jdbcType=INTEGER},
-    #{projectSurplusTimes,jdbcType=INTEGER}, #{projectInitAmount,jdbcType=DECIMAL},
-    #{projectSurplusAmount,jdbcType=DECIMAL}, #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR},
-    #{sysClerkName,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{discount,jdbcType=REAL},
-    #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
-    #{updateDate,jdbcType=TIMESTAMP})
+    insert into shop_user_project_group_rel_relation (id, consume_record_id, shop_project_group_name, 
+      shop_project_group_id, shop_project_group_number, 
+      shop_group_puchase_price, sys_user_id, shop_project_info_id, 
+      shop_project_info_name, shop_project_info_group_relation_id, 
+      project_init_times, project_surplus_times, 
+      project_init_amount, project_surplus_amount, 
+      sys_shop_id, sys_clerk_id, sys_clerk_name, 
+      sys_boss_code, discount, create_by, 
+      create_date, update_user, update_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{consumeRecordId,jdbcType=VARCHAR}, #{shopProjectGroupName,jdbcType=VARCHAR}, 
+      #{shopProjectGroupId,jdbcType=VARCHAR}, #{shopProjectGroupNumber,jdbcType=INTEGER}, 
+      #{shopGroupPuchasePrice,jdbcType=DECIMAL}, #{sysUserId,jdbcType=VARCHAR}, #{shopProjectInfoId,jdbcType=VARCHAR}, 
+      #{shopProjectInfoName,jdbcType=VARCHAR}, #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR}, 
+      #{projectInitTimes,jdbcType=INTEGER}, #{projectSurplusTimes,jdbcType=INTEGER}, 
+      #{projectInitAmount,jdbcType=DECIMAL}, #{projectSurplusAmount,jdbcType=DECIMAL}, 
+      #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, 
+      #{sysBossCode,jdbcType=VARCHAR}, #{discount,jdbcType=REAL}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO" >
     insert into shop_user_project_group_rel_relation
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="consumeRecordId != null" >
+        consume_record_id,
       </if>
       <if test="shopProjectGroupName != null" >
         shop_project_group_name,
@@ -167,7 +173,7 @@
       <if test="shopProjectInfoId != null" >
         shop_project_info_id,
       </if>
-      <if test="shopProjectInfoName != null">
+      <if test="shopProjectInfoName != null" >
         shop_project_info_name,
       </if>
       <if test="shopProjectInfoGroupRelationId != null" >
@@ -217,6 +223,9 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
+      <if test="consumeRecordId != null" >
+        #{consumeRecordId,jdbcType=VARCHAR},
+      </if>
       <if test="shopProjectGroupName != null" >
         #{shopProjectGroupName,jdbcType=VARCHAR},
       </if>
@@ -235,7 +244,7 @@
       <if test="shopProjectInfoId != null" >
         #{shopProjectInfoId,jdbcType=VARCHAR},
       </if>
-      <if test="shopProjectInfoName != null">
+      <if test="shopProjectInfoName != null" >
         #{shopProjectInfoName,jdbcType=VARCHAR},
       </if>
       <if test="shopProjectInfoGroupRelationId != null" >
@@ -294,6 +303,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.consumeRecordId != null" >
+        consume_record_id = #{record.consumeRecordId,jdbcType=VARCHAR},
+      </if>
       <if test="record.shopProjectGroupName != null" >
         shop_project_group_name = #{record.shopProjectGroupName,jdbcType=VARCHAR},
       </if>
@@ -312,7 +324,7 @@
       <if test="record.shopProjectInfoId != null" >
         shop_project_info_id = #{record.shopProjectInfoId,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopProjectInfoName != null">
+      <if test="record.shopProjectInfoName != null" >
         shop_project_info_name = #{record.shopProjectInfoName,jdbcType=VARCHAR},
       </if>
       <if test="record.shopProjectInfoGroupRelationId != null" >
@@ -365,13 +377,14 @@
   <update id="updateByCriteria" parameterType="map" >
     update shop_user_project_group_rel_relation
     set id = #{record.id,jdbcType=VARCHAR},
+      consume_record_id = #{record.consumeRecordId,jdbcType=VARCHAR},
       shop_project_group_name = #{record.shopProjectGroupName,jdbcType=VARCHAR},
       shop_project_group_id = #{record.shopProjectGroupId,jdbcType=VARCHAR},
       shop_project_group_number = #{record.shopProjectGroupNumber,jdbcType=INTEGER},
       shop_group_puchase_price = #{record.shopGroupPuchasePrice,jdbcType=DECIMAL},
       sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       shop_project_info_id = #{record.shopProjectInfoId,jdbcType=VARCHAR},
-    shop_project_info_name = #{record.shopProjectInfoName,jdbcType=VARCHAR},
+      shop_project_info_name = #{record.shopProjectInfoName,jdbcType=VARCHAR},
       shop_project_info_group_relation_id = #{record.shopProjectInfoGroupRelationId,jdbcType=VARCHAR},
       project_init_times = #{record.projectInitTimes,jdbcType=INTEGER},
       project_surplus_times = #{record.projectSurplusTimes,jdbcType=INTEGER},
@@ -393,6 +406,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO" >
     update shop_user_project_group_rel_relation
     <set >
+      <if test="consumeRecordId != null" >
+        consume_record_id = #{consumeRecordId,jdbcType=VARCHAR},
+      </if>
       <if test="shopProjectGroupName != null" >
         shop_project_group_name = #{shopProjectGroupName,jdbcType=VARCHAR},
       </if>
@@ -411,7 +427,7 @@
       <if test="shopProjectInfoId != null" >
         shop_project_info_id = #{shopProjectInfoId,jdbcType=VARCHAR},
       </if>
-      <if test="shopProjectInfoName != null">
+      <if test="shopProjectInfoName != null" >
         shop_project_info_name = #{shopProjectInfoName,jdbcType=VARCHAR},
       </if>
       <if test="shopProjectInfoGroupRelationId != null" >
@@ -461,13 +477,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO" >
     update shop_user_project_group_rel_relation
-    set shop_project_group_name = #{shopProjectGroupName,jdbcType=VARCHAR},
+    set consume_record_id = #{consumeRecordId,jdbcType=VARCHAR},
+      shop_project_group_name = #{shopProjectGroupName,jdbcType=VARCHAR},
       shop_project_group_id = #{shopProjectGroupId,jdbcType=VARCHAR},
       shop_project_group_number = #{shopProjectGroupNumber,jdbcType=INTEGER},
       shop_group_puchase_price = #{shopGroupPuchasePrice,jdbcType=DECIMAL},
       sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       shop_project_info_id = #{shopProjectInfoId,jdbcType=VARCHAR},
-    shop_project_info_name = #{shopProjectInfoName,jdbcType=VARCHAR},
+      shop_project_info_name = #{shopProjectInfoName,jdbcType=VARCHAR},
       shop_project_info_group_relation_id = #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR},
       project_init_times = #{projectInitTimes,jdbcType=INTEGER},
       project_surplus_times = #{projectSurplusTimes,jdbcType=INTEGER},

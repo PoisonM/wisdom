@@ -33,6 +33,14 @@ public interface ShopUerConsumeRecordService {
     *@Date:2018/4/9 19:06
     */
     UserConsumeRecordResponseDTO getShopCustomerConsumeRecord(String consumeFlowNo);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:  根据消费记录id获取消费信息
+    *@Date:2018/6/4 14:57
+    */
+    UserConsumeRecordResponseDTO getUserConsumeRecord(String id);
 
     /**
      * 根据条件查询消费记录

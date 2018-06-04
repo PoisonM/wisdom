@@ -3,10 +3,12 @@ package com.wisdom.beauty.api.responseDto;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.common.entity.BaseEntity;
+import org.apache.commons.collections.map.HashedMap;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: UserConsumeRecordResponseDTO
@@ -35,7 +37,8 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
 	private List<UserConsumeRecordResponseDTO> userConsumeRecordResponseList;
 	//店员集合
 	private List<String> sysClerkNameList;
-
+    //支付明细
+	private Map<String, BigDecimal> payMap;
 	public String getSysShopClerkName() {
 		return sysShopClerkName;
 	}
@@ -108,5 +111,13 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
 
 	public void setSysClerkNameList(List<String> sysClerkNameList) {
 		this.sysClerkNameList = sysClerkNameList;
+	}
+
+	public Map<String, BigDecimal> getPayMap() {
+		return payMap;
+	}
+
+	public void setPayMap(Map<String, BigDecimal> payMap) {
+		this.payMap = payMap;
 	}
 }
