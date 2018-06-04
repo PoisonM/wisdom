@@ -176,14 +176,13 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		logger.info("getPerformanceList方法传入的参数,sysShopId={}", userConsumeRequest.getSysShopId());
 		// 获取近7的时间放入list中
 		List<String> sevenDayList = new ArrayList<>();
-		String str = "";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar lastDate = null;
 		for (int i = 0; i < 7; i++) {
-			lastDate = Calendar.getInstance();
-			lastDate.roll(Calendar.DATE, i - 7);// 日期回滚7天
-			str = sdf.format(lastDate.getTime());
-			sevenDayList.add(str);
+			Calendar calendar = new GregorianCalendar();
+			calendar.setTime(new Date());
+			calendar.add(calendar.DATE,i-7);//把日期往后增加一天.整数往后推,负数往前移动
+			String putDate = sdf.format(calendar.getTime()); //增加一天后的日期
+			sevenDayList.add(putDate);
 		}
 		// 查询七日数据
 		String startTime = sevenDayList.get(0) + " 00:00:00";
