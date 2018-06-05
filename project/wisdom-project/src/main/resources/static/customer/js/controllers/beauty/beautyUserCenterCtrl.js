@@ -9,46 +9,46 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
         currentShopInfo : {}
     }
 
-    $.ajax({
-        url:"/weixin/beauty/getBeautyConfig",// 跳转到 action
-        async:true,
-        type:'get',
-        data:{url:location.href.split('#')[0]},//得到需要分享页面的url
-        cache:false,
-        dataType:'json',
-        success:function(data) {
-            var configValue = data.responseData;
-            console.log(configValue);
-            if(configValue!=null ){
-                timestamp = configValue.timestamp;//得到时间戳
-                nonceStr = configValue.nonceStr;//得到随机字符串
-                signature = configValue.signature;//得到签名
-                appid = configValue.appid;//appid
-
-                //微信配置
-                wx.config({
-                    debug: false,
-                    appId: appid,
-                    timestamp:timestamp,
-                    nonceStr: nonceStr,
-                    signature: signature,
-                    jsApiList: [
-                        'scanQRCode'
-                    ] // 功能列表
-                });
-                wx.ready(function () {
-                    // config信息验证后会执行ready方法，
-                    // 所有接口调用都必须在config接口获得结果之后，
-                    // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
-                    // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
-                    // 则可以直接调用，不需要放在ready函数中。
-                })
-            }else{
-            }
-        },
-        error : function() {
-        }
-    });
+    // $.ajax({
+    //     url:"/weixin/beauty/getBeautyConfig",// 跳转到 action
+    //     async:true,
+    //     type:'get',
+    //     data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+    //     cache:false,
+    //     dataType:'json',
+    //     success:function(data) {
+    //         var configValue = data.responseData;
+    //         console.log(configValue);
+    //         if(configValue!=null ){
+    //             timestamp = configValue.timestamp;//得到时间戳
+    //             nonceStr = configValue.nonceStr;//得到随机字符串
+    //             signature = configValue.signature;//得到签名
+    //             appid = configValue.appid;//appid
+    //
+    //             //微信配置
+    //             wx.config({
+    //                 debug: false,
+    //                 appId: appid,
+    //                 timestamp:timestamp,
+    //                 nonceStr: nonceStr,
+    //                 signature: signature,
+    //                 jsApiList: [
+    //                     'scanQRCode'
+    //                 ] // 功能列表
+    //             });
+    //             wx.ready(function () {
+    //                 // config信息验证后会执行ready方法，
+    //                 // 所有接口调用都必须在config接口获得结果之后，
+    //                 // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
+    //                 // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
+    //                 // 则可以直接调用，不需要放在ready函数中。
+    //             })
+    //         }else{
+    //         }
+    //     },
+    //     error : function() {
+    //     }
+    // });
 
     $scope.chooseProject = function() {
         $state.go("beautyAppoint");
@@ -67,15 +67,17 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
     }
 
     GetUserClientInfo.get(function (data) {
+        BeautyUtil.checkResponseData(data,'beautyUserCenter');
         if(data.result==Global.SUCCESS) {
             $scope.param.currentShopInfo = data.responseData.currentShop;
         }
     })
 
     GetCurrentLoginUserInfo.get(function (data) {
-        //BeautyUtil.checkResponseData(data,'beautyUserCenter');
+        BeautyUtil.checkResponseData(data,'beautyUserCenter');
         if(data.result==Global.SUCCESS){
             $rootScope.shopAppointInfo.shopUserInfo = data.responseData;
+            console.log($rootScope.shopAppointInfo.shopUserInfo);
         }
     })
 

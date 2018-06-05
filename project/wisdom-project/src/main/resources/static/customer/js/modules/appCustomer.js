@@ -12,7 +12,7 @@ define(['angular'], function (angular) {
                     request: function(config){
                         config.headers = config.headers || {};
 
-                        if(window.location.href.indexOf("beautyAppoint")!=-1) {
+                        if(window.location.href.indexOf("beautyAppoint")!=-1||window.location.href.indexOf("beautyUserCenter")!=-1) {
                             config.headers.usertype = Global.userType.BEAUTY_USER;
                         }
 
