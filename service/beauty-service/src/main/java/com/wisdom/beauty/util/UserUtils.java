@@ -10,6 +10,7 @@ import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.JedisUtils;
+import com.wisdom.common.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -34,6 +35,9 @@ public class UserUtils {
      */
     public static UserInfoDTO getUserInfo() {
         String token = getUserToken(LoginEnum.USER);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
         String userInfoStr = JedisUtils.get(token);
         UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
         try {
@@ -51,6 +55,9 @@ public class UserUtils {
      */
     public static SysClerkDTO getClerkInfo() {
         String token = getUserToken(LoginEnum.CLERK);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
         String sysClerkDTO = JedisUtils.get(token);
         SysClerkDTO clerkDTO = (new Gson()).fromJson(sysClerkDTO, SysClerkDTO.class);
         try {
@@ -71,6 +78,9 @@ public class UserUtils {
      */
     public static SysBossDTO getBossInfo() {
         String token = getUserToken(LoginEnum.BOSS);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
         String sysBossDTO = JedisUtils.get(token);
         SysBossDTO bossDTO = (new Gson()).fromJson(sysBossDTO, SysBossDTO.class);
         try {

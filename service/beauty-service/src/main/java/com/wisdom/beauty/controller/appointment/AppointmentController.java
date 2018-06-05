@@ -419,6 +419,9 @@ public class AppointmentController {
 
 		logger.info("保存用户的预约信息={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
 		shopAppointServiceDTO.setCreateDate(new Date());
+		SysClerkDTO sysClerkDTO = redisUtils.getSysClerkDTO(shopAppointServiceDTO.getSysClerkId());
+		shopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
+		shopAppointServiceDTO.setSysBossCode(sysClerkDTO.getSysBossCode());
 		int info = appointmentService.saveUserShopAppointInfo(shopAppointServiceDTO);
 		logger.debug("保存用户的预约信息执行结果， {}", info > 0 ? "成功" : "失败");
 
