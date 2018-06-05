@@ -43,7 +43,7 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
 
                 }
                 if($scope.param.managerStatus == true){
-                    $scope.sysClerkDTO.role += "店长 "
+                    $scope.sysClerkDTO.role += "店员 "
 
                 }
                 if($scope.param.fontDeskStatus == true){
@@ -52,7 +52,6 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
                 }
                 $scope.sysClerkDTO.role = $scope.sysClerkDTO.role.slice(0, $scope.sysClerkDTO.role.length-1);
 
-                console.log( $scope.sysClerkDTO)
                 SaveClerkInfo.save($scope.sysClerkDTO,function (data) {
                     if(data.result==Global.SUCCESS){
                         $state.go("addFamily")

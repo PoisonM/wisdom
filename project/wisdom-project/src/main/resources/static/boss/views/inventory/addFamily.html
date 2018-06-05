@@ -19,7 +19,7 @@
                         <img src="images/more.png" class="more mr10" style="margin-top: 20px;" ng-click="selShop()">
                     </p>
                     <ul class="bgfff">
-                        <li class="h50  ml20 bbl" style="display: flex" ng-repeat="item in addFamily" ng-click="selEmployees($index)">
+                        <li class="h50  ml20 bbl" style="display: flex" ng-repeat="item in addFamily" ng-click="mployeesDtails(item.id)" ui-sref="mployeesDtails({id:item.id})">
 
                             <p style="height:40px;line-height: 40px;width:40px;background: gainsboro;border-radius: 50%; "class="mt5" >
                                 <img ng-src="{{item.photo}}" style="height:40px;line-height: 40px;width:40px;border-radius: 50%; ">

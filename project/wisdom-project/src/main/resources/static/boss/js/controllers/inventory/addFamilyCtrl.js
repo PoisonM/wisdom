@@ -45,10 +45,10 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                 $scope.param.searchFile = ''
             }
             $scope.search = function () {
-                GetClerkBySearchFile.query({
+                GetClerkBySearchFile.get({
                     searchFile:$scope.param.searchFile
                 },function(data){
-
+                    $scope.addFamily = data.responseData
                 })
             }
 
