@@ -63,7 +63,6 @@ public class CustomerContributionStatisticController {
                                                                                @RequestParam String endTime,
                                                                                @RequestParam(required = false)  String sortBy,
                                                                                @RequestParam(required = false)  String sortRule) {
-
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();

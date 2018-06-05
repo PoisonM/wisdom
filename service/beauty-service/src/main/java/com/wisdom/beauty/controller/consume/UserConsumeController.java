@@ -1,7 +1,6 @@
 package com.wisdom.beauty.controller.consume;
 
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ShopConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
@@ -27,7 +26,7 @@ import java.util.List;
  * ClassName: UserConsumeController
  *
  * @Author： huan
- * 
+ *
  * @Description:
  * @Date:Created in 2018/4/9 18:55
  * @since JDK 1.8
@@ -149,7 +148,7 @@ public class UserConsumeController {
 
 	/**
 	 * 根据消费主键查询消费详情
-	 * 
+	 *
 	 * @param consumeId
 	 * @return
 	 */
@@ -181,19 +180,15 @@ public class UserConsumeController {
 	ResponseDTO<Object> getUserConsumeByFlowId(@RequestParam String flowId,
 			@RequestParam(required = false) String consumeType) {
 
-		ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-		if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
-			flowId = "10b939362aca4680b1634718106cf840";
-		}
-		shopUserConsumeRecordDTO.setFlowId(flowId);
-		shopUserConsumeRecordDTO.setConsumeType(consumeType);
-		List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService
-				.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
-		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(shopCustomerConsumeRecord);
-		return responseDTO;
-	}
+        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+        shopUserConsumeRecordDTO.setFlowId(flowId);
+        shopUserConsumeRecordDTO.setConsumeType(consumeType);
+        List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(shopCustomerConsumeRecord);
+        return responseDTO;
+    }
 
 	/**
 	 * 用户划疗程卡操作

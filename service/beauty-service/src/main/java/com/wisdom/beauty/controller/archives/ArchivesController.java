@@ -2,7 +2,6 @@ package com.wisdom.beauty.controller.archives;
 
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
@@ -19,7 +18,6 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.PinYinSort;
-import com.wisdom.common.util.RandomValue;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -256,10 +254,6 @@ public class ArchivesController {
             shopUserRechargeCardDTO.setSysShopId(shopUserArchive.getSysShopId());
             BigDecimal sumAmount = cardService.getUserRechargeCardSumAmount(shopUserRechargeCardDTO);
             extShopUserArchivesDTO.setTotalBalance(sumAmount.toString());
-            //测试挡板
-            if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
-                extShopUserArchivesDTO.setTotalBalance(String.valueOf(RandomValue.getNum(100, 10000)));
-            }
             responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setResponseData(extShopUserArchivesDTO);
         }

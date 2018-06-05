@@ -330,10 +330,6 @@ public class AppointmentController {
 		shopAppointServiceDTO.setSysUserId(userInfo.getId());
 		shopAppointServiceDTO.setStatus(status);
 		String sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
-		if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
-			sysShopId = "11";
-		}
-
 		shopAppointServiceDTO.setSysShopId(sysShopId);
 		List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(shopAppointServiceDTO);
 

@@ -81,8 +81,6 @@ public class CustomerArriveStatisticController {
 			                                                  @RequestParam String startTime,
 														      @RequestParam String endTime,
 															  @RequestParam String condition) {
-
-		long start = System.currentTimeMillis();
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 		userConsumeRequestDTO.setSysShopId(sysShopId);
@@ -93,7 +91,6 @@ public class CustomerArriveStatisticController {
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
-		logger.info("getShopCustomerArriveList{}毫秒", (System.currentTimeMillis() - start));
 		return responseDTO;
 	}
 }

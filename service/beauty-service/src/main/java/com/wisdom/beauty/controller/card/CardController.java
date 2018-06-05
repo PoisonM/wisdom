@@ -3,7 +3,6 @@ package com.wisdom.beauty.controller.card;
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
@@ -23,7 +22,6 @@ import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.RandomValue;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,10 +107,6 @@ public class CardController {
 		hashMap.put("userRechargeCardList", userRechargeCardList);
 		//查询用户账户总余额
 		String sumAmount = cardService.getUserRechargeCardSumAmount(shopUserRechargeCardDTO).toString();
-		//测试挡板
-		if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
-			sumAmount = String.valueOf(RandomValue.getNum(100, 10000));
-		}
 		hashMap.put("totalBalance", sumAmount);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(hashMap);

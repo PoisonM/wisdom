@@ -2,7 +2,6 @@ package com.wisdom.beauty.controller.mine;
 
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.dto.SysShopDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopBossDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
@@ -148,10 +147,6 @@ public class MineController {
     ResponseDTO<Object> getUserClientInfo() {
 
         UserInfoDTO userInfo = UserUtils.getUserInfo();
-        //测试挡板
-        if (CommonCodeEnum.TRUE.getCode().equalsIgnoreCase(msg)) {
-            userInfo = UserUtils.getTestUserInfoDTO();
-        }
 
         HashMap<Object, Object> responseMap = new HashMap<>(2);
         ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(userInfo.getId());
@@ -187,9 +182,6 @@ public class MineController {
     ResponseDTO<Object> changeUserShop(@RequestParam String sysShopId) {
 
         UserInfoDTO userInfo = UserUtils.getUserInfo();
-        if (CommonUtils.objectIsEmpty(userInfo)) {
-            userInfo = UserUtils.getTestUserInfoDTO();
-        }
         redisUtils.updateUserLoginShop(userInfo.getId(), sysShopId);
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
@@ -206,10 +198,6 @@ public class MineController {
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         UserInfoDTO userInfo = UserUtils.getUserInfo();
-        if (null == userInfo && CommonCodeEnum.TRUE.getCode().equals(msg)) {
-            logger.error("获取我的二维码userInfo为空1");
-            userInfo = UserUtils.getTestUserInfoDTO();
-        }
         if (null != userInfo) {
             String temporaryQrCode = weixinServiceClient.getTemporaryQrCode(userInfo.getMobile());
             logger.info("调用微信服务获取到的二维码为,{}", temporaryQrCode);
