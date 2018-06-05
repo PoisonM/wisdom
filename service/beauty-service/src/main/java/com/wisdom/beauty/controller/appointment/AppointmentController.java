@@ -87,7 +87,7 @@ public class AppointmentController {
 	@RequestMapping(value = "shopDayAppointmentInfoByDate", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	ResponseDTO<Map<String, Object>> shopDayAppointmentInfoByDate(@RequestParam String sysShopId,
+	ResponseDTO<Map<String, Object>> shopDayAppointmentInfoByDate(@RequestParam(required = false) String sysShopId,
 																  @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
 
 		String preLog = "根据时间查询某个美容店预约列表,";
