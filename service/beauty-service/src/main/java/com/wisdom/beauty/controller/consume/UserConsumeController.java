@@ -1,7 +1,6 @@
 package com.wisdom.beauty.controller.consume;
 
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ShopConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
@@ -170,9 +169,6 @@ public class UserConsumeController {
     ResponseDTO<Object> getUserConsumeByFlowId(@RequestParam String flowId, @RequestParam(required = false) String consumeType) {
 
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-        if (msg.equals(CommonCodeEnum.TRUE.getCode())) {
-            flowId = "10b939362aca4680b1634718106cf840";
-        }
         shopUserConsumeRecordDTO.setFlowId(flowId);
         shopUserConsumeRecordDTO.setConsumeType(consumeType);
         List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
