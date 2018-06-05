@@ -1205,7 +1205,7 @@ define(['appBoss'], function(app){
                     })
                     /*划卡记录*/
                     .state('treatmentCardDtails', {
-                        url: '/treatmentCardDtails/:flowId,:goodsType,:flowIds,:id',
+                        url: '/treatmentCardDtails/:flowId/:goodsType/:flowIds/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'treatmentCardDtailsCtrl',
                         resolve: {
@@ -1490,7 +1490,7 @@ define(['appBoss'], function(app){
                     })
                     /* kuTube  库管人*/
                     .state('kuTube', {
-                        url: '/kuTube/:id',
+                        url: '/kuTube/:id,:storeManagerId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'kuTubeCtrl',
                         resolve: {

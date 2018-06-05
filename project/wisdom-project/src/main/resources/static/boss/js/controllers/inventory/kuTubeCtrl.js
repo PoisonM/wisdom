@@ -8,8 +8,10 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
                 sysShopId:'',
                 ids:[],
                 names:[]
-
             };
+            if($stateParams.storeManagerId!=''){
+                $scope.param.ids = $stateParams.storeManagerId.split(",")
+            }
             $scope.getInfo=function(){
                 GetClerkInfoList.query({
                     sysBossId:"",
