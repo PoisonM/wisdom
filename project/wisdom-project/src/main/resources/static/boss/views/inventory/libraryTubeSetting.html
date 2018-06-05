@@ -9,7 +9,7 @@
                <i class="ion-chevron-up mr10 col999" ng-show="item.id == param.id"></i>
                <i class="ion-chevron-down mr10 col999" ng-show="item.id != param.id"></i>
             </div>
-            <ul class="bgfff" ng-show="item.id == param.id" ui-sref="kuTube({id:param.id})">
+            <ul class="bgfff" ng-show="item.id == param.id" ui-sref="kuTube({id:param.id,storeManagerId:peopleKuTube.storeManagerId})">
                 <li class="h50  ml20 bbl sb"  >
 
                   <p class="fs16">
@@ -17,7 +17,7 @@
                       <span class="colff66">*</span>
                   </p>
                   <p>
-                      <span class="fs14 col333">{{peopleKuTube}}</span>
+                      <span class="fs14 col333">{{peopleKuTube.storeManagerName}}</span>
                      <img src="images/more.png" class="more mr10">
                   </p>
 
