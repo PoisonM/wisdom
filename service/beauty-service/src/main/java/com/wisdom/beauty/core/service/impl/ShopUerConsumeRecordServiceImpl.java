@@ -267,6 +267,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 			userConsumeRecordResponseDTO.setSumAmount(totalAmount);
 			userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
+			userConsumeRecordResponseDTO.setPayMap(this.getPayMap(userConsumeRecordResponseDTO.getFlowNo()));
 			return userConsumeRecordResponseDTO;
 
 		}
@@ -293,6 +294,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 			userConsumeRecordResponseDTO.setSumAmount(totalAmount);
 			userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
+			userConsumeRecordResponseDTO.setPayMap(this.getPayMap(userConsumeRecordResponseDTO.getFlowNo()));
 			return userConsumeRecordResponseDTO;
 		}
 		// 其他类型
@@ -305,6 +307,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		}
 		userConsumeRecordResponseDTO.setSumAmount(totalAmount);
 		userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
+		userConsumeRecordResponseDTO.setPayMap(this.getPayMap(userConsumeRecordResponseDTO.getFlowNo()));
 		return userConsumeRecordResponseDTO;
 	}
 
@@ -369,30 +372,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
 		userConsumeRecordResponseDTO.setSignUrl(shopUserConsumeRecord.getSignUrl());
 		userConsumeRecordResponseDTO.setDetail(shopUserConsumeRecord.getDetail());
-		// 计算支付明细,根据消费记录id查询支付明细
-		ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
-		shopCashFlowDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
-		ShopCashFlowDTO shopCashFlow = cashService.getShopCashFlow(shopCashFlowDTO);
-		// 支付宝、微信、银行支付金额
-		BigDecimal payTypeAmount = null;
-		// 余额支付
-		BigDecimal balanceAmount = null;
-		// 充值卡支付
-		BigDecimal rechargeCardAmount = null;
-		// 现金支付
-		BigDecimal cashAmount = null;
-		Map<String, BigDecimal> payMap = new HashedMap();
-		if (shopCashFlow != null) {
-			balanceAmount = shopCashFlow.getBalanceAmount();
-			rechargeCardAmount = shopCashFlow.getRechargeCardAmount();
-			cashAmount = shopCashFlow.getCashAmount();
-			payMap.put(shopCashFlow.getPayType(), shopCashFlow.getPayTypeAmount());
-		}
-		payMap.put("balanceAmount", balanceAmount);
-		payMap.put("rechargeCardAmount", rechargeCardAmount);
-		payMap.put("cashAmount", cashAmount);
 
-		userConsumeRecordResponseDTO.setPayMap(payMap);
+		userConsumeRecordResponseDTO.setPayMap(this.getPayMap(shopUserConsumeRecord.getFlowNo()));
 		return userConsumeRecordResponseDTO;
 	}
 
@@ -535,13 +516,13 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		}
 		logger.info("getTreatmentCardRecord传入的参数FlowId={}", userConsumeRequestDTO.getFlowId());
 
-		List<ShopUserConsumeRecordDTO> list=null;
-		//判断如果是套卡
-		if(GoodsTypeEnum.COLLECTION_CARD.getCode().equals(userConsumeRequestDTO.getGoodsType())){
-			list=this.getShopCustomerConsumeRecord(userConsumeRequestDTO.getFlowIds());
+		List<ShopUserConsumeRecordDTO> list = null;
+		// 判断如果是套卡
+		if (GoodsTypeEnum.COLLECTION_CARD.getCode().equals(userConsumeRequestDTO.getGoodsType())) {
+			list = this.getShopCustomerConsumeRecord(userConsumeRequestDTO.getFlowIds());
 		}
-		//判断是疗程卡
-		if(GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRequestDTO.getGoodsType())){
+		// 判断是疗程卡
+		if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRequestDTO.getGoodsType())) {
 			ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
 			shopUserConsumeRecordDTO.setFlowId(userConsumeRequestDTO.getFlowId());
 			list = this.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
@@ -672,14 +653,14 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 	@Override
 	public List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(List<String> flowIds) {
-		logger.info("getShopCustomerConsumeRecord方法传入的参数flowIds={}",flowIds);
+		logger.info("getShopCustomerConsumeRecord方法传入的参数flowIds={}", flowIds);
 		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
-		if(CollectionUtils.isEmpty(flowIds)){
-			return  null;
+		if (CollectionUtils.isEmpty(flowIds)) {
+			return null;
 		}
 		c.andFlowIdIn(flowIds);
-		return  shopUserConsumeRecordMapper.selectByCriteria(criteria);
+		return shopUserConsumeRecordMapper.selectByCriteria(criteria);
 
 	}
 
@@ -730,27 +711,26 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 		}
 
-			// 根据多个id查询用户和项目的关系表
-			List<ShopUserProjectRelationDTO> shopUserProjectRelations = shopProjectService
-					.getUserShopProjectList(flowIds);
-			// map key存放用户和项目关系的id value存放用户和项目的关系对象
-			Map<String, ShopUserProjectRelationDTO> map = new HashedMap();
-			for (ShopUserProjectRelationDTO shopUserProjectRelationDTO : shopUserProjectRelations) {
-				map.put(shopUserProjectRelationDTO.getId(), shopUserProjectRelationDTO);
+		// 根据多个id查询用户和项目的关系表
+		List<ShopUserProjectRelationDTO> shopUserProjectRelations = shopProjectService.getUserShopProjectList(flowIds);
+		// map key存放用户和项目关系的id value存放用户和项目的关系对象
+		Map<String, ShopUserProjectRelationDTO> map = new HashedMap();
+		for (ShopUserProjectRelationDTO shopUserProjectRelationDTO : shopUserProjectRelations) {
+			map.put(shopUserProjectRelationDTO.getId(), shopUserProjectRelationDTO);
+		}
+		List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = new ArrayList<>();
+		UserConsumeRecordResponseDTO userConsumeRecordResponse = null;
+		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
+			userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
+			BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponse);
+			if (map.get(shopUserConsumeRecordDTO.getFlowId()) != null) {
+				userConsumeRecordResponse
+						.setIncludeTimes(map.get(shopUserConsumeRecordDTO.getFlowId()).getSysShopProjectInitTimes());
 			}
-			List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = new ArrayList<>();
-			UserConsumeRecordResponseDTO userConsumeRecordResponse = null;
-			for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
-				userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
-				BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponse);
-				if (map.get(shopUserConsumeRecordDTO.getFlowId()) != null) {
-					userConsumeRecordResponse.setIncludeTimes(
-							map.get(shopUserConsumeRecordDTO.getFlowId()).getSysShopProjectInitTimes());
-				}
-				userConsumeRecordResponses.add(userConsumeRecordResponse);
-			}
-			userConsumeRecordResponseDTO.setSumAmount(totalAmount);
-			userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
+			userConsumeRecordResponses.add(userConsumeRecordResponse);
+		}
+		userConsumeRecordResponseDTO.setSumAmount(totalAmount);
+		userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
 		// 计算支付明细,根据消费记录id查询支付明细
 		ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
 		shopCashFlowDTO.setFlowNo(userConsumeRecordResponseDTO.getFlowNo());
@@ -775,6 +755,35 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		payMap.put("cashAmount", cashAmount);
 
 		userConsumeRecordResponseDTO.setPayMap(payMap);
-			return userConsumeRecordResponseDTO;
+		return userConsumeRecordResponseDTO;
+	}
+
+	private Map<String, BigDecimal> getPayMap(String flowNo) {
+		logger.info("getPayMap方法传入的参数flowNo={}", flowNo);
+		// 计算支付明细,根据消费记录id查询支付明细
+		ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
+		shopCashFlowDTO.setFlowNo(flowNo);
+		ShopCashFlowDTO shopCashFlow = cashService.getShopCashFlow(shopCashFlowDTO);
+		if (shopCashFlow == null) {
+			logger.info("getShopCashFlow方法获取的结果shopCashFlow为空");
+			return null;
 		}
+		// 余额支付
+		BigDecimal balanceAmount = null;
+		// 充值卡支付
+		BigDecimal rechargeCardAmount = null;
+		// 现金支付
+		BigDecimal cashAmount = null;
+		Map<String, BigDecimal> payMap = new HashedMap();
+
+		balanceAmount = shopCashFlow.getBalanceAmount();
+		rechargeCardAmount = shopCashFlow.getRechargeCardAmount();
+		cashAmount = shopCashFlow.getCashAmount();
+		payMap.put(shopCashFlow.getPayType(), shopCashFlow.getPayTypeAmount());
+
+		payMap.put("balanceAmount", balanceAmount);
+		payMap.put("rechargeCardAmount", rechargeCardAmount);
+		payMap.put("cashAmount", cashAmount);
+		return payMap;
+	}
 }
