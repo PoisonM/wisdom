@@ -65,7 +65,7 @@ public class UserUtils {
             clerkDTO.setSysBossName(java.net.URLDecoder.decode(clerkDTO.getSysBossName(), "utf-8"));
             clerkDTO.setName(java.net.URLDecoder.decode(clerkDTO.getName(), "utf-8"));
             clerkDTO.setNickname(java.net.URLDecoder.decode(clerkDTO.getNickname(), "utf-8"));
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return clerkDTO;

@@ -36,7 +36,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     $scope.param = {
         //新建预约修改预约查询对应每个美容师可用时间
         mrLeisureTime:"",
-        nowTime:new Date().getFullYear()+"-"+parseInt(new Date().getMonth()+1)+"-"+parseInt(new Date().getDate()),
+        nowTime:new Date().getFullYear()+"-"+(parseInt(new Date().getMonth()+1)<10?"0"+parseInt(new Date().getMonth()+1):parseInt(new Date().getMonth()+1))+"-"+(parseInt(new Date().getDate())<10?"0"+parseInt(new Date().getDate()):parseInt(new Date().getDate())),
         endTime:"",
         newChangeContent:"修改预约",
         changeYuyueFlag: "",
@@ -297,11 +297,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     /*获取日预约列表*/
     $scope.dayAll = function () {
         ShopDayAppointmentInfoByDate.get({
-            sysShopId: '3',
-            // startDate: "2018-00-00 00:00:00",
-            // endDate: "2019-00-00 00:00:00"
             startDate: $scope.param.nowTime,
-            // endDate: ""
         }, function (data) {
             $scope.memeda = data.responseData;
             $scope.startTime = data.responseData.startTime;
@@ -389,11 +385,6 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     }
                 }
             }
-
-
-
-
-
         });
 
     }
@@ -407,7 +398,6 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     /*获取周预约列表*/
     $scope.weekAll = function () {
         ShopWeekAppointmentInfoByDate.get({
-            sysShopId: "11",
             startDate: $scope.param.nowTime,
         }, function (data) {
             $scope.param.week.weekData = data.responseData;

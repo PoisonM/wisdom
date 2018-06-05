@@ -22,7 +22,6 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
     $scope.queryScheduleList = function (searchDate) {
         GetShopClerkScheduleList.get({
             searchDate:searchDate,
-            sysShopId:""
         },function (data) {
             if(data.result == "0x00001"){
                 $scope.tempWeek = data.responseData.dateDetail

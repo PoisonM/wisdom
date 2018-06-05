@@ -1,11 +1,11 @@
-PADWeb.controller("left_navCtrl", function($scope, $state,$stateParams, FindArchives) {
+PADWeb.controller("left_navCtrl", function($scope,$rootScope, $state,$stateParams, FindArchives) {
     console.log("left_navCtrl")
     $scope.mainLeftSwitch = {
         peopleListFlag: false,
         priceListFlag: true
     }
     $scope.$parent.mainSwitch.footerBoxFlag = true
-
+    $rootScope.recordNum=""
 
     //获取档案列表
     $scope.queryRecordList = function() {
@@ -16,6 +16,7 @@ PADWeb.controller("left_navCtrl", function($scope, $state,$stateParams, FindArch
             if (data.result == "0x00001") {
                 $scope.dataList = [];
                 $scope.info = data.responseData.info
+                $rootScope.recordNum = data.responseData.data
                 $scope.$parent.param.headerCash.leftContent = "档案("+data.responseData.data+")"
             }
         })
