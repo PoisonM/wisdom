@@ -196,7 +196,7 @@ public class RedisUtils {
                     loginDTO.setSysUserId(sysUserId);
                     loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
                     UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(sysUserId);
-                    loginDTO.setPhone(userInfoDTO.getPhoto());
+                    loginDTO.setPhone(userInfoDTO.getMobile());
                     JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
                 }
             }
