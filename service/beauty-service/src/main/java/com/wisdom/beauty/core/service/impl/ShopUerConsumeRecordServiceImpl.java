@@ -683,28 +683,11 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (CommonUtils.objectIsNotEmpty(list)) {
 			BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
 		}
-		BigDecimal totalAmount = null;
-		Set<String> consumeTypes = new HashSet<>();
-		Set<String> goodsTypes = new HashSet<>();
 		List<String> flowIds = new ArrayList<>();
-		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
-			flowIds.add(shopUserConsumeRecordDTO.getFlowId());
-			consumeTypes.add(shopUserConsumeRecordDTO.getConsumeType());
-			goodsTypes.add(shopUserConsumeRecordDTO.getGoodsType());
-			if (null != shopUserConsumeRecordDTO.getPrice()) {
-				if (totalAmount == null) {
-					totalAmount = shopUserConsumeRecordDTO.getPrice()
-							.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber() ? 0
-									: shopUserConsumeRecordDTO.getConsumeNumber()));
-				} else {
-					totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice()
-							.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber() ? 0
-									: shopUserConsumeRecordDTO.getConsumeNumber())));
-				}
-			}
-		}
-		if (consumeTypes.contains(ConsumeTypeEnum.RECHARGE.getCode())) {
-			if (goodsTypes.contains(GoodsTypeEnum.RECHARGE_CARD.getCode())) {
+		flowIds.add(userConsumeRecordResponseDTO.getFlowId());
+
+		if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())) {
+			if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getCode());
 			} else {
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
@@ -729,36 +712,13 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 			userConsumeRecordResponses.add(userConsumeRecordResponse);
 		}
-		userConsumeRecordResponseDTO.setSumAmount(totalAmount);
+		userConsumeRecordResponseDTO.setSumAmount(userConsumeRecordResponseDTO.getPrice());
 		userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
-		// 计算支付明细,根据消费记录id查询支付明细
-		ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
-		shopCashFlowDTO.setFlowNo(userConsumeRecordResponseDTO.getFlowNo());
-		ShopCashFlowDTO shopCashFlow = cashService.getShopCashFlow(shopCashFlowDTO);
-		// 支付宝、微信、银行支付金额
-		BigDecimal payTypeAmount = null;
-		// 余额支付
-		BigDecimal balanceAmount = null;
-		// 充值卡支付
-		BigDecimal rechargeCardAmount = null;
-		// 现金支付
-		BigDecimal cashAmount = null;
-		Map<String, BigDecimal> payMap = new HashedMap();
-		if (shopCashFlow != null) {
-			balanceAmount = shopCashFlow.getBalanceAmount();
-			rechargeCardAmount = shopCashFlow.getRechargeCardAmount();
-			cashAmount = shopCashFlow.getCashAmount();
-			payMap.put(shopCashFlow.getPayType(), shopCashFlow.getPayTypeAmount());
-		}
-		payMap.put("balanceAmount", balanceAmount);
-		payMap.put("rechargeCardAmount", rechargeCardAmount);
-		payMap.put("cashAmount", cashAmount);
-
-		userConsumeRecordResponseDTO.setPayMap(payMap);
+		userConsumeRecordResponseDTO.setPayMap(this.getPayMap(userConsumeRecordResponseDTO.getFlowNo()));
 		return userConsumeRecordResponseDTO;
 	}
 
-	private Map<String, BigDecimal> getPayMap(String flowNo) {
+		private Map<String, Object> getPayMap(String flowNo) {
 		logger.info("getPayMap方法传入的参数flowNo={}", flowNo);
 		// 计算支付明细,根据消费记录id查询支付明细
 		ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
@@ -774,13 +734,14 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		BigDecimal rechargeCardAmount = null;
 		// 现金支付
 		BigDecimal cashAmount = null;
-		Map<String, BigDecimal> payMap = new HashedMap();
+		Map<String, Object> payMap = new HashedMap();
 
 		balanceAmount = shopCashFlow.getBalanceAmount();
 		rechargeCardAmount = shopCashFlow.getRechargeCardAmount();
 		cashAmount = shopCashFlow.getCashAmount();
 		payMap.put(shopCashFlow.getPayType(), shopCashFlow.getPayTypeAmount());
-
+		payMap.put("payType",shopCashFlow.getPayType());
+		payMap.put("payTypeAmount",shopCashFlow.getPayTypeAmount());
 		payMap.put("balanceAmount", balanceAmount);
 		payMap.put("rechargeCardAmount", rechargeCardAmount);
 		payMap.put("cashAmount", cashAmount);
