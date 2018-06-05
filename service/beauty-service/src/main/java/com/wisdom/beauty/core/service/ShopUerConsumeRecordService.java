@@ -90,4 +90,20 @@ public interface ShopUerConsumeRecordService {
     *@Date:2018/6/2 14:08
     */
     List<UserConsumeRecordResponseDTO> getUserStampCardRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 根据多个flow_id查询
+    *@Date:2018/6/4 18:58
+    */
+    List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(List<String> flowIds);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取疗程卡
+    *@Date:2018/6/4 20:02
+    */
+    UserConsumeRecordResponseDTO getTreatmentCardConsumeDetail(String flowId);
 }
