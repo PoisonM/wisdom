@@ -86,9 +86,9 @@ public class MineController {
     @ResponseBody
     ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
 
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        String sysShopId = redisUtils.getShopId();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-        userConsumeRequest.setSysShopId(sysClerkDTO.getSysShopId());
+        userConsumeRequest.setSysShopId(sysShopId);
         userConsumeRequest.setGoodsTypeRequire(true);
         pageParamVoDTO.setRequestData(userConsumeRequest);
         pageParamVoDTO.setPageNo(0);

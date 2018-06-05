@@ -8,13 +8,12 @@ import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopOrderService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.StringUtils;
@@ -51,6 +50,8 @@ public class OrderController {
 
     @Resource
     private MongoTemplate mongoTemplate;
+    @Resource
+    private RedisUtils redisUtils;
 
     @Resource
     private ShopCardService shopCardService;
@@ -70,7 +71,7 @@ public class OrderController {
     @ResponseBody
     ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String sysUserId, @RequestParam(required = false) String orderId) {
 
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = redisUtils.getShopId();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
 
         ShopUserOrderDTO shopUserOrderDTO = null;
@@ -78,7 +79,7 @@ public class OrderController {
             Query query = new Query(Criteria.where("orderId").is(orderId));
             shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
         } else {
-            Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(sysUserId));
+            Query query = new Query(Criteria.where("shopId").is(sysShopId)).addCriteria(Criteria.where("userId").is(sysUserId));
             query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
             shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
         }
@@ -115,11 +116,11 @@ public class OrderController {
             logger.error("保存用户的订单信息传入参数为空");
             return null;
         }
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = redisUtils.getShopId();
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
         //先查询最后一次订单信息
-        Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(shopUserOrderDTO.getUserId()));
+        Query query = new Query(Criteria.where("shopId").is(sysShopId)).addCriteria(Criteria.where("userId").is(shopUserOrderDTO.getUserId()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         ShopUserOrderDTO searchOrderInfo = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
         if (null != searchOrderInfo) {
@@ -129,7 +130,7 @@ public class OrderController {
         }
         //如果最后一次订单为空则需初始化插入
         searchOrderInfo = new ShopUserOrderDTO();
-        searchOrderInfo.setShopId(clerkInfo.getSysShopId());
+        searchOrderInfo.setShopId(sysShopId);
         searchOrderInfo.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
         searchOrderInfo.setStatus(OrderStatusEnum.NOT_PAY.getCode());
         searchOrderInfo.setCreateDate(new Date());
