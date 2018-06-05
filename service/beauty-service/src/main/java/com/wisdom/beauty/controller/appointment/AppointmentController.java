@@ -360,19 +360,17 @@ public class AppointmentController {
 
 		ResponseDTO<List<SysClerkDTO>> responseDTO = new ResponseDTO<>();
 
-		UserInfoDTO userInfo = UserUtils.getUserInfo();
-
 		String sysShopId = null;
 		//pad端
-		if (StringUtils.isBlank(sysShopId)) {
+		if (null != UserUtils.getClerkInfo()) {
 			logger.info("pad端登陆");
 			SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 			sysShopId = clerkInfo.getSysShopId();
 		}
 		//用户端
-		if (StringUtils.isBlank(sysShopId)) {
+		if (null != UserUtils.getUserInfo()) {
 			logger.info("用户端登陆");
-			sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
+			sysShopId = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId()).getSysShopId();
 		}
 
 		List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(sysShopId);

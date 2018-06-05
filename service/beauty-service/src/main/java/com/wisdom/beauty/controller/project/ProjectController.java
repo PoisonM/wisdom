@@ -546,15 +546,19 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "getUserClientShopProjectList", method = { RequestMethod.POST, RequestMethod.GET })
-	// @LoginRequired
 	public @ResponseBody ResponseDTO<Object> getUserClientShopProjectList(@RequestParam String pageNo,
 			@RequestParam String pageSize) {
 
-		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-		String sysShopId = clerkInfo.getSysShopId();
+		String sysShopId = null;
+		if (null != UserUtils.getUserInfo()) {
+			ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
+			sysShopId = userLoginShop.getSysShopId();
+		}
+		if (null != UserUtils.getClerkInfo()) {
+			sysShopId = UserUtils.getClerkInfo().getSysShopId();
+		}
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-
 		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
 		shopProjectInfoDTO.setSysShopId(sysShopId);
 		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
