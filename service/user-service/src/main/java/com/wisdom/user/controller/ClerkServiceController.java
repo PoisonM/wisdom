@@ -9,7 +9,6 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
-import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.ClerkInfoService;
 import com.wisdom.user.util.UserUtils;
 import org.slf4j.Logger;
@@ -92,9 +91,10 @@ public class ClerkServiceController {
 		long time = System.currentTimeMillis();
 
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
 		SysClerkDTO sysClerkDTO = new SysClerkDTO();
-		sysClerkDTO.setSysBossCode(sysBossCode);
-		sysClerkDTO.setSysShopId(sysShopId);
+		sysClerkDTO.setSysBossCode(bossInfo.getSysBossCode());
+		sysClerkDTO.setSysShopId(bossInfo.getCurrentShopId());
 		PageParamVoDTO<SysClerkDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		pageParamVoDTO.setRequestData(sysClerkDTO);
 		pageParamVoDTO.setPageSize(pageSize);

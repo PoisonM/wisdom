@@ -4,8 +4,6 @@
 package com.wisdom.beauty.util;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
-import com.aliyun.oss.ServiceException;
-import com.wisdom.beauty.api.extDto.ExtUserDTO;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
@@ -28,46 +26,9 @@ import java.util.Map;
  */
 public class UserUtils {
 
-    /**
-     * 获取用户信息
-     *
-     * @return
-     */
-    public static ExtUserDTO getUserDTO() {
-
-        ExtUserDTO extUserDTO = new ExtUserDTO();
-        //用户登陆
-        UserInfoDTO userInfo = getUserInfo();
-        if (null != userInfo) {
-            System.out.println("获取普通用户信息");
-            extUserDTO.setSysUserId(userInfo.getId());
-            extUserDTO.setSysUserName(userInfo.getNickname());
-            extUserDTO.setUserNamePhone(userInfo.getMobile());
-            return extUserDTO;
-        }
-
-        //pad端用户登陆
-        SysClerkDTO clerkInfo = getClerkInfo();
-        if (null != clerkInfo) {
-            System.out.println("获取clerk信息");
-            extUserDTO.setSysBossCode(clerkInfo.getSysBossCode());
-            extUserDTO.setSysShopId(clerkInfo.getSysShopId());
-            extUserDTO.setSysClerkName(clerkInfo.getName());
-            return extUserDTO;
-        }
-
-        //boss端用户登陆
-        SysBossDTO bossInfo = getBossInfo();
-        if (null != bossInfo) {
-            System.out.println("获取boss信息");
-            extUserDTO.setSysShopId(bossInfo.getId());
-            extUserDTO.setSysBossName(bossInfo.getName());
-            return extUserDTO;
-        }
-        System.out.println("未获取到用户信息");
-        return extUserDTO;
-    }
-
+    public static final String beautyUserLoginToken = "beautyUserLoginToken";
+    public static final String beautyBossLoginToken = "beautyBossLoginToken";
+    public static final String beautyClerkLoginToken = "beautyClerkLoginToken";
 
     /**
      * 获取用户信息
@@ -75,10 +36,10 @@ public class UserUtils {
      * @return
      */
     public static UserInfoDTO getUserInfo() {
-        String token = getUserToken();
+        String token = getUserToken(beautyUserLoginToken);
         String userInfoStr = JedisUtils.get(token);
         UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
-        return getTestUserInfoDTO();
+        return userInfoDTO;
     }
 
     /**
@@ -87,10 +48,10 @@ public class UserUtils {
      * @return
      */
     public static SysClerkDTO getClerkInfo() {
-        String token = getUserToken();
+        String token = getUserToken(beautyClerkLoginToken);
         String sysClerkDTO = JedisUtils.get(token);
         SysClerkDTO clerkDTO = (new Gson()).fromJson(sysClerkDTO, SysClerkDTO.class);
-        return getTestClerkInfo();
+        return clerkDTO;
     }
 
     /**
@@ -99,10 +60,10 @@ public class UserUtils {
      * @return
      */
     public static SysBossDTO getBossInfo() {
-        String token = getUserToken();
+        String token = getUserToken(beautyBossLoginToken);
         String sysBossDTO = JedisUtils.get(token);
         SysBossDTO bossDTO = (new Gson()).fromJson(sysBossDTO, SysBossDTO.class);
-        return getTestBossInfo();
+        return bossDTO;
     }
 
     /**
@@ -113,41 +74,22 @@ public class UserUtils {
     public static void bossSwitchShops(SysBossDTO sysBossDTO) {
         Gson gson = new Gson();
         String bossInfoStr = gson.toJson(sysBossDTO);
-        JedisUtils.set(getUserToken(), bossInfoStr, ConfigConstant.logintokenPeriod);
+        JedisUtils.set(getUserToken(beautyBossLoginToken), bossInfoStr, ConfigConstant.logintokenPeriod);
     }
 
     /**
      * 获取登陆的token信息
      * @return
      */
-    private static String getUserToken() {
+    private static String getUserToken(String loginToken) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Map<String, String> tokenValue = getHeadersInfo(request);
-
-        String userType = tokenValue.get("usertype");
-        String token = tokenValue.get("beautylogintoken");
-
-        if(StringUtils.isBlank(userType) || StringUtils.isBlank(token)){
-            System.out.println("商户平台登陆获取userTyp或token为空"+userType+token);
+        String token = tokenValue.get(loginToken);
+        if (StringUtils.isBlank(loginToken)) {
+            System.out.println("商户平台登陆获取userTyp或token为空");
             return null;
         }
         return token;
-    }
-
-    /**
-     * 获取登陆人的角色信息
-     *
-     * @return
-     */
-    private static String getUserType() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        Map<String, String> tokenValue = getHeadersInfo(request);
-        String userType = tokenValue.get("usertype");
-        if (StringUtils.isNotBlank(userType)) {
-            System.out.println("获取当前登录人的角色为空");
-            throw new ServiceException("获取当前登录人的角色为空");
-        }
-        return userType;
     }
 
     /**
@@ -165,56 +107,4 @@ public class UserUtils {
         }
         return map;
     }
-
-    /**
-     * 获取测试老板数据
-     * @return
-     */
-    public static SysBossDTO getTestBossInfo() {
-        SysBossDTO sysBossDTO = new SysBossDTO();
-        sysBossDTO.setMobile("18810142926");
-        sysBossDTO.setNickname("赵得良");
-        sysBossDTO.setId("11");
-        sysBossDTO.setCurrentShopId("11");
-        sysBossDTO.setSysBossCode("11");
-        sysBossDTO.setSex("男");
-        return sysBossDTO;
-    }
-
-    /**
-     * 获取测试店员信息
-     *
-     * @return
-     */
-    public static SysClerkDTO getTestClerkInfo() {
-        //挡板
-        SysClerkDTO clerkDTO = new SysClerkDTO();
-        clerkDTO.setWeixinAttentionStatus("1");
-        clerkDTO.setSysUserId("3");
-        clerkDTO.setSysBossName("王老板");
-        clerkDTO.setSysBossCode("11");
-        clerkDTO.setName("陈莺梦");
-        clerkDTO.setId("clerkId1");
-        clerkDTO.setSysShopId("11");
-        clerkDTO.setNickname("张欢昵称");
-        clerkDTO.setMobile("18810142926");
-        clerkDTO.setSysShopName("汉方美业");
-        clerkDTO.setScore(70f);
-        return clerkDTO;
-    }
-
-    /**
-     * 获取测试用户信息
-     *
-     * @return
-     */
-    public static UserInfoDTO getTestUserInfoDTO() {
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setId("1");
-        userInfoDTO.setMobile("18810142926");
-        userInfoDTO.setNickname("小明");
-        userInfoDTO.setPhoto("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%91%98%E5%B7%A5%E5%9B%BE%E7%89%87.png");
-        return userInfoDTO;
-    }
-
 }
