@@ -26,9 +26,9 @@ import java.util.Map;
  */
 public class UserUtils {
 
-    public static final String beautyUserLoginToken = "beautyUserLoginToken";
-    public static final String beautyBossLoginToken = "beautyBossLoginToken";
-    public static final String beautyClerkLoginToken = "beautyClerkLoginToken";
+    public static final String beautyUserLoginToken = "beautyuserlogintoken";
+    public static final String beautyBossLoginToken = "beautybosslogintoken";
+    public static final String beautyClerkLoginToken = "beautyclerklogintoken";
 
     /**
      * 获取用户信息
