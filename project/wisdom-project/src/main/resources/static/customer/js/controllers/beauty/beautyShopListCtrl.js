@@ -11,6 +11,7 @@ angular.module('controllers',[]).controller('beautyShopListCtrl',
             }
 
             GetUserClientInfo.get(function (data) {
+                console.log(data.responseData);
                 if(data.result==Global.SUCCESS)
                 {
                     $scope.param.currentShopInfo = data.responseData.currentShop;
