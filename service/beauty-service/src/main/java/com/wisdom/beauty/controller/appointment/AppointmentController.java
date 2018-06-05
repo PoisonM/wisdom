@@ -183,13 +183,19 @@ public class AppointmentController {
 	@RequestMapping(value = "shopWeekAppointmentInfoByDate", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	ResponseDTO<Map<String, Object>> shopWeekAppointmentInfoByDate(@RequestParam String sysShopId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
+	ResponseDTO<Map<String, Object>> shopWeekAppointmentInfoByDate(@RequestParam(required = false) String sysShopId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
 		ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 		Date startTime = DateUtils.StrToDate(DateUtils.getDateStartTime(startDate), "datetimesec");
 		Date endTime = DateUtils.dateIncDays(startTime, 7);
 
 		String preLog = "根据时间查询某个美容店周预约列表";
 		logger.info(preLog + "美容店主键为={}", sysShopId);
+		if (StringUtils.isBlank(sysShopId) && null != UserUtils.getClerkInfo()) {
+			sysShopId = UserUtils.getClerkInfo().getSysShopId();
+		}
+		if (StringUtils.isBlank(sysShopId) && null != UserUtils.getBossInfo()) {
+			sysShopId = UserUtils.getBossInfo().getCurrentShopId();
+		}
 
 		//根据时间查询当前店下所有美容师
 		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
