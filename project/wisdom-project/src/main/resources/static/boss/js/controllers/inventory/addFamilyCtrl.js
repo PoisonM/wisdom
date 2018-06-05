@@ -1,11 +1,12 @@
 angular.module('controllers',[]).controller('addFamilyCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetClerkInfoList','Global','GetBossShopList',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetClerkInfoList,Global,GetBossShopList) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetClerkInfoList','Global','GetBossShopList','GetClerkBySearchFile',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetClerkInfoList,Global,GetBossShopList,GetClerkBySearchFile) {
             $rootScope.title = "添加家人";
             $scope.param={
                 index:0,
                 flag:false,
-                sysShopId:''
+                sysShopId:'',
+                searchFile:''
 
             };
             $scope.getInfo=function(){
@@ -39,6 +40,16 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
             }
             $scope.all = function(){
                 $scope.param.flag = false;
+            }
+            $scope.clearSearch = function () {
+                $scope.param.searchFile = ''
+            }
+            $scope.search = function () {
+                GetClerkBySearchFile.query({
+                    searchFile:$scope.param.searchFile
+                },function(data){
+
+                })
             }
 
 

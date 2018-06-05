@@ -34,8 +34,8 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
             $scope.save = function () {
                 var setStorekeeperRequestDTO = {
                     shopStoreId:$scope.param.id,
-                    storeManagerIds:$stateParams.ids,
-                    storeManagerNames:$scope.peopleKuTube
+                    storeManagerIds:$stateParams.ids.split(','),
+                    storeManagerNames:$scope.peopleKuTube.split(',')
                 }
                 SetStorekeeper.save(setStorekeeperRequestDTO,function (data) {
                     

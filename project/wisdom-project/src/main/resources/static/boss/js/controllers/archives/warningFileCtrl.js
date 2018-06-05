@@ -17,7 +17,7 @@ angular.module('controllers',[]).controller('warningFileCtrl',
                     queryType:$scope.queryType
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $scope.warningFile = data.responseData.info
+                        $scope.warningFile = data.responseData
 
 
                     }

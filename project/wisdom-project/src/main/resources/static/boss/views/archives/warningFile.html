@@ -17,9 +17,9 @@
             </div>
         </div>
         <p style="background: #FBCAC7;font-size: 14px;color: #FF6666;height:30px;line-height:30px;position: relative;width:100%;top: 48px;" class="center">
-            **份档案
+           共{{warningFile.count}}份档案
         </p>
-        <div  ng-repeat = 'item in warningFile'>
+        <div  ng-repeat = 'item in warningFile.info'>
             <ion-list ng-repeat="(key,val) in item">
                 <ion-item   class="h30 bge6 ">
                     <span class="ml10">{{key}}</span>
