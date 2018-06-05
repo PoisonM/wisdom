@@ -5,7 +5,6 @@ import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.api.enums.IsUseUpEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.RelationIds;
-import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopUserProjectRelationResponseDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
@@ -101,18 +100,7 @@ public class ProjectController {
 	// @LoginRequired
 	public @ResponseBody ResponseDTO<HashMap<String, Object>> searchShopProjectList(@RequestParam String useStyle,
 			@RequestParam String filterStr) {
-		String sysShopId = null;
-
-		if (StringUtils.isBlank(sysShopId)) {
-			logger.info("pad端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
-			SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-			sysShopId = clerkInfo.getSysShopId();
-		}
-		if (StringUtils.isBlank(sysShopId)) {
-			SysBossDTO bossInfo = UserUtils.getBossInfo();
-			logger.info("boss端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
-			sysShopId = bossInfo.getCurrentShopId();
-		}
+        String sysShopId = redisUtils.getShopId();
 
 		logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
 		ResponseDTO<HashMap<String, Object>> responseDTO = new ResponseDTO<>();
@@ -178,19 +166,8 @@ public class ProjectController {
 
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 		UserInfoDTO userInfo = UserUtils.getUserInfo();
-		String sysShopId = "";
 		String sysBossCode = "";
-		// pad端登陆
-		if (null != clerkInfo) {
-			logger.info("pad端操作");
-			sysShopId = clerkInfo.getSysShopId();
-		}
-		// 用户端登陆
-		if (null != userInfo) {
-			logger.info("用户端操作");
-			ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(userInfo.getId());
-			sysShopId = userLoginShop.getSysShopId();
-		}
+        String sysShopId = redisUtils.getShopId();
 		// boss端登陆
 		if (null != userInfo) {
 			logger.info("用户端操作");
@@ -492,8 +469,7 @@ public class ProjectController {
 	public @ResponseBody ResponseDTO<Object> getShopTwoLevelProjectList(@RequestParam(required = false) String pageNo,
 			@RequestParam(required = false) String pageSize, @RequestParam(required = false) String filterStr) {
 
-		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-		String sysShopId = clerkInfo.getSysShopId();
+        String sysShopId = redisUtils.getShopId();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
 		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
@@ -546,15 +522,11 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "getUserClientShopProjectList", method = { RequestMethod.POST, RequestMethod.GET })
-	// @LoginRequired
 	public @ResponseBody ResponseDTO<Object> getUserClientShopProjectList(@RequestParam String pageNo,
 			@RequestParam String pageSize) {
 
-		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-		String sysShopId = clerkInfo.getSysShopId();
-
+        String sysShopId = redisUtils.getShopId();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-
 		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
 		shopProjectInfoDTO.setSysShopId(sysShopId);
 		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);

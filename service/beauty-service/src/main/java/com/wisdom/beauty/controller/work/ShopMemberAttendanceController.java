@@ -3,10 +3,10 @@ package com.wisdom.beauty.controller.work;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
-import com.wisdom.beauty.core.service.ShopWorkService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
@@ -36,7 +36,7 @@ import java.util.Map;
 public class ShopMemberAttendanceController {
 
 	@Resource
-	private ShopWorkService workService;
+	private RedisUtils redisUtils;
 
 	@Autowired
 	private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
@@ -71,6 +71,7 @@ public class ShopMemberAttendanceController {
 	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getExpenditureAndIncome(@RequestParam(required = false) String sysShopId) {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+		sysShopId = redisUtils.getShopId();
 		userConsumeRequest.setSysShopId(sysShopId);
 
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();

@@ -5,7 +5,7 @@ import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
-import com.wisdom.beauty.client.UserServiceClient;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
@@ -18,7 +18,6 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.PinYinSort;
-import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -55,7 +54,7 @@ public class ArchivesController {
     private SysUserAccountService sysUserAccountService;
 
     @Autowired
-    private UserServiceClient userServiceClient;
+    private RedisUtils redisUtils;
 
     @Resource
     private ShopCardService cardService;
@@ -83,11 +82,7 @@ public class ArchivesController {
         ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO = new PageParamVoDTO<>();
 
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        //pad端用户
-        if (null != clerkInfo && StringUtils.isBlank(sysShopId)) {
-            sysShopId = clerkInfo.getSysShopId();
-        }
+        sysShopId = redisUtils.getShopId();
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysShopId(sysShopId);
         shopUserArchivesDTO.setPhone(queryField);
@@ -268,7 +263,7 @@ public class ArchivesController {
      */
     @RequestMapping(value = "/userBinding", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<String> userBinding(@RequestParam String openId, @RequestParam String shopId) {
+    ResponseDTO<String> userBinding(@RequestParam String openId, @RequestParam(required = false) String shopId) {
         ResponseDTO<String> responseDTO = shopUserRelationService.userBinding(openId, shopId);
         return responseDTO;
     }

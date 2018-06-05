@@ -94,7 +94,6 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     else
                     {
                         $scope.param.beautyShopInfo.splice(0,1);
-                        console.log($scope.param.beautyShopInfo);
                         angular.forEach($scope.param.beautyShopInfo,function (value,index) {
                             if(index==($scope.param.beautyShopInfo.length-1))
                             {

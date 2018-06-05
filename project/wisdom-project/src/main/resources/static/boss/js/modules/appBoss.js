@@ -12,7 +12,13 @@ define(['angular'], function (angular) {
                     request: function(config){
                         config.headers = config.headers || {};
                         if(window.location.href.indexOf("workHome")!=-1) {
-                            config.headers.usertype = Global.userType.BEAUTY_BOSS;
+                            window.localStorage.setItem("userType",Global.userType.BEAUTY_BOSS);
+                        }
+
+                        if(window.localStorage.getItem("userType")!=undefined
+                            &&window.localStorage.getItem("userType")!=null)
+                        {
+                            config.headers.usertype = window.localStorage.getItem("userType");
                         }
 
                         if(window.localStorage.getItem("beautyUserLoginToken")!=undefined

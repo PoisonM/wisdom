@@ -86,9 +86,9 @@ public class MineController {
     @ResponseBody
     ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
 
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        String sysShopId = redisUtils.getShopId();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-        userConsumeRequest.setSysShopId(sysClerkDTO.getSysShopId());
+        userConsumeRequest.setSysShopId(sysShopId);
         userConsumeRequest.setGoodsTypeRequire(true);
         pageParamVoDTO.setRequestData(userConsumeRequest);
         pageParamVoDTO.setPageNo(0);
@@ -236,10 +236,10 @@ public class MineController {
             responseDTO.setResponseData(extShopBossDTO);
             return responseDTO;
         }
-        UserInfoDTO userInfo = UserUtils.getUserInfo();
-        if (null != userInfo) {
+        if (null != UserUtils.getUserInfo()) {
             logger.info("用户端获取我的个人信息");
-            responseDTO.setResponseData(userInfo);
+            ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
+            responseDTO.setResponseData(userLoginShop);
             return responseDTO;
         }
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();

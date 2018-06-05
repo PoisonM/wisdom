@@ -9,6 +9,7 @@ import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
@@ -18,8 +19,6 @@ import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.user.SysBossDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +59,8 @@ public class CardController {
 	private MongoTemplate mongoTemplate;
 	@Autowired
 	private ShopUserConsumeService shopUserConsumeService;
+    @Autowired
+    private RedisUtils redisUtils;
 
 	@Value("${test.msg}")
 	private String msg;
@@ -73,7 +74,6 @@ public class CardController {
 	 * 查询某个用户的充值卡列表信息
 	 *
 	 * @param sysUserId
-	 * @param sysShopId
 	 * @return
 	 */
 	@RequestMapping(value = "/getUserRechargeCardList", method = { RequestMethod.POST, RequestMethod.GET })
@@ -81,7 +81,7 @@ public class CardController {
 	public @ResponseBody
 	ResponseDTO<Object> getUserRechargeCardList(
 			@RequestParam String sysUserId, @RequestParam(required = false) String sysShopId) {
-
+        sysShopId = redisUtils.getShopId();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
         if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
@@ -125,7 +125,7 @@ public class CardController {
     public @ResponseBody
     ResponseDTO<BigDecimal> getUserRechargeSumAmount(@RequestParam String sysUserId) {
 
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = redisUtils.getShopId();
         ResponseDTO<BigDecimal> responseDTO = new ResponseDTO<>();
 
         if (StringUtils.isBlank(sysUserId)) {
@@ -134,7 +134,7 @@ public class CardController {
         }
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
         shopUserRechargeCardDTO.setSysUserId(sysUserId);
-        shopUserRechargeCardDTO.setSysShopId(clerkInfo.getSysShopId());
+        shopUserRechargeCardDTO.setSysShopId(sysShopId);
         BigDecimal sumAmount = cardService.getUserRechargeCardSumAmount(shopUserRechargeCardDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(sumAmount);
@@ -153,10 +153,10 @@ public class CardController {
 	@ResponseBody
 	ResponseDTO<Object> findRechargeCardList(@RequestParam(required = false) String name,
 											 int pageSize) {
-		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        String sysShopId = redisUtils.getShopId();
 		PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
-		shopRechargeCardDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        shopRechargeCardDTO.setSysShopId(sysShopId);
 		shopRechargeCardDTO.setName(name);
 
 		pageParamVoDTO.setRequestData(shopRechargeCardDTO);
@@ -209,15 +209,9 @@ public class CardController {
 			@RequestParam(required = false) String projectGroupName, int pageSize) {
 
 		ShopProjectGroupDTO shopProjectGroupDTO = new ShopProjectGroupDTO();
-		String sysShopId = null;
-		if (StringUtils.isBlank(sysShopId)) {
-			SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
-			shopProjectGroupDTO.setSysShopId(sysClerkDTO.getSysShopId());
-		}
-		if (StringUtils.isBlank(sysShopId)) {
-			SysBossDTO bossInfo = UserUtils.getBossInfo();
-			shopProjectGroupDTO.setSysShopId(bossInfo.getCurrentShopId());
-		}
+        String sysShopId = redisUtils.getShopId();
+        shopProjectGroupDTO.setSysShopId(sysShopId);
+
 		PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		if (StringUtils.isNotBlank(projectGroupName)) {
 			shopProjectGroupDTO.setProjectGroupName(projectGroupName);

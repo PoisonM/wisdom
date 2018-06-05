@@ -62,16 +62,12 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/getShopClerkScheduleList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Object> getShopClerkScheduleList(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate, @RequestParam String sysShopId) {
+    ResponseDTO<Object> getShopClerkScheduleList(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate, @RequestParam(required = false) String sysShopId) {
 
         logger.info("获取某个店的排班信息传入参数={}", "searchDate = [" + searchDate + "], sysShopId = [" + sysShopId + "]");
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        //shopId为空为pad端请求，不为空为boss端请求
-        if (StringUtils.isBlank(sysShopId)) {
-            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-            sysShopId = clerkInfo.getSysShopId();
-        }
+        sysShopId = redisUtils.getShopId();
         ArrayList<Object> helperList = new ArrayList<>();
         ExtShopClerkScheduleDTO shopClerkScheduleDTO = new ExtShopClerkScheduleDTO();
         shopClerkScheduleDTO.setSysShopId(sysShopId);
@@ -181,9 +177,7 @@ public class ScheduleController {
         logger.info("获取某个店某个美容师某天的可预约信息传入参数={}", "searchDate = [" + searchDate + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         ExtShopClerkScheduleDTO shopClerkScheduleDTO = new ExtShopClerkScheduleDTO();
-        //登陆相关-待补充
-//        String sysShopId = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId()).getSysShopId();
-        String sysShopId = "11";
+        String sysShopId = redisUtils.getShopId();
         shopClerkScheduleDTO.setSysShopId(sysShopId);
         shopClerkScheduleDTO.setSysClerkId(clerkId);
         shopClerkScheduleDTO.setScheduleDate(searchDate);
@@ -270,9 +264,8 @@ public class ScheduleController {
     @ResponseBody
     ResponseDTO<Object> getBossShopScheduleSetting(@RequestParam(required = false) String sysShopId) {
         ShopScheduleSettingDTO settingDTO = new ShopScheduleSettingDTO();
-        if (StringUtils.isBlank(sysShopId)) {
-            settingDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
-        }
+        sysShopId = redisUtils.getShopId();
+        settingDTO.setSysShopId(sysShopId);
         List<ShopScheduleSettingDTO> setting = shopClerkScheduleService.getBossShopScheduleSetting(settingDTO);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
