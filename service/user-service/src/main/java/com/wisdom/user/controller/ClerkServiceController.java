@@ -118,7 +118,7 @@ public class ClerkServiceController {
 	*/
 	@RequestMapping(value = "getClerkBySearchFile", method =  RequestMethod.GET )
 	@ResponseBody
-	List<SysClerkDTO> getClerkBySearchFile(@RequestParam String searchFile) {
+	ResponseDTO<List<SysClerkDTO>> getClerkBySearchFile(@RequestParam String searchFile) {
 
 		long time = System.currentTimeMillis();
 
@@ -134,7 +134,7 @@ public class ClerkServiceController {
 		listResponseDTO.setResult(StatusConstant.SUCCESS);
 
 		logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - time));
-		return clerkInfo;
+		return listResponseDTO;
 	}
 
 	/**
