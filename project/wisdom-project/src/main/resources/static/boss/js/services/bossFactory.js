@@ -1,25 +1,25 @@
-var appointmentInfo = '/beauty/appointmentInfo/';
-var work = '/beauty/work/';
-var stock = '/beauty/stock/';
-var consume = '/beauty/consume/';
-var  earlyWarning =  '/beauty/earlyWarning/';
-var  archives =  '/beauty/archives/';
-var shopBossRelation ='/beauty/shopBossRelation/';
-var user ='/user/';
-var analyze = '/beauty/analyze/';
-var consumes = '/beauty/consumes/';
-var cardInfo  = '/beauty/cardInfo/';
-var projectInfo  = '/beauty/projectInfo/';
-var productInfo  = '/beauty/productInfo/';
-var productTypeInfo = '/beauty/productTypeInfo/';
-var projectType='/beauty/projectType/';
-var shop='/beauty/shop/';
-var projectGroupInfo='/beauty/projectGroupInfo/';
-var cardHelper ='/beauty/cardHelper/';
-var clerkSchedule = '/beauty/clerkSchedule/';
-var  mine='/beauty/mine/';
-var remind='/beauty/remind/';
-var file = '/system-service/file/';
+var work = 'http://192.168.1.133/beauty/work/';
+var stock = 'http://192.168.1.133/beauty/stock/';
+var consume = 'http://192.168.1.133/beauty/consume/';
+var  earlyWarning =  'http://192.168.1.133/beauty/earlyWarning/';
+var  archives =  'http://192.168.1.133/beauty/archives/';
+var shopBossRelation ='http://192.168.1.133/beauty/shopBossRelation/';
+var user ='http://192.168.1.133/user/';
+var analyze = 'http://192.168.1.133/beauty/analyze/';
+var consumes = 'http://192.168.1.133/beauty/consumes/';
+var cardInfo  = 'http://192.168.1.133/beauty/cardInfo/';
+var projectInfo  = 'http://192.168.1.133/beauty/projectInfo/';
+var productInfo  = 'http://192.168.1.133/beauty/productInfo/';
+var productTypeInfo = 'http://192.168.1.133/beauty/productTypeInfo/';
+var projectType='http://192.168.1.133/beauty/projectType/';
+var shop='http://192.168.1.133/beauty/shop/';
+var projectGroupInfo='http://192.168.1.133/beauty/projectGroupInfo/';
+var cardHelper ='http://192.168.1.133/beauty/cardHelper/';
+var clerkSchedule = 'http://192.168.1.133/beauty/clerkSchedule/';
+var  mine='http://192.168.1.133/beauty/mine/';
+var remind='http://192.168.1.133/beauty/remind/';
+var file = 'http://192.168.1.133/system-service/file/';
+var appointmentInfo = 'http://192.168.1.133/beauty/appointmentInfo/';
 
 define(['appBoss'], function (app) {
     app
@@ -455,4 +455,33 @@ define(['appBoss'], function (app) {
         .factory('GetClerkWorkDetail',['$resource',function ($resource){
             return $resource(clerkWork + "getClerkWorkDetail")
         }])
+        /*获取疗程和套卡的划卡记录*/
+        .factory('TreatmentAndGroupCardRecordList',['$resource',function ($resource){
+            return $resource(consume + "treatmentAndGroupCardRecordList")
+        }])
+        /*获取用户的划卡记录*/
+        .factory('UserStampCardRecordList',['$resource',function ($resource){
+            return $resource(consume + "userStampCardRecordList")
+        }])
+        /*疗程卡消费详情*/
+        .factory('FlowId',['$resource',function ($resource){
+            return $resource(consume + "flowId")
+        }])
+        /*疗程卡消费详情*/
+        .factory('Id',['$resource',function ($resource){
+            return $resource(consume + "id")
+        }])
+        /*选择仓库*/
+        .factory('FindStoreList',['$resource',function ($resource){
+            return $resource(stock + "findStoreList")
+        }])
+        /*获取仓库的库管员(库管设置)*/
+        .factory('GetStoreManager',['$resource',function ($resource){
+            return $resource(stock + "getStoreManager")
+        }])
+        /*仓库管理员设置*/
+        .factory('SetStorekeeper',['$resource',function ($resource){
+            return $resource(stock + "setStorekeeper")
+        }])
+
 });

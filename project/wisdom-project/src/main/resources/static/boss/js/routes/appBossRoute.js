@@ -1203,8 +1203,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*划卡记录*/
                     .state('treatmentCardDtails', {
-                        url: '/treatmentCardDtails/:sysUserId',
+                        url: '/treatmentCardDtails/:flowId,:goodsType,:flowIds,:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'treatmentCardDtailsCtrl',
                         resolve: {
@@ -1487,6 +1488,19 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* kuTube  库管人*/
+                    .state('kuTube', {
+                        url: '/kuTube/:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'kuTubeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.kuTubeCtrl',
+                                    ['js/controllers/inventory/kuTubeCtrl.js?ver='+ bossVersion],
+                                    'views/inventory/kuTube.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                     /* reservoirRunningWater 出入库流水*/
                     .state('reservoirRunningWater', {
                         url: '/reservoirRunningWater',
@@ -1576,7 +1590,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('libraryTubeSetting', {
-                        url: '/libraryTubeSetting',
+                        url: '/libraryTubeSetting/:ids/:names,:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'libraryTubeSettingCtrl',
                         resolve: {
