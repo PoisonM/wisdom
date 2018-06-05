@@ -2042,6 +2042,19 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /* mployeesDtailsCtrl 家人詳情*/
+                    .state('mployeesDtails', {
+                        url: '/mployeesDtails,:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'mployeesDtailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.mployeesDtailsCtrl',
+                                    ['js/controllers/mine/mployeesDtailsCtrl.js?ver='+ bossVersion],
+                                    'views/mine/mployeesDtails.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                     /*oneTime 单次折扣范围*/
                     .state('oneTime', {
                         url: '/oneTime/:url,:id',

@@ -20,7 +20,6 @@ var  mine='http://192.168.1.133/beauty/mine/';
 var remind='http://192.168.1.133/beauty/remind/';
 var file = 'http://192.168.1.133/system-service/file/';
 var appointmentInfo = 'http://192.168.1.133/beauty/appointmentInfo/';
-
 define(['appBoss'], function (app) {
     app
 
@@ -69,13 +68,21 @@ define(['appBoss'], function (app) {
         .factory('AddStock',['$resource',function ($resource){
             return $resource(stock + 'addStock')
         }])
-        /*查询家人*/
+        /*查询家人列表*/
         .factory('GetClerkInfoList',['$resource',function ($resource){
             return $resource(user + 'getClerkInfoList')
         }])
-        /*查询家人*/
+        /*添加家人*/
         .factory('SaveClerkInfo',['$resource',function ($resource){
             return $resource(user + 'saveClerkInfo')
+        }])
+        /*查询家人*/
+        .factory('ClerkInfo',['$resource',function ($resource){
+            return $resource(user + 'clerkInfo/:clerkId',{clerkId:"@clerkId"})
+        }])
+        /*upDate 家人*/
+        .factory('UpateClerkInfo',['$resource',function ($resource){
+            return $resource(user + 'upateClerkInfo')
         }])
 
 /*综合分析*/
@@ -482,6 +489,10 @@ define(['appBoss'], function (app) {
         /*仓库管理员设置*/
         .factory('SetStorekeeper',['$resource',function ($resource){
             return $resource(stock + "setStorekeeper")
+        }])
+        /*搜索我的>家人*/
+        .factory('GetClerkBySearchFile',['$resource',function ($resource){
+            return $resource(user + "getClerkBySearchFile")
         }])
 
 });
