@@ -20,33 +20,23 @@ import java.util.Map;
  * @since JDK 1.8
  */
 public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
-	//总金额
+	// 总金额
 	private BigDecimal sumAmount;
-	//划卡和消费页面展示的名称
+	// 划卡和消费页面展示的名称
 	private String title;
-	// 前台
-	private String sysShopClerkName;
 	// 前台id
 	private String sysShopClerkId;
 	// 用于返回前端判断消费还是充值字段
 	private String type;
-	//最多包含次数
+	// 最多包含次数
 	private Integer includeTimes;
-    //包含项目
+	// 包含项目
 	private List<ShopProjectInfoDTO> shopProjectInfoDTOList;
 	private List<UserConsumeRecordResponseDTO> userConsumeRecordResponseList;
-	//店员集合
+	// 店员集合
 	private List<String> sysClerkNameList;
-    //支付明细
+	// 支付明细
 	private Map<String, Object> payMap;
-	public String getSysShopClerkName() {
-		return sysShopClerkName;
-	}
-
-	public void setSysShopClerkName(String sysShopClerkName) {
-		this.sysShopClerkName = sysShopClerkName;
-	}
-
 
 	public String getSysShopClerkId() {
 		return sysShopClerkId;
@@ -64,13 +54,13 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
 		this.type = type;
 	}
 
-    public List<UserConsumeRecordResponseDTO> getUserConsumeRecordResponseList() {
-        return userConsumeRecordResponseList;
-    }
+	public List<UserConsumeRecordResponseDTO> getUserConsumeRecordResponseList() {
+		return userConsumeRecordResponseList;
+	}
 
-    public void setUserConsumeRecordResponseList(List<UserConsumeRecordResponseDTO> userConsumeRecordResponseList) {
-        this.userConsumeRecordResponseList = userConsumeRecordResponseList;
-    }
+	public void setUserConsumeRecordResponseList(List<UserConsumeRecordResponseDTO> userConsumeRecordResponseList) {
+		this.userConsumeRecordResponseList = userConsumeRecordResponseList;
+	}
 
 	public BigDecimal getSumAmount() {
 		return sumAmount;
@@ -87,7 +77,6 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 
 	public List<ShopProjectInfoDTO> getShopProjectInfoDTOList() {
 		return shopProjectInfoDTOList;

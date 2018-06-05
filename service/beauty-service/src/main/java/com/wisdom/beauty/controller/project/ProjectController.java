@@ -17,7 +17,6 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -164,16 +163,8 @@ public class ProjectController {
 			@RequestParam(required = false) String sysUserId, @RequestParam(required = false) String cardStyle,
 			@RequestParam(required = false) String id) {
 
-		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-		UserInfoDTO userInfo = UserUtils.getUserInfo();
-		String sysBossCode = "";
+		String sysBossCode = redisUtils.getBossCode();
         String sysShopId = redisUtils.getShopId();
-		// boss端登陆
-		if (null != userInfo) {
-			logger.info("用户端操作");
-			SysBossDTO bossInfo = UserUtils.getBossInfo();
-			sysBossCode = bossInfo.getId();
-		}
 
 		logger.info("传入参数={}",
 				"sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "], cardStyle = [" + cardStyle + "]");
@@ -189,7 +180,10 @@ public class ProjectController {
 		if (CommonUtils.objectIsEmpty(userProjectList)) {
 			logger.debug("查询某个用户的卡片列表信息为空, {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId
 					+ "], cardStyle = [" + cardStyle + "]");
-			return null;
+			responseDTO.setResponseData(null);
+			responseDTO.setErrorInfo("查无数据");
+			responseDTO.setResult(StatusConstant.SUCCESS);
+			return responseDTO;
 		}
 		List<ShopUserProjectRelationResponseDTO> shopUserProjectRelationResponseDTO = new ArrayList<>();
 		ShopUserProjectRelationResponseDTO shopUserProjectRelationResponse = null;

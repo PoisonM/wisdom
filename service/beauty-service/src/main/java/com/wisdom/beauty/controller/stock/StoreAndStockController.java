@@ -388,7 +388,7 @@ public class StoreAndStockController {
 	@RequestMapping(value = "/getStoreManager", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Object> getStoreManager(@RequestParam String id) {
-		String result = shopStockService.getStoreManager(id);
+		Map<String,String> result = shopStockService.getStoreManager(id);
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(result);
 		responseDTO.setResult(StatusConstant.SUCCESS);

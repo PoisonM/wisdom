@@ -10,10 +10,12 @@ import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.JedisUtils;
+import com.wisdom.common.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +35,16 @@ public class UserUtils {
      */
     public static UserInfoDTO getUserInfo() {
         String token = getUserToken(LoginEnum.USER);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
         String userInfoStr = JedisUtils.get(token);
         UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
+        try {
+            userInfoDTO.setNickname(java.net.URLDecoder.decode(userInfoDTO.getNickname(), "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return userInfoDTO;
     }
 
@@ -45,8 +55,19 @@ public class UserUtils {
      */
     public static SysClerkDTO getClerkInfo() {
         String token = getUserToken(LoginEnum.CLERK);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
         String sysClerkDTO = JedisUtils.get(token);
         SysClerkDTO clerkDTO = (new Gson()).fromJson(sysClerkDTO, SysClerkDTO.class);
+        try {
+            clerkDTO.setSysShopName(java.net.URLDecoder.decode(clerkDTO.getSysShopName(), "utf-8"));
+            clerkDTO.setSysBossName(java.net.URLDecoder.decode(clerkDTO.getSysBossName(), "utf-8"));
+            clerkDTO.setName(java.net.URLDecoder.decode(clerkDTO.getName(), "utf-8"));
+            clerkDTO.setNickname(java.net.URLDecoder.decode(clerkDTO.getNickname(), "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return clerkDTO;
     }
 
@@ -57,8 +78,17 @@ public class UserUtils {
      */
     public static SysBossDTO getBossInfo() {
         String token = getUserToken(LoginEnum.BOSS);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
         String sysBossDTO = JedisUtils.get(token);
         SysBossDTO bossDTO = (new Gson()).fromJson(sysBossDTO, SysBossDTO.class);
+        try {
+            bossDTO.setNickname(java.net.URLDecoder.decode(bossDTO.getNickname(), "utf-8"));
+            bossDTO.setName(java.net.URLDecoder.decode(bossDTO.getName(), "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return bossDTO;
     }
 
@@ -105,5 +135,6 @@ public class UserUtils {
         }
         return map;
     }
+
 
 }

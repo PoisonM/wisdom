@@ -164,7 +164,7 @@ public class RedisUtils {
                 loginDTO.setSysUserId(sysUserId);
                 loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
                 UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(sysUserId);
-                loginDTO.setPhone(userInfoDTO.getPhoto());
+                loginDTO.setPhone(userInfoDTO.getMobile());
                 JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
                 return loginDTO;
             }
@@ -241,5 +241,19 @@ public class RedisUtils {
             sysShopId = UserUtils.getBossInfo().getCurrentShopId();
         }
         return sysShopId;
+    }
+
+    public String getBossCode() {
+        String sysBossCode = null;
+        //pad端
+        if (null != UserUtils.getClerkInfo()) {
+            System.out.println("pad端登陆");
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+            sysBossCode = clerkInfo.getSysBossCode();
+        }
+        if (null != UserUtils.getBossInfo()) {
+            sysBossCode = UserUtils.getBossInfo().getSysBossCode();
+        }
+        return sysBossCode;
     }
 }
