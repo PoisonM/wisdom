@@ -19,7 +19,7 @@ public class ShopCashFlowDTO extends BaseEntity implements Serializable {
     //归属老板编码
     private String sysBossCode;
 
-    //支付方式  0:微信 1：支付宝 2:现金
+    //支付方式  0:微信 1：支付宝 2:银行支付金额
     private String payType;
 
     //支付宝、微信、银行支付金额
