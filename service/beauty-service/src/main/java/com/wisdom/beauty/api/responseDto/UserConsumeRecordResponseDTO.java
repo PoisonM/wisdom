@@ -38,7 +38,7 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
 	//店员集合
 	private List<String> sysClerkNameList;
     //支付明细
-	private Map<String, BigDecimal> payMap;
+	private Map<String, Object> payMap;
 	public String getSysShopClerkName() {
 		return sysShopClerkName;
 	}
@@ -113,11 +113,11 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
 		this.sysClerkNameList = sysClerkNameList;
 	}
 
-	public Map<String, BigDecimal> getPayMap() {
+	public Map<String, Object> getPayMap() {
 		return payMap;
 	}
 
-	public void setPayMap(Map<String, BigDecimal> payMap) {
+	public void setPayMap(Map<String, Object> payMap) {
 		this.payMap = payMap;
 	}
 }
