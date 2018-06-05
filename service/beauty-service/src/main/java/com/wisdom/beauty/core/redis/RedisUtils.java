@@ -10,6 +10,7 @@ import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
@@ -164,6 +165,8 @@ public class RedisUtils {
                 loginDTO.setSysShopName(relationDTO.getSysShopName());
                 loginDTO.setSysUserId(sysUserId);
                 loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
+                UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(sysUserId);
+                loginDTO.setPhone(userInfoDTO.getPhoto());
                 JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
                 return loginDTO;
             }
@@ -192,6 +195,8 @@ public class RedisUtils {
                     loginDTO.setSysShopName(relationDTO.getSysShopName());
                     loginDTO.setSysUserId(sysUserId);
                     loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
+                    UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(sysUserId);
+                    loginDTO.setPhone(userInfoDTO.getPhoto());
                     JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
                 }
             }
