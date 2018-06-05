@@ -1,10 +1,11 @@
 angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TreatmentAndGroupCardRecordList','FlowId','Id',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TreatmentAndGroupCardRecordList,FlowId,Id) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TreatmentAndGroupCardRecordList','FlowId','Id','Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TreatmentAndGroupCardRecordList,FlowId,Id,Global) {
             $rootScope.title = "疗程卡详情";
             $scope.param={
                 flag:true,
-                sysUserId	:$stateParams.sysUserId
+                sysUserId	:$stateParams.sysUserId,
+                type:$stateParams.goodsType
 
             };
             $scope.chooseTab = function (type) {
@@ -35,17 +36,17 @@ angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
                     FlowId.get({
                         flowId:$stateParams.flowId
                     },function(data){
-                        /*if(data.result==Global.SUCCESS&&data.responseData!=null)
+                        if(data.result==Global.SUCCESS&&data.responseData!=null)
                          { $scope.details = data.responseData;
-                         }*/
+                         }
                     })
                 }else if($stateParams.goodsType == '3'){
                     Id.get({
                         id:$stateParams.id
                     },function(data){
-                        /*if(data.result==Global.SUCCESS&&data.responseData!=null)
+                        if(data.result==Global.SUCCESS&&data.responseData!=null)
                          { $scope.details = data.responseData;
-                         }*/
+                         }
                     })
                 }
 

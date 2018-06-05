@@ -24,7 +24,6 @@ angular.module('controllers',[]).controller('treatmentCardCtrl',
             };
             /*调取疗程卡页面数据*/
             GetUserCourseProjectList.get({cardStyle:"1",sysUserId:$stateParams.sysUserId},function (data) {
-                console.log(data);
                 $scope.treatmentCard=data.responseData;
                 $scope.arr = data.responseData;
 
