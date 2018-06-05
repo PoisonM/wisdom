@@ -535,9 +535,17 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		}
 		logger.info("getTreatmentCardRecord传入的参数FlowId={}", userConsumeRequestDTO.getFlowId());
 
-		ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-		shopUserConsumeRecordDTO.setFlowId(userConsumeRequestDTO.getFlowId());
-		List<ShopUserConsumeRecordDTO> list = this.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+		List<ShopUserConsumeRecordDTO> list=null;
+		//判断如果是套卡
+		if(GoodsTypeEnum.COLLECTION_CARD.getCode().equals(userConsumeRequestDTO.getGoodsType())){
+			list=this.getShopCustomerConsumeRecord(userConsumeRequestDTO.getFlowIds());
+		}
+		//判断是疗程卡
+		if(GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRequestDTO.getGoodsType())){
+			ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+			shopUserConsumeRecordDTO.setFlowId(userConsumeRequestDTO.getFlowId());
+			list = this.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+		}
 		if (CollectionUtils.isEmpty(list)) {
 			logger.info("list结果返回为空");
 			return null;
@@ -662,4 +670,111 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		return userConsumeRecordResponseDTOs;
 	}
 
+	@Override
+	public List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(List<String> flowIds) {
+		logger.info("getShopCustomerConsumeRecord方法传入的参数flowIds={}",flowIds);
+		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
+		if(CollectionUtils.isEmpty(flowIds)){
+			return  null;
+		}
+		c.andFlowIdIn(flowIds);
+		return  shopUserConsumeRecordMapper.selectByCriteria(criteria);
+
+	}
+
+	@Override
+	public UserConsumeRecordResponseDTO getTreatmentCardConsumeDetail(String flowId) {
+		logger.info("getTreatmentCardConsumeDetail方法传入的参数,flowId={}}", flowId);
+		if (StringUtils.isBlank(flowId)) {
+			throw new ServiceException("getTreatmentCardConsumeDetail方法传入的参数为空");
+		}
+		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
+		c.andFlowIdEqualTo(flowId);
+
+		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
+		if (CollectionUtils.isEmpty(list)) {
+			logger.info("getShopCustomerConsumeRecord方法获取list集合为空");
+			return null;
+		}
+		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
+		if (CommonUtils.objectIsNotEmpty(list)) {
+			BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
+		}
+		BigDecimal totalAmount = null;
+		Set<String> consumeTypes = new HashSet<>();
+		Set<String> goodsTypes = new HashSet<>();
+		List<String> flowIds = new ArrayList<>();
+		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
+			flowIds.add(shopUserConsumeRecordDTO.getFlowId());
+			consumeTypes.add(shopUserConsumeRecordDTO.getConsumeType());
+			goodsTypes.add(shopUserConsumeRecordDTO.getGoodsType());
+			if (null != shopUserConsumeRecordDTO.getPrice()) {
+				if (totalAmount == null) {
+					totalAmount = shopUserConsumeRecordDTO.getPrice()
+							.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber() ? 0
+									: shopUserConsumeRecordDTO.getConsumeNumber()));
+				} else {
+					totalAmount = totalAmount.add(shopUserConsumeRecordDTO.getPrice()
+							.multiply(new BigDecimal(null == shopUserConsumeRecordDTO.getConsumeNumber() ? 0
+									: shopUserConsumeRecordDTO.getConsumeNumber())));
+				}
+			}
+		}
+		if (consumeTypes.contains(ConsumeTypeEnum.RECHARGE.getCode())) {
+			if (goodsTypes.contains(GoodsTypeEnum.RECHARGE_CARD.getCode())) {
+				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getCode());
+			} else {
+				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
+			}
+		}
+
+			// 根据多个id查询用户和项目的关系表
+			List<ShopUserProjectRelationDTO> shopUserProjectRelations = shopProjectService
+					.getUserShopProjectList(flowIds);
+			// map key存放用户和项目关系的id value存放用户和项目的关系对象
+			Map<String, ShopUserProjectRelationDTO> map = new HashedMap();
+			for (ShopUserProjectRelationDTO shopUserProjectRelationDTO : shopUserProjectRelations) {
+				map.put(shopUserProjectRelationDTO.getId(), shopUserProjectRelationDTO);
+			}
+			List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = new ArrayList<>();
+			UserConsumeRecordResponseDTO userConsumeRecordResponse = null;
+			for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
+				userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
+				BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponse);
+				if (map.get(shopUserConsumeRecordDTO.getFlowId()) != null) {
+					userConsumeRecordResponse.setIncludeTimes(
+							map.get(shopUserConsumeRecordDTO.getFlowId()).getSysShopProjectInitTimes());
+				}
+				userConsumeRecordResponses.add(userConsumeRecordResponse);
+			}
+			userConsumeRecordResponseDTO.setSumAmount(totalAmount);
+			userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
+		// 计算支付明细,根据消费记录id查询支付明细
+		ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
+		shopCashFlowDTO.setFlowNo(userConsumeRecordResponseDTO.getFlowNo());
+		ShopCashFlowDTO shopCashFlow = cashService.getShopCashFlow(shopCashFlowDTO);
+		// 支付宝、微信、银行支付金额
+		BigDecimal payTypeAmount = null;
+		// 余额支付
+		BigDecimal balanceAmount = null;
+		// 充值卡支付
+		BigDecimal rechargeCardAmount = null;
+		// 现金支付
+		BigDecimal cashAmount = null;
+		Map<String, BigDecimal> payMap = new HashedMap();
+		if (shopCashFlow != null) {
+			balanceAmount = shopCashFlow.getBalanceAmount();
+			rechargeCardAmount = shopCashFlow.getRechargeCardAmount();
+			cashAmount = shopCashFlow.getCashAmount();
+			payMap.put(shopCashFlow.getPayType(), shopCashFlow.getPayTypeAmount());
+		}
+		payMap.put("balanceAmount", balanceAmount);
+		payMap.put("rechargeCardAmount", rechargeCardAmount);
+		payMap.put("cashAmount", cashAmount);
+
+		userConsumeRecordResponseDTO.setPayMap(payMap);
+			return userConsumeRecordResponseDTO;
+		}
 }

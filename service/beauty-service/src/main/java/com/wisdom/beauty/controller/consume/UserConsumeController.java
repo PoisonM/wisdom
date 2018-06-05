@@ -88,7 +88,7 @@ public class UserConsumeController {
     *@Author:zhanghuan
     *@Param:
     *@Return:
-    *@Description: 根据消费记录id查询具体某个消费信息记录
+    *@Description: 根据消费记录id查询具体某个消费详情
     *@Date:2018/6/4 14:52
     */
     @RequestMapping(value = "/consume/id", method = RequestMethod.GET)
@@ -96,6 +96,23 @@ public class UserConsumeController {
     ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetailById(@RequestParam String id) {
 
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService.getUserConsumeRecord(id);
+        ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(userConsumeRecordResponseDTO);
+        return responseDTO;
+    }
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取疗程卡的消费详情
+    *@Date:2018/6/4 19:59
+    */
+    @RequestMapping(value = "/consume/flowId", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetailByFlowId(@RequestParam String flowId) {
+
+        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService.getTreatmentCardConsumeDetail(flowId);
         ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
@@ -233,15 +250,15 @@ public class UserConsumeController {
      * @Param:
      * @Return:
      * @Description: 根据疗程卡Id获取疗程和套卡的划卡记录
+     * 套卡查询需要传递flowIds  goodsType
+     *                疗程卡查询需要传递flowId goodsType
      * @Date:2018/4/10 11:20
      */
         @RequestMapping(value = "/consume/treatmentAndGroupCardRecordList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO< List<UserConsumeRecordResponseDTO>> getUserConsumeByFlowId(@RequestParam String flowId) {
+    ResponseDTO< List<UserConsumeRecordResponseDTO>> getUserConsumeByFlowId(@RequestBody UserConsumeRequestDTO userConsumeRequestDTO) {
 
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO=new PageParamVoDTO();
-        UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
-        userConsumeRequestDTO.setFlowId(flowId);
         pageParamVoDTO.setRequestData(userConsumeRequestDTO);
         List<UserConsumeRecordResponseDTO> list = shopUerConsumeRecordService.getTreatmentAndGroupCardRecord(pageParamVoDTO);
         ResponseDTO< List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
