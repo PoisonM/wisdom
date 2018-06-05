@@ -123,7 +123,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 	}
 
 	@Override
-	public String getStoreManager(String id) {
+	public Map<String,String> getStoreManager(String id) {
 		logger.info("getStoreManager方法传入的参数id={}");
 		ShopStoreCriteria shopStoreCriteria = new ShopStoreCriteria();
 		ShopStoreCriteria.Criteria c = shopStoreCriteria.createCriteria();
@@ -139,7 +139,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 			logger.info("storeManagerName为空");
 			return null;
 		}
-		return storeManagerName;
+		Map<String, String> map=new HashedMap();
+		map.put("storeManagerName",storeManagerName);
+		map.put("storeManagerId",shopStoreDTO.getStoreManagerId());
+		return map;
 	}
 
 	/**
