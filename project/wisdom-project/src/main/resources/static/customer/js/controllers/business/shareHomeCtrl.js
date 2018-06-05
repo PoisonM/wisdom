@@ -16,7 +16,7 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
                             if(data.result==Global.SUCCESS)
                             {
                                 if(data.responseData.userType=="business-A-1"||data.responseData.userType=="business-B-1"){
-                                    $state.go("sharePage");
+                                    $state.go("sharePage",{reload:true});
                                 }else
                                 {
                                     var alertPopup = $ionicPopup.alert({

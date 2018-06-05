@@ -258,19 +258,17 @@ public class ProcessUserSubscribeEventService {
             }
             else
             {
-                List<Article> articleList = new ArrayList<>();
-                Article article = new Article();
-                article.setTitle("嗨!您终于来啦! ~\n");
-                article.setDescription(
-                        "在这里,可以边赚钱边美美哒 ~  \n" +
-                                " \n" +
-                                "点击「99课堂」，教你玩转社群营销 ~\n" +
-                                "点击「99商城」，分享即赚钱 ~\n" +
-                                "更多资讯,直接留言 ~");
-                article.setPicUrl("");
-                article.setUrl("");
-                articleList.add(article);
-                WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+                String content = "【美享99快时尚】一个分享赚钱的美妆商城，自用省钱，分享更赚钱。\n" +
+                        " 仅需，一次性消费满498元，成为美享店主☟☟☟   \n" +
+                        " \n" +
+                        " 享 25-70%的现金返利                 \n" +
+                        " 送 新人三重礼，价值845元         \n" +
+                        " 送 快速拓客课程，价值1920元 \n" +
+                        " \n" +"猛戳<a href=\\\"http://mx99.kpbeauty.com.cn/customer#/shopHome/\\\">做店主～(￣▽￣～)</a>~ \n"+ " \n" +
+                        "点击【我要赚钱】☞ <a href=\\\"http://mx99.kpbeauty.com.cn/customer#/shareHome\\\">分享赚钱</a> ~\n" +
+                        "点击【用户指南】☞ <a href=\\\"https://mp.weixin.qq.com/s/B8f8hmCWz3T2xUwpRvz-iQ\\\">了解赚钱</a> ~\n" +
+                        "学习课程请点击【微课堂】，并加导师微信：mx99xx001";
+                WeixinUtil.sendMsgToWeixin(token,xmlEntity.getFromUserName(),content);
             }
         }
     }
