@@ -4,12 +4,12 @@
 package com.wisdom.beauty.util;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
+import com.wisdom.beauty.api.enums.LoginEnum;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.JedisUtils;
-import com.wisdom.common.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -26,17 +26,13 @@ import java.util.Map;
  */
 public class UserUtils {
 
-    public static final String beautyUserLoginToken = "beautyuserlogintoken";
-    public static final String beautyBossLoginToken = "beautybosslogintoken";
-    public static final String beautyClerkLoginToken = "beautyclerklogintoken";
-
     /**
      * 获取用户信息
      *
      * @return
      */
     public static UserInfoDTO getUserInfo() {
-        String token = getUserToken(beautyUserLoginToken);
+        String token = getUserToken(LoginEnum.USER);
         String userInfoStr = JedisUtils.get(token);
         UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
         return userInfoDTO;
@@ -48,7 +44,7 @@ public class UserUtils {
      * @return
      */
     public static SysClerkDTO getClerkInfo() {
-        String token = getUserToken(beautyClerkLoginToken);
+        String token = getUserToken(LoginEnum.CLERK);
         String sysClerkDTO = JedisUtils.get(token);
         SysClerkDTO clerkDTO = (new Gson()).fromJson(sysClerkDTO, SysClerkDTO.class);
         return clerkDTO;
@@ -60,7 +56,7 @@ public class UserUtils {
      * @return
      */
     public static SysBossDTO getBossInfo() {
-        String token = getUserToken(beautyBossLoginToken);
+        String token = getUserToken(LoginEnum.BOSS);
         String sysBossDTO = JedisUtils.get(token);
         SysBossDTO bossDTO = (new Gson()).fromJson(sysBossDTO, SysBossDTO.class);
         return bossDTO;
@@ -74,22 +70,24 @@ public class UserUtils {
     public static void bossSwitchShops(SysBossDTO sysBossDTO) {
         Gson gson = new Gson();
         String bossInfoStr = gson.toJson(sysBossDTO);
-        JedisUtils.set(getUserToken(beautyBossLoginToken), bossInfoStr, ConfigConstant.logintokenPeriod);
+        JedisUtils.set(getUserToken(LoginEnum.BOSS), bossInfoStr, ConfigConstant.logintokenPeriod);
     }
 
     /**
      * 获取登陆的token信息
      * @return
      */
-    private static String getUserToken(String loginToken) {
+    private static String getUserToken(LoginEnum loginEnum) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Map<String, String> tokenValue = getHeadersInfo(request);
-        String token = tokenValue.get(loginToken);
-        if (StringUtils.isBlank(loginToken)) {
-            System.out.println("商户平台登陆获取userTyp或token为空");
-            return null;
+        //只能获取到usertype对应的token
+        String userType = tokenValue.get("usertype");
+        if (loginEnum.getUserType().equals(userType)) {
+            String token = tokenValue.get(loginEnum.getLoginToken());
+            return token;
         }
-        return token;
+        System.out.println("userType = " + userType + ",loginEnum.userType =" + loginEnum.getUserType());
+        return null;
     }
 
     /**
