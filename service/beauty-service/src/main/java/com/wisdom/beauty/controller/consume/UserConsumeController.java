@@ -254,7 +254,7 @@ public class UserConsumeController {
      *                疗程卡查询需要传递flowId goodsType
      * @Date:2018/4/10 11:20
      */
-        @RequestMapping(value = "/consume/treatmentAndGroupCardRecordList", method = RequestMethod.GET)
+        @RequestMapping(value = "/consume/treatmentAndGroupCardRecordList", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO< List<UserConsumeRecordResponseDTO>> getUserConsumeByFlowId(@RequestBody UserConsumeRequestDTO userConsumeRequestDTO) {
 
