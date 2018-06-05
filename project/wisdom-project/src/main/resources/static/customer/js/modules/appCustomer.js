@@ -13,7 +13,13 @@ define(['angular'], function (angular) {
                         config.headers = config.headers || {};
 
                         if(window.location.href.indexOf("beautyAppoint")!=-1||window.location.href.indexOf("beautyUserCenter")!=-1) {
-                            config.headers.usertype = Global.userType.BEAUTY_USER;
+                            window.localStorage.setItem("userType",Global.userType.BEAUTY_USER);
+                        }
+
+                        if(window.localStorage.getItem("userType")!=undefined
+                            &&window.localStorage.getItem("userType")!=null)
+                        {
+                            config.headers.usertype = window.localStorage.getItem("userType");
                         }
 
                         if(window.localStorage.getItem("logintoken")!=undefined){

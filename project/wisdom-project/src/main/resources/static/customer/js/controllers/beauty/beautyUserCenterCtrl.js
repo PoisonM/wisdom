@@ -5,9 +5,9 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetUserClientInfo','Global','GetCurrentLoginUserInfo','BeautyUtil',
         function ($scope,$rootScope,$stateParams,$state,GetUserClientInfo,Global,GetCurrentLoginUserInfo,BeautyUtil) {
 
-    $scope.param = {
-        currentShopInfo : {}
-    }
+            $scope.param = {
+                currentShopInfo : {}
+            }
 
     // $.ajax({
     //     url:"/weixin/beauty/getBeautyConfig",// 跳转到 action
@@ -50,35 +50,39 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
     //     }
     // });
 
-    $scope.chooseProject = function() {
-        $state.go("beautyAppoint");
-    }
+            $scope.$on('$ionicView.enter', function(){
+                GetUserClientInfo.get(function (data) {
+                    console.log(data);
+                    BeautyUtil.checkResponseData(data,'beautyUserCenter');
+                    if(data.result==Global.SUCCESS) {
+                        $scope.param.currentShopInfo = data.responseData.currentShop;
+                    }
+                })
 
-    $scope.bindBeautyShop = function(){
-        wx.scanQRCode({
-            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-            scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
-            success: function (res) {
-                var result = JSON.stringify(res);;
-                //var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                alert(result);
+                GetCurrentLoginUserInfo.get(function (data) {
+                    BeautyUtil.checkResponseData(data,'beautyUserCenter');
+                    if(data.result==Global.SUCCESS){
+                        $rootScope.shopAppointInfo.shopUserInfo = data.responseData;
+                        console.log($rootScope.shopAppointInfo.shopUserInfo);
+                    }
+                })
+
+            })
+
+            $scope.chooseProject = function() {
+                $state.go("beautyAppoint");
             }
-        });
-    }
 
-    GetUserClientInfo.get(function (data) {
-        BeautyUtil.checkResponseData(data,'beautyUserCenter');
-        if(data.result==Global.SUCCESS) {
-            $scope.param.currentShopInfo = data.responseData.currentShop;
-        }
-    })
-
-    GetCurrentLoginUserInfo.get(function (data) {
-        BeautyUtil.checkResponseData(data,'beautyUserCenter');
-        if(data.result==Global.SUCCESS){
-            $rootScope.shopAppointInfo.shopUserInfo = data.responseData;
-            console.log($rootScope.shopAppointInfo.shopUserInfo);
-        }
-    })
+            $scope.bindBeautyShop = function(){
+                wx.scanQRCode({
+                    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = JSON.stringify(res);;
+                        //var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                        alert(result);
+                    }
+                });
+            }
 
 }])
