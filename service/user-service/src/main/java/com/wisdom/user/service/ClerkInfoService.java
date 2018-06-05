@@ -33,4 +33,12 @@ public interface ClerkInfoService {
     *@Date:2018/5/11 11:25
     */
     int saveSysClerk(SysClerkDTO sysClerkDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:根据姓名或者手机查询clerk信息
+    *@Date:2018/6/5 11:10
+    */
+    List<SysClerkDTO> getClerkBySearchFile(SysClerkDTO sysClerkDTO);
 }

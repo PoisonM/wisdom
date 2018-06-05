@@ -83,7 +83,7 @@ public class ClerkServiceController {
 	@RequestMapping(value = "getClerkInfoList", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
 	List<SysClerkDTO> getClerkInfoList(@RequestParam(required = false) String sysBossCode,
-										   @RequestParam(required = false) String sysShopId,
+									   @RequestParam(required = false) String sysShopId,
 			                           @RequestParam(required = false) String startTime,
 									   @RequestParam(required = false) String endTime,
 									   int pageSize) {
@@ -102,6 +102,33 @@ public class ClerkServiceController {
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
 		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfoList(pageParamVoDTO);
+
+		listResponseDTO.setResponseData(clerkInfo);
+		listResponseDTO.setResult(StatusConstant.SUCCESS);
+
+		logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - time));
+		return clerkInfo;
+	}
+	/**
+	*@Author:zhanghuan
+	*@Param:
+	*@Return:
+	*@Description: 根据手机号或者姓名查询家人信息
+	*@Date:2018/6/5 10:35
+	*/
+	@RequestMapping(value = "getClerkBySearchFile", method =  RequestMethod.GET )
+	@ResponseBody
+	List<SysClerkDTO> getClerkBySearchFile(@RequestParam String searchFile) {
+
+		long time = System.currentTimeMillis();
+
+		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
+		SysClerkDTO sysClerkDTO = new SysClerkDTO();
+		sysClerkDTO.setSysBossCode(bossInfo.getSysBossCode());
+		sysClerkDTO.setName(searchFile);
+		sysClerkDTO.setMobile(searchFile);
+		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkBySearchFile(sysClerkDTO);
 
 		listResponseDTO.setResponseData(clerkInfo);
 		listResponseDTO.setResult(StatusConstant.SUCCESS);
