@@ -158,7 +158,8 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                                         else
                                         {
                                             data.status = '2';
-                                            if(length==0)
+                                            //得良添加，防止时间出现小数，向上取整
+                                            if (Math.ceil(length) == 0)
                                             {
                                                 $scope.param.appointFlag = true;
                                             }
