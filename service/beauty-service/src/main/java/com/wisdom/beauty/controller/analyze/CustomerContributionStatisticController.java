@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.analyze;
 
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
@@ -36,6 +37,8 @@ public class CustomerContributionStatisticController {
 
     @Autowired
     private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
+    @Autowired
+    private RedisUtils redisUtils;
 
     //获取门店某天的业绩
     @RequestMapping(value = "shopCustomerContributionByDate", method = {RequestMethod.POST, RequestMethod.GET})
@@ -58,7 +61,7 @@ public class CustomerContributionStatisticController {
      */
     @RequestMapping(value = "/getClerkAchievementList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getClerkAchievementList(@RequestParam(required = false) String sysShopId,
+    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getClerkAchievementList(
                                                                                @RequestParam String startTime,
                                                                                @RequestParam String endTime,
                                                                                @RequestParam(required = false)  String sortBy,
@@ -66,6 +69,7 @@ public class CustomerContributionStatisticController {
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
+        String sysShopId = redisUtils.getShopId();
         if (StringUtils.isNotBlank(sysShopId)) {
             userConsumeRequestDTO.setSysShopId(sysShopId);
         }

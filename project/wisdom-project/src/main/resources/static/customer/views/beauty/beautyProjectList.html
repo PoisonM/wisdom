@@ -1,5 +1,5 @@
 <ion-view style="background:white">
-    <ion-scroll>
+    <ion-scroll style="height:100%">
         <ion-refresher
                 pulling-text="下拉加载更多项目..."
                 on-refresh="doRefresh()">
@@ -17,7 +17,6 @@
                     <p style="margin-top:10px">{{item.projectDuration}}分钟</p>
                 </div>
             </ion-item>
-            <br><br><br><br>
         </ion-list>
     </ion-scroll>
     <div class="tabs"

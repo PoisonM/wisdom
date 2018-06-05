@@ -62,16 +62,12 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/getShopClerkScheduleList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Object> getShopClerkScheduleList(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate, @RequestParam String sysShopId) {
+    ResponseDTO<Object> getShopClerkScheduleList(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate, @RequestParam(required = false) String sysShopId) {
 
         logger.info("获取某个店的排班信息传入参数={}", "searchDate = [" + searchDate + "], sysShopId = [" + sysShopId + "]");
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        //shopId为空为pad端请求，不为空为boss端请求
-        if (StringUtils.isBlank(sysShopId)) {
-            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-            sysShopId = clerkInfo.getSysShopId();
-        }
+        sysShopId = redisUtils.getShopId();
         ArrayList<Object> helperList = new ArrayList<>();
         ExtShopClerkScheduleDTO shopClerkScheduleDTO = new ExtShopClerkScheduleDTO();
         shopClerkScheduleDTO.setSysShopId(sysShopId);
@@ -91,28 +87,7 @@ public class ScheduleController {
         }
 
         //如果某个店的店员排班信息为空，则批量初始化
-        if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
-            logger.info("获取某个店的排班信息为空");
-            clerkScheduleList = new ArrayList<>();
-            for (SysClerkDTO sysClerkDTO : clerkDTOS) {
-                for (String string : monthFullDay) {
-                    ShopClerkScheduleDTO scheduleDTO = new ShopClerkScheduleDTO();
-                    scheduleDTO.setId(IdGen.uuid());
-                    scheduleDTO.setScheduleDate(DateUtils.StrToDate(string, "date"));
-                    scheduleDTO.setSysShopId(sysShopId);
-                    scheduleDTO.setCreateDate(new Date());
-                    scheduleDTO.setScheduleType(ScheduleTypeEnum.ALL.getCode());
-                    scheduleDTO.setSysClerkId(sysClerkDTO.getId());
-                    scheduleDTO.setSysBossCode(sysClerkDTO.getSysBossCode());
-                    scheduleDTO.setSysClerkName(sysClerkDTO.getName());
-                    clerkScheduleList.add(scheduleDTO);
-                }
-            }
-            //批量插入
-            int number = shopClerkScheduleService.saveShopClerkScheduleList(clerkScheduleList);
-            logger.info("批量插入{}条数据",number);
-        }
-
+        clerkScheduleList = getShopClerkScheduleDTOS(sysShopId, clerkScheduleList, monthFullDay, clerkDTOS);
 
         for (SysClerkDTO sysClerkDTO : clerkDTOS) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
@@ -153,6 +128,31 @@ public class ScheduleController {
         return responseDTO;
     }
 
+    private List<ShopClerkScheduleDTO> getShopClerkScheduleDTOS(@RequestParam(required = false) String sysShopId, List<ShopClerkScheduleDTO> clerkScheduleList, List<String> monthFullDay, List<SysClerkDTO> clerkDTOS) {
+        if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
+            logger.info("获取某个店的排班信息为空");
+            clerkScheduleList = new ArrayList<>();
+            for (SysClerkDTO sysClerkDTO : clerkDTOS) {
+                for (String string : monthFullDay) {
+                    ShopClerkScheduleDTO scheduleDTO = new ShopClerkScheduleDTO();
+                    scheduleDTO.setId(IdGen.uuid());
+                    scheduleDTO.setScheduleDate(DateUtils.StrToDate(string, "date"));
+                    scheduleDTO.setSysShopId(sysShopId);
+                    scheduleDTO.setCreateDate(new Date());
+                    scheduleDTO.setScheduleType(ScheduleTypeEnum.ALL.getCode());
+                    scheduleDTO.setSysClerkId(sysClerkDTO.getId());
+                    scheduleDTO.setSysBossCode(sysClerkDTO.getSysBossCode());
+                    scheduleDTO.setSysClerkName(sysClerkDTO.getName());
+                    clerkScheduleList.add(scheduleDTO);
+                }
+            }
+            //批量插入
+            int number = shopClerkScheduleService.saveShopClerkScheduleList(clerkScheduleList);
+            logger.info("批量插入{}条数据", number);
+        }
+        return clerkScheduleList;
+    }
+
 
     /**
      * 批量更新某个店的排班信息
@@ -181,21 +181,27 @@ public class ScheduleController {
         logger.info("获取某个店某个美容师某天的可预约信息传入参数={}", "searchDate = [" + searchDate + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         ExtShopClerkScheduleDTO shopClerkScheduleDTO = new ExtShopClerkScheduleDTO();
-        //登陆相关-待补充
-//        String sysShopId = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId()).getSysShopId();
-        String sysShopId = "11";
+        String sysShopId = redisUtils.getShopId();
         shopClerkScheduleDTO.setSysShopId(sysShopId);
         shopClerkScheduleDTO.setSysClerkId(clerkId);
         shopClerkScheduleDTO.setScheduleDate(searchDate);
         //查询美容师的排班信息
         List<ShopClerkScheduleDTO> clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
+        //排班信息为空则批量初始化
         if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
-            responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setResponseData("美容师的可预约信息为空，没有初始化！");
-            return responseDTO;
+            //查询某个店的排班信息
+            shopClerkScheduleDTO.setSysClerkId("");
+            clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
+            //获取某个月的所有天的集合
+            List<String> monthFullDay = DateUtils.getMonthFullDay(Integer.parseInt(DateUtils.getYear(searchDate)), Integer.parseInt(DateUtils.getMonth(searchDate)), 0);
+            //查询店员信息
+            List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(sysShopId);
+            //批量初始化
+            getShopClerkScheduleDTOS(sysShopId, clerkScheduleList, monthFullDay, clerkDTOS);
+            shopClerkScheduleDTO.setSysClerkId(clerkId);
+            clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
         }
         ShopClerkScheduleDTO scheduleDTO = clerkScheduleList.get(0);
-
         String startTime = ScheduleTypeEnum.judgeValue(scheduleDTO.getScheduleType()).getDefaultStartTime();
         String endTime = ScheduleTypeEnum.judgeValue(scheduleDTO.getScheduleType()).getDefaultEndTime();
         //存储当前美容师的排班时间段
@@ -270,9 +276,8 @@ public class ScheduleController {
     @ResponseBody
     ResponseDTO<Object> getBossShopScheduleSetting(@RequestParam(required = false) String sysShopId) {
         ShopScheduleSettingDTO settingDTO = new ShopScheduleSettingDTO();
-        if (StringUtils.isBlank(sysShopId)) {
-            settingDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
-        }
+        sysShopId = redisUtils.getShopId();
+        settingDTO.setSysShopId(sysShopId);
         List<ShopScheduleSettingDTO> setting = shopClerkScheduleService.getBossShopScheduleSetting(settingDTO);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);

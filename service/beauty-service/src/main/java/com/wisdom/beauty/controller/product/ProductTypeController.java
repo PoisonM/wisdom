@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.extDto.RequestDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
@@ -38,6 +39,9 @@ public class ProductTypeController {
     private ShopProductInfoService shopProductInfoService;
     @Resource
     private ShopStockService ShopStockService;
+
+    @Resource
+    private RedisUtils redisUtils;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -133,8 +137,7 @@ public class ProductTypeController {
         if (judgeBossCurrentShop(responseDTO, bossInfo)) {
             return responseDTO;
         }
-        String currentShopId = bossInfo.getCurrentShopId();
-
+        String sysShopId = redisUtils.getShopId();
         if (StringUtils.isNotBlank(productType)) {
             shopProductInfoDTO.setProductType(productType);
         }
@@ -145,7 +148,7 @@ public class ProductTypeController {
             shopProductInfoDTO.setProductTypeTwoId(levelTwoId);
         }
 
-        shopProductInfoDTO.setSysShopId(currentShopId);
+        shopProductInfoDTO.setSysShopId(sysShopId);
         List<ShopProductInfoDTO> detailProductList = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
 
         HashMap<Object, Object> responseMap = new HashMap<>(8);

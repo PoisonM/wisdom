@@ -9,6 +9,7 @@ import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -86,9 +87,6 @@ public class RedisUtils {
 
         ShopAppointServiceDTO shopAppointServiceDTO = (ShopAppointServiceDTO) JedisUtils.getObject(appointmentId);
 
-        if (msg.equals("true")) {
-            shopAppointServiceDTO = null;
-        }
         //redis中没有查出数据，再次缓存到redis中
         if (null == shopAppointServiceDTO) {
             shopAppointServiceDTO = new ShopAppointServiceDTO();
@@ -224,5 +222,24 @@ public class RedisUtils {
         }
 
         return (SysClerkDTO) object;
+    }
+
+    public String getShopId() {
+        String sysShopId = null;
+        //pad端
+        if (null != UserUtils.getClerkInfo()) {
+            System.out.println("pad端登陆");
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+            sysShopId = clerkInfo.getSysShopId();
+        }
+        //用户端
+        if (null != UserUtils.getUserInfo()) {
+            System.out.println("用户端登陆");
+            sysShopId = getUserLoginShop(UserUtils.getUserInfo().getId()).getSysShopId();
+        }
+        if (null != UserUtils.getBossInfo()) {
+            sysShopId = UserUtils.getBossInfo().getCurrentShopId();
+        }
+        return sysShopId;
     }
 }

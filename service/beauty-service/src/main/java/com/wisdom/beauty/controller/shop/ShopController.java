@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
@@ -12,7 +13,6 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
@@ -41,6 +41,8 @@ public class ShopController {
     @Autowired
     private ShopService shopService;
     @Autowired
+    private RedisUtils redisUtils;
+    @Autowired
     private ShopUserRelationService shopUserRelationService;
 
     @Value("${test.msg}")
@@ -59,10 +61,7 @@ public class ShopController {
     ResponseDTO<Object> getShopInfo(@RequestParam(required = false) String sysShopId) {
 
         ResponseDTO<Object> responseDTO = new ResponseDTO();
-        if (StringUtils.isBlank(sysShopId)) {
-            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-            sysShopId = clerkInfo.getSysShopId();
-        }
+        sysShopId = redisUtils.getShopId();
         SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
         responseDTO.setResponseData(shopInfoByPrimaryKey);
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -77,6 +76,7 @@ public class ShopController {
     ResponseDTO<Object> getUserScanInfo(@RequestParam String sysUserId, @RequestParam String shopId) {
         logger.info("查询某个用户是否扫码绑定传入参数={}", "sysUserId = [" + sysUserId + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO();
+        shopId = redisUtils.getShopId();
         if (StringUtils.isNotBlank(shopId) && StringUtils.isNotBlank(sysUserId)) {
             String string = new StringBuffer(shopId).append("_").append(sysUserId).toString();
             Object object = JedisUtils.getStringObject(string);

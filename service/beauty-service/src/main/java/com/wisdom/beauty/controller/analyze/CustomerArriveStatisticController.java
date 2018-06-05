@@ -1,6 +1,7 @@
 package com.wisdom.beauty.controller.analyze;
 
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
@@ -30,6 +31,8 @@ public class CustomerArriveStatisticController {
 
 	@Autowired
 	private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
+    @Autowired
+    private RedisUtils redisUtils;
 
 	//获取门店某天的业绩
 	@RequestMapping(value = "customerArriveAnalyzeByDate", method = {RequestMethod.POST, RequestMethod.GET})
@@ -58,7 +61,7 @@ public class CustomerArriveStatisticController {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 
-		userConsumeRequestDTO.setSysBossCode(bossInfo.getId());
+        userConsumeRequestDTO.setSysBossCode(bossInfo.getSysBossCode());
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
@@ -81,6 +84,7 @@ public class CustomerArriveStatisticController {
 			                                                  @RequestParam String startTime,
 														      @RequestParam String endTime,
 															  @RequestParam String condition) {
+        sysShopId = redisUtils.getShopId();
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 		userConsumeRequestDTO.setSysShopId(sysShopId);
