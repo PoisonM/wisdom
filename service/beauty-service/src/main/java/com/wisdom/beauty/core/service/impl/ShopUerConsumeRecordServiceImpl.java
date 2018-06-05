@@ -7,10 +7,9 @@ import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -52,17 +51,17 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 	@Autowired
 	private CashService cashService;
+	@Autowired
+	private RedisUtils redisUtils;
 
 	@Override
 	public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
-		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
-		if (sysClerkDTO == null) {
-			throw new ServiceException("从redis中获取sysClerkDTO对象为空");
-		}
+		String sysShopId = redisUtils.getShopId();
+
 		logger.info("getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},ShopUserId={},consumeType={}",
-				sysClerkDTO.getSysShopId(), userConsumeRequest.getSysUserId(), userConsumeRequest.getConsumeType());
+				sysShopId, userConsumeRequest.getSysUserId(), userConsumeRequest.getConsumeType());
 
 		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
@@ -82,8 +81,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			c.andCreateDateBetween(startTime, endTime);
 		}
 		// 设置查询条件
-		if (StringUtils.isNotBlank(sysClerkDTO.getSysShopId())) {
-			c.andSysShopIdEqualTo(sysClerkDTO.getSysShopId());
+		if (StringUtils.isNotBlank(sysShopId)) {
+			c.andSysShopIdEqualTo(sysShopId);
 		}
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysClerkId())) {
 			c.andSysClerkIdEqualTo(userConsumeRequest.getSysClerkId());

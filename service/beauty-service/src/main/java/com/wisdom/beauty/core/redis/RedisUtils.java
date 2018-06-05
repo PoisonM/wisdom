@@ -242,4 +242,18 @@ public class RedisUtils {
         }
         return sysShopId;
     }
+
+    public String getBossCode() {
+        String sysBossCode = null;
+        //pad端
+        if (null != UserUtils.getClerkInfo()) {
+            System.out.println("pad端登陆");
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+            sysBossCode = clerkInfo.getSysBossCode();
+        }
+        if (null != UserUtils.getBossInfo()) {
+            sysBossCode = UserUtils.getBossInfo().getSysBossCode();
+        }
+        return sysBossCode;
+    }
 }
