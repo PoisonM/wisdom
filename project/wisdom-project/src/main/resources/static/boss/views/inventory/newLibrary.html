@@ -20,25 +20,22 @@
                             </textarea>
                         </div>
                         <ion-list>
-                            <ion-item style="height:90px;border-radius:6px 6px 0 0" class="sb">
-                                <div style="display: flex">
+                            <ion-item style="height:90px;border-radius:6px 6px 0 0;position: relative" class="sb">
+                                <div style="display: flex;">
                                     <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
                                         <img ng-src="{{item.productUrl}}">
                                     </p>
                                     <div class="ml10 mt10">
                                         <P class="fs14 col333 ">{{item.productName}}</P>
-                                        <P class="fs12 col888 mt10">编号：{{item.shopProcId}}</P>
+                                        <div class="fs12 col888 mt10">编号：{{item.shopProcId}}</div>
                                         <P class="fs12 col888">
                                             <span>单位：{{item.productUnit}}</span>
                                             <span class="ml50">规格：{{item.productSpec}}</span>
                                         </P>
                                     </div>
                                 </div>
-                                <p ng-click="deleteEntryProduct(item.shopProcId)">
-                                    <img src="images/inventory/delTong.png"
-                                         class=" mr10 mt20"
-                                         style="width:25px;height:25px;">
-                                </p>
+                                <img src="images/inventory/delTong.png"  class="  "  style="width:25px;height:25px;position: absolute;right:0px;top:10px;" ng-click="deleteEntryProduct(item.shopProcId)">
+
                             </ion-item>
                         </ion-list>
                         <p class="h40 sb bbl fs14 col333" style="background: #F6F6F6;">
@@ -47,7 +44,7 @@
                         </p>
                         <div class="h40 sb bbl" style="background: #F6F6F6;">
                             <p class="ml20 fs14 col333">生产日期</p>
-                            <p class="mr20 fs14 col333">
+                            <p class="mr10 fs14 col333">
                                 <ionic-datepicker input-obj="datepickerObjectEnd" ng-click="selDate(item.productDate,item.shopProcId)">
                                     {{item.productDate}}
                                     <img src="images/more.png" class="more">

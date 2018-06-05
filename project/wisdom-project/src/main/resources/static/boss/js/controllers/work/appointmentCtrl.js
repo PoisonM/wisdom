@@ -67,7 +67,7 @@ angular.module('controllers',[]).controller('appointmentCtrl',
 
             $scope.getInfo = function(){
                 GetShopAppointmentNumberInfo.get({
-                    searchDate:$scope.param.date
+                    searchDate:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.appointment = data.responseData;

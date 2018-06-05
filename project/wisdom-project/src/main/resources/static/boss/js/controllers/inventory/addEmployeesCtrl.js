@@ -10,7 +10,7 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
                 shopName:""
             };
             $scope.sysClerkDTO = {
-                sysShopId:"11",
+                sysShopId:"",
                 mobile:"",
                 name:"",
                 role:""
@@ -54,13 +54,13 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
 
                 console.log( $scope.sysClerkDTO)
                 SaveClerkInfo.save($scope.sysClerkDTO,function (data) {
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                    if(data.result==Global.SUCCESS){
                         $state.go("addFamily")
                     }
                 })
             }
-            $scope.importAddressBookGo=function () {
+           /* $scope.importAddressBookGo=function () {
                 $state.go("importAddressBook")
-            }
+            }*/
 
         }])

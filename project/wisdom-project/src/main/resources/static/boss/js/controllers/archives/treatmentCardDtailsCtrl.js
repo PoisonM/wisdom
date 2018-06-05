@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Consumes',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Consumes) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TreatmentAndGroupCardRecordList','FlowId','Id',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TreatmentAndGroupCardRecordList,FlowId,Id) {
             $rootScope.title = "疗程卡详情";
             $scope.param={
                 flag:true,
@@ -13,25 +13,45 @@ angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
                     $scope.getInfo()
                 }else{
                     $scope.param.flag = false;
-                    $scope.getInfo()
+                    $scope.getInfos()
                 }
             };
-            var userConsumeRequest={
-                consumeType:"1",
-                goodType:"5",
-                pageSize:"10",
-                sysUserId	: $scope.param.sysUserId
-            };
+
             $scope.getInfo = function () {
-                Consumes.save(userConsumeRequest,function (data) {
+                $scope.userConsumeRequestDTO = {
+                    flowId:$stateParams.flowId,
+                    flowIds:$stateParams.flowIds.split(','),
+                    goodsType:$stateParams.goodsType
+                };
+                TreatmentAndGroupCardRecordList.save($scope.userConsumeRequestDTO,function (data) {
                     $scope.treatmentCardDtails=data.responseData;
-                    console.log( $scope.treatmentCardDtails);
 
                 });
             }
             $scope.getInfo()
-            /*点击顾客签字*/
-            $scope.drawCardRecordsDetailGO=function () {
-             $state.go("drawCardRecordsDetail")
+
+            $scope.getInfos= function () {
+                if($stateParams.goodsType == '1'){
+                    FlowId.get({
+                        flowId:$stateParams.flowId
+                    },function(data){
+                        /*if(data.result==Global.SUCCESS&&data.responseData!=null)
+                         { $scope.details = data.responseData;
+                         }*/
+                    })
+                }else if($stateParams.goodsType == '3'){
+                    Id.get({
+                        id:$stateParams.id
+                    },function(data){
+                        /*if(data.result==Global.SUCCESS&&data.responseData!=null)
+                         { $scope.details = data.responseData;
+                         }*/
+                    })
+                }
+
+            }
+
+            $scope.drawCardRecordsDetailGO=function (flowNo) {
+             $state.go("drawCardRecordsDetail",{flowNo:flowNo})
             }
         }]);

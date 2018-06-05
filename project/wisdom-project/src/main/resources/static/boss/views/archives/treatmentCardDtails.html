@@ -9,23 +9,25 @@
                     </a>
                     <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='0']"
                        ng-click="chooseTab('1')">
-                        <span class="fs15 col333" ng-class="{'colff66':param.flag!=true}"> 操作记录</span>
+                        <span class="fs15 col333" ng-class="{'colff66':param.flag!=true}">消费详情</span>
                     </a>
                 </div>
             </div>
 
             <div ng-show="param.flag">
                 <ion-list>
-                    <ion-item style="height:70px;" class="sb" ng-repeat="item in treatmentCardDtails" ng-click="drawCardRecordsDetailGO()">
+                    <ion-item style="height:70px;" class="sb" ng-repeat="item in treatmentCardDtails" ng-click="drawCardRecordsDetailGO(item.flowNo)">
                         <div>
                             <p class="fs15 col666 ml10 mt10">{{item.createDate|date:'yyyy-MM-dd'}}</p>
                             <p class="fs15 col333 ml10">
-                                <span style="width:80px;display: inline-block">{{item.title}}  </span>
+                                <span style="width:80px;display: inline-block">{{item.flowName}}  </span>
                                 <span style="width:50px;display: inline-block">{{item.consumeNumber}}次 </span>
-                                <span>{{item.sysShopClerkName}}({{item.sysShopName}})</span>
+                                <span ng-repeat="items in item.sysClerkNameList">{{items}}</span>({{item.sysShopName}})
                             </p>
                         </div>
-                        <p class="mr10 fs16 col333" style="line-height: 70px">签字</p>
+                        <p class="mr10 fs16 col333" style="line-height: 70px">
+                            <img ng-src="{{item.signUrl}}">
+                        </p>
 
                     </ion-item>
                 </ion-list>
@@ -38,7 +40,7 @@
                     <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                         <p class="ml10">时间</p>
                         <p class="mr10 col888">
-                            2018-01-26 16：32：28
+                            {{details.createDate|date : 'yyyy-MM-dd hh:mm:ss'}}
                         </p>
                     </ion-item>
                     <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">

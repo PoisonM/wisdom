@@ -40,11 +40,11 @@
         </div>
         <!--备注-->
         <p class="ml10 fs15 col33 " style="height:20px;line-height: 20px;width: 100% ;margin-top: -13px">备注</p>
-        <div class="list">
-            <p class="item p10 col88 mt5">{{confirmed.detail}}</p>
+        <div class="list " >
+            <p class="item p10 col88 mt5" style="min-height: 70px;">{{confirmed.detail}}</p>
         </div>
     </ion-content>
-    <div class="tabs">
+    <div class="tabs" ng-hide="confirmed.status==2||confirmed.status==3">
         <a class="tab-item col33 fs16"  ng-click="cancel()">
             取消预约
         </a>

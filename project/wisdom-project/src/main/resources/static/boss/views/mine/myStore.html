@@ -19,7 +19,7 @@
         </div>
         <!--分店列表-->
         <div class="list bgfff mt10">
-            <p class="item p10"><span>分店列表</span><img src="images/mine/drop-down.png" style="width: 12px;height: 6px;display: inline-block;float: right;margin-top:8px"></p>
+            <p class="item p10"><span>分店列表</span><img src="images/mine/drop-down.png" style="width: 12px;height: 6px;display: inline-block;float: right;margin-top:8px" ng-show="false"></p>
         </div>
           <!--列表-->
         <div style="width: 100%;background: #ffffff;padding:20px;"  ng-click="branchShopGo(item.id)"  ng-repeat="item in shopList " ng-if="item.type=='1'">

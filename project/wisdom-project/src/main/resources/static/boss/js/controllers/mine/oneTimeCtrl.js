@@ -29,7 +29,6 @@ angular.module('controllers',[]).controller('oneTimeCtrl',
                 } else {
                     $scope.param.timesList.push(domIndex);
                 }
-
             }
             $scope.save = function () {
                 for(var  i=0;i<$scope.param.timesList.length;i++){

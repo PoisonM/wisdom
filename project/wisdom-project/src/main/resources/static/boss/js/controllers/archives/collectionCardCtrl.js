@@ -24,7 +24,6 @@ angular.module('controllers',[]).controller('collectionCardCtrl',
             };
             /*调取套卡列表*/
             GetUserProjectGroupList.get({sysUserId:$stateParams.sysUserId},function (data) {
-                console.log(data);
                 $scope.collectionCar=data.responseData;
                 /*为啦便于筛选*/
                 $scope.arr=data.responseData;
@@ -38,9 +37,17 @@ angular.module('controllers',[]).controller('collectionCardCtrl',
                 }else{
                     for(var i=0;i<$scope.arr.length;i++){
                         if($scope.arr[i].isUseUp ==$scope.param.isUseUp){
-                            $scope.collectionCar.push($scope.arr[i])
+                            $scope.collectionCar.push($scope.arr[i]);
                         }
                     }
                 }
             };
+            
+            $scope.treatmentCardDtailsGo = function (consumeRecordId,index) {
+                var ids = new Array()
+                for(var i=0;i<$scope.collectionCar[index].projectList.length;i++){
+                   ids[i] =$scope.collectionCar[index].projectList[i].id
+                }
+                $state.go('treatmentCardDtails',{id:consumeRecordId,flowIds:ids,goodsType:'3'})
+            }
         }]);

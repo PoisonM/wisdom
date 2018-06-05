@@ -30,8 +30,8 @@ angular.module('controllers',[]).controller('treatmentCardCtrl',
 
             });
             /*点击疗程卡列表跳转到划卡页面*/
-            $scope.goTreatmentCard=function (sysUserId) {
-                $state.go("treatmentCardDtails",{sysUserId:sysUserId})
+            $scope.goTreatmentCard=function (id) {
+                $state.go("treatmentCardDtails",{flowId:id,goodsType:'1'})
             };
             /*点击确定按钮*/
             $scope.selTrue = function(){

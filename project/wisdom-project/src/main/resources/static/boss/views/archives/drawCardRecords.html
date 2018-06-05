@@ -6,9 +6,9 @@
                     <div>
                         <p class="fs15 col666 ml10 mt10">{{item.createDate|date:'yyyy-MM-dd'}}</p>
                         <p class="fs15 col333 ml10">
-                            <span style="width:80px;display: inline-block">{{item.title}}</span>
+                            <span style="width:80px;display: inline-block">{{item.flowName}}</span>
                             <span style="width:50px;display: inline-block">{{item.consumeNumber}}次 </span>
-                            <span>{{item.sysShopClerkName}}（{{item.sysShopName}}）</span>
+                            <span ng-repeat="items in item.sysClerkNameList">{{items}}</span>（{{item.sysShopName}}）
                         </p>
                     </div>
                     <p class="mr10 fs16 col333" style="line-height: 70px">
