@@ -711,7 +711,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			ShopUserProjectRelationDTO shopUserProjectRelation = shopUserProjectRelations.get(0);
 
 			UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
-			dto.setIncludeTimes(shopUserProjectRelationDTO.getServiceTime());
+			dto.setIncludeTimes(shopUserProjectRelation.getServiceTime());
             dto.setPrice(shopUserProjectRelation.getSysShopProjectPurchasePrice());
 			dto.setSumAmount(userConsumeRecordResponseDTO.getPrice());
 			dto.setPeriodDiscount(userConsumeRecordResponseDTO.getPeriodDiscount());

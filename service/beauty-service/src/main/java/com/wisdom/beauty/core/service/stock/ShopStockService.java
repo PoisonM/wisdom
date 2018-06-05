@@ -40,7 +40,7 @@ public interface ShopStockService {
 	 * @Description: 获取某个仓库的库管人
 	 * @Date:2018/5/23 15:42
 	 */
-	String getStoreManager(String id);
+	Map<String,String> getStoreManager(String id);
 
 	/**
 	 * 插入一条出/入库记录
