@@ -162,7 +162,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				userConsumeRecordResponseDTO.setGoodsType(shopUserConsumeRecord.getGoodsType());
 				userConsumeRecordResponseDTO.setConsumeType(shopUserConsumeRecord.getConsumeType());
 				userConsumeRecordResponseDTO.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
-				userConsumeRecordResponseDTO.setSysShopClerkName(shopUserConsumeRecord.getSysClerkName());
+				userConsumeRecordResponseDTO.setCreateBy(shopUserConsumeRecord.getCreateBy());
 				if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
 					// 如果是充值类型，并且是GoodsType=2,则设置标题为充值
 					if (shopUserConsumeRecord.getGoodsType().equals(GoodsTypeEnum.RECHARGE_CARD.getCode())) {
@@ -673,18 +673,21 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
 		c.andFlowIdEqualTo(flowId);
+		c.andConsumeTypeEqualTo(ConsumeTypeEnum.RECHARGE.getCode());
+		c.andGoodsTypeEqualTo(GoodsTypeEnum.TREATMENT_CARD.getCode());
 
+        //查询消费记录表
 		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
 		if (CollectionUtils.isEmpty(list)) {
 			logger.info("getShopCustomerConsumeRecord方法获取list集合为空");
 			return null;
 		}
+		ShopUserConsumeRecordDTO shopUserConsumeRecordDTO=list.get(0);
+		//获取一条消费记录,因为根据flowId查询的疗程卡只有一个
 		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 		if (CommonUtils.objectIsNotEmpty(list)) {
-			BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
+			BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponseDTO);
 		}
-		List<String> flowIds = new ArrayList<>();
-		flowIds.add(userConsumeRecordResponseDTO.getFlowId());
 
 		if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())) {
 			if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
@@ -693,32 +696,38 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
 			}
 		}
+		//支付明细
+		userConsumeRecordResponseDTO.setPayMap(this.getPayMap(userConsumeRecordResponseDTO.getFlowNo()));
+		// 根据flowId查询用户和项目的关系,获取ShopUserProjectRelationDTO信息
+		ShopUserProjectRelationDTO shopUserProjectRelationDTO=new ShopUserProjectRelationDTO();
+		shopUserProjectRelationDTO.setId(shopUserConsumeRecordDTO.getFlowId());
+		List<ShopUserProjectRelationDTO> shopUserProjectRelations = shopProjectService.getUserProjectList(shopUserProjectRelationDTO);
+		logger.info("getUserProjectList获取的结果shopUserProjectRelations={}",shopUserProjectRelations);
 
-		// 根据多个id查询用户和项目的关系表
-		List<ShopUserProjectRelationDTO> shopUserProjectRelations = shopProjectService.getUserShopProjectList(flowIds);
-		// map key存放用户和项目关系的id value存放用户和项目的关系对象
-		Map<String, ShopUserProjectRelationDTO> map = new HashedMap();
-		for (ShopUserProjectRelationDTO shopUserProjectRelationDTO : shopUserProjectRelations) {
-			map.put(shopUserProjectRelationDTO.getId(), shopUserProjectRelationDTO);
+		List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = null;
+		if(CollectionUtils.isEmpty(shopUserProjectRelations)){
+			logger.info("shopUserProjectRelations结果为空");
+		}else {
+			userConsumeRecordResponses = new ArrayList<>();
+			ShopUserProjectRelationDTO shopUserProjectRelation = shopUserProjectRelations.get(0);
+
+			UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
+			dto.setIncludeTimes(shopUserProjectRelationDTO.getServiceTime());
+            dto.setPrice(shopUserProjectRelation.getSysShopProjectPurchasePrice());
+			dto.setSumAmount(userConsumeRecordResponseDTO.getPrice());
+			dto.setPeriodDiscount(userConsumeRecordResponseDTO.getPeriodDiscount());
+			dto.setConsumeNumber(userConsumeRecordResponseDTO.getConsumeNumber());
+			userConsumeRecordResponses.add(dto);
 		}
-		List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = new ArrayList<>();
-		UserConsumeRecordResponseDTO userConsumeRecordResponse = null;
-		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
-			userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
-			BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponse);
-			if (map.get(shopUserConsumeRecordDTO.getFlowId()) != null) {
-				userConsumeRecordResponse
-						.setIncludeTimes(map.get(shopUserConsumeRecordDTO.getFlowId()).getSysShopProjectInitTimes());
-			}
-			userConsumeRecordResponses.add(userConsumeRecordResponse);
-		}
+
+
 		userConsumeRecordResponseDTO.setSumAmount(userConsumeRecordResponseDTO.getPrice());
 		userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
-		userConsumeRecordResponseDTO.setPayMap(this.getPayMap(userConsumeRecordResponseDTO.getFlowNo()));
+
 		return userConsumeRecordResponseDTO;
 	}
 
-		private Map<String, Object> getPayMap(String flowNo) {
+	private Map<String, Object> getPayMap(String flowNo) {
 		logger.info("getPayMap方法传入的参数flowNo={}", flowNo);
 		// 计算支付明细,根据消费记录id查询支付明细
 		ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
@@ -739,9 +748,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		balanceAmount = shopCashFlow.getBalanceAmount();
 		rechargeCardAmount = shopCashFlow.getRechargeCardAmount();
 		cashAmount = shopCashFlow.getCashAmount();
-		payMap.put(shopCashFlow.getPayType(), shopCashFlow.getPayTypeAmount());
-		payMap.put("payType",shopCashFlow.getPayType());
-		payMap.put("payTypeAmount",shopCashFlow.getPayTypeAmount());
+		payMap.put("payType", shopCashFlow.getPayType());
+		payMap.put("payTypeAmount", shopCashFlow.getPayTypeAmount());
 		payMap.put("balanceAmount", balanceAmount);
 		payMap.put("rechargeCardAmount", rechargeCardAmount);
 		payMap.put("cashAmount", cashAmount);
