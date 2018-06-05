@@ -16,6 +16,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 rookieProductId:"201712101718100007",
                 redPackerFlagOne:false,
                 redPackerFlagTwo:false,
+                redPackerBox:true,
                 bonusValue:"",
                 timeContent:""
             }
@@ -164,8 +165,10 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             };
 
             $scope.redPackerClose = function () {
-                $scope.param.redPackerFlagOne = false;
-                $scope.param.redPackerFlagTwo = false
+
+              $scope.param.redPackerBox=false;
+              /*  $scope.param.redPackerFlagOne = false;
+                $scope.param.redPackerFlagTwo = false*/
             }
 
             $scope.redPackerOpen = function () {
