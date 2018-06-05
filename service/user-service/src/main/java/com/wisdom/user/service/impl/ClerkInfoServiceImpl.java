@@ -130,15 +130,17 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 
 		// 参数
 		if (StringUtils.isNotBlank(sysClerkDTO.getSysBossCode())) {
-			c.andSysShopIdEqualTo(sysClerkDTO.getSysBossCode());
+			c.andSysBossCodeEqualTo(sysClerkDTO.getSysBossCode());
 		}
 		if (StringUtils.isNotBlank(sysClerkDTO.getMobile())) {
-			c.andMobileEqualTo("%" + sysClerkDTO.getMobile() + "%");
+			c.andMobileLike("%" + sysClerkDTO.getMobile() + "%");
 		}
 		if (StringUtils.isNotBlank(sysClerkDTO.getName())) {
-			or.andNameEqualTo("%" + sysClerkDTO.getName() + "%");
+			or.andNameLike("%" + sysClerkDTO.getName() + "%");
 		}
-
+		if (StringUtils.isNotBlank(sysClerkDTO.getSysBossCode())) {
+			or.andSysBossCodeEqualTo(sysClerkDTO.getSysBossCode());
+		}
 		sysClerkCriteria.or(or);
 		return sysClerkMapper.selectByCriteria(sysClerkCriteria);
 
