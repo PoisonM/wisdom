@@ -373,6 +373,11 @@ public class AppointmentController {
 			sysShopId = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId()).getSysShopId();
 		}
 
+		if (StringUtils.isBlank(sysShopId)) {
+			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setErrorInfo("获取店铺主键为空");
+			return responseDTO;
+		}
 		List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(sysShopId);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(clerkDTOS);
