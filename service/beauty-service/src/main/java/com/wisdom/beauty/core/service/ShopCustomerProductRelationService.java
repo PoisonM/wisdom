@@ -31,7 +31,15 @@ public interface ShopCustomerProductRelationService {
      * @Description: 根据条件查询用户和产品关系列表
      * @Date:2018/4/18 10:15
      */
-    Map<String,Object> getShopUserProductRelations(String sysClerkId, String sysShopId,String searchFile);
+    Map<String,Object> getShopUserProductRelations(String sysShopId,String searchFile);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取待领取数量和客数
+    *@Date:2018/6/6 19:29
+    */
+    Map<String,Object> getWaitReceivePeopleAndNumber(String sysShopId);
     /**
     *@Author:huan
     *@Param:

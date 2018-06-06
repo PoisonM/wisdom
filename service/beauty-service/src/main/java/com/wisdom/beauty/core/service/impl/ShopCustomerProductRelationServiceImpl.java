@@ -69,51 +69,46 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
     }
 
     @Override
-    public Map<String, Object> getShopUserProductRelations(String sysClerkId, String sysShopId, String searchFile) {
-        logger.info("getShopProductInfo方法传入的参数,sysClerkId={},searchFile={}", sysClerkId, searchFile);
-        if (StringUtils.isBlank(sysClerkId)) {
-            throw new ServiceException("getShopUserProductRelations方法传入的参数sysClerkId为空");
-        }
+    public Map<String, Object> getShopUserProductRelations(String sysShopId, String searchFile) {
+        logger.info("getShopProductInfo方法传入的参数,searchFile={}" , searchFile);
         Map<String,String> mapFile=new HashMap();
-        mapFile.put("sysClerkId",sysClerkId);
         mapFile.put("sysShopId",sysShopId);
+        if(StringUtils.isNotBlank(searchFile)){
+            mapFile.put("searchFile","%"+searchFile+"%");
+        }else {
+            mapFile.put("searchFile",searchFile);
+        }
         List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(mapFile);
         if (CollectionUtils.isEmpty(list)) {
             logger.info("getWaitReceiveNumber方法查询的结果为空");
+            return null;
+        }
+        Map<String, Object> mapResponse = new HashMap<>();
+        mapResponse.put("data", list);
+        return mapResponse;
+    }
+
+    @Override
+    public Map<String, Object> getWaitReceivePeopleAndNumber(String sysShopId) {
+        logger.info("getWaitReceivePeopleAndNumber方法传入的参数,sysShopId={}" , sysShopId);
+        Map<String,String> mapFile=new HashMap();
+        mapFile.put("sysShopId",sysShopId);
+        mapFile.put("searchFile",null);
+        List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(mapFile);
+        if (CollectionUtils.isEmpty(list)) {
+            logger.info("getWaitReceivePeopleAndNumber方法查询的结果为空");
             return null;
         }
         //待领取数量
         Integer totalWaitReceiveNumber = 0;
         //待领取数量
         Integer totalWaitReceivePeople = list.size();
-        List<String> idList = new ArrayList<>();
-        //用于存储用户和剩余领取的数量的对应关系
-        Map<String, Integer> map = new HashMap<>(16);
         //遍历用户信息，并且将该用户对应的产品为领取数量放到一起
         for (UserProductRelationResponseDTO userProductRelationResponse : list) {
             totalWaitReceiveNumber = totalWaitReceiveNumber + userProductRelationResponse.getWaitReceiveNumber();
-            idList.add(userProductRelationResponse.getSysUserId());
-            map.put(userProductRelationResponse.getSysUserId(), userProductRelationResponse.getWaitReceiveNumber());
         }
 
-        String[] strings = new String[idList.size()];
-        String[] strs = idList.toArray(strings);
-        //查询用户的信息
-        List<UserInfoDTO> userInfoList = userServiceClient.getUserInfoListFromUserId(strs, searchFile);
-        if (CollectionUtils.isEmpty(userInfoList)) {
-
-        }
-        List<UserProductRelationResponseDTO> userProductRelationResponses = new ArrayList<>();
-        UserProductRelationResponseDTO userProductRelationResponseDTO = null;
-        for (UserInfoDTO userInfoDTO : userInfoList) {
-            userProductRelationResponseDTO = new UserProductRelationResponseDTO();
-            userProductRelationResponseDTO.setWaitReceiveNumber(map.get(userInfoDTO.getId()));
-            userProductRelationResponseDTO.setMobile(userInfoDTO.getMobile());
-            userProductRelationResponseDTO.setNickname(userInfoDTO.getNickname());
-            userProductRelationResponses.add(userProductRelationResponseDTO);
-        }
         Map<String, Object> mapResponse = new HashMap<>();
-        mapResponse.put("data", userProductRelationResponses);
         mapResponse.put("totalWaitReceiveNumber", totalWaitReceiveNumber);
         mapResponse.put("totalWaitReceivePeople", totalWaitReceivePeople);
 
