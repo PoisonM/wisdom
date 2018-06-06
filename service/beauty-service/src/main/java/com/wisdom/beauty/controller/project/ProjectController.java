@@ -404,8 +404,9 @@ public class ProjectController {
 	 */
 	@RequestMapping(value = "getShopProjectList", method = { RequestMethod.POST, RequestMethod.GET })
 	// @LoginRequired
-	public @ResponseBody ResponseDTO<List<Object>> getShopProjectList(@RequestParam String pageNo,
-			@RequestParam String pageSize, @RequestParam String filterStr) {
+	public @ResponseBody
+	ResponseDTO<List<Object>> getShopProjectList(@RequestParam(required = false) String pageNo,
+												 @RequestParam(required = false) String pageSize, @RequestParam(required = false) String filterStr) {
 
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 		String sysShopId = clerkInfo.getSysShopId();
