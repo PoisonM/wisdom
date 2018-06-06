@@ -8,8 +8,7 @@ PADWeb.controller('stampCardRecordCtrl', function($scope, $stateParams, ngDialog
 
     //consumeType 0：充值 1：消费 2、还欠款 3、退款
     Consumes.save({
-        sysClerkId:112,
-        goodsType:2,
+        goodsType:5,
         consumeType:1,
         pageSize:12
     },function (data) {

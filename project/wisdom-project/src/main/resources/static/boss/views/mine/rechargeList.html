@@ -2,15 +2,13 @@
     <ion-content>
         <div class="list">
             <ion-item  class="row " ng-repeat="item in rechargeList" ng-click="editedRechargeGo(item.id)">
-                <div class="col col-25" style="line-height: 49px;">
-                    <p style="height:89px;width:106px;background: gainsboro;">
-                        <img ng-src="{{item.imageUrl}}" style="height:89px;width:106px;">
-                    </p >
+                <div class="col col-25" style="line-height: 49px;background: url('{{item.imageUrl}}');background-size: contain;background-position: center center;background-repeat: no-repeat" >
+
                 </div>
 
-                <div class="col col-75 ml20 mr10" >
+                <div class="col col-75 ml10 mr10" >
                     <p class="fs15" style="color: #333333!important;"><span>{{item.name}}</span></p >
-                    <p class="fs15" style="color: #FF6666!important; "><span class="fs11">面额：</span><span class="fs14">{{item.discountPrice}}</span></p >
+                    <p class="fs15" style="color: #FF6666!important; "><span class="fs11">面额：</span><span class="fs14">{{item.amount}}</span></p >
                     <div class=" fs11" style="color: #333333!important;">折扣：
                         <span ng-if="item.timeDiscount!=null">单次{{item.timeDiscount}}折</span>&nbsp&nbsp
                         <span ng-if="item.periodDiscount!=null">疗程卡{{item.periodDiscount}}折</span>&nbsp&nbsp

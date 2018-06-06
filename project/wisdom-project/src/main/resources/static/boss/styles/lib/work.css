@@ -118,7 +118,7 @@
 .redBox{background:url("../../images/work/analysis.png");background-size: 100% 100%;width: 350px;height: 97px;margin: auto;padding: 30px}
 .tabBox{ width:204px;height: 30px;margin: auto;border: 1px solid #ff6666;box-sizing: content-box;border-radius:5px}
 .tabBox button{width:33.33%;height: 30px;text-align: center;margin:-1px;box-sizing: border-box;/*font-size: 14px*/;border-bottom-left-radius: 2px;border-top-left-radius: 2px}
-.active {
+.activeCardType {
     background-color: #ff6666;color: #ffffff;
     border-right: 1px solid #ff6666;
 }

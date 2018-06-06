@@ -16,21 +16,29 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 })
 
             };
-
-            TwoLevelProject.get({
-                id:$stateParams.id
-            },function(data){
-                if(data.result==Global.SUCCESS){
-                    $scope.requestList = data.responseData;
-                    if(data.responseData==null){$scope.requestList=[]}
-
-                    console.log($scope.requestList);
-                    for(var i=0;i<$scope.requestList.length;i++){
-                        $scope.requestList[i].parentId = $stateParams.id;
-                        $scope.param.selTrue.push(false)
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                TwoLevelProject.get({
+                    id:$stateParams.id
+                },function(data){
+                    if(data.result==Global.SUCCESS){
+                        $ionicLoading.hide();
+                        $scope.requestList = data.responseData;
+                        if(data.responseData==null){$scope.requestList=[]}
+                        for(var i=0;i<$scope.requestList.length;i++){
+                            $scope.requestList[i].parentId = $stateParams.id;
+                            $scope.param.selTrue.push(false)
+                        }
                     }
-                }
-            });
+                });
+            })
+
             $scope.selBtnShow = function(index){
                 $scope.param.selTrue[index] =!$scope.param.selTrue[index]
               };

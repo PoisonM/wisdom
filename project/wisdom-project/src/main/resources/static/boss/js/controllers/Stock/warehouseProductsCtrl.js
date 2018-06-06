@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/6.
  */
 angular.module('controllers',[]).controller('warehouseProductsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopProductLevelInfo','Global',
-        function ($scope,$rootScope,$stateParams,$state,GetShopProductLevelInfo,Global) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopProductLevelInfo','Global','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetShopProductLevelInfo,Global,$ionicLoading) {
 
             $rootScope.title = "仓库产品";
             $scope.param = {
@@ -53,13 +53,25 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
             $scope.all = function () {
                 $scope.param.flag = false;
             };
-            GetShopProductLevelInfo.get({
-            },function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $scope.warehouseProducts = data.responseData;
-                }
 
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                GetShopProductLevelInfo.get({
+                },function(data){
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $ionicLoading.hide();
+                        $scope.warehouseProducts = data.responseData;
+                    }
+
+                })
             })
+
             $scope.getInfo = function(){
                 GetShopProductLevelInfo.get({
                     productType:$scope.param.productType,

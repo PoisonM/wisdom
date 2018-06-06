@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('editedRechargeCtrl',
-    ['$scope','$rootScope','$stateParams','$state','RechargeCardDetail','Global','$http','GetGoodsUseScope','UpdateRechargeCardInfo','ImageBase64UploadToOSS',
-        function ($scope,$rootScope,$stateParams,$state,RechargeCardDetail,Global,$http,GetGoodsUseScope,UpdateRechargeCardInfo,ImageBase64UploadToOSS) {
+    ['$scope','$rootScope','$stateParams','$state','RechargeCardDetail','Global','$http','GetGoodsUseScope','UpdateRechargeCardInfo','ImageBase64UploadToOSS','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,RechargeCardDetail,Global,$http,GetGoodsUseScope,UpdateRechargeCardInfo,ImageBase64UploadToOSS,$ionicLoading) {
 
             $rootScope.title = "编辑充值卡";
             $scope.param={
@@ -11,36 +11,45 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                 status:true,
                 id:$stateParams.id
             };
-            RechargeCardDetail.get({
-                id:$stateParams.id
-            },function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $rootScope.settingAddsome.editedRecharge = data.responseData;
-                    if($rootScope.settingAddsome.editedRecharge.status == '0'){
-                        $scope.param.status = true
-                    }else{
-                        $scope.param.status = false
+
+                RechargeCardDetail.get({
+                    id:$stateParams.id
+                },function(data){
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $rootScope.settingAddsome.editedRecharge = data.responseData;
+                        if($rootScope.settingAddsome.editedRecharge.status == '0'){
+                            $scope.param.status = true
+                        }else{
+                            $scope.param.status = false
+                        }
+                        GetGoodsUseScope.get({
+                            shopRechargeCardId:$stateParams.id
+                        },function (data) {
+                            if(data.responseData.timesList!=undefined||data.responseData.periodList!=undefined||data.responseData.productList!=undefined){
+                                $rootScope.settingAddsome.editedRecharge.timesList =data.responseData.timesList;
+                                $rootScope.settingAddsome.editedRecharge.periodList =data.responseData.periodList;
+                                $rootScope.settingAddsome.editedRecharge.productList =data.responseData.productList;
+                                if($rootScope.settingAddsome.editedRecharge.productList.length>0||$rootScope.settingAddsome.editedRecharge.timeDiscount!=''){
+                                    $scope.param.appearArr[2]=true
+                                }
+                                if($rootScope.settingAddsome.editedRecharge.periodList.length>0||$rootScope.settingAddsome.editedRecharge.periodDiscount!=''){
+                                    $scope.param.appearArr[1]=true
+                                }
+                                if($rootScope.settingAddsome.editedRecharge.timesList.length>0||$rootScope.settingAddsome.editedRecharge.timeDiscount!=""){
+                                    $scope.param.appearArr[0]=true
+                                }
+                            }else{
+                                $rootScope.settingAddsome.editedRecharge.timesList =new Array;
+                                $rootScope.settingAddsome.editedRecharge.periodList =new Array;
+                                $rootScope.settingAddsome.editedRecharge.productList =new Array;
+                            }
+
+
+                        })
+
                     }
-                    GetGoodsUseScope.get({
-                        shopRechargeCardId:$stateParams.id
-                    },function (data) {
-                        $rootScope.settingAddsome.editedRecharge.timesList =data.responseData.timesList;
-                        $rootScope.settingAddsome.editedRecharge.periodList =data.responseData.periodList;
-                        $rootScope.settingAddsome.editedRecharge.productList =data.responseData.productList;
-                        if($rootScope.settingAddsome.editedRecharge.productList.length>0){
-                            $scope.param.appearArr[2]=true
-                        }
-                        if($rootScope.settingAddsome.editedRecharge.periodList.length>0){
-                            $scope.param.appearArr[1]=true
-                        }
-                        if($rootScope.settingAddsome.editedRecharge.timesList.length>0){
-                            $scope.param.appearArr[0]=true
-                        }
+                });
 
-                    })
-
-                }
-            });
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
@@ -86,10 +95,13 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                 }
             }
             $scope.save = function () {
-                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||($rootScope.settingAddsome.editedRecharge.timesList.length<=0&&$rootScope.settingAddsome.editedRecharge.timeDiscount!=''||( $rootScope.settingAddsome.editedRecharge.timesList.periodList>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.timesList.periodList<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!=''))||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
+                debugger
+                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||( $rootScope.settingAddsome.editedRecharge.timesList.periodList>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.timesList.periodList<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!='')||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
                     alert("信息不完全")
                     return
                 }
+
+
                 UpdateRechargeCardInfo.save($rootScope.settingAddsome.editedRecharge,function (data) {
                     if(data.result==Global.SUCCESS){
                         $state.go("basicSetting")

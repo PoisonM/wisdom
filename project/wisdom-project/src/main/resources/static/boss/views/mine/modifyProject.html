@@ -8,12 +8,12 @@
                     <span class="fs16">卡类别<span class="colff66">*</span></span>
                 </div>
                 <div class="col col-80 fs13" >
-                    <p><span class="project1"   ng-class="{'active': settingAddsome.extShopProjectInfoDTO.cardType=='0'}" ng-show="param.secondary">次卡</span><span class="project1 m5"  ng-class="{'active':settingAddsome.extShopProjectInfoDTO.cardType!='0'}" ng-show="param.cardBox">时效卡</span></p >
-                    <p ng-show="param.cardBox">
-                        <span class="project1"  ng-click="secondaryCard('1',1)" ng-class="{'active':settingAddsome.extShopProjectInfoDTO.cardType=='1'}">月卡</span>
-                        <span class="project1 m5"  ng-click="secondaryCard('2',3)" ng-class="{'active':settingAddsome.extShopProjectInfoDTO.cardType=='2'}">季卡</span>
-                        <span class="project1"  ng-click="secondaryCard('3',6)" ng-class="{'active':settingAddsome.extShopProjectInfoDTO.cardType=='3'}">半年卡</span>
-                        <span class="project1"  ng-click="secondaryCard('4',12)" ng-class="{'active':settingAddsome.extShopProjectInfoDTO.cardType=='4'}">年卡</span>
+                    <p style="margin-top:6px;"><span class="project1"   ng-class="{'activeCardType': settingAddsome.extShopProjectInfoDTO.cardType=='0'}"  ng-if="settingAddsome.extShopProjectInfoDTO.cardType=='0'">次卡</span><span class="project1 m5"  ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType!='0'}" ng-if="settingAddsome.extShopProjectInfoDTO.cardType!=0">时效卡</span></p >
+                    <p ng-if="settingAddsome.extShopProjectInfoDTO.cardType!='0'">
+                        <span class="project1"  ng-click="secondaryCard('1',1)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='1'}">月卡</span>
+                        <span class="project1 m5"  ng-click="secondaryCard('2',3)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='2'}">季卡</span>
+                        <span class="project1"  ng-click="secondaryCard('3',6)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='3'}">半年卡</span>
+                        <span class="project1"  ng-click="secondaryCard('4',12)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='4'}">年卡</span>
                 </div>
             </li>
             <!--有效期-->

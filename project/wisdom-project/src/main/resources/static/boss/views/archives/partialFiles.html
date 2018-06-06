@@ -4,8 +4,8 @@
             <ion-list>
                 <ion-item class="item-input" style="background: border-box;height: 40px; ">
                 <span class="item-input-wrapper" style="margin-right:16px;height:30px;margin-left:10px;" >
-                        <i class="icon ion-ios-search placeholder-icon" ng-click="search()"></i>
-                        <input id="search" type="search" placeholder="请输入顾客姓名或者手机号码" ng-model="param.queryField" >
+                        <i class="icon ion-ios-search placeholder-icon" ></i>
+                        <input id="search" type="search" placeholder="请输入顾客姓名或者手机号码" ng-model="param.queryField" ng-change="search()">
                         <i class="icon ion-close-circled placeholder-icon" style="vertical-align: middle;"
                            on-tap="clearSearch()"></i>
                  </span>
@@ -28,7 +28,7 @@
                     预警档案
                     <i class="ion ion-ios-arrow-right" style="float: right;margin-right: 20px;margin-top: 17px;font-size: 20px"></i>
                 </div>
-                <ion-list>
+                <ion-list style="height:100%;">
                     <div ng-repeat="bigItem in info">
                         <div ng-repeat="(key,value) in bigItem">
                             <ion-item   class="h30 bge6 "  >

@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('editorCardCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopProjectGroupDetail','Global','$filter','UpdateProjectGroupInfo','ImageBase64UploadToOSS',
-        function ($scope,$rootScope,$stateParams,$state,GetShopProjectGroupDetail,Global,$filter,UpdateProjectGroupInfo,ImageBase64UploadToOSS) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopProjectGroupDetail','Global','$filter','UpdateProjectGroupInfo','ImageBase64UploadToOSS','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetShopProjectGroupDetail,Global,$filter,UpdateProjectGroupInfo,ImageBase64UploadToOSS,$ionicLoading) {
 
             $rootScope.title = "编辑套卡";
             $scope.param = {
@@ -13,25 +13,34 @@ angular.module('controllers',[]).controller('editorCardCtrl',
             }
 
 
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                GetShopProjectGroupDetail.get({id:$stateParams.id
+                },function(data){
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $ionicLoading.hide();
+                        $rootScope.settingAddsome.editorCard = data.responseData;
+                        if($rootScope.settingAddsome.editorCard.status =='0'){
+                            $scope.param.status = true
+                        }else{
+                            $scope.param.status = false
+                        }
 
-            GetShopProjectGroupDetail.get({id:$stateParams.id
-            },function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $scope.delList = function(index){
+                            $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.splice(index,1)
+                            $scope.numMarkerPrice()
 
-                    $rootScope.settingAddsome.editorCard = data.responseData;
-                    if($rootScope.settingAddsome.editorCard.status =='0'){
-                        $scope.param.status = true
-                    }else{
-                        $scope.param.status = false
+                        }
                     }
-
-                    $scope.delList = function(index){
-                        $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.splice(index,1)
-                        $scope.numMarkerPrice()
-
-                    }
-                }
+                })
             })
+
             $scope.expirationDate = function(){
                 $rootScope.settingAddsome.editorCard.expirationDate ='0'
             }

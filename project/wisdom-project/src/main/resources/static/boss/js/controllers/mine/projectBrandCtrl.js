@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/21.
  */
 angular.module('controllers',[]).controller('projectBrandCtrl',
-    ['$scope','$rootScope','$stateParams','$state','SearchShopProjectList',
-        function ($scope,$rootScope,$stateParams,$state,SearchShopProjectList) {
+    ['$scope','$rootScope','$stateParams','$state','SearchShopProjectList','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,SearchShopProjectList,$ionicLoading) {
 
             $rootScope.title = "项目类别";
             $scope.addSeriesGo = function(){
@@ -15,8 +15,19 @@ angular.module('controllers',[]).controller('projectBrandCtrl',
             $scope.checkSeries=function (id) {
                 $state.go("projectSeries",{id:id})
             };
-            SearchShopProjectList.get({filterStr:'',useStyle:"2"},function (data) {
-                console.log(data.responseData.detailLevel);
-                $scope.projectBrand = data.responseData.detailLevel
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                SearchShopProjectList.get({filterStr:'',useStyle:"2"},function (data) {
+                    $ionicLoading.hide();
+                    $scope.projectBrand = data.responseData.detailLevel
+                })
             })
+
+
         }]);

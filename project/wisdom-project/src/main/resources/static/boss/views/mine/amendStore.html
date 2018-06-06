@@ -7,7 +7,7 @@
 
             <li class="item" >
                 <ul style="" class="Htab-head">
-                    <li class="Htab-head-item " style="width:130px;height:120px;" ng-repeat="item in amendStore.imageList">
+                    <li class="Htab-head-item " style="width:130px;height:120px;" ng-repeat="item in amendStore.imageList track by $index">
                         <div style="width: 105px;height: 105px;position: relative;">
                              <span  style="position: absolute;top: 0px;right: -15px;"  ng-click="delPic($index)">
                                  <i class="ion-android-remove-circle colff66" ></i>

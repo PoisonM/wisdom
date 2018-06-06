@@ -3,9 +3,23 @@
     <div class="customerBox">
         <ul>
             <li ng-click="selectCustomersCtrl()"><span class="boxLift">顾客</span><a class="boxRight">{{param.selectCustomersObject.sysUserName}}<img src="images/bt_more.png" class="morePic ml20" ></a></li>
-            <li ng-click="selectNewProduct()"><span class="boxLift">项目</span><a class="boxRight">选择了{{param.ModifyAppointmentObject.productNum}}个项目<img src="images/bt_more.png" class="morePic ml20" ></a></li>
+            <li ng-click="selectNewProduct()">
+                <span class="boxLift">项目</span>
+                <a data-aaa="{{checkprojectId.split(';').length}}" class="boxRight">
+                    <span ng-if="checkprojectId.split(';').length != undefined">选择了{{checkprojectId.split(";").length-1}}个项目</span>
+                    <span ng-if="checkprojectId.split(';').length == undefined">选择了0个项目</span>
+                    <img src="images/bt_more.png" class="morePic ml20" >
+                </a>
+            </li>
             <!--<li ng-click="selectTimeLength()"><span class="boxLift">时长</span><a class="boxRight">{{param.ModifyAppointmentObject.appointPeriod}}<img src="images/bt_more.png" class="morePic ml20" ></a></li>-->
-            <li><span class="boxLift">时长</span><a class="boxRight">{{param.ModifyAppointmentObject.appointPeriod/60}}<img src="images/bt_more.png" class="morePic ml20" ></a></li>
+            <li>
+                <span class="boxLift">时长</span>
+                <a class="boxRight">
+                    <span ng-if="checkprojectDuration != undefined">{{checkprojectDuration/60}}</span>
+                    <span ng-if="checkprojectDuration == undefined">0</span>
+                    <img src="images/bt_more.png" class="morePic ml20" >
+                </a>
+            </li>
         </ul>
     </div>
     <!--美容师 时间-->

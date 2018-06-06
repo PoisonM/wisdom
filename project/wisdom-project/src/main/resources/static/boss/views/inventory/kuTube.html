@@ -4,10 +4,10 @@
             <ion-list>
                 <ion-item class="item-input" style="background: border-box;height: 40px; ">
                 <span class="item-input-wrapper" style="margin-right:10px;height:30px;margin-left:10px;" >
-                        <i class="icon ion-ios-search placeholder-icon" ng-click="search()"></i>
-                        <input id="search" type="search" placeholder="根据手机号查询" ng-model="searchCont.key" >
+                        <i class="icon ion-ios-search placeholder-icon" ></i>
+                        <input id="search" type="search" placeholder="根据手机号查询" ng-model="param.searchFile" ng-change="search()">
                         <i class="icon ion-close-circled placeholder-icon" style="vertical-align: middle;"
-                           on-tap="clearSearch()" ng-if="searchCont.key.length" ng-click="clearSearch()"></i>
+                           on-tap="clearSearch()" ng-if="param.searchFile.length" ng-click="clearSearch()"></i>
                  </span>
                 </ion-item>
                 <div>

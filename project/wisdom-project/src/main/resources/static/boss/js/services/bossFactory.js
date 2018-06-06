@@ -20,11 +20,20 @@ var cardHelper ='/beauty/cardHelper/';
 var  mine='/beauty/mine/';
 var remind='/beauty/remind/';
 var file = '/system-service/file/';
+
 define(['appBoss'], function (app) {
     app
 
         .factory('GetUserValidateCode',['$resource',function ($resource){
             return $resource(user + 'getUserValidateCode')
+        }])
+        /*登录*/
+        .factory('BossUserLogin',['$resource',function ($resource){
+            return $resource(user + 'beautyLogin')
+        }])
+        /*退出登录*/
+        .factory('BossUserLoginOut',['$resource',function ($resource){
+            return $resource(user + 'beautyLoginOut')
         }])
        /*根据时间查询各店预约情况*/
         .factory('GetShopAppointmentNumberInfo',['$resource',function ($resource){

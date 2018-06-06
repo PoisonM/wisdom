@@ -138,6 +138,6 @@ img {display: inline-block}
 .Htab-head{list-style-type: none;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;;padding:0;overflow:auto;text-align: center}
 .Htab-head-item{-webkit-box-flex:1;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;color:#333333;font-size: 0.3rem;}
 
-
+.active{border:none;background: none; }
 
 
