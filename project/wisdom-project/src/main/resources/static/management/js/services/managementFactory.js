@@ -183,4 +183,9 @@ define(['appManagement'], function (app) {
         .factory('MonthlyIncomeSignalMT',['$resource',function ($resource){
             return $resource(income + 'MonthlyIncomeSignalMT');
         }])
+
+        //监听
+        .factory('GetKey',['$resource',function ($resource){
+            return $resource(income + 'getKey');
+        }])
 });

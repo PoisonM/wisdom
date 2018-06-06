@@ -638,7 +638,7 @@ public class BusinessRunTimeService {
      *
      *
      * */
-    public void MTMonthlyIncomeCalc(String businessType,Date startDateM ,Date endDateM,String isPullMessage) throws Exception{
+    public void MTMonthlyIncomeCalc(String businessType,Date startDateM ,Date endDateM,String isPullMessage,String key) throws Exception{
 
 
         logger.info("准备处理"+startDateM+"到"+endDateM+"时间段"+businessType+"的月度");
@@ -872,6 +872,8 @@ public class BusinessRunTimeService {
             }
         }
         this.sendWeixinMessage(businessType,startDateM,endDateM,isPullMessage);
+        JedisUtils.set(key,"true",3600);
+        logger.info("生成月度完成！！！！");
     }
 
     /**
