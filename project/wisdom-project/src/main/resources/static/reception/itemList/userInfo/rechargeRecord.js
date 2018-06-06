@@ -5,10 +5,9 @@ PADWeb.controller('rechargeRecordCtrl', function($scope, $stateParams, ngDialog,
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     //consumeType 0：充值 1：消费 2、还欠款 3、退款
     Consumes.save({
-        sysClerkId:112,
-        goodsType:0,
+        goodsType:2,
         consumeType:0,
-        pageSize:12
+        pageSize:10
     },function (data) {
         $scope.dataList = data.responseData
     })
