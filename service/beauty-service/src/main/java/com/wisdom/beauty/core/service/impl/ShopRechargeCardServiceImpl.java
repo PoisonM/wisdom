@@ -1,7 +1,9 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.dto.ShopRechargeCardCriteria;
+import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria;
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.core.mapper.ExtShopProjectProductCardRelationMapper;
@@ -21,9 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ClassName: ShopRechargeCardServiceImpl
@@ -117,7 +117,16 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = new ShopRechargeCardResponseDTO();
 		BeanUtils.copyProperties(shopRechargeCardDTO, shopRechargeCardResponseDTO);
-		shopRechargeCardResponseDTO.setImageUrls(mongoUtils.getImageUrl(shopRechargeCardDTO.getId()));
+		List<String> imageUrl = mongoUtils.getImageUrl(shopRechargeCardDTO.getId());
+		if (StringUtils.isNotBlank(shopRechargeCardDTO.getImageUrl()) && CommonUtils.objectIsEmpty(imageUrl)) {
+			ArrayList<String> arrayList = new ArrayList<>();
+			arrayList.add(shopRechargeCardDTO.getImageUrl());
+			shopRechargeCardResponseDTO.setImageUrls(arrayList);
+			shopRechargeCardResponseDTO.setImageUrls(arrayList);
+		} else {
+			shopRechargeCardResponseDTO.setImageUrls(imageUrl);
+		}
+
 		return shopRechargeCardResponseDTO;
 	}
 
