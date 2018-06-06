@@ -29,7 +29,6 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
         if (type == 0) { //疗程卡
             GetUserCourseProjectList.get({
                 sysUserId: 1,
-                sysShopId: 1,
                 cardStyle: 1
             }, function(data) {
                 if (data.result == "0x00001") {
@@ -39,8 +38,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
             })
         } else if (type == 1) { //套卡
             GetUserProjectGroupList.get({
-                sysUserId: 1,
-                sysShopId: 1
+                sysUserId: 1
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("套卡:" + data)
@@ -58,8 +56,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
             })
 
             GetUserRechargeCardList.get({
-                sysUserId: 1,
-                sysShopId: 1
+                sysUserId: 1
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("充值卡:" + data)
@@ -70,7 +67,6 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
         } else if (type == 3) { //单次
             GetUserCourseProjectList.get({
                 sysUserId: 1,
-                sysShopId: 1,
                 cardStyle: 0
             }, function(data) {
                 if (data.result == "0x00001") {
@@ -80,8 +76,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
             })
         } else if (type == 4) { //产品
             GetUserProductList.get({
-                sysUserId: 1,
-                sysShopId: 1
+                sysUserId: 1
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("产品:" + data)

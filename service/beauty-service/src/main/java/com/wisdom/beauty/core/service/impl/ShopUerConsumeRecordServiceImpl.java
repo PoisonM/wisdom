@@ -325,9 +325,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			return null;
 		}
 		ShopUserConsumeRecordDTO shopUserConsumeRecord = shopUserConsumeRecordDTOs.get(0);
+
 		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 		BeanUtils.copyProperties(shopUserConsumeRecord, userConsumeRecordResponseDTO);
-		BigDecimal totalAmount = null;
+
 		if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())) {
 			if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getCode());
@@ -335,44 +336,49 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
 			}
 		}
-		// 根据多个id查询套卡
-		List<ShopProjectInfoGroupRelationDTO> shopProjectInfoGroupRelationDTO = shopProjectGroupService
-				.getShopProjectInfoGroupRelationById(shopUserConsumeRecord.getFlowId());
+		// 根据多个id查询套
+		ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation=new ShopUserProjectGroupRelRelationDTO();
+		shopUserProjectGroupRelRelation.setConsumeRecordId(id);
+		List<ShopUserProjectGroupRelRelationDTO> shopUserProjectGroupRelRelationDTO = shopProjectGroupService
+				.getShopUserProjectGroupRelRelation(shopUserProjectGroupRelRelation);
 
-		List<String> projectIds = new ArrayList<>();
-		for (ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelation : shopProjectInfoGroupRelationDTO) {
-			projectIds.add(shopProjectInfoGroupRelation.getShopProjectInfoId());
-		}
-		// 根据项目表主键查询项目集合
-		List<ShopProjectInfoDTO> shopProjectInfos = shopProjectService.getProjectDetails(projectIds);
-		List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = new ArrayList<>();
-		// 计算服务次数
-		Integer serviceTimes = null;
-		if (CollectionUtils.isNotEmpty(shopProjectInfos)) {
-			for (ShopProjectInfoDTO shopProjectInfoDTO : shopProjectInfos) {
-				if (serviceTimes == null) {
-					serviceTimes = shopProjectInfoDTO.getServiceTimes();
-				} else {
-					serviceTimes = serviceTimes + shopProjectInfoDTO.getServiceTimes();
+		Integer includeTimes=null;
+		//shopProjectInfos集合存储套卡中的项目信息
+		List<ShopProjectInfoDTO> shopProjectInfos = null;
+        if(CollectionUtils.isNotEmpty(shopUserProjectGroupRelRelationDTO)){
+			shopProjectInfos = new ArrayList<>();
+			ShopProjectInfoDTO shopProjectInfoDTO=null;
+			for (ShopUserProjectGroupRelRelationDTO dto : shopUserProjectGroupRelRelationDTO) {
+				//计算包含次数，每个项目的次数之和
+				if(includeTimes==null){
+					includeTimes=dto.getProjectInitTimes();
+				}else {
+					includeTimes=includeTimes+dto.getProjectInitTimes();
 				}
+				shopProjectInfoDTO=new ShopProjectInfoDTO();
+				shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
+				shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
+				shopProjectInfoDTO.setDiscountPrice(dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+				shopProjectInfos.add(shopProjectInfoDTO);
 			}
 		}
-		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO2 = new UserConsumeRecordResponseDTO();
-		userConsumeRecordResponseDTO2.setIncludeTimes(serviceTimes);
-		userConsumeRecordResponseDTO2.setPrice(shopUserConsumeRecord.getPrice()
-				.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber())));
-		userConsumeRecordResponseDTO2.setSumAmount(shopUserConsumeRecord.getPrice());
-		userConsumeRecordResponseDTO2.setDiscount(shopUserConsumeRecord.getDiscount());
-		userConsumeRecordResponseDTO2.setConsumeNumber(userConsumeRecordResponseDTO.getConsumeNumber());
-		userConsumeRecordResponseDTO2.setShopProjectInfoDTOList(shopProjectInfos);
-		userConsumeRecordResponses.add(userConsumeRecordResponseDTO2);
-		userConsumeRecordResponseDTO.setSumAmount(totalAmount);
-		userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
+		List<UserConsumeRecordResponseDTO> userConsumeRecordResponseList = new ArrayList<>();
+        //创建套卡中内容对象
+		UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
+		dto.setFlowName(shopUserConsumeRecord.getFlowName());
+		dto.setIncludeTimes(includeTimes);
+		dto.setPrice(shopUserConsumeRecord.getPrice().divide(new BigDecimal(shopUserConsumeRecord.getConsumeNumber())));
+		dto.setDiscount(shopUserConsumeRecord.getDiscount());
+		dto.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
+		dto.setSumAmount(shopUserConsumeRecord.getPrice());
+        dto.setShopProjectInfoDTOList(shopProjectInfos);
+		userConsumeRecordResponseList.add(dto);
+		userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponseList);
 		userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
+		userConsumeRecordResponseDTO.setPayMap(this.getPayMap(shopUserConsumeRecord.getFlowNo()));
 		userConsumeRecordResponseDTO.setSignUrl(shopUserConsumeRecord.getSignUrl());
 		userConsumeRecordResponseDTO.setDetail(shopUserConsumeRecord.getDetail());
 
-		userConsumeRecordResponseDTO.setPayMap(this.getPayMap(shopUserConsumeRecord.getFlowNo()));
 		return userConsumeRecordResponseDTO;
 	}
 
@@ -665,9 +671,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 	@Override
 	public UserConsumeRecordResponseDTO getTreatmentCardConsumeDetail(String flowId) {
-		logger.info("getTreatmentCardConsumeDetail方法传入的参数,flowId={}}", flowId);
+		logger.info("getTreatmentCardConsumeDetail方法传入的参数,flowId={}", flowId);
 		if (StringUtils.isBlank(flowId)) {
-			throw new ServiceException("getTreatmentCardConsumeDetail方法传入的参数为空");
+			logger.info("getTreatmentCardConsumeDetail方法传入的参数为空");
+			return  null;
 		}
 		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
@@ -695,8 +702,6 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
 			}
 		}
-		//支付明细
-		userConsumeRecordResponseDTO.setPayMap(this.getPayMap(userConsumeRecordResponseDTO.getFlowNo()));
 		// 根据flowId查询用户和项目的关系,获取ShopUserProjectRelationDTO信息
 		ShopUserProjectRelationDTO shopUserProjectRelationDTO=new ShopUserProjectRelationDTO();
 		shopUserProjectRelationDTO.setId(shopUserConsumeRecordDTO.getFlowId());
@@ -712,15 +717,18 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 			UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
 			dto.setIncludeTimes(shopUserProjectRelation.getServiceTime());
-            dto.setPrice(shopUserProjectRelation.getSysShopProjectPurchasePrice());
+            dto.setPrice(userConsumeRecordResponseDTO.getPrice().divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber())));
 			dto.setSumAmount(userConsumeRecordResponseDTO.getPrice());
 			dto.setPeriodDiscount(userConsumeRecordResponseDTO.getPeriodDiscount());
 			dto.setConsumeNumber(userConsumeRecordResponseDTO.getConsumeNumber());
+			dto.setFlowName(userConsumeRecordResponseDTO.getFlowName());
 			userConsumeRecordResponses.add(dto);
 		}
 
 
 		userConsumeRecordResponseDTO.setSumAmount(userConsumeRecordResponseDTO.getPrice());
+		//支付明细
+		userConsumeRecordResponseDTO.setPayMap(this.getPayMap(userConsumeRecordResponseDTO.getFlowNo()));
 		userConsumeRecordResponseDTO.setUserConsumeRecordResponseList(userConsumeRecordResponses);
 
 		return userConsumeRecordResponseDTO;

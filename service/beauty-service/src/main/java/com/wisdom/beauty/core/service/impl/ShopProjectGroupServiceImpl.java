@@ -154,6 +154,9 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         if (StringUtils.isNotBlank(shopUserProjectGroupRelRelation.getId())) {
             criteria.andIdEqualTo(shopUserProjectGroupRelRelation.getId());
         }
+        if(StringUtils.isNotBlank(shopUserProjectGroupRelRelation.getConsumeRecordId())){
+            criteria.andConsumeRecordIdEqualTo(shopUserProjectGroupRelRelation.getConsumeRecordId());
+        }
         List<ShopUserProjectGroupRelRelationDTO> dtos = shopUserProjectGroupRelRelationMapper
                 .selectByCriteria(relationCriteria);
         logger.debug("根据条件查询用户与套卡与项目关系的关系表查出来的数量为， {}", dtos != null ? dtos.size() : "0");
