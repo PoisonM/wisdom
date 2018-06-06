@@ -390,7 +390,6 @@ public class ProjectController {
 	ResponseDTO<ShopProjectInfoResponseDTO> findDetailProject(@PathVariable String id) {
 		// 查询数据
 		ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = projectService.getProjectDetail(id);
-
 		ResponseDTO<ShopProjectInfoResponseDTO> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopProjectInfoResponseDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
