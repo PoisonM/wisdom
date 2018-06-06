@@ -19,7 +19,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 redPackerBox:true,
                 bonusValue:"",
                 timeContent:""
-            }
+            };
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
                     content: 'Loading',
@@ -45,11 +45,11 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                             if(value2==parseInt(value1.price)) {
                                 same = true;
                             }
-                        })
+                        });
                         if(!same) {
                             partNames.push(parseInt(value1.price))
                         }
-                    })
+                    });
                     partNames.sort(function(a,b){return a-b});
                     var index=0;
                     angular.forEach(partNames,function (value1,index1) {
@@ -61,19 +61,19 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                             if(value1==parseInt(value2.price)) {
                                 $scope.param.product2List[index].data.push(value2);
                             }
-                        })
+                        });
                         index++;
-                    })
-                    console.log( $scope.param.product2List)
+                    });
+                    console.log( $scope.param.product2List);
                     /**/
-                    var tempArr = []
+                    var tempArr = [];
                     for(var i = 0; i < $scope.param.product2List.length; i++){
                         if($scope.param.product2List[i].data[0].productId == "201712101718100007"||$scope.param.product2List[i].data[0].productId == "88888888888"){
                         }else{
                             tempArr.push($scope.param.product2List[i])
                         }
                     }
-                    $scope.param.product2List = tempArr
+                    $scope.param.product2List = tempArr;
                     console.log( $scope.param.product2List)
 
                 })
@@ -117,7 +117,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
             $scope.clickCarousel=function(item){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_BADJ,item);
-            }
+            };
 
             $scope.enterDetails=function(item2){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ADJ,item2);
@@ -130,7 +130,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     return
                 }
                 $state.go("offlineProductDetail",{productId:item2})
-            }
+            };
 
             $scope.goPromoteProduct = function(item){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ADJ,item);
@@ -169,7 +169,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
               $scope.param.redPackerBox=false;
               /*  $scope.param.redPackerFlagOne = false;
                 $scope.param.redPackerFlagTwo = false*/
-            }
+            };
 
             $scope.redPackerOpen = function () {
                 //可以领取
@@ -213,7 +213,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 $scope.soldOutTime = convertDateFromString( data.responseData.soldOutTime).getTime();
 
                 timeInterval($scope.nowTime,$scope.soldOutTime)
-            })
+            });
             function timeInterval(nowTime,soldOutTime){
                 var timer = setInterval(function () {
                     if (isNaN(soldOutTime) || isNaN(nowTime)) {
@@ -236,4 +236,4 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             }
 
 
-        }])
+        }]);

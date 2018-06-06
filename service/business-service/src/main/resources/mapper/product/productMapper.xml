@@ -218,7 +218,8 @@
 		price,
 		status,
 		create_date,
-		second_type
+		second_type,
+		product_amount
 		) VALUES (
 		#{id},
 		#{productName},
@@ -230,7 +231,8 @@
 		#{price},
 		#{status},
 		#{createDate},
-		#{secondType}
+		#{secondType},
+		#{productAmount}
 		)
 	</insert>
 	
