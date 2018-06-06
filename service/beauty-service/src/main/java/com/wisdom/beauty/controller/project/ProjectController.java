@@ -221,8 +221,8 @@ public class ProjectController {
 	// @LoginRequired
 	public @ResponseBody ResponseDTO<List<HashMap<String, Object>>> getUserProjectGroupList(
 			@RequestParam String sysUserId) {
-		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-		String sysShopId = clerkInfo.getSysShopId();
+
+		String sysShopId = redisUtils.getShopId();
 
 		ResponseDTO<List<HashMap<String, Object>>> responseDTO = new ResponseDTO<>();
 
