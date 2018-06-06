@@ -61,10 +61,12 @@ public class UserUtils {
         String sysClerkDTO = JedisUtils.get(token);
         SysClerkDTO clerkDTO = (new Gson()).fromJson(sysClerkDTO, SysClerkDTO.class);
         try {
-            clerkDTO.setSysShopName(java.net.URLDecoder.decode(clerkDTO.getSysShopName(), "utf-8"));
-            clerkDTO.setSysBossName(java.net.URLDecoder.decode(clerkDTO.getSysBossName(), "utf-8"));
-            clerkDTO.setName(java.net.URLDecoder.decode(clerkDTO.getName(), "utf-8"));
-            clerkDTO.setNickname(java.net.URLDecoder.decode(clerkDTO.getNickname(), "utf-8"));
+            if (StringUtils.isNotBlank(clerkDTO.getSysShopName()) && clerkDTO.getSysShopName().contains("%")) {
+                clerkDTO.setSysShopName(java.net.URLDecoder.decode(clerkDTO.getSysShopName(), "utf-8"));
+                clerkDTO.setSysBossName(java.net.URLDecoder.decode(clerkDTO.getSysBossName(), "utf-8"));
+                clerkDTO.setName(java.net.URLDecoder.decode(clerkDTO.getName(), "utf-8"));
+                clerkDTO.setNickname(java.net.URLDecoder.decode(clerkDTO.getNickname(), "utf-8"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

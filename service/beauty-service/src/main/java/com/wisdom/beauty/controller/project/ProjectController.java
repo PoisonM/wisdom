@@ -221,8 +221,8 @@ public class ProjectController {
 	// @LoginRequired
 	public @ResponseBody ResponseDTO<List<HashMap<String, Object>>> getUserProjectGroupList(
 			@RequestParam String sysUserId) {
-		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-		String sysShopId = clerkInfo.getSysShopId();
+
+		String sysShopId = redisUtils.getShopId();
 
 		ResponseDTO<List<HashMap<String, Object>>> responseDTO = new ResponseDTO<>();
 
@@ -390,7 +390,6 @@ public class ProjectController {
 	ResponseDTO<ShopProjectInfoResponseDTO> findDetailProject(@PathVariable String id) {
 		// 查询数据
 		ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = projectService.getProjectDetail(id);
-
 		ResponseDTO<ShopProjectInfoResponseDTO> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopProjectInfoResponseDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -404,8 +403,9 @@ public class ProjectController {
 	 */
 	@RequestMapping(value = "getShopProjectList", method = { RequestMethod.POST, RequestMethod.GET })
 	// @LoginRequired
-	public @ResponseBody ResponseDTO<List<Object>> getShopProjectList(@RequestParam String pageNo,
-			@RequestParam String pageSize, @RequestParam String filterStr) {
+	public @ResponseBody
+	ResponseDTO<List<Object>> getShopProjectList(@RequestParam(required = false) String pageNo,
+												 @RequestParam(required = false) String pageSize, @RequestParam(required = false) String filterStr) {
 
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 		String sysShopId = clerkInfo.getSysShopId();

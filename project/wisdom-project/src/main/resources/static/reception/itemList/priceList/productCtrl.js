@@ -73,7 +73,7 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
             productTypeTwoId:id,
             productName:$scope.param.productName
         },function (data) {
-         $scope.product3List=data.responseData[0];
+            $scope.product3List = data.responseData;
          $scope.param.productAppear=false;
         })
     };

@@ -5,7 +5,6 @@ PADWeb.controller('unclaimedAllCtrl', function($scope, $stateParams, ngDialog,Ge
     /*-----------------------------------------------------------------------------------------------------*/
     GetProductRecord.get({
         searchFile:"186",
-        sysClerkId:"22",
     },function (data) {
         if(data.result == "0x00001"){
             $scope.dataList = data.responseData.data

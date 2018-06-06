@@ -37,7 +37,7 @@ public interface ShopUerConsumeRecordService {
     *@Author:zhanghuan
     *@Param:
     *@Return:
-    *@Description:  根据消费记录id获取消费信息
+    *@Description:  根据消费记录id获取套卡的
     *@Date:2018/6/4 14:57
     */
     UserConsumeRecordResponseDTO getUserConsumeRecord(String id);
@@ -100,9 +100,9 @@ public interface ShopUerConsumeRecordService {
     List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(List<String> flowIds);
     /**
     *@Author:zhanghuan
-    *@Param:
+    *@Param:  flowId  项目和用户的关系表主键
     *@Return:
-    *@Description: 获取疗程卡
+    *@Description: 获取疗程卡的消费详情
     *@Date:2018/6/4 20:02
     */
     UserConsumeRecordResponseDTO getTreatmentCardConsumeDetail(String flowId);

@@ -235,12 +235,16 @@ public class ProductController {
         if (StringUtils.isBlank(sysShopId)) {
             logger.info("pad端查询某个店的产品传入参数={}", "filterStr = [" + filterStr + "]");
             SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-            sysShopId = clerkInfo.getSysShopId();
+            if(clerkInfo!=null){
+                sysShopId = clerkInfo.getSysShopId();
+            }
         }
         if (StringUtils.isBlank(sysShopId)) {
             logger.info("老板端查询某个店的产品传入参数={}", "filterStr = [" + filterStr + "]");
             SysBossDTO bossInfo = UserUtils.getBossInfo();
-            sysShopId = bossInfo.getCurrentShopId();
+            if(bossInfo!=null){
+                sysShopId = bossInfo.getCurrentShopId();
+            }
         }
         logger.info("查询某个店的产品列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
         ResponseDTO<HashMap<String, Object>> responseDTO = new ResponseDTO<>();

@@ -20,7 +20,7 @@ function oFixedTable(id, obj, _cfg){
         rows: _cfg.rows || 1,
         cols: _cfg.cols || 0,
         background: _cfg.background || '#ffffff',
-        zindex: _cfg.zindex || 9999
+        zindex: _cfg.zindex || 999
     };
 
     window.setTimeout(this._fixTable, 100, this);

@@ -363,6 +363,12 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		BeanUtils.copyProperties(shopProjectInfoDTO, shopProjectInfoResponseDTO);
 
         shopProjectInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
+
+        if (CommonUtils.objectIsEmpty(shopProjectInfoResponseDTO.getImageList()) && org.apache.commons.lang3.StringUtils.isNotBlank(shopProjectInfoResponseDTO.getProjectUrl())) {
+            List<String> objects = new ArrayList<>();
+            objects.add(shopProjectInfoResponseDTO.getProjectUrl());
+            shopProjectInfoResponseDTO.setImageList(objects);
+        }
 		return shopProjectInfoResponseDTO;
 	}
 

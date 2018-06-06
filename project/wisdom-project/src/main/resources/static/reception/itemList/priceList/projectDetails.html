@@ -2,7 +2,8 @@
     <!--轮播图-->
     <div class="swiper-container ">
         <div class="swiper-wrapper">
-            <div ng-repeat="imgSrc in projectInformation.imageUrl" data-sss="{{projectInformation.imageUrl}}" class="swiper-slide">
+            <div ng-repeat="imgSrc in projectInformation.imageList" data-sss="{{projectInformation.imageList}}"
+                 class="swiper-slide">
                 <img ng-src="{{imgSrc}}" alt="">
             </div>
         </div>
