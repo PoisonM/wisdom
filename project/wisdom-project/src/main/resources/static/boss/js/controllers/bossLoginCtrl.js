@@ -1,6 +1,6 @@
-angular.module('controllers',[]).controller('loginCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserValidateCode','BossUtil','$interval','Global','BossUserLogin',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserValidateCode,BossUtil,$interval,Global,BossUserLogin) {
+angular.module('controllers',[]).controller('bossLoginCtrl',
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserValidateCode','BossUtil','$interval','Global','BossUserLogin','$ionicPopup',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserValidateCode,BossUtil,$interval,Global,BossUserLogin,$ionicPopup) {
             $rootScope.title = "登录";
 
             $rootScope.title = "美享登录";
@@ -41,6 +41,7 @@ angular.module('controllers',[]).controller('loginCtrl',
 
                 if($scope.param.validateCode=='')
                 {
+
                     var alertPopup = $ionicPopup.alert({
                         template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请输入验证码</span>',
                         okText:'确定'
@@ -48,6 +49,7 @@ angular.module('controllers',[]).controller('loginCtrl',
                 }
                 else
                 {
+
                     BossUserLogin.save({userPhone:$scope.param.userPhone,code:$scope.param.validateCode},function(data){
                         console.log(data);
                         if(data.result==Global.FAILURE)
@@ -56,11 +58,13 @@ angular.module('controllers',[]).controller('loginCtrl',
                         }
                         else
                         {
+
                             if(data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)
                             {
                                 window.localStorage.removeItem("beautyUserLoginToken");
                                 window.localStorage.setItem("beautyUserLoginToken",data.responseData.beautyUserLoginToken);
                             }
+
                             if(data.responseData.beautyBossLoginToken!=Global.TOKEN_ERROR)
                             {
                                 window.localStorage.removeItem("beautyBossLoginToken");

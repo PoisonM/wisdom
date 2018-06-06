@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('beautySettingCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetBossShopInfo','Global','UpdateShopInfo','ImageBase64UploadToOSS',
-        function ($scope,$rootScope,$stateParams,$state,GetBossShopInfo,Global,UpdateShopInfo,ImageBase64UploadToOSS) {
+    ['$scope','$rootScope','$stateParams','$state','GetBossShopInfo','Global','UpdateShopInfo','ImageBase64UploadToOSS','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetBossShopInfo,Global,UpdateShopInfo,ImageBase64UploadToOSS,$ionicLoading) {
 
             $rootScope.title = "美容院设置";
             $scope.param = {
@@ -12,11 +12,22 @@ angular.module('controllers',[]).controller('beautySettingCtrl',
             $scope.showPic = function () {
                 $scope.param.flag =!$scope.param.flag
             }
-            GetBossShopInfo.get({},function (data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
-                     $scope.beautySetting = data.responseData
-                }
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                GetBossShopInfo.get({},function (data){
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $ionicLoading.hide();
+                        $scope.beautySetting = data.responseData
+                    }
+                })
             })
+
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64

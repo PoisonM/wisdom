@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('reminderCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetBossShopScheduleSetting','UpdateBossShopScheduleSetting','GetBossShopList','Global',
-        function ($scope,$rootScope,$stateParams,$state,GetBossShopScheduleSetting,UpdateBossShopScheduleSetting,GetBossShopList,Global) {
+    ['$scope','$rootScope','$stateParams','$state','GetBossShopScheduleSetting','UpdateBossShopScheduleSetting','GetBossShopList','Global','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetBossShopScheduleSetting,UpdateBossShopScheduleSetting,GetBossShopList,Global,$ionicLoading) {
 
             $rootScope.title = "提醒设置";
             $scope.param = {
@@ -12,9 +12,20 @@ angular.module('controllers',[]).controller('reminderCtrl',
                 displayShopBox:false,
                 sysShopId:''
             }
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                $scope.getInfo()
+            })
             $scope.getInfo= function(){
                 GetBossShopScheduleSetting.get({sysShopId:$scope.param.sysShopId},function (data) {
-                    $scope.reminder = data.responseData
+                    $scope.reminder = data.responseData;
+                    $ionicLoading.hide();
                     $scope.status()
 
                 })

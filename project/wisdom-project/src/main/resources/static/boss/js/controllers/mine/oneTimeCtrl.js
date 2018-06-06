@@ -1,17 +1,28 @@
 angular.module('controllers',[]).controller('oneTimeCtrl',
-    ['$scope','$rootScope','$stateParams','$state','Global','SearchShopProjectList',
-        function ($scope,$rootScope,$stateParams,$state,Global,SearchShopProjectList) {
+    ['$scope','$rootScope','$stateParams','$state','Global','SearchShopProjectList','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,Global,SearchShopProjectList,$ionicLoading) {
             $scope.param={
                 timesList:[]
             }
-            SearchShopProjectList.get({
-                filterStr:"",
-                useStyle:'0'
-            },function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $scope.oneTime =data.responseData
-                }
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                SearchShopProjectList.get({
+                    filterStr:"",
+                    useStyle:'0'
+                },function(data){
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $ionicLoading.hide();
+                        $scope.oneTime =data.responseData
+                    }
+                })
             })
+
             for(var  i=0;i<$rootScope.settingAddsome.editedRecharge.timesList.length;i++){
                 $scope.param.timesList[i]=$rootScope.settingAddsome.editedRecharge.timesList[i].shopGoodsTypeId
             }

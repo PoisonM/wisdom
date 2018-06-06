@@ -55,22 +55,33 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
-            if( $stateParams.id !=''){
-                $rootScope.settingAddsome.productId = $stateParams.id
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                if( $stateParams.id !=''){
+                    $rootScope.settingAddsome.productId = $stateParams.id
 
-                ProductInfoMess.get({
-                    productId:$rootScope.settingAddsome.productId
-                },function (data) {
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $rootScope.settingAddsome.product = data.responseData;
-                        if($rootScope.settingAddsome.product.status =='0'){
-                            $scope.param.status = true;
-                        }else{
-                            $scope.param.status = false;
+                    ProductInfoMess.get({
+                        productId:$rootScope.settingAddsome.productId
+                    },function (data) {
+                        if(data.result==Global.SUCCESS&&data.responseData!=null){
+                            $ionicLoading.hide();
+                            $rootScope.settingAddsome.product = data.responseData;
+                            if($rootScope.settingAddsome.product.status =='0'){
+                                $scope.param.status = true;
+                            }else{
+                                $scope.param.status = false;
+                            }
                         }
-                    }
-                })
-            }
+                    })
+                }
+            })
+
 
 
             $scope.selProductType = function(type){
@@ -152,7 +163,6 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                 }
                 UpdateProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS){
-                        localStorage.removeItem('modifyProduct');
 
                         $state.go("warehouseProducts")
                     }

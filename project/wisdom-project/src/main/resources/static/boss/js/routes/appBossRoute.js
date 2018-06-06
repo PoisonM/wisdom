@@ -1428,10 +1428,10 @@ define(['appBoss'], function(app){
                     .state('bossLogin', {
                         url: '/bossLogin/:redirectUrl',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'loginCtrl',
+                        controller: 'bossLoginCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.loginCtrl',
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.bossLoginCtrl',
                                     ['js/controllers/bossLoginCtrl.js?ver='+ bossVersion],
                                     'views/bossLogin.html?ver=' + bossVersion);
                             }

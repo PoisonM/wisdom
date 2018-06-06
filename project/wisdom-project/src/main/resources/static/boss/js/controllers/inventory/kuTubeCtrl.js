@@ -1,13 +1,14 @@
 angular.module('controllers',[]).controller('kuTubeCtrl',
-    ['$scope','$rootScope','$stateParams','$state',"BossUtil",'Global','$filter','GetClerkInfoList','GetBossShopList',
-        function ($scope,$rootScope,$stateParams,$state,BossUtil,Global,$filter,GetClerkInfoList,GetBossShopList) {
+    ['$scope','$rootScope','$stateParams','$state',"BossUtil",'Global','$filter','GetClerkInfoList','GetBossShopList','GetClerkBySearchFile',
+        function ($scope,$rootScope,$stateParams,$state,BossUtil,Global,$filter,GetClerkInfoList,GetBossShopList,GetClerkBySearchFile) {
             $rootScope.title = "添加家人";
             $scope.param={
                 index:0,
                 flag:false,
                 sysShopId:'',
                 ids:[],
-                names:[]
+                names:[],
+                searchFile:''
             };
             if($stateParams.storeManagerId!=''){
                 $scope.param.ids = $stateParams.storeManagerId.split(",")
@@ -63,6 +64,16 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
                     $scope.param.ids.push(domIndex);
                     $scope.param.names.push(name);
                 }
+            }
+            $scope.clearSearch = function () {
+                $scope.param.searchFile = ''
+            }
+            $scope.search = function () {
+                GetClerkBySearchFile.get({
+                    searchFile:$scope.param.searchFile
+                },function(data){
+                    $scope.addFamily = data.responseData
+                })
             }
             $scope.save = function () {
                   $state.go('libraryTubeSetting',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),id:$stateParams.id})

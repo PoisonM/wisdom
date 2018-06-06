@@ -2,13 +2,13 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('modifyProjectCtrl',
-    ['$scope','$rootScope','$stateParams','$state','ProjectInfo','UpdateProjectInfo','ImageBase64UploadToOSS','Global',
-        function ($scope,$rootScope,$stateParams,$state,ProjectInfo,UpdateProjectInfo,ImageBase64UploadToOSS,Global) {
+    ['$scope','$rootScope','$stateParams','$state','ProjectInfo','UpdateProjectInfo','ImageBase64UploadToOSS','Global','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,ProjectInfo,UpdateProjectInfo,ImageBase64UploadToOSS,Global,$ionicLoading) {
 
             $rootScope.title = "修改项目";
             $scope.param={
                 projectId:$stateParams.projectId,/*接受项目列表穿过的id*/
-                cardBox:true,
+               
                 secondary:"",
                 timeLength:"",
             };
@@ -19,23 +19,33 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
             $scope.addProjectSeriesGo = function () {
                 $state.go("addProjectSeries",{projectId:$scope.param.projectId,url:'modifyProject'})
             }
-
-            ProjectInfo.get({id:$scope.param.projectId},function (data) {
-                $scope.settingAddsome.extShopProjectInfoDTO=data.responseData;
-                if($rootScope.settingAddsome.extShopProjectInfoDTO.status=="1"){
-                    $scope.param.status=false
-                }else {
-                    $scope.param.status=true
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                ProjectInfo.get({id:$scope.param.projectId},function (data) {
+                    if(data.result == '0x00001'){
+                        $ionicLoading.hide();
+                        $scope.settingAddsome.extShopProjectInfoDTO=data.responseData;
+                        if($rootScope.settingAddsome.extShopProjectInfoDTO.status=="1"){
+                            $scope.param.status=false
+                        }else {
+                            $scope.param.status=true
+                        }
+                    } 
+                });
+            })
+            $scope.secondaryCard=function (type,timeLength) {
+                if(type !='-1') {
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.cardType = type;
+                    $scope.param.timeLength = timeLength
                 }
 
-                $scope.secondaryCard=function (type,timeLength) {
-                    if(type !='-1') {
-                        $rootScope.settingAddsome.extShopProjectInfoDTO.cardType = type;
-                        $scope.param.timeLength = timeLength
-                    }
-
-                };
-            });
+            };
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64

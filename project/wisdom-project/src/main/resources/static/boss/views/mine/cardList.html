@@ -3,7 +3,7 @@
         <div class="list" ng-repeat="item in cardList" ui-sref="editorCard({id:item.id})">
             <ion-item  class="row" >
                 <div class="col col-20" style="line-height: 49px;">
-                    <p style="height:64px;width:82px;background: gainsboro;margin-top:5px;">
+                    <p style="height:64px;width:82px;margin-top:5px;">
                         <img  ng-src="{{item.projectGroupUrl}}" style="height:64px;width:82px;">
                     </p >
                 </div>
@@ -21,7 +21,7 @@
                     <p ng-if="item.status != '0'&& item.overdue == true" style="position: absolute;bottom: 0;right:30px;"> 已禁用</p>
                 </div>
             </ion-item>
-            <p class="item fs12" style="color: #999999">有效期：{{item.effectiveDate}} - {{item.expirationDate}}</p>
+            <p class="item fs12" style="color: #999999" ng-if="item.expirationDate != 0">有效期：{{item.effectiveDate}} - {{item.expirationDate}}</p>
             <p class="item fs12" style="color: #999999" ng-if="item.expirationDate == 0">有效期：长期有效</p>
         </div>
     </ion-content>
