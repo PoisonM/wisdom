@@ -322,7 +322,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //充值卡充值签字确认接口
     .factory('RechargeCardSignConfirm', ['$resource', function($resource) {
-        return $resource(beautyIP + '/cardInfo/rechargeCardSignConfirm')
+        return $resource(beautyIP + 'cardInfo/rechargeCardSignConfirm')
     }])
     //图片上传
     .factory('ImageBase64UploadToOSS', ['$resource', function($resource) {
@@ -334,35 +334,35 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //全量更新用户的订单
     .factory('UpdateShopUserOrderInfo', ['$resource', function($resource) {
-        return $resource(beautyIP + '/orderInfo/updateShopUserOrderInfo')
+        return $resource(beautyIP + 'orderInfo/updateShopUserOrderInfo')
     }])
     //用户支付接口
     .factory('UserPayOpe', ['$resource', function($resource) {
-        return $resource(beautyIP + '/userPay/userPayOpe')
+        return $resource(beautyIP + 'userPay/userPayOpe')
     }])
     //支付界面添加充值卡列表
     .factory('UpdateShopUserOrderPayInfo', ['$resource', function($resource) {
-        return $resource(beautyIP + '/userPay/updateShopUserOrderPayInfo')
+        return $resource(beautyIP + 'userPay/updateShopUserOrderPayInfo')
     }])
     //用户领取产品
     .factory('ConsumesUserProduct', ['$resource', function($resource) {
-        return $resource(beautyIP + '/consumes/consumesUserProduct')
+        return $resource(beautyIP + 'consumes/consumesUserProduct')
     }])
     //查询用户某个产品详情
     .factory('GetUserProductInfo', ['$resource', function($resource) {
-        return $resource(beautyIP + '/productInfo/getUserProductInfo')
+        return $resource(beautyIP + 'productInfo/getUserProductInfo')
     }])
     //查询用户套卡下的子卡的详细信息
     .factory('GetShopUserProjectGroupRelRelationInfo', ['$resource', function($resource) {
-        return $resource(beautyIP + '/projectInfo/getShopUserProjectGroupRelRelationInfo')
+        return $resource(beautyIP + 'projectInfo/getShopUserProjectGroupRelRelationInfo')
     }])
     //用户用户划套卡下的子卡操作
     .factory('ConsumesDaughterCard', ['$resource', function($resource) {
-        return $resource(beautyIP + '/consumes/consumesDaughterCard')
+        return $resource(beautyIP + 'consumes/consumesDaughterCard')
     }])
     //划卡签字确认
     .factory('UpdateConsumeRecord', ['$resource', function($resource) {
-        return $resource(beautyIP + '/consume/updateConsumeRecord')
+        return $resource(beautyIP + 'consume/updateConsumeRecord')
     }])
 
 ;

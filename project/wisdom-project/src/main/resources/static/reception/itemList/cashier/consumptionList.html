@@ -40,8 +40,8 @@
             <ul>
                 <div ng-repeat="(key1,item1) in secondCategory">
                     <div class="consumptionListUlTitle">{{item1.levelOneDetail.projectTypeName}}</div>
-                    <li ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select!=2" ng-click="getThreeCategories(item2.projectTypeOneId,item2.projectTypeTwoId)">{{key2}}</li>
-                    <li ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select==2" ng-click="getProductInfoThreeLevelProject(item2.productTypeOneId,item2.productTypeTwoId)">{{key2}}</li>
+                    <li ng-class="{'redFont':redFontFlag == $index}" ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select!=2"  ng-click="getThreeCategories(item2.projectTypeOneId,item2.projectTypeTwoId,$index)">{{key2}}</li>
+                    <li ng-class="{'redFont':redFontFlag == $index}" ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select==2" ng-click="getProductInfoThreeLevelProject(item2.productTypeOneId,item2.productTypeTwoId,$index)">{{key2}}</li>
                 </div>
             </ul>
         </div>

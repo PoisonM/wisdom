@@ -1,27 +1,18 @@
 PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm, ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
-    $scope.$parent.param.headerCash.leftContent = "档案(9010)";
-    $scope.$parent.param.headerCash.leftAddContent = "添加档案";
-    $scope.$parent.param.headerCash.backContent = "充值记录";
-    $scope.$parent.param.headerCash.leftTip = "保存";
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
-    /*$scope.flagFn = function(bool) {
-    //左
-    $scope.mainLeftSwitch.peopleListFlag = bool
-    $scope.mainLeftSwitch.priceListFlag = !bool
-    //头
-    $scope.$parent.$parent.mainSwitch.headerReservationAllFlag = !bool
-    $scope.$parent.$parent.mainSwitch.headerCashAllFlag = bool
-    $scope.$parent.$parent.mainSwitch.headerPriceListAllFlag = !bool
-    $scope.$parent.$parent.mainSwitch.headerLoginFlag = !bool
-    $scope.$parent.$parent.mainSwitch.headerCashFlag.leftFlag = bool
-    $scope.$parent.$parent.mainSwitch.headerCashFlag.middleFlag = bool
-    $scope.$parent.$parent.mainSwitch.headerCashFlag.rightFlag = bool
-    }*/
+    $scope.$parent.param.top_bottomSelect = "jiamubiao";
+    $scope.$parent.param.headerPrice.title = "签字确认";
+    $scope.flagFn = function (bool) {
+        //头
+        $scope.$parent.mainSwitch.headerReservationAllFlag = !bool;
+        $scope.$parent.mainSwitch.headerCashAllFlag = !bool;
+        $scope.$parent.mainSwitch.headerPriceListAllFlag = bool;
+        $scope.$parent.mainSwitch.headerLoginFlag = !bool;
+        $scope.$parent.mainSwitch.headerPriceListBlackFlag = !bool
+
+    };
     /*打开收银头部/档案头部/我的头部*/
-    /*$scope.flagFn(true)*/
+    $scope.flagFn(true);
 
     var $signature = $("#signConfirmRight").jSignature({
         'height': 500,
@@ -63,7 +54,10 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDi
                 $state.go("pad-web.left_nav.personalFile");
             })
         })
+    }
 
 
+    $scope.$parent.priceListBlackFn = function () {
+        window.history.go(-1)
     }
 });
