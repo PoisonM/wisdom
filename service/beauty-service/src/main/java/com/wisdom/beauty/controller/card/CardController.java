@@ -65,7 +65,6 @@ public class CardController {
 	@Value("${test.msg}")
 	private String msg;
 
-
 	@Autowired
 	private ShopProjectGroupService shopProjectGroupService;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -77,7 +76,6 @@ public class CardController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getUserRechargeCardList", method = { RequestMethod.POST, RequestMethod.GET })
-	// @LoginRequired
 	public @ResponseBody
 	ResponseDTO<Object> getUserRechargeCardList(
 			@RequestParam String sysUserId, @RequestParam(required = false) String sysShopId) {
@@ -121,7 +119,6 @@ public class CardController {
      * @return
      */
     @RequestMapping(value = "/getUserRechargeSumAmount", method = {RequestMethod.POST, RequestMethod.GET})
-    // @LoginRequired
     public @ResponseBody
     ResponseDTO<BigDecimal> getUserRechargeSumAmount(@RequestParam String sysUserId) {
 

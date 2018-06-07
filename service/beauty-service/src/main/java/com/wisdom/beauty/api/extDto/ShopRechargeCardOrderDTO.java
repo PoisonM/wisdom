@@ -16,10 +16,10 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     private String surplusPayPrice;
 
     //支付方式
-    private String PayType;
+    private String payType;
 
     //店员名称
-    private String sysCLerkName;
+    private String sysClerkName;
 
     //用户id
     private String sysUserId;
@@ -39,8 +39,7 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
      * WECHAT_PAY("1", "微信支付"),
      * ALI_PAY("2", "支付宝支付");
      */
-    //支付方式
-    private String payType;
+
 
     private String userName;
     //图片
@@ -82,6 +81,14 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
         return orderStatus;
     }
 
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
@@ -92,14 +99,6 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public String getSysCLerkName() {
-        return sysCLerkName;
-    }
-
-    public void setSysCLerkName(String sysCLerkName) {
-        this.sysCLerkName = sysCLerkName;
     }
 
     public String getCashPay() {
@@ -116,14 +115,6 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     public void setSurplusPayPrice(String surplusPayPrice) {
         this.surplusPayPrice = surplusPayPrice;
-    }
-
-    public String getPayType() {
-        return PayType;
-    }
-
-    public void setPayType(String payType) {
-        PayType = payType;
     }
 
     public String getRechargeAmount() {

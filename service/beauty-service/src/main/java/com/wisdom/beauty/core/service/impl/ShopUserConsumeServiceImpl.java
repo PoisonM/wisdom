@@ -703,7 +703,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 
         //针对特殊卡进行更新操作
-        if (orderDTO.getPayType().equals(RechargeCardTypeEnum.SPECIAL.getCode())) {
+        if (orderDTO.getRechargeCardType().equals(RechargeCardTypeEnum.SPECIAL.getCode())) {
             logger.info("针对特殊卡进行更新操作交易号，{},订单对象为", transactionId, orderDTO);
             //查询某个用户的特殊充值卡
             ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();

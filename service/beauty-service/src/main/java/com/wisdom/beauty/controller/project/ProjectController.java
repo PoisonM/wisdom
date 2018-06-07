@@ -57,7 +57,7 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "getUserCardProjectList", method = { RequestMethod.POST, RequestMethod.GET })
-	// @LoginRequired
+
 	public @ResponseBody ResponseDTO<HashMap<Object, Object>> getUserCardProjectList(
 			@RequestParam String appointmentId) {
 
@@ -96,7 +96,7 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "searchShopProjectList", method = { RequestMethod.POST, RequestMethod.GET })
-	// @LoginRequired
+
 	public @ResponseBody ResponseDTO<HashMap<String, Object>> searchShopProjectList(@RequestParam String useStyle,
 			@RequestParam String filterStr) {
         String sysShopId = redisUtils.getShopId();
@@ -158,7 +158,7 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "getUserCourseProjectList", method = { RequestMethod.POST, RequestMethod.GET })
-	// @LoginRequired
+
 	public @ResponseBody ResponseDTO<List<ShopUserProjectRelationResponseDTO>> getUserCourseProjectList(
 			@RequestParam(required = false) String sysUserId, @RequestParam(required = false) String cardStyle,
 			@RequestParam(required = false) String id) {
@@ -218,7 +218,7 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getUserProjectGroupList", method = { RequestMethod.POST, RequestMethod.GET })
-	// @LoginRequired
+
 	public @ResponseBody ResponseDTO<List<HashMap<String, Object>>> getUserProjectGroupList(
 			@RequestParam String sysUserId) {
 
@@ -406,7 +406,7 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "getShopProjectList", method = { RequestMethod.POST, RequestMethod.GET })
-	// @LoginRequired
+
 	public @ResponseBody
 	ResponseDTO<List<Object>> getShopProjectList(@RequestParam(required = false) String pageNo,
 												 @RequestParam(required = false) String pageSize, @RequestParam(required = false) String filterStr) {
@@ -463,7 +463,7 @@ public class ProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "getShopTwoLevelProjectList", method = { RequestMethod.POST, RequestMethod.GET })
-	// @LoginRequired
+
 	public @ResponseBody ResponseDTO<Object> getShopTwoLevelProjectList(@RequestParam(required = false) String pageNo,
 			@RequestParam(required = false) String pageSize, @RequestParam(required = false) String filterStr) {
 
