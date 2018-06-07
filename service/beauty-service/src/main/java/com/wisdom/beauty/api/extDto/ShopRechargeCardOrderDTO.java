@@ -16,10 +16,10 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     private String surplusPayPrice;
 
     //支付方式
-    private String PayType;
+    private String payType;
 
     //店员名称
-    private String sysCLerkName;
+    private String sysClerkName;
 
     //用户id
     private String sysUserId;
@@ -39,12 +39,11 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
      * WECHAT_PAY("1", "微信支付"),
      * ALI_PAY("2", "支付宝支付");
      */
-    //支付方式
-    private String payType;
+
 
     private String userName;
     //图片
-    private List<String> imageUrls;
+    private List<String> imageList;
 
     public String getSignUrl() {
         return signUrl;
@@ -82,6 +81,22 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
         return orderStatus;
     }
 
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
@@ -92,14 +107,6 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public String getSysCLerkName() {
-        return sysCLerkName;
-    }
-
-    public void setSysCLerkName(String sysCLerkName) {
-        this.sysCLerkName = sysCLerkName;
     }
 
     public String getCashPay() {
@@ -118,14 +125,6 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
         this.surplusPayPrice = surplusPayPrice;
     }
 
-    public String getPayType() {
-        return PayType;
-    }
-
-    public void setPayType(String payType) {
-        PayType = payType;
-    }
-
     public String getRechargeAmount() {
         return rechargeAmount;
     }
@@ -134,11 +133,11 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
         this.rechargeAmount = rechargeAmount;
     }
 
-    public List<String> getImageUrls() {
-        return imageUrls;
+    public List<String> getImageList() {
+        return imageList;
     }
 
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 }

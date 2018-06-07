@@ -121,10 +121,10 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		if (StringUtils.isNotBlank(shopRechargeCardDTO.getImageUrl()) && CommonUtils.objectIsEmpty(imageUrl)) {
 			ArrayList<String> arrayList = new ArrayList<>();
 			arrayList.add(shopRechargeCardDTO.getImageUrl());
-			shopRechargeCardResponseDTO.setImageUrls(arrayList);
-			shopRechargeCardResponseDTO.setImageUrls(arrayList);
+			shopRechargeCardResponseDTO.setImageList(arrayList);
+			shopRechargeCardResponseDTO.setImageList(arrayList);
 		} else {
-			shopRechargeCardResponseDTO.setImageUrls(imageUrl);
+			shopRechargeCardResponseDTO.setImageList(imageUrl);
 		}
 
 		return shopRechargeCardResponseDTO;

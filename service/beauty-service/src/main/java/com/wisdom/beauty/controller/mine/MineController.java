@@ -67,37 +67,39 @@ public class MineController {
     @Resource
     private ShopUserRelationService shopUserRelationService;
 
-
     @Resource
     private UserServiceClient userServiceClient;
 
     @Value("${test.msg}")
     private String msg;
+
     /**
      * @Author:huan
      * @Param:
      * @Return:
-     * @Description: 今日收银记录
-     *              划卡记录对应后台的消费---状态是1,此时不需要goodType
-     *              充值记录，消费记录对应后台的充值---状态是0，并且充值记录的goodType--2
+     * @Description: 今日收银记录 划卡记录对应后台的消费---状态是1,此时不需要goodType
+     * 充值记录，消费记录对应后台的充值---状态是0，并且充值记录的goodType--2
      * @Date:2018/4/17 14:45
      */
     @RequestMapping(value = "/consumes", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(
+            @RequestBody UserConsumeRequestDTO userConsumeRequest) {
 
         String sysShopId = redisUtils.getShopId();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         userConsumeRequest.setSysShopId(sysShopId);
         userConsumeRequest.setGoodsTypeRequire(true);
         pageParamVoDTO.setRequestData(userConsumeRequest);
+        pageParamVoDTO.setPaging(true);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
 
-        //获取当日时间
-        String currentTime= DateUtils.formatDateTime(new Date());
-        pageParamVoDTO.setStartTime(currentTime);
-        List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecordList(pageParamVoDTO);
+        // 设置当天的开始时间和结束时间
+        pageParamVoDTO.setStartTime(DateUtils.getStartTime());
+        pageParamVoDTO.setEndTime(DateUtils.getEndTime());
+        List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
+                .getShopCustomerConsumeRecordList(pageParamVoDTO);
 
         ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -107,10 +109,29 @@ public class MineController {
 
     @RequestMapping(value = "/getProductRecord", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String, Object>> getProductRecord(@RequestParam String sysClerkId,
-                                                      @RequestParam(required = false) String searchFile) {
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
-        Map<String, Object> map = shopCustomerProductRelationService.getShopUserProductRelations(sysClerkId, sysClerkDTO.getSysShopId(), searchFile);
+    ResponseDTO<Map<String, Object>> getProductRecord(@RequestParam(required = false) String searchFile) {
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        Map<String, Object> map = shopCustomerProductRelationService
+                .getShopUserProductRelations(sysClerkDTO.getSysShopId(), searchFile);
+        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(map);
+        return responseDTO;
+    }
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description:
+     * @Date:2018/6/6 19:27
+     */
+    @RequestMapping(value = "/getWaitReceivePeopleAndNumber", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Map<String, Object>> getWaitReceivePeopleAndNumber() {
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        Map<String, Object> map = shopCustomerProductRelationService
+                .getWaitReceivePeopleAndNumber(sysClerkDTO.getSysShopId());
         ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(map);
@@ -128,8 +149,9 @@ public class MineController {
     @ResponseBody
     ResponseDTO<List<UserProductRelationResponseDTO>> getProductRecordDetail(@RequestParam String sysUserId) {
 
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
-        List<UserProductRelationResponseDTO> list = shopCustomerProductRelationService.getShopUserProductRelationList(sysUserId, sysClerkDTO.getSysShopId());
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        List<UserProductRelationResponseDTO> list = shopCustomerProductRelationService
+                .getShopUserProductRelationList(sysUserId, sysClerkDTO.getSysShopId());
         ResponseDTO<List<UserProductRelationResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(list);
@@ -154,7 +176,8 @@ public class MineController {
 
         ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
         shopUserRelationDTO.setSysUserId(userInfo.getId());
-        List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService.getShopListByCondition(shopUserRelationDTO);
+        List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService
+                .getShopListByCondition(shopUserRelationDTO);
         if (CommonUtils.objectIsNotEmpty(shopListByCondition) && shopListByCondition.size() > 1) {
             Iterator it = shopListByCondition.iterator();
             while (it.hasNext()) {
@@ -174,6 +197,7 @@ public class MineController {
 
     /**
      * 切换店铺
+     *
      * @param sysShopId
      * @return
      */
@@ -227,9 +251,9 @@ public class MineController {
             logger.info("老板端获取我的个人信息");
             ExtShopBossDTO extShopBossDTO = new ExtShopBossDTO();
             BeanUtils.copyProperties(bossInfo, extShopBossDTO);
-            //查询当前店铺名称
+            // 查询当前店铺名称
             SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(bossInfo.getParentShopId());
-            //查询当前美容院名称
+            // 查询当前美容院名称
             SysShopDTO shop = shopService.getShopInfoByPrimaryKey(bossInfo.getCurrentShopId());
             extShopBossDTO.setCurrentBeautyShopName(null != beauty ? beauty.getName() : "");
             extShopBossDTO.setCurrentShopName(null != shop ? shop.getName() : "");
@@ -262,6 +286,5 @@ public class MineController {
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
-
 
 }

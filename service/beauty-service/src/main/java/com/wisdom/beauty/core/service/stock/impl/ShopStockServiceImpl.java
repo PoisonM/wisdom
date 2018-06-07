@@ -225,7 +225,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 				shopStockResponseDTO.setProductCode(map.get(shopStock.getShopProcId()).getProductCode());
 				shopStockResponseDTO.setProductSpec(map.get(shopStock.getShopProcId()).getProductSpec());
 				shopStockResponseDTO.setProductUnit(map.get(shopStock.getShopProcId()).getProductUnit());
-				shopStockResponseDTO.setImageUrl(map.get(shopStock.getShopProcId()).getImageUrl());
+				shopStockResponseDTO.setImageUrl(map.get(shopStock.getShopProcId()).getImageList());
 				shopStockResponseDTO.setShopProcName(map.get(shopStock.getShopProcId()).getProductName());
 			}
 
@@ -557,7 +557,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockResponseDTO.setProductCode(shopProductInfoResponseDTO.getProductCode());
 			shopStockResponseDTO.setProductSpec(shopProductInfoResponseDTO.getProductSpec());
 			shopStockResponseDTO.setProductUnit(shopProductInfoResponseDTO.getProductUnit());
-			shopStockResponseDTO.setImageUrl(shopProductInfoResponseDTO.getImageUrl());
+			shopStockResponseDTO.setImageUrl(shopProductInfoResponseDTO.getImageList());
 			shopStockResponseDTO.setShopProcName(shopProductInfoResponseDTO.getProductName());
 		}
 		if (shopStockNumber != null) {

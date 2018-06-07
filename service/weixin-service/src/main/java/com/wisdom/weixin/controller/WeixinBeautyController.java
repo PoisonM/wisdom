@@ -103,20 +103,24 @@ public class WeixinBeautyController {
                 "&secret=" + ConfigConstant.BOSS_SECRET +
                 "&code="+ code +
                 "&grant_type=authorization_code";
-        WeixinUserBean weixinUserBean;
+        WeixinUserBean weixinUserBean = null;
         int countNum = 0;
         do {
             String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
+            if(StringUtils.isBlank(json)){
+                break;
+            }
             weixinUserBean = JsonUtil.getObjFromJsonStr(json, WeixinUserBean.class);
             if (countNum++ > 3) {
                 break;
             }
         } while (weixinUserBean == null);
+        if(null!= weixinUserBean){
+            String openId = weixinUserBean.getOpenid();
+            session.setAttribute(ConfigConstant.BOSS_OPEN_ID, openId);
+            CookieUtils.setCookie(response, ConfigConstant.BOSS_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
 
-        String openId = weixinUserBean.getOpenid();
-        session.setAttribute(ConfigConstant.BOSS_OPEN_ID, openId);
-        CookieUtils.setCookie(response, ConfigConstant.BOSS_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
-
+        }
         return "redirect:" + url;
     }
 

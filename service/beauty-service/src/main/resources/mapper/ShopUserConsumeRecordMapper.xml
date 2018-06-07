@@ -17,7 +17,7 @@
     <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
     <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="discount" property="discount" jdbcType="DECIMAL" />
+    <result column="discount" property="discount" jdbcType="REAL" />
     <result column="time_discount" property="timeDiscount" jdbcType="REAL" />
     <result column="period_discount" property="periodDiscount" jdbcType="REAL" />
     <result column="product_discount" property="productDiscount" jdbcType="REAL" />
@@ -91,8 +91,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, flow_id, flow_name, flow_no, sys_user_id, sys_user_name, consume_number, goods_type, 
-    consume_type, sys_boss_code, sys_shop_id, sys_shop_name, sys_clerk_id, sys_clerk_name,
-    price, discount, time_discount, period_discount, product_discount, oper_date, pay_type,
+    consume_type, sys_boss_code, sys_shop_id, sys_shop_name, sys_clerk_id, sys_clerk_name, 
+    price, discount, time_discount, period_discount, product_discount, oper_date, pay_type, 
     sign_url, detail, status, create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria" >
@@ -133,22 +133,22 @@
       flow_no, sys_user_id, sys_user_name, 
       consume_number, goods_type, consume_type, 
       sys_boss_code, sys_shop_id, sys_shop_name, 
-      sys_clerk_id, sys_clerk_name, price,
-    discount, time_discount, period_discount,
-    product_discount, oper_date, pay_type,
-    sign_url, detail, status,
-    create_by, create_date, update_user,
-    update_date)
+      sys_clerk_id, sys_clerk_name, price, 
+      discount, time_discount, period_discount, 
+      product_discount, oper_date, pay_type, 
+      sign_url, detail, status, 
+      create_by, create_date, update_user, 
+      update_date)
     values (#{id,jdbcType=VARCHAR}, #{flowId,jdbcType=VARCHAR}, #{flowName,jdbcType=VARCHAR}, 
       #{flowNo,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, 
       #{consumeNumber,jdbcType=INTEGER}, #{goodsType,jdbcType=CHAR}, #{consumeType,jdbcType=CHAR}, 
       #{sysBossCode,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, 
-      #{sysClerkId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
-    #{discount,jdbcType=DECIMAL}, #{timeDiscount,jdbcType=REAL}, #{periodDiscount,jdbcType=REAL},
-    #{productDiscount,jdbcType=REAL}, #{operDate,jdbcType=TIMESTAMP}, #{payType,jdbcType=CHAR},
-    #{signUrl,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{status,jdbcType=CHAR},
-    #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
-    #{updateDate,jdbcType=TIMESTAMP})
+      #{sysClerkId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{discount,jdbcType=REAL}, #{timeDiscount,jdbcType=REAL}, #{periodDiscount,jdbcType=REAL}, 
+      #{productDiscount,jdbcType=REAL}, #{operDate,jdbcType=TIMESTAMP}, #{payType,jdbcType=CHAR}, 
+      #{signUrl,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO" >
     insert into shop_user_consume_record
@@ -285,7 +285,7 @@
         #{price,jdbcType=DECIMAL},
       </if>
       <if test="discount != null" >
-        #{discount,jdbcType=DECIMAL},
+        #{discount,jdbcType=REAL},
       </if>
       <if test="timeDiscount != null" >
         #{timeDiscount,jdbcType=REAL},
@@ -380,7 +380,7 @@
         price = #{record.price,jdbcType=DECIMAL},
       </if>
       <if test="record.discount != null" >
-        discount = #{record.discount,jdbcType=DECIMAL},
+        discount = #{record.discount,jdbcType=REAL},
       </if>
       <if test="record.timeDiscount != null" >
         time_discount = #{record.timeDiscount,jdbcType=REAL},
@@ -440,7 +440,7 @@
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
-      discount = #{record.discount,jdbcType=DECIMAL},
+      discount = #{record.discount,jdbcType=REAL},
       time_discount = #{record.timeDiscount,jdbcType=REAL},
       period_discount = #{record.periodDiscount,jdbcType=REAL},
       product_discount = #{record.productDiscount,jdbcType=REAL},
@@ -503,7 +503,7 @@
         price = #{price,jdbcType=DECIMAL},
       </if>
       <if test="discount != null" >
-        discount = #{discount,jdbcType=DECIMAL},
+        discount = #{discount,jdbcType=REAL},
       </if>
       <if test="timeDiscount != null" >
         time_discount = #{timeDiscount,jdbcType=REAL},
@@ -560,7 +560,7 @@
       sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
-      discount = #{discount,jdbcType=DECIMAL},
+      discount = #{discount,jdbcType=REAL},
       time_discount = #{timeDiscount,jdbcType=REAL},
       period_discount = #{periodDiscount,jdbcType=REAL},
       product_discount = #{productDiscount,jdbcType=REAL},

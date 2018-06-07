@@ -180,7 +180,7 @@ public class ProjectTest {
         images.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
         images.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
         images.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
-        extShopProjectGroupDTO.setImages(images);
+        extShopProjectGroupDTO.setImageList(images);
         extShopProjectGroupDTO.setMarketPrice(new BigDecimal(1000));
         extShopProjectGroupDTO.setDiscountPrice(new BigDecimal(900));
         extShopProjectGroupDTO.setEffectiveDate("2018-05-10");

@@ -143,7 +143,7 @@ public class ShopCardServiceImpl implements ShopCardService {
         String currentShopId = UserUtils.getBossInfo().getCurrentShopId();
         extShopRechargeCardDTO.setSysShopId(currentShopId);
         extShopRechargeCardDTO.setCreateBy(UserUtils.getBossInfo().getId());
-        List<String> imageUrls = extShopRechargeCardDTO.getImageUrls();
+        List<String> imageUrls = extShopRechargeCardDTO.getImageList();
         if (CommonUtils.objectIsNotEmpty(imageUrls)) {
             extShopRechargeCardDTO.setImageUrl(imageUrls.get(0));
         }
@@ -167,12 +167,12 @@ public class ShopCardServiceImpl implements ShopCardService {
     @Transactional(rollbackFor = Exception.class)
     public int updateRechargeCardInfo(ExtShopRechargeCardDTO extShopRechargeCardDTO) {
         //保存图片信息
-        if (CommonUtils.objectIsNotEmpty(extShopRechargeCardDTO.getImageUrls())) {
-            extShopRechargeCardDTO.setImageUrl(extShopRechargeCardDTO.getImageUrls().get(0));
+        if (CommonUtils.objectIsNotEmpty(extShopRechargeCardDTO.getImageList())) {
+            extShopRechargeCardDTO.setImageUrl(extShopRechargeCardDTO.getImageList().get(0));
         } else {
             extShopRechargeCardDTO.setImageUrl("");
         }
-        mongoUtils.saveImageUrl(extShopRechargeCardDTO.getImageUrls(), extShopRechargeCardDTO.getId());
+        mongoUtils.saveImageUrl(extShopRechargeCardDTO.getImageList(), extShopRechargeCardDTO.getId());
         int update = shopRechargeCardMapper.updateByPrimaryKey(extShopRechargeCardDTO);
         //删除充值卡适用范围信息
         ShopProjectProductCardRelationCriteria criteria = new ShopProjectProductCardRelationCriteria();

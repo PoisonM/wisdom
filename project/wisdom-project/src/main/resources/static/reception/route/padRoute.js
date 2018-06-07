@@ -355,7 +355,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         })
 
         .state('pad-web.left_nav.selectRechargeType', {
-            url: '/selectRechargeType/:type',
+            url: '/selectRechargeType/:type/:userId',
             templateUrl: root + '/cashier/selectRechargeType.html',
             controller: 'selectRechargeTypeCtrl',
             resolve: {
@@ -370,7 +370,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.selectRechargeCard', {
-            url: '/selectRechargeCard/:type',
+            url: '/selectRechargeCard/:type/:userId',
             templateUrl: root + '/cashier/selectRechargeCard.html',
             controller: 'selectRechargeCardCtrl',
             resolve: {
@@ -400,7 +400,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.consumptionList', {
-            url: '/consumptionList',
+            url: '/consumptionList/:userId',
             templateUrl: root + '/cashier/consumptionList.html',
             controller: 'consumptionListCtrl',
             resolve: {
@@ -445,7 +445,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.signConfirm', {
-            url: '/signConfirm/:transactionId/:orderId',
+            url: '/signConfirm/:transactionId/:orderId/:userId',
             templateUrl: root + '/cashier/signConfirm.html',
             controller: 'signConfirmCtrl',
             resolve: {

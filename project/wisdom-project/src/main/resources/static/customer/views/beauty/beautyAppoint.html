@@ -80,8 +80,8 @@
                 <a class="item item-icon-left" ui-sref="beautySendMessage">
                     <i class="icon ion-chatbubble-working" style="color:#FF6666"></i>
                     <span style="color: #333333;font-size: 15px">捎话</span>
-                    <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail==''" style="font-size: 15px;color: #666666">给美容师捎句话&nbsp;></span>
-                    <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail!=''">{{shopAppointInfo.shopProjectDetail}}&nbsp;></span>
+                    <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail==''" style="font-size: 15px;color: #666666">请输入捎话&nbsp;></span>
+                    <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail!=''">{{shopAppointInfo.shopProjectDetail|textLengthSet:true:10:'...'}}></span>
                 </a>
             </div>
             <center>

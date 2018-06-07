@@ -207,7 +207,7 @@ public class OrderTest {
         relationDTO.setEffectiveDate(new Date());
         relationDTO.setInvalidDays(new Date());
         relationDTO.setUseStyle(GoodsTypeEnum.TREATMENT_CARD.getCode());
-        relationDTO.setDiscount("0.75");
+        relationDTO.setDiscount(0.75f);
         relationDTO.setEffectiveDate(new Date());
         relationDTO.setSysClerkId("110");
         shopUserProjectRelationDTOS.add(relationDTO);

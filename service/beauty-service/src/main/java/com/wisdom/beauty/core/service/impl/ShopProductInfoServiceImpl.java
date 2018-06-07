@@ -217,7 +217,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		for (ShopProductInfoDTO shopProductInfo : list) {
 			ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
 			BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
-            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
+            shopProductInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProductInfo.getId()));
 			respon.add(shopProductInfoResponseDTO);
 		}
 		return respon;
@@ -243,7 +243,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		ShopProductInfoDTO shopProductInfo = list.get(0);
 		ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
         BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
-        shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
+        shopProductInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProductInfo.getId()));
 		return shopProductInfoResponseDTO;
 
 	}
@@ -266,7 +266,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		for (ShopProductInfoDTO shopProductInfo : list) {
 			shopProductInfoResponseDTO= new ShopProductInfoResponseDTO();
 			BeanUtils.copyProperties(shopProductInfo,shopProductInfoResponseDTO);
-            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
+            shopProductInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProductInfo.getId()));
 			respon.add(shopProductInfoResponseDTO);
 		}
 		return respon;

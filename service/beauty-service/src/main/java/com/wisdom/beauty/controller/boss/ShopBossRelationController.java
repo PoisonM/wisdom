@@ -39,7 +39,7 @@ public class ShopBossRelationController {
      * @return
      */
     @RequestMapping(value = "/getBossShopList", method = {RequestMethod.POST, RequestMethod.GET})
-    // @LoginRequired
+
     public @ResponseBody
     ResponseDTO<Object> getBossShopList() {
         SysBossDTO bossInfo = UserUtils.getBossInfo();

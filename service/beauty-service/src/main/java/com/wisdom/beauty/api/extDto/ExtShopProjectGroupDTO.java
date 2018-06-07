@@ -7,16 +7,18 @@ import java.util.List;
 
 public class ExtShopProjectGroupDTO extends ShopProjectGroupDTO {
 
-    List<ShopProjectInfoDTO> shopProjectInfoDTOS;
+    private List<ShopProjectInfoDTO> shopProjectInfoDTOS;
 
-    List<String> images;
+    private List<String> imageList;
 
-    public List<String> getImages() {
-        return images;
+
+
+    public List<String> getImageList() {
+        return imageList;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 
     public List<ShopProjectInfoDTO> getShopProjectInfoDTOS() {

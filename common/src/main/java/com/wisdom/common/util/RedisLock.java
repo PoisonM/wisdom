@@ -3,11 +3,13 @@
  */
 package com.wisdom.common.util;
 
-import com.wisdom.common.util.SpringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 
 /**
@@ -35,23 +37,35 @@ public class RedisLock {
 
 	private static JedisPool jedisPool = SpringUtil.getBean(JedisPool.class);
 
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	public RedisLock(String lockName){
 		this.jedis = jedisPool.getResource();
 		this.lockName = lockName;
 	}
 
 	public void lock() {
-		if (jedis == null)
+		AtomicInteger tryTimes = new AtomicInteger();
+		if (jedis == null){
 			throw new NullPointerException("jedis is null");
-		if (lockName == null)
+		}
+		if (lockName == null){
 			throw new NullPointerException("key is null");
+		}
 		while (true){
-			if (!interruped)
+			if (!interruped){
 				throw new RuntimeException("获取锁状态被中断");
+			}
+			if(tryTimes.intValue()>100){
+				logger.info("{},获取锁超时",lockName);
+				throw new RuntimeException("获取锁超时");
+			}
 			long id = jedis.setnx(lockName, lockName);
 			if (id == 0L){
 				try {
-					Thread.currentThread().sleep(this.sleepTime);
+					logger.info("redis中设置锁失败，尝试重新获得锁,重试次数为={}",tryTimes.intValue());
+					tryTimes.incrementAndGet();
+					Thread.sleep(this.sleepTime);
 				}catch (InterruptedException e){
 					e.printStackTrace();
 				}

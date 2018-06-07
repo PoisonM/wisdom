@@ -82,7 +82,7 @@ public class ClerkServiceController {
 	 */
 	@RequestMapping(value = "getClerkInfoList", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
-	List<SysClerkDTO> getClerkInfoList(@RequestParam(required = false) String sysBossCode,
+	ResponseDTO<List<SysClerkDTO>> getClerkInfoList(@RequestParam(required = false) String sysBossCode,
 									   @RequestParam(required = false) String sysShopId,
 			                           @RequestParam(required = false) String startTime,
 									   @RequestParam(required = false) String endTime,
@@ -107,7 +107,7 @@ public class ClerkServiceController {
 		listResponseDTO.setResult(StatusConstant.SUCCESS);
 
 		logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - time));
-		return clerkInfo;
+		return listResponseDTO;
 	}
 	/**
 	*@Author:zhanghuan

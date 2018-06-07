@@ -58,6 +58,7 @@ public class UserConsumeController {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		userConsumeRequest.setGoodsTypeRequire(true);
 		pageParamVoDTO.setRequestData(userConsumeRequest);
+		pageParamVoDTO.setPaging(true);
 		pageParamVoDTO.setPageNo(0);
 		pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
 		List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
@@ -90,7 +91,7 @@ public class UserConsumeController {
 
 	/**
 	 * @Author:zhanghuan
-	 * @Param: id  消费记录表中的主键
+	 * @Param: id 消费记录表中的主键
 	 * @Return:
 	 * @Description: 根据消费记录id查询具体某个消费详情
 	 * @Date:2018/6/4 14:52
@@ -180,15 +181,16 @@ public class UserConsumeController {
 	ResponseDTO<Object> getUserConsumeByFlowId(@RequestParam String flowId,
 			@RequestParam(required = false) String consumeType) {
 
-        ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-        shopUserConsumeRecordDTO.setFlowId(flowId);
-        shopUserConsumeRecordDTO.setConsumeType(consumeType);
-        List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
-        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        responseDTO.setResponseData(shopCustomerConsumeRecord);
-        return responseDTO;
-    }
+		ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+		shopUserConsumeRecordDTO.setFlowId(flowId);
+		shopUserConsumeRecordDTO.setConsumeType(consumeType);
+		List<ShopUserConsumeRecordDTO> shopCustomerConsumeRecord = shopUerConsumeRecordService
+				.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		responseDTO.setResponseData(shopCustomerConsumeRecord);
+		return responseDTO;
+	}
 
 	/**
 	 * 用户划疗程卡操作

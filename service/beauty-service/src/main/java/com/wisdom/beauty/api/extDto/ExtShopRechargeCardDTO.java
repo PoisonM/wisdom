@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ExtShopRechargeCardDTO extends ShopRechargeCardDTO {
 
-    List<String> imageUrls;
+    private List<String> imageList;
 
     List<ShopProjectProductCardRelationDTO> timesList;
     List<ShopProjectProductCardRelationDTO> periodList;
@@ -15,13 +15,6 @@ public class ExtShopRechargeCardDTO extends ShopRechargeCardDTO {
     List<ShopProjectProductCardRelationDTO> rechargeCardList;
     List<ShopProjectProductCardRelationDTO> productList;
 
-    public List<String> getImageUrls() {
-        return imageUrls;
-    }
-
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
-    }
 
     public List<ShopProjectProductCardRelationDTO> getTimesList() {
         return timesList;
@@ -61,5 +54,13 @@ public class ExtShopRechargeCardDTO extends ShopRechargeCardDTO {
 
     public void setProductList(List<ShopProjectProductCardRelationDTO> productList) {
         this.productList = productList;
+    }
+
+    public List<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 }

@@ -696,62 +696,52 @@ public class ShopUserProjectRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andDiscountEqualTo(String value) {
+        public Criteria andDiscountEqualTo(Float value) {
             addCriterion("discount =", value, "discount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountNotEqualTo(String value) {
+        public Criteria andDiscountNotEqualTo(Float value) {
             addCriterion("discount <>", value, "discount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountGreaterThan(String value) {
+        public Criteria andDiscountGreaterThan(Float value) {
             addCriterion("discount >", value, "discount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountGreaterThanOrEqualTo(String value) {
+        public Criteria andDiscountGreaterThanOrEqualTo(Float value) {
             addCriterion("discount >=", value, "discount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountLessThan(String value) {
+        public Criteria andDiscountLessThan(Float value) {
             addCriterion("discount <", value, "discount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountLessThanOrEqualTo(String value) {
+        public Criteria andDiscountLessThanOrEqualTo(Float value) {
             addCriterion("discount <=", value, "discount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountLike(String value) {
-            addCriterion("discount like", value, "discount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDiscountNotLike(String value) {
-            addCriterion("discount not like", value, "discount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDiscountIn(List<String> values) {
+        public Criteria andDiscountIn(List<Float> values) {
             addCriterion("discount in", values, "discount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountNotIn(List<String> values) {
+        public Criteria andDiscountNotIn(List<Float> values) {
             addCriterion("discount not in", values, "discount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountBetween(String value1, String value2) {
+        public Criteria andDiscountBetween(Float value1, Float value2) {
             addCriterion("discount between", value1, value2, "discount");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountNotBetween(String value1, String value2) {
+        public Criteria andDiscountNotBetween(Float value1, Float value2) {
             addCriterion("discount not between", value1, value2, "discount");
             return (Criteria) this;
         }

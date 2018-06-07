@@ -1,12 +1,12 @@
 PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParams, ngDialog, Archives, CardInfo, UserRechargeConfirm) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
-    $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
+    // $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
-    $scope.$parent.$parent.param.headerCash.backContent = "充值记录";
+    $scope.$parent.$parent.param.headerCash.backContent = "选择充值卡";
     $scope.$parent.$parent.param.headerCash.leftTip = "保存";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
-    $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
+    $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = false;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
     $scope.flagFn = function(bool) {
         //左
@@ -37,7 +37,10 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
     }
     $scope.goCustomerSignature = function() {
         UserRechargeConfirm.save($scope.responseData, function(data) {
-            $state.go('pad-web.signConfirm', { transactionId: data.responseData.transactionId });
+            $state.go('pad-web.signConfirm', {
+                transactionId: data.responseData.transactionId,
+                userId:$stateParams.userId
+            });
         })
     }
     $scope.checkBoxChek = function(e) {
@@ -46,4 +49,9 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
     CardInfo.get({ id: $state.params.type }, function(data) {
         $scope.responseData = data.responseData;
     })
+
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        // $state.go("pad-web.left_nav.personalFile")
+        window.history.go(-1)
+    }
 });
