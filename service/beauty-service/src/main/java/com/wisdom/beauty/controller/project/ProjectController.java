@@ -310,11 +310,15 @@ public class ProjectController {
 		String sysShopId = null;
 		if (StringUtils.isBlank(sysShopId)) {
 			SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
-			sysShopId = sysClerkDTO.getSysShopId();
+			if(sysClerkDTO!=null){
+				sysShopId = sysClerkDTO.getSysShopId();
+			}
 		}
 		if (StringUtils.isBlank(sysShopId)) {
 			SysBossDTO bossInfo = UserUtils.getBossInfo();
-			sysShopId = bossInfo.getCurrentShopId();
+			if(bossInfo!=null){
+				sysShopId = bossInfo.getCurrentShopId();
+			}
 		}
 		ResponseDTO<List<ShopProjectTypeDTO>> responseDTO = new ResponseDTO<>();
 		List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysShopId);
