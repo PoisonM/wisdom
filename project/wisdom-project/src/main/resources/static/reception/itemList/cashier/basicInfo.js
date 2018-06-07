@@ -1,4 +1,4 @@
-function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId, ArchivesDetail) {
+function basicInfo($scope, $state,$stateParams,Archives, ArchivesDetail) {
     //初始化参数
     $scope.param = {
         userId: "", //用户id
@@ -11,7 +11,7 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId, Ar
     $scope.queryUserInfo = function(sysUserId, id) {
         //根据id查用户信息
         //member    会员状态    string  0:绑定 1：未绑定
-        Archives.get({ userId: sysUserId }, function(data) {
+        Archives.get({ id: id }, function(data) {
             if (data.result == "0x00001") {
                 $scope.responseData = data.responseData
             }
@@ -28,7 +28,7 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId, Ar
         $state.go('pad-web.left_nav.stillOwed');
     };
     $scope.goSelectRechargeType = function() {
-        $state.go('pad-web.left_nav.selectRechargeType');
+        $state.go('pad-web.left_nav.selectRechargeType',{userId:$state.params.sysUserId});
     };
     $scope.goBindMember = function() {
         $state.go('pad-web.bindMember', {
@@ -42,6 +42,6 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId, Ar
         })
     }
     $scope.toConsumptionList = function() {
-        $state.go('pad-web.consumptionList');
+        $state.go('pad-web.consumptionList',{userId:$state.params.sysUserId});
     }
 }
