@@ -322,6 +322,32 @@ define(['appManagement'], function(app){
                                 }
                             }
                         })
+
+                        .state('homePageEditor', {
+                            url: '/homePageEditor/:id/:time/:transactionId/:MAccount/:startTime/:endTime/:pageNo/:status/:checkStatus',
+                            templateProvider: function() { return lazyDeferred.promise; },
+                            controller: 'homePageEditorCtrl',
+                            resolve: {
+                                load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                    loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homePageEditorCtrl',
+                                        ['js/controllers/homePageEditorCtrl.js?ver=' + managementVersion],
+                                        'js/views/homePageEditor.html?ver=' + managementVersion);
+                                }
+                            }
+                        })
+
+                        .state('homePageEditor', {
+                            url: '/homePageEditor/:id/:time/:transactionId/:MAccount/:startTime/:endTime/:pageNo/:status/:checkStatus',
+                            templateProvider: function() { return lazyDeferred.promise; },
+                            controller: 'homePageEditorCtrl',
+                            resolve: {
+                                load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                    loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homePageEditorCtrl',
+                                        ['js/controllers/homePageEditorCtrl.js?ver=' + managementVersion],
+                                        'js/views/homePageEditor.html?ver=' + managementVersion);
+                                }
+                            }
+                        })
                 $urlRouterProvider.otherwise('home/%EF%BC%8F///')
             }])
 })
