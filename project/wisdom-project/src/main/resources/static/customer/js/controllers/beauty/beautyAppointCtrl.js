@@ -79,6 +79,8 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 {    //防止用户已经选中预约时间段被冲掉
                     if($rootScope.shopAppointInfo.appointValue!=''){
                         $scope.appointProject($rootScope.shopAppointInfo.appointValue);
+                        //帮助回显
+                        $scope.param.chooseDate = $rootScope.shopAppointInfo.chooseDate;
                     }else{
                         initialTimeDate();
                         GetBeautyShopInfo.clerkInfo($rootScope.shopAppointInfo.clerkId).then(function(data) {
@@ -134,6 +136,8 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
 
             $scope.chooseAppointDate = function(dateValue){
                 $scope.param.chooseDate = dateValue;
+                //帮助回显
+                $rootScope.shopAppointInfo.chooseDate = dateValue;
                 GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
                     searchDate:$scope.param.chooseDate},function (data){
                     BeautyUtil.checkResponseData(data,'beautyAppoint');
