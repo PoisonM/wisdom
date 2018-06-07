@@ -6,7 +6,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
         'GetBeautyShopInfo','Global','SaveUserAppointInfo','GetCurrentLoginUserInfo',
         function ($scope,$rootScope,$stateParams,$state,BeautyUtil,GetClerkScheduleInfo,
                   GetBeautyShopInfo,Global,SaveUserAppointInfo,GetCurrentLoginUserInfo) {
-
+            //初始化全部不可预约状态
             var initialTimeDate = function () {
                 $scope.param.timeDate = [
                     [{index:'0',value:'00:00',status:'0'},{index:'1',value:'00:30',status:'0'},{index:'2',value:'01:00',status:'0'},{index:'3',value:'01:30',status:'0'},{index:'4',value:"02:00",status:'0'},{index:'5',value:'02:30',status:'0'}],
@@ -19,7 +19,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     [{index:'42',value:'21:00',status:'0'},{index:'43',value:'21:30',status:'0'},{index:'44',value:'22:00',status:'0'},{index:'45',value:'22:30',status:'0'},{index:'46',value:"23:00",status:'0'},{index:'47',value:'23:30',status:'0'}],
                 ]
             }
-
+            //初始化全部可预约状态
             var appointTimeDate = function () {
                 $scope.param.timeDate = [
                     [{index:'0',value:'00:00',status:'1'},{index:'1',value:'00:30',status:'1'},{index:'2',value:'01:00',status:'1'},{index:'3',value:'01:30',status:'1'},{index:'4',value:"02:00",status:'1'},{index:'5',value:'02:30',status:'1'}],
