@@ -44,7 +44,7 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDi
     } else if ($state.params.orderId != '') {
         GetShopUserRecentlyOrderInfo.get({
             orderId: $state.params.orderId,
-            sysUserId: '110'
+            sysUserId: $stateParams.userId
         }, function(data) {
             console.log(data)
         })
