@@ -26,6 +26,12 @@ public class OfflineProductDTO {
 
     @JSONField(name = "senderAddress")
     private String senderAddress;
+    //展示销量
+    @JSONField(name = "productSalesVolume")
+    private String productSalesVolume;
+    //零售价
+    @JSONField(name = "productMarketPrice")
+    private String productMarketPrice;
 
     @JSONField(name = "productAmount")
     private int productAmount;
@@ -122,5 +128,21 @@ public class OfflineProductDTO {
 
     public void setProductAmount(int productAmount) {
         this.productAmount = productAmount;
+    }
+
+    public String getProductMarketPrice() {
+        return productMarketPrice;
+    }
+
+    public void setProductMarketPrice(String productMarketPrice) {
+        this.productMarketPrice = productMarketPrice;
+    }
+
+    public String getProductSalesVolume() {
+        return productSalesVolume;
+    }
+
+    public void setProductSalesVolume(String productSalesVolume) {
+        this.productSalesVolume = productSalesVolume;
     }
 }

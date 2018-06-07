@@ -28,10 +28,10 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                 ManagementUtil.checkResponseData(data,"");
                 if(data.result == Global.SUCCESS){
                     $scope.uploadingPar = data.responseData;
+                    $scope.param.productDetail.senderAddress = data.responseData.productDetail.senderAddress
                     $scope.param.productName=$scope.uploadingPar.productName;
                     $scope.param.brand=$scope.uploadingPar.brand;
                     $scope.param.secondType=$scope.uploadingPar.secondType;
-                    $scope.param.productDetail.senderAddress =  $scope.uploadingPar.productDetail.senderAddress;
 
                    if(data.responseData.productDetail){
                        pic(data,"#particulars_viewPic","detailPic");
@@ -355,6 +355,7 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                         firstUrl:$scope.uploadingPar.firstUrl,
                         price:price,
                         status:status,
+                        productPrefecture:$scope.uploadingPar.productPrefecture,
                         productAmount:$scope.uploadingPar.productAmount,
                         productDetail:{
                             createDate:$stateParams.createDate,
@@ -364,7 +365,9 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                             detailPic:$scope.uploadingPar.productDetail.detailPic,
                             listPic:$scope.uploadingPar.productDetail.listPic,
                             senderAddress:$scope.param.productDetail.senderAddress,
-                            productId:$stateParams.productId
+                            productId:$stateParams.productId,
+                            productSalesVolume:$scope.uploadingPar.productDetail.productSalesVolume,
+                            productMarketPrice:$scope.uploadingPar.productDetail.productMarketPrice
                         }
                     };
                     UpdateProductByParameters.save(ProductDTO,function(data){

@@ -89,6 +89,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
             };
 
             $scope.goPay = function(){
+               /* debugger;*/
                 /*根据商品状态来判断商品是否为下架商品*/
                 if($scope.param.product.status == "0"){
                     return;
@@ -96,9 +97,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ACJ,$stateParams.productId);
 
                 if($scope.model){
-                    if($scope.param.product.productDetail.spec.length == 1){
-                        $scope.param.checkFlag = $scope.param.product.productDetail.spec[0]
-                    }
+
                     if($scope.param.checkFlag=="")
                     {
                         $scope.model=true;
@@ -134,8 +133,8 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                     productName:$scope.param.product.productName,
                                     productNum:$scope.param.productNum,
                                     productPrice:$scope.param.product.price,
-                                    productSpec:$scope.param.productSpec
-                                }
+                                    productSpec:$scope.param.checkFlag
+                                };
                                 needPayOrderList.push(payOrder);
                                 //将needPayOrderList数据放入后台list中
                                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
@@ -235,6 +234,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 GetOfflineProductDetail.get({productId:$stateParams.productId},function(data){
                     $ionicLoading.hide();
                     $scope.param.product = data.responseData;
+                    $scope.param.checkFlag = $scope.param.product.productDetail.spec[0]
                     /*测试*/
                    /* $scope.param.product.status = "0";*/
                     /* $scope.param.product.productAmount=$scope.param.product.productAmount-1;*/

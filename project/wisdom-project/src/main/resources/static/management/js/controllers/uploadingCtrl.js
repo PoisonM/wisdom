@@ -5,20 +5,20 @@ angular.module('controllers',[]).controller('uploadingCtrl',
             var postage = document.querySelector("#postage");
             var service = document.querySelectorAll(".service input[type='checkbox']");
             var serviceText = document.querySelectorAll(".service p label");
-            var address = document.querySelector("#address").value;
             var address1 = document.querySelector("#address");
             var description = document.querySelector(".description");
             $scope.mess = false;
             $scope.ProductDTO = {
                 productId:'',
                 productName:"",
-                brand:"",
+                brand:"唯美度",
                 type:"offline",
-                secondType:"",
+                secondType:"面膜",
                 description:"",
                 price:"",
                 status:"",
                 firstUrl:"",
+                productPrefecture:"",
                 productAmount:"",
                 createDate:$filter("date")(Date.parse(new Date()),"yyyy-MM-dd HH:mm:ss"),
                 productDetail:{
@@ -27,8 +27,9 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                     tag:[],
                     spec:[],
                     services:[],
-                    senderAddress:""
-
+                    senderAddress:"深圳地区发货",
+                    productMarketPrice:"",
+                    productSalesVolume:""
                 }
 
 
@@ -39,9 +40,6 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                     return;
                 }
 
-
-                 var index=address1.selectedIndex;
-                    $scope.ProductDTO.productDetail.senderAddress = address1.options[index].value;
                     var indexStatus = status.selectedIndex;
                     $scope.ProductDTO.status = status.options[indexStatus].value;
                     if(postage.checked == true){
@@ -57,7 +55,7 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                             $scope.ProductDTO.productDetail.services[j]=serviceText[j].innerHTML
                         }
                     }
-                    if($scope.ProductDTO.productName ==""||$scope.ProductDTO.brand ==""||$scope.ProductDTO.secondType ==""||$scope.ProductDTO.description ==""||$scope.ProductDTO.price ==""||$scope.ProductDTO.price ==null||$scope.ProductDTO.status ==""||$scope.ProductDTO.firstUrl.length<=-1||$scope.ProductDTO.productDetail.listPic.length<=0||$scope.ProductDTO.productDetail.detailPic =="[]"||$scope.ProductDTO.productDetail.spec.length<=0||$scope.ProductDTO.productDetail.productAmount==""){
+                    if($scope.ProductDTO.productName ==""||$scope.ProductDTO.brand ==""||$scope.ProductDTO.secondType ==""||$scope.ProductDTO.price ==""||$scope.ProductDTO.price ==null||$scope.ProductDTO.status ==""||$scope.ProductDTO.productDetail.spec.length<=0||$scope.ProductDTO.productDetail.productAmount==""||$scope.ProductDTO.productDetail.productMarketPrice==""||$scope.ProductDTO.productDetail.productSalesVolume==""){
                         $scope.mess = true;
                     }else{
 

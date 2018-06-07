@@ -67,15 +67,19 @@ public class PayCoreService {
 
     @Transactional(rollbackFor = Exception.class)
     public void handleProductPayNotifyInfo(PayRecordDTO payRecordDTO,String notifyType) {
-        logger.info("service处理微信平台推送的支付成功消息=={}"+payRecordDTO,notifyType);
+
+        logger.info("处理微信平台推送的支付成功消息=="+payRecordDTO);
+
         RedisLock redisLock = new RedisLock("userPay" + payRecordDTO.getOutTradeNo());
 
         try {
             redisLock.lock();
+            PayRecordDTO payRecordDTO2 = new PayRecordDTO();
+            payRecordDTO2.setOutTradeNo(payRecordDTO.getOutTradeNo());
+            List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO2);
 
-            List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
-            logger.info("service处理微信平台推送的支付成功消息List=={}",payRecordDTOList.size());
             payFunction.processPayStatus(payRecordDTOList);
+
             if(notifyType.equals("offline"))
             {
                 //实时返现不跟交易放在一起，在此设置一个信号灯
@@ -88,12 +92,11 @@ public class PayCoreService {
                 mongoTemplate.insert(instanceReturnMoneySignalDTO,"instanceReturnMoneySignal");
 
                 //开启一个线程，进行即时返现和提升处理
-                logger.info("开启一个线程，进行即时返现和提升处理");
                 Runnable processInstancePayThread = new ProcessInstancePayThread(instanceReturnMoneySignalDTO);
                 threadExecutorSingle.execute(processInstancePayThread);
             }
+
         } catch (Exception e) {
-            logger.error("service处理微信平台推送的支付成功消息异常,异常信息为=={}"+e.getMessage(),e);
             e.printStackTrace();
         }finally {
             redisLock.unlock();
@@ -112,17 +115,16 @@ public class PayCoreService {
         public void run() {
             try
             {
-                logger.info("进入即时返现和提升处理线程");
                 //todo 开启A、B店的规则，给不同的用户给与不同的金额入账，此处涉及到修改用户的account表和income表
                 UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(instanceReturnMoneySignalDTO.getSysUserId());
 
+                logger.info("根据支付交易，处理及时返利=="+instanceReturnMoneySignalDTO);
                 handleInstanceReturnMoney(userInfoDTO,instanceReturnMoneySignalDTO);
 
                 float expenseMoney = calculateUserExpenseMoney(instanceReturnMoneySignalDTO);
                 logger.info("获取支付交易的消费金额=="+expenseMoney);
 
-
-                logger.info("进行月度流水统计=={}",userInfoDTO.getUserType());
+                logger.info("进行月度流水统计");
                 if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1))
                 {
                     payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
@@ -143,7 +145,6 @@ public class PayCoreService {
             }
             catch (Exception e)
             {
-                logger.error("即时返现和提升处理线程异常,异常信息为=={}"+e.getMessage(),e);
                 e.printStackTrace();
             }
         }
@@ -162,13 +163,11 @@ public class PayCoreService {
         {
             expenseMoney = expenseMoney + payRecord.getAmount();
         }
-        logger.info("Service== 计算用户在某笔交易中的消费总金额=={}",expenseMoney);
         return expenseMoney;
     }
 
     //处理红包领取显示信号量
     private void handleSpecialActivitySignal(UserInfoDTO userInfoDTO, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO) {
-        logger.info("Service== 处理红包领取显示信号量==");
         PayRecordDTO payRecordDTO = new PayRecordDTO();
         payRecordDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
         List<PayRecordDTO> payRecordDTOS = payRecordService.getUserPayRecordList(payRecordDTO);
@@ -197,6 +196,7 @@ public class PayCoreService {
                         bonusFlagDTO.setProductId(ConfigConstant.promote_businessB1_ProductId_No1);
                         bonusFlagDTO.setBonusFlag("true");
                         bonusFlagDTO.setMessageFlag("true");
+
                         mongoTemplate.insert(bonusFlagDTO,"bonusFlag");
                     }
                     else if(bonusFlagDTO.getBonusFlag().equals("false"))
@@ -230,7 +230,6 @@ public class PayCoreService {
 
     //处理用户购买特殊商品的等级提升
     private void handleUserLevelPromotionInSpecialActivity(UserInfoDTO userInfoDTO, float expenseMoney, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO) {
-        logger.info("Service== 处理用户购买特殊商品的等级提升==");
         //处理特殊活动下的，用户提升等级
         //1、查询用户所有购买的特殊商品
         if(ConfigConstant.businessC1.equals(userInfoDTO.getUserType()))
@@ -298,20 +297,17 @@ public class PayCoreService {
     //根据消费提升用户等级
     private void handleUserLevelPromotion(UserInfoDTO userInfoDTO, float expenseMoney) {
         //判断，消费额度是否可以提升用户的等级
-        logger.info("service == 判断，消费额度是否可以提升用户的等级=={},金额={}",userInfoDTO.getMobile(),expenseMoney);
         if(ConfigConstant.businessC1.equals(userInfoDTO.getUserType()))
         {
             //如果是C用户
             if(expenseMoney>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&expenseMoney<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE)
             {
                 //消费金额在B的区间段，升级为B
-                logger.info("C用户消费金额在B的区间段，升级为B");
                 payFunction.promoteUserBusinessTypeForExpenseSecond(userInfoDTO,ConfigConstant.businessB1,ConfigConstant.livingPeriodYear);
             }
             else if(expenseMoney>=ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)
             {
                 //消费金额在A的区间段，升级为A
-                logger.info("C用户消费金额在A的区间段，升级为A");
                 payFunction.promoteUserBusinessTypeForExpenseSecond(userInfoDTO,ConfigConstant.businessA1,ConfigConstant.livingPeriodYear);
             }
         }
@@ -320,13 +316,11 @@ public class PayCoreService {
             if(expenseMoney>=ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)
             {
                 //消费金额在A的区间段，升级为A
-                logger.info("B用户消费金额在A的区间段，升级为A");
                 payFunction.promoteUserBusinessTypeForExpenseSecond(userInfoDTO,ConfigConstant.businessA1,ConfigConstant.livingPeriodYear);
             }
             if(expenseMoney>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&expenseMoney<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE)
             {
                 //判断用户是否为B1的冻结状态，如果冻结状态，则解冻
-                logger.info("B用户为B1的冻结状态,解冻");
                 deFrozenUserType(userInfoDTO);
             }
         }
@@ -335,7 +329,6 @@ public class PayCoreService {
             if(expenseMoney>=ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)
             {
                 //判断用户是否为A1的冻结状态，如果冻结状态，则解冻
-                logger.info("A用户为A1的冻结状态,解冻");
                 deFrozenUserType(userInfoDTO);
             }
         }
@@ -343,7 +336,7 @@ public class PayCoreService {
 
     //处理即时返现逻辑
     private void handleInstanceReturnMoney(UserInfoDTO userInfoDTO, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO) {
-        logger.info("service == 根据支付交易，处理即时返现逻辑=="+instanceReturnMoneySignalDTO);
+
         //todo 此处的逻辑主要是用来实现即时返现功能，此时即时返现的资金是冻结的，需要用户收货之后，获得返现的用户才能拿到钱
         if(!ObjectUtils.isNullOrEmpty(userInfoDTO.getParentUserId()))
         {
@@ -362,11 +355,14 @@ public class PayCoreService {
 
                         if(grandpaUserInfoDTO!=null){
                             if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
+
                                 //执行平级返利
                                 payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"A1A1", instanceReturnMoneySignalDTO);
                             }
+
                         }
                     }
+
                 }
             }
 
@@ -383,11 +379,14 @@ public class PayCoreService {
                         UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
                         if(grandpaUserInfoDTO!=null){
                             if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
+
                                 //执行平级返利
                                 payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"A1A1", instanceReturnMoneySignalDTO);
                             }
+
                         }
                     }
+
                 }
                 //查询父类是否是B店用户
                 if(ConfigConstant.businessB1.equals(parentUserInfoDTO.getUserType()))
@@ -399,14 +398,17 @@ public class PayCoreService {
                         UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
                         if(grandpaUserInfoDTO!=null){
                             if(ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
+
                                 //执行平级返利
                                 payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"B1B1", instanceReturnMoneySignalDTO);
                             }else if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType())){
+
                                 //执行平级返利
                                 payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"B1A1", instanceReturnMoneySignalDTO);
                             }
                         }
                     }
+
                 }
             }
             else if(ConfigConstant.businessC1.equals(userInfoDTO.getUserType()))
@@ -431,15 +433,20 @@ public class PayCoreService {
                 {
                     //先更新用户上一级B店用户的返现金额
                     payFunction.updateReturnMoneyDataBase(parentUserInfoDTO.getId(),ConfigConstant.businessC1,ConfigConstant.businessB1, instanceReturnMoneySignalDTO);
+
                     if(!ObjectUtils.isNullOrEmpty(parentUserInfoDTO.getParentUserId()))
                     {
                         UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(parentUserInfoDTO.getParentUserId());
+
                         //在更新爷爷一级用户的类型为A店店主的返现金额
                         if(ConfigConstant.businessA1.equals(grandpaUserInfoDTO.getUserType()))
                         {
                             payFunction.updateReturnMoneyDataBase(grandpaUserInfoDTO.getId(),ConfigConstant.businessC1,"A1B1", instanceReturnMoneySignalDTO);
+
                         }else if(ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
+
                             payFunction.flatRebate(userInfoDTO.getUserType(),grandpaUserInfoDTO.getId(),"B1B1", instanceReturnMoneySignalDTO);
+
                         }
                     }
                 }
@@ -449,7 +456,6 @@ public class PayCoreService {
 
     //对用户的级别进行解冻处理
     private void deFrozenUserType(UserInfoDTO userInfoDTO) {
-        logger.info("service == 对用户的级别进行解冻处理=={}",userInfoDTO.getId());
         UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
         userBusinessTypeDTO.setSysUserId(userInfoDTO.getId());
         userBusinessTypeDTO.setStatus("2");
