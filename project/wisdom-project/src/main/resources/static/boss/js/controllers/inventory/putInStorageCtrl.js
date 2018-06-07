@@ -31,10 +31,12 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     $scope.param.multiSelectFlag=false;
                     $scope.param.type = type;
                     $scope.param.selectProductList = '';
+                    console.log(1)
                 }
                 else
                 {
                     $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
+                    console.log(2);
                 }
                 GetShopProductLevelInfo.get({productType:type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
@@ -51,7 +53,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 $scope.param.flag = true;
             };
             $scope.all = function () {
-                $scope.param.flag = false;
+                $scope.param.multiSelectFlag = false;
             };
 
             $scope.threeMess = function () {

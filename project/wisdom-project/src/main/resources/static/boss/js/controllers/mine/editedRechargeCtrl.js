@@ -29,13 +29,16 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                                 $rootScope.settingAddsome.editedRecharge.timesList =data.responseData.timesList;
                                 $rootScope.settingAddsome.editedRecharge.periodList =data.responseData.periodList;
                                 $rootScope.settingAddsome.editedRecharge.productList =data.responseData.productList;
-                                if($rootScope.settingAddsome.editedRecharge.productList.length>0||$rootScope.settingAddsome.editedRecharge.timeDiscount!=''){
+                                if($rootScope.settingAddsome.editedRecharge.productList.length>0||($rootScope.settingAddsome.editedRecharge.productList!=''&&$rootScope.settingAddsome.editedRecharge.productList!=null)){
+                                    console.log(0)
                                     $scope.param.appearArr[2]=true
                                 }
-                                if($rootScope.settingAddsome.editedRecharge.periodList.length>0||$rootScope.settingAddsome.editedRecharge.periodDiscount!=''){
+                                if($rootScope.settingAddsome.editedRecharge.periodList.length>0||($rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=null)){
+                                    console.log(1)
                                     $scope.param.appearArr[1]=true
                                 }
-                                if($rootScope.settingAddsome.editedRecharge.timesList.length>0||$rootScope.settingAddsome.editedRecharge.timeDiscount!=""){
+                                if($rootScope.settingAddsome.editedRecharge.timesList.length>0||($rootScope.settingAddsome.editedRecharge.timeDiscount!=""&&$rootScope.settingAddsome.editedRecharge.timeDiscount!=null)){
+                                    console.log(2);
                                     $scope.param.appearArr[0]=true
                                 }
                             }else{
@@ -54,7 +57,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($rootScope.settingAddsome.editedRecharge.imageUrls.length>6){
+                if($rootScope.settingAddsome.editedRecharge.imageList.length>6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -65,7 +68,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $rootScope.settingAddsome.editedRecharge.imageUrls.push(data.responseData)
+                                $rootScope.settingAddsome.editedRecharge.imageList.push(data.responseData)
                             }
 
                         })
@@ -79,7 +82,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
 
             };
             $scope.delPic = function(index){
-                $rootScope.settingAddsome.editedRecharge.imageUrls.splice(index,1)
+                $rootScope.settingAddsome.editedRecharge.imageList.splice(index,1)
             }
             $scope. appear=function (index) {
                 $scope.param.appearArr[index ] =!$scope.param.appearArr[index ]
@@ -95,9 +98,8 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                 }
             }
             $scope.save = function () {
-                debugger
-                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||( $rootScope.settingAddsome.editedRecharge.timesList.periodList>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.timesList.periodList<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!='')||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
-                    alert("信息不完全")
+                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||($rootScope.settingAddsome.editedRecharge.periodList.length>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!=''&&$rootScope.settingAddsome.editedRecharge.productDiscount!=null)||($rootScope.settingAddsome.editedRecharge.periodList.length<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=null)||($rootScope.settingAddsome.editedRecharge.timesList.length<=0&&$rootScope.settingAddsome.editedRecharge.timesList!=''&&$rootScope.settingAddsome.editedRecharge.timesList!=null)||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
+                    alert("请检查信息");
                     return
                 }
 

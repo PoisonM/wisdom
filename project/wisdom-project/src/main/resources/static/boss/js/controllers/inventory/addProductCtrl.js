@@ -10,7 +10,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                 productTypeTwoName:"",
                 productTypeTwoId:"",
                 productName:"",
-                imageUrl:[],
+                imageList:[],
                 marketPrice:"",
                 discountPrice:"",
                 productCode:"",
@@ -120,7 +120,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($rootScope.settingAddsome.product.imageUrl.length>6){
+                if($rootScope.settingAddsome.product.imageList.length>6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -131,7 +131,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $rootScope.settingAddsome.product.imageUrl.push(data.responseData)
+                                $rootScope.settingAddsome.product.imageList.push(data.responseData)
                             }
 
                         })
@@ -145,7 +145,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
 
             };
             $scope.delPic = function(index){
-                $rootScope.settingAddsome.product.imageUrl.splice(index,1)
+                $rootScope.settingAddsome.product.imageList.splice(index,1)
             }
 
 

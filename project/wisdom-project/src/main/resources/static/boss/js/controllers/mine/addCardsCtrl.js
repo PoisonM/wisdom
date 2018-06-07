@@ -11,7 +11,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
             $rootScope.settingAddsome.editorCard = {
                 projectGroupName:'',
                 shopProjectInfoDTOS:null,
-                imageUrl:[],
+                imageList:[],
                 marketPrice:"",
                 discountPrice:'',
                 expirationDate:$filter('date')(new Date(), 'yyyy-MM-dd'),
@@ -31,7 +31,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($rootScope.settingAddsome.editorCard.imageUrl.length>6){
+                if($rootScope.settingAddsome.editorCard.imageList.length>6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -42,7 +42,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $rootScope.settingAddsome.editorCard.imageUrl.push(data.responseData)
+                                $rootScope.settingAddsome.editorCard.imageList.push(data.responseData)
                             }
 
                         })
@@ -56,7 +56,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
 
             };
             $scope.delPic = function (index) {
-                $rootScope.settingAddsome.editorCard.imageUrl.splice(index,1)
+                $rootScope.settingAddsome.editorCard.imageList.splice(index,1)
 
             };
             $scope.expirationDate = function(){
@@ -143,7 +143,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                 }
                 SaveProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){
                     if(data.result==Global.SUCCESS){
-                        $status.go("basicSetting")
+                        $state.go("basicSetting")
                     }
                 })
             }

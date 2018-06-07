@@ -1346,8 +1346,8 @@ define(['appBoss'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.newUserCtrl',
-                                    ['js/controllers/archives/employeeNewUserCtrl.js?ver='+ bossVersion],
-                                    'views/archives/employeeNewUser.html?ver=' + bossVersion);
+                                    ['js/controllers/archives/newUserCtrl.js?ver='+ bossVersion],
+                                    'views/archives/newUser.html?ver=' + bossVersion);
                             }
                         }
                     })

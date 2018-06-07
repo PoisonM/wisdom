@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/5.
  */
 angular.module('controllers',[]).controller('modificationInformationCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetCurrentLoginUserInfo','UpdateBossInfo','ImageBase64UploadToOSS','Global',
-        function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,UpdateBossInfo,ImageBase64UploadToOSS,Global) {
+    ['$scope','$rootScope','$stateParams','$state','GetCurrentLoginUserInfo','UpdateBossInfo','ImageBase64UploadToOSS','Global','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,UpdateBossInfo,ImageBase64UploadToOSS,Global,$ionicLoading) {
 
             $rootScope.title = "修改资料";
             $scope.userInfo={
@@ -17,10 +17,22 @@ angular.module('controllers',[]).controller('modificationInformationCtrl',
             $scope.male=function () {
                 $scope.userInfo.sex = '男'
             };
-            /*查询我的信息*/
-            GetCurrentLoginUserInfo.get(function (data) {
-                $scope.userInfo=data.responseData;
-            });
+
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                /*查询我的信息*/
+                GetCurrentLoginUserInfo.get(function (data) {
+                    $ionicLoading.hide();
+                    $scope.userInfo=data.responseData;
+                });
+            })
+
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64

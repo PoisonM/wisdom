@@ -16,11 +16,11 @@
         </div>
         <div style="position: relative;height:100%;padding-top:10px;">
             <ion-item  class=" bgfff row"style="width: 96%;margin: 0px auto 10px;border-radius: 6px;" ng-click="modifyProductGo(item.id)" ng-repeat="item in warehouseProducts.detailProductList">
-                <div class="col col-20">
-                    <p style="height:70px;width:75px;background: gainsboro;margin-top: 5px"></p >
+                <div class="col col-30" style="background: url('{{item.productUrl}}');background-position: center center;background-size: contain;background-repeat: no-repeat;">
+
                 </div>
 
-                <div class="col col-70 ml10" >
+                <div class="col col-60 ml10" >
                     <p style="font-size: 15px"><span>{{item.productName}}</span></p >
                     <p class="fs12 col88">编号：{{item.productCode}}</p >
                     <p class="fs12 col88"><span>单位：{{item.productUnit}}</span><span class="ml5">规格：{{item.productSpec}}</span></p>
@@ -31,14 +31,14 @@
             </ion-item>
             <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100"  ng-show="param.flag"></div>
             <div style="position: absolute;top:0;width:100%;z-index: 1000"  class="sb bgf6" ng-show="param.flag">
-                <ul class="W33 col333  fs14">
-                    <li class=" h40  col333 center bbl bgfff" ng-repeat="item in warehouseProducts.oneLevelList" ng-click="selTwo(item.productTypeOneId);$event.stopPropagation()">
-                        <span class="ml10">{{item.productName}}</span>
+                <ul class="W33 col333  fs14 bgfff">
+                    <li class="  col333 center bbl " ng-repeat="item in warehouseProducts.oneLevelList" ng-click="selTwo(item.productTypeOneId);$event.stopPropagation()" style="min-height: 40px;padding: 5px 0" ng-class="{'bge6':param.levelOneId == item.productTypeOneId}">
+                        <div class="ml10">{{item.productName}}</div>
                     </li>
                 </ul>
                 <ul style="width:77%;background: #F6F6F6;" class="fs14 col333">
-                    <li class="ml10 h40 sb" style="border-bottom: 1px solid #FFFFFF;" ng-click="checkThree(val.productTypeTwoId);$event.stopPropagation()" ng-repeat="item in param.twoLevelList">
-                        <span>{{item.productTypeTwoName}}</span>
+                    <li class="ml10 h40 sb" style="border-bottom: 1px solid #FFFFFF;" ng-click="checkThree(val.productTypeTwoId);$event.stopPropagation()" ng-repeat="item in param.twoLevelList" ng-class="{'bge6':param.levelTwoId == item.productTypeTwoId}">
+                        <div>{{item.productTypeTwoName}}</div>
 
                     </li>
 

@@ -1,6 +1,6 @@
 <ion-view>
     <ion-content class="partialFiles bgf6"  style="margin-bottom: 45px;" ng-click="all()">
-        <div>
+        <div style="position: relative">
             <div >
                 <div class="h45 bgfff bbl">
                     <label class="fs16 col333 ml10">入库方式：</label>
@@ -41,25 +41,29 @@
                     </div>
                 </div>
             </div>
-            <div style="position:absolute;z-index: 999;width: 50%" ng-if="param.multiSelectFlag">
-                <ion-list>
-                    <ion-item style="width:100%;text-align:center;padding: 10px 20px"
-                              ng-click="chooseTwoLevelList(item.productTypeOneId)"
-                              ng-repeat="item in param.oneLevelList">
-                        {{item.productTypeOneName}}
-                    </ion-item>
-                </ion-list>
+            <div style="width:100%;height:100%;position: absolute;background:rgba(0,0,0,0.2);z-index: 100" ng-if="param.multiSelectFlag" ng-click="dis()"></div>
+            <div style="position:absolute;z-index: 999;width:100%;" ng-if="param.multiSelectFlag" class="sb">
+                <div style="width: 50%" >
+                    <ion-list>
+                        <ion-item style="width:100%;text-align:center;padding: 10px 20px"
+                                  ng-click="chooseTwoLevelList(item.productTypeOneId)"
+                                  ng-repeat="item in param.oneLevelList">
+                            {{item.productTypeOneName}}
+                        </ion-item>
+                    </ion-list>
+                </div>
+                <div style="width: 50%" >
+                    <ion-list>
+                        <ion-item style="width:100%;text-align:center;padding: 10px 20px;"
+                                  ng-repeat="item in param.twoLevelList"
+                                  ng-if="item.productTypeOneId==param.selectProductTypeOneId"
+                                  ng-click="chooseProductList(item.productTypeTwoId)">
+                            {{item.productTypeTwoName}}
+                        </ion-item>
+                    </ion-list>
+                </div>
             </div>
-            <div style="position:absolute;z-index: 999;margin-left:50%;width: 50%" ng-if="param.multiSelectFlag">
-                <ion-list>
-                    <ion-item style="width:100%;text-align:center;padding: 10px 20px;"
-                              ng-repeat="item in param.twoLevelList"
-                              ng-if="item.productTypeOneId==param.selectProductTypeOneId"
-                              ng-click="chooseProductList(item.productTypeTwoId)">
-                        {{item.productTypeTwoName}}
-                    </ion-item>
-                </ion-list>
-            </div>
+
             <div style="position:relative ">
                 <div>
                     <ion-list>
@@ -82,8 +86,8 @@
                         <ion-item style="height:90px;width:95%;margin: 0px auto 10px; border-radius: 6px; box-shadow: 0 2px 4px 0 rgba(153,153,153,0.20)" class="sb" ng-repeat="item in param.detailProductList"
                                   ng-click="selProduct($index)">
                             <div style="display: flex">
-                                <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
-                                    <img ng-src="{{item.productUrl}}">
+                                <p style="height:70px;border:solid 1px #f6f6f6;width:75px;background: url('{{item.productUrl}}');background-repeat: no-repeat;background-size: contain;background-position: center center"  class="mt10 ml10" >
+
                                 </p>
                                 <div class="ml10 mt10">
                                     <P class="fs14 col333 ">{{item.productTypeOneName+item.productName}}</P>
@@ -103,6 +107,7 @@
                 </div>
             </div>
         </div>
+
     </ion-content>
     <div class="h45 center fs16 colfff bgff66 tabs" >
         <p ng-click="newLibraryGo()">下一步(0/30)</p>

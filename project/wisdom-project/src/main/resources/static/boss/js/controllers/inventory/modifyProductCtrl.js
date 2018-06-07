@@ -55,14 +55,7 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
-            $scope.$on('$ionicView.enter', function() {
-                $ionicLoading.show({
-                    content: 'Loading',
-                    animation: 'fade-in',
-                    showBackdrop: true,
-                    maxWidth: 200,
-                    showDelay: 0
-                });
+
                 if( $stateParams.id !=''){
                     $rootScope.settingAddsome.productId = $stateParams.id
 
@@ -70,7 +63,6 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                         productId:$rootScope.settingAddsome.productId
                     },function (data) {
                         if(data.result==Global.SUCCESS&&data.responseData!=null){
-                            $ionicLoading.hide();
                             $rootScope.settingAddsome.product = data.responseData;
                             if($rootScope.settingAddsome.product.status =='0'){
                                 $scope.param.status = true;
@@ -80,7 +72,6 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                         }
                     })
                 }
-            })
 
 
 
@@ -119,9 +110,8 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                console.log(files)
-                if(files.length <=0)return
-                if($rootScope.settingAddsome.product.imageUrl.length>6){
+                if($rootScope.settingAddsome.product.imageList ==null) $rootScope.settingAddsome.product.imageList=[]
+                if($rootScope.settingAddsome.product.imageList.length>6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -132,7 +122,7 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $rootScope.settingAddsome.product.imageUrl.push(data.responseData)
+                                $rootScope.settingAddsome.product.imageList.push(data.responseData)
                             }
 
                         })
@@ -146,7 +136,7 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
 
             };
             $scope.delPic = function(index){
-                $rootScope.settingAddsome.product.imageUrl.splice(index,1)
+                $rootScope.settingAddsome.product.imageList.splice(index,1)
             }
 
 
