@@ -74,8 +74,9 @@ public class PayCoreService {
 
         try {
             redisLock.lock();
-
-            List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
+            PayRecordDTO payRecordDTO2 = new PayRecordDTO();
+            payRecordDTO2.setOutTradeNo(payRecordDTO.getOutTradeNo());
+            List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO2);
 
             payFunction.processPayStatus(payRecordDTOList);
 
