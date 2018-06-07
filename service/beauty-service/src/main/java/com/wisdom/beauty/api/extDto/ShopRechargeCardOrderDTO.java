@@ -18,11 +18,8 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     //支付方式
     private String payType;
 
-    //特殊充值卡传0 普通充值卡充值传1
-    private String rechargeCardType;
-
     //店员名称
-    private String sysCLerkName;
+    private String sysClerkName;
 
     //用户id
     private String sysUserId;
@@ -92,16 +89,6 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
         this.payType = payType;
     }
 
-    @Override
-    public String getRechargeCardType() {
-        return rechargeCardType;
-    }
-
-    @Override
-    public void setRechargeCardType(String rechargeCardType) {
-        this.rechargeCardType = rechargeCardType;
-    }
-
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
@@ -112,14 +99,6 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public String getSysCLerkName() {
-        return sysCLerkName;
-    }
-
-    public void setSysCLerkName(String sysCLerkName) {
-        this.sysCLerkName = sysCLerkName;
     }
 
     public String getCashPay() {
