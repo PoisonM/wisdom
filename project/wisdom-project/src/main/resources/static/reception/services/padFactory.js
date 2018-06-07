@@ -86,6 +86,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetWaitReceiveDetail', ['$resource', function($resource) {
         return $resource(beautyIP + 'mine/getWaitReceiveDetail')
     }])
+    //待领取记录汇总
+    .factory('GetWaitReceivePeopleAndNumber', ['$resource', function($resource) {
+        return $resource(beautyIP + 'mine/getWaitReceivePeopleAndNumber')
+    }])
     //店员相关的记录统计
     .factory('Consumes', ['$resource', function($resource) {
         return $resource(beautyIP + 'mine/consumes')

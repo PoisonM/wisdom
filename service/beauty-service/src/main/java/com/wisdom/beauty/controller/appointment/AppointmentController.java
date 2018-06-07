@@ -365,16 +365,20 @@ public class AppointmentController {
 	public
 	@ResponseBody
 	ResponseDTO<Map> saveUserAppointInfo(@RequestBody ExtShopAppointServiceDTO shopAppointServiceDTO) {
+		ResponseDTO<Map> responseDTO = null;
 		//针对于美容师加锁
 		RedisLock redisLock = new RedisLock(shopAppointServiceDTO.getSysClerkId());
 		redisLock.lock();
-		ResponseDTO<Map> responseDTO = null;
+		responseDTO = null;
 		try {
 			responseDTO = appointmentService.saveUserShopAppointInfo(shopAppointServiceDTO);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			logger.error("保存用户的预约信息失败，失败信息为" + e.getMessage(), e);
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
+		}finally {
+			redisLock.unlock();
 		}
-		redisLock.unlock();
 		return responseDTO;
 	}
 
@@ -391,10 +395,13 @@ public class AppointmentController {
 		ResponseDTO<Map> responseDTO = null;
 		try {
 			responseDTO = appointmentService.updateUserAppointInfo(shopAppointServiceDTO);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			logger.error("修改用户的预约信息失败，失败信息为" + e.getMessage(), e);
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
+		}finally {
+			redisLock.unlock();
 		}
-		redisLock.unlock();
 		return responseDTO;
 	}
 
