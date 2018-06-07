@@ -172,12 +172,12 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(userProjectRelationDTO.getUseStyle())) {
                         BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()).multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes())));
                         userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
-                        userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getTimeDiscount()));
+                        userProjectRelationDTO.setDiscount(shopUserRechargeCardDTO.getTimeDiscount());
                         updateFlag = true;
                     } else {
                         BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()).multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes())));
                         userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
-                        userProjectRelationDTO.setDiscount(String.valueOf(shopUserRechargeCardDTO.getPeriodDiscount()));
+                        userProjectRelationDTO.setDiscount(shopUserRechargeCardDTO.getPeriodDiscount());
                         updateFlag = true;
                     }
                 }

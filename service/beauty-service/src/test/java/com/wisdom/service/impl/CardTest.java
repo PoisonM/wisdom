@@ -101,7 +101,7 @@ public class CardTest {
         imageUrls.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
         imageUrls.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
         imageUrls.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
-        extShopRechargeCardDTO.setImageUrls(imageUrls);
+        extShopRechargeCardDTO.setImageList(imageUrls);
         extShopRechargeCardDTO.setTimeDiscount(0.75f);
         extShopRechargeCardDTO.setPeriodDiscount(0.95f);
         extShopRechargeCardDTO.setProductDiscount(0.85f);

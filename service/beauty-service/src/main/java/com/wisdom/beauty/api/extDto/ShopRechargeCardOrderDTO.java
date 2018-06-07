@@ -44,7 +44,7 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     private String userName;
     //图片
-    private List<String> imageUrls;
+    private List<String> imageList;
 
     public String getSignUrl() {
         return signUrl;
@@ -134,11 +134,11 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
         this.rechargeAmount = rechargeAmount;
     }
 
-    public List<String> getImageUrls() {
-        return imageUrls;
+    public List<String> getImageList() {
+        return imageList;
     }
 
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 }

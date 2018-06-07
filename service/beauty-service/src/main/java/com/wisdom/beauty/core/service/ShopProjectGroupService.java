@@ -74,10 +74,10 @@ public interface ShopProjectGroupService {
      * @Author:zhanghuan
      * @Param:
      * @Return:
-     * @Description: 根据多个主键id查询信息
+     * @Description: 根据多个主键flowId查询信息
      * @Date:2018/5/17 9:22
      */
-    List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(List<String> ids);
+    List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(List<String> flowIds);
 
     /**
      * @Author:zhanghuan

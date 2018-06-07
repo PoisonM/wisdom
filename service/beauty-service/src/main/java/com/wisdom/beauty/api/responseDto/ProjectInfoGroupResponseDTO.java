@@ -20,7 +20,7 @@ public class ProjectInfoGroupResponseDTO extends ShopProjectGroupDTO {
 	/** 项目List */
 	private List<ShopProjectInfoDTO> shopProjectInfoDTOS;
 	/** 图片地址URL */
-    private List<String> imageUrl;
+    private List<String> imageList;
 	/** 是否过期 */
 	private  Boolean  overdue;
 	/** 是否启用 */
@@ -32,14 +32,6 @@ public class ProjectInfoGroupResponseDTO extends ShopProjectGroupDTO {
 
 	public void setShopProjectInfoDTOS(List<ShopProjectInfoDTO> shopProjectInfoDTOS) {
 		this.shopProjectInfoDTOS = shopProjectInfoDTOS;
-	}
-
-	public List<String> getImageUrl() {
-		return imageUrl;
-	}
-
-    public void setImageUrl(List<String> imageUrl) {
-		this.imageUrl = imageUrl;
 	}
 
 	public Boolean getOverdue() {
@@ -56,5 +48,13 @@ public class ProjectInfoGroupResponseDTO extends ShopProjectGroupDTO {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public List<String> getImageList() {
+		return imageList;
+	}
+
+	public void setImageList(List<String> imageList) {
+		this.imageList = imageList;
 	}
 }

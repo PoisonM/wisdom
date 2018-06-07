@@ -194,7 +194,7 @@ public class ConsumeTest {
         consumeRecordDTO.setPayType(PayTypeEnum.ALI_PAY.getCode());
         consumeRecordDTO.setDetail("这是一个备注");
         consumeRecordDTO.setConsumeNumber(2);
-        consumeRecordDTO.setDiscount(new BigDecimal("0.75"));
+        consumeRecordDTO.setDiscount(0.75f);
         consumeRecordDTO.setGoodsType(GoodsTypeEnum.TIME_CARD.getCode());
         consumeRecordDTO.setSysShopId(uuid);
         consumeRecordDTO.setSysClerkId(uuid);

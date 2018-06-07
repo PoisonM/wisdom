@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable {
     //
@@ -53,7 +53,7 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
     private BigDecimal price;
 
     //消费折扣
-    private BigDecimal discount;
+    private Float discount;
 
     //
     private Float timeDiscount;
@@ -213,11 +213,11 @@ public class ShopUserConsumeRecordDTO extends BaseEntity implements Serializable
         this.price = price;
     }
 
-    public BigDecimal getDiscount() {
+    public Float getDiscount() {
         return discount;
     }
 
-    public void setDiscount(BigDecimal discount) {
+    public void setDiscount(Float discount) {
         this.discount = discount;
     }
 

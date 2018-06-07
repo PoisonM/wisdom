@@ -25,14 +25,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkName;
 
-    //使用方式 0：疗程 1：单次
+    //使用方式 0：疗程 1：单次 
     private String useStyle;
 
     //美容院id
     private String sysShopId;
 
     //折扣价格
-    private String discount;
+    private Float discount;
 
     //
     private String sysShopName;
@@ -151,11 +151,11 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
         this.sysShopId = sysShopId;
     }
 
-    public String getDiscount() {
+    public Float getDiscount() {
         return discount;
     }
 
-    public void setDiscount(String discount) {
+    public void setDiscount(Float discount) {
         this.discount = discount;
     }
 
