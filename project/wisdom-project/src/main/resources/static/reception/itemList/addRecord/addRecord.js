@@ -1,5 +1,5 @@
 PADWeb.controller('addRecordCtrl', function($scope,$rootScope,$state,SaveArchiveInfo
-    ,GetShopUserArchivesInfoByUserId,DeleteArchiveInfo,ImageBase64UploadToOSS,ImageBase64UploadToOSS) {
+    ,DeleteArchiveInfo,ImageBase64UploadToOSS,ImageBase64UploadToOSS) {
     console.log($scope);
 /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";

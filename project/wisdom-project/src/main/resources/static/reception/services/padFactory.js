@@ -68,7 +68,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(beautyIP + 'shop/getUserScanInfo')
     }])
     .factory('Archives', ['$resource', function($resource) {
-        return $resource(beautyIP + 'archives/:userId', { userId: '@id' })
+        return $resource(beautyIP + 'archives/:userId', { id: '@id' })
     }])
     //档案详情
     .factory('ArchivesDetail', ['$resource', function($resource) {

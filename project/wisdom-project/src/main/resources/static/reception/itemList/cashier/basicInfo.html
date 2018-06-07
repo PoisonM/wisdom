@@ -1,10 +1,12 @@
 <div class="basicInfo-box">
     <div class="headPortrait-box fl clearfix">
-        <div ng-click="goAddRecordDetail()" class="headPortrait"><img ng-src="{{responseData.photo}}" alt=""></div>
+        <div ng-click="goAddRecordDetail()" class="headPortrait">
+            <img  ng-src="{{responseData.imageUrl}}" alt="">
+        </div>
     </div>
     <div class="basicInfo-content clearfix fl">
         <div class="basicInfo-content-first clearfix">
-            <span class="basicInfoName fl">{{responseData.sysClerkName}}</span>
+            <span class="basicInfoName fl">{{responseData.sysUserName}}</span>
             <span class="accountRecords fl" ng-click="goAccountRecords()">账户记录<b>＞</b></span>
         </div>
         <div class="basicInfo-content-second clearfix">

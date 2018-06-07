@@ -21,7 +21,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     //获取订单ID
 
     SaveShopUserOrderInfo.save({
-        userId: '110'
+        userId: $stateParams.userId
     }, function(data) {
         $scope.orderId = data.responseData;
         GetConsumeDisplayIds.get({
