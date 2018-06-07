@@ -81,6 +81,14 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
         return orderStatus;
     }
 
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
     public String getPayType() {
         return payType;
     }
