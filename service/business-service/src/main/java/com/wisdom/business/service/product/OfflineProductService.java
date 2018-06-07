@@ -45,6 +45,14 @@ public class OfflineProductService {
 
     public List<ProductDTO> findOfflineProductList(PageParamDTO pageParamDTO) {
         List<ProductDTO> productDTOList = productMapper.findOfflineProductList(pageParamDTO);
+        for (ProductDTO productDTO : productDTOList){
+            Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
+            OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
+            if(null != offlineProductDTO){
+                offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
+            }
+            productDTO.setProductDetail(offlineProductDTO);
+        }
         return productDTOList;
     }
 
