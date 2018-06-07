@@ -240,7 +240,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
             }
 
 }])
-
+//捎句话过滤器
 var beauty = angular.module('filter', []);
 beauty.filter('textLengthSet', function() {
     return function(value, wordwise, max, tail) {
