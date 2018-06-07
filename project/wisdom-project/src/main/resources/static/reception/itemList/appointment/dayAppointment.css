@@ -17,8 +17,8 @@
 .dayAppointment .header input[type='button'] { width: 1.48438rem; height: 0.45313rem; line-height: 0.45313rem; box-sizing: border-box; border: solid 1px #ffffff; }
 .dayAppointment .header .common { background: #ff6666; color: #ffffff; }
 .dayAppointment .header .btnActive { color: #ff6666; background: #ffffff; }
-.dayAppointment .header .appointmentDay { width: 50%;float: left; height: 100%; line-height: 0.609375rem;border-bottom-left-radius: 0.0625rem; border-top-left-radius: 0.0625rem; }
-.dayAppointment .header .appointmentWeek { width: 50%;float: left; height: 100%; line-height: 0.609375rem; border-bottom-right-radius: 0.0625rem; border-top-right-radius: 0.0625rem; }
+.dayAppointment .header .appointmentDay { width: 50%;float: left; height: 100%; line-height: 0.534374rem;border-bottom-left-radius: 0.0625rem; border-top-left-radius: 0.0625rem; }
+.dayAppointment .header .appointmentWeek { width: 50%;float: left; height: 100%; line-height: 0.534374rem; border-bottom-right-radius: 0.0625rem; border-top-right-radius: 0.0625rem; }
 .dayAppointment .header p, .dayAppointment .header .timeArea { width: 33.3%; }
 .dayAppointment .header .timeArea p { width: 100%; }
 .dayAppointment .header .timeArea .time { width: 3.125rem; margin-left: 0.3125rem; text-align: left; background: border-box; color: #ffffff; font-size: 0.20313rem; }

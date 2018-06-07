@@ -243,7 +243,7 @@
             <ul>
                 <li class="checks" ng-click="close(0)"><span class="ml30">取消</span></li>
                 <li class="addCustomer center">添加顾客</li>
-                <li class="checks" ng-click="close(1)"><span class="mr30 floatR">保存</span></li>
+                <li class="checks" ng-click="close(1)"><span ng-click="addSaveUserInfo()" class="mr30 floatR">保存</span></li>
             </ul>
         </div>
         <div ng-include="'itemList/appointment/addCustomers.html'" class="modifyingWrap bblr bbrr"></div>

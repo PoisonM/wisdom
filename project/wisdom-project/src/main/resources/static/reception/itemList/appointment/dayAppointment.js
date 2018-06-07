@@ -5,7 +5,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     , GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject
     , GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, UpdateAppointmentInfoById
     , FindArchives, GetShopProjectList, ShopWeekAppointmentInfoByDate, GetShopClerkScheduleList
-    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo) {
+    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo) {
     $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
     //切换时间更新数据
@@ -1279,12 +1279,32 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             $scope.param.addCustomersObject.userPhone='请填写正确的手机号';
                             return
                         }
-                        var ShopUserArchivesDTO = {
-                            sex:$scope.param.addCustomersObject.sex,
-                            picSrc:$scope.param.addCustomersObject.picSrc,
-                            userName:$scope.param.addCustomersObject.userName,
-                            userPhone:$scope.param.addCustomersObject.userPhone,
-                        }/*添加客户参数 post*/
+                        $scope.ShopUserArchivesDTO = {
+                            age	:$scope.param.selectContentAge,//年龄
+                            birthday:"",//生日
+                            bloodType:"",//血型
+                            channel:'',//渠道
+                            constellation:"",//星座
+                            detail:'',//备注
+                            height:"",//身高
+                            imageUrl:$scope.param.addCustomersObject.picSrc,//头像地址
+                            phone:$scope.param.addCustomersObject.userPhone,//手机号
+                            sex:$scope.param.addCustomersObject.sex,//性别
+                            sysClerkId:'',
+                            sysClerkName:"",
+                            sysShopId:'',
+                            sysShopName:'',
+                            sysUserName:$scope.param.addCustomersObject.userName,
+                        }
+
+                        SaveArchiveInfo.save($scope.ShopUserArchivesDTO,function (data) {
+                            if(data.result == "0x00001"){
+                                alert("保存成功")
+                                $scope.selectCustomersFun()
+                            }else if(data.result == "0x00002"){
+                                alert(data.responseData)
+                            }
+                        })
                     }
                     $scope.closeThisDialog();
 
