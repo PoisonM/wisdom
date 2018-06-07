@@ -28,6 +28,7 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                 ManagementUtil.checkResponseData(data,"");
                 if(data.result == Global.SUCCESS){
                     $scope.uploadingPar = data.responseData;
+                    $scope.param.productDetail.senderAddress = data.responseData.productDetail.senderAddress
                     $scope.param.productName=$scope.uploadingPar.productName;
                     $scope.param.brand=$scope.uploadingPar.brand;
                     $scope.param.secondType=$scope.uploadingPar.secondType;
@@ -287,7 +288,6 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
             /*保存*/
             $scope.mess = false;
             $scope.save = function(){
-                debugger
                     if($scope.hintPic1 ==""||$scope.hintPic2 ==""||$scope.hintPic3==""){
                         $scope.mess = true;
                         return;
@@ -355,6 +355,7 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                         firstUrl:$scope.uploadingPar.firstUrl,
                         price:price,
                         status:status,
+                        productPrefecture:$scope.uploadingPar.productPrefecture,
                         productAmount:$scope.uploadingPar.productAmount,
                         productDetail:{
                             createDate:$stateParams.createDate,
