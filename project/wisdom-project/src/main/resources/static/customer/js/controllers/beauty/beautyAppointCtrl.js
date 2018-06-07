@@ -76,16 +76,20 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 }
 
                 if($rootScope.shopAppointInfo.clerkId!='')
-                {
-                    initialTimeDate();
-                    GetBeautyShopInfo.clerkInfo($rootScope.shopAppointInfo.clerkId).then(function(data) {
-                        //success函数
-                        $scope.param.clerkInfo = data[0];
-                        GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
-                            searchDate:$scope.param.chooseDate},function (data){
-                            arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
+                {    //防止用户已经选中预约时间段被冲掉
+                    if($rootScope.shopAppointInfo.appointValue!=''){
+                        $scope.appointProject($rootScope.shopAppointInfo.appointValue);
+                    }else{
+                        initialTimeDate();
+                        GetBeautyShopInfo.clerkInfo($rootScope.shopAppointInfo.clerkId).then(function(data) {
+                            //success函数
+                            $scope.param.clerkInfo = data[0];
+                            GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
+                                searchDate:$scope.param.chooseDate},function (data){
+                                arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
+                            })
                         })
-                    })
+                    }
                 }
                 //如果没有选中美容师，默认为全选中状态
                 else {
@@ -147,6 +151,8 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
             }
 
             $scope.appointProject = function(appointValue){
+                //缓存用户选择的时间
+                $rootScope.shopAppointInfo.appointValue = appointValue;
                 initialTimeDate();
                 if($rootScope.shopAppointInfo.clerkId!='')
                 {
@@ -175,7 +181,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                                         else
                                         {
                                             data.status = '2';
-                                            //得良添加，防止时间出现小数，向上取整
+                                            //防止时间出现小数，向上取整
                                             if (Math.ceil(length) == 0)
                                             {
                                                 $scope.param.appointFlag = true;

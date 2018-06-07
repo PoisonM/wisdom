@@ -54,6 +54,7 @@ define(['angular'], function (angular) {
                 clerkId : '',
                 shopProjectIds:[],
                 shopProjectDetail:'',
+                appointValue:'',
                 shopUserInfo:{}
             }
         })
