@@ -374,6 +374,8 @@ public class AppointmentController {
 			responseDTO = appointmentService.saveUserShopAppointInfo(shopAppointServiceDTO);
 		} catch (Throwable e) {
 			logger.error("保存用户的预约信息失败，失败信息为" + e.getMessage(), e);
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
 		}finally {
 			redisLock.unlock();
 		}
@@ -395,6 +397,8 @@ public class AppointmentController {
 			responseDTO = appointmentService.updateUserAppointInfo(shopAppointServiceDTO);
 		} catch (Throwable e) {
 			logger.error("修改用户的预约信息失败，失败信息为" + e.getMessage(), e);
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
 		}finally {
 			redisLock.unlock();
 		}
