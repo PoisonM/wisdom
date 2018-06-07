@@ -222,6 +222,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                         BeautyUtil.checkResponseData(data,'beautyAppoint');
                         if(data.result==Global.SUCCESS)
                         {
+                            $rootScope.shopAppointInfo.shopProjectDetail = '';
                             $state.go("beautyUserAppointDetail",{appointId:data.responseData.appointmentId});
                         }
                     })
