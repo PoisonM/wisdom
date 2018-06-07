@@ -136,7 +136,12 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
 
             $scope.chooseAppointDate = function(dateValue){
                 $scope.param.chooseDate = dateValue;
-                //帮助回显
+                //如果没有选中美容师，默认为全选中状态
+                if($rootScope.shopAppointInfo.clerkId!='')
+                {
+                    appointTimeDate();
+                }
+                    //帮助回显
                 $rootScope.shopAppointInfo.chooseDate = dateValue;
                 GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
                     searchDate:$scope.param.chooseDate},function (data){
