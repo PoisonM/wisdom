@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
+import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
@@ -340,6 +341,45 @@ public class CardController {
 		ResponseDTO<Object> responseDTO = shopUserConsumeService.rechargeRechargeCrad(transactionId, imageUrl);
 
 		logger.info("查询套卡列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+	/**
+	 * 新增充值卡信息
+	 *
+	 * @param extShopRechargeCardDTO
+	 * @return
+	 */
+	@RequestMapping(value = "/saveRechargeCardInfo", method = RequestMethod.POST)
+	@ResponseBody
+	ResponseDTO<Object> saveRechargeCardInfo(@RequestBody ExtShopRechargeCardDTO extShopRechargeCardDTO) {
+		long currentTimeMillis = System.currentTimeMillis();
+		logger.info("新增充值卡信息传入参数={}", "extShopRechargeCardDTO = [" + extShopRechargeCardDTO + "]");
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		int info = cardService.saveRechargeCardInfo(extShopRechargeCardDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("新增充值卡信息执行结果={}，新增充值卡信息信息耗时{}毫秒", info > 0 ? "成功" : "失败", System.currentTimeMillis() - currentTimeMillis);
+		return responseDTO;
+	}
+
+	/**
+	 * 更新充值卡信息
+	 *
+	 * @param extShopRechargeCardDTO
+	 * @return
+	 */
+	@RequestMapping(value = "/updateRechargeCardInfo", method = RequestMethod.POST)
+	@ResponseBody
+	ResponseDTO<Object> updateRechargeCardInfo(@RequestBody ExtShopRechargeCardDTO extShopRechargeCardDTO) {
+		long currentTimeMillis = System.currentTimeMillis();
+		ResponseDTO<Object> responseDTO = new ResponseDTO();
+		if (StringUtils.isBlank(extShopRechargeCardDTO.getId())) {
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
+		}
+		int info = cardService.updateRechargeCardInfo(extShopRechargeCardDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("更新充值卡信息执行结果={}，新增充值卡信息信息耗时{}毫秒", info > 0 ? "成功" : "失败", System.currentTimeMillis() - currentTimeMillis);
 		return responseDTO;
 	}
 }

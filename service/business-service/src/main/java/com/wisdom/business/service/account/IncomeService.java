@@ -96,7 +96,7 @@ public class IncomeService {
     }
 
     public List<IncomeRecordDTO> getIncomeRecordByPageParam(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
-
+        logger.info("根据条件查询用户佣金奖励");
         String orderStatus ="2";
         String orderId ="";
         String orderAmount ="0";
@@ -169,7 +169,6 @@ public class IncomeService {
                         incomeRecordDTO.setCheckStatus(incomeRecordManagementDTOS.get(0).getStatus());
                         incomeRecordDTO.setCheckUserName(URLDecoder.decode(incomeRecordManagementDTOS.get(0).getUserName(),"utf-8"));
                         incomeRecordDTO.setCheckSysUserId(incomeRecordManagementDTOS.get(0).getSysUserId());
-                        //incomeRecordDTO.setCreateDate(incomeRecordManagementDTOS.get(0).getCreateDate());
                     }
                 }else if(incomeRecordManagementDTOS.size() == 2){
                     boolean status = true;
@@ -297,7 +296,6 @@ public class IncomeService {
                                 }else{
                                     break;
                                 }
-
                             }
                             incomeRecordDTO.setNickName(nickNameW);
                         }else{
@@ -334,12 +332,10 @@ public class IncomeService {
                         incomeRecordDTO.setNextUserNickName("特殊符号用户");
                     }
                 }
-
             //判断该交易购买者是否升级
             PromotionTransactionRelation promotionTransactionRelation = promotionTransactionRelationMapper.getIsImportLevel(incomeRecordDTO.getTransactionId());
             if(promotionTransactionRelation!=null){
                 if(promotionTransactionRelation.getPromotionLevel()!=null){
-
                     if((promotionTransactionRelation.getPromotionLevel().equals(ConfigConstant.LEVE_IMPORT_A))||(promotionTransactionRelation.getPromotionLevel().equals(ConfigConstant.LEVE_IMPORT_B))){
                         incomeRecordDTO.setIsImportLevel("是");
                     }else{
@@ -359,6 +355,7 @@ public class IncomeService {
     }
 
     public List<MonthTransactionRecordDTO> queryMonthRecordByParentRelation(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+        logger.info("service -- 月度奖励详情queryMonthRecordByParentRelation方法" );
         List<MonthTransactionRecordDTO> monthTransactionRecordDTOS = incomeMapper.queryMonthRecordByParentRelation(pageParamVoDTO);
         for (MonthTransactionRecordDTO monthTransactionRecordDTO: monthTransactionRecordDTOS) {
             try {
@@ -372,6 +369,15 @@ public class IncomeService {
                 logger.info("service -- 月度奖励详情queryMonthRecordByParentRelation方法转换nickName失败" );
                 e.printStackTrace();
             }
+            IncomeRecordDTO incomeRecord = new IncomeRecordDTO();
+            incomeRecord.setTransactionId(monthTransactionRecordDTO.getTransactionId());
+            incomeRecord.setSysUserId(monthTransactionRecordDTO.getUserId());
+            List<IncomeRecordDTO> incomeRecordDTOS = incomeMapper.getUserIncomeInfo(incomeRecord);
+            float amountMoney = 0;
+            for(IncomeRecordDTO incomeRecordDTO:incomeRecordDTOS){
+                amountMoney = amountMoney+incomeRecordDTO.getAmount();
+            }
+            monthTransactionRecordDTO.setAmountMoney(amountMoney);
             UserInfoDTO selfUserInfoDTO = userServiceClient.getUserInfoFromUserId(monthTransactionRecordDTO.getUserId());
             UserInfoDTO nextUserInfoDTO = userServiceClient.getUserInfoFromUserId(monthTransactionRecordDTO.getNextUserId());
             monthTransactionRecordDTO.setUserTypeNow(selfUserInfoDTO.getUserType());
@@ -392,6 +398,7 @@ public class IncomeService {
     }
 
     public List<ExportIncomeRecordExcelDTO> exportExcelIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+        logger.info("service -- 导出佣金数据 exportExcelIncomeRecord,方法执行" );
         List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeMapper.exportExcelIncomeRecord(pageParamVoDTO);
         for (ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO : exportIncomeRecordExcelDTOS){
             //判断该交易购买者是否升级
@@ -478,11 +485,12 @@ public class IncomeService {
      *
      * */
     public PageParamDTO<List<IncomeRecordDTOExt>> findNextUserInfo(PageParamVoDTO<UserInfoDTO> pageParamVoDTO){
-
+        logger.info("service -- 店铺信息 findNextUserInfo,方法执行" );
         PageParamDTO<List<IncomeRecordDTOExt>> pageResult = new PageParamDTO<List<IncomeRecordDTOExt>>();
 
         //获取父类是该用户的所有用户
         List<UserInfoDTO> userInfoDTOS = (ArrayList)userServiceClient.getUserInfo(pageParamVoDTO.getRequestData());
+        logger.info("service -- 获取父类是该用户的所有用户List={}", userInfoDTOS.size());
         List<IncomeRecordDTOExt> incomeRecordDTOExts = new ArrayList<>();
         if(userInfoDTOS != null && userInfoDTOS.size()>0){
             for(UserInfoDTO userInfo : userInfoDTOS){
@@ -513,7 +521,7 @@ public class IncomeService {
                                         orderId = orderId.append(payRecordDTOList.get(0).getOrderId());
                                     }
                                 }
-
+                                logger.info("service -- 判断此单={}是否大于498",amount);
                                 //判断此单是否大于498
                                 if(amount>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE){
                                     incomeRecordDTOExt.setUserInfoDTO(userInfo);

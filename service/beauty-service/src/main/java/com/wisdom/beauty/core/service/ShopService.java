@@ -2,6 +2,8 @@ package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.SysShopDTO;
 
+import java.util.List;
+
 /**
  * FileName: ShopBossService
  *
@@ -18,4 +20,11 @@ public interface ShopService {
      * @return
      */
     SysShopDTO getShopInfoByPrimaryKey(String id);
+
+    /**
+     * 根据条件查询shop相关信息
+     *
+     * @return
+     */
+    List<SysShopDTO> getShopInfo(SysShopDTO sysShopDTO);
 }

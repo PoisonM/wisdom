@@ -8,7 +8,6 @@ function individualTravelerAppointment ($scope,ngDialog,FindArchives,GetShopProj
         $scope.param.AppointmentType="散客"
     };*/
 
-
     modifyingAppointmentPage && modifyingAppointmentPage ($scope,ngDialog,FindArchives,GetShopProjectList)
 }
 

@@ -93,11 +93,11 @@ public class ConfigConstant {
 
 	public static final String BOSS_OPEN_ID =  Global.getConfig("BOSS_OPEN_ID");
 
-	public static final String financeMember =  Global.getConfig("financeMember");
+    public static final String financeMember =  Global.getConfig("financeMember");
 
-	public static final String operationMember =  Global.getConfig("operationMember");
+    public static final String operationMember =  Global.getConfig("operationMember");
 
-	public static final int MAX_WITHDRAW_NUM = Integer.parseInt(Global.getConfig("MAX_WITHDRAW_NUM"));
+    public static final int MAX_WITHDRAW_NUM = Integer.parseInt(Global.getConfig("MAX_WITHDRAW_NUM"));
 
 	public static final int MAX_WITHDRAW_AMOUNT = Integer.parseInt(Global.getConfig("MAX_WITHDRAW_AMOUNT"));
 
@@ -107,6 +107,11 @@ public class ConfigConstant {
 
 	public static final String PAY_TEST_FLAG = Global.getConfig("PAY_TEST_FLAG");
 
+	public static final String shopBusiness = Global.getConfig("shopBusiness");
+
+	public static final String beautySource = "beauty";
+
+	public static final String businessSource = "business";
 /*	public static final float PERMANT_REWARD = Integer.parseInt(Global.getConfig("PERMANT_REWARD"));*/
 
 	public static final String LEVE_IMPORT_A = Global.getConfig("LEVE_IMPORT_A");
@@ -129,5 +134,6 @@ public class ConfigConstant {
 	public static final String INCOME_AUDITED = Global.getConfig("INCOME_AUDITED");
 
 	public static final String INCOME_AUDIT_REJECTION = Global.getConfig("INCOME_AUDIT_REJECTION");
+
 
 }

@@ -1,7 +1,9 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
+import com.wisdom.beauty.api.dto.ShopProjectInfoGroupRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
+import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
@@ -66,4 +68,36 @@ public interface ShopProjectGroupService {
     *@Date:2018/4/17 11:32
     */
     ShopProjectGroupDTO getShopProjectGroupDTO(String id);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 根据多个主键id查询信息
+    *@Date:2018/5/17 9:22
+    */
+    List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(List<String> ids);
+    /**
+     *@Author:zhanghuan
+     *@Param:
+     *@Return:
+     *@Description: 根据多个套卡id查询信息
+     *@Date:2018/5/17 9:22
+     */
+    List<ShopProjectInfoGroupRelationDTO> getShopProjectInfoGroupRelation(List<String> ids);
+
+    /**
+     * 添加套卡
+     *
+     * @param extShopProjectGroupDTO
+     * @return
+     */
+    int saveProjectGroupInfo(ExtShopProjectGroupDTO extShopProjectGroupDTO);
+
+    /**
+     * 修改套卡
+     *
+     * @param extShopProjectGroupDTO
+     * @return
+     */
+    int updateProjectGroupInfo(ExtShopProjectGroupDTO extShopProjectGroupDTO);
 }

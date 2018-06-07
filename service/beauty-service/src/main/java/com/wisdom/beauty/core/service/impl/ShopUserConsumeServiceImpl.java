@@ -7,7 +7,6 @@ import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
-import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -31,6 +30,8 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import static java.math.BigDecimal.ROUND_HALF_DOWN;
 
 /**
  * FileName: ShopUserConsumService
@@ -67,9 +68,6 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
     @Resource
     private ShopProjectGroupService shopProjectGroupService;
-
-    @Resource
-    private RedisUtils redisUtils;
 
     @Resource
     private MongoTemplate mongoTemplate;
@@ -164,6 +162,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             update.set("cashPayPrice", shopUserPayDTO.getCashPayPrice());
             update.set("surplusPayPrice", shopUserPayDTO.getSurplusPayPrice());
             update.set("payType", shopUserPayDTO.getPayType());
+            update.set("balancePay", shopUserPayDTO.getBalancePay());
+            update.set("detail", shopUserPayDTO.getDetail());
             mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         } catch (RuntimeException e) {
             logger.error("用户充值操作异常，异常原因为" + e.getMessage(), e);
@@ -201,6 +201,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
                 userConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
                 userConsumeRecordDTO.setSysBossId(clerkInfo.getSysBossId());
+                userConsumeRecordDTO.setPrice(dto.getSurplusAmount());
                 userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
                 userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
                 logger.info("订单号={},更新用户的充值卡信息={}", orderId, userConsumeRecordDTO);
@@ -238,8 +239,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 for (int i = 0; i < dto.getProjectInitTimes(); i++) {
                     //购买一个套卡的金额
                     BigDecimal price = dto.getProjectInitAmount();
-                    BigDecimal divide = dto.getShopGroupPuchasePrice().divide(dto.getProjectInitAmount());
-                    dto.setDiscount(divide.floatValue());
+                    BigDecimal discount = dto.getShopGroupPuchasePrice().divide(dto.getProjectInitAmount(), 2, ROUND_HALF_DOWN);
+                    dto.setDiscount(discount.floatValue());
                     //根据套卡id查询项目列表
                     ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
                     shopProjectInfoGroupRelationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
@@ -254,14 +255,12 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     //生成用户跟套卡与项目的关系的关系
                     for (ShopProjectInfoGroupRelationDTO dt : groupRelations) {
                         //查询项目信息
-                        ShopProjectInfoDTO shopProjectInfoDTO = redisUtils.getShopProjectInfoFromRedis(dt.getShopProjectInfoId());
                         ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
                         groupRelRelationDTO.setSysShopId(clerkInfo.getSysShopId());
                         groupRelRelationDTO.setSysUserId(archivesInfo.getSysUserId());
                         groupRelRelationDTO.setId(IdGen.uuid());
                         groupRelRelationDTO.setShopProjectGroupId(dto.getId());
                         groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
-                        groupRelRelationDTO.setSysBossId(shopProjectInfoDTO.getSysBossId());
                         groupRelRelationDTO.setProjectSurplusTimes(dt.getShopProjectServiceTimes());
                         groupRelRelationDTO.setProjectSurplusAmount(dt.getShopProjectPrice());
                         logger.info("订单号={}，生成用户跟套卡的关系的关系记录={}", orderId, groupRelRelationDTO);
@@ -270,6 +269,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     //生成充值记录
                     ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
                     userConsumeRecordDTO.setFlowName(dto.getShopProjectGroupName());
+                    //存储套卡id
                     userConsumeRecordDTO.setFlowId(dto.getId());
                     if (null != dto.getDiscount()) {
                         userConsumeRecordDTO.setDiscount(new BigDecimal(dto.getDiscount()));
@@ -320,7 +320,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     dto.setSysBossId(clerkInfo.getSysBossId());
                     //单个项目的价格 = 总金额/购买了多少个
                     BigDecimal price = dto.getSysShopProjectInitAmount();
-                    BigDecimal divide = dto.getSysShopProjectPurchasePrice().divide(dto.getSysShopProjectInitAmount());
+                    BigDecimal divide = dto.getSysShopProjectPurchasePrice().divide(dto.getSysShopProjectInitAmount(), 2, ROUND_HALF_DOWN);
                     dto.setDiscount(divide.toString());
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getUseStyle())) {
@@ -379,7 +379,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 dto.setSysBossId(clerkInfo.getSysBossId());
                 dto.setSurplusTimes(dto.getInitTimes());
                 dto.setSurplusAmount(dto.getInitAmount());
-                BigDecimal divide = dto.getPurchasePrice().divide(dto.getInitAmount());
+                BigDecimal divide = dto.getPurchasePrice().divide(dto.getInitAmount(), 2, ROUND_HALF_DOWN);
                 dto.setDiscount(divide.floatValue());
                 logger.info("订单号={}，生成用户跟产品的关系={}", orderId, dto);
                 shopProductInfoService.saveShopUserProductRelation(dto);

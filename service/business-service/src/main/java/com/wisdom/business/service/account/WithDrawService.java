@@ -52,14 +52,17 @@ public class WithDrawService {
 
     
     public Map<String,String> updateWithdrawById(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
+        logger.info("service -- 提现审核 updateWithdrawById,方法执行" );
 
         String openid = JedisUtils.get("openid");
+        logger.info("service -- 提现审核 openid={}",openid );
         RedisLock redisLock = new RedisLock("deFrozenWithDrawRecord"+openid);
         redisLock.lock();
         String withdrawId = withDrawRecordDTO.getWithdrawId();
         String status = withDrawRecordDTO.getStatus();
         String token = WeixinUtil.getUserToken();
         Float moneyAmount = withDrawRecordDTO.getMoneyAmount();
+        logger.info("service -- 提现Id={},审核状态={},token={},金额={}",withdrawId,status,token,moneyAmount);
         String time = DateUtils.getDateTime();
         WithDrawRecordDTO withDrawRecordDTO1 = new WithDrawRecordDTO();
         withDrawRecordDTO1.setId(withdrawId);
@@ -71,25 +74,30 @@ public class WithDrawService {
             if (withDrawRecordDTOS.get(0).getStatus().equals("0")) {
 
                 withDrawMapper.updateWithdrawById(withdrawId, status);
-                if ("2".equals(status)) {//拒绝提现,提现金额返还余额
+                //拒绝提现,提现金额返还余额
+                if ("2".equals(status)) {
+                    logger.info("拒绝提现,提现金额返还余额");
                     AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(withDrawRecordDTO.getSysUserId());
-                    Float money = accountDTO.getBalance();//用户余额
-                    Float balance = withDrawRecordDTO.getMoneyAmount();//提现金额
+                    //用户余额
+                    Float money = accountDTO.getBalance();
+                    //提现金额
+                    Float balance = withDrawRecordDTO.getMoneyAmount();
                     Float f = money + balance;
+                    logger.info("拒绝提现,提现金额返还余额,用户余额=={},提现金额=={},返还金额=={}",money,balance,f);
                     accountDTO.setBalance(f);
                     accountMapper.updateUserAccountInfo(accountDTO);
                     //发送提现失败消息模板
+                    logger.info("拒绝提现,发送提现失败消息模板");
                     WeixinTemplateMessageUtil.sendWithDrawTemplateFailureMessage(String.valueOf(moneyAmount), time, token, "", openid);
                     HashMap<String, String> result = new HashMap<String, String>();
                     result.put("result","success");
                     result.put("message","执行成功");
                     redisLock.unlock();
                     return result;
-
                 } else {
-
                     try {
                         //将钱打入用户零钱账户
+                        logger.info("将钱打入用户零钱账户");
                         returnMoneyToUser(moneyAmount, request, openid, token);
                         HashMap<String, String> result = new HashMap<String, String>();
                         result.put("result","success");
@@ -97,6 +105,7 @@ public class WithDrawService {
                         redisLock.unlock();
                         return result;
                     } catch (Exception e) {
+                        logger.info("公司公众号帐户余额不足，请联系财务人员");
                         logger.info(e.getMessage());
                         withDrawMapper.updateWithdrawById(withdrawId, "0");
                         HashMap<String, String> result = new HashMap<String, String>();
@@ -113,7 +122,6 @@ public class WithDrawService {
                 redisLock.unlock();
                 return result;
             }
-
         }else{
             HashMap<String, String> result = new HashMap<String, String>();
             result.put("result","failure");
@@ -121,18 +129,17 @@ public class WithDrawService {
             redisLock.unlock();
             return result;
         }
-
     }
 
 
     
     public PageParamDTO<List<WithDrawRecordDTO>> queryWithdrawsByParameters(PageParamVoDTO<ProductDTO> pageParamVoDTO) {
-
+        logger.info("service -- 条件查询提现 queryWithdrawsByParameters,方法执行" );
         PageParamDTO<List<WithDrawRecordDTO>> page = new  PageParamDTO<>();
         int count = withDrawMapper.queryWithdrawsCountByParameters(pageParamVoDTO);
         page.setTotalCount(count);
         List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawMapper.queryWithdrawsByParameters(pageParamVoDTO);
-
+        logger.info("service -- 条件查询提现Count={} List={}",count,withDrawRecordDTOList.size());
         for(WithDrawRecordDTO withDrawRecordDTO : withDrawRecordDTOList){
             String nickNameW ="";
             try {
@@ -160,8 +167,6 @@ public class WithDrawService {
                 }else{
                     nickNameW="未知用户";
                 }
-
-
                 //withDrawRecordDTO.setNickName(URLDecoder.decode(URLDecoder.decode(withDrawRecordDTO.getNickName(),"utf-8"),"utf-8"));
             } catch(Throwable e){
                 logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
@@ -208,15 +213,16 @@ public class WithDrawService {
 
     @Transactional(rollbackFor = Exception.class)
     public void withDrawMoneyFromAccount(float moneyAmount, HttpServletRequest request, String openid,boolean checkFlag)  throws Exception{
-
+        logger.info("service -- 提现 withDrawMoneyFromAccount,方法执行" );
         String token = WeixinUtil.getUserToken();
-
+        logger.info("service -- 提现 token={}",token);
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         AccountDTO accountDTO = accountMapper.getUserAccountInfoByUserId(userInfoDTO.getId());
 
         //扣除账户余额中的款项
         if((accountDTO.getBalance()-moneyAmount)<0)
         {
+            logger.info("service -- 提现金额大于您的账户余额，提现失败 ");
             List<Article> articleList = new ArrayList<>();
             Article article = new Article();
             article.setTitle("对不起，您的提现金额大于您的账户余额，提现失败。");
@@ -258,6 +264,7 @@ public class WithDrawService {
     public void deFrozenWithDrawRecord(WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) throws Exception {
         withDrawMapper.updateWithdrawById(withDrawRecordDTO.getWithdrawId(),"1");
         String token = WeixinUtil.getUserToken();
+        logger.info("提现用户token==={}" , token);
         returnMoneyToUser(withDrawRecordDTO.getMoneyAmount(),request,withDrawRecordDTO.getUserOpenId(),token);
     }
 

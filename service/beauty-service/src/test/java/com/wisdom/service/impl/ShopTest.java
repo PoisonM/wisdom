@@ -1,7 +1,9 @@
 package com.wisdom.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
-import com.wisdom.common.util.JedisUtils;
+import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
+import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,14 +57,43 @@ public class ShopTest {
     @Test
     public void getUserScanInfo() throws Exception {
 
-        JedisUtils.setObject("20180510170143457_1", "Y", 100000000);
+//        JedisUtils.setObject("20180510170143457_1", "Y", 100000000);
 
-        MvcResult result = mvc.perform(get("/shop/getUserScanInfo").param("sysUserId", "1").param("shopId", "20180510170143457"))
+//        MvcResult result = mvc.perform(get("/shop/getBossShopInfo").param("sysUserId", "1").param("shopId", "20180510170143457"))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+
+//        MvcResult result = mvc.perform(get("/shop/getBossShopInfo"))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+
+        MvcResult result = mvc.perform(get("/shop/getShopInfo"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
 
         System.out.println(result.getResponse().getContentAsString());
     }
+
+
+    @Test
+    public void updateShopInfo() throws Exception {
+
+        SysShopDTO sysShopDTO = new SysShopDTO();
+        sysShopDTO.setId("11");
+        sysShopDTO.setAddress("安定门大街 五道营胡同处");
+        String toJSONString = JSONObject.toJSONString(sysShopDTO);
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/shop/updateShopInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
 
 }

@@ -1,0 +1,79 @@
+<div>
+
+    <nav-bar index1="2" index2="23"></nav-bar>
+    <div class="main_content">
+        <enjoy-menu></enjoy-menu>
+        <div class="content_box">
+         <div class="mum" ng-show="mum">
+                <div class="m-load2">
+                    <div class="line">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="circlebg"></div>
+                </div>
+            </div>
+         <div class="product_content_right">
+             <div class="rightCenter">
+                 <div class="product_eara">
+                     <div class="product_name" style="width:95%;">
+                         <div class="product_nameEara " style="float:left; width:35%;">
+                             <label  for="financeName" style="width:85px;" class="bold">图片编号:</label>
+                             <input type="text" class="product_search imgId" ng-model="bills" id="financeName">
+                         </div>
+                         <div class="orderTime product_nameEara" style="float:left; width:60%;">
+                             <label class="bold">
+                                 创建时间：
+                             </label>
+                             <input  class="imgCreateStart date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp--&nbsp<input class="imgCreateEnd date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"  >
+                         </div>
+                     </div>
+                     <div class="product_searchEara"  style="width:95%;heght:45px;">
+                         <input type="button" value="搜索" style="margin-top:30px;float:right;" class="search_btn" ng-click="searchBills()">
+                     </div>
+                 </div>
+                 <div class="table_lis">
+                     <div>
+                         <a class="order_lis simulateBtn" ng-click="createImage()">上传图片</a>
+                     </div>
+                     <table class="table   table-hover text-center ">
+                         <thead>
+                         <tr id="product_lis_title">
+                             <th class="text-center">图片编号</th>
+                             <th class="text-center">图片类型</th>
+                             <th class="text-center">创建时间</th>
+                             <th class="text-center" >图片</th>
+                             <th class="text-center" >跳转url</th>
+                             <th class="text-center" colspan="3">操作</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         <tr ng-repeat="item in finance" >
+                             <td>{{item.nickName}}</td>
+                             <td>{{item.mobile}}</td>
+                             <td>{{item.userType}}</td>
+                             <td>{{item.transactionId}}</td>
+                             <td>{{item.orderId}}</td>
+                             <td ng-click="void();$event.stopPropagation()" colspan="3">
+                                 <a ng-click="updateImageInfo(item.sysUserId);$event.stopPropagation()" class="orderBtn" >编辑</a>
+                                 &nbsp;
+                                 <a ng-click="remove(item.id);$event.stopPropagation()" class="orderBtn" >移除</a>
+                                 &nbsp;
+                                 <a ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index,item.id);$event.stopPropagation()" class="orderBtn" >上移</a>
+                                 &nbsp;
+                                 <a ng-click="examine(item.id);$event.stopPropagation()" class="orderBtn" >下移</a>
+                             </td>
+                         </tr>
+                         </tbody>
+                     </table>
+                     <div page-tool></div>
+                 </div>
+             </div>
+        </div>
+     </div>
+    </div>
+</div>

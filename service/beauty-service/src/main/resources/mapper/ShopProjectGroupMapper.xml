@@ -8,7 +8,8 @@
     <result column="project_group_url" property="projectGroupUrl" jdbcType="VARCHAR"/>
     <result column="market_price" property="marketPrice" jdbcType="DECIMAL"/>
     <result column="discount_price" property="discountPrice" jdbcType="DECIMAL"/>
-    <result column="valid_date" property="validDate" jdbcType="TIMESTAMP"/>
+    <result column="effective_date" property="effectiveDate" jdbcType="VARCHAR"/>
+    <result column="expiration_date" property="expirationDate" jdbcType="VARCHAR"/>
     <result column="detail" property="detail" jdbcType="VARCHAR"/>
     <result column="status" property="status" jdbcType="CHAR"/>
     <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
@@ -76,7 +77,8 @@
   </sql>
   <sql id="Base_Column_List">
     id, sys_shop_id, project_group_name, project_group_url, market_price, discount_price,
-    valid_date, detail, status, create_by, create_date, update_user, update_date
+    effective_date, expiration_date, detail, status, create_by, create_date, update_user,
+    update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap"
           parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupCriteria">
@@ -115,14 +117,14 @@
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO">
     insert into shop_project_group (id, sys_shop_id, project_group_name,
     project_group_url, market_price, discount_price,
-    valid_date, detail, status,
-    create_by, create_date, update_user,
-    update_date)
+    effective_date, expiration_date, detail,
+    status, create_by, create_date,
+    update_user, update_date)
     values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{projectGroupName,jdbcType=VARCHAR},
     #{projectGroupUrl,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL},
-    #{validDate,jdbcType=TIMESTAMP}, #{detail,jdbcType=VARCHAR}, #{status,jdbcType=CHAR},
-    #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
-    #{updateDate,jdbcType=TIMESTAMP})
+    #{effectiveDate,jdbcType=VARCHAR}, #{expirationDate,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR},
+    #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO">
     insert into shop_project_group
@@ -145,8 +147,11 @@
       <if test="discountPrice != null">
         discount_price,
       </if>
-      <if test="validDate != null">
-        valid_date,
+      <if test="effectiveDate != null">
+        effective_date,
+      </if>
+      <if test="expirationDate != null">
+        expiration_date,
       </if>
       <if test="detail != null">
         detail,
@@ -186,8 +191,11 @@
       <if test="discountPrice != null">
         #{discountPrice,jdbcType=DECIMAL},
       </if>
-      <if test="validDate != null">
-        #{validDate,jdbcType=TIMESTAMP},
+      <if test="effectiveDate != null">
+        #{effectiveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="expirationDate != null">
+        #{expirationDate,jdbcType=VARCHAR},
       </if>
       <if test="detail != null">
         #{detail,jdbcType=VARCHAR},
@@ -237,8 +245,11 @@
       <if test="record.discountPrice != null">
         discount_price = #{record.discountPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.validDate != null">
-        valid_date = #{record.validDate,jdbcType=TIMESTAMP},
+      <if test="record.effectiveDate != null">
+        effective_date = #{record.effectiveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expirationDate != null">
+        expiration_date = #{record.expirationDate,jdbcType=VARCHAR},
       </if>
       <if test="record.detail != null">
         detail = #{record.detail,jdbcType=VARCHAR},
@@ -271,7 +282,8 @@
       project_group_url = #{record.projectGroupUrl,jdbcType=VARCHAR},
       market_price = #{record.marketPrice,jdbcType=DECIMAL},
       discount_price = #{record.discountPrice,jdbcType=DECIMAL},
-      valid_date = #{record.validDate,jdbcType=TIMESTAMP},
+    effective_date = #{record.effectiveDate,jdbcType=VARCHAR},
+    expiration_date = #{record.expirationDate,jdbcType=VARCHAR},
       detail = #{record.detail,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=CHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
@@ -300,8 +312,11 @@
       <if test="discountPrice != null">
         discount_price = #{discountPrice,jdbcType=DECIMAL},
       </if>
-      <if test="validDate != null">
-        valid_date = #{validDate,jdbcType=TIMESTAMP},
+      <if test="effectiveDate != null">
+        effective_date = #{effectiveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="expirationDate != null">
+        expiration_date = #{expirationDate,jdbcType=VARCHAR},
       </if>
       <if test="detail != null">
         detail = #{detail,jdbcType=VARCHAR},
@@ -331,7 +346,8 @@
       project_group_url = #{projectGroupUrl,jdbcType=VARCHAR},
       market_price = #{marketPrice,jdbcType=DECIMAL},
       discount_price = #{discountPrice,jdbcType=DECIMAL},
-      valid_date = #{validDate,jdbcType=TIMESTAMP},
+    effective_date = #{effectiveDate,jdbcType=VARCHAR},
+    expiration_date = #{expirationDate,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},
       status = #{status,jdbcType=CHAR},
       create_by = #{createBy,jdbcType=VARCHAR},

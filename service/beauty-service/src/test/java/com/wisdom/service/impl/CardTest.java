@@ -2,6 +2,7 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
+import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -76,6 +79,55 @@ public class CardTest {
         System.out.println(toJSONString);
 
         MvcResult result = mvc.perform(post("/cardInfo/userRechargeConfirm").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    /**
+     * 保存充值卡信息
+     *
+     * @throws Exception
+     */
+    @Test
+    public void saveRechargeCardInfo() throws Exception {
+
+        ExtShopRechargeCardDTO extShopRechargeCardDTO = new ExtShopRechargeCardDTO();
+        extShopRechargeCardDTO.setName("测试充值卡名称");
+        List<String> imageUrls = new ArrayList<>();
+        imageUrls.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
+        imageUrls.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
+        imageUrls.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
+        extShopRechargeCardDTO.setImageUrls(imageUrls);
+        extShopRechargeCardDTO.setTimeDiscount(0.75f);
+        extShopRechargeCardDTO.setPeriodDiscount(0.95f);
+        extShopRechargeCardDTO.setProductDiscount(0.85f);
+        extShopRechargeCardDTO.setIntroduce("这是一张测试用的充值卡~");
+        extShopRechargeCardDTO.setAmount(new BigDecimal(10000));
+
+        extShopRechargeCardDTO.setId("4e3a924187b44bc5a156262f690902e2");
+        List<String> product = new ArrayList<>();
+        product.add("1");
+        product.add("2");
+        product.add("3");
+        extShopRechargeCardDTO.setProductIds(product);
+        List<String> projectIds = new ArrayList<>();
+        projectIds.add("1");
+        projectIds.add("2");
+        projectIds.add("3");
+        extShopRechargeCardDTO.setProjectIds(projectIds);
+
+        String toJSONString = JSONObject.toJSONString(extShopRechargeCardDTO);
+
+        System.out.println(toJSONString);
+
+//        MvcResult result = mvc.perform(post("/cardInfo/saveRechargeCardInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+        MvcResult result = mvc.perform(post("/cardInfo/updateRechargeCardInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

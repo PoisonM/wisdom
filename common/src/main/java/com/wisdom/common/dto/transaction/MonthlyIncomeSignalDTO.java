@@ -13,8 +13,31 @@ public class MonthlyIncomeSignalDTO {
     @JSONField(name = "month")
     private String month;
 
+    @JSONField(name = "day")
+    private String day;
+
+    @JSONField(name = "businessType")
+    private String businessType;
+
     @JSONField(name = "onTimeFinish")
     private String onTimeFinish;
+
+
+    public String getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
 
     public String getYear() {
         return year;

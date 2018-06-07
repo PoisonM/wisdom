@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopCheckRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="flow_no" property="flowNo" jdbcType="VARCHAR" />
+    <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="shop_boss_id" property="shopBossId" jdbcType="VARCHAR" />
+    <result column="shop_close_position_id" property="shopClosePositionId" jdbcType="VARCHAR" />
+    <result column="actual_stock_number" property="actualStockNumber" jdbcType="INTEGER" />
+    <result column="stock_number" property="stockNumber" jdbcType="INTEGER" />
+    <result column="shop_proc_name" property="shopProcName" jdbcType="VARCHAR" />
+    <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR" />
+    <result column="product_type_one_name" property="productTypeOneName" jdbcType="VARCHAR" />
+    <result column="product_type_one_Id" property="productTypeOneId" jdbcType="VARCHAR" />
+    <result column="manager_id" property="managerId" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, flow_no, shop_store_id, state, shop_boss_id, shop_close_position_id, actual_stock_number, 
+    stock_number, shop_proc_name, shop_proc_id, product_type_one_name, product_type_one_Id, 
+    manager_id, create_date, update_date
+  </sql>
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_check_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart >= 0" >
+      limit ${limitStart},${pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from shop_check_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from shop_check_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordCriteria" >
+    delete from shop_check_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
+    insert into shop_check_record (id, flow_no, shop_store_id, 
+      state, shop_boss_id, shop_close_position_id, 
+      actual_stock_number, stock_number, shop_proc_name, 
+      shop_proc_id, product_type_one_name, product_type_one_Id, 
+      manager_id, create_date, update_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{flowNo,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, 
+      #{state,jdbcType=CHAR}, #{shopBossId,jdbcType=VARCHAR}, #{shopClosePositionId,jdbcType=VARCHAR}, 
+      #{actualStockNumber,jdbcType=INTEGER}, #{stockNumber,jdbcType=INTEGER}, #{shopProcName,jdbcType=VARCHAR}, 
+      #{shopProcId,jdbcType=VARCHAR}, #{productTypeOneName,jdbcType=VARCHAR}, #{productTypeOneId,jdbcType=VARCHAR}, 
+      #{managerId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
+    insert into shop_check_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="flowNo != null" >
+        flow_no,
+      </if>
+      <if test="shopStoreId != null" >
+        shop_store_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="shopBossId != null" >
+        shop_boss_id,
+      </if>
+      <if test="shopClosePositionId != null" >
+        shop_close_position_id,
+      </if>
+      <if test="actualStockNumber != null" >
+        actual_stock_number,
+      </if>
+      <if test="stockNumber != null" >
+        stock_number,
+      </if>
+      <if test="shopProcName != null" >
+        shop_proc_name,
+      </if>
+      <if test="shopProcId != null" >
+        shop_proc_id,
+      </if>
+      <if test="productTypeOneName != null" >
+        product_type_one_name,
+      </if>
+      <if test="productTypeOneId != null" >
+        product_type_one_Id,
+      </if>
+      <if test="managerId != null" >
+        manager_id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="flowNo != null" >
+        #{flowNo,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStoreId != null" >
+        #{shopStoreId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
+      </if>
+      <if test="shopBossId != null" >
+        #{shopBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopClosePositionId != null" >
+        #{shopClosePositionId,jdbcType=VARCHAR},
+      </if>
+      <if test="actualStockNumber != null" >
+        #{actualStockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="stockNumber != null" >
+        #{stockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="shopProcName != null" >
+        #{shopProcName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopProcId != null" >
+        #{shopProcId,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeOneName != null" >
+        #{productTypeOneName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeOneId != null" >
+        #{productTypeOneId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordCriteria" resultType="java.lang.Integer" >
+    select count(1) from shop_check_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCriteriaSelective" parameterType="map" >
+    update shop_check_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flowNo != null" >
+        flow_no = #{record.flowNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopStoreId != null" >
+        shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=CHAR},
+      </if>
+      <if test="record.shopBossId != null" >
+        shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopClosePositionId != null" >
+        shop_close_position_id = #{record.shopClosePositionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actualStockNumber != null" >
+        actual_stock_number = #{record.actualStockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.stockNumber != null" >
+        stock_number = #{record.stockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopProcName != null" >
+        shop_proc_name = #{record.shopProcName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopProcId != null" >
+        shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productTypeOneName != null" >
+        product_type_one_name = #{record.productTypeOneName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productTypeOneId != null" >
+        product_type_one_Id = #{record.productTypeOneId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerId != null" >
+        manager_id = #{record.managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCriteria" parameterType="map" >
+    update shop_check_record
+    set id = #{record.id,jdbcType=VARCHAR},
+      flow_no = #{record.flowNo,jdbcType=VARCHAR},
+      shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=CHAR},
+      shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      shop_close_position_id = #{record.shopClosePositionId,jdbcType=VARCHAR},
+      actual_stock_number = #{record.actualStockNumber,jdbcType=INTEGER},
+      stock_number = #{record.stockNumber,jdbcType=INTEGER},
+      shop_proc_name = #{record.shopProcName,jdbcType=VARCHAR},
+      shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
+      product_type_one_name = #{record.productTypeOneName,jdbcType=VARCHAR},
+      product_type_one_Id = #{record.productTypeOneId,jdbcType=VARCHAR},
+      manager_id = #{record.managerId,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
+    update shop_check_record
+    <set >
+      <if test="flowNo != null" >
+        flow_no = #{flowNo,jdbcType=VARCHAR},
+      </if>
+      <if test="shopStoreId != null" >
+        shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="shopBossId != null" >
+        shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopClosePositionId != null" >
+        shop_close_position_id = #{shopClosePositionId,jdbcType=VARCHAR},
+      </if>
+      <if test="actualStockNumber != null" >
+        actual_stock_number = #{actualStockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="stockNumber != null" >
+        stock_number = #{stockNumber,jdbcType=INTEGER},
+      </if>
+      <if test="shopProcName != null" >
+        shop_proc_name = #{shopProcName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopProcId != null" >
+        shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeOneName != null" >
+        product_type_one_name = #{productTypeOneName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeOneId != null" >
+        product_type_one_Id = #{productTypeOneId,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        manager_id = #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
+    update shop_check_record
+    set flow_no = #{flowNo,jdbcType=VARCHAR},
+      shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
+      state = #{state,jdbcType=CHAR},
+      shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+      shop_close_position_id = #{shopClosePositionId,jdbcType=VARCHAR},
+      actual_stock_number = #{actualStockNumber,jdbcType=INTEGER},
+      stock_number = #{stockNumber,jdbcType=INTEGER},
+      shop_proc_name = #{shopProcName,jdbcType=VARCHAR},
+      shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
+      product_type_one_name = #{productTypeOneName,jdbcType=VARCHAR},
+      product_type_one_Id = #{productTypeOneId,jdbcType=VARCHAR},
+      manager_id = #{managerId,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

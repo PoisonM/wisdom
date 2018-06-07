@@ -5,6 +5,8 @@ import com.wisdom.business.mapper.transaction.PayRecordMapper;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.*;
 import com.wisdom.common.dto.system.PageParamDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,7 +23,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = false)
 public class TrainingProductService {
-
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -32,7 +34,7 @@ public class TrainingProductService {
     private PayRecordMapper payRecordMapper;
 
     public ProductDTO<TrainingProductDTO> getTrainingProductDetailById(String productId) {
-
+        logger.info("service -- 根据id查询视频信息={} getTrainingProductDetailById,方法执行",productId);
         ProductDTO<TrainingProductDTO> productDTO = productMapper.getBusinessProductInfo(productId);
 
         //从mongodb库中获取培训课程详尽信息
@@ -70,11 +72,12 @@ public class TrainingProductService {
                 }
             }
         }
+        logger.info("service -- 根据id={}查询视频点击数={} getTrainingProductPlayNum,方法执行",productId,num);
         return num;
     }
 
     public void AddTrainingProductPlayNum(String productId, String playURL) {
-
+        logger.info("service -- 根据id={}增加视频点击数={} AddTrainingProductPlayNum,方法执行",productId,playURL);
         Query query = new Query().addCriteria(Criteria.where("productId").is(productId)).addCriteria(Criteria.where("url").is(playURL));
         TrainingProductPlayStatisticDTO trainingProductPlayStatisticDTO = mongoTemplate.findOne(query, TrainingProductPlayStatisticDTO.class,"trainingProductPlayStatistic");
 
@@ -100,10 +103,12 @@ public class TrainingProductService {
      * @return
      */
     public PageParamVoDTO<List<ProductDTO>> queryTrainingProductsByParameters(PageParamVoDTO<ProductDTO> pageParamVoDTO) {
+        logger.info("service -- 条件查询视频 queryTrainingProductsByParameters,方法执行");
         PageParamVoDTO<List<ProductDTO>> page = new  PageParamVoDTO<>();
         int count = productMapper.queryProductsCountByParameters(pageParamVoDTO);
         page.setTotalCount(count);
         List<ProductDTO> productDTOList = productMapper.queryProductsByParameters(pageParamVoDTO);
+        logger.info("service -- 条件查询视频Count={},List={}",count,productDTOList.size());
         for (ProductDTO productDTO : productDTOList){
             String sellNum = payRecordMapper.getSellNumByProductId(productDTO.getProductId());
             Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
@@ -113,18 +118,15 @@ public class TrainingProductService {
         }
         page.setResponseData(productDTOList);
         return page;
-        /*PageParamDTO<List<TrainingProductDTO>> page = new  PageParamDTO<>();
-        //List<TrainingProductDTO> trainingProductDTO = productMapper.queryAllTrainingProducts();
-        List<TrainingProductDTO> trainingProductDTO = mongoTemplate.findAll(TrainingProductDTO.class,"trainingProduct");
-        page.setResponseData(trainingProductDTO);
-        return page;*/
     }
 
     public void addTrainingProduct(ProductDTO<TrainingProductDTO> productDTO){
+        logger.info("service -- 新增视频={} addTrainingProduct,方法执行",productDTO.getProductId());
         mongoTemplate.insert(productDTO.getProductDetail(),"trainingProduct");
         productMapper.addOfflineProduct(productDTO);
     }
     public void updateTrainingProduct(ProductDTO<TrainingProductDTO> productDTO){
+        logger.info("service -- 编辑视频={} updateTrainingProduct,方法执行",productDTO.getProductId());
         Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
         Update update = new Update();
         update.set("trainingProductName",productDTO.getProductDetail().getTrainingProductName());

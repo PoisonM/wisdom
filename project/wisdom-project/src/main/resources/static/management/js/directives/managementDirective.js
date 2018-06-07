@@ -546,6 +546,7 @@ define(['appManagement','jquery'], function (app,$) {
                     '<div class="administration_content" >' +
                     '<p><a ui-sref="home" ng-class="{\'activeNavbarSide\':index2==21}">查询</a></p>' +
                     '<p><a ui-sref="uploading" ng-class="{\'activeNavbarSide\':index2==22}">产品管理-上传</a></p>' +
+                    '<p><a ui-sref="homePageEditor" ng-class="{\'activeNavbarSide\':index2==23}">商城首页编辑</a></p>' +
                     '</div>' +
                     '</li>' +
 

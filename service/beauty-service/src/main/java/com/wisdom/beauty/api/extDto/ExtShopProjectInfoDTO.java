@@ -1,16 +1,21 @@
 package com.wisdom.beauty.api.extDto;
 
-import com.wisdom.common.entity.BaseEntity;
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 
-import java.io.Serializable;
+import java.util.List;
 
-public class ExtShopProjectInfoDTO extends BaseEntity implements Serializable {
-    //
-    private String id;
+public class ExtShopProjectInfoDTO extends ShopProjectInfoDTO {
 
-    //仓库名称
-    private String name;
+    /**
+     * 图片详情
+     */
+    private List<String> imageList;
 
-    private static final long serialVersionUID = 1L;
+    public List<String> getImageList() {
+        return imageList;
+    }
 
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
+    }
 }

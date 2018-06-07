@@ -473,6 +473,76 @@ public class ShopBossRelationCriteria {
             addCriterion("sys_boss_name not between", value1, value2, "sysBossName");
             return (Criteria) this;
         }
+
+        public Criteria andSysShopAddressIsNull() {
+            addCriterion("sys_shop_address is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressIsNotNull() {
+            addCriterion("sys_shop_address is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressEqualTo(String value) {
+            addCriterion("sys_shop_address =", value, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressNotEqualTo(String value) {
+            addCriterion("sys_shop_address <>", value, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressGreaterThan(String value) {
+            addCriterion("sys_shop_address >", value, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressGreaterThanOrEqualTo(String value) {
+            addCriterion("sys_shop_address >=", value, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressLessThan(String value) {
+            addCriterion("sys_shop_address <", value, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressLessThanOrEqualTo(String value) {
+            addCriterion("sys_shop_address <=", value, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressLike(String value) {
+            addCriterion("sys_shop_address like", value, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressNotLike(String value) {
+            addCriterion("sys_shop_address not like", value, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressIn(List<String> values) {
+            addCriterion("sys_shop_address in", values, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressNotIn(List<String> values) {
+            addCriterion("sys_shop_address not in", values, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressBetween(String value1, String value2) {
+            addCriterion("sys_shop_address between", value1, value2, "sysShopAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andSysShopAddressNotBetween(String value1, String value2) {
+            addCriterion("sys_shop_address not between", value1, value2, "sysShopAddress");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

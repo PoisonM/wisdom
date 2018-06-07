@@ -1,11 +1,11 @@
-.stillOwedBox {
+.orderListBox {
     width: 100%;
     height: 100%;
     background: #F5F5F5;
     overflow: scroll;
 }
 
-.stillOwedTotalAmount {
+.orderListTotalAmount {
     width: 100%;
     height: 80px;
     background: #fff;
@@ -14,7 +14,7 @@
     font-size: 20px;
 }
 
-.stillOwedBox .stillOwedTitle {
+.orderListBox .orderListTitle {
     background: #EEEEEE;
     font-size: 13px;
     color: #888888;
@@ -23,23 +23,23 @@
     margin-top: 10px;
 }
 
-.stillOwedBox .stillOwedUl {
+.orderListBox .orderListUl {
     width: 100%;
     background: #fff;
 }
 
-.stillOwedBox .stillOwedUl li {
+.orderListBox .orderListUl li {
     height: 45px;
     border-bottom: 1px solid #E5E5E5;
 }
 
-.stillOwedBox .stillOwedUl li input {
+.orderListBox .orderListUl li input {
     display: block;
     float: left;
     margin: 16px 0px 0px 10px;
 }
 
-.stillOwedBox .stillOwedUl li div {
+.orderListBox .orderListUl li div {
     margin: 13px 0 0 16px;
     float: left;
     font-family: PingFangSC-Regular;
@@ -48,7 +48,7 @@
     letter-spacing: 0;
 }
 
-.stillOwedBox .stillOwedUl li span {
+.orderListBox .orderListUl li span {
     margin: 13px 16px 0 0;
     float: right;
     font-family: PingFangSC-Regular;
@@ -57,7 +57,7 @@
     letter-spacing: 0;
 }
 
-.stillOwedBox .stillOwedUl li span input {
+.orderListBox .orderListUl li span input {
     background: #F4F4F4;
     border: 0 solid #EBEBEB;
     width: 150px;
@@ -70,11 +70,11 @@
     padding-left: 9px;
 }
 
-.stillOwedBox textarea {
+.orderListBox textarea {
     width: 100%;
 }
 
-.stillOwedBox button {
+.orderListBox button {
     background: #FF6666;
     border-radius: 4px;
     font-family: PingFangSC-Regular;
@@ -87,7 +87,7 @@
     height: 44px;
 }
 
-.checkBox {
+.orderListBox .checkBox {
     width: 22px;
     height: 22px;
     border-radius: 50%;
@@ -97,7 +97,7 @@
     border: 1px solid #FF6666;
 }
 
-.checkBox img {
+.orderListBox .checkBox img {
     width: 100%;
     height: 100%;
     display: block;

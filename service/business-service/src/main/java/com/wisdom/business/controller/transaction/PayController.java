@@ -11,6 +11,7 @@ import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.RedisLock;
 import com.wisdom.common.util.XMLUtil;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,7 +30,7 @@ import java.util.Map;
 @RequestMapping(value = "transaction")
 public class PayController {
 
-    org.slf4j.Logger logger = LoggerFactory.getLogger(PayController.class);
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private PayRecordService payRecordService;
@@ -45,7 +46,8 @@ public class PayController {
     public
     @ResponseBody
     ResponseDTO<PrePayInfoDTO> userPay(HttpServletRequest request, HttpSession session, @PathVariable String productType) throws Exception {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("js支付==={}开始",startTime);
         ResponseDTO<PrePayInfoDTO> responseDTO = new ResponseDTO<>();
 
         //获取统一支付接口参数
@@ -61,6 +63,7 @@ public class PayController {
             responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setResponseData(prePayInfoDTO);
         }
+        logger.info("js支付,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -72,7 +75,8 @@ public class PayController {
     public
     @ResponseBody
     String getOfflineProductPayNotifyInfo(HttpServletRequest request) {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("接收OfflineProductPay支付成后微信notify_url参数中传来的参数==={}开始",startTime);
         InputStream inStream = null;
         try {
             inStream = request.getInputStream();
@@ -93,12 +97,15 @@ public class PayController {
                 payRecordDTO.setOutTradeNo((String) map.get("out_trade_no"));
                 payRecordDTO.setStatus("0");
 
+                logger.info("放入service层进行事物控制");
                 payCoreService.handleProductPayNotifyInfo(payRecordDTO,"offline");
             }
             return  XMLUtil.setXML("SUCCESS", "");
         } catch (Exception e) {
+            logger.error("接收OfflineProductPay支付成后微信notify_url参数中传来的参数,异常信息为=={}"+e.getMessage(),e);
             e.printStackTrace();
         }
+        logger.info("接收OfflineProductPay支付成后微信notify_url参数中传来的参数,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return "";
     }
 
@@ -110,6 +117,8 @@ public class PayController {
     public
     @ResponseBody
     String getTrainingProductPayNotifyInfo(HttpServletRequest request) {
+        long startTime = System.currentTimeMillis();
+        logger.info("接收TrainingProductPay支付成后微信notify_url参数中传来的参数==={}开始",startTime);
 
         RedisLock redisLock = new RedisLock("trainingProductPayNotifyInfo");
         InputStream inStream = null;
@@ -137,10 +146,12 @@ public class PayController {
             }
             return  XMLUtil.setXML("SUCCESS", "");
         } catch (Exception e) {
+            logger.error("接收TrainingProductPay支付成后微信notify_url参数中传来的参数,异常信息为=={}"+e.getMessage(),e);
             e.printStackTrace();
         }finally {
             redisLock.unlock();
         }
+        logger.info("接收TrainingProductPay支付成后微信notify_url参数中传来的参数,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return "";
     }
 
@@ -152,7 +163,8 @@ public class PayController {
     public
     @ResponseBody
     String getSpecialProductPayNotifyInfo(HttpServletRequest request) {
-
+        long startTime = System.currentTimeMillis();
+        logger.info("接收SpecialProductPay支付成后微信notify_url参数中传来的参数==={}开始",startTime);
         RedisLock redisLock = new RedisLock("speicalProductPayNotifyInfo");
         InputStream inStream = null;
         try {
@@ -183,6 +195,7 @@ public class PayController {
         }finally {
             redisLock.unlock();
         }
+        logger.info("接收SpecialProductPay支付成后微信notify_url参数中传来的参数,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return "";
     }
     

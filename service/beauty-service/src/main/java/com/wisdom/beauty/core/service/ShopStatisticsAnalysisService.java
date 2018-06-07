@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
@@ -137,4 +138,12 @@ public interface ShopStatisticsAnalysisService {
     *@Date:2018/5/15 15:50
     */
     Map<String,Object> getCustomerArriveList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取某个美容院的到店情况，
+    *@Date:2018/5/15 18:32
+    */
+    Map<String,Object> getShopCustomerArriveList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO, String condition);
 }

@@ -364,7 +364,7 @@ define(['appBoss'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.schedulingCtrl',
                                     [
                                         'js/controllers/work/schedulingCtrl.js?ver='+ bossVersion,
-                                        'js/controllers/work/fixedTab.js?ver='+ bossVersion,
+                                        'js/libs/fixedTab.js?ver='+ bossVersion,
 
                                     ],
                                     'views/work/scheduling.html?ver=' + bossVersion
@@ -639,7 +639,7 @@ define(['appBoss'], function(app){
                     })
                 /*修改门店*/
                     .state('amendStore', {
-                        url: '/amendStore',
+                        url: '/amendStore/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'amendStoreCtrl',
                         resolve: {
@@ -873,7 +873,7 @@ define(['appBoss'], function(app){
                     })
                 /*产品品牌设置*/
                     .state('productSetting', {
-                        url: '/productSetting',
+                        url: '/productSetting/:type,:productTypeOneId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productSettingCtrl',
                         resolve: {
@@ -894,6 +894,45 @@ define(['appBoss'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.productBrandCtrl',
                                     ['js/controllers/Stock/productBrandCtrl.js?ver='+ bossVersion],
                                     'views/Stock/productBrand.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                        /*项目大类设置*/
+                    .state('projectBrand', {
+                        url: '/projectBrand',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'projectBrandCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.projectBrandCtrl',
+                                    ['js/controllers/mine/projectBrandCtrl.js?ver='+ bossVersion],
+                                    'views/mine/projectBrand.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                        /*项目类别*/
+                    .state('projectSetting', {
+                        url: '/projectSetting',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'projectSettingCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.projectSettingCtrl',
+                                    ['js/controllers/mine/projectSettingCtrl.js?ver='+ bossVersion],
+                                    'views/mine/projectSetting.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                        /*修改系列*/
+                    .state('projectSeries', {
+                        url: '/projectSeries/:projectTypeOneId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'projectSeriesCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.projectSeriesCtrl',
+                                    ['js/controllers/mine/projectSeriesCtrl.js?ver='+ bossVersion],
+                                    'views/mine/projectSeries.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -962,6 +1001,7 @@ define(['appBoss'], function(app){
                         }
                     }
                 })
+
                     .state('archives', {
                         url: '/archives/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -1027,7 +1067,7 @@ define(['appBoss'], function(app){
                     })
                     /* refillCard  充值卡*/
                     .state('refillCard', {
-                        url: '/refillCard',
+                        url: '/refillCard/:sysShopId/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'refillCardCtrl',
                         resolve: {
@@ -1040,7 +1080,7 @@ define(['appBoss'], function(app){
                     })
                     /*prepaidPhoneRecords 充值记录*/
                     .state('prepaidPhoneRecords', {
-                        url: '/prepaidPhoneRecords',
+                        url: '/prepaidPhoneRecords/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'prepaidPhoneRecordsCtrl',
                         resolve: {
@@ -1053,7 +1093,7 @@ define(['appBoss'], function(app){
                     })
                     /*accountDetails 账户明细*/
                     .state('accountDetails', {
-                        url: '/accountDetails',
+                        url: '/accountDetails/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'accountDetailsCtrl',
                         resolve: {
@@ -1126,7 +1166,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('treatmentCard', {
-                        url: '/treatmentCard',
+                        url: '/treatmentCard/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'treatmentCardCtrl',
                         resolve: {
@@ -1138,7 +1178,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('treatmentCardDtails', {
-                        url: '/treatmentCardDtails',
+                        url: '/treatmentCardDtails/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'treatmentCardDtailsCtrl',
                         resolve: {
@@ -1162,7 +1202,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('collectionCard', {
-                        url: '/collectionCard',
+                        url: '/collectionCard/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'collectionCardCtrl',
                         resolve: {
@@ -1174,7 +1214,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('product', {
-                        url: '/product',
+                        url: '/product/:sysUserId/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productCtrl',
                         resolve: {
@@ -1209,8 +1249,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*accountRecords 账户记录*/
                     .state('accountRecords', {
-                        url: '/accountRecords',
+                        url: '/accountRecords/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'accountRecordsCtrl',
                         resolve: {
@@ -1222,7 +1263,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('recordCashier', {
-                        url: '/recordCashier',
+                        url: '/recordCashier/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'recordCashierCtrl',
                         resolve: {
@@ -1233,8 +1274,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*detailsOfCashier  收银详情*/
                     .state('detailsOfCashier', {
-                        url: '/detailsOfCashier',
+                        url: '/detailsOfCashier/:flowNo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailsOfCashierCtrl',
                         resolve: {
@@ -1246,7 +1288,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('drawCardRecords', {
-                        url: '/drawCardRecords',
+                        url: '/drawCardRecords/:sysUserId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'drawCardRecordsCtrl',
                         resolve: {
@@ -1258,7 +1300,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('drawCardRecordsDetail', {
-                        url: '/drawCardRecordsDetail',
+                        url: '/drawCardRecordsDetail/:flowNo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'drawCardRecordsDetailCtrl',
                         resolve: {
@@ -1270,7 +1312,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('newUser', {
-                        url: '/newUser',
+                        url: '/newUser/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newUserCtrl',
                         resolve: {
@@ -1724,7 +1766,7 @@ define(['appBoss'], function(app){
                     })
                     /* addSeries 添加系列*/
                     .state('addSeries', {
-                        url: '/addSeries',
+                        url: '/addSeries/:productTypeOneId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'addSeriesCtrl',
                         resolve: {
@@ -1905,9 +1947,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-                /*trendChart  趋势图*/
+                /*trendChart  趋势图-收支分析*/
                     .state('trendChart', {
-                        url: '/trendChart',
+                        url: '/trendChart/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'trendChartCtrl',
                         resolve: {
@@ -1931,8 +1973,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*sevenDayCharts  趋势图-综合分析*/
                     .state('sevenDayCharts', {
-                        url: '/sevenDayCharts',
+                        url: '/sevenDayCharts/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'sevenDayChartsCtrl',
                         resolve: {
@@ -1959,7 +2002,7 @@ define(['appBoss'], function(app){
                  product
                  accountRecords 账户记
                  recordCashier 收银记录
-                 detailsOfCashier  收银详情
+
                  drawCardRecords 划卡记录
                  drawCardRecordsDetail 划卡记录详情
                  newUser新建档案

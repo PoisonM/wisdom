@@ -10,6 +10,8 @@ import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.system.interceptor.LoginRequired;
 import com.wisdom.system.service.FeedbackService;
 import com.wisdom.system.util.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "feedback")
 public class FeedBackController {
-
+    Logger logger = LoggerFactory.getLogger(BannerController.class);
     @Autowired
     private FeedbackService feedbackService;
 
@@ -38,11 +40,15 @@ public class FeedBackController {
     public
     @ResponseBody
     ResponseDTO suggestion(@RequestParam String suggestion) {
+        long startTime = System.currentTimeMillis();
+        logger.info("提交建议 ==={}开始" , startTime);
         ResponseDTO<SuggestionDto> result = new ResponseDTO<>();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         String userId=userInfoDTO.getId();
+        logger.info("用户={}提交建议==={}" ,userId,suggestion);
         result.setResponseData(feedbackService.addSuggestion(userId,suggestion));
         result.setResult(StatusConstant.SUCCESS);
+        logger.info("获取 Banner 图,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return result;
     }
 }

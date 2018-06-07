@@ -16,6 +16,8 @@ import com.wisdom.common.dto.transaction.NeedPayOrderDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderListDTO;
 import com.wisdom.common.util.*;
 import org.jdom.JDOMException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -33,7 +35,7 @@ import java.util.*;
 
 @Service
 public class PayRecordService {
-
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -44,7 +46,7 @@ public class PayRecordService {
 
     @Transactional(rollbackFor = Exception.class)
     public PrePayInfoDTO getPrepayInfo(HttpServletRequest request, HttpSession session, String productType) {
-
+        logger.info("Service == 获取统一支付接口参数request={},session={},productType={}",request,session,productType);
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 
         RedisLock redisLock = new RedisLock("payRecord" + userInfoDTO.getId());
@@ -62,9 +64,11 @@ public class PayRecordService {
             prePayInfoMap.put("attach","detail");
             //生成的商户订单号
             String outTradeNo = IdGen.uuid();
+            logger.info("生成的商户订单号=={}",outTradeNo);
             prePayInfoMap.put("out_trade_no",outTradeNo);
             prePayInfoMap.put("fee_type",ConfigConstant.FEE_TYPE);
-
+            logger.info("获取统一支付接口参数==appid={},mch_id={},device_info={},body={},attach=detail,out_trade_no={},fee_type={}"
+            ,ConfigConstant.APP_ID,ConfigConstant.MCH_ID,ConfigConstant.DEVICE_INFO,productType,outTradeNo,ConfigConstant.FEE_TYPE);
 
             String value = JedisUtils.get(userInfoDTO.getId()+"needPay");
             NeedPayOrderListDTO needPayOrderListDTO = (new Gson()).fromJson(value, NeedPayOrderListDTO.class);
@@ -85,7 +89,7 @@ public class PayRecordService {
             {
                 payPrice = payPrice + Float.valueOf(needPayOrderDTO.getProductPrice())*Float.valueOf(needPayOrderDTO.getProductNum());
             }
-
+            logger.info("需要支付价格=={}",payPrice);
             if(ConfigConstant.PAY_TEST_FLAG.equals("true"))
             {
                 prePayInfoMap.put("total_fee",1+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
@@ -97,6 +101,7 @@ public class PayRecordService {
 
             prePayInfoMap.put("spbill_create_ip",request.getRemoteAddr());
 
+            logger.info("支付商品类型=={}",productType);
             if(productType.equals("offline"))
             {
                 prePayInfoMap.put("notify_url",ConfigConstant.OFFLINE_PRODUCT_BUY_NOTIFY_URL);
@@ -114,14 +119,14 @@ public class PayRecordService {
 
             String openId = WeixinUtil.getUserOpenId(session, request);
             prePayInfoMap.put("openid",openId);
-
+            logger.info("支付人openid=={}",openId);
             //将上述参数进行签名
             String sign = JsApiTicketUtil.createSign("UTF-8", prePayInfoMap);
             prePayInfoMap.put("sign",sign);
+            logger.info("将上述参数进行签名=={}",sign);
 
             String requestXML = JsApiTicketUtil.getRequestXml(prePayInfoMap);
             String payResult = HttpRequestUtil.httpsRequest(ConfigConstant.GATE_URL, "POST", requestXML).replaceAll("200>>>>",""); //gate url是腾讯的支付URL
-
 
             Map<String, Object> payResultMap = XMLUtil.doXMLParse(payResult);
             if (!"FAIL".equals(payResultMap.get("return_code"))) {
@@ -151,6 +156,7 @@ public class PayRecordService {
                 char agent = userAgent.charAt(userAgent.indexOf("MicroMessenger") + 15);
                 prePayInfoDTO.setAgent((int)agent);//微信版本号，用于前面提到的判断用户手机微信的版本是否是5.0以上版本。
                 prePayInfoMap.put("agent", new String(new char[]{agent}));
+                logger.info("微信版本号=={}",agent);
 
                 PayRecordDTO payRecordDTO = new PayRecordDTO();
                 if (userInfoDTO.getId() != null) {
@@ -160,7 +166,7 @@ public class PayRecordService {
                 }
 
                 String transactionId = CodeGenUtil.getTransactionCodeNumber();
-
+                logger.info("交易流水号=={}",transactionId);
                 String needInvoice = "0";
                 for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
                 {
@@ -171,7 +177,7 @@ public class PayRecordService {
                         needInvoice = "1";
                     }
                 }
-
+                logger.info("是否需要发票=={}",needInvoice);
                 for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
                 {
                     payRecordDTO.setId(UUID.randomUUID().toString());
@@ -196,14 +202,17 @@ public class PayRecordService {
         }
         catch (JDOMException e)
         {
+            logger.error("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
         }
         catch (IOException e)
         {
+            logger.error("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
         }
         catch (Exception e)
         {
+            logger.error("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
             throw e;
         }
@@ -211,7 +220,6 @@ public class PayRecordService {
         {
             redisLock.unlock();
         }
-
         return prePayInfoDTO;
     }
 
@@ -248,7 +256,6 @@ public class PayRecordService {
      *
      * */
     public List<String> findTransactionIdList(PayRecordDTO payRecordDTO){
-
         return payRecordMapper.findTransactionIdList(payRecordDTO);
     }
 }

@@ -1,11 +1,13 @@
 package com.wisdom.beauty.api.extDto;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2018/4/27.
  */
 public class ImageUrl {
     private String imageId;
-    private String url;
+    private List<String> url;
 
     public String getImageId() {
         return imageId;
@@ -15,11 +17,11 @@ public class ImageUrl {
         this.imageId = imageId;
     }
 
-    public String getUrl() {
+    public List<String> getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(List<String> url) {
         this.url = url;
     }
 }
