@@ -6,17 +6,20 @@ angular.module('controllers',[]).controller('listOfItemsCtrl',
                 filterStr:"",
                 ids:[],
                 id:$stateParams.id,
-                list:[]
+                list:[],
+                fuzzyQuery:""
 
             }
             $scope.searchProject = function () {
+                $scope.param.fuzzyQuery='0'
                 $scope.getInfo()
             }
             $scope.getInfo = function(){
                 GetShopTwoLevelProjectList.get({
                     filterStr:$scope.param.filterStr,
                     pageNo:1,
-                    pageSize:1000
+                    pageSize:1000,
+                    fuzzyQuery:$scope.param.fuzzyQuery
                 },function (data) {
                     if(data.responseData==null)$scope.listOfItems=[]
                     if(data.result==Global.SUCCESS&&data.responseData!=null){

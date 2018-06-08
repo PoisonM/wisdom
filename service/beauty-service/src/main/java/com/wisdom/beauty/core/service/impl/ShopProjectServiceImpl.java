@@ -205,7 +205,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			criteria.andSysShopIdEqualTo(extShopProjectInfoDTO.getSysShopId());
 		}
 		if(StringUtils.isNotBlank(extShopProjectInfoDTO.getFuzzyQuery())&&"0".equals(extShopProjectInfoDTO.getFuzzyQuery())){
-			criteria.andProjectNameLike(extShopProjectInfoDTO.getProjectName());
+			criteria.andProjectNameLike("%"+extShopProjectInfoDTO.getProjectName()+"%");
 		}else {
 			if (StringUtils.isNotBlank(extShopProjectInfoDTO.getProjectName())) {
 				criteria.andProjectNameLike(extShopProjectInfoDTO.getProjectName());
