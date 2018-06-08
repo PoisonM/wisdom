@@ -96,8 +96,8 @@ public class ProjectController {
 				payList.add(shopUserProjectRelationDTO);
 			}
 		}
-		returnMap.put("consume", payList);
-		returnMap.put("punchCard", consumeList);
+		returnMap.put("punchCard", payList);
+		returnMap.put("consume", consumeList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(returnMap);
 		return responseDTO;
