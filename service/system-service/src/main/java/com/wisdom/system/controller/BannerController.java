@@ -163,21 +163,22 @@ public class BannerController {
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		try {
 			BannerDTO bannerDTO = bannerService.findHomeBannerInfoById(bannerId);
+			int bannerRank = bannerDTO.getBannerRank();
 			if(null == bannerDTO){
 				logger.info("编辑homeBannerId-上移下移,出错此bannerId={}查出banner为null",bannerId);
 				responseDTO.setResult(StatusConstant.FAILURE);
 				return responseDTO;
 			}
 			if("up".equals(status)){
-				int bannerRank = bannerDTO.getBannerRank();
-				if(bannerDTO.getBannerRank()-1 < 0){
+
+				if(bannerRank-1 < 0){
 					logger.info("编辑homeBannerId-上移,出错此bannerId={}已为最上层无法再上移",bannerId);
 					responseDTO.setResult(StatusConstant.FAILURE);
 					return responseDTO;
 				}
 				//查出此banner上一层banner
 				BannerDTO bannerDTODown = bannerService.findHomeBannerInfoByBannerRank(bannerRank-1);
-				if(null == bannerDTO){
+				if(null == bannerDTODown){
 					logger.info("编辑homeBannerId-上移,出错此bannerRank={}查出banner为null",bannerRank-1);
 					responseDTO.setResult(StatusConstant.FAILURE);
 					return responseDTO;
@@ -189,15 +190,14 @@ public class BannerController {
 				bannerService.updateHomeBanner(bannerDTO);
 				bannerService.updateHomeBanner(bannerDTODown);
 			}else if("down".equals(status)){
-				int bannerRank = bannerDTO.getBannerRank();
 				BannerDTO bannerDTODown = bannerService.findHomeBannerInfoByBannerRank(bannerRank+1);
-				if(null == bannerDTO){
+				if(null == bannerDTODown){
 					logger.info("编辑homeBannerId-下移,出错此bannerRank={}查出banner为null",bannerRank+1);
 					responseDTO.setResult(StatusConstant.FAILURE);
 					return responseDTO;
 				}
 				//上移,下层banner
-				bannerDTODown.setBannerRank(bannerRank-1);
+				bannerDTODown.setBannerRank(bannerRank);
 				//下移,此banner图
 				bannerDTO.setBannerRank(bannerRank+1);
 				bannerService.updateHomeBanner(bannerDTO);
