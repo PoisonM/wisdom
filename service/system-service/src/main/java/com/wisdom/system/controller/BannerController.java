@@ -60,10 +60,9 @@ public class BannerController {
 		boolean nextBanner = true;
 		String bannerId = CodeGenUtil.getProductCodeNumber();
 		int bannerRank = bannerDTO.getBannerRank();
-		List<BannerDTO> list = bannerService.getHomeBannerList();
-		BannerDTO bannerDTOOld = bannerService.findHomeBannerInfoByBannerRank(bannerDTO.getBannerRank());
+		BannerDTO bannerDTOOld = bannerService.findHomeBannerInfoByBannerRank(bannerRank);
 		if(null != bannerDTOOld){
-			logger.info("新增banner,出错此banner图层={}已有banner图",bannerDTO.getBannerRank());
+			logger.info("新增banner,此banner图层={}已有banner图",bannerDTO.getBannerRank());
 			//后面的banner全都向后排序
 			while (nextBanner) {
 				bannerDTODown = bannerService.findHomeBannerInfoByBannerRank(bannerRank);
@@ -73,20 +72,21 @@ public class BannerController {
 					bannerService.updateHomeBanner(bannerDTODown);
 					bannerRank++;
 				}else {
-					logger.info("新增Banner方法,各层banner已全部下移,没有下层banner了={}", bannerRank);
+					logger.info("新增Banner方法,各层banner已全部下移,没有下层banner了此楼层={}", bannerRank);
 					nextBanner = false;
 				}
 			}
 		}else {
 			//新增默认为最后一个
+			List<BannerDTO> list = bannerService.getHomeBannerList();
 			bannerDTO.setBannerRank(list.size()+1);
 			logger.info("新增bannerId楼层={}", list.size()+1);
 		}
-		logger.info("新增bannerId={}", bannerId);
 		try {
 			bannerDTO.setBannerId(bannerId);
 			bannerDTO.setPlace("home");
 			bannerService.addHomeBanner(bannerDTO);
+			logger.info("新增bannerId={}楼层={}", bannerId,bannerDTO.getBannerRank());
 			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
 			logger.info("新增banner异常,异常信息为={}"+e.getMessage(),e);
@@ -109,6 +109,10 @@ public class BannerController {
 		long startTime = System.currentTimeMillis();
 		logger.info("编辑homeBanner开始={}", bannerDTO);
 		ResponseDTO responseDTO = new ResponseDTO<>();
+		if(null == bannerDTO.getBannerId() || "".equals(bannerDTO.getBannerId())){
+			String bannerId = CodeGenUtil.getProductCodeNumber();
+			bannerDTO.setBannerId(bannerId);
+		}
 		logger.info("编辑homeBannerId={}", bannerDTO.getBannerId());
 		try {
 			bannerService.updateHomeBanner(bannerDTO);
