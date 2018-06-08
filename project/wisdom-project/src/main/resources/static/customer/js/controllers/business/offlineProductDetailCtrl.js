@@ -102,7 +102,6 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                         $scope.model=true;
                     }
                     /*根据用户的等级的商品来判断*/
-                    debugger;
                     if($scope.param.product.productPrefecture=="1"){
                         GetUserInfoByOpenId.get(function (data) {
                                 if(data.responseData.userType!="business-C-1"){
