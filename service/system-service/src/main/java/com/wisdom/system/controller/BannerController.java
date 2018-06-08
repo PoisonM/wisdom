@@ -5,6 +5,7 @@ import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.system.BannerDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CodeGenUtil;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.system.interceptor.LoginRequired;
 import com.wisdom.system.service.BannerService;
 import org.slf4j.Logger;
@@ -85,6 +86,8 @@ public class BannerController {
 		try {
 			bannerDTO.setBannerId(bannerId);
 			bannerDTO.setPlace("home");
+			bannerDTO.setStatus("1");
+			bannerDTO.setCreateDate( DateUtils.getDate());
 			bannerService.addHomeBanner(bannerDTO);
 			logger.info("新增bannerId={}楼层={}", bannerId,bannerDTO.getBannerRank());
 			responseDTO.setResult(StatusConstant.SUCCESS);
