@@ -1705,7 +1705,7 @@ define(['appBoss'], function(app){
                     })
                 /*entryDetails 入库单详情*/
                     .state('entryDetails', {
-                        url: '/entryDetails/:entryId',
+                        url: '/entryDetails/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'entryDetailsCtrl',
                         resolve: {
@@ -2096,15 +2096,15 @@ define(['appBoss'], function(app){
                     })
                 /*员工端路由*/
                 /*员工端首页*/
-                    .state('employeeIndex', {
-                        url: '/employeeIndex',
+                    .state('employeeWorkHome', {
+                        url: '/employeeWorkHome',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'employeeIndexCtrl',
+                        controller: 'employeeWorkHomeCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeIndexCtrl',
-                                    ['js/controllers/employee/employeeIndexCtrl.js?ver='+ bossVersion],
-                                    'views/employee/employeeIndex.html?ver=' + bossVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeWorkHomeCtrl',
+                                    ['js/controllers/employee/employeeWorkHomeCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeWorkHome.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -2135,15 +2135,15 @@ define(['appBoss'], function(app){
                         }
                     })
                 /*员工预约*/
-                    .state('employeeAppointList', {
-                        url: '/employeeAppointList',
+                    .state('employeeCanceled', {
+                        url: '/employeeCanceled',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'employeeAppointListCtrl',
+                        controller: 'employeeCanceledCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeAppointListCtrl',
-                                    ['js/controllers/employee/employeeAppointListCtrl.js?ver='+ bossVersion],
-                                    'views/employee/employeeAppointList.html?ver=' + bossVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeCanceledCtrl',
+                                    ['js/controllers/employee/employeeCanceledCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeCanceled.html?ver=' + bossVersion);
                             }
                         }
                     })

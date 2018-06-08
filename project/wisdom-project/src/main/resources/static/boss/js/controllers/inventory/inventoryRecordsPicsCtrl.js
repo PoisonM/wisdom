@@ -39,7 +39,7 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                         $scope.param.startValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
                     }else{
                         $scope.param.endTime = $filter('date')(val, 'yyyy-MM-dd');
-                        $scope.param.endValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
+                        $scope.param.endValue = $filter('date')(val, 'yyyy-MM-dd') + " 23:59:59";
                     }
                     $scope.getInfo();
                 }
@@ -103,8 +103,8 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                     endTime:$scope.param.startValue,
                     startTime:$scope.param.endValue,
                     stockStyle:"5",
-                    shopStoreId:"11",
-                    pageSize:100
+                    shopStoreId: $rootScope.shopInfo.shopStoreId,
+                    pageSize:1000
                 }
                 ShopStockRecordList.save($scope.shopStockRecordRequestDTO,function(data){
                     $scope.param.inventoryRecordsPics = data.responseData;

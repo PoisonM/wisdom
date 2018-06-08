@@ -5,8 +5,9 @@ angular.module('controllers',[]).controller('outboundCtrl',
             $scope.param = {
                 flag: false,
                 type: 0, /*客装产品  易耗品*/
-                selType: 0, /*扫码出库  手动出库*/
-                ids: [],/*出库产品*/
+                selType: 2, /*扫码出库  手动出库*/
+                indexs: [],/*出库产品*/
+                ids:[],
                 detailProductList:[],
                 searchProductList:[],
                 searchContent :"",
@@ -47,21 +48,21 @@ angular.module('controllers',[]).controller('outboundCtrl',
                 $scope.param.selectProductTypeOneId = productTypeOneId;
             }
 
-            $scope.selNext = function () {
+           /* $scope.selNext = function () {
                 $scope.param.flag = true;
-            };
+            };*/
             $scope.all = function () {
-                $scope.param.flag = false;
+                $scope.param.multiSelectFlag = false;
             };
 
-            $scope.threeMess = function () {
+         /*   $scope.threeMess = function () {
                 $scope.param.flag = false;
             }
             $scope.selType = function (type) {
                 $scope.param.selType = type;
-            }
+            }*/
 
-            $scope.selProduct = function (domIndex) {
+            $scope.selProduct = function (domIndex,id) {
                 $rootScope.shopInfo.entryShopProductList = [];
                 if($scope.param.type=='0')
                 {
@@ -75,18 +76,20 @@ angular.module('controllers',[]).controller('outboundCtrl',
                 {
                     $scope.param.selectProductList = '易耗品';
                 }
-                if ($scope.param.ids.indexOf(domIndex) != -1) {
+                if ($scope.param.indexs.indexOf(domIndex) != -1) {
                     var key = 0;
-                    angular.forEach($scope.param.ids, function (val, index) {
+                    angular.forEach($scope.param.indexs, function (val, index) {
                         if (val == domIndex) {
+                            $scope.param.indexs.splice(key, 1);
                             $scope.param.ids.splice(key, 1);
                         }
                         key++;
                     })
                 } else {
-                    $scope.param.ids.push(domIndex);
+                    $scope.param.indexs.push(domIndex);
+                    $scope.param.ids.push(id);
                 }
-                angular.forEach($scope.param.ids,function (val,index) {
+                angular.forEach($scope.param.indexs,function (val,index) {
                     angular.forEach($scope.param.detailProductList,function (val1,index1) {
                         if(val==index1)
                         {
@@ -140,6 +143,10 @@ angular.module('controllers',[]).controller('outboundCtrl',
 
             /*下一步*/
             $scope.AddOutboundGo = function(){
+                if($rootScope.shopInfo.entryShopProductList.length<=0){
+                    alert("请选择产品");
+                    return
+                }
                 $state.go("AddOutbound",{stockStyle:$scope.param.selType})
             }
 

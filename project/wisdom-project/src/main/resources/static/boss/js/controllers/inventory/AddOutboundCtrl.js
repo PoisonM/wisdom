@@ -8,8 +8,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                 shopStock : [],
                 outOperationName : '',
                 detail:''
-            }
-
+            };
             angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
                 var value = {
                     detail:"",
@@ -74,8 +73,14 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                 angular.forEach($scope.param.shopStock,function (val,index) {
                    val.receiver = $scope.param.outOperationName;
                    val.detail = $scope.param.detail;
-                })
-
+                });
+                var list=$scope.param.shopStock;
+                for(var i=0;i<list.length;i++){
+                    if(list[i].stockNumber ==""||list[i].stockOutNumber ==""||list[i].stockType ==""||list[i].receiver ==""){
+                        alert("请检查信息");
+                        return
+                    }
+                }
                 AddStock.save($scope.param.shopStock,function(data){
                     if(data.result==Global.SUCCESS){
                         $rootScope.shopInfo.outShopStockType = '';

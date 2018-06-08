@@ -11,7 +11,7 @@ angular.module('controllers',[]).controller('entryDetailsCtrl',
                 $state.go('modifyLibrary')
             }
 
-            ShopStockRecordDetail.get({id:$stateParams.entryId},function (data) {
+            ShopStockRecordDetail.get({id:$stateParams.id},function (data) {
                 $scope.param.shopEntryDetails = data.responseData;
             })
 }])

@@ -99,6 +99,13 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             }
 
             $scope.successfulInventoryGo=function(){
+                var list = $scope.param.shopStock;
+                for(var i=0;i<list.length;i++){
+                    if(list[i].stockNumber == ''||list[i].productDate == ''||list[i].stockPrice == ''){
+                        alert("请检查信息")
+                        return
+                    }
+                }
                 AddStock.save($scope.param.shopStock,function(data){
                     if(data.result==Global.SUCCESS){
                         $state.go("successfulInventory",{id:data.responseData,type:'inbound'})

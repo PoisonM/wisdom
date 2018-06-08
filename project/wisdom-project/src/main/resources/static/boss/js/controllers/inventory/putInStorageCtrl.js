@@ -31,12 +31,10 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     $scope.param.multiSelectFlag=false;
                     $scope.param.type = type;
                     $scope.param.selectProductList = '';
-                    console.log(1)
                 }
                 else
                 {
                     $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
-                    console.log(2);
                 }
                 GetShopProductLevelInfo.get({productType:type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
@@ -104,6 +102,11 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             };
 
             $scope.newLibraryGo = function(){
+                console.log($rootScope.shopInfo.entryShopProductList);
+                if($rootScope.shopInfo.entryShopProductList.length<=0){
+                    alert("请先选择产品");
+                    return;
+                }
                 $state.go("newLibrary",{stockStyle:$scope.param.selType})
             }
 

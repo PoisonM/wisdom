@@ -31,6 +31,8 @@ angular.module('controllers',[]).controller('productSettingCtrl',
                          console.log(data);
                          if(data.result=="0x00001"){
                              $state.go("productBrand")
+                         }else{
+                             alert("添加未成功")
                          }
                      });
                  }else if($scope.param.editType=="edit"){
@@ -38,6 +40,8 @@ angular.module('controllers',[]).controller('productSettingCtrl',
                      UpdateOneLevelTypeInfo.save({id:$scope.param.id,productTypeName:$scope.param.productTypeName,status:$stateParams.status},function (data) {
                          if(data.result=="0x00001"){
                              $state.go("productBrand")
+                         }else {
+                             alert("修改为成功")
                          }
                       })
                  }
