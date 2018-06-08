@@ -72,9 +72,9 @@ public class ProjectController {
 
 		HashMap<Object, Object> returnMap = new HashMap<>(2);
 		//用户需要购买列表
-		List<Object> payList = new ArrayList<>();
+		List<Object> punchCard = new ArrayList<>();
 		//用户直接划卡列表
-		List<Object> consumeList = new ArrayList<>();
+		List<Object> consume = new ArrayList<>();
 
 		String[] appointmentProjectIds = shopAppointInfoFromRedis.getShopProjectId().split(";");
 		String[] appointmentProjectNames = shopAppointInfoFromRedis.getShopProjectName().split(";");
@@ -92,13 +92,13 @@ public class ProjectController {
 			}
 
 			if(CardTypeEnum.TREATMENT_CARD.getCode().equals(shopUserProjectRelationDTO.getUseStyle()) && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()>0){
-				consumeList.add(shopUserProjectRelationDTO);
+				consume.add(shopUserProjectRelationDTO);
 			}else{
-				payList.add(shopUserProjectRelationDTO);
+				punchCard.add(shopUserProjectRelationDTO);
 			}
 		}
-		returnMap.put("punchCard", payList);
-		returnMap.put("consume", consumeList);
+		returnMap.put("punchCard", punchCard);
+		returnMap.put("consume", consume);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(returnMap);
 		return responseDTO;
