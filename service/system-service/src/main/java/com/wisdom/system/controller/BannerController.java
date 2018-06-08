@@ -56,21 +56,36 @@ public class BannerController {
 		long startTime = System.currentTimeMillis();
 		logger.info("新增banner开始={}", bannerDTO);
 		ResponseDTO responseDTO = new ResponseDTO<>();
+		BannerDTO bannerDTODown = null;
+		boolean nextBanner = true;
+		String bannerId = CodeGenUtil.getProductCodeNumber();
+		int bannerRank = bannerDTO.getBannerRank();
+		List<BannerDTO> list = bannerService.getHomeBannerList();
 		BannerDTO bannerDTOOld = bannerService.findHomeBannerInfoByBannerRank(bannerDTO.getBannerRank());
 		if(null != bannerDTOOld){
 			logger.info("新增banner,出错此banner图层={}已有banner图",bannerDTO.getBannerRank());
-			responseDTO.setResult(StatusConstant.FAILURE);
-			return responseDTO;
+			//后面的banner全都向后排序
+			while (nextBanner) {
+				bannerDTODown = bannerService.findHomeBannerInfoByBannerRank(bannerRank);
+				if(null != bannerDTODown){
+					logger.info("新增Banner,该层bannerId为={}楼层为={}需要下移到={}", bannerDTODown.getBannerId(),bannerRank,bannerRank+1);
+					bannerDTODown.setBannerRank(bannerRank+1);
+					bannerService.updateHomeBanner(bannerDTODown);
+					bannerRank++;
+				}else {
+					logger.info("新增Banner方法,各层banner已全部下移,没有下层banner了={}", bannerRank);
+					nextBanner = false;
+				}
+			}
+		}else {
+			//新增默认为最后一个
+			bannerDTO.setBannerRank(list.size()+1);
+			logger.info("新增bannerId楼层={}", list.size()+1);
 		}
-		String bannerId = CodeGenUtil.getProductCodeNumber();
-		List<BannerDTO> list = bannerService.getHomeBannerList();
 		logger.info("新增bannerId={}", bannerId);
 		try {
 			bannerDTO.setBannerId(bannerId);
 			bannerDTO.setPlace("home");
-			//新增默认为最后一个
-			bannerDTO.setBannerRank(list.size()+1);
-			logger.info("新增bannerId楼层={}", list.size()+1);
 			bannerService.addHomeBanner(bannerDTO);
 			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
