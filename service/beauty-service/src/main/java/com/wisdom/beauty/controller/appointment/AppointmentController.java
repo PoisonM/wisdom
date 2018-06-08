@@ -572,8 +572,7 @@ public class AppointmentController {
 
 		//查询店铺下的预约信息
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		SysBossDTO bossInfo = UserUtils.getBossInfo();
-        extShopAppointServiceDTO.setSysBossCode(bossInfo.getSysBossCode());
+        extShopAppointServiceDTO.setSysBossCode(redisUtils.getBossCode());
         if (StringUtils.isBlank(sysShopId)){
             sysShopId = redisUtils.getShopId();
         }
