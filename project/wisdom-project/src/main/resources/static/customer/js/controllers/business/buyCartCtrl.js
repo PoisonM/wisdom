@@ -211,21 +211,18 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 var needPayOrderList = [];
                 var alertFlag = true;
                 GetUserInfoByOpenId.get(function (data) {
-                    if(data.result==Global.SUCCESS)
-                    {
                         if(data.responseData.userType!="business-C-1"){
                             angular.forEach($scope.param.unPaidOrder,function(value,index,array){
                                 angular.forEach(value.orderList,function(value1,index,array){
-                                    if(value1.orderChecked&&value1.productPrefecture == "1")
+                                    if(value1.productPrefecture == "1")
                                     {
                                         alert("亲！此商品为新用户专享产品");
-                                        retFlag = false
+                                        retFlag = false;
 
                                     }
                                 })
                             });
                         }
-                    }
                 });
                 if(retFlag == true){
                     angular.forEach($scope.param.unPaidOrder,function(value,index,array){
