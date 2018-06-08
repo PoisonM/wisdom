@@ -53,10 +53,10 @@ public interface ShopProjectService {
     /**
      * 查询某个店的项目列表信息
      *
-     * @param shopProjectInfoDTO
+     * @param extShopProjectInfoDTO
      * @return
      */
-    List<ShopProjectInfoDTO> getShopCourseProjectList(ShopProjectInfoDTO shopProjectInfoDTO);
+    List<ShopProjectInfoDTO> getShopCourseProjectList(ExtShopProjectInfoDTO extShopProjectInfoDTO);
 
     /**
      * 查询某个用户的所有套卡项目列表
