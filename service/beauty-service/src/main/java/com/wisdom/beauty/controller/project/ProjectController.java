@@ -18,6 +18,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,29 +63,42 @@ public class ProjectController {
 			@RequestParam String appointmentId) {
 
 		ResponseDTO<HashMap<Object, Object>> responseDTO = new ResponseDTO<>();
-
-		ShopUserProjectRelationDTO ShopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
-		ShopUserProjectRelationDTO.setShopAppointmentId(appointmentId);
-
-		List<ShopUserProjectRelationDTO> projectList = projectService.getUserProjectList(ShopUserProjectRelationDTO);
-		if (CommonUtils.objectIsEmpty(projectList)) {
-			responseDTO.setResult(StatusConstant.FAILURE);
+		ShopAppointServiceDTO shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(appointmentId);
+		if(null == shopAppointInfoFromRedis ||StringUtils.isBlank(shopAppointInfoFromRedis.getShopProjectId())){
+			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+			responseDTO.setErrorInfo("未查询到用户预约信息或用户没有预约项目");
 			return responseDTO;
 		}
-		// 分组，需要购买的一组（预约的时候建立关系，可使用次数为0），直接划卡(可使用次数不为0)的一组
-		HashMap<Object, Object> returnMap = new HashMap<>();
-		ArrayList<Object> payList = new ArrayList<>();
-		ArrayList<Object> consumeList = new ArrayList<>();
-		for (ShopUserProjectRelationDTO dto : projectList) {
-			Integer surplusTimes = dto.getSysShopProjectSurplusTimes();
-			if (null != surplusTimes && surplusTimes > 0) {
-				payList.add(dto);
-			} else {
-				consumeList.add(dto);
+
+		HashMap<Object, Object> returnMap = new HashMap<>(2);
+		//用户需要购买列表
+		List<Object> punchCard = new ArrayList<>();
+		//用户直接划卡列表
+		List<Object> consume = new ArrayList<>();
+
+		String[] appointmentProjectIds = shopAppointInfoFromRedis.getShopProjectId().split(";");
+		String[] appointmentProjectNames = shopAppointInfoFromRedis.getShopProjectName().split(";");
+		for (int i=0 ;i<appointmentProjectIds.length ; i++) {
+			ShopUserProjectRelationDTO shopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
+			shopUserProjectRelationDTO.setSysShopId(shopAppointInfoFromRedis.getSysShopId());
+			shopUserProjectRelationDTO.setSysUserId(shopAppointInfoFromRedis.getSysUserId());
+			shopUserProjectRelationDTO.setSysShopProjectId(appointmentProjectIds[i]);
+			List<ShopUserProjectRelationDTO> projectList = projectService.getUserProjectList(shopUserProjectRelationDTO);
+			if(CommonUtils.objectIsEmpty(projectList)){
+				logger.error("用户预约项目为空={}","projectId = [" + appointmentProjectIds[i] + "]");
+				shopUserProjectRelationDTO.setSysShopProjectName(appointmentProjectNames[i]);
+			}else{
+				shopUserProjectRelationDTO = projectList.get(0);
+			}
+
+			if(CardTypeEnum.TREATMENT_CARD.getCode().equals(shopUserProjectRelationDTO.getUseStyle()) && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()>0){
+				consume.add(shopUserProjectRelationDTO);
+			}else{
+				punchCard.add(shopUserProjectRelationDTO);
 			}
 		}
-		returnMap.put("consume", payList);
-		returnMap.put("punchCard", consumeList);
+		returnMap.put("punchCard", punchCard);
+		returnMap.put("consume", consume);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(returnMap);
 		return responseDTO;
@@ -113,6 +127,28 @@ public class ProjectController {
 
 		HashMap<String, Object> returnMap = new HashMap<>(16);
 		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
+		//获取二级和三级
+		ShopProjectTypeDTO shopProjectType=new ShopProjectTypeDTO();
+		shopProjectType.setSysShopId(sysShopId);
+		List<ShopProjectTypeDTO> listTwoAndThree=projectService.getTwoLevelProjectList(shopProjectType);
+		//一个一级对应所有的二级
+		Map<String,Map<String,ShopProjectTypeDTO>> twoMap=null;
+		if(CollectionUtils.isNotEmpty(listTwoAndThree)){
+			twoMap=new HashMap<>();
+			for (ShopProjectTypeDTO dto:listTwoAndThree){
+				if(twoMap.containsKey(dto.getParentId())){
+					Map<String,ShopProjectTypeDTO> devMap=twoMap.get(dto.getParentId());
+					devMap.put(dto.getProjectTypeName(),dto);
+					twoMap.put(dto.getParentId(),devMap);
+				}else {
+					if(StringUtils.isNotBlank(dto.getParentId())){
+						Map<String,ShopProjectTypeDTO> devMap=new HashMap<>();
+						devMap.put(dto.getProjectTypeName(),dto);
+						twoMap.put(dto.getParentId(),devMap);
+					}
+				}
+			}
+		}
 
 		if (CommonUtils.objectIsEmpty(projectList)) {
 			logger.debug("查询某个店的疗程卡列表信息查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
@@ -132,10 +168,8 @@ public class ProjectController {
 			HashMap<Object, Object> helperMap = new HashMap<>(16);
 			// 承接二级项目
 			HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
-			for (ShopProjectInfoDTO dto : projectList) {
-				if (shopProjectTypeDTO.getId().equals(dto.getProjectTypeOneId())) {
-					twoLevelMap.put(dto.getProjectTypeTwoName(), dto);
-				}
+			if(twoMap.get(shopProjectTypeDTO.getId())!=null){
+				twoLevelMap.putAll(twoMap.get(shopProjectTypeDTO.getId()));
 			}
 			helperMap.put("levelTwoDetail", twoLevelMap);
 			helperMap.put("levelOneDetail", shopProjectTypeDTO);

@@ -219,3 +219,6 @@
     color: #333333;
     letter-spacing: 0.73px;
 }
+.consumptionListBox .redFont{
+    color: #ff6666 !important;
+}

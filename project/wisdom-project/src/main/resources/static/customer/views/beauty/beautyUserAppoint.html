@@ -13,7 +13,9 @@
         </div>
     </div>
     <ion-content style="margin-top:60px">
-        <ion-item ng-repeat="item in param.appointProjectList" style="width: 95%;margin: auto;margin-bottom: 10px">
+        <ion-item ng-repeat="item in param.appointProjectList"
+                  style="width: 95%;margin: auto;margin-bottom: 10px"
+                  ng-click="goAppointDetail(item.id)">
             <div ng-if="param.type=='onGoing'">
                 <h1 style="font-size: 14px;color: #333333">{{item.appointStartTime|date:"yyyy-MM-dd HH:mm:ss"}}</h1>
                 <p class="item-note"><i class="ion ion-clock"></i><span style="color: #888888;font-size: 12px">&nbsp;{{item.appointPeriod}}分钟</span></p>

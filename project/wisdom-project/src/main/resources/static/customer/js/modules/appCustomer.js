@@ -55,7 +55,7 @@ define(['angular'], function (angular) {
                 shopProjectIds:[],
                 shopProjectDetail:'',
                 appointValue:'',
-                chooseDate :"",
+                chooseWeekDate :"",
                 shopUserInfo:{}
             }
         })

@@ -151,6 +151,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
                 criteria.andStatusEqualTo(status);
             }
         }
+        shopAppointServiceCriteria.setOrderByClause("appoint_start_time desc");
 
         List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
         return appointServiceDTOS;
@@ -278,8 +279,6 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         deleteRelationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
         //删除用户与项目的关系
         shopProjectService.deleteUserAndProjectRelation(deleteRelationDTO);
-        //生成用户与项目的关系
-        buildUserProjectRelation(shopAppointServiceDTO);
 
         HashMap<Object, Object> hashMap = new HashMap<>(1);
         hashMap.put("appointmentId", shopAppointServiceDTO.getId());
@@ -350,8 +349,6 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         shopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
         shopAppointServiceDTO.setSysBossCode(sysClerkDTO.getSysBossCode());
 
-        //生成用户与项目的关系
-        buildUserProjectRelation(shopAppointServiceDTO);
         logger.info("保存用户的预约信息传入参数={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
 
         int insert = shopAppointServiceMapper.insertSelective(shopAppointServiceDTO);
@@ -403,7 +400,6 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
                         relationDTO.setSysShopProjectSurplusTimes(0);
                         relationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
                         relationDTO.setSysShopId(projectDetail.getSysShopId());
-                        relationDTO.setSysShopProjectInitTimes(1);
                         int num = shopProjectService.saveUserProjectRelation(relationDTO);
                         logger.debug("建立项目与用户的关系， {}", num > 0 ? "成功" : "失败");
                     }

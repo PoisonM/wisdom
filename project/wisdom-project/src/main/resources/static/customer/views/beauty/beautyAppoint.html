@@ -55,8 +55,8 @@
             </div>
             <div class="row" style="background: white;color:black;margin-top:1px;text-align: center">
                 <div class="col" style="width:11%" ng-repeat="item in param.weekDays" ng-click="chooseAppointDate(item.dateValue)">
-                    <span class="noChooseDay" ng-if="item.dateValue!=param.chooseDate">{{item.dateIndex}}</span>
-                    <span class="chooseDay" ng-if="item.dateValue==param.chooseDate">{{item.dateIndex}}</span>
+                    <span class="noChooseDay" ng-if="item.dateValue!=param.chooseWeekDate">{{item.dateIndex}}</span>
+                    <span class="chooseDay" ng-if="item.dateValue==param.chooseWeekDate">{{item.dateIndex}}</span>
                 </div>
             </div>
             <div style="margin-top:0px;background:pink;color:transparent;font-size:1px;height:2px;">123</div>

@@ -43,6 +43,7 @@
             <div ng-if = "!mainSwitch.headerPriceListBlackFlag" class="header_price_box">
                 <span ng-click="priceListBlackFn()" class="header_price_left"><i></i>{{param.headerPrice.backContent}}</span>
                 <div class="header_price_right">{{param.headerPrice.title}}</div>
+                <span ng-click="priceListSaveFn()" class="header_price_save">{{param.headerPrice.saveContent}}</span>
             </div>
             <div ng-if = "mainSwitch.headerPriceListBlackFlag" class="header_price_box">
                 <div class="header_price_black_l">

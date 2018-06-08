@@ -267,7 +267,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
 		ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
 		criteria.andSysShopIdEqualTo(sysShopId);
-		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
+		//criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 		criteria.andParentIdIsNull();
 
 		ShopProjectTypeCriteria.Criteria or = shopProjectTypeCriteria.createCriteria();
@@ -279,16 +279,20 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 	@Override
 	public List<ShopProjectTypeDTO> getTwoLevelProjectList(ShopProjectTypeDTO shopProjectTypeDTO) {
-		logger.info("getTwoLevelProjectList传入的参数,id={}", shopProjectTypeDTO.getId());
-
-		if (StringUtils.isBlank(shopProjectTypeDTO.getId())) {
-			logger.info("getTwoLevelProjectList传入的参数id为空");
+		if(shopProjectTypeDTO==null){
+			logger.info("shopProjectTypeDTO参数为空");
 			return null;
 		}
+		logger.info("getTwoLevelProjectList传入的参数,id={},sysShopId={}", shopProjectTypeDTO.getId(),shopProjectTypeDTO.getSysShopId());
+
 		ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
 		ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
-		criteria.andParentIdEqualTo(shopProjectTypeDTO.getId());
-		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
+		if(StringUtils.isNotBlank(shopProjectTypeDTO.getId())){
+			criteria.andParentIdEqualTo(shopProjectTypeDTO.getId());
+		}
+		if(StringUtils.isNotBlank(shopProjectTypeDTO.getSysShopId())){
+			criteria.andSysShopIdEqualTo(shopProjectTypeDTO.getSysShopId());
+		}
 		List<ShopProjectTypeDTO> list = shopProjectTypeMapper.selectByCriteria(shopProjectTypeCriteria);
 		return list;
 	}

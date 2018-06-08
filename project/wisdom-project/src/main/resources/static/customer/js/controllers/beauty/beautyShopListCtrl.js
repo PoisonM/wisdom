@@ -10,6 +10,15 @@ angular.module('controllers',[]).controller('beautyShopListCtrl',
                 otherShopInfo : []
             }
 
+            $rootScope.shopAppointInfo = {
+                clerkId : '',
+                shopProjectIds:[],
+                shopProjectDetail:'',
+                appointValue:'',
+                chooseWeekDate :"",
+                shopUserInfo:{}
+            }
+
             GetUserClientInfo.get(function (data) {
                 if(data.result==Global.SUCCESS)
                 {

@@ -1,23 +1,18 @@
 PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, ngDialog, Archives, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, ThreeLevelProject, productInfoThreeLevelProject, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo, GetConsumeDisplayIds) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
-    $scope.$parent.param.headerCash.leftContent = "档案(9010)";
-    $scope.$parent.param.headerCash.leftAddContent = "添加档案";
-    $scope.$parent.param.headerCash.backContent = "消费";
-    $scope.$parent.param.headerCash.leftTip = "保存";
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
-    $scope.flagFn = function(bool) {
+    $scope.$parent.param.top_bottomSelect = "jiamubiao";
+    $scope.$parent.param.headerPrice.title = "消费";
+    $scope.flagFn = function (bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool;
-        $scope.$parent.mainSwitch.headerCashAllFlag = bool;
-        $scope.$parent.mainSwitch.headerPriceListAllFlag = !bool;
+        $scope.$parent.mainSwitch.headerCashAllFlag = !bool;
+        $scope.$parent.mainSwitch.headerPriceListAllFlag = bool;
         $scope.$parent.mainSwitch.headerLoginFlag = !bool;
-        $scope.$parent.mainSwitch.headerCashFlag.leftFlag = bool;
-        $scope.$parent.mainSwitch.headerCashFlag.middleFlag = bool;
-        $scope.$parent.mainSwitch.headerCashFlag.rightFlag = bool;
-    }
+        $scope.$parent.mainSwitch.headerPriceListBlackFlag = !bool
+
+    };
     /*打开收银头部/档案头部/我的头部*/
+    $scope.flagFn(true);
     //获取订单ID
 
     SaveShopUserOrderInfo.save({
@@ -117,7 +112,8 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     }
 
     $scope.tabclick(1);
-    $scope.getThreeCategories = function(one, two) {
+    $scope.getThreeCategories = function(one, two,index) {
+        $scope.redFontFlag = index
         ThreeLevelProject.get({
             pageSize: 100,
             projectName: "",
@@ -127,7 +123,8 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             $scope.threeCategories = data.responseData;
         });
     }
-    $scope.getProductInfoThreeLevelProject = function(one, two) {
+    $scope.getProductInfoThreeLevelProject = function(one, two ,index) {
+        $scope.redFontFlag = index
         productInfoThreeLevelProject.get({
             pageSize: 100,
             productName: "",
@@ -138,6 +135,8 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         });
     }
     $scope.updateVirtualGoodsOrderInfo = function(e, res) {
+
+
         Array.prototype.indexOf = function(val) {
             for (var i = 0; i < this.length; i++) {
                 if (this[i] == val) return i;
@@ -176,7 +175,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 sysShopProjectPurchasePrice: res.marketPrice,
                 sysShopProjectInitTimes: '1',
                 sysShopProjectName: res.projectName,
-                sysUserId: 110,
+                sysUserId: $stateParams.userId,
                 useStyle: res.useStyle,
             }],
             shopUserProductRelationDTOS: [{
@@ -184,7 +183,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 initTimes: '1',
                 shopProductId: res.id,
                 shopProductName: res.productName,
-                sysUserId: 110,
+                sysUserId: $stateParams.userId,
             }],
             projectGroupRelRelationDTOS: [{
                 shopGroupPuchasePrice: res.marketPrice,
@@ -193,7 +192,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 projectSurplusTimes: '',
                 shopProjectGroupId: res.id,
                 shopProjectGroupName: res.projectGroupName,
-                sysUserId: 110,
+                sysUserId: $stateParams.userId,
             }]
         }
         switch (e) {
@@ -264,5 +263,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     $scope.$parent.leftTipFn = function() {
         $state.go('pad-web.left_nav.makeSureOrder')
     }
+    $scope.$parent.priceListSaveFn = function () {
 
+    }
 });
