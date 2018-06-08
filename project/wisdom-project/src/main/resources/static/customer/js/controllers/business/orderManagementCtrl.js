@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('orderManagementCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetBusinessOrderList','BusinessUtil','PutNeedPayOrderListToRedis','Global','DeleteOrderFromBuyCart','UpdateBusinessOrderStatus','$ionicPopup','$ionicLoading','$timeout',
-        function ($scope,$rootScope,$stateParams,$state,GetBusinessOrderList,BusinessUtil,PutNeedPayOrderListToRedis,Global,DeleteOrderFromBuyCart,UpdateBusinessOrderStatus,$ionicPopup,$ionicLoading,$timeout) {
+    ['$scope','$rootScope','$stateParams','$state','GetBusinessOrderList','BusinessUtil','PutNeedPayOrderListToRedis','Global','DeleteOrderFromBuyCart','UpdateBusinessOrderStatus','$ionicPopup','$ionicLoading','$timeout','GetUserInfoByOpenId',
+        function ($scope,$rootScope,$stateParams,$state,GetBusinessOrderList,BusinessUtil,PutNeedPayOrderListToRedis,Global,DeleteOrderFromBuyCart,UpdateBusinessOrderStatus,$ionicPopup,$ionicLoading,$timeout,GetUserInfoByOpenId) {
             $scope.param = {
                 orderList:[],
                 orderType:""
-            }
+            };
             $scope.chooseTab = function(type){
                 $scope.param.orderList=[];
                 $scope.param.orderType = type;
@@ -17,6 +17,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                      $(".pedingDelivery").show()
                     }else
                     {
+
                       $(".pedingDelivery").hide()
                     }
                 })
@@ -26,35 +27,44 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
 
             $scope.goPay = function(item){
                 var needPayOrderList = [];
-                var payOrder = {
-                    orderId:item.businessOrderId,
-                    productFirstUrl:item.businessProductFirstUrl,
-                    productId:item.businessProductId,
-                    productName:item.businessProductName,
-                    productNum:item.businessProductNum,
-                    productPrice:item.businessProductPrice,
-                    productSpec:item.productSpec
-                }
-                needPayOrderList.push(payOrder);
-                //将needPayOrderList数据放入后台list中
-                PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
-                    if(data.result==Global.SUCCESS)
-                    {
-                        if(item.type=="offline")
-                        {
-                            window.location.href = "orderPay.do?productType=offline&random="+Math.random();
+                GetUserInfoByOpenId.get(function (data) {
+                    if(data.responseData.userType!="business-C-1"){
+                        if($scope.param.orderList.productPrefecture=="1"){
+                            alert("亲！此商品为新用户专享产品");
+                            return
                         }
-                        else if(item.type=="special")
-                        {
-                            window.location.href = "orderPay.do?productType=special&random="+Math.random();
-                        }
-                        else if(item.type=="training")
-                        {
-                            window.location.href = "orderPay.do?productType=training&random="+Math.random();
-                        }
+                    }else {
+                        var payOrder = {
+                            orderId:item.businessOrderId,
+                            productFirstUrl:item.businessProductFirstUrl,
+                            productId:item.businessProductId,
+                            productName:item.businessProductName,
+                            productNum:item.businessProductNum,
+                            productPrice:item.businessProductPrice,
+                            productSpec:item.productSpec
+                        };
+                        needPayOrderList.push(payOrder);
+                        //将needPayOrderList数据放入后台list中
+                        PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
+                            if(data.result==Global.SUCCESS)
+                            {
+                                if(item.type=="offline")
+                                {
+                                    window.location.href = "orderPay.do?productType=offline&random="+Math.random();
+                                }
+                                else if(item.type=="special")
+                                {
+                                    window.location.href = "orderPay.do?productType=special&random="+Math.random();
+                                }
+                                else if(item.type=="training")
+                                {
+                                    window.location.href = "orderPay.do?productType=training&random="+Math.random();
+                                }
 
+                            }
+                        })
                     }
-                })
+                });
             }
 
             $scope.buyAgain = function(item){
