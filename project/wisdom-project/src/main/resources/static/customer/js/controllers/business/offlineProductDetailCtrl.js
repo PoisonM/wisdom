@@ -89,12 +89,13 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
             };
 
             $scope.goPay = function(){
+                /*根据用户购买的商品来判断*/
                   if($scope.param.product.productPrefecture=="1"){
                       GetUserInfoByOpenId.get(function (data) {
                           if(data.result==Global.SUCCESS)
                           {
                               if(data.responseData.userType!="business-C-1"){
-                                  alert("123");
+                                  alert("亲！此商品为新用户专享产品");
                                   return
                               }
                           }
