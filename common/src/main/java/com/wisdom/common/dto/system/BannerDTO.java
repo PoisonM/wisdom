@@ -11,6 +11,7 @@ public class BannerDTO {
     @JSONField(name = "bannerId")
     private String bannerId;
 
+
     //banner图片连接
     @JSONField(name = "uri")
     private String uri;

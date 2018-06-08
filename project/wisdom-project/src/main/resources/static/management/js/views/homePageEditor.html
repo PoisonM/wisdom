@@ -33,7 +33,7 @@
                          </div>
                      </div>
                      <div class="product_searchEara"  style="width:95%;heght:45px;">
-                         <input type="button" value="搜索" style="margin-top:30px;float:right;" class="search_btn" ng-click="searchBills()">
+                         <input type="button" value="搜索" style="margin-top:30px;float:right;" class="search_btn" ng-click="loadPageList()">
                      </div>
                  </div>
                  <div class="table_lis">
@@ -52,25 +52,25 @@
                          </tr>
                          </thead>
                          <tbody>
-                         <tr ng-repeat="item in finance" >
-                             <td>{{item.nickName}}</td>
-                             <td>{{item.mobile}}</td>
-                             <td>{{item.userType}}</td>
-                             <td>{{item.transactionId}}</td>
-                             <td>{{item.orderId}}</td>
-                             <td ng-click="void();$event.stopPropagation()" colspan="3">
-                                 <a ng-click="updateImageInfo(item.sysUserId);$event.stopPropagation()" class="orderBtn" >编辑</a>
+                         <tr ng-repeat="item in bannerList" >
+                             <td class="text-center">{{item.bannerId}}</td>
+                             <td class="text-center">{{item.bannerType}}</td>
+                             <td class="text-center">{{item.createDate}}</td>
+                             <td class="text-center"><img src="{{item.uri}}" style="max-width:100%;" /></td>
+                             <td class="text-center">{{item.forward}}</td>
+                             <td class="text-center" ng-click="void();$event.stopPropagation()" colspan="3">
+                                 <a ng-click="updateImageInfo(item.bannerId);$event.stopPropagation()" class="orderBtn" >编辑</a>
                                  &nbsp;
-                                 <a ng-click="remove(item.id);$event.stopPropagation()" class="orderBtn" >移除</a>
+                                 <a ng-click="remove(item.bannerId);$event.stopPropagation()" class="orderBtn" >移除</a>
                                  &nbsp;
-                                 <a ng-click="details(item.sysUserId,item.createDate,item.incomeType,item.transactionId,$index,item.id);$event.stopPropagation()" class="orderBtn" >上移</a>
+                                 <a ng-click="upAndDownBanner(item.bannerId,'up');$event.stopPropagation()" class="orderBtn" >上移</a>
                                  &nbsp;
-                                 <a ng-click="examine(item.id);$event.stopPropagation()" class="orderBtn" >下移</a>
+                                 <a ng-click="upAndDownBanner(item.bannerId,'down');$event.stopPropagation()" class="orderBtn" >下移</a>
                              </td>
                          </tr>
                          </tbody>
                      </table>
-                     <div page-tool></div>
+                     <div ng-show="false" page-tool></div>
                  </div>
              </div>
         </div>

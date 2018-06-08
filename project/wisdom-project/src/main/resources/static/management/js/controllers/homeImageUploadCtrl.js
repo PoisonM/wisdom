@@ -2,37 +2,85 @@
  * Created by Administrator on 2018/1/11.
  */
 angular.module('controllers',[]).controller('homeImageUploadCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','$http','ExportNextUserInfoControl','UpdateIncomeRecordStatusById','$filter','ManagementUtil',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,$http,ExportNextUserInfoControl,UpdateIncomeRecordStatusById,$filter,ManagementUtil) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','$http','ExportNextUserInfoControl','UpdateIncomeRecordStatusById','$filter','ManagementUtil','FindHomeBannerInfoById','UpdateHomeBanner','AddHomeBanner',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,$http,ExportNextUserInfoControl,UpdateIncomeRecordStatusById,$filter,ManagementUtil,FindHomeBannerInfoById,UpdateHomeBanner,AddHomeBanner) {
+
+            $scope.showImage = true;
 
             $scope.back = function(){
                 $state.go("homePageEditor");
             };
-            $scope.loadPageList  = function(){
-
-            };
-            $scope.productDTO={
-                   imageType:"",
+            $scope.bannerDTO={
+                   bannerType:"",
                    firstUrl:"",
-                   sequence:"",
-                   createTime:"",
-                   imageUrl:""
+                   bannerRank:"",
+                   uri:"",
+                   forward:"",
+                   bannerId:""
             };
 
-            $scope.detailPageList = function () {
-               if($stateParams.id!=0){
 
-               }
+
+            $scope.loadPageList  = function(){
+                if($stateParams.bannerId!="0"){
+                        FindHomeBannerInfoById.get({bannerId:$stateParams.bannerId},function(data){
+                            $("#imageType").val(data.responseData.bannerType);
+                            $("#sequence").val(data.responseData.bannerRank);
+                            $("#imageUrl").val(data.responseData.forward);
+                            $("#imageShow").attr("src",data.responseData.uri);
+
+                        })
+                   }else{
+                        $scope.showImage = false;
+                   }
              };
 
             $scope.uploadImageInfo = function(){
-                $scope.productDTO.imageType = $("#imageType").val();
-                $scope.productDTO.sequence = $("#sequence").val();
-                $scope.productDTO.createTime = $("#createTime").val();
-                $scope.productDTO.imageUrl = $("#imageUrl").val();
 
-                alert($scope.productDTO.firstUrl);
+                $scope.bannerDTO.bannerType = $("#imageType").val();
+                $scope.bannerDTO.forward = $("#imageUrl").val();
+                $scope.bannerDTO.uri = $scope.bannerDTO.firstUrl.toString();
+                $scope.bannerDTO.bannerRank = $("#sequence").val();
+                if($stateParams.bannerId!="0"){
+                    if($scope.bannerDTO.uri==""){
+                        $scope.bannerDTO.uri = $('#imageShow').attr('src');
+                    }
+                    $scope.bannerDTO.bannerId = $stateParams.bannerId;
+                    if($scope.bannerDTO.uri!=""){
+                        UpdateHomeBanner.save($scope.bannerDTO,function(data){
+                            if(data.result==Global.SUCCESS){
+                                 alert("更新成功！");
+                                 $state.go("homePageEditor");
+                            }else{
+                                alert("更新失败");
+                            }
+                        })
+                    }else{
+                        alert("图片为空或图片正在上传请等待.....")
+                        return;
+                    }
+                }else{
+                    if($scope.bannerDTO.uri!=""){
+                        AddHomeBanner.save({
+                            bannerType:$scope.bannerDTO.bannerType,
+                            bannerRank:$scope.bannerDTO.bannerRank,
+                            uri:$scope.bannerDTO.uri.toString(),
+                            forward:$scope.bannerDTO.forward
 
+                        },function(data){
+                            if(data.result==Global.SUCCESS){
+                                 alert("新增成功！");
+                                 $state.go("homePageEditor");
+                            }else{
+                                alert("新增失败");
+                            }
+                        })
+                    }else{
+                        alert("图片为空或图片正在上传请等待.....")
+                        return;
+                    }
+
+                }
             };
 
             function remove (name,picArr,id,div){
@@ -48,13 +96,13 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
                     for(var i=0;i<img.length;i++){
                         if(img[i]==obj){
                             if(id!="#publicityPic"){
-                                $scope.productDTO.productDetail[picArr].splice(i,1);
+                                $scope.bannerDTO.productDetail[picArr].splice(i,1);
                             }else{
-                                $scope.productDTO.firstUrl=''
+                                $scope.bannerDTO.firstUrl=''
                             }
 
                             patter.removeChild(div[i]);
-                            if($scope.productDTO.firstUrl==""){
+                            if($scope.bannerDTO.firstUrl==""){
                                 $scope.hintPic1 ="";
                             }
                             remove("#publicityPic .falsePic","firstUrl","#publicityPic","#publicityPic div");
@@ -80,7 +128,7 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
                     input.addEventListener('change',readFile,false);
                 }
                 function readFile(){
-                    var as = big1.querySelectorAll('.as' );
+                   var as = big1.querySelectorAll('.as' );
                    if(id=="particulars_view"){
                         $scope.hintPic2="";
                     }else if(id=="publicity"){
@@ -131,7 +179,7 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
                         ManagementUtil.checkResponseData(data,"");
                         if(data.errorInfo == Global.SUCCESS){
                              if(id=="publicity"){
-                                $scope.productDTO.firstUrl= data.responseData[0];
+                                $scope.bannerDTO.firstUrl= data.responseData;
                                 $scope.hintPic1="images/true.png";
                                  remove("#publicityPic .falsePic","firstUrl","#publicityPic","#publicityPic div");
                             }
@@ -147,7 +195,7 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
                         }
                     }).error(function(){
                         alert("上传图片失败");
-                        console.log($scope.productDTO.firstUrl);
+                        console.log($scope.bannerDTO.firstUrl);
                         delError(id)
                     })
                 }

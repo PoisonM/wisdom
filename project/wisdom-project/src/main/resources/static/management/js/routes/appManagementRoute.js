@@ -324,7 +324,7 @@ define(['appManagement'], function(app){
                         })
 
                       .state('homePageEditor', {
-                           url: '/homePageEditor/:id/:time/:transactionId/:MAccount/:startTime/:endTime/:pageNo/:status/:checkStatus',
+                           url: '/homePageEditor',
                            templateProvider: function() { return lazyDeferred.promise; },
                            controller: 'homePageEditorCtrl',
                            resolve: {
@@ -337,7 +337,7 @@ define(['appManagement'], function(app){
                        })
 
                        .state('homeImageUpload', {
-                           url: '/homePageEditor/:id',
+                           url: '/homePageEditor/:bannerId',
                            templateProvider: function() { return lazyDeferred.promise; },
                            controller: 'homeImageUploadCtrl',
                            resolve: {

@@ -25,22 +25,12 @@
                         <div style="width:30%;margin-top:100px;">
                             <label class="bold">图片类型:</label>
                             <select class="imageType selectWidth" id="imageType" style="border:1px solid;height:30px;color:#7f818a;">
-                                <option value="0"> banner</option>
-                                <option value="1">banner1</option>
-                                <option value="2">banner2</option>
-                                <option value="3">banner3</option>
-                                <option value="4">banner4</option>
+                                <option value="banner">banner图</option>
                             </select>
                         </div>
-                        <div style="width:30%;margin-top:25px;">
+                        <div ng-show="!showImage" style="width:30%;margin-top:25px;">
                             <label class="bold">选择顺序:</label>
-                            <input type="text" class="product_search sequence" id="sequence" ng-model="bills" />
-                        </div>
-                        <div style="margin-top:25px;">
-                            <label class="bold">
-                                创建时间：
-                            </label>
-                            <input style="width:18%;" class="createTime date" id="createTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
+                            <input type="number" class="product_search sequence" id="sequence" ng-model="bills" />
                         </div>
                         <div style="width:30%;margin-top:25px;">
                             <label class="bold">跳转url:</label>
@@ -51,10 +41,15 @@
                             <input type="file" id="publicity"  />
                             <img ng-src="{{hintPic1}}" class="hintPic" ng-show="hintPic1!=''?true:false">
                         </div>
-                        <div id="publicityPic"></div>
+                        <div id="publicityPic">
+                            <div ng-if="showImage" class="as">
+                                <img src="" id="imageShow" style="max-width:100%;" />
+                            </div>
+                        </div>
                         <button class="okBtn" style="background:rgba(41, 69, 210, 0.48);border:'2';margin-top:25px;width:75px;height:40px;" ng-click="uploadImageInfo();">确认上传</button>
                     </div>
                 </div>
+                <div ng-show="false" page-tool></div>
             </div>
         </div>
     </div>

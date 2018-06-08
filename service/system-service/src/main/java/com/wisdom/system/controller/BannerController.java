@@ -31,11 +31,11 @@ public class BannerController {
 	/**
 	 * 获取 Banner 图
 	 *
-			 */
+	 * */
 	@RequestMapping(value = "getHomeBannerList", method = {RequestMethod.POST, RequestMethod.GET})
 	public
 	@ResponseBody
-	ResponseDTO<List<BannerDTO>> getHomeBannerList() {
+	ResponseDTO<List<BannerDTO>> getHomeBannerList(){
 		ResponseDTO responseDto=new ResponseDTO<>();
 		List<BannerDTO> list = bannerService.getHomeBannerList();
 		if(list.size()>0){
@@ -157,7 +157,7 @@ public class BannerController {
 	@LoginRequired
 	public
 	@ResponseBody
-	ResponseDTO updateHomeBannerRank(@RequestParam String status,@RequestParam String bannerId) {
+	ResponseDTO updateHomeBannerRank(@RequestParam("bannerId") String bannerId,@RequestParam("status") String status) {
 		long startTime = System.currentTimeMillis();
 		logger.info("编辑homeBannerId=={}-上移下移=={},开始={}", bannerId,status,startTime);
 		ResponseDTO responseDTO = new ResponseDTO<>();
