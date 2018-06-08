@@ -6,6 +6,7 @@ import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
@@ -319,7 +320,13 @@ public class AppointmentController {
 		ExtShopAppointServiceDTO shopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		shopAppointServiceDTO.setSysUserId(userInfo.getId());
 		shopAppointServiceDTO.setStatus(status);
-		String sysShopId = redisUtils.getUserLoginShop(userInfo.getId()).getSysShopId();
+		ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(userInfo.getId());
+		if(null == userLoginShop){
+			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setErrorInfo("未获取到关联店铺信息");
+			return responseDTO;
+		}
+		String sysShopId = userLoginShop.getSysShopId();
 		shopAppointServiceDTO.setSysShopId(sysShopId);
 		List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(shopAppointServiceDTO);
 

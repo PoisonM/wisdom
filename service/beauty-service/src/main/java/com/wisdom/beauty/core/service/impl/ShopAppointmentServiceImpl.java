@@ -151,6 +151,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
                 criteria.andStatusEqualTo(status);
             }
         }
+        shopAppointServiceCriteria.setOrderByClause("appoint_start_time desc");
 
         List<ShopAppointServiceDTO> appointServiceDTOS = shopAppointServiceMapper.selectByCriteria(shopAppointServiceCriteria);
         return appointServiceDTOS;
