@@ -577,7 +577,8 @@ public class AppointmentController {
         if (StringUtils.isBlank(sysShopId)){
             sysShopId = redisUtils.getShopId();
         }
-        if(StringUtils.isBlank(sysClerkId)){
+        //员工端查询的话，如果sysClerkId为空
+        if(StringUtils.isBlank(sysClerkId) && null != UserUtils.getClerkInfo()){
             sysClerkId = UserUtils.getClerkInfo().getId();
         }
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
