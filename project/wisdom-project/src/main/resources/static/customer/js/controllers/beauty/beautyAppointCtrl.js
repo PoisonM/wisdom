@@ -42,14 +42,14 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 $scope.param = {
                     weekDays : [],
                     timeDate :[],
-                    chooseDate : BeautyUtil.getAddDate(BeautyUtil.getNowFormatDate(),0),
+                    chooseWeekDate : BeautyUtil.getAddDate(BeautyUtil.getNowFormatDate(),0),
                     clerkInfo : {},
                     beautyShopInfo : [],
                     beautyProjectName : '',
                     beautyProjectIds : '',
                     beautyProjectDuration : 0,
                     appointFlag : false,
-                    chooseDateTime : ''
+                    chooseWeekDateTime : ''
                 }
 
                 for(var i = 0; i<7; i++)
@@ -75,19 +75,20 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     $scope.param.weekDays.push(angular.copy(value));
                 }
 
+                //帮助回显
+                $scope.param.chooseWeekDate = $rootScope.shopAppointInfo.chooseWeekDate;
+
                 if($rootScope.shopAppointInfo.clerkId!='')
                 {    //防止用户已经选中预约时间段被冲掉
                     if($rootScope.shopAppointInfo.appointValue!=''){
                         $scope.appointProject($rootScope.shopAppointInfo.appointValue);
-                        //帮助回显
-                        $scope.param.chooseDate = $rootScope.shopAppointInfo.chooseDate;
                     }else{
                         initialTimeDate();
                         GetBeautyShopInfo.clerkInfo($rootScope.shopAppointInfo.clerkId).then(function(data) {
                             //success函数
                             $scope.param.clerkInfo = data[0];
                             GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
-                                searchDate:$scope.param.chooseDate},function (data){
+                                searchDate:$scope.param.chooseWeekDate},function (data){
                                 arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
                             })
                         })
@@ -135,9 +136,9 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
             }
 
             $scope.chooseAppointDate = function(dateValue){
-                $scope.param.chooseDate = dateValue;
+                $scope.param.chooseWeekDate = dateValue;
                 //帮助回显
-                $rootScope.shopAppointInfo.chooseDate = dateValue;
+                $rootScope.shopAppointInfo.chooseWeekDate = dateValue;
                 //如果没有选中美容师，默认为全选中状态
                 if($rootScope.shopAppointInfo.clerkId=='')
                 {
@@ -145,7 +146,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     return;
                 }
                 GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
-                    searchDate:$scope.param.chooseDate},function (data){
+                    searchDate:$scope.param.chooseWeekDate},function (data){
                     BeautyUtil.checkResponseData(data,'beautyAppoint');
                     initialTimeDate();
                     arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
@@ -171,10 +172,10 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                         //success函数
                         $scope.param.clerkInfo = data[0];
                         GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
-                            searchDate:$scope.param.chooseDate},function (data){
+                            searchDate:$scope.param.chooseWeekDate},function (data){
                             arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
 
-                            $scope.param.chooseDateTime = $scope.param.chooseDate+' '+appointValue.value;
+                            $scope.param.chooseWeekDateTime = $scope.param.chooseWeekDate+' '+appointValue.value;
                             var length = $scope.param.beautyProjectDuration/30;
 
                             var flag = false;
@@ -185,7 +186,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                                         if(data.status=='0')
                                         {
                                             alert("此时间无法预约");
-                                            $scope.chooseAppointDate($scope.param.chooseDate);
+                                            $scope.chooseAppointDate($scope.param.chooseWeekDate);
                                             flag = false;
                                         }
                                         else
@@ -223,7 +224,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 {
                     SaveUserAppointInfo.save({shopProjectId:$scope.param.beautyProjectIds,
                         sysClerkId:$rootScope.shopAppointInfo.clerkId,
-                        appointStartTimeS:$scope.param.chooseDateTime,
+                        appointStartTimeS:$scope.param.chooseWeekDateTime,
                         shopProjectName:$scope.param.beautyProjectName,
                         appointPeriod:$scope.param.beautyProjectDuration,
                         detail:$rootScope.shopAppointInfo.shopProjectDetail,
