@@ -65,8 +65,12 @@ public class ClerkServiceController {
 	@RequestMapping(value = "saveClerkInfo", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
 	ResponseDTO<Object>  saveClerkInfo(@RequestBody SysClerkDTO sysClerkDTO) {
-
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+		if(bossInfo!=null){
+			sysClerkDTO.setSysBossCode(bossInfo.getSysBossCode());
+			sysClerkDTO.setSysBossName(bossInfo.getName());
+		}
 		clerkInfoService.saveSysClerk(sysClerkDTO);
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
