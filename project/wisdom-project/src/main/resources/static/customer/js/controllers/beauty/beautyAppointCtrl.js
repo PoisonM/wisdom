@@ -218,8 +218,6 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                         })
                     })
                 }
-
-
             }
             
             $scope.confirmAppoint = function () {

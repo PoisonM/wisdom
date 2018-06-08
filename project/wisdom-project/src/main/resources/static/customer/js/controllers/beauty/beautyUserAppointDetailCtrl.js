@@ -9,6 +9,15 @@ angular.module('controllers',[]).controller('beautyUserAppointDetailCtrl',
             appointInfo : {}
         }
 
+        $rootScope.shopAppointInfo = {
+            clerkId : '',
+            shopProjectIds:[],
+            shopProjectDetail:'',
+            appointValue:'',
+            chooseWeekDate :"",
+            shopUserInfo:{}
+        }
+
         GetAppointmentInfoById.get({shopAppointServiceId:$stateParams.appointId},function (data) {
             $scope.param.appointInfo = data.responseData;
         })
