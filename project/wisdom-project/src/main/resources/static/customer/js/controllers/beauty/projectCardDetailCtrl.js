@@ -7,15 +7,20 @@ angular.module('controllers',[]).controller('projectCardDetailCtrl',
 
     $scope.param = {
         pageSize:5000,
-        projectCardConsumes : []
+        projectCardConsumes : [],
+        projectCardDetailData : "true"
     }
 
     GetProjectCardConsume.get({consumeFlowNo:$stateParams.projectId},function (data) {
         if(data.result==Global.SUCCESS)
         {
-            $scope.param.projectCardConsumes = data.responseData;
+            if(data.responseData!=null)
+            {
+                $scope.param.projectCardConsumes = data.responseData;
+            }else {
+                $scope.param.projectCardDetailData = "false";
+            }
         }
-        console.log(data);
     })
 
 }])

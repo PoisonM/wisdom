@@ -87,10 +87,13 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                         GetBeautyShopInfo.clerkInfo($rootScope.shopAppointInfo.clerkId).then(function(data) {
                             //success函数
                             $scope.param.clerkInfo = data[0];
-                            GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
-                                searchDate:$scope.param.chooseWeekDate},function (data){
-                                arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
-                            })
+                            if($scope.param.chooseWeekDate!="")
+                            {
+                                GetClerkScheduleInfo.get({clerkId:$rootScope.shopAppointInfo.clerkId,
+                                    searchDate:$scope.param.chooseWeekDate},function (data){
+                                    arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
+                                })
+                            }
                         })
                     }
                 }

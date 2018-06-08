@@ -1,11 +1,15 @@
 <ion-view style="background:white">
     <ion-content>
-        <ion-list>
+        <ion-list ng-if="param.expenseCardDetailData=='true'">
             <ion-item ng-repeat="item in param.projectConsumes" style="color: #333333;font-size: 15px">
                 <h>{{item.createDate|date:'yyyy-MM-dd HH:MM:ss'}}</h>
                 <p class="item-note">1次</p>
             </ion-item>
             <br><br><br><br>
         </ion-list>
+        <center ng-if="param.expenseCardDetailData=='false'">
+            <img style="width: 80%;margin-top:25%;"
+                 src="https://mximage.oss-cn-beijing.aliyuncs.com/viewPicture/%E7%A9%BA%E7%8A%B6%E6%80%81%E5%9B%BE%403x.png">
+        </center>
     </ion-content>
 </ion-view>

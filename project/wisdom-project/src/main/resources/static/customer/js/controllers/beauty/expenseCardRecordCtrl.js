@@ -7,16 +7,22 @@ angular.module('controllers',[]).controller('expenseCardRecordCtrl',
 
             $scope.param = {
                 pageSize:5000,
-                projectConsumes : []
+                projectConsumes : [],
+                expenseCardDetailData :'true'
             }
 
             GetProjectConsumes.save({consumeType:'0',goodType:'6',
                 pageSize:$scope.param.pageSize,shopUserId:$rootScope.shopAppointInfo.shopUserInfo.id},function (data) {
                 if(data.result==Global.SUCCESS)
                 {
-                    $scope.param.projectConsumes = data.responseData;
+                    if(data.responseData!=null)
+                    {
+                        $scope.param.projectConsumes = data.responseData;
+                    }
+                    else {
+                        $scope.param.expenseCardDetailData = "false";
+                    }
                 }
-                console.log(data);
             })
 
 }])
