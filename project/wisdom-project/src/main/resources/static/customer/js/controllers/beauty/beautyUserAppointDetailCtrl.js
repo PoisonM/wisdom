@@ -11,6 +11,5 @@ angular.module('controllers',[]).controller('beautyUserAppointDetailCtrl',
 
         GetAppointmentInfoById.get({shopAppointServiceId:$stateParams.appointId},function (data) {
             $scope.param.appointInfo = data.responseData;
-            console.log($scope.param.appointInfo);
         })
 }])

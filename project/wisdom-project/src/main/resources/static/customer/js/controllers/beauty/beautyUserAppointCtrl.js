@@ -28,5 +28,9 @@ angular.module('controllers',[]).controller('beautyUserAppointCtrl',
 
         $scope.selectAppointProject($scope.param.type);
 
+        $scope.goAppointDetail = function (appointId) {
+            $state.go("beautyUserAppointDetail",{appointId:appointId});
+        }
+
 
 }])
