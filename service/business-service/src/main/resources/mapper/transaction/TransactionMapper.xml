@@ -212,7 +212,7 @@
     <select id="getBusinessOrderListByUserIdAndStatus"
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
         select bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
-        opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,bpr.price businessProductPrice,bor.status status,
+        opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.product_prefecture,bpr.`name` businessProductName,bpr.price businessProductPrice,bor.status status,
         bor.update_date updateDate,bor.type type
         from
         business_order bor, order_product_relation opr, business_product bpr
