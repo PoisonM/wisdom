@@ -52,7 +52,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                 }
                             });
                             /*测试用的*/
-                           /* $scope.param.unPaidOrder[0].orderList[0].productStatus='0';*/
+                            /* $scope.param.unPaidOrder[0].orderList[0].productStatus='0';*/
                         })
                     }
                 })
@@ -180,8 +180,8 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                             minusButton = true;
                         })
                     }
-                     if(parseInt(item.productNum)-1<=parseInt(item.productAmount)){
-                         $("#greyBox").css("background","red")
+                    if(parseInt(item.productNum)-1<=parseInt(item.productAmount)){
+                        $("#greyBox").css("background","red")
                     }
 
                 }
@@ -206,71 +206,68 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     }
                 })
             };
-            var retFlag=true;
             $scope.goPay = function() {
                 var needPayOrderList = [];
                 var alertFlag = true;
                 GetUserInfoByOpenId.get(function (data) {
-                        if(data.responseData.userType!="business-C-1"){
-                            angular.forEach($scope.param.unPaidOrder,function(value,index,array){
-                                angular.forEach(value.orderList,function(value1,index,array){
-                                    if(value1.productPrefecture == "1")
-                                    {
-                                        alert("亲！此商品为新用户专享产品");
-                                        retFlag = false;
+                    if(data.responseData.userType!="business-C-1"){
+                        angular.forEach($scope.param.unPaidOrder,function(value,index,array){
+                            angular.forEach(value.orderList,function(value1,index,array){
+                                if(value1.productPrefecture == "1")
+                                {
+                                    alert("亲！此商品为新用户专享产品");
+                                    return
+                                }
+                            })
+                        });
+                    }else {
+                        angular.forEach($scope.param.unPaidOrder,function(value,index,array){
+                            angular.forEach(value.orderList,function(value1,index,array){
+                                if(value1.orderChecked&&value1.productStatus == "1")
+                                {
+                                    needPayOrderList.push(value1);
+                                }
 
-                                    }
-                                })
-                            });
-                        }
-                });
-                if(retFlag == true){
-                    angular.forEach($scope.param.unPaidOrder,function(value,index,array){
-                        angular.forEach(value.orderList,function(value1,index,array){
-                            if(value1.orderChecked&&value1.productStatus == "1")
-                            {
-                                needPayOrderList.push(value1);
-                            }
+                                if(value1.productStatus == "1"){
+                                    alertFlag = false;
+                                    return;
+                                }
 
-                            if(value1.productStatus == "1"){
-                                alertFlag = false;
+                            })
+                        });
+
+                        angular.forEach($scope.param.unPaidOrder,function(value,index,array){
+                            angular.forEach(value.orderList,function(value1,index,array){
+                                if(value1.productStatus == "0"&&alertFlag){
+                                    alertFlag = false;
+                                    alert("商品下架啦哟亲！");
+                                }
+                            })
+                        });
+
+                        for(var i =0;i<needPayOrderList.length;i++){
+                            if(needPayOrderList[i].productNum>parseInt(needPayOrderList[i].productAmount)){
+                                alert("库存不足~");
                                 return;
                             }
-
-                        })
-                    });
-
-                    angular.forEach($scope.param.unPaidOrder,function(value,index,array){
-                        angular.forEach(value.orderList,function(value1,index,array){
-                            if(value1.productStatus == "0"&&alertFlag){
-                                alertFlag = false;
-                                alert("商品下架啦哟亲！");
+                        }
+                        //将needPayOrderList数据放入后台list中
+                        PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
+                            if(needPayOrderList=="")
+                            {
+                                $("#greyBox").css("background","grey")
+                            }
+                            else if(data.result==Global.SUCCESS)
+                            {
+                                window.location.href = "orderPay.do?productType=offline&random="+Math.random();
+                            }
+                            else if(data.result==Global.FAILURE){
+                                alert("库存不足~,购买失败");
+                                $state.go("shopHome");
                             }
                         })
-                    });
-
-                    for(var i =0;i<needPayOrderList.length;i++){
-                        if(needPayOrderList[i].productNum>parseInt(needPayOrderList[i].productAmount)){
-                            alert("库存不足~");
-                            return;
-                        }
                     }
-                    //将needPayOrderList数据放入后台list中
-                    PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
-                        if(needPayOrderList=="")
-                        {
-                            $("#greyBox").css("background","grey")
-                        }
-                        else if(data.result==Global.SUCCESS)
-                        {
-                            window.location.href = "orderPay.do?productType=offline&random="+Math.random();
-                        }
-                        else if(data.result==Global.FAILURE){
-                            alert("库存不足~,购买失败");
-                            $state.go("shopHome");
-                        }
-                    })
-                }
+                })
 
             };
 
@@ -289,4 +286,4 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 });
                 loadBuyCartInfo();
             })
-}]);
+        }]);
