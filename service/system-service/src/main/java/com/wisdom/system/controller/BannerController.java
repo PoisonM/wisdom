@@ -80,8 +80,11 @@ public class BannerController {
 		}else {
 			//新增默认为最后一个
 			List<BannerDTO> list = bannerService.getHomeBannerList();
-			bannerDTO.setBannerRank(list.size()+1);
-			logger.info("新增bannerId楼层={}", list.size()+1);
+			if(0 == list.size()){
+				bannerDTO.setBannerRank(list.size());
+			}else {
+				bannerDTO.setBannerRank(list.size()+1);
+			}
 		}
 		try {
 			bannerDTO.setBannerId(bannerId);
@@ -165,7 +168,7 @@ public class BannerController {
 					return responseDTO;
 				}
 				//下移,上层banner
-				bannerDTODown.setBannerRank(bannerRank+1);
+				bannerDTODown.setBannerRank(bannerRank);
 				//上移,此banner图
 				bannerDTO.setBannerRank(bannerRank-1);
 				bannerService.updateHomeBanner(bannerDTO);
