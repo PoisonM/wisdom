@@ -19,7 +19,7 @@ var projectGroupInfo='/beauty/projectGroupInfo/';
 var cardHelper ='/beauty/cardHelper/';
 var  mine='/beauty/mine/';
 var remind='/beauty/remind/';
-var file = '/system-service/file/';
+var file = '/system/file/';
 var clerkWork = '/beauty/clerkWork/';
 
 define(['appBoss'], function (app) {

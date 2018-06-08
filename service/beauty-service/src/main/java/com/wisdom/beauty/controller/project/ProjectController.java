@@ -18,6 +18,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,21 +139,51 @@ public class ProjectController {
 			responseDTO.setResult(StatusConstant.SUCCESS);
 			return responseDTO;
 		}
-
+		//获取二级和三级
+		ShopProjectTypeDTO shopProjectType=new ShopProjectTypeDTO();
+		shopProjectType.setSysShopId(sysShopId);
+		List<ShopProjectTypeDTO> twoAndThreeTypeList=projectService.getTwoLevelProjectList(shopProjectType);
+		//一个一级对应所有的二级
+		Map<String,Map<String,ShopProjectTypeDTO>> twoMap=null;
+		if(CollectionUtils.isNotEmpty(twoAndThreeTypeList)){
+			twoMap=new HashMap<>();
+			for (ShopProjectTypeDTO dto:twoAndThreeTypeList){
+				if(twoMap.containsKey(dto.getParentId())){
+					Map<String,ShopProjectTypeDTO> devMap=twoMap.get(dto.getParentId());
+					devMap.put(dto.getProjectTypeName(),dto);
+					twoMap.put(dto.getParentId(),devMap);
+				}else {
+					if(StringUtils.isNotBlank(dto.getParentId())){
+						Map<String,ShopProjectTypeDTO> devMap=new HashMap<>();
+						devMap.put(dto.getProjectTypeName(),dto);
+						twoMap.put(dto.getParentId(),devMap);
+					}
+				}
+			}
+		}
 		ArrayList<Object> levelList = new ArrayList<>();
+		ArrayList<Object> oneAndTwoLevelList = new ArrayList<>();
 		// 遍历缓存的一级
 		for (ShopProjectTypeDTO shopProjectTypeDTO : shopProjectTypeDTOList) {
 			HashMap<Object, Object> helperMap = new HashMap<>(16);
+			HashMap<Object, Object> oneAndTwoHelperMap = new HashMap<>(16);
 			// 承接二级项目
 			HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
+			HashMap<Object, Object> oneAndTwoLevelMap = new HashMap<>(16);
 			for (ShopProjectInfoDTO dto : projectList) {
 				if (shopProjectTypeDTO.getId().equals(dto.getProjectTypeOneId())) {
 					twoLevelMap.put(dto.getProjectTypeTwoName(), dto);
+				}
+				if(twoMap.get(shopProjectTypeDTO.getId())!=null){
+					oneAndTwoLevelMap.putAll(twoMap.get(shopProjectTypeDTO.getId()));
 				}
 			}
 			helperMap.put("levelTwoDetail", twoLevelMap);
 			helperMap.put("levelOneDetail", shopProjectTypeDTO);
 			levelList.add(helperMap);
+			oneAndTwoHelperMap.put("levelTwoDetail", oneAndTwoLevelMap);
+			oneAndTwoHelperMap.put("levelOneDetail", shopProjectTypeDTO);
+			oneAndTwoLevelList.add(oneAndTwoHelperMap);
 		}
 		// detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表
 		returnMap.put("detailLevel", levelList);

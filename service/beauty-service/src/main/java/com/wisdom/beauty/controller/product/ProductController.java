@@ -275,12 +275,12 @@ public class ProductController {
         //获取二级和三级
         ShopProductTypeDTO shopProductType=new ShopProductTypeDTO();
         shopProductType.setSysShopId(sysShopId);
-        List<ShopProductTypeDTO> listTwoAndThree=shopProductInfoService.getTwoLevelProductList(shopProductType);
+        List<ShopProductTypeDTO> twoAndThreeTypeList=shopProductInfoService.getTwoLevelProductList(shopProductType);
         //一个一级对应所有的二级
         Map<String,Map<String,ShopProductTypeDTO>> twoMap=null;
-        if(CollectionUtils.isNotEmpty(listTwoAndThree)){
+        if(CollectionUtils.isNotEmpty(twoAndThreeTypeList)){
             twoMap=new HashMap<>();
-            for (ShopProductTypeDTO dto:listTwoAndThree){
+            for (ShopProductTypeDTO dto:twoAndThreeTypeList){
                 if(twoMap.containsKey(dto.getParentId())){
                     Map<String,ShopProductTypeDTO> devMap=twoMap.get(dto.getParentId());
                     devMap.put(dto.getProductTypeName(),dto);
@@ -295,21 +295,33 @@ public class ProductController {
             }
         }
         ArrayList<Object> levelList = new ArrayList<>();
+        ArrayList<Object> oneAndTwoLevelList = new ArrayList<>();
         //遍历缓存的一级产品
         for (ShopProductTypeDTO shopProductTypeDTO : oneLevelProductList) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
+            HashMap<Object, Object> oneAndTwoHelperMap = new HashMap<>(16);
             //承接二级产品
             HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
-
+            HashMap<Object, Object> oneAndTwoLevelMap = new HashMap<>(16);
+            for (ShopProductInfoDTO dto : shopProductInfo) {
+                if (shopProductTypeDTO.getId().equals(dto.getProductTypeOneId())) {
+                    twoLevelMap.put(dto.getProductTypeTwoName(), dto);
+                }
+            }
             if(twoMap.get(shopProductTypeDTO.getId())!=null){
-                twoLevelMap.putAll(twoMap.get(shopProductTypeDTO.getId()));
+                oneAndTwoLevelMap.putAll(twoMap.get(shopProductTypeDTO.getId()));
             }
             helperMap.put("levelTwoDetail", twoLevelMap);
             helperMap.put("levelOneDetail", shopProductTypeDTO);
             levelList.add(helperMap);
+
+            oneAndTwoHelperMap.put("levelTwoDetail", oneAndTwoLevelMap);
+            oneAndTwoHelperMap.put("levelOneDetail", shopProductTypeDTO);
+            oneAndTwoLevelList.add(oneAndTwoHelperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProduct集合是所有产品的列表
         returnMap.put("detailLevel", levelList);
+        returnMap.put("oneAndTwoLevelList", oneAndTwoLevelList);
         returnMap.put("detailProduct", shopProductInfo);
         responseDTO.setResponseData(returnMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
