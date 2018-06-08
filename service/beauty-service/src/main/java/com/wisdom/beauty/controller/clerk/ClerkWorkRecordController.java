@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +74,13 @@ public class ClerkWorkRecordController {
             map.put("income", income.toString());
             map.put("expenditure", expenditure.toString());
             map.put("kahao", kahao.toString());
+        }
+        else
+        {
+            map = new HashMap<>();
+            map.put("income", "0");
+            map.put("expenditure", "0");
+            map.put("kahao", "0");
         }
 
         ResponseDTO<Map<String, String>> response = new ResponseDTO<>();

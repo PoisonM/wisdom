@@ -20,6 +20,7 @@ var cardHelper ='/beauty/cardHelper/';
 var  mine='/beauty/mine/';
 var remind='/beauty/remind/';
 var file = '/system-service/file/';
+var clerkWork = '/beauty/clerkWork/';
 
 define(['appBoss'], function (app) {
     app
@@ -156,7 +157,6 @@ define(['appBoss'], function (app) {
         .factory('GetBossAchievement',['$resource',function ($resource){
             return $resource(work+"getBossAchievement")
         }])
-
 
    /*档案*/
         /*预警档案*/
@@ -502,6 +502,11 @@ define(['appBoss'], function (app) {
         /*搜索我的>家人*/
         .factory('GetClerkBySearchFile',['$resource',function ($resource){
             return $resource(user + "getClerkBySearchFile")
+        }])
+
+        /*查询某个店员的排班信息*/
+        .factory('GetClerkScheduleOneDayInfo',['$resource',function ($resource){
+            return $resource(clerkSchedule + "getClerkScheduleOneDayInfo")
         }])
 
 });
