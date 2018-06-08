@@ -76,7 +76,7 @@ public class ProjectController {
 		shopUserProjectRelationDTO.setUseStyle(CardTypeEnum.TREATMENT_CARD.getCode());
 		List<ShopUserProjectRelationDTO> projectList = projectService.getUserProjectList(shopUserProjectRelationDTO);
 		if (CommonUtils.objectIsEmpty(projectList)) {
-			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.SUCCESS);
 			return responseDTO;
 		}
 		// 分组，需要购买的一组（预约的时候建立关系，可使用次数为0），直接划卡(可使用次数不为0)的一组
