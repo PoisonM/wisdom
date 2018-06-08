@@ -59,14 +59,6 @@ public class CustomerAccountResponseDto extends ShopUserArchivesDTO {
         this.photo = photo;
     }
 
-    public String getSysClerkName() {
-        return sysClerkName;
-    }
-
-    public void setSysClerkName(String sysClerkName) {
-        this.sysClerkName = sysClerkName;
-    }
-
     public String getMember() {
         return member;
     }

@@ -18,7 +18,6 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,28 +126,6 @@ public class ProjectController {
 
 		HashMap<String, Object> returnMap = new HashMap<>(16);
 		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
-		//获取二级和三级
-		ShopProjectTypeDTO shopProjectType=new ShopProjectTypeDTO();
-		shopProjectType.setSysShopId(sysShopId);
-		List<ShopProjectTypeDTO> listTwoAndThree=projectService.getTwoLevelProjectList(shopProjectType);
-		//一个一级对应所有的二级
-		Map<String,Map<String,ShopProjectTypeDTO>> twoMap=null;
-		if(CollectionUtils.isNotEmpty(listTwoAndThree)){
-			twoMap=new HashMap<>();
-			for (ShopProjectTypeDTO dto:listTwoAndThree){
-				if(twoMap.containsKey(dto.getParentId())){
-					Map<String,ShopProjectTypeDTO> devMap=twoMap.get(dto.getParentId());
-					devMap.put(dto.getProjectTypeName(),dto);
-					twoMap.put(dto.getParentId(),devMap);
-				}else {
-					if(StringUtils.isNotBlank(dto.getParentId())){
-						Map<String,ShopProjectTypeDTO> devMap=new HashMap<>();
-						devMap.put(dto.getProjectTypeName(),dto);
-						twoMap.put(dto.getParentId(),devMap);
-					}
-				}
-			}
-		}
 
 		if (CommonUtils.objectIsEmpty(projectList)) {
 			logger.debug("查询某个店的疗程卡列表信息查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
@@ -168,8 +145,10 @@ public class ProjectController {
 			HashMap<Object, Object> helperMap = new HashMap<>(16);
 			// 承接二级项目
 			HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
-			if(twoMap.get(shopProjectTypeDTO.getId())!=null){
-				twoLevelMap.putAll(twoMap.get(shopProjectTypeDTO.getId()));
+			for (ShopProjectInfoDTO dto : projectList) {
+				if (shopProjectTypeDTO.getId().equals(dto.getProjectTypeOneId())) {
+					twoLevelMap.put(dto.getProjectTypeTwoName(), dto);
+				}
 			}
 			helperMap.put("levelTwoDetail", twoLevelMap);
 			helperMap.put("levelOneDetail", shopProjectTypeDTO);
