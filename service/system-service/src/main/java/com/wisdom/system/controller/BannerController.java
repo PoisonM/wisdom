@@ -61,6 +61,10 @@ public class BannerController {
 		boolean nextBanner = true;
 		String bannerId = CodeGenUtil.getProductCodeNumber();
 		int bannerRank = bannerDTO.getBannerRank();
+		if(null == bannerDTO.getUri()){
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
+		}
 		BannerDTO bannerDTOOld = bannerService.findHomeBannerInfoByBannerRank(bannerRank);
 		if(null != bannerDTOOld){
 			logger.info("新增banner,此banner图层={}已有banner图",bannerDTO.getBannerRank());
@@ -115,6 +119,11 @@ public class BannerController {
 		long startTime = System.currentTimeMillis();
 		logger.info("编辑homeBanner开始={}", bannerDTO);
 		ResponseDTO responseDTO = new ResponseDTO<>();
+		if(null == bannerDTO.getUri()){
+			logger.info("编辑homeBanner没有url");
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
+		}
 		if(null == bannerDTO.getBannerId() || "".equals(bannerDTO.getBannerId())){
 			String bannerId = CodeGenUtil.getProductCodeNumber();
 			bannerDTO.setBannerId(bannerId);
