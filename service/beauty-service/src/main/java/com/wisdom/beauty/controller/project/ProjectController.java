@@ -63,41 +63,43 @@ public class ProjectController {
 
 		ResponseDTO<HashMap<Object, Object>> responseDTO = new ResponseDTO<>();
 		ShopAppointServiceDTO shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(appointmentId);
-		if(null == shopAppointInfoFromRedis){
+		if(null == shopAppointInfoFromRedis ||StringUtils.isBlank(shopAppointInfoFromRedis.getShopProjectId())){
 			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
-			responseDTO.setErrorInfo("未查询到用户预约信息");
+			responseDTO.setErrorInfo("未查询到用户预约信息或用户没有预约项目");
 			return responseDTO;
 		}
-		//查询用户还没有使用完的疗程卡
-		ShopUserProjectRelationDTO shopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
-		shopUserProjectRelationDTO.setSysShopId(shopAppointInfoFromRedis.getSysShopId());
-		shopUserProjectRelationDTO.setSysUserId(shopUserProjectRelationDTO.getSysUserId());
-		shopUserProjectRelationDTO.setSysShopProjectSurplusTimes(1);
-		shopUserProjectRelationDTO.setUseStyle(CardTypeEnum.TREATMENT_CARD.getCode());
-		List<ShopUserProjectRelationDTO> projectList = projectService.getUserProjectList(shopUserProjectRelationDTO);
-		if (CommonUtils.objectIsEmpty(projectList)) {
-			responseDTO.setResult(StatusConstant.SUCCESS);
-			return responseDTO;
-		}
-		// 分组，需要购买的一组（预约的时候建立关系，可使用次数为0），直接划卡(可使用次数不为0)的一组
+
 		HashMap<Object, Object> returnMap = new HashMap<>(2);
-		ArrayList<Object> payList = new ArrayList<>();
-		ArrayList<Object> consumeList = new ArrayList<>();
-		for (ShopUserProjectRelationDTO dto : projectList) {
-			if (shopAppointInfoFromRedis.getShopProjectId().contains(dto.getId())){
-				payList.add(dto);
+		//用户需要购买列表
+		List<Object> payList = new ArrayList<>();
+		//用户直接划卡列表
+		List<Object> consumeList = new ArrayList<>();
+
+		String[] appointmentProjectIds = shopAppointInfoFromRedis.getShopProjectId().split(";");
+		String[] appointmentProjectNames = shopAppointInfoFromRedis.getShopProjectName().split(";");
+		for (int i=0 ;i<appointmentProjectIds.length ; i++) {
+			ShopUserProjectRelationDTO shopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
+			shopUserProjectRelationDTO.setSysShopId(shopAppointInfoFromRedis.getSysShopId());
+			shopUserProjectRelationDTO.setSysUserId(shopAppointInfoFromRedis.getSysUserId());
+			shopUserProjectRelationDTO.setSysShopProjectId(appointmentProjectIds[i]);
+			List<ShopUserProjectRelationDTO> projectList = projectService.getUserProjectList(shopUserProjectRelationDTO);
+			if(CommonUtils.objectIsEmpty(projectList)){
+				logger.error("用户预约项目为空={}","projectId = [" + appointmentProjectIds[i] + "]");
+				shopUserProjectRelationDTO.setSysShopProjectName(appointmentProjectNames[i]);
 			}else{
-				consumeList.add(dto);
+				shopUserProjectRelationDTO = projectList.get(0);
+			}
+
+			if(CardTypeEnum.TREATMENT_CARD.getCode().equals(shopUserProjectRelationDTO.getUseStyle()) && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()>0){
+				consumeList.add(shopUserProjectRelationDTO);
+			}else{
+				payList.add(shopUserProjectRelationDTO);
 			}
 		}
 		returnMap.put("consume", payList);
 		returnMap.put("punchCard", consumeList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(returnMap);
-
-		//获取用户已经预约的项目id
-
-		//获取用户已经存在
 		return responseDTO;
 	}
 

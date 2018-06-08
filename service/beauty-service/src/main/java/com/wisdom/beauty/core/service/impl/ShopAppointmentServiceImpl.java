@@ -279,8 +279,6 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         deleteRelationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
         //删除用户与项目的关系
         shopProjectService.deleteUserAndProjectRelation(deleteRelationDTO);
-        //生成用户与项目的关系
-        buildUserProjectRelation(shopAppointServiceDTO);
 
         HashMap<Object, Object> hashMap = new HashMap<>(1);
         hashMap.put("appointmentId", shopAppointServiceDTO.getId());
@@ -351,8 +349,6 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         shopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
         shopAppointServiceDTO.setSysBossCode(sysClerkDTO.getSysBossCode());
 
-        //生成用户与项目的关系
-        buildUserProjectRelation(shopAppointServiceDTO);
         logger.info("保存用户的预约信息传入参数={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
 
         int insert = shopAppointServiceMapper.insertSelective(shopAppointServiceDTO);
