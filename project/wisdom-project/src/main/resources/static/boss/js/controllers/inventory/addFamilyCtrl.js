@@ -9,17 +9,30 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                 searchFile:''
 
             };
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                $scope.getInfo()
+            })
             $scope.getInfo=function(){
-                GetClerkInfoList.query({
+                GetClerkInfoList.get({
                     sysBossId:"",
                     sysShopId:$scope.param.sysShopId,
                     pageSize:"1000"
                 },function(data){
-                    $scope.addFamily = data
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $ionicLoading.hide();
+                        $scope.addFamily = data.responseData
 
+                    }
                 })
             }
-            $scope.getInfo()
+
 
 
             $scope.addEmployeesGo = function(){

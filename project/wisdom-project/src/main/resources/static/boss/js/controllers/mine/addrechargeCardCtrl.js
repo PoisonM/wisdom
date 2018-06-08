@@ -13,7 +13,7 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
             $rootScope.settingAddsome.editedRecharge={
                 name:'',
                 amount:"",
-                imageUrls:[],
+                imageList:[],
                 introduce:'',
                 status:'0',
                 timesList:[],/*次卡数组id*/
@@ -29,7 +29,7 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($rootScope.settingAddsome.editedRecharge.imageUrls.length>6){
+                if($rootScope.settingAddsome.editedRecharge.imageList.length>6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -40,7 +40,7 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $rootScope.settingAddsome.editedRecharge.imageUrls.push(data.responseData)
+                                $rootScope.settingAddsome.editedRecharge.imageList.push(data.responseData)
                             }
 
                         })
@@ -54,7 +54,7 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
 
             };
             $scope.delPic = function(index){
-                $rootScope.settingAddsome.editedRecharge.imageUrls.splice(index,1)
+                $rootScope.settingAddsome.editedRecharge.imageList.splice(index,1)
             }
             $scope. appear=function (index) {
                $scope.param.appearArr[index ] =!$scope.param.appearArr[index ]
@@ -74,9 +74,7 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                 }else{
                     $rootScope.settingAddsome.editedRecharge.status = '1'
                 }
-
-
-                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||($rootScope.settingAddsome.editedRecharge.timesList.length<=0&&$rootScope.settingAddsome.editedRecharge.timeDiscount!=''||( $rootScope.settingAddsome.editedRecharge.timesList.periodList>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.timesList.periodList<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!=''))||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
+                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||( $rootScope.settingAddsome.editedRecharge.periodList>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!='')||($rootScope.settingAddsome.editedRecharge.periodList.length<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!='')||($rootScope.settingAddsome.editedRecharge.timesList.periodList<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!='')||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
                     alert("信息不完全")
                     return
                 }

@@ -11,14 +11,25 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                 fileBOx:false,
                 distributionStart:false /*选择档案的多选框*/
             };
-            FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,
-                pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
-                BossUtil.checkResponseData(data,'partialFiles');
-                if(data.result == "0x00001"){
-                    $scope.fileList = [];
-                    $scope.info = data.responseData.info;
-                }
-            });
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,
+                    pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
+                    BossUtil.checkResponseData(data,'partialFiles');
+                    if(data.result == "0x00001"){
+                        $scope.fileList = [];
+                        $ionicLoading.hide();
+                        $scope.info = data.responseData.info;
+                    }
+                });
+            })
+
             /*点击跳转到预警档案*/
             $scope.switching=function () {
                 $state.go("warningFile")

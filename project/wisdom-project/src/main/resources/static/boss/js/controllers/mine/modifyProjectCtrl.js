@@ -19,30 +19,21 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
             $scope.addProjectSeriesGo = function () {
                 $state.go("addProjectSeries",{projectId:$scope.param.projectId,url:'modifyProject'})
             }
-            $scope.$on('$ionicView.enter', function() {
-                $ionicLoading.show({
-                    content: 'Loading',
-                    animation: 'fade-in',
-                    showBackdrop: true,
-                    maxWidth: 200,
-                    showDelay: 0
-                });
-                ProjectInfo.get({id:$scope.param.projectId},function (data) {
-                    if(data.result == '0x00001'){
-                        $ionicLoading.hide();
-                        $scope.settingAddsome.extShopProjectInfoDTO=data.responseData;
-                        if($rootScope.settingAddsome.extShopProjectInfoDTO.status=="1"){
-                            $scope.param.status=false
-                        }else {
-                            $scope.param.status=true
-                        }
-                    } 
-                });
-            })
+            ProjectInfo.get({id:$scope.param.projectId},function (data) {
+                if(data.result == '0x00001'){
+                    $scope.settingAddsome.extShopProjectInfoDTO=data.responseData;
+                    if($rootScope.settingAddsome.extShopProjectInfoDTO.status=="1"){
+                        $scope.param.status=false
+                    }else {
+                        $scope.param.status=true
+                    }
+                }
+            });
+
             $scope.secondaryCard=function (type,timeLength) {
                 if(type !='-1') {
                     $rootScope.settingAddsome.extShopProjectInfoDTO.cardType = type;
-                    $scope.param.timeLength = timeLength
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth = timeLength;
                 }
 
             };

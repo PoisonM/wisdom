@@ -17,6 +17,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
             title:"项目",
             blackBackContent:"",
             blackTitle:"产品",
+            saveContent:"确认"
         }
     }
     //公共部分开关管理

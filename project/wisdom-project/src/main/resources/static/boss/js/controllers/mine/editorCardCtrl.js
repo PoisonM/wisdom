@@ -13,32 +13,23 @@ angular.module('controllers',[]).controller('editorCardCtrl',
             }
 
 
-            $scope.$on('$ionicView.enter', function() {
-                $ionicLoading.show({
-                    content: 'Loading',
-                    animation: 'fade-in',
-                    showBackdrop: true,
-                    maxWidth: 200,
-                    showDelay: 0
-                });
-                GetShopProjectGroupDetail.get({id:$stateParams.id
-                },function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $ionicLoading.hide();
-                        $rootScope.settingAddsome.editorCard = data.responseData;
-                        if($rootScope.settingAddsome.editorCard.status =='0'){
-                            $scope.param.status = true
-                        }else{
-                            $scope.param.status = false
-                        }
-
-                        $scope.delList = function(index){
-                            $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.splice(index,1)
-                            $scope.numMarkerPrice()
-
-                        }
+            GetShopProjectGroupDetail.get({id:$stateParams.id
+            },function(data){
+                if(data.result==Global.SUCCESS&&data.responseData!=null){
+                    $ionicLoading.hide();
+                    $rootScope.settingAddsome.editorCard = data.responseData;
+                    if($rootScope.settingAddsome.editorCard.status =='0'){
+                        $scope.param.status = true
+                    }else{
+                        $scope.param.status = false
                     }
-                })
+
+                    $scope.delList = function(index){
+                        $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.splice(index,1)
+                        $scope.numMarkerPrice()
+
+                    }
+                }
             })
 
             $scope.expirationDate = function(){
@@ -106,10 +97,10 @@ angular.module('controllers',[]).controller('editorCardCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($rootScope.settingAddsome.editorCard.imageUrl == null){
-                    $rootScope.settingAddsome.editorCard.imageUrl=[]
+                if($rootScope.settingAddsome.editorCard.imageList == null){
+                    $rootScope.settingAddsome.editorCard.imageList=[]
                 }
-                if($rootScope.settingAddsome.editorCard.imageUrl.length>6){
+                if($rootScope.settingAddsome.editorCard.imageList.length>6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -120,7 +111,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
-                                $rootScope.settingAddsome.editorCard.imageUrl.push(data.responseData)
+                                $rootScope.settingAddsome.editorCard.imageList.push(data.responseData)
                             }
 
                         })
@@ -134,7 +125,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
 
             };
             $scope.delPic = function (index) {
-                $rootScope.settingAddsome.editorCard.imageUrl.splice(index,1)
+                $rootScope.settingAddsome.editorCard.imageList.splice(index,1)
             };
             $scope.listOfItemsGo = function () {
                 $state.go('listOfItems',{id:$scope.param.id,url:'editorCard'})
@@ -143,7 +134,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                 $rootScope.settingAddsome.editorCard.expirationDate =$filter('date')(new Date(), 'yyyy-MM-dd')
             }
             $scope.type = function (type) {
-                $rootScope.param.type = type
+                $scope.param.type = type
             }
             $scope.numMarkerPrice = function () {
                 $rootScope.settingAddsome.editorCard.marketPrice =0
@@ -153,7 +144,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
             }
             $scope.save = function (type) {
                 if(type == 0){
-                    $rootScope.settingAddsome.editorCard.status ='0'
+                    $rootScope.settingAddsome.editorCard.status ='1'
 
                 }else{
                      if($scope.param.status == true){

@@ -8,7 +8,7 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
             $rootScope.title = "仓库产品";
             $scope.param = {
                 flag: false,
-                productType:"",
+                productType:"0",
                 levelOneId:"",
                 levelTwoId:"",
                 twoLevelList:[]

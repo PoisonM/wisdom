@@ -11,7 +11,7 @@ angular.module('controllers',[]).controller('addSeriesCtrl',
                     requestList:$scope.requestList
                 };
                 UpdateTwoLevelTypeInfo.save(requestList,function(data){
-                    if(data.result == '0x00002'){
+                    if(data.result == '0x00002'||data.result == '0x00001'){
                          $state.go("productBrand")
                     }
                 })

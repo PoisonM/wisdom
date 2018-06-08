@@ -19,11 +19,11 @@
             <p class="pd15 bbl fs13 h30">{{item.twoLevel.projectTypeTwoName}}</p>
             <div class="list">
                 <li class="item pd15 h50 sb" ng-repeat="(indexs,items) in item.threeProjectList" ng-click="addProject(items,index,indexs)">
-                    <p class="W33">
-                        <i class="icon ion-android-radio-button-off" class="col888" style="color:#FF6666;font-size:20px;" ng-if="param.arr[index][indexs] == true" ng-click="expirationDate()"></i>
-                        <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.arr[index][indexs] != true"></i>
+                    <p >
+                        <i class="icon ion-android-radio-button-off" class="col888" style="color:#FF6666;font-size:20px;" ng-if="param.ids.indexOf(items.id) == -1" ng-click="expirationDate()"></i>
+                        <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.ids.indexOf(items.id) != -1"></i>
+                        {{items.projectName}}
                     </p>
-                    <p class="W33 center">{{items.projectName}}</p>
                     <p class="W33">
                         <span class="fr">{{items.discountPrice}}元</span>
                     </p>

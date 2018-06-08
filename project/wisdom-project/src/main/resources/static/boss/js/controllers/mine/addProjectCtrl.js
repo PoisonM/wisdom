@@ -48,11 +48,10 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                         $scope.cardBox=false;
                     }else{
                         $scope.cardBox=true;
-                        $rootScope.settingAddsome.extShopProjectInfoDTO.timeLength = effectiveNumberMonth
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth = timeLength
                     }
                 }else{
                     $rootScope.settingAddsome.extShopProjectInfoDTO.cardType = '4';
-                    $scope.cardBox=true;
                 }
 
 

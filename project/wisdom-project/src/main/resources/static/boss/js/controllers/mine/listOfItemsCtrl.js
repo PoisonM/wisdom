@@ -4,11 +4,11 @@ angular.module('controllers',[]).controller('listOfItemsCtrl',
 
             $scope.param = {
                 filterStr:"",
-                arr:[],
+                ids:[],
                 id:$stateParams.id,
+                list:[]
 
             }
-            console.log($stateParams.id)
             $scope.searchProject = function () {
                 $scope.getInfo()
             }
@@ -18,30 +18,14 @@ angular.module('controllers',[]).controller('listOfItemsCtrl',
                     pageNo:1,
                     pageSize:1000
                 },function (data) {
+                    if(data.responseData==null)$scope.listOfItems=[]
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.listOfItems = data.responseData;
-                        for(var i=0;i<$scope.listOfItems.length;i++){
-                            $scope.param.arr[i]=new Array;
-                            for(var k=0;k<$scope.listOfItems[i].threeProjectList.length;k++){
-                                $scope.param.arr[i][k] = true
 
-                            }
-                        }
                         if($rootScope.settingAddsome.editorCard.shopProjectInfoDTOS !=null){
-
-                            var list = $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS;
-                            for(var i=0;i<$scope.listOfItems.length;i++){
-                                for(var j=0;j<list.length;j++){
-                                    if($scope.listOfItems[i].twoLevel.projectTypeTwoId == list[j].projectTypeTwoId ){
-                                        for(var k=0;k<$scope.listOfItems[i].threeProjectList.length;k++){
-                                            if($scope.listOfItems[i].threeProjectList[k].id == list[j].id ){
-                                                console.log(k)
-                                                console.log(i)
-                                                $scope.param.arr[i][k] = false
-                                            }
-                                        }
-                                    }
-                                }
+                            $scope.param.list = $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS
+                            for(var i=0;i<$scope.param.list.length;i++){
+                                $scope.param.ids.push($scope.param.list[i].id)
                             }
                         }else{
                             $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS=[]
@@ -56,26 +40,21 @@ angular.module('controllers',[]).controller('listOfItemsCtrl',
 
 
             $scope.addProject = function (items,index,indexs) {
-                $scope.param.arr[index][indexs] = !$scope.param.arr[index][indexs]
-                if($rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0){
-                    $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.push(items)
-                    $scope.allAarketPrice()
-                }else{
-                    for(var i=0;i<$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length;i++){
-                        if($rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].id == items.id){
-                            $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.splice(i,1)
-                            $scope.allAarketPrice()
-                            return
-                        }else{
-                            $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.push(items)
-                            $scope.allAarketPrice()
-                            return
+                if ($scope.param.ids.indexOf(items.id) != -1) {
+                    var key = 0;
+                    angular.forEach($scope.param.ids, function (val, index) {
+                        if (val== items.id) {
+                            $scope.param.ids.splice(key, 1)
+                            $scope.param.list.splice(key, 1);
                         }
+                        key++;
+                    })
+                } else {
+                    $scope.param.ids.push(items.id)
+                    $scope.param.list.push(items);
 
-                    }
                 }
-
-
+                $scope.allAarketPrice()
             }
             $scope.allAarketPrice = function () {
                 $rootScope.settingAddsome.editorCard.marketPrice =0
@@ -83,9 +62,10 @@ angular.module('controllers',[]).controller('listOfItemsCtrl',
                     $rootScope.settingAddsome.editorCard.marketPrice =$rootScope.settingAddsome.editorCard.marketPrice+($rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].marketPrice)*($rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].serviceTimes)
 
                 }
-                console.log( $rootScope.settingAddsome.editorCard.marketPrice)
             }
             $scope.editorCardGo = function(){
+                $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS=$scope.param.list
+                $scope.allAarketPrice()
                 $state.go($stateParams.url,{id:$scope.param.id})
             }
 
