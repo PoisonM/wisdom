@@ -1,6 +1,7 @@
 package com.wisdom.system.service;
 
 import com.wisdom.common.dto.system.BannerDTO;
+import com.wisdom.common.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -39,7 +40,7 @@ public class BannerService {
         update.set("bannerType",bannerDTO.getBannerType());
 //        update.set("status",bannerDTO.getStatus());
         update.set("bannerRank",bannerDTO.getBannerRank());
-        update.set("createDate",bannerDTO.getBannerRank());
+        update.set("createDate", DateUtils.getDate());
         mongoTemplate.updateFirst(query,update,"bannerList");
     }
 
