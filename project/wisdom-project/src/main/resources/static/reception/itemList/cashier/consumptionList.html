@@ -38,10 +38,11 @@
         </div>
         <div style="overflow: scroll;height: 100%;">
             <ul>
-                <div ng-repeat="(key1,item1) in secondCategory">
+                <!--status0启用 1禁用-->
+                <div ng-if="item1.levelOneDetail.status != 1" ng-repeat="(key1,item1) in secondCategory">
                     <div class="consumptionListUlTitle">{{item1.levelOneDetail.projectTypeName}}</div>
-                    <li ng-class="{'redFont':redFontFlag == $index}" ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select!=2"  ng-click="getThreeCategories(item2.projectTypeOneId,item2.projectTypeTwoId,$index)">{{key2}}</li>
-                    <li ng-class="{'redFont':redFontFlag == $index}" ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select==2" ng-click="getProductInfoThreeLevelProject(item2.productTypeOneId,item2.productTypeTwoId,$index)">{{key2}}</li>
+                    <li class="two_project_cla" data-ddd="{{item2}}"ng-click="getThreeCategories(item2.projectTypeOneId,item2.projectTypeTwoId,item2.id)" ng-class="{'redFont':redFontFlag == item2.id}" ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select!=2"  >{{key2}}</li>
+                    <li class="two_project_cla" data-ddd="{{item2}}"ng-click="getProductInfoThreeLevelProject(item2.productTypeOneId,item2.productTypeTwoId,item2.id)" ng-class="{'redFont':redFontFlag == item2.id}" ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select==2">{{key2}}</li>
                 </div>
             </ul>
         </div>

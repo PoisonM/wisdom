@@ -415,7 +415,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.makeSureOrder', {
-            url: '/makeSureOrder',
+            url: '/makeSureOrder/:userId',
             templateUrl: root + '/cashier/makeSureOrder.html',
             controller: 'makeSureOrderCtrl',
             resolve: {

@@ -131,7 +131,8 @@
                                         <span>{{indexItem.shopProjectName}}</span>
                                         <span>{{indexItem.status}}</span>-->
                                         <p class="user_name">{{indexItem.sysUserName}}</p>
-                                        <div class="user_info">
+                                        <!--index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2]-->
+                                        <div ng-click="detailsWrap('0',indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="user_info">
                                             <em>点</em>
                                             <span class="time">{{indexItem.appointStartTime | date: "HH:mm"}}</span>
                                             <span class="pr_name">{{indexItem.shopProjectName}}</span>

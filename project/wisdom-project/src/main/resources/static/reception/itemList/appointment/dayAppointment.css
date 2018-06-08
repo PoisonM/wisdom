@@ -308,7 +308,12 @@
     margin-right: 3px;
 }
 .dayAppointment .havedata .user_info .pr_name{
-
+    width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display:inline-block;
+    line-height:13px;
 }
 .dayAppointment .week_box .week_left .radus_sty{
     display: block;

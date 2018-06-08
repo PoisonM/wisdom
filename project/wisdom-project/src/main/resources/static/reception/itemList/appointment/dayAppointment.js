@@ -500,6 +500,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     };
     /*加载预约详情项目 根据预约主键查询预约项目*/
     $scope.detailsWrap = function (type, sysUserId, sysShopId, id) {
+        console.log(1)
         $scope.appointmentId = id
         if (type == undefined || sysUserId == undefined || sysShopId == undefined || id == undefined) {
             return
@@ -514,7 +515,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     appointmentId: id
                 }, function (data) {
                     $scope.param.individualTravelerAppointmentObj.individualTravelerAppointment = data.responseData;
-                    if (data.responseData.consume.length >= 0) {
+                    /*if (data.responseData.consume.length >= 0) {
                         $scope.param.individualTravelerAppointmentObj.consumptionFlag = true
                     } else {
                         $scope.param.individualTravelerAppointmentObj.consumptionFlag = false;
@@ -523,7 +524,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         $scope.param.individualTravelerAppointmentObj.scratchCardFlag = true
                     } else {
                         $scope.param.individualTravelerAppointmentObj.scratchCardFlag = false;
-                    }
+                    }*/
                 });
                 /*预约详情*/
                 GetAppointmentInfoById.get({
@@ -533,7 +534,6 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                 });
                 $scope.close = function () {
                     $scope.closeThisDialog();
-
                 };
 
 
@@ -552,10 +552,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                 };
                 /*开始服务*/
                 $scope.startSevier = function () {
-                    UpdateAppointmentInfoById.get({
-                        shopAppointServiceId: id,
-                        status: "1"
-                    }, function (data) {
+                    UpdateAppointmentInfoById.get({shopAppointServiceId: id, status: "1"}, function (data) {
                         if (data.result == "0x00001") {
                             $scope.seriverColor = false;
                             $scope.param.changeYuyueFlag = "1"
@@ -566,7 +563,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             className: 'ngdialog-theme-default',
 
         });
-        detailsReservation && detailsReservation($scope, ngDialog, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, GetUserShopProjectList, FindArchives, GetShopProjectList, GetShopProjectList, ShopWeekAppointmentInfoByDate);
+        // detailsReservation && detailsReservation($scope, ngDialog, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, GetUserShopProjectList, FindArchives, GetShopProjectList, GetShopProjectList, ShopWeekAppointmentInfoByDate);
 
     };
 
@@ -756,12 +753,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         }, function (data) {
             $scope.param.selectCustomersObject.data = data.responseData.info;
         })
-        /* {
-         queryField:$scope.param.selectCustomersObject.queryField,/!*顾客查询条件，可为空*!/
-         pageNo:1,
-         pageSize:100
-         }*/
-        /*选择顾客参数  get*/
+
     }
     $scope.selectCustomersCtrl = function () {
         ngDialog.open({
@@ -805,9 +797,6 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     /*疗程卡*/
 
     $scope.newProjectFun = function (filterStr) {
-        /*{useStyle:"0",
-         filterStr:$scope.param.newProductObject.filterStr  //参数
-         }*/
         GetUserProjectGroupList.get({
             cardStyle: "0",
             sysUserId: $scope.param.selectCustomersObject.sysUserId,
@@ -1215,6 +1204,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         $scope.importData = {
                             shopProjectId:$scope.checkprojectId,
                             sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
+                            sysUserId:$scope.param.selectCustomersObject.sysUserId,//biaoji
                             appointStartTimeS:new Date().format("yyyy-MM-dd")+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
                             shopProjectName:$scope.checkprojectName,
                             appointPeriod:$scope.checkprojectDuration,
