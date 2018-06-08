@@ -63,7 +63,7 @@ public class BannerController {
 		List<BannerDTO> list = bannerService.getHomeBannerList();
 		BannerDTO bannerDTOOld = bannerService.findHomeBannerInfoByBannerRank(bannerDTO.getBannerRank());
 		if(null != bannerDTOOld){
-			logger.info("新增banner,出错此banner图层={}已有banner图",bannerDTO.getBannerRank());
+			logger.info("新增banner,此banner图层={}已有banner图",bannerDTO.getBannerRank());
 			//后面的banner全都向后排序
 			while (nextBanner) {
 				bannerDTODown = bannerService.findHomeBannerInfoByBannerRank(bannerRank);
