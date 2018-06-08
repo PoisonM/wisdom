@@ -140,7 +140,7 @@ public class ProjectController {
 		}
 
 		ArrayList<Object> levelList = new ArrayList<>();
-		// 遍历缓存的一级项目
+		// 遍历缓存的一级
 		for (ShopProjectTypeDTO shopProjectTypeDTO : shopProjectTypeDTOList) {
 			HashMap<Object, Object> helperMap = new HashMap<>(16);
 			// 承接二级项目
