@@ -49,9 +49,7 @@ angular.module('controllers',[]).controller('bossLoginCtrl',
                 }
                 else
                 {
-
                     BossUserLogin.save({userPhone:$scope.param.userPhone,code:$scope.param.validateCode},function(data){
-                        console.log(data);
                         if(data.result==Global.FAILURE)
                         {
                             alert(data.errorInfo);

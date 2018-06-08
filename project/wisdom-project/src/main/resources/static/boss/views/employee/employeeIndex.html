@@ -6,11 +6,11 @@
                 <div class="row businessBox1" >
                     <div class=" businessBox2 col col-50 ">
                         业绩
-                        <p>46698.60</p>
+                        <p>{{workHome.income}}</p>
                     </div>
                     <div class=" businessBox2 col col-50" >
                         耗卡
-                        <p>16418.80</p>
+                        <p>{{workHome.expenditure}}</p>
                     </div>
                 </div>
             </div>
@@ -18,7 +18,7 @@
             <div class="list mt-20">
                 <p class="todayJob">今日工作</p>
                 <div class="row bgfff fs13 col33">
-                    <div class="col col-25" style="text-align: center" ui-sref="employeeCanceled">
+                    <div class="col col-25" style="text-align: center" ui-sref="employeeAppointList">
                         <img src="images/work/appointment.png"  class="imageContent">
                         <p class="mt12">预约</p>
                     </div>
@@ -37,5 +37,5 @@
         </ion-list>
         <br><br>
     </ion-content>
-    <boss-footer></boss-footer>
+    <clerk-footer></clerk-footer>
 </ion-view>

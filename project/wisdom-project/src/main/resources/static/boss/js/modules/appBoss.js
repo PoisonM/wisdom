@@ -11,8 +11,13 @@ define(['angular'], function (angular) {
                 return {
                     request: function(config){
                         config.headers = config.headers || {};
+
                         if(window.location.href.indexOf("workHome")!=-1) {
                             window.localStorage.setItem("userType",Global.userType.BEAUTY_BOSS);
+                        }
+
+                        if(window.location.href.indexOf("employeeIndex")!=-1) {
+                            window.localStorage.setItem("userType",Global.userType.BEAUTY_CLERK);
                         }
 
                         if(window.localStorage.getItem("userType")!=undefined

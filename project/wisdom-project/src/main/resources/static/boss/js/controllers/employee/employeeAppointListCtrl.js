@@ -1,11 +1,9 @@
 /**
- * Created by Administrator on 2018/5/3.
+ * Created by Administrator on 2018/5/31.
  */
-angular.module('controllers',[]).controller('appointmentCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopAppointmentNumberInfo',"BossUtil",'Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetShopAppointmentNumberInfo,BossUtil,Global,$filter) {
-
-            $rootScope.title = "预约";
+angular.module('controllers',[]).controller('employeeAppointListCtrl',
+    ['$scope','$rootScope','$stateParams','$state','BossUtil','$filter',
+        function ($scope,$rootScope,$stateParams,$state,BossUtil,$filter) {
 
             /*日期插件*/
             $scope.param = {
@@ -23,6 +21,7 @@ angular.module('controllers',[]).controller('appointmentCtrl',
                 new Date("08-14-2015"), //Short format
                 new Date(1439676000000) //UNIX format
             ];
+
             //方便的年月日设置方式，正和我意，可以随便改了。
             var weekDaysList = ["日", "一", "二", "三", "四", "五", "六"];
             var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
@@ -33,7 +32,7 @@ angular.module('controllers',[]).controller('appointmentCtrl',
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
                     $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
-                    $scope.getInfo();
+                    console.log($scope.param.date);
                 }
             };
 
@@ -53,8 +52,8 @@ angular.module('controllers',[]).controller('appointmentCtrl',
                 monthList: monthList, //可选
                 templateType: 'modal', //可选i.e.的模式 modal or popup(兼容模式？)
                 showTodayButton: 'true', //可选
-                modalHeaderColor: 'bar-positive', //可选
-                modalFooterColor: 'bar-positive', //可选
+                modalHeaderColor: 'bar-assertive', //可选
+                modalFooterColor: 'bar-assertive', //可选
                 from: new Date(2008, 8, 2), //可选
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
@@ -64,22 +63,11 @@ angular.module('controllers',[]).controller('appointmentCtrl',
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
 
-            $scope.getInfo = function(){
-                GetShopAppointmentNumberInfo.get({
-                    searchDate:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")
-                },function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $scope.appointment = data.responseData;
-                    }
-                })
+            $scope.confirmedGo = function(){
+                $state.go("employeeConfirmed")
             };
-            $scope.getInfo();
-
-
-            $scope.healthClubGo = function(id,name){
-                $state.go("beautySalon",{sysShopId:id,date:$scope.param.date,shopName:name})
+            $scope.employeeReservation = function(){
+                $state.go("employeeReservation")
             }
 
-
-
-        }]);
+}]);
