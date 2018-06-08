@@ -83,6 +83,9 @@ public class BusinessOrderDTO {
     @JSONField(name = "productStatus")
     private String productStatus;
 
+    @JSONField(name = "productPrefecture")
+    private String productPrefecture;
+
     //此订单订单价格   ==pay表中的amount
     @JSONField(name = "amount")
     private String amount;
@@ -411,5 +414,13 @@ public class BusinessOrderDTO {
 
     public void setProductStatus(String productStatus) {
         this.productStatus = productStatus;
+    }
+
+    public String getProductPrefecture() {
+        return productPrefecture;
+    }
+
+    public void setProductPrefecture(String productPrefecture) {
+        this.productPrefecture = productPrefecture;
     }
 }
