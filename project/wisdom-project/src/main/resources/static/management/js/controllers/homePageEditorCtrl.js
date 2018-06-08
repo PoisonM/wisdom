@@ -42,7 +42,7 @@ angular.module('controllers',[]).controller('homePageEditorCtrl',
                 DelHomeBannerById.get({bannerId:bannerId},function(data){
 
                     if (data.result == Global.SUCCESS) {
-                        /*$scope.detailPageList();*/
+
                         alert("删除成功");
                         $state.reload('app.toMenu');
                     }else{

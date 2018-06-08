@@ -41,46 +41,53 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
                 $scope.bannerDTO.forward = $("#imageUrl").val();
                 $scope.bannerDTO.uri = $scope.bannerDTO.firstUrl.toString();
                 $scope.bannerDTO.bannerRank = $("#sequence").val();
-                if($stateParams.bannerId!="0"){
-                    if($scope.bannerDTO.uri==""){
-                        $scope.bannerDTO.uri = $('#imageShow').attr('src');
-                    }
-                    $scope.bannerDTO.bannerId = $stateParams.bannerId;
-                    if($scope.bannerDTO.uri!=""){
-                        UpdateHomeBanner.save($scope.bannerDTO,function(data){
-                            if(data.result==Global.SUCCESS){
-                                 alert("更新成功！");
-                                 $state.go("homePageEditor");
-                            }else{
-                                alert("更新失败");
-                            }
-                        })
-                    }else{
-                        alert("图片为空或图片正在上传请等待.....")
+                if($scope.bannerDTO.bannerRank==""){
+                        alert("存在必填项，没有填写，请填写后在提交");
                         return;
-                    }
-                }else{
-                    if($scope.bannerDTO.uri!=""){
-                        AddHomeBanner.save({
-                            bannerType:$scope.bannerDTO.bannerType,
-                            bannerRank:$scope.bannerDTO.bannerRank,
-                            uri:$scope.bannerDTO.uri.toString(),
-                            forward:$scope.bannerDTO.forward
+                 }else{
+                    if($stateParams.bannerId!="0"){
 
-                        },function(data){
-                            if(data.result==Global.SUCCESS){
-                                 alert("新增成功！");
-                                 $state.go("homePageEditor");
-                            }else{
-                                alert("新增失败");
-                            }
-                        })
+                        if($scope.bannerDTO.uri==""){
+                            $scope.bannerDTO.uri = $('#imageShow').attr('src');
+                        }
+                        $scope.bannerDTO.bannerId = $stateParams.bannerId;
+                        if($scope.bannerDTO.uri!=""&&$scope.bannerDTO.uri!=undefined){
+                            UpdateHomeBanner.save($scope.bannerDTO,function(data){
+                                if(data.result==Global.SUCCESS){
+                                     alert("更新成功！");
+                                     $state.go("homePageEditor");
+                                }else{
+                                    alert("更新失败");
+                                }
+                            })
+                        }else{
+                            alert("图片为空或图片正在上传请等待.....")
+                            return;
+                        }
                     }else{
-                        alert("图片为空或图片正在上传请等待.....")
-                        return;
-                    }
+                        if($scope.bannerDTO.uri!=""){
+                            AddHomeBanner.save({
+                                bannerType:$scope.bannerDTO.bannerType,
+                                bannerRank:$scope.bannerDTO.bannerRank,
+                                uri:$scope.bannerDTO.uri.toString(),
+                                forward:$scope.bannerDTO.forward
 
-                }
+                            },function(data){
+                                if(data.result==Global.SUCCESS){
+                                     alert("新增成功！");
+                                     $state.go("homePageEditor");
+                                }else{
+                                    alert("新增失败");
+                                }
+                            })
+                        }else{
+                            alert("图片为空或图片正在上传请等待.....")
+                            return;
+                        }
+
+                    }
+                 }
+
             };
 
             function remove (name,picArr,id,div){
@@ -111,6 +118,7 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
                     }
 
                 }
+
             }
 
 
@@ -208,6 +216,7 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
                 if(id=="publicity"){
                     remove("#publicityPic .falsePic","firstUrl","#publicityPic","#publicityPic div");
                 }
+
             }
 
 }]);
