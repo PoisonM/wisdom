@@ -16,6 +16,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -37,6 +39,13 @@ public class BannerController {
 		ResponseDTO responseDto=new ResponseDTO<>();
 		List<BannerDTO> list = bannerService.getHomeBannerList();
 		if(list.size()>0){
+			Collections.sort(list, new Comparator<BannerDTO>() {
+				@Override
+				public int compare(BannerDTO o1, BannerDTO o2) {
+					int i = o1.getBannerRank() - o2.getBannerRank();
+					return i;
+				}
+			});
 			responseDto.setResponseData(list);
 			responseDto.setResult(StatusConstant.SUCCESS);
 		}else{
@@ -61,7 +70,8 @@ public class BannerController {
 		boolean nextBanner = true;
 		String bannerId = CodeGenUtil.getProductCodeNumber();
 		int bannerRank = bannerDTO.getBannerRank();
-		if(null == bannerDTO.getUri()){
+		if(null == bannerDTO.getUri() || "".equals(bannerDTO.getUri())){
+			logger.info("编辑homeBanner没有url");
 			responseDTO.setResult(StatusConstant.FAILURE);
 			return responseDTO;
 		}
@@ -115,7 +125,7 @@ public class BannerController {
 		long startTime = System.currentTimeMillis();
 		logger.info("编辑homeBanner开始={}", bannerDTO);
 		ResponseDTO responseDTO = new ResponseDTO<>();
-		if(null == bannerDTO.getUri()){
+		if(null == bannerDTO.getUri() || "".equals(bannerDTO.getUri())){
 			logger.info("编辑homeBanner没有url");
 			responseDTO.setResult(StatusConstant.FAILURE);
 			return responseDTO;
