@@ -198,7 +198,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
             return 0;
         }
         if (null != extSysShopDTO.getImageList()) {
-            String o = (String) extSysShopDTO.getImageList().get(0);
+            String o =  extSysShopDTO.getShopImageUrl();
             extSysShopDTO.setShopImageUrl(o);
         }
 

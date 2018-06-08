@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('canceledCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopClerkAppointmentInfo',"BossUtil",'Global','$filter','Global',
-        function ($scope,$rootScope,$stateParams,$state,GetShopClerkAppointmentInfo,BossUtil,Global,$filter,Global) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopClerkAppointmentInfo',"BossUtil",'Global','$filter','Global','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetShopClerkAppointmentInfo,BossUtil,Global,$filter,Global,$ionicLoading) {
 
             $rootScope.title = "";
             $scope.param = {
@@ -69,13 +69,24 @@ angular.module('controllers',[]).controller('canceledCtrl',
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $scope.canceled = data.responseData
+                        $ionicLoading.hide();
                         /*$rootScope.title = $scope.canceled[0].sysClerkInfo.name;*/
                     }
 
 
                 })
             }
-            $scope.getInfo()
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                $scope.getInfo()
+            })
+
 
 
             $scope.confirmedGo = function(id){

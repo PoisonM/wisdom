@@ -20,21 +20,26 @@
                             </textarea>
                         </div>
                         <ion-list>
-                            <ion-item style="height:90px;border-radius:6px 6px 0 0;position: relative" class="sb">
-                                <div style="display: flex;">
-                                    <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
-                                        <img ng-src="{{item.productUrl}}">
-                                    </p>
-                                    <div class="ml10 mt10">
-                                        <P class="fs14 col333 ">{{item.productName}}</P>
-                                        <div class="fs12 col888 mt10">编号：{{item.shopProcId}}</div>
-                                        <P class="fs12 col888">
-                                            <span>单位：{{item.productUnit}}</span>
-                                            <span class="ml50">规格：{{item.productSpec}}</span>
-                                        </P>
+                            <ion-item style="height:90px;border-radius:6px 6px 0 0;position: relative" class="row">
+                                <div class="col col-90">
+                                    <div class="row">
+                                        <p style="height:60px;border:solid 1px #f6f6f6;background: url('{{item.productUrl}}');background-position: center center;background-size: contain;background-repeat: no-repeat;" class="mt5 ml10 col col-20" >
+
+                                        </p>
+                                        <div class="ml10  col col-80">
+                                            <P class="fs14 col333 ">{{item.productName}}</P>
+                                            <div class="fs12 col888 mt10">编号：{{item.shopProcId}}</div>
+                                            <P class="fs12 col888">
+                                                <span>单位：{{item.productUnit}}</span>
+                                                <span class="ml50">规格：{{item.productSpec}}</span>
+                                            </P>
+                                        </div>
                                     </div>
+
                                 </div>
-                                <img src="images/inventory/delTong.png"  class="  "  style="width:25px;height:25px;position: absolute;right:0px;top:10px;" ng-click="deleteEntryProduct(item.shopProcId)">
+                                <p class="col col-10">
+                                    <img src="images/inventory/delTong.png"  class="  "  style="width:25px;height:25px;position: absolute;right:0px;top:10px;" ng-click="deleteEntryProduct(item.shopProcId)">
+                                </p>
 
                             </ion-item>
                         </ion-list>
@@ -58,7 +63,7 @@
                     </div>
                 </div>
            </div>
-            <p class="h45 bgfff fs14 center colff66" style="width:95%;margin:20px auto 0 ;">
+            <p class="h45 bgfff fs14 center colff66" style="width:95%;margin:20px auto 0 ;" ng-show="false">
                 <span ng-click="productPutInStorageMoreGo('0')">选择更多产品入库</span><span class="col333">或者</span><span ng-click="productPutInStorageMoreGo('1')">扫码入库</span>
             </p>
         </div>

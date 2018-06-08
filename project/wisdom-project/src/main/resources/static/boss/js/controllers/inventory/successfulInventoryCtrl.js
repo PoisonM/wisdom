@@ -18,7 +18,7 @@ angular.module('controllers',[]).controller('successfulInventoryCtrl',
             $scope.detailsGo = function(){
                 if($stateParams.type=='inbound')
                 {
-                    $state.go('entryDetails',{entryId:$stateParams.entryId});
+                    $state.go('entryDetails',{id:$stateParams.id});
                 }
                 else if($stateParams.type=='outbound')
                 {

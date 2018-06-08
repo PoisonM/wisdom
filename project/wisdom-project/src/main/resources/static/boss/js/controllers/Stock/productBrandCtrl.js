@@ -23,7 +23,7 @@ angular.module('controllers',[]).controller('productBrandCtrl',
                     showDelay: 0
                 });
                 SearchShopProductList.get({filterStr:''},function (date) {
-                    $scope.productBrand = date.responseData.detailLevel
+                    $scope.productBrand = date.responseData.oneAndTwoLevelList
                     $ionicLoading.hide();
 
                 })

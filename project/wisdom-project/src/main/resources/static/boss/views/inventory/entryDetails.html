@@ -50,17 +50,20 @@
                      ng-repeat="item in param.shopEntryDetails.shopStockResponseDTO">
                     <ion-list>
                         <ion-item style="height:90px;border-radius:6px 6px 0 0" class="sb">
-                            <div style="display: flex">
-                                <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
-                                    <img ng-src="{{item.imageUrl}}">
+                            <div class="row">
+                                <p style="height:70px;border:solid 1px #f6f6f6;width:75px;background: url('{{item.imageUrl[0]}}');background-repeat: no-repeat;background-position: center center;background-size: contain;" class="mt10 ml10 col col-20">
+
                                 </p>
-                                <div class="ml10 mt10">
-                                    <P class="fs14 col333 ">{{item.shopProcName}}</P>
-                                    <P class="fs12 col888 mt10">编号：{{item.productCode}}</P>
-                                    <P class="fs12 col888">
-                                        <span>单位：{{item.productUnit}}</span>
-                                        <span class="ml50">规格：{{item.productSpec}}</span>
-                                    </P>
+                                <div class=" col col-80">
+                                    <div class="ml10 ">
+                                        <P class="fs14 col333 ">{{item.shopProcName}}</P>
+                                        <P class="fs12 col888 mt10">编号：{{item.productCode}}</P>
+                                        <P class="fs12 col888">
+                                            <span>单位：{{item.productUnit}}</span>
+                                            <span class="ml50">规格：{{item.productSpec}}</span>
+                                        </P>
+                                    </div>
+
                                 </div>
                             </div>
                         </ion-item>

@@ -8,7 +8,7 @@
                 <img src="images/work/drop-down.png" class="dropImg">
             </ionic-datepicker>
         </div>
-        <ion-item  class="bgfff row mb10" ng-repeat="item in canceled"  ng-click="confirmedGo(item.appointmentInfo.id)">
+        <ion-item  class="bgfff row mb10" ng-repeat="item in canceled"  ng-click="confirmedGo(item.appointmentInfo.id)" ng-if="item.appointmentInfo.status != 4">
             <div class="col col-20" style="line-height: 49px;">
                 <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;">
                     <img ng-src="{{item.sysClerkInfo.photo}}">
