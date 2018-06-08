@@ -51,9 +51,9 @@
                     <span>总余额：￥{{sunAmount}}</span>
                 </div>
                 <div ng-repeat="item2 in rechargeCardList" class="prepaidCardContent">
-                    <img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1522311638&di=3712f277b199303e7c7eb1df22e73f55&src=http://img5.xiazaizhijia.com/walls/20160708/1440x900_2f172c09d079701.jpg" alt="">
+                    <img src={{item2.imageUrl}}} alt="">
                     <div class="prepaidCardInfo clearfix">
-                        <span class="prepaidCardName">余额充值</span>
+                        <span class="prepaidCardName">{{item2.shopRechargeCardName}}</span>
                         <span class="prepaidCardRAName">剩余金额：<b>￥{{item2.surplusAmount}}</b></span>
                         <span class="prepaidCardTAName">充值金额：<b>￥{{item2.initAmount}}</b></span>
                     </div>

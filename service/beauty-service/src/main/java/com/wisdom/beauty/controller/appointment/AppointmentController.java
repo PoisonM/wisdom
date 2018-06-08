@@ -574,6 +574,12 @@ public class AppointmentController {
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		SysBossDTO bossInfo = UserUtils.getBossInfo();
         extShopAppointServiceDTO.setSysBossCode(bossInfo.getSysBossCode());
+        if (StringUtils.isBlank(sysShopId)){
+            sysShopId = redisUtils.getShopId();
+        }
+        if(StringUtils.isBlank(sysClerkId)){
+            sysClerkId = UserUtils.getClerkInfo().getId();
+        }
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
 		extShopAppointServiceDTO.setSysClerkId(sysClerkId);
 		extShopAppointServiceDTO.setStatus(status);
