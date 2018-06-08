@@ -365,12 +365,11 @@ public class AppointmentController {
 	public
 	@ResponseBody
 	ResponseDTO<Map> saveUserAppointInfo(@RequestBody ExtShopAppointServiceDTO shopAppointServiceDTO) {
-		ResponseDTO<Map> responseDTO = null;
+		ResponseDTO<Map> responseDTO = new ResponseDTO<>();
 		//针对于美容师加锁
 		RedisLock redisLock = new RedisLock(shopAppointServiceDTO.getSysClerkId());
-		redisLock.lock();
-		responseDTO = null;
 		try {
+			redisLock.lock();
 			responseDTO = appointmentService.saveUserShopAppointInfo(shopAppointServiceDTO);
 		} catch (Throwable e) {
 			logger.error("保存用户的预约信息失败，失败信息为" + e.getMessage(), e);
