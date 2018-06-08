@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.product;
 
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
+import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
@@ -17,6 +18,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -269,19 +272,38 @@ public class ProductController {
             responseDTO.setResult(StatusConstant.SUCCESS);
             return responseDTO;
         }
-
+        //获取二级和三级
+        ShopProductTypeDTO shopProductType=new ShopProductTypeDTO();
+        shopProductType.setSysShopId(sysShopId);
+        List<ShopProductTypeDTO> listTwoAndThree=shopProductInfoService.getTwoLevelProductList(shopProductType);
+        //一个一级对应所有的二级
+        Map<String,Map<String,ShopProductTypeDTO>> twoMap=null;
+        if(CollectionUtils.isNotEmpty(listTwoAndThree)){
+            twoMap=new HashMap<>();
+            for (ShopProductTypeDTO dto:listTwoAndThree){
+                if(twoMap.containsKey(dto.getParentId())){
+                    Map<String,ShopProductTypeDTO> devMap=twoMap.get(dto.getParentId());
+                    devMap.put(dto.getProductTypeName(),dto);
+                    twoMap.put(dto.getParentId(),devMap);
+                }else {
+                    if(StringUtils.isNotBlank(dto.getParentId())){
+                        Map<String,ShopProductTypeDTO> devMap=new HashMap<>();
+                        devMap.put(dto.getProductTypeName(),dto);
+                        twoMap.put(dto.getParentId(),devMap);
+                    }
+                }
+            }
+        }
         ArrayList<Object> levelList = new ArrayList<>();
         //遍历缓存的一级产品
         for (ShopProductTypeDTO shopProductTypeDTO : oneLevelProductList) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
             //承接二级产品
             HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
-            for (ShopProductInfoDTO dto : shopProductInfo) {
-                if (shopProductTypeDTO.getId().equals(dto.getProductTypeOneId())) {
-                    twoLevelMap.put(dto.getProductTypeTwoName(), dto);
-                }
-            }
 
+            if(twoMap.get(shopProductTypeDTO.getId())!=null){
+                twoLevelMap.putAll(twoMap.get(shopProductTypeDTO.getId()));
+            }
             helperMap.put("levelTwoDetail", twoLevelMap);
             helperMap.put("levelOneDetail", shopProductTypeDTO);
             levelList.add(helperMap);
