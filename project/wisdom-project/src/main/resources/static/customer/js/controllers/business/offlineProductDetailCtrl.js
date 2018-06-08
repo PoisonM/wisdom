@@ -89,19 +89,6 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
             };
 
             $scope.goPay = function(){
-                /*根据用户购买的商品来判断*/
-                  if($scope.param.product.productPrefecture=="1"){
-                      GetUserInfoByOpenId.get(function (data) {
-                          if(data.result==Global.SUCCESS)
-                          {
-                              if(data.responseData.userType!="business-C-1"){
-                                  alert("亲！此商品为新用户专享产品");
-                                  return
-                              }
-                          }
-                      });
-                  }
-
                 /*根据商品状态来判断商品是否为下架商品*/
                 if($scope.param.product.status == "0"){
                     return;
@@ -113,6 +100,18 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     if($scope.param.checkFlag=="")
                     {
                         $scope.model=true;
+                    }
+                    /*根据用户购买的商品来判断*/
+                    if($scope.param.product.productPrefecture=="1"){
+                        GetUserInfoByOpenId.get(function (data) {
+                            if(data.result==Global.SUCCESS)
+                            {
+                                if(data.responseData.userType!="business-C-1"){
+                                    alert("亲！此商品为新用户专享产品");
+                                    return
+                                }
+                            }
+                        });
                     }
                     /*根据商品数量跟库存的对比，数量大于库存及库存不足，结束这一步*/
                     if($scope.param.productNum>$scope.param.product.productAmount){

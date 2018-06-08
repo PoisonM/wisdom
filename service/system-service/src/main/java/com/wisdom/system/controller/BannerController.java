@@ -84,11 +84,7 @@ public class BannerController {
 		}else {
 			//新增默认为最后一个
 			List<BannerDTO> list = bannerService.getHomeBannerList();
-			if(0 == list.size()){
-				bannerDTO.setBannerRank(list.size());
-			}else {
-				bannerDTO.setBannerRank(list.size()+1);
-			}
+			bannerDTO.setBannerRank(list.size());
 		}
 		try {
 			bannerDTO.setBannerId(bannerId);
