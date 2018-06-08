@@ -381,6 +381,7 @@ public class AppointmentController {
 		} catch (Throwable e) {
 			logger.error("保存用户的预约信息失败，失败信息为" + e.getMessage(), e);
 			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setErrorInfo("数据异常,请联系客服");
 			return responseDTO;
 		}finally {
 			redisLock.unlock();
@@ -548,7 +549,8 @@ public class AppointmentController {
 				HashMap<Object, Object> hashMap = new HashMap<>(2);
 				hashMap.put("sysClerkInfo", redisUtils.getSysClerkDTO(serviceDTO.getSysClerkId()));
 				hashMap.put("appointmentInfo", serviceDTO);
-				hashMap.put("projectNumber", StringUtils.isBlank(serviceDTO.getShopProjectId()) ? "0" : serviceDTO.getShopProjectId().split(";").length);
+				int length = serviceDTO.getShopProjectId().split(";").length;
+				hashMap.put("projectNumber", length-1);
 				arrayList.add(hashMap);
 			}
 		}
@@ -572,8 +574,14 @@ public class AppointmentController {
 
 		//查询店铺下的预约信息
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		SysBossDTO bossInfo = UserUtils.getBossInfo();
-        extShopAppointServiceDTO.setSysBossCode(bossInfo.getSysBossCode());
+        extShopAppointServiceDTO.setSysBossCode(redisUtils.getBossCode());
+        if (StringUtils.isBlank(sysShopId)){
+            sysShopId = redisUtils.getShopId();
+        }
+        //员工端查询的话，如果sysClerkId为空
+        if(StringUtils.isBlank(sysClerkId) && null != UserUtils.getClerkInfo()){
+            sysClerkId = UserUtils.getClerkInfo().getId();
+        }
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
 		extShopAppointServiceDTO.setSysClerkId(sysClerkId);
 		extShopAppointServiceDTO.setStatus(status);

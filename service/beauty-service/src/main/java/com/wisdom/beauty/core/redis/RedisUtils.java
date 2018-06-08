@@ -4,6 +4,7 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
@@ -118,7 +119,8 @@ public class RedisUtils {
         if (null == shopProjectInfoDTO) {
             shopProjectInfoDTO = new ShopProjectInfoDTO();
             shopProjectInfoDTO.setId(projectInfoId);
-            List<ShopProjectInfoDTO> projectList = shopProjectService.getShopCourseProjectList(shopProjectInfoDTO);
+            ExtShopProjectInfoDTO extShopProjectInfoDTO=(ExtShopProjectInfoDTO)shopProjectInfoDTO;
+            List<ShopProjectInfoDTO> projectList = shopProjectService.getShopCourseProjectList(extShopProjectInfoDTO);
             if (CommonUtils.objectIsEmpty(projectList)) {
                 logger.error("根据项目主键查询项目信息为空");
                 throw new ServiceException("根据项目主键查询项目信息为空");

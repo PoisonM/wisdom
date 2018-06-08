@@ -2,16 +2,36 @@
  * Created by Administrator on 2018/5/31.
  */
 angular.module('controllers',[]).controller('employeeAppointListCtrl',
-    ['$scope','$rootScope','$stateParams','$state','BossUtil','$filter',
-        function ($scope,$rootScope,$stateParams,$state,BossUtil,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','BossUtil','$filter','GetClerkScheduleOneDayInfo','GetShopAppointmentInfoByStatus',
+        function ($scope,$rootScope,$stateParams,$state,BossUtil,$filter,GetClerkScheduleOneDayInfo,GetShopAppointmentInfoByStatus) {
 
             /*日期插件*/
-            $scope.param = {
-                startDate : BossUtil.getNowFormatDate(),
-                date: BossUtil.getNowFormatDate(),
+            var date = new Date();
+            var seperator1 = "-";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
             }
-            $scope.param.date=$scope.param.date.replace(/00/g,'');
-            $scope.param.date=$scope.param.date.replace(/:/g,'');
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate;
+
+            $scope.param =  {
+                date: currentdate,
+                week:'',
+                scheduleDate:''
+            }
+
+            GetClerkScheduleOneDayInfo.get({searchDate:$scope.param.date},function (data) {
+                $scope.param.week = data.responseData.week;
+                $scope.param.scheduleDate = data.responseData.scheduleDate;
+                GetShopAppointmentInfoByStatus.get({searchDate:$scope.param.date},function (data) {
+                    console.log(data);
+                })
+            })
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -30,9 +50,14 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
             var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
-                    var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
+                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
                     console.log($scope.param.date);
+                    GetClerkScheduleOneDayInfo.get({searchDate:$scope.param.date},function (data) {
+                        console.log(data);
+                        GetShopAppointmentInfoByStatus.get({searchDate:$scope.param.date},function (data) {
+                            console.log(data);
+                        })
+                    })
                 }
             };
 
@@ -62,7 +87,7 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
-
+            
             $scope.confirmedGo = function(){
                 $state.go("employeeConfirmed")
             };

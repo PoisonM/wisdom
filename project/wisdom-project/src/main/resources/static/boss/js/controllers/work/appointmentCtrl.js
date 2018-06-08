@@ -76,7 +76,6 @@ angular.module('controllers',[]).controller('appointmentCtrl',
             };
             $scope.getInfo();
 
-
             $scope.healthClubGo = function(id,name){
                 $state.go("beautySalon",{sysShopId:id,date:$scope.param.date,shopName:name})
             }

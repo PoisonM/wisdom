@@ -8,6 +8,7 @@ import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.beauty.core.service.ShopService;
@@ -58,7 +59,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
     @Autowired
     private ShopService shopService;
 
-
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Override
     public int getArchivesCount(ShopUserArchivesDTO shopUserArchivesDTO) {
@@ -316,17 +318,28 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
-        String sysBossCode = null;
-        String sysShopId = null;
+        String sysBossCode = redisUtils.getBossCode();
+        String sysShopId = redisUtils.getShopId();
+        String sysShopName = null;
+        String sysClerkId = null;
+        String sysClerkName = null;
+        String channel = shopUserArchivesDTO.getChannel();
         //pad端登陆
         if (null != clerkInfo) {
-            sysBossCode = clerkInfo.getSysBossCode();
-            sysShopId = clerkInfo.getSysShopId();
+            sysClerkName = clerkInfo.getName();
+            sysClerkId = clerkInfo.getId();
+            sysShopName = null == clerkInfo.getSysShopName()?"clerk":clerkInfo.getSysShopName();
+            channel = StringUtils.isBlank(channel)?"clerk":channel;
         }
         if (null != bossInfo) {
-            sysBossCode = bossInfo.getId();
+            sysShopName = "boss";
+            channel = StringUtils.isBlank(channel)?"boss":channel;
         }
 
+        shopUserArchivesDTO.setChannel(channel);
+        shopUserArchivesDTO.setSysShopName(sysShopName);
+        shopUserArchivesDTO.setSysClerkId(sysClerkId);
+        shopUserArchivesDTO.setSysClerkName(sysClerkName);
         shopUserArchivesDTO.setSysUserId(userInfoDTO.getId());
         shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
         shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());

@@ -64,6 +64,7 @@ public class ProductTypeController {
         ShopProductTypeDTO shopProductTypeDTO = new ShopProductTypeDTO();
         shopProductTypeDTO.setStatus(status);
         shopProductTypeDTO.setProductTypeName(productTypeName);
+        shopProductTypeDTO.setSysShopId(bossInfo.getCurrentShopId());
         int updateInfo = shopProductInfoService.saveProductTypeInfo(shopProductTypeDTO);
         responseDTO.setResult(updateInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         return responseDTO;

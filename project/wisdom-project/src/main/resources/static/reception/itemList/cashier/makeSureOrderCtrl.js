@@ -3,7 +3,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
-    $scope.$parent.$parent.param.headerCash.backContent = "充值记录";
+    $scope.$parent.$parent.param.headerCash.backContent = "返回";
     $scope.$parent.$parent.param.headerCash.leftTip = "添加更多";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
@@ -51,9 +51,9 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
         $state.go('pad-web.left_nav.selectRechargeType', { type: 1 });
     }
 
-    SaveShopUserOrderInfo.save({ userId: '110' }, function(data) {
+    SaveShopUserOrderInfo.save({ userId: $stateParams.userId }, function(data) {
         $scope.orderId = data.responseData;
-        GetShopUserRecentlyOrderInfo.get({ sysUserId: '110', orderId: data.responseData }, function(data) {
+        GetShopUserRecentlyOrderInfo.get({ sysUserId: $stateParams.userId , orderId: data.responseData }, function(data) {
             $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
             /*for (var i = 0; i < $scope.projectGroupRelRelationDTOS.length; i++) {
                 $scope.projectGroupRelRelationDTOS[i].ng_markPrice = '';
@@ -105,7 +105,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
             default:
         }
         UpdateVirtualGoodsOrderInfo.save(virtualGoodsOrderInfo, function(data) {
-            GetShopUserRecentlyOrderInfo.get({ sysUserId: '110' }, function(data) {
+            GetShopUserRecentlyOrderInfo.get({ sysUserId: $stateParams.userId  }, function(data) {
                 $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
                 $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
                 $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
@@ -146,4 +146,10 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
         }, 100)
     }
     $scope.myChangeFn()
+
+
+
+    $scope.backHeaderCashFn = function () {
+        window.history.go(-1)
+    }
 });

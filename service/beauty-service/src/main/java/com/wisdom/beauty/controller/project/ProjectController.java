@@ -18,7 +18,6 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,37 +117,15 @@ public class ProjectController {
 		logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
 		ResponseDTO<HashMap<String, Object>> responseDTO = new ResponseDTO<>();
 
-		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
-		shopProjectInfoDTO.setSysShopId(sysShopId);
-		shopProjectInfoDTO.setProjectName(filterStr);
+		ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
+		extShopProjectInfoDTO.setSysShopId(sysShopId);
+		extShopProjectInfoDTO.setProjectName(filterStr);
 		if (StringUtils.isNotBlank(useStyle) && (!CardTypeEnum.ALL.getCode().equals(useStyle))) {
-			shopProjectInfoDTO.setUseStyle(useStyle);
+			extShopProjectInfoDTO.setUseStyle(useStyle);
 		}
 
 		HashMap<String, Object> returnMap = new HashMap<>(16);
-		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
-		//获取二级和三级
-		ShopProjectTypeDTO shopProjectType=new ShopProjectTypeDTO();
-		shopProjectType.setSysShopId(sysShopId);
-		List<ShopProjectTypeDTO> listTwoAndThree=projectService.getTwoLevelProjectList(shopProjectType);
-		//一个一级对应所有的二级
-		Map<String,Map<String,ShopProjectTypeDTO>> twoMap=null;
-		if(CollectionUtils.isNotEmpty(listTwoAndThree)){
-			twoMap=new HashMap<>();
-			for (ShopProjectTypeDTO dto:listTwoAndThree){
-				if(twoMap.containsKey(dto.getParentId())){
-					Map<String,ShopProjectTypeDTO> devMap=twoMap.get(dto.getParentId());
-					devMap.put(dto.getProjectTypeName(),dto);
-					twoMap.put(dto.getParentId(),devMap);
-				}else {
-					if(StringUtils.isNotBlank(dto.getParentId())){
-						Map<String,ShopProjectTypeDTO> devMap=new HashMap<>();
-						devMap.put(dto.getProjectTypeName(),dto);
-						twoMap.put(dto.getParentId(),devMap);
-					}
-				}
-			}
-		}
+		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(extShopProjectInfoDTO);
 
 		if (CommonUtils.objectIsEmpty(projectList)) {
 			logger.debug("查询某个店的疗程卡列表信息查询结果为空，{}", "sysShopId = [" + sysShopId + "]");
@@ -163,13 +140,15 @@ public class ProjectController {
 		}
 
 		ArrayList<Object> levelList = new ArrayList<>();
-		// 遍历缓存的一级项目
+		// 遍历缓存的一级
 		for (ShopProjectTypeDTO shopProjectTypeDTO : shopProjectTypeDTOList) {
 			HashMap<Object, Object> helperMap = new HashMap<>(16);
 			// 承接二级项目
 			HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
-			if(twoMap.get(shopProjectTypeDTO.getId())!=null){
-				twoLevelMap.putAll(twoMap.get(shopProjectTypeDTO.getId()));
+			for (ShopProjectInfoDTO dto : projectList) {
+				if (shopProjectTypeDTO.getId().equals(dto.getProjectTypeOneId())) {
+					twoLevelMap.put(dto.getProjectTypeTwoName(), dto);
+				}
 			}
 			helperMap.put("levelTwoDetail", twoLevelMap);
 			helperMap.put("levelOneDetail", shopProjectTypeDTO);
@@ -450,12 +429,12 @@ public class ProjectController {
 
 		ResponseDTO<List<Object>> responseDTO = new ResponseDTO<>();
 
-		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
-		shopProjectInfoDTO.setSysShopId(sysShopId);
+		ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
+		extShopProjectInfoDTO.setSysShopId(sysShopId);
 		if (StringUtils.isNotBlank(filterStr)) {
-			shopProjectInfoDTO.setProjectName(filterStr);
+			extShopProjectInfoDTO.setProjectName(filterStr);
 		}
-		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
+		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(extShopProjectInfoDTO);
 		if (CommonUtils.objectIsEmpty(projectList)) {
 			logger.debug("查询某店的项目列表，个数为空");
 			return null;
@@ -499,17 +478,20 @@ public class ProjectController {
 	@RequestMapping(value = "getShopTwoLevelProjectList", method = { RequestMethod.POST, RequestMethod.GET })
 
 	public @ResponseBody ResponseDTO<Object> getShopTwoLevelProjectList(@RequestParam(required = false) String pageNo,
-			@RequestParam(required = false) String pageSize, @RequestParam(required = false) String filterStr) {
+			                                                            @RequestParam(required = false) String pageSize,
+																		@RequestParam(required = false) String filterStr,
+																		@RequestParam(required = false) String fuzzyQuery) {
 
         String sysShopId = redisUtils.getShopId();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
-		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
-		shopProjectInfoDTO.setSysShopId(sysShopId);
+		ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
+		extShopProjectInfoDTO.setSysShopId(sysShopId);
 		if (StringUtils.isNotBlank(filterStr)) {
-			shopProjectInfoDTO.setProjectName(filterStr);
+			extShopProjectInfoDTO.setProjectName(filterStr);
 		}
-		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
+		extShopProjectInfoDTO.setFuzzyQuery(fuzzyQuery);
+		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(extShopProjectInfoDTO);
 		if (CommonUtils.objectIsEmpty(projectList)) {
 			logger.debug("查询返回二级和三级某店的项目列表的项目列表，个数为空");
 			responseDTO.setErrorInfo("查询结果为空！");
@@ -559,9 +541,9 @@ public class ProjectController {
 
         String sysShopId = redisUtils.getShopId();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
-		shopProjectInfoDTO.setSysShopId(sysShopId);
-		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(shopProjectInfoDTO);
+		ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
+		extShopProjectInfoDTO.setSysShopId(sysShopId);
+		List<ShopProjectInfoDTO> projectList = projectService.getShopCourseProjectList(extShopProjectInfoDTO);
 		if (CommonUtils.objectIsEmpty(projectList)) {
 			logger.debug("用户端-查询某店的项目列表，个数为空");
 			return null;

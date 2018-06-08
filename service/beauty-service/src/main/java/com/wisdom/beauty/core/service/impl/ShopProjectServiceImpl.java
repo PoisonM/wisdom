@@ -190,31 +190,34 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	 * @return
 	 */
 	@Override
-	public List<ShopProjectInfoDTO> getShopCourseProjectList(ShopProjectInfoDTO shopProjectInfoDTO) {
+	public List<ShopProjectInfoDTO> getShopCourseProjectList(ExtShopProjectInfoDTO extShopProjectInfoDTO) {
 
-		logger.info("查询某个店的疗程卡列表信息传入参数={}", "shopProjectInfoDTO = [" + shopProjectInfoDTO + "]");
+		logger.info("查询某个店的疗程卡列表信息传入参数={}", "shopProjectInfoDTO = [" + extShopProjectInfoDTO + "]");
 
-		if (shopProjectInfoDTO == null) {
+		if (extShopProjectInfoDTO == null) {
 			return null;
 		}
 
 		ShopProjectInfoCriteria shopProjectInfoCriteria = new ShopProjectInfoCriteria();
 		ShopProjectInfoCriteria.Criteria criteria = shopProjectInfoCriteria.createCriteria();
 
-		if (StringUtils.isNotBlank(shopProjectInfoDTO.getSysShopId())) {
-			criteria.andSysShopIdEqualTo(shopProjectInfoDTO.getSysShopId());
+		if (StringUtils.isNotBlank(extShopProjectInfoDTO.getSysShopId())) {
+			criteria.andSysShopIdEqualTo(extShopProjectInfoDTO.getSysShopId());
+		}
+		if(StringUtils.isNotBlank(extShopProjectInfoDTO.getFuzzyQuery())&&"0".equals(extShopProjectInfoDTO.getFuzzyQuery())){
+			criteria.andProjectNameLike("%"+extShopProjectInfoDTO.getProjectName()+"%");
+		}else {
+			if (StringUtils.isNotBlank(extShopProjectInfoDTO.getProjectName())) {
+				criteria.andProjectNameLike(extShopProjectInfoDTO.getProjectName());
+			}
 		}
 
-		if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
-			criteria.andProjectNameLike(shopProjectInfoDTO.getProjectName());
+		if (StringUtils.isNotBlank(extShopProjectInfoDTO.getUseStyle())) {
+			criteria.andUseStyleEqualTo(extShopProjectInfoDTO.getUseStyle());
 		}
 
-		if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
-			criteria.andUseStyleEqualTo(shopProjectInfoDTO.getUseStyle());
-		}
-
-		if (StringUtils.isNotBlank(shopProjectInfoDTO.getId())) {
-			criteria.andIdEqualTo(shopProjectInfoDTO.getId());
+		if (StringUtils.isNotBlank(extShopProjectInfoDTO.getId())) {
+			criteria.andIdEqualTo(extShopProjectInfoDTO.getId());
 		}
 
 		List<ShopProjectInfoDTO> dtos = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);

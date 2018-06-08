@@ -408,8 +408,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		}
 		shopProductTypeDTOS.setCreateDate(new Date());
 		shopProductTypeDTOS.setId(IdGen.uuid());
-		shopProductTypeMapper.insertSelective(shopProductTypeDTOS);
-		return 0;
+		return shopProductTypeMapper.insertSelective(shopProductTypeDTOS);
 	}
 
 	/**

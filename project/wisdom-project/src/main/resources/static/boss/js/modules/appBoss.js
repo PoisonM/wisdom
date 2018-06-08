@@ -51,7 +51,6 @@ define(['angular'], function (angular) {
         }])
         .run(function($rootScope){
             $rootScope.shopInfo = {
-                shopId:'11',
                 entryShopProductList:[],
                 outShopProductList:[],
                 outShopStockType : '',

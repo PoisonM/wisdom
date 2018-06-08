@@ -67,19 +67,13 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 useStyle: e,
             }, function(data) {
                 $scope.secondCategory = data.responseData.detailLevel;
-                var first = data.responseData.detailLevel[0];
-                var firstkey = '',
-                    secondkey = '';
-                for (var key in first) {
-                    firstkey = key;
-                    break
-                }
-                var second = first[firstkey];
-                for (var key in second) {
-                    secondkey = key;
-                    break
-                }
-                $scope.getThreeCategories(second[secondkey].projectTypeOneId, second[secondkey].projectTypeTwoId);
+                //默认展示第一个
+                $scope.timeInt = setInterval(function () {
+                    if($(".two_project_cla").length != 0){
+                        $(".two_project_cla").eq(0).trigger('click')
+                        clearInterval($scope.timeInt)
+                    }
+                },100)
             })
         } else if (e == 2) {
             SearchShopProductList.get({
@@ -112,8 +106,8 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     }
 
     $scope.tabclick(1);
-    $scope.getThreeCategories = function(one, two,index) {
-        $scope.redFontFlag = index
+    $scope.getThreeCategories = function(one, two,id) {
+        $scope.redFontFlag = id
         ThreeLevelProject.get({
             pageSize: 100,
             projectName: "",
@@ -260,10 +254,12 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             }
         })
     }
-    $scope.$parent.leftTipFn = function() {
-        $state.go('pad-web.left_nav.makeSureOrder')
-    }
     $scope.$parent.priceListSaveFn = function () {
-
+        $state.go('pad-web.left_nav.makeSureOrder',{"userId":$stateParams.userId})
     }
+
+    /*$scope.$parent.leftTipFn = function() {
+        $state.go('pad-web.left_nav.makeSureOrder',{"userId":$stateParams.userId})
+    }*/
+
 });
