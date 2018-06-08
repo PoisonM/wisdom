@@ -109,6 +109,10 @@ public class BannerController {
 		long startTime = System.currentTimeMillis();
 		logger.info("编辑homeBanner开始={}", bannerDTO);
 		ResponseDTO responseDTO = new ResponseDTO<>();
+		if(null == bannerDTO.getBannerId() || "".equals(bannerDTO.getBannerId())){
+			String bannerId = CodeGenUtil.getProductCodeNumber();
+			bannerDTO.setBannerId(bannerId);
+		}
 		logger.info("编辑homeBannerId={}", bannerDTO.getBannerId());
 		try {
 			bannerService.updateHomeBanner(bannerDTO);
