@@ -18,20 +18,10 @@ angular.module('controllers',[]).controller('modificationInformationCtrl',
                 $scope.userInfo.sex = '男'
             };
 
-            $scope.$on('$ionicView.enter', function() {
-                $ionicLoading.show({
-                    content: 'Loading',
-                    animation: 'fade-in',
-                    showBackdrop: true,
-                    maxWidth: 200,
-                    showDelay: 0
-                });
-                /*查询我的信息*/
-                GetCurrentLoginUserInfo.get(function (data) {
-                    $ionicLoading.hide();
-                    $scope.userInfo=data.responseData;
-                });
-            })
+            GetCurrentLoginUserInfo.get(function (data) {
+                $ionicLoading.hide();
+                $scope.userInfo=data.responseData;
+            });
 
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口

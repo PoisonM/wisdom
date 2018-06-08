@@ -2096,15 +2096,15 @@ define(['appBoss'], function(app){
                     })
                 /*员工端路由*/
                 /*员工端首页*/
-                    .state('employeeWorkHome', {
-                        url: '/employeeWorkHome',
+                    .state('employeeIndex', {
+                        url: '/employeeIndex',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'employeeWorkHomeCtrl',
+                        controller: 'employeeIndexCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeWorkHomeCtrl',
-                                    ['js/controllers/employee/employeeWorkHomeCtrl.js?ver='+ bossVersion],
-                                    'views/employee/employeeWorkHome.html?ver=' + bossVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeIndexCtrl',
+                                    ['js/controllers/employee/employeeIndexCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeIndex.html?ver=' + bossVersion);
                             }
                         }
                     })
@@ -2135,15 +2135,15 @@ define(['appBoss'], function(app){
                         }
                     })
                 /*员工预约*/
-                    .state('employeeCanceled', {
-                        url: '/employeeCanceled',
+                    .state('employeeAppointList', {
+                        url: '/employeeAppointList',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'employeeCanceledCtrl',
+                        controller: 'employeeAppointListCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeCanceledCtrl',
-                                    ['js/controllers/employee/employeeCanceledCtrl.js?ver='+ bossVersion],
-                                    'views/employee/employeeCanceled.html?ver=' + bossVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeAppointListCtrl',
+                                    ['js/controllers/employee/employeeAppointListCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeAppointList.html?ver=' + bossVersion);
                             }
                         }
                     })

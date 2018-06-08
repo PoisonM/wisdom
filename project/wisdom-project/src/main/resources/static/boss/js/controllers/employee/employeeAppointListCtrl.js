@@ -22,14 +22,16 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
             $scope.param =  {
                 date: currentdate,
                 week:'',
-                scheduleDate:''
+                scheduleDate:'',
+                appointList : [],
             }
 
             GetClerkScheduleOneDayInfo.get({searchDate:$scope.param.date},function (data) {
                 $scope.param.week = data.responseData.week;
                 $scope.param.scheduleDate = data.responseData.scheduleDate;
                 GetShopAppointmentInfoByStatus.get({searchDate:$scope.param.date},function (data) {
-                    console.log(data);
+                    $scope.param.appointList = data.responseData;
+                    console.log($scope.param.appointList);
                 })
             })
 
@@ -51,11 +53,12 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                 if (typeof (val) === 'undefined') {
                 } else {
                     $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
-                    console.log($scope.param.date);
                     GetClerkScheduleOneDayInfo.get({searchDate:$scope.param.date},function (data) {
-                        console.log(data);
+                        $scope.param.week = data.responseData.week;
+                        $scope.param.scheduleDate = data.responseData.scheduleDate;
                         GetShopAppointmentInfoByStatus.get({searchDate:$scope.param.date},function (data) {
-                            console.log(data);
+                            $scope.param.appointList = data.responseData;
+                            console.log($scope.param.appointList);
                         })
                     })
                 }
