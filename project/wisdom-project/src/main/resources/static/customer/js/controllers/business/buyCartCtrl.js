@@ -1,14 +1,15 @@
 angular.module('controllers',[]).controller('buyCartCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetBuyCartInfo','AddProduct2BuyCart',
-        'MinusProduct2BuyCart','DeleteOrderFromBuyCart','Global','PutNeedPayOrderListToRedis','$ionicLoading',
+        'MinusProduct2BuyCart','DeleteOrderFromBuyCart','Global','PutNeedPayOrderListToRedis','$ionicLoading',"GetUserInfoByOpenId",
         function ($scope,$rootScope,$stateParams,$state,GetBuyCartInfo,AddProduct2BuyCart,
-                  MinusProduct2BuyCart,DeleteOrderFromBuyCart,Global,PutNeedPayOrderListToRedis,$ionicLoading) {
+                  MinusProduct2BuyCart,DeleteOrderFromBuyCart,Global,PutNeedPayOrderListToRedis,$ionicLoading,GetUserInfoByOpenId) {
 
             $(".cartNull").hide();
 
             //载入购物车信息
             var loadBuyCartInfo = function(){
                 GetBuyCartInfo.get(function(data){
+
                     $ionicLoading.hide();
                     if (data.responseData=="")
                     {
@@ -45,6 +46,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                         productId : value2.businessProductId,
                                         orderId : value2.businessOrderId,
                                         productStatus:value2.productStatus,
+                                        productPrefecture:value2.productPrefecture,
                                         orderChecked:true
                                     })
                                 }
@@ -208,6 +210,23 @@ angular.module('controllers',[]).controller('buyCartCtrl',
             $scope.goPay = function() {
                 var needPayOrderList = [];
                 var alertFlag = true;
+                GetUserInfoByOpenId.get(function (data) {
+                    if(data.result==Global.SUCCESS)
+                    {
+                        if(data.responseData.userType!="business-C-1"){
+                            angular.forEach($scope.param.unPaidOrder,function(value,index,array){
+                                angular.forEach(value.orderList,function(value1,index,array){
+                                    if(value1.orderChecked&&value1.productPrefecture == "1")
+                                    {
+                                        alert("123");
+                                        return
+
+                                    }
+                                })
+                            });
+                        }
+                    }
+                });
                 angular.forEach($scope.param.unPaidOrder,function(value,index,array){
                     angular.forEach(value.orderList,function(value1,index,array){
                         if(value1.orderChecked&&value1.productStatus == "1")

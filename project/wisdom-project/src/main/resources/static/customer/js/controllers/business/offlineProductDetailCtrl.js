@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('offlineProductDetailCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetOfflineProductDetail',
         'AddProduct2BuyCart','BusinessUtil','GetProductNumFromBuyCart','$ionicPopup',
-        '$ionicSlideBoxDelegate','CreateBusinessOrder','PutNeedPayOrderListToRedis','Global','$ionicLoading',"$interval",'LoginGlobal','$timeout','IsLogin',
+        '$ionicSlideBoxDelegate','CreateBusinessOrder','PutNeedPayOrderListToRedis','Global','$ionicLoading',"$interval",'LoginGlobal','$timeout','IsLogin','GetUserInfoByOpenId',
         function ($scope,$rootScope,$stateParams,$state,GetOfflineProductDetail,
                   AddProduct2BuyCart,BusinessUtil,GetProductNumFromBuyCart,$ionicPopup,
-                  $ionicSlideBoxDelegate,CreateBusinessOrder,PutNeedPayOrderListToRedis,Global,$ionicLoading,$interval,LoginGlobal,$timeout,IsLogin) {
+                  $ionicSlideBoxDelegate,CreateBusinessOrder,PutNeedPayOrderListToRedis,Global,$ionicLoading,$interval,LoginGlobal,$timeout,IsLogin,GetUserInfoByOpenId) {
 
             $rootScope.title = "美享99产品详情";
 
@@ -89,7 +89,18 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
             };
 
             $scope.goPay = function(){
-               /* debugger;*/
+                  if($scope.param.product.productPrefecture=="1"){
+                      GetUserInfoByOpenId.get(function (data) {
+                          if(data.result==Global.SUCCESS)
+                          {
+                              if(data.responseData.userType!="business-C-1"){
+                                  alert("123");
+                                  return
+                              }
+                          }
+                      });
+                  }
+
                 /*根据商品状态来判断商品是否为下架商品*/
                 if($scope.param.product.status == "0"){
                     return;
@@ -234,7 +245,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 GetOfflineProductDetail.get({productId:$stateParams.productId},function(data){
                     $ionicLoading.hide();
                     $scope.param.product = data.responseData;
-                    $scope.param.checkFlag = $scope.param.product.productDetail.spec[0]
+                    $scope.param.checkFlag = $scope.param.product.productDetail.spec[0];
                     /*测试*/
                    /* $scope.param.product.status = "0";*/
                     /* $scope.param.product.productAmount=$scope.param.product.productAmount-1;*/

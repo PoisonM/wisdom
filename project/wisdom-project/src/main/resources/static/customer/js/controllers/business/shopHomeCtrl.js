@@ -1,19 +1,20 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById',
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById','GetUserInfoByOpenId',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById) {
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId) {
             $rootScope.title = "美享99触屏版";
+            $scope.params="all";/*一进入商城页面默认全部*/
             $scope.param = {
                 bannerList:{},
                 productList:{},//特殊商品
                 product2List:[[]],//普通商品
                 promoteProduct:true,
-                promoteProductId:"MXT99-04",
+                /*promoteProductId:"MXT99-04",*/
                 rookieProduct:true,
-                rookieProductId:"201712101718100007",
+               /* rookieProductId:"201712101718100007",*/
                 redPackerFlagOne:false,
                 redPackerFlagTwo:false,
                 redPackerBox:true,
@@ -31,6 +32,14 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
                 GetHomeBannerList.save(function(data){
                     $scope.param.bannerList = data.responseData;
+                    /*轮播图排序 按照后台返回来的那个值*/
+                    function sortRule(a,b) {
+                        return a.bannerRank - b.bannerRank;
+                    }
+                    $scope.param.bannerList.sort(sortRule);
+                    console.log($scope.param.bannerList);
+
+
                     $ionicSlideBoxDelegate.update();
                     $ionicSlideBoxDelegate.loop(true);
                 });
@@ -38,7 +47,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 GetOfflineProductList.save({pageNo:0,pageSize:100},function(data){
                     $ionicLoading.hide();
                     $scope.param.productList = data.responseData;
-                    var partNames = [];
+              /*      var partNames = [];
                     angular.forEach($scope.param.productList,function(value1,index1){
                         var same = false;
                         angular.forEach(partNames,function(value2,index){
@@ -65,7 +74,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                         index++;
                     });
                     console.log( $scope.param.product2List);
-                    /**/
+                    /!**!/
                     var tempArr = [];
                     for(var i = 0; i < $scope.param.product2List.length; i++){
                         if($scope.param.product2List[i].data[0].productId == "201712101718100007"||$scope.param.product2List[i].data[0].productId == "88888888888"){
@@ -74,7 +83,29 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                         }
                     }
                     $scope.param.product2List = tempArr;
-                    console.log( $scope.param.product2List)
+                    console.log( $scope.param.product2List)*/
+                    $scope.repeatList = [];
+                    $scope.onePriductList = [];
+                    $scope.twoPriductList = [];
+                    $scope.threePriductList = [];
+                    $scope.fourPriductList = [];
+                    $scope.fivePriductList = [];
+                    $scope.allPriductList = $scope.param.productList;
+                    $scope.repeatList=$scope.param.productList;/*一进入商城默认全部商城*/
+
+                    for(var i = 0; i < $scope.param.productList.length; i++){
+                        if($scope.param.productList[i].price == "99.00"){
+                            $scope.onePriductList.push($scope.param.productList[i])
+                        }else if($scope.param.productList[i].price == "199.00"){
+                            $scope.twoPriductList.push($scope.param.productList[i])
+                        }else if($scope.param.productList[i].price == "299.00"){
+                            $scope.threePriductList.push($scope.param.productList[i])
+                        }else if($scope.param.productList[i].price == "399.00"){
+                            $scope.fourPriductList.push($scope.param.productList[i])
+                        }else if($scope.param.productList[i].price == "499.00"){
+                            $scope.fivePriductList.push($scope.param.productList[i])
+                        }
+                    }
 
                 })
 
@@ -91,7 +122,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                         $scope.param.promoteProduct = false;
                     }
                 })*/
-
+/*
                 GetBusinessOrderByProductId.get({productId:$scope.param.rookieProductId},function(data){
                     if(data.result==Global.SUCCESS)
                     {
@@ -101,10 +132,10 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     {
                         $scope.param.rookieProduct=false;
                     }
-                })
+                });*/
 
                 //判断用户是否是3月的B店店主,如果是，则弹出红包页
-                CheckTripleMonthBonus.get(function(data){
+              /*  CheckTripleMonthBonus.get(function(data){
                     if(data.result==Global.SUCCESS)
                     {
                         $scope.param.redPackerFlagOne = true;
@@ -112,29 +143,29 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                         $scope.param.bonusLeftDay = data.responseData;
                         console.log($scope.param.bonusLeftDay);
                     }
-                })
+                })*/
             });
 
             $scope.clickCarousel=function(item){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_BADJ,item);
             };
 
-            $scope.enterDetails=function(item2){
-                BusinessUtil.twoParameters(LoginGlobal.MX_SC_ADJ,item2);
-                if(item2=="201712101718100004")
+            $scope.enterDetails=function(item){
+                BusinessUtil.twoParameters(LoginGlobal.MX_SC_ADJ,item);
+               /* if(item=="201712101718100004")
                 {
                     var alertPopup = $ionicPopup.alert({
                         template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">正在补货中，敬请期待</span>',
                         okText:'确定'
                     });
                     return
-                }
-                $state.go("offlineProductDetail",{productId:item2})
+                }*/
+                $state.go("offlineProductDetail",{productId:item})
             };
 
             $scope.goPromoteProduct = function(item){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ADJ,item);
-                $state.go("offlineProductDetail",{productId:$scope.param.promoteProductId});
+                $state.go("offlineProductDetail",{productId:item});
 
                /* if($scope.param.promoteProduct&&$scope.param.promoteProductId==item)
                 {
@@ -162,16 +193,16 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
                 }*/
 
+
             };
 
             $scope.redPackerClose = function () {
-
               $scope.param.redPackerBox=false;
               /*  $scope.param.redPackerFlagOne = false;
                 $scope.param.redPackerFlagTwo = false*/
             };
 
-            $scope.redPackerOpen = function () {
+            /*$scope.redPackerOpen = function () {
                 //可以领取
                 if($scope.param.redPackerFlagOne)
                 {
@@ -192,7 +223,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     });
                 }
             }
-
+*/
 
             function convertDateFromString(dateString) {
                 if (dateString) {
@@ -235,5 +266,29 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 }, 1000)
             }
 
+            $scope.allProductFlag = true;
+            $scope.checkPrice = function (price) {
+                $scope.params=price;
+                if(price=='all'){
+                    // $scope.repeatList =  $scope.allPriductList
+                    $scope.allProductFlag = true
 
+                }else if(price == 99){
+                    $scope.repeatList = $scope.onePriductList;
+                    $scope.allProductFlag = false
+                }else if(price == 199){
+                    $scope.repeatList = $scope.twoPriductList;
+                    $scope.allProductFlag = false
+                }else if(price == 299){
+                    $scope.repeatList = $scope.threePriductList;
+                    $scope.allProductFlag = false
+                }else if(price == 399){
+                    $scope.repeatList = $scope.fourPriductList;
+                    $scope.allProductFlag = false
+                }else if(price == 499){
+                    $scope.repeatList = $scope.fivePriductList;
+                    $scope.allProductFlag = false
+                }
+                console.log( $scope.repeatList)
+            }
         }]);
