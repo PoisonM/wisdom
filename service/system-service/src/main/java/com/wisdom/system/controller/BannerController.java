@@ -63,10 +63,14 @@ public class BannerController {
 			return responseDTO;
 		}
 		String bannerId = CodeGenUtil.getProductCodeNumber();
+		List<BannerDTO> list = bannerService.getHomeBannerList();
 		logger.info("新增bannerId={}", bannerId);
 		try {
 			bannerDTO.setBannerId(bannerId);
 			bannerDTO.setPlace("home");
+			//新增默认为最后一个
+			bannerDTO.setBannerRank(list.size()+1);
+			logger.info("新增bannerId楼层={}", list.size()+1);
 			bannerService.addHomeBanner(bannerDTO);
 			responseDTO.setResult(StatusConstant.SUCCESS);
 		} catch (Exception e) {
@@ -230,14 +234,14 @@ public class BannerController {
 		logger.info("删除Banner,开始={}", bannerId);
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		BannerDTO bannerDTODown = null;
-		boolean havebanner = true;
+		boolean nextBanner = true;
 		try {
 			BannerDTO bannerDTO = bannerService.findHomeBannerInfoById(bannerId);
 			int bannerRank = bannerDTO.getBannerRank()+1;
 			logger.info("删除Banner,删除的banner楼层为={}", bannerRank-1);
 			bannerService.delHomeBannerById(bannerId);
 			//后面的banner全都向前排序
-			while (havebanner) {
+			while (nextBanner) {
 				bannerDTODown = bannerService.findHomeBannerInfoByBannerRank(bannerRank);
 				if(null != bannerDTODown){
 					logger.info("删除Banner,下层bannerId为={}楼层为={}需要前移到={}", bannerDTODown.getBannerId(),bannerRank,bannerRank-1);
@@ -246,7 +250,7 @@ public class BannerController {
 					bannerRank++;
 				}else {
 					logger.info("删除Banner方法,下层banner已全部前移,没有下层banner了={}", bannerRank);
-					havebanner = false;
+					nextBanner = false;
 				}
 			}
 			responseDTO.setResult(StatusConstant.SUCCESS);
