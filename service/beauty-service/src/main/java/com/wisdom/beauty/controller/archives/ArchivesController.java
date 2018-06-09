@@ -16,7 +16,6 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.PinYinSort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,7 +118,7 @@ public class ArchivesController {
                 logger.info("查询店铺的预约信息个数为={}",extShopAppointServiceDTOS.size());
                 for(ExtShopAppointServiceDTO shopAppointServiceDTO : extShopAppointServiceDTOS){
                     if(shopAppointServiceDTO.getSysUserId().equals(archivesDTO.getSysUserId())){
-                        extShopUserArchivesDTO.setLastAppointTimes(DateUtils.DateToStr(shopAppointServiceDTO.getAppointStartTime(),"datetime"));
+                        extShopUserArchivesDTO.setLastAppointTimes(shopAppointServiceDTO.getLastAppointTime());
                     }
                 }
             }
