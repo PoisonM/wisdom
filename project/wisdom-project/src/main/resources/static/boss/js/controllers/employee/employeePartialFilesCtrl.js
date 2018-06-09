@@ -6,6 +6,7 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,FindArchives,GetBossShopList,Global) {
 
             $rootScope.title = "全院档案";
+
             $scope.param={
                 sysShopId:"11",
                 pageSize:"100",
@@ -37,7 +38,7 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
                 $scope.param.blackBox=true;
                 $scope.param.fileBOx=true;
                 GetBossShopList.get(function (data) {
-                    if(data.result == "0x00001"){
+                    if(data.result == Global.SUCCESS){
                         $scope.switchingList = [];
                         $scope.switchingList = data.responseData;
                         console.log(data)
@@ -50,7 +51,7 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
             };
             $scope.checkFileBox=function (id) {
                 FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
-                    if(data.result == "0x00001"){
+                    if(data.result == Global.SUCCESS){
                         $scope.fileList = [];
                         $scope.info = data.responseData.info;
                     }
@@ -69,7 +70,7 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
             /*点击放大镜根绝姓名搜索*/
             $scope.search=function () {
                 FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
-                    if(data.result == "0x00001"){
+                    if(data.result == Global.SUCCESS){
                         $scope.fileList = [];
                         $scope.info = data.responseData.info;
                     }
@@ -79,7 +80,7 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
             $scope.clearSearch=function () {
                 $scope.param.queryField="";
                 FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
-                    if(data.result == "0x00001"){
+                    if(data.result == Global.SUCCESS){
                         $scope.fileList = [];
                         $scope.info = data.responseData.info;
                     }
