@@ -2149,7 +2149,7 @@ define(['appBoss'], function(app){
                     })
                     /**/
                     .state('employeeConfirmed', {
-                        url: '/employeeConfirmed',
+                        url: '/employeeConfirmed/:shopAppointServiceId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'employeeConfirmedCtrl',
                         resolve: {

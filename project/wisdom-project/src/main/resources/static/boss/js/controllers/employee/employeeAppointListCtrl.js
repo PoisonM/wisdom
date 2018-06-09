@@ -91,11 +91,13 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
             
-            $scope.confirmedGo = function(){
-                $state.go("employeeConfirmed")
+            $scope.confirmedGo = function(shopAppointServiceId){
+                //这一期暂停
+                // $state.go("employeeConfirmed",{shopAppointServiceId:shopAppointServiceId})
             };
-            $scope.employeeReservation = function(){
-                $state.go("employeeReservation")
-            }
+
+            // $scope.employeeReservation = function(){
+            //     $state.go("employeeReservation")
+            // }
 
 }]);

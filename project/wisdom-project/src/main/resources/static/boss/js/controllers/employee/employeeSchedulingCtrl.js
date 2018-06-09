@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/31.
  */
 angular.module('controllers',[]).controller('employeeSchedulingCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopClerkScheduleListForClerk',
-        function ($scope,$rootScope,$stateParams,$state,GetShopClerkScheduleListForClerk) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopClerkScheduleListForClerk','Global',
+        function ($scope,$rootScope,$stateParams,$state,GetShopClerkScheduleListForClerk,Global) {
             $rootScope.title = "排班";
             $scope.param={
                 nowdate:new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月",//初始化时间
@@ -14,7 +14,7 @@ angular.module('controllers',[]).controller('employeeSchedulingCtrl',
                 GetShopClerkScheduleListForClerk.get({
                     searchDate:searchDate
                 },function (data) {
-                    if(data.result == "0x00001"){
+                    if(data.result == Global.SUCCESS){
                         $scope.tempWeek = data.responseData.dateDetail;
                         console.log($scope.tempWeek);
                         for(var i = 0; i < $scope.tempWeek.length; i++){
@@ -24,6 +24,7 @@ angular.module('controllers',[]).controller('employeeSchedulingCtrl',
                     }
                 })
             };
+
             $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"));
             $scope.compileDateFn = function () {
                 if(new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月" == $scope.param.nowdate){
