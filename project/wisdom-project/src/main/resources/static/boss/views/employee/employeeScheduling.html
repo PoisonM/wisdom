@@ -22,10 +22,11 @@
             <tbody >
             <tr ng-repeat="item4 in tempUser" class="list">
                <td ng-repeat="infoItem in item4.clerkSchInfo">
-                    <div class="employeeBox">
+                    <div class="employeeBox" style="line-height:14px">
                         <!--日期-->
-                        <p>1</p>
-                        <p> <img ng-if="infoItem.scheduleType == 0" src="images/work/morning.png">
+                        <p style="font-size:15px">{{infoItem.scheduleDate|date:'yyyy-MM-dd'}}</p>
+                        <p>
+                            <img ng-if="infoItem.scheduleType == 0" src="images/work/morning.png">
                             <img ng-if="infoItem.scheduleType == 1" src="images/work/middle.png">
                             <img ng-if="infoItem.scheduleType == 2" src="images/work/night.png">
                             <img ng-if="infoItem.scheduleType == 3" src="images/work/all.png">

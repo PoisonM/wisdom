@@ -11,6 +11,7 @@ angular.module('controllers',[]).controller('employeeSchedulingCtrl',
             };
 
             $scope.queryScheduleList = function (searchDate) {
+                console.log(searchDate);
                 GetShopClerkScheduleListForClerk.get({
                     searchDate:searchDate
                 },function (data) {
@@ -34,6 +35,7 @@ angular.module('controllers',[]).controller('employeeSchedulingCtrl',
                 }
             };
             $scope.compileDateFn();
+
             /*更改日期*/
             $scope.subMonth = function () {
                 $scope.dataYear = parseInt($scope.param.nowdate.split("年")[0])

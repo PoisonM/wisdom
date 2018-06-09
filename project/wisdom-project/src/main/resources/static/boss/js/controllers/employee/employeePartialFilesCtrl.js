@@ -2,8 +2,9 @@
  * Created by Administrator on 2018/6/1.
  */
 angular.module('controllers',[]).controller('employeePartialFilesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','FindArchives','GetBossShopList',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,FindArchives,GetBossShopList) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','FindArchives','GetBossShopList','Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,FindArchives,GetBossShopList,Global) {
+
             $rootScope.title = "全院档案";
             $scope.param={
                 sysShopId:"11",
@@ -14,19 +15,23 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
                 fileBOx:false,
                 distributionStart:false /*选择档案的多选框*/
             };
+
             FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
-                if(data.result == "0x00001"){
+                if(data.result == Global.SUCCESS){
                     $scope.fileList = [];
                     $scope.info = data.responseData.info;
                 }
             });
+
             /*点击跳转到预警档案*/
             $scope.switching=function () {
                 $state.go("employeeWarningFile")
             };
+
             $scope.goActives=function (id) {
                 $state.go("employeeArchives",{id:id})
             };
+
             /*点击切换档案*/
             $scope.tabSwitching=function () {
                 $scope.param.blackBox=true;
