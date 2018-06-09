@@ -1,15 +1,14 @@
 package com.wisdom.beauty.controller.archives;
 
+import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
+import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopUserArchivesDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.redis.RedisUtils;
-import com.wisdom.beauty.core.service.ShopCardService;
-import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
-import com.wisdom.beauty.core.service.ShopUserRelationService;
-import com.wisdom.beauty.core.service.SysUserAccountService;
+import com.wisdom.beauty.core.service.*;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -17,6 +16,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.PinYinSort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +62,9 @@ public class ArchivesController {
     @Autowired
     private ShopUserRelationService shopUserRelationService;
 
+    @Resource
+    private ShopAppointmentService appointmentService;
+
     @Value("${test.msg}")
     private String msg;
 
@@ -103,14 +106,33 @@ public class ArchivesController {
             responseDTO.setResult(StatusConstant.FAILURE);
             return responseDTO;
         }
+        logger.info("查询用户的档案信息个数为={}",shopUserArchivesDTOS.size());
+        //获取用户最近一次预约时间
+        ShopAppointServiceDTO serviceDTO = new ShopAppointServiceDTO();
+        serviceDTO.setSysShopId(sysShopId);
+        List<ExtShopAppointServiceDTO> extShopAppointServiceDTOS = appointmentService.selectShopUserLastAppointInfo(serviceDTO);
+        List<ExtShopUserArchivesDTO> extShopUserArchivesDTOS = new ArrayList<>();
+        for(ShopUserArchivesDTO archivesDTO :shopUserArchivesDTOS){
+            ExtShopUserArchivesDTO extShopUserArchivesDTO = new ExtShopUserArchivesDTO();
+            BeanUtils.copyProperties(archivesDTO,extShopUserArchivesDTO);
+            if(CommonUtils.objectIsNotEmpty(extShopAppointServiceDTOS)){
+                logger.info("查询店铺的预约信息个数为={}",extShopAppointServiceDTOS.size());
+                for(ExtShopAppointServiceDTO shopAppointServiceDTO : extShopAppointServiceDTOS){
+                    if(shopAppointServiceDTO.getSysUserId().equals(archivesDTO.getSysUserId())){
+                        extShopUserArchivesDTO.setLastAppointTimes(DateUtils.DateToStr(shopAppointServiceDTO.getAppointStartTime(),"datetime"));
+                    }
+                }
+            }
+            extShopUserArchivesDTOS.add(extShopUserArchivesDTO);
+        }
 
         ArrayList<Object> lastList = new ArrayList<>();
         for (char a : PinYinSort.getSortType()) {
             HashMap<Object, Object> hashMap = new HashMap<>(16);
             ArrayList<Object> arrayList = new ArrayList<>();
-            for (ShopUserArchivesDTO archivesDTO : shopUserArchivesDTOS) {
-                if (a == PinYinSort.ToPinYinString(archivesDTO.getSysUserName()).toLowerCase().charAt(0)) {
-                    arrayList.add(archivesDTO);
+            for (ExtShopUserArchivesDTO dto : extShopUserArchivesDTOS) {
+                if (a == PinYinSort.ToPinYinString(dto.getSysUserName()).toLowerCase().charAt(0)) {
+                    arrayList.add(dto);
                 }
             }
             if (arrayList.size() > 0) {

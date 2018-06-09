@@ -323,6 +323,10 @@ public class JedisUtils {
 	public static Set<String> getSet(String key) {
 		Set<String> value = null;
 		Jedis jedis = null;
+		if(StringUtils.isBlank(key)){
+		    logger.info("getSet传入参数为空");
+		    return null;
+		}
 		try {
 			jedis = getResource();
 			if (jedis.exists(key)) {
@@ -379,6 +383,33 @@ public class JedisUtils {
 				jedis.del(key);
 			}
 			result = jedis.sadd(key, (String[])value.toArray());
+			if (cacheSeconds != 0) {
+				jedis.expire(key, cacheSeconds);
+			}
+			logger.debug("setSet {} = {}", key, value);
+		} catch (Exception e) {
+			logger.warn("setSet {} = {}", key, value, e);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
+	/**
+	 * 设置Set缓存
+	 * @param key 键
+	 * @param value 值
+	 * @param cacheSeconds 超时时间，0为不超时
+	 * @return
+	 */
+	public static long setSet(String key, String value, int cacheSeconds) {
+		long result = 0;
+		Jedis jedis = null;
+		try {
+			jedis = getResource();
+			if (jedis.exists(key)) {
+				jedis.del(key);
+			}
+			result = jedis.sadd(key, value);
 			if (cacheSeconds != 0) {
 				jedis.expire(key, cacheSeconds);
 			}

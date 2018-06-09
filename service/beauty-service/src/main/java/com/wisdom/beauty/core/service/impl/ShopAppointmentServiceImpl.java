@@ -485,4 +485,18 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
 
         return page;
     }
+
+
+    /**
+     * 获取用户的最后一次预约时间
+     * @param appointServiceDTO
+     * @return
+     */
+    @Override
+    public List<ExtShopAppointServiceDTO> selectShopUserLastAppointInfo(ShopAppointServiceDTO appointServiceDTO){
+        if (appointServiceDTO == null) {
+            logger.error("查询对象为空");
+        }
+        return extShopAppointServiceMapper.selectShopUserLastAppointInfo(appointServiceDTO);
+    }
 }

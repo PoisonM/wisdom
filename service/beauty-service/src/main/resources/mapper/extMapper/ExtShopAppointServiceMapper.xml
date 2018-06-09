@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper">
-    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopAppointServiceDTO">
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="shop_project_id" property="shopProjectId" jdbcType="VARCHAR"/>
         <result column="shop_project_name" property="shopProjectName" jdbcType="VARCHAR"/>
@@ -16,11 +16,13 @@
         <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
         <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR"/>
         <result column="sys_user_phone" property="sysUserPhone" jdbcType="VARCHAR"/>
+        <result column="lastAppointTime" property="lastAppointTime" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="CHAR"/>
         <result column="detail" property="detail" jdbcType="VARCHAR"/>
         <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
         <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Example_Where_Clause">
@@ -106,6 +108,18 @@
     <if test="limitStart &gt;= 0">
       limit ${limitStart},${pageSize}
     </if>
+  </select>
+
+    <!--查询用户最后一次到店时间-->
+  <select id="selectShopUserLastAppointInfo"
+          parameterType="com.wisdom.beauty.api.dto.ShopAppointServiceDTO"
+          resultMap="BaseResultMap">
+      SELECT
+      *, max(appoint_start_time) lastAppointTime
+      FROM
+      shop_appoint_service
+      where sys_shop_id=#{sysShopId}
+      GROUP BY sys_user_id;
   </select>
 
     <!--查询某个美容院某个时间预约个数或某个美容院某个店员某个时间预约个数-->

@@ -6,6 +6,17 @@ public class ExtShopUserArchivesDTO extends ShopUserArchivesDTO {
     //账户总余额
     private String totalBalance;
 
+    //最近一次预约时间
+    private String lastAppointTimes;
+
+    public String getLastAppointTimes() {
+        return lastAppointTimes;
+    }
+
+    public void setLastAppointTimes(String lastAppointTimes) {
+        this.lastAppointTimes = lastAppointTimes;
+    }
+
     public String getTotalBalance() {
         return totalBalance;
     }

@@ -21,6 +21,16 @@ public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
     private String appointEndTimeE;
 
     private String clerkImage;
+    //最近一次预约时间
+    private String lastAppointTime;
+
+    public String getLastAppointTime() {
+        return lastAppointTime;
+    }
+
+    public void setLastAppointTime(String lastAppointTime) {
+        this.lastAppointTime = lastAppointTime;
+    }
 
     public String getClerkImage() {
         return clerkImage;

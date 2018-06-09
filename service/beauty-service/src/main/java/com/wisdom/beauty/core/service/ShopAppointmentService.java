@@ -94,4 +94,10 @@ public interface ShopAppointmentService {
      */
     ResponseDTO saveUserShopAppointInfo(ExtShopAppointServiceDTO shopAppointServiceDTO);
 
+    /**
+     * 获取用户的最后一次预约时间
+     * @param appointServiceDTO
+     * @return
+     */
+    List<ExtShopAppointServiceDTO> selectShopUserLastAppointInfo(ShopAppointServiceDTO appointServiceDTO);
 }
