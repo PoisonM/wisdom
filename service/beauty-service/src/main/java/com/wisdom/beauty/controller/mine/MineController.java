@@ -25,6 +25,7 @@ import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -280,6 +281,9 @@ public class MineController {
             //查询美容院
             beauty = shopService.getShopInfoByPrimaryKey(beauty.getParentsId());
             extSysClerkDTO.setCurrentBeautyShopName(null != beauty ? beauty.getName() : "");
+            if(StringUtils.isBlank(clerkInfo.getSex())){
+                extSysClerkDTO.setSex("女");
+            }
             responseDTO.setResponseData(extSysClerkDTO);
             return responseDTO;
         }
