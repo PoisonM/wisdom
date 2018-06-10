@@ -26,12 +26,11 @@ angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
                 };
                 TreatmentAndGroupCardRecordList.save($scope.userConsumeRequestDTO,function (data) {
                     $scope.treatmentCardDtails=data.responseData;
-
                 });
             }
             $scope.getInfo()
 
-            $scope.getInfos= function () {
+            $scope.getInfos = function () {
                 if($stateParams.goodsType == '1'){
                     FlowId.get({
                         flowId:$stateParams.flowId
@@ -49,10 +48,9 @@ angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
                          }
                     })
                 }
-
             }
 
             $scope.drawCardRecordsDetailGO=function (flowNo) {
-             $state.go("drawCardRecordsDetail",{flowNo:flowNo})
+                $state.go("drawCardRecordsDetail",{flowNo:flowNo})
             }
         }]);
