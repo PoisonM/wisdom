@@ -63,7 +63,7 @@ public class ArchivesEarlyWarningController {
 	@ResponseBody
 	ResponseDTO<Object> getEarlyWarningList(@RequestParam String queryType,
 			                                @RequestParam(required = false) String pageNo,
-                                            @RequestParam(required = false) String pageSize) {
+                                            @RequestParam(required = false) String pageSize,@RequestParam(required = false) String queryScope) {
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		String bossCode = redisUtils.getBossCode();
@@ -78,7 +78,11 @@ public class ArchivesEarlyWarningController {
 		// 获取当前boss下的档案列表
 		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
 		shopUserArchivesDTO.setSysBossCode(bossCode);
-		shopUserArchivesDTO.setSysShopId(redisUtils.getShopId());
+		//查询老板下所有店铺信息
+		if(!"all".equals(queryScope)){
+			shopUserArchivesDTO.setSysShopId(redisUtils.getShopId());
+		}
+
 		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService
 				.getShopUserArchivesInfo(shopUserArchivesDTO);
 		if (CommonUtils.objectIsEmpty(shopUserArchivesInfo)) {
