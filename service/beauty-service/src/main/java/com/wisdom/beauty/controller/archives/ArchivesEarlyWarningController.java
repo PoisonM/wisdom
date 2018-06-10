@@ -135,7 +135,8 @@ public class ArchivesEarlyWarningController {
 				String rule = "[\\u4e00-\\u9fa5]+";
 				Pattern pattern = Pattern.compile(rule);
 				Matcher m = pattern.matcher(archivesDTO.getSysUserName());
-				if (m.find() && m.group(0).equals(archivesDTO.getSysUserName())) {
+				//&& m.group(0).equals(archivesDTO.getSysUserName())
+				if (m.find()) {
 					pinyin = PinYinSort.ToPinYinString(archivesDTO.getSysUserName());
 				} else {
 					pinyin = archivesDTO.getSysUserName();
@@ -153,7 +154,7 @@ public class ArchivesEarlyWarningController {
 		// 查询个数
 		Map<String, Object> map = new HashMap<>(16);
 		map.put("info", lastList);
-		map.put("count", lastList.size());
+		map.put("count", shopUserArchivesInfo.size());
 
 		// 返回过滤后的档案列表
 		responseDTO.setResponseData(map);

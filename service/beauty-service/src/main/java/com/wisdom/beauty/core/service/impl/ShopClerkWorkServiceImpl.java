@@ -174,12 +174,15 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())) {
 				if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())
 						|| GoodsTypeEnum.COLLECTION_CARD.getCode()
-								.equals(shopClerkWorkRecordResponseDTO.getGoodsType()))
+								.equals(shopClerkWorkRecordResponseDTO.getGoodsType())){
 					if (scratchCard != null) {
 						scratchCard = scratchCard.add(shopClerkWorkRecordResponseDTO.getSumAmount());
 					} else {
 						scratchCard = shopClerkWorkRecordResponseDTO.getSumAmount();
 					}
+
+				}
+
 			}
 			// 耗卡 --- 单次消费
 			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())

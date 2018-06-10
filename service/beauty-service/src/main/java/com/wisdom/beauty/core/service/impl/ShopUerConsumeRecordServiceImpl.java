@@ -230,7 +230,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 			// 获取疗程卡
 			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+					&& GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				treatmentCardList.add(shopUserConsumeRecordDTO);
 			}
 		}
