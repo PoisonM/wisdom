@@ -20,6 +20,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.RedisLock;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -301,7 +302,19 @@ public class CardController {
 	@RequestMapping(value = "/rechargeCardSignConfirm", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Object> rechargeCardSignConfirm(@RequestParam String transactionId, @RequestParam String imageUrl) {
-        ResponseDTO<Object> responseDTO = shopUserConsumeService.rechargeRechargeCard(transactionId, imageUrl);
+
+		ResponseDTO<Object> responseDTO = new ResponseDTO();
+		RedisLock lock = null;
+		try {
+			lock = new RedisLock("recharge_" + transactionId);
+			responseDTO = shopUserConsumeService.rechargeRechargeCard(transactionId, imageUrl);
+		} catch (Exception e) {
+			responseDTO.setErrorInfo("异常数据");
+			responseDTO.setResult(StatusConstant.FAILURE);
+		}finally {
+			lock.unlock();
+		}
+		responseDTO.setResult(StatusConstant.FAILURE);
 		return responseDTO;
 	}
 

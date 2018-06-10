@@ -1,6 +1,5 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
@@ -53,6 +52,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	private CashService cashService;
 	@Autowired
 	private RedisUtils redisUtils;
+	@Autowired
+	private ShopService shopService;
 
 	@Override
 	public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(
@@ -466,7 +467,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	public int saveCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
 
 		logger.info("保存用户消费或充值记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
-
+		if(StringUtils.isBlank(shopUserConsumeRecordDTO.getSysShopName()) && StringUtils.isNotBlank(shopUserConsumeRecordDTO.getSysShopId())){
+			SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(shopUserConsumeRecordDTO.getSysShopId());
+			shopUserConsumeRecordDTO.setSysShopName(beauty.getName());
+		}
 		int insert = shopUserConsumeRecordMapper.insert(shopUserConsumeRecordDTO);
 		saveShopClerkWorkRecord(shopUserConsumeRecordDTO.getSysClerkId(), shopUserConsumeRecordDTO);
 		return insert;
