@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.mine;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.beauty.api.extDto.ExtShopBossDTO;
+import com.wisdom.beauty.api.extDto.ExtSysClerkDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
@@ -33,7 +34,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: MineController
@@ -268,6 +272,14 @@ public class MineController {
         }
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         if (null != clerkInfo) {
+            ExtSysClerkDTO extSysClerkDTO = new ExtSysClerkDTO();
+            BeanUtils.copyProperties(clerkInfo,extSysClerkDTO);
+            //查询美容店
+            SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(extSysClerkDTO.getSysShopId());
+            extSysClerkDTO.setSysShopName(beauty.getName());
+            //查询美容院
+            beauty = shopService.getShopInfoByPrimaryKey(beauty.getParentsId());
+            extSysClerkDTO.setCurrentBeautyShopName(null != beauty ? beauty.getName() : "");
             responseDTO.setResponseData(clerkInfo);
             return responseDTO;
         }
