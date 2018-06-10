@@ -17,7 +17,7 @@
             </div>
         </div>
         <p style="background: #FBCAC7;font-size: 14px;color: #FF6666;height:30px;line-height:30px;position: relative;width:100%;top: 48px;" class="center">
-            **份档案
+            {{archiveCount}}份档案
         </p>
         <div  ng-repeat = 'item in warningFile'>
             <ion-list ng-repeat="(key,val) in item">
@@ -25,28 +25,17 @@
                     <span class="ml10">{{key}}</span>
                 </ion-item>
                 <ion-item  class="h60 bgfff row" ng-repeat="items in val" ng-click="archivesGo(items.id)">
-                    <div class="col col-15" style="line-height: 49px;">
-                        {{val.imageRul}}
-                        <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;" class="ml10">
-                            <img ng-src="{{items.imageRul}}">
-
-                        </p>
-                    </div>
-
-                    <div class="col col-60">
+                    <img style="width:10%;height:70%;border-radius:40px;margin-top:5px;margin-left:10px" ng-src="{{items.imageUrl}}">
+                    <div class="col col-60" style="margin-left:10px">
                         <p class="fs16">{{items.sysUserName}}</p>
                         <p class="fs12 col666"> <img src="images/time.png" class="timePic mr5">上次到店时间：{{items.updateDate|date : 'yyyy-MM-dd hh:mm:ss'}}</p>
                     </div>
-                    <p class="col col-25" style="line-height: 49px;">
-                        <img src="images/associated.png" class="associated ml20 ">
-                        <span class="fs11 colff66">{{items.sysClerkName
-}}</span>
-                    </p>
+                    <!--<p class="col col-25" style="line-height:49px;">-->
+                        <!--<img src="images/associated.png" class="associated ml20 ">-->
+                        <!--<span class="fs11 colff66">{{items.sysClerkName}}</span>-->
+                    <!--</p>-->
                 </ion-item>
-
             </ion-list>
         </div>
-
-
     </ion-content>
 </ion-view>
