@@ -63,7 +63,7 @@ public class ArchivesEarlyWarningController {
 	@ResponseBody
 	ResponseDTO<Object> getEarlyWarningList(@RequestParam String queryType,
 			                                @RequestParam(required = false) String pageNo,
-                                            @RequestParam(required = false) String pageSize,@RequestParam(required = false) String queryScope) {
+                                            @RequestParam(required = false) String pageSize,@RequestParam(required = false) String queryScope,@RequestParam(required = false) String sysShopId) {
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		String bossCode = redisUtils.getBossCode();
