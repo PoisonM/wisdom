@@ -174,15 +174,15 @@ public class ProductController {
     /**
      * 更新产品信息
      *
-     * @param shopProductInfoDTO
+     * @param extShopProductInfoDTO
      * @return
      */
     @RequestMapping(value = "/updateProductInfo", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<Object> updateProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
+    ResponseDTO<Object> updateProductInfo(@RequestBody ExtShopProductInfoDTO extShopProductInfoDTO) {
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        int info = shopProductInfoService.updateProductInfo(shopProductInfoDTO);
+        int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
 
         responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         return responseDTO;

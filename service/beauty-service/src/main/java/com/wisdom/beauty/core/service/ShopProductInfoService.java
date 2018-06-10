@@ -122,10 +122,10 @@ public interface ShopProductInfoService {
     /**
      * 更新产品信息
      *
-     * @param shopProductInfoDTO
+     * @param extShopProductInfoDTO
      * @return
      */
-    int updateProductInfo(ShopProductInfoDTO shopProductInfoDTO);
+    int updateProductInfo(ExtShopProductInfoDTO extShopProductInfoDTO);
 
     /**
      * 添加某个店的某个产品类别
