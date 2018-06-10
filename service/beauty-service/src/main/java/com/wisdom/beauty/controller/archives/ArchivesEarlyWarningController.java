@@ -78,9 +78,10 @@ public class ArchivesEarlyWarningController {
 		// 获取当前boss下的档案列表
 		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
 		shopUserArchivesDTO.setSysBossCode(bossCode);
+		shopUserArchivesDTO.setSysShopId(redisUtils.getShopId());
 		//查询老板下所有店铺信息
-		if(!"all".equals(queryScope)){
-			shopUserArchivesDTO.setSysShopId(redisUtils.getShopId());
+		if("all".equals(queryScope)){
+			shopUserArchivesDTO.setSysShopId("");
 		}
 
 		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService
