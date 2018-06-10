@@ -9,22 +9,27 @@ angular.module('controllers',[]).controller('employeeTreatmentCardCtrl',
                 flag:false,
                 overdue:"6"
             };
+
             /*点击筛选*/
             $scope.sel = function(){
                 $scope.param.flag = true
             };
+
             /*点击关闭*/
             $scope.disNone=function () {
                 $scope.param.flag = false;
             };
+
             /*点击选择类型*/
             $scope.selType = function(type){
                 $scope.param.overdue = type
             };
+
             /*点击重置*/
             $scope.reset = function() {
-                $scope.param.overdue = '6'
+                $scope.param.overdue = '6';
             };
+
             /*调取疗程卡页面数据*/
             GetUserCourseProjectList.get({cardStyle:"1",sysUserId:$stateParams.sysUserId},function (data) {
                 console.log(data);
@@ -32,10 +37,12 @@ angular.module('controllers',[]).controller('employeeTreatmentCardCtrl',
                 $scope.arr = data.responseData;
 
             });
+
             /*点击疗程卡列表跳转到划卡页面*/
             $scope.goTreatmentCard=function (sysUserId) {
                 $state.go("employeeTreatmentCardDtails",{sysUserId:sysUserId})
             };
+
             /*点击确定按钮*/
             $scope.selTrue = function(){
                 $scope.param.flag = false;
@@ -51,6 +58,5 @@ angular.module('controllers',[]).controller('employeeTreatmentCardCtrl',
                         }
                     }
                 }
-
             };
-        }]);
+}]);
