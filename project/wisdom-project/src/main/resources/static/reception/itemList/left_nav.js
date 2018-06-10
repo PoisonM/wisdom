@@ -43,7 +43,7 @@ PADWeb.controller("left_navCtrl", function($scope,$rootScope, $state,$stateParam
     }
 
     $scope.selectSty = function (id,sysUserId,shopid,sysShopId) {
-        $scope.param.selectSty = id
+        $scope.param.selectSty = sysUserId
         $state.go("pad-web.left_nav.personalFile",{
             id:id,
             shopid:shopid,

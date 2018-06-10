@@ -6,6 +6,8 @@ function basicInfo($scope, $state,$stateParams,Archives, ArchivesDetail) {
         shopId: ""
     }
 
+    //确定用户选中样式
+    $scope.$parent.param.selectSty = $state.params.sysUserId
 
 
     $scope.queryUserInfo = function(sysUserId, id) {

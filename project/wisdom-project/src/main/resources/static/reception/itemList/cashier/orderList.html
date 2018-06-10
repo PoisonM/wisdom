@@ -11,7 +11,7 @@
     <ul class="orderListUl">
         <li>
             <div>余额（可用余额：¥{{responseData.availableBalance}}）</div>
-            <span><b class="fl">¥</b><input type="text" ng-model="balancePay"></span>
+            <span><b class="fl">¥</b><input ng-change="countPrice()" type="text" ng-model="balancePay"></span>
         </li>
         <!-- <li>
             <div>其中欠款</div>
@@ -19,7 +19,12 @@
         </li> -->
         <li>
             <div>现金支付</div>
-            <span><b class="fl">¥</b><input type="text" ng-model="cashPayPrice"></span>
+            <span><b class="fl">¥</b><input ng-change="countPrice()" type="text" ng-model="cashPayPrice"></span>
+        </li>
+
+        <li>
+            <div>剩余支付</div>
+            <span><b class="fl">¥</b><input type="text" readonly ng-model="surplusPrice" style="background-color: #ffffff"></span>
         </li>
     </ul>
     <div class="orderListTitle">其他支付方式</div>
