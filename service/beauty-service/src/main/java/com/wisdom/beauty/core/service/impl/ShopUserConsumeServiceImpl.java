@@ -170,7 +170,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             update.set("surplusPayPrice", shopUserPayDTO.getSurplusPayPrice());
             update.set("payType", shopUserPayDTO.getPayType());
             update.set("balancePay", shopUserPayDTO.getBalancePay());
-            update.set("detail", shopUserPayDTO.getDetail());
+            update.set("shopUserPayDTO", shopUserPayDTO);
+            update.set("archivesInfo", archivesInfo);
             mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         } catch (RuntimeException e) {
             logger.error("用户充值操作异常，异常原因为" + e.getMessage(), e);
