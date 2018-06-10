@@ -236,7 +236,8 @@ public class ProjectController {
 			shopUserProjectRelationResponse = new ShopUserProjectRelationResponseDTO();
 			BeanUtils.copyProperties(shopUserProjectRelationDTO, shopUserProjectRelationResponse);
 			if (shopUserProjectRelationDTO.getInvalidDays() == null) {
-                shopUserProjectRelationResponseDTO.add(shopUserProjectRelationResponse);
+				shopUserProjectRelationResponse.setOverdue("0");
+				shopUserProjectRelationResponseDTO.add(shopUserProjectRelationResponse);
 				continue;
 			} else {
 				// 产品有效期
