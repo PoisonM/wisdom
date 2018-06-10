@@ -3,10 +3,10 @@ package com.wisdom.beauty.controller.archives;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -45,6 +45,9 @@ public class ArchivesEarlyWarningController {
 	@Autowired
 	private ShopAppointmentService shopAppointmentService;
 
+	@Autowired
+	private RedisUtils redisUtils;
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -63,11 +66,7 @@ public class ArchivesEarlyWarningController {
                                             @RequestParam(required = false) String pageSize) {
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-		String bossCode = UserUtils.getBossInfo().getSysBossCode();
-
-		if (StringUtils.isBlank(bossCode)) {
-			bossCode = UserUtils.getClerkInfo().getSysBossCode();
-		}
+		String bossCode = redisUtils.getBossCode();
 
 		if (StringUtils.isBlank(bossCode)) {
 			logger.error("获取到的店铺信息为空");
