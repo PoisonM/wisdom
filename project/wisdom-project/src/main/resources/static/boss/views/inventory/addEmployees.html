@@ -67,7 +67,7 @@
             <p style="width:165px;height:44px;margin:auto;background: #FF6666;box-shadow: 0 4px 4px 0 rgba(255,102,102,0.24);border-radius: 100px;line-height: 44px;margin-top:100px;" class="center colfff " ng-click="save(); $event.stopPropagation()">保存</p>
         </div>
         <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100" ng-show="param.flag"></div>
-        <div style="position: absolute;bottom: 0;z-index: 101;width:100%;" ng-show="param.flag">
+        <div style="position: absolute;top: 0;z-index: 101;width:100%;" ng-show="param.flag">
             <p class="h50 col333 bbl  bgfff" ng-repeat="item in fenShop" ng-click="selShop(item.id,item.sysShopName); $event.stopPropagation()">
                 <span class="ml10">{{item.sysShopName}}</span>
             </p>

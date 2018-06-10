@@ -71,12 +71,14 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
               $scope.param.distributionStart = !$scope.param.distributionStart
              
          };
-         /*点击放大镜根绝姓名搜索*/
+         /*搜索*/
           $scope.search=function () {
               FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
                   if(data.result == "0x00001"){
                       $scope.fileList = [];
                       $scope.info = data.responseData.info;
+                  }else{
+                      alert("查询结果为空")
                   }
               });
           };

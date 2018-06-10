@@ -76,7 +76,10 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                 }else {
                     $rootScope.settingAddsome.extShopProjectInfoDTO.status ='1'
                 }
-                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==''){
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.cardType=='0'){
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ='1'
+                }
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''||$rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes==''){
                     alert("请检查信息")
                 }
                 UpdateProjectInfo.save($scope.settingAddsome.extShopProjectInfoDTO,function (data) {

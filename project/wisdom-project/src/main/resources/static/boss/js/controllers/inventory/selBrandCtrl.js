@@ -10,9 +10,12 @@ angular.module('controllers',[]).controller('selBrandCtrl',
                 }
             })
             $scope.selBand = function(name,oneId){
-                    $state.go($stateParams.url)
                     $rootScope.settingAddsome.product.productTypeOneName=name
                     $rootScope.settingAddsome.product.productTypeOneId=oneId
+                    $rootScope.settingAddsome.product.productTypeTwoName=''
+                    $rootScope.settingAddsome.product.productTypeTwoId=''
+
+                    $state.go($stateParams.url)
             }
 
         }])
