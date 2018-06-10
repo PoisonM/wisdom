@@ -1,6 +1,6 @@
 PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
     , $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm
-    , ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo,ConsumeFlowNo) {
+    , ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo,ConsumeFlowNo,PaySignConfirm) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "签字确认";
@@ -50,14 +50,27 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
 
     $scope.clickOk = function() {
         ImageBase64UploadToOSS.save({ imageStr: $("#signConfirmRight").jSignature("getData") }, function(data) {
-            RechargeCardSignConfirm.get({
-                transactionId: $state.params.transactionId,
-                //orderId: $state.params.orderId,
-                //图片base64流是data
-                imageUrl: data.responseData,
-            }, function(data) {
-                $state.go("pad-web.left_nav.personalFile");
-            })
+            if($state.params.transactionId != ''){
+                RechargeCardSignConfirm.get({
+                    transactionId: $state.params.transactionId,
+                    imageUrl: data.responseData,
+                }, function(data) {
+                    if(data.result == "0x00001"){
+                        $state.go("pad-web.left_nav.blankPage");
+                    }
+
+                })
+            }else if($state.params.orderId != ''){
+                PaySignConfirm.save({
+                    orderId:$stateParams.orderId,
+                    imageUrl: data.responseData,
+                },function (data) {
+                    if(data.result == "0x00001"){
+                        $state.go("pad-web.left_nav.blankPage");
+                    }
+                })
+            }
+
         })
     }
 

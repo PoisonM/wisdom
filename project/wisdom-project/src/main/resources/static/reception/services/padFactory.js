@@ -365,8 +365,11 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(beautyIP + 'consume/updateConsumeRecord')
     }])
     //账户信息记录的详细信息
-//     http://localhost:9051/consume/consumeFlowNo?consumeFlowNo=20180427200448205o=20180426160908422
     .factory('ConsumeFlowNo', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/consumeFlowNo')
+    }])
+    //支付签字确认接口
+    .factory('PaySignConfirm', ['$resource', function($resource) {
+        return $resource(beautyIP + 'userPay/paySignConfirm')
     }])
 ;
