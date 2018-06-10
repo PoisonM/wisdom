@@ -105,6 +105,10 @@ angular.module('controllers',[]).controller('myselfCenterCtrl',
                      $state.go("login",{redirectUrl:"myTeam"})
                  }
             };
+            /*点击售后电话跳转到一个新的页面*/
+            $scope.goAfterSale=function () {
+                $state.go("afterSale")
+            };
             $scope.bool=false;
             $scope.checkOpen=function ($event) {
                 $scope.bool=!$scope.bool;

@@ -26,6 +26,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
             $rootScope.title = "订单管理";
 
             $scope.goPay = function(item){
+                console.log($scope.param.orderList.productPrefecture);
                 var needPayOrderList = [];
                 GetUserInfoByOpenId.get(function (data) {
                     if(data.responseData.userType!="business-C-1"){
@@ -33,7 +34,9 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                             alert("亲！此商品为新用户专享产品");
                             return
                         }
-                    }else {
+                        alert("$scope.param.orderList.productPrefecture")
+                    }
+                })
                         var payOrder = {
                             orderId:item.businessOrderId,
                             productFirstUrl:item.businessProductFirstUrl,
@@ -63,8 +66,6 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
 
                             }
                         })
-                    }
-                });
             }
 
             $scope.buyAgain = function(item){
