@@ -21,7 +21,7 @@ angular.module('controllers',[]).controller('listOfItemsCtrl',
                     pageSize:1000,
                     fuzzyQuery:$scope.param.fuzzyQuery
                 },function (data) {
-                    if(data.responseData==null)$scope.listOfItems=[]
+                    if(data.responseData==null){$scope.listOfItems=[]}
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.listOfItems = data.responseData;
 

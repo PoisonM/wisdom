@@ -64,6 +64,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
               $scope.param.fileBOx=false;
           };
             $scope.newUser=function () {
+                if($scope.info.length<=0)$scope.param.queryField=''
                 $state.go("newUser")
             };
 
@@ -78,7 +79,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                       $scope.fileList = [];
                       $scope.info = data.responseData.info;
                   }else{
-                      alert("查询结果为空")
+                      $scope.info=[]
                   }
               });
           };
