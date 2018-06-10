@@ -25,17 +25,25 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
+    $scope.$parent.param.selectSty = $stateParams.userId//选中店员控制样式
+
     $scope.goSignConfirm = function() {
+        if($scope.payType == undefined){
+            $scope.payType = ""
+        }
+        if($scope.detail == undefined){
+            $scope.detail = ""
+        }
         UserPayOpe.save({
             balancePay: $scope.balancePay,
             cashPayPrice: $scope.cashPayPrice,
             orderId: $state.params.orderId,
             payType: $scope.payType,
-            shopUserRechargeCard: $scope.responseData.userPayRechargeCardList,
-            surplusPayPrice: '',
+            // shopUserRechargeCard: $scope.responseData.userPayRechargeCardList,
+            surplusPayPrice: $scope.surplusPrice,
             detail: $scope.detail
         }, function(data) {
-            $state.go('pad-web.signConfirm', { orderId: $state.params.orderId, })
+            $state.go('pad-web.signConfirm', { orderId: $state.params.orderId,userId:$stateParams.userId })
         })
     }
 
@@ -44,22 +52,26 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
     }
 
     GetShopUserRecentlyOrderInfo.get({
-        sysUserId: 110,
+        sysUserId: $stateParams.userId,
         orderId: $state.params.orderId,
     }, function(data) {
         $scope.responseData = data.responseData;
+        $scope.balancePay = $scope.responseData.orderPrice//默认显示
+        $scope.countPrice()
     })
 
     $scope.goSelectRechargeType = function() {
         $state.go('pad-web.left_nav.selectRechargeType', { type: 2 })
     }
 
+
+    $scope.cashPayPrice = 0//默认显示
     $scope.countPrice = function () {
-        if($scope.responseData.availableBalance < $scope.balancePay){
-            $scope.balancePay = $scope.responseData.availableBalance;
-        }
+        //计算剩余支付
         $scope.surplusPrice = $scope.responseData.orderPrice - (parseInt($scope.balancePay) + parseInt($scope.cashPayPrice))
+
     }
+
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-1)
