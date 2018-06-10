@@ -78,6 +78,7 @@ public class ArchivesEarlyWarningController {
 		// 获取当前boss下的档案列表
 		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
 		shopUserArchivesDTO.setSysBossCode(bossCode);
+		shopUserArchivesDTO.setSysShopId(redisUtils.getShopId());
 		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService
 				.getShopUserArchivesInfo(shopUserArchivesDTO);
 		if (CommonUtils.objectIsEmpty(shopUserArchivesInfo)) {

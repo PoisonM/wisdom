@@ -15,7 +15,6 @@ import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.beauty.core.service.ShopUserConsumeService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -81,13 +80,6 @@ public class CardController {
 			@RequestParam String sysUserId, @RequestParam(required = false) String sysShopId) {
         sysShopId = redisUtils.getShopId();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-
-        if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
-            logger.debug("传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
-			if (null != UserUtils.getClerkInfo()) {
-				sysShopId = UserUtils.getClerkInfo().getSysShopId();
-			}
-        }
 
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
         shopUserRechargeCardDTO.setSysUserId(sysUserId);

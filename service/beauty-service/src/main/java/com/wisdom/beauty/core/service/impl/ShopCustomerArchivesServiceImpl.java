@@ -264,6 +264,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysUserId())) {
             c.andSysUserIdEqualTo(shopUserArchivesDTO.getSysUserId());
         }
+        if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysShopId())) {
+            c.andSysUserIdEqualTo(shopUserArchivesDTO.getSysShopId());
+        }
 
         if (StringUtils.isNotBlank(shopUserArchivesDTO.getPhone())) {
             c.andPhoneEqualTo(shopUserArchivesDTO.getPhone());
