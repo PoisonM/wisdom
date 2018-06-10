@@ -1,10 +1,11 @@
 PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ngDialog, Archives, SaveShopUserOrderInfo, GetShopUserRecentlyOrderInfo, UpdateVirtualGoodsOrderInfo, UpdateShopUserOrderInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
-    $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
+    // $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
     $scope.$parent.$parent.param.headerCash.backContent = "返回";
     $scope.$parent.$parent.param.headerCash.leftTip = "添加更多";
+    $scope.$parent.$parent.param.headerCash.title = "消费"
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
@@ -23,6 +24,9 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
+    $scope.$parent.param.selectSty = $stateParams.userId//选中店员控制样式
+
+
     $scope.car = 1;
     $scope.$parent.$parent.leftTipFn = function() {
         $state.go('pad-web.consumptionList');
@@ -149,7 +153,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
 
 
 
-    $scope.backHeaderCashFn = function () {
-        window.history.go(-1)
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-2)
     }
 });

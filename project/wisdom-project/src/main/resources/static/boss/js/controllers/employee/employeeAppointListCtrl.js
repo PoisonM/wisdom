@@ -50,6 +50,7 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
 
             // 日期选择后的回调函数
             var datePickerCallback = function (val) {
+                console.log(val);
                 if (typeof (val) === 'undefined') {
                 } else {
                     $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
