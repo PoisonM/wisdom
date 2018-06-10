@@ -80,7 +80,7 @@ public class ArchivesEarlyWarningController {
 		shopUserArchivesDTO.setSysBossCode(bossCode);
 		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService
 				.getShopUserArchivesInfo(shopUserArchivesDTO);
-		if (CommonUtils.objectIsEmpty(shopUserArchivesDTO)) {
+		if (CommonUtils.objectIsEmpty(shopUserArchivesInfo)) {
 			logger.info("获取当前boss下的档案列表为空");
 			return getSuccessResponseDTO(responseDTO, shopUserArchivesInfo);
 		}
