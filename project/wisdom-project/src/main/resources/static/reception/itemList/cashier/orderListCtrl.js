@@ -41,8 +41,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
             payType: $scope.payType,
             // shopUserRechargeCard: $scope.responseData.userPayRechargeCardList,
             surplusPayPrice: $scope.surplusPrice,
-            detail: $scope.detail,
-            sysUserId: $stateParams.userId,
+            detail: $scope.detail
         }, function(data) {
             $state.go('pad-web.signConfirm', { orderId: $state.params.orderId,userId:$stateParams.userId })
         })
