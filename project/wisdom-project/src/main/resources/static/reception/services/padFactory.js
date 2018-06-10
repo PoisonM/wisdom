@@ -314,7 +314,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //充值卡充值确认接口
     .factory('UserRechargeConfirm', ['$resource', function($resource) {
-        return $resource(beautyIP + '/cardInfo/userRechargeConfirm')
+        return $resource(beautyIP + 'cardInfo/userRechargeConfirm')
     }])
     //充值卡充值签字确认查询接口
     .factory('SearchRechargeConfirm', ['$resource', function($resource) {
@@ -364,5 +364,9 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UpdateConsumeRecord', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/updateConsumeRecord')
     }])
-
+    //账户信息记录的详细信息
+//     http://localhost:9051/consume/consumeFlowNo?consumeFlowNo=20180427200448205o=20180426160908422
+    .factory('ConsumeFlowNo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/consumeFlowNo')
+    }])
 ;

@@ -1,7 +1,10 @@
-PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm, ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo) {
+PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
+    , $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm
+    , ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo,ConsumeFlowNo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "签字确认";
+    $scope.$parent.param.headerPrice.saveContent = ""
     $scope.flagFn = function (bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool;
@@ -25,21 +28,26 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDi
     var img = new Image()
     img.src = data
     $(img).appendTo($('#signimg'))
+
+
+
     //将数据显示在文本框
     if ($state.params.transactionId != '') {
-        SearchRechargeConfirm.get({
+        $scope.rechargeConsumeFlag = true
+        SearchRechargeConfirm.get({//充值签字确认
             transactionId: $state.params.transactionId,
         }, function(data) {
             $scope.responseData = data.responseData;
         })
     } else if ($state.params.orderId != '') {
-        GetShopUserRecentlyOrderInfo.get({
-            orderId: $state.params.orderId,
-            sysUserId: $stateParams.userId
-        }, function(data) {
-            console.log(data)
+        $scope.rechargeConsumeFlag = false
+        ConsumeFlowNo.get({
+            consumeFlowNo:$stateParams.orderId
+        },function (data) {
+            $scope.consumeListInfo = data.responseData
         })
     }
+    //单词
 
 
 

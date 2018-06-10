@@ -527,7 +527,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.orderList', {
-            url: '/orderList/:orderId',
+            url: '/orderList/:orderId/:userId',
             templateUrl: root + '/cashier/orderList.html',
             controller: 'orderListCtrl',
             resolve: {

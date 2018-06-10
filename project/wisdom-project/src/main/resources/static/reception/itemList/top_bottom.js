@@ -6,7 +6,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         top_bottomSelect:"yuyue",
         tabSty:'day',
         headerCash:{
-            leftContent:"档案(9010)",
+            leftContent:"档案()",
             leftAddContent:"添加档案",
             backContent:"账户明细",
             title:"详情",

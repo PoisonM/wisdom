@@ -45,7 +45,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: $scope.tempAll, //总金额
         }, function(data) {
-            $state.go('pad-web.left_nav.orderList', { orderId: $scope.orderId })
+            $state.go('pad-web.left_nav.orderList', { orderId: $scope.orderId,userId:$stateParams.userId })
         })
     }
     $scope.checkBoxChek = function(e) {
