@@ -67,7 +67,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                     fr.onloadend = function(e) {
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
-                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                            if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $rootScope.settingAddsome.editedRecharge.imageList.push(data.responseData)
                             }
 

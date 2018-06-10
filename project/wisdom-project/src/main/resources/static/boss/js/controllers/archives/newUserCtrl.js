@@ -42,7 +42,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     fr.onloadend = function(e) {
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
-                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                            if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $scope.newUser.imageUrl=data.responseData
                             }
 

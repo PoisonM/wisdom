@@ -33,7 +33,7 @@ angular.module('controllers',[]).controller('modificationInformationCtrl',
                     fr.onloadend = function(e) {
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
-                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                            if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $scope.userInfo.photo=data.responseData
                             }
 

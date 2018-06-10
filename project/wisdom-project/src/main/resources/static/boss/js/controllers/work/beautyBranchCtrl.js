@@ -18,8 +18,8 @@ angular.module('controllers',[]).controller('beautyBranchCtrl',
             $scope.getInfo= function () {
                 GetShopCustomerArriveList.get({
                     condition:$scope.param.current,
-                    startTime:'2018-05-01'+' 00:00:00',
-                    endTime:"2018-05-15"+' 23:59:59',
+                    startTime:$scope.param.date+' 00:00:00',
+                    endTime:$scope.param.date+' 23:59:59',
                     sysShopId:$stateParams.sysShopId
                 },function(data){
                      $scope.beautyBranch = data.responseData
@@ -97,7 +97,7 @@ angular.module('controllers',[]).controller('beautyBranchCtrl',
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
                     $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
-                    /*$scope.getInfo();*/
+                    $scope.getInfo();
                 }
             };
 
