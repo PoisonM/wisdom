@@ -594,7 +594,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     private String updateUserAccountDTO(SysClerkDTO clerkInfo, String transactionCodeNumber, ShopUserConsumeDTO consumeDTO) {
         // 更新用户的账户信息
         SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
-        sysUserAccountDTO.setSysUserId(consumeDTO.getSysUserId());
+        sysUserAccountDTO.setSysUserId("35");//consumeDTO.getSysUserId()
         sysUserAccountDTO.setSysShopId(clerkInfo.getSysShopId());
         sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
         sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().subtract(consumeDTO.getConsumePrice()));
@@ -667,7 +667,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
         userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
         userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
-        userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
+        if(StringUtils.isNotBlank(shopUserPayDTO.getPayType())){
+            userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
+        }
         logger.info("订单号={}，生成充值记录,{}", shopUserOrderDTO.getOrderId(), userConsumeRecordDTO);
         shopUerConsumeRecordService.saveCustomerConsumeRecord(userConsumeRecordDTO);
         return userConsumeRecordDTO;
