@@ -6,6 +6,7 @@ angular.module('controllers',[]).controller('myselfCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,BossUtil) {
 
             $rootScope.title = "我的";
+
             /*点击头像跳转*/
             $scope.modificationInformationGo=function () {
                 $state.go("modificationInformation")

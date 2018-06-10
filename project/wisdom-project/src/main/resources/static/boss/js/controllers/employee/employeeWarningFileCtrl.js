@@ -36,7 +36,7 @@ angular.module('controllers',[]).controller('employeeWarningFileCtrl',
             $scope.getInfo()
 
             $scope.archivesGo = function(id){
-                $state.go("employeeArchives",{id:id})
+                $state.go("archives",{id:id})
             }
 
         }])
