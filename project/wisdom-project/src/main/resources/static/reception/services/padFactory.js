@@ -1,6 +1,6 @@
-var beautyIP = '/beauty/';
-var userIP = '/user/';
-var systemService = '/system-service/';
+var beautyIP = 'http://192.168.1.117/beauty/';
+var userIP = 'http://192.168.1.117/user/';
+var systemService = 'http://192.168.1.117/system-service/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
             /*request: function(config) {

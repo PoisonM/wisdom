@@ -63,50 +63,46 @@
         </div>
 
 
-        <div ng-if="!rechargeConsumeFlag" ng-repeat="consumeItem in consumeListInfo.userConsumeRecordResponseList" class="signConfirmLeftContent">
-            <div ng-if="consumeItem.goodsType == 0" class="signConfirmLeftContentTitle">单次</div>
-            <div ng-if="consumeItem.goodsType == 1" class="signConfirmLeftContentTitle">疗程卡</div>
-            <div ng-if="consumeItem.goodsType == 2" class="signConfirmLeftContentTitle">充值卡</div>
-            <div ng-if="consumeItem.goodsType == 3" class="signConfirmLeftContentTitle">套卡</div>
-            <p>{{consumeItem.flowName}}</p>
-            <ul>
-                <li ng-if="consumeItem.goodsType != 0">
-                    <span class="name">包含次数</span>
-                    <span class="type">{{consumeItem.includeTimes}}</span>
-                </li>
-                <li>
-                    <span class="name">折后价</span>
-                    <span class="type">¥{{consumeItem.price}}</span>
-                </li>
-                <li>
-                    <span class="name">折扣</span>
-                    <span class="type">¥{{consumeItem.discount}}</span>
-                </li>
-                <li>
-                    <span class="name">数量</span>
-                    <span class="type">¥{{consumeItem.consumeNumber}}</span>
-                </li>
-                <li>
-                    <span class="name">金额</span>
-                    <span class="type">¥{{consumeItem.sumAmount}}</span>
-                </li>
-                <li>
-                    <span class="name">包含项目</span>
-                    <div class="xiangmu_info">
-                        <ul>
-                            <li>
-                                颈部包养*1
-                            </li>
-                            <li>
-                                颈部包养*1
-                            </li>
-                            <li>
-                                颈部包养*1
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
+        <div ng-if="!rechargeConsumeFlag"  class="signConfirmLeftContent">
+            <div ng-repeat="consumeItem in consumeListInfo.userConsumeRecordResponseList">
+                <div ng-if="consumeItem.goodsType == 0" class="signConfirmLeftContentTitle">单次</div>
+                <div ng-if="consumeItem.goodsType == 1" class="signConfirmLeftContentTitle">疗程卡</div>
+                <div ng-if="consumeItem.goodsType == 2" class="signConfirmLeftContentTitle">充值卡</div>
+                <div ng-if="consumeItem.goodsType == 3" class="signConfirmLeftContentTitle">套卡</div>
+                <p>{{consumeItem.flowName}}</p>
+                <ul>
+                    <li ng-if="consumeItem.goodsType != 0">
+                        <span class="name">包含次数</span>
+                        <span class="type">{{consumeItem.includeTimes}}</span>
+                    </li>
+                    <li>
+                        <span class="name">折后价</span>
+                        <span class="type">¥{{consumeItem.price}}</span>
+                    </li>
+                    <li>
+                        <span class="name">折扣</span>
+                        <span class="type">¥{{consumeItem.discount}}</span>
+                    </li>
+                    <li>
+                        <span class="name">数量</span>
+                        <span class="type">¥{{consumeItem.consumeNumber}}</span>
+                    </li>
+                    <li>
+                        <span class="name">金额</span>
+                        <span class="type">¥{{consumeItem.sumAmount}}</span>
+                    </li>
+                    <li ng-if="consumeItem.goodsType == 3">
+                        <span class="name">包含项目</span>
+                        <div class="xiangmu_info">
+                            <ul>
+                                <li ng-repeat="projectItem in consumeItem.shopProjectInfoDTOList">
+                                    {{projectItem.projectName}}*{{projectItem.serviceTimes}}
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
 
     </div>

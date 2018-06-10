@@ -23,6 +23,7 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
+    $scope.$parent.param.selectSty = $stateParams.userId//选中店员控制样式
 
 
     $scope.select = 0;

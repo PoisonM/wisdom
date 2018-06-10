@@ -47,9 +47,6 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
             $scope.consumeListInfo = data.responseData
         })
     }
-    //单词
-
-
 
     $scope.clickOk = function() {
         ImageBase64UploadToOSS.save({ imageStr: $("#signConfirmRight").jSignature("getData") }, function(data) {
