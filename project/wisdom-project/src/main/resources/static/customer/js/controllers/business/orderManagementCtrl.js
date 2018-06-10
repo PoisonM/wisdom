@@ -26,14 +26,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
             $rootScope.title = "订单管理";
 
             $scope.goPay = function(item){
-
                 var needPayOrderList = [];
-                GetUserInfoByOpenId.get(function (data) {
-                    if(data.responseData.userType!="business-C-1"){
-                        if(item.productPrefecture=="1"){
-                            alert("亲！此商品为新用户专享产品");
-                            return;
-                        }else {
                             var payOrder = {
                                 orderId:item.businessOrderId,
                                 productFirstUrl:item.businessProductFirstUrl,
@@ -41,7 +34,8 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                                 productName:item.businessProductName,
                                 productNum:item.businessProductNum,
                                 productPrice:item.businessProductPrice,
-                                productSpec:item.productSpec
+                                productSpec:item.productSpec,
+                                productPrefecture:item.productPrefecture
                             };
                             needPayOrderList.push(payOrder);
                             //将needPayOrderList数据放入后台list中
@@ -61,43 +55,11 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                                         window.location.href = "orderPay.do?productType=training&random="+Math.random();
                                     }
 
+                                }else {
+                                    alert(data.errorInfo)
                                 }
                             })
-                        }
-                    }else if(data.responseData.userType=="business-C-1"){
-                        var payOrder = {
-                            orderId:item.businessOrderId,
-                            productFirstUrl:item.businessProductFirstUrl,
-                            productId:item.businessProductId,
-                            productName:item.businessProductName,
-                            productNum:item.businessProductNum,
-                            productPrice:item.businessProductPrice,
-                            productSpec:item.productSpec
-                        };
-                        needPayOrderList.push(payOrder);
-                        //将needPayOrderList数据放入后台list中
-                        PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
-                            if(data.result==Global.SUCCESS)
-                            {
-                                if(item.type=="offline")
-                                {
-                                    window.location.href = "orderPay.do?productType=offline&random="+Math.random();
-                                }
-                                else if(item.type=="special")
-                                {
-                                    window.location.href = "orderPay.do?productType=special&random="+Math.random();
-                                }
-                                else if(item.type=="training")
-                                {
-                                    window.location.href = "orderPay.do?productType=training&random="+Math.random();
-                                }
-
-                            }
-                        })
-                    }
-                })
-
-            }
+            };
 
             $scope.buyAgain = function(item){
                 $state.go("offlineProductDetail",{productId:item.businessProductId})

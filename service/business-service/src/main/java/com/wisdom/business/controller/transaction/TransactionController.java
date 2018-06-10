@@ -77,19 +77,23 @@ public class TransactionController {
         logger.info("putNeedPayOrderListToRedis需要支付订单放入redis==={}开始",startTime);
         ResponseDTO responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        RedisLock redisLock = new RedisLock("putNeedPayProductAmount");
-        String needPayValue = (new Gson()).toJson(needPayOrderList);
-        JedisUtils.del(userInfoDTO.getId()+"needPay");
-        JedisUtils.set(userInfoDTO.getId()+"needPay",needPayValue,60*5);
+        if((!userInfoDTO.getUserType().equals(ConfigConstant.businessC1))&&needPayOrderList.getNeedPayOrderList().get(0).getProductPrefecture().equals("1")){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("亲！此商品为新用户专享产品");
+        }else{
+            RedisLock redisLock = new RedisLock("putNeedPayProductAmount");
+            String needPayValue = (new Gson()).toJson(needPayOrderList);
+            JedisUtils.del(userInfoDTO.getId()+"needPay");
+            JedisUtils.set(userInfoDTO.getId()+"needPay",needPayValue,60*5);
 
-        try {
-            //todo log
-            //logger.info("锁前订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
-            redisLock.lock();
-            //todo log
-            //logger.info("锁下订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
-            //将商品放入未支付订单列表
-            for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
+            try {
+                //todo log
+                //logger.info("锁前订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
+                redisLock.lock();
+                //todo log
+                //logger.info("锁下订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
+                //将商品放入未支付订单列表
+                for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
                     BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
                     businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
                     businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
@@ -116,19 +120,21 @@ public class TransactionController {
                     businessOrderDTO.setStatus("0");
                     businessOrderDTO.setUpdateDate(new Date());
                     transactionService.updateBusinessOrder(businessOrderDTO);
+                }
+            }catch (Throwable e)
+            {
+                logger.error("需要支付订单放入redis异常,异常信息为{}"+e.getMessage(),e);
+                e.printStackTrace();
+                throw new ServiceException("");
             }
-        }catch (Throwable e)
-        {
-            logger.error("需要支付订单放入redis异常,异常信息为{}"+e.getMessage(),e);
-            e.printStackTrace();
-            throw new ServiceException("");
+            finally
+            {
+                redisLock.unlock();
+            }
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            logger.info("putNeedPayOrderListToRedis需要支付订单放入redis,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         }
-        finally
-        {
-            redisLock.unlock();
-        }
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("putNeedPayOrderListToRedis需要支付订单放入redis,耗时{}毫秒",(System.currentTimeMillis() - startTime));
+
         return responseDTO;
     }
 
