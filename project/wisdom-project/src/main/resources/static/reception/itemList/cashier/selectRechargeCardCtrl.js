@@ -36,6 +36,8 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
         $state.go('pad-web.left_nav.housekeeper');
     }
     $scope.goCustomerSignature = function() {
+        $scope.responseData.sysUserId = $stateParams.userId;
+
         UserRechargeConfirm.save($scope.responseData, function(data) {
             $state.go('pad-web.signConfirm', {
                 transactionId: data.responseData.transactionId,
