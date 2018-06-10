@@ -192,21 +192,21 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
         shopCashFlowDTO.setId(IdGen.uuid());
         shopCashFlowDTO.setCreateDate(new Date());
-        if (null != shopUserPayDTO.getSurplusPayPrice()) {
+        if (StringUtils.isNotBlank(shopUserPayDTO.getSurplusPayPrice())) {
             shopCashFlowDTO.setPayTypeAmount(new BigDecimal(shopUserPayDTO.getSurplusPayPrice()));
         }
         shopCashFlowDTO.setPayType(shopUserPayDTO.getPayType());
-        if (shopUserPayDTO.getBalancePay() != null) {
+        if (StringUtils.isNotBlank(shopUserPayDTO.getBalancePay())) {
             shopCashFlowDTO.setBalanceAmount(new BigDecimal(shopUserPayDTO.getBalancePay()));
         }
         shopCashFlowDTO.setSysShopId(shopUserOrderDTO.getShopId());
         shopCashFlowDTO.setSysBossCode(sysUserAccountDTO.getSysBossCode());
         shopCashFlowDTO.setRechargeCardAmount(totalAmount);
-        if (shopUserPayDTO.getOweAmount() != null) {
+        if (StringUtils.isNotBlank(shopUserPayDTO.getOweAmount())) {
             shopCashFlowDTO.setOweAmount(new BigDecimal(shopUserPayDTO.getOweAmount()));
         }
         shopCashFlowDTO.setFlowNo(transactionCodeNumber);
-        if (shopUserPayDTO.getCashPayPrice() != null) {
+        if (StringUtils.isNotBlank(shopUserPayDTO.getCashPayPrice())) {
             shopCashFlowDTO.setCashAmount(new BigDecimal(shopUserPayDTO.getCashPayPrice()));
         }
         int shopCashFlow = cashService.saveShopCashFlow(shopCashFlowDTO);
