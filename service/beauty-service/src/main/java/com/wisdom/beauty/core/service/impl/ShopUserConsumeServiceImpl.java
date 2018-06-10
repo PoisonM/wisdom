@@ -170,7 +170,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             update.set("surplusPayPrice", shopUserPayDTO.getSurplusPayPrice());
             update.set("payType", shopUserPayDTO.getPayType());
             update.set("balancePay", shopUserPayDTO.getBalancePay());
-            update.set("detail", shopUserPayDTO.getDetail());
+            update.set("shopUserPayDTO", shopUserPayDTO);
+            update.set("archivesInfo", archivesInfo);
             mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         } catch (RuntimeException e) {
             logger.error("用户充值操作异常，异常原因为" + e.getMessage(), e);
@@ -192,21 +193,21 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
         shopCashFlowDTO.setId(IdGen.uuid());
         shopCashFlowDTO.setCreateDate(new Date());
-        if (null != shopUserPayDTO.getSurplusPayPrice()) {
+        if (StringUtils.isNotBlank(shopUserPayDTO.getSurplusPayPrice())) {
             shopCashFlowDTO.setPayTypeAmount(new BigDecimal(shopUserPayDTO.getSurplusPayPrice()));
         }
         shopCashFlowDTO.setPayType(shopUserPayDTO.getPayType());
-        if (shopUserPayDTO.getBalancePay() != null) {
+        if (StringUtils.isNotBlank(shopUserPayDTO.getBalancePay())) {
             shopCashFlowDTO.setBalanceAmount(new BigDecimal(shopUserPayDTO.getBalancePay()));
         }
         shopCashFlowDTO.setSysShopId(shopUserOrderDTO.getShopId());
         shopCashFlowDTO.setSysBossCode(sysUserAccountDTO.getSysBossCode());
         shopCashFlowDTO.setRechargeCardAmount(totalAmount);
-        if (shopUserPayDTO.getOweAmount() != null) {
+        if (StringUtils.isNotBlank(shopUserPayDTO.getOweAmount())) {
             shopCashFlowDTO.setOweAmount(new BigDecimal(shopUserPayDTO.getOweAmount()));
         }
         shopCashFlowDTO.setFlowNo(transactionCodeNumber);
-        if (shopUserPayDTO.getCashPayPrice() != null) {
+        if (StringUtils.isNotBlank(shopUserPayDTO.getCashPayPrice())) {
             shopCashFlowDTO.setCashAmount(new BigDecimal(shopUserPayDTO.getCashPayPrice()));
         }
         int shopCashFlow = cashService.saveShopCashFlow(shopCashFlowDTO);
@@ -594,7 +595,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     private String updateUserAccountDTO(SysClerkDTO clerkInfo, String transactionCodeNumber, ShopUserConsumeDTO consumeDTO) {
         // 更新用户的账户信息
         SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
-        sysUserAccountDTO.setSysUserId(consumeDTO.getSysUserId());
+        sysUserAccountDTO.setSysUserId("35");//consumeDTO.getSysUserId()
         sysUserAccountDTO.setSysShopId(clerkInfo.getSysShopId());
         sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
         sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().subtract(consumeDTO.getConsumePrice()));
@@ -667,7 +668,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
         userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
         userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
-        userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
+        if(StringUtils.isNotBlank(shopUserPayDTO.getPayType())){
+            userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
+        }
         logger.info("订单号={}，生成充值记录,{}", shopUserOrderDTO.getOrderId(), userConsumeRecordDTO);
         shopUerConsumeRecordService.saveCustomerConsumeRecord(userConsumeRecordDTO);
         return userConsumeRecordDTO;

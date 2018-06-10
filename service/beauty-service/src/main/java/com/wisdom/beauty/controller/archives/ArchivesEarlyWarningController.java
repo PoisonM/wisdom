@@ -3,10 +3,10 @@ package com.wisdom.beauty.controller.archives;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -45,6 +45,9 @@ public class ArchivesEarlyWarningController {
 	@Autowired
 	private ShopAppointmentService shopAppointmentService;
 
+	@Autowired
+	private RedisUtils redisUtils;
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -58,16 +61,12 @@ public class ArchivesEarlyWarningController {
 	 */
 	@RequestMapping(value = "/getEarlyWarningList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<Object> getEarlyWarningList(@RequestParam String queryType,
-			                                @RequestParam(required = false) String pageNo,
-                                            @RequestParam(required = false) String pageSize) {
+	ResponseDTO<Object> getEarlyWarningList(@RequestParam String queryType, @RequestParam(required = false) String pageNo,
+                                            @RequestParam(required = false) String pageSize,@RequestParam(required = false) String queryScope,
+											@RequestParam(required = false) String sysShopId) {
 
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-		String bossCode = UserUtils.getBossInfo().getSysBossCode();
-
-		if (StringUtils.isBlank(bossCode)) {
-			bossCode = UserUtils.getClerkInfo().getSysBossCode();
-		}
+		String bossCode = redisUtils.getBossCode();
 
 		if (StringUtils.isBlank(bossCode)) {
 			logger.error("获取到的店铺信息为空");
@@ -79,9 +78,15 @@ public class ArchivesEarlyWarningController {
 		// 获取当前boss下的档案列表
 		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
 		shopUserArchivesDTO.setSysBossCode(bossCode);
+		shopUserArchivesDTO.setSysShopId(redisUtils.getShopId());
+		//查询老板下所有店铺信息
+		if("all".equals(queryScope)){
+			shopUserArchivesDTO.setSysShopId("");
+		}
+
 		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService
 				.getShopUserArchivesInfo(shopUserArchivesDTO);
-		if (CommonUtils.objectIsEmpty(shopUserArchivesDTO)) {
+		if (CommonUtils.objectIsEmpty(shopUserArchivesInfo)) {
 			logger.info("获取当前boss下的档案列表为空");
 			return getSuccessResponseDTO(responseDTO, shopUserArchivesInfo);
 		}

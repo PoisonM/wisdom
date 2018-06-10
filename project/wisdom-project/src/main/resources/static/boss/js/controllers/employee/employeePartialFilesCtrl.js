@@ -30,7 +30,7 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
             };
 
             $scope.goActives=function (id) {
-                $state.go("employeeArchives",{id:id})
+                $state.go("archives",{id:id})
             };
 
             /*点击切换档案*/
