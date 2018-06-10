@@ -912,35 +912,36 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
 		List<UserInfoDTOResponseDTO> responseDTOList = new ArrayList<>();
 		UserInfoDTOResponseDTO userInfoDTOResponseDTO=null;
-
-		for (ShopUserArchivesDTO shopUserArchivesDTO : shopUserArchivesDTOs) {
-			userInfoDTOResponseDTO=new UserInfoDTOResponseDTO();
-			userInfoDTOResponseDTO.setPhoto(shopUserArchivesDTO.getImageUrl());
-			userInfoDTOResponseDTO.setNickname(shopUserArchivesDTO.getSysUserName());
-			userInfoDTOResponseDTO.setLastArriveTime(map.get(shopUserArchivesDTO.getSysUserId()).getCreateDate());
-			//查询redis是否存在记录,key是 "arrive"+shopId+userId
-			String key="arrive"+shopUserArchivesDTO.getSysShopId()+shopUserArchivesDTO.getSysUserId();
-			String date1= (String)JedisUtils.getObject(key);
-			if(StringUtils.isBlank(date1)){
-				userInfoDTOResponseDTO.setNewUser(true);
-			}else {
-               //判断redis中获取到的时间是否大于当前时间
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-				try {
-					Date dt1 = df.parse(date1);
-					Date dt2 = df.parse(pageParamVoDTO.getStartTime());
-					if(dt1.getTime() > dt2.getTime()){
-						userInfoDTOResponseDTO.setNewUser(true);
-					}else {
-						userInfoDTOResponseDTO.setNewUser(false);
+        if(CollectionUtils.isNotEmpty(shopUserArchivesDTOs)) {
+			for (ShopUserArchivesDTO shopUserArchivesDTO : shopUserArchivesDTOs) {
+				userInfoDTOResponseDTO = new UserInfoDTOResponseDTO();
+				userInfoDTOResponseDTO.setPhoto(shopUserArchivesDTO.getImageUrl());
+				userInfoDTOResponseDTO.setNickname(shopUserArchivesDTO.getSysUserName());
+				userInfoDTOResponseDTO.setLastArriveTime(map.get(shopUserArchivesDTO.getSysUserId()).getCreateDate());
+				//查询redis是否存在记录,key是 "arrive"+shopId+userId
+				String key = "arrive" + shopUserArchivesDTO.getSysShopId() + shopUserArchivesDTO.getSysUserId();
+				String date1 = (String) JedisUtils.getObject(key);
+				if (StringUtils.isBlank(date1)) {
+					userInfoDTOResponseDTO.setNewUser(true);
+				} else {
+					//判断redis中获取到的时间是否大于当前时间
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+					try {
+						Date dt1 = df.parse(date1);
+						Date dt2 = df.parse(pageParamVoDTO.getStartTime());
+						if (dt1.getTime() > dt2.getTime()) {
+							userInfoDTOResponseDTO.setNewUser(true);
+						} else {
+							userInfoDTOResponseDTO.setNewUser(false);
+						}
+					} catch (ParseException e) {
+						e.printStackTrace();
 					}
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
 
+				}
+				userInfoDTOResponseDTO.setUseArriveShopTime(map.get(shopUserArchivesDTO.getSysUserId()).getUseArriveShopTime());
+				responseDTOList.add(userInfoDTOResponseDTO);
 			}
-			userInfoDTOResponseDTO.setUseArriveShopTime(map.get(shopUserArchivesDTO.getSysUserId()).getUseArriveShopTime());
-			responseDTOList.add(userInfoDTOResponseDTO);
 		}
 		Map<String,Object>  responseMap=new HashedMap();
 		responseMap.put("responseDTOList",responseDTOList);
