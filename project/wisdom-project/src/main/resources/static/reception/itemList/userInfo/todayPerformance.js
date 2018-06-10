@@ -11,9 +11,9 @@ PADWeb.controller('todayPerformanceCtrl', function($scope,$state,$stateParams, n
 
     /*-------------------------------------------方法----------------------------------------------*/
     //判断店员是否登录
-    /*if(window.localStorage.getItem("beautyClerkLoginToken")==undefined || window.localStorage.getItem("beautyClerkLoginToken")==null){
+    if(window.localStorage.getItem("beautyClerkLoginToken")==undefined || window.localStorage.getItem("beautyClerkLoginToken")==null){
         $state.go("pad-web.login")
-    }*/
+    }
 
 
     $scope.goRecord = function (content) {

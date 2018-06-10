@@ -9,6 +9,7 @@ import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
+import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.beauty.core.service.ShopService;
@@ -29,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
@@ -58,6 +60,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 
     @Autowired
     private ShopService shopService;
+
+    @Autowired
+    private ShopCardService shopCardService;
 
     @Autowired
     private RedisUtils redisUtils;
@@ -113,7 +118,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             c.andPhoneLike("%" + requestData.getPhone() + "%");
         }
         if (StringUtils.isNotBlank(requestData.getSysUserName())) {
-            or.andSysUserNameLike("%" + requestData.getSysUserName() + "%");
+            c.andSysUserNameLike("%" + requestData.getSysUserName() + "%");
         }
 
         criteria.or(or);
@@ -285,10 +290,10 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         //查询是否已存在档案信息
-
         List<ShopUserArchivesDTO> shopUserArchivesInfo = getShopUserArchivesInfo(shopUserArchivesDTO);
         if (CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)) {
             responseDTO.setResponseData("用户已经存在了");
@@ -353,7 +358,12 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         shopUserArchivesDTO.setSysBossCode(sysBossCode);
         int info = saveShopUserArchivesInfo(shopUserArchivesDTO);
         logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");
-
+        //生成用户的特殊账号
+        ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+        shopUserRechargeCardDTO.setSysShopId(redisUtils.getShopId());
+        shopUserRechargeCardDTO.setSysUserId(shopUserArchivesDTO.getSysUserId());
+        shopUserRechargeCardDTO.setSysUserName(shopUserArchivesDTO.getSysUserName());
+        shopCardService.saveUserSpecialRechargeCardInfo(shopUserRechargeCardDTO);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;

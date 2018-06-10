@@ -34,4 +34,11 @@ public interface ExtShopAppointServiceMapper extends BaseDao<ShopAppointServiceD
      *  @autur zhangchao
      * */
     List<ExtShopAppointServiceDTO> findUserInfoForShopAppointByTime(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO);
+
+    /**
+     * 查询用户最后一次到店时间
+     * @param appointServiceDTO
+     * @return
+     */
+    List<ExtShopAppointServiceDTO> selectShopUserLastAppointInfo(ShopAppointServiceDTO appointServiceDTO);
 }

@@ -1,9 +1,7 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationCriteria;
-import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardCriteria;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.aliyun.oss.ServiceException;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
@@ -11,6 +9,7 @@ import com.wisdom.beauty.core.mapper.ShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopRechargeCardMapper;
 import com.wisdom.beauty.core.mapper.ShopUserRechargeCardMapper;
 import com.wisdom.beauty.core.redis.MongoUtils;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.util.CommonUtils;
@@ -46,6 +45,9 @@ public class ShopCardServiceImpl implements ShopCardService {
     public MongoUtils mongoUtils;
 
     @Autowired
+    public RedisUtils redisUtils;
+
+    @Autowired
     public ShopProjectProductCardRelationMapper shopProjectProductCardRelationMapper;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -75,6 +77,10 @@ public class ShopCardServiceImpl implements ShopCardService {
 
         if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getSysShopId())) {
             criteria.andSysShopIdEqualTo(shopUserRechargeCardDTO.getSysShopId());
+        }
+
+        if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getRechargeCardType())) {
+            criteria.andRechargeCardTypeEqualTo(shopUserRechargeCardDTO.getRechargeCardType());
         }
 
         if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getId())) {
@@ -154,6 +160,82 @@ public class ShopCardServiceImpl implements ShopCardService {
         //保存项目的适用范围
         useScope(extShopRechargeCardDTO);
         return insert;
+    }
+
+    /**
+     * 查询某个店的充值卡列表
+     * @param shopRechargeCardDTO
+     * @return
+     */
+    @Override
+    public List<ShopRechargeCardDTO> getShopRechargeCardInfo(ShopRechargeCardDTO shopRechargeCardDTO) {
+        logger.info("传入参数={}","shopRechargeCardDTO = [" + shopRechargeCardDTO + "]");
+        if(null == shopRechargeCardDTO){
+            logger.error("查询某个店的充值卡列表传入参数为空");
+            return null;
+        }
+
+        ShopRechargeCardCriteria shopRechargeCardCriteria = new ShopRechargeCardCriteria();
+        ShopRechargeCardCriteria.Criteria c = shopRechargeCardCriteria.createCriteria();
+
+        if(StringUtils.isNotBlank(shopRechargeCardDTO.getId())){
+            c.andIdEqualTo(shopRechargeCardDTO.getId());
+        }
+
+        if(StringUtils.isNotBlank(shopRechargeCardDTO.getRechargeCardType())){
+            c.andRechargeCardTypeEqualTo(shopRechargeCardDTO.getRechargeCardType());
+        }
+
+        if(StringUtils.isNotBlank(shopRechargeCardDTO.getSysShopId())){
+            c.andSysShopIdEqualTo(shopRechargeCardDTO.getSysShopId());
+        }
+
+        return shopRechargeCardMapper.selectByCriteria(shopRechargeCardCriteria);
+    }
+
+    /**
+     * 保存用户余额充值账号
+     *
+     * @param shopUserProjectRelationDTO
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int saveUserSpecialRechargeCardInfo(ShopUserRechargeCardDTO shopUserProjectRelationDTO) {
+        logger.info("保存用户余额充值账号传入参数={}", "shopUserProjectRelationDTO = [" + shopUserProjectRelationDTO + "]");
+        //查询某个店的特殊账号
+        ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
+        shopRechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
+        String sysShopId = shopUserProjectRelationDTO.getSysShopId();
+        if(StringUtils.isBlank(shopUserProjectRelationDTO.getSysShopId())){
+            throw new RuntimeException("店铺为空");
+        }
+        shopRechargeCardDTO.setSysShopId(sysShopId);
+        List<ShopRechargeCardDTO> shopRechargeCardInfo = getShopRechargeCardInfo(shopRechargeCardDTO);
+        if(CommonUtils.objectIsEmpty(shopRechargeCardInfo)){
+            throw new ServiceException(sysShopId+"为空");
+        }
+        //构建用户余额充值账号
+        shopRechargeCardDTO = shopRechargeCardInfo.get(0);
+        shopUserProjectRelationDTO.setId(IdGen.uuid());
+        shopUserProjectRelationDTO.setSurplusAmount(new BigDecimal(0));
+        shopUserProjectRelationDTO.setShopRechargeCardName(shopRechargeCardDTO.getName());
+        shopUserProjectRelationDTO.setInitAmount(new BigDecimal(0));
+        shopUserProjectRelationDTO.setPeriodDiscount(1f);
+        shopUserProjectRelationDTO.setTimeDiscount(1f);
+        shopUserProjectRelationDTO.setProductDiscount(1f);
+        shopUserProjectRelationDTO.setSurplusAmount(new BigDecimal(0));
+        shopUserProjectRelationDTO.setSysShopId(shopRechargeCardDTO.getSysShopId());
+        shopUserProjectRelationDTO.setShopRechargeCardId(shopRechargeCardDTO.getId());
+        if(null != UserUtils.getClerkInfo()){
+            shopUserProjectRelationDTO.setSysClerkId(UserUtils.getClerkInfo().getId());
+        }
+        shopUserProjectRelationDTO.setCreateDate(new Date());
+        shopUserProjectRelationDTO.setSysBossCode(redisUtils.getBossCode());
+        shopUserProjectRelationDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
+        //保存用户与特殊账号的关系
+        int selective = shopUserRechargeCardMapper.insertSelective(shopUserProjectRelationDTO);
+        return selective;
     }
 
 

@@ -9,7 +9,6 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         $scope.$parent.mainSwitch.headerPriceListAllFlag = bool;
         $scope.$parent.mainSwitch.headerLoginFlag = !bool;
         $scope.$parent.mainSwitch.headerPriceListBlackFlag = !bool
-
     };
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
