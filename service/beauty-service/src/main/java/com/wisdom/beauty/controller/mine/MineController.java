@@ -280,7 +280,7 @@ public class MineController {
             //查询美容院
             beauty = shopService.getShopInfoByPrimaryKey(beauty.getParentsId());
             extSysClerkDTO.setCurrentBeautyShopName(null != beauty ? beauty.getName() : "");
-            responseDTO.setResponseData(clerkInfo);
+            responseDTO.setResponseData(extSysClerkDTO);
             return responseDTO;
         }
         responseDTO.setResult(StatusConstant.FAILURE);
