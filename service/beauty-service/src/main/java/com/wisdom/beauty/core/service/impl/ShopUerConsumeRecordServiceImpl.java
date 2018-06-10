@@ -224,13 +224,13 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				}
 			}
 			// 获取套卡集合
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.COLLECTION_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())
+					&& GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())) {
 				collectionCardList.add(shopUserConsumeRecordDTO);
 			}
 			// 获取疗程卡
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())
+					&& GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())) {
 				treatmentCardList.add(shopUserConsumeRecordDTO);
 			}
 		}
