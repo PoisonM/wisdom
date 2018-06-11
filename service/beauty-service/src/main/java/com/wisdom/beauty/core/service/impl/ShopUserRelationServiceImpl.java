@@ -70,7 +70,8 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         ShopUserRelationDTO shopUserRelationDTO = null;
         if (CollectionUtils.isEmpty(list)) {
             logger.info("list集合为空");
-            return null;
+            //默认返回未绑定的状态
+            return "1";
         }
 
         shopUserRelationDTO = list.get(0);

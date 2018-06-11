@@ -10,13 +10,11 @@
             <span class="accountRecords fl" ng-click="goAccountRecords()">账户记录<b>＞</b></span>
         </div>
         <div class="basicInfo-content-second clearfix">
-            <span>会员：{{responseData.userName}}</span>
-            <span ng-if="responseData.userName.member == '1'">未绑定</span>
-            <span ng-if="responseData.userName.member == '0'" ng-click="goBindMember()" class="bind">绑定</span>
+            <span>会员：{{responseData.isMember}}</span>
         </div>
         <div class="basicInfo-content-third clearfix">
-            <span>总金额：<b>{{responseData.sumAmount}}</b></span>
-            <span class="totalOwed">总欠款：<b>{{responseData.arrears}}</b></span>
+            <span>总金额：<b>{{responseData.totalBalance}}</b></span>
+            <!--<span class="totalOwed">总欠款：<b>{{responseData.arrears}}</b></span>-->
         </div>
         <div class="basicInfo-content-fourth clearfix">
             <span>档案生成：未知</span>
@@ -26,6 +24,6 @@
     <div class="basicInfo-right">
         <button ng-click="goSelectRechargeType()">充值</button>
         <button ng-click="toConsumptionList()">消费</button>
-        <button ng-click="goStillOwed()">还欠款</button>
+        <!--<button ng-click="goStillOwed()">还欠款</button>-->
     </div>
 </div>

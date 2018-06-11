@@ -260,8 +260,6 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(beautyIP + 'clerkSchedule/getClerkScheduleInfo')
     }])
 
-
-
     //查询某个用户的疗程卡、单次卡信息
     .factory('GetUserCourseProjectList', ['$resource', function($resource) {
         return $resource(beautyIP + 'projectInfo/getUserCourseProjectList')
