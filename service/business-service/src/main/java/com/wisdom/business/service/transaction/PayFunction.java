@@ -84,7 +84,7 @@ public class PayFunction {
             for (PayRecordDTO payRecordDTO : payRecordDTOList) {
                 //修改payRecord的订单状态，表示已支付
                 payRecordDTO.setStatus("1");
-                payRecordDTO.setUpdateDate(new Date());
+                payRecordDTO.setPayDate(new Date());
                 payRecordService.updatePayRecordStatus(payRecordDTO);
 
                 totalMoney = totalMoney + payRecordDTO.getAmount();
