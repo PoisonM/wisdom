@@ -281,6 +281,7 @@ public class CardController {
 			logger.error("用户主键为空");
 			throw new ServiceException("用户主键为空");
 		}
+		//查询用户档案表信息
 		extShopUserRechargeCardDTO.setUserName(userServiceClient.getUserInfoFromUserId(extShopUserRechargeCardDTO.getSysUserId()).getNickname());
 		mongoTemplate.save(extShopUserRechargeCardDTO, "extShopUserRechargeCardDTO");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
