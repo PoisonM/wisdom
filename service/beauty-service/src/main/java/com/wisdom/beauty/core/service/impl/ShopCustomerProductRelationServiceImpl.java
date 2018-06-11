@@ -78,7 +78,7 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 		if (StringUtils.isNotBlank(searchFile)) {
 			mapFile.put("searchFile", "%" + searchFile + "%");
 		} else {
-			mapFile.put("searchFile", searchFile);
+			mapFile.put("searchFile", null);
 		}
 		List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(mapFile);
 		if (CollectionUtils.isEmpty(list)) {

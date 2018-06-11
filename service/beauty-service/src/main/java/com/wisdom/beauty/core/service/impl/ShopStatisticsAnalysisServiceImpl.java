@@ -766,27 +766,37 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		numberCriteria.setDistinct(true);
 		List<ExpenditureAndIncomeResponseDTO> consumeNumberList = extShopUserConsumeRecordMapper
 				.selectPriceListByCriteria(numberCriteria);
-		Map<String, Integer> map = new HashedMap(16);
-		for (ExpenditureAndIncomeResponseDTO dto : consumeNumberList) {
-			if (map.get(dto.getSysShopId()) == null) {
-				map.put(dto.getSysShopId(), 1);
-			} else {
-				Integer consumeTime = map.get(dto.getSysShopId());
-				map.put(dto.getSysShopId(), consumeTime + 1);
+		Map<String, Integer> map = null;
+		if(CollectionUtils.isNotEmpty(consumeNumberList)){
+			map = new HashedMap(16);
+			for (ExpenditureAndIncomeResponseDTO dto : consumeNumberList) {
+				if (map.get(dto.getSysShopId()) == null) {
+					map.put(dto.getSysShopId(), 1);
+				} else {
+					Integer consumeTime = map.get(dto.getSysShopId());
+					map.put(dto.getSysShopId(), consumeTime + 1);
+				}
 			}
+
 		}
 
 		// 人次数
 		ShopUserConsumeRecordCriteria timeCriteria = new ShopUserConsumeRecordCriteria();
 		List<ExpenditureAndIncomeResponseDTO> timeList = extShopUserConsumeRecordMapper
 				.selectPriceListByCriteria(timeCriteria);
-		Map<String, Integer> timeMap = new HashedMap(16);
-		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : timeList) {
-			if (timeMap.get(expenditureAndIncomeResponseDTO.getSysShopId()) == null) {
-				timeMap.put(expenditureAndIncomeResponseDTO.getSysShopId(), 1);
-			} else {
-				Integer consumeTime = map.get(expenditureAndIncomeResponseDTO.getSysShopId());
-				timeMap.put(expenditureAndIncomeResponseDTO.getSysShopId(), consumeTime + 1);
+		Map<String, Integer> timeMap = null;
+		if(CollectionUtils.isNotEmpty(timeList)){
+			timeMap = new HashedMap(16);
+			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : timeList) {
+				if (timeMap.get(expenditureAndIncomeResponseDTO.getSysShopId()) == null) {
+					timeMap.put(expenditureAndIncomeResponseDTO.getSysShopId(), 1);
+				} else {
+					Integer consumeTime=0;
+					if(map!=null){
+						consumeTime = map.get(expenditureAndIncomeResponseDTO.getSysShopId());
+					}
+					timeMap.put(expenditureAndIncomeResponseDTO.getSysShopId(), consumeTime + 1);
+				}
 			}
 		}
 		// 新客
@@ -816,8 +826,12 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
 			expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());// 美容院店名字
 			expenditureAndIncomeResponseDTO.setShopNewUserNumber(newCustomerMap.get(shopBossRelation.getSysShopId()));// 新客
-			expenditureAndIncomeResponseDTO.setConsumeNumber(map.get(shopBossRelation.getSysShopId()));// 人头数
-			expenditureAndIncomeResponseDTO.setConsumeTime(timeMap.get(shopBossRelation.getSysShopId()));// 次数
+			if(map!=null){
+				expenditureAndIncomeResponseDTO.setConsumeNumber(map.get(shopBossRelation.getSysShopId()));// 人头数
+			}
+			if(timeMap!=null){
+				expenditureAndIncomeResponseDTO.setConsumeTime(timeMap.get(shopBossRelation.getSysShopId()));// 次数
+			}
 			expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());
 			if (totalConsumeNumber == null) {
 				totalConsumeNumber = map.get(shopBossRelation.getSysShopId());
