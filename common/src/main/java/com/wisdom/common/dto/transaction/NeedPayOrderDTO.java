@@ -34,6 +34,9 @@ public class NeedPayOrderDTO {
     @JSONField(name = "productPrefecture")
     private String productPrefecture;
 
+    @JSONField(name = "status")
+    private String status;
+
 
     public String getProductPrefecture() {
         return productPrefecture;
@@ -105,5 +108,13 @@ public class NeedPayOrderDTO {
 
     public void setProductSpec(String productSpec) {
         this.productSpec = productSpec;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -35,7 +35,8 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                                 productNum:item.businessProductNum,
                                 productPrice:item.businessProductPrice,
                                 productSpec:item.productSpec,
-                                productPrefecture:item.productPrefecture
+                                productPrefecture:item.productPrefecture,
+                                productPrefecture:item.status
                             };
                             needPayOrderList.push(payOrder);
                             //将needPayOrderList数据放入后台list中

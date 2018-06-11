@@ -84,6 +84,13 @@ public class TransactionController {
                 return responseDTO;
             }
         }
+        for(NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()){
+            if("0".equals(needPayOrderDTO.getStatus())){
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("此商品已下架-"+needPayOrderDTO.getProductName());
+                return responseDTO;
+            }
+        }
         RedisLock redisLock = new RedisLock("putNeedPayProductAmount");
         String needPayValue = (new Gson()).toJson(needPayOrderList);
         JedisUtils.del(userInfoDTO.getId()+"needPay");
