@@ -602,8 +602,17 @@ public class BusinessOrderController {
         logger.info("订单=={}收货地址详情==={}开始" ,orderId,startTime);
         ResponseDTO responseDTO = new ResponseDTO<>();
         //根据订单ID，查询此订单的收货地址
-        UserOrderAddressDTO userOrderAddressDTO =  userOrderAddressService.getUserOrderAddressByOrderId(orderId);
-
+        UserOrderAddressDTO userOrderAddressDTO1 =  userOrderAddressService.getUserOrderAddressByOrderId(orderId);
+        List<OrderAddressRelationDTO> orderAddressRelationDTOS =  userOrderAddressService.getOrderAddressRelationByOrderId(orderId);
+        UserOrderAddressDTO userOrderAddressDTO =new UserOrderAddressDTO();
+        if(orderAddressRelationDTOS.size() != 0){
+            userOrderAddressDTO.setUserName(orderAddressRelationDTOS.get(0).getUserNameAddress());
+            userOrderAddressDTO.setUserPhone(orderAddressRelationDTOS.get(0).getUserPhoneAddress());
+            userOrderAddressDTO.setCity(orderAddressRelationDTOS.get(0).getUserCityAddress());
+            userOrderAddressDTO.setDetailAddress(orderAddressRelationDTOS.get(0).getUserDetailAddress());
+            userOrderAddressDTO.setId(orderAddressRelationDTOS.get(0).getId());
+            userOrderAddressDTO.setProvince(orderAddressRelationDTOS.get(0).getUserProvinceAddress());
+        }
         if(userOrderAddressDTO!=null)
         {
             responseDTO.setResponseData(userOrderAddressDTO);
