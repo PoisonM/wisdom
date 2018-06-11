@@ -37,6 +37,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         $scope.selectSingleList=data.responseData;
         $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
         $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
+        console.log($scope.selectSingleList);
     });
 
     //点击二级列表调取三级项目列表产品数据方法

@@ -3,7 +3,7 @@
     <div class="projectHeader">
         <ul class="tab-head">
             <li ng-repeat="items in selectSingleList" class="tab-head-item" >
-                <span ng-class="{'bg_box_sty' : param.selection == $index}" class="bg_box" ng-click="selection($index,items.id)">{{items.projectTypeName}}</span>
+                <span ng-class="{'bg_box_sty':param.selection == $index}" class="bg_box" ng-click="selection($index,items.id)">{{items.projectTypeName}}</span>
                 <span ng-class="{'check_img':items.status == 1,'check_img_bottom':items.status == 3,'check_img_top':items.status == 4}"
                       class="check_img" ng-click="checkImg($index,items.status,items.id);" ></span>
             </li>
