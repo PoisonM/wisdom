@@ -1,7 +1,7 @@
 
 angular.module('controllers',[]).controller('customerStoreCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetCustomerArriveList','$filter','BossUtil',
-        function ($scope,$rootScope,$stateParams,$state,GetCustomerArriveList,$filter,BossUtil) {
+    ['$scope','$rootScope','$stateParams','$state','GetCustomerArriveList','$filter','BossUtil','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetCustomerArriveList,$filter,BossUtil,$ionicLoading) {
 
             $rootScope.title = "顾客到店";
 
@@ -12,7 +12,6 @@ angular.module('controllers',[]).controller('customerStoreCtrl',
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
-            console.log($scope.param.date);
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -64,14 +63,23 @@ angular.module('controllers',[]).controller('customerStoreCtrl',
             };
 
             $scope.getInfo = function () {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetCustomerArriveList.get({
                     startTime:$scope.param.date+' 00:00:00',
                     endTime:$scope.param.date+ " 23:59:59"
                 },function(data){
                       $scope.customerStore = data.responseData
+                    $ionicLoading.hide();
                 })
-            }
+            };
             $scope.getInfo()
+
 
 
         }]);

@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/14.
  */
 angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','Global','GetInComeExpenditureDetail',
-        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,Global,GetInComeExpenditureDetail) {
+    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','Global','GetInComeExpenditureDetail','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,Global,GetInComeExpenditureDetail,$ionicLoading) {
             /*日期插件*/
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
@@ -65,10 +65,20 @@ angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
 
             $rootScope.title = "";
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetInComeExpenditureDetail.get({sysShopId:$stateParams.sysShopId,startTime:$scope.param.date+" 00:00:00",
                     endTime:$scope.param.date+" 23:59:59"},function (data) {
+                    $ionicLoading.hide()
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $scope.oneIncomeAnalysis = data.responseData
+                        $scope.oneIncomeAnalysis = data.responseData;
+                    }else{
+                        $scope.oneIncomeAnalysis=[]
                     }
                 })
             }

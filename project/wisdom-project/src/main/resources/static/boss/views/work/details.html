@@ -208,9 +208,29 @@
                 <div>
                     <opn-list >
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml10"> 微信</p>
+                            <p class="ml10"  ng-if="details.payMap.payType=='0'"> 微信</p>
+                            <p class="ml10"  ng-if="details.payMap.payType=='1'"> 支付宝</p>
+                            <p class="ml10"  ng-if="details.payMap.payType=='2'"> 银行卡</p>
                             <p class="mr10 col888">
-                                ***￥4888.00
+                                ￥{{details.payMap.payTypeAmount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="details.payMap.balanceAmount != null">
+                            <p class="ml10"> 余额</p>
+                            <p class="mr10 col888">
+                                ￥{{details.payMap.balanceAmount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="details.payMap.cashAmount != null">
+                            <p class="ml10"> 现金支付</p>
+                            <p class="mr10 col888">
+                                ￥{{details.payMap.cashAmount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="details.payMap.rechargeCardAmount != null">
+                            <p class="ml10"> 充值卡支付</p>
+                            <p class="mr10 col888">
+                                ￥{{details.payMap.rechargeCardAmount}}
                             </p>
                         </ion-item>
                     </opn-list>
@@ -218,12 +238,12 @@
             </div>
 
             <p class="h50 ml10">顾客签字</p>
-            <div style="height:156px;background: url('{{details.signUrl}}');background-size: contain;background-position: center center" class="bgfff" >
-
+            <div style="height:156px;" class="bgfff">
+                <img ng-src="{{details.signUrl}}" style="height:156px;">
             </div>
             <p class="h50 ml10 fs14">备注</p>
             <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff" >
-                 {{details.detail}}
+                    {{details.detail}}
             </textarea>
 
 

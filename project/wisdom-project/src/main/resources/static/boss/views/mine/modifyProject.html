@@ -4,10 +4,10 @@
             <li class="item" ng-click="selectionCategoryGO()"><span class="fs16">选择类别<span class="colff66">*</span></span><span class="fr tr">{{settingAddsome.extShopProjectInfoDTO.projectTypeOneName}}<i class="ion ion-ios-arrow-right ml10 fs17"></i></span></li>
             <li class="item" ng-click="addProjectSeriesGo()"><span class="fs16">选择系列<span class="colff66">*</span></span><span class="fr">{{settingAddsome.extShopProjectInfoDTO.projectTypeTwoName}}<i class="ion ion-ios-arrow-right ml10 fs17"></i></span></li>
             <li class="row bgfff">
-                <div class="col col-20" style="line-height: 49px;">
+                <div class="col col-25" style="line-height: 40px;">
                     <span class="fs16">卡类别<span class="colff66">*</span></span>
                 </div>
-                <div class="col col-80 fs13" >
+                <div class="col col-70 fs13" >
                     <p style="margin-top:6px;"><span class="project1"   ng-class="{'activeCardType': settingAddsome.extShopProjectInfoDTO.cardType=='0'}"  ng-if="settingAddsome.extShopProjectInfoDTO.cardType=='0'">次卡</span><span class="project1 m5"  ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType!='0'}" ng-if="settingAddsome.extShopProjectInfoDTO.cardType!=0">时效卡</span></p >
                     <p ng-if="settingAddsome.extShopProjectInfoDTO.cardType!='0'">
                         <span class="project1"  ng-click="secondaryCard('1',1)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='1'}">月卡</span>

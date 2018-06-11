@@ -58,11 +58,18 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
 
                 if( $stateParams.id !=''){
                     $rootScope.settingAddsome.productId = $stateParams.id
-
+                    $ionicLoading.show({
+                        content: 'Loading',
+                        animation: 'fade-in',
+                        showBackdrop: true,
+                        maxWidth: 200,
+                        showDelay: 0
+                    })
                     ProductInfoMess.get({
                         productId:$rootScope.settingAddsome.productId
                     },function (data) {
                         if(data.result==Global.SUCCESS&&data.responseData!=null){
+                            $ionicLoading.hide()
                             $rootScope.settingAddsome.product = data.responseData;
                             if($rootScope.settingAddsome.product.status =='0'){
                                 $scope.param.status = true;

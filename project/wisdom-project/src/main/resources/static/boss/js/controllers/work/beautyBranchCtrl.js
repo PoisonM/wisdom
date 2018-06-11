@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/4.
  */
 angular.module('controllers',[]).controller('beautyBranchCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopCustomerArriveList','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetShopCustomerArriveList,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopCustomerArriveList','$filter','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetShopCustomerArriveList,$filter,$ionicLoading) {
 
             $rootScope.title = "美容院分店";
             $scope.param={
@@ -11,21 +11,37 @@ angular.module('controllers',[]).controller('beautyBranchCtrl',
                 date:$stateParams.date
             };
             $scope.setCurrent=function (param) {
-                $scope.param.current=param;
-                $scope.getInfo()
+
+                    $scope.param.current=param;
+                    $scope.getInfo()
+
+
+
 
             };
             $scope.getInfo= function () {
-                GetShopCustomerArriveList.get({
-                    condition:$scope.param.current,
-                    startTime:$scope.param.date+' 00:00:00',
-                    endTime:$scope.param.date+' 23:59:59',
-                    sysShopId:$stateParams.sysShopId
-                },function(data){
-                     $scope.beautyBranch = data.responseData
-                })
-            }
+                    $ionicLoading.show({
+                        content: 'Loading',
+                        animation: 'fade-in',
+                        showBackdrop: true,
+                        maxWidth: 200,
+                        showDelay: 0
+                    });
+                    GetShopCustomerArriveList.get({
+                        condition: $scope.param.current,
+                        startTime: $scope.param.date + ' 00:00:00',
+                        endTime: $scope.param.date + ' 23:59:59',
+                        sysShopId: $stateParams.sysShopId
+                    }, function (data) {
+                        $scope.beautyBranch = data.responseData
+                        $ionicLoading.hide();
+                    })
+
+            };
             $scope.getInfo();
+
+
+
 
             $scope.HPic =function(){
                 if($scope.param.current !=2)return

@@ -35,40 +35,76 @@
             <p class="item p8"><span>总收入</span><span  class="fr fs15 colff66">+{{oneIncomeAnalysis[4]==undefined?0:oneIncomeAnalysis[4]}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
             <div class="row row-wrap bgfff col33 tc p0">
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
-                    <img src="images/work/recharge.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
-                    现金
-                    <p  class="mt5">{{oneIncomeAnalysis[3] ==undefined?0:oneIncomeAnalysis[3]}}</p>
+                    <div class="row">
+                        <p class="col col-20">
+                            <img src="images/work/recharge.png" alt="" style="width: 17px;height: 18px;margin-top:12px;">
+                        </p>
+                        <div class="col col-80" style="text-align: left">
+                            <p> 现金</p>
+                            <p  class="mt5">{{oneIncomeAnalysis[3] ==undefined?0:oneIncomeAnalysis[3]}}</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="col col-50"  style="padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
-                    <img src="images/work/Arrears.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
-                    银行卡
-                    <p  class="mt5">{{oneIncomeAnalysis[0] ==undefined?0:oneIncomeAnalysis[0]}}</p>
+                    <div class="row">
+                        <p class="col col-20">
+                            <img src="images/work/Arrears.png" alt="" style="width: 17px;height: 18px;margin-top:12px;">
+                        </p>
+                        <div class="col col-80" style="text-align: left">
+                            <p> 银行卡</p>
+                            <p  class="mt5">{{oneIncomeAnalysis[0] ==undefined?0:oneIncomeAnalysis[0]}}</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;position: relative">
-                    <img src="images/work/WeChat.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
-                    微信
-                    <p  class="mt5">{{oneIncomeAnalysis[1] ==undefined?0:oneIncomeAnalysis[1]}}</p>
+                    <div class="row">
+                        <p class="col col-20">
+                            <img src="images/work/WeChat.png" alt="" style="width: 17px;height: 18px;margin-top:12px;">
+                        </p>
+                        <div class="col col-80" style="text-align: left">
+                            <p> 微信</p>
+                            <p  class="mt5">{{oneIncomeAnalysis[1] ==undefined?0:oneIncomeAnalysis[1]}}</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="col col-50"  style="padding-top: 10px;position: relative">
-                    <img src="images/work/Alipay.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
-                    支付宝
-                    <p  class="mt5">{{oneIncomeAnalysis[2] ==undefined?0:oneIncomeAnalysis[2]}}</p>
+                    <div class="row">
+                        <p class="col col-20">
+                            <img src="images/work/Alipay.png" alt="" style="width: 17px;height: 18px;margin-top:12px;">
+                        </p>
+                        <div class="col col-80" style="text-align: left">
+                            <p> 支付宝</p>
+                            <p  class="mt5">{{oneIncomeAnalysis[2] ==undefined?0:oneIncomeAnalysis[2]}}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <!--总支出-->
-        <div class="list" ui-sref="incomeDetails">
+        <div class="list" >
             <p class="item p8" ><span>总支出</span><span class="fr fs15 colff66">******<i  class="ml10 col99" class="ion ion-ios-arrow-right"></i></span></p>
             <div class="row row-wrap bgfff col33 tc p0" >
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
-                    <img src="images/work/refund.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
-                    退款
-                    <p class="mt5">***</p>
+                    <div class="row">
+                        <p class="col col-20">
+                            <img src="images/work/refund.png" alt="" style="width: 17px;height: 18px;margin-top:12px;">
+                        </p>
+                        <div class="col col-80" style="text-align: left">
+                            <p> 退款</p>
+                            <p  class="mt5">***</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="col col-50"  style="padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
-                    <img src="images/work/payCard.png" alt="" style="width: 17px;height: 18px;display: inline-block;position: absolute;top: 16px;left: 22%">
-                    <p style="margin-left: 0.5rem">刷卡手续费</p>
-                    <p class="mt5">***</p>
+                    <div class="row">
+                        <p class="col col-20">
+                            <img src="images/work/payCard.png" alt="" style="width: 17px;height: 18px;margin-top:12px;">
+                        </p>
+                        <div class="col col-80" style="text-align: left">
+                            <p> 刷卡手续费</p>
+                            <p  class="mt5">***</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

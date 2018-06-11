@@ -18,9 +18,17 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
             }
             $scope.addProjectSeriesGo = function () {
                 $state.go("addProjectSeries",{projectId:$scope.param.projectId,url:'modifyProject'})
-            }
+            };
+            $ionicLoading.show({
+                content: 'Loading',
+                animation: 'fade-in',
+                showBackdrop: true,
+                maxWidth: 200,
+                showDelay: 0
+            })
             ProjectInfo.get({id:$scope.param.projectId},function (data) {
                 if(data.result == '0x00001'){
+                    $ionicLoading.hide()
                     $scope.settingAddsome.extShopProjectInfoDTO=data.responseData;
                     if($rootScope.settingAddsome.extShopProjectInfoDTO.status=="1"){
                         $scope.param.status=false

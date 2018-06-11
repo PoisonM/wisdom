@@ -41,7 +41,7 @@
 
                     <div class="col col-80">
                         <p class="fs15">{{item.nickname}} <img src="images/work/newPerson.png" style="width: 20px;height: 20px;display: inline-block;margin-left: 5px" ng-if="item.newUser==true"></p >
-                        <p class="fs12 col666"><span >最后到点</span><span>{{item.lastArriveTime}}</span></p >
+                        <p class="fs12 col666"><span >最后到店</span><span>{{item.lastArriveTime|date:'yyyy-MM-dd'}}</span></p >
                     </div>
                 </ion-item>
             </div>
@@ -93,7 +93,7 @@
 
                     <div class="col col-60">
                         <p class="fs15">{{item.nickname}} <img src="images/work/newPerson.png" style="width: 20px;height: 20px;display: inline-block;margin-left: 5px" ng-if="item.newUser==true"></p >
-                        <p class="fs12 col666"><span >最后到点</span><span>{{item.lastArriveTime}}</span></p >
+                        <p class="fs12 col666"><span >最后到店</span><span>{{item.lastArriveTime|date:'yyyy-MM-dd'}}</span></p >
                     </div>
                     <div class="col col-20">
                         <p class="fr">到店{{item.useArriveShopTime}}次</p>

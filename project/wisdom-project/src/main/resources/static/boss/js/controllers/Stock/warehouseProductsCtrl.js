@@ -63,11 +63,17 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                console.log($scope.param.productType)
                 $scope.getInfo()
             })
 
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetShopProductLevelInfo.get({
                     productType:$scope.param.productType,
                     levelOneId:$scope.param.levelOneId,

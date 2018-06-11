@@ -11,11 +11,18 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                 status:true,
                 id:$stateParams.id
             };
-
+            $ionicLoading.show({
+                content: 'Loading',
+                animation: 'fade-in',
+                showBackdrop: true,
+                maxWidth: 200,
+                showDelay: 0
+            })
                 RechargeCardDetail.get({
                     id:$stateParams.id
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $ionicLoading.hide()
                         $rootScope.settingAddsome.editedRecharge = data.responseData;
                         if($rootScope.settingAddsome.editedRecharge.status == '0'){
                             $scope.param.status = true
@@ -29,22 +36,19 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                                 $rootScope.settingAddsome.editedRecharge.timesList =data.responseData.timesList;
                                 $rootScope.settingAddsome.editedRecharge.periodList =data.responseData.periodList;
                                 $rootScope.settingAddsome.editedRecharge.productList =data.responseData.productList;
-                                if($rootScope.settingAddsome.editedRecharge.productList.length>0||($rootScope.settingAddsome.editedRecharge.productList!=''&&$rootScope.settingAddsome.editedRecharge.productList!=null)){
-                                    console.log(0)
-                                    $scope.param.appearArr[2]=true
-                                }
-                                if($rootScope.settingAddsome.editedRecharge.periodList.length>0||($rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=null)){
-                                    console.log(1)
-                                    $scope.param.appearArr[1]=true
-                                }
-                                if($rootScope.settingAddsome.editedRecharge.timesList.length>0||($rootScope.settingAddsome.editedRecharge.timeDiscount!=""&&$rootScope.settingAddsome.editedRecharge.timeDiscount!=null)){
-                                    console.log(2);
-                                    $scope.param.appearArr[0]=true
-                                }
                             }else{
                                 $rootScope.settingAddsome.editedRecharge.timesList =new Array;
                                 $rootScope.settingAddsome.editedRecharge.periodList =new Array;
                                 $rootScope.settingAddsome.editedRecharge.productList =new Array;
+                            }
+                            if($rootScope.settingAddsome.editedRecharge.productList.length>0||($rootScope.settingAddsome.editedRecharge.productList!=''&&$rootScope.settingAddsome.editedRecharge.productList!=null)){
+                                $scope.param.appearArr[2]=true
+                            }
+                            if($rootScope.settingAddsome.editedRecharge.periodList.length>0||($rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=null)){
+                                $scope.param.appearArr[1]=true
+                            }
+                            if($rootScope.settingAddsome.editedRecharge.timesList.length>0||($rootScope.settingAddsome.editedRecharge.timeDiscount!=""&&$rootScope.settingAddsome.editedRecharge.timeDiscount!=null)){
+                                $scope.param.appearArr[0]=true
                             }
 
 
@@ -98,11 +102,12 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                 }
             }
             $scope.save = function () {
+               /*
                 if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||($rootScope.settingAddsome.editedRecharge.periodList.length>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!=''&&$rootScope.settingAddsome.editedRecharge.productDiscount!=null)||($rootScope.settingAddsome.editedRecharge.periodList.length<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=null)||($rootScope.settingAddsome.editedRecharge.timesList.length<=0&&$rootScope.settingAddsome.editedRecharge.timesList!=''&&$rootScope.settingAddsome.editedRecharge.timesList!=null)||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
                     alert("请检查信息");
                     return
                 }
-
+*/
 
                 UpdateRechargeCardInfo.save($rootScope.settingAddsome.editedRecharge,function (data) {
                     if(data.result==Global.SUCCESS){
