@@ -57,6 +57,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
             $scope.loading = false;
             $scope.param.projectAppear = false;
             $scope.param.chooseProjectItem = '';
+            console.log($scope.threeList);
         })
     };
 
@@ -70,6 +71,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         $scope.threeList = [];
         TwoLevelProject.get({id:oneId},function (data) {
             $scope.project2List = data.responseData;
+            console.log($scope.project2List);
             if($scope.project2List.length>0)
             {
                 $scope.param.projectAppear = true;
