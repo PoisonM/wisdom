@@ -5,16 +5,14 @@ PADWeb.controller('stampCardRecordCtrl', function($scope, $stateParams, ngDialog
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     console.log('划卡记录');
 
-
     //consumeType 0：充值 1：消费 2、还欠款 3、退款
     Consumes.save({
         goodsType:5,
         consumeType:1,
         pageSize:12
     },function (data) {
-        $scope.dataList = data.responseData
+        $scope.dataList = data.responseData;
+        console.log($scope.dataList);
     })
-    /*$scope.$parent.$parent.backHeaderCashFn = function () {
-        $state.go("pad-web.userInfo.todayPerformance")
-    }*/
+
 });
