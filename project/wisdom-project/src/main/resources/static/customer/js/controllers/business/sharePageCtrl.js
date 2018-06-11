@@ -11,6 +11,9 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 mainImg:{},
                 canvas:{}
             };
+            $scope.ad={
+                text:"bao"
+            }
 
             var calcHeight = function(obj, w)
             {
@@ -61,19 +64,21 @@ angular.module('controllers',[]).controller('sharePageCtrl',
             }
 
             $scope.$on('$ionicView.enter', function(){
+                debugger;
                 GetQRCodeURL.get(function (data) {
                     BusinessUtil.checkResponseData(data,'sharePage');
                     $scope.param.weixinShareInfo = data.responseData;
-                    if(data.responseData.userType.indexOf("B-1")>-1)
+                   /* if(data.responseData.userType.indexOf("B-1")>-1)
                     {
                         $scope.param.weixinShareInfo.userType = "9小主";
                     }
                     else if(data.responseData.userType.indexOf("A-1")>-1)
                     {
                         $scope.param.weixinShareInfo.userType = "大当家";
-                    }
+                    }*/
 
                     //获取$scope.param.canvas
+                    $scope.ad.text = "jdijie"
                     $scope.param.canvas = document.getElementById('canvas');
 
                     //设置宽高
