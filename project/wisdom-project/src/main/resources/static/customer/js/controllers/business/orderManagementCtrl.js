@@ -3,7 +3,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetBusinessOrderList,BusinessUtil,PutNeedPayOrderListToRedis,Global,DeleteOrderFromBuyCart,UpdateBusinessOrderStatus,$ionicPopup,$ionicLoading,$timeout,GetUserInfoByOpenId) {
             $scope.param = {
                 orderList:[],
-                orderType:""
+                orderType:"all"
             };
             $scope.chooseTab = function(type){
                 $scope.param.orderList=[];
