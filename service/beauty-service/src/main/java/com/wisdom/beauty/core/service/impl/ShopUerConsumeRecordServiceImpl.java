@@ -139,13 +139,13 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					goodType.add(GoodsTypeEnum.PRODUCT.getCode());
 					c.andGoodsTypeIn(goodType);
-				} else {
+				} /*else {
 					List goodType = new ArrayList();
 					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
 					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					c.andGoodsTypeIn(goodType);
-				}
+				}*/
 			}
 		}
 		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
@@ -168,6 +168,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				userConsumeRecordResponseDTO.setCreateBy(shopUserConsumeRecord.getCreateBy());
 				userConsumeRecordResponseDTO.setSysShopName(shopUserConsumeRecord.getSysShopName());
 				userConsumeRecordResponseDTO.setFlowName(shopUserConsumeRecord.getFlowName());
+				userConsumeRecordResponseDTO.setSysUserName(shopUserConsumeRecord.getSysUserName());
 				// 前台页面显示如果划卡title是项目名称，消费收银为消费类型
 				if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
 					userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getFlowName());
