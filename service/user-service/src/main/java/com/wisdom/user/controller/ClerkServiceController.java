@@ -163,7 +163,7 @@ public class ClerkServiceController {
 		return clerkInfo;
 	}
 
-	@RequestMapping(value = "/upateClerkInfo", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateClerkInfo", method = RequestMethod.POST)
 	@ResponseBody
     ResponseDTO<String>  updateClerkInfo(@RequestBody SysClerkDTO sysClerkDTO) {
 		int info = clerkInfoService.updateSysClerk(sysClerkDTO);
