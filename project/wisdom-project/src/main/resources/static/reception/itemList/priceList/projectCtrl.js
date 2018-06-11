@@ -32,13 +32,17 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         pageSize:"10"
     };
 
+    $scope.loading = true;
+
     /*一级项目列表接口*/
     OneLevelProject.get(function (data) {
         $scope.selectSingleList=data.responseData;
         $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
         $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
         console.log($scope.selectSingleList);
+        $scope.loading = false;
     });
+
     //点击二级列表调取三级项目列表产品数据方法
     $scope.refreshGoods=function (id) {
         ThreeLevelProject.get({
@@ -50,6 +54,10 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
             $scope.threeList=data.responseData;
             $scope.param.projectAppear=false;
         })
+    };
+
+    $scope.goProjectDetails=function (id) {
+        $state.go("pad-web.projectDetails",{id:id})
     };
 
     /*点击图片显示内容*/
@@ -78,11 +86,8 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         }
     };
 
-    $scope.goProjectDetails=function (id) {
-        $state.go("pad-web.projectDetails",{id:id})
-    };
-
     $scope.selection  = function (index,oneId) {
+        $scope.loading = true;
         TwoLevelProject.get({id:oneId},function (data) {
             $scope.project2List=data.responseData;
             //默认调去三级展示
@@ -94,6 +99,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
             },function (data) {
                 $scope.threeList=data.responseData;
                 $scope.param.projectAppear=false;
+                $scope.loading = false;
             });
         });
         $scope.param.childrenFlag = index;
