@@ -917,11 +917,10 @@ public class JedisUtils {
 			jedis.close();
 			if (jedis.isConnected()) {
 				try {
-					logger.info("退出{}:{}", jedis.toString(), jedis.quit());
+					logger.info("---------退出{}:{}", jedis.toString(), jedis.quit());
 					jedis.disconnect();
 				} catch (Exception e) {
-					logger.error("退出失败" + e.getMessage(), e);
-					e.printStackTrace();
+					logger.error("---------退出失败" + e.getMessage(), e);
 				}
 			}
 	}
