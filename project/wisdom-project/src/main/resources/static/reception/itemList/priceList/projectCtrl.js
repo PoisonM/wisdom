@@ -29,22 +29,24 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         projectTypeOneId:"",//一级项目id
         ProjectTypeTwoId:"",//二级项目id
         projectName:"",
-        pageSize:"10"
+        pageSize:"10",
+        chooseProjectItem : ''
     };
 
     $scope.loading = true;
-
     /*一级项目列表接口*/
     OneLevelProject.get(function (data) {
         $scope.selectSingleList=data.responseData;
         $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
         $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
-        console.log($scope.selectSingleList);
         $scope.loading = false;
     });
 
     //点击二级列表调取三级项目列表产品数据方法
     $scope.refreshGoods=function (id) {
+        $scope.param.chooseProjectItem = id;
+        $scope.loading = true;
+        $scope.threeList = [];
         ThreeLevelProject.get({
             ProjectTypeTwoId:id,
             projectTypeOneId: $scope.param.projectTypeOneId,
@@ -52,7 +54,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
             pageSize:$scope.param.pageSize
         },function (data) {
             $scope.threeList=data.responseData;
-            $scope.param.projectAppear=false;
+            $scope.loading = false;
         })
     };
 
@@ -60,53 +62,30 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         $state.go("pad-web.projectDetails",{id:id})
     };
 
-    /*点击图片显示内容*/
-    $scope.checkImg = function (index,status,id) {
-        $scope.param.projectTypeOneId=id;
-        /*二级产品列表接口*/
-        TwoLevelProject.get({id:id},function (data) {
-            $scope.project2List=data.responseData;
-        });
-        if($scope.param.childrenFlag == index){
-            for(var i = 0; i < $scope.selectSingleList.length; i++ ){
-                $scope.selectSingleList[i].status = 1
-            }
-            if(status == 1){
-                $scope.selectSingleList[index].status = 4;
-                $scope.param.projectAppear = true;
-            }
-            if(status == 4){
-                $scope.selectSingleList[index].status = 3;
-                $scope.param.projectAppear = false;
-            }
-            if(status == 3){
-                $scope.selectSingleList[index].status = 4;
-                $scope.param.projectAppear = true;
-            }
-        }
-    };
-
     $scope.selection  = function (index,oneId) {
         $scope.loading = true;
-        TwoLevelProject.get({id:oneId},function (data) {
-            $scope.project2List=data.responseData;
-            //默认调去三级展示
-            ThreeLevelProject.get({
-                ProjectTypeTwoId:data.responseData[0].id,
-                projectTypeOneId:oneId,
-                projectName:$scope.param.projectName,
-                pageSize:$scope.param.pageSize
-            },function (data) {
-                $scope.threeList=data.responseData;
-                $scope.param.projectAppear=false;
-                $scope.loading = false;
-            });
-        });
-        $scope.param.childrenFlag = index;
-        for(var i = 0; i < $scope.selectSingleList.length; i++ ){
-            $scope.selectSingleList[i].status = 1
-        }
         $scope.param.selection = index;
-        $scope.selectSingleList[index].status = 3
+        $scope.threeList = [];
+        TwoLevelProject.get({id:oneId},function (data) {
+            $scope.project2List = data.responseData;
+            if($scope.project2List.length>0)
+            {
+                $scope.param.projectAppear = true;
+                $scope.param.chooseProjectItem = $scope.project2List[0].id;
+                ThreeLevelProject.get({
+                    ProjectTypeTwoId:$scope.project2List[0].id,
+                    projectTypeOneId:oneId,
+                    projectName:$scope.param.projectName,
+                    pageSize:$scope.param.pageSize
+                },function (data) {
+                    $scope.threeList=data.responseData;
+                    $scope.loading = false;
+                });
+            }
+            else
+            {
+                $scope.loading = false;
+            }
+        });
     };
 });
