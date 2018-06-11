@@ -1,6 +1,7 @@
 var beautyIP = '/beauty/';
 var userIP = '/user/';
 var systemService = '/system-service/';
+var  mine='/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
             /*request: function(config) {
@@ -113,6 +114,9 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     //删除档案信息
     .factory('DeleteArchiveInfo', ['$resource', function($resource) {
         return $resource(beautyIP + 'archives/deleteArchiveInfo')
+    }])
+    .factory('GetCurrentLoginUserInfo',['$resource',function ($resource){
+        return $resource(mine+"getCurrentLoginUserInfo")
     }])
     //个人中心用户信息
     .factory('ClerkInfo', ['$resource', function($resource) {

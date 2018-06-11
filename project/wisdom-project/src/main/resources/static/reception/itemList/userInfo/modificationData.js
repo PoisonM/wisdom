@@ -1,4 +1,4 @@
-PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInfo,UpateClerkInfo,ImageBase64UploadToOSS) {
+PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInfo,UpateClerkInfo,ImageBase64UploadToOSS,GetCurrentLoginUserInfo) {
     /*-------------------------------------------定义头部信息----------------------------------------------*/
     $scope.$parent.$parent.param.headerCash.title="修改资料"
     $scope.$parent.$parent.param.headerCash.backContent="取消"
@@ -15,11 +15,17 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
 
     /*个人信息*/
     $scope.getUserInfo = function () {
-        ClerkInfo.query({
-            clerkId: "2"
-        }, function(data) {
-            $scope.userInfoDataMod = data[0]
-        });
+        GetCurrentLoginUserInfo.get(function (data) {
+            if(data.result="0x00001")
+            {
+                ClerkInfo.query({
+                    clerkId: data.responseData.id
+                }, function(data) {
+                    $scope.userInfoDataMod = data[0];
+                    console.log($scope.userInfoDataMod);
+                });
+            }
+        })
     }
     $scope.getUserInfo()
     /*---------------------------------------------方法--------------------------------------------------*/
@@ -51,9 +57,6 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
         debugger
         console.log($scope.thumb)
         ImageBase64UploadToOSS.save($scope.thumb, function (data) {
-            /*if(data.result == "0x00001"){
-
-             }*/
             $scope.param.imgSrc = data.responseData//图片地址
         })
     }

@@ -1,5 +1,5 @@
 PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialog
-    , GetProductRecord, GetClerkAchievement, ClerkInfo,BeautyLoginOut) {
+    , GetProductRecord, GetClerkAchievement,ClerkInfo,BeautyLoginOut,GetCurrentLoginUserInfo) {
     /*-------------------------------------------定义头部信息|----------------------------------------------*/
     $scope.$parent.param.top_bottomSelect = "wo";
     $scope.$parent.param.headerCash.leftContent = "我"
@@ -40,27 +40,33 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
             },1000)
         }
     })
-    /*个人信息*/
-    ClerkInfo.query({
-        clerkId: "2"
-    }, function(data) {
-        $scope.tempArr = []
-        $scope.userInfoData = data
-        //计算资料完成度
-        for (var key in $scope.userInfoData[0]) {
-            $scope.tempArr.push($scope.userInfoData[0][key]); //属性
-        }
-        var tempLength = 0
-        for(var i = 0; i < $scope.tempArr.length; i++){
-            if($scope.tempArr[i] != null){
-                tempLength+=1
-            }
-        }
-        $scope.userInfoData[0].completeness = Number(tempLength/$scope.tempArr.length*100).toFixed(0)+"%";
-        /*操作dom*/
-        $(".col_pink").width(($(".bg_gray").width()*Number(tempLength/$scope.tempArr.length*100).toFixed(1))/100)
 
+    /*个人信息*/
+    GetCurrentLoginUserInfo.get({},function (data) {
+        if(data.result="0x00001")
+        {
+            ClerkInfo.query({
+                clerkId: data.responseData.id
+            }, function(data) {
+                $scope.tempArr = []
+                $scope.userInfoData = data
+                //计算资料完成度
+                for (var key in $scope.userInfoData[0]) {
+                    $scope.tempArr.push($scope.userInfoData[0][key]); //属性
+                }
+                var tempLength = 0
+                for(var i = 0; i < $scope.tempArr.length; i++){
+                    if($scope.tempArr[i] != null){
+                        tempLength+=1
+                    }
+                }
+                $scope.userInfoData[0].completeness = Number(tempLength/$scope.tempArr.length*100).toFixed(0)+"%";
+                /*操作dom*/
+                $(".col_pink").width(($(".bg_gray").width()*Number(tempLength/$scope.tempArr.length*100).toFixed(1))/100)
+            })
+        }
     })
+
     /*----------------------------------------------方法-------------------------------------------------------------*/
     //今日业绩
     $scope.goTodayPerformance = function() {
@@ -88,9 +94,6 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
                 $scope.close = function() {
                     $scope.closeThisDialog();
                 };
-
-
-
             }],
             className: 'ngdialog-theme-default ngdialog-theme-custom border_radius',
             'width': 270,
