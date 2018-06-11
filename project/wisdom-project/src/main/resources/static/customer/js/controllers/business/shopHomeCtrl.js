@@ -40,6 +40,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
                 GetOfflineProductList.save({pageNo:0,pageSize:100},function(data){
                     $ionicLoading.hide();
+                    $scope.param.checkType="0";
                     $scope.param.productList = data.responseData;
               /*      var partNames = [];
                     angular.forEach($scope.param.productList,function(value1,index1){
