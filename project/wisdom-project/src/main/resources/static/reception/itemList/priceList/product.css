@@ -71,5 +71,13 @@
 .productAppear ul{width: 100%;background: #f5f5f5;display: flex;flex-wrap: wrap;text-align: center}
 .productAppear ul li{width: 1.8rem;height: 0.56rem;;line-height: 0.56rem}
 .productAppear ul li{margin: 0.37rem;background:#FFFFFF;color: #333333;font-size: 0.25rem;border-radius: 0.09rem;border: 1px solid #cccccc;font-family: PingFangTC-Medium}
-.productAppear ul li:nth-child(1){background: #FF6666;color: #FFFFFF;border: 0px}
+/*.productAppear ul li:nth-child(1){background: #FF6666;color: #FFFFFF;border: 0px}*/
 .mb{margin-bottom: 0.2rem}
+.product-white{
+    width:3rem !important;
+    background:#FFFFFF  !important;
+}
+.product-red{
+    width:3rem  !important;
+    background:#ff6666  !important;
+}
