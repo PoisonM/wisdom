@@ -157,4 +157,18 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
 
         return sysUserAccount;
     }
+
+    /**
+     * 创建用户的账户信息
+     *
+     * @param sysUserAccountDTO
+     * @return
+     */
+    @Override
+    public int saveSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO) {
+        logger.info("创建用户的账户信息传入参数={}", "sysUserAccountDTO = [" + sysUserAccountDTO + "]");
+        int sysUserAccount = sysCustomerAccountMapper.insert(sysUserAccountDTO);
+        logger.debug("创建用户的账户信息执行结果 {}", sysUserAccount > 0 ? "成功" : "失败");
+        return sysUserAccount;
+    }
 }

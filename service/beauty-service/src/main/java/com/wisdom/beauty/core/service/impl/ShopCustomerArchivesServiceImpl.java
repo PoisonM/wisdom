@@ -9,10 +9,7 @@ import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
-import com.wisdom.beauty.core.service.ShopCardService;
-import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
-import com.wisdom.beauty.core.service.ShopRechargeCardService;
-import com.wisdom.beauty.core.service.ShopService;
+import com.wisdom.beauty.core.service.*;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
@@ -60,6 +57,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 
     @Autowired
     private ShopService shopService;
+
+    @Autowired
+    private SysUserAccountService sysUserAccountService;
 
     @Autowired
     private ShopCardService shopCardService;
@@ -336,7 +336,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         if (null != clerkInfo) {
             sysClerkName = clerkInfo.getName();
             sysClerkId = clerkInfo.getId();
-            sysShopName = null == clerkInfo.getSysShopName()?"clerk":clerkInfo.getSysShopName();
+            SysShopDTO shop = shopService.getShopInfoByPrimaryKey(sysShopId);
+            sysShopName = shop.getName();
             channel = StringUtils.isBlank(channel)?"clerk":channel;
         }
         if (null != bossInfo) {
@@ -363,13 +364,34 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");
         //生成用户的特殊账号
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
-        shopUserRechargeCardDTO.setSysShopId(redisUtils.getShopId());
+        shopUserRechargeCardDTO.setSysShopId(sysShopId);
         shopUserRechargeCardDTO.setSysUserId(shopUserArchivesDTO.getSysUserId());
         shopUserRechargeCardDTO.setSysUserName(shopUserArchivesDTO.getSysUserName());
         shopCardService.saveUserSpecialRechargeCardInfo(shopUserRechargeCardDTO);
+        //创建用户账户
+        buildUserAccount(shopUserArchivesDTO, sysBossCode, sysShopId);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
+    }
+
+    /**
+     * 创建用户账户
+     * @param shopUserArchivesDTO
+     * @param sysBossCode
+     * @param sysShopId
+     */
+    private void buildUserAccount(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO, String sysBossCode, String sysShopId) {
+        SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
+        sysUserAccountDTO.setId(IdGen.uuid());
+        sysUserAccountDTO.setSysUserId(shopUserArchivesDTO.getSysUserId());
+        sysUserAccountDTO.setSumAmount(new BigDecimal(0));
+        sysUserAccountDTO.setSysShopId(sysShopId);
+        sysUserAccountDTO.setArrears(new BigDecimal(0));
+        sysUserAccountDTO.setCreateDate(new Date());
+        sysUserAccountDTO.setSysBossCode(sysBossCode);
+        int dto = sysUserAccountService.saveSysUserAccountDTO(sysUserAccountDTO);
+        logger.info("创建用户账户执行结果={}",dto>0?"成功":"失败");
     }
 
     @Override

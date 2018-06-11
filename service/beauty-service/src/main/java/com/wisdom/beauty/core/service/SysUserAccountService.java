@@ -37,4 +37,10 @@ public interface SysUserAccountService {
      */
     int updateSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO);
 
+    /**
+     * 创建用户账户信息
+     * @param sysUserAccountDTO
+     * @return
+     */
+    int saveSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO);
 }
