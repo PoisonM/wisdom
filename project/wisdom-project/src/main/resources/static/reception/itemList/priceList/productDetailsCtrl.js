@@ -13,7 +13,6 @@ PADWeb.controller("productDetailsCtrl", function($scope, $state, $stateParams,$r
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
-    console.log("productDetailsCtrl")
     $rootScope.title="产品详情";
     /*开关设置如果没有侧边栏*/
     $scope.$parent.mainSwitch.footerBoxFlag=false;
