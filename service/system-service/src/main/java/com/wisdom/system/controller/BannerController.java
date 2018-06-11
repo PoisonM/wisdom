@@ -97,7 +97,7 @@ public class BannerController {
 		}else {
 			//新增默认为最后一个
 			List<BannerDTO> list = bannerService.getHomeBannerList();
-			bannerDTO.setBannerRank(list.size());
+			bannerDTO.setBannerRank(list.size()+1);
 		}
 		try {
 			bannerDTO.setBannerId(bannerId);
@@ -174,7 +174,7 @@ public class BannerController {
 			}
 			if("up".equals(status)){
 
-				if(bannerRank-1 < 0){
+				if(bannerRank-1 < 1){
 					logger.info("编辑homeBannerId-上移,出错此bannerId={}已为最上层无法再上移",bannerId);
 					responseDTO.setResult(StatusConstant.FAILURE);
 					return responseDTO;
