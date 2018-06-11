@@ -45,13 +45,8 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 	public List<ShopClerkWorkRecordResponseDTO> getShopCustomerConsumeRecordList(
 			PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParamVoDTO) {
 		ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = pageParamVoDTO.getRequestData();
-		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
-		if (sysClerkDTO == null) {
-			throw new ServiceException("从redis中获取sysClerkDTO对象为空");
-		}
 		logger.info(
-				"getShopCustomerConsumeRecordList方法传入的参数,SysShopId={},sysClerkId={},consumeType={},startTime={}，endTime={}",
-				sysClerkDTO.getSysShopId(), shopClerkWorkRecordRequestDTO.getSysClerkId(),
+				"getShopCustomerConsumeRecordList方法传入的参数,sysClerkId={},consumeType={},startTime={}，endTime={}", shopClerkWorkRecordRequestDTO.getSysClerkId(),
 				shopClerkWorkRecordRequestDTO.getConsumeType(), pageParamVoDTO.getStartTime(),
 				pageParamVoDTO.getEndTime());
 		ShopClerkWorkRecordCriteria criteria = new ShopClerkWorkRecordCriteria();
@@ -70,8 +65,8 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 			c.andCreateDateBetween(startTime, endTime);
 		}
 		// 设置查询条件
-		if (StringUtils.isNotBlank(sysClerkDTO.getSysShopId())) {
-			c.andSysShopIdEqualTo(sysClerkDTO.getSysShopId());
+		if (StringUtils.isNotBlank(shopClerkWorkRecordRequestDTO.getSysShopId())) {
+			c.andSysShopIdEqualTo(shopClerkWorkRecordRequestDTO.getSysShopId());
 		}
 		if (StringUtils.isNotBlank(shopClerkWorkRecordRequestDTO.getSysClerkId())) {
 			c.andSysClerkIdEqualTo(shopClerkWorkRecordRequestDTO.getSysClerkId());
