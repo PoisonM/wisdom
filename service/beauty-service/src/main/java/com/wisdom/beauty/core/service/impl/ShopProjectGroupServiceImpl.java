@@ -330,7 +330,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             return 0;
         }
         List<String> images = extShopProjectGroupDTO.getImageList();
-        mongoUtils.saveImageUrl(images, groupDTOId);
+        mongoUtils.updateImageUrl(images, groupDTOId);
         int update = shopProjectGroupMapper.updateByPrimaryKeySelective(extShopProjectGroupDTO);
         logger.info("修改套卡执行结果={}", update > 0 ? "成功" : "失败");
 

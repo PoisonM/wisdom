@@ -254,7 +254,7 @@ public class ShopCardServiceImpl implements ShopCardService {
         } else {
             extShopRechargeCardDTO.setImageUrl("");
         }
-        mongoUtils.saveImageUrl(extShopRechargeCardDTO.getImageList(), extShopRechargeCardDTO.getId());
+        mongoUtils.updateImageUrl(extShopRechargeCardDTO.getImageList(), extShopRechargeCardDTO.getId());
         int update = shopRechargeCardMapper.updateByPrimaryKey(extShopRechargeCardDTO);
         //删除充值卡适用范围信息
         ShopProjectProductCardRelationCriteria criteria = new ShopProjectProductCardRelationCriteria();

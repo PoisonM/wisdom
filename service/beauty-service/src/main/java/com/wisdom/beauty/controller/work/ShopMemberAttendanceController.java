@@ -1,10 +1,14 @@
 package com.wisdom.beauty.controller.work;
 
+import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
+import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.requestDto.ShopClerkWorkRecordRequestDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopClerkWorkRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.beauty.core.service.ShopClerkWorkService;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +46,8 @@ public class ShopMemberAttendanceController {
 	@Autowired
 	private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
 
-	@Autowired
-	private ShopUerConsumeRecordService shopUerConsumeRecordService;
-	@Autowired
-	private ShopAppointmentService appointmentService;
+    @Autowired
+	private ShopClerkWorkService shopClerkWorkService;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -223,31 +226,77 @@ public class ShopMemberAttendanceController {
 
 	/**
 	 * @Author:zhanghuan
-	 * @Param:
 	 * @Return:
-	 * @Description: 业绩明细
+	 * @Param:   searchFile 1   查业绩明细
+	 *           searchFile 2   耗卡明细
+	 *           searchFile 3  卡耗明细
+	 * @Description: 获取boss的业绩,耗卡,卡耗明细
+	 *                  业绩明细: consumeType 0 goodsType 2
+	 *                         : consumeType 0 goodsType 0 1 3 4
+	 *                  耗卡明细:consumeType 1 goodsType 1
+	 *                          consumeType 1 goodsType 3
+	 *                          consumeType 0 goodsType 0
+	 *                  卡耗明细:consumeType 1 goodsType2
 	 * @Date:2018/5/7 15:35
 	 */
-	@RequestMapping(value = "/getBossPerformance", method = RequestMethod.POST)
+	@RequestMapping(value = "/getBossPerformanceList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(
-			@RequestBody UserConsumeRequestDTO userConsumeRequest) {
+	ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> findMineConsume(@RequestParam String searchFile, int pageSize) {
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+		if (sysBossDTO == null) {
+			logger.info("redis获取boos对象sysBossDTO为空");
+			return null;
+		}
+		ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = new ShopClerkWorkRecordRequestDTO();
 
-		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-		userConsumeRequest.setSysShopId(userConsumeRequest.getSysShopId());
-		userConsumeRequest.setSysBossCode(sysBossDTO.getId());
-		userConsumeRequest.setGoodsTypeRequire(true);
-		pageParamVoDTO.setRequestData(userConsumeRequest);
+		shopClerkWorkRecordRequestDTO.setSysShopId(sysBossDTO.getCurrentShopId());
+		//设置为true 这样需要通过consumeType和goodType做为条件来查询
+		shopClerkWorkRecordRequestDTO.setTypeRequire(true);
+		if("1".equals(searchFile)){
+			List<String> consumeType=new ArrayList<>();
+			consumeType.add(ConsumeTypeEnum.RECHARGE.getCode());
+			shopClerkWorkRecordRequestDTO.setConsumeTypeList(consumeType);
+			List<String> goodsType=new ArrayList<>();
+			goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.PRODUCT.getCode());
+			shopClerkWorkRecordRequestDTO.setGoodsTypeList(goodsType);
+		}
+		if("2".equals(searchFile)){
+			shopClerkWorkRecordRequestDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+			List<String> goodsType=new ArrayList<>();
+			goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+			shopClerkWorkRecordRequestDTO.setGoodsTypeList(goodsType);
+			List<String> consumeType=new ArrayList<>();
+			consumeType.add(ConsumeTypeEnum.RECHARGE.getCode());
+			consumeType.add(ConsumeTypeEnum.CONSUME.getCode());
+			shopClerkWorkRecordRequestDTO.setConsumeTypeList(consumeType);
+		}
+		if("3".equals(searchFile)){
+			shopClerkWorkRecordRequestDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+			List<String> goodsType=new ArrayList<>();
+			goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
+			shopClerkWorkRecordRequestDTO.setGoodsTypeList(goodsType);
+			List<String> consumeType=new ArrayList<>();
+			consumeType.add(ConsumeTypeEnum.CONSUME.getCode());
+			shopClerkWorkRecordRequestDTO.setConsumeTypeList(consumeType);
+		}
+		PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		pageParamVoDTO.setRequestData(shopClerkWorkRecordRequestDTO);
+		pageParamVoDTO.setPaging(true);
 		pageParamVoDTO.setPageNo(0);
-		pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
+		pageParamVoDTO.setPageSize(pageSize);
 
-		List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
+		List<ShopClerkWorkRecordResponseDTO> shopClerkWorkRecordResponseDTOs = shopClerkWorkService
 				.getShopCustomerConsumeRecordList(pageParamVoDTO);
 
-		ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
+		ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(userConsumeRecordResponseDTO);
+		responseDTO.setResponseData(shopClerkWorkRecordResponseDTOs);
 		return responseDTO;
 	}
 

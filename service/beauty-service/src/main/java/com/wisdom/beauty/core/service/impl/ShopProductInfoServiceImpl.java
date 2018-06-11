@@ -391,7 +391,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		}
 		//保存图片信息
 		if (CommonUtils.objectIsNotEmpty(extShopProductInfoDTO.getImageList())) {
-			mongoUtils.saveImageUrl(extShopProductInfoDTO.getImageList(), extShopProductInfoDTO.getId());
+			mongoUtils.updateImageUrl(extShopProductInfoDTO.getImageList(), extShopProductInfoDTO.getId());
 			extShopProductInfoDTO.setProductUrl(extShopProductInfoDTO.getImageList().get(0));
 		}
 		extShopProductInfoDTO.setUpdateDate(new Date());
