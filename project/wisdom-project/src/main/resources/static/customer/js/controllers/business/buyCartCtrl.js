@@ -250,6 +250,7 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                     }
                                     //将needPayOrderList数据放入后台list中
                                     PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
+
                                         if(needPayOrderList=="")
                                         {
                                             $("#greyBox").css("background","grey")
@@ -259,8 +260,12 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                             window.location.href = "orderPay.do?productType=offline&random="+Math.random();
                                         }
                                         else if(data.result==Global.FAILURE){
-                                            alert("库存不足~,购买失败");
-                                            $state.go("shopHome");
+                                            if(data.errorInfo=="failure"){
+                                                alert("亲！此商品为新用户专享产品");
+                                            }else{
+                                                alert("库存不足~,购买失败");
+                                                $state.go("shopHome");
+                                            }
                                         }
                                     })
                                 }
@@ -308,8 +313,12 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                 window.location.href = "orderPay.do?productType=offline&random="+Math.random();
                             }
                             else if(data.result==Global.FAILURE){
-                                alert("库存不足~,购买失败");
-                                $state.go("shopHome");
+                                if(data.errorInfo=="failure"){
+                                    alert("亲！此商品为新用户专享产品");
+                                }else{
+                                    alert("库存不足~,购买失败");
+                                    $state.go("shopHome");
+                                }
                             }
                         })
                     }

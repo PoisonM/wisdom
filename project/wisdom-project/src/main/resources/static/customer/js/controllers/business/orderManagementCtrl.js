@@ -57,7 +57,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                                     }
 
                                 }else {
-                                    alert(data.errorInfo)
+                                    alert("亲！此商品为新用户专享产品")
                                 }
                             })
             };

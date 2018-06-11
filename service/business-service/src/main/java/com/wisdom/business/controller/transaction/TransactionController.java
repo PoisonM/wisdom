@@ -77,11 +77,13 @@ public class TransactionController {
         logger.info("putNeedPayOrderListToRedis需要支付订单放入redis==={}开始",startTime);
         ResponseDTO responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        if(needPayOrderList.getNeedPayOrderList().get(0).getProductPrefecture()!=null){
-            if((!userInfoDTO.getUserType().equals(ConfigConstant.businessC1))&&needPayOrderList.getNeedPayOrderList().get(0).getProductPrefecture().equals("1")){
-                responseDTO.setResult(StatusConstant.FAILURE);
-                responseDTO.setErrorInfo("亲！此商品为新用户专享产品");
-                return responseDTO;
+        for(NeedPayOrderDTO needPayOrder: needPayOrderList.getNeedPayOrderList()){
+            if(needPayOrder.getProductPrefecture()!=null){
+                if((!userInfoDTO.getUserType().equals(ConfigConstant.businessC1))&&needPayOrder.getProductPrefecture().equals("1")){
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                    responseDTO.setErrorInfo("failure");
+                    return responseDTO;
+                }
             }
         }
         for(NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()){
