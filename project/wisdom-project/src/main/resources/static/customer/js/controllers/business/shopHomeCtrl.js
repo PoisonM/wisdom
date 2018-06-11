@@ -19,7 +19,8 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 redPackerFlagTwo:false,
                 redPackerBox:true,
                 bonusValue:"",
-                timeContent:""
+                timeContent:"",
+                checkType:"0"
             };
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
@@ -33,13 +34,6 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 GetHomeBannerList.save(function(data){
                     $scope.param.bannerList = data.responseData;
                     /*轮播图排序 按照后台返回来的那个值*/
-                    function sortRule(a,b) {
-                        return a.bannerRank - b.bannerRank;
-                    }
-                    $scope.param.bannerList.sort(sortRule);
-                    console.log($scope.param.bannerList);
-
-
                     $ionicSlideBoxDelegate.update();
                     $ionicSlideBoxDelegate.loop(true);
                 });
@@ -109,7 +103,9 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
                 })
 
-
+               $scope.checkBg=function (checkType) {
+                $scope.param.checkType=checkType;
+               }
 
                 //判断用户是否购买过新人大礼包产品
                 /*GetBusinessOrderByProductId.get({productId:$scope.param.promoteProductId},function(data){

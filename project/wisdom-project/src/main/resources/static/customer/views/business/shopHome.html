@@ -135,11 +135,12 @@
             width: 100%;
             margin-bottom: 20px;
         }
-        .tab-title{font-size: 14px;}
-        ion-tabs.tabs-color-active-assertive .tab-item.tab-item-active {
-            color: #ffffff;
-            background: #FC4B4B;
+        .footColor{color: #4A4A4A;}
+        .footActive{
+            background:#FC4B4B;color:#ffffff;
         }
+        .tab-title{font-size: 14px;}
+
     </style>
     <ion-content overflow-scroll="true" style="bottom: 44px">
         <!--轮播图部分-->
@@ -284,19 +285,40 @@
         </div>
         </div>
     </ion-content>
-    <ion-tabs class="tabs-icon-bottom tabs-color-active-assertive" style="position: absolute;left: 0px;bottom: 0px;right: 0px">
+    <!--ionic 底部切换在安卓手机出现兼容问题 所以改变成div形式-->
+    <div style="width: 100%;background: #DBDBDB ;position: absolute;left: 0px;bottom: 0px;right: 0px;height: 62px;">
+        <ul style="display: flex;flex-wrap: wrap;justify-content: space-between;font-size: 14px">
+            <li style="text-align: center;width: 25%;height: 62px" class="footColor" ng-class="{'footActive':param.checkType==0}" ng-click="checkBg(0)" ui-sref="shopHome">
+                <i class=" icon ion-ios-home-outline"  style="font-size: 30px;margin-top: 7px;display: inline-block" class="footColor"></i>
+                <p style="margin-top: 4px">首页</p>
+            </li>
+            <li style="text-align: center;width: 25%;height: 62px"  ng-class="{'footActive':param.checkType==1}" ng-click="checkBg(1)" class="footColor" ui-sref="shareHome">
+                <i class=" icon ion-ios-redo-outline" style="font-size: 30px;margin-top: 7px;display: inline-block"></i>
+                <p style="margin-top: 4px">分享赚钱</p>
+            </li>
+            <li style="text-align: center;width: 25%;height: 62px"  ng-class="{'footActive':param.checkType==2}" ng-click="checkBg(2)" class="footColor" ui-sref="buyCart">
+                <i class=" icon ion-ios-cart-outline" style="font-size: 30px;margin-top: 7px;display: inline-block"></i>
+                <p style="margin-top: 4px">购物车</p>
+            </li>
+            <li style="text-align: center;width: 25%;height: 62px"  ng-class="{'footActive':param.checkType==3}" ng-click="checkBg(3)" class="footColor" ui-sref="orderManagement">
+                <i class=" icon ion-ios-list-outline" style="font-size: 30px;margin-top: 7px;display: inline-block"></i>
+                <p style="margin-top: 4px">我的订单</p>
+            </li>
+        </ul>
+    </div>
+    <!--<ion-tabs class="tabs-icon-bottom tabs-color-active-assertive" style="position: absolute;left: 0px;bottom: 0px;right: 0px;z-index: 1001">
         <ion-tab title="首页" icon-off="ion-ios-home-outline" icon-on="ion-ios-home-outline" ui-sref="shopHome"></ion-tab>
         <ion-tab title="分享赚钱" icon-off=" ion-ios-redo-outline" icon-on="ion-ios-redo-outline"
                  ui-sref="shareHome"></ion-tab>
         <ion-tab title="购物车" icon-off=" ion-ios-cart-outline" icon-on=" ion-ios-cart-outline" ui-sref="buyCart"></ion-tab>
         <ion-tab title="我的订单" icon-off="ion-ios-list-outline" icon-on="ion-ios-list-outline"
                  ui-sref="orderManagement"></ion-tab>
-    </ion-tabs>
+    </ion-tabs>-->
     <!--进首页弹出页面-->
-    <div class="redPacket_box" ng-if="param.redPackerBox">
+    <!--<div class="redPacket_box" ng-if="param.redPackerBox">
         <div class="redPacket">
             <img src="images/huo.jpg" alt="">
             <span ng-click="redPackerClose()" class="close1"></span>
         </div>
-    </div>
+    </div>-->
 </ion-view>
