@@ -431,7 +431,7 @@ PADWeb.directive('ngTime', function () {
                         slidesPerView: 3,
                         loop: true,
                     });
-                },500);
+                },1000);
             }
         }
     }]);
