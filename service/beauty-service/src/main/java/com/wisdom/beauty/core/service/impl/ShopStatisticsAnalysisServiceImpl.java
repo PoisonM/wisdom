@@ -13,6 +13,7 @@ import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
@@ -401,8 +402,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	public List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
-		List<SysClerkDTO> sysClerkList = userServiceClient.getClerkInfoList(userConsumeRequest.getSysBossCode(),
+		ResponseDTO<List<SysClerkDTO>> listResponseDTO  = userServiceClient.getClerkInfoList(userConsumeRequest.getSysBossCode(),
 				pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime(), pageParamVoDTO.getPageSize());
+		List<SysClerkDTO> sysClerkList=listResponseDTO.getResponseData();
 		if (CollectionUtils.isEmpty(sysClerkList)) {
 			logger.info("查询店员的结果为空");
 			return null;
@@ -634,8 +636,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	public List<ExpenditureAndIncomeResponseDTO> getClerkAchievementList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
-		List<SysClerkDTO> sysClerkList = userServiceClient.getClerkInfoList(userConsumeRequest.getSysBossCode(),
+		ResponseDTO<List<SysClerkDTO>> listResponseDTO   = userServiceClient.getClerkInfoList(userConsumeRequest.getSysBossCode(),
 				pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime(), pageParamVoDTO.getPageSize());
+		List<SysClerkDTO> sysClerkList=listResponseDTO.getResponseData();
 		if (CollectionUtils.isEmpty(sysClerkList)) {
 			logger.info("查询店员的结果为空");
 			return null;

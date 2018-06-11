@@ -1,5 +1,6 @@
 package com.wisdom.beauty.client;
 
+import com.wisdom.beauty.interceptor.FeignConfigInterceptor;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient("user-service")
+@FeignClient(value = "user-service")
 public interface UserServiceClient {
 
 	/**
@@ -73,9 +74,9 @@ public interface UserServiceClient {
 	 * @Date:2018/4/25 18:32
 	 */
 	@RequestMapping(value = "/getClerkInfoList", method = RequestMethod.GET)
-	List<SysClerkDTO> getClerkInfoList(@RequestParam(value = "sysBossCode") String sysBossCode,
+	ResponseDTO<List<SysClerkDTO>>   getClerkInfoList(@RequestParam(value = "sysBossCode") String sysBossCode,
 			                           @RequestParam(value = "startTime") String startTime,
-									   @RequestParam(value = "startTime") String endTime,
+									   @RequestParam(value = "endTime") String endTime,
 									   @RequestParam(value = "pageSize") int pageSize);
 
 	/**
