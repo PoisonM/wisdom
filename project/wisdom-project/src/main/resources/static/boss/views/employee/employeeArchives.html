@@ -4,14 +4,14 @@
 
         </div>
         <div style="border: 1px solid #EEEEEE;border-radius: 2px;width:95%;margin:0 auto;margin-top:-55px;" class="bgfff">
-            <div style=";margin-left:10px;">
-                <p style="width:40px;height:40px;border-radius: 5px;position: absolute;top:15px;">
+            <div style=";margin-left:10px;margin-top:8px">
+                <p style="width:40px;height:40px;border-radius: 5px;position: absolute">
                     <img ng-src="{{archives.imageUrl}}" style="width:40px;height:40px;border-radius: 5px; " ng-click="newUserGo()">
                 </p>
-                <span  style="font-size: 16px;display: inline-block;margin-top:10px;margin-left:50px;" >
-                  {{archives.sysUserName}}
-               </span>
-                <img src="images/pho.png" class=" mr10" style="float: right;margin-top:10px;height:24px;width:15px;">
+                <span  style="font-size: 16px;display: inline-block;margin-top:10px;margin-left:50px;">
+                    {{archives.sysUserName}}
+                </span>
+                <!--<img src="images/pho.png" class=" mr10" style="float: right;margin-top:10px;height:24px;width:15px;">-->
             </div>
             <div class="row">
                 <div class="col col-50">
@@ -23,32 +23,25 @@
                         <img src="images/shopgray.png" class=" mr10" style="width:14px;height:12px;">
                         {{archives.sysShopName}}
                     </p>
+                    <p>
+                        总余额：{{archives.totalBalance}}元
+                    </p>
                 </div>
-                <div class="col col-50" >
-                    <div style="float: right" class="center">
-                        <p style="width:32px;height:32px;border-radius: 50%;background: gainsboro">
-
-                        </p>
-                        <p class="fs11 colff66" ><img src="images/associated.png" class="associated "><span style="margin-top: 5px;display: inline-block">{{archives.sysClerkName}}</span></p>
-                    </div>
-                </div>
-
             </div>
-            <div style="border: 1px solid #EEEEEE;border-radius: 2px;height:62px;font-size: 14px;color: #666666;" class="row">
-                <div class="col col333 center" ng-click="refillCardGo(archives.sysShopId,archives.sysUserId)">
-                    <p>总余额</p>
-                    <p>{{archives.totalBalance}}</p>
-                </div>
-                <div class="col col333 center" ng-click="balanceRecordGo()">
-                    <p>总欠款</p>
-                    <p>****</p>
-                </div>
-                <div class="col col333 center">
-                    <p>优惠券</p>
-                    <p>****张</p>
-                </div>
-
-            </div>
+            <!--<div style="border: 1px solid #EEEEEE;border-radius: 2px;height:62px;font-size: 14px;color: #666666;" class="row">-->
+                <!--<div class="col col333 center" ng-click="refillCardGo(archives.sysShopId,archives.sysUserId)">-->
+                    <!--<p>总余额</p>-->
+                    <!--<p>{{archives.totalBalance}}</p>-->
+                <!--</div>-->
+                <!--<div class="col col333 center" ng-click="balanceRecordGo()">-->
+                    <!--<p>总欠款</p>-->
+                    <!--<p>****</p>-->
+                <!--</div>-->
+                <!--<div class="col col333 center">-->
+                    <!--<p>优惠券</p>-->
+                    <!--<p>****张</p>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
         <div style="margin-top:10px;">
             <ion-list >

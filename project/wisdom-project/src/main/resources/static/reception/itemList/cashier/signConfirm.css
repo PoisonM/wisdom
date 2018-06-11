@@ -6,6 +6,8 @@
     float: left;
     width: 318px;
     background: #eee;
+    height: 100%;
+    overflow-y: scroll;
 }
 
 .signConfirmBox .signConfirmLeft .signConfirmLeftTitle {
@@ -24,25 +26,33 @@
     text-align: center;
     display: block;
     margin: 10px auto;
+    font-size: 20px;
 }
 
 .signConfirmBox .signConfirmLeft .signConfirmLeftContent {}
 
 .signConfirmBox .signConfirmLeft .signConfirmLeftContent .signConfirmLeftContentTitle {
-    margin: 15px 10px;
+    margin: 5px 10px;
+    font-size: 16px;
 }
-
+.signConfirmBox .signConfirmLeft .signConfirmLeftContent p{
+    font-family: PingFangSC-Regular;
+    font-size: 18px;
+    color: #333333;
+    padding: 5px 10px;
+    background: #ffff;
+}
 .signConfirmBox .signConfirmLeft .signConfirmLeftContent ul {
     background: #fff;
 }
 
 .signConfirmBox .signConfirmLeft .signConfirmLeftContent ul li {
-    padding: 15px 10px;
+    padding: 5px 10px;
 }
 
 .signConfirmBox .signConfirmLeft .signConfirmLeftContent ul li .name {
     font-family: PingFangSC-Regular;
-    font-size: 16px;
+    font-size: 15px;
     color: #333333;
 }
 
@@ -81,4 +91,10 @@
     margin: 41px 44px 0 0;
     width: 180px;
     height: 44px;
+}
+
+
+.signConfirmBox .signConfirmLeft .signConfirmLeftContent .xiangmu_info ul li{
+    padding: 5px 10px;
+    color: #333333;
 }

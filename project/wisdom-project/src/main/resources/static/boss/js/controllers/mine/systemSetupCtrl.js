@@ -18,10 +18,8 @@ angular.module('controllers',[]).controller('systemSetupCtrl',
                         window.localStorage.removeItem("beautyUserLoginToken")
                         window.localStorage.removeItem("beautyBossLoginToken")
                         window.localStorage.removeItem("beautyClerkLoginToken")
-                        $state.go("bossLogin")
+                        $state.go("workHome");
                     }
-
                 })
-
             }
         }]);

@@ -1,6 +1,7 @@
-var beautyIP = 'http://192.168.1.117/beauty/';
-var userIP = 'http://192.168.1.117/user/';
-var systemService = 'http://192.168.1.117/system-service/';
+var beautyIP = '/beauty/';
+var userIP = '/user/';
+var systemService = '/system-service/';
+var  mine='/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
             /*request: function(config) {
@@ -114,13 +115,16 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('DeleteArchiveInfo', ['$resource', function($resource) {
         return $resource(beautyIP + 'archives/deleteArchiveInfo')
     }])
+    .factory('GetCurrentLoginUserInfo',['$resource',function ($resource){
+        return $resource(mine+"getCurrentLoginUserInfo")
+    }])
     //个人中心用户信息
     .factory('ClerkInfo', ['$resource', function($resource) {
         return $resource(userIP + 'clerkInfo/:clerkId', { clerkId: '@id' })
     }])
     //更新个人中心用户信息
-    .factory('UpateClerkInfo', ['$resource', function($resource) {
-        return $resource(userIP + 'upateClerkInfo')
+    .factory('UpdateClerkInfo', ['$resource', function($resource) {
+        return $resource(userIP + 'updateClerkInfo')
     }])
 
     //个人中心获取今日业绩
@@ -260,8 +264,6 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(beautyIP + 'clerkSchedule/getClerkScheduleInfo')
     }])
 
-
-
     //查询某个用户的疗程卡、单次卡信息
     .factory('GetUserCourseProjectList', ['$resource', function($resource) {
         return $resource(beautyIP + 'projectInfo/getUserCourseProjectList')
@@ -314,7 +316,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //充值卡充值确认接口
     .factory('UserRechargeConfirm', ['$resource', function($resource) {
-        return $resource(beautyIP + '/cardInfo/userRechargeConfirm')
+        return $resource(beautyIP + 'cardInfo/userRechargeConfirm')
     }])
     //充值卡充值签字确认查询接口
     .factory('SearchRechargeConfirm', ['$resource', function($resource) {
@@ -364,5 +366,12 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('UpdateConsumeRecord', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/updateConsumeRecord')
     }])
-
+    //账户信息记录的详细信息
+    .factory('ConsumeFlowNo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/consumeFlowNo')
+    }])
+    //支付签字确认接口
+    .factory('PaySignConfirm', ['$resource', function($resource) {
+        return $resource(beautyIP + 'userPay/paySignConfirm')
+    }])
 ;

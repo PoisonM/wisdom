@@ -1,7 +1,10 @@
-PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm, ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo) {
+PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
+    , $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm
+    , ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo,ConsumeFlowNo,PaySignConfirm) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "签字确认";
+    $scope.$parent.param.headerPrice.saveContent = ""
     $scope.flagFn = function (bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool;
@@ -25,34 +28,52 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDi
     var img = new Image()
     img.src = data
     $(img).appendTo($('#signimg'))
+
+
+
     //将数据显示在文本框
     if ($state.params.transactionId != '') {
-        SearchRechargeConfirm.get({
+        $scope.rechargeConsumeFlag = true
+        SearchRechargeConfirm.get({//充值签字确认
             transactionId: $state.params.transactionId,
         }, function(data) {
             $scope.responseData = data.responseData;
         })
     } else if ($state.params.orderId != '') {
-        GetShopUserRecentlyOrderInfo.get({
-            orderId: $state.params.orderId,
-            sysUserId: $stateParams.userId
-        }, function(data) {
-            console.log(data)
+        $scope.rechargeConsumeFlag = false
+        ConsumeFlowNo.get({
+            consumeFlowNo:$stateParams.orderId
+        },function (data) {
+            $scope.consumeListInfo = data.responseData
         })
     }
 
-
-
     $scope.clickOk = function() {
         ImageBase64UploadToOSS.save({ imageStr: $("#signConfirmRight").jSignature("getData") }, function(data) {
-            RechargeCardSignConfirm.get({
-                transactionId: $state.params.transactionId,
-                //orderId: $state.params.orderId,
-                //图片base64流是data
-                imageUrl: data.responseData,
-            }, function(data) {
-                $state.go("pad-web.left_nav.personalFile");
-            })
+            if($state.params.transactionId != ''){
+                RechargeCardSignConfirm.get({
+                    transactionId: $state.params.transactionId,
+                    imageUrl: data.responseData,
+                }, function(data) {
+                    if(data.result == "0x00001"){
+                        $state.go("pad-web.left_nav.blankPage");
+                    }else{
+                        alert(data.errorInfo);
+                        $state.go("pad-web.left_nav.blankPage");
+                    }
+
+                })
+            }else if($state.params.orderId != ''){
+                PaySignConfirm.save({
+                    orderId:$stateParams.orderId,
+                    imageUrl: data.responseData,
+                },function (data) {
+                    if(data.result == "0x00001"){
+                        $state.go("pad-web.left_nav.blankPage");
+                    }
+                })
+            }
+
         })
     }
 

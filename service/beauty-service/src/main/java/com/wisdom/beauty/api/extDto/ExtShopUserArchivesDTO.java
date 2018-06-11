@@ -9,6 +9,16 @@ public class ExtShopUserArchivesDTO extends ShopUserArchivesDTO {
     //最近一次预约时间
     private String lastAppointTimes;
 
+    private String isMember;
+
+    public String getIsMember() {
+        return isMember;
+    }
+
+    public void setIsMember(String isMember) {
+        this.isMember = isMember;
+    }
+
     public String getLastAppointTimes() {
         return lastAppointTimes;
     }

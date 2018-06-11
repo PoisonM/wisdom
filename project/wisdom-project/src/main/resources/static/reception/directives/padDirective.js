@@ -30,6 +30,7 @@ PADWeb.directive('ngTime', function () {
             }
         };
     })
+
     //分页
     .directive('tmPagination', [function () {
         return {
@@ -379,31 +380,61 @@ PADWeb.directive('ngTime', function () {
         };
     })
     .directive("ngOnhold", ["$swipe", "$parse", function($swipe, $parse){
-    //长按触发事件需要的时间
-    var ON_HOLD_TIMEMS = 1000;
-    return function(scope, element, attr) {
-        var onholdHandler = $parse(attr["ngOnhold"]);
-        var run;
-        $swipe.bind(element, {
-            'start': function(coords, event) {
-                run = setTimeout(function(){
-                    scope.$apply(function() {
-                        element.triggerHandler("onhold");
-                        onholdHandler(scope, {$event: event});
-                        console.log(event);
+        //长按触发事件需要的时间
+        var ON_HOLD_TIMEMS = 1000;
+        return function(scope, element, attr) {
+            var onholdHandler = $parse(attr["ngOnhold"]);
+            var run;
+            $swipe.bind(element, {
+                'start': function(coords, event) {
+                    run = setTimeout(function(){
+                        scope.$apply(function() {
+                            element.triggerHandler("onhold");
+                            onholdHandler(scope, {$event: event});
+                            console.log(event);
+                        });
+                    }, ON_HOLD_TIMEMS);
+                },
+                'cancel': function(event) {
+                    if(run)clearTimeout(run);
+                },
+                'move' : function(event){
+                    if(run)clearTimeout(run);
+                },
+                'end': function(coords, event) {
+                    if(run)clearTimeout(run);
+                }
+            }, ['touch', 'mouse']);
+        }
+    }])
+
+    .directive('swipers',['$timeout',function($timeout){
+        return {
+            restrict: "EA",
+            scope: {
+                data:"="
+            },
+            template: '<div class="swiper-container silder">'+
+            '<ul class="swiper-wrapper">'+
+            '<li class="swiper-slide" ng-repeat="item in data">'+
+            '<a class="img40"><img ng-src="{{item}}" alt="" /></a>'+
+            '</li>'+
+            '</ul>'+
+            '<div class="swiper-pagination"></div>'+
+            '</div>',
+            link: function(scope, element, attrs) {
+                $timeout(function(){
+                    var swiper = new Swiper('.swiper-container', {   //轮播图绑定样式名
+                        pagination: '.swiper-pagination',
+                        paginationClickable: true,
+                        autoplay: 5000,
+                        slidesPerView: 3,
+                        loop: true,
                     });
-                }, ON_HOLD_TIMEMS);
-            },
-            'cancel': function(event) {
-                if(run)clearTimeout(run);
-            },
-            'move' : function(event){
-                if(run)clearTimeout(run);
-            },
-            'end': function(coords, event) {
-                if(run)clearTimeout(run);
+                },1000);
             }
-        }, ['touch', 'mouse']);
-    }
-}]);
+        }
+    }]);
+
 ;
+

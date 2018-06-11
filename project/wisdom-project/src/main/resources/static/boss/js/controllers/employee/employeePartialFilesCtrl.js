@@ -30,7 +30,7 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
             };
 
             $scope.goActives=function (id) {
-                $state.go("employeeArchives",{id:id})
+                $state.go("archives",{id:id})
             };
 
             /*点击切换档案*/
@@ -71,6 +71,7 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
             /*点击放大镜根绝姓名搜索*/
             $scope.search=function () {
                 FindArchives.get({pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
+                    console.log(data);
                     if(data.result == Global.SUCCESS){
                         $scope.fileList = [];
                         $scope.info = data.responseData.info;

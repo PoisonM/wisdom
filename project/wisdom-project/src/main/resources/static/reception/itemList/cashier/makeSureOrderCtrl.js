@@ -45,14 +45,14 @@ PADWeb.controller('makeSureOrderCtrl', function($scope, $stateParams, $state, ng
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: $scope.tempAll, //总金额
         }, function(data) {
-            $state.go('pad-web.left_nav.orderList', { orderId: $scope.orderId })
+            $state.go('pad-web.left_nav.orderList', { orderId: $scope.orderId,userId:$stateParams.userId })
         })
     }
     $scope.checkBoxChek = function(e) {
         $(e.target).children('.checkBox').css('background', '#FF6666')
     }
     $scope.goSelectRechargeType = function() {
-        $state.go('pad-web.left_nav.selectRechargeType', { type: 1 });
+        $state.go('pad-web.left_nav.selectRechargeType', { type: 1,userId:$stateParams.userId });
     }
 
     SaveShopUserOrderInfo.save({ userId: $stateParams.userId }, function(data) {

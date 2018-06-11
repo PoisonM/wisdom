@@ -46,9 +46,7 @@
                 <span ng-click="priceListSaveFn()" class="header_price_save">{{param.headerPrice.saveContent}}</span>
             </div>
             <div ng-if = "mainSwitch.headerPriceListBlackFlag" class="header_price_box">
-                <div class="header_price_black_l">
-
-                </div>
+                <div class="header_price_black_l"></div>
                 <div class="header_price_black_r">
                     <div class="black_r_title">{{param.headerPrice.blackTitle}}</div>
                     <span class="black_r_search"><i></i>{{param.headerPrice.blackBackContent}}</span>
@@ -58,10 +56,7 @@
 
     </div>
 
-
-
     <!--中心切换区域-->
-
     <div ui-view style="height: 100%"></div>
     <div ng-if = "mainSwitch.footerBoxFlag" class="footer">
         <div class="footer_box">

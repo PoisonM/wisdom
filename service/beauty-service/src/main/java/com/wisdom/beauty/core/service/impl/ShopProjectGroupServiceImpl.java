@@ -92,26 +92,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         for (ShopProjectGroupDTO s : groupDTOS) {
             ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO = new ProjectInfoGroupResponseDTO();
             BeanUtils.copyProperties(s, projectInfoGroupResponseDTO);
-            if(StringUtils.isNotBlank(projectInfoGroupResponseDTO.getExpirationDate())&&"0".equals(projectInfoGroupResponseDTO.getExpirationDate())){
-                projectInfoGroupResponseDTO.setOverdue(false);
-            }else {
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                //产品有效期
-                Date expirationDate=null;
-                try {
-                     expirationDate = df.parse(projectInfoGroupResponseDTO.getExpirationDate());
-                } catch (Exception e) {
-                    logger.info("时间转换异常,异常信息"+e.getMessage(),e);
-                }
-                if(expirationDate!=null) {
-                    if (expirationDate.getTime() > System.currentTimeMillis()) {
-                        projectInfoGroupResponseDTO.setOverdue(true);
-
-                    } else {
-                        projectInfoGroupResponseDTO.setOverdue(false);
-                    }
-                }
-            }
+            projectGroupOverdue(projectInfoGroupResponseDTO);
             projectInfoGroupResponseDTO.setImageList(mongoUtils.getImageUrl(s.getId()));
             response.add(projectInfoGroupResponseDTO);
         }
@@ -217,8 +198,34 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             BeanUtils.copyProperties(shopProjectGroupDTO, projectInfoGroupResponseDTO);
             projectInfoGroupResponseDTO.setImageList(mongoUtils.getImageUrl(shopProjectGroupDTO.getId()));
         }
+        projectGroupOverdue(projectInfoGroupResponseDTO);
         projectInfoGroupResponseDTO.setShopProjectInfoDTOS(shopProjectInfos);
         return projectInfoGroupResponseDTO;
+    }
+
+    private void projectGroupOverdue(ProjectInfoGroupResponseDTO projectInfoGroupResponseDTO) {
+        if(StringUtils.isNotBlank(projectInfoGroupResponseDTO.getExpirationDate())&&"0".equals(projectInfoGroupResponseDTO.getExpirationDate())){
+            projectInfoGroupResponseDTO.setOverdue(false);
+        }else {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            //产品有效期
+            Date expirationDate=null;
+            try {
+                expirationDate = df.parse(projectInfoGroupResponseDTO.getExpirationDate()+" 23:59:59");
+            } catch (Exception e) {
+                logger.info("时间转换异常,异常信息"+e.getMessage(),e);
+            }
+            if(expirationDate!=null) {
+                if (expirationDate.getTime() > System.currentTimeMillis()) {
+                    //未过期
+                    projectInfoGroupResponseDTO.setOverdue(false);
+
+                } else {
+                    //过期
+                    projectInfoGroupResponseDTO.setOverdue(true);
+                }
+            }
+        }
     }
 
     @Override
@@ -330,7 +337,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             return 0;
         }
         List<String> images = extShopProjectGroupDTO.getImageList();
-        mongoUtils.saveImageUrl(images, groupDTOId);
+        mongoUtils.updateImageUrl(images, groupDTOId);
         int update = shopProjectGroupMapper.updateByPrimaryKeySelective(extShopProjectGroupDTO);
         logger.info("修改套卡执行结果={}", update > 0 ? "成功" : "失败");
 

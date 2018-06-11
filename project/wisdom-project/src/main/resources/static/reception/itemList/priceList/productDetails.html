@@ -1,13 +1,6 @@
 <div class="productWrap">
     <!--轮播图-->
-    <div class="swiper-container ">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <img src="images/timgs.jpg" alt="">
-            </div>
-        </div>
-        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-    </div>
+    <swipers data="productInformation.imageList"></swipers>
     <!-项目详情-描述-->
     <div class="productDescribe">
         <div class="describeTwo ">
@@ -19,9 +12,8 @@
                 <p class="mt50 fs32"><span class="c99 ">规格</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c33">{{productInformation.productSpec}}</span></p>
                 <p class="mt50 fs32"><span class="c99">适用部位：{{productInformation.productPosition}}</span></p>
                 <p class="mt50 fs32 c99">功效：{{productInformation.productFunction}}</p>
-                <p class="mt80 fs32 c99 mb50">功能介绍</p>
+                <p class="mt80 fs32 c99 mb50">功能介绍：{{productInformation.introduce}}</p>
             </div>
-            <p class="textDestrice c33 fs34"><span>1</span>/<span>40</span></p>
         </div>
     </div>
 </div>

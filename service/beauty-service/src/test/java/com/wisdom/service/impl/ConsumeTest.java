@@ -10,9 +10,11 @@ import com.wisdom.beauty.api.enums.PayTypeEnum;
 import com.wisdom.beauty.api.extDto.ShopConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
+import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
+import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.SpringUtil;
@@ -60,6 +62,9 @@ public class ConsumeTest {
     private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
     @Autowired
     private ExtShopUserConsumeRecordMapper extShopUserConsumeRecordMapper;
+
+    @Autowired
+    private ShopUerConsumeRecordService shopUerConsumeRecordService;
 
     @Before
     public void setupMockMvc() throws Exception {
@@ -274,5 +279,9 @@ public class ConsumeTest {
         Date voucherDate = calendar.getTime();
         System.out.println(dateFormat.format(voucherDate));
     }
-
+   @Test
+    public  void  testdd(){
+       shopUerConsumeRecordService
+               .getShopCustomerConsumeRecord("20180607144058285");
+   }
 }

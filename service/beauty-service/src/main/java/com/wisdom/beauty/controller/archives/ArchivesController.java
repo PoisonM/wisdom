@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.archives;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.enums.MemberEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopUserArchivesDTO;
@@ -53,13 +54,13 @@ public class ArchivesController {
     private SysUserAccountService sysUserAccountService;
 
     @Autowired
+    private ShopUserRelationService shopUserRelationService;
+
+    @Autowired
     private RedisUtils redisUtils;
 
     @Resource
     private ShopCardService cardService;
-
-    @Autowired
-    private ShopUserRelationService shopUserRelationService;
 
     @Resource
     private ShopAppointmentService appointmentService;
@@ -269,6 +270,15 @@ public class ArchivesController {
             shopUserRechargeCardDTO.setSysUserId(shopUserArchive.getSysUserId());
             shopUserRechargeCardDTO.setSysShopId(shopUserArchive.getSysShopId());
             BigDecimal sumAmount = cardService.getUserRechargeCardSumAmount(shopUserRechargeCardDTO);
+
+            //获取会员绑定关系
+            String state = null;
+            try {
+                state = shopUserRelationService.isMember(shopUserArchive.getSysUserId());
+            } catch (Exception e) {
+                logger.error("shopUserRelationService.isMember()方法调用异常,异常信息是:" + e.getMessage(), e);
+            }
+            extShopUserArchivesDTO.setIsMember(MemberEnum.judgeValue(state).getDesc());
             extShopUserArchivesDTO.setTotalBalance(sumAmount.toString());
             responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setResponseData(extShopUserArchivesDTO);
@@ -288,6 +298,4 @@ public class ArchivesController {
         ResponseDTO<String> responseDTO = shopUserRelationService.userBinding(openId, shopId);
         return responseDTO;
     }
-
-
 }

@@ -199,7 +199,6 @@ public class UserConsumeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/consumes/consumeCourseCard", method = { RequestMethod.POST, RequestMethod.GET })
-
 	public @ResponseBody ResponseDTO<String> consumeCourseCard(
 			@RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
 

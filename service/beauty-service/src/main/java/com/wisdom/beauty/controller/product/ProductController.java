@@ -2,13 +2,13 @@ package com.wisdom.beauty.controller.product;
 
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
-import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.extDto.ExtShopScanProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.redis.MongoUtils;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
@@ -52,6 +52,8 @@ public class ProductController {
 
     @Autowired
     private MongoUtils mongoUtils;
+    @Autowired
+    private RedisUtils redisUtils;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -138,6 +140,7 @@ public class ProductController {
     ResponseDTO<List<ShopProductTypeDTO>> findTwoLevelProduct(@RequestParam String id) {
         ShopProductTypeDTO shopProductTypeDTO = new ShopProductTypeDTO();
         shopProductTypeDTO.setId(id);
+        shopProductTypeDTO.setSysShopId(redisUtils.getShopId());
         //查询数据
         List<ShopProductTypeDTO> list = shopProductInfoService.getTwoLevelProductList(shopProductTypeDTO);
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
@@ -174,15 +177,15 @@ public class ProductController {
     /**
      * 更新产品信息
      *
-     * @param shopProductInfoDTO
+     * @param extShopProductInfoDTO
      * @return
      */
     @RequestMapping(value = "/updateProductInfo", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<Object> updateProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
+    ResponseDTO<Object> updateProductInfo(@RequestBody ExtShopProductInfoDTO extShopProductInfoDTO) {
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        int info = shopProductInfoService.updateProductInfo(shopProductInfoDTO);
+        int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
 
         responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         return responseDTO;

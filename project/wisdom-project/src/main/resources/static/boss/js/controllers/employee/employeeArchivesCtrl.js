@@ -10,7 +10,8 @@ angular.module('controllers',[]).controller('employeeArchivesCtrl',
                 id:$stateParams.id
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $scope.archives = data.responseData
+                    $scope.archives = data.responseData;
+                    console.log($scope.archives);
                 }
             });
             /*点击账户记录跳转到账户详情*/

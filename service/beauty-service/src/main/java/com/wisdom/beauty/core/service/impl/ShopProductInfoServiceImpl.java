@@ -380,17 +380,22 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	/**
 	 * 更新产品信息
 	 *
-	 * @param shopProductInfoDTO
+	 * @param extShopProductInfoDTO
 	 * @return
 	 */
 	@Override
-	public int updateProductInfo(ShopProductInfoDTO shopProductInfoDTO) {
-		if (CommonUtils.objectIsEmpty(shopProductInfoDTO) || StringUtils.isBlank(shopProductInfoDTO.getId())) {
-			logger.error("{}", "shopProductInfoDTO = [" + shopProductInfoDTO + "]");
+	public int updateProductInfo(ExtShopProductInfoDTO extShopProductInfoDTO) {
+		if (CommonUtils.objectIsEmpty(extShopProductInfoDTO) || StringUtils.isBlank(extShopProductInfoDTO.getId())) {
+			logger.error("{}", "extShopProductInfoDTO = [" + extShopProductInfoDTO + "]");
 			return 0;
 		}
-		shopProductInfoDTO.setUpdateDate(new Date());
-		return shopProductInfoMapper.updateByPrimaryKeySelective(shopProductInfoDTO);
+		//保存图片信息
+		if (CommonUtils.objectIsNotEmpty(extShopProductInfoDTO.getImageList())) {
+			mongoUtils.updateImageUrl(extShopProductInfoDTO.getImageList(), extShopProductInfoDTO.getId());
+			extShopProductInfoDTO.setProductUrl(extShopProductInfoDTO.getImageList().get(0));
+		}
+		extShopProductInfoDTO.setUpdateDate(new Date());
+		return shopProductInfoMapper.updateByPrimaryKeySelective(extShopProductInfoDTO);
 	}
 
 	/**
@@ -418,17 +423,19 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	 * @return
 	 */
 	@Override
+
 	public int saveProductInfo(ExtShopProductInfoDTO shopProductInfoDTO) {
 		shopProductInfoDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
 		shopProductInfoDTO.setId(IdGen.uuid());
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getEffectDate()) && shopProductInfoDTO.getQualityPeriod() > 0) {
 			shopProductInfoDTO.setInvalidDate(DateUtils.dateSubMonth(shopProductInfoDTO.getEffectDate(), shopProductInfoDTO.getQualityPeriod()));
 		}
-		int insertSelective = shopProductInfoMapper.insertSelective(shopProductInfoDTO);
+
 		//图片保存 到mongodb
 		if (CommonUtils.objectIsNotEmpty(shopProductInfoDTO.getImageList())) {
 			shopProductInfoDTO.setProductUrl(shopProductInfoDTO.getImageList().get(0));
 		}
+		int insertSelective = shopProductInfoMapper.insertSelective(shopProductInfoDTO);
 		mongoUtils.saveImageUrl(shopProductInfoDTO.getImageList(), shopProductInfoDTO.getId());
 		logger.info("添加产品信息保存={}", insertSelective > 0 ? "成功" : "失败");
 		return insertSelective;

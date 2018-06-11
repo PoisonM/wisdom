@@ -27,6 +27,9 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     //交易id
     private String transactionId;
 
+    //关联员工
+    private String sysClerkId;
+
     private String signUrl;
 
     private String detail;
@@ -44,6 +47,14 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     private String userName;
     //图片
     private List<String> imageList;
+
+    public String getSysClerkId() {
+        return sysClerkId;
+    }
+
+    public void setSysClerkId(String sysClerkId) {
+        this.sysClerkId = sysClerkId;
+    }
 
     public String getSignUrl() {
         return signUrl;

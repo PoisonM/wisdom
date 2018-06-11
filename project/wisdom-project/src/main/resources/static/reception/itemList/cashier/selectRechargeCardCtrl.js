@@ -23,6 +23,7 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
+    $scope.$parent.param.selectSty = $stateParams.userId//选中店员控制样式
 
 
     $scope.select = 0;
@@ -36,6 +37,8 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
         $state.go('pad-web.left_nav.housekeeper');
     }
     $scope.goCustomerSignature = function() {
+        $scope.responseData.sysUserId = $stateParams.userId;
+
         UserRechargeConfirm.save($scope.responseData, function(data) {
             $state.go('pad-web.signConfirm', {
                 transactionId: data.responseData.transactionId,

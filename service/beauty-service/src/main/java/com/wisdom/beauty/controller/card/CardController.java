@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.card;
 
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
+import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
@@ -10,17 +11,14 @@ import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
-import com.wisdom.beauty.core.service.ShopCardService;
-import com.wisdom.beauty.core.service.ShopProjectGroupService;
-import com.wisdom.beauty.core.service.ShopRechargeCardService;
-import com.wisdom.beauty.core.service.ShopUserConsumeService;
+import com.wisdom.beauty.core.service.*;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.RedisLock;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,8 +55,13 @@ public class CardController {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+
+	@Autowired
+	private ShopCustomerArchivesService shopCustomerArchivesService;
+
 	@Autowired
 	private ShopUserConsumeService shopUserConsumeService;
+
     @Autowired
     private RedisUtils redisUtils;
 
@@ -67,6 +70,7 @@ public class CardController {
 
 	@Autowired
 	private ShopProjectGroupService shopProjectGroupService;
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -81,13 +85,6 @@ public class CardController {
 			@RequestParam String sysUserId, @RequestParam(required = false) String sysShopId) {
         sysShopId = redisUtils.getShopId();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-
-        if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
-            logger.debug("传入参数为空， {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
-			if (null != UserUtils.getClerkInfo()) {
-				sysShopId = UserUtils.getClerkInfo().getSysShopId();
-			}
-        }
 
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
         shopUserRechargeCardDTO.setSysUserId(sysUserId);
@@ -274,10 +271,29 @@ public class CardController {
 	@RequestMapping(value = "/userRechargeConfirm", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> userRechargeConfirm(@RequestBody ShopRechargeCardOrderDTO extShopUserRechargeCardDTO) {
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+
 		extShopUserRechargeCardDTO.setTransactionId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
 		extShopUserRechargeCardDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
+		if(StringUtils.isBlank(extShopUserRechargeCardDTO.getSysUserId())){
+			logger.error("用户主键为空");
+			responseDTO.setErrorInfo("用户主键为空");
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
+		}
+		//查询用户档案表信息
+		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+		shopUserArchivesDTO.setSysUserId(extShopUserRechargeCardDTO.getSysUserId());
+		shopUserArchivesDTO.setSysShopId(redisUtils.getShopId());
+		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
+		if(CommonUtils.objectIsEmpty(shopUserArchivesInfo)){
+			logger.error("用户档案信息为空");
+			responseDTO.setErrorInfo("用户档案信息为空");
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
+		}
+		extShopUserRechargeCardDTO.setUserName(shopUserArchivesInfo.get(0).getSysUserName());
 		mongoTemplate.save(extShopUserRechargeCardDTO, "extShopUserRechargeCardDTO");
-		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(extShopUserRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
@@ -309,7 +325,19 @@ public class CardController {
 	@RequestMapping(value = "/rechargeCardSignConfirm", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Object> rechargeCardSignConfirm(@RequestParam String transactionId, @RequestParam String imageUrl) {
-        ResponseDTO<Object> responseDTO = shopUserConsumeService.rechargeRechargeCard(transactionId, imageUrl);
+
+		ResponseDTO<Object> responseDTO = new ResponseDTO();
+		RedisLock lock = null;
+		try {
+			lock = new RedisLock("recharge_" + transactionId);
+			responseDTO = shopUserConsumeService.rechargeRechargeCard(transactionId, imageUrl);
+		} catch (Exception e) {
+			responseDTO.setErrorInfo("异常数据");
+			responseDTO.setResult(StatusConstant.FAILURE);
+		}finally {
+			lock.unlock();
+		}
+		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
 

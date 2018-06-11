@@ -188,6 +188,7 @@ public class ProjectController {
 		// detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表
 		returnMap.put("detailLevel", levelList);
 		returnMap.put("detailProject", projectList);
+		returnMap.put("oneAndTwoLevelList", oneAndTwoLevelList);
 		responseDTO.setResponseData(returnMap);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
@@ -235,7 +236,8 @@ public class ProjectController {
 			shopUserProjectRelationResponse = new ShopUserProjectRelationResponseDTO();
 			BeanUtils.copyProperties(shopUserProjectRelationDTO, shopUserProjectRelationResponse);
 			if (shopUserProjectRelationDTO.getInvalidDays() == null) {
-                shopUserProjectRelationResponseDTO.add(shopUserProjectRelationResponse);
+				shopUserProjectRelationResponse.setOverdue("0");
+				shopUserProjectRelationResponseDTO.add(shopUserProjectRelationResponse);
 				continue;
 			} else {
 				// 产品有效期

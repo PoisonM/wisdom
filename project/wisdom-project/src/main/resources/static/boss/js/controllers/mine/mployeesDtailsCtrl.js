@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('mployeesDtailsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ClerkInfo','UpateClerkInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ClerkInfo,UpateClerkInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ClerkInfo','UpdateClerkInfo',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ClerkInfo,UpdateClerkInfo) {
             $scope.param={
                 beauticianStatus:false,
                 managerStatus:false,
@@ -39,7 +39,7 @@ angular.module('controllers',[]).controller('mployeesDtailsCtrl',
                 }
                 $scope.mployeesDtails.role = $scope.mployeesDtails.role.slice(0, $scope.mployeesDtails.role.length - 1);
                 var sysClerkDTO =  $scope.mployeesDtails
-                UpateClerkInfo.save(sysClerkDTO,function (data) {
+                UpdateClerkInfo.save(sysClerkDTO,function (data) {
                      if(data.result=="0x00001"){
                              $state.go('addFamily')
                      }

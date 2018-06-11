@@ -1,6 +1,5 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
@@ -53,6 +52,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	private CashService cashService;
 	@Autowired
 	private RedisUtils redisUtils;
+	@Autowired
+	private ShopService shopService;
 
 	@Override
 	public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(
@@ -138,13 +139,13 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					goodType.add(GoodsTypeEnum.PRODUCT.getCode());
 					c.andGoodsTypeIn(goodType);
-				} else {
+				} /*else {
 					List goodType = new ArrayList();
 					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
 					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
 					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
 					c.andGoodsTypeIn(goodType);
-				}
+				}*/
 			}
 		}
 		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
@@ -167,6 +168,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				userConsumeRecordResponseDTO.setCreateBy(shopUserConsumeRecord.getCreateBy());
 				userConsumeRecordResponseDTO.setSysShopName(shopUserConsumeRecord.getSysShopName());
 				userConsumeRecordResponseDTO.setFlowName(shopUserConsumeRecord.getFlowName());
+				userConsumeRecordResponseDTO.setSysUserName(shopUserConsumeRecord.getSysUserName());
 				// 前台页面显示如果划卡title是项目名称，消费收银为消费类型
 				if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
 					userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getFlowName());
@@ -224,13 +226,13 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				}
 			}
 			// 获取套卡集合
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.COLLECTION_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())
+					&& GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())) {
 				collectionCardList.add(shopUserConsumeRecordDTO);
 			}
 			// 获取疗程卡
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())
+					&& GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())) {
 				treatmentCardList.add(shopUserConsumeRecordDTO);
 			}
 		}
@@ -466,7 +468,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	public int saveCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
 
 		logger.info("保存用户消费或充值记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
-
+		if(StringUtils.isBlank(shopUserConsumeRecordDTO.getSysShopName()) && StringUtils.isNotBlank(shopUserConsumeRecordDTO.getSysShopId())){
+			SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(shopUserConsumeRecordDTO.getSysShopId());
+			shopUserConsumeRecordDTO.setSysShopName(beauty.getName());
+		}
 		int insert = shopUserConsumeRecordMapper.insert(shopUserConsumeRecordDTO);
 		saveShopClerkWorkRecord(shopUserConsumeRecordDTO.getSysClerkId(), shopUserConsumeRecordDTO);
 		return insert;

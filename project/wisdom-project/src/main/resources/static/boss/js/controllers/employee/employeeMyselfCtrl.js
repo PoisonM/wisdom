@@ -3,8 +3,8 @@
  */
 
 angular.module('controllers',[]).controller('employeeMyselfCtrl',
-    ['$scope','$rootScope','$stateParams','$state',
-        function ($scope,$rootScope,$stateParams,$state) {
+    ['$scope','$rootScope','$stateParams','$state','GetCurrentLoginUserInfo','BossUtil',
+        function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,BossUtil) {
 
             $rootScope.title = "我的";
 
@@ -22,5 +22,10 @@ angular.module('controllers',[]).controller('employeeMyselfCtrl',
             $scope.setInformationGo=function () {
                 $state.go("employeeSet")
             };
+
+            /*查询我的信息*/
+            GetCurrentLoginUserInfo.get(function (data) {
+                BossUtil.checkResponseData(data,'myself');
+            })
            
         }]);
