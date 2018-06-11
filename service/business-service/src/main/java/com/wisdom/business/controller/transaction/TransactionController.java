@@ -82,8 +82,10 @@ public class TransactionController {
                 if((!userInfoDTO.getUserType().equals(ConfigConstant.businessC1))&&needPayOrder.getProductPrefecture().equals("1")){
                     responseDTO.setResult(StatusConstant.FAILURE);
                     responseDTO.setErrorInfo("failure");
+                    logger.info("_______________________________________________________________________"+userInfoDTO.getUserType());
                     return responseDTO;
                 }
+                logger.info("_______________________________________________________________________"+userInfoDTO.getUserType());
             }
         }
         for(NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()){
