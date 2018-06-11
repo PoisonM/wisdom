@@ -81,7 +81,6 @@ angular.module('controllers',[]).controller('myselfCenterCtrl',
             };
             $scope.goOrderManagement = function(type){
                 $state.go("orderManagement",{"type":type});
-
             };
 
             $scope.myselfLogin = function(){

@@ -108,6 +108,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 $scope.param.checkType=checkType;
                }
 
+
                 //判断用户是否购买过新人大礼包产品
                 /*GetBusinessOrderByProductId.get({productId:$scope.param.promoteProductId},function(data){
                     if(data.result==Global.SUCCESS)
@@ -146,7 +147,6 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             $scope.clickCarousel=function(item){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_BADJ,item);
             };
-
             $scope.enterDetails=function(item){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ADJ,item);
                /* if(item=="201712101718100004")

@@ -61,6 +61,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
             }
 
             $scope.$on('$ionicView.enter', function(){
+                debugger;
                 GetQRCodeURL.get(function (data) {
                     BusinessUtil.checkResponseData(data,'sharePage');
                     $scope.param.weixinShareInfo = data.responseData;

@@ -54,7 +54,7 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
                                     ]
 
                                 });
-                                // alert("亲，请先升级为我们的铂金店主或者钻石店主");
+
                             }
                         })
                     }
