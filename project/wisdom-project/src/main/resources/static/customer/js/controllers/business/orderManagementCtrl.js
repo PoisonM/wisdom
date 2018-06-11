@@ -3,14 +3,13 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetBusinessOrderList,BusinessUtil,PutNeedPayOrderListToRedis,Global,DeleteOrderFromBuyCart,UpdateBusinessOrderStatus,$ionicPopup,$ionicLoading,$timeout,GetUserInfoByOpenId) {
             $scope.param = {
                 orderList:[],
-                orderType:"all"
+                orderType:""
             };
             $scope.chooseTab = function(type){
                 $scope.param.orderList=[];
                 $scope.param.orderType = type;
                 GetBusinessOrderList.get({status:$scope.param.orderType},function(data){
                     $ionicLoading.hide();
-                    $scope.param.orderType="all";
                     BusinessUtil.checkResponseData(data,"orderManagement&"+$scope.param.orderType);
                     $scope.param.orderList = data.responseData;
                     if(($scope.param.orderType=='1'&&$scope.param.orderList=="")||($scope.param.orderType=='0'&&$scope.param.orderList=="")||($scope.param.orderType=='4'&&$scope.param.orderList=="")||($scope.param.orderType=='all'&&$scope.param.orderList=="")||($scope.param.orderType=='2'&&$scope.param.orderList==""))
