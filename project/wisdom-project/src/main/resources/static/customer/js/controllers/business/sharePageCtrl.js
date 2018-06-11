@@ -74,7 +74,6 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                     }*/
 
                     //获取$scope.param.canvas
-                   alert("hua")
                     $scope.param.canvas = document.getElementById('canvas');
 
                     //设置宽高
