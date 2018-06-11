@@ -895,7 +895,7 @@ public class JedisUtils {
 	 */
 	public static void returnBrokenResource(Jedis jedis) {
 		if (jedis != null) {
-			jedisPool.returnBrokenResource(jedis);
+			closeRedisPool(jedis);
 		}
 	}
 	
@@ -905,14 +905,30 @@ public class JedisUtils {
 	 */
 	public static void returnResource(Jedis jedis) {
 		if (jedis != null) {
-			jedisPool.returnResource(jedis);
+			closeRedisPool(jedis);
 		}
 	}
 
 	/**
-	 * 获取byte[]类型Key
-	 * @return
+	 * 释放资源升级版
+	 * @param jedis
 	 */
+	public static void closeRedisPool(Jedis jedis) {
+			jedis.close();
+			if (jedis.isConnected()) {
+				try {
+					logger.info("---------退出{}:{}", jedis.toString(), jedis.quit());
+					jedis.disconnect();
+				} catch (Exception e) {
+					logger.error("---------退出失败" + e.getMessage(), e);
+				}
+			}
+	}
+
+		/**
+         * 获取byte[]类型Key
+         * @return
+         */
 	public static byte[] getBytesKey(Object object){
 		if(object instanceof String){
     		return StringUtils.getBytes((String)object);
