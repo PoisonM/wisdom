@@ -1,8 +1,8 @@
 package com.wisdom.beauty.controller.card;
 
-import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
+import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
@@ -10,12 +10,8 @@ import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
-import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
-import com.wisdom.beauty.core.service.ShopCardService;
-import com.wisdom.beauty.core.service.ShopProjectGroupService;
-import com.wisdom.beauty.core.service.ShopRechargeCardService;
-import com.wisdom.beauty.core.service.ShopUserConsumeService;
+import com.wisdom.beauty.core.service.*;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -61,7 +57,7 @@ public class CardController {
 	private MongoTemplate mongoTemplate;
 
 	@Autowired
-	private UserServiceClient userServiceClient;
+	private ShopCustomerArchivesService shopCustomerArchivesService;
 
 	@Autowired
 	private ShopUserConsumeService shopUserConsumeService;
@@ -275,16 +271,29 @@ public class CardController {
 	@RequestMapping(value = "/userRechargeConfirm", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> userRechargeConfirm(@RequestBody ShopRechargeCardOrderDTO extShopUserRechargeCardDTO) {
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+
 		extShopUserRechargeCardDTO.setTransactionId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
 		extShopUserRechargeCardDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
 		if(StringUtils.isBlank(extShopUserRechargeCardDTO.getSysUserId())){
 			logger.error("用户主键为空");
-			throw new ServiceException("用户主键为空");
+			responseDTO.setErrorInfo("用户主键为空");
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
 		}
 		//查询用户档案表信息
-		extShopUserRechargeCardDTO.setUserName(userServiceClient.getUserInfoFromUserId(extShopUserRechargeCardDTO.getSysUserId()).getNickname());
+		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+		shopUserArchivesDTO.setSysUserId(extShopUserRechargeCardDTO.getSysUserId());
+		shopUserArchivesDTO.setSysShopId(redisUtils.getShopId());
+		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
+		if(CommonUtils.objectIsEmpty(shopUserArchivesInfo)){
+			logger.error("用户档案信息为空");
+			responseDTO.setErrorInfo("用户档案信息为空");
+			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
+		}
+		extShopUserRechargeCardDTO.setUserName(shopUserArchivesInfo.get(0).getSysUserName());
 		mongoTemplate.save(extShopUserRechargeCardDTO, "extShopUserRechargeCardDTO");
-		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(extShopUserRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
