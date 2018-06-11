@@ -20,21 +20,21 @@
          <div class="product_content_right">
              <div class="rightCenter">
                  <div class="product_eara">
-                     <div class="product_name" style="width:95%;">
-                         <div class="product_nameEara " style="float:left; width:35%;">
-                             <label  for="financeName" style="width:85px;" class="bold">图片编号:</label>
+                   <!--  div class="product_name" style="width:95%;">
+                     <div class="product_nameEara " style="float:left; width:35%;">
+                         <  <label  for="financeName" style="width:85px;" class="bold">图片编号:</label>
                              <input type="text" class="product_search imgId" ng-model="bills" id="financeName">
                          </div>
                          <div class="orderTime product_nameEara" style="float:left; width:60%;">
                              <label class="bold">
                                  创建时间：
                              </label>
-                             <input  class="imgCreateStart date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp--&nbsp<input class="imgCreateEnd date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"  >
+                             <input  class="imgCreateStart date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp&#45;&#45;&nbsp<input class="imgCreateEnd date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"  >
                          </div>
-                     </div>
-                     <div class="product_searchEara"  style="width:95%;heght:45px;">
+                     </div>-->
+                   <!--  <div class="product_searchEara"  style="width:95%;heght:45px;">
                          <input type="button" value="搜索" style="margin-top:30px;float:right;" class="search_btn" ng-click="loadPageList()">
-                     </div>
+                     </div>-->
                  </div>
                  <div class="table_lis">
                      <div>
@@ -63,7 +63,7 @@
                                  &nbsp;
                                  <a ng-click="remove(item.bannerId);$event.stopPropagation()" class="orderBtn" >移除</a>
                                  &nbsp;
-                                 <a ng-click="upAndDownBanner(item.bannerId,'up');$event.stopPropagation()" class="orderBtn" >上移</a>
+                                 <a ng-click="upAndDownBanner(item.bannerId,'up');$event.stopPropagation()" ng-show="item.bannerRank!=1" class="orderBtn" >上移</a>
                                  &nbsp;
                                  <a ng-click="upAndDownBanner(item.bannerId,'down');$event.stopPropagation()" class="orderBtn" >下移</a>
                              </td>
