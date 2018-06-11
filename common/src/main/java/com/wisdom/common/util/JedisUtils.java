@@ -915,14 +915,6 @@ public class JedisUtils {
 	 */
 	public static void closeRedisPool(Jedis jedis) {
 			jedis.close();
-			if (jedis.isConnected()) {
-				try {
-					logger.info("---------退出{}:{}", jedis.toString(), jedis.quit());
-					jedis.disconnect();
-				} catch (Exception e) {
-					logger.error("---------退出失败" + e.getMessage(), e);
-				}
-			}
 	}
 
 		/**
