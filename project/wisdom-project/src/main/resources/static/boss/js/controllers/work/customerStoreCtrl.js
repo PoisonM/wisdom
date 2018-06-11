@@ -78,7 +78,16 @@ angular.module('controllers',[]).controller('customerStoreCtrl',
                     $ionicLoading.hide();
                 })
             };
-            $scope.getInfo()
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                $scope.getInfo()
+            })
 
 
 
