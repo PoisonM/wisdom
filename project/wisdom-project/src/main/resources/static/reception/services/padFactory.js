@@ -123,8 +123,8 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(userIP + 'clerkInfo/:clerkId', { clerkId: '@id' })
     }])
     //更新个人中心用户信息
-    .factory('UpateClerkInfo', ['$resource', function($resource) {
-        return $resource(userIP + 'upateClerkInfo')
+    .factory('UpdateClerkInfo', ['$resource', function($resource) {
+        return $resource(userIP + 'updateClerkInfo')
     }])
 
     //个人中心获取今日业绩

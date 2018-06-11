@@ -1,4 +1,4 @@
-PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInfo,UpateClerkInfo,ImageBase64UploadToOSS,GetCurrentLoginUserInfo) {
+PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInfo,UpdateClerkInfo,ImageBase64UploadToOSS,GetCurrentLoginUserInfo) {
     /*-------------------------------------------定义头部信息----------------------------------------------*/
     $scope.$parent.$parent.param.headerCash.title="修改资料"
     $scope.$parent.$parent.param.headerCash.backContent="取消"
@@ -62,7 +62,7 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
     }
 
     $scope.$parent.$parent.leftTipFn = function () {
-        UpateClerkInfo.save({
+        UpdateClerkInfo.save({
             id:$scope.userInfoDataMod.id,
             sysUserId:$scope.userInfoDataMod.sysUserId,
             sex:$scope.userInfoDataMod.sex,

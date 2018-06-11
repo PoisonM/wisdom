@@ -91,8 +91,8 @@ define(['appBoss'], function (app) {
             return $resource(user + 'clerkInfo/:clerkId',{clerkId:"@clerkId"})
         }])
         /*upDate 家人*/
-        .factory('UpateClerkInfo',['$resource',function ($resource){
-            return $resource(user + 'upateClerkInfo')
+        .factory('UpdateClerkInfo',['$resource',function ($resource){
+            return $resource(user + 'updateClerkInfo')
         }])
 
 /*综合分析*/

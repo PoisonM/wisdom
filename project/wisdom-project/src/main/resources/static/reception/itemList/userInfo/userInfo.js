@@ -29,7 +29,6 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
 
     /*-----------------------------------------------接口---------------------------------------------------*/
     GetClerkAchievement.get({
-        // sysClerkId: 11
     }, function(data) {
         if (data.result == "0x00001") {
             $scope.todayPerformance = data.responseData
