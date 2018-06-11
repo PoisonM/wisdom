@@ -55,6 +55,8 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         },function (data) {
             $scope.threeList=data.responseData;
             $scope.loading = false;
+            $scope.param.projectAppear = false;
+            $scope.param.chooseProjectItem = '';
         })
     };
 
@@ -71,16 +73,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
             if($scope.project2List.length>0)
             {
                 $scope.param.projectAppear = true;
-                $scope.param.chooseProjectItem = $scope.project2List[0].id;
-                ThreeLevelProject.get({
-                    ProjectTypeTwoId:$scope.project2List[0].id,
-                    projectTypeOneId:oneId,
-                    projectName:$scope.param.projectName,
-                    pageSize:$scope.param.pageSize
-                },function (data) {
-                    $scope.threeList=data.responseData;
-                    $scope.loading = false;
-                });
+                $scope.loading = false;
             }
             else
             {
