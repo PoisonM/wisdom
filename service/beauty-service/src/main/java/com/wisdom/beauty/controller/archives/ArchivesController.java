@@ -288,6 +288,4 @@ public class ArchivesController {
         ResponseDTO<String> responseDTO = shopUserRelationService.userBinding(openId, shopId);
         return responseDTO;
     }
-
-
 }

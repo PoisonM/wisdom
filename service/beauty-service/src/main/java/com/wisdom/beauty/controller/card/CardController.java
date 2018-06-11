@@ -337,7 +337,7 @@ public class CardController {
 		}finally {
 			lock.unlock();
 		}
-		responseDTO.setResult(StatusConstant.FAILURE);
+		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
 

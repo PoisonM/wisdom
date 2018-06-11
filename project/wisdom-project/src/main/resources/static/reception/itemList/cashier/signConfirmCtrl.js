@@ -57,6 +57,9 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
                 }, function(data) {
                     if(data.result == "0x00001"){
                         $state.go("pad-web.left_nav.blankPage");
+                    }else{
+                        alert(data.errorInfo);
+                        $state.go("pad-web.left_nav.blankPage");
                     }
 
                 })
