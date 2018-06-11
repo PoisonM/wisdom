@@ -241,15 +241,12 @@ public class ShopMemberAttendanceController {
 	 */
 	@RequestMapping(value = "/getBossPerformanceList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getBossPerformanceList(@RequestParam String searchFile, int pageSize) {
-		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
-		if (sysBossDTO == null) {
-			logger.info("redis获取boos对象sysBossDTO为空");
-			return null;
-		}
+	ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getBossPerformanceList(@RequestParam String searchFile,
+																			 @RequestParam String sysShopId,
+																			 int pageSize) {
 		ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = new ShopClerkWorkRecordRequestDTO();
 
-		shopClerkWorkRecordRequestDTO.setSysShopId(sysBossDTO.getCurrentShopId());
+		shopClerkWorkRecordRequestDTO.setSysShopId(sysShopId);
 		//设置为true 这样需要通过consumeType和goodType做为条件来查询
 		shopClerkWorkRecordRequestDTO.setTypeRequire(true);
 		if("1".equals(searchFile)){
