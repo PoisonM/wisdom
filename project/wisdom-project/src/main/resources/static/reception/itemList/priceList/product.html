@@ -16,8 +16,8 @@
     <!--点击导航栏的任意商品出现相对应的弹框-->
     <div ng-show="param.productAppear" class="productAppear" >
         <ul>
-            <li ng-repeat="item in product2List"  ng-click="goThreeList(item.id)">{{item.productTypeName}}</li>
-            <li ng-repeat="item in product2List"  ng-click="goThreeList(item.id)">{{item.productTypeName}}</li>
+            <li ng-class="{'product-red':param.chooseProductItem==items.id,'product-white':param.chooseProductItem!=items.id}"
+                    ng-repeat="item in product2List" ng-click="goThreeList(item.id)">{{item.productTypeName}}</li>
         </ul>
     </div>
     <!--商品-->
@@ -29,7 +29,7 @@
                 </div>
                 <div class="textDiv">
                     <p class="textName bold">{{items.productName}}</p>
-                    <p class="textMoney cff6666 mb"><span class="fs30">价格：</span><span class="fs34">298</span><span class="fs28">.00</span></p>
+                    <p class="textMoney cff6666 mb"><span class="fs30">价格：</span><span class="fs34">￥{{items.discountPrice}}</span></p>
                 </div>
             </li>
         </ul>

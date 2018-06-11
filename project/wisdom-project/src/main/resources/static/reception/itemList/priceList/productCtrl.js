@@ -42,33 +42,11 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
         $scope.loading = false;
     });
 
-    // $scope.checkImg = function (index,status,id) {
-    //     $scope.param.productTypeOneId=id;
-    //     //点击一级列表图标调取二级列表接口
-    //     TwoLevelProduct.get({id:id},function (data) {
-    //         $scope.product2List=data.responseData;
-    //         console.log(data)
-    //     });
-    //     if($scope.param.childrenFlag == index){
-    //         for(var i = 0; i < $scope.selectSingleData.length; i++ ){
-    //             $scope.selectSingleData[i].status = 1
-    //         }
-    //         if(status == 1){
-    //             $scope.selectSingleData[index].status = 4;
-    //             $scope.param.productAppear = true;
-    //         }
-    //         if(status == 4){
-    //             $scope.selectSingleData[index].status = 3;
-    //             $scope.param.productAppear = false;
-    //         }
-    //         if(status == 3){
-    //             $scope.selectSingleData[index].status = 4;
-    //             $scope.param.productAppear = true;
-    //         }
-    //     }
-    // };
     //点击二级列表调取三级商品接口
     $scope.goThreeList=function (id) {
+        $scope.param.chooseProductItem = id;
+        $scope.loading = true;
+        $scope.product3List = [];
         ThreeLevelProduct.get({
             pageSize:$scope.param.pageSize,
             productTypeOneId:$scope.param.productTypeOneId,
@@ -76,6 +54,10 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
             productName:$scope.param.productName
         },function (data) {
             $scope.product3List = data.responseData;
+            console.log($scope.product3List);
+            $scope.loading = false;
+            $scope.param.productAppear = false;
+            $scope.param.chooseProjectItem = ''
         })
     };
 
@@ -86,21 +68,14 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
     $scope.selection  = function (index,id) {
         $scope.loading = true;
         $scope.param.selection = index;
-
+        $scope.product2List = [];
+        $scope.product3List = [];
         TwoLevelProduct.get({id:id},function (data) {
             $scope.product2List = data.responseData;
             if($scope.product2List.length>0)
             {
                 $scope.param.productAppear = true;
-                $scope.param.chooseProductItem = $scope.product2List[0].id;
-                ThreeLevelProduct.get({
-                    pageSize:$scope.param.pageSize,
-                    productTypeOneId:"2",productTypeTwoId:"3",
-                    productName:$scope.param.productName
-                },function (data) {
-                    $scope.product3List=data.responseData;
-                    $scope.loading = false;
-                })
+                $scope.loading = false;
             }
             else
             {
