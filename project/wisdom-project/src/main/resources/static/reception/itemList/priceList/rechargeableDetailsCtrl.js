@@ -30,16 +30,14 @@ PADWeb.controller("rechargeableDetailsCtrl", function($scope, $state, $statePara
     });
 
     $scope.param={
-        rechargeList:{},
+        rechargeDetail:{},
         urlArray:{}
     }
     GetCardInfo.get({
         id:$stateParams.shopRechargeCardId
     },function (data) {
-        $scope.rechargeList=data.responseData;
-        //将轮播图数据截取
-        /*var url= $scope.rechargeList.imageUrl;
-        $scope.param.urlArray = url.split(",");*/
+        $scope.param.rechargeDetail = data.responseData;
+        console.log($scope.param.rechargeDetail);
     })
 
 

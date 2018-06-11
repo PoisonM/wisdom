@@ -28,6 +28,6 @@ PADWeb.controller("rechargeableCardCtrl", function($scope, $state, $stateParams,
     }
     GetShopProjectGroups.get({projectGroupName: $scope.param.projectGroupName,pageSize:$scope.param.pageSize},function (data) {
        $scope.rechargeableCardList=data.responseData;
-      console.log(data)
+       console.log(data)
     })
 })
