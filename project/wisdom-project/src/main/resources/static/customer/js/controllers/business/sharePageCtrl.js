@@ -78,7 +78,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                     }*/
 
                     //获取$scope.param.canvas
-                    $scope.ad.text = "jdijie"
+                   alert("hua")
                     $scope.param.canvas = document.getElementById('canvas');
 
                     //设置宽高
