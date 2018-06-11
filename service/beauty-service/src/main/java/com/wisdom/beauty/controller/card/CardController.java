@@ -1,5 +1,6 @@
 package com.wisdom.beauty.controller.card;
 
+import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
@@ -9,6 +10,7 @@ import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
+import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
@@ -57,8 +59,13 @@ public class CardController {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+
+	@Autowired
+	private UserServiceClient userServiceClient;
+
 	@Autowired
 	private ShopUserConsumeService shopUserConsumeService;
+
     @Autowired
     private RedisUtils redisUtils;
 
@@ -67,6 +74,7 @@ public class CardController {
 
 	@Autowired
 	private ShopProjectGroupService shopProjectGroupService;
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -269,6 +277,11 @@ public class CardController {
 	ResponseDTO<Object> userRechargeConfirm(@RequestBody ShopRechargeCardOrderDTO extShopUserRechargeCardDTO) {
 		extShopUserRechargeCardDTO.setTransactionId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
 		extShopUserRechargeCardDTO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
+		if(StringUtils.isBlank(extShopUserRechargeCardDTO.getSysUserId())){
+			logger.error("用户主键为空");
+			throw new ServiceException("用户主键为空");
+		}
+		extShopUserRechargeCardDTO.setUserName(userServiceClient.getUserInfoFromUserId(extShopUserRechargeCardDTO.getSysUserId()).getNickname());
 		mongoTemplate.save(extShopUserRechargeCardDTO, "extShopUserRechargeCardDTO");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(extShopUserRechargeCardDTO);
