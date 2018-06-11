@@ -9,6 +9,9 @@ angular.module('controllers',[]).controller('addProjectSeriesCtrl',
 
             TwoLevelProject.get({id:$scope.settingAddsome.extShopProjectInfoDTO.projectTypeOneId},function (data) {
                 $scope.seriesList=data.responseData;
+                if($scope.seriesList.length<=0){
+                    alert("此类别无系列")
+                }
             });
             $scope.selectSeries=function (seriesId,seriesName) {
                 $rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoId=seriesId

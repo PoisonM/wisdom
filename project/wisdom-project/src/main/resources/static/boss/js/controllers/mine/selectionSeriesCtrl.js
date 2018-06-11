@@ -15,6 +15,9 @@ angular.module('controllers',[]).controller('selectionSeriesCtrl',
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                     $scope.selectionSeries = data.responseData
+                    if($scope.selectionSeries.length<=0){
+                        alert("此品牌无系列")
+                    }
                 }
             })
             $scope.series = function (productTypeName,id) {

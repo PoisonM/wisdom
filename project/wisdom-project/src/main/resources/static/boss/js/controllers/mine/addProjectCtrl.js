@@ -6,7 +6,9 @@ angular.module('controllers',[]).controller('addProjectCtrl',
         function ($scope,$rootScope,$stateParams,$state,SaveProjectInfo,ImageBase64UploadToOSS,Global) {
 
             $rootScope.title = "添加项目";
-            $scope.selFlag ='';
+            $scope.param={
+                selFlag:true
+            }
             $scope.cardBox=false;/*点击次卡 点击时效卡显示的卡项*/
             $rootScope.settingAddsome.extShopProjectInfoDTO={
                     functionIntr:"",/*功能介绍*/
@@ -38,6 +40,10 @@ angular.module('controllers',[]).controller('addProjectCtrl',
             };
             /*选择系列*/
             $scope.projectSeries=function () {
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneId==""){
+                    alert("请先选择类别")
+                    return
+                }
                 $state.go("addProjectSeries",{url:"addProject"});
             };
             /*点击时效卡与次卡*/
@@ -70,7 +76,7 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                     fr.onloadend = function(e) {
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
-                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                            if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $rootScope.settingAddsome.extShopProjectInfoDTO.imageList.push(data.responseData)
                             }
 
@@ -90,15 +96,17 @@ angular.module('controllers',[]).controller('addProjectCtrl',
 
          /*添加保存*/
             $scope.Preservation=function () {
-                if($scope.selFlag ==true){
+                if($scope.param.selFlag ==true){
                     $rootScope.settingAddsome.extShopProjectInfoDTO.status = '0';
                 }else{
                     $rootScope.settingAddsome.extShopProjectInfoDTO.status = '1';
                 }
-           /*    if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""){
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.cardType=='0'){
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ='1'
+                }
+               if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''){
                    alert("填入的数据不完整")
-               }*/
-
+               }
 
                    SaveProjectInfo.save($rootScope.settingAddsome.extShopProjectInfoDTO,function (data) {
                        $state.go("basicSetting")

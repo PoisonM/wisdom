@@ -48,7 +48,7 @@
 .businessBox1{font-size: 0.3rem;width: 6.8rem;height: 1.05rem;color: #FFFFFF;margin: auto}
 .businessBox2{text-align: center;padding-top: 0.2rem;}
 
-.head{background: url("../../images/work/home2.png");background-size: 100% 100%;width: 80%;margin: auto;margin-top: 30px;border-radius: 6px; box-shadow :0px 12px 18px 0px rgba(255, 102, 102, 0.16);}
+.head{background: url("../../images/work/home2.png");background-size: 100% 100%;width: 85%;margin: auto;margin-top: 30px;border-radius: 6px; box-shadow :0px 12px 18px 0px rgba(255, 102, 102, 0.16);}
 .mu{margin: auto}
 .mt45{margin-top: 45px}
 .col33{color: #333333}
@@ -95,7 +95,7 @@
 .bgfff{background: #FFFFFF}
 
 /*收支分析*/
-.incomeAnalysisBox{width: 100%;height: 97px;background:url("../../images/work/analysis.png");background-size: 100% 100%}
+.incomeAnalysisBox{width: 100%;height: 112px;background:url("../../images/work/analysis.png");background-size: 100% 100%}
 .incomeAnalysisBox1{font-size: 0.3rem;width: 6.8rem;height: 1.05rem;color: #FFFFFF;margin: auto}
 .incomeAnalysisBox2{text-align: center;padding-top: 0.2rem;}
 
@@ -115,9 +115,9 @@
     overflow: hidden;
     margin: 40px auto;
 }
-.redBox{background:url("../../images/work/analysis.png");background-size: 100% 100%;width: 350px;height: 97px;margin: auto;padding: 30px}
+.redBox{background:url("../../images/work/analysis.png");background-size: 100% 100%;width: 90%;height: 97px;margin: auto;padding: 30px}
 .tabBox{ width:204px;height: 30px;margin: auto;border: 1px solid #ff6666;box-sizing: content-box;border-radius:5px}
-.tabBox button{width:33.33%;height: 30px;text-align: center;margin:-1px;box-sizing: border-box;/*font-size: 14px*/;border-bottom-left-radius: 2px;border-top-left-radius: 2px}
+.tabBox button{width:33.33%;height: 30px;text-align: center;box-sizing: border-box;/*font-size: 14px*/;border-bottom-left-radius: 2px;border-top-left-radius: 2px}
 .activeCardType {
     background-color: #ff6666;color: #ffffff;
     border-right: 1px solid #ff6666;

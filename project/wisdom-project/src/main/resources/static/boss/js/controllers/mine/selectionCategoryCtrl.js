@@ -14,8 +14,8 @@ angular.module('controllers',[]).controller('selectionCategoryCtrl',
             $scope.selectType=function (projectTypeOneId,name) {
                 $rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName = name
                 $rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneId = projectTypeOneId
-
-                console.log($rootScope.settingAddsome.extShopProjectInfoDTO)
+                $rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName = '';
+                $rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoId = '';
                 $state.go($stateParams.url,{projectId:$stateParams.projectId})
             }
 

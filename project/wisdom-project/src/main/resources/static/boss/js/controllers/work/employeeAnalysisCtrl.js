@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('employeeAnalysisCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','GetClerkAchievementList','GetBossShopList',
-        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,GetClerkAchievementList,GetBossShopList) {
+    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','GetClerkAchievementList','GetBossShopList','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,GetClerkAchievementList,GetBossShopList,$ionicLoading) {
 
             $rootScope.title = "员工分析";
 
@@ -71,18 +71,34 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
             };
 
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetClerkAchievementList.get({
                     sysShopId:$scope.param.sysShopId,
-                    startTime:$scope.param.date +' 00:00:00',
-                    endTime:$scope.param.date +' 23:59:59',
+                    startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+' 00:00:00',
+                    endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+' 23:59:59',
                     sortBy:$scope.param.sortBy,
                     sortRule:$scope.param.sortRule
                 },function(data){
-                      $scope.employeeAnalysis = data.responseData
+                      $scope.employeeAnalysis = data.responseData;
+                     $ionicLoading.hide();
                 })
             }
-            $scope.getInfo();
-
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                $scope.getInfo();
+            })
             $scope.tabShop=function () {
                 $scope.param.displayShopBox=true;
                 $scope.param.displayShop=true;

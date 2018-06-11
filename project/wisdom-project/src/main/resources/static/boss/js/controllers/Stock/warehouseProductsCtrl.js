@@ -30,8 +30,9 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                 $scope.param.levelTwoId='';
                 $scope.param.productType = type;
                 $scope.param.flag = true;
-                $scope.getInfo()
-                $scope.param.twoLevelList = $scope.warehouseProducts.twoLevelList
+                $scope.param.oneLevelList = []
+                $scope.param.twoLevelList = []
+                $scope.getInfo();
             };
             $scope.selTwo = function (productTypeOneId) {/*根据一级查询二级*/
                 $scope.param.levelOneId = productTypeOneId;
@@ -62,24 +63,25 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                GetShopProductLevelInfo.get({
-                },function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $ionicLoading.hide();
-                        $scope.warehouseProducts = data.responseData;
-                    }
-
-                })
+                $scope.getInfo()
             })
 
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetShopProductLevelInfo.get({
                     productType:$scope.param.productType,
                     levelOneId:$scope.param.levelOneId,
                     levelTwoId:$scope.param.levelTwoId,
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $scope.warehouseProducts = data.responseData
+                        $scope.warehouseProducts = data.responseData;
+                        $ionicLoading.hide();
                         if($scope.param.levelOneId == ''){
                         }
 

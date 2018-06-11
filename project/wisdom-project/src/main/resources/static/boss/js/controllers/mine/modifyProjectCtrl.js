@@ -18,9 +18,17 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
             }
             $scope.addProjectSeriesGo = function () {
                 $state.go("addProjectSeries",{projectId:$scope.param.projectId,url:'modifyProject'})
-            }
+            };
+            $ionicLoading.show({
+                content: 'Loading',
+                animation: 'fade-in',
+                showBackdrop: true,
+                maxWidth: 200,
+                showDelay: 0
+            })
             ProjectInfo.get({id:$scope.param.projectId},function (data) {
                 if(data.result == '0x00001'){
+                    $ionicLoading.hide()
                     $scope.settingAddsome.extShopProjectInfoDTO=data.responseData;
                     if($rootScope.settingAddsome.extShopProjectInfoDTO.status=="1"){
                         $scope.param.status=false
@@ -51,7 +59,7 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                     fr.onloadend = function(e) {
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
-                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                            if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $rootScope.settingAddsome.extShopProjectInfoDTO.imageList.push(data.responseData)
                             }
 
@@ -76,7 +84,10 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                 }else {
                     $rootScope.settingAddsome.extShopProjectInfoDTO.status ='1'
                 }
-                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==''){
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.cardType=='0'){
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ='1'
+                }
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''||$rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes==''){
                     alert("请检查信息")
                 }
                 UpdateProjectInfo.save($scope.settingAddsome.extShopProjectInfoDTO,function (data) {

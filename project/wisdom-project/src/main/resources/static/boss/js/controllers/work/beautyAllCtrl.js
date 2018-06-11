@@ -76,8 +76,8 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
                 });
             }
             $scope.getInfo()
-            $scope.detailedPerformanceGo = function(){
-                $state.go("detailedPerformance",{shopId:$stateParams.sysShopId})
+            $scope.detailedPerformanceGo = function(type){
+                $state.go("detailedPerformance",{shopId:$stateParams.sysShopId,searchFile:type})
             }
             $scope.allFamilyGo = function(){
                 $state.go("allFamily",{date:$scope.param.date})

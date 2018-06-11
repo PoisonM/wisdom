@@ -24,7 +24,7 @@ angular.module('controllers',[]).controller('projectListCtrl',
                     /*循环遍历项目里面所以商品*/
                     for(var  i=0;i< $scope.projectList.length;i++){
                         if($scope.projectList[i].cardType=="0"){
-                            $scope.projectList[i].cardType='时效卡';
+                            $scope.projectList[i].cardType='次卡';
                         }else if($scope.projectList[i].cardType=="1"){
                             $scope.projectList[i].cardType='月卡';
                         }else if($scope.projectList[i].cardType=="2"){

@@ -10,7 +10,6 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
                 startDate : $stateParams.date,
                 date:$stateParams.date
             };
-            console.log($scope.param.date);
             $scope.param.date=$scope.param.date.replace(/00/g,'')
             $scope.param.date=$scope.param.date.replace(/:/g,'')
  /*日期插件*/
@@ -30,7 +29,7 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
             var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
-                    $scope.param.date =$filter('date')(val, 'yyyy-MM-dd');
+                    $scope.param.date =$filter('date')(val,'yyyy-MM-dd');
                     $scope.getInfo()
                 }
             };
@@ -62,8 +61,8 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
             };
             $scope.getInfo = function () {
                 GetFamilyList.get({
-                    endTime:$scope.param.date+" 23:59:59",
-                    startTime:$scope.param.date+" 00:00:00",
+                    endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59",
+                    startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",
                     pageSize:100
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null)

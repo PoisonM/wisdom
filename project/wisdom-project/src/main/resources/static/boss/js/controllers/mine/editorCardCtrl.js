@@ -12,7 +12,13 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                 type:""
             }
 
-
+            $ionicLoading.show({
+                content: 'Loading',
+                animation: 'fade-in',
+                showBackdrop: true,
+                maxWidth: 200,
+                showDelay: 0
+            })
             GetShopProjectGroupDetail.get({id:$stateParams.id
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
@@ -110,7 +116,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                     fr.onloadend = function(e) {
                         $scope.thumb = e.target.result
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
-                            if(data.errorInfo==Global.SUCCESS&&data.responseData!=null){
+                            if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $rootScope.settingAddsome.editorCard.imageList.push(data.responseData)
                             }
 

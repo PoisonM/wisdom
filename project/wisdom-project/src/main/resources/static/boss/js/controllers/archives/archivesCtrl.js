@@ -21,6 +21,9 @@ angular.module('controllers',[]).controller('archivesCtrl',
                     }
                 });
             })
+            $scope.tel=function (pho) {
+                window.location.href = "tel:" + pho;
+            }
 
             /*点击账户记录跳转到账户详情*/
              $scope.accountRecordsGo=function (sysUserId) {

@@ -19,8 +19,8 @@ var projectGroupInfo='/beauty/projectGroupInfo/';
 var cardHelper ='/beauty/cardHelper/';
 var  mine='/beauty/mine/';
 var remind='/beauty/remind/';
-var file = '/system/file/';
-var clerkWork = '/beauty/clerkWork/';
+var file = '/system-service/file/';
+
 
 define(['appBoss'], function (app) {
     app
@@ -508,5 +508,10 @@ define(['appBoss'], function (app) {
         .factory('GetClerkScheduleOneDayInfo',['$resource',function ($resource){
             return $resource(clerkSchedule + "getClerkScheduleOneDayInfo")
         }])
+        /*员工的业绩，耗卡，卡耗明细列表*/
+        .factory('GetBossPerformanceList',['$resource',function ($resource){
+            return $resource(work + "getBossPerformanceList")
+        }])
+
 
 });

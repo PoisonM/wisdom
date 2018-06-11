@@ -1191,6 +1191,180 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                 }]
             }
         })
+
+        //每个卡的消费记录
+        .state('pad-web.left_nav.consumeCardDetail', {
+            url: '/consumeCardDetail',
+            templateUrl: root + '/cashier/consumeCardDetail.html',
+            controller: 'consumeCardDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "每个卡的消费记录",
+                        files: [root + "cashier/consumeCardDetail.js?version=" + version,
+                            root + "cashier/consumeCardDetail.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+        //疗程卡划卡记录
+        .state('pad-web.left_nav.cureCardRecords', {
+            url: '/cureCardRecords',
+            templateUrl: root + '/cashier/cureCardRecords.html',
+            controller: 'cureCardRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "疗程卡划卡记录",
+                        files: [root + "cashier/cureCardRecords.js?version=" + version,
+                            root + "cashier/cureCardRecords.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+        //套卡划卡记录
+        .state('pad-web.left_nav.completeCardRecords', {
+            url: '/completeCardRecords',
+            templateUrl: root + '/cashier/completeCardRecords.html',
+            controller: 'completeCardRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "套卡划卡记录",
+                        files: [root + "cashier/completeCardRecords.js?version=" + version,
+                            root + "cashier/completeCardRecords.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+        //疗程卡的划卡详情
+        .state('pad-web.left_nav.cureCardDetail', {
+            url: '/cureCardDetail',
+            templateUrl: root + '/cashier/cureCardDetail.html',
+            controller: 'cureCardDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "疗程卡划卡详情",
+                        files: [root + "cashier/cureCardDetail.js?version=" + version,
+                            root + "cashier/cureCardDetail.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+        //套卡划卡详情
+        .state('pad-web.left_nav.completeCardDetail', {
+            url: '/completeCardDetail',
+            templateUrl: root + '/cashier/completeCardDetail.html',
+            controller: 'cureCardDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "套卡划卡详情",
+                        files: [root + "cashier/completeCardDetail.js?version=" + version,
+                            root + "cashier/completeCardDetail.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+
+
+        //特殊充值卡充值记录
+        .state('pad-web.left_nav.featureRechargeCardRecords', {
+            url: '/featureRechargeCardRecords',
+            templateUrl: root + '/cashier/featureRechargeCardRecords.html',
+            controller: 'featureRechargeCardRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "特殊充值卡充值记录",
+                        files: [root + "cashier/featureRechargeCardRecords.js?version=" + version,
+                            root + "cashier/featureRechargeCardRecords.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+
+        //充值卡账户明细列表
+        .state('pad-web.left_nav.rechargeCardRecords', {
+            url: '/rechargeCardRecords',
+            templateUrl: root + '/cashier/rechargeCardRecords.html',
+            controller: 'rechargeCardRecordsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值卡账户明细列表",
+                        files: [root + "cashier/rechargeCardRecords.js?version=" + version,
+                            root + "cashier/rechargeCardRecords.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+        //充值卡详情
+        .state('pad-web.left_nav.rechargeCardDetail', {
+            url: '/rechargeCardDetail',
+            templateUrl: root + '/cashier/rechargeCardDetail.html',
+            controller: 'rechargeCardDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "充值卡详情",
+                        files: [root + "cashier/rechargeCardDetail.js?version=" + version,
+                            root + "cashier/rechargeCardDetail.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+        //产品领取记录
+        .state('pad-web.left_nav.getProductRecord', {
+            url: '/getProductRecord',
+            templateUrl: root + '/cashier/getProductRecord.html',
+            controller: 'getProductRecordCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "产品领取记录",
+                        files: [root + "cashier/getProductRecord.js?version=" + version,
+                            root + "cashier/getProductRecord.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+        //产品详情
+        .state('pad-web.left_nav.cashProductDetails', {
+            url: '/cashProductDetails',
+            templateUrl: root + '/cashier/cashProductDetails.html',
+            controller: 'cashProductDetailsCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "产品详情",
+                        files: [root + "cashier/cashProductDetails.js?version=" + version,
+                            root + "cashier/cashProductDetails.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+
+    ;
     $urlRouterProvider.otherwise('pad-web/userInfo/todayPerformance');
     $httpProvider.interceptors.push('httpInterceptor');
 });
