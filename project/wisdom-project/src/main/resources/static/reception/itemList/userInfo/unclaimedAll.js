@@ -7,6 +7,7 @@ PADWeb.controller('unclaimedAllCtrl', function($scope, $stateParams, ngDialog,Ge
         searchFile:"",
     },function (data) {
         if(data.result == "0x00001"){
+            console.log(data.responseData);
             $scope.dataList = data.responseData.data
         }
     })
