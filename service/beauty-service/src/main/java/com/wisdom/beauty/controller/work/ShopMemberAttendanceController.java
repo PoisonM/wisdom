@@ -241,7 +241,7 @@ public class ShopMemberAttendanceController {
 	 */
 	@RequestMapping(value = "/getBossPerformanceList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> findMineConsume(@RequestParam String searchFile, int pageSize) {
+	ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getBossPerformanceList(@RequestParam String searchFile, int pageSize) {
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		if (sysBossDTO == null) {
 			logger.info("redis获取boos对象sysBossDTO为空");
