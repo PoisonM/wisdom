@@ -13,8 +13,8 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         $scope.$parent.$parent.mainSwitch.headerPriceListAllFlag = bool;
         $scope.$parent.$parent.mainSwitch.headerLoginFlag = !bool;
         $scope.$parent.$parent.mainSwitch.headerPriceListBlackFlag = bool
-
     };
+
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
 
@@ -37,8 +37,8 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         $scope.selectSingleList=data.responseData;
         $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
         $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
-        // $scope.selection(0,"1") //data.responseData.id //初始化默认页面项目的第一项
     });
+
     //点击二级列表调取三级项目列表产品数据方法
     $scope.refreshGoods=function (id) {
         ThreeLevelProject.get({
