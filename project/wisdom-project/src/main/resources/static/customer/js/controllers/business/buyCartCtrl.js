@@ -251,7 +251,6 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         window.location.href = "orderPay.do?productType=offline&random="+Math.random();
                     }
                     else if(data.result==Global.FAILURE){
-                        alert(data.errorInfo)
                         if(data.errorInfo=="failure"){
                             alert("亲！此商品为新用户专享产品");
                         }else{
