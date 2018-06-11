@@ -10,7 +10,7 @@
     <div class="personalFile-content">
         <div class="treatment">
             <div class="treatmentCard clearfix" ng-if="select=='0'">
-                <div ng-repeat="item0 in courseProjectList0" class="treatmentCardTop clearfix">
+                <div ng-click="goCureCardRecords()" ng-repeat="item0 in courseProjectList0" class="treatmentCardTop clearfix">
                     <span class="treatmentCardTopName">{{item0.sysShopProjectName}}</span>
                     <span class="treatmentCardTopPrice">金额:￥{{item0.sysShopProjectInitAmount}}</span>
                     <div class="useNub">
@@ -50,7 +50,7 @@
                 <div class="prepaidCardTop clearfix">
                     <span>总余额：￥{{sunAmount}}</span>
                 </div>
-                <div ng-repeat="item2 in rechargeCardList" class="prepaidCardContent">
+                <div ng-click="go" ng-repeat="item2 in rechargeCardList" class="prepaidCardContent">
                     <img src={{item2.imageUrl}}} alt="">
                     <div class="prepaidCardInfo clearfix">
                         <span class="prepaidCardName">{{item2.shopRechargeCardName}}</span>

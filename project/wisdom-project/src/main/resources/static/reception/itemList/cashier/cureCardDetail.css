@@ -1,15 +1,15 @@
-.consumeCardDetail{
+.cureCardDetail{
     overflow-y: scroll;
     height: 100%;
 }
-.consumeCardDetail_box{
+.cureCardDetail_box{
     width: 100%;
     background-color: #ffffff;
 }
-.consumeCardDetail_box .basic{
+.cureCardDetail_box .basic{
     width: 100%;
 }
-.consumeCardDetail_box .basic p{
+.cureCardDetail_box .basic p{
     height: 30px;
     line-height: 30px;
     padding-left: 15px;
@@ -20,7 +20,7 @@
     background-color: #F5F5F5;
 }
 
-.consumeCardDetail_box .basic ul li{
+.cureCardDetail_box .basic ul li{
     width: 100%;
     padding-left: 15px;
     height: 55px;
@@ -33,7 +33,7 @@
     border-bottom: 1px solid #E5E5E5;
 }
 
-.consumeCardDetail_box .basic ul li span{
+.cureCardDetail_box .basic ul li span{
     font-size: 14px;
     color: #888888;
     float: right;

@@ -101,6 +101,11 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
     $scope.goGetProduct = function(id) {
         $state.go('pad-web.left_nav.getProduct', { id: id })
     }
+
+    $scope.goCureCardRecords = function () {
+        $state.go('pad-web.left_nav.cureCardRecords')
+    }
+
     //这边引入include
     basicInfo && basicInfo($scope, $state, Archives, ArchivesDetail);
 });
