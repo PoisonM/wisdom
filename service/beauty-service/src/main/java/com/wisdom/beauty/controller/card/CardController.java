@@ -265,14 +265,14 @@ public class CardController {
 	/**
 	 * 充值卡充值确认接口
 	 *
-	 * @param extShopUserRechargeCardDTO
+	 * @param shopRechargeCardOrderDTO
 	 * @return
 	 */
 	@RequestMapping(value = "/userRechargeConfirm", method = RequestMethod.POST)
 	@ResponseBody
 	ResponseDTO<Object> userRechargeConfirm(@RequestBody ShopRechargeCardOrderDTO shopRechargeCardOrderDTO) {
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-
+		String shopId = redisUtils.getShopId();
 		shopRechargeCardOrderDTO.setTransactionId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
 		shopRechargeCardOrderDTO.setOrderStatus(OrderStatusEnum.WAIT_SIGN.getCode());
 		shopRechargeCardOrderDTO.setOrderStatusDesc(OrderStatusEnum.WAIT_SIGN.getDesc());
@@ -285,7 +285,7 @@ public class CardController {
 		//查询用户档案表信息
 		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
 		shopUserArchivesDTO.setSysUserId(shopRechargeCardOrderDTO.getSysUserId());
-		shopUserArchivesDTO.setSysShopId(redisUtils.getShopId());
+		shopUserArchivesDTO.setSysShopId(shopId);
 		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
 		if(CommonUtils.objectIsEmpty(shopUserArchivesInfo)){
 			logger.error("用户档案信息为空");
@@ -294,6 +294,7 @@ public class CardController {
 			return responseDTO;
 		}
 		shopRechargeCardOrderDTO.setUserName(shopUserArchivesInfo.get(0).getSysUserName());
+		shopRechargeCardOrderDTO.setSysShopId(shopId);
 		mongoTemplate.save(shopRechargeCardOrderDTO, "shopRechargeCardOrderDTO");
 		responseDTO.setResponseData(shopRechargeCardOrderDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);

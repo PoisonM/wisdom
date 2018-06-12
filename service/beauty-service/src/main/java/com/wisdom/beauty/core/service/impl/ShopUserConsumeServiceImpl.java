@@ -724,11 +724,15 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
         ResponseDTO responseDTO = new ResponseDTO();
         Query query = new Query().addCriteria(Criteria.where("transactionId").is(transactionId));
-        ShopRechargeCardOrderDTO orderDTO = mongoTemplate.findOne(query, ShopRechargeCardOrderDTO.class, "extShopUserRechargeCardDTO");
-        orderDTO.setImageUrl(imageUrl);
-        if(!OrderStatusEnum.WAIT_SIGN.getCode().equals(orderDTO.getStatus())){
+        ShopRechargeCardOrderDTO orderDTO = mongoTemplate.findOne(query, ShopRechargeCardOrderDTO.class, "shopRechargeCardOrderDTO");
+        if(null == orderDTO){
             responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("此订单已经作废！请查看"+orderDTO.getOrderStatusDesc());
+            responseDTO.setErrorInfo("查无此订单");
+            return responseDTO;
+        }
+        if(!OrderStatusEnum.WAIT_SIGN.getCode().equals(orderDTO.getOrderStatus())){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("此订单已经作废！"+orderDTO.getOrderStatusDesc());
             return responseDTO;
         }
         if(StringUtils.isBlank(orderDTO.getSysUserId())){
@@ -736,15 +740,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             responseDTO.setErrorInfo("获取到的用户为空");
             return responseDTO;
         }
-
-
-        //查询用户的充值卡信息
-        if (null == orderDTO || StringUtils.isBlank(orderDTO.getId())) {
-            logger.error("mongo查询充值卡信息为空,{}", "transactionId = [" + transactionId + "], imageUrl = [" + imageUrl + "]");
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setResponseData("mongo查询充值卡信息为空");
-            return responseDTO;
-        }
+        orderDTO.setImageUrl(imageUrl);
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         //查询用户与当前充值卡的关系
@@ -790,10 +786,22 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         int record = saveRechargeCardConsumeRecord(userInfoDTO,orderDTO, clerkInfo, shopUserRechargeInfo);
         logger.info("充值卡充值操作流水号={}，生成充值记录,{}", transactionId, record > 0 ? "成功" : "失败");
 
+        //更新用户的账户信息
+        SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
+        sysUserAccountDTO.setSysUserId(userInfoDTO.getId());
+        sysUserAccountDTO.setSysShopId(orderDTO.getSysShopId());
+        sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
+        if(null == sysUserAccountDTO){
+            logger.error("查无此用户账户");
+            throw new ServiceException("查无此用户账户");
+        }
+
         Update update = new Update();
         update.set("imageUrl", imageUrl);
-        update.set("orderStatusDesc", OrderStatusEnum.CONFIRM_PAY.getCode());
+        update.set("orderStatusDesc", OrderStatusEnum.CONFIRM_PAY.getDesc());
+        update.set("orderStatus", OrderStatusEnum.CONFIRM_PAY.getCode());
         mongoTemplate.upsert(query, update, "shopRechargeCardOrderDTO");
+
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
