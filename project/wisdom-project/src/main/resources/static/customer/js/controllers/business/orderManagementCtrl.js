@@ -3,7 +3,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetBusinessOrderList,BusinessUtil,PutNeedPayOrderListToRedis,Global,DeleteOrderFromBuyCart,UpdateBusinessOrderStatus,$ionicPopup,$ionicLoading,$timeout,GetUserInfoByOpenId) {
             $scope.param = {
                 orderList:[],
-                orderType:""
+                orderType:$stateParams.type
             };
             $scope.chooseTab = function(type){
                 $scope.param.orderList=[];
@@ -56,8 +56,12 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                                         window.location.href = "orderPay.do?productType=training&random="+Math.random();
                                     }
 
-                                }else {
-                                    alert("亲！此商品为新用户专享产品")
+                                }else if(data.result==Global.FAILURE){
+                                    if(data.errorInfo=="failure"){
+                                        alert("亲！此商品为新用户专享产品");
+                                    }else{
+                                        alert(data.errorInfo);
+                                    }
                                 }
                             })
             };
