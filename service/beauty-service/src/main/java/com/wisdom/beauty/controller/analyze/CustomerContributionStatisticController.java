@@ -73,7 +73,7 @@ public class CustomerContributionStatisticController {
         if (StringUtils.isNotBlank(sysShopId)) {
             userConsumeRequestDTO.setSysShopId(sysShopId);
         }
-        userConsumeRequestDTO.setSysBossCode(bossInfo.getId());
+        userConsumeRequestDTO.setSysBossCode(bossInfo.getSysBossCode());
         pageParamVoDTO.setRequestData(userConsumeRequestDTO);
         pageParamVoDTO.setStartTime(startTime);
         pageParamVoDTO.setEndTime(endTime);
