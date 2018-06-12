@@ -30,7 +30,13 @@
                         </div>
                         <div ng-show="!showImage" style="width:30%;margin-top:25px;">
                             <label class="bold">选择顺序:</label>
-                            <input type="number" min="0" class="product_search sequence" id="sequence" ng-model="bills" />
+                            <select class="sequence selectWidth" id="sequence" style="border:1px solid;height:30px;color:#7f818a;">
+                                <option value="1">第一张</option>
+                                <option value="2">第二张</option>
+                                <option value="3">第三张</option>
+                                <option value="4">第四张</option>
+                                <option value="5">第五张</option>
+                            </select>
                         </div>
                         <div style="width:30%;margin-top:25px;">
                             <label class="bold">跳转url:</label>
