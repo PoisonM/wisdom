@@ -9,6 +9,8 @@ PADWeb.controller('featureRechargeCardRecordsCtrl', function($scope, $stateParam
     $scope.$parent.$parent.param.headerCash.backContent = "返回";
     $scope.$parent.$parent.param.headerCash.title = "特殊充值卡充值记录";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
+    $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
+    $scope.$parent.param.selectSty = $stateParams.userId
 
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
@@ -16,6 +18,6 @@ PADWeb.controller('featureRechargeCardRecordsCtrl', function($scope, $stateParam
     }
 
     $scope.goRechargeCardRecords = function () {
-        $state.go("pad-web.left_nav.rechargeCardRecords")
+        $state.go("pad-web.left_nav.rechargeCardRecords",{userId:$stateParams.userId})
     }
 });

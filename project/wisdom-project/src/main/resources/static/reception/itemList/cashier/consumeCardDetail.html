@@ -5,75 +5,87 @@
             <ul>
                 <li>
                     <label for="">时间</label>
-                    <span>2018-05-13</span>
+                    <span>{{dataInfo.createDate |date:'yyyy-MM-dd HH:MM:ss'}}</span>
                 </li>
                 <li>
                     <label for="">顾客</label>
-                    <span>张琦</span>
+                    <span>{{dataInfo.sysUserName}}</span>
                 </li>
                 <li>
                     <label for="">操作门店</label>
-                    <span>哈方</span>
+                    <span>{{dataInfo.sysShopName}}</span>
                 </li>
                 <li>
                     <label for="">前台</label>
-                    <span>2018-05-13</span>
+                    <span>{{dataInfo.sysClerkName}}</span>
                 </li>
                 <li>
                     <label for="">类型</label>
-                    <span>店内消费</span>
+                    <span ng-if="dataInfo.payMap.payType == '0'">微信</span>
+                    <span ng-if="dataInfo.payMap.payType == '1'">支付宝</span>
+                    <span ng-if="dataInfo.payMap.payType == '2'">银行支付金额</span>
                 </li>
             </ul>
         </div>
-        <div class="basic">
-            <p>疗程卡</p>
-            <ul>
-                <li>
-                    <label for="">春雨保湿</label>
-                    <span>2018-05-13</span>
-                </li>
-                <li>
-                    <label for="">包含次数</label>
-                    <span>张琦</span>
-                </li>
-                <li>
-                    <label for="">价格</label>
-                    <span>哈方</span>
-                </li>
-                <li>
-                    <label for="">折扣</label>
-                    <span>2018-05-13</span>
-                </li>
-                <li>
-                    <label for="">数量</label>
-                    <span>店内消费</span>
-                </li>
-                <li>
-                    <label for="">金额</label>
-                    <span>店内消费</span>
-                </li>
-                <li>
-                    <label for="">员工业绩</label>
-                    <span>店内消费</span>
-                </li>
-            </ul>
+        <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList">
+            <div class="basic">
+                <p ng-if="listItem.goodsType == '0'">单次</p>
+                <p ng-if="listItem.goodsType == '1'">疗程卡</p>
+                <p ng-if="listItem.goodsType == '2'">充值卡</p>
+                <p ng-if="listItem.goodsType == '3'">套卡</p>
+                <ul>
+                    <li>
+                        <label for="">{{listItem.flowName}}</label>
+                        <span>{{listItem.createDate}}</span>
+                    </li>
+                    <li>
+                        <label for="">包含次数</label>
+                        <span>{{listItem.includeTimes}}</span>
+                    </li>
+                    <li>
+                        <label for="">价格</label>
+                        <span>{{listItem.price}}</span>
+                    </li>
+                    <li>
+                        <label for="">折扣</label>
+                        <span>{{listItem.discount}}</span>
+                    </li>
+                    <li>
+                        <label for="">数量</label>
+                        <span>{{listItem.consumeNumber}}</span>
+                    </li>
+                    <li>
+                        <label for="">金额</label>
+                        <span>{{listItem.sumAmount}}</span>
+                    </li>
+                    <!--<li>
+                        <label for="">员工业绩</label>
+                        <span>店内消费</span>
+                    </li>-->
+                </ul>
+            </div>
+            <div class="basic">
+                <p>支付明细</p>
+                <ul>
+                    <li>
+                        <label for="">
+                            <span ng-if="dataInfo.payMap.payType == '0'">微信</span>
+                            <span ng-if="dataInfo.payMap.payType == '1'">支付宝</span>
+                            <span ng-if="dataInfo.payMap.payType == '2'">银行支付金额</span>
+                        </label>
+                        <span>{{dataInfo.payMap.payTypeAmount}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="basic">
+                <p>顾客签字</p>
+                <ul>
+                    <li>
+                        <img ng-src="{{listItem.signUrl}}" alt="">
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="basic">
-            <p>支付明细</p>
-            <ul>
-                <li>
-                    <label for="">余额</label>
-                    <span>2018</span>
-                </li>
-            </ul>
-        </div>
-        <div class="basic">
-            <p>顾客签字</p>
-            <ul>
-                <li>
-                    <img src="" alt="">
-                </li>
-            </ul>
-        </div>
+
     </div>
 </div>

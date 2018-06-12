@@ -102,9 +102,37 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
         $state.go('pad-web.left_nav.getProduct', { id: id })
     }
 
-    $scope.goCureCardRecords = function () {
-        $state.go('pad-web.left_nav.cureCardRecords')
+    $scope.goCureCardRecords = function (id) {
+        $state.go('pad-web.left_nav.cureCardRecords',{id:id,userId:$stateParams.sysUserId})
     }
+
+    //点击充值卡跳转
+    $scope.goRechargeCardRecords = function (index) {
+        if(index == 0){
+            $state.go('pad-web.left_nav.featureRechargeCardRecords',{userId:$stateParams.sysUserId})
+        }else{
+            $state.go('pad-web.left_nav.rechargeCardRecords',{userId:$stateParams.sysUserId})
+        }
+    }
+
+    //套卡
+    $scope.goCompleteCardRecords = function (consumeRecordId,projectList) {
+        $scope.tempStr = ""
+        for(var i = 0; i < projectList.length; i++){
+            $scope.tempStr+=projectList[i].id+","
+        }
+        $state.go('pad-web.left_nav.completeCardRecords',{
+            ids:$scope.tempStr,
+            id:consumeRecordId,
+            userId:$stateParams.sysUserId
+        })
+    }
+    //产品
+    $scope.goGetProductRecord = function () {
+        $state.go("pad-web.left_nav.getProductRecord",{userId:$stateParams.sysUserId})
+    }
+
+
 
     //这边引入include
     basicInfo && basicInfo($scope, $state, Archives, ArchivesDetail);

@@ -10,7 +10,7 @@
     <div class="personalFile-content">
         <div class="treatment">
             <div class="treatmentCard clearfix" ng-if="select=='0'">
-                <div ng-click="goCureCardRecords()" ng-repeat="item0 in courseProjectList0" class="treatmentCardTop clearfix">
+                <div ng-click="goCureCardRecords(item0.id)" ng-repeat="item0 in courseProjectList0" class="treatmentCardTop clearfix">
                     <span class="treatmentCardTopName">{{item0.sysShopProjectName}}</span>
                     <span class="treatmentCardTopPrice">金额:￥{{item0.sysShopProjectInitAmount}}</span>
                     <div class="useNub">
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class=" clearfix" ng-if="select=='1'">
-                <div class="recorderCard " ng-repeat="item1 in projectGroupList">
+                <div ng-click="goCompleteCardRecords(item1.consumeRecordId,item1.projectList)" class="recorderCard " ng-repeat="item1 in projectGroupList">
                     <div class="recorderCardTop clearfix">
                         <span class="recorderCardTopName">{{item1.projectGroupName}}</span>
                         <span class="recorderCardTopPrice">金额:<b>{{item1.marketPrice}}</b></span>
@@ -50,7 +50,7 @@
                 <div class="prepaidCardTop clearfix">
                     <span>总余额：￥{{sunAmount}}</span>
                 </div>
-                <div ng-click="go" ng-repeat="item2 in rechargeCardList" class="prepaidCardContent">
+                <div ng-click="goRechargeCardRecords($index)" ng-repeat="item2 in rechargeCardList" class="prepaidCardContent">
                     <img src={{item2.imageUrl}} alt="">
                     <div class="prepaidCardInfo clearfix">
                         <span class="prepaidCardName">{{item2.shopRechargeCardName}}</span>
@@ -68,7 +68,7 @@
                     <li ng-repeat="item3 in courseProjectList1">
                         <span class="time">{{item3.createDate |date:"yyyy-MM-dd HH:MM:ss"}}</span>
                         <span class="type">单次消费</span>
-                        <span class="name">{{item3.sysShopProjectName}}</span>
+                        <span class="name ov_dian">{{item3.sysShopProjectName}}</span>
                         <span class="number">{{item3.sysShopProjectInitTimes}}</span>
                         <span class="price">{{item3.sysShopProjectInitAmount}}</span>
                     </li>
@@ -76,7 +76,7 @@
             </div>
             <div class="productCard clearfix" ng-if="select=='4'">
                 <ul>
-                    <li ng-repeat="item4 in productList">
+                    <li ng-click="goGetProductRecord()" ng-repeat="item4 in productList">
                         <div class="left">
                             <span>{{item4.shopProductName}}</span>
                             <p class="price">金额:{{item4.initAmount}}</p>

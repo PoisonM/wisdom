@@ -1,5 +1,6 @@
 var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize', "ngTouch"]);
 var version = "1.0."+Math.random()+""
+// var version = "1.0"
 PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterProvider",
     function($provide, $compileProvider, $controllerProvider, $filterProvider) {
         PADWeb.controller = $controllerProvider.register;
@@ -1194,7 +1195,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //每个卡的消费记录
         .state('pad-web.left_nav.consumeCardDetail', {
-            url: '/consumeCardDetail',
+            url: '/consumeCardDetail/:userId/:id/:type',
             templateUrl: root + '/cashier/consumeCardDetail.html',
             controller: 'consumeCardDetailCtrl',
             resolve: {
@@ -1211,7 +1212,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //疗程卡划卡记录
         .state('pad-web.left_nav.cureCardRecords', {
-            url: '/cureCardRecords',
+            url: '/cureCardRecords/:userId/:id',
             templateUrl: root + '/cashier/cureCardRecords.html',
             controller: 'cureCardRecordsCtrl',
             resolve: {
@@ -1227,7 +1228,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         })
         //套卡划卡记录
         .state('pad-web.left_nav.completeCardRecords', {
-            url: '/completeCardRecords',
+            url: '/completeCardRecords/:userId/:consumeRecordId/:ids',
             templateUrl: root + '/cashier/completeCardRecords.html',
             controller: 'completeCardRecordsCtrl',
             resolve: {
@@ -1244,7 +1245,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //疗程卡的划卡详情
         .state('pad-web.left_nav.cureCardDetail', {
-            url: '/cureCardDetail',
+            url: '/cureCardDetail/:userId/:flowNo',
             templateUrl: root + '/cashier/cureCardDetail.html',
             controller: 'cureCardDetailCtrl',
             resolve: {
@@ -1261,9 +1262,9 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //套卡划卡详情
         .state('pad-web.left_nav.completeCardDetail', {
-            url: '/completeCardDetail',
+            url: '/completeCardDetail/:userId',
             templateUrl: root + '/cashier/completeCardDetail.html',
-            controller: 'cureCardDetailCtrl',
+            controller: 'completeCardDetailCtrl',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
@@ -1280,7 +1281,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //特殊充值卡充值记录
         .state('pad-web.left_nav.featureRechargeCardRecords', {
-            url: '/featureRechargeCardRecords',
+            url: '/featureRechargeCardRecords/:userId',
             templateUrl: root + '/cashier/featureRechargeCardRecords.html',
             controller: 'featureRechargeCardRecordsCtrl',
             resolve: {
@@ -1298,7 +1299,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //充值卡账户明细列表
         .state('pad-web.left_nav.rechargeCardRecords', {
-            url: '/rechargeCardRecords',
+            url: '/rechargeCardRecords/:userId',
             templateUrl: root + '/cashier/rechargeCardRecords.html',
             controller: 'rechargeCardRecordsCtrl',
             resolve: {
@@ -1315,7 +1316,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //充值卡详情
         .state('pad-web.left_nav.rechargeCardDetail', {
-            url: '/rechargeCardDetail',
+            url: '/rechargeCardDetail/:userId',
             templateUrl: root + '/cashier/rechargeCardDetail.html',
             controller: 'rechargeCardDetailCtrl',
             resolve: {
@@ -1331,7 +1332,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         })
         //产品领取记录
         .state('pad-web.left_nav.getProductRecord', {
-            url: '/getProductRecord',
+            url: '/getProductRecord/:userId',
             templateUrl: root + '/cashier/getProductRecord.html',
             controller: 'getProductRecordCtrl',
             resolve: {
@@ -1348,7 +1349,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //产品详情
         .state('pad-web.left_nav.cashProductDetails', {
-            url: '/cashProductDetails',
+            url: '/cashProductDetails/:userId',
             templateUrl: root + '/cashier/cashProductDetails.html',
             controller: 'cashProductDetailsCtrl',
             resolve: {

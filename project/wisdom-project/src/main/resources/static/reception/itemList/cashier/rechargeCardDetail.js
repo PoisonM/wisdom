@@ -10,6 +10,7 @@ PADWeb.controller('rechargeCardDetailCtrl', function($scope, $stateParams, $stat
     $scope.$parent.$parent.param.headerCash.title = "充值卡详情";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
 
+    $scope.$parent.param.selectSty = $stateParams.userId
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-1)
     }

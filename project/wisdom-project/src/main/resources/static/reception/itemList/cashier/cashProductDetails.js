@@ -9,4 +9,9 @@ PADWeb.controller('cashProductDetailsCtrl', function($scope, $stateParams, $stat
     $scope.$parent.$parent.param.headerCash.backContent = "返回";
     $scope.$parent.$parent.param.headerCash.title = "产品详情";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
+    $scope.$parent.param.selectSty = $stateParams.userId
+
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-1)
+    }
 });
