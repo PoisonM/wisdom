@@ -40,6 +40,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
                 GetOfflineProductList.save({pageNo:0,pageSize:100},function(data){
                     $ionicLoading.hide();
+                    /*底部切换初始默认为首页*/
                     $scope.param.checkType="0";
                     $scope.param.productList = data.responseData;
               /*      var partNames = [];
@@ -102,8 +103,8 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                         }
                     }
 
-                })
-
+                });
+                /*点击底部切换按钮更改背景色 字体*/
                $scope.checkBg=function (checkType) {
                 $scope.param.checkType=checkType;
                }
@@ -160,11 +161,11 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 $state.go("offlineProductDetail",{productId:item})
             };
 
-            $scope.goPromoteProduct = function(item){
+           /* $scope.goPromoteProduct = function(item){
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ADJ,item);
                 $state.go("offlineProductDetail",{productId:item});
 
-               /* if($scope.param.promoteProduct&&$scope.param.promoteProductId==item)
+                if($scope.param.promoteProduct&&$scope.param.promoteProductId==item)
                 {
                     var alertPopup = $ionicPopup.alert({
                         template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">你已经购买过促销产品，不能再次购买</span>',
@@ -175,9 +176,9 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 {
                     $state.go("offlineProductDetail",{productId:$scope.param.promoteProductId});
 
-                }*/
+                }
 
-               /* if($scope.param.rookieProduct&&$scope.param.rookieProductId==item)
+                if($scope.param.rookieProduct&&$scope.param.rookieProductId==item)
                 {
                     var alertPopup = $ionicPopup.alert({
                         template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">你已经购买过促销产品，不能再次购买</span>',
@@ -188,15 +189,13 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 {
                     $state.go("offlineProductDetail",{productId:$scope.param.rookieProductId});
 
-                }*/
+                }
 
 
-            };
-
+            };*/
+                /*点击首页浮层 取消让浮层隐藏*/
             $scope.redPackerClose = function () {
               $scope.param.redPackerBox=false;
-              /*  $scope.param.redPackerFlagOne = false;
-                $scope.param.redPackerFlagTwo = false*/
             };
 
             /*$scope.redPackerOpen = function () {
@@ -262,7 +261,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
                 }, 1000)
             }
-
+             /*点击全部 99元专区 199元专区 299元专区 399元专区 499元专区*/
             $scope.allProductFlag = true;
             $scope.checkPrice = function (price) {
                 $scope.params=price;
