@@ -59,6 +59,8 @@ public class OrderController {
     @Resource
     private ShopOrderService shopOrderService;
 
+    private final long orderOutTime = 10L;
+
     /**
      * 查询用户最近一次订单信息
      *
@@ -66,19 +68,20 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "getShopUserRecentlyOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-
     public
     @ResponseBody
-    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String sysUserId, @RequestParam(required = false) String orderId) {
+    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam(required = false) String sysUserId, @RequestParam(required = false) String orderId) {
 
         String sysShopId = redisUtils.getShopId();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
 
         ShopUserOrderDTO shopUserOrderDTO = null;
         if (StringUtils.isNotBlank(orderId)) {
+            logger.info("根据订单编号查询订单数据={}",orderId);
             Query query = new Query(Criteria.where("orderId").is(orderId));
             shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
         } else {
+            logger.info("根据用户id和shopId查询用户最近一次订单记录={}");
             Query query = new Query(Criteria.where("shopId").is(sysShopId)).addCriteria(Criteria.where("userId").is(sysUserId));
             query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
             shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
@@ -112,18 +115,22 @@ public class OrderController {
     @ResponseBody
     ResponseDTO<String> saveShopUserOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
         if(null == shopUserOrderDTO || StringUtils.isBlank(shopUserOrderDTO.getUserId())){
             logger.error("保存用户的订单信息传入参数为空");
-            return null;
+            responseDTO.setErrorInfo("数据异常！请核对输入数据^_^");
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
         }
         String sysShopId = redisUtils.getShopId();
-        ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
-        //先查询最后一次订单信息
+        //先查询最后一次未支付的订单信息
         Query query = new Query(Criteria.where("shopId").is(sysShopId)).addCriteria(Criteria.where("userId").is(shopUserOrderDTO.getUserId()));
+        query.addCriteria(Criteria.where("status").is(OrderStatusEnum.NOT_PAY.getCode()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         ShopUserOrderDTO searchOrderInfo = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-        if (null != searchOrderInfo) {
+        //最近一笔未支付的定单不为空，并且在10分钟以内，则认为有效订单
+        if (null != searchOrderInfo && null!= searchOrderInfo.getUpdateDate() && DateUtils.pastMinutes(searchOrderInfo.getUpdateDate())<orderOutTime) {
             responseDTO.setResponseData(searchOrderInfo.getOrderId());
             responseDTO.setResult(StatusConstant.SUCCESS);
             return responseDTO;
@@ -134,17 +141,18 @@ public class OrderController {
         searchOrderInfo.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
         searchOrderInfo.setStatus(OrderStatusEnum.NOT_PAY.getCode());
         searchOrderInfo.setCreateDate(new Date());
+        searchOrderInfo.setUpdateDate(new Date());
+        searchOrderInfo.setStatusDesc(OrderStatusEnum.NOT_PAY.getDesc());
         searchOrderInfo.setUserId(shopUserOrderDTO.getUserId());
         mongoTemplate.save(searchOrderInfo, "shopUserOrderDTO");
 
         responseDTO.setResponseData(searchOrderInfo.getOrderId());
         responseDTO.setResult(StatusConstant.SUCCESS);
-
         return responseDTO;
     }
 
     /**
-     * 更新用户的订单信息
+     * 用户下单接口，消费界面选完待消费物品点击确认按钮
      *
      * @param shopUserOrderDTO 订单对象
      * @return
@@ -160,9 +168,11 @@ public class OrderController {
         //mongodb中更新订单的状态
         Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
-        update.set("status", shopUserOrderDTO.getStatus());
+        update.set("status", OrderStatusEnum.WAIT_PAY.getCode());
+        update.set("statusDesc", OrderStatusEnum.WAIT_PAY.getDesc());
         update.set("signUrl", shopUserOrderDTO.getSignUrl());
         update.set("orderPrice", shopUserOrderDTO.getOrderPrice());
+        update.set("updateDate",new Date());
         update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
         update.set("shopUserProductRelationDTOS", shopUserOrderDTO.getShopUserProductRelationDTOS());
         update.set("shopUserProjectRelationDTOS", shopUserOrderDTO.getShopUserProjectRelationDTOS());

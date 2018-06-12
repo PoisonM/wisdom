@@ -68,10 +68,15 @@ public class ProductController {
     public
     @ResponseBody
     ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId) {
-
+        String sysShopId=null;
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        String sysShopId = clerkInfo.getSysShopId();
-
+        if(clerkInfo!=null){
+             sysShopId = clerkInfo.getSysShopId();
+        }
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if(bossInfo!=null){
+            sysShopId = bossInfo.getCurrentShopId();
+        }
         ResponseDTO<List<ShopUserProductRelationDTO>> responseDTO = new ResponseDTO<>();
         if (StringUtils.isBlank(sysShopId) || StringUtils.isBlank(sysUserId)) {
             responseDTO.setResult(StatusConstant.FAILURE);

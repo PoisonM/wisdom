@@ -374,4 +374,14 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('PaySignConfirm', ['$resource', function($resource) {
         return $resource(beautyIP + 'userPay/paySignConfirm')
     }])
+    //获取疗程和套卡的划卡记录
+    .factory('TreatmentAndGroupCardRecordList', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/treatmentAndGroupCardRecordList')
+    }])
+    //疗程卡消费详情
+//http://localhost:9051/consume/flowId?flowId=7ec842257fd642d5aa1d1d079556833b
+    .factory('GetCureByflowId', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/flowId')
+    }])
+
 ;

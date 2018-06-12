@@ -11,9 +11,9 @@
         <ul>
             <li ng-repeat="item in dataList">
                 <div class="ifo">
-                    <span ng-class="{chesty:$index == 2}" >2018-03-29</span>
-                    <span>小喵喵</span>
-                    <span>美腿治疗</span>
+                    <span>{{item.createDate|date:'yyyy-MM-dd'}}</span>
+                    <span>{{item.sysUserName}}</span>
+                    <span>{{item.flowName}}</span>
                 </div>
                 <div class="go_set"></div>
             </li>

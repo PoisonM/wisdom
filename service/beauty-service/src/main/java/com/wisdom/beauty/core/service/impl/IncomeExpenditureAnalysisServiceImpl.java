@@ -151,9 +151,9 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationDTOList) {
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
-			if (cashAmountMap.get(shopBossRelation.getSysShopId()) != null) {
-				expenditureAndIncomeResponseDTO.setCashEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
-				expenditureAndIncomeResponseDTO.setAllEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
+			if(cashAmountMap!=null && cashAmountMap.get(shopBossRelation.getSysShopId()) != null){
+					expenditureAndIncomeResponseDTO.setCashEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
+					expenditureAndIncomeResponseDTO.setAllEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
 			}
 			expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());
 			expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());

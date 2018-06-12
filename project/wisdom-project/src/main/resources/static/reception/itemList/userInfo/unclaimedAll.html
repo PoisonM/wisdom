@@ -13,7 +13,7 @@
         <div class="unclaimedAll_content">
             <div class="unclaimedAll_search">
                 <span class="sear_add"></span>
-                <input type="text" placeholder="搜索顾客的名称或手机号">
+                <input type="text" placeholder="搜索顾客的名称或手机号" ng-model="searchNameAndPhone">
                 <span class="cancel">取消</span>
             </div>
             <div class="user_form">
@@ -26,10 +26,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in dataList">
+                        <tr ng-repeat="item in dataNewValueList">
                             <td>{{item.nickname}}</td>
                             <td>{{item.mobile}}</td>
-                            <td class="go_set_pre">{{item.waitReceiveNumber}} <i class="go_set"></i> </td>
+                            <td class="go_set_pre">{{item.waitReceiveNumber}}<i class="go_set"></i> </td>
                         </tr>
                     </tbody>
                 </table>

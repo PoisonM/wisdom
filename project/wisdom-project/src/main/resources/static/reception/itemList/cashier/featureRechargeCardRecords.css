@@ -1,0 +1,45 @@
+.featureRechargeCardRecords{
+
+}
+.featureRechargeCardRecords .color_red{
+    color: #fd3232;
+}
+.featureRechargeCardRecords_box{
+    background-color: #ffffff;
+}
+.featureRechargeCardRecords_box p{
+    padding-left: 15px;
+    font-family: PingFangSC-Regular;
+    color: #333333;
+    font-size: 16px;
+    letter-spacing: 0.4px;
+    height: 44px;
+    line-height: 44px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.featureRechargeCardRecords_box .content ul li{
+    height: 55px;
+    line-height: 55px;
+    padding: 0px 15px;
+    font-family: PingFangSC-Regular;
+    color: #333333;
+    font-size: 15px;
+    letter-spacing: 0.4px;
+    position: relative;
+}
+
+.featureRechargeCardRecords_box .content ul li span{
+    margin-right: 110px;
+}
+
+
+.featureRechargeCardRecords_box ul li .go_set {
+    position: absolute;
+    top: 40%;
+    right: 0.3125rem;
+    background: url(../../images/userInfo/bt_more.png) no-repeat;
+    background-size: 100%;
+    width: 0.1171875rem;
+    height: 0.2109375rem;
+}

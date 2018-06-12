@@ -12,7 +12,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 searchContent :"",
                 oneLevelList:[],
                 twoLevelList:[],
-                multiSelectFlag:false,
+                multiSelectFlag:true,
                 selectProductTypeOneId:'',
                 selectProductList:'',
             };
@@ -42,11 +42,12 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     $scope.param.twoLevelList = data.responseData.twoLevelList;
                 })
             };
-            
+
             $scope.chooseTwoLevelList = function (productTypeOneId) {
                 $scope.param.selectProductTypeOneId = productTypeOneId;
+                console.log($scope.param.multiSelectFlag);
             }
-            
+
             $scope.selNext = function () {
                 $scope.param.flag = true;
             };
@@ -135,14 +136,14 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     $scope.param.twoLevelList = data.responseData.twoLevelList;
                 })
             }
-            
+
             $scope.chooseProductList = function (productTypeTwoId) {
                 GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
                     $scope.param.oneLevelList = data.responseData.oneLevelList;
                     $scope.param.twoLevelList = data.responseData.twoLevelList;
-                    $scope.param.multiSelectFlag=false;
+                    $scope.param.multiSelectFlag=true;
                 })
             }
 }])

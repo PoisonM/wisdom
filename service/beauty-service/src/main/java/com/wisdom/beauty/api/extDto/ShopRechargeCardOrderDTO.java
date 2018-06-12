@@ -37,6 +37,8 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     //订单状态 1、未支付 2、待支付  2、已支付  3、已失效
     private String orderStatus;
 
+    private String orderStatusDesc;
+
     /**
      * BANK_PAY("0", "银行卡支付"),
      * WECHAT_PAY("1", "微信支付"),
@@ -47,6 +49,14 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     private String userName;
     //图片
     private List<String> imageList;
+
+    public String getOrderStatusDesc() {
+        return orderStatusDesc;
+    }
+
+    public void setOrderStatusDesc(String orderStatusDesc) {
+        this.orderStatusDesc = orderStatusDesc;
+    }
 
     public String getSysClerkId() {
         return sysClerkId;

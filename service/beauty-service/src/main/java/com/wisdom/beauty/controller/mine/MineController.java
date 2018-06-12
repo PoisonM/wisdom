@@ -114,13 +114,13 @@ public class MineController {
 
     @RequestMapping(value = "/getProductRecord", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String, Object>> getProductRecord(@RequestParam(required = false) String searchFile) {
+    ResponseDTO<List<UserProductRelationResponseDTO>> getProductRecord(@RequestParam(required = false) String searchFile) {
         SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
-        Map<String, Object> map = shopCustomerProductRelationService
+        List<UserProductRelationResponseDTO> list = shopCustomerProductRelationService
                 .getShopUserProductRelations(sysClerkDTO.getSysShopId(), searchFile);
-        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<UserProductRelationResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
-        responseDTO.setResponseData(map);
+        responseDTO.setResponseData(list);
         return responseDTO;
     }
 

@@ -278,7 +278,9 @@ public class ArchivesController {
             } catch (Exception e) {
                 logger.error("shopUserRelationService.isMember()方法调用异常,异常信息是:" + e.getMessage(), e);
             }
-            extShopUserArchivesDTO.setIsMember(MemberEnum.judgeValue(state).getDesc());
+            if(state!=null){
+                extShopUserArchivesDTO.setIsMember(MemberEnum.judgeValue(state).getDesc());
+            }
             extShopUserArchivesDTO.setTotalBalance(sumAmount.toString());
             responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setResponseData(extShopUserArchivesDTO);

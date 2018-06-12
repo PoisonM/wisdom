@@ -106,4 +106,12 @@ public interface ShopUerConsumeRecordService {
     *@Date:2018/6/4 20:02
     */
     UserConsumeRecordResponseDTO getTreatmentCardConsumeDetail(String flowId);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 根据flowId获取产品的消费详情
+    *@Date:2018/6/12 16:26
+    */
+    UserConsumeRecordResponseDTO getProductConsumeDetailByFlowId(UserConsumeRequestDTO userConsumeRequestDTO);
 }
