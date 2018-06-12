@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * FileName: OrderController
@@ -98,15 +99,23 @@ public class PayController {
     ResponseDTO<String> paySignConfirm(@RequestBody ShopUserPayDTO shopUserPayDTO) {
 
         ResponseDTO responseDTO = new ResponseDTO<String>();
-
-        //mongodb中更新订单的状态
-        Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
-        Update update = new Update();
-        update.set("status", OrderStatusEnum.CONFIRM_PAY.getCode());
-        update.set("signUrl", shopUserPayDTO.getSignUrl());
-        mongoTemplate.upsert(query, update, "shopUserOrderDTO");
-        responseDTO.setResponseData(StatusConstant.SUCCESS);
-        responseDTO.setResult(StatusConstant.SUCCESS);
+        Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
+        ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        //支付成功用户才能签字确认
+        if(OrderStatusEnum.ALREADY_PAY.getCode().equals(shopUserOrderDTO.getStatus())){
+            //mongodb中更新订单的状态
+            Update update = new Update();
+            update.set("status", OrderStatusEnum.CONFIRM_PAY.getCode());
+            update.set("statusDesc",OrderStatusEnum.CONFIRM_PAY.getDesc());
+            update.set("signUrl", shopUserPayDTO.getSignUrl());
+            update.set("updateDate",new Date());
+            mongoTemplate.upsert(query, update, "shopUserOrderDTO");
+            responseDTO.setResponseData(StatusConstant.SUCCESS);
+            responseDTO.setResult(StatusConstant.SUCCESS);
+        }else{
+            responseDTO.setErrorInfo("订单未支付成功，操作失败");
+            responseDTO.setResult(StatusConstant.FAILURE);
+        }
 
         return responseDTO;
     }
