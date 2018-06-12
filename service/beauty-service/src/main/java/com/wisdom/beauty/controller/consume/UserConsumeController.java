@@ -322,4 +322,22 @@ public class UserConsumeController {
         responseDTO.setResponseData(list);
         return responseDTO;
     }
+    /**
+    *@Author:zhanghuan
+    *@Param:  flowId  goodsType  consumeType
+    *@Return:
+    *@Description: 获取产品的消费详情和充值卡的订单详情
+    *@Date:2018/6/12 16:10
+    */
+    @RequestMapping(value = "/consume/productAndRechargeCard/getConsumeDetail", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<UserConsumeRecordResponseDTO> getProductConsumeDetailByFlowId(@RequestBody UserConsumeRequestDTO userConsumeRequestDTO) {
+
+        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService
+                .getProductConsumeDetailByFlowId(userConsumeRequestDTO);
+        ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(userConsumeRecordResponseDTO);
+        return responseDTO;
+    }
 }
