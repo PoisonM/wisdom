@@ -142,6 +142,7 @@ public class OrderController {
         searchOrderInfo.setStatus(OrderStatusEnum.NOT_PAY.getCode());
         searchOrderInfo.setCreateDate(new Date());
         searchOrderInfo.setUpdateDate(new Date());
+        searchOrderInfo.setStatusDesc(OrderStatusEnum.NOT_PAY.getDesc());
         searchOrderInfo.setUserId(shopUserOrderDTO.getUserId());
         mongoTemplate.save(searchOrderInfo, "shopUserOrderDTO");
 

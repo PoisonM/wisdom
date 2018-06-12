@@ -49,6 +49,8 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //订单价格
     private String orderPrice;
+    //状态描述
+    private String statusDesc;
 
     //可用余额
     private BigDecimal availableBalance;
@@ -67,6 +69,14 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
 
     public Date getUpdateDate() {
         return updateDate;

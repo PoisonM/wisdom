@@ -67,9 +67,16 @@ public class PayController {
             redisLock.lock();
             Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
             ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-            int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO, shopUserPayDTO, clerkInfo);
-            responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+            //用户为待支付的状态才能执行支付操作
+            if(OrderStatusEnum.WAIT_PAY.getCode().equals(shopUserOrderDTO.getStatus())){
+                int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO, shopUserPayDTO, clerkInfo);
+                responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+            }else{
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("订单已失效，请勿重复操作");
+            }
         } catch (Exception e) {
+            logger.error("订单支付失败，失败信息为={}"+e.getMessage(),e);
             responseDTO.setErrorInfo("处理异常，请联系客服，谢谢");
             responseDTO.setResult(StatusConstant.FAILURE);
         }finally {

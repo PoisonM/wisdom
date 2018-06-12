@@ -5,8 +5,8 @@ public enum OrderStatusEnum {
     NOT_PAY("0", "未支付"),
     WAIT_PAY("1", "待支付"),
     ALREADY_PAY("2", "已支付"),
-    CONFIRM_PAY("4", "已确认"),
-    INVALID("3", "已失效");
+    CONFIRM_PAY("3", "已确认"),
+    INVALID("4", "已失效");
 
     OrderStatusEnum(String code, String desc) {
         this.code = code;
