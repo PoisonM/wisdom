@@ -23,13 +23,12 @@
                     <span ng-if="projectInformation.cardType == 4" class="describeCard bgff6666">年卡</span>
                 </p>
                 <p class="fs30 c33 mt20"><span>单次价格:&nbsp;</span><span>￥{{projectInformation.oncePrice}}</span></p>
-                <p class="cff66 mt22"><span>办卡价格：&nbsp;</span><span class="bold fs32">￥{{projectInformation.marketPrice}}</span><span class="fs40">.00</span><span class="fs31">/{{projectInformation.maxContainTimes}}次</span></p>
+                <p class="cff66 mt22"><span>办卡价格：&nbsp;</span><span class="bold fs32">￥{{projectInformation.marketPrice}}</span><span class="fs31">/{{projectInformation.serviceTimes}}次</span></p>
                 <p class="mt40 fs32"><span class="c99">类型</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c33">{{projectInformation.projectTypeOneName}}</span></p>
                 <p class="mt50 fs32"><span class="c99 ">系列</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c33">{{projectInformation.projectTypeTwoName}}</span></p>
-                <p class="mt50 fs32"><span class="c99">时长</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c33">{{projectInformation.projectDuration}}</span></p>
-                <p class="mt126 fs32 c99 mb50">功能介绍</p>
+                <p class="mt50 fs32"><span class="c99">时长</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c33">{{projectInformation.projectDuration}}分钟</span></p>
+                <p class="mt126 fs32 c99 mb50" style="margin-top: 0.4rem">功能介绍：{{projectInformation.functionIntr}}</p>
             </div>
-            <p class="textDestrice c33 fs34"><span>1</span>/<span>80</span></p>
         </div>
     </div>
 </div>
