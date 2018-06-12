@@ -31,8 +31,20 @@
                 </div>
                 <div class="textDiv">
                     <p class="textName">{{item.projectName}}</p>
-                    <p class="textMoney">单次价格：￥{{item.marketPrice}}</p>
-                    <p><span class="cards bff6666">{{item.cardType}}</span>&nbsp;<span class="money cff6666 fs39">￥<span>{{item.discountPrice}}</span><span class="fs31"><!--.00--></span></span><span class="cff6666 fs31">/{{item.useStyle}}</span></p>
+                    <p class="textMoney">单次价格：￥{{item.oncePrice}}</p>
+                    <p>
+                        <span class="cards bff6666" ng-if="item.cardType=='1'">月卡</span>
+                        <span class="cards bff6666" ng-if="item.cardType=='2'">季卡</span>
+                        <span class="cards bff6666" ng-if="item.cardType=='3'">半年卡</span>
+                        <span class="cards bff6666" ng-if="item.cardType=='4'">年卡</span>
+                        <span class="cards bff6666" ng-if="item.cardType=='5'">长期</span>
+                        &nbsp;
+                        <span class="money cff6666 fs39">
+                            ￥<span>{{item.marketPrice}}</span>
+                            <span class="fs31"></span>
+                        </span>
+                        <span class="cff6666 fs31">/{{item.serviceTimes}}次</span>
+                    </p>
                 </div>
             </li>
         </ul>

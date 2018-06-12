@@ -15,6 +15,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,21 +47,31 @@ public class ClerkWorkRecordController {
      * @Param:
      * @Return:
      * @Description: 获取具体某个店员的业绩和耗卡（包含来源分析）
+     *               (可以用于在boss端调用,需要前端传递sysClerkId)
      * @Date:2018/5/31 15:32
      */
     @RequestMapping(value = "/getClerkWorkDetail", method = {RequestMethod.GET})
     @ResponseBody
-    ResponseDTO<Map<String, String>> getClerkWorkDetail(@RequestParam String startTime, @RequestParam String endTime) {
+    ResponseDTO<Map<String, String>> getClerkWorkDetail(@RequestParam(required = false) String sysClerkId,
+                                                        @RequestParam String startTime,
+                                                        @RequestParam String endTime) {
+        String clerkId=null;
         SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
-        if (sysClerkDTO == null) {
-            logger.info("redis获取sysClerkDTO为空");
-            return null;
+        if (sysClerkDTO != null) {
+            clerkId=sysClerkDTO.getId();
+        }else {
+            if(StringUtils.isNotBlank(sysClerkId)){
+                clerkId=sysClerkId;
+            }
+        }
+        if(clerkId==null){
+            logger.info("clerkId参数为空");
+            return  null;
         }
         PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         pageParamVoDTO.setStartTime(startTime);
         pageParamVoDTO.setEndTime(endTime);
         ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = new ShopClerkWorkRecordRequestDTO();
-        shopClerkWorkRecordRequestDTO.setSysShopId(sysClerkDTO.getSysShopId());
         shopClerkWorkRecordRequestDTO.setSysClerkId(sysClerkDTO.getId());
 
         pageParamVoDTO.setRequestData(shopClerkWorkRecordRequestDTO);
@@ -95,7 +106,7 @@ public class ClerkWorkRecordController {
      *           searchFile 2   耗卡明细
      *           searchFile 3  卡耗明细
      * @Return:
-     * @Description: 获取员工的业绩,耗卡,卡耗明细
+     * @Description: 获取员工的业绩,耗卡,卡耗明细(可以用于在boss端调用,需要前端传递sysClerkId)
      *                  业绩明细: consumeType 0 goodsType 2
      *                         : consumeType 0 goodsType 0 1 3 4
      *                  耗卡明细:consumeType 1 goodsType 1
@@ -106,11 +117,24 @@ public class ClerkWorkRecordController {
      */
     @RequestMapping(value = "/getClerkPerformanceList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getClerkPerformanceList(@RequestParam String searchFile, int pageSize) {
+    ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getClerkPerformanceList(@RequestParam(required = false) String sysClerkId,
+                                                                              @RequestParam String searchFile,
+                                                                              int pageSize) {
+        String clerkId=null;
         SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        if (sysClerkDTO != null) {
+            clerkId=sysClerkDTO.getId();
+        }else {
+            if(StringUtils.isNotBlank(sysClerkId)){
+                clerkId=sysClerkId;
+            }
+        }
+        if(clerkId==null){
+            logger.info("clerkId参数为空");
+            return  null;
+        }
         ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = new ShopClerkWorkRecordRequestDTO();
-        shopClerkWorkRecordRequestDTO.setSysShopId(sysClerkDTO.getSysShopId());
-        shopClerkWorkRecordRequestDTO.setSysClerkId(sysClerkDTO.getId());
+        shopClerkWorkRecordRequestDTO.setSysClerkId(clerkId);
         //设置为true 这样需要通过consumeType和goodType做为条件来查询
         shopClerkWorkRecordRequestDTO.setTypeRequire(true);
         if("1".equals(searchFile)){
