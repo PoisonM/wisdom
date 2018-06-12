@@ -71,7 +71,7 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 	}
 
 	@Override
-	public Map<String, Object> getShopUserProductRelations(String sysShopId, String searchFile) {
+	public List<UserProductRelationResponseDTO> getShopUserProductRelations(String sysShopId, String searchFile) {
 		logger.info("getShopProductInfo方法传入的参数,searchFile={}", searchFile);
 		Map<String, String> mapFile = new HashMap();
 		mapFile.put("sysShopId", sysShopId);
@@ -85,9 +85,8 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 			logger.info("getWaitReceiveNumber方法查询的结果为空");
 			return null;
 		}
-		Map<String, Object> mapResponse = new HashMap<>();
-		mapResponse.put("data", list);
-		return mapResponse;
+
+		return list;
 	}
 
 	@Override

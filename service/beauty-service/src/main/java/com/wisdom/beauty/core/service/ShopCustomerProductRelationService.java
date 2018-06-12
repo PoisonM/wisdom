@@ -31,7 +31,7 @@ public interface ShopCustomerProductRelationService {
      * @Description: 根据条件查询用户和产品关系列表
      * @Date:2018/4/18 10:15
      */
-    Map<String, Object> getShopUserProductRelations(String sysShopId, String searchFile);
+    List<UserProductRelationResponseDTO> getShopUserProductRelations(String sysShopId, String searchFile);
 
     /**
      * @Author:zhanghuan
