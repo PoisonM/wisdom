@@ -602,7 +602,7 @@ public class BusinessOrderController {
         logger.info("订单=={}收货地址详情==={}开始" ,orderId,startTime);
         ResponseDTO responseDTO = new ResponseDTO<>();
         //根据订单ID，查询此订单的收货地址
-//        UserOrderAddressDTO userOrderAddressDTO1 =  userOrderAddressService.getUserOrderAddressByOrderId(orderId);
+        UserOrderAddressDTO userOrderAddressDTO1 =  userOrderAddressService.getUserOrderAddressByOrderId(orderId);
         List<OrderAddressRelationDTO> orderAddressRelationDTOS =  userOrderAddressService.getOrderAddressRelationByOrderId(orderId);
         UserOrderAddressDTO userOrderAddressDTO =new UserOrderAddressDTO();
         if(orderAddressRelationDTOS.size() != 0){
