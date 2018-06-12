@@ -572,8 +572,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (GoodsTypeEnum.COLLECTION_CARD.getCode().equals(userConsumeRequestDTO.getGoodsType())) {
 			list = this.getShopCustomerConsumeRecord(userConsumeRequestDTO.getFlowIds());
 		}
-		// 判断是疗程卡
-		if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRequestDTO.getGoodsType())) {
+		// 判断是疗程卡或者产品
+		if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRequestDTO.getGoodsType())
+				||GoodsTypeEnum.PRODUCT.getCode().equals(userConsumeRequestDTO.getGoodsType())) {
 			ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
 			shopUserConsumeRecordDTO.setFlowId(userConsumeRequestDTO.getFlowId());
 			list = this.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
@@ -587,8 +588,12 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			flowIds.add(shopUserConsumeRecord.getFlowId());
 
 		}
-		// 根据flowIds集合查询店员list
-		List<ShopClerkWorkRecordDTO> shopClerkWorkRecordDTOs = shopClerkWorkService.getShopClerkList(flowIds);
+		// 根据flowIds集合查询店员list，如果是产品领取记录则不需要查询店员list
+		List<ShopClerkWorkRecordDTO> shopClerkWorkRecordDTOs=null;
+		if(!GoodsTypeEnum.PRODUCT.getCode().equals(userConsumeRequestDTO.getGoodsType())){
+			logger.info("查询getShopClerkList");
+			shopClerkWorkRecordDTOs = shopClerkWorkService.getShopClerkList(flowIds);
+		}
 		Map<String, List<String>> map = null;
 		if (CollectionUtils.isEmpty(shopClerkWorkRecordDTOs)) {
 			logger.info("查询shopClerkWorkRecordDTO结果为空");
@@ -621,6 +626,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					userConsumeRecordResponseDTO.setSignUrl(shopUserConsumeRecord.getSignUrl());
 					userConsumeRecordResponseDTO.setSysShopName(shopUserConsumeRecord.getSysShopName());
 					userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
+					userConsumeRecordResponseDTO.setGoodsType(shopUserConsumeRecord.getGoodsType());
 					if (map != null) {
 						userConsumeRecordResponseDTO.setSysClerkNameList(map.get(shopUserConsumeRecord.getId()));
 					}
