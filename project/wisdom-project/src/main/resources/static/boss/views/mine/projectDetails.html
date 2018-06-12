@@ -6,7 +6,10 @@
         <div class="list">
             <ion-item  class=" bgfff row">
                 <div class="col col-80" >
-                    <p ><span class="fs16">{{projectInfo.projectName}}</span><span class="fs12 disp yearCard bgf66 colff tc ml5">{{projectInfo.cardType}}</span></p >
+                    <p>
+                        <span class="fs16">{{projectInfo.projectName}}</span>
+                        <span class="fs12 disp yearCard bgf66 colff tc ml5">{{projectInfo.cardType}}</span>
+                    </p>
                     <p class="fs11">
                         <span class=" fs11 colff disp tc" ng-class="projectInfo.status=='启用'?'Label1':'Label2'">{{projectInfo.status}}</span>
                     </p >
@@ -27,6 +30,5 @@
             <p class="item p10">功能介绍</p>
             <textarea style="height:1rem;width:100%;font-size: 0.3rem;color: #333333;padding: 20px;" ng-model="projectInfo.functionIntr"></textarea>
         </div>
-
     </ion-content>
 </ion-view>
