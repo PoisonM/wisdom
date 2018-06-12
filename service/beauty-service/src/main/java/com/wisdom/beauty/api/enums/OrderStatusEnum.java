@@ -4,7 +4,7 @@ public enum OrderStatusEnum {
 
     NOT_PAY("0", "未支付"),
     WAIT_PAY("1", "待支付"),
-    ALREADY_PAY("2", "已支付"),
+    WAIT_SIGN("2", "待签字确认"),
     CONFIRM_PAY("3", "已签字确认"),
     INVALID("4", "已失效");
 
