@@ -1,8 +1,10 @@
 package com.wisdom.beauty.controller.pay;
 
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserConsumeService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
@@ -42,6 +44,9 @@ public class PayController {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Resource
+    private ShopUerConsumeRecordService shopUerConsumeRecordService;
 
     @Resource
     private ShopUserConsumeService shopUserConsumeService;
@@ -110,6 +115,12 @@ public class PayController {
             update.set("signUrl", shopUserPayDTO.getSignUrl());
             update.set("updateDate",new Date());
             mongoTemplate.upsert(query, update, "shopUserOrderDTO");
+            ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+            //消费记录表中添加签字图片
+            shopUserConsumeRecordDTO.setId(shopUserOrderDTO.getOrderId());
+            shopUserConsumeRecordDTO.setSignUrl(shopUserOrderDTO.getSignUrl());
+            shopUserConsumeRecordDTO.setStatus(OrderStatusEnum.CONFIRM_PAY.getCode());
+            shopUerConsumeRecordService.updateConsumeRecord(shopUserConsumeRecordDTO);
             responseDTO.setResponseData(StatusConstant.SUCCESS);
             responseDTO.setResult(StatusConstant.SUCCESS);
         }else{

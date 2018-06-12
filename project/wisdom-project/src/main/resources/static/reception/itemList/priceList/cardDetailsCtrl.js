@@ -26,6 +26,7 @@ PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$root
 
     Detail.get({id:2},function (data) {
         $scope.param.cardDetail = data.responseData;
+        console.log($scope.param.cardDetail);
     })
 
     $scope.$parent.priceListBlackFn = function () {

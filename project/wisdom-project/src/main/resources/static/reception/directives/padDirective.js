@@ -436,5 +436,3 @@ PADWeb.directive('ngTime', function () {
         }
     }]);
 
-;
-
