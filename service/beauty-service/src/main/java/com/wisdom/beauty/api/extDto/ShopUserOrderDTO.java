@@ -55,6 +55,9 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //可用余额
     private BigDecimal availableBalance;
 
+    //支付对象
+    private ShopUserPayDTO shopUserPayDTO;
+
     //用户与项目关系
     private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
 
@@ -69,6 +72,14 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+
+    public ShopUserPayDTO getShopUserPayDTO() {
+        return shopUserPayDTO;
+    }
+
+    public void setShopUserPayDTO(ShopUserPayDTO shopUserPayDTO) {
+        this.shopUserPayDTO = shopUserPayDTO;
+    }
 
     public String getStatusDesc() {
         return statusDesc;

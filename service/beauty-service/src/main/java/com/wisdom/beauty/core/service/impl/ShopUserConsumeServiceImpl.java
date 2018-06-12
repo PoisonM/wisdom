@@ -114,8 +114,10 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public int userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo) {
-
+    public int userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO) {
+        //支付对象
+        ShopUserPayDTO shopUserPayDTO = shopUserOrderDTO.getShopUserPayDTO();
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         if (CommonUtils.objectIsEmpty(shopUserOrderDTO) || CommonUtils.objectIsEmpty(shopUserPayDTO)) {
             logger.info("传入参数为空，{}", "shopUserOrderDTO = [" + shopUserOrderDTO + "], shopUserPayDTO = [" + shopUserPayDTO + "]");
             return 0;
@@ -171,8 +173,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             //订单已支付，更新用户订单信息
             Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
             Update update = new Update();
-            update.set("status", OrderStatusEnum.ALREADY_PAY.getCode());
-            update.set("statusDesc", OrderStatusEnum.ALREADY_PAY.getDesc());
+            update.set("status", OrderStatusEnum.CONFIRM_PAY.getCode());
+            update.set("statusDesc", OrderStatusEnum.CONFIRM_PAY.getDesc());
             update.set("cashPayPrice", shopUserPayDTO.getCashPayPrice());
             update.set("surplusPayPrice", shopUserPayDTO.getSurplusPayPrice());
             update.set("payType", shopUserPayDTO.getPayType());
@@ -627,7 +629,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     private String updateUserAccountDTO(SysClerkDTO clerkInfo, String transactionCodeNumber, ShopUserConsumeDTO consumeDTO) {
         // 更新用户的账户信息
         SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
-        sysUserAccountDTO.setSysUserId("35");//consumeDTO.getSysUserId()
+        sysUserAccountDTO.setSysUserId(consumeDTO.getSysUserId());
         sysUserAccountDTO.setSysShopId(clerkInfo.getSysShopId());
         sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
         sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().subtract(consumeDTO.getConsumePrice()));
@@ -724,9 +726,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         Query query = new Query().addCriteria(Criteria.where("transactionId").is(transactionId));
         ShopRechargeCardOrderDTO orderDTO = mongoTemplate.findOne(query, ShopRechargeCardOrderDTO.class, "extShopUserRechargeCardDTO");
         orderDTO.setImageUrl(imageUrl);
-        if(OrderStatusEnum.ALREADY_PAY.getCode().equals(orderDTO.getStatus())){
+        if(!OrderStatusEnum.WAIT_SIGN.getCode().equals(orderDTO.getStatus())){
             responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("此订单已经操作成功了！请查看");
+            responseDTO.setErrorInfo("此订单已经作废！请查看"+orderDTO.getOrderStatusDesc());
             return responseDTO;
         }
         if(StringUtils.isBlank(orderDTO.getSysUserId())){
@@ -735,10 +737,6 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             return responseDTO;
         }
 
-        Update update = new Update();
-        update.set("imageUrl", imageUrl);
-        update.set("status", OrderStatusEnum.ALREADY_PAY.getCode());
-        mongoTemplate.upsert(query, update, "extShopUserRechargeCardDTO");
 
         //查询用户的充值卡信息
         if (null == orderDTO || StringUtils.isBlank(orderDTO.getId())) {
@@ -791,6 +789,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         orderDTO.setImageUrl(imageUrl);
         int record = saveRechargeCardConsumeRecord(userInfoDTO,orderDTO, clerkInfo, shopUserRechargeInfo);
         logger.info("充值卡充值操作流水号={}，生成充值记录,{}", transactionId, record > 0 ? "成功" : "失败");
+
+        Update update = new Update();
+        update.set("imageUrl", imageUrl);
+        update.set("orderStatusDesc", OrderStatusEnum.CONFIRM_PAY.getCode());
+        mongoTemplate.upsert(query, update, "shopRechargeCardOrderDTO");
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }

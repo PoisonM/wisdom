@@ -7,10 +7,8 @@ import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserConsumeService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.RedisLock;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -66,17 +64,21 @@ public class PayController {
             responseDTO.setErrorInfo("数据异常！请联系客服，谢谢");
             responseDTO.setResult(StatusConstant.FAILURE);
         }
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         RedisLock redisLock = null;
         try {
             redisLock = new RedisLock("userPayOpe:"+shopUserPayDTO.getOrderId());
             redisLock.lock();
             Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
             ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-            //用户为待支付的状态才能执行支付操作
+            //用户为待支付的状态才能执行签字确认操作
             if(OrderStatusEnum.WAIT_PAY.getCode().equals(shopUserOrderDTO.getStatus())){
-                int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO, shopUserPayDTO, clerkInfo);
-                responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+                Update update = new Update();
+                update.set("status", OrderStatusEnum.WAIT_SIGN.getCode());
+                update.set("statusDesc",OrderStatusEnum.WAIT_SIGN.getDesc());
+                update.set("signUrl", shopUserPayDTO.getSignUrl());
+                update.set("shopUserPayDTO",shopUserPayDTO);
+                update.set("updateDate",new Date());
+                mongoTemplate.upsert(query, update, "shopUserOrderDTO");
             }else{
                 responseDTO.setResult(StatusConstant.FAILURE);
                 responseDTO.setErrorInfo("订单已失效，请勿重复操作");
@@ -106,15 +108,11 @@ public class PayController {
         ResponseDTO responseDTO = new ResponseDTO<String>();
         Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
         ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-        //支付成功用户才能签字确认
-        if(OrderStatusEnum.ALREADY_PAY.getCode().equals(shopUserOrderDTO.getStatus())){
+        //进入待签字确认状态之后才能签字确认
+        if(OrderStatusEnum.WAIT_SIGN.getCode().equals(shopUserOrderDTO.getStatus())){
             //mongodb中更新订单的状态
-            Update update = new Update();
-            update.set("status", OrderStatusEnum.CONFIRM_PAY.getCode());
-            update.set("statusDesc",OrderStatusEnum.CONFIRM_PAY.getDesc());
-            update.set("signUrl", shopUserPayDTO.getSignUrl());
-            update.set("updateDate",new Date());
-            mongoTemplate.upsert(query, update, "shopUserOrderDTO");
+            int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO);
+            responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
             ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
             //消费记录表中添加签字图片
             shopUserConsumeRecordDTO.setId(shopUserOrderDTO.getOrderId());
