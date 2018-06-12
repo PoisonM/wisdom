@@ -7,6 +7,7 @@ import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
@@ -482,30 +483,42 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         if (CommonUtils.objectIsNotEmpty(productRelationDTOS)) {
 
             for (ShopUserProductRelationDTO dto : productRelationDTOS) {
+                //根据产品id查询产品信息
+                ShopProductInfoResponseDTO productDetail = shopProductInfoService.getProductDetail(dto.getShopProductId());
+                if(null == productDetail){
+                    logger.error("根据产品id查询产品信息为空");
+                    return;
+                }
+
                 String uuid = IdGen.uuid();
                 String sysClerkId = dto.getSysClerkId();
                 dto.setId(uuid);
                 dto.setSysShopId(clerkInfo.getSysShopId());
                 dto.setSysShopName(clerkInfo.getSysShopName());
                 dto.setSysBossCode(clerkInfo.getSysBossCode());
-                dto.setSurplusTimes(dto.getInitTimes());
                 dto.setSurplusAmount(dto.getInitAmount());
-                BigDecimal divide = dto.getPurchasePrice().divide(dto.getInitAmount(), 2, ROUND_HALF_DOWN);
+                BigDecimal divide = dto.getPurchasePrice().divide(productDetail.getMarketPrice(), 2, ROUND_HALF_DOWN);
                 dto.setDiscount(divide.floatValue());
+
                 logger.info("订单号={}，生成用户跟产品的关系={}", orderId, dto);
                 shopProductInfoService.saveShopUserProductRelation(dto);
 
                 ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-                userConsumeRecordDTO.setFlowName(dto.getShopProductName());
-                if (null != dto.getDiscount()) {
-                    userConsumeRecordDTO.setDiscount(dto.getDiscount());
+                userConsumeRecordDTO.setFlowName(productDetail.getProductName());
+                Float discount = dto.getDiscount();
+                if (null != discount) {
+                    userConsumeRecordDTO.setDiscount(discount);
+                    userConsumeRecordDTO.setTimeDiscount(discount);
+                    userConsumeRecordDTO.setPeriodDiscount(discount);
+                    userConsumeRecordDTO.setProductDiscount(discount);
                 }
                 userConsumeRecordDTO.setPrice(dto.getInitAmount());
                 userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
                 userConsumeRecordDTO.setConsumeNumber(dto.getInitTimes());
                 userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
-                userConsumeRecordDTO.setDiscount(dto.getDiscount());
                 userConsumeRecordDTO.setSysClerkId(sysClerkId);
+                userConsumeRecordDTO.setSysClerkId(dto.getSysClerkId());
+                userConsumeRecordDTO.setSysClerkName(dto.getSysClerkName());
                 userConsumeRecordDTO.setFlowId(dto.getId());
                 saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
 
