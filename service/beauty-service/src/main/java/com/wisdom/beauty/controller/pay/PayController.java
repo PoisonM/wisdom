@@ -1,6 +1,5 @@
 package com.wisdom.beauty.controller.pay;
 
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
@@ -108,21 +107,20 @@ public class PayController {
         ResponseDTO responseDTO = new ResponseDTO<String>();
         Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
         ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        if(null == shopUserOrderDTO){
+            responseDTO.setErrorInfo("未查询到此订单信息");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
         //进入待签字确认状态之后才能签字确认
         if(OrderStatusEnum.WAIT_SIGN.getCode().equals(shopUserOrderDTO.getStatus())){
             //mongodb中更新订单的状态
             int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO);
             responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-            ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
-            //消费记录表中添加签字图片
-            shopUserConsumeRecordDTO.setId(shopUserOrderDTO.getOrderId());
-            shopUserConsumeRecordDTO.setSignUrl(shopUserOrderDTO.getSignUrl());
-            shopUserConsumeRecordDTO.setStatus(OrderStatusEnum.CONFIRM_PAY.getCode());
-            shopUerConsumeRecordService.updateConsumeRecord(shopUserConsumeRecordDTO);
             responseDTO.setResponseData(StatusConstant.SUCCESS);
             responseDTO.setResult(StatusConstant.SUCCESS);
         }else{
-            responseDTO.setErrorInfo("订单未支付成功，操作失败");
+            responseDTO.setErrorInfo("订单已失效，请勿重复提交");
             responseDTO.setResult(StatusConstant.FAILURE);
         }
 

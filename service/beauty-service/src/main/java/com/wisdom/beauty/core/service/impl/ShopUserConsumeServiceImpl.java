@@ -168,6 +168,13 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             int flag = sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
             logger.info("更新账户信息传入参数={},执行结果={}", sysUserAccountDTO, flag > 0 ? "成功" : "失败");
 
+            ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+            //消费记录表中添加签字图片
+            shopUserConsumeRecordDTO.setId(shopUserOrderDTO.getOrderId());
+            shopUserConsumeRecordDTO.setSignUrl(shopUserOrderDTO.getSignUrl());
+            shopUserConsumeRecordDTO.setStatus(OrderStatusEnum.CONFIRM_PAY.getCode());
+            shopUerConsumeRecordService.updateConsumeRecord(shopUserConsumeRecordDTO);
+
             //保存资金流水记录
             saveCashFlowInfo(shopUserOrderDTO, shopUserPayDTO, transactionCodeNumber, sysUserAccountDTO, totalAmount);
             //订单已支付，更新用户订单信息
