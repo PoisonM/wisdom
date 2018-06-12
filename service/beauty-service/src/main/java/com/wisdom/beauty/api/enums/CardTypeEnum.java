@@ -2,22 +2,43 @@ package com.wisdom.beauty.api.enums;
 
 public enum CardTypeEnum {
 
-    TIME_CARD("0", "次卡"),
-    MONTH_CARD("1", "月卡"),
-    SEASON_CARD("2", "季卡"),
-    HALF_YEAR_CARD("3", "半年卡"),
-    YEAR_CARD("4", "年卡"),
-    TREATMENT_CARD("1", "疗程卡"),
-    ONE_TIME_CARD("0", "单次"),
-    ALL("2", "所有卡");
+    TIME_CARD("0", "次卡",1),
+    MONTH_CARD("1", "月卡",30),
+    SEASON_CARD("2", "季卡",90),
+    HALF_YEAR_CARD("3", "半年卡",180),
+    PERMANENT_CARD("5", "长期有效卡",100000),
+    YEAR_CARD("4", "年卡",365),
+    TREATMENT_CARD("1", "疗程卡",0),
+    ONE_TIME_CARD("0", "单次",0),
+    ALL("2", "所有卡",0);
 
-    CardTypeEnum(String code, String desc) {
+    CardTypeEnum(String code, String desc,int date) {
         this.code = code;
         this.desc = desc;
     }
 
+    public static CardTypeEnum judgeValue(String code) {
+        CardTypeEnum[] resultCodes = CardTypeEnum.values();
+        for (CardTypeEnum resultCode : resultCodes) {
+            if (resultCode.getCode().equals(code)) {
+                return resultCode;
+            }
+        }
+        return null;
+    }
+
+
     private String code;
     private String desc;
+    private int date;
+
+    public int getDate() {
+        return date;
+    }
+
+    public void setDate(int date) {
+        this.date = date;
+    }
 
     public String getCode() {
         return code;
