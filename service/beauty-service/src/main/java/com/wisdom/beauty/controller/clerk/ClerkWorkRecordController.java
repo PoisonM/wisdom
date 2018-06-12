@@ -47,7 +47,7 @@ public class ClerkWorkRecordController {
      * @Param:
      * @Return:
      * @Description: 获取具体某个店员的业绩和耗卡（包含来源分析）
-     *               (可以用于在boss端调用)
+     *               (可以用于在boss端调用,需要前端传递sysClerkId)
      * @Date:2018/5/31 15:32
      */
     @RequestMapping(value = "/getClerkWorkDetail", method = {RequestMethod.GET})
@@ -106,7 +106,7 @@ public class ClerkWorkRecordController {
      *           searchFile 2   耗卡明细
      *           searchFile 3  卡耗明细
      * @Return:
-     * @Description: 获取员工的业绩,耗卡,卡耗明细(可以用于在boss端调用)
+     * @Description: 获取员工的业绩,耗卡,卡耗明细(可以用于在boss端调用,需要前端传递sysClerkId)
      *                  业绩明细: consumeType 0 goodsType 2
      *                         : consumeType 0 goodsType 0 1 3 4
      *                  耗卡明细:consumeType 1 goodsType 1
