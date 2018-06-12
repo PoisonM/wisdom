@@ -169,10 +169,12 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
             Update update = new Update();
             update.set("status", OrderStatusEnum.ALREADY_PAY.getCode());
+            update.set("statusDesc", OrderStatusEnum.ALREADY_PAY.getDesc());
             update.set("cashPayPrice", shopUserPayDTO.getCashPayPrice());
             update.set("surplusPayPrice", shopUserPayDTO.getSurplusPayPrice());
             update.set("payType", shopUserPayDTO.getPayType());
             update.set("balancePay", shopUserPayDTO.getBalancePay());
+            update.set("updateDate",new Date());
             update.set("shopUserPayDTO", shopUserPayDTO);
             update.set("archivesInfo", archivesInfo);
             mongoTemplate.upsert(query, update, "shopUserOrderDTO");

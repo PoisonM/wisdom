@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -198,8 +199,8 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             update.set("shopUserProjectRelationDTOS", alreadyOrderDTO.getShopUserProjectRelationDTOS());
             update.set("shopUserProductRelationDTOS", alreadyOrderDTO.getShopUserProductRelationDTOS());
         }
+        update.set("updateDate",new Date());
         mongoTemplate.upsert(updateQuery, update, "shopUserOrderDTO");
-
     }
 
     /**

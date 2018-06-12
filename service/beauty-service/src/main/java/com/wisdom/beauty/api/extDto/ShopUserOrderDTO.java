@@ -32,6 +32,9 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //创建时间
     private Date createDate;
 
+    //更新时间
+    private Date updateDate;
+
     //备注
     private String detail;
 
@@ -64,6 +67,14 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 
     public List<ShopUserRechargeCardDTO> getUserPayRechargeCardList() {
         return userPayRechargeCardList;
