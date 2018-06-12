@@ -9,7 +9,7 @@ PADWeb.controller('stampCardRecordCtrl', function($scope, $stateParams, ngDialog
     Consumes.save({
         goodsType:5,
         consumeType:1,
-        pageSize:12
+        pageSize:1000
     },function (data) {
         $scope.dataList = data.responseData;
         console.log($scope.dataList);
