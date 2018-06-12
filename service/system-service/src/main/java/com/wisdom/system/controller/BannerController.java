@@ -103,7 +103,7 @@ public class BannerController {
 			bannerDTO.setBannerId(bannerId);
 			bannerDTO.setPlace("home");
 			bannerDTO.setStatus("1");
-			bannerDTO.setCreateDate( DateUtils.getDate());
+			bannerDTO.setCreateDate( DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));
 			bannerService.addHomeBanner(bannerDTO);
 			logger.info("新增bannerId={}楼层={}", bannerId,bannerDTO.getBannerRank());
 			responseDTO.setResult(StatusConstant.SUCCESS);
