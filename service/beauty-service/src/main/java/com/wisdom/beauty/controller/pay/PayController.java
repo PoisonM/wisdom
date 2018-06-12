@@ -9,6 +9,8 @@ import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.util.RedisLock;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -50,21 +52,29 @@ public class PayController {
      * @return
      */
     @RequestMapping(value = "userPayOpe", method = {RequestMethod.POST})
-
     public
     @ResponseBody
     ResponseDTO<ShopUserOrderDTO> userPayOpe(@RequestBody ShopUserPayDTO shopUserPayDTO) {
-
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
-
-        Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
-        ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-
-        int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO, shopUserPayDTO, clerkInfo);
-
-        responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-
+        if(null == shopUserPayDTO || StringUtils.isBlank(shopUserPayDTO.getOrderId())){
+            responseDTO.setErrorInfo("数据异常！请联系客服，谢谢");
+            responseDTO.setResult(StatusConstant.FAILURE);
+        }
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        RedisLock redisLock = null;
+        try {
+            redisLock = new RedisLock("userPayOpe:"+shopUserPayDTO.getOrderId());
+            redisLock.lock();
+            Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
+            ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+            int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO, shopUserPayDTO, clerkInfo);
+            responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        } catch (Exception e) {
+            responseDTO.setErrorInfo("处理异常，请联系客服，谢谢");
+            responseDTO.setResult(StatusConstant.FAILURE);
+        }finally {
+            redisLock.unlock();
+        }
         return responseDTO;
     }
 
