@@ -1,5 +1,6 @@
 var appointmentInfo = '/beauty/appointmentInfo/';
 var work = '/beauty/work/';
+var clerkWork = '/beauty/clerkWork/';
 var stock = '/beauty/stock/';
 var consume = '/beauty/consume/';
 var  earlyWarning =  '/beauty/earlyWarning/';
@@ -512,6 +513,25 @@ define(['appBoss'], function (app) {
         .factory('GetBossPerformanceList',['$resource',function ($resource){
             return $resource(work + "getBossPerformanceList")
         }])
+        /*获取具体某个店员的业绩和耗卡（包含来源分析）*/
+       /* .factory('GetClerkWorkDetail',['$resource',function ($resource){
+            return $resource(clerkWork + "getClerkWorkDetail")
+        }])*/
+
+
+        /*获取用户产品的领取记录*/
+        .factory('GetProductDrawRecord',['$resource',function ($resource){
+            return $resource(consume + "getProductDrawRecord")
+        }])
+        /*员工的业绩，耗卡，卡耗明细列表*/
+        .factory('GetClerkPerformanceListClerk',['$resource',function ($resource){
+            return $resource(clerkWork + "getClerkPerformanceList")
+        }])
+        /*获取产品的消费详情和充值卡的订单详情*/
+        .factory('ProductAndRechargeCard',['$resource',function ($resource){
+            return $resource(consume + "productAndRechargeCard")
+        }])
+
 
 
 });

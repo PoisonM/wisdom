@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/2.
  */
 angular.module('controllers',[]).controller('allFamilyCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetFamilyList','Global','BossUtil','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetFamilyList,Global,BossUtil,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetFamilyList','Global','BossUtil','$filter','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetFamilyList,Global,BossUtil,$filter,$ionicLoading) {
 
             $rootScope.title = "全部家人";
             $scope.param = {
@@ -60,18 +60,30 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
             $scope.getInfo = function () {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                })
                 GetFamilyList.get({
                     endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59",
                     startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",
                     pageSize:100
                 },function(data){
+                    $ionicLoading.hide()
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {
+
                         $scope.allFamily = data.responseData
                     }
                 })
-            }
-            $scope.getInfo()
+            };
+            $scope.$on('$ionicView.enter', function() {
+                $scope.getInfo()
+            })
+
 
 
         }]);

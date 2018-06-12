@@ -8,24 +8,24 @@
                 <img src="images/work/drop-down.png" class="dropImg">
             </ionic-datepicker>
 
-            <span class="fs15 fr pr10 colfff" ng-click="allFamilyGo()">全部家人</span>
+            <span class="fs15 fr pr10 colfff" ng-click="allFamilyGo()" ng-if="param.sysShopId!=''">全部家人</span>
 
         </div>
         <!--业绩耗卡-->
         <div class="list">
             <div class="item">
-                <div class="list comprehensiveBox" style="position: relative;border-radius: 10px;">
-                    <div class="row comprehensiveBox1">
+                <div class="list comprehensiveBox" style="position: relative;border-radius: 10px;height:92px;">
+                    <div class="row comprehensiveBox1" style="height:92px;">
                         <div class=" comprehensiveBox2 col col-50">
                             业绩
-                            <p class="colff">{{beautyAll.income}}</p>
+                            <p class="colff">{{beautyAll.income==undefined?0:beautyAll.income}}</p>
                         </div>
                         <div class=" comprehensiveBox2 col col-50" >
                             耗卡
-                            <p class="colff">{{beautyAll.expenditure}}</p>
+                            <p class="colff">{{beautyAll.expenditure==undefined?0:beautyAll.expenditure}}</p>
                         </div>
                     </div>
-                    <div class="" style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #FF6666" ui-sref="sevenDayCharts({id:param.sysShopId})"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;" >近7日趋势图</div>
+                    <div class="" style="position: absolute;bottom: 7px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #FF6666" ui-sref="sevenDayCharts({id:param.sysShopId})" ng-if="param.sysShopId!=''"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;" >近7日趋势图</div>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
         <!--业绩-->
         <div class="list" ng-click="detailedPerformanceGo('1')">
             <p class="item" style="padding: 8px"><span>业绩</span>
-                <span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.income}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
+                <span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.income==undefined?0:beautyAll.income}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
             <div class="row row-wrap" style="background: #ffffff;color: #333333;text-align: center;padding: 0px">
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
                     <div class="row">
@@ -43,7 +43,7 @@
                         </p>
                         <div class="col col-80" style="text-align: left">
                             <p>充值</p>
-                            <p style="margin-top: 5px">{{beautyAll.recharge}}</p>
+                            <p style="margin-top: 5px">{{beautyAll.recharge==undefined?0:beautyAll.recharge}}</p>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                         </p>
                         <div class="col col-80" style="text-align: left">
                             <p>消费</p>
-                            <p style="margin-top: 5px">{{beautyAll.consume}}</p>
+                            <p style="margin-top: 5px">{{beautyAll.consume==undefined?0:beautyAll.consume}}</p>
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
         <!--耗卡-->
         <div class="list" ng-click="detailedPerformanceGo('2')">
             <p class="item" style="padding: 8px"><span>耗卡</span>
-                <span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.expenditure}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
+                <span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.expenditure==undefined?0:beautyAll.expenditure}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
             <div class="row row-wrap" style="background: #ffffff;color: #333333;text-align: center;padding: 0px">
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
                     <div class="row">
@@ -94,7 +94,7 @@
                         </p>
                         <div class="col col-80" style="text-align: left">
                             <p>划卡</p>
-                            <p style="margin-top: 5px">{{beautyAll.scratchCard}}</p>
+                            <p style="margin-top: 5px">{{beautyAll.scratchCard==undefined?0:beautyAll.scratchCard}}</p>
                         </div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                         </p>
                         <div class="col col-80" style="text-align: left">
                             <p>单次消费耗卡</p>
-                            <p style="margin-top: 5px">{{beautyAll.oneConsume}}</p>
+                            <p style="margin-top: 5px">{{beautyAll.oneConsume==undefined?0:beautyAll.oneConsume}}</p>
                         </div>
                     </div>
                 </div>
@@ -134,8 +134,8 @@
             </div>
         </div>
         <!--卡耗-->
-        <div class="list" ng-click="detailedPerformanceGo('3')">
-            <p class="item" style="padding: 8px"><span>卡耗</span><span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.kahao}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
+        <div class="list" ng-click="('3')">
+            <p class="item" style="padding: 8px"><span>卡耗</span><span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.kahao==undefined?0:beautyAll.kahao}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
             <div class="row" style="background: #ffffff;color: #333333;text-align: center;padding: 0px">
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">
                     <div class="row">
@@ -144,7 +144,7 @@
                         </p>
                         <div class="col col-80" style="text-align: left">
                             <p>消费</p>
-                            <p style="margin-top: 5px">{{beautyAll.cardConsume}}</p>
+                            <p style="margin-top: 5px">{{beautyAll.cardConsume==undefined?0:beautyAll.cardConsume}}</p>
                         </div>
                     </div>
                 </div>

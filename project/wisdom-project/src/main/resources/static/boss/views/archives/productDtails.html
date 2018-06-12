@@ -3,13 +3,13 @@
         <div class="tabs-striped tabs-top tabs-background-light tabs-color-assertive">
             <div style="height:48px;">
                 <div class="tabs" style="top:0;"  >
-                    <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='all']"
-                       ng-click="chooseTab('0')">
-                        <span class="fs15 colff66"> 领取记录</span>
-                    </a>
                     <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='0']"
+                       ng-click="chooseTab('0')">
+                        <span class="fs15 "> 领取记录</span>
+                    </a>
+                    <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='1']"
                        ng-click="chooseTab('1')">
-                        <span class="fs15 col333">  操作记录</span>
+                        <span class="fs15 ">  消费详情</span>
                     </a>
                 </div>
             </div>
@@ -37,73 +37,69 @@
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">时间</p>
                             <p class="mr10 col888">
-                                2018-01-26 16：32：28
+                                {{info.createDate|date:'yyyy-MM-dd'}}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">顾客</p>
                             <p class="mr10 col888">
-                                阿敏
+                               {{info.sysUserName}}
                             </p>
                         </ion-item>
 
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">操作门店</p>
                             <p class="mr10 col888">
-                                美容院分店
+                                {{info.sysShopName}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">前台</p>
                             <p class="mr10 col888">
-                                王萱萱
+                                {{info.createBy}}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">类型</p>
-                            <p class="mr10 col888">
-                                店内消费
+                            <p class="mr10 col888" ng-if="info.type == '0'">
+                               消费
+                            </p>
+                            <p class="mr10 col888" ng-if="info.type == '1'">
+                                充值
                             </p>
                         </ion-item>
                     </ion-list>
                 </div>
                 <div>
                     <p class="h50 ml10">商品信息</p>
-                    <ion-list>
+                    <ion-list ng-repeat="item in info.userConsumeRecordResponseList">
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml10">水光针</p>
+                            <p class="ml10">{{item.flowName}}</p>
                             <p class="mr10">
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml20">包含次数</p>
+                            <p class="ml20">充值金额</p>
                             <p class="mr10 col888">
-                                6次
+                                {{item.price}}
                             </p>
                         </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml20">价格</p>
-                            <p class="mr10 col888">
-                                ¥4888.00
-                            </p>
-                        </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml20">折扣</p>
-                            <p class="mr10 v">
-                                9.2折
-                            </p>
-                        </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml20">数量</p>
-                            <p class="mr10 col888">
-                                1
-                            </p>
-                        </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml20">金额</p>
-                            <p class="mr10 col888">
-                                ¥4888.00
-                            </p>
+                        <ion-item  class=" bgfff" style="display: flex;justify-content: space-between">
+                            <p class="ml20 h50">折扣</p>
+                            <div >
+                                <p class="sb">
+                                    <span>单次</span>
+                                    <span>{{item.timeDiscount}}折</span>
+                                </p>
+                                <p class="sb">
+                                    <span>疗程卡</span>
+                                    <span>{{item.periodDiscount}}折</span>
+                                </p>
+                                <p class="sb">
+                                    <span>产品</span>
+                                    <span>{{item.productDiscount}}折</span>
+                                </p>
+                            </div>
                         </ion-item>
 
                     </ion-list>
@@ -114,7 +110,7 @@
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10"> 总金额</p>
                             <p class="mr10 col888">
-                                ￥4888.00
+                                ￥{{info.sumAmount}}
                             </p>
                         </ion-item>
                     </opn-list>

@@ -2,7 +2,7 @@
     <ion-content>
         <div  >
             <ion-list >
-                <ion-item  class="h60 bgfff " style="display: flex;" ng-repeat="item in accountDetails">
+                <ion-item  class="h60 bgfff " style="display: flex;" ng-repeat="item in accountDetails" ui-sref="detailsOfCashier({flowNo:item.flowNo})" >
                     <div class="W33 ml20">
                         <p >{{item.createDate|date:'yyyy-MM-dd'}}</p>
                     </div>
@@ -12,7 +12,7 @@
                         <p class="floatR">
                             <span class="colff66" ng-if="item.consumeType == '0'">+{{item.price}}</span>
                             <span class="col4BC647" ng-if="item.consumeType == '1'">-{{item.price}}</span>
-                            <img src="images/more.png"  class="more mr10 ml5" ng-show="false">
+                            <img src="images/more.png"  class="more mr10 ml5" >
                        </p>
                     </div>
                 </ion-item>

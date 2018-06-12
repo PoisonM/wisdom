@@ -10,21 +10,21 @@
             <span  class="fs15 fr mr10 colfff" ui-sref="storeExpenditure({date:param.date})">全部分店</span>
         </div>
         <!--业绩耗卡-->
-        <div class="list">
-            <div class="item p10" >
+        <div class="list" >
+            <div class="item p10" style="padding-bottom: 0px;">
                 <div class="list incomeAnalysisBox" style="position: relative;border-radius: 10px;margin-bottom: 0">
                     <div style="text-align: center;margin: auto;margin-top: 5%">
                         <p  class="colff">现金收益</p>
                         <p  class="colff">{{oneIncomeAnalysis[3] ==undefined?0:oneIncomeAnalysis[3]}}</p>
                     </div>
-                    <p  style="position: absolute;bottom: 15px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #ff6666" ui-sref="trendChart({id:'a'})"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;" >近7日趋势图</p>
+                    <p  style="position: absolute;bottom: 8px;left: 36%;background: rgb(255,211,211);border-radius: 10px;width: 100px;height: 17px;font-size: 11px;text-align: center;color: #ff6666" ui-sref="trendChart({id:'a'})"><img src="images/work/map.png" style="width: 12px;height: 10px;display: inline-block;" >近7日趋势图</p>
                 </div>
               <div class="row col33 p0" >
-                  <div class="col col-50 tc fs13" style="margin-top:10px;">
+                  <div class="col col-50 tc fs13" >
                        总收入
                       <p  class="colff66">+{{incomeAnalysis[4] ==undefined?0:incomeAnalysis[4]}}</p>
                   </div>
-                  <div class="col col-50 tc fs13" style="margin-top:10px;">
+                  <div class="col col-50 tc fs13" >
                       总支出
                       <p class="colff66">****</p>
                   </div>

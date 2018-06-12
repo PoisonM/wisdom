@@ -89,13 +89,13 @@
 .achievementBox2{width:90%;height: 97px;background: rgb(255,102,102);margin: auto}
 .colff{color: #ffffff!important;}
 /*综合分析的业绩耗卡部分*/
-.comprehensiveBox{width: 100%;height: 127px;background:url("../../images/work/analysis.png");background-size: 100% 100%}
+.comprehensiveBox{width: 100%;height: 97px;background:url("../../images/work/analysis.png");background-size: 100% 100%}
 .comprehensiveBox1{font-size: 0.3rem;width: 6.8rem;height: 1.05rem;color: #FFFFFF;margin: auto}
 .comprehensiveBox2{text-align: center;padding-top: 0.2rem;}
 .bgfff{background: #FFFFFF}
 
 /*收支分析*/
-.incomeAnalysisBox{width: 100%;height: 112px;background:url("../../images/work/analysis.png");background-size: 100% 100%}
+.incomeAnalysisBox{width: 100%;height: 97px;background:url("../../images/work/analysis.png");background-size: 100% 100%;margin-bottom: 0px;}
 .incomeAnalysisBox1{font-size: 0.3rem;width: 6.8rem;height: 1.05rem;color: #FFFFFF;margin: auto}
 .incomeAnalysisBox2{text-align: center;padding-top: 0.2rem;}
 

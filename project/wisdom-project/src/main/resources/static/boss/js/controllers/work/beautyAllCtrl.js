@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('beautyAllCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopConsumeAndRecharge','BossUtil','Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetShopConsumeAndRecharge,BossUtil,Global,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopConsumeAndRecharge','BossUtil','Global','$filter','$ionicLoading','GetClerkWorkDetail',
+        function ($scope,$rootScope,$stateParams,$state,GetShopConsumeAndRecharge,BossUtil,Global,$filter,$ionicLoading,GetClerkWorkDetail) {
 
             $rootScope.title = "唯美度养生会所";
 
@@ -11,7 +11,8 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date:$stateParams.date,
-                sysShopId:$stateParams.sysShopId
+                sysShopId:$stateParams.sysShopId,
+                sysClerkId:$stateParams.sysClerkId
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'')
             $scope.param.date=$scope.param.date.replace(/:/g,'')
@@ -64,20 +65,54 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
             };
 
             $scope.getInfo = function () {
-                GetShopConsumeAndRecharge.get({
-                    shopId:$stateParams.sysShopId,
-                    startTime:$scope.param.date+" 00:00:00",
-                    endTime:$scope.param.date+" 23:59:59"
-                },function (data) {
-                    if(data.result==Global.SUCCESS&&data.responseData!=null)
-                    {
-                        $scope.beautyAll = data.responseData
-                    }
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
                 });
-            }
-            $scope.getInfo()
+                $scope.beautyAll = ''
+                if($scope.param.sysShopId!=""){
+                    GetShopConsumeAndRecharge.get({
+                        shopId:$stateParams.sysShopId,
+                        startTime:$scope.param.date+" 00:00:00",
+                        endTime:$scope.param.date+" 23:59:59"
+                    },function (data) {
+                        $ionicLoading.hide()
+                        if(data.result==Global.SUCCESS&&data.responseData!=null)
+                        {
+                            $scope.beautyAll = data.responseData
+                        }
+                    });
+                }
+                if($scope.param.sysClerkId!=""){
+                    GetClerkWorkDetail.get({
+                        sysClerkId:$stateParams.sysClerkId,
+                        startTime:$scope.param.date+" 00:00:00",
+                        endTime:$scope.param.date+" 23:59:59"
+                    },function(data){
+                        $ionicLoading.hide()
+                        if(data.result==Global.SUCCESS&&data.responseData!=null)
+                        {
+                            $scope.beautyAll = data.responseData
+                        }
+                    })
+                }
+
+            };
+            $scope.$on('$ionicView.enter', function() {
+                $scope.getInfo();
+            })
+
             $scope.detailedPerformanceGo = function(type){
-                $state.go("detailedPerformance",{shopId:$stateParams.sysShopId,searchFile:type})
+                if ($scope.param.sysClerkId != "") {
+                    $state.go("detailedPerformance",{sysClerkId:$stateParams.sysClerkId,searchFile:type})
+                }
+                if ($scope.param.sysShopId != "") {
+                    $state.go("detailedPerformance",{sysShopId:$stateParams.sysShopId,searchFile:type})
+                }
+
             }
             $scope.allFamilyGo = function(){
                 $state.go("allFamily",{date:$scope.param.date})

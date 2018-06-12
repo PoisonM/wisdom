@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/2.
  */
 angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl',
-    ['$scope','$rootScope','$stateParams','$state','BossUtil','Global','$filter','GetBossExpenditureAndIncome',
-        function ($scope,$rootScope,$stateParams,$state,BossUtil,Global,$filter,GetBossExpenditureAndIncome) {
+    ['$scope','$rootScope','$stateParams','$state','BossUtil','Global','$filter','GetBossExpenditureAndIncome','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,BossUtil,Global,$filter,GetBossExpenditureAndIncome,$ionicLoading) {
 
             $rootScope.title = "综合分析";
 
@@ -65,17 +65,27 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
             };
 
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetBossExpenditureAndIncome.get({
                     startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59"},function (data) {
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {
+                        $ionicLoading.hide()
                         $scope.comprehensive = data.responseData;
 
                     }
                 });
             }
+            $scope.$on('$ionicView.enter', function() {
+                $scope.getInfo()
+            })
 
-            $scope.getInfo()
 
             $scope.beautyAllGo = function(sysShopId){
                 $state.go("beautyAll",{sysShopId:sysShopId,date:$scope.param.date})

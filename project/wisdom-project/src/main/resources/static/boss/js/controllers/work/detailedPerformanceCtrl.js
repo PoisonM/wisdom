@@ -2,24 +2,41 @@
  * Created by Administrator on 2018/5/2.
  */
 angular.module('controllers',[]).controller('detailedPerformanceCtrl',
-    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",
-        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global) {
+    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",'GetClerkPerformanceListClerk',
+        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk) {
 
             $rootScope.title = "业绩明细";
             $scope.flag = false;
             $scope.userConsumeRequest = {
-                sysShopId:$stateParams.shopId,
                 pageSize:1000,
                 searchFile:$stateParams.searchFile
             };
-            GetBossPerformanceList.get($scope.userConsumeRequest,function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null)
-                {
-                    $scope.list = data.responseData;
-                    $scope.detailedPerformance = data.responseData;
-                }
+            if ($stateParams.sysClerkId != "") {
+                $scope.userConsumeRequest.sysClerkId = $stateParams.sysClerkId
+                GetClerkPerformanceListClerk.get($scope.userConsumeRequest,function(data){
+                    if(data.result==Global.SUCCESS&&data.responseData!=null)
+                    {
+                        $scope.list = data.responseData;
+                        $scope.detailedPerformance = data.responseData;
+                    }
 
-            })
+                })
+            }
+            if ($stateParams.sysShopId != "") {
+                $scope.userConsumeRequest.sysShopId = $stateParams.sysShopId;
+                GetBossPerformanceList.get($scope.userConsumeRequest,function(data){
+                    if(data.result==Global.SUCCESS&&data.responseData!=null)
+                    {
+                        $scope.list = data.responseData;
+                        $scope.detailedPerformance = data.responseData;
+                    }
+
+                })
+            }
+            console.log($stateParams.sysClerkId);
+            console.log($stateParams.sysShopId);
+            console.log($scope.userConsumeRequest);
+
             $scope.expenditureDetailsGo = function(flowNo){
                 $state.go("details",{flowNo:flowNo})
             }

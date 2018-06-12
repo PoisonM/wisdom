@@ -9,6 +9,7 @@ angular.module('controllers',[]).controller('modificationInformationCtrl',
             $scope.userInfo={
                 sex:"女"
             };
+
             /*点击女*/
             $scope.female=function () {
                 $scope.userInfo.sex = '女'
@@ -18,10 +19,23 @@ angular.module('controllers',[]).controller('modificationInformationCtrl',
                 $scope.userInfo.sex = '男'
             };
 
-            GetCurrentLoginUserInfo.get(function (data) {
-                $ionicLoading.hide();
-                $scope.userInfo=data.responseData;
-            });
+            $scope.getInfo = function () {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                GetCurrentLoginUserInfo.get(function (data) {
+                    $ionicLoading.hide();
+                    $scope.userInfo=data.responseData;
+                });
+            }
+            $scope.getInfo()
+
+
+
 
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
