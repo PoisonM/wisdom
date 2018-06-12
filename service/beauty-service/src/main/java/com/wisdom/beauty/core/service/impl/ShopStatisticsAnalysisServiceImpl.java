@@ -320,11 +320,15 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		BigDecimal allExpenditure=null;
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationList) {
 			response = new ExpenditureAndIncomeResponseDTO();
-			if (incomeMap.get(shopBossRelation.getSysShopId()) != null) {
-				response.setIncome(incomeMap.get(shopBossRelation.getSysShopId()).getTotalPrice());
+			if(incomeMap!=null){
+				if (incomeMap.get(shopBossRelation.getSysShopId()) != null) {
+					response.setIncome(incomeMap.get(shopBossRelation.getSysShopId()).getTotalPrice());
+				}
 			}
-			if (expenditureMap.get(shopBossRelation.getSysShopId()) != null) {
-				response.setExpenditure(expenditureMap.get(shopBossRelation.getSysShopId()).getTotalPrice());
+			if(expenditureMap!=null){
+				if (expenditureMap.get(shopBossRelation.getSysShopId()) != null) {
+					response.setExpenditure(expenditureMap.get(shopBossRelation.getSysShopId()).getTotalPrice());
+				}
 			}
 			response.setSysShopId(shopBossRelation.getSysShopId());
 			response.setSysShopName(shopBossRelation.getSysShopName());
@@ -573,56 +577,59 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		BigDecimal oneConsume = null;
 		BigDecimal cardConsume = null;
 		Map<String, String> map = null;
-		for (UserConsumeRecordResponseDTO userConsumeRecordResponseDTO : userConsumeRecordResponse) {
-			// 业绩 ---充值金额
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
-				if (recharge != null) {
-					recharge = recharge.add(userConsumeRecordResponseDTO.getSumAmount());
-				} else {
-					recharge = userConsumeRecordResponseDTO.getSumAmount();
-				}
-			}
-			// 业绩 ---消费金额
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
-				if (consume != null) {
-					consume = consume.add(userConsumeRecordResponseDTO.getSumAmount());
-				} else {
-					consume = userConsumeRecordResponseDTO.getSumAmount();
-				}
-			}
-			// 耗卡 --- 划卡金额(疗程卡和套卡)
-			if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())) {
-				if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())
-						|| GoodsTypeEnum.COLLECTION_CARD.getCode()
-						.equals(userConsumeRecordResponseDTO.getGoodsType())) {
-					if (scratchCard != null) {
-						scratchCard = scratchCard.add(userConsumeRecordResponseDTO.getSumAmount());
+		if(CollectionUtils.isNotEmpty(userConsumeRecordResponse)){
+			for (UserConsumeRecordResponseDTO userConsumeRecordResponseDTO : userConsumeRecordResponse) {
+				// 业绩 ---充值金额
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
+						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+					if (recharge != null) {
+						recharge = recharge.add(userConsumeRecordResponseDTO.getSumAmount());
 					} else {
-						scratchCard = userConsumeRecordResponseDTO.getSumAmount();
+						recharge = userConsumeRecordResponseDTO.getSumAmount();
+					}
+				}
+				// 业绩 ---消费金额
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
+						&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+					if (consume != null) {
+						consume = consume.add(userConsumeRecordResponseDTO.getSumAmount());
+					} else {
+						consume = userConsumeRecordResponseDTO.getSumAmount();
+					}
+				}
+				// 耗卡 --- 划卡金额(疗程卡和套卡)
+				if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())) {
+					if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())
+							|| GoodsTypeEnum.COLLECTION_CARD.getCode()
+							.equals(userConsumeRecordResponseDTO.getGoodsType())) {
+						if (scratchCard != null) {
+							scratchCard = scratchCard.add(userConsumeRecordResponseDTO.getSumAmount());
+						} else {
+							scratchCard = userConsumeRecordResponseDTO.getSumAmount();
+						}
+					}
+				}
+				// 耗卡 --- 单次消费
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
+						&& GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+					if (oneConsume != null) {
+						oneConsume = oneConsume.add(userConsumeRecordResponseDTO.getSumAmount());
+					} else {
+						oneConsume = userConsumeRecordResponseDTO.getSumAmount();
+					}
+				}
+				// 卡耗 --- 单次消费
+				if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
+						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+					if (cardConsume != null) {
+						cardConsume = cardConsume.add(userConsumeRecordResponseDTO.getSumAmount());
+					} else {
+						cardConsume = userConsumeRecordResponseDTO.getSumAmount();
 					}
 				}
 			}
-			// 耗卡 --- 单次消费
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
-				if (oneConsume != null) {
-					oneConsume = oneConsume.add(userConsumeRecordResponseDTO.getSumAmount());
-				} else {
-					oneConsume = userConsumeRecordResponseDTO.getSumAmount();
-				}
-			}
-			// 卡耗 --- 单次消费
-			if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
-				if (cardConsume != null) {
-					cardConsume = cardConsume.add(userConsumeRecordResponseDTO.getSumAmount());
-				} else {
-					cardConsume = userConsumeRecordResponseDTO.getSumAmount();
-				}
-			}
 		}
+
 		map = new HashedMap();
 		map.put("recharge", recharge == null ? "0" : recharge.toString());
 		map.put("consume", consume == null ? "0" : consume.toString());
