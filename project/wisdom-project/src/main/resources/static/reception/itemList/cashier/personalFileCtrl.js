@@ -60,7 +60,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("充值卡:" + data)
-                    $scope.rechargeCardList = data.responseData
+                    $scope.rechargeCardList = data.responseData.userRechargeCardList;
                 }
             })
 

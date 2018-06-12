@@ -813,7 +813,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         //针对普通卡进行插入操作
         else {
             logger.info("针对普通卡进行插入操作交易号，{},订单对象为", transactionId, orderDTO);
-            shopUserRechargeInfo = saveUserRechargeCard(userInfoDTO,shopRechargeCard.getImageUrl(),orderDTO, clerkInfo,"余额充值",RechargeCardTypeEnum.COMMON);
+            shopUserRechargeInfo = saveUserRechargeCard(userInfoDTO,shopRechargeCard.getImageUrl(),orderDTO, clerkInfo,orderDTO.getName(),RechargeCardTypeEnum.COMMON);
         }
 
         //插入用户的消费记录
