@@ -466,6 +466,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			expenditureAndIncomeResponse.setPhoto(sysClerkDTO.getPhoto());
 			expenditureAndIncomeResponse.setSysShopClerkName(sysClerkDTO.getName());
 			expenditureAndIncomeResponse.setRole(sysClerkDTO.getRole());
+			expenditureAndIncomeResponse.setSysShopClerkId(sysClerkDTO.getId());
 			expenditureAndIncomeResponses.add(expenditureAndIncomeResponse);
 		}
 		return expenditureAndIncomeResponses;
