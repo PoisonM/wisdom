@@ -112,16 +112,25 @@ public class PayController {
             responseDTO.setResult(StatusConstant.FAILURE);
             return responseDTO;
         }
-        //进入待签字确认状态之后才能签字确认
-        if(OrderStatusEnum.WAIT_SIGN.getCode().equals(shopUserOrderDTO.getStatus())){
-            //mongodb中更新订单的状态
-            int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO);
-            responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-            responseDTO.setResponseData(StatusConstant.SUCCESS);
-            responseDTO.setResult(StatusConstant.SUCCESS);
-        }else{
-            responseDTO.setErrorInfo("订单已失效，请勿重复提交");
-            responseDTO.setResult(StatusConstant.FAILURE);
+        RedisLock redisLock = null;
+        try {
+            redisLock = new RedisLock("paySign:"+shopUserPayDTO.getOrderId());
+            redisLock.lock();
+            //进入待签字确认状态之后才能签字确认
+            if(OrderStatusEnum.WAIT_SIGN.getCode().equals(shopUserOrderDTO.getStatus())){
+                //mongodb中更新订单的状态
+                int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO);
+                responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+                responseDTO.setResponseData(StatusConstant.SUCCESS);
+                responseDTO.setResult(StatusConstant.SUCCESS);
+            }else{
+                responseDTO.setErrorInfo("订单已失效，请勿重复提交");
+                responseDTO.setResult(StatusConstant.FAILURE);
+            }
+        } catch (Exception e) {
+            logger.error("签字确认失败，失败信息为={}"+e.getMessage(),e);
+        }finally {
+            redisLock.unlock();
         }
 
         return responseDTO;
