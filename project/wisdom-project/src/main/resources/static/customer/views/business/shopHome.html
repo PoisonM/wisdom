@@ -178,17 +178,17 @@
         <div class="tab_sty">
             <div  class="tab_header">
                 <ul>
-                    <li ng-click="checkPrice('all')" class=""><e ng-show="params=='all'"></e><i style="font-size: 20px">全部</i></li>
-                    <li ng-click="checkPrice(99)" class=""><e  ng-show="params==99"></e><i class="bigsize">99</i>元专区</li>
-                    <li ng-click="checkPrice(199)" class=""><e  ng-show="params==199"></e><i class="bigsize">199</i>元专区</li>
-                    <li ng-click="checkPrice(299)" class=""><e  ng-show="params==299"></e><i class="bigsize">299</i>元专区</li>
-                    <li ng-click="checkPrice(399)" class=""><e  ng-show="params==399"></e><i class="bigsize">399</i>元专区</li>
-                    <li ng-click="checkPrice(499)" class=""><e  ng-show="params==499"></e><i class="bigsize">499</i>元专区</li>
+                    <li ng-click="checkPrice('all')" class=""><e ng-show="shopHomeParam=='all'"></e><i style="font-size: 20px">全部</i></li>
+                    <li ng-click="checkPrice(99)" class=""><e  ng-show="shopHomeParam==99"></e><i class="bigsize">99</i>元专区</li>
+                    <li ng-click="checkPrice(199)" class=""><e  ng-show="shopHomeParam==199"></e><i class="bigsize">199</i>元专区</li>
+                    <li ng-click="checkPrice(299)" class=""><e  ng-show="shopHomeParam==299"></e><i class="bigsize">299</i>元专区</li>
+                    <li ng-click="checkPrice(399)" class=""><e  ng-show="shopHomeParam==399"></e><i class="bigsize">399</i>元专区</li>
+                    <li ng-click="checkPrice(499)" class=""><e  ng-show="shopHomeParam==499"></e><i class="bigsize">499</i>元专区</li>
                 </ul>
             </div>
             <div class="tab_conetnt">
                 <div class="priceArea ">
-                    <div  class="row row-wrap"  >
+                    <div  class="row row-wrap">
                         <!--单个分区-->
                         <div ng-if="!allProductFlag" ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in repeatList">
                             <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
@@ -198,7 +198,6 @@
                                 <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
                                 <span style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-left: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></span>
                             </p>
-
                         </div>
                         <!--点击全部按钮-->
                         <!--99-->
@@ -278,6 +277,7 @@
                                 </p>
                             </div>
                         </div>
+
 
                     </div>
               </div>
