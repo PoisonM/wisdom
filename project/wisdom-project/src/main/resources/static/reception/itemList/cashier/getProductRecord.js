@@ -34,7 +34,7 @@ PADWeb.controller('getProductRecordCtrl', function($scope, $stateParams, $state,
         flowId:$stateParams.id,
         goodsType:"4"
     },function (data) {
-        if(dat.result == "0x00001"){
+        if(data.result == "0x00001"){
             $scope.dataList = data.responseData
         }
     })
