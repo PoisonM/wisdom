@@ -69,13 +69,13 @@
 
                             </div>
 
-                            <div class="product_searchEara">
+                            <div style="margin-top: 15px;" class="product_searchEara">
                                 <input type="button" value="搜索" class="search_btn" ng-click="searchMonthlyBalance()">
                             </div>
                         </div>
 
                         <div class="statusBar" align="left" style="height:60px;">
-                            <button class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='permanent'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
+                            <button style="margin-top: 30px;" class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='permanent'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
                             <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommend'" ng-show="false">筛选已完成的订单</button>
                         </div>
 <!--
