@@ -1,7 +1,7 @@
-var beautyIP = '/beauty/';
-var userIP = '/user/';
-var systemService = '/system-service/';
-var  mine='/beauty/mine/';
+var beautyIP = 'http://192.168.1.117/beauty/';
+var userIP = 'http://192.168.1.117/user/';
+var systemService = 'http://192.168.1.117/system-service/';
+var  mine='http://192.168.1.117/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
             /*request: function(config) {
@@ -386,7 +386,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetCompleteByflowId', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/id')
     }])
-    //获取用户产品的领取记录 :9051/consume/getProductDrawRecord
+    //获取用户产品的领取记录
 
     .factory('GetProductDrawRecord', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/id')
@@ -394,5 +394,17 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     // http://localhost:9051/consume/getRechargeRecord
     .factory('GetRechargeRecord', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/getRechargeRecord')
+    }])
+    //获取普通充值卡的订单详情产品的消费详情
+    .factory('GetConsumeDetail', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/productAndRechargeCard/getConsumeDetail')
+    }])
+    //特殊充值卡的订单详情 http://47.100.102.37:1002/workspace/myWorkspace.do?projectId=6#24
+    .factory('GetConsumeDetail', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/productAndRechargeCard/getConsumeDetail')
+    }])
+    //获取用户产品的领取记录  http://192.168.1.117:9051/consume/getProductDrawRecord
+    .factory('GetProductDrawRecord', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/getProductDrawRecord')
     }])
 ;
