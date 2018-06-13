@@ -97,9 +97,8 @@ public class IncomeService {
 
     public List<IncomeRecordDTO> getIncomeRecordByPageParam(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         logger.info("根据条件查询用户佣金奖励");
-        String orderStatus ="2";
-        String orderId ="";
-        String orderAmount ="0";
+
+
 
         //获取审核状态条件
         String CheckStatus =pageParamVoDTO.getRequestData().getCheckStatus();
@@ -140,6 +139,9 @@ public class IncomeService {
         IncomeRecordManagementDTO incomeRecordManagementDTO =new IncomeRecordManagementDTO();
         Iterator<IncomeRecordDTO> iterator = incomeRecordDTOS.iterator();
         while (iterator.hasNext()){
+            String orderStatus ="2";
+            String orderId ="";
+            String orderAmount ="0";
             IncomeRecordDTO incomeRecordDTO = iterator.next();
             try {
                 //查詢审核信息
