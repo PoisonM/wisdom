@@ -20,6 +20,12 @@ PADWeb.controller('featureRechargeCardRecordsCtrl', function($scope, $stateParam
     $scope.goRechargeCardRecords = function () {
         $state.go("pad-web.left_nav.rechargeCardRecords",{userId:$stateParams.userId})
     }
+    $scope.goRechargeCardDetail = function (flowNo) {
+        $state.go("pad-web.left_nav.rechargeCardDetail",{
+            userId:$stateParams.userId,
+            flowNo:flowNo
+        })
+    }
 
     GetRechargeRecord.get({
         flowId:$stateParams.id,

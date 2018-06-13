@@ -67,8 +67,8 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         }
     },100)
 
-    $scope.tempTime = $scope.param.nowdate.replace("年","-").replace("月","-1")
     $scope.goCompileWorkList = function () {
+        $scope.tempTime = $scope.param.nowdate.replace("年","-").replace("月","-1")
         $state.go("pad-web.compileWorkList",{time:$scope.tempTime})
     }
 

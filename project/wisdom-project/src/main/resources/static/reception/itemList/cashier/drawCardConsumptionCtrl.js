@@ -47,6 +47,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
         consumeNum: 0,
         consumePrice: 0,
         consumeOncePrice:0,
+        imageUrl:'',
     })
     //查询用户套卡
     if ($scope.params.type == 2) {

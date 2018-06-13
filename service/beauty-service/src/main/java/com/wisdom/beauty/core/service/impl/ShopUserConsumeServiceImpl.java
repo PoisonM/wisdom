@@ -588,6 +588,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
             consumeRecordDTO.setOperDate(new Date());
             consumeRecordDTO.setCreateBy(clerkInfo.getId());
+            consumeRecordDTO.setSignUrl(dto.getImageUrl());
             consumeRecordDTO.setConsumeNumber(dto.getConsumeNum());
             consumeRecordDTO.setSysUserId(shopUserProjectRelationDTO.getSysUserId());
             consumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
@@ -709,6 +710,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
         consumeRecordDTO.setOperDate(new Date());
         consumeRecordDTO.setCreateBy(clerkInfo.getId());
+        consumeRecordDTO.setSignUrl(consumeDTO.getImageUrl());
         consumeRecordDTO.setConsumeNumber(consumeRecordDTO.getConsumeNumber());
         consumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
         consumeRecordDTO.setPrice(consumeRecordDTO.getPrice());

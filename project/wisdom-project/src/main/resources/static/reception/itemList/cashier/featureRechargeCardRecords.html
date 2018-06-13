@@ -3,7 +3,7 @@
         <p>{{sunAmount}}</p>
         <div class="content">
             <ul>
-                <li ng-repeat="item in featureData" ng-click="goRechargeCardRecords()">
+                <li ng-repeat="item in featureData" ng-click="goRechargeCardDetail(item.flowNo)">
                     <div>
                         <span>{{item.createDate}}</span>
                         <span ng-if="item.goodsType == 2">店内充值</span>

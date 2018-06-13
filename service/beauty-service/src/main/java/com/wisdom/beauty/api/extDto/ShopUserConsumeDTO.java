@@ -25,6 +25,16 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
 
     private String flowId;
 
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public String getConsumeName() {
         return consumeName;
     }
