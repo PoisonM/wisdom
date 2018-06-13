@@ -49,11 +49,15 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
         consumeOncePrice:0,
     })
     //查询用户套卡
-    if ($scope.params == 2) {
+    if ($scope.params.type == 2) {
         GetShopUserProjectGroupRelRelationInfo.get({
             shopUserProjectGroupRelRelationId: $state.params.id
         }, function(data) {
             $scope.responseData = data.responseData;
+            $scope.shopUserConsumeDTO[0].consumePrice = Math.round($scope.responseData.projectInitAmount/$scope.responseData.projectInitTimes);
+            $scope.shopUserConsumeDTO[0].consumeOncePrice = Math.round($scope.responseData.projectInitAmount/$scope.responseData.projectInitTimes);
+            $scope.shopUserConsumeDTO[0].consumeNum = 1;
+            $scope.shopUserConsumeDTO[0].consumeId = $scope.responseData.id;
             console.log($state.responseData)
         })
     }
@@ -112,15 +116,9 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
             })
         }
         //套卡划卡
-        else if($scope.params.type = 2){
+        if($scope.params.type = 2){
             ConsumesDaughterCard.save({
-                shopUserConsumeDTO: [{
-                    clerkId: '',
-                    consumeId: $scope.responseData.id,
-                    consumeNum: $scope.responseData.shopProjectGroupNumber,
-                    consumePrice: $scope.responseData.shopGroupPuchasePrice,
-                    sysUserId: '110',
-                }]
+                shopUserConsumeDTO: $scope.shopUserConsumeDTO
             }, function(data) {
                 $state.go('pad-web.confirmations', {
                     consumeId: data.responseData,

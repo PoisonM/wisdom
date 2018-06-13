@@ -624,6 +624,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         relation.setProjectSurplusTimes(relation.getProjectSurplusTimes() - consumeDTO.getConsumeNum());
         shopProjectGroupService.updateShopUserProjectGroupRelRelation(relation);
 
+        consumeDTO.setSysUserId(relation.getSysUserId());
         // 更新用户的账户信息
         return updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
     }
@@ -696,6 +697,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
         consumeRecordDTO.setPrice(consumeRecordDTO.getPrice());
         consumeRecordDTO.setCreateDate(new Date());
+        consumeRecordDTO.setSysUserId(consumeDTO.getSysUserId());
         consumeRecordDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
         shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
         return consumeRecordDTO.getId();
