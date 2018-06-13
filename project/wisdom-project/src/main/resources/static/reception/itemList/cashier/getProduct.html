@@ -4,22 +4,25 @@
         <span class="number">购买数量 <b>{{getproduct.initTimes}}</b></span>
         <span class="number">未领取数量<b>{{getproduct.surplusTimes}}</b></span>
     </div>
+    <div class="get_num_sty">
+        <span>领取数量</span>
+        <span class="rightContent">
+            <div class="reduction" ng-click="changePrice()">-</div>
+            <input type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
+            <div class="addBtn" ng-click="consumeNumInc()" style="border-left: 1px solid #E5E5E5;">+</div>
+        </span>
+
+    </div>
     <div class="stillOwedTitle"></div>
     <div class="height100Num color333FS34 ">
-        <li class="space-between paddingLeft30">
-            <p>领取数量</p>
-            <p class="rightContent">
-                <button class="reduction" ng-click="changePrice()">-</button>
-                <input type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
-                <button class="addBtn" ng-click="consumeNumInc()">+</button>
-            </p>
-        </li>
-        <li class="space-between paddingLeft30">
-            <span>关联员工</span>
-            <a class="rightContent">{{responseData.sysClerkName}}<img src="images/bt_more.png" class="morePic marginLeft20" ng-click="relatedStaff()"></a>
-        </li>
+        <ul>
+            <li class="space-between paddingLeft30">
+                <span>关联员工</span>
+                {{responseData.sysClerkName}}
+                <div ng-click="relatedStaff()" class="go_set"></div>
+            </li>
+        </ul>
     </div>
-    <img src="" alt="">
     <div class="stillOwedTitle">备注</div>
     <textarea name="" rows="10" ng-model="getproduct.detail"></textarea>
     <button ng-click="goConfirmations()">确认</button>

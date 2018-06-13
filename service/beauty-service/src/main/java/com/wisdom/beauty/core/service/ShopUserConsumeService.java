@@ -52,7 +52,7 @@ public interface ShopUserConsumeService {
      * @param clerkInfo
      * @return
      */
-    String consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
+    ResponseDTO consumesUserProduct(ShopUserConsumeDTO shopUserConsumeDTOS, SysClerkDTO clerkInfo);
 
     /**
      * 充值卡充值操作

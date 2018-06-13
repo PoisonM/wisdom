@@ -634,24 +634,35 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public String consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
-
-        if (CommonUtils.objectIsEmpty(shopUserConsumeDTOS)) {
-            logger.info("用户领取产品传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTOS + "], clerkInfo = [" + clerkInfo + "]");
-            return null;
+    public ResponseDTO consumesUserProduct(ShopUserConsumeDTO consumeDTO, SysClerkDTO clerkInfo) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setResult(StatusConstant.FAILURE);
+        if (CommonUtils.objectIsEmpty(consumeDTO)) {
+            logger.info("用户领取产品传入参数={}", "consumeDTO = [" + consumeDTO + "], clerkInfo = [" + clerkInfo + "]");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
         }
         String transactionCodeNumber = DateUtils.DateToStr(new Date(), "dateMillisecond");
 
         ShopUserProductRelationDTO relation = new ShopUserProductRelationDTO();
 
         //更新用户与套卡与项目关系的关系表
-        ShopUserConsumeDTO consumeDTO = shopUserConsumeDTOS.get(0);
         relation.setId(consumeDTO.getConsumeId());
         //计算单件产品的价格
         ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
         shopUserProductRelationDTO.setId(consumeDTO.getConsumeId());
         List<ShopUserProductRelationDTO> productInfoList = shopProductInfoService.getUserProductInfoList(shopUserProductRelationDTO);
+        if(CommonUtils.objectIsEmpty(productInfoList)){
+            logger.error("用户与产品关系主键={},consumeDTO={}",consumeDTO.getConsumeId(),consumeDTO);
+            responseDTO.setErrorInfo("未查询到用户这件产品记录");
+            return responseDTO;
+        }
         ShopUserProductRelationDTO userProductRelationDTO = productInfoList.get(0);
+        if(userProductRelationDTO.getSurplusTimes()<consumeDTO.getConsumeNum()){
+            logger.error("用户领取产品的数量大约待领取的数量");
+            responseDTO.setErrorInfo("用户领取产品的数量大约待领取的数量");
+            return responseDTO;
+        }
         BigDecimal onePrice = userProductRelationDTO.getInitAmount().divide(new BigDecimal(userProductRelationDTO.getInitTimes()), 2, ROUND_HALF_DOWN);
         logger.info("单件产品的价格为={}", onePrice);
         BigDecimal consumeAmount = onePrice.multiply(new BigDecimal(consumeDTO.getConsumeNum()));
@@ -662,7 +673,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         relation.setSurplusAmount(relation.getSurplusAmount().subtract(consumeAmount));
         relation.setSurplusTimes(relation.getSurplusTimes() - consumeDTO.getConsumeNum());
         shopProductInfoService.updateShopUserProductRelation(relation);
-        return updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+         updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
+        return responseDTO;
 
 
     }
