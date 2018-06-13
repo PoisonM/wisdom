@@ -217,6 +217,7 @@ public class UserConsumeController {
         int cardFlag = shopUserConsumeService.consumeCourseCard(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
         // 保存用户的操作记录
         responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setErrorInfo(cardFlag == 2?"无可用卡":"");
         responseDTO.setResponseData("success");
         return responseDTO;
     }

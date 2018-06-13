@@ -5,10 +5,12 @@ import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -54,6 +56,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	private RedisUtils redisUtils;
 	@Autowired
 	private ShopService shopService;
+	@Autowired
+	private UserServiceClient userServiceClient;
 
 	@Override
 	public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(
@@ -477,6 +481,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				&& StringUtils.isNotBlank(shopUserConsumeRecordDTO.getSysShopId())) {
 			SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(shopUserConsumeRecordDTO.getSysShopId());
 			shopUserConsumeRecordDTO.setSysShopName(beauty.getName());
+		}
+		if(StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserName())){
+			UserInfoDTO userInfoFromUserId = userServiceClient.getUserInfoFromUserId(shopUserConsumeRecordDTO.getSysUserId());
+			shopUserConsumeRecordDTO.setSysUserName(userInfoFromUserId.getNickname());
 		}
 		int insert = shopUserConsumeRecordMapper.insert(shopUserConsumeRecordDTO);
 		saveShopClerkWorkRecord(shopUserConsumeRecordDTO.getSysClerkId(), shopUserConsumeRecordDTO);
