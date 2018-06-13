@@ -100,10 +100,15 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
             ConsumeCourseCard.save({
                 shopUserConsumeDTO: $scope.shopUserConsumeDTO
             }, function(data) {
-                $state.go('pad-web.confirmations', {
-                    consumeId: data.responseData,
-                    shopProjectInfoName: $scope.responseData.shopProjectInfoName,
-                })
+                if('0x00001' == data.result){
+                    $state.go('pad-web.confirmations', {
+                        consumeId: data.responseData,
+                        shopProjectInfoName: $scope.responseData.shopProjectInfoName,
+                    })
+                }else{
+                    alert(data.errorInfo);
+                }
+
             })
         }
         //套卡划卡
