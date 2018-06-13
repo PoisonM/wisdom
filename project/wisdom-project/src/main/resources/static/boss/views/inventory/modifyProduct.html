@@ -103,7 +103,7 @@
                             <span> <img src="images/more.png" class="more"></span>
                         </p>
                     </div>
-                    <div data-mem="" style="display: flex;flex-flow: wrap;">
+                    <div data-mem="" style="display: flex;flex-flow: wrap;" ng-if="settingAddsome.product.productFunction!=''">
                         <span style="display: inline-block;padding: 0 7px;border-radius:4px;border:solid 1px #FF6666;height:20px;line-height: 20px;color: #FF6666;margin-bottom: 10px;margin-right:10px; "class="fs14" ng-repeat="ceshiItem in (settingAddsome.product.productFunction.split(';'))"  >{{ceshiItem}}</span>
                     </div>
 

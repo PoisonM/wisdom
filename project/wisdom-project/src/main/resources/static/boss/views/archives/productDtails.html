@@ -29,6 +29,7 @@
                 </ion-list>
             </div>
             <div ng-show="!param.flag">
+
                 <div>
                     <p class="h30 ml10">
                         基础信息
@@ -43,14 +44,14 @@
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">顾客</p>
                             <p class="mr10 col888">
-                               {{info.sysUserName}}
+                                {{info.sysUserName}}
                             </p>
                         </ion-item>
 
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">操作门店</p>
                             <p class="mr10 col888">
-                                {{info.sysShopName}
+                                {{info.sysShopName}}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
@@ -62,7 +63,7 @@
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">类型</p>
                             <p class="mr10 col888" ng-if="info.type == '0'">
-                               消费
+                                消费
                             </p>
                             <p class="mr10 col888" ng-if="info.type == '1'">
                                 充值
@@ -79,32 +80,33 @@
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml20">充值金额</p>
+                            <p class="ml20">价格</p>
                             <p class="mr10 col888">
                                 {{item.price}}
                             </p>
                         </ion-item>
-                        <ion-item  class=" bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml20 h50">折扣</p>
-                            <div >
-                                <p class="sb">
-                                    <span>单次</span>
-                                    <span>{{item.timeDiscount}}折</span>
-                                </p>
-                                <p class="sb">
-                                    <span>疗程卡</span>
-                                    <span>{{item.periodDiscount}}折</span>
-                                </p>
-                                <p class="sb">
-                                    <span>产品</span>
-                                    <span>{{item.productDiscount}}折</span>
-                                </p>
-                            </div>
+
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                            <p class="ml20">折扣</p>
+                            <p class="mr10 col888">
+                                {{item.discount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                            <p class="ml20">数量</p>
+                            <p class="mr10 col888">
+                                {{item.consumeNumber}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                            <p class="ml20">金额</p>
+                            <p class="mr10 col888">
+                                {{item.sumAmount}}
+                            </p>
                         </ion-item>
 
                     </ion-list>
                 </div>
-
                 <div class="mt20">
                     <opn-list >
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
@@ -119,21 +121,41 @@
                 <div>
                     <opn-list >
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                            <p class="ml10"  ng-if="info.payMap.payType=='0'"> 微信</p>
+                            <p class="ml10"  ng-if="info.payMap.payType=='1'"> 支付宝</p>
+                            <p class="ml10"  ng-if="info.payMap.payType=='2'"> 银行卡</p>
+                            <p class="mr10 col888">
+                                ￥{{info.payMap.payTypeAmount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.balanceAmount != null">
                             <p class="ml10"> 余额</p>
                             <p class="mr10 col888">
-                                ￥4888.00
+                                ￥{{info.payMap.balanceAmount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.cashAmount != null">
+                            <p class="ml10"> 现金支付</p>
+                            <p class="mr10 col888">
+                                ￥{{info.payMap.cashAmount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.rechargeCardAmount != null">
+                            <p class="ml10"> 充值卡支付</p>
+                            <p class="mr10 col888">
+                                ￥{{info.payMap.rechargeCardAmount}}
                             </p>
                         </ion-item>
                     </opn-list>
                 </div>
                 <p class="h50 ml10">顾客签字</p>
-                <div style="height:156px;" class="bgfff">
+                <div style="height:156px;background: url('{{info.signUrl}}');background-size: contain;background-repeat: no-repeat;background-position: center center" class="bgfff" >
 
                 </div>
                 <p class="h50 ml10 fs14">备注</p>
                 <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff">
-
-            </textarea>
+                     {{info.detail}}
+               </textarea>
 
 
             </div>

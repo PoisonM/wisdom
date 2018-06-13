@@ -529,9 +529,12 @@ define(['appBoss'], function (app) {
         }])
         /*获取产品的消费详情和充值卡的订单详情*/
         .factory('ProductAndRechargeCard',['$resource',function ($resource){
-            return $resource(consume + "productAndRechargeCard")
+            return $resource(consume + "productAndRechargeCard/getConsumeDetail")
         }])
-
+        /*获取特殊类型充值卡的充值记录(档案-总余额-选择账户余额充值卡)*/
+        .factory('GetRechargeRecord',['$resource',function ($resource){
+            return $resource(consume + "getRechargeRecord")
+        }])
 
 
 });

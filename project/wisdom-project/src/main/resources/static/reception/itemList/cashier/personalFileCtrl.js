@@ -136,8 +136,11 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
         })
     }
     //产品
-    $scope.goGetProductRecord = function () {
-        $state.go("pad-web.left_nav.getProductRecord",{userId:$stateParams.sysUserId})
+    $scope.goGetProductRecord = function (id) {
+        $state.go("pad-web.left_nav.getProductRecord",{
+            userId:$stateParams.sysUserId,
+            id:id
+        })
     }
 
 

@@ -22,8 +22,10 @@ angular.module('controllers',[]).controller('projectSettingCtrl',
                 }else {
                     var status = '1'
                 }
-                console.log($scope.param.status==true)
-                console.log(status)
+                if($scope.param.projectTypeName == ""){
+                    alert("请输入品牌名称")
+                    return
+                }
                 if($scope.param.editType=="add"){
 
                     SaveShopProjectType.save({projectTypeName:$scope.param.projectTypeName,status:status},function (data) {

@@ -1,16 +1,7 @@
 angular.module('controllers',[]).controller('detailsOfCashierCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ConsumeFlowNo','Global',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ConsumeFlowNo,Global) {
-            $rootScope.title = "收银详情   ";
-           /* ConsumeFlowNo.get({
-                consumeFlowNo:$stateParams.flowNo
-            },function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null)
-                {
-                    $scope.details = data.responseData;
-
-                }
-            });*/
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ProductAndRechargeCard','Global','ConsumeFlowNo',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ProductAndRechargeCard,Global,ConsumeFlowNo) {
+            $rootScope.title = "消费详情";
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
                     content: 'Loading',
@@ -19,6 +10,28 @@ angular.module('controllers',[]).controller('detailsOfCashierCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
+                var userConsumeRequestDTO = {
+                    consumeType:0,
+                    flowId:$stateParams.id,
+                    goodsType:2
+                }
+                if($stateParams.rechargeCardType==''){
+                    ProductAndRechargeCard.save(userConsumeRequestDTO,function (data) {
+                        $ionicLoading.hide()
+                        if(data.result==Global.SUCCESS&&data.responseData!=null){
+                            $scope.info =data.responseData
+                        }
+                    })
+                }else{
+                    ConsumeFlowNo.get({
+                        consumeFlowNo:$stateParams.flowNo
+                    },function (data) {
+                        $ionicLoading.hide()
+                        if(data.result==Global.SUCCESS&&data.responseData!=null){
+                            $scope.info =data.responseData
+                        }
+                    })
+                }
 
             })
         }]);

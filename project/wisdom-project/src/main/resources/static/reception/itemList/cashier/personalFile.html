@@ -76,7 +76,7 @@
             </div>
             <div class="productCard clearfix" ng-if="select=='4'">
                 <ul>
-                    <li ng-click="goGetProductRecord()" ng-repeat="item4 in productList">
+                    <li ng-click="goGetProductRecord(item4.id); $event.stopPropagation();" ng-repeat="item4 in productList">
                         <div class="left">
                             <span>{{item4.shopProductName}}</span>
                             <p class="price">金额:{{item4.initAmount}}</p>

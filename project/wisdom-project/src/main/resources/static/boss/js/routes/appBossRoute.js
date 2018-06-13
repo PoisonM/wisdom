@@ -1093,7 +1093,7 @@ define(['appBoss'], function(app){
                     })
                     /* refillCard  充值卡*/
                     .state('refillCard', {
-                        url: '/refillCard/:sysShopId/:sysUserId',
+                        url: '/refillCard/:sysUserId/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'refillCardCtrl',
                         resolve: {
@@ -1119,7 +1119,7 @@ define(['appBoss'], function(app){
                     })
                     /*accountDetails 账户明细*/
                     .state('accountDetails', {
-                        url: '/accountDetails/:id',
+                        url: '/accountDetails/:id,:rechargeCardType',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'accountDetailsCtrl',
                         resolve: {
@@ -1303,7 +1303,7 @@ define(['appBoss'], function(app){
                     })
                     /*detailsOfCashier  收银详情*/
                     .state('detailsOfCashier', {
-                        url: '/detailsOfCashier/:flowNo',
+                        url: '/detailsOfCashier/:id,:flowNo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailsOfCashierCtrl',
                         resolve: {

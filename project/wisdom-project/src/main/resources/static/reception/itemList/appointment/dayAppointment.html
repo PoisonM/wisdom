@@ -120,10 +120,11 @@
                         <!-- data-val={{value}} -->
                         <div>{{key}}</div>
                     </td>
-                    <td  ng-click="onHold()" ng-repeat="item in value" class="bor_e5">
+                    <td  ng-onHold = "onHold()" ng-repeat="item in value" class="bor_e5">
                         <div class="td_box" style="position: relative;width: 100%">
                             <!--<span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0','bgFFE6E6':indexItem.status=='1','bgE1F8FF':indexItem.status=='2','bgF3F3F3':indexItem.status=='3','bgF3F3F3':indexItem.status=='4','bgE1F8FF':indexItem.status=='5','bgF3F3F3':indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">-->
-                            <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
+                            <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}"
+                                  ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
                                 <!--{{index.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1}}-->
                                 <div class="havedata">
                                     <div>
@@ -132,7 +133,7 @@
                                         <span>{{indexItem.status}}</span>-->
                                         <p class="user_name">{{indexItem.sysUserName}}</p>
                                         <!--index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2]-->
-                                        <div ng-click="detailsWrap('0',indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="user_info">
+                                        <div class="user_info">
                                             <em>点</em>
                                             <span class="time">{{indexItem.appointStartTime | date: "HH:mm"}}</span>
                                             <span class="pr_name">{{indexItem.shopProjectName}}</span>
@@ -309,7 +310,7 @@
                 预约详情
             </p>
             <p class="scheduling W33">
-                <span class="floatR mr30"><img src="images/bt_shut down.png." class="closePic mt20" ng-click="close()"></span>
+                <span class="floatR mr30"><img src="images/bt_shut down.png" class="closePic mt20" ng-click="close()"></span>
             </p>
         </div>
         <div ng-include="'itemList/appointment/individualTravelerAppointment.html'" class=" bblr bbrr"></div>
