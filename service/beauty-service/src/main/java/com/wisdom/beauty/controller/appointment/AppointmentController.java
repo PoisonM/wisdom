@@ -135,12 +135,12 @@ public class AppointmentController {
 			extShopAppointServiceDTO.setSysShopId("");
 			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 			extShopAppointServiceDTO.setSysShopId(sysShopId);
+			ArrayList<Object> appointInfoList = new ArrayList<>();
 			if (CommonUtils.objectIsEmpty(shopAppointServiceDTOS)) {
 				logger.info(preLog + "美容师预约列表为空");
-				shopAppointMap.put("appointmentInfo", "");
+				shopAppointMap.put("appointmentInfo",appointInfoList);
 				shopAppointMap.put("point", 0);
 			} else {
-				ArrayList<Object> appointInfoList = new ArrayList<>();
 				for (ShopAppointServiceDTO serviceDTO : shopAppointServiceDTOS) {
 					try {
 						HashMap<String, Object> hashMap = CommonUtils.beanToMap(serviceDTO);
