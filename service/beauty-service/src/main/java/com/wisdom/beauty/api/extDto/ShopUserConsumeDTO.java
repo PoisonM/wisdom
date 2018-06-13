@@ -21,7 +21,37 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
     //消耗数量
     private int consumeNum;
 
+    private String consumeName;
+
+    private String flowId;
+
+    public String getConsumeName() {
+        return consumeName;
+    }
+
+    public void setConsumeName(String consumeName) {
+        this.consumeName = consumeName;
+    }
+
+    public String getFlowId() {
+        return flowId;
+    }
+
+    public void setFlowId(String flowId) {
+        this.flowId = flowId;
+    }
+
     private T shopUserConsumeDTO;
+
+    private String goodsType;
+
+    public String getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType;
+    }
 
     public T getT() {
         return shopUserConsumeDTO;
