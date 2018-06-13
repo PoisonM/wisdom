@@ -323,8 +323,9 @@ public class ProjectController {
 						}else {
 							surplusTimes=surplusTimes+dto.getProjectSurplusTimes();
 						}
-
-						bigDecimal = bigDecimal.add(dto.getProjectInitAmount());
+                        if(dto.getProjectInitAmount()!=null){
+							bigDecimal = bigDecimal.add(dto.getProjectInitAmount());
+						}
 						projectGroupName = dto.getShopProjectGroupName();
 						consumeRecordId=dto.getConsumeRecordId();
 					}

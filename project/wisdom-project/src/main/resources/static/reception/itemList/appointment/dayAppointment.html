@@ -120,7 +120,7 @@
                         <!-- data-val={{value}} -->
                         <div>{{key}}</div>
                     </td>
-                    <td  ng-onHold = "onHold()" ng-repeat="item in value" class="bor_e5">
+                    <td  ng-click="onHold()" ng-repeat="item in value" class="bor_e5">
                         <div class="td_box" style="position: relative;width: 100%">
                             <!--<span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0','bgFFE6E6':indexItem.status=='1','bgE1F8FF':indexItem.status=='2','bgF3F3F3':indexItem.status=='3','bgF3F3F3':indexItem.status=='4','bgE1F8FF':indexItem.status=='5','bgF3F3F3':indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">-->
                             <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
@@ -229,7 +229,10 @@
     <div class="br36 bgf5f5f5 b w758 addWraps">
         <div class="customerTop  btrr btlr">
             <ul class="space-between btrr btlr">
-                <li class="pl W33 "><img src="images/bt_back.png" class="backPic mr20" ng-click="close(0)"><span class="color6666">{{param.newChangeContent}}</span> </li><!--标注-->
+                <li class="pl W33 " ng-click="close(0)">
+                    <img src="images/bt_back.png" class="backPic mr20">
+                    <span class="color6666">{{param.newChangeContent}}</span>
+                </li><!--标注-->
                 <li class="fc W33 center">选择顾客</li>
                 <li class="people pr pt W33"><img src="images/bt_add to.png" alt="" class="floatR ml30" ng-click="addCustomersCtrl()"></li>
             </ul>
