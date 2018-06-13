@@ -499,7 +499,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 dto.setSurplusAmount(dto.getInitAmount());
                 BigDecimal divide = dto.getPurchasePrice().divide(productDetail.getMarketPrice(), 2, ROUND_HALF_DOWN);
                 dto.setDiscount(divide.floatValue());
-
+                dto.setCreateDate(new Date());
                 logger.info("订单号={}，生成用户跟产品的关系={}", orderId, dto);
                 shopProductInfoService.saveShopUserProductRelation(dto);
 
