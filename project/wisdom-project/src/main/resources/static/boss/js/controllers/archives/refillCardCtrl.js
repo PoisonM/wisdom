@@ -5,8 +5,12 @@ angular.module('controllers',[]).controller('refillCardCtrl',
             $scope.param={
                 flag:false
             }
-           $scope.prepaidPhoneRecordsGo=function (id) {
-               $state.go("accountDetails",{id:id})
+           $scope.prepaidPhoneRecordsGo=function (id,rechargeCardType) {
+               if(rechargeCardType == '0'){
+                   $state.go("accountDetails",{id:id,rechargeCardType:rechargeCardType})
+               }else{
+                   $state.go("detailsOfCashier",{id:id})
+               }
            }
             GetUserRechargeCardList.get({
                 sysUserId:$stateParams.sysUserId,

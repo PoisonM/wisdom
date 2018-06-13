@@ -5,13 +5,15 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetShopProductLevelInfo','Global','$ionicLoading',
         function ($scope,$rootScope,$stateParams,$state,GetShopProductLevelInfo,Global,$ionicLoading) {
 
-            $rootScope.title = "仓库产品";
+            $rootScope.title = "产品";
             $scope.param = {
                 flag: false,
                 productType:"0",
                 levelOneId:"",
                 levelTwoId:"",
-                twoLevelList:[]
+                twoLevelList:[],
+                levelOneName:"",
+                levelTwoName:""
             };
 
             $scope.modifyProductGo = function(id){
@@ -34,8 +36,9 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                 $scope.param.twoLevelList = []
                 $scope.getInfo();
             };
-            $scope.selTwo = function (productTypeOneId) {/*根据一级查询二级*/
+            $scope.selTwo = function (productTypeOneId,productTypeOneName) {/*根据一级查询二级*/
                 $scope.param.levelOneId = productTypeOneId;
+                $scope.param.levelOneName = productTypeOneName;
                 $scope.param.twoLevelList = []
                 for(var i=0;i<$scope.warehouseProducts.twoLevelList.length;i++){
                     if( $scope.warehouseProducts.twoLevelList[i].productTypeOneId == productTypeOneId){
@@ -43,10 +46,11 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                     }
 
                 }
-                console.log( $scope.warehouseProducts.twoLevelList)
             }
-            $scope.checkThree = function(productTypeTwoId){
+            $scope.checkThree = function(productTypeTwoId,productTypeTwoName){
                 $scope.param.levelTwoId =productTypeTwoId;
+                $scope.param.levelTwoName =productTypeTwoName;
+
                 $scope.param.flag = false;
                 $scope.getInfo()
             }

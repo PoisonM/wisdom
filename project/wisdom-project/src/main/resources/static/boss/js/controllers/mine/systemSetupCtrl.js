@@ -14,11 +14,11 @@ angular.module('controllers',[]).controller('systemSetupCtrl',
             $scope.exitLogon=function () {
                 BossUserLoginOut.get({},function (data) {
                     if(data.result =="0x00001"){
-                        alert("退出成功")
-                        window.localStorage.removeItem("beautyUserLoginToken")
-                        window.localStorage.removeItem("beautyBossLoginToken")
-                        window.localStorage.removeItem("beautyClerkLoginToken")
-                        $state.go("workHome");
+                        alert("退出成功");
+                        window.localStorage.removeItem("beautyUserLoginToken");
+                        window.localStorage.removeItem("beautyBossLoginToken");
+                        window.localStorage.removeItem("beautyClerkLoginToken");
+                        $state.go("bossLogin");
                     }
                 })
             }

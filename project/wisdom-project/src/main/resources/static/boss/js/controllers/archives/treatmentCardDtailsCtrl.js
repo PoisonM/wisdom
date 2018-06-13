@@ -1,7 +1,7 @@
 angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TreatmentAndGroupCardRecordList','FlowId','Id','Global',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TreatmentAndGroupCardRecordList,FlowId,Id,Global) {
-            $rootScope.title = "疗程卡详情";
+            $rootScope.title = "详情";
             $scope.param={
                 flag:true,
                 sysUserId	:$stateParams.sysUserId,
