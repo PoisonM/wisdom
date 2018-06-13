@@ -35,8 +35,8 @@ public class BossInfoServiceImpl implements BossInfoService{
         int update = sysBossMapper.updateByPrimaryKeySelective(sysBossDTO);
         //更新redis中boss的信息
         String sysBossDTOStr = gson.toJson(sysBossDTO);
-        String logintoken=UserUtils.getToken();
-        JedisUtils.set(logintoken,sysBossDTOStr, ConfigConstant.logintokenPeriod);
+        String loginToken=UserUtils.getToken();
+        JedisUtils.set(loginToken,sysBossDTOStr, ConfigConstant.logintokenPeriod);
         logger.info("更新老板信息更新结果={}", update > 0 ? "成功" : "失败");
         return update;
     }
