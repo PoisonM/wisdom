@@ -1,17 +1,17 @@
 <div class="stillOwedBox clearfix">
     <div class="stillOwedPorduct clearfix">
-        <span class="name">{{getproduct.shopProductName}}</span>
-        <span class="number">购买数量 <b>{{getproduct.initTimes}}</b></span>
-        <span class="number">未领取数量<b>{{getproduct.surplusTimes}}</b></span>
+        <span class="name">{{productInfo.shopProductName}}</span>
+        <span class="number">购买数量 <b>{{productInfo.initTimes}}</b></span>
+        <span class="number">未领取数量<b>{{productInfo.surplusTimes}}</b></span>
     </div>
     <div class="stillOwedTitle"></div>
     <div class="height100Num color333FS34 ">
         <li class="space-between paddingLeft30">
             <p>领取数量</p>
             <p class="rightContent">
-                <button class="reduction" ng-click="changePrice()">-</button>
-                <input type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
-                <button class="addBtn" ng-click="consumeNumInc()">+</button>
+                <button class="reduction" ng-click="productNumSub()">-</button>
+                <input type="text" ng-change="changeProductNum()" ng-model='shopUserConsumeDTO.consumeNum' >
+                <button class="addBtn" ng-click="productNumInc()">+</button>
             </p>
         </li>
         <li class="space-between paddingLeft30">

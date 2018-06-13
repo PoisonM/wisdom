@@ -252,19 +252,18 @@ public class UserConsumeController {
      * @return
      */
     @RequestMapping(value = "/consumes/consumesUserProduct", method = {RequestMethod.POST, RequestMethod.GET})
-
     public
     @ResponseBody
-    ResponseDTO<String> consumesUserProduct(
-            @RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
+    ResponseDTO<String> consumesUserProduct(@RequestBody ShopUserConsumeDTO shopUserConsumeDTO) {
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
-        String cardFlag = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO.getShopUserConsumeDTO(),
-                clerkInfo);
-        // 保存用户的操作记录
-        responseDTO.setResult(cardFlag != null ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        responseDTO.setResponseData(cardFlag);
+        if(StringUtils.isBlank(shopUserConsumeDTO.getConsumeId()) || shopUserConsumeDTO.getConsumeNum() == 0){
+            responseDTO.setErrorInfo("传入数据异常！");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        responseDTO = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO, clerkInfo);
         return responseDTO;
     }
 
