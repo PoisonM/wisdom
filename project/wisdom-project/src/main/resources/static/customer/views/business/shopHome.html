@@ -77,8 +77,8 @@
 
 
         .tab_sty{
-            height: 80px;
-            line-height: 68px;
+            height: 48px;
+            line-height: 48px;
             width: 100%;
         }
         .tab_sty ul{
@@ -89,12 +89,14 @@
             width: 100%;
             overflow-x: scroll;
             overflow-y: hidden;
+            margin-top: 16px;
+
         }
         .tab_sty .tab_header ul{
             height: 100%;
         }
         .tab_sty .tab_header ul li{
-            height: 68px;
+            height: 42px;
             width:16%;
             text-align: center;
             border-radius: 8px;
@@ -142,7 +144,7 @@
         .tab-title{font-size: 14px;}
 
     </style>
-    <ion-content overflow-scroll="true" style="bottom: 62px">
+    <ion-content overflow-scroll="true" style="bottom: 48px">
         <!--轮播图部分-->
         <a style="background: #FC4B4B;height: 36px;line-height: 36px;font-size: 16px;font-family: PingFangSC-Regular;text-align: center"
            href="https://mp.weixin.qq.com/s/B8f8hmCWz3T2xUwpRvz-iQ">一个可以分享赚钱的美妆商城</a>
@@ -155,9 +157,9 @@
             </ion-slide>
         </ion-slide-box>
         <!--新人专享-->
-        <div style="width: 100%;height: 84px;position:relative;">
-            <img src="images/newPeople.png" style="width: 150px;height: 38px;position:absolute;top:50%;left:50%;margin-top: -19px;
-    margin-left: -75px;">
+        <div style="width: 100%;height: 68px;position:relative;">
+            <img src="images/newPeople.png" style="width: 123px;height:32px;position:absolute;top:50%;left:50%;margin-top: -12px;
+    margin-left: -61.5px;">
         </div>
         <div style="height:136px;width:7.50rem" ng-repeat="item in param.productList"
             ng-if="item.productPrefecture=='1'">
@@ -165,9 +167,9 @@
                 style="width: 7.5rem;height: 136px"/>
        </div>
        <!--活动专区-->
-        <div style="width: 100%;height: 84px;position:relative;">
-            <img src="images/huodong.png" style="width: 150px;height: 38px;position:absolute;top:50%;left:50%;margin-top: -19px;
-    margin-left: -75px;">
+        <div style="width: 100%;height: 68px;position:relative;">
+            <img src="images/huodong.png" style="width: 123px;height:32px;position:absolute;top:50%;left:50%;margin-top: -12px;
+    margin-left: -61.5px;">
         </div>
         <div style="height:136px;width:7.50rem" ng-repeat="item in  param.productList"
              ng-if="item.productPrefecture=='2'">
@@ -202,12 +204,12 @@
                         <!--点击全部按钮-->
                         <!--99-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag" >
-                          <div style="width: 100%;height: 50px;line-height: 50px;padding: 15px">
+                          <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
                               <img src="images/99.png" style="width: 225px;margin: 0 auto">
                           </div>
                             <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in onePriductList">
                                 <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px">
+                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
                                     <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                     <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
@@ -217,12 +219,12 @@
                         </div>
                         <!--199-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
-                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 15px">
+                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
                                 <img src="images/199.png" style="width: 225px;margin: 0 auto">
                             </div>
                         <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in twoPriductList">
                             <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                            <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px">
+                            <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
                                 <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                 <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
@@ -233,12 +235,12 @@
 
                         <!--299-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
-                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 15px">
+                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
                                 <img src="images/299.png" style="width: 225px;margin: 0 auto">
                             </div>
                             <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in threePriductList">
                                 <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px">
+                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
                                     <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                     <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
@@ -248,12 +250,12 @@
                         </div>
                         <!--399-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
-                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 15px">
+                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
                                 <img src="images/399.png" style="width: 225px;margin: 0 auto">
                             </div>
                             <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in fourPriductList">
                                 <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px">
+                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
                                     <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                     <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
@@ -264,12 +266,12 @@
 
                         <!--499-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
-                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 15px">
+                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
                                 <img src="images/499.png" style="width: 225px;margin: 0 auto">
                             </div>
                             <div ng-if="allProductFlag" ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in fivePriductList">
                                 <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px">
+                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
                                     <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                     <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
@@ -286,23 +288,23 @@
         </div>
     </ion-content>
     <!--ionic 底部切换在安卓手机出现兼容问题 所以改变成div形式-->
-    <div style="width: 100%;background: #DBDBDB ;position: absolute;left: 0px;bottom: 0px;right: 0px;height: 62px;">
+    <div style="width: 100%;background: #DBDBDB ;position: absolute;left: 0px;bottom: 0px;right: 0px;height: 48px;">
         <ul style="display: flex;flex-wrap: wrap;justify-content: space-between;font-size: 14px">
-            <li style="text-align: center;width: 25%;height: 62px" class="footColor" ng-class="{'footActive':param.checkType==0}" ng-click="checkBg(0)" ui-sref="shopHome">
-                <i class=" icon ion-ios-home-outline"  style="font-size: 30px;margin-top: 7px;display: inline-block" class="footColor"></i>
-                <p style="margin-top: 4px">首页</p>
+            <li style="text-align: center;width: 25%;height: 48px" class="footColor" ng-class="{'footActive':param.checkType==0}" ng-click="checkBg(0)" ui-sref="shopHome">
+                <i class=" icon ion-ios-home-outline"  style="font-size: 24px;display: inline-block;margin-top: 5px" class="footColor"></i>
+                <p style="margin-top: 1px;font-size: 12px">首页</p>
             </li>
-            <li style="text-align: center;width: 25%;height: 62px"  ng-class="{'footActive':param.checkType==1}" ng-click="checkBg(1)" class="footColor" ui-sref="shareHome">
-                <i class=" icon ion-ios-redo-outline" style="font-size: 30px;margin-top: 7px;display: inline-block"></i>
-                <p style="margin-top: 4px">分享赚钱</p>
+            <li style="text-align: center;width: 25%;height: 48px"  ng-class="{'footActive':param.checkType==1}" ng-click="checkBg(1)" class="footColor" ui-sref="shareHome">
+                <i class=" icon ion-ios-redo-outline" style="font-size: 24px;display: inline-block;margin-top: 5px"></i>
+                <p style="margin-top: 1px;font-size: 12px">分享赚钱</p>
             </li>
-            <li style="text-align: center;width: 25%;height: 62px"  ng-class="{'footActive':param.checkType==2}" ng-click="checkBg(2)" class="footColor" ui-sref="buyCart">
-                <i class=" icon ion-ios-cart-outline" style="font-size: 30px;margin-top: 7px;display: inline-block"></i>
-                <p style="margin-top: 4px">购物车</p>
+            <li style="text-align: center;width: 25%;height: 48px"  ng-class="{'footActive':param.checkType==2}" ng-click="checkBg(2)" class="footColor" ui-sref="buyCart">
+                <i class=" icon ion-ios-cart-outline" style="font-size: 24px;display: inline-block;margin-top: 5px"></i>
+                <p style="margin-top: 1px;font-size: 12px">购物车</p>
             </li>
-            <li style="text-align: center;width: 25%;height: 62px"  ng-class="{'footActive':param.checkType==3}" ng-click="checkBg(3)" class="footColor" ui-sref="orderManagement({type:'all'})">
-                <i class=" icon ion-ios-list-outline" style="font-size: 30px;margin-top: 7px;display: inline-block"></i>
-                <p style="margin-top: 4px">我的订单</p>
+            <li style="text-align: center;width: 25%;height: 48px"  ng-class="{'footActive':param.checkType==3}" ng-click="checkBg(3)" class="footColor" ui-sref="orderManagement({type:'all'})">
+                <i class=" icon ion-ios-list-outline" style="font-size: 24px;display: inline-block;margin-top: 5px"></i>
+                <p style="margin-top: 1px;font-size: 7px">我的订单</p>
             </li>
         </ul>
     </div>
@@ -315,10 +317,10 @@
                  ui-sref="orderManagement"></ion-tab>
     </ion-tabs>-->
     <!--进首页弹出页面-->
-    <div class="redPacket_box" ng-if="param.redPackerBox">
+  <!--  <div class="redPacket_box" ng-if="param.redPackerBox">
         <div class="redPacket">
             <img src="images/huo.jpg" alt="">
             <span ng-click="redPackerClose()" class="close1"></span>
         </div>
-    </div>
+    </div>-->
 </ion-view>
