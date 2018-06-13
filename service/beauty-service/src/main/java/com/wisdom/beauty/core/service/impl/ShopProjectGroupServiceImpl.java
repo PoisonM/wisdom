@@ -181,15 +181,13 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             logger.info("shopProjectInfoGroupRelationMapper查询的结果shopProjectInfoGroupRelations为空");
             return  null;
         }
-            List<String> shopProjectInfoIds = new ArrayList<>();
-
+        List<ShopProjectInfoDTO> shopProjectInfos=new ArrayList<>();
+        ShopProjectInfoDTO shopProjectInfoDTO=null;
         for (ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO : shopProjectInfoGroupRelations) {
-            shopProjectInfoIds.add(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
-        }
-        // 根据项目id(可能多个)查询,项目的详细信息
-        List<ShopProjectInfoDTO> shopProjectInfos = shopProjectService.getProjectDetails(shopProjectInfoIds);
-        if (CollectionUtils.isEmpty(shopProjectInfos)) {
-            logger.info("接口shopProjectService#getProjectDetails()方法调用结果为空");
+            shopProjectInfoDTO=new ShopProjectInfoDTO();
+            shopProjectInfoDTO.setProjectName(shopProjectInfoGroupRelationDTO.getShopProjectInfoName());
+            shopProjectInfoDTO.setServiceTimes(shopProjectInfoGroupRelationDTO.getShopProjectServiceTimes());
+            shopProjectInfos.add(shopProjectInfoDTO);
         }
         // 获取套卡信息
         ShopProjectGroupDTO shopProjectGroupDTO = this.getShopProjectGroupDTO(id);
