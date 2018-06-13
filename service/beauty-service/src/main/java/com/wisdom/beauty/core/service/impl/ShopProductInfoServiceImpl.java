@@ -1,15 +1,17 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.extDto.ImageUrl;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProductInfoMapper;
 import com.wisdom.beauty.core.mapper.ShopProductTypeMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
+import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -17,11 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -44,6 +43,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private MongoUtils mongoUtils;
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -63,6 +65,15 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(shopProductInfoDTO.getSysShopId());
+		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductTypeOneId())) {
+			criteria.andProductTypeOneIdEqualTo(shopProductInfoDTO.getProductTypeOneId());
+		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductTypeTwoId())) {
+			criteria.andProductTypeTwoIdEqualTo(shopProductInfoDTO.getProductTypeTwoId());
+		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductType())) {
+			criteria.andProductTypeEqualTo(shopProductInfoDTO.getProductType());
 		}
 
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductName())) {
@@ -204,38 +215,12 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");
 		}
 		List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
-		List<String> ids = new ArrayList<>();
-		for (ShopProductInfoDTO shopProductInfo : list) {
-			ids.add(shopProductInfo.getId());
-		}
-		List<ImageUrl> imageUrls = null;
-		if (CollectionUtils.isNotEmpty(ids)) {
-			Query query = new Query(Criteria.where("imageId").in(ids));
-			imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-		}
-		Map<String, String> map = null;
-		if (CollectionUtils.isNotEmpty(imageUrls)) {
-			map = new HashMap<>(16);
-			for (ImageUrl imageUrl : imageUrls) {
-				map.put(imageUrl.getImageId(), imageUrl.getUrl());
-			}
-		}
-		ShopProductInfoResponseDTO shopProductInfoResponseDTO=null;
+
 		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
 		for (ShopProductInfoDTO shopProductInfo : list) {
-			shopProductInfoResponseDTO= new ShopProductInfoResponseDTO();
-			shopProductInfoResponseDTO.setId(shopProductInfo.getId());
-			shopProductInfoResponseDTO.setDiscountPrice(shopProductInfo.getDiscountPrice());
-			shopProductInfoResponseDTO.setProductName(shopProductInfo.getProductName());
-			shopProductInfoResponseDTO.setProductTypeOneName(shopProductInfo.getProductTypeOneName());
-			shopProductInfoResponseDTO.setProductTypeTwoName(shopProductInfo.getProductTypeTwoName());
-			String[] urls = null;
-			if (map != null && StringUtils.isNotBlank(map.get(shopProductInfo.getId()))) {
-				urls = map.get(shopProductInfo.getId()).split("\\|");
-			}
-			if (urls != null) {
-				shopProductInfoResponseDTO.setImageUrl(urls);
-			}
+			ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
+			BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
+            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
 			respon.add(shopProductInfoResponseDTO);
 		}
 		return respon;
@@ -259,29 +244,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		}
 
 		ShopProductInfoDTO shopProductInfo = list.get(0);
-
-		Query query = new Query(Criteria.where("imageId").is(shopProductInfo.getId()));
-		List<ImageUrl> imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-
 		ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
-		shopProductInfoResponseDTO.setDiscountPrice(shopProductInfo.getDiscountPrice());
-		shopProductInfoResponseDTO.setMarketPrice(shopProductInfo.getMarketPrice());
-		shopProductInfoResponseDTO.setProductName(shopProductInfo.getProductName());
-		shopProductInfoResponseDTO.setProductTypeOneName(shopProductInfo.getProductTypeOneName());
-		shopProductInfoResponseDTO.setProductTypeTwoName(shopProductInfo.getProductTypeTwoName());
-		shopProductInfoResponseDTO.setProductPosition(shopProductInfo.getProductPosition());
-		shopProductInfoResponseDTO.setProductSpec(shopProductInfo.getProductSpec());
-		shopProductInfoResponseDTO.setProductFunction(shopProductInfo.getProductFunction());
-		shopProductInfoResponseDTO.setIntroduce(shopProductInfo.getIntroduce());
-		shopProductInfoResponseDTO.setProductUnit(shopProductInfo.getProductUnit());
-		shopProductInfoResponseDTO.setProductCode(shopProductInfo.getProductCode());
-		if(	CollectionUtils.isNotEmpty(imageUrls)){
-			ImageUrl imageUrl=imageUrls.get(0);
-			String url=imageUrl.getUrl();
-			if(StringUtils.isNotBlank(url)){
-				shopProductInfoResponseDTO.setImageUrl(url.split("\\|"));
-			}
-		}
+        BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
+        shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
 		return shopProductInfoResponseDTO;
 
 	}
@@ -298,34 +263,13 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 		criteria.andIdIn(ids);
 		List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
-		List<String> idList = new ArrayList<>();
-		for (ShopProductInfoDTO shopProductInfo : list) {
-			idList.add(shopProductInfo.getId());
-		}
-		List<ImageUrl> imageUrls = null;
-		if (CollectionUtils.isNotEmpty(idList)) {
-			Query query = new Query(Criteria.where("imageId").in(idList));
-			imageUrls = mongoTemplate.find(query, ImageUrl.class, "imageUrl");
-		}
-		Map<String, String> map = null;
-		if (CollectionUtils.isNotEmpty(imageUrls)) {
-			map = new HashMap<>(16);
-			for (ImageUrl imageUrl : imageUrls) {
-				map.put(imageUrl.getImageId(), imageUrl.getUrl());
-			}
-		}
+
 		ShopProductInfoResponseDTO shopProductInfoResponseDTO =null;
 		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
 		for (ShopProductInfoDTO shopProductInfo : list) {
 			shopProductInfoResponseDTO= new ShopProductInfoResponseDTO();
 			BeanUtils.copyProperties(shopProductInfo,shopProductInfoResponseDTO);
-			String[] urls = null;
-			if (map != null && StringUtils.isNotBlank(map.get(shopProductInfo.getId()))) {
-				urls = map.get(shopProductInfo.getId()).split("\\|");
-			}
-			if (urls != null) {
-				shopProductInfoResponseDTO.setImageUrl(urls);
-			}
+            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
 			respon.add(shopProductInfoResponseDTO);
 		}
 		return respon;
@@ -388,6 +332,83 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		int insertFlag = shopUserProductRelationMapper.insertSelective(shopUserProductRelationDTO);
 
 		return insertFlag;
+	}
+
+	/**
+	 * 更新产品类别列表
+	 *
+	 * @param shopProductTypeDTOS
+	 * @return
+	 */
+	@Override
+	public int updateProductTypeListInfo(List<ShopProductTypeDTO> shopProductTypeDTOS) {
+		int returnFlag = 0;
+		logger.info("更新产品类别列表传入参数={}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+		if (CommonUtils.objectIsNotEmpty(shopProductTypeDTOS)) {
+			for (ShopProductTypeDTO dto : shopProductTypeDTOS) {
+                dto.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
+				//id为空则是新增
+				if (StringUtils.isBlank(dto.getId())) {
+					logger.info("主键为空，说明是新增记录={}", dto.getProductTypeName());
+					returnFlag = saveProductTypeInfo(dto);
+				} else {
+					logger.info("主键不为空，说明是修改记录={}", dto.getProductTypeName());
+					returnFlag = updateProductTypeInfo(dto);
+				}
+			}
+		}
+		return returnFlag;
+	}
+
+	/**
+	 * 更新产品类别
+	 *
+	 * @param shopProductTypeDTOS
+	 * @return
+	 */
+	@Override
+	public int updateProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS) {
+		if (CommonUtils.objectIsEmpty(shopProductTypeDTOS) || StringUtils.isBlank(shopProductTypeDTOS.getId())) {
+			logger.error("{}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+			return 0;
+		}
+		shopProductTypeDTOS.setUpdateDate(new Date());
+		return shopProductTypeMapper.updateByPrimaryKeySelective(shopProductTypeDTOS);
+	}
+
+	/**
+	 * 更新产品信息
+	 *
+	 * @param shopProductInfoDTO
+	 * @return
+	 */
+	@Override
+	public int updateProductInfo(ShopProductInfoDTO shopProductInfoDTO) {
+		if (CommonUtils.objectIsEmpty(shopProductInfoDTO) || StringUtils.isBlank(shopProductInfoDTO.getId())) {
+			logger.error("{}", "shopProductInfoDTO = [" + shopProductInfoDTO + "]");
+			return 0;
+		}
+		shopProductInfoDTO.setUpdateDate(new Date());
+		return shopProductInfoMapper.updateByPrimaryKeySelective(shopProductInfoDTO);
+	}
+
+	/**
+	 * 添加某个店的某个产品类别
+	 *
+	 * @param shopProductTypeDTOS
+	 */
+	@Override
+	public int saveProductTypeInfo(ShopProductTypeDTO shopProductTypeDTOS) {
+
+		logger.info("添加某个店的某个产品类别传入参数={}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+		if (CommonUtils.objectIsEmpty(shopProductTypeDTOS)) {
+			logger.error("添加某个店的某个产品类别{}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
+			return 0;
+		}
+		shopProductTypeDTOS.setCreateDate(new Date());
+		shopProductTypeDTOS.setId(IdGen.uuid());
+		shopProductTypeMapper.insertSelective(shopProductTypeDTOS);
+		return 0;
 	}
 
 }

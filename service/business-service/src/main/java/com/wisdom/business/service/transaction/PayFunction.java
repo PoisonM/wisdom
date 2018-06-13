@@ -73,31 +73,28 @@ public class PayFunction {
 
     @Transactional(rollbackFor = Exception.class)
     public void processPayStatus(List<PayRecordDTO> payRecordDTOList) throws ClientException {
+        logger.info("service == 处理支付状态processPayStatus");
         try {
             float totalMoney = 0;
             String productName = "";
             String token = WeixinUtil.getUserToken();
             String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
+            logger.info("处理支付状态token={},url={}",token,url);
             String userId = "";
             for (PayRecordDTO payRecordDTO : payRecordDTOList) {
                 //修改payRecord的订单状态，表示已支付
                 payRecordDTO.setStatus("1");
-                payRecordDTO.setUpdateDate(new Date());
+                payRecordDTO.setPayDate(new Date());
                 payRecordService.updatePayRecordStatus(payRecordDTO);
 
                 totalMoney = totalMoney + payRecordDTO.getAmount();
 
                 //修改business_order的状态，表示已支付
+                logger.info("修改payRecord,business_order=={}的状态，表示已支付",payRecordDTO.getOrderId());
                 BusinessOrderDTO businessOrderDTO = transactionService.getBusinessOrderDetailInfoByOrderId(payRecordDTO.getOrderId());
                 businessOrderDTO.setStatus("1");
                 businessOrderDTO.setUpdateDate(new Date());
                 transactionService.updateBusinessOrder(businessOrderDTO);
-
-                //减商品库存
-//                ProductDTO productDTO = new ProductDTO();
-//                productDTO.setProductId(businessOrderDTO.getBusinessProductId());
-//                productDTO.setProductAmount(businessOrderDTO.getBusinessProductNum());
-//                transactionService.updateOfflineProductAmount(productDTO,"lose");
 
                 productName = productName + businessOrderDTO.getBusinessProductName() +
                         "(" + businessOrderDTO.getProductSpec() + ")" + businessOrderDTO.getBusinessProductNum() + "套" + ";";
@@ -107,6 +104,7 @@ public class PayFunction {
                 Query query = new Query(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId()));
                 SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO = mongoTemplate.findOne(query, SpecialShopBusinessOrderDTO.class, "specialShopBusinessOrder");
                 if (specialShopBusinessOrderDTO != null) {
+                    logger.info("购买的是跨境商品");
                     String shopId = specialShopBusinessOrderDTO.getShopId();
                     query = new Query(Criteria.where("shopId").is(shopId));
                     SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query, SpecialShopInfoDTO.class, "specialShopInfo");
@@ -114,10 +112,12 @@ public class PayFunction {
                     userInfoDTO.setMobile(specialShopInfoDTO.getShopBossMobile());
                     List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
                     if (userInfoDTOList.size() > 0) {
+                        logger.info("直接给店主={}发送推送消息",businessOrderDTO, userInfoDTOList.get(0).getUserOpenid());
                         WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(token, payRecordDTO.getAmount() + "元", businessOrderDTO, userInfoDTOList.get(0).getUserOpenid(), specialShopInfoDTO);
                         SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(), payRecordDTO.getAmount() + "元", businessOrderDTO, specialShopInfoDTO);
                     } else {
                         //直接给店主发送短信
+                        logger.info("直接给店主={}发送短信",specialShopInfoDTO.getShopBossMobile());
                         SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(), payRecordDTO.getAmount() + "元", businessOrderDTO, specialShopInfoDTO);
                     }
                 }
@@ -132,6 +132,7 @@ public class PayFunction {
             }
             WeixinTemplateMessageUtil.sendOrderPaySuccessTemplateWXMessage((int) totalMoney + "元", productName, token, url, userInfoDTO.getUserOpenid());
         } catch (Exception e) {
+            logger.error("处理支付状态processPayStatus异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
         }
     }
@@ -140,10 +141,12 @@ public class PayFunction {
     public void promoteUserBusinessTypeForExpenseSecond(UserInfoDTO userInfoDTO, String businessType, int livingPeriod) {
 
         //sys_user表也需要更新
+        logger.info("service == 更新sys_user表用户=={},等级=={},时效={}",userInfoDTO.getMobile(),businessType,livingPeriod);
         userInfoDTO.setUserType(businessType);
         userServiceClient.updateUserInfo(userInfoDTO);
 
         //更新user_business_type表的数据
+        logger.info("更新user_business_type表的数据,把老级别变为失效");
         //1、把老级别变为失效
         UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
         userBusinessTypeDTO.setSysUserId(userInfoDTO.getId());
@@ -162,6 +165,7 @@ public class PayFunction {
         }
 
         //2、级别更新创建新的记录
+        logger.info("级别更新创建新的记录UserBusinessType表");
         userBusinessTypeDTO = new UserBusinessTypeDTO();
         userBusinessTypeDTO.setId(UUID.randomUUID().toString());
         userBusinessTypeDTO.setParentUserId(userInfoDTO.getParentUserId());
@@ -176,6 +180,7 @@ public class PayFunction {
 
     @Transactional(rollbackFor = Exception.class)
     public void updateReturnMoneyDataBase(String parentUserId, String userRuleType, String parentRuleType, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO) {
+        logger.info("service -- updateReturnMoneyDataBase,参数parentUserId={},userRuleType={},parentRuleType={}方法执行",parentUserId,userRuleType,parentRuleType);
         String token = WeixinUtil.getUserToken();
         try {
 
@@ -203,7 +208,7 @@ public class PayFunction {
             for (PayRecordDTO payRecord : payRecordDTOList) {
                 expenseAmount = expenseAmount + payRecord.getAmount();
             }
-
+            logger.info("service -- updateReturnMoneyDataBase 本人交易金额==={}",expenseAmount);
             //即时返现的金额
             float returnMoney = 0;
 
@@ -215,7 +220,6 @@ public class PayFunction {
 
             //逻辑先写死
             if (userRuleType.equals(ConfigConstant.businessC1)) {
-
                 if (parentRuleType.equals(ConfigConstant.businessA1)) {
 
                     float amount = 0;
@@ -233,7 +237,7 @@ public class PayFunction {
                         if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                         }
-
+                        logger.info("service -- updateReturnMoneyDataBase,本人C,上级A,交易金额大于{},即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE,returnMoney,permanentReward,amount,isImportLevel);
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount <= ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
                         //用户升级成B时即时返利给父类的钱
                         returnMoney = ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE * 10 / 100 + (expenseAmount - ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE) * 2 / 100;
@@ -248,7 +252,7 @@ public class PayFunction {
                         if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_B;
                         }
-
+                        logger.info("service -- updateReturnMoneyDataBase,本人C,上级A,交易金额在{}和{}之间,即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE,ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE,returnMoney,permanentReward,amount,isImportLevel);
                     } else {
                         //用户即时提现返给父类的钱
                         returnMoney = expenseAmount * 2 / 100;
@@ -258,6 +262,7 @@ public class PayFunction {
 
                         //记录月度交易流水
                         amount = expenseAmount;
+                        logger.info("service -- updateReturnMoneyDataBase,本人C,上级A,交易金额低于B,即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",returnMoney,permanentReward,amount,isImportLevel);
                     }
                     recordMonthTransaction(parentUserId, instanceReturnMoneySignalDTO, amount, parentRuleType);
 
@@ -277,7 +282,7 @@ public class PayFunction {
                         if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_B;
                         }
-
+                        logger.info("service -- updateReturnMoneyDataBase,本人C,上级B,交易金额在{}和{}之间,即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE,ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE,returnMoney,permanentReward,amount,isImportLevel);
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
 
                         returnMoney = ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE * 5 / 100 + (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 5 / 100;
@@ -292,6 +297,7 @@ public class PayFunction {
                         if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                         }
+                        logger.info("service -- updateReturnMoneyDataBase,本人C,上级B,交易金额大于{},即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE,returnMoney,permanentReward,amount,isImportLevel);
                     } else {
 
                         //b的下级消费返5%的即时
@@ -302,8 +308,8 @@ public class PayFunction {
 
                         //记录月度交易流水
                         amount = expenseAmount;
+                        logger.info("service -- updateReturnMoneyDataBase,本人C,上级B,交易金额低于B,即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",returnMoney,permanentReward,amount,isImportLevel);
                     }
-
                     recordMonthTransaction(parentUserId, instanceReturnMoneySignalDTO, amount, parentRuleType);
                 } else if (parentRuleType.equals("A1B1")) {
                     float amount = 0;
@@ -320,7 +326,7 @@ public class PayFunction {
                         if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_B;
                         }
-
+                        logger.info("service -- updateReturnMoneyDataBase,本人C,上上级关系,交易金额在{}和{}之间,即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE,ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE,returnMoney,permanentReward,amount,isImportLevel);
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
                         returnMoney = (expenseAmount - ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) * 2 / 100;
 
@@ -334,6 +340,7 @@ public class PayFunction {
                         if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                         }
+                        logger.info("service -- updateReturnMoneyDataBase,本人C,上上级关系,交易金额大于{},即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE,returnMoney,permanentReward,amount,isImportLevel);
                     } else {
                         returnMoney = expenseAmount * 2 / 100;
 
@@ -342,6 +349,7 @@ public class PayFunction {
 
                         //记录月度交易流水
                         amount = expenseAmount;
+                        logger.info("service -- updateReturnMoneyDataBase,本人C,上上级关系,交易金额低于B,即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",returnMoney,permanentReward,amount,isImportLevel);
                     }
                     recordMonthTransaction(parentUserId, instanceReturnMoneySignalDTO, amount, "A1B1");
                 }
@@ -361,6 +369,7 @@ public class PayFunction {
                         if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                             isImportLevel = ConfigConstant.LEVE_IMPORT_A;
                         }
+                        logger.info("service -- updateReturnMoneyDataBase,本人B,上级A,交易金额大于{},即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE,returnMoney,permanentReward,amount,isImportLevel);
                     } else {
                         returnMoney = expenseAmount * 2 / 100;
 
@@ -369,29 +378,28 @@ public class PayFunction {
 
                         //记录月度交易流水
                         amount = expenseAmount;
+                        logger.info("service -- updateReturnMoneyDataBase,本人B,上级A,交易金额低于A,即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",returnMoney,permanentReward,amount,isImportLevel);
                     }
                     recordMonthTransaction(parentUserId, instanceReturnMoneySignalDTO, amount, parentRuleType);
                 } else if (parentRuleType.equals(ConfigConstant.businessB1)) {
-
                     //平级无即时和月度返利 用户消费时永久性奖励
                     permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
-
+                    logger.info("service -- updateReturnMoneyDataBase,本人B,上级B,平级无即时和月度返利 用户消费时永久性奖励,即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",returnMoney,permanentReward,isImportLevel);
                 }
 
-
             } else if (userRuleType.equals(ConfigConstant.businessA1)) {
-
                 if (parentRuleType.equals(ConfigConstant.businessA1)) {
-
                     //平级无即时和月度返利 用户消费时永久性奖励
                     permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
-
+                    logger.info("service -- updateReturnMoneyDataBase,本人A,上级A,平级无即时和月度返利 用户消费时永久性奖励,即时返现的金额={},永久性奖励的金额={},记录月度交易流水={},升级={}",returnMoney,permanentReward,isImportLevel);
                 }
             }
             AccountDTO accountDTO = new AccountDTO();
             accountDTO.setSysUserId(parentUserId);
 
             if (returnMoney >= 0) {
+                logger.info("service -- updateReturnMoneyDataBase,将returnMoney={}去更新要返现的用户ID的account和income两个表的数据",returnMoney);
+
                 //将returnMoney去更新要返现的用户ID的account和income两个表的数据
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, returnMoney);
 
@@ -400,6 +408,7 @@ public class PayFunction {
             }
             //永久性奖励
             if(permanentReward>=0){
+                logger.info("service -- updateReturnMoneyDataBase,永久性奖励,更新要返现的用户ID的account和income两个表的数据",permanentReward);
 
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, permanentReward);
                 this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,permanentReward,expenseAmount,parentRuleType,ConfigConstant.INCOME_TYPE_P);
@@ -417,6 +426,7 @@ public class PayFunction {
             }
 
         } catch (Exception e) {
+            logger.error("service -- updateReturnMoneyDataBase,出现异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
         }
     }
@@ -428,8 +438,11 @@ public class PayFunction {
      * */
     @Transactional(rollbackFor = Exception.class)
     public void flatRebate(String userRuleType ,String parentUserId,String parentRuleType, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO){
+        logger.info("service -- flatRebate,平级返利,参数userRuleType={},parentUserId={},parentRuleType={}",userRuleType,parentUserId,parentRuleType);
 
         String token = WeixinUtil.getUserToken();
+        logger.info("service -- flatRebate,平级返利,token={}",token);
+
         PayRecordDTO payRecordDTO = new PayRecordDTO();
         payRecordDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
         payRecordDTO.setOutTradeNo(instanceReturnMoneySignalDTO.getOutTradeNo());
@@ -442,10 +455,12 @@ public class PayFunction {
         for (PayRecordDTO payRecord : payRecordDTOList) {
             expenseAmount = expenseAmount + payRecord.getAmount();
         }
+        logger.info("service -- 平级返利,该交易流水的交易金额,expenseAmount={}",expenseAmount);
 
         //永久性奖励的金额
         float permanentReward = 0;
         permanentReward = this.getPermanentReward(userRuleType,expenseAmount);
+        logger.info("service -- 平级返利,永久性奖励的金额,permanentReward={}",permanentReward);
 
         String isImportLevel = ConfigConstant.LEVE_IMPORT;
 
@@ -461,55 +476,45 @@ public class PayFunction {
         }
 
         if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount < ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
-
             //记录此单是用户升级单
             if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                 isImportLevel = ConfigConstant.LEVE_IMPORT_B;
                 logger.info("用户当前的等级={},升级记录为={}", userType, isImportLevel);
             }
-
         } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
-
             //记录此单是用户升级单
             if (!userType.equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
                 isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                logger.info("用户当前的等级={},升级记录为={}", userType, isImportLevel);
             }
         }
 
         try{
             AccountDTO accountDTO = new AccountDTO();
             accountDTO.setSysUserId(parentUserId);
-
-
             if(permanentReward>=0){
-
                 //更新用户账户金额
+                logger.info("service -- 平级返利,更新用户账户金额,");
                 accountDTO = this.updateUserAccount(accountDTO,parentUserId, permanentReward);
-
                 //插入永久奖励信息
+                logger.info("service -- 平级返利,插入永久奖励信息,");
                 this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,permanentReward,expenseAmount,parentRuleType,ConfigConstant.INCOME_TYPE_P);
-
-
                 //给用户推送下级消费信息
+                logger.info("service -- 平级返利,给用户推送下级消费信息,");
                 int size = promotionTransactionRelationMapper.isExistence(instanceReturnMoneySignalDTO.getTransactionId());
                 if(size == 0){
                     this.insertPromotionTransactionRelation(isImportLevel,instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getTransactionId());
                 }
-
                 WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(userInfoDTO.getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
-
             }
-
         }catch (Exception e) {
+            logger.error("service -- 平级返利异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
-
         }
-
-
     }
 
     public void recordMonthTransaction(String userId, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO, float amount, String parentRelation) throws UnsupportedEncodingException {
-
+        logger.info("service == 进行月度流水统计,用户id={},金额amount={},关系={}",userId,amount,parentRelation);
         MonthTransactionRecordDTO monthTransactionRecordDTO = new MonthTransactionRecordDTO();
         monthTransactionRecordDTO.setId(UUID.randomUUID().toString());
         monthTransactionRecordDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
@@ -548,9 +553,9 @@ public class PayFunction {
      * @return
      */
     public Float getPermanentReward(String userRuleType,float expenseAmount) {
+        logger.info("service == 根据消费金额计算出永久奖励,参数userRuleType={},expenseAmount={}",userRuleType,expenseAmount);
 
         Float permantReward = (float)0;
-
         if(userRuleType.equals(ConfigConstant.businessC1)){
             if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
 
@@ -574,8 +579,8 @@ public class PayFunction {
         }else{
             permantReward = expenseAmount * 5/100;
         }
+        logger.info("service == 根据消费金额计算出永久奖励={}",permantReward);
         return permantReward;
-
     }
 
     /**
@@ -585,12 +590,14 @@ public class PayFunction {
      */
 
     public void insertIncomeServiceIm(InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO,String parentUserId,Float returnMoney,Float expenseAmount,String parentRuleType,String incomeType) throws Exception{
+        logger.info("service -- insertIncomeServiceIm,给即时返利表插入数据,参数parentUserId={},returnMoney={},expenseAmount={},parentRuleType={},incomeType={}",parentUserId,returnMoney,expenseAmount,parentRuleType,incomeType);
         IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
 
         //获取子类用户信息
         UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
         nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
         List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+        logger.info("service -- insertIncomeServiceIm,获取子类用户={}信息,",instanceReturnMoneySignalDTO.getSysUserId());
 
         //获取获得返利人信息
         UserInfoDTO userInfoDTO = new UserInfoDTO();
@@ -633,8 +640,12 @@ public class PayFunction {
      * */
 
     public AccountDTO updateUserAccount(AccountDTO accountDTO,String parentUserId,Float returnMoney)throws Exception{
+        logger.info("service -- updateUserAccount,更新用户账户金额,参数parentUserId={},returnMoney={}",parentUserId,returnMoney);
+
         List<AccountDTO> accountDTOS = accountService.getUserAccountInfo(accountDTO);
         if (accountDTOS.size() == 0) {
+            logger.info("service -- updateUserAccount,更新用户账户金额,用户没有账户,为用户创建账户");
+
             //为用户创建一个账户
             accountDTO = new AccountDTO();
             accountDTO.setId(UUID.randomUUID().toString());
@@ -654,6 +665,7 @@ public class PayFunction {
 
             float balance = accountDTO.getBalance() + returnMoney;
             float balanceDeny = accountDTO.getBalanceDeny() + returnMoney;
+            logger.info("service -- updateUserAccount,更新用户账户金额,balance={},balanceDeny={}",balance,balanceDeny);
             accountDTO.setBalance(balance);
             accountDTO.setBalanceDeny(balanceDeny);
             accountDTO.setUpdateDate(new Date());
@@ -662,14 +674,13 @@ public class PayFunction {
             accountDTO = accountDTOS.get(0);
             float balance = accountDTO.getBalance() + returnMoney;
             float balanceDeny = accountDTO.getBalanceDeny() + returnMoney;
+            logger.info("service -- updateUserAccount,更新用户账户金额,balance={},balanceDeny={}",balance,balanceDeny);
             accountDTO.setBalance(balance);
             accountDTO.setBalanceDeny(balanceDeny);
             accountDTO.setUpdateDate(new Date());
             accountService.updateUserAccountInfo(accountDTO);
         }
-
         return accountDTO;
-
     }
 
     /**
@@ -678,6 +689,7 @@ public class PayFunction {
      *
      * */
     public void insertPromotionTransactionRelation(String promotionLevel,String sysUserId,String transactionId)throws  Exception{
+        logger.info("service -- 插入具体是哪个交易流水升级,insertPromotionTransactionRelation方法执行,");
 
         PromotionTransactionRelation promotionTransactionRelation = new PromotionTransactionRelation();
         promotionTransactionRelation.setPromotionLevelId(UUID.randomUUID().toString());

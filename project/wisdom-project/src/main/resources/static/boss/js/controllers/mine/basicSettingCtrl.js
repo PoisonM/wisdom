@@ -42,4 +42,8 @@ angular.module('controllers',[]).controller('basicSettingCtrl',
             $scope.projectDifferenceGo=function () {
                 $state.go("projectDifference")
             };
+            /*点击项目大类设置*/
+            $scope.projectBrandGo=function () {
+                $state.go("projectBrand")
+            }
         }]);

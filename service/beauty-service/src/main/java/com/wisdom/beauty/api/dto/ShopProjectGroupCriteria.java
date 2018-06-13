@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -415,52 +416,52 @@ public class ShopProjectGroupCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceEqualTo(Long value) {
+        public Criteria andMarketPriceEqualTo(BigDecimal value) {
             addCriterion("market_price =", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceNotEqualTo(Long value) {
+        public Criteria andMarketPriceNotEqualTo(BigDecimal value) {
             addCriterion("market_price <>", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceGreaterThan(Long value) {
+        public Criteria andMarketPriceGreaterThan(BigDecimal value) {
             addCriterion("market_price >", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andMarketPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("market_price >=", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceLessThan(Long value) {
+        public Criteria andMarketPriceLessThan(BigDecimal value) {
             addCriterion("market_price <", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceLessThanOrEqualTo(Long value) {
+        public Criteria andMarketPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("market_price <=", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceIn(List<Long> values) {
+        public Criteria andMarketPriceIn(List<BigDecimal> values) {
             addCriterion("market_price in", values, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceNotIn(List<Long> values) {
+        public Criteria andMarketPriceNotIn(List<BigDecimal> values) {
             addCriterion("market_price not in", values, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceBetween(Long value1, Long value2) {
+        public Criteria andMarketPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("market_price between", value1, value2, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceNotBetween(Long value1, Long value2) {
+        public Criteria andMarketPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("market_price not between", value1, value2, "marketPrice");
             return (Criteria) this;
         }
@@ -475,113 +476,193 @@ public class ShopProjectGroupCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceEqualTo(Long value) {
+        public Criteria andDiscountPriceEqualTo(BigDecimal value) {
             addCriterion("discount_price =", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceNotEqualTo(Long value) {
+        public Criteria andDiscountPriceNotEqualTo(BigDecimal value) {
             addCriterion("discount_price <>", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceGreaterThan(Long value) {
+        public Criteria andDiscountPriceGreaterThan(BigDecimal value) {
             addCriterion("discount_price >", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andDiscountPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("discount_price >=", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceLessThan(Long value) {
+        public Criteria andDiscountPriceLessThan(BigDecimal value) {
             addCriterion("discount_price <", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceLessThanOrEqualTo(Long value) {
+        public Criteria andDiscountPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("discount_price <=", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceIn(List<Long> values) {
+        public Criteria andDiscountPriceIn(List<BigDecimal> values) {
             addCriterion("discount_price in", values, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceNotIn(List<Long> values) {
+        public Criteria andDiscountPriceNotIn(List<BigDecimal> values) {
             addCriterion("discount_price not in", values, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceBetween(Long value1, Long value2) {
+        public Criteria andDiscountPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("discount_price between", value1, value2, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceNotBetween(Long value1, Long value2) {
+        public Criteria andDiscountPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("discount_price not between", value1, value2, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateIsNull() {
-            addCriterion("valid_date is null");
+        public Criteria andEffectiveDateIsNull() {
+            addCriterion("effective_date is null");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateIsNotNull() {
-            addCriterion("valid_date is not null");
+        public Criteria andEffectiveDateIsNotNull() {
+            addCriterion("effective_date is not null");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateEqualTo(Date value) {
-            addCriterion("valid_date =", value, "validDate");
+        public Criteria andEffectiveDateEqualTo(String value) {
+            addCriterion("effective_date =", value, "effectiveDate");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateNotEqualTo(Date value) {
-            addCriterion("valid_date <>", value, "validDate");
+        public Criteria andEffectiveDateNotEqualTo(String value) {
+            addCriterion("effective_date <>", value, "effectiveDate");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateGreaterThan(Date value) {
-            addCriterion("valid_date >", value, "validDate");
+        public Criteria andEffectiveDateGreaterThan(String value) {
+            addCriterion("effective_date >", value, "effectiveDate");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateGreaterThanOrEqualTo(Date value) {
-            addCriterion("valid_date >=", value, "validDate");
+        public Criteria andEffectiveDateGreaterThanOrEqualTo(String value) {
+            addCriterion("effective_date >=", value, "effectiveDate");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateLessThan(Date value) {
-            addCriterion("valid_date <", value, "validDate");
+        public Criteria andEffectiveDateLessThan(String value) {
+            addCriterion("effective_date <", value, "effectiveDate");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateLessThanOrEqualTo(Date value) {
-            addCriterion("valid_date <=", value, "validDate");
+        public Criteria andEffectiveDateLessThanOrEqualTo(String value) {
+            addCriterion("effective_date <=", value, "effectiveDate");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateIn(List<Date> values) {
-            addCriterion("valid_date in", values, "validDate");
+        public Criteria andEffectiveDateLike(String value) {
+            addCriterion("effective_date like", value, "effectiveDate");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateNotIn(List<Date> values) {
-            addCriterion("valid_date not in", values, "validDate");
+        public Criteria andEffectiveDateNotLike(String value) {
+            addCriterion("effective_date not like", value, "effectiveDate");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateBetween(Date value1, Date value2) {
-            addCriterion("valid_date between", value1, value2, "validDate");
+        public Criteria andEffectiveDateIn(List<String> values) {
+            addCriterion("effective_date in", values, "effectiveDate");
             return (Criteria) this;
         }
 
-        public Criteria andValidDateNotBetween(Date value1, Date value2) {
-            addCriterion("valid_date not between", value1, value2, "validDate");
+        public Criteria andEffectiveDateNotIn(List<String> values) {
+            addCriterion("effective_date not in", values, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateBetween(String value1, String value2) {
+            addCriterion("effective_date between", value1, value2, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEffectiveDateNotBetween(String value1, String value2) {
+            addCriterion("effective_date not between", value1, value2, "effectiveDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateIsNull() {
+            addCriterion("expiration_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateIsNotNull() {
+            addCriterion("expiration_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateEqualTo(String value) {
+            addCriterion("expiration_date =", value, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateNotEqualTo(String value) {
+            addCriterion("expiration_date <>", value, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateGreaterThan(String value) {
+            addCriterion("expiration_date >", value, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateGreaterThanOrEqualTo(String value) {
+            addCriterion("expiration_date >=", value, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateLessThan(String value) {
+            addCriterion("expiration_date <", value, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateLessThanOrEqualTo(String value) {
+            addCriterion("expiration_date <=", value, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateLike(String value) {
+            addCriterion("expiration_date like", value, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateNotLike(String value) {
+            addCriterion("expiration_date not like", value, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateIn(List<String> values) {
+            addCriterion("expiration_date in", values, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateNotIn(List<String> values) {
+            addCriterion("expiration_date not in", values, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateBetween(String value1, String value2) {
+            addCriterion("expiration_date between", value1, value2, "expirationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpirationDateNotBetween(String value1, String value2) {
+            addCriterion("expiration_date not between", value1, value2, "expirationDate");
             return (Criteria) this;
         }
 

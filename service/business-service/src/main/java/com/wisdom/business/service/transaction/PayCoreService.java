@@ -74,8 +74,9 @@ public class PayCoreService {
 
         try {
             redisLock.lock();
-
-            List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
+            PayRecordDTO payRecordDTO2 = new PayRecordDTO();
+            payRecordDTO2.setOutTradeNo(payRecordDTO.getOutTradeNo());
+            List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO2);
 
             payFunction.processPayStatus(payRecordDTOList);
 
@@ -124,9 +125,19 @@ public class PayCoreService {
                 logger.info("获取支付交易的消费金额=="+expenseMoney);
 
                 logger.info("进行月度流水统计");
-                if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1))
+
+                logger.info("用户等级："+userInfoDTO.getUserType());
+                if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1)||userInfoDTO.getUserType().equals(ConfigConstant.businessC1))
                 {
-                    payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
+                    //如果用户为c是用户c的升级单则计入
+                    if(userInfoDTO.getUserType().equals(ConfigConstant.businessC1)){
+                        if(expenseMoney>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE){
+                            payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
+                        }
+                    }else{
+                        payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
+                    }
+
                 }
 
                 logger.info("根据消费金额处理用户的等级提升=="+userInfoDTO.getMobile());

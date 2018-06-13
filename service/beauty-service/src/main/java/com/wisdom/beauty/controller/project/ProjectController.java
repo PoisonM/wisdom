@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.RelationIds;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
@@ -24,10 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * FileName: ProjectController
@@ -109,8 +107,19 @@ public class ProjectController {
     ResponseDTO<HashMap<String, Object>> searchShopProjectList(@RequestParam String useStyle, @RequestParam String filterStr) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        String sysShopId = clerkInfo.getSysShopId();
+        String sysShopId = null;
+
+        if (StringUtils.isBlank(sysShopId)) {
+            logger.info("pad端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+            sysShopId = clerkInfo.getSysShopId();
+        }
+        if (StringUtils.isBlank(sysShopId)) {
+            SysBossDTO bossInfo = UserUtils.getBossInfo();
+            logger.info("boss端传入参数={}", "useStyle = [" + useStyle + "], filterStr = [" + filterStr + "]");
+            sysShopId = bossInfo.getCurrentShopId();
+        }
+
         logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
         ResponseDTO<HashMap<String, Object>> responseDTO = new ResponseDTO<>();
 
@@ -130,25 +139,25 @@ public class ProjectController {
         }
 
         //缓存一级
-        HashMap<String, ShopProjectInfoDTO> oneTypeMap = new HashMap<>(16);
-        for (ShopProjectInfoDTO dto : projectList) {
-            oneTypeMap.put(dto.getProjectTypeOneId(), dto);
+        List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId);
+        if (CommonUtils.objectIsEmpty(shopProjectTypeDTOList)) {
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
         }
-        logger.info("缓存一级项目={}", oneTypeMap);
 
         ArrayList<Object> levelList = new ArrayList<>();
         //遍历缓存的一级项目
-        for (Map.Entry entry : oneTypeMap.entrySet()) {
+        for (ShopProjectTypeDTO shopProjectTypeDTO : shopProjectTypeDTOList) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
             //承接二级项目
-            HashMap<Object, Object> hashMap = new HashMap<>(16);
+            HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
             for (ShopProjectInfoDTO dto : projectList) {
-                if (entry.getKey().equals(dto.getProjectTypeOneId())) {
-                    hashMap.put(dto.getProjectTypeTwoName(), dto);
+                if (shopProjectTypeDTO.getId().equals(dto.getProjectTypeOneId())) {
+                    twoLevelMap.put(dto.getProjectTypeTwoName(), dto);
                 }
             }
-            helperMap.put(((ShopProjectInfoDTO) entry.getValue()).getProjectTypeOneName(), hashMap);
-//            helperMap.put("twoLevelSize", hashMap.size());
+            helperMap.put("levelTwoDetail", twoLevelMap);
+            helperMap.put("levelOneDetail", shopProjectTypeDTO);
             levelList.add(helperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表
@@ -304,9 +313,17 @@ public class ProjectController {
     @ResponseBody
     ResponseDTO<List<ShopProjectTypeDTO>> findOneLevelProject() {
         long currentTimeMillis = System.currentTimeMillis();
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        String sysShopId = null;
+        if (StringUtils.isBlank(sysShopId)) {
+            SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+            sysShopId = sysClerkDTO.getSysShopId();
+        }
+        if (StringUtils.isBlank(sysShopId)) {
+            SysBossDTO bossInfo = UserUtils.getBossInfo();
+            sysShopId = bossInfo.getCurrentShopId();
+        }
         ResponseDTO<List<ShopProjectTypeDTO>> responseDTO = new ResponseDTO<>();
-        List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysClerkDTO.getSysShopId());
+        List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysShopId);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
@@ -531,6 +548,89 @@ public class ProjectController {
 
         logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
+    }
+
+    /**
+     * 保存用户的项目信息
+     */
+    @RequestMapping(value = "saveProjectInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<Object> saveProjectInfo(@RequestBody ExtShopProjectInfoDTO extShopProjectInfoDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if (judgeBossCurrentShop(responseDTO, bossInfo)) {
+            return responseDTO;
+        }
+        if (null == extShopProjectInfoDTO.getOncePrice()) {
+            responseDTO.setResponseData("折扣价格不能为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        if (null == extShopProjectInfoDTO.getServiceTimes()) {
+            responseDTO.setResponseData("服务次数不能为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        extShopProjectInfoDTO.setSysShopId(bossInfo.getCurrentShopId());
+        extShopProjectInfoDTO.setCreateDate(new Date());
+        if (!CardTypeEnum.ONE_TIME_CARD.getCode().equals(extShopProjectInfoDTO.getCardType())) {
+            extShopProjectInfoDTO.setUseStyle(CardTypeEnum.TREATMENT_CARD.getCode());
+        }
+        extShopProjectInfoDTO.setMarketPrice(extShopProjectInfoDTO.getOncePrice().multiply(new BigDecimal(extShopProjectInfoDTO.getServiceTimes())));
+        int info = projectService.saveProjectInfo(extShopProjectInfoDTO);
+        responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+
+        logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 保存用户的项目信息
+     */
+    @RequestMapping(value = "updateProjectInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<Object> updateProjectInfo(@RequestBody ExtShopProjectInfoDTO extShopProjectInfoDTO) {
+
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if (judgeBossCurrentShop(responseDTO, bossInfo)) {
+            return responseDTO;
+        }
+        if (null == extShopProjectInfoDTO.getId()) {
+            responseDTO.setResponseData("更新主键不可为空不能为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        extShopProjectInfoDTO.setUpdateDate(new Date());
+        int info = projectService.updateProjectInfo(extShopProjectInfoDTO);
+        responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+
+        logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 判断老板有当前店铺信息
+     *
+     * @param responseDTO
+     * @param bossInfo
+     * @return
+     */
+    private boolean judgeBossCurrentShop(ResponseDTO<Object> responseDTO, SysBossDTO bossInfo) {
+        if (null == bossInfo || com.wisdom.common.util.StringUtils.isBlank(bossInfo.getCurrentShopId())) {
+            logger.error("获取老板信息异常，{}", "bossInfo = [" + bossInfo + "]");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setResponseData("获取老板信息异常");
+            return true;
+        }
+        return false;
     }
 
 }

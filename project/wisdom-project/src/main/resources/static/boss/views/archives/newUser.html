@@ -8,20 +8,19 @@
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">头像</p>
                     <p class="mr10">
-                        <span style="width:42px;height:42px;background: #e5e5e5;border-radius: 50%;display: inline-block;margin-top:5px;"></span>
-                        <img src="images/more.png" style="width:8px;height:14.1px;margin-top:-30px;">
+                        <img ng-src="{{newUser.imageRul}}" style="width:40px;height:40px;border-radius: 5px;">
                     </p>
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">姓名<span class="colff66 fs15">*</span></p>
                     <p class="mr10">
-                        安妮
+                        {{newUser.sysUserName}}
                     </p>
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">手机<span class="colff66 fs15">*</span></p>
                     <p class="mr10">
-                        123458
+                        {{newUser.phone}}
                     </p>
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
@@ -52,35 +51,29 @@
                     </div>
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
-                    <p class="ml10">微信</p>
-                    <p class="mr10">
-                        <input type="text" placeholder="请输入微信号" style="text-align: right">
-                    </p>
-                </ion-item>
-                <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">生日</p>
                     <p class="mr10">
-                        <img src="images/more.png" style="width:8px;height:14.1px;">
+                        <input type="text" placeholder="请输入您的生日" style="text-align: right" ng-model="param.userInformation.birthday">
                     </p>
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">星座</p>
                     <p class="mr10">
-                        <img src="images/more.png" style="width:8px;height:14.1px;">
+                        <input type="text" placeholder="请输入星座" style="text-align: right" ng-model="param.userInformation.constellation">
                     </p>
                 </ion-item>
-                <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
+                <!--<ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">类型</p>
                     <p class="mr10">
                         <img src="images/more.png" style="width:8px;height:14.1px;">
                     </p>
-                </ion-item>
-                <ion-item  class=" bgfff" style="display: flex;justify-content: space-between;min-height: 54px;">
+                </ion-item>-->
+               <!-- <ion-item  class=" bgfff" style="display: flex;justify-content: space-between;min-height: 54px;">
                     <p class="ml10 mt10">标签</p>
                     <p class="mr10 mt10">
                         <img src="images/more.png" style="width:8px;height:14.1px;">
                     </p>
-                </ion-item>
+                </ion-item>-->
 
             </ion-list>
             <div style="margin-top:10px;">
@@ -95,7 +88,8 @@
 
                 </ion-list>
             </div>
-            <div style="margin-top:10px;">
+            <!--会员信息-->
+           <!-- <div style="margin-top:10px;">
                 <ion-list>
                     <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                         <p class="ml10">会员信息</p>
@@ -111,7 +105,7 @@
                         </p>
                     </ion-item>
                 </ion-list>
-            </div>
+            </div>-->
 
             <div style="margin-top:10px;height:50px;line-height: 50px;font-size: 16px;color: #59D84C;text-align: center" class="bgfff ">
                 <img src="images/greenJia.png" style="width:16px;height:16px;">
@@ -120,12 +114,12 @@
             <div style="margin-top:10px;display: flex;justify-content: space-between" class="bgfff">
                 <label class="ml10">备注：</label>
                 <textarea style="width:85%;height:100px">
-
+                {{newUser.detail}}
             </textarea>
             </div>
-            <div style="height:100px;display: flex;justify-content: space-around;padding-top:30px;">
+            <div style="height:100px;display: flex;justify-content: space-around;padding-top:30px;" >
 
-                <p style="border: 1px solid #FF6666;border-radius: 46px;width:150px;height:40px;line-height: 40px" class="center colff66 bgfff activeBtn">
+                <p style="border: 1px solid #FF6666;border-radius: 46px;width:150px;height:40px;line-height: 40px" class="center colff66 bgfff activeBtn" ng-click="preservation()">
                     保存
                 </p>
             </div>

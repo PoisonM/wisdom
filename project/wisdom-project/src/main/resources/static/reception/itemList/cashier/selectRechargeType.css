@@ -1,17 +1,17 @@
-.prepaidBox {
+.selectRechargeTypeBox {
     width: 100%;
     height: 100%;
     overflow: scroll;
 }
 
-.prepaidTitle {
+.selectRechargeTypeTitle {
     background: #fff;
     height: 69px;
     width: 706px;
     margin: 30px 0;
 }
 
-.prepaidTitle span {
+.selectRechargeTypeTitle span {
     font-family: PingFangSC-Regular;
     font-size: 16px;
     color: #333333;
@@ -22,7 +22,7 @@
     width: 80%;
 }
 
-.prepaidTitle p {
+.selectRechargeTypeTitle p {
     font-family: PingFangSC-Regular;
     font-size: 11px;
     color: #999999;
@@ -32,7 +32,7 @@
     float: left;
 }
 
-.prepaidTitle .checkDiv {
+.selectRechargeTypeTitle .checkDiv {
     border: 1px solid #FF6666;
     border-radius: 50%;
     width: 15px;
@@ -41,14 +41,14 @@
     float: left;
 }
 
-.prepaidBox .prepaidUl {}
+.selectRechargeTypeBox .selectRechargeTypeUl {}
 
-.prepaidBox .prepaidUl li {
+.selectRechargeTypeBox .selectRechargeTypeUl li {
     height: 128px;
     background: #fff;
 }
 
-.prepaidBox .prepaidUl li img {
+.selectRechargeTypeBox .selectRechargeTypeUl li>img {
     width: 164px;
     height: 96px;
     border-radius: 10px;
@@ -56,7 +56,7 @@
     float: left;
 }
 
-.prepaidBox .prepaidUl li .checkDiv {
+.selectRechargeTypeBox .selectRechargeTypeUl li .checkDiv {
     border: 1px solid #FF6666;
     border-radius: 50%;
     width: 15px;
@@ -65,7 +65,7 @@
     float: left;
 }
 
-.prepaidBox .prepaidUl li .name {
+.selectRechargeTypeBox .selectRechargeTypeUl li .name {
     display: inline-block;
     margin: 22px 0 0 10px;
     font-family: PingFangSC-Regular;
@@ -74,7 +74,7 @@
     letter-spacing: 1px;
 }
 
-.prepaidBox .prepaidUl li .price {
+.selectRechargeTypeBox .selectRechargeTypeUl li .price {
     margin: 22px 0 0 10px;
     display: inline-block;
     font-family: PingFangSC-Regular;
@@ -83,11 +83,31 @@
     letter-spacing: 0;
 }
 
-.prepaidBox .prepaidUl li .discount {
+.selectRechargeTypeBox .selectRechargeTypeUl li .discount {
     display: inline-block;
     margin: 7px 0 0 11px;
     font-family: PingFangSC-Regular;
     font-size: 11px;
     color: #999999;
     letter-spacing: 1px;
+}
+
+.selectRechargeTypeBox .checkBox {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 53px 8px;
+    float: left;
+    border: 1px solid #FF6666;
+}
+
+.selectRechargeTypeBox .checkBox img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.bgF6 {
+    background: #FF6666;
 }

@@ -1,4 +1,4 @@
-PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDialog, Archives, GetShopUserRecentlyOrderInfo) {
+PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDialog, Archives, GetShopUserRecentlyOrderInfo, UserPayOpe) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
@@ -25,12 +25,30 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
     $scope.flagFn(true)
 
     $scope.goSignConfirm = function() {
-        $state.go('pad-web.signConfirm')
+        UserPayOpe.save({
+            balancePay: $scope.balancePay,
+            cashPayPrice: $scope.cashPayPrice,
+            orderId: $state.params.orderId,
+            payType: $scope.payType,
+            shopUserRechargeCard: $scope.responseData.userPayRechargeCardList,
+            surplusPayPrice: '',
+            detail: $scope.detail
+        }, function(data) {
+            $state.go('pad-web.signConfirm', { orderId: $state.params.orderId, })
+        })
     }
+
     $scope.checkBoxChek = function(e) {
-        $(e.target).children('.checkBox').css('background', '#FF6666')
+        $scope.payType = e;
     }
-    GetShopUserRecentlyOrderInfo.get({ sysUserId: 110 }, function(data) {
-        $scope.orderPrice = data.orderPrice;
+
+    GetShopUserRecentlyOrderInfo.get({
+        sysUserId: 110
+    }, function(data) {
+        $scope.responseData = data.responseData;
     })
+
+    $scope.goSelectRechargeType = function() {
+        $state.go('pad-web.left_nav.selectRechargeType', { type: 2 })
+    }
 });

@@ -164,7 +164,7 @@
 
     <select id="getUserUnPayOrderInBuyCart"
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
-        select bor.order_id businessOrderId,bpr.product_id businessProductId,bpr.status AS productStatus,bpr.product_amount productAmount,opr.product_num businessProductNum,
+        select bor.order_id businessOrderId,bpr.product_id businessProductId,bpr.product_prefecture productPrefecture,bpr.status AS productStatus,bpr.product_amount productAmount,opr.product_num businessProductNum,
         opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,bpr.price businessProductPrice from
         business_order bor, order_product_relation opr, business_product bpr
         where
@@ -212,7 +212,7 @@
     <select id="getBusinessOrderListByUserIdAndStatus"
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
         select bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
-        opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,bpr.price businessProductPrice,bor.status status,
+        opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.status productStatus,bpr.product_prefecture,bpr.`name` businessProductName,bpr.price businessProductPrice,bor.status status,
         bor.update_date updateDate,bor.type type
         from
         business_order bor, order_product_relation opr, business_product bpr

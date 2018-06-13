@@ -15,6 +15,8 @@ import com.wisdom.weixin.client.UserServiceClient;
 import com.wisdom.weixin.interceptor.LoginRequired;
 import com.wisdom.weixin.service.user.WeixinUserCoreService;
 import com.wisdom.weixin.util.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -45,6 +47,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "customer")
 public class WeixinUserController {
+    private static Logger logger = LoggerFactory.getLogger(WeixinUserController.class);
 
     @Autowired
     private WeixinUserCoreService weixinCustomerCoreService;
@@ -66,6 +69,8 @@ public class WeixinUserController {
     public
     @ResponseBody
     String requestFromServer(HttpServletRequest request, HttpServletResponse response) {
+        long startTime = System.currentTimeMillis();
+        logger.info("用户校验是否是微信服务器发送的请求,开始={}" ,startTime);
           String method = request.getMethod().toUpperCase();
           if ("GET".equals(method)) {
               // 微信加密签名
@@ -102,6 +107,8 @@ public class WeixinUserController {
                                           HttpServletResponse response,
                                           HttpSession session) throws Exception
     {
+        long startTime = System.currentTimeMillis();
+        logger.info("公众号菜单引导页 081dazSU0Zf1iU1fGISU0q5ASU0dazSd 0815XmM70lSlvH1UnyN70OwBM705XmM9,开始={}" ,startTime);
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
 
         if ("shopHome".equals(url)) {
@@ -141,6 +148,7 @@ public class WeixinUserController {
         String openId = weixinUserBean.getOpenid();
         session.setAttribute(ConfigConstant.USER_OPEN_ID, openId);
         CookieUtils.setCookie(response, ConfigConstant.USER_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
+        logger.info("公众号菜单引导页 081dazSU0Zf1iU1fGISU0q5ASU0dazSd 0815XmM70lSlvH1UnyN70OwBM705XmM9,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 
         return "redirect:" + url;
     }
@@ -158,6 +166,8 @@ public class WeixinUserController {
     @ResponseBody
     ResponseDTO<WeixinConfigDTO> getConfig(HttpServletRequest request) throws Exception
     {
+        long startTime = System.currentTimeMillis();
+        logger.info("用户端微信JS-SDK获得初始化参数==={}开始" , startTime);
         ResponseDTO<WeixinConfigDTO> responseDTO = new ResponseDTO<>();
         String u = request.getParameter("url");
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
@@ -165,6 +175,7 @@ public class WeixinUserController {
         String ticket = weixinTokenDTO.getTicket();
         WeixinConfigDTO WeixinConfigDTO = JsApiTicketUtil.customerSign(ticket, u);
         responseDTO.setResponseData(WeixinConfigDTO);
+        logger.info("用户端微信JS-SDK获得初始化参数,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -176,8 +187,12 @@ public class WeixinUserController {
      */
     @RequestMapping(value = "/fieldwork/author", method = RequestMethod.GET)
     public String Oauth2API(HttpServletRequest request) {
+        long startTime = System.currentTimeMillis();
+        logger.info("验证主入口Oauth2API方法==={}开始" , startTime);
         String backUrl = request.getParameter("url");
         String oauth2Url = WeixinUtil.getUserOauth2Url(backUrl);
+        logger.info("验证主入口Oauth2API方法backUrl={}oauth2Url={}" ,backUrl,oauth2Url);
+        logger.info("验证主入口Oauth2API方法,结束,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return "redirect:" + oauth2Url;
     }
 
@@ -189,6 +204,8 @@ public class WeixinUserController {
     public
     @ResponseBody
     ResponseDTO<WeixinShareDTO> getUserQRCode() throws FileNotFoundException {
+        long startTime = System.currentTimeMillis();
+        logger.info("用户获取推广二维码==={}开始" , startTime);
         ResponseDTO<WeixinShareDTO> responseDTO = new ResponseDTO();
 
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
@@ -212,6 +229,7 @@ public class WeixinUserController {
             responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setResponseData(weixinShareDTO);
         }
+        logger.info("用户获取推广二维码,结束,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -219,14 +237,19 @@ public class WeixinUserController {
     public
     @ResponseBody
     ResponseDTO<String> getSpecialShopQRCode(@RequestParam String specialShopId) throws FileNotFoundException {
+        long startTime = System.currentTimeMillis();
+        logger.info("getSpecialShopQRCode方法参数specialShopId={},开始==={}" ,specialShopId,startTime);
         ResponseDTO<String> responseDTO = new ResponseDTO();
         String specialShopQRURL = weixinCustomerCoreService.getSpecialShopQRCode(specialShopId);
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(specialShopQRURL);
+        logger.info("getSpecialShopQRCode方法,结束,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
     private static String saveImageToLocal(String urlToLocal,String userId,String type) throws FileNotFoundException {
+        long startTime = System.currentTimeMillis();
+        logger.info("将图片存入到本地==={}开始" , startTime);
         //将图片存入到本地
         String rootPath = getRootPath();
         String newUrl = "static/images/sharePage/" + userId + "_" + type + ".png";
@@ -256,12 +279,14 @@ public class WeixinUserController {
             outStream.close();
 
         } catch (MalformedURLException e) {
+            logger.info("将图片存入到本地异常,异常信息为={}" +e.getMessage(),e);
             e.printStackTrace();
         }
         catch (IOException e) {
+            logger.info("将图片存入到本地异常,异常信息为={}" +e.getMessage(),e);
             e.printStackTrace();
         }
-
+        logger.info("将图片存入到本地,结束,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseURL;
     }
 
@@ -272,6 +297,7 @@ public class WeixinUserController {
      * Created On 2007-5-10 15:16:21
      */
     private static String getRootPath() throws FileNotFoundException {
+        logger.info("获取跟目录方法执行" );
         //获取跟目录
         File path = new File(ResourceUtils.getURL("classpath:").getPath());
         if(!path.exists()) path = new File("");

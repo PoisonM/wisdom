@@ -1,14 +1,15 @@
 angular.module('controllers',[]).controller('buyCartCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetBuyCartInfo','AddProduct2BuyCart',
-        'MinusProduct2BuyCart','DeleteOrderFromBuyCart','Global','PutNeedPayOrderListToRedis','$ionicLoading',
+        'MinusProduct2BuyCart','DeleteOrderFromBuyCart','Global','PutNeedPayOrderListToRedis','$ionicLoading',"GetUserInfoByOpenId",
         function ($scope,$rootScope,$stateParams,$state,GetBuyCartInfo,AddProduct2BuyCart,
-                  MinusProduct2BuyCart,DeleteOrderFromBuyCart,Global,PutNeedPayOrderListToRedis,$ionicLoading) {
+                  MinusProduct2BuyCart,DeleteOrderFromBuyCart,Global,PutNeedPayOrderListToRedis,$ionicLoading,GetUserInfoByOpenId) {
 
             $(".cartNull").hide();
 
             //载入购物车信息
             var loadBuyCartInfo = function(){
                 GetBuyCartInfo.get(function(data){
+
                     $ionicLoading.hide();
                     if (data.responseData=="")
                     {
@@ -45,12 +46,13 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                                         productId : value2.businessProductId,
                                         orderId : value2.businessOrderId,
                                         productStatus:value2.productStatus,
+                                        productPrefecture:value2.productPrefecture,
                                         orderChecked:true
                                     })
                                 }
                             });
                             /*测试用的*/
-                           /* $scope.param.unPaidOrder[0].orderList[0].productStatus='0';*/
+                            /* $scope.param.unPaidOrder[0].orderList[0].productStatus='0';*/
                         })
                     }
                 })
@@ -178,8 +180,8 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                             minusButton = true;
                         })
                     }
-                     if(parseInt(item.productNum)-1<=parseInt(item.productAmount)){
-                         $("#greyBox").css("background","red")
+                    if(parseInt(item.productNum)-1<=parseInt(item.productAmount)){
+                        $("#greyBox").css("background","red")
                     }
 
                 }
@@ -204,7 +206,6 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                     }
                 })
             };
-
             $scope.goPay = function() {
                 var needPayOrderList = [];
                 var alertFlag = true;
@@ -213,12 +214,13 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                         if(value1.orderChecked&&value1.productStatus == "1")
                         {
                             needPayOrderList.push(value1);
-
                         }
+
                         if(value1.productStatus == "1"){
                             alertFlag = false;
                             return;
                         }
+
                     })
                 });
 
@@ -239,19 +241,25 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 }
                 //将needPayOrderList数据放入后台list中
                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
+
                     if(needPayOrderList=="")
                     {
-                      $("#greyBox").css("background","grey")
+                        $("#greyBox").css("background","grey")
                     }
                     else if(data.result==Global.SUCCESS)
                     {
                         window.location.href = "orderPay.do?productType=offline&random="+Math.random();
                     }
                     else if(data.result==Global.FAILURE){
-                        alert("库存不足~,购买失败");
-                        $state.go("shopHome");
+                        if(data.errorInfo=="failure"){
+                            alert("亲！此商品为新用户专享产品");
+                        }else{
+                            alert("库存不足~,购买失败");
+                            $state.go("shopHome");
+                        }
                     }
                 })
+
             };
 
             $scope.$on('$ionicView.enter', function(){
@@ -269,4 +277,4 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 });
                 loadBuyCartInfo();
             })
-}]);
+        }]);

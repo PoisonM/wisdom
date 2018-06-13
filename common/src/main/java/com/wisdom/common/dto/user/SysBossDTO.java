@@ -6,12 +6,22 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SysBossDTO extends BaseEntity implements Serializable {
-
+    //
     private String id;
 
     //user表主键
     private String sysUserId;
 
+    //
+    private String parentShopId;
+
+    //
+    private String currentShopId;
+
+    //
+    private String currentStoreId;
+
+    //
     private String name;
 
     //昵称
@@ -37,6 +47,12 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     //关注状态
     private String weixinAttentionStatus;
+
+    //
+    private String weChat;
+
+    //
+    private String qq;
 
     //照片
     private String photo;
@@ -75,6 +91,30 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setSysUserId(String sysUserId) {
         this.sysUserId = sysUserId;
+    }
+
+    public String getParentShopId() {
+        return parentShopId;
+    }
+
+    public void setParentShopId(String parentShopId) {
+        this.parentShopId = parentShopId;
+    }
+
+    public String getCurrentShopId() {
+        return currentShopId;
+    }
+
+    public void setCurrentShopId(String currentShopId) {
+        this.currentShopId = currentShopId;
+    }
+
+    public String getCurrentStoreId() {
+        return currentStoreId;
+    }
+
+    public void setCurrentStoreId(String currentStoreId) {
+        this.currentStoreId = currentStoreId;
     }
 
     public String getName() {
@@ -147,6 +187,22 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setWeixinAttentionStatus(String weixinAttentionStatus) {
         this.weixinAttentionStatus = weixinAttentionStatus;
+    }
+
+    public String getWeChat() {
+        return weChat;
+    }
+
+    public void setWeChat(String weChat) {
+        this.weChat = weChat;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
     }
 
     public String getPhoto() {

@@ -18,6 +18,7 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                 price:"",
                 status:"",
                 firstUrl:"",
+                productPrefecture:"",
                 productAmount:"",
                 createDate:$filter("date")(Date.parse(new Date()),"yyyy-MM-dd HH:mm:ss"),
                 productDetail:{

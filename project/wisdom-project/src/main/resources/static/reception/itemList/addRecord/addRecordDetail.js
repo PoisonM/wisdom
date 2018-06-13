@@ -1,4 +1,4 @@
-PADWeb.controller('addRecordDetailCtrl', function($scope) {
+PADWeb.controller('addRecordDetailCtrl', function($scope,$state,$stateParams,ArchivesDetail) {
     console.log($scope);
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
@@ -26,9 +26,17 @@ PADWeb.controller('addRecordDetailCtrl', function($scope) {
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
+    //档案详情
+    ArchivesDetail.get({id:$stateParams.id},function (data) {
+        $scope.responseData = data.responseData
+    })
+
 
     /*----------------------------------初始化参数------------------------------------------*/
 
     /*---------------------------------方法-----------------------------------*/
+
+
+
 
 });

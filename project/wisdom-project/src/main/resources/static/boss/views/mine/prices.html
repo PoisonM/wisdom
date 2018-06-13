@@ -1,19 +1,27 @@
 <ion-view class="bg">
-    <ion-content>
-        <div class="h45 bgfff row fs14 col33">
-            <div class="col col-25 tc" style="border-right: solid 1px #f6f6f6">
-                <p style="margin-top:-10px" class="colff66">项目 <img src="images/Stock/hitCard.png" class="trianglePic"></p>
-            </div>
-            <div class="col col-25 tc" style="border-right: solid 1px #f6f6f6">
-                <p style="margin-top:-10px">产品<img src="images/Stock/Below.png" class="trianglePic"></p>
-            </div>
-            <div class="col col-25 tc" style="border-right: solid 1px #f6f6f6">
-                <p style="margin-top:-10px">套卡</p>
-            </div>
-            <div class="col col-25 tc">
-                <p style="margin-top:-10px">充值卡</p>
+    <ion-header>
+        <div class="tabs-striped tabs-top tabs-background-light tabs-color-assertive">
+            <div class="tabs" style="top:0" >
+                <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='project']"
+                   ng-click="chooseTab('all')">
+                    <span style="font-size:0.35rem">项目</span><img src="images/Stock/hitCard.png" class="trianglePic">
+                </a>
+                <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='product']"
+                   ng-click="chooseTab('0')">
+                    <span style="font-size:0.35rem">产品</span><img src="images/Stock/hitCard.png" class="trianglePic">
+                </a>
+                <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='card']"
+                   ng-click="chooseTab('1')">
+                    <span style="font-size:0.35rem">套卡</span>
+                </a>
+                <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='rechargeableCard']"
+                   ng-click="chooseTab('4')">
+                    <span style="font-size:0.35rem">充值卡</span>
+                </a>
             </div>
         </div>
+    </ion-header>
+    <ion-content style="margin-top: 40px">
         <ion-item  class=" bgfff row"style="width: 96%;margin: 20px auto 0;border-radius: 6px;" >
             <div class="col col-20">
                 <p style="height:70px;width:75px;background: gainsboro;margin-top: 5px"></p >

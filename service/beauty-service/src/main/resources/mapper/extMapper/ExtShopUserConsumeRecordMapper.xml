@@ -122,8 +122,8 @@
         <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
+        <if test="distinct ==true">
+            group by sys_clerk_id
         </if>
         <if test="limitStart >= 0">
             limit ${limitStart},${pageSize}
@@ -132,15 +132,15 @@
     <select id="selectPriceListByCriteria" resultType="com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO"
             parameterType="com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria">
         select
-        flow_no flowNo,SUM(price) totalPrice,sys_shop_id sysShopId, sys_clerk_id sysShopClerkId,sys_shop_name sysShopName,DATE_FORMAT(create_date,'%Y-%m-%d') formateDate,pay_type payType
+        flow_no flowNo,SUM(price) totalPrice,sys_user_id sysUserId ,sys_shop_id sysShopId, sys_clerk_id sysShopClerkId,sys_shop_name sysShopName,DATE_FORMAT(create_date,'%Y-%m-%d') formateDate,pay_type payType,create_date createDate
         from shop_user_consume_record
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
+        GROUP  BY flow_no
         <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
-        GROUP  BY flow_no
         <if test="limitStart >= 0">
             limit ${limitStart},${pageSize}
         </if>

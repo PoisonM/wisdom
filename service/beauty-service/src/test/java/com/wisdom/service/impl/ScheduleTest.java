@@ -2,8 +2,8 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
-import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
-import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
+import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
+import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +56,12 @@ public class ScheduleTest {
     @Test
     public void getShopClerkScheduleList() throws Exception {
 
-        MvcResult result = mvc.perform(get("/clerkSchedule/getShopClerkScheduleList").param("searchDate", "2018-04-28").param("clerkId", "6ce974e11feb4deab74b553d3b3c5509"))
+//        MvcResult result = mvc.perform(get("/clerkSchedule/getShopClerkScheduleList").param("searchDate", "2018-04-28").param("clerkId", "6ce974e11feb4deab74b553d3b3c5509"))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+
+        MvcResult result = mvc.perform(get("/clerkSchedule/getBossShopScheduleSetting"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
@@ -72,21 +77,29 @@ public class ScheduleTest {
     @Test
     public void updateShopClerkScheduleList() throws Exception {
 
-        ExtShopClerkScheduleDTO<List<ShopClerkScheduleDTO>> shopClerkScheduleDTO = new ExtShopClerkScheduleDTO<List<ShopClerkScheduleDTO>>();
+        RequestDTO<ShopScheduleSettingDTO> requestDTO = new RequestDTO<ShopScheduleSettingDTO>();
+        List<ShopScheduleSettingDTO> scheduleDTOS = new ArrayList<>();
 
-        List<ShopClerkScheduleDTO> scheduleDTOS = new ArrayList<>();
-        ShopClerkScheduleDTO scheduleDTO = new ShopClerkScheduleDTO();
-        scheduleDTO.setSysBossId("11");
-        scheduleDTO.setSysClerkName("琴瑞琬");
-        scheduleDTO.setSysClerkId("01dc16c5905c4410a494c7e410b210d5");
-        scheduleDTO.setScheduleType("1");
-        scheduleDTO.setId("003410751d104e69a03f46423e6fa817");
+        ShopScheduleSettingDTO scheduleDTO = new ShopScheduleSettingDTO();
+        scheduleDTO.setStatus("1");
+        scheduleDTO.setId("320697b6007a4d76a64fac92562e5a68");
+        scheduleDTO.setStartTime("11:11");
+        scheduleDTO.setEndTime("14:00");
         scheduleDTOS.add(scheduleDTO);
-        shopClerkScheduleDTO.setShopClerkSchedule(scheduleDTOS);
+        ShopScheduleSettingDTO scheduleDTO2 = new ShopScheduleSettingDTO();
+        scheduleDTO2.setStatus("1");
+        scheduleDTO2.setStartTime("13:11");
+        scheduleDTO2.setEndTime("12:00");
+        scheduleDTO2.setId("733baf711fa04cfe9f5f5e0f5b054ed5");
+        scheduleDTOS.add(scheduleDTO2);
 
-        String toJSONString = JSONObject.toJSONString(shopClerkScheduleDTO);
 
-        MvcResult result = mvc.perform(post("/clerkSchedule/updateShopClerkScheduleList").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        requestDTO.setRequestList(scheduleDTOS);
+
+        String toJSONString = JSONObject.toJSONString(requestDTO);
+        System.out.println(toJSONString);
+
+        MvcResult result = mvc.perform(post("/clerkSchedule/updateBossShopScheduleSetting").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

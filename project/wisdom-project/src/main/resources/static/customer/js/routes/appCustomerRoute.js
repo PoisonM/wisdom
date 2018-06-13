@@ -591,6 +591,19 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                  /*个人中心页面  点击售后页面 跳转到另一个页面*/
+                    .state('afterSale', {
+                        url: '/afterSale',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'afterSaleCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.afterSaleCtrl',
+                                    ['js/controllers/business/afterSaleCtrl.js?ver='+ customerVersion],
+                                    'views/business/afterSale.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('/shopHome')
             }])

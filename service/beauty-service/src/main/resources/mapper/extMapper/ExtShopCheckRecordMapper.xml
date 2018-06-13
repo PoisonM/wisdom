@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopCheckRecordMapper" >
+    <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopCheckRecordDTO" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="flow_no" property="flowNo" jdbcType="VARCHAR" />
+        <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="CHAR" />
+        <result column="shop_boss_id" property="shopBossId" jdbcType="VARCHAR" />
+        <result column="shop_close_position_id" property="shopClosePositionId" jdbcType="VARCHAR" />
+        <result column="actual_stock_number" property="actualStockNumber" jdbcType="INTEGER" />
+        <result column="stock_number" property="stockNumber" jdbcType="INTEGER" />
+        <result column="shop_proc_name" property="shopProcName" jdbcType="VARCHAR" />
+        <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR" />
+        <result column="product_type_one_name" property="productTypeOneName" jdbcType="VARCHAR" />
+        <result column="product_type_one_Id" property="productTypeOneId" jdbcType="VARCHAR" />
+        <result column="manager_id" property="managerId" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List" >
+        id, flow_no, shop_store_id, state, shop_boss_id, shop_close_position_id, actual_stock_number,
+        stock_number, shop_proc_name, shop_proc_id, product_type_one_name, product_type_one_Id,
+        manager_id, create_date, update_date
+    </sql>
+    <!--批量插入-->
+    <insert id="insertBatchCheckRecord" >
+        insert into shop_check_record (id, flow_no, shop_store_id,
+        state, shop_boss_id, shop_close_position_id,
+        actual_stock_number, stock_number, shop_proc_name,
+        shop_proc_id, product_type_one_name, product_type_one_Id,
+        manager_id, create_date, update_date
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.flowNo,jdbcType=VARCHAR}, #{item.shopStoreId,jdbcType=VARCHAR},
+            #{item.state,jdbcType=CHAR}, #{item.shopBossId,jdbcType=VARCHAR}, #{item.shopClosePositionId,jdbcType=VARCHAR},
+            #{item.actualStockNumber,jdbcType=INTEGER}, #{item.stockNumber,jdbcType=INTEGER}, #{item.shopProcName,jdbcType=VARCHAR},
+            #{item.shopProcId,jdbcType=VARCHAR}, #{item.productTypeOneName,jdbcType=VARCHAR}, #{item.productTypeOneId,jdbcType=VARCHAR},
+            #{item.managerId,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP}, #{item.updateDate,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+
+
+
+</mapper>

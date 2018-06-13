@@ -26,9 +26,9 @@ PADWeb.controller('accountDetailsCtrl', function($scope, $state, $stateParams, n
     $scope.flagFn(true);
 
     cashConsume.get({
-        consumeFlowNo:$stateParams.flowNo
-    },function (data) {
+        consumeFlowNo: $stateParams.flowNo
+    }, function(data) {
         $scope.dataInfo = data.responseData
     })
-    
+
 });

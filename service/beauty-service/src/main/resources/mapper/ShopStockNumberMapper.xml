@@ -5,7 +5,9 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="shop_proc_id" property="shopProcId" jdbcType="VARCHAR" />
     <result column="shop_store_id" property="shopStoreId" jdbcType="VARCHAR" />
+    <result column="shop_store_name" jdbcType="VARCHAR" property="shopStoreName" />
     <result column="shop_boss_id" property="shopBossId" jdbcType="VARCHAR" />
+    <result column="product_type_two_id" property="productTypeTwoId" jdbcType="VARCHAR" />
     <result column="stock_number" property="stockNumber" jdbcType="INTEGER" />
     <result column="actual_stock_number" property="actualStockNumber" jdbcType="INTEGER" />
     <result column="actual_stock_price" property="actualStockPrice" jdbcType="INTEGER" />
@@ -74,8 +76,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_proc_id, shop_store_id, shop_boss_id, stock_number, actual_stock_number,
-    actual_stock_price, stock_price, create_by, create_date, update_user, update_date
+    id, shop_proc_id, shop_store_id, shop_store_name,shop_boss_id, product_type_two_id, stock_number,
+    actual_stock_number, actual_stock_price, stock_price, create_by, create_date, update_user, 
+    update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopStockNumberCriteria" >
     select
@@ -95,7 +98,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
+    select 
     <include refid="Base_Column_List" />
     from shop_stock_number
     where id = #{id,jdbcType=VARCHAR}
@@ -111,16 +114,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopStockNumberDTO" >
-    insert into shop_stock_number (id, shop_proc_id, shop_store_id,
-    shop_boss_id, stock_number, actual_stock_number,
-    actual_stock_price, stock_price, create_by,
-    create_date, update_user, update_date
-    )
-    values (#{id,jdbcType=VARCHAR}, #{shopProcId,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR},
-    #{shopBossId,jdbcType=VARCHAR}, #{stockNumber,jdbcType=INTEGER}, #{actualStockNumber,jdbcType=INTEGER},
-    #{actualStockPrice,jdbcType=INTEGER}, #{stockPrice,jdbcType=DECIMAL}, #{createBy,jdbcType=VARCHAR},
-    #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-    )
+    insert into shop_stock_number (id, shop_proc_id, shop_store_id, shop_store_name,
+      shop_boss_id, product_type_two_id, stock_number, 
+      actual_stock_number, actual_stock_price, stock_price, 
+      create_by, create_date, update_user, 
+      update_date)
+    values (#{id,jdbcType=VARCHAR}, #{shopProcId,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, #{shopStoreName,jdbcType=VARCHAR},
+      #{shopBossId,jdbcType=VARCHAR}, #{productTypeTwoId,jdbcType=VARCHAR}, #{stockNumber,jdbcType=INTEGER}, 
+      #{actualStockNumber,jdbcType=INTEGER}, #{actualStockPrice,jdbcType=INTEGER}, #{stockPrice,jdbcType=DECIMAL}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopStockNumberDTO" >
     insert into shop_stock_number
@@ -134,8 +137,14 @@
       <if test="shopStoreId != null" >
         shop_store_id,
       </if>
+      <if test="shopStoreName != null" >
+        shop_store_name,
+      </if>
       <if test="shopBossId != null" >
         shop_boss_id,
+      </if>
+      <if test="productTypeTwoId != null" >
+        product_type_two_id,
       </if>
       <if test="stockNumber != null" >
         stock_number,
@@ -172,8 +181,14 @@
       <if test="shopStoreId != null" >
         #{shopStoreId,jdbcType=VARCHAR},
       </if>
+      <if test="shopStoreName != null" >
+        #{shopStoreName,jdbcType=VARCHAR},
+      </if>
       <if test="shopBossId != null" >
         #{shopBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeTwoId != null" >
+        #{productTypeTwoId,jdbcType=VARCHAR},
       </if>
       <if test="stockNumber != null" >
         #{stockNumber,jdbcType=INTEGER},
@@ -216,11 +231,17 @@
       <if test="record.shopProcId != null" >
         shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
       </if>
+      <if test="record.shopStoreName != null" >
+        shop_store_name = #{record.shopStoreName,jdbcType=VARCHAR},
+      </if>
       <if test="record.shopStoreId != null" >
         shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
       </if>
       <if test="record.shopBossId != null" >
         shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productTypeTwoId != null" >
+        product_type_two_id = #{record.productTypeTwoId,jdbcType=VARCHAR},
       </if>
       <if test="record.stockNumber != null" >
         stock_number = #{record.stockNumber,jdbcType=INTEGER},
@@ -254,17 +275,19 @@
   <update id="updateByCriteria" parameterType="map" >
     update shop_stock_number
     set id = #{record.id,jdbcType=VARCHAR},
-    shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
-    shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
-    shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
-    stock_number = #{record.stockNumber,jdbcType=INTEGER},
-    actual_stock_number = #{record.actualStockNumber,jdbcType=INTEGER},
-    actual_stock_price = #{record.actualStockPrice,jdbcType=INTEGER},
-    stock_price = #{record.stockPrice,jdbcType=DECIMAL},
-    create_by = #{record.createBy,jdbcType=VARCHAR},
-    create_date = #{record.createDate,jdbcType=TIMESTAMP},
-    update_user = #{record.updateUser,jdbcType=VARCHAR},
-    update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+      shop_proc_id = #{record.shopProcId,jdbcType=VARCHAR},
+      shop_store_id = #{record.shopStoreId,jdbcType=VARCHAR},
+      shop_store_name = #{record.shopStoreName,jdbcType=VARCHAR},
+      shop_boss_id = #{record.shopBossId,jdbcType=VARCHAR},
+      product_type_two_id = #{record.productTypeTwoId,jdbcType=VARCHAR},
+      stock_number = #{record.stockNumber,jdbcType=INTEGER},
+      actual_stock_number = #{record.actualStockNumber,jdbcType=INTEGER},
+      actual_stock_price = #{record.actualStockPrice,jdbcType=INTEGER},
+      stock_price = #{record.stockPrice,jdbcType=DECIMAL},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -278,8 +301,14 @@
       <if test="shopStoreId != null" >
         shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
       </if>
+      <if test="shopStoreName != null" >
+        shop_store_name = #{shopStoreName,jdbcType=VARCHAR},
+      </if>
       <if test="shopBossId != null" >
         shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeTwoId != null" >
+        product_type_two_id = #{productTypeTwoId,jdbcType=VARCHAR},
       </if>
       <if test="stockNumber != null" >
         stock_number = #{stockNumber,jdbcType=INTEGER},
@@ -311,16 +340,18 @@
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopStockNumberDTO" >
     update shop_stock_number
     set shop_proc_id = #{shopProcId,jdbcType=VARCHAR},
-    shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
-    shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
-    stock_number = #{stockNumber,jdbcType=INTEGER},
-    actual_stock_number = #{actualStockNumber,jdbcType=INTEGER},
-    actual_stock_price = #{actualStockPrice,jdbcType=INTEGER},
-    stock_price = #{stockPrice,jdbcType=DECIMAL},
-    create_by = #{createBy,jdbcType=VARCHAR},
-    create_date = #{createDate,jdbcType=TIMESTAMP},
-    update_user = #{updateUser,jdbcType=VARCHAR},
-    update_date = #{updateDate,jdbcType=TIMESTAMP}
+      shop_store_id = #{shopStoreId,jdbcType=VARCHAR},
+      shop_store_name = #{shopStoreName,jdbcType=VARCHAR},
+      shop_boss_id = #{shopBossId,jdbcType=VARCHAR},
+      product_type_two_id = #{productTypeTwoId,jdbcType=VARCHAR},
+      stock_number = #{stockNumber,jdbcType=INTEGER},
+      actual_stock_number = #{actualStockNumber,jdbcType=INTEGER},
+      actual_stock_price = #{actualStockPrice,jdbcType=INTEGER},
+      stock_price = #{stockPrice,jdbcType=DECIMAL},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -11,6 +11,8 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.UUIDUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +27,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "product")
 public class TrainingProductController {
-
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private TrainingProductService trainingProductService;
 
@@ -42,10 +44,14 @@ public class TrainingProductController {
 	public
 	@ResponseBody
 	ResponseDTO<List<ProductDTO>> getTrainingProductListNeedPay(@RequestBody PageParamDTO<ProductDTO> pageParamDTO) {
+		long startTime = System.currentTimeMillis();
+		logger.info("获取培训商品的详细信息==={}开始" , startTime);
 		ResponseDTO<List<ProductDTO>> responseDTO = new ResponseDTO<>();
 		List<ProductDTO> productDTOList = trainingProductService.getTrainingProductList(pageParamDTO,1.00f);
+		logger.info("获取培训商品的详细信息Size==={}" , productDTOList.size());
 		responseDTO.setResponseData(productDTOList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("获取培训商品的详细信息,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -53,10 +59,14 @@ public class TrainingProductController {
 	public
 	@ResponseBody
 	ResponseDTO<List<ProductDTO>> getTrainingProductListNoNeedPay(@RequestBody PageParamDTO<ProductDTO> pageParamDTO) {
+		long startTime = System.currentTimeMillis();
+		logger.info("获取培训商品getTrainingProductListNoNeedPay==={}开始" , startTime);
 		ResponseDTO<List<ProductDTO>> responseDTO = new ResponseDTO<>();
 		List<ProductDTO> productDTOList = trainingProductService.getTrainingProductList(pageParamDTO,0.00f);
+		logger.info("获取培训商品getTrainingProductListNoNeedPay结果Size==={}" , productDTOList.size());
 		responseDTO.setResponseData(productDTOList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("获取培训商品的getTrainingProductListNoNeedPay,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -73,11 +83,15 @@ public class TrainingProductController {
 	public
 	@ResponseBody
 	ResponseDTO<ProductDTO<TrainingProductDTO>> getTrainingProductDetail(@RequestParam String productId) {
+		long startTime = System.currentTimeMillis();
+		logger.info("根据id获取培训商品的详细信息==={}开始" , startTime);
+		logger.info("根据id{}获取培训商品的详细信息" , productId);
 		ResponseDTO<ProductDTO<TrainingProductDTO>> responseDTO = new ResponseDTO<>();
 		ProductDTO<TrainingProductDTO> productDTO = trainingProductService.getTrainingProductDetailById(productId);
 		productDTO.setPrice(productDTO.getPrice());
 		responseDTO.setResponseData(productDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("根据id获取培训商品的详细信息,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -93,10 +107,14 @@ public class TrainingProductController {
 	public
 	@ResponseBody
 	ResponseDTO<Integer> getTrainingProductPlayNum(@RequestParam String productId) {
+		long startTime = System.currentTimeMillis();
+		logger.info("获取某个培训商品的播放次数==={}开始" , startTime);
 		ResponseDTO<Integer> responseDTO = new ResponseDTO<>();
 		int playNum = trainingProductService.getTrainingProductPlayNum(productId);
+		logger.info("获取某个培训商品{}的播放次数{}" , productId,playNum);
 		responseDTO.setResponseData(playNum);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("获取某个培训商品的播放次数,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -104,9 +122,13 @@ public class TrainingProductController {
 	public
 	@ResponseBody
 	ResponseDTO AddTrainingProductPlayNum(@RequestParam String productId, @RequestParam String playURL) {
+		long startTime = System.currentTimeMillis();
+		logger.info("添加商品点击次数==={}开始" , startTime);
+		logger.info("添加商品{}点击次数playURL{}" , productId,playURL);
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		trainingProductService.AddTrainingProductPlayNum(productId,playURL);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("添加商品点击次数,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 	/**
@@ -118,8 +140,11 @@ public class TrainingProductController {
 	public
 	@ResponseBody
 	ResponseDTO addTrainingProduct(@RequestBody ProductDTO<TrainingProductDTO> productDTO) {
+		long startTime = System.currentTimeMillis();
+		logger.info("新增视频==={}开始" , startTime);
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		String productId = CodeGenUtil.getProductCodeNumber();
+		logger.info("新增视频{}" , productId);
 		String uuid = UUIDUtil.getUUID();
 		try {
 			productDTO.setId(uuid);
@@ -133,9 +158,11 @@ public class TrainingProductController {
 			trainingProductService.addTrainingProduct(productDTO);
 			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		} catch (Exception e) {
+			logger.info("新增视频异常,异常信息为,{}" +e.getMessage(), e);
 			e.printStackTrace();
 			responseDTO.setErrorInfo(StatusConstant.FAILURE);
 		}
+		logger.info("新增视频,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -148,14 +175,19 @@ public class TrainingProductController {
 	public
 	@ResponseBody
 	ResponseDTO updateTrainingProduct(@RequestBody ProductDTO<TrainingProductDTO> product) {
+		long startTime = System.currentTimeMillis();
+		logger.info("编辑视频==={}开始" , startTime);
+		logger.info("编辑视频==={}" , product.getProductId());
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		try {
 			trainingProductService.updateTrainingProduct(product);
 			responseDTO.setResult(StatusConstant.SUCCESS);
 		}catch (Exception e){
+			logger.info("编辑视频异常,异常信息为==={}" +e.getMessage(), e);
 			responseDTO.setResult(StatusConstant.FAILURE);
 			e.printStackTrace();
 		}
+		logger.info("编辑视频,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 

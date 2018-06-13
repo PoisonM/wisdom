@@ -10,13 +10,11 @@ import javax.servlet.http.HttpSession;
 
 @Service
 @Transactional(readOnly = false)
-public interface LoginService {
+public interface BeautyLoginService {
 
-    String userLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception;
+    String beautyUserLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception;
     
-    String userLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session);
-
-    String managerLogin(String userPhone, String code);
+    String beautyUserLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session);
 
     String bossMobileLogin(LoginDTO loginDTO, String loginIp, String openid);
 

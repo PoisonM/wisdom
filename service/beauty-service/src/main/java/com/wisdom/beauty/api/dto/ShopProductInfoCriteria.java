@@ -1,5 +1,6 @@
 package com.wisdom.beauty.api.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -262,6 +263,76 @@ public class ShopProductInfoCriteria {
 
         public Criteria andSysShopIdNotBetween(String value1, String value2) {
             addCriterion("sys_shop_id not between", value1, value2, "sysShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdIsNull() {
+            addCriterion("parent_shop_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdIsNotNull() {
+            addCriterion("parent_shop_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdEqualTo(String value) {
+            addCriterion("parent_shop_id =", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdNotEqualTo(String value) {
+            addCriterion("parent_shop_id <>", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdGreaterThan(String value) {
+            addCriterion("parent_shop_id >", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdGreaterThanOrEqualTo(String value) {
+            addCriterion("parent_shop_id >=", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdLessThan(String value) {
+            addCriterion("parent_shop_id <", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdLessThanOrEqualTo(String value) {
+            addCriterion("parent_shop_id <=", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdLike(String value) {
+            addCriterion("parent_shop_id like", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdNotLike(String value) {
+            addCriterion("parent_shop_id not like", value, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdIn(List<String> values) {
+            addCriterion("parent_shop_id in", values, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdNotIn(List<String> values) {
+            addCriterion("parent_shop_id not in", values, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdBetween(String value1, String value2) {
+            addCriterion("parent_shop_id between", value1, value2, "parentShopId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentShopIdNotBetween(String value1, String value2) {
+            addCriterion("parent_shop_id not between", value1, value2, "parentShopId");
             return (Criteria) this;
         }
 
@@ -1155,52 +1226,52 @@ public class ShopProductInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceEqualTo(Long value) {
+        public Criteria andMarketPriceEqualTo(BigDecimal value) {
             addCriterion("market_price =", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceNotEqualTo(Long value) {
+        public Criteria andMarketPriceNotEqualTo(BigDecimal value) {
             addCriterion("market_price <>", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceGreaterThan(Long value) {
+        public Criteria andMarketPriceGreaterThan(BigDecimal value) {
             addCriterion("market_price >", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andMarketPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("market_price >=", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceLessThan(Long value) {
+        public Criteria andMarketPriceLessThan(BigDecimal value) {
             addCriterion("market_price <", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceLessThanOrEqualTo(Long value) {
+        public Criteria andMarketPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("market_price <=", value, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceIn(List<Long> values) {
+        public Criteria andMarketPriceIn(List<BigDecimal> values) {
             addCriterion("market_price in", values, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceNotIn(List<Long> values) {
+        public Criteria andMarketPriceNotIn(List<BigDecimal> values) {
             addCriterion("market_price not in", values, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceBetween(Long value1, Long value2) {
+        public Criteria andMarketPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("market_price between", value1, value2, "marketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMarketPriceNotBetween(Long value1, Long value2) {
+        public Criteria andMarketPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("market_price not between", value1, value2, "marketPrice");
             return (Criteria) this;
         }
@@ -1215,52 +1286,52 @@ public class ShopProductInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceEqualTo(Long value) {
+        public Criteria andDiscountPriceEqualTo(BigDecimal value) {
             addCriterion("discount_price =", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceNotEqualTo(Long value) {
+        public Criteria andDiscountPriceNotEqualTo(BigDecimal value) {
             addCriterion("discount_price <>", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceGreaterThan(Long value) {
+        public Criteria andDiscountPriceGreaterThan(BigDecimal value) {
             addCriterion("discount_price >", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andDiscountPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("discount_price >=", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceLessThan(Long value) {
+        public Criteria andDiscountPriceLessThan(BigDecimal value) {
             addCriterion("discount_price <", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceLessThanOrEqualTo(Long value) {
+        public Criteria andDiscountPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("discount_price <=", value, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceIn(List<Long> values) {
+        public Criteria andDiscountPriceIn(List<BigDecimal> values) {
             addCriterion("discount_price in", values, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceNotIn(List<Long> values) {
+        public Criteria andDiscountPriceNotIn(List<BigDecimal> values) {
             addCriterion("discount_price not in", values, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceBetween(Long value1, Long value2) {
+        public Criteria andDiscountPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("discount_price between", value1, value2, "discountPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceNotBetween(Long value1, Long value2) {
+        public Criteria andDiscountPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("discount_price not between", value1, value2, "discountPrice");
             return (Criteria) this;
         }
@@ -1345,52 +1416,52 @@ public class ShopProductInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitEqualTo(Long value) {
+        public Criteria andProductUnitEqualTo(BigDecimal value) {
             addCriterion("product_unit =", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitNotEqualTo(Long value) {
+        public Criteria andProductUnitNotEqualTo(BigDecimal value) {
             addCriterion("product_unit <>", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitGreaterThan(Long value) {
+        public Criteria andProductUnitGreaterThan(BigDecimal value) {
             addCriterion("product_unit >", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitGreaterThanOrEqualTo(Long value) {
+        public Criteria andProductUnitGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("product_unit >=", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitLessThan(Long value) {
+        public Criteria andProductUnitLessThan(BigDecimal value) {
             addCriterion("product_unit <", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitLessThanOrEqualTo(Long value) {
+        public Criteria andProductUnitLessThanOrEqualTo(BigDecimal value) {
             addCriterion("product_unit <=", value, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitIn(List<Long> values) {
+        public Criteria andProductUnitIn(List<BigDecimal> values) {
             addCriterion("product_unit in", values, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitNotIn(List<Long> values) {
+        public Criteria andProductUnitNotIn(List<BigDecimal> values) {
             addCriterion("product_unit not in", values, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitBetween(Long value1, Long value2) {
+        public Criteria andProductUnitBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("product_unit between", value1, value2, "productUnit");
             return (Criteria) this;
         }
 
-        public Criteria andProductUnitNotBetween(Long value1, Long value2) {
+        public Criteria andProductUnitNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("product_unit not between", value1, value2, "productUnit");
             return (Criteria) this;
         }

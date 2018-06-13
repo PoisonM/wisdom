@@ -20,6 +20,8 @@ import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.RealNameAuthService;
 import com.wisdom.user.service.UserInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -38,7 +40,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "customer")
 public class UserInfoController {
-
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserInfoService userInfoService;
 
@@ -56,10 +58,13 @@ public class UserInfoController {
     public
     @ResponseBody
     ResponseDTO<UserInfoDTO> getUserInfo() {
+        long startTime = System.currentTimeMillis();
+        logger.info("获取用户头像和手机号,方法开始==={}" ,startTime);
         ResponseDTO<UserInfoDTO> responseDTO = new ResponseDTO<>();
         UserInfoDTO userInfoDTO = userInfoService.getUserInfoFromRedis();
         responseDTO.setResponseData(userInfoDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info( "获取用户头像和手机号,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -67,9 +72,12 @@ public class UserInfoController {
     public
     @ResponseBody
     ResponseDTO<SpecialShopInfoDTO> getSpecialBossCondition(HttpSession session, HttpServletRequest request) {
+        long startTime = System.currentTimeMillis();
+        logger.info("getSpecialBossCondition,方法开始==={}" ,startTime);
         ResponseDTO<SpecialShopInfoDTO> responseDTO = new ResponseDTO<>();
         SpecialShopInfoDTO specialShopInfoDTO = new SpecialShopInfoDTO();
         String openId = WeixinUtil.getUserOpenId(session,request);
+        logger.info("getSpecialBossCondition,方法openId={}" ,openId);
         if(StringUtils.isNotNull(openId))
         {
             responseDTO.setResponseData(specialShopInfoDTO);
@@ -93,6 +101,7 @@ public class UserInfoController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
+        logger.info( "getSpecialBossCondition,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 

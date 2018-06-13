@@ -39,7 +39,7 @@ import java.util.*;
 @RequestMapping(value = "account")
 public class AccountController {
 
-	Logger logger = LoggerFactory.getLogger(AccountController.class);
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private AccountService accountService;
@@ -64,8 +64,8 @@ public class AccountController {
 	public
 	@ResponseBody
 	ResponseDTO<AccountDTO> getUserAccountInfo() {
-
-		logger.info("用户获取账户信息===" + new Date());
+		long startTime = System.currentTimeMillis();
+		logger.info("用户获取账户信息==={}" + startTime);
 
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		ResponseDTO<AccountDTO> result = new ResponseDTO<>();
@@ -77,7 +77,7 @@ public class AccountController {
 		//如果用户没有账户，则为用户创建一个账户
 		if(accountDTOS.size()==0)
 		{
-			logger.info("用户之前没有账户，创建一个新账户==" + userInfoDTO.getMobile());
+			logger.info("用户之前没有账户，创建一个新账户,手机号=={}" + userInfoDTO.getMobile());
 
 			accountDTO = new AccountDTO();
 
@@ -95,7 +95,7 @@ public class AccountController {
 		else
 		{
 			accountDTO = accountDTOS.get(0);
-			logger.info("用户已经有账户，获取当前账户信息==" + accountDTO);
+			logger.info("用户已经有账户，获取当前账户信息=={}" + accountDTO.getSysUserId());
 		}
 
 		IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
@@ -110,7 +110,7 @@ public class AccountController {
 		accountDTO.setTodayIncome(todayIncome);
 		accountDTO.setIdentifyNumber(userInfoDTO.getIdentifyNumber());
 
-		logger.info(userInfoDTO.getMobile()+"用户获取到今天的收益==="+todayIncome);
+		logger.info("用户手机号=={},用户获取到今天的收益==={}",userInfoDTO.getMobile(),todayIncome);
 
 		Query query = new Query(Criteria.where("sysUserId").is(userInfoDTO.getId()));
 		List<UserBankCardInfoDTO> userBankCardInfoDTOS = mongoTemplate.find(query,UserBankCardInfoDTO.class,"userBankCardInfo");
@@ -125,10 +125,11 @@ public class AccountController {
 			OrderStatusCountList.add(businessOrderDTOList.size());
 		}
 		accountDTO.setOrderStatusCountList(OrderStatusCountList);
-		logger.info(userInfoDTO.getMobile()+"用户获取所有订单的状态=="+JSONObject.toJSONString(OrderStatusCountList));
+		logger.info("用户手机号=={},用户获取所有订单的状态=={}",userInfoDTO.getMobile(),JSONObject.toJSONString(OrderStatusCountList));
 
 		result.setResponseData(accountDTO);
 		result.setResult(StatusConstant.SUCCESS);
+		logger.info( "getUserAccountInfo方法"+ "耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return result;
 	}
 
@@ -139,17 +140,20 @@ public class AccountController {
 	 * @param pageParamDTO
 	 * @return
 	 */
-	@RequestMapping(value = "queryAllUserBalance", method = {RequestMethod.POST, RequestMethod.GET})
+	/*@RequestMapping(value = "queryAllUserBalance", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<PageParamDTO<List<AccountDTO>>> queryAllUserBalance(@RequestBody PageParamDTO pageParamDTO){
+		long startTime = System.currentTimeMillis();
+		logger.info("查询所有用户及余额==={}" + startTime);
 		ResponseDTO<PageParamDTO<List<AccountDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamDTO<List<AccountDTO>> page = accountService.queryAllUserBalance(pageParamDTO);
 		responseDTO.setResponseData(page);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info( "查询所有用户及余额耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
-	}
+	}*/
 
 	/**
 	 * 根据条件查询余额信息
@@ -164,9 +168,13 @@ public class AccountController {
 																			  @RequestParam String isExportExcel,
 																			  @RequestParam Integer pageNo,
 																			  @RequestParam Integer pageSize) {
+		long startTime = System.currentTimeMillis();
+		logger.info("根据条件查询余额信息==={}" + startTime);
+		logger.info("phoneAndIdentify=={},pageNo=={},pageSize=={},是否导表==={}",phoneAndIdentify,pageNo,pageSize,isExportExcel);
 		ResponseDTO<PageParamDTO<List<AccountDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamDTO<List<AccountDTO>> page = accountService.queryUserBalanceByParameters(phoneAndIdentify,isExportExcel,pageNo,pageSize);
 		if("Y".equals(isExportExcel)){
+			logger.info("根据条件查询余额信息导表===");
 			try{
 				String[] orderHeaders = {"用户ID","用户名","用户等级","手机号", "账户余额","不可提现余额","可提现余额"};
 				ExportExcel<ExportAccountExcelDTO> ex =new ExportExcel<>();
@@ -184,9 +192,11 @@ public class AccountController {
 				}
 				ByteArrayInputStream in = ex.getWorkbookIn("账户余额EXCEL文档",orderHeaders, excelList);
 				String url = CommonUtils.orderExcelToOSS(in);
+				logger.info("根据条件查询余额信息导表Url==={}",url);
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 			}catch (Exception e){
+				logger.error("根据条件查询余额信息导表，异常信息为，{}"+e.getMessage(),e);
 				e.printStackTrace();
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			}
@@ -194,6 +204,7 @@ public class AccountController {
 		}
 		responseDTO.setResponseData(page);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info( "根据条件查询余额信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -206,14 +217,19 @@ public class AccountController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamDTO<List<PayRecordDTO>>>  queryPayRecordsByParameters(@RequestBody PageParamVoDTO<ProductDTO> pageParamVoDTO) {
+		long startTime = System.currentTimeMillis();
+		logger.info("根据条件查询账单信息==={}" + startTime);
+		logger.info("是否导表==={}",pageParamVoDTO.getIsExportExcel());
 		ResponseDTO<PageParamDTO<List<PayRecordDTO>>> responseDTO = new ResponseDTO<>();
-		String startDate = "1990-01-01";//设定起始时间
+		//设定起始时间
+		String startDate = "1990-01-01";
 		if (!"0".equals(pageParamVoDTO.getTimeType())){
 			pageParamVoDTO.setStartTime("".equals(pageParamVoDTO.getStartTime()) ? startDate : pageParamVoDTO.getStartTime());
 			pageParamVoDTO.setEndTime(CommonUtils.getEndDate(pageParamVoDTO.getEndTime()));
 		}
 		PageParamDTO<List<PayRecordDTO>> page = transactionService.queryPayRecordsByParameters(pageParamVoDTO);
 		if("Y".equals(pageParamVoDTO.getIsExportExcel())) {
+			logger.info("账单信息导出===");
 			try {
 				String[] orderHeaders = {"用户id", "用户名", "手机号", "付款金额", "付款时间", "完成时间", "账单编号", "订单编号"};
 				ExportExcel<ExportPayRecordExcelDTO> ex = new ExportExcel<>();
@@ -229,20 +245,22 @@ public class AccountController {
 					exportPayRecordExcelDTO.setTransactionId(payRecordDTO.getTransactionId());
 					exportPayRecordExcelDTO.setUpdateDate(DateUtils.formatDate(payRecordDTO.getUpdateDate(),"yyyy-MM-dd HH:mm:ss"));
 					excelList.add(exportPayRecordExcelDTO);
-
 				}
 				ByteArrayInputStream in = ex.getWorkbookIn("账单EXCEL文档", orderHeaders, excelList);
 				String url = CommonUtils.orderExcelToOSS(in);
+				logger.info("账单EXCEL文档Url==={}",url);
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 				return responseDTO;
 			} catch (Exception e) {
+				logger.error("根据条件查询账单信息导表异常，异常信息为，{}"+e.getMessage(),e);
 				e.printStackTrace();
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			}
 		}
 		responseDTO.setResponseData(page);
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+		logger.info( "根据条件查询账单信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -255,11 +273,13 @@ public class AccountController {
 	public
 	@ResponseBody
 	ResponseDTO<Integer> isShopKeeper(){
-		logger.info("用户获取账户信息===" + new Date());
+		long startTime = System.currentTimeMillis();
+		logger.info("判断当前用户是否是店主接口开始时间==={}" , startTime);
 
 		//获取当前登录用户信息
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		String phone = userInfoDTO.getMobile();
+		logger.info("当前用户手机号==={}" , phone);
 		SpecialShopInfoDTO specialShopInfoDTO = new SpecialShopInfoDTO();
 		specialShopInfoDTO.setShopBossMobile(phone);
 
@@ -273,6 +293,7 @@ public class AccountController {
 		}else{
 			responseDTO.setResponseData(0);
 		}
+		logger.info( "根据条件查询账单信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -285,13 +306,13 @@ public class AccountController {
 	public
 	@ResponseBody
 	ResponseDTO<List<SpecialShopBusinessOrderDTO>> findShopKeeperOrderS(@RequestBody PageParamVoDTO<SpecialShopBusinessOrderDTO> pageParamVoDTO){
-		logger.info("用户获取账户信息===" + new Date());
-
 		long startTime = System.currentTimeMillis();
+		logger.info("查询当前登录用户店铺的交易明细==={}" , startTime);
+
 		//获取当前登录用户信息
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		String phone = userInfoDTO.getMobile();
-
+		logger.info("当前用户手机号==={}" , phone);
 		SpecialShopInfoDTO specialShopInfoDTO = new SpecialShopInfoDTO();
 		specialShopInfoDTO.setShopBossMobile(phone);
 
@@ -310,31 +331,30 @@ public class AccountController {
 				//根据店铺查询店铺下的订单
 				SpecialShopBusinessOrderDTO  specialShopBusinessOrderDTO = new SpecialShopBusinessOrderDTO();
 				specialShopBusinessOrderDTO.setShopId(specialShopInfoDTOS.get(i).getShopId());
+				logger.info("店铺id=={}",specialShopInfoDTOS.get(i).getShopId());
 				Query queryOrder = new Query(Criteria.where("shopId").is(specialShopInfoDTOS.get(i).getShopId()));
 				queryOrder.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
 				List<SpecialShopBusinessOrderDTO> specialShopBusinessOrderDTOS = mongoTemplate.find(queryOrder,SpecialShopBusinessOrderDTO.class,"specialShopBusinessOrder");
 
 				//将所有订单放入一个list里面
-				for(int j=0;j<specialShopBusinessOrderDTOS.size();j++){
+				for(int j=0;j < specialShopBusinessOrderDTOS.size();j++){
 
 					List<PayRecordDTO>  payRecordDTOS = payRecordService.findOrderInfoForSpecial(specialShopBusinessOrderDTOS.get(j).getOrderId());
 
-					logger.info("交易订单号为："+specialShopBusinessOrderDTOS.get(j).getOrderId());
+					logger.info("交易订单号为=={}",specialShopBusinessOrderDTOS.get(j).getOrderId());
 					SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO1 = new SpecialShopBusinessOrderDTO();
 					specialShopBusinessOrderDTO1 = specialShopBusinessOrderDTOS.get(j);
 
-					if(payRecordDTOS != null&&payRecordDTOS.size()>0){
+					if(payRecordDTOS != null && payRecordDTOS.size()>0){
 						Float account=(float)0 ;
-						for (int m=0;m<payRecordDTOS.size();m++){
-							account = account+payRecordDTOS.get(m).getAmount();
+						for (int m=0;m < payRecordDTOS.size();m++){
+							account = account + payRecordDTOS.get(m).getAmount();
 						}
 						specialShopBusinessOrderDTO1.setAccount(String.valueOf(account));
 
 						logger.info("交易金额为："+account);
 					}
-
 					specialShopBusinessOrderDTOSZ.add(specialShopBusinessOrderDTO1);
-
 				}
 			}
 		}
@@ -349,16 +369,14 @@ public class AccountController {
 		logger.info("获取该店铺订单列表耗时{}毫秒", (System.currentTimeMillis() - startTime));
 
 		ResponseDTO<List<SpecialShopBusinessOrderDTO>> responseDTO = new ResponseDTO<>();
-		if(responeList!=null&&responeList.size()>0){
-
+		if(responeList!=null && responeList.size()>0){
 			responseDTO.setResult(StatusConstant.SUCCESS);
 			responseDTO.setResponseData(responeList);
 		}else{
-
 			responseDTO.setResult(StatusConstant.FAILURE);
 			responseDTO.setErrorInfo("无更多交易记录");
 		}
-
+		logger.info("查询当前登录用户店铺的交易明细方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -373,24 +391,24 @@ public class AccountController {
 	public
 	@ResponseBody
 	ResponseDTO<List<PayRecordDTO>> findOrderByTransactionId(@RequestParam String orderId){
-
-		logger.info("交易订单号为={}",orderId);
 		long startTime = System.currentTimeMillis();
+		logger.info("根据交易流水查询所有订单接口开始时间==={}" , startTime);
+		logger.info("交易订单号为=={}",orderId);
 
 		List<PayRecordDTO>  payRecordDTOS = payRecordService.findOrderInfoForSpecial(orderId);
 
 		logger.info("获取该交易流水号下订单列表耗时{}毫秒", (System.currentTimeMillis() - startTime));
 
-		Float paySum=(float)0;
+		/*Float paySum=(float)0;
 		if(payRecordDTOS!=null&&payRecordDTOS.size()>0){
 			for(int i =0;i<payRecordDTOS.size();i++){
 				paySum = paySum + payRecordDTOS.get(i).getAmount();
-
 			}
-		}
+		}*/
 
 		ResponseDTO<List<PayRecordDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(payRecordDTOS);
+		logger.info("根据交易流水查询所有订单方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -403,6 +421,8 @@ public class AccountController {
 	public
 	@ResponseBody
 	ResponseDTO<String> isLogin(){
+		long startTime = System.currentTimeMillis();
+		logger.info("查询用户是否登录接口开始时间==={}" , startTime);
 
 		ResponseDTO<String> responseDTO = new ResponseDTO<>();
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
@@ -413,7 +433,7 @@ public class AccountController {
 			responseDTO.setResult(StatusConstant.FAILURE);
 			responseDTO.setResponseData("failure");
 		}
-
+		logger.info("查询用户是否登录方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 

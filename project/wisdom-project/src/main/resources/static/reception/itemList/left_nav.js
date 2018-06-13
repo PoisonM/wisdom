@@ -1,4 +1,4 @@
-PADWeb.controller("left_navCtrl", function($scope, $state, FindArchives) {
+PADWeb.controller("left_navCtrl", function($scope, $state,$stateParams, FindArchives) {
     console.log("left_navCtrl")
     $scope.mainLeftSwitch = {
         peopleListFlag: false,
@@ -39,7 +39,25 @@ PADWeb.controller("left_navCtrl", function($scope, $state, FindArchives) {
         $scope.queryRecordList()
     }
 
-    //价目表切换
+
+    var timeIn = setInterval(function () {
+        if($(".user_info").length!=0){
+            // $(".user_info").eq(0).trigger("click");
+            clearInterval(timeIn)
+        }
+     },100)
+    $scope.selectSty = function (id,shopid,sysShopId,sysUserId) {
+        $scope.param.selectSty = id
+        $state.go("pad-web.left_nav.personalFile",{
+            id:id,
+            shopid:shopid,
+            sysShopId:sysShopId,
+            sysUserId:sysUserId
+        })
+    }
+
+
+    //价目表部分的切换
     $scope.selectPriceType = function(type) {
         $scope.param.priceType = type
         if (type == 'xm') {

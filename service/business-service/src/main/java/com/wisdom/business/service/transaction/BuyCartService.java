@@ -44,6 +44,7 @@ public class BuyCartService {
 
     public List<BusinessOrderDTO> getUserUnPayOrderInBuyCart() {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        logger.info("获取用户=={}购物车中的信息",userInfoDTO.getId());
         List<BusinessOrderDTO> businessOrderDTOS = transactionMapper.getUserUnPayOrderInBuyCart(userInfoDTO.getId());
         for(BusinessOrderDTO businessOrderDTO:businessOrderDTOS)
         {
@@ -57,8 +58,7 @@ public class BuyCartService {
     @Transactional(rollbackFor = Exception.class)
     public String addOfflineProduct2BuyCart(String productId, String productSpec,int num) {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-
-        logger.info(userInfoDTO.getMobile()+"将商品放入购物车中"+productId);
+        logger.info("用户=={}将货品id=={}规格=={}数量=={}加入用户的购物车==={}",userInfoDTO.getMobile(),productId,productSpec,num);
 
         //判断用户是否已经将此商品加入过购物车，如果已经加入过，则直接增加订单中，产品的数量
         OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,productSpec,userInfoDTO.getId());
@@ -68,6 +68,7 @@ public class BuyCartService {
             try {
                 //如果没有加入过，则直接增加订单中，并设置产品的数量为1
                 String businessOrderId = CodeGenUtil.getOrderCodeNumber();
+                logger.info("如果没有加入过，则直接增加订单中=={}，并设置产品的数量为1",businessOrderId);
                 BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
                 businessOrderDTO.setId(UUID.randomUUID().toString());
                 businessOrderDTO.setSysUserId(userInfoDTO.getId());
@@ -90,11 +91,11 @@ public class BuyCartService {
                 orderProductRelationDTO.setProductNum(num);
                 orderProductRelationDTO.setProductSpec(productSpec);
                 transactionMapper.createOrderProductRelation(orderProductRelationDTO);
-
                 return StatusConstant.SUCCESS;
             }
             catch (Exception e)
             {
+                logger.error("则直接增加订单异常,异常信息为{}"+e.getMessage(),e);
                 return  StatusConstant.FAILURE;
             }
         }
@@ -105,11 +106,13 @@ public class BuyCartService {
             {
                 redisLock.lock();
                 Integer productNum = orderProductRelationUnPaid.getProductNum() + num;
+                logger.info("购物车已经加入过，则直接增加订单中，产品的数量=={}",productNum);
                 orderProductRelationUnPaid.setProductNum(productNum);
                 transactionMapper.updateOrderProductRelation(orderProductRelationUnPaid);
                 return StatusConstant.SUCCESS;
             }
             catch (Exception e) {
+                logger.error("购物车已经加入过，则直接增加订单中，产品的数量异常,异常信息为{}"+e.getMessage(),e);
                 e.printStackTrace();
                 return StatusConstant.FAILURE;
             } finally {
@@ -131,21 +134,20 @@ public class BuyCartService {
             {
                 num = num + orderProductRelationDTO.getProductNum();
             }
+            logger.info("获取用户=={}购物车中的商品总数==={}",userInfoDTO.getId(),num);
             return num.toString();
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void minusProduct2BuyCart(String productId, String productSpec) {
-
-        logger.info("减少购物车中商品数"+productId);
-
         RedisLock redisLock = new RedisLock("OrderProductRelation");
         try
         {
             redisLock.lock();
 
             UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+            logger.info("用户=={}减少购物车中商品数=={},商品规格=={}",userInfoDTO.getId(),productId,productSpec);
             OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,productSpec,userInfoDTO.getId());
 
             Integer productNum = orderProductRelationUnPaid.getProductNum()-1;
@@ -153,6 +155,7 @@ public class BuyCartService {
             transactionMapper.updateOrderProductRelation(orderProductRelationUnPaid);
         }
         catch (Exception e) {
+            logger.error("减少购物车中商品数异常,异常信息为{}"+e.getMessage(),e);
             throw e;
         } finally {
             redisLock.unlock();
@@ -162,7 +165,7 @@ public class BuyCartService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteOrderFromBuyCart(String orderId) {
 
-        logger.info("减少购物车中的订单"+orderId);
+        logger.info("service == 减少购物车中的订单"+orderId);
 
         RedisLock redisLock = new RedisLock("businessOrder"+orderId);
         try
@@ -174,6 +177,7 @@ public class BuyCartService {
             transactionMapper.updateBusinessOrder(businessOrderDTO);
         }
         catch (Exception e) {
+            logger.info("减少购物车中的订单异常,异常信息为{}"+e.getMessage(),e);
             throw e;
         } finally {
             redisLock.unlock();

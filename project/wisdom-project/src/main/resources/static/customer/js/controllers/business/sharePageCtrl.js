@@ -21,19 +21,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
             var drawImage = function(){
                 //背景图
                 $scope.param.ctx.drawImage($scope.param.imgs.bg, 0, 0, $scope.param.canvas.width, $scope.param.canvas.height);
-                //头像
-               /* $scope.param.ctx.drawImage($scope.param.imgs.via,60,50);*/
-                //微信名字
-                /*$scope.param.ctx.fillStyle = '#ffffff';
-                $scope.param.ctx.font = '28px microsoft yahei';
-                $scope.param.ctx.fillText($scope.param.weixinShareInfo.nickName,218,90);*/
-                /*美享*/
-                /*$scope.param.ctx.font = '36px microsoft  yahei';
-                $scope.param.ctx.fillText('美享' ,218, 150);*/
-                  /*九小主 大当家*/
-               /* $scope.param.ctx.fillStyle = '#FFF100';
-                $scope.param.ctx.font = '36px microsoft #FFF100';
-                $scope.param.ctx.fillText($scope.param.weixinShareInfo.userType,328,150);*/
+
                 //二维码
                 $scope.param.ctx.drawImage($scope.param.imgs.qrCode, $scope.param.canvas.width*0.36, $scope.param.canvas.height*0.78 , $scope.param.canvas.width*0.23, calcHeight($scope.param.imgs.qrCode, $scope.param.canvas.width*0.23));
 
@@ -60,18 +48,10 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 }
             }
 
-            $scope.$on('$ionicView.enter', function(){
+            // $scope.$on('$ionicView.enter', function(){
                 GetQRCodeURL.get(function (data) {
                     BusinessUtil.checkResponseData(data,'sharePage');
                     $scope.param.weixinShareInfo = data.responseData;
-                    if(data.responseData.userType.indexOf("B-1")>-1)
-                    {
-                        $scope.param.weixinShareInfo.userType = "9小主";
-                    }
-                    else if(data.responseData.userType.indexOf("A-1")>-1)
-                    {
-                        $scope.param.weixinShareInfo.userType = "大当家";
-                    }
 
                     //获取$scope.param.canvas
                     $scope.param.canvas = document.getElementById('canvas');
@@ -100,5 +80,5 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                     drawInto();
                 })
 
-            })
+            // })
         }])

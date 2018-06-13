@@ -11,6 +11,7 @@ import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +25,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * FileName: productController
@@ -175,6 +175,25 @@ public class ProductController {
     }
 
     /**
+     * 更新产品信息
+     *
+     * @param shopProductInfoDTO
+     * @return
+     */
+    @RequestMapping(value = "/updateProductInfo", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<Object> updateProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        int info = shopProductInfoService.updateProductInfo(shopProductInfoDTO);
+
+        responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        logger.info("获取产品详情方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
      * @Author:huan
      * @Param: id是一级产品的id
      * @Return:
@@ -223,8 +242,17 @@ public class ProductController {
     ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        String sysShopId = clerkInfo.getSysShopId();
+        String sysShopId = null;
+        if (StringUtils.isBlank(sysShopId)) {
+            logger.info("pad端查询某个店的产品传入参数={}", "filterStr = [" + filterStr + "]");
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+            sysShopId = clerkInfo.getSysShopId();
+        }
+        if (StringUtils.isBlank(sysShopId)) {
+            logger.info("老板端查询某个店的产品传入参数={}", "filterStr = [" + filterStr + "]");
+            SysBossDTO bossInfo = UserUtils.getBossInfo();
+            sysShopId = bossInfo.getCurrentShopId();
+        }
         logger.info("查询某个店的产品列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
         ResponseDTO<HashMap<String, Object>> responseDTO = new ResponseDTO<>();
 
@@ -240,25 +268,29 @@ public class ProductController {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
 
-        //缓存一级
-        HashMap<String, ShopProductInfoDTO> oneTypeMap = new HashMap<>(16);
-        for (ShopProductInfoDTO dto : shopProductInfo) {
-            oneTypeMap.put(dto.getProductTypeOneId(), dto);
+        //查询某个店的一级产品
+        ShopProductTypeDTO typeDTO = new ShopProductTypeDTO();
+        typeDTO.setSysShopId(sysShopId);
+        List<ShopProductTypeDTO> oneLevelProductList = shopProductInfoService.getOneLevelProductList(typeDTO);
+        if (CommonUtils.objectIsEmpty(oneLevelProductList)) {
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
         }
-        logger.info("缓存一级产品={}", oneTypeMap);
 
         ArrayList<Object> levelList = new ArrayList<>();
         //遍历缓存的一级产品
-        for (Map.Entry entry : oneTypeMap.entrySet()) {
+        for (ShopProductTypeDTO shopProductTypeDTO : oneLevelProductList) {
             HashMap<Object, Object> helperMap = new HashMap<>(16);
             //承接二级产品
-            HashMap<Object, Object> hashMap = new HashMap<>(16);
+            HashMap<Object, Object> twoLevelMap = new HashMap<>(16);
             for (ShopProductInfoDTO dto : shopProductInfo) {
-                if (entry.getKey().equals(dto.getProductTypeOneId())) {
-                    hashMap.put(dto.getProductTypeTwoName(), dto);
+                if (shopProductTypeDTO.getId().equals(dto.getProductTypeOneId())) {
+                    twoLevelMap.put(dto.getProductTypeTwoName(), dto);
                 }
             }
-            helperMap.put(((ShopProductInfoDTO) entry.getValue()).getProductTypeOneName(), hashMap);
+
+            helperMap.put("levelTwoDetail", twoLevelMap);
+            helperMap.put("levelOneDetail", shopProductTypeDTO);
             levelList.add(helperMap);
         }
         //detailLevel集合中包含了一级二级的关联信息，detailProduct集合是所有产品的列表
@@ -270,6 +302,5 @@ public class ProductController {
         logger.info("查询某个店的产品列表信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
-
 
 }

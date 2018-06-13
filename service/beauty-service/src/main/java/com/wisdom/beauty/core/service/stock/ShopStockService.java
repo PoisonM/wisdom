@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
+import com.wisdom.beauty.api.requestDto.ShopCheckRecordRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
@@ -95,6 +96,14 @@ public interface ShopStockService {
      */
     ShopStockNumberDTO getStockNumber(ShopStockNumberDTO shopStockNumberDTO);
     /**
+     *@Author:zhanghuan
+     *@Param: 仓库ID，多个产品ID
+     *@Return:
+     *@Description: 根据条件查询ShopStockNumberDTO信息
+     *@Date:2018/5/4 17:14
+     */
+    List<ShopStockNumberDTO> getStockNumberList(String shopStoreId, List<String> shopProcIds);
+    /**
     *@Author:zhanghuan
     *@Param:
     *@Return:
@@ -126,6 +135,30 @@ public interface ShopStockService {
      * @Date:2018/5/2 16:54
      */
     ShopStockResponseDTO getProductInfoAndStock(String shopStoreId, String shopProcId);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取库存详情
+    *@Date:2018/5/18 15:28
+    */
+   List<ShopStockResponseDTO> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:
+    *@Date:2018/5/18 19:11
+    */
+    ShopStockResponseDTO getProductStockDetail(ShopStockNumberDTO shopStockNumberDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 产品盘点
+    *@Date:2018/5/19 14:33
+    */
+   int checkProduct(List<ShopCheckRecordDTO> list);
 
 
 

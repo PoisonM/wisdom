@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('monthlyAccountsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord','MonthlyIncomeSignalMT',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord,MonthlyIncomeSignalMT) {
             var startTime = document.querySelector(".MStart");
             var endTime = document.querySelector(".MEnd");
             var pattern = /^1[34578]\d{9}$/;
@@ -249,6 +249,28 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 
 
             };
+
+                /*手动生成月度*/
+                $scope.monthlyIncomeSignal = function() {
+                    $scope.businessType = $("#businessType").val();
+                    $scope.startTimeMonth = document.querySelector(".MStartMonth").value;
+                    $scope.endTimeMonth = document.querySelector(".MEndMonth").value;
+                    alert($scope.startTimeMonth);
+                    if (confirm("手动生成月度？")) {
+
+                        MonthlyIncomeSignalMT.get({businessType:$scope.businessType,startDateM:$scope.startTimeMonth,endDateM:$scope.endTimeMonth,isPullMessage:'0'}, function (data) {
+                            ManagementUtil.checkResponseData(data, "");
+                            alert(data.result);
+                            if (data.result == Global.SUCCESS) {
+                                alert("手动生成月度成功");
+                                $scope.loadPageList();
+                            }else{
+                                alert(data.errorInfo);
+                            }
+                        })
+
+                    }
+                }
  /*搜索*/
             $scope.searchMonthlyBalance = function(){
 

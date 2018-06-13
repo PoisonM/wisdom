@@ -69,18 +69,27 @@
 
                             </div>
 
-                            <div class="product_searchEara">
+                            <div style="margin-top: 15px;" class="product_searchEara">
                                 <input type="button" value="搜索" class="search_btn" ng-click="searchMonthlyBalance()">
                             </div>
                         </div>
 
+                        <div class="statusBar" align="left" style="height:60px;">
+                            <button style="margin-top: 30px;" class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='permanent'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
+                            <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommend'" ng-show="false">筛选已完成的订单</button>
+                        </div>
+<!--
+                        <div class="product_name big time_box">
+                            <div style="margin-top: 84px;line-height: 31px;">
+                                <span class="bold agencyTime">时间：</span>
+                                <input class="time MStartMonth date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp;&#45;&#45;&nbsp;<input class="time MEndMonth date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
+                            </div>
+                        </div>
+                        <div  class = "statusBar" style="float:right" ng-if="status=='month'">
+                            <button class="order_lis simulateBtn" ng-click="monthlyIncomeSignal()">生成月度账单</button>
+                        </div>-->
 
                         <div class="table_lis" >
-                            <div class="statusBar" style="height:60px;">
-                                <button class="order_lis simulateBtn" ng-click="educeLis()" ng-if="status=='instance'||status=='permanent'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
-                                <button class="order_lis simulateBtn" ng-click="completedOrders()" ng-if="status=='instance'||status=='recommend'" ng-show="false">筛选已完成的订单</button>
-                            </div>
-
                             <table  ng-if="status=='instance'||status=='month'||status=='permanent'" class="table  text-center ">
                                 <thead>
                                 <tr id="product_lis_title IncomeListTitle" class="pos" style="">
@@ -191,9 +200,7 @@
                             <div page-tool></div>
                         </div>
                     </div>
-
                 </div>
-
              </div>
          </div>
   </div>

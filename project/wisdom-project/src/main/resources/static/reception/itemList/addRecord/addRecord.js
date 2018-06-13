@@ -128,9 +128,5 @@ PADWeb.controller('addRecordCtrl', function($scope,$state,SaveArchiveInfo,GetSho
         $scope.param.openSelectFlag = false
     }
 
-    $scope.$parent.selectSty = function(id) {
-        $scope.$parent.param.selectSty = id
-        $state.go("pad-web.left_nav.personalFile")
-    }
 
 });

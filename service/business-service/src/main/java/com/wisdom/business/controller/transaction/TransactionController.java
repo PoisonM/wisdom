@@ -73,8 +73,28 @@ public class TransactionController {
     @RequestMapping(value ="putNeedPayOrderListToRedis",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public ResponseDTO putNeedPayOrderListToRedis(@RequestBody NeedPayOrderListDTO needPayOrderList) {
+        long startTime = System.currentTimeMillis();
+        logger.info("putNeedPayOrderListToRedis需要支付订单放入redis==={}开始",startTime);
         ResponseDTO responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        for(NeedPayOrderDTO needPayOrder: needPayOrderList.getNeedPayOrderList()){
+            if(needPayOrder.getProductPrefecture()!=null){
+                if((!userInfoDTO.getUserType().equals(ConfigConstant.businessC1))&&needPayOrder.getProductPrefecture().equals("1")){
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                    responseDTO.setErrorInfo("failure");
+                    logger.info("_______________________________________________________________________"+userInfoDTO.getUserType());
+                    return responseDTO;
+                }
+                logger.info("_______________________________________________________________________"+userInfoDTO.getUserType());
+            }
+        }
+        for(NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()){
+            if("0".equals(needPayOrderDTO.getProductStatus())){
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("此商品已下架-"+needPayOrderDTO.getProductName());
+                return responseDTO;
+            }
+        }
         RedisLock redisLock = new RedisLock("putNeedPayProductAmount");
         String needPayValue = (new Gson()).toJson(needPayOrderList);
         JedisUtils.del(userInfoDTO.getId()+"needPay");
@@ -88,35 +108,36 @@ public class TransactionController {
             //logger.info("锁下订单号=={}",needPayOrderList.getNeedPayOrderList().get(0).getOrderId());
             //将商品放入未支付订单列表
             for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
-                    BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
-                    businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
-                    businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
+                BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
+                businessOrderDTO.setBusinessProductId(needPayOrderDTO.getProductId());
+                businessOrderDTO.setProductSpec(needPayOrderDTO.getProductSpec());
+                //todo log
+                logger.info("查询订单前订单号=={}",needPayOrderDTO.getOrderId());
+                businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
+                if("3".equals(businessOrderDTO.getStatus())){
                     //todo log
-                    logger.info("查询订单前订单号=={}",needPayOrderDTO.getOrderId());
-                    businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
-                    if("3".equals(businessOrderDTO.getStatus())){
+                    logger.info("状态3进入订单号=={}",needPayOrderDTO.getOrderId());
+                    logger.info("状态3进入订单状态=={}",businessOrderDTO.getStatus());
+                    logger.info("状态3进入商品数量=={}",needPayOrderDTO.getProductNum());
+                    ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
+                    logger.info("状态3进入查出库中商品库存=={}",productDTO.getProductAmount());
+                    if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
                         //todo log
-                        logger.info("状态3进入订单号=={}",needPayOrderDTO.getOrderId());
-                        logger.info("状态3进入订单状态=={}",businessOrderDTO.getStatus());
-                        logger.info("状态3进入商品数量=={}",needPayOrderDTO.getProductNum());
-                        ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
-                        logger.info("状态3进入查出库中商品库存=={}",productDTO.getProductAmount());
-                        if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
-                            //todo log
-                            logger.info("商品数量大于商品库存订单号=={}",needPayOrderDTO.getOrderId());
-                            responseDTO.setErrorInfo("库存不足");
-                            responseDTO.setResult(StatusConstant.FAILURE);
-                            return responseDTO;
-                        }
+                        logger.info("商品数量大于商品库存订单号=={}",needPayOrderDTO.getOrderId());
+                        responseDTO.setErrorInfo("库存不足");
+                        responseDTO.setResult(StatusConstant.FAILURE);
+                        return responseDTO;
                     }
-                    //todo log
-                    logger.info("状态3判断通过订单号=={}",needPayOrderDTO.getOrderId());
-                    businessOrderDTO.setStatus("0");
-                    businessOrderDTO.setUpdateDate(new Date());
-                    transactionService.updateBusinessOrder(businessOrderDTO);
+                }
+                //todo log
+                logger.info("状态3判断通过订单号=={}",needPayOrderDTO.getOrderId());
+                businessOrderDTO.setStatus("0");
+                businessOrderDTO.setUpdateDate(new Date());
+                transactionService.updateBusinessOrder(businessOrderDTO);
             }
         }catch (Throwable e)
         {
+            logger.error("需要支付订单放入redis异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
             throw new ServiceException("");
         }
@@ -125,6 +146,9 @@ public class TransactionController {
             redisLock.unlock();
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("putNeedPayOrderListToRedis需要支付订单放入redis,耗时{}毫秒",(System.currentTimeMillis() - startTime));
+
+
         return responseDTO;
     }
 
@@ -132,6 +156,8 @@ public class TransactionController {
     @RequestMapping(value ="getNeedPayOrderListToRedis",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public ResponseDTO<NeedPayOrderListDTO> getNeedPayOrderListToRedis() {
+        long startTime = System.currentTimeMillis();
+        logger.info("getNeedPayOrderListToRedi从redis获取需要支付订单==={}开始",startTime);
         ResponseDTO<NeedPayOrderListDTO> responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         String value = JedisUtils.get(userInfoDTO.getId()+"needPay");
@@ -145,6 +171,7 @@ public class TransactionController {
             responseDTO.setResponseData(needPayOrderListDTO);
             responseDTO.setResult(StatusConstant.SUCCESS);
         }
+        logger.info("getNeedPayOrderListToRedi从redis获取需要支付订单,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -152,6 +179,8 @@ public class TransactionController {
     @RequestMapping(value ="getTransactionList",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public ResponseDTO<List<TransactionDTO>> getTransactionList(@RequestBody PageParamDTO pageParamDTO) {
+        long startTime = System.currentTimeMillis();
+        logger.info("getTransactionList==={}开始",startTime);
         ResponseDTO<List<TransactionDTO>> responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         List<TransactionDTO> transactionDTOList =  new ArrayList<>();
@@ -193,6 +222,7 @@ public class TransactionController {
         }else{
             responseDTO.setResponseData(null);
         }
+        logger.info("getTransactionList,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -200,9 +230,11 @@ public class TransactionController {
     @RequestMapping(value ="getUserTransactionDetail",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public ResponseDTO<TransactionDTO> getUserTransactionDetail(@RequestParam String transactionId, @RequestParam String transactionType) {
+        long startTime = System.currentTimeMillis();
+        logger.info("getUserTransactionDetail==={}开始",startTime);
         ResponseDTO<TransactionDTO> responseDTO = new ResponseDTO();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-
+        logger.info("getUserTransactionDetail参数transactionId={},transactionType={}开始",transactionId,transactionType);
         if(transactionType.equals("withdraw"))
         {
             WithDrawRecordDTO withDrawRecordDTO = withDrawService.getWithdrawDetail(transactionId);
@@ -223,7 +255,6 @@ public class TransactionController {
         }
         else
         {
-
             IncomeRecordDTO incomeRecordDTOValue  = new IncomeRecordDTO();
             incomeRecordDTOValue.setSysUserId(userInfoDTO.getId());
             incomeRecordDTOValue.setTransactionId(transactionId);
@@ -249,16 +280,19 @@ public class TransactionController {
             }
 
         }
-
+        logger.info("getUserTransactionDetail,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
     @RequestMapping(value ="getBusinessOrderByProductId",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public ResponseDTO<String> getBusinessOrderByProductId(@RequestParam String productId, HttpSession session, HttpServletRequest request) {
+        long startTime = System.currentTimeMillis();
+        logger.info("根据商品id={}获取订单信息==={}开始",productId,startTime);
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
         String openId = WeixinUtil.getUserOpenId(session,request);
+        logger.info("根据商品id获取订单信息用户openid={}",openId);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);
         List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
@@ -266,6 +300,7 @@ public class TransactionController {
         {
             userInfoDTO = userInfoDTOS.get(0);
             List<BusinessOrderDTO> businessOrderDTOS = transactionService.getBusinessOrderByUserIdAndProductId(userInfoDTO.getId(),productId);
+            logger.info("根据商品id获取订单List",businessOrderDTOS.size());
             if(businessOrderDTOS.size()>0)
             {
                 responseDTO.setResult(StatusConstant.SUCCESS);
@@ -279,6 +314,7 @@ public class TransactionController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
+        logger.info("getUserTransactionDetail,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return  responseDTO;
     }
 
@@ -286,8 +322,11 @@ public class TransactionController {
     @RequestMapping(value ="getTripleMonthBonus",method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public ResponseDTO<Float> getTripleMonthBonus(HttpSession session, HttpServletRequest request) throws UnsupportedEncodingException {
+        long startTime = System.currentTimeMillis();
+        logger.info("获取每日红包==={}开始",startTime);
         ResponseDTO<Float> responseDTO = new ResponseDTO<>();
         String openId = WeixinUtil.getUserOpenId(session,request);
+        logger.info("获取每日红包openid==={}",openId);
 
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);
@@ -297,6 +336,7 @@ public class TransactionController {
         {
             //判断用户是否购买了指定活动的商品
             String productId = ConfigConstant.promote_businessB1_ProductId_No1;
+            logger.info("指定活动的商品id==={}",productId);
             Query query = new Query(Criteria.where("userId").is(userInfoDTOS.get(0).getId()))
                     .addCriteria(Criteria.where("productId").is(productId));
             BonusFlagDTO bonusFlagDTO = mongoTemplate.findOne(query,BonusFlagDTO.class,"bonusFlag");
@@ -407,7 +447,7 @@ public class TransactionController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
-
+        logger.info("获取每日红包,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return  responseDTO;
     }
 
@@ -415,6 +455,8 @@ public class TransactionController {
     public
     @ResponseBody
     ResponseDTO<Integer> checkTripleMonthBonus(HttpSession session, HttpServletRequest request) {
+        long startTime = System.currentTimeMillis();
+        logger.info("审核三个月奖励==={}开始",startTime);
         ResponseDTO responseDTO = new ResponseDTO<>();
 
         Query query = new Query();
@@ -428,6 +470,7 @@ public class TransactionController {
         String openId = WeixinUtil.getUserOpenId(session,request);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setUserOpenid(openId);
+        logger.info("审核三个月奖励用户openid==={}",openId);
         List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
         if(userInfoDTOS.size()>0)
         {
@@ -492,6 +535,7 @@ public class TransactionController {
         {
             responseDTO.setResult(StatusConstant.FAILURE);
         }
+        logger.info("审核三个月奖励,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 

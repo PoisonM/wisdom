@@ -83,4 +83,13 @@ public interface ShopCustomerArchivesService {
      * @return
      */
     ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param: userIds
+    *@Return:
+    *@Description:根据多个userId获取档案列表
+    *@Date:2018/5/18 11:48
+    */
+    List<ShopUserArchivesDTO> getArchivesList(List<String>  userIds);
+
 }

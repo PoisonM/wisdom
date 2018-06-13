@@ -3,13 +3,16 @@ package com.wisdom.beauty.controller.shop;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -17,10 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * ClassName: ArchivesController
@@ -104,6 +106,94 @@ public class ShopController {
         }
         responseDTO.setResult(StatusConstant.FAILURE);
         logger.info("查询某个用户是否扫码绑定耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 查询某个老板的美容院
+     */
+    @RequestMapping(value = "/getBossShopInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getBossShopInfo() {
+        long currentTimeMillis = System.currentTimeMillis();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        ResponseDTO<Object> responseDTO = new ResponseDTO();
+        ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
+        extSysShopDTO.setSysBossId(bossInfo.getId());
+        extSysShopDTO.setType(CommonCodeEnum.SUCCESS.getCode());
+        List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
+        responseDTO.setResponseData(CommonUtils.objectIsEmpty(bossShopInfo) ? new ExtSysShopDTO() : bossShopInfo.get(0));
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 查询某个老板的店面
+     */
+    @RequestMapping(value = "/getBossAllShopList", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getBossAllShopList() {
+        long currentTimeMillis = System.currentTimeMillis();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        ResponseDTO<Object> responseDTO = new ResponseDTO();
+        ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
+        extSysShopDTO.setSysBossId(bossInfo.getId());
+        List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
+        if (CommonUtils.objectIsEmpty(bossShopInfo)) {
+            logger.info("老板{}切换店铺", bossInfo.getId());
+            bossInfo.setCurrentShopId(bossShopInfo.get(0).getShopId());
+            UserUtils.bossSwitchShops(bossInfo);
+        }
+        responseDTO.setResponseData(bossShopInfo);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 老板切换店铺
+     *
+     * @param sysShopId 为店铺的id
+     * @return
+     */
+    @RequestMapping(value = "/bossSwitchShops", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> bossSwitchShops(@RequestParam String sysShopId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (StringUtils.isBlank(sysShopId)) {
+            responseDTO.setResponseData("传入的sysShopId为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        bossInfo.setCurrentShopId(sysShopId);
+        UserUtils.bossSwitchShops(bossInfo);
+
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("查询某个老板的美容院耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 修改门店
+     */
+    @RequestMapping(value = "/updateShopInfo", method = RequestMethod.POST)
+    @ResponseBody
+    ResponseDTO<Object> updateShopInfo(@RequestBody SysShopDTO sysShopDTO) {
+        long currentTimeMillis = System.currentTimeMillis();
+        logger.info("修改门店传入参数={}","sysShopDTO = [" + sysShopDTO + "]");
+        ResponseDTO<Object> responseDTO = new ResponseDTO();
+        if(StringUtils.isBlank(sysShopDTO.getId())){
+            responseDTO.setResponseData("传入id为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        int info = shopUserRelationService.updateShopInfo(sysShopDTO);
+        responseDTO.setResponseData(info>0?"成功":"失败");
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("修改门店耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

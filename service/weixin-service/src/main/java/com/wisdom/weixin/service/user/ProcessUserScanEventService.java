@@ -8,6 +8,8 @@ import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -26,6 +28,7 @@ import java.util.concurrent.Executors;
 @Service
 @Transactional(readOnly = false)
 public class ProcessUserScanEventService {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -34,11 +37,13 @@ public class ProcessUserScanEventService {
 
     public void processUserScanEvent(ReceiveXmlEntity xmlEntity)
     {
+        logger.info("已关注公众号的情况下扫描" );
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
 
         //开启线程，给关注的用户推送微信消息
+        logger.info("开启线程，给关注的用户token={}推送微信消息",token);
         Runnable sendSubscribeMessageThread = new SendScanMessageThread(token, xmlEntity);
         threadExecutorCached.execute(sendSubscribeMessageThread);
     }
@@ -63,6 +68,7 @@ public class ProcessUserScanEventService {
                 String specialShopId = codeArray[0];
 
                 //通过shopId查询出店铺名称
+                logger.info("通过shopId={}查询出店铺名称",specialShopId);
                 Query query = new Query(Criteria.where("shopId").is(specialShopId));
                 SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
 
