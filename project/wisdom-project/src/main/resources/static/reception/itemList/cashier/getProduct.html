@@ -1,15 +1,15 @@
 <div class="stillOwedBox clearfix">
     <div class="stillOwedPorduct clearfix">
-        <span class="name">{{getproduct.shopProductName}}</span>
-        <span class="number">购买数量 <b>{{getproduct.initTimes}}</b></span>
-        <span class="number">未领取数量<b>{{getproduct.surplusTimes}}</b></span>
+        <span class="name">{{productInfo.shopProductName}}</span>
+        <span class="number">购买数量 <b>{{productInfo.initTimes}}</b></span>
+        <span class="number">未领取数量<b>{{productInfo.surplusTimes}}</b></span>
     </div>
     <div class="get_num_sty">
         <span>领取数量</span>
         <span class="rightContent">
-            <div class="reduction" ng-click="changePrice()">-</div>
-            <input type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
-            <div class="addBtn" ng-click="consumeNumInc()" style="border-left: 1px solid #E5E5E5;">+</div>
+            <div class="reduction" ng-click="productNumSub()">-</div>
+            <input type="text" ng-change="changeProductNum()" ng-model='shopUserConsumeDTO.consumeNum' >
+            <div class="addBtn" ng-click="productNumInc()" style="border-left: 1px solid #E5E5E5;">+</div>
         </span>
 
     </div>

@@ -36,16 +36,15 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
     }
 
     $scope.goConfirmations = function() {
-        ConsumesUserProduct.save({
-            shopUserConsumeDTO: {
-                clerkId: '',
-                consumeId: $scope.getproduct.id,
-                consumeNum: 1,
-                consumePrice: '',
-                sysUserId: '110',
+        ConsumesUserProduct.save(
+            $scope.shopUserConsumeDTO
+        , function(data) {
+            if(data.result == '0x00001'){
+                $state.go('pad-web.confirmations', { consumeId: data.responseData, shopProjectInfoName: $scope.getproduct.shopProductName })
             }
-        }, function(data) {
-            $state.go('pad-web.confirmations', { consumeId: data.responseData, shopProjectInfoName: $scope.getproduct.shopProductName })
+            else{
+                alert(data.errorInfo);
+            }
         })
     }
     $scope.checkBoxChek = function(e) {
@@ -53,6 +52,10 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
     }
 
     $scope.productNumSub = function () {
+        if($scope.shopUserConsumeDTO.consumeNum<=0){
+            alert("领取数量不能小于0");
+            return;
+        }
         $scope.shopUserConsumeDTO.consumeNum = $scope.shopUserConsumeDTO.consumeNum -1;
     }
     $scope.changeProductNum = function () {
@@ -70,5 +73,6 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
     }, function(data) {
         $scope.productInfo = data.responseData;
         $scope.shopUserConsumeDTO.consumeId = data.id;
+        $scope.shopUserConsumeDTO.consumeId = $state.params.id;
     })
 });

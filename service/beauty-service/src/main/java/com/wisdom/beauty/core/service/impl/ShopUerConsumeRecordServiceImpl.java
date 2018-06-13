@@ -479,7 +479,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	@Override
 	public int saveCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
 
-		logger.info("保存用户消费或充值记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
+		logger.info("保存用户消费或充值记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO.getFlowId() + "]");
 		if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysShopName())
 				&& StringUtils.isNotBlank(shopUserConsumeRecordDTO.getSysShopId())) {
 			SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(shopUserConsumeRecordDTO.getSysShopId());

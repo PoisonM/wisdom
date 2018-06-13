@@ -207,7 +207,7 @@ public class UserConsumeController {
             @RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         ShopUserConsumeDTO consumeDTO = shopUserConsumeDTO.getShopUserConsumeDTO().get(0);
-        if(StringUtils.isBlank(consumeDTO.getConsumeId()) || consumeDTO.getConsumeNum() == 0){
+        if(StringUtils.isBlank(consumeDTO.getConsumeId()) || consumeDTO.getConsumeNum() <= 0){
             responseDTO.setErrorInfo("传入数据异常");
             responseDTO.setResult(StatusConstant.FAILURE);
             return responseDTO;
@@ -238,6 +238,11 @@ public class UserConsumeController {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
         List<ShopUserConsumeDTO> userConsumeDTOT = shopUserConsumeDTO.getShopUserConsumeDTO();
+        if(StringUtils.isBlank(userConsumeDTOT.get(0).getConsumeId()) || userConsumeDTOT.get(0).getConsumeNum() <= 0){
+            responseDTO.setErrorInfo("传入数据异常");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
         String cardFlag = shopUserConsumeService.consumesDaughterCard(userConsumeDTOT, clerkInfo);
         // 保存用户的操作记录
         responseDTO.setResult(cardFlag != null ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
@@ -258,7 +263,7 @@ public class UserConsumeController {
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
-        if(StringUtils.isBlank(shopUserConsumeDTO.getConsumeId()) || shopUserConsumeDTO.getConsumeNum() == 0){
+        if(StringUtils.isBlank(shopUserConsumeDTO.getConsumeId()) || shopUserConsumeDTO.getConsumeNum() <= 0){
             responseDTO.setErrorInfo("传入数据异常！");
             responseDTO.setResult(StatusConstant.FAILURE);
             return responseDTO;

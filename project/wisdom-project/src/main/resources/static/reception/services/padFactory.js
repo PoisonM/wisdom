@@ -1,7 +1,7 @@
-var beautyIP = 'http://192.168.1.117/beauty/';
-var userIP = 'http://192.168.1.117/user/';
-var systemService = 'http://192.168.1.117/system-service/';
-var  mine='http://192.168.1.117/beauty/mine/';
+var beautyIP = '/beauty/';
+var userIP = '/user/';
+var systemService = '/system-service/';
+var  mine='/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
             /*request: function(config) {
@@ -386,7 +386,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetCompleteByflowId', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/id')
     }])
-    //获取用户产品的领取记录 http://192.168.1.117:9051/consume/getProductDrawRecord
+    //获取用户产品的领取记录 :9051/consume/getProductDrawRecord
 
     .factory('GetProductDrawRecord', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/id')
