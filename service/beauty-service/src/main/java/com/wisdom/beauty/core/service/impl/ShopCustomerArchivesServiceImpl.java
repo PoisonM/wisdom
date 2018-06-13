@@ -118,7 +118,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             c.andPhoneLike("%" + requestData.getPhone() + "%");
         }
         if (StringUtils.isNotBlank(requestData.getSysUserName())) {
-            c.andSysUserNameLike("%" + requestData.getSysUserName() + "%");
+            or.andSysUserNameLike("%" + requestData.getSysUserName() + "%");
         }
 
         criteria.or(or);

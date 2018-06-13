@@ -251,7 +251,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 		}
 		if (consumeTypes.contains(ConsumeTypeEnum.CONSUME.getCode())) {
-			userConsumeRecordResponseDTO.setType(GoodsTypeEnum.PUNCH_CARD.getCode());
+			if(goodsTypes.contains(GoodsTypeEnum.PRODUCT.getCode())){
+				userConsumeRecordResponseDTO.setType(GoodsTypeEnum.PRODUCT.getCode());
+			}else {
+			userConsumeRecordResponseDTO.setType(GoodsTypeEnum.PUNCH_CARD.getCode());}
 		}
 		// 存放所有的消费项目的
 		List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = new ArrayList<>();
