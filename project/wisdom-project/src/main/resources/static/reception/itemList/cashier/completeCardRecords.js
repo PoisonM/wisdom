@@ -7,7 +7,7 @@ PADWeb.controller('completeCardRecordsCtrl', function($scope, $stateParams, $sta
     $scope.$parent.mainLeftSwitch.peopleListFlag = true;
     $scope.$parent.mainLeftSwitch.priceListFlag = false;
     $scope.$parent.$parent.param.headerCash.backContent = "返回";
-    $scope.$parent.$parent.param.headerCash.title = "划卡记录";
+    $scope.$parent.$parent.param.headerCash.title = "套卡的划卡记录";
     $scope.$parent.$parent.param.headerCash.leftTip = "消费记录";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
@@ -20,11 +20,18 @@ PADWeb.controller('completeCardRecordsCtrl', function($scope, $stateParams, $sta
 
     //跳转消费记录
     $scope.$parent.$parent.leftTipFn = function () {
-        $state.go("pad-web.left_nav.consumeCardDetail",{consumeRecordId:$stateParams.consumeRecordId,userId:$stateParams.userId})
+        $state.go("pad-web.left_nav.consumeCardDetail",{
+            id:$stateParams.consumeRecordId,
+            userId:$stateParams.userId,
+            type:"tk"
+        })
     }
     //
-    $scope.goCompleteCardDetail = function () {
-        $state.go("pad-web.left_nav.completeCardDetail",{userId:$stateParams.userId})
+    $scope.goCompleteCardDetail = function (flowNo) {
+        $state.go("pad-web.left_nav.completeCardDetail",{
+            userId:$stateParams.userId,
+            flowNo:flowNo
+        })
     }
 
     //1、商品类型为疗程卡 ；3、商品类型为套卡

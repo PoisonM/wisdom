@@ -61,8 +61,7 @@
 }
 
 .personalFile-box .personalFile-content .treatment .treatmentCard .treatmentCardTop {
-    height: 70px;
-    height: 105px;
+    height: 80px;
     background: #FFFFFF;
     box-shadow: 0 2px 4px 0 rgba(228, 228, 228, 0.50);
     border-radius: 4px;

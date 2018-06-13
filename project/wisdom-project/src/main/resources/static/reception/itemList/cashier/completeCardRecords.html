@@ -1,7 +1,7 @@
 <div class="completeCardRecords">
     <div class="completeCardRecords_box">
         <ul>
-            <li ng-click="goCompleteCardDetail()" ng-repeat="item in dataList">
+            <li ng-click="goCompleteCardDetail(item.flowNo)" ng-repeat="item in dataList">
                 <div class="basic_info">
                     <p>{{item.flowName}}</p>
                     <span>{{item.createDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
