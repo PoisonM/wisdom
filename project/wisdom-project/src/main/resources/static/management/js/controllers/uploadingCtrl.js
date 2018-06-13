@@ -55,7 +55,7 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                             $scope.ProductDTO.productDetail.services[j]=serviceText[j].innerHTML
                         }
                     }
-                    if($scope.ProductDTO.productName ==""||$scope.ProductDTO.brand ==""||$scope.ProductDTO.secondType ==""||$scope.ProductDTO.price ==""||$scope.ProductDTO.price ==null||$scope.ProductDTO.status ==""||$scope.ProductDTO.productDetail.spec.length<=0||$scope.ProductDTO.productDetail.productAmount==""||$scope.ProductDTO.productDetail.productMarketPrice==""||$scope.ProductDTO.productDetail.productSalesVolume==""){
+                    if($scope.ProductDTO.productName ==""||$scope.ProductDTO.brand ==""||$scope.ProductDTO.secondType ==""||$scope.ProductDTO.price ==""||$scope.ProductDTO.price ==null||$scope.ProductDTO.status ==""||$scope.ProductDTO.productDetail.spec.length<=0||$scope.ProductDTO.productAmount==""||$scope.ProductDTO.productDetail.productMarketPrice==""||$scope.ProductDTO.productDetail.productSalesVolume==""){
                         $scope.mess = true;
                     }else{
 
