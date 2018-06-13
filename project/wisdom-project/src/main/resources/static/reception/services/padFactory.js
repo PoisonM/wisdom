@@ -1,7 +1,7 @@
-var beautyIP = '/beauty/';
-var userIP = '/user/';
-var systemService = '/system-service/';
-var  mine='/beauty/mine/';
+var beautyIP = 'http://192.168.1.117/beauty/';
+var userIP = 'http://192.168.1.117/user/';
+var systemService = 'http://192.168.1.117/system-service/';
+var  mine='http://192.168.1.117/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return {
             /*request: function(config) {
@@ -99,7 +99,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('cashConsumes', ['$resource', function($resource) {
         return $resource(beautyIP + 'consumes')
     }])
-    //收银记录统计明细
+    //根据流水号查消费记录
     .factory('cashConsume', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/:consumeFlowNo', { consumeFlowNo: '@id' })
     }])
@@ -379,9 +379,20 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
         return $resource(beautyIP + 'consume/treatmentAndGroupCardRecordList')
     }])
     //疗程卡消费详情
-//http://localhost:9051/consume/flowId?flowId=7ec842257fd642d5aa1d1d079556833b
     .factory('GetCureByflowId', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/flowId')
     }])
+    //套卡消费详情
+    .factory('GetCompleteByflowId', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/id')
+    }])
+    //获取用户产品的领取记录 http://192.168.1.117:9051/consume/getProductDrawRecord
 
+    .factory('GetProductDrawRecord', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/id')
+    }])
+    // http://localhost:9051/consume/getRechargeRecord
+    .factory('GetRechargeRecord', ['$resource', function($resource) {
+        return $resource(beautyIP + 'consume/getRechargeRecord')
+    }])
 ;

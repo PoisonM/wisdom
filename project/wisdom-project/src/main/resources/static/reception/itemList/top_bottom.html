@@ -49,7 +49,7 @@
                 <div class="header_price_black_l"></div>
                 <div class="header_price_black_r">
                     <div class="black_r_title">{{param.headerPrice.blackTitle}}</div>
-                    <span class="black_r_search"><i></i>{{param.headerPrice.blackBackContent}}</span>
+                    <span ng-if="mainSwitch.headerPriceListFlag.headerPriceSearchFlag" class="black_r_search"><i></i>{{param.headerPrice.blackBackContent}}</span>
                 </div>
             </div>
         </div>

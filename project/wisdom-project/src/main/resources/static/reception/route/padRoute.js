@@ -1,6 +1,6 @@
 var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize', "ngTouch"]);
-var version = "1.0."+Math.random()+""
-// var version = "1.0"
+// var version = "1.0."+Math.random()+""
+var version = "1.0"
 PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterProvider",
     function($provide, $compileProvider, $controllerProvider, $filterProvider) {
         PADWeb.controller = $controllerProvider.register;
@@ -1262,7 +1262,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //套卡划卡详情
         .state('pad-web.left_nav.completeCardDetail', {
-            url: '/completeCardDetail/:userId',
+            url: '/completeCardDetail/:userId/:flowNo',
             templateUrl: root + '/cashier/completeCardDetail.html',
             controller: 'completeCardDetailCtrl',
             resolve: {
@@ -1281,7 +1281,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //特殊充值卡充值记录
         .state('pad-web.left_nav.featureRechargeCardRecords', {
-            url: '/featureRechargeCardRecords/:userId',
+            url: '/featureRechargeCardRecords/:userId/:id/:sunAmount',
             templateUrl: root + '/cashier/featureRechargeCardRecords.html',
             controller: 'featureRechargeCardRecordsCtrl',
             resolve: {
@@ -1316,7 +1316,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //充值卡详情
         .state('pad-web.left_nav.rechargeCardDetail', {
-            url: '/rechargeCardDetail/:userId',
+            url: '/rechargeCardDetail/:userId/:id',
             templateUrl: root + '/cashier/rechargeCardDetail.html',
             controller: 'rechargeCardDetailCtrl',
             resolve: {

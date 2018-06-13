@@ -116,7 +116,6 @@ public class ArchivesController {
             ExtShopUserArchivesDTO extShopUserArchivesDTO = new ExtShopUserArchivesDTO();
             BeanUtils.copyProperties(archivesDTO,extShopUserArchivesDTO);
             if(CommonUtils.objectIsNotEmpty(extShopAppointServiceDTOS)){
-                logger.info("查询店铺的预约信息个数为={}",extShopAppointServiceDTOS.size());
                 for(ExtShopAppointServiceDTO shopAppointServiceDTO : extShopAppointServiceDTOS){
                     if(shopAppointServiceDTO.getSysUserId().equals(archivesDTO.getSysUserId())){
                         extShopUserArchivesDTO.setLastAppointTimes(shopAppointServiceDTO.getLastAppointTime());
