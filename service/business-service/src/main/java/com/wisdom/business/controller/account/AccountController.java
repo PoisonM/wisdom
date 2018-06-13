@@ -121,8 +121,10 @@ public class AccountController {
 				accountDTO1.setId(accountDTO.getId());
 				accountDTO1.setBalance(accountDTO.getBalance()+s);
 				accountDTO1.setBalanceDeny((float)s);
+				accountDTO1.setUpdateDate(new Date());
 				accountService.updateUserAccountInfo(accountDTO1);
 				accountDTO.setTodayIncome((float)s);
+				accountDTO.setBalance(accountDTO.getBalance()+s);
 			}else {
 				accountDTO.setTodayIncome(accountDTO.getBalanceDeny());
 			}
