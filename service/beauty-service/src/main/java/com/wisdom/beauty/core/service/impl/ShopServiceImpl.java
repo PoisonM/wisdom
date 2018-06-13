@@ -49,8 +49,10 @@ public class ShopServiceImpl implements ShopService {
         }
         SysShopDTO sysShopDTOS = sysShopMapper.selectByPrimaryKey(id);
         ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
-        BeanUtils.copyProperties(sysShopDTOS, extSysShopDTO);
-        extSysShopDTO.setImageList(mongoUtils.getImageUrl(extSysShopDTO.getId()));
+        if(null != sysShopDTOS){
+            BeanUtils.copyProperties(sysShopDTOS, extSysShopDTO);
+            extSysShopDTO.setImageList(mongoUtils.getImageUrl(extSysShopDTO.getId()));
+        }
         return extSysShopDTO;
     }
 
