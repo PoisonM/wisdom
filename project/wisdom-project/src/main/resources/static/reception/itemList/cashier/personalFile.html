@@ -80,8 +80,8 @@
                         <div class="left">
                             <span>{{item4.shopProductName}}</span>
                             <p class="price">金额:{{item4.initAmount}}</p>
-                            <p class="number">购买数量：{{item4.initTimes-item4.surplusTimes}} 未领取数量：{{item4.surplusTimes}}</p>
-                            <p class="time">购买时间：{{item4.updateDate |date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                            <p class="number">购买数量：{{item4.initTimes}} 未领取数量：{{item4.surplusTimes}}</p>
+                            <p class="time">购买时间：{{item4.createDate |date:'yyyy-MM-dd HH:mm:ss'}}</p>
                         </div>
                         <div class="right">
                             <button ng-click="goGetProduct(item4.id)">领取</button>
