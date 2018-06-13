@@ -97,7 +97,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(userConsumeRequest.getConsumeType())) {
 			c.andConsumeTypeEqualTo(userConsumeRequest.getConsumeType());
 		}
-
+		if(StringUtils.isNotBlank(userConsumeRequest.getFlowId())){
+			c.andFlowIdEqualTo(userConsumeRequest.getFlowId());
+		}
 		// 根据goodsTypeRequire设置查询条件，如果费类型不是划卡则需要通过goodType来区分,如果goodsTypeRequire为false则需要根据goodType来区分
 		if (userConsumeRequest.getGoodsTypeRequire()) {
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRequest.getConsumeType())) {
