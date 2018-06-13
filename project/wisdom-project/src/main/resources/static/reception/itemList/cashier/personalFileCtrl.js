@@ -107,11 +107,19 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
     }
 
     //点击充值卡跳转
-    $scope.goRechargeCardRecords = function (index) {
-        if(index == 0){
-            $state.go('pad-web.left_nav.featureRechargeCardRecords',{userId:$stateParams.sysUserId})
+    $scope.goRechargeCardRecords = function (id,index,sunAmount) {
+        if(index == 0){//特俗充值卡
+            $state.go('pad-web.left_nav.featureRechargeCardRecords',{
+                userId:$stateParams.sysUserId,
+                id:id,
+                sunAmount:sunAmount
+            })
         }else{
-            $state.go('pad-web.left_nav.rechargeCardRecords',{userId:$stateParams.sysUserId})
+            // $state.go('pad-web.left_nav.rechargeCardRecords',{userId:$stateParams.sysUserId})
+            $state.go('pad-web.left_nav.rechargeCardDetail',{
+                userId:$stateParams.sysUserId,
+                id:id,
+            })
         }
     }
 
@@ -123,13 +131,16 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
         }
         $state.go('pad-web.left_nav.completeCardRecords',{
             ids:$scope.tempStr,
-            id:consumeRecordId,
+            consumeRecordId:consumeRecordId,
             userId:$stateParams.sysUserId
         })
     }
     //产品
-    $scope.goGetProductRecord = function () {
-        $state.go("pad-web.left_nav.getProductRecord",{userId:$stateParams.sysUserId})
+    $scope.goGetProductRecord = function (id) {
+        $state.go("pad-web.left_nav.getProductRecord",{
+            userId:$stateParams.sysUserId,
+            id:id
+        })
     }
 
 

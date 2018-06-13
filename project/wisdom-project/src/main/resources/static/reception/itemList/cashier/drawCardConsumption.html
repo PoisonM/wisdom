@@ -1,6 +1,37 @@
 <!--划卡-->
 <div class="content">
-    <div>
+    <div ng-if="params.type == 1">
+        <div class="productMess paddingLeft50">
+            <div class="space-between waterGuangZhen">
+                <p>
+                    <span class="color333FS38">{{responseData.sysShopProjectName}}</span>
+                    <!-- <span class="yearCard w66h32 btnActive marginLeft16 FS24">年卡</span>-->
+                </p>
+                <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha" ng-click="candelScratchCard($index)">
+            </div>
+            <div class="money color999FS32 colorFF6666FS34 space-between">
+                <p class="W33">金额 <span class="num">￥{{shopUserConsumeDTO[0].consumePrice}}</span></p>
+                <p class=" colorFF6666FS38 W33 center">{{responseData.projectSurplusAmount}}<span class="color333FS38">/{{responseData.projectInitAmount}}</span></p>
+                <p class="W33"></p>
+            </div>
+        </div>
+        <ul class="height100Num color333FS34">
+            <li class="space-between paddingLeft30">
+                <p>划卡数量</p>
+                <p class="rightContent">
+                    <button class="reduction" ng-click="changePrice()">-</button>
+                    <input type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
+                    <button class="addBtn" ng-click="consumeNumInc()">+</button>
+                </p>
+            </li>
+            <li class="space-between paddingLeft30">
+                <span>关联员工</span>
+                <a class="rightContent">{{responseData.sysClerkName}}<img src="images/bt_more.png" class="morePic marginLeft20" ng-click="relatedStaff()"></a>
+            </li>
+        </ul>
+    </div>
+
+    <div ng-if="params.type == 2">
         <div class="productMess paddingLeft50">
             <div class="space-between waterGuangZhen">
                 <p>
@@ -10,18 +41,18 @@
                 <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha" ng-click="candelScratchCard($index)">
             </div>
             <div class="money color999FS32 colorFF6666FS34 space-between">
-                <p class="W33">金额 <span class="num">￥{{responseData.shopGroupPuchasePrice}}</span></p>
-                <p class=" colorFF6666FS38 W33 center">{{responseData.projectSurplusAmount}}<span class="color333FS38">/{{responseData.projectInitAmount}}</span></p>
+                <p class="W33">金额 <span class="num">￥{{shopUserConsumeDTO[0].consumePrice}}</span></p>
+                <p class=" colorFF6666FS38 W33 center">{{responseData.projectSurplusTimes}}<span class="color333FS38">/{{responseData.projectInitTimes}}(剩余)</span></p>
                 <p class="W33"></p>
             </div>
         </div>
-        <ul class="height100Num color333FS34 ">
+        <ul class="height100Num color333FS34">
             <li class="space-between paddingLeft30">
                 <p>划卡数量</p>
                 <p class="rightContent">
-                    <button class="reduction" ng-click="">-</button>
-                    <input type="text" value="1" ng-model="responseData.shopProjectGroupNumber">
-                    <button class="addBtn" ng-click="">+</button>
+                    <button class="reduction" ng-click="changePrice()">-</button>
+                    <input type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
+                    <button class="addBtn" ng-click="consumeNumInc()">+</button>
                 </p>
             </li>
             <li class="space-between paddingLeft30">

@@ -1,6 +1,8 @@
 package com.wisdom.beauty.controller.consume;
 
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
+import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
+import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.extDto.ShopConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
@@ -14,6 +16,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -202,12 +205,19 @@ public class UserConsumeController {
     @ResponseBody
     ResponseDTO<String> consumeCourseCard(
             @RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
-
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
+        ShopUserConsumeDTO consumeDTO = shopUserConsumeDTO.getShopUserConsumeDTO().get(0);
+        if(StringUtils.isBlank(consumeDTO.getConsumeId()) || consumeDTO.getConsumeNum() <= 0){
+            responseDTO.setErrorInfo("传入数据异常");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+
         int cardFlag = shopUserConsumeService.consumeCourseCard(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
         // 保存用户的操作记录
         responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setErrorInfo(cardFlag == 2?"无可用卡":"");
         responseDTO.setResponseData("success");
         return responseDTO;
     }
@@ -228,6 +238,11 @@ public class UserConsumeController {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
         List<ShopUserConsumeDTO> userConsumeDTOT = shopUserConsumeDTO.getShopUserConsumeDTO();
+        if(StringUtils.isBlank(userConsumeDTOT.get(0).getConsumeId()) || userConsumeDTOT.get(0).getConsumeNum() <= 0){
+            responseDTO.setErrorInfo("传入数据异常");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
         String cardFlag = shopUserConsumeService.consumesDaughterCard(userConsumeDTOT, clerkInfo);
         // 保存用户的操作记录
         responseDTO.setResult(cardFlag != null ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
@@ -242,19 +257,18 @@ public class UserConsumeController {
      * @return
      */
     @RequestMapping(value = "/consumes/consumesUserProduct", method = {RequestMethod.POST, RequestMethod.GET})
-
     public
     @ResponseBody
-    ResponseDTO<String> consumesUserProduct(
-            @RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
+    ResponseDTO<String> consumesUserProduct(@RequestBody ShopUserConsumeDTO shopUserConsumeDTO) {
 
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
-        String cardFlag = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO.getShopUserConsumeDTO(),
-                clerkInfo);
-        // 保存用户的操作记录
-        responseDTO.setResult(cardFlag != null ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        responseDTO.setResponseData(cardFlag);
+        if(StringUtils.isBlank(shopUserConsumeDTO.getConsumeId()) || shopUserConsumeDTO.getConsumeNum() <= 0){
+            responseDTO.setErrorInfo("传入数据异常！");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        responseDTO = shopUserConsumeService.consumesUserProduct(shopUserConsumeDTO, clerkInfo);
         return responseDTO;
     }
 
@@ -338,6 +352,35 @@ public class UserConsumeController {
         ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
+        return responseDTO;
+    }
+    /**
+    *@Author:zhanghuan
+    *@Param:  goodsType=2   consumeType=0   flowId(需要前端传递参数)
+    *@Return:
+    *@Description: 获取特殊类型充值卡的充值记录
+    *@Date:2018/6/13 9:40
+    */
+    @RequestMapping(value = "/consume/getRechargeRecord", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> getRechargeRecord(@RequestParam String flowId,int pageSize) {
+        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
+        userConsumeRequestDTO.setGoodsTypeRequire(true);
+        userConsumeRequestDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+        userConsumeRequestDTO.setGoodsType(GoodsTypeEnum.COLLECTION_CARD.getCode());
+        userConsumeRequestDTO.setGoodsTypeRequire(true);
+        userConsumeRequestDTO.setFlowId(flowId);
+        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        pageParamVoDTO.setPaging(true);
+        pageParamVoDTO.setPageNo(0);
+        pageParamVoDTO.setPageSize(pageSize);
+
+        List<UserConsumeRecordResponseDTO> list = shopUerConsumeRecordService
+                .getShopCustomerConsumeRecordList(pageParamVoDTO);
+        ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(list);
         return responseDTO;
     }
 }

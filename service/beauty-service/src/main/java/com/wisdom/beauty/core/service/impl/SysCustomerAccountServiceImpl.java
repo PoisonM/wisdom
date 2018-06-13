@@ -115,7 +115,7 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
      */
     @Override
     public SysUserAccountDTO getSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO) {
-
+        logger.info("获取用户的账户信息传入参数={}","sysUserAccountDTO = [" + sysUserAccountDTO + "]");
         if (CommonUtils.objectIsEmpty(sysUserAccountDTO)) {
             logger.info("获取用户的账户信息传入参数={}", "sysUserAccountDTO = [" + sysUserAccountDTO + "]");
             return null;

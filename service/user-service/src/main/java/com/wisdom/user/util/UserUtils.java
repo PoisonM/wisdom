@@ -137,6 +137,17 @@ public class UserUtils {
         }
         return map;
     }
+    /**
+     *获取token信息
+     * @return
+     */
+    public static String getToken() {
+        String token = getUserToken(LoginEnum.BOSS);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
+        return token;
+    }
 
 
 }

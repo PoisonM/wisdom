@@ -5,10 +5,12 @@ import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -54,6 +56,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	private RedisUtils redisUtils;
 	@Autowired
 	private ShopService shopService;
+	@Autowired
+	private UserServiceClient userServiceClient;
 
 	@Override
 	public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(
@@ -97,7 +101,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(userConsumeRequest.getConsumeType())) {
 			c.andConsumeTypeEqualTo(userConsumeRequest.getConsumeType());
 		}
-
+		if(StringUtils.isNotBlank(userConsumeRequest.getFlowId())){
+			c.andFlowIdEqualTo(userConsumeRequest.getFlowId());
+		}
 		// 根据goodsTypeRequire设置查询条件，如果费类型不是划卡则需要通过goodType来区分,如果goodsTypeRequire为false则需要根据goodType来区分
 		if (userConsumeRequest.getGoodsTypeRequire()) {
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRequest.getConsumeType())) {
@@ -245,7 +251,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 		}
 		if (consumeTypes.contains(ConsumeTypeEnum.CONSUME.getCode())) {
-			userConsumeRecordResponseDTO.setType(GoodsTypeEnum.PUNCH_CARD.getCode());
+			if(goodsTypes.contains(GoodsTypeEnum.PRODUCT.getCode())){
+				userConsumeRecordResponseDTO.setType(GoodsTypeEnum.PRODUCT.getCode());
+			}else {
+			userConsumeRecordResponseDTO.setType(GoodsTypeEnum.PUNCH_CARD.getCode());}
 		}
 		// 存放所有的消费项目的
 		List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = new ArrayList<>();
@@ -400,8 +409,11 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				shopProjectInfoDTO = new ShopProjectInfoDTO();
 				shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 				shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
-				shopProjectInfoDTO
-						.setDiscountPrice(dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+				if(dto.getProjectInitAmount()!=null && dto.getProjectInitTimes()!=null){
+					shopProjectInfoDTO
+							.setDiscountPrice(dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+				}
+
 				shopProjectInfos.add(shopProjectInfoDTO);
 			}
 		}
@@ -467,11 +479,15 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	@Override
 	public int saveCustomerConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
 
-		logger.info("保存用户消费或充值记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
+		logger.info("保存用户消费或充值记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO.getFlowId() + "]");
 		if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysShopName())
 				&& StringUtils.isNotBlank(shopUserConsumeRecordDTO.getSysShopId())) {
 			SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(shopUserConsumeRecordDTO.getSysShopId());
 			shopUserConsumeRecordDTO.setSysShopName(beauty.getName());
+		}
+		if(StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserName())){
+			UserInfoDTO userInfoFromUserId = userServiceClient.getUserInfoFromUserId(shopUserConsumeRecordDTO.getSysUserId());
+			shopUserConsumeRecordDTO.setSysUserName(userInfoFromUserId.getNickname());
 		}
 		int insert = shopUserConsumeRecordMapper.insert(shopUserConsumeRecordDTO);
 		saveShopClerkWorkRecord(shopUserConsumeRecordDTO.getSysClerkId(), shopUserConsumeRecordDTO);

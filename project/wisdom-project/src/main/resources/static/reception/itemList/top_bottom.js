@@ -49,7 +49,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         headerPriceListAllFlag:false,
         headerPriceListBlackFlag:true,
         headerPriceListFlag:{
-
+            headerPriceSearchFlag:false,
         },
         //我的头部开关
 
@@ -58,7 +58,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
 
         //尾部总开关
         footerBoxFlag:true
-    }
+    };
     /*--------------------------------------方法-------------------------------------------------*/
     $scope.goAddrecord = function () {
         $state.go("pad-web.left_nav.addRecord")

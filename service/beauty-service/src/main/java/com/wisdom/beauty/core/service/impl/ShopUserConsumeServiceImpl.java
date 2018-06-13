@@ -497,9 +497,10 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 dto.setSysShopName(clerkInfo.getSysShopName());
                 dto.setSysBossCode(clerkInfo.getSysBossCode());
                 dto.setSurplusAmount(dto.getInitAmount());
+                dto.setSurplusTimes(dto.getInitTimes());
                 BigDecimal divide = dto.getPurchasePrice().divide(productDetail.getMarketPrice(), 2, ROUND_HALF_DOWN);
                 dto.setDiscount(divide.floatValue());
-
+                dto.setCreateDate(new Date());
                 logger.info("订单号={}，生成用户跟产品的关系={}", orderId, dto);
                 shopProductInfoService.saveShopUserProductRelation(dto);
 
@@ -543,12 +544,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         }
         // 查询用户的账户信息
         SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
-        sysUserAccountDTO.setSysUserId(shopUserConsumeDTO.get(0).getSysUserId());
-        sysUserAccountDTO.setSysShopId(clerkInfo.getSysShopId());
-        sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
 
         for (ShopUserConsumeDTO dto : shopUserConsumeDTO) {
-
             logger.info("开始更新用户的疗程卡={}", dto.toString());
             ShopUserProjectRelationDTO shopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
             shopUserProjectRelationDTO.setId(dto.getConsumeId());
@@ -557,17 +554,27 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 throw new ServiceException("根据主键查询项目列表为空");
             }
             shopUserProjectRelationDTO = userProjectList.get(0);
+            //划卡的数量大于剩余了卡数，不做操作
+            if(shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()<dto.getConsumeNum()){
+                logger.error("划卡的数量大于剩余了卡数,用户卡主键={},消费数量={}",shopUserProjectRelationDTO.getId(),dto.getConsumeNum());
+                return 2;
+            }
 
             //更新用户与卡表的数量
             shopUserProjectRelationDTO.setSysShopProjectSurplusTimes(shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() - dto.getConsumeNum());
             //更新用户与卡表的关系的金额
             shopUserProjectRelationDTO.setSysShopProjectSurplusAmount(shopUserProjectRelationDTO.getSysShopProjectSurplusAmount().subtract(dto.getConsumePrice()));
 
+            shopUserProjectRelationDTO.setUpdateDate(new Date());
+            shopUserProjectRelationDTO.setUpdateUser(clerkInfo.getId());
             shopProjectService.updateUserAndProjectRelation(shopUserProjectRelationDTO);
+            sysUserAccountDTO.setSysUserId(shopUserProjectRelationDTO.getSysUserId());
+            sysUserAccountDTO.setSysShopId(clerkInfo.getSysShopId());
+            sysUserAccountDTO = sysUserAccountService.getSysUserAccountDTO(sysUserAccountDTO);
 
             ShopUserConsumeRecordDTO consumeRecordDTO = new ShopUserConsumeRecordDTO();
             String uuid = IdGen.uuid();
-            consumeRecordDTO.setFlowId(uuid);
+            consumeRecordDTO.setFlowId(shopUserProjectRelationDTO.getId());
             consumeRecordDTO.setId(uuid);
             consumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
             consumeRecordDTO.setCreateDate(new Date());
@@ -581,7 +588,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
             consumeRecordDTO.setOperDate(new Date());
             consumeRecordDTO.setCreateBy(clerkInfo.getId());
+            consumeRecordDTO.setSignUrl(dto.getImageUrl());
             consumeRecordDTO.setConsumeNumber(dto.getConsumeNum());
+            consumeRecordDTO.setSysUserId(shopUserProjectRelationDTO.getSysUserId());
             consumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
             consumeRecordDTO.setPrice(dto.getConsumePrice());
             consumeRecordDTO.setCreateDate(new Date());
@@ -589,8 +598,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
             logger.info("更新用户的账户信息");
             sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().subtract(dto.getConsumePrice()));
+            sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
         }
-        sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
         return 1;
     }
 
@@ -617,7 +626,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         relation.setProjectSurplusTimes(relation.getProjectSurplusTimes() - consumeDTO.getConsumeNum());
         shopProjectGroupService.updateShopUserProjectGroupRelRelation(relation);
 
+        consumeDTO.setSysUserId(relation.getSysUserId());
         // 更新用户的账户信息
+        consumeDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
+        consumeDTO.setFlowId(relation.getId());
+        consumeDTO.setConsumeName(relation.getShopProjectInfoName());
         return updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
     }
 
@@ -626,37 +639,48 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public String consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo) {
-
-        if (CommonUtils.objectIsEmpty(shopUserConsumeDTOS)) {
-            logger.info("用户领取产品传入参数={}", "shopUserConsumeDTO = [" + shopUserConsumeDTOS + "], clerkInfo = [" + clerkInfo + "]");
-            return null;
+    public ResponseDTO consumesUserProduct(ShopUserConsumeDTO consumeDTO, SysClerkDTO clerkInfo) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setResult(StatusConstant.FAILURE);
+        if (CommonUtils.objectIsEmpty(consumeDTO)) {
+            logger.info("用户领取产品传入参数={}", "consumeDTO = [" + consumeDTO + "], clerkInfo = [" + clerkInfo + "]");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
         }
         String transactionCodeNumber = DateUtils.DateToStr(new Date(), "dateMillisecond");
 
-        ShopUserProductRelationDTO relation = new ShopUserProductRelationDTO();
-
-        //更新用户与套卡与项目关系的关系表
-        ShopUserConsumeDTO consumeDTO = shopUserConsumeDTOS.get(0);
-        relation.setId(consumeDTO.getConsumeId());
         //计算单件产品的价格
         ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
         shopUserProductRelationDTO.setId(consumeDTO.getConsumeId());
         List<ShopUserProductRelationDTO> productInfoList = shopProductInfoService.getUserProductInfoList(shopUserProductRelationDTO);
-        ShopUserProductRelationDTO userProductRelationDTO = productInfoList.get(0);
-        BigDecimal onePrice = userProductRelationDTO.getInitAmount().divide(new BigDecimal(userProductRelationDTO.getInitTimes()), 2, ROUND_HALF_DOWN);
+        if(CommonUtils.objectIsEmpty(productInfoList)){
+            logger.error("用户与产品关系主键={},consumeDTO={}",consumeDTO.getConsumeId(),consumeDTO);
+            responseDTO.setErrorInfo("未查询到用户这件产品记录");
+            return responseDTO;
+        }
+        ShopUserProductRelationDTO relationDTO = productInfoList.get(0);
+        if(relationDTO.getSurplusTimes()<consumeDTO.getConsumeNum()){
+            logger.error("用户领取产品的数量大于待领取的数量");
+            responseDTO.setErrorInfo("用户领取产品的数量大于待领取的数量");
+            return responseDTO;
+        }
+        BigDecimal onePrice = relationDTO.getInitAmount().divide(new BigDecimal(relationDTO.getInitTimes()), 2, ROUND_HALF_DOWN);
         logger.info("单件产品的价格为={}", onePrice);
         BigDecimal consumeAmount = onePrice.multiply(new BigDecimal(consumeDTO.getConsumeNum()));
         consumeDTO.setConsumePrice(consumeAmount);
         logger.info("领取产品价值={}", consumeAmount);
 
-        relation = shopProductInfoService.getUserProductInfoList(relation).get(0);
-        relation.setSurplusAmount(relation.getSurplusAmount().subtract(consumeAmount));
-        relation.setSurplusTimes(relation.getSurplusTimes() - consumeDTO.getConsumeNum());
-        shopProductInfoService.updateShopUserProductRelation(relation);
-        return updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
+        relationDTO.setSurplusAmount(relationDTO.getSurplusAmount().subtract(consumeAmount));
+        relationDTO.setSurplusTimes(relationDTO.getSurplusTimes() - consumeDTO.getConsumeNum());
+        shopProductInfoService.updateShopUserProductRelation(relationDTO);
 
-
+        consumeDTO.setSysUserId(relationDTO.getSysUserId());
+        consumeDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
+        consumeDTO.setFlowId(relationDTO.getId());
+        consumeDTO.setConsumeName(relationDTO.getShopProductName());
+        updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
     }
 
     private String updateUserAccountDTO(SysClerkDTO clerkInfo, String transactionCodeNumber, ShopUserConsumeDTO consumeDTO) {
@@ -671,8 +695,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         //保存消费记录
         ShopUserConsumeRecordDTO consumeRecordDTO = new ShopUserConsumeRecordDTO();
         String uuid = IdGen.uuid();
-        consumeRecordDTO.setFlowId(uuid);
         consumeRecordDTO.setId(uuid);
+        consumeRecordDTO.setFlowId(consumeDTO.getFlowId());
+        consumeRecordDTO.setFlowName(consumeDTO.getConsumeName());
         consumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
         consumeRecordDTO.setCreateDate(new Date());
         consumeRecordDTO.setFlowNo(transactionCodeNumber);
@@ -685,11 +710,13 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
         consumeRecordDTO.setOperDate(new Date());
         consumeRecordDTO.setCreateBy(clerkInfo.getId());
+        consumeRecordDTO.setSignUrl(consumeDTO.getImageUrl());
         consumeRecordDTO.setConsumeNumber(consumeRecordDTO.getConsumeNumber());
         consumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
         consumeRecordDTO.setPrice(consumeRecordDTO.getPrice());
         consumeRecordDTO.setCreateDate(new Date());
-        consumeRecordDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
+        consumeRecordDTO.setSysUserId(consumeDTO.getSysUserId());
+        consumeRecordDTO.setGoodsType(consumeDTO.getGoodsType());
         shopUerConsumeRecordService.saveCustomerConsumeRecord(consumeRecordDTO);
         return consumeRecordDTO.getId();
     }

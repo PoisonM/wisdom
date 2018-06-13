@@ -91,7 +91,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			if (totalAmount == null) {
 				totalAmount = expenditureAndIncomeResponseDTO.getTotalPrice();
 			}else {
-				totalAmount=totalAmount.add(expenditureAndIncomeResponseDTO.getTotalPrice());
+				if(expenditureAndIncomeResponseDTO.getTotalPrice()!=null){
+					totalAmount=totalAmount.add(expenditureAndIncomeResponseDTO.getTotalPrice());
+				}
 			}
 		}
 		return totalAmount;

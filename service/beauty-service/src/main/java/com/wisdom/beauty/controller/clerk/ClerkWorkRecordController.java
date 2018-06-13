@@ -72,7 +72,7 @@ public class ClerkWorkRecordController {
         pageParamVoDTO.setStartTime(startTime);
         pageParamVoDTO.setEndTime(endTime);
         ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = new ShopClerkWorkRecordRequestDTO();
-        shopClerkWorkRecordRequestDTO.setSysClerkId(sysClerkDTO.getId());
+        shopClerkWorkRecordRequestDTO.setSysClerkId(clerkId);
 
         pageParamVoDTO.setRequestData(shopClerkWorkRecordRequestDTO);
 
