@@ -14,6 +14,7 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -202,9 +203,15 @@ public class UserConsumeController {
     @ResponseBody
     ResponseDTO<String> consumeCourseCard(
             @RequestBody ShopConsumeDTO<List<ShopUserConsumeDTO>> shopUserConsumeDTO) {
-
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO responseDTO = new ResponseDTO();
+        ShopUserConsumeDTO consumeDTO = shopUserConsumeDTO.getShopUserConsumeDTO().get(0);
+        if(StringUtils.isBlank(consumeDTO.getConsumeId()) || consumeDTO.getConsumeNum() == 0){
+            responseDTO.setErrorInfo("传入数据异常");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+
         int cardFlag = shopUserConsumeService.consumeCourseCard(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
         // 保存用户的操作记录
         responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
