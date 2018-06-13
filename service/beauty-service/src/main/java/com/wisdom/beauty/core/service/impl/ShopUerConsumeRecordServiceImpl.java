@@ -402,8 +402,11 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				shopProjectInfoDTO = new ShopProjectInfoDTO();
 				shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 				shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
-				shopProjectInfoDTO
-						.setDiscountPrice(dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+				if(dto.getProjectInitAmount()!=null && dto.getProjectInitTimes()!=null){
+					shopProjectInfoDTO
+							.setDiscountPrice(dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+				}
+
 				shopProjectInfos.add(shopProjectInfoDTO);
 			}
 		}
