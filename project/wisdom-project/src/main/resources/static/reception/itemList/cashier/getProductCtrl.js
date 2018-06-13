@@ -32,6 +32,7 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
         clerkId: '',
         consumeId: '',
         consumeNum: 1,
+        imageUrl:'',
         consumePrice: ''
     }
 
