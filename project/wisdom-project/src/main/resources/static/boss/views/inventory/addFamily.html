@@ -11,12 +11,12 @@
                  </span>
                 </ion-item>
                 <div>
-                    <p class="h45 sb bgfff bbl" >
+                    <p class="h45 sb bgfff bbl" ng-click="selShop()">
                         <span class="fs15 colff66">
                          <img src="images/inventory/fenShop.png" class="ml10 fenShopPic">
                          美容院分店
                      </span>
-                        <img src="images/more.png" class="more mr10" style="margin-top: 20px;" ng-click="selShop()">
+                        <img src="images/more.png" class="more mr10" style="margin-top: 20px;" >
                     </p>
                     <ul class="bgfff">
                         <li class="h50  ml20 bbl" style="display: flex" ng-repeat="item in addFamily" ng-click="mployeesDtails(item.id)" ui-sref="mployeesDtails({id:item.id})">
