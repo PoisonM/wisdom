@@ -125,7 +125,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
             }
 
             //疗程卡划卡
-            if($scope.params.type= 1){
+            if($scope.params.type== 1){
                 ConsumeCourseCard.save({
                     shopUserConsumeDTO: $scope.shopUserConsumeDTO
                 }, function(data) {
@@ -142,7 +142,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
 
 
         //套卡划卡
-        if($scope.params.type = 2){
+        if($scope.params.type == 2){
             ConsumesDaughterCard.save({
                 shopUserConsumeDTO: $scope.shopUserConsumeDTO
             }, function(data) {
