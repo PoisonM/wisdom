@@ -297,7 +297,7 @@ public class OrderController {
             shopUserArchivesDTO.setSysUserId(userOrderDTO.getUserId());
             shopUserArchivesDTO.setSysShopId(shopId);
             List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
-            if(CommonUtils.objectIsEmpty(shopUserArchivesInfo)){
+            if(CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)){
                 responseMap.put("userInfo",shopUserArchivesInfo.get(0));
             }
 
