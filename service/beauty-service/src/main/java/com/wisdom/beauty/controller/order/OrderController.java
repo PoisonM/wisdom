@@ -7,11 +7,9 @@ import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
-import com.wisdom.beauty.core.service.ShopCardService;
-import com.wisdom.beauty.core.service.ShopOrderService;
-import com.wisdom.beauty.core.service.ShopProjectGroupService;
-import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.core.service.*;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -65,6 +63,8 @@ public class OrderController {
 
     @Resource
     private ShopProjectService shopProjectService;
+    @Resource
+    private ShopCustomerArchivesService shopCustomerArchivesService;
 
     private final long orderOutTime = 10L;
 
@@ -229,17 +229,20 @@ public class OrderController {
                 //存储疗程卡列表
                 List<Object> periodProjectList = new ArrayList<>();
                 for(ShopUserProjectRelationDTO dto:projectInfo){
+
+                    ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(dto.getSysShopProjectId());
+                    dto.setSysShopProjectName(projectDetail.getProjectName());
                     //如果是疗程卡
                     if(CardTypeEnum.TREATMENT_CARD.getCode().equals(dto.getUseStyle())){
                         timeProjectList.add(dto);
-                        responseMap.put("timeProjectList",timeProjectList);
                     }
                     //单次卡
                     else{
                         periodProjectList.add(dto);
-                        responseMap.put("periodProjectList",periodProjectList);
                     }
                 }
+                responseMap.put("timeProjectList",timeProjectList);
+                responseMap.put("periodProjectList",periodProjectList);
             }
             //解析套卡
             List<ShopUserProjectGroupRelRelationDTO> projectGroupInfo = userOrderDTO.getProjectGroupRelRelationDTOS();
@@ -289,6 +292,15 @@ public class OrderController {
             responseDTO.setResponseData(responseMap);
             ShopUserPayDTO shopUserPayDTO = userOrderDTO.getShopUserPayDTO();
             responseMap.put("shopUserPayDTO",shopUserPayDTO);
+            //查询用户信息
+            ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+            shopUserArchivesDTO.setSysUserId(userOrderDTO.getUserId());
+            shopUserArchivesDTO.setSysShopId(shopId);
+            List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
+            if(CommonUtils.objectIsEmpty(shopUserArchivesInfo)){
+                responseMap.put("userInfo",shopUserArchivesInfo.get(0));
+            }
+
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
