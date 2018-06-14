@@ -194,7 +194,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 
         //查询某个店的充值卡特殊卡
         ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
-        shopRechargeCardDTO.setSysShopId(shopRechargeCardDTO.getSysShopId());
+        shopRechargeCardDTO.setSysShopId(shopUserArchivesDTO.getSysShopId());
         shopRechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
         ShopRechargeCardResponseDTO shopRechargeCard = shopRechargeCardService.getShopRechargeCard(shopRechargeCardDTO);
         if (null == shopRechargeCard) {
@@ -216,7 +216,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         rechargeCardDTO.setSysClerkName(shopUserArchivesDTO.getSysClerkName());
         rechargeCardDTO.setSysBossCode(shopUserArchivesDTO.getSysBossCode());
         rechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
-        rechargeCardDTO.setImageUrl(StringUtils.isBlank(shopRechargeCard.getImageUrl())?ImageEnum.SPECIAL_CARD.getCode():shopRechargeCard.getImageUrl());
+        rechargeCardDTO.setImageUrl(ImageEnum.SPECIAL_CARD.getDesc());
         int updateRechargeCard = shopRechargeCardService.saveShopUserRechargeCardInfo(rechargeCardDTO);
         logger.info("生成用户的特殊卡{}", updateRechargeCard > 0 ? "成功" : "失败");
         return shopUserArchivesMapper.insert(shopUserArchivesDTO);
