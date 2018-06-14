@@ -29,7 +29,7 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($rootScope.settingAddsome.editedRecharge.imageList.length>6){
+                if($rootScope.settingAddsome.editedRecharge.imageList.length>=6){
                     alert("图片上传不能大于6张")
                     return
                 }

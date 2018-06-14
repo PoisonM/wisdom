@@ -22,13 +22,13 @@
                             <div class="fs15 col333 ml10">
                                 <p style="display: inline-block" class="col col-33">{{item.flowName}}  </p>
                                 <p style="display: inline-block" class="col col-20">{{item.consumeNumber}}次 </p>
-                                <p style="display: inline-block" class="col col-50">
+                                <p style="display: inline-block" class="col col-40">
                                     <span ng-repeat="items in item.sysClerkNameList">{{items}}</span>({{item.sysShopName}})
                                 </p>
                             </div>
                         </div>
                         <p class="mr10 fs16 col333 col col-20" style="line-height: 70px">
-                            <img ng-src="{{item.signUrl}}">
+                            <img ng-src="{{item.signUrl}}" style="width:30px;height:30px;float: right;margin-top:11px;" ng-if="item.signUrl!=null||item.signUrl!=''">
                         </p>
 
                     </ion-item>

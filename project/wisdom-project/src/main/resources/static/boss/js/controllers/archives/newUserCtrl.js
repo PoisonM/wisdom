@@ -58,23 +58,24 @@ angular.module('controllers',[]).controller('newUserCtrl',
             };
             $scope.pho = function () {
                 if(!(/^1[34578]\d{9}$/.test($scope.newUser.phone))){
-                    alert("手机号格式不正确")
+                    alert("手机号格式不正确");
+                    $scope.newUser.phone = ''
                 }
 
             }
 
             /*更新保存*/
             $scope.preservation=function () {
+                if($scope.newUser.phone==''||$scope.newUser.sysUserName==""){
+                    alert("请检查您的档案信息");
+                    return
+                }
                 if($stateParams.id==""){
                     $scope.shopUserArchivesDTO=$scope.newUser;
                     /*新建保存接口*/
-                    if(phoneReg.test( $scope.newUser.phone)||$scope.newUser.sysUserName!=""){
-                        SaveArchiveInfo.save($scope.shopUserArchivesDTO,function (data) {
-                            $state.go("partialFiles");
-                        })
-                    }else {
-                      alert("请检查您的档案信息")
-                    }
+                    SaveArchiveInfo.save($scope.shopUserArchivesDTO,function (data) {
+                        $state.go("partialFiles");
+                    })
                 }else {
                     $scope.userInformation=$scope.newUser;
                     /*修改档案更新保存*/
