@@ -373,12 +373,6 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         shopUserArchivesDTO.setSysBossCode(sysBossCode);
         int info = saveShopUserArchivesInfo(shopUserArchivesDTO);
         logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");
-        //生成用户的特殊账号
-        ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
-        shopUserRechargeCardDTO.setSysShopId(sysShopId);
-        shopUserRechargeCardDTO.setSysUserId(shopUserArchivesDTO.getSysUserId());
-        shopUserRechargeCardDTO.setSysUserName(shopUserArchivesDTO.getSysUserName());
-        shopCardService.saveUserSpecialRechargeCardInfo(shopUserRechargeCardDTO);
         //创建用户账户
         buildUserAccount(shopUserArchivesDTO, sysBossCode, sysShopId);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());
