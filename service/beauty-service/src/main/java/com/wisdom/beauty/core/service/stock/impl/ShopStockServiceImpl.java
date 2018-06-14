@@ -21,6 +21,7 @@ import com.wisdom.common.util.StringUtils;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.poi.hssf.record.RKRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -181,10 +183,21 @@ public class ShopStockServiceImpl implements ShopStockService {
 			logger.info("返回的集合为空");
 			return null;
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 		ShopStockRecordDTO shopStockRecord = list.get(0);
+		shopStockRecord.setCreateDateTime(sdf.format(list.get(0).getCreateDate()));
 		String id = shopStockRecord.getId();
 		// 根据id查询，shop_stock的入库，出库产品记录
 		ShopProductInfoResponseDTO shopProductInfoResponseDTO = null;
+
+		List<ShopStoreDTO> StoreList = this.findStoreList(shopStockRecord.getSysBossCode());
+		for(ShopStoreDTO store:StoreList){
+			if(store.getId().equals(shopStockRecord.getShopStoreId())){
+				shopStockRecord.setName(store.getName());
+			}
+		}
+
 		if (StringUtils.isBlank(id)) {
 			logger.info("库存记录为空");
 			return null;
@@ -242,6 +255,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockResponseDTO.setDetail(shopStockRecord.getDetail());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
+		shopStockResponseDTO.setCreateDate(shopStockRecord.getCreateDate());
 		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())
 				|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())) {
 			shopStockResponseDTO.setStockStatus(StockStyleEnum.IN_STORAGE.getCode());
@@ -286,8 +300,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 				c.andStockStyleIn(styles);
 			}
 		}
-		if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
-				&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+		if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
 			Date startDate = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
 			Date endDate = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
 			c.andCreateDateBetween(startDate, endDate);
@@ -342,51 +355,68 @@ public class ShopStockServiceImpl implements ShopStockService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String insertShopStockDTO(String shopStockRequest) {
+
 		logger.info("insertShopStockDTO方法入参shopStockRequest={}", shopStockRequest);
+
 		if (StringUtils.isBlank(shopStockRequest)) {
 			logger.info("insertShopStockDTO方法出入的参数shopStockRequest为空");
 		}
+
 		ShopStockRequestDTO[] shopStockRequestDTOArray = (ShopStockRequestDTO[]) JSONArray
 				.toArray(JSONArray.fromObject(shopStockRequest), ShopStockRequestDTO.class);
 		List<ShopStockRequestDTO> shopStockRequestDTO = Arrays.asList(shopStockRequestDTOArray);
+
 		if (CollectionUtils.isEmpty(shopStockRequestDTO)) {
 			logger.info("转换出来的集合shopStocks为空");
 			return null;
 		}
-		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
-		// 入库记录插入
-		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 
+		//开始执行入库/出库
+		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
 		String id = IdGen.uuid();
 		shopStockRecordDTO.setSysBossCode(sysBossDTO.getSysBossCode());
 		shopStockRecordDTO.setShopStoreId(shopStockDto.getShopStoreId());
 		shopStockRecordDTO.setId(id);
 		shopStockRecordDTO.setCreateDate(new Date());
-		shopStockRecordDTO.setFlowNo(shopStockDto.getFlowNo());
+		shopStockRecordDTO.setStockStyle(shopStockDto.getStockStyle());
 		shopStockRecordDTO.setDetail(shopStockDto.getDetail());
 		shopStockRecordDTO.setManagerId(sysBossDTO.getSysBossCode());
-		// 判断是出库还是入库
-		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())
-				|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
-			// 此时是入库
-			shopStockRecordDTO.setStockType(StockTypeEnum.PURCHASE_IN_STORAGE.getCode());
-		}
-		if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())
-				|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
-			// 此时是出库
-			shopStockRecordDTO.setStockType(shopStockDto.getStockType());
-			shopStockRecordDTO.setStockStyle(shopStockDto.getStockType());
-			shopStockRecordDTO.setReceiver(shopStockDto.getReceiver());
-		}
 		shopStockRecordDTO.setCreateDate(new Date());
-		shopStockRecordDTO.setUpdateDate(new Date());
+
+		//生成单据号
+		Random random = new Random();
+		String result="";
+		for (int i=0;i<6;i++)
+		{
+			result+=random.nextInt(10);
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		StringBuilder flowNo = new StringBuilder();
+		// 判断是出库还是入库
+		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
+
+			shopStockRecordDTO.setStockType(StockTypeEnum.PURCHASE_IN_STORAGE.getCode());
+			flowNo.append("RK").append("-").append(sdf.format(new Date())).append("-").append(result);
+			shopStockRecordDTO.setFlowNo(flowNo.toString());
+		}else if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
+
+			shopStockRecordDTO.setStockType(shopStockDto.getStockType());
+			shopStockRecordDTO.setStockStyle(shopStockDto.getStockStyle());
+			shopStockRecordDTO.setReceiver(shopStockDto.getReceiver());
+			flowNo.append("CK").append("-").append(sdf.format(new Date())).append("-").append(result);
+			shopStockRecordDTO.setFlowNo(flowNo.toString());
+		}
+
+		//插入出入库记录
 		this.insertStockRecord(shopStockRecordDTO);
-		// 记录插入结束
+
 		List<ShopStockDTO> shopStockDTOList = new ArrayList<>();
 		List<String> productIds = new ArrayList<>();
 		ShopStockDTO shopStockDTO = null;
 		Map<String, ShopStockRequestDTO> map = new HashedMap();
+
 		// 遍历传入过来的集合参数
 		for (ShopStockRequestDTO shopStock : shopStockRequestDTO) {
 			shopStockDTO = new ShopStockDTO();
@@ -395,26 +425,28 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockDTO.setCreateDate(new Date());
 			shopStockDTO.setUpdateDate(new Date());
 			shopStock.setShopBossId(sysBossDTO.getId());
+
 			// 将record表总的id放入shopStockDTO中
 			shopStockDTO.setShopStockRecordId(shopStockRecordDTO.getId());
+
 			// 判断的出库还是入库
-			if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())
-					|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
+			if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
 				// 此时是入库
 				shopStockDTO.setStockNumber(shopStock.getStockNumber());
-			}
-			if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())
-					|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
+			}else if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
 				// 此时是出库
-				shopStockDTO.setOutStockNumber(shopStock.getStockNumber());
+				shopStockDTO.setOutStockNumber(shopStock.getStockOutNumber());
 			}
 			shopStockDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+			shopStockDTO.setFlowNo(flowNo.toString());
 			shopStockDTOList.add(shopStockDTO);
 			productIds.add(shopStock.getShopProcId());
 			map.put(shopStock.getShopProcId(), shopStock);
 		}
 		extShopStockMapper.insertBatchShopStock(shopStockDTOList);
 		// 更新数量,如果shop_stock_number中没有数据插入。有则更新
+
+
 		// 根据产品查询
 		List<ShopStockNumberDTO> shopStockNumberDTOs = this.getShopStockNumberBy(productIds);
 		// 需要更新的List集合
@@ -424,19 +456,16 @@ public class ShopStockServiceImpl implements ShopStockService {
 			if (map.get(shopStockNumber.getShopProcId()) != null) {
 				// 需要更新的
 				// 判断是出库还是入库。入库需要加，出库需要减
-				if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())
-						|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
+				if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
 					// 此时是入库
 					shopStockNumber.setStockNumber(shopStockNumber.getStockNumber()
 							+ map.get(shopStockNumber.getShopProcId()).getStockNumber());
-				}
-				if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())
-						|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
+				}else if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
 					// 此时是出库
-					shopStockNumber.setStockNumber(shopStockNumber.getStockNumber()
-							- map.get(shopStockNumber.getShopProcId()).getStockNumber());
+					shopStockNumber.setStockNumber(shopStockNumber.getStockNumber()- map.get(shopStockNumber.getShopProcId()).getStockOutNumber());
 				}
 				updateShopStockNumber.add(shopStockNumber);
+
 				// 出去map中需要更新的，剩下的就是需要插入的
 				map.remove(shopStockNumber.getShopProcId());
 			}
@@ -444,18 +473,20 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 		// 判断updateShopStockNumber是否为空，如果为空则不需要批量更新库存量
 		if (CollectionUtils.isNotEmpty(updateShopStockNumber)) {
-			extShopStockNumberMapper.updateBatchShopStockNumberCondition(updateShopStockNumber);
+				extShopStockNumberMapper.updateBatchShopStockNumberCondition(updateShopStockNumber);
 		}
+
 		// 获取需要插入的对象，然后遍历
 		Collection<ShopStockRequestDTO> values = map.values();
+
 		// 需要插入的List集合
 		List<ShopStockNumberDTO> saveShopStockNumber = new ArrayList<>();
 		if (CollectionUtils.isEmpty(values)) {
 			logger.info("values为空不需要更新");
 			return id;
 		}
-		// 查询产品信息，用户获取到
 
+		// 查询产品信息，用户获取到
 		ShopStockNumberDTO shopStockNumberDTO = null;
 		for (ShopStockRequestDTO addShopStockRequest : values) {
 			shopStockNumberDTO = new ShopStockNumberDTO();
@@ -464,6 +495,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockNumberDTO.setSysBossCode(sysBossDTO.getId());
 			shopStockNumberDTO.setShopProcId(addShopStockRequest.getShopProcId());
 			shopStockNumberDTO.setShopStoreId(addShopStockRequest.getShopStoreId());
+			shopStockNumberDTO.setStockPrice(addShopStockRequest.getStockPrice());
 			shopStockNumberDTO.setProductTypeTwoId(addShopStockRequest.getProductTypeTwoId());
 			shopStockNumberDTO.setUpdateDate(new Date());
 			shopStockNumberDTO.setCreateDate(new Date());
@@ -768,12 +800,16 @@ public class ShopStockServiceImpl implements ShopStockService {
 							shopStockNumber.getStockPrice().multiply(new BigDecimal(shopStockNumber.getStockNumber())));
 				}
 			}
-			// 计算占用总成
+			//计算占用总成
 			if (allUseCost == null) {
-				allUseCost = shopStockNumber.getStockPrice().multiply(new BigDecimal(shopStockNumber.getStockNumber()));
+				if(shopStockNumber.getStockNumber()!=null&&shopStockNumber.getStockPrice()!=null){
+					allUseCost = shopStockNumber.getStockPrice().multiply(new BigDecimal(shopStockNumber.getStockNumber()));
+				}
 			} else {
-				allUseCost = allUseCost.add(
-						shopStockNumber.getStockPrice().multiply(new BigDecimal(shopStockNumber.getStockNumber())));
+				if(shopStockNumber.getStockNumber()!=null&&shopStockNumber.getStockPrice()!=null){
+					allUseCost = allUseCost.add(
+							shopStockNumber.getStockPrice().multiply(new BigDecimal(shopStockNumber.getStockNumber())));
+				}
 			}
 		}
 		Map<String, Object> map = new HashMap<>();
