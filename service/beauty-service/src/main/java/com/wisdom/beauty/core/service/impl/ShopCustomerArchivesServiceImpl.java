@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
@@ -215,6 +216,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         rechargeCardDTO.setSysClerkName(shopUserArchivesDTO.getSysClerkName());
         rechargeCardDTO.setSysBossCode(shopUserArchivesDTO.getSysBossCode());
         rechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
+        rechargeCardDTO.setImageUrl(StringUtils.isBlank(shopRechargeCard.getImageUrl())?ImageEnum.SPECIAL_CARD.getCode():shopRechargeCard.getImageUrl());
         int updateRechargeCard = shopRechargeCardService.saveShopUserRechargeCardInfo(rechargeCardDTO);
         logger.info("生成用户的特殊卡{}", updateRechargeCard > 0 ? "成功" : "失败");
         return shopUserArchivesMapper.insert(shopUserArchivesDTO);
@@ -329,6 +331,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             userInfoDTO.setCreateDate(new Date());
             userInfoDTO.setUserType(ConfigConstant.beautySource);
             userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
+            userInfoDTO.setPhoto(StringUtils.isBlank(shopUserArchivesDTO.getPhone())? ImageEnum.USER_HEAD.getDesc():shopUserArchivesDTO.getPhone());
             logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
             userServiceClient.insertUserInfo(userInfoDTO);
         } else {
@@ -364,6 +367,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
         shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
         shopUserArchivesDTO.setCreateDate(new Date());
+        shopUserArchivesDTO.setImageUrl(StringUtils.isBlank(shopUserArchivesDTO.getPhone())? ImageEnum.USER_HEAD.getDesc():shopUserArchivesDTO.getPhone());
         shopUserArchivesDTO.setSysShopId(sysShopId);
         SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
         if (null != shopInfoByPrimaryKey) {
