@@ -1,6 +1,6 @@
 var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize', "ngTouch"]);
-var version = "1.0."+Math.random()+""
-// var version = "1.0"
+// var version = "1.0."+Math.random()+""
+var version = "1.0"
 PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterProvider",
     function($provide, $compileProvider, $controllerProvider, $filterProvider) {
         PADWeb.controller = $controllerProvider.register;
@@ -507,6 +507,9 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         files: [root + "cashier/drawCardConsumptionCtrl.js?version=" + version,
                             root + "cashier/drawCardConsumption.css?version=" + version,
                             root + "appointment/style.css?version=" + version,
+                            root + "cashier/flashcanvas.min.js?version=" + version,
+                            root + "cashier/jSignature.min.js?version=" + version,
+                            root + "cashier/flashcanvas.swf?version=" + version,
                         ]
                     })
                 }]
@@ -543,7 +546,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.prepaidRecords', {
-            url: '/prepaidRecords',
+            url: '/prepaidRecords/:userId',
             templateUrl: root + '/cashier/prepaidRecords.html',
             controller: 'prepaidRecordsCtrl',
             resolve: {
@@ -558,7 +561,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.drawCardRecords', {
-            url: '/drawCardRecords',
+            url: '/drawCardRecords/:userId',
             templateUrl: root + '/cashier/drawCardRecords.html',
             controller: 'drawCardRecordsCtrl',
             resolve: {
@@ -588,7 +591,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.accountRecords', {
-            url: '/accountRecords',
+            url: '/accountRecords/:userId',
             templateUrl: root + '/cashier/accountRecords.html',
             controller: 'accountRecordsCtrl',
             resolve: {

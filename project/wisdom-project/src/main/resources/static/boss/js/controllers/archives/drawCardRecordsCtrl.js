@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('drawCardRecordsCtrl',
             $rootScope.title = "划卡记录";
            $scope.goDrawCardRecordsDetail=function (flowNo) {
                $state.go("drawCardRecordsDetail",{flowNo:flowNo})
-           }
+           };
 
             UserStampCardRecordList.get({sysUserId:$stateParams.sysUserId},function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){

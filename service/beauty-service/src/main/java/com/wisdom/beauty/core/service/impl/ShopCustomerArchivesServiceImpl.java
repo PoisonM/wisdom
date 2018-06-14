@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
@@ -108,6 +109,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
         }
         //参数
+        if(StringUtils.isNotBlank(requestData.getSysBossCode())){
+            c.andSysBossCodeEqualTo(requestData.getSysBossCode());
+        }
         if (StringUtils.isNotBlank(requestData.getSysShopId())) {
             c.andSysShopIdEqualTo(requestData.getSysShopId());
         }
@@ -120,7 +124,15 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         if (StringUtils.isNotBlank(requestData.getSysUserName())) {
             or.andSysUserNameLike("%" + requestData.getSysUserName() + "%");
         }
-
+        if(StringUtils.isNotBlank(requestData.getSysBossCode())){
+            or.andSysBossCodeEqualTo(requestData.getSysBossCode());
+        }
+        if (StringUtils.isNotBlank(requestData.getSysShopId())) {
+            or.andSysShopIdEqualTo(requestData.getSysShopId());
+        }
+        if (StringUtils.isNotBlank(requestData.getId())) {
+            or.andIdEqualTo(requestData.getId());
+        }
         criteria.or(or);
         List<ShopUserArchivesDTO> shopCustomerArchiveslist = shopUserArchivesMapper.selectByCriteria(criteria);
 
@@ -182,7 +194,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 
         //查询某个店的充值卡特殊卡
         ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
-        shopRechargeCardDTO.setSysShopId(shopRechargeCardDTO.getSysShopId());
+        shopRechargeCardDTO.setSysShopId(shopUserArchivesDTO.getSysShopId());
         shopRechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
         ShopRechargeCardResponseDTO shopRechargeCard = shopRechargeCardService.getShopRechargeCard(shopRechargeCardDTO);
         if (null == shopRechargeCard) {
@@ -204,6 +216,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         rechargeCardDTO.setSysClerkName(shopUserArchivesDTO.getSysClerkName());
         rechargeCardDTO.setSysBossCode(shopUserArchivesDTO.getSysBossCode());
         rechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());
+        rechargeCardDTO.setImageUrl(ImageEnum.SPECIAL_CARD.getDesc());
         int updateRechargeCard = shopRechargeCardService.saveShopUserRechargeCardInfo(rechargeCardDTO);
         logger.info("生成用户的特殊卡{}", updateRechargeCard > 0 ? "成功" : "失败");
         return shopUserArchivesMapper.insert(shopUserArchivesDTO);
@@ -294,8 +307,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
-        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+    public ResponseDTO<Object> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         //查询是否已存在档案信息
         List<ShopUserArchivesDTO> shopUserArchivesInfo = getShopUserArchivesInfo(shopUserArchivesDTO);
         if (CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)) {
@@ -318,6 +331,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             userInfoDTO.setCreateDate(new Date());
             userInfoDTO.setUserType(ConfigConstant.beautySource);
             userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
+            userInfoDTO.setPhoto(StringUtils.isBlank(shopUserArchivesDTO.getPhone())? ImageEnum.USER_HEAD.getDesc():shopUserArchivesDTO.getPhone());
             logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
             userServiceClient.insertUserInfo(userInfoDTO);
         } else {
@@ -353,6 +367,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
         shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
         shopUserArchivesDTO.setCreateDate(new Date());
+        shopUserArchivesDTO.setImageUrl(StringUtils.isBlank(shopUserArchivesDTO.getPhone())? ImageEnum.USER_HEAD.getDesc():shopUserArchivesDTO.getPhone());
         shopUserArchivesDTO.setSysShopId(sysShopId);
         SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
         if (null != shopInfoByPrimaryKey) {
@@ -362,12 +377,6 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         shopUserArchivesDTO.setSysBossCode(sysBossCode);
         int info = saveShopUserArchivesInfo(shopUserArchivesDTO);
         logger.info("生成用户的档案信息{}", info > 0 ? "成功" : "失败");
-        //生成用户的特殊账号
-        ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
-        shopUserRechargeCardDTO.setSysShopId(sysShopId);
-        shopUserRechargeCardDTO.setSysUserId(shopUserArchivesDTO.getSysUserId());
-        shopUserRechargeCardDTO.setSysUserName(shopUserArchivesDTO.getSysUserName());
-        shopCardService.saveUserSpecialRechargeCardInfo(shopUserRechargeCardDTO);
         //创建用户账户
         buildUserAccount(shopUserArchivesDTO, sysBossCode, sysShopId);
         responseDTO.setResponseData(BusinessErrorCode.SUCCESS.getCode());

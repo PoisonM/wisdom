@@ -106,6 +106,10 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		if (StringUtils.isNotBlank(shopRechargeCardDTO.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(shopRechargeCardDTO.getSysShopId());
 		}
+		
+		if(StringUtils.isNotBlank(shopRechargeCardDTO.getRechargeCardType())){
+		    criteria.andRechargeCardTypeEqualTo(shopRechargeCardDTO.getRechargeCardType());
+		}
 
 		List<ShopRechargeCardDTO> list = shopRechargeCardMapper.selectByCriteria(shopRechargeCardCriteria);
 		if (CollectionUtils.isEmpty(list)) {

@@ -26,9 +26,9 @@ PADWeb.controller('accountRecordsCtrl', function($scope, $state, $stateParams, n
     $scope.flagFn(true)
 
     $scope.goPrepaidRecords = function() {
-        $state.go('pad-web.left_nav.prepaidRecords');
+        $state.go('pad-web.left_nav.prepaidRecords',{userId:$state.params.userId});
     }
     $scope.goDrawCardRecords = function() {
-        $state.go('pad-web.left_nav.drawCardRecords')
+        $state.go('pad-web.left_nav.drawCardRecords',{userId:$state.params.userId})
     }
 });

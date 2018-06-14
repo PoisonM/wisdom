@@ -2,12 +2,13 @@
     <div class="signConfirmLeft">
         <div class="signConfirmLeftTitle clearfix">
             <span ng-if="rechargeConsumeFlag" class="signConfirmLeftTitleName">{{responseData.userName}}</span>
-            <span ng-if="!rechargeConsumeFlag"class="signConfirmLeftTitleName">{{consumeListInfo.sysUserName}}</span>
+            <span ng-if="!rechargeConsumeFlag"class="signConfirmLeftTitleName">{{userInfo.sysUserName}}</span>
             <span class="signConfirmLeftTitleType">
                 <e ng-if="rechargeConsumeFlag">充值明细</e>
                 <e ng-if="!rechargeConsumeFlag">消费明细</e>
             </span>
         </div>
+        <!--充值明细-->
         <div ng-if="rechargeConsumeFlag" class="signConfirmLeftContent">
             <div class="signConfirmLeftContentTitle">充值</div>
             <ul>
@@ -62,47 +63,156 @@
             </ul>
         </div>
 
-
+        <!--消费明细-->
         <div ng-if="!rechargeConsumeFlag"  class="signConfirmLeftContent">
-            <div ng-repeat="consumeItem in consumeListInfo.userConsumeRecordResponseList">
-                <div ng-if="consumeItem.goodsType == 0" class="signConfirmLeftContentTitle">单次</div>
-                <div ng-if="consumeItem.goodsType == 1" class="signConfirmLeftContentTitle">疗程卡</div>
-                <div ng-if="consumeItem.goodsType == 2" class="signConfirmLeftContentTitle">充值卡</div>
-                <div ng-if="consumeItem.goodsType == 3" class="signConfirmLeftContentTitle">套卡</div>
-                <p>{{consumeItem.flowName}}</p>
-                <ul>
-                    <li ng-if="consumeItem.goodsType != 0">
-                        <span class="name">包含次数</span>
-                        <span class="type">{{consumeItem.includeTimes}}</span>
-                    </li>
-                    <li>
-                        <span class="name">折后价</span>
-                        <span class="type">¥{{consumeItem.price}}</span>
-                    </li>
-                    <li>
-                        <span class="name">折扣</span>
-                        <span class="type">¥{{consumeItem.discount}}</span>
-                    </li>
-                    <li>
-                        <span class="name">数量</span>
-                        <span class="type">¥{{consumeItem.consumeNumber}}</span>
-                    </li>
-                    <li>
-                        <span class="name">金额</span>
-                        <span class="type">¥{{consumeItem.sumAmount}}</span>
-                    </li>
-                    <li ng-if="consumeItem.goodsType == 3">
-                        <span class="name">包含项目</span>
-                        <div class="xiangmu_info">
-                            <ul>
-                                <li ng-repeat="projectItem in consumeItem.shopProjectInfoDTOList">
-                                    {{projectItem.projectName}}*{{projectItem.serviceTimes}}
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
+            <!--单次-->
+            <div>
+                <div ng-repeat="timeItem in timeProjectList">
+                    <div class="signConfirmLeftContentTitle">单次</div>
+                    <p>{{timeItem.sysShopProjectName}}</p>
+                    <ul>
+                        <li ng-if="consumeItem.goodsType != 0">
+                            <span class="name">包含次数</span>
+                            <span class="type">{{timeItem.sysShopProjectInitTimes}}</span>
+                        </li>
+                        <li>
+                            <span class="name">折后价</span>
+                            <span class="type">¥{{timeItem.sysShopProjectPurchasePrice}}</span>
+                        </li>
+                        <li>
+                            <span class="name">折扣</span>
+                            <span class="type">¥{{timeItem.discount}}</span>
+                        </li>
+                        <li>
+                            <span class="name">数量</span>
+                            <span class="type">¥{{timeItem.sysShopProjectInitTimes}}</span>
+                        </li>
+                        <li>
+                            <span class="name">金额</span>
+                            <span class="type">¥{{timeItem.sysShopProjectPurchasePrice}}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
+            <!--疗程-->
+            <div>
+                <div ng-repeat="periodItem in periodProjectList">
+                    <div class="signConfirmLeftContentTitle">疗程卡</div>
+                    <p>{{periodItem.sysShopProjectName}}</p>
+                    <ul>
+                        <li>
+                            <span class="name">包含次数</span>
+                            <span class="type">{{periodItem.serviceTime}}</span>
+                        </li>
+                        <li>
+                            <span class="name">折后价</span>
+                            <span class="type">¥{{periodItem.sysShopProjectPurchasePrice}}</span>
+                        </li>
+                        <li>
+                            <span class="name">折扣</span>
+                            <span class="type">¥{{periodItem.discount}}</span>
+                        </li>
+                        <li>
+                            <span class="name">数量</span>
+                            <span class="type">¥{{periodItem.sysShopProjectInitTimes}}</span>
+                        </li>
+                        <li>
+                            <span class="name">金额</span>
+                            <span class="type">¥{{periodItem.sysShopProjectInitAmount}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--套卡-->
+            <div>
+                <div ng-repeat="groupItem in groupList">
+                    <div class="signConfirmLeftContentTitle">套卡</div>
+                    <p>{{groupItem.shopProjectGroupName}}</p>
+                    <ul>
+                        <li>
+                            <span class="name">包含次数</span>
+                            <span class="type">{{groupItem.shopProjectServiceTimes}}</span>
+                        </li>
+                        <li>
+                            <span class="name">折后价</span>
+                            <span class="type">¥{{groupItem.shopGroupPuchasePrice}}</span>
+                        </li>
+                        <li>
+                            <span class="name">折扣</span>
+                            <span class="type">¥{{groupItem.discount}}</span>
+                        </li>
+                        <li>
+                            <span class="name">数量</span>
+                            <span class="type">¥{{groupItem.number}}</span>
+                        </li>
+                        <li>
+                            <span class="name">金额</span>
+                            <span class="type">¥{{groupItem.shopGroupPuchasePrice}}</span>
+                        </li>
+                        <li >
+                            <span class="name">包含项目</span>
+                            <div class="xiangmu_info">
+                                <ul>
+                                    <li ng-repeat="projectItem in groupItem.containProject">
+                                        {{projectItem.shopProjectInfoName}}*{{projectItem.shopProjectServiceTimes}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--产品-->
+            <div>
+                <div ng-repeat="productItem in productList">
+                    <div class="signConfirmLeftContentTitle">产品</div>
+                    <p>{{productItem.shopProductName}}</p>
+                    <ul>
+                        <li ng-if="consumeItem.goodsType != 0">
+                            <span class="name">包含次数</span>
+                            <span class="type">{{productItem.initTimes}}</span>
+                        </li>
+                        <li>
+                            <span class="name">折后价</span>
+                            <span class="type">¥{{productItem.purchasePrice}}</span>
+                        </li>
+                        <li>
+                            <span class="name">折扣</span>
+                            <span class="type">{{productItem.discount}}</span>
+                        </li>
+                        <li>
+                            <span class="name">数量</span>
+                            <span class="type">¥{{productItem.initTimes}}</span>
+                        </li>
+                        <li>
+                            <span class="name">金额</span>
+                            <span class="type">¥{{productItem.purchasePrice}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div class="signConfirmLeftContentTitle">支付明细</div>
+            <ul>
+                <li ng-if="shopUserPayDTO.payType==0">
+                    <span class="name">银行卡支付</span>
+                    <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
+                </li>
+                <li ng-if="shopUserPayDTO.payType==1">
+                    <span class="name">支付宝</span>
+                    <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
+                </li>
+                <li ng-if="shopUserPayDTO.payType==2">
+                    <span class="name">微信支付</span>
+                    <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
+                </li>
+                <li ng-if="shopUserPayDTO.payType==3">
+                    <span class="name">现金支付</span>
+                    <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
+                </li>
+            </ul>
         </div>
 
     </div>

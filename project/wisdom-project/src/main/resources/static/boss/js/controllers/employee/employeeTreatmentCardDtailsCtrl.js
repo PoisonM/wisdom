@@ -35,6 +35,6 @@ angular.module('controllers',[]).controller('employeeTreatmentCardDtailsCtrl',
 
             /*点击顾客签字*/
             $scope.drawCardRecordsDetailGO=function () {
-                $state.go("drawCardRecordsDetail")
+                $state.go("employeeDrawCardRecordsDetail")
             }
         }]);

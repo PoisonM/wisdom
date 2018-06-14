@@ -12,7 +12,7 @@ angular.module('controllers',["ionic-datepicker"]).controller('employeeComprehen
                 expenditure:0,
                 startDate : BossUtil.getNowFormatDate(),
                 date:BossUtil.getNowFormatDate()
-            }
+            };
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
 
@@ -33,7 +33,7 @@ angular.module('controllers',["ionic-datepicker"]).controller('employeeComprehen
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.date =$filter('date')(val, 'yyyy-MM-dd')
+                    $scope.param.date =$filter('date')(val, 'yyyy-MM-dd');
                     $scope.getInfo();
                 }
             };

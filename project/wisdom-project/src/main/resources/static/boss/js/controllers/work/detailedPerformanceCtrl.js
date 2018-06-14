@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/2.
  */
 angular.module('controllers',[]).controller('detailedPerformanceCtrl',
-    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",'GetClerkPerformanceListClerk',
-        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk) {
+    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",'GetClerkPerformanceListClerk','$ionicScrollDelegate',
+        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk,$ionicScrollDelegate) {
 
             $rootScope.title = "业绩明细";
             $scope.flag = false;
@@ -33,15 +33,13 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
 
                 })
             }
-            console.log($stateParams.sysClerkId);
-            console.log($stateParams.sysShopId);
-            console.log($scope.userConsumeRequest);
 
             $scope.expenditureDetailsGo = function(flowNo){
                 $state.go("details",{flowNo:flowNo})
             }
             $scope.sel = function(){
-                $scope.flag = true
+                $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
+                $scope.flag = true;
             };
             $scope.all=function () {
                 $scope.flag = false

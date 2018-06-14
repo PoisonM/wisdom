@@ -106,7 +106,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                 if($rootScope.settingAddsome.editorCard.imageList == null){
                     $rootScope.settingAddsome.editorCard.imageList=[]
                 }
-                if($rootScope.settingAddsome.editorCard.imageList.length>6){
+                if($rootScope.settingAddsome.editorCard.imageList.length>=6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -161,6 +161,18 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                 }
                 if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.discountPrice ==''|| $rootScope.settingAddsome.editorCard.effectiveDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''||$rootScope.settingAddsome.editorCard.marketPrice ==null||$rootScope.settingAddsome.editorCard.discountPrice ==null){
                     alert('信息不完整');
+                    return
+                }
+
+                var effectiveDate=$rootScope.settingAddsome.editorCard.effectiveDate;
+                effectiveDate = effectiveDate.replace(/-/g,"/");//替换字符，变成标准格式
+                var expirationDate = $rootScope.settingAddsome.editorCard.expirationDate;
+                expirationDate = expirationDate.replace(/-/g,"/");//替换字符，变成标准格式
+                var d1 = new Date(Date.parse(effectiveDate));
+                var d2 =  new Date(Date.parse(expirationDate));
+
+                if(d1>d2){
+                    alert("生效日期大于活动有效期");
                     return
                 }
                 UpdateProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){

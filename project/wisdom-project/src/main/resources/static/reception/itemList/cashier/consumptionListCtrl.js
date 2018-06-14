@@ -1,7 +1,8 @@
 PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, ngDialog, Archives, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, ThreeLevelProject, productInfoThreeLevelProject, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo, GetConsumeDisplayIds) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
-    $scope.$parent.param.top_bottomSelect = "jiamubiao";
+    $scope.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.param.headerPrice.title = "消费";
+    $scope.$parent.param.headerPrice.saveContent = "确认"
     $scope.flagFn = function (bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool;
@@ -256,9 +257,6 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     $scope.$parent.priceListSaveFn = function () {
         $state.go('pad-web.left_nav.makeSureOrder',{"userId":$stateParams.userId})
     }
-
-    /*$scope.$parent.leftTipFn = function() {
-        $state.go('pad-web.left_nav.makeSureOrder',{"userId":$stateParams.userId})
-    }*/
+    
 
 });

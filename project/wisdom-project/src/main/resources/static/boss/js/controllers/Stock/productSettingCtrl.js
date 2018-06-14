@@ -25,6 +25,10 @@ angular.module('controllers',[]).controller('productSettingCtrl',
                  }else {
                      $stateParams.status="1"
                  }
+                 if($scope.param.productTypeName == ''){
+                     alert("请输入品牌名称");
+                     return
+                 }
                  if($scope.param.editType=="add"){
 
                      SaveProductTypeInfo.get({productTypeName:$scope.param.productTypeName,status:$stateParams.status},function (data) {

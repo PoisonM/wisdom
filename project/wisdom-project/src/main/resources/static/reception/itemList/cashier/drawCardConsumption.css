@@ -1,3 +1,179 @@
-.productMess {
-    padding: 10px;
+.drawCardConsumption{
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    background-color: #F2F2F2;
+}
+.drawCardConsumption_box{
+    width: 100%;
+}
+.drawCardConsumption_box .card_details{
+    height: 80px;
+    width: 100%;
+    padding: 15px;
+}
+.drawCardConsumption_box .card_details_box{
+    position: relative;
+}
+.drawCardConsumption_box .card_details p{
+    font-family: PingFangSC-Semibold;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0.8px;
+}
+
+.drawCardConsumption_box .close_img{
+    width: 0.19531rem;
+    height: 0.19531rem;
+    display: inline-block;
+    background: url("../../images/bt_shut down b.png") no-repeat;
+    background-size: 100%;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+.drawCardConsumption_box .card_price_box {
+    margin-top: 15px;
+}
+.drawCardConsumption_box .card_price_box .price{
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF6666;
+    letter-spacing: 0;
+
+}
+
+.drawCardConsumption_box .card_price_box span{
+    font-family: PingFangSC-Semibold;
+    font-size: 21px;
+    color: #FF6666;
+    letter-spacing: 0;
+    line-height: 22px;
+}
+
+.drawCardConsumption_box .card_price_box span e{
+    font-size: 14px;
+}
+
+.drawCardConsumption_box .ullist_sty{
+    background-color: #ffffff;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.drawCardConsumption_box .ullist_sty ul li{
+    height: 0.65625rem;
+    line-height: 0.65625rem;
+    font-size: 0.25rem;
+    color: #333333;
+    letter-spacing: 0.45px;
+    padding-left: 0.265625rem;
+    position: relative;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.drawCardConsumption_box .go_set {
+    position: absolute;
+    top: 40%;
+    right: 0.3125rem;
+    background: url(../../images/userInfo/bt_more.png) no-repeat;
+    background-size: 100%;
+    width: 0.1171875rem;
+    height: 0.2109375rem;
+}
+.drawCardConsumption_box .card_remark{
+    margin-top: 20px;
+    width: 100%;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+.drawCardConsumption_box .card_remark ul li{
+    height: 0.65625rem;
+    line-height: 0.65625rem;
+    font-size: 0.25rem;
+    color: #333333;
+    letter-spacing: 0.45px;
+    padding-left: 0.265625rem;
+    position: relative;
+    border-bottom: 1px solid #E5E5E5;
+}
+.drawCardConsumption_box .card_remark textarea{
+    border: none;
+    width: 98%;
+    height: 180px;
+    margin: 10px auto;
+    display: block;
+    font-size: 15px;
+}
+
+
+.drawCardConsumption_box  .save_btn{
+    float: right;
+    width: 170px;
+    height: 40px;
+    line-height: 40px;
+    background: #FF6666;
+    border-radius: 4px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: PingFangSC-Regular;
+    font-size: 18px;
+    color: #FCFCFC;
+    letter-spacing: 0.45px;
+}
+
+.drawCardConsumption_box .sub_btn{
+    width: 0.35938rem;
+    height: 0.42188rem;
+    border: solid 1px #cccccc;
+    padding: 0;
+    border-bottom-left-radius: 0.01563rem;
+    border-top-left-radius: 0.01563rem;
+}
+
+.drawCardConsumption_box .add_btn{
+    border-bottom-right-radius: 0.01563rem;
+    border-top-right-radius: 0.01563rem;
+    margin-left: -6px;
+    border-left: none;
+    width: 0.35938rem;
+    height: 0.42188rem;
+    border: solid 1px #cccccc;
+    padding: 0;
+}
+
+.drawCardConsumption_box .sub_add_num{
+    width: 0.54688rem;
+    border: solid 1px #cccccc;
+    margin-left: -4px;
+    border-left: none;
+    text-align: center;
+}
+.drawCardConsumption_box .count_num{
+    float: right;
+    margin-right: 25px;
+}
+
+.drawCardConsumption_box .signConfirm_box{
+    background-color: #ffffff;
+    width: 100%;
+    overflow: hidden;
+}
+
+.drawCardConsumption_box .signConfirm_box ul li{
+    height: 0.65625rem;
+    line-height: 0.65625rem;
+    font-size: 0.25rem;
+    color: #333333;
+    letter-spacing: 0.45px;
+    padding-left: 0.265625rem;
+    position: relative;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.drawCardConsumption_box .signConfirmRight{
+    width: 100%;
+    height: 600px;
 }

@@ -120,7 +120,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($rootScope.settingAddsome.product.imageList.length>6){
+                if($rootScope.settingAddsome.product.imageList.length>=6){
                     alert("图片上传不能大于6张")
                     return
                 }

@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/4.
  */
 angular.module('controllers',[]).controller('myselfCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetCurrentLoginUserInfo','BossUtil',
-        function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,BossUtil) {
+    ['$scope','$rootScope','$stateParams','$state','GetCurrentLoginUserInfo','BossUtil','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetCurrentLoginUserInfo,BossUtil,$ionicLoading) {
 
             $rootScope.title = "我的";
 
@@ -20,8 +20,19 @@ angular.module('controllers',[]).controller('myselfCtrl',
                 $state.go("setInformation")
             };
             /*查询我的信息*/
-            GetCurrentLoginUserInfo.get(function (data) {
-                BossUtil.checkResponseData(data,'myself');
-                $scope.userInfo=data.responseData;
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                GetCurrentLoginUserInfo.get(function (data) {
+                    BossUtil.checkResponseData(data,'myself');
+                    $ionicLoading.hide()
+                    $scope.userInfo=data.responseData;
+                })
             })
+
         }]);

@@ -3,20 +3,20 @@
         <div class="tabs-striped tabs-top tabs-background-light tabs-color-assertive">
             <div style="height:48px;">
                 <div class="tabs" style="top:0;"  >
-                    <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='all']"
+                    <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='1']"
                        ng-click="chooseTab('0')">
-                        <span class="fs15 colff66"> 领取记录</span>
+                        <span class="{true: 'fs15 colff66', false: 'fs15 col333'}[param.orderType=='1']"> 领取记录</span>
                     </a>
                     <a ng-class="{true: 'tab-item active', false: 'tab-item'}[param.orderType=='0']"
                        ng-click="chooseTab('1')">
-                        <span class="fs15 col333">  操作记录</span>
+                        <span class="{true: 'fs15 colff66', false: 'fs15 col333'}[param.orderType=='0']">  操作记录</span>
                     </a>
                 </div>
             </div>
 
             <div ng-show="param.flag">
                 <ion-list>
-                    <ion-item style="height:70px;" class="sb" ng-repeat="item in productDtails">
+                    <ion-item style="height:70px;" class="sb" ng-repeat="item in productDetails">
                         <div>
                             <p class="fs16  col333 ml10 mt10">领取记录</p>
                             <p class="fs15  col666 ml10">
@@ -29,6 +29,7 @@
                 </ion-list>
             </div>
             <div ng-show="!param.flag">
+
                 <div>
                     <p class="h30 ml10">
                         基础信息
@@ -37,84 +38,81 @@
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">时间</p>
                             <p class="mr10 col888">
-                                2018-01-26 16：32：28
+                                {{info.createDate|date:'yyyy-MM-dd'}}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">顾客</p>
                             <p class="mr10 col888">
-                                阿敏
+                                {{info.sysUserName}}
                             </p>
                         </ion-item>
 
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">操作门店</p>
                             <p class="mr10 col888">
-                                美容院分店
+                                {{info.sysShopName}}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">前台</p>
                             <p class="mr10 col888">
-                                王萱萱
+                                {{info.createBy}}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10">类型</p>
-                            <p class="mr10 col888">
-                                店内消费
+                            <p class="mr10 col888" ng-if="info.type == '0'">
+                                消费
+                            </p>
+                            <p class="mr10 col888" ng-if="info.type == '1'">
+                                充值
                             </p>
                         </ion-item>
                     </ion-list>
                 </div>
                 <div>
                     <p class="h50 ml10">商品信息</p>
-                    <ion-list>
+                    <ion-list ng-repeat="item in info.userConsumeRecordResponseList">
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml10">水光针</p>
+                            <p class="ml10">{{item.flowName}}</p>
                             <p class="mr10">
-                            </p>
-                        </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml20">包含次数</p>
-                            <p class="mr10 col888">
-                                6次
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml20">价格</p>
                             <p class="mr10 col888">
-                                ¥4888.00
+                                {{item.price}}
                             </p>
                         </ion-item>
+
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml20">折扣</p>
-                            <p class="mr10 v">
-                                9.2折
+                            <p class="mr10 col888">
+                                {{item.discount}}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml20">数量</p>
                             <p class="mr10 col888">
-                                1
+                                {{item.consumeNumber}}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml20">金额</p>
                             <p class="mr10 col888">
-                                ¥4888.00
+                                {{item.sumAmount}}
                             </p>
                         </ion-item>
 
                     </ion-list>
                 </div>
-
                 <div class="mt20">
                     <opn-list >
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10"> 总金额</p>
                             <p class="mr10 col888">
-                                ￥4888.00
+                                ￥{{info.sumAmount}}
                             </p>
                         </ion-item>
                     </opn-list>
@@ -123,23 +121,41 @@
                 <div>
                     <opn-list >
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                            <p class="ml10"  ng-if="info.payMap.payType=='0'"> 微信</p>
+                            <p class="ml10"  ng-if="info.payMap.payType=='1'"> 支付宝</p>
+                            <p class="ml10"  ng-if="info.payMap.payType=='2'"> 银行卡</p>
+                            <p class="mr10 col888">
+                                ￥{{info.payMap.payTypeAmount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.balanceAmount != null">
                             <p class="ml10"> 余额</p>
                             <p class="mr10 col888">
-                                ￥4888.00
+                                ￥{{info.payMap.balanceAmount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.cashAmount != null">
+                            <p class="ml10"> 现金支付</p>
+                            <p class="mr10 col888">
+                                ￥{{info.payMap.cashAmount}}
+                            </p>
+                        </ion-item>
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.rechargeCardAmount != null">
+                            <p class="ml10"> 充值卡支付</p>
+                            <p class="mr10 col888">
+                                ￥{{info.payMap.rechargeCardAmount}}
                             </p>
                         </ion-item>
                     </opn-list>
                 </div>
                 <p class="h50 ml10">顾客签字</p>
-                <div style="height:156px;" class="bgfff">
+                <div style="height:156px;background: url('{{info.signUrl}}');background-size: contain;background-repeat: no-repeat;background-position: center center" class="bgfff" >
 
                 </div>
                 <p class="h50 ml10 fs14">备注</p>
                 <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff">
-
-            </textarea>
-
-
+                     {{info.detail}}
+               </textarea>
             </div>
         </div>
     </ion-content>

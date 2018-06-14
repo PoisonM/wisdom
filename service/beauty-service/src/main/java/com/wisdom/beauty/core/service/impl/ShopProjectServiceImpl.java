@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
@@ -516,7 +517,12 @@ public class ShopProjectServiceImpl implements ShopProjectService {
         }
         if (CommonUtils.objectIsNotEmpty(extShopProjectInfoDTO.getImageList())) {
             extShopProjectInfoDTO.setProjectUrl(extShopProjectInfoDTO.getImageList().get(0));
-        }
+        }else{
+			extShopProjectInfoDTO.setProjectUrl(ImageEnum.GOODS_CARD.getDesc());
+			ArrayList<String> objects = new ArrayList<>();
+			objects.add(ImageEnum.GOODS_CARD.getDesc());
+			extShopProjectInfoDTO.setImageList(objects);
+		}
         String uuid = IdGen.uuid();
         extShopProjectInfoDTO.setId(uuid);
         //保存图片信息

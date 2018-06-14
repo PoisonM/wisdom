@@ -56,12 +56,18 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
         orderId: $state.params.orderId,
     }, function(data) {
         $scope.responseData = data.responseData;
-        $scope.balancePay = $scope.responseData.orderPrice//默认显示
+        //如果可用余额>支付金额
+        if($scope.responseData.availableBalance >= $scope.responseData.orderPrice){
+            $scope.balancePay = $scope.responseData.orderPrice//默认显示
+        }else{
+            $scope.balancePay = $scope.responseData.availableBalance;
+        }
+
         $scope.countPrice()
     })
 
     $scope.goSelectRechargeType = function() {
-        $state.go('pad-web.left_nav.selectRechargeType', { type: 2 })
+        $state.go('pad-web.left_nav.selectRechargeType', { type: 2,userId:$stateParams.userId })
     }
 
 

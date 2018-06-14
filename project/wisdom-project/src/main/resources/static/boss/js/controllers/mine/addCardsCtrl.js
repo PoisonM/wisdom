@@ -31,7 +31,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
-                if($rootScope.settingAddsome.editorCard.imageList.length>6){
+                if($rootScope.settingAddsome.editorCard.imageList.length>=6){
                     alert("图片上传不能大于6张")
                     return
                 }
@@ -139,6 +139,17 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                 console.log($rootScope.settingAddsome.editorCard)
                 if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.discountPrice ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS==null){
                     alert('信息不完整');
+                    return
+                }
+                var effectiveDate=$rootScope.settingAddsome.editorCard.effectiveDate;
+                effectiveDate = effectiveDate.replace(/-/g,"/");//替换字符，变成标准格式
+                var expirationDate = $rootScope.settingAddsome.editorCard.expirationDate;
+                expirationDate = expirationDate.replace(/-/g,"/");//替换字符，变成标准格式
+                var d1 = new Date(Date.parse(effectiveDate));
+                var d2 =  new Date(Date.parse(expirationDate));
+
+                if(d1>d2){
+                    alert("生效日期大于活动有效期");
                     return
                 }
                 SaveProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){

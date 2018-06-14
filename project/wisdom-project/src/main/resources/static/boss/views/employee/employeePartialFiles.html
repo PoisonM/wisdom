@@ -3,13 +3,12 @@
         <ion-list>
             <ion-list>
                 <ion-item class="item-input" style="background: border-box;height: 40px; ">
-                <span class="item-input-wrapper" style="margin-right:16px;height:30px;margin-left:10px;" >
-                        <i class="icon ion-ios-search placeholder-icon" ng-click="search()"></i>
-                        <input id="search" type="search" placeholder="请输入顾客姓名或者手机号码" ng-model="param.queryField" >
+               <span class="item-input-wrapper" style="margin-right:16px;height:30px;margin-left:10px;" >
+                        <i class="icon ion-ios-search placeholder-icon" ></i>
+                        <input id="search" type="search" placeholder="请输入顾客姓名或者手机号码" ng-model="param.queryField" ng-change="search()">
                         <i class="icon ion-close-circled placeholder-icon" style="vertical-align: middle;"
                            on-tap="clearSearch()"></i>
                  </span>
-                    <!--<i  class="changeArchivesBtn fs15 col333" ng-click="tabSwitching()">切换档案</i>-->
                 </ion-item>
             </ion-list>
             <div style="position: relative;height:100%;">

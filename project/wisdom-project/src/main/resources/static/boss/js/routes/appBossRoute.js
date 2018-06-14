@@ -2466,6 +2466,19 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                    /*员工端关于我们*/
+                    .state('employeeAboutMine', {
+                        url: '/employeeAboutMine',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeAboutMineCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeAboutMineCtrl',
+                                    ['js/controllers/employee/employeeAboutMineCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeAboutMine.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                 
                 /**/
                 /*

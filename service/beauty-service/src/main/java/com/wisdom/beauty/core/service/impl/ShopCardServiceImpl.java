@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectProductCardRelationMapper;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -152,6 +154,9 @@ public class ShopCardServiceImpl implements ShopCardService {
         List<String> imageUrls = extShopRechargeCardDTO.getImageList();
         if (CommonUtils.objectIsNotEmpty(imageUrls)) {
             extShopRechargeCardDTO.setImageUrl(imageUrls.get(0));
+        }else{
+            imageUrls = new ArrayList<>();
+            imageUrls.add(ImageEnum.COMMON_CARD.getDesc());
         }
         //保存图片信息
         mongoUtils.saveImageUrl(imageUrls, rechargeCardId);

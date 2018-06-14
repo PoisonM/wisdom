@@ -118,7 +118,7 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
             $scope.thumb = "";      //用于存放图片的base64
             $scope.img_upload = function(files) {
                 if($rootScope.settingAddsome.product.imageList ==null) $rootScope.settingAddsome.product.imageList=[]
-                if($rootScope.settingAddsome.product.imageList.length>6){
+                if($rootScope.settingAddsome.product.imageList.length>=6){
                     alert("图片上传不能大于6张")
                     return
                 }

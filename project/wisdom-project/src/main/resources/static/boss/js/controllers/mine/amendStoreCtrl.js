@@ -21,7 +21,7 @@ angular.module('controllers',[]).controller('amendStoreCtrl',
                 if($scope.amendStore.imageList == null){
                     $scope.amendStore.imageList=[]
                 }
-                if($scope.amendStore.imageList.length>6){
+                if($scope.amendStore.imageList.length>=6){
                     alert("图片上传不能大于6张")
                     return
                 }
