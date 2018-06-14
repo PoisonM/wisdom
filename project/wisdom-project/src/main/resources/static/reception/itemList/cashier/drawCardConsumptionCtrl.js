@@ -116,8 +116,13 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
             imageStr: $("#signConfirmRight").jSignature("getData")
         }, function(data) {
             $scope.shopUserConsumeDTO[0].imageUrl = data.responseData
-            $scope.shopUserConsumeDTO[0].sysClerkId = $scope.staffListIds.join(";")
-            $scope.shopUserConsumeDTO[0].sysClerkName = $scope.staffListNames.join(";")
+            if($scope.staffListIds == undefined){
+                $scope.shopUserConsumeDTO[0].sysClerkId = "";
+                $scope.shopUserConsumeDTO[0].sysClerkName = ""
+            }else {
+                $scope.shopUserConsumeDTO[0].sysClerkId = $scope.staffListIds.join(";");
+                $scope.shopUserConsumeDTO[0].sysClerkName = $scope.staffListNames.join(";");
+            }
 
             //疗程卡划卡
             if($scope.params.type= 1){
