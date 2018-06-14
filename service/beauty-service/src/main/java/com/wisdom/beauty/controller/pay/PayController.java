@@ -119,10 +119,7 @@ public class PayController {
             //进入待签字确认状态之后才能签字确认
             if(OrderStatusEnum.WAIT_SIGN.getCode().equals(shopUserOrderDTO.getStatus())){
                 //mongodb中更新订单的状态
-                int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO);
-                responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-                responseDTO.setResponseData(StatusConstant.SUCCESS);
-                responseDTO.setResult(StatusConstant.SUCCESS);
+                responseDTO = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO);
             }else{
                 responseDTO.setErrorInfo("订单已失效，请勿重复提交");
                 responseDTO.setResult(StatusConstant.FAILURE);

@@ -61,7 +61,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
     })
 
     $scope.goSelectRechargeType = function() {
-        $state.go('pad-web.left_nav.selectRechargeType', { type: 2 })
+        $state.go('pad-web.left_nav.selectRechargeType', { type: 2,userId:$stateParams.userId })
     }
 
 

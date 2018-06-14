@@ -492,6 +492,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			UserInfoDTO userInfoFromUserId = userServiceClient.getUserInfoFromUserId(shopUserConsumeRecordDTO.getSysUserId());
 			shopUserConsumeRecordDTO.setSysUserName(userInfoFromUserId.getNickname());
 		}
+		shopUserConsumeRecordDTO.setCreateDate(new Date());
+		shopUserConsumeRecordDTO.setOperDate(new Date());
 		int insert = shopUserConsumeRecordMapper.insert(shopUserConsumeRecordDTO);
 		saveShopClerkWorkRecord(shopUserConsumeRecordDTO.getSysClerkId(), shopUserConsumeRecordDTO);
 		return insert;

@@ -86,7 +86,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
             return
         }
         $scope.shopUserConsumeDTO[0].consumeNum = $scope.shopUserConsumeDTO[0].consumeNum-1
-        $scope.shopUserConsumeDTO[0].consumePrice = Math.round($scope.shopUserConsumeDTO[0].consumeNum/$scope.shopUserConsumeDTO[0].consumeOncePrice);
+        $scope.shopUserConsumeDTO[0].consumePrice = Math.round($scope.shopUserConsumeDTO[0].consumeNum*$scope.shopUserConsumeDTO[0].consumeOncePrice);
     }
 
     //点击按钮，购买数量+1
