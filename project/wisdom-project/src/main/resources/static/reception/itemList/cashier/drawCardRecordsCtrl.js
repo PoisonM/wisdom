@@ -28,7 +28,7 @@ PADWeb.controller('drawCardRecordsCtrl', function($scope, $state, $stateParams, 
     cashConsumes.save({
         consumeType: "1",
         goodsType: "5",
-        sysUserId: "110",
+        sysUserId: $stateParams.userId,
         pageSize: "100"
     }, function(data) {
         $scope.itemList = data.responseData
