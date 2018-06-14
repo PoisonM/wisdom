@@ -2,7 +2,7 @@
     <ion-content>
         <ion-refresher pulling-text="下拉获取更多收支明细" on-refresh="getMoreTransactionList()">
         </ion-refresher>
-            <p style="font-size: 0.5rem;color: #999999" align="center" ng-if="param.transactionList==null">无更多交易明细！</p>
+            <p style="font-size:0.4rem;color: #999999" align="center" ng-if="param.transactionList==null">无更多交易明细！</p>
             <div class="list">
             <div class="item" ng-repeat="item in param.transactionList">
                 <a ng-if="item.amount!=0" ui-sref="transactionDetail({'transactionId':item.transactionId,'type':item.transactionType})">
@@ -16,9 +16,10 @@
                     <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='recommend'&&item.amount!=0">推荐奖励</h1>
                     <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='withdraw'&&item.amount!=0">提现</h1>
                     <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='tripleMonth'&&item.amount!=0">活动奖励</h1>
-                    <p style="font-size: 0.24rem;color: #999999" ng-if="item.amount!=0">{{item.transactionDate|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                    <p style="font-size: 0.24rem;color: #999999;margin-top: 10px" ng-if="item.amount!=0">{{item.transactionDate|date:'yyyy-MM-dd HH:mm:ss'}}</p>
                 </a>
             </div>
+                <p style="font-size: 15px;color: #999999;text-align: center;margin-top: 5px" ng-if="param.transactionList!=null">亲,下拉刷新哟！！！</p>
             </div>
     </ion-content>
 </ion-view>
