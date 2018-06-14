@@ -35,12 +35,12 @@ public interface ShopUerConsumeRecordService {
     UserConsumeRecordResponseDTO getShopCustomerConsumeRecord(String consumeFlowNo);
     /**
     *@Author:zhanghuan
-    *@Param:
+    *@Param:  id  消费记录表中的id
     *@Return:
-    *@Description:  根据消费记录id获取套卡的
+    *@Description:  (套卡的消费详情)
     *@Date:2018/6/4 14:57
     */
-    UserConsumeRecordResponseDTO getUserConsumeRecord(String id);
+    UserConsumeRecordResponseDTO getUserGroupCardConsumeDetail(String id);
 
     /**
      * 根据条件查询消费记录

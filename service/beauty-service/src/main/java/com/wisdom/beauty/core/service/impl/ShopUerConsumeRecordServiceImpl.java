@@ -362,24 +362,27 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	}
 
 	@Override
-	public UserConsumeRecordResponseDTO getUserConsumeRecord(String id) {
-		logger.info("getUserConsumeRecord方法出入的参数id={}", id);
+	public UserConsumeRecordResponseDTO getUserGroupCardConsumeDetail(String id) {
+		logger.info("getUserGroupCardConsumeDetail方法出入的参数id={}", id);
 		if (StringUtils.isBlank(id)) {
+			logger.info("getUserGroupCardConsumeDetail方法出入的参数id为空");
 			return null;
 		}
 		ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
 		shopUserConsumeRecordDTO.setId(id);
+		//根据条件获取消费记录，条件是id
 		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOs = this
 				.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
 		if (CollectionUtils.isEmpty(shopUserConsumeRecordDTOs)) {
 			logger.info("返回的shopUserConsumeRecordDTOs为空");
 			return null;
 		}
+		//获取到消费记录对象
 		ShopUserConsumeRecordDTO shopUserConsumeRecord = shopUserConsumeRecordDTOs.get(0);
 
 		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 		BeanUtils.copyProperties(shopUserConsumeRecord, userConsumeRecordResponseDTO);
-
+        //如果要是充值并且是充值卡类型的    type=充值  否则type=消费
 		if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())) {
 			if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getCode());
@@ -387,7 +390,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
 			}
 		}
-		// 根据多个id查询套
+		// 根据id查询套卡和用户的关系表的关系表
 		ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation = new ShopUserProjectGroupRelRelationDTO();
 		shopUserProjectGroupRelRelation.setConsumeRecordId(id);
 		List<ShopUserProjectGroupRelRelationDTO> shopUserProjectGroupRelRelationDTO = shopProjectGroupService
