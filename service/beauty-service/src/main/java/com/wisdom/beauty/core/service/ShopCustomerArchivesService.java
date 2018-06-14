@@ -82,7 +82,7 @@ public interface ShopCustomerArchivesService {
      * @param shopUserArchivesDTO
      * @return
      */
-    ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO);
+    ResponseDTO<Object> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO);
     /**
     *@Author:zhanghuan
     *@Param: userIds

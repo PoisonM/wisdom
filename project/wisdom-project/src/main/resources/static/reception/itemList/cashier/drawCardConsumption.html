@@ -1,69 +1,110 @@
 <!--划卡-->
-<div class="content">
-    <div ng-if="params.type == 1">
-        <div class="productMess paddingLeft50">
-            <div class="space-between waterGuangZhen">
-                <p>
-                    <span class="color333FS38">{{responseData.sysShopProjectName}}</span>
-                    <!-- <span class="yearCard w66h32 btnActive marginLeft16 FS24">年卡</span>-->
-                </p>
-                <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha" ng-click="candelScratchCard($index)">
+<div class="drawCardConsumption">
+    <div class="drawCardConsumption_box">
+        <div ng-if="params.type == 1">
+            <div class="card_details">
+                <div lass="card_details_box" style="position: relative">
+                    <p>
+                        <span >{{responseData.sysShopProjectName}}</span>
+                        <!-- <span>年卡</span>-->
+                    </p>
+                    <span class="close_img" ng-click="candelScratchCard($index)"></span>
+                </div>
+                <div class="card_price_box">
+                    <span class="price">金额 <span>￥{{shopUserConsumeDTO[0].consumePrice}} <e>.00</e>   </span></span>
+                    <span class="num">{{responseData.sysShopProjectInitTimes}}<span>/{{responseData.sysShopProjectSurplusTimes}}(剩余)</span></span>
+                </div>
             </div>
-            <div class="money color999FS32 colorFF6666FS34 space-between">
-                <p class="W33">金额 <span class="num">￥{{shopUserConsumeDTO[0].consumePrice}}</span></p>
-                <p class=" colorFF6666FS38 W33 center">{{responseData.projectSurplusAmount}}<span class="color333FS38">/{{responseData.projectInitAmount}}</span></p>
-                <p class="W33"></p>
+            <div class="ullist_sty">
+                <ul >
+                    <li>
+                        <span>划卡数量</span>
+                        <span class="count_num">
+                            <button class="sub_btn" ng-click="changePrice()">-</button>
+                            <input  class="sub_add_num" type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
+                            <button class="add_btn" ng-click="consumeNumInc()">+</button>
+                        </span>
+                    </li>
+                    <li ng-click="goHousekeeper()">
+                        <span>关联员工</span>
+                        <span style="float: right; margin-right: 40px;">
+                            <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                        </span>
+                        <div class="go_set"></div>
+                    </li>
+                </ul>
             </div>
         </div>
-        <ul class="height100Num color333FS34">
-            <li class="space-between paddingLeft30">
-                <p>划卡数量</p>
-                <p class="rightContent">
-                    <button class="reduction" ng-click="changePrice()">-</button>
-                    <input type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
-                    <button class="addBtn" ng-click="consumeNumInc()">+</button>
-                </p>
-            </li>
-            <li class="space-between paddingLeft30">
-                <span>关联员工</span>
-                <a class="rightContent">{{responseData.sysClerkName}}<img src="images/bt_more.png" class="morePic marginLeft20" ng-click="relatedStaff()"></a>
-            </li>
-        </ul>
-    </div>
 
-    <div ng-if="params.type == 2">
-        <div class="productMess paddingLeft50">
-            <div class="space-between waterGuangZhen">
-                <p>
-                    <span class=" color333FS38">{{responseData.shopProjectInfoName}}</span>
-                    <!-- <span class="yearCard w66h32 btnActive marginLeft16 FS24">年卡</span>-->
-                </p>
-                <img src="images/bt_shut%20down%20b.png" class="rightContent downPic cha" ng-click="candelScratchCard($index)">
+        <div ng-if="params.type == 2" class="">
+            <div class="card_details">
+                <div class="card_details_box">
+                    <p>
+                        {{responseData.shopProjectInfoName}}
+                        <!-- <span>年卡</span>-->
+                    </p>
+                    <span class="close_img" ng-click="candelScratchCard($index)"></span>
+                </div>
+                <div class="card_price_box">
+                    <span class="price">金额 <span>￥{{shopUserConsumeDTO[0].consumePrice}} <e>.00</e>   </span></span>
+                    <span class="num">{{responseData.projectSurplusTimes}}<span>/{{responseData.projectInitTimes}}</span></span>
+                </div>
             </div>
-            <div class="money color999FS32 colorFF6666FS34 space-between">
-                <p class="W33">金额 <span class="num">￥{{shopUserConsumeDTO[0].consumePrice}}</span></p>
-                <p class=" colorFF6666FS38 W33 center">{{responseData.projectSurplusTimes}}<span class="color333FS38">/{{responseData.projectInitTimes}}(剩余)</span></p>
-                <p class="W33"></p>
+            <div class="ullist_sty">
+                <ul>
+                    <li>
+                        <span>划卡数量</span>
+                        <span class="count_num">
+                            <button class="sub_btn" ng-click="changePrice()">-</button>
+                            <input  class="sub_add_num" type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
+                            <button class="add_btn" ng-click="consumeNumInc()">+</button>
+                        </span>
+                    </li>
+                    <li  ng-click="goHousekeeper()">
+                        <span>关联员工</span>
+                        <span style="float: right; margin-right: 40px;">
+                            <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                        </span>
+                        <div class="go_set"></div>
+                    </li>
+                </ul>
             </div>
+
+           <!-- <ul >
+                <li >
+                    <p>划卡数量</p>
+                    <p>
+                        <button c ng-click="changePrice()">-</button>
+                        <input type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
+                        <button  ng-click="consumeNumInc()">+</button>
+                    </p>
+                </li>
+                <li >
+                    <span>关联员工</span>
+                    <a>{{responseData.sysClerkName}}<img src="images/bt_more.png"  ng-click="relatedStaff()"></a>
+                </li>
+            </ul>-->
         </div>
-        <ul class="height100Num color333FS34">
-            <li class="space-between paddingLeft30">
-                <p>划卡数量</p>
-                <p class="rightContent">
-                    <button class="reduction" ng-click="changePrice()">-</button>
-                    <input type="text" ng-change="changeConsumeNum()" ng-model='shopUserConsumeDTO[0].consumeNum' >
-                    <button class="addBtn" ng-click="consumeNumInc()">+</button>
-                </p>
-            </li>
-            <li class="space-between paddingLeft30">
-                <span>关联员工</span>
-                <a class="rightContent">{{responseData.sysClerkName}}<img src="images/bt_more.png" class="morePic marginLeft20" ng-click="relatedStaff()"></a>
-            </li>
-        </ul>
-    </div>
-    <div class="note">
-        <p>
-            <button class="nextStepBtn rightMgain60" ng-click="goConfirmations()">下一步</button>
-        </p>
+        <div class="card_remark">
+            <ul>
+                <li>
+                    <span>备注</span>
+                </li>
+            </ul>
+            <textarea name="" id="" cols="30" rows="10"></textarea>
+
+        </div>
+
+
+        <div class="signConfirm_box">
+            <ul>
+                <li>
+                    <span>用户签字</span>
+                </li>
+            </ul>
+            <div class="signConfirmRightContent" id="signConfirmRight"></div>
+
+            <div ng-click="goConfirmations()" class="save_btn">保存</div>
+        </div>
     </div>
 </div>

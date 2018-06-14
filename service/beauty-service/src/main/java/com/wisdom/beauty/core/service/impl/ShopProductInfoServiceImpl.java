@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
@@ -434,6 +435,11 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		//图片保存 到mongodb
 		if (CommonUtils.objectIsNotEmpty(shopProductInfoDTO.getImageList())) {
 			shopProductInfoDTO.setProductUrl(shopProductInfoDTO.getImageList().get(0));
+		}else{
+			shopProductInfoDTO.setProductUrl(ImageEnum.GOODS_CARD.getDesc());
+			ArrayList<String> str = new ArrayList<>();
+			str.add(ImageEnum.GOODS_CARD.getDesc());
+			shopProductInfoDTO.setImageList(str);
 		}
 		int insertSelective = shopProductInfoMapper.insertSelective(shopProductInfoDTO);
 		mongoUtils.saveImageUrl(shopProductInfoDTO.getImageList(), shopProductInfoDTO.getId());

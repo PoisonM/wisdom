@@ -1,10 +1,11 @@
-PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $state, ngDialog, Archives,GetUserCourseProjectList,
-                                                      GetShopUserProjectGroupRelRelationInfo,ConsumeCourseCard, ConsumesDaughterCard) {
+PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateParams, $state
+    , ngDialog, Archives,GetUserCourseProjectList,GetShopUserProjectGroupRelRelationInfo
+    ,ConsumeCourseCard, ConsumesDaughterCard,ImageBase64UploadToOSS) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
-    $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
-    $scope.$parent.$parent.param.headerCash.leftAddContent = "还欠款";
-    $scope.$parent.$parent.param.headerCash.backContent = "用户档案";
+    $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
+    $scope.$parent.$parent.param.headerCash.backContent = "返回";
+    $scope.$parent.$parent.param.headerCash.title = "划卡";
     $scope.$parent.$parent.param.headerCash.leftTip = "保存";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
@@ -24,7 +25,13 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
+    $scope.staffListNames = $rootScope.staffListNames//关联员工
+    $scope.staffListIds = $rootScope.staffListIds
 
+
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-1)
+    }
     $scope.goHousekeeper = function() {
         $state.go('pad-web.left_nav.housekeeper')
     }
@@ -77,7 +84,11 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
     }
     //购买价格
     $scope.changePrice = function () {
-        $scope.shopUserConsumeDTO[0].consumePrice = Math.round($scope.shopUserConsumeDTO[0].consumeNum/$scope.shopUserConsumeDTO[0].consumeOncePrice);
+        if($scope.shopUserConsumeDTO[0].consumeNum <= 1){
+            return
+        }
+        $scope.shopUserConsumeDTO[0].consumeNum = $scope.shopUserConsumeDTO[0].consumeNum-1
+        $scope.shopUserConsumeDTO[0].consumePrice = Math.round($scope.shopUserConsumeDTO[0].consumeNum*$scope.shopUserConsumeDTO[0].consumeOncePrice);
     }
 
     //点击按钮，购买数量+1
@@ -100,33 +111,66 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
             alert("对不起，划卡数量不能大于剩余卡数^_^");
             return;
         }
-        //疗程卡划卡
-        if($scope.params.type= 1){
-            ConsumeCourseCard.save({
-                shopUserConsumeDTO: $scope.shopUserConsumeDTO
-            }, function(data) {
-                if('0x00001' == data.result){
-                    $state.go('pad-web.confirmations', {
-                        consumeId: data.responseData,
-                        shopProjectInfoName: $scope.responseData.shopProjectInfoName,
-                    })
-                }else{
-                    alert(data.errorInfo);
-                }
 
-            })
-        }
+        ImageBase64UploadToOSS.save({
+            imageStr: $("#signConfirmRight").jSignature("getData")
+        }, function(data) {
+            $scope.shopUserConsumeDTO[0].imageUrl = data.responseData
+            if($scope.staffListIds == undefined){
+                $scope.shopUserConsumeDTO[0].sysClerkId = "";
+                $scope.shopUserConsumeDTO[0].sysClerkName = ""
+            }else {
+                $scope.shopUserConsumeDTO[0].sysClerkId = $scope.staffListIds.join(";");
+                $scope.shopUserConsumeDTO[0].sysClerkName = $scope.staffListNames.join(";");
+            }
+
+            //疗程卡划卡
+            if($scope.params.type== 1){
+                ConsumeCourseCard.save({
+                    shopUserConsumeDTO: $scope.shopUserConsumeDTO
+                }, function(data) {
+                    if('0x00001' == data.result){
+                        $rootScope.staffListNames=[]//保存清除关联员工
+                        $rootScope.staffListIds=[]
+                        alert("保存成功")
+                    }else{
+                        alert(data.errorInfo);
+                    }
+                })
+            }
+        })
+
+
         //套卡划卡
-        if($scope.params.type = 2){
+        if($scope.params.type == 2){
             ConsumesDaughterCard.save({
                 shopUserConsumeDTO: $scope.shopUserConsumeDTO
             }, function(data) {
-                $state.go('pad-web.confirmations', {
-                    consumeId: data.responseData,
-                    shopProjectInfoName: $scope.responseData.shopProjectInfoName,
-                })
+                if('0x00001' == data.result){
+                    $rootScope.staffListNames=[]//保存清除关联员工
+                    $rootScope.staffListIds=[]
+                    alert("保存成功")
+                }else{
+                    alert(data.errorInfo);
+                }
             })
         }
 
     }
+
+    var $signature = $("#signConfirmRight").jSignature({
+        'height': 450,
+    });
+    $signature.jSignature('reset')
+
+    //获取数据
+    var data = $signature.jSignature('getData', 'default')
+    //图片展示
+    var img = new Image()
+    img.src = data
+    $(img).appendTo($('#signimg'))
+    //将数据显示在文本框
+    $('#text').val(data)
+
+    // $("#signConfirmRight").jSignature("getData")//传给后台的值
 });

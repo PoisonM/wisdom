@@ -91,14 +91,32 @@
   <update id="batchUpdate" parameterType="java.util.Map">
     <foreach collection="list" separator=";" item="record">
       update shop_clerk_schedule
-      set sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
-      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
-      sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
-      sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
-      schedule_type = #{record.scheduleType,jdbcType=CHAR},
-      schedule_date = #{record.scheduleDate,jdbcType=TIMESTAMP},
-      create_date = #{record.createDate,jdbcType=TIMESTAMP},
-      create_by = #{record.createBy,jdbcType=TIMESTAMP}
+      <set>
+      <if test="record.sysBossCode !=null">
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysShopId !=null">
+        sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysClerkName !=null">
+        sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scheduleDate !=null">
+        schedule_date = #{record.scheduleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createDate !=null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy !=null">
+        create_by = #{record.createBy,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sysClerkId !=null">
+        sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scheduleType !=null">
+        schedule_type = #{record.scheduleType,jdbcType=CHAR}
+      </if>
+      </set>
       where id = #{record.id,jdbcType=VARCHAR}
     </foreach>
   </update>

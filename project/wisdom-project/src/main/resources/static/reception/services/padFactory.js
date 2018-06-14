@@ -407,4 +407,8 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetProductDrawRecord', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/getProductDrawRecord')
     }])
+    //消费详情
+    .factory('GetOrderConsumeDetailInfo', ['$resource', function($resource) {
+        return $resource(beautyIP + 'orderInfo/getOrderConsumeDetailInfo')
+    }])
 ;

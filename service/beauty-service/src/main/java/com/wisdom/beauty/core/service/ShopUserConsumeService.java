@@ -29,7 +29,7 @@ public interface ShopUserConsumeService {
     /**
      * 用户充值操作
      */
-    int userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO);
+    ResponseDTO userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO);
 
     /**
      * 用户划疗程卡

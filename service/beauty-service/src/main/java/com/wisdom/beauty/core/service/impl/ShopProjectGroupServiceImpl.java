@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
@@ -303,11 +304,18 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         extShopProjectGroupDTO.setId(groupId);
         extShopProjectGroupDTO.setSysShopId(shopId);
         extShopProjectGroupDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
+        extShopProjectGroupDTO.setProjectGroupUrl(StringUtils.isBlank(extShopProjectGroupDTO.getProjectGroupUrl())? ImageEnum.GOODS_CARD.getDesc():extShopProjectGroupDTO.getProjectGroupUrl());
         //保存图片信息
-        mongoUtils.saveImageUrl(extShopProjectGroupDTO.getImageList(), groupId);
+
         if (CommonUtils.objectIsNotEmpty(extShopProjectGroupDTO.getImageList())) {
             extShopProjectGroupDTO.setProjectGroupUrl(extShopProjectGroupDTO.getImageList().get(0));
+        }else{
+            ArrayList<String> list = new ArrayList<>();
+            list.add(ImageEnum.GOODS_CARD.getDesc());
+            extShopProjectGroupDTO.setImageList(list);
         }
+        mongoUtils.saveImageUrl(extShopProjectGroupDTO.getImageList(), groupId);
+
         extShopProjectGroupDTO.setCreateBy(UserUtils.getBossInfo().getId());
         int insertSelective = shopProjectGroupMapper.insertSelective(extShopProjectGroupDTO);
         logger.error("添加套卡执行结果，{}", "insertSelective = [" + (insertSelective > 0 ? "成功" : "失败") + "]");

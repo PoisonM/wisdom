@@ -199,7 +199,7 @@ public class ProjectController {
 	 *
 	 * @param sysUserId
 	 * @param cardStyle
-	 *            01 查询疗程卡 0 查询单次卡
+	 *            0 查询单次  1查询疗程卡
 	 * @return
 	 */
 	@RequestMapping(value = "getUserCourseProjectList", method = { RequestMethod.POST, RequestMethod.GET })

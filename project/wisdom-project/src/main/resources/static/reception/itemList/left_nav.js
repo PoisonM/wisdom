@@ -11,7 +11,7 @@ PADWeb.controller("left_navCtrl", function($scope,$rootScope, $state,$stateParam
     $scope.queryRecordList = function() {
         FindArchives.get({
             queryField: $scope.param.queryField,
-            pageSize: "15"
+            pageSize: "100"
         }, function(data) {
             if (data.result == "0x00001") {
                 $scope.dataList = [];
