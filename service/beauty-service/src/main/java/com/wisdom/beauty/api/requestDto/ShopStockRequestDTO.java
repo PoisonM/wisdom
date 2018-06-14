@@ -1,7 +1,6 @@
 package com.wisdom.beauty.api.requestDto;
 
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
-import com.wisdom.common.entity.BaseEntity;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -52,6 +51,16 @@ public class ShopStockRequestDTO extends ShopProductInfoDTO {
 	private String stockType;
 	private String receiver;
 
+	private Integer stockOutNumber;
+
+
+	public Integer getStockOutNumber() {
+		return stockOutNumber;
+	}
+
+	public void setStockOutNumber(Integer stockOutNumber) {
+		this.stockOutNumber = stockOutNumber;
+	}
 
 	public String getShopBossId() {
 		return sysBossCode;

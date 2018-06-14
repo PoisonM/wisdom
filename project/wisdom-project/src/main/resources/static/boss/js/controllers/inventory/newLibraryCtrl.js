@@ -10,12 +10,13 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             };
 
             angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
+
                 var value = {
                     detail:"",
                     productDate:val.effectDate,
                     stockPrice:val.marketPrice,/*进货单价*/
                     shopProcId:val.id,/*产品id*/
-                    shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
+                    shopStoreId:$stateParams.shopStoreId,/*仓库id*/
                     stockNumber: "",
                     productUrl : val.productUrl,
                     productName: val.productName,

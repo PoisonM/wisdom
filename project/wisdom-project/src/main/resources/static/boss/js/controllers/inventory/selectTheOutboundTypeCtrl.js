@@ -5,6 +5,6 @@ angular.module('controllers',[]).controller('selectTheOutboundTypeCtrl',
             $scope.AddOutboundGo = function(stockType){
                 $rootScope.shopInfo.outShopStockType = stockType;
                 console.log($rootScope.shopInfo.outShopStockType);
-                $state.go("AddOutbound");
+                $state.go("AddOutbound",{shopStoreId:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle,stockType:stockType});
             }
         }])
