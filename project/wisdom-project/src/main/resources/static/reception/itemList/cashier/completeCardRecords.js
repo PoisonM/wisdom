@@ -38,7 +38,7 @@ PADWeb.controller('completeCardRecordsCtrl', function($scope, $stateParams, $sta
     TreatmentAndGroupCardRecordList.save({
         // flowId:$stateParams.id,
         flowIds:$stateParams.ids.split(","),//
-        goodsType:"1",
+        goodsType:"3",
     },function (data) {
         if(data.result == "0x00001"){
             $scope.dataList = data.responseData
