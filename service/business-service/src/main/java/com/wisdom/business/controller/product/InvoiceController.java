@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 关于账户管理
- * @author frank
+ * @author
  * @date 2015-10-14
  */
 @Controller
