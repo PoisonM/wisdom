@@ -1541,7 +1541,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('funArea', {
-                        url: '/funArea',
+                        url: '/funArea/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'funAreaCtrl',
                         resolve: {

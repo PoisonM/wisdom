@@ -8,6 +8,15 @@ public class ShopStockRecordRequestDTO {
 	private String stockStyle;
 	private int pageSize;
 	private String startTime;
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public String getShopStoreId() {
 		return shopStoreId;
