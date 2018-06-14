@@ -15,7 +15,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                     productDate:val.effectDate,
                     stockPrice:val.marketPrice,/*进货单价*/
                     shopProcId:val.id,/*产品id*/
-                    shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
+                    shopStoreId:$stateParams.shopStoreId,/*仓库id*/
                     stockNumber: "",
                     productUrl : val.productUrl,
                     productName: val.productName,
@@ -33,7 +33,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
             })
 
             $scope.selectTheOutboundTypeGo = function(){
-                $state.go("selectTheOutboundType")
+                $state.go("selectTheOutboundType",{shopStoreId:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle})
             }
 
             /*添加更多*/
@@ -51,7 +51,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                             productDate:val.effectDate,
                             stockPrice:val.marketPrice,/*进货单价*/
                             shopProcId:val.id,/*产品id*/
-                            shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
+                            shopStoreId:$stateParams.shopStoreId,/*仓库id*/
                             stockNumber: "",
                             productUrl : val.productUrl,
                             productName: val.productName,

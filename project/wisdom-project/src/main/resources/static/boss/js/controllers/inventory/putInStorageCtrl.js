@@ -19,35 +19,73 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             $rootScope.shopInfo.entryShopProductList = [];
 
             GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
+
                 $scope.param.detailProductList = data.responseData.detailProductList;
                 $scope.param.oneLevelList = data.responseData.oneLevelList;
+                $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
                 $scope.param.twoLevelList = data.responseData.twoLevelList;
             })
 
+            // 客装产品  院装产品 易耗品tab按钮
             $scope.changeBtn = function (type) {
-                if($scope.param.type != type)
-                {
+                if($scope.param.type != type){
+                    $scope.param.type = type;
+                    if(!$scope.param.multiSelectFlag){
+                       GetShopProductLevelInfo.get({productType:type},function(data){
+
+                           $scope.param.oneLevelList = data.responseData.oneLevelList;
+                           $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
+                           $scope.param.twoLevelList = data.responseData.twoLevelList;
+                       })
+                    }else{
+                        $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
+
+                        GetShopProductLevelInfo.get({productType:type},function(data){
+                           $scope.param.oneLevelList = data.responseData.oneLevelList;
+                           $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
+                           $scope.param.twoLevelList = data.responseData.twoLevelList;
+                        })
+                    }
+
+                }else{
+                  if(!$scope.param.multiSelectFlag){
+                      $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
+                   }else{
+                       $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
+                       GetShopProductLevelInfo.get({productType:type},function(data){
+                           $scope.param.oneLevelList = data.responseData.oneLevelList;
+                           $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
+                           $scope.param.twoLevelList = data.responseData.twoLevelList;
+                       })
+                   }
+                }
+
+            /*
+                if($scope.param.type != type){
                     $scope.param.selectProductTypeOneId = "";
                     $scope.param.multiSelectFlag=false;
                     $scope.param.type = type;
                     $scope.param.selectProductList = '';
-                }
-                else
-                {
+
+                }else{
                     $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
                 }
                 GetShopProductLevelInfo.get({productType:type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
                     $scope.param.oneLevelList = data.responseData.oneLevelList;
                     $scope.param.twoLevelList = data.responseData.twoLevelList;
-                })
-            };
+                })*/
 
+            };
+            
             $scope.chooseTwoLevelList = function (productTypeOneId) {
                 $scope.param.selectProductTypeOneId = productTypeOneId;
-                console.log($scope.param.multiSelectFlag);
-            }
+                GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
+                   $scope.param.twoLevelList = data.responseData.twoLevelList;
+               })
 
+            }
+            
             $scope.selNext = function () {
                 $scope.param.flag = true;
             };
@@ -89,8 +127,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 }
                 angular.forEach($scope.param.ids,function (val,index) {
                     angular.forEach($scope.param.detailProductList,function (val1,index1) {
-                        if(val==index1)
-                        {
+                        if(val==index1){
                             $scope.param.selectProductList = $scope.param.selectProductList+','+val1.productTypeTwoName;
                             $rootScope.shopInfo.entryShopProductList.push(val1);
                         }
@@ -99,7 +136,8 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             };
 
             $scope.inventoryRecordsPicsGo = function(){
-                $state.go("inventoryRecordsPics")
+                alert($rootScope.shopInfo.shopStoreId);
+                $state.go("inventoryRecordsPics",{shopStoreId:$rootScope.shopInfo.shopStoreId})
             };
 
             $scope.newLibraryGo = function(){
@@ -108,7 +146,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     alert("请先选择产品");
                     return;
                 }
-                $state.go("newLibrary",{stockStyle:$scope.param.selType})
+                $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId})
             }
 
             $scope.search = function(){
@@ -136,7 +174,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     $scope.param.twoLevelList = data.responseData.twoLevelList;
                 })
             }
-
+            
             $scope.chooseProductList = function (productTypeTwoId) {
                 GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){

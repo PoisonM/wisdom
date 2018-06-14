@@ -48,6 +48,8 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
     //
     private Date createDate;
 
+    private String createDateTime;
+
     //
     private String updateUser;
 
@@ -55,6 +57,17 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
     private Date updateDate;
 
     private static final long serialVersionUID = 1L;
+
+
+
+    public String getCreateDateTime() {
+        return createDateTime;
+    }
+
+    public void setCreateDateTime(String createDateTime) {
+        this.createDateTime = createDateTime;
+    }
+
 
     public String getId() {
         return id;

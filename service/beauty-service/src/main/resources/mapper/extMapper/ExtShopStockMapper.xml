@@ -88,14 +88,14 @@
     <!--批量插入-->
     <insert id="insertBatchShopStock" >
         insert into shop_stock (id, sys_boss_code, shop_stock_record_id,
-        shop_store_id, flow_no, stock_number,
+        shop_store_id, flow_no, out_stock_number ,stock_number,
         shop_proc_id, shop_proc_name, product_date,
         stock_price, create_by, create_date,
         update_user, update_date)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.id,jdbcType=VARCHAR}, #{item.sysBossCode,jdbcType=VARCHAR}, #{item.shopStockRecordId,jdbcType=VARCHAR},
-            #{item.shopStoreId,jdbcType=VARCHAR}, #{item.flowNo,jdbcType=VARCHAR}, #{item.stockNumber,jdbcType=INTEGER},
+            #{item.shopStoreId,jdbcType=VARCHAR}, #{item.flowNo,jdbcType=VARCHAR}, #{item.outStockNumber,jdbcType=INTEGER},#{item.stockNumber,jdbcType=INTEGER},
             #{item.shopProcId,jdbcType=VARCHAR}, #{item.shopProcName,jdbcType=VARCHAR}, #{item.productDate,jdbcType=TIMESTAMP},
             #{item.stockPrice,jdbcType=DECIMAL}, #{item.createBy,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP},
             #{item.updateUser,jdbcType=VARCHAR}, #{item.updateDate,jdbcType=TIMESTAMP})

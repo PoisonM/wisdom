@@ -31,7 +31,39 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
             });
 
             $scope.changeBtn = function (type) {
-                if($scope.param.type != type)
+
+                 if($scope.param.type != type){
+                        $scope.param.type = type;
+                        if($scope.param.multiSelectFlag){
+                           GetShopProductLevelInfo.get({productType:type},function(data){
+
+                               $scope.param.oneLevelList = data.responseData.oneLevelList;
+                               $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
+                               $scope.param.twoLevelList = data.responseData.twoLevelList;
+                           })
+                        }else{
+                            $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
+
+                            GetShopProductLevelInfo.get({productType:type},function(data){
+                               $scope.param.oneLevelList = data.responseData.oneLevelList;
+                               $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
+                               $scope.param.twoLevelList = data.responseData.twoLevelList;
+                            })
+                        }
+
+                    }else{
+                      if($scope.param.multiSelectFlag){
+                          $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
+                       }else{
+                           $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
+                           GetShopProductLevelInfo.get({productType:type},function(data){
+                               $scope.param.oneLevelList = data.responseData.oneLevelList;
+                               $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
+                               $scope.param.twoLevelList = data.responseData.twoLevelList;
+                           })
+                       }
+                    }
+               /* if($scope.param.type != type)
                 {
                     $scope.param.selectProductTypeOneId = "";
                     $scope.param.multiSelectFlag=false;
@@ -46,7 +78,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                     $scope.param.detailProductList = data.responseData.detailProductList;
                     $scope.param.oneLevelList = data.responseData.oneLevelList;
                     $scope.param.twoLevelList = data.responseData.twoLevelList;
-                })
+                })*/
 
                 if(type=='0')
                 {

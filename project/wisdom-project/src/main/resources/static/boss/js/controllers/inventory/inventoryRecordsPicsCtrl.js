@@ -69,7 +69,7 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                     datePickerCallback(val,"start");
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
-                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
+                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。原本是false。
             };
             $scope.datepickerObjectEnd = {
                 titleLabel: '选择日期',  //可选
@@ -100,19 +100,20 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
 
             $scope.getInfo  = function(){
                 $scope.shopStockRecordRequestDTO = {
-                    endTime:$scope.param.startValue,
-                    startTime:$scope.param.endValue,
+                    endTime:$scope.param.endTime,
+                    startTime:$scope.param.startValue,
                     stockStyle:"5",
-                    shopStoreId: $rootScope.shopInfo.shopStoreId,
+                    shopStoreId: $stateParams.shopStoreId,
                     pageSize:1000
                 }
                 ShopStockRecordList.save($scope.shopStockRecordRequestDTO,function(data){
                     $scope.param.inventoryRecordsPics = data.responseData;
+                    alert( $scope.param.inventoryRecordsPics[0].id);
                 })
             }
             $scope.getInfo()
 
             $scope.entryDetailsGo=function(entryId){
-                $state.go('entryDetails',{entryId:entryId})
+                $state.go('entryDetails',{id:entryId})
             }
         }])

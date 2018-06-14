@@ -108,6 +108,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
             criteria.setPageSize(shopCustomerArchivesDTO.getPageSize());
         }
         //参数
+        if(StringUtils.isNotBlank(requestData.getSysBossCode())){
+            c.andSysBossCodeEqualTo(requestData.getSysBossCode());
+        }
         if (StringUtils.isNotBlank(requestData.getSysShopId())) {
             c.andSysShopIdEqualTo(requestData.getSysShopId());
         }
@@ -120,7 +123,15 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         if (StringUtils.isNotBlank(requestData.getSysUserName())) {
             or.andSysUserNameLike("%" + requestData.getSysUserName() + "%");
         }
-
+        if(StringUtils.isNotBlank(requestData.getSysBossCode())){
+            or.andSysBossCodeEqualTo(requestData.getSysBossCode());
+        }
+        if (StringUtils.isNotBlank(requestData.getSysShopId())) {
+            or.andSysShopIdEqualTo(requestData.getSysShopId());
+        }
+        if (StringUtils.isNotBlank(requestData.getId())) {
+            or.andIdEqualTo(requestData.getId());
+        }
         criteria.or(or);
         List<ShopUserArchivesDTO> shopCustomerArchiveslist = shopUserArchivesMapper.selectByCriteria(criteria);
 

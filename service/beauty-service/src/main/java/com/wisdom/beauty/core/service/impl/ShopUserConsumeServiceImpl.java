@@ -307,11 +307,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 //查询套卡信息
                 ShopProjectGroupDTO shopProjectGroupDTO = shopProjectGroupService.getShopProjectGroupDTO(groupDto.getShopProjectGroupId());
                 String consumeId = IdGen.uuid();
+                //购买一个套卡的金额
+                BigDecimal discount = groupDto.getShopGroupPuchasePrice().divide(shopProjectGroupDTO.getMarketPrice(), 2, ROUND_HALF_DOWN);
+                groupDto.setDiscount(discount.floatValue());
                 //同一种套卡购买多个，groupDto.getProjectInitTimes()存储的是购买了几个同一种套卡
                 for (int i = 0; i < groupDto.getProjectInitTimes(); i++) {
-                    //购买一个套卡的金额
-                    BigDecimal discount = groupDto.getShopGroupPuchasePrice().divide(shopProjectGroupDTO.getMarketPrice(), 2, ROUND_HALF_DOWN);
-                    groupDto.setDiscount(discount.floatValue());
                     //根据套卡id查询项目列表
                     ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
                     shopProjectInfoGroupRelationDTO.setShopProjectGroupId(groupDto.getShopProjectGroupId());

@@ -91,7 +91,7 @@ public class ArchivesController {
         shopUserArchivesDTO.setPhone(queryField);
         shopUserArchivesDTO.setSysUserName(queryField);
         if (null != UserUtils.getBossInfo()) {
-            shopUserArchivesDTO.setSysBossCode(UserUtils.getBossInfo().getId());
+            shopUserArchivesDTO.setSysBossCode(UserUtils.getBossInfo().getSysBossCode());
         }
         pageParamVoDTO.setRequestData(shopUserArchivesDTO);
         pageParamVoDTO.setPaging(true);

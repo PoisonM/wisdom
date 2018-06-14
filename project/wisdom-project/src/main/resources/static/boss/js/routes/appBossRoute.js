@@ -1477,7 +1477,7 @@ define(['appBoss'], function(app){
                     })
                     /* outboundRecords  出库记录*/
                     .state('outboundRecords', {
-                        url: '/outboundRecords',
+                        url: '/outboundRecords/:shopStoreId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'outboundRecordsCtrl',
                         resolve: {
@@ -1566,7 +1566,7 @@ define(['appBoss'], function(app){
                     })
                     /* inventoryDetails库存详情*/
                     .state('inventoryDetails', {
-                        url: '/inventoryDetails',
+                        url: '/inventoryDetails/:shopStoreId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'inventoryDetailsCtrl',
                         resolve: {
@@ -1731,7 +1731,7 @@ define(['appBoss'], function(app){
                     })*/
                 /*inventoryRecords 入库记录*/
                     .state('inventoryRecordsPics', {
-                        url: '/inventoryRecordsPics',
+                        url: '/inventoryRecordsPics/:shopStoreId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'inventoryRecordsPicsCtrl',
                         resolve: {
@@ -1874,7 +1874,7 @@ define(['appBoss'], function(app){
                     })
                 /*AddOutbound 新增出库*/
                     .state('AddOutbound', {
-                        url: '/AddOutbound/:stockStyle',
+                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'AddOutboundCtrl',
                         resolve: {
@@ -1887,7 +1887,7 @@ define(['appBoss'], function(app){
                     })
                 /* newLibrary  新增入库*/
                     .state('newLibrary', {
-                        url: '/newLibrary/:stockStyle',
+                        url: '/newLibrary/:stockStyle/:shopStoreId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newLibraryCtrl',
                         resolve: {
@@ -1940,7 +1940,7 @@ define(['appBoss'], function(app){
                     })
                 /*selectTheOutboundType 选择出库类型*/
                     .state('selectTheOutboundType', {
-                        url: '/selectTheOutboundType',
+                        url: '/selectTheOutboundType/:shopStoreId/:stockStyle',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectTheOutboundTypeCtrl',
                         resolve: {
