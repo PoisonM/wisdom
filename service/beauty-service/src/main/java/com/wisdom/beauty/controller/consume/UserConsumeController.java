@@ -95,15 +95,15 @@ public class UserConsumeController {
      * @Author:zhanghuan
      * @Param: id 消费记录表中的主键
      * @Return:
-     * @Description: 根据消费记录id查询具体某个消费详情
+     * @Description: 根据消费记录id查询具体某个消费详情,(套卡的消费详情)
      * @Date:2018/6/4 14:52
      */
     @RequestMapping(value = "/consume/id", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetailById(@RequestParam String id) {
+    ResponseDTO<UserConsumeRecordResponseDTO> userGroupCardConsumeDetail(@RequestParam String id) {
 
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService
-                .getUserConsumeRecord(id);
+                .getUserGroupCardConsumeDetail(id);
         ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
@@ -119,7 +119,7 @@ public class UserConsumeController {
      */
     @RequestMapping(value = "/consume/flowId", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<UserConsumeRecordResponseDTO> findUserConsumeDetailByFlowId(@RequestParam String flowId) {
+    ResponseDTO<UserConsumeRecordResponseDTO> treatmentConsumeDetail(@RequestParam String flowId) {
 
         UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService
                 .getTreatmentCardConsumeDetail(flowId);
