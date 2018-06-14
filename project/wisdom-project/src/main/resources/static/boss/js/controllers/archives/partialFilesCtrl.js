@@ -93,4 +93,5 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                   }
               });
           }
+
         }]);

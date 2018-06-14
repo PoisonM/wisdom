@@ -9,7 +9,7 @@ angular.module('controllers',[]).controller('productDtailsCtrl',
             $scope.chooseTab = function (type) {
                 $scope.param.orderType = type;
                 if(type =="0"){
-                    $scope.param.flag = true
+                    $scope.param.flag = true;
                     $scope.getInfo();
                 }else{
                     $scope.param.flag = false;
@@ -35,7 +35,7 @@ angular.module('controllers',[]).controller('productDtailsCtrl',
                     consumeType:1,
                     flowId:$stateParams.flowId,
                     goodsType:'4'
-                }
+                };
                 ProductAndRechargeCard.save(userConsumeRequestDTO,function (data) {
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $scope.info=data.responseData;
