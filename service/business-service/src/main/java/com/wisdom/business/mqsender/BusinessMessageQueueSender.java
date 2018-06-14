@@ -1,6 +1,6 @@
 package com.wisdom.business.mqsender;
 
-import com.google.gson.Gson;
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.account.AccountMapper;
 import com.wisdom.common.dto.account.AccountDTO;

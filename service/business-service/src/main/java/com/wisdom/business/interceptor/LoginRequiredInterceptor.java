@@ -1,6 +1,6 @@
 package com.wisdom.business.interceptor;
 
-import com.google.gson.Gson;
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;

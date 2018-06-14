@@ -1,7 +1,7 @@
 package com.wisdom.business.mqreceiver;
 
 import com.aliyuncs.exceptions.ClientException;
-import com.google.gson.Gson;
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.service.transaction.PayRecordService;
 import com.wisdom.business.service.transaction.TransactionService;

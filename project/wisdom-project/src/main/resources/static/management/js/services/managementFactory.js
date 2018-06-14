@@ -186,6 +186,11 @@ define(['appManagement'], function (app) {
             return $resource(income + 'MonthlyIncomeSignalMT');
         }])
 
+         //监听
+        .factory('GetKey',['$resource',function ($resource){
+            return $resource(income + 'getKey');
+        }])
+
         //获取banner图列表
         .factory('GetHomeBannerList',['$resource',function ($resource){
             return $resource(banner + 'getHomeBannerList');
