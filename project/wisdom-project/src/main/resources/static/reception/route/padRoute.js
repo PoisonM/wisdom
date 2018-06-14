@@ -546,7 +546,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.prepaidRecords', {
-            url: '/prepaidRecords',
+            url: '/prepaidRecords/:userId',
             templateUrl: root + '/cashier/prepaidRecords.html',
             controller: 'prepaidRecordsCtrl',
             resolve: {
@@ -561,7 +561,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.drawCardRecords', {
-            url: '/drawCardRecords',
+            url: '/drawCardRecords/:userId',
             templateUrl: root + '/cashier/drawCardRecords.html',
             controller: 'drawCardRecordsCtrl',
             resolve: {
@@ -591,7 +591,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.accountRecords', {
-            url: '/accountRecords',
+            url: '/accountRecords/:userId',
             templateUrl: root + '/cashier/accountRecords.html',
             controller: 'accountRecordsCtrl',
             resolve: {

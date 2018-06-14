@@ -24,7 +24,7 @@ function basicInfo($scope, $state,$stateParams,Archives, ArchivesDetail) {
 
 
     $scope.goAccountRecords = function() {
-        $state.go('pad-web.left_nav.accountRecords');
+        $state.go('pad-web.left_nav.accountRecords',{userId:$state.params.sysUserId});
     };
     $scope.goStillOwed = function() {
         $state.go('pad-web.left_nav.stillOwed');

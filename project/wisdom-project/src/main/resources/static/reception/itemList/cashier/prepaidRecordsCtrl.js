@@ -31,8 +31,8 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, n
 
     Consumes.save({
         consumeType:"0",
-        shopUserId:"22",
-        pageSize:"10",
+        sysUserId:$stateParams.userId,
+        pageSize:"100",
         goodsType:"6"
     },function (data) {
         $scope.itemList = data.responseData
