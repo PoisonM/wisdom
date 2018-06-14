@@ -7,6 +7,7 @@ import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
@@ -63,8 +64,12 @@ public class OrderController {
 
     @Resource
     private ShopProjectService shopProjectService;
+
     @Resource
     private ShopCustomerArchivesService shopCustomerArchivesService;
+
+    @Resource
+    private ShopProductInfoService shopProductInfoService;
 
     private final long orderOutTime = 10L;
 
@@ -286,6 +291,10 @@ public class OrderController {
             //解析产品
             List<ShopUserProductRelationDTO> productList = userOrderDTO.getShopUserProductRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(productList)){
+                for(ShopUserProductRelationDTO dto : productList){
+                    ShopProductInfoResponseDTO productDetail = shopProductInfoService.getProductDetail(dto.getId());
+                    dto.setShopProductName(productDetail.getProductName());
+                }
                 responseMap.put("productList",productList);
             }
             //支付金额相关
