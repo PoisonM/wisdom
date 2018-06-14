@@ -1,8 +1,9 @@
 <div class="sourcesBox clearfix">
     <ul class="sourcesUl">
-        <li ng-repeat="item in UserList" ng-click="housekeeperCheck($index,item.id)">
+        <li ng-repeat="item in UserList" ng-click="housekeeperCheck($index,item.id,item.name)">
             <div>
-                <b class="checkRadio" ng-class="{check:select == $index}"></b>{{item.name}}({{item.mobile}}）
+                <!--check-->
+                <b class="checkRadio" ng-class="{check:staffListIds.indexOf(item.id)!= -1}"></b>{{item.name}}({{item.mobile}}）
             </div>
         </li>
     </ul>

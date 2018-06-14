@@ -1,4 +1,4 @@
-PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $state
+PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateParams, $state
     , ngDialog, Archives,GetUserCourseProjectList,GetShopUserProjectGroupRelRelationInfo
     ,ConsumeCourseCard, ConsumesDaughterCard,ImageBase64UploadToOSS) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
@@ -25,6 +25,8 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
+    $scope.staffListNames = $rootScope.staffListNames//关联员工
+    $scope.staffListIds = $rootScope.staffListIds
 
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
@@ -114,6 +116,8 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
             imageStr: $("#signConfirmRight").jSignature("getData")
         }, function(data) {
             $scope.shopUserConsumeDTO[0].imageUrl = data.responseData
+            $scope.shopUserConsumeDTO[0].sysClerkId = $scope.staffListIds.join(";")
+            $scope.shopUserConsumeDTO[0].sysClerkName = $scope.staffListNames.join(";")
 
             //疗程卡划卡
             if($scope.params.type= 1){
@@ -121,6 +125,8 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
                     shopUserConsumeDTO: $scope.shopUserConsumeDTO
                 }, function(data) {
                     if('0x00001' == data.result){
+                        $rootScope.staffListNames=[]//保存清除关联员工
+                        $rootScope.staffListIds=[]
                         alert("保存成功")
                     }else{
                         alert(data.errorInfo);
@@ -135,10 +141,13 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope, $stateParams, $sta
             ConsumesDaughterCard.save({
                 shopUserConsumeDTO: $scope.shopUserConsumeDTO
             }, function(data) {
-                $state.go('pad-web.confirmations', {
-                    consumeId: data.responseData,
-                    shopProjectInfoName: $scope.responseData.shopProjectInfoName,
-                })
+                if('0x00001' == data.result){
+                    $rootScope.staffListNames=[]//保存清除关联员工
+                    $rootScope.staffListIds=[]
+                    alert("保存成功")
+                }else{
+                    alert(data.errorInfo);
+                }
             })
         }
 

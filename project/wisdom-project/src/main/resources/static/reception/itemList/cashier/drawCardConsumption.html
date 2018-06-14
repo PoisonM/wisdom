@@ -25,10 +25,12 @@
                             <button class="add_btn" ng-click="consumeNumInc()">+</button>
                         </span>
                     </li>
-                    <li >
+                    <li ng-click="goHousekeeper()">
                         <span>关联员工</span>
-                        <span>{{responseData.sysClerkName}}</span>
-                        <div   ng-click="relatedStaff()" class="go_set"></div>
+                        <span style="float: right; margin-right: 40px;">
+                            <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                        </span>
+                        <div class="go_set"></div>
                     </li>
                 </ul>
             </div>
@@ -58,9 +60,11 @@
                             <button class="add_btn" ng-click="consumeNumInc()">+</button>
                         </span>
                     </li>
-                    <li>
+                    <li  ng-click="goHousekeeper()">
                         <span>关联员工</span>
-                        <span></span>
+                        <span style="float: right; margin-right: 40px;">
+                            <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                        </span>
                         <div class="go_set"></div>
                     </li>
                 </ul>
