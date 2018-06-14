@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('monthlyAccountsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord','MonthlyIncomeSignalMT',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord,MonthlyIncomeSignalMT) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord','MonthlyIncomeSignalMT','GetKey',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord,MonthlyIncomeSignalMT,GetKey) {
             var startTime = document.querySelector(".MStart");
             var endTime = document.querySelector(".MEnd");
             var pattern = /^1[34578]\d{9}$/;
@@ -9,6 +9,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             $scope.status="instance";
             $scope.agencyIndex = -1;
             $scope.checkStatus = "";
+            $scope.key = "";
+            $scope.value = "false";
             $scope.mum = true;
             var pageTrue = true;
             $scope.auditFlag=false;
@@ -116,7 +118,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             }
 
 
-/*月结  即时提现*/
+        /*月结  即时提现*/
 
             $scope.loadPageList = function(){
                 $timeout(function(){
@@ -250,27 +252,55 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
 
             };
 
-                /*手动生成月度*/
-                $scope.monthlyIncomeSignal = function() {
-                    $scope.businessType = $("#businessType").val();
-                    $scope.startTimeMonth = document.querySelector(".MStartMonth").value;
-                    $scope.endTimeMonth = document.querySelector(".MEndMonth").value;
-                    alert($scope.startTimeMonth);
-                    if (confirm("手动生成月度？")) {
+            /*手动生成月度*/
+            $scope.monthlyIncomeSignal = function() {
+                var key = $scope.getRandomString();
+                $scope.key = key;
+                $scope.businessType = $("#businessType").val();
+                $scope.startTimeMonth = document.querySelector(".MStartMonth").value;
+                $scope.endTimeMonth = document.querySelector(".MEndMonth").value;
 
-                        MonthlyIncomeSignalMT.get({businessType:$scope.businessType,startDateM:$scope.startTimeMonth,endDateM:$scope.endTimeMonth,isPullMessage:'0'}, function (data) {
-                            ManagementUtil.checkResponseData(data, "");
-                            alert(data.result);
-                            if (data.result == Global.SUCCESS) {
-                                alert("手动生成月度成功");
-                                $scope.loadPageList();
-                            }else{
-                                alert(data.errorInfo);
-                            }
-                        })
+                if (confirm("手动生成月度？")) {
 
-                    }
+                    MonthlyIncomeSignalMT.get({businessType:$scope.businessType,startDateM:$scope.startTimeMonth,endDateM:$scope.endTimeMonth,isPullMessage:'0',key:key},function(data){
+                        ManagementUtil.checkResponseData(data,"");
+                        if(data.result != Global.SUCCESS){
+                            alert(data.errorInfo);
+                        }
+                    })
+
                 }
+            }
+
+            $scope.setTimeJianting = function(){
+                GetKey.get({
+                        key:$scope.key
+                    }, function (data) {
+                        ManagementUtil.checkResponseData(data, "");
+                        value = data.responseData;
+                        if(value == "true"){
+                            $scope.key="";
+                            alert("生成月度完成！");
+                        }
+                   })
+             }
+
+              $scope.timeInfo = setInterval(function () {
+                    $scope.setTimeJianting();
+                },6000)
+
+            $scope.getRandomString =  function() {
+                len = 5 || 32;
+                var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'; // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
+                var maxPos = $chars.length;
+                var pwd = '';
+                for (i = 0; i < len; i++) {
+                    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+                }
+                return pwd;
+            }
+
+
  /*搜索*/
             $scope.searchMonthlyBalance = function(){
 

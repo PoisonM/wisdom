@@ -91,6 +91,8 @@ public class PayFunction {
 
                 //修改business_order的状态，表示已支付
                 logger.info("修改payRecord,business_order=={}的状态，表示已支付",payRecordDTO.getOrderId());
+
+                //此处对orderId加锁
                 BusinessOrderDTO businessOrderDTO = transactionService.getBusinessOrderDetailInfoByOrderId(payRecordDTO.getOrderId());
                 businessOrderDTO.setStatus("1");
                 businessOrderDTO.setUpdateDate(new Date());
