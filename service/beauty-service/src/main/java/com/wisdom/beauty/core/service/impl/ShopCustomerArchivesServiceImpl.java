@@ -305,8 +305,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
-        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+    public ResponseDTO<Object> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         //查询是否已存在档案信息
         List<ShopUserArchivesDTO> shopUserArchivesInfo = getShopUserArchivesInfo(shopUserArchivesDTO);
         if (CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)) {

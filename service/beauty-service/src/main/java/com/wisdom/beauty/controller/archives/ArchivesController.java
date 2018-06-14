@@ -18,6 +18,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.PinYinSort;
+import com.wisdom.common.util.RedisLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -159,10 +160,20 @@ public class ArchivesController {
      */
     @RequestMapping(value = "/saveArchiveInfo", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<String> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
-
-        ResponseDTO<String> responseDTO = shopCustomerArchivesService.saveArchiveInfo(shopUserArchivesDTO);
-
+    ResponseDTO<Object> saveArchiveInfo(@RequestBody ShopUserArchivesDTO shopUserArchivesDTO) {
+        RedisLock redisLock = null;
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        try {
+            redisLock = new RedisLock("saveArchiveInfo:" + shopUserArchivesDTO.getPhone());
+            redisLock.lock();
+            responseDTO = shopCustomerArchivesService.saveArchiveInfo(shopUserArchivesDTO);
+        } catch (Exception e) {
+            logger.error("保存用户档案异常，异常信息={}"+e.getMessage(),e);
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("保存用户档案异常");
+        } finally {
+            redisLock.unlock();
+        }
         return responseDTO;
     }
 
