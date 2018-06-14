@@ -39,9 +39,15 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
         $state.go('pad-web.left_nav.housekeeper');
     }
     $scope.goCustomerSignature = function() {
+        if($scope.staffListIds == undefined){
+            $scope.responseData.sysClerkId = "";
+            $scope.responseData.sysClerkName = ""
+        }else {
+            $scope.responseData.sysClerkId = $scope.staffListIds.join(";");
+            $scope.responseData.sysClerkName = $scope.staffListNames.join(";");
+        }
         $scope.responseData.sysUserId = $stateParams.userId;
-        $scope.responseData.sysClerkId = $scope.staffListIds.join(";");
-        $scope.responseData.sysClerkName = $scope.staffListNames.join(";");
+
 
         UserRechargeConfirm.save($scope.responseData, function(data) {
             if(data.result=="0x00001"){

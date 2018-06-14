@@ -5,7 +5,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     , GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject
     , GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, UpdateAppointmentInfoById
     , FindArchives, GetShopProjectList, ShopWeekAppointmentInfoByDate, GetShopClerkScheduleList
-    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo) {
+    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo,GetShopUserArchivesInfoByUserId) {
     $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
     //切换时间更新数据
@@ -539,6 +539,15 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         }
                     })
                 };
+                /*去划卡*/
+                $scope.personalFile = function () {
+                    /*调取套卡列表*/
+                    GetShopUserArchivesInfoByUserId.get({sysUserId:sysUserId},function (data) {
+                        $state.go('pad-web.left_nav.personalFile',{id:data.responseData[0].id,shopid:"",sysShopId:sysShopId,sysUserId:sysUserId})
+                        ngDialog.closeAll()
+                    });
+
+                };
                 /*开始服务*/
                 $scope.startSevier = function () {
                     if($scope.param.changeYuyueFlag != 1) return;
@@ -630,7 +639,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     // $scope.param.ModifyAppointmentObject.appointPeriod = data.responseData.appointPeriod,
                     // $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
 
-
+                    $scope.param.selectCustomersObject.sysUserId = data.responseData.sysUserId
                     $scope.param.selectCustomersObject.sysUserName = data.responseData.sysUserName
                     $scope.param.ModifyAppointmentObject.beauticianName = data.responseData.sysClerkName
                     $scope.checkprojectId = data.responseData.shopProjectId,
@@ -1293,7 +1302,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
 
 
-    detailsReservation && detailsReservation($scope, ngDialog, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, FindArchives, GetShopProjectList);
+    detailsReservation && detailsReservation($scope,$state, ngDialog, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, FindArchives, GetShopProjectList);
     //预约详情
     individualTravelerAppointment && individualTravelerAppointment($scope, ngDialog, UpdateAppointmentInfoById, FindArchives, GetShopProjectList);
     //周预约

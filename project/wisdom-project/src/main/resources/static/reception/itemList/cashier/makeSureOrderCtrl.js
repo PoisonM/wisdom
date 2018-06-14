@@ -37,7 +37,8 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     }
     $scope.goOrderListm = function() {
         console.log($scope.car)
-        UpdateShopUserOrderInfo.save({
+
+        $scope.importData = {
             orderId: $scope.orderId,
             projectGroupRelRelationDTOS: $scope.projectGroupRelRelationDTOS,
             shopUserProductRelationDTOS: $scope.shopUserProductRelationDTOS,
@@ -45,9 +46,17 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
             status: 1,
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: $scope.tempAll, //总金额
-            sysClerkId:$scope.staffListIds.join(";"),
-            sysClerkName:$scope.staffListNames.join(";")
-        }, function(data) {
+            sysClerkId:"",
+            sysClerkName:""
+        }
+        if($scope.staffListIds == undefined){
+            $scope.importData.sysClerkId = "";
+            $scope.importData.sysClerkName = ""
+        }else {
+            $scope.importData.sysClerkId = $scope.staffListIds.join(";");
+            $scope.importData.sysClerkName = $scope.staffListNames.join(";");
+        }
+        UpdateShopUserOrderInfo.save($scope.importData, function(data) {
             $state.go('pad-web.left_nav.orderList', { orderId: $scope.orderId,userId:$stateParams.userId })
         })
     }

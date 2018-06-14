@@ -45,7 +45,7 @@
         <div ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.consume.length != 0" class="bte5">
             <p class="mt20 ml30 fs30"><span ng-repeat="item in param.individualTravelerAppointmentObj.individualTravelerAppointment.consume" style="width:50%;display: inline-block">{{item.sysShopProjectName}}</span></p>
             <p class="pb60 floatC">
-                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "goConsumption('消费')">去消费</button>
+                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "personalFile()">去消费</button>
             </p>
         </div>
         <p ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard.length != 0" class=" fs28 colaaa  h70 bte5">
@@ -54,7 +54,7 @@
         <div ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard.length != 0">
             <p class="mt20 ml30 fs30"><span  ng-repeat="item in param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard">{{item.sysShopProjectName}}</span></p>
             <p class="pb60 floatC">
-                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "goConsumption('划卡')">去划卡</button>
+                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "personalFile()">去划卡</button>
             </p>
         </div>
     </div>
