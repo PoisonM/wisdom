@@ -1,8 +1,9 @@
 PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
     , $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm
-    , ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo,ConsumeFlowNo,PaySignConfirm) {
+    , ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo,ConsumeFlowNo,PaySignConfirm
+    ,GetOrderConsumeDetailInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
-    $scope.$parent.param.top_bottomSelect = "jiamubiao";
+    $scope.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.param.headerPrice.title = "签字确认";
     $scope.$parent.param.headerPrice.saveContent = ""
     $scope.flagFn = function (bool) {
@@ -41,10 +42,37 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
         })
     } else if ($state.params.orderId != '') {
         $scope.rechargeConsumeFlag = false
-        ConsumeFlowNo.get({
+        /*ConsumeFlowNo.get({
             consumeFlowNo:$stateParams.orderId
         },function (data) {
             $scope.consumeListInfo = data.responseData
+        })*/
+
+        GetOrderConsumeDetailInfo.get({
+            orderId:$stateParams.orderId
+        },function (data) {
+            $scope.userInfo = data.responseData.userInfo
+            $scope.shopUserPayDTO = data.responseData.shopUserPayDTO
+            if(data.responseData.groupList != undefined){
+                $scope.groupList = data.responseData.groupList//套卡
+            }else {
+                $scope.groupList = []
+            }
+            if(data.responseData.periodProjectList != undefined){
+                $scope.periodProjectList = data.responseData.periodProjectList//疗程
+            }else{
+                $scope.periodProjectList = []
+            }
+            if(data.responseData.productList != undefined){
+                $scope.productList = data.responseData.productList//产品
+            }else{
+                $scope.productList = []
+            }
+            if(data.responseData.timeProjectList != undefined){
+                $scope.timeProjectList = data.responseData.timeProjectList//单次
+            }else{
+                $scope.timeProjectList = []
+            }
         })
     }
 
