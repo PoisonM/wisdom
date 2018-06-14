@@ -178,6 +178,8 @@ public class OrderController {
         update.set("signUrl", shopUserOrderDTO.getSignUrl());
         update.set("orderPrice", shopUserOrderDTO.getOrderPrice());
         update.set("updateDate",new Date());
+        update.set("sysClerkId",shopUserOrderDTO.getSysClerkId());
+        update.set("sysClerkName",shopUserOrderDTO.getSysClerkName());
         update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
         update.set("shopUserProductRelationDTOS", shopUserOrderDTO.getShopUserProductRelationDTOS());
         update.set("shopUserProjectRelationDTOS", shopUserOrderDTO.getShopUserProjectRelationDTOS());

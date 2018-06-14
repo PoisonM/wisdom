@@ -40,7 +40,10 @@
                         </li>
                         <li ng-click="goHousekeeper()">
                             <div>关联员工</div>
-                            <span>></span>
+                            <span>
+                                <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                                >
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -79,7 +82,9 @@
                         </li>
                         <li ng-click="goHousekeeper()">
                             <div>关联员工</div>
-                            <span>></span>
+                            <span>
+                                <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                                ></span>
                         </li>
                     </ul>
                 </div>
@@ -118,7 +123,9 @@
                         </li>
                         <li ng-click="goHousekeeper()">
                             <div>关联员工</div>
-                            <span>></span>
+                            <span>
+                                <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                                ></span>
                         </li>
                     </ul>
                 </div>

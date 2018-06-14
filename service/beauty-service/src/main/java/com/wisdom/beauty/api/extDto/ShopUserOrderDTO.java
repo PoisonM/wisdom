@@ -38,6 +38,9 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //备注
     private String detail;
 
+    private String sysClerkId;
+
+    private String sysClerkName;
     //签字图片地址
     private String signUrl;
 
@@ -72,6 +75,22 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
 
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+
+    public String getSysClerkId() {
+        return sysClerkId;
+    }
+
+    public void setSysClerkId(String sysClerkId) {
+        this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
 
     public ShopUserPayDTO getShopUserPayDTO() {
         return shopUserPayDTO;

@@ -1,4 +1,4 @@
-PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParams, ngDialog, Archives, CardInfo, UserRechargeConfirm) {
+PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, $stateParams, ngDialog, Archives, CardInfo, UserRechargeConfirm) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     // $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
@@ -24,6 +24,8 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
     $scope.$parent.param.selectSty = $stateParams.userId//选中店员控制样式
+    $scope.staffListNames = $rootScope.staffListNames//关联员工
+    $scope.staffListIds = $rootScope.staffListIds
 
 
     $scope.select = 0;
@@ -38,12 +40,19 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope, $state, $stateParam
     }
     $scope.goCustomerSignature = function() {
         $scope.responseData.sysUserId = $stateParams.userId;
+        $scope.responseData.sysClerkId = $scope.staffListIds.join(";");
+        $scope.responseData.sysClerkName = $scope.staffListNames.join(";");
 
         UserRechargeConfirm.save($scope.responseData, function(data) {
-            $state.go('pad-web.signConfirm', {
-                transactionId: data.responseData.transactionId,
-                userId:$stateParams.userId
-            });
+            if(data.result=="0x00001"){
+                $rootScope.staffListNames=[]//保存清除关联员工
+                $rootScope.staffListIds=[]
+                $state.go('pad-web.signConfirm', {
+                    transactionId: data.responseData.transactionId,
+                    userId:$stateParams.userId
+                });
+            }
+
         })
     }
     $scope.checkBoxChek = function(e) {

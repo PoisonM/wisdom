@@ -16,7 +16,10 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.RedisLock;
 import com.wisdom.common.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -44,6 +47,8 @@ public class UserConsumeController {
 
     @Value("${test.msg}")
     private String msg;
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * @Author:huan
@@ -214,7 +219,17 @@ public class UserConsumeController {
         }
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
 
-        int cardFlag = shopUserConsumeService.consumeCourseCard(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
+        RedisLock redisLock = null;
+        int cardFlag = 0;
+        try {
+            redisLock = new RedisLock("consumeCourseCard:"+consumeDTO.getConsumeId());
+            redisLock.lock();
+            cardFlag = shopUserConsumeService.consumeCourseCard(shopUserConsumeDTO.getShopUserConsumeDTO(), clerkInfo);
+        } catch (Exception e) {
+            logger.error("用户划疗程卡操作,操作异常，异常信息为={}"+e.getMessage(),e);
+        } finally {
+            redisLock.unlock();
+        }
         // 保存用户的操作记录
         responseDTO.setResult(cardFlag > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setErrorInfo(cardFlag == 2?"无可用卡":"");
