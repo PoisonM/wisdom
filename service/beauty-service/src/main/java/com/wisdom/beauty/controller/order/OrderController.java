@@ -13,7 +13,6 @@ import com.wisdom.beauty.core.service.ShopOrderService;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
-import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -210,12 +209,13 @@ public class OrderController {
      * @param orderId 订单id
      * @return
      */
-    @RequestMapping(value = "getOrderConsumeDetailInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/getOrderConsumeDetailInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     ResponseDTO<Object> getOrderConsumeDetailInfo(@RequestParam String orderId) {
         ResponseDTO<Object> responseDTO = new ResponseDTO();
         Query query = new Query(Criteria.where("orderId").is(orderId));
+        String shopId = redisUtils.getShopId();
         ShopUserOrderDTO userOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
         if(null != userOrderDTO){
             HashMap<Object, Object> responseMap = new HashMap<>(4);
@@ -269,13 +269,14 @@ public class OrderController {
                         //根据套卡id查询项目列表
                         ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
                         shopProjectInfoGroupRelationDTO.setShopProjectGroupId(groupDto.getShopProjectGroupId());
-                        shopProjectInfoGroupRelationDTO.setSysShopId(UserUtils.getClerkInfo().getSysShopId());
+                        shopProjectInfoGroupRelationDTO.setSysShopId(shopId);
                         List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
                         eachMap.put("containProject",groupRelations);
                     }
                     eachMap.put("serviceTime",serviceTime);
                     groupList.add(eachMap);
                 }
+                responseMap.put("groupList",groupList);
             }
             //解析产品
             List<ShopUserProductRelationDTO> productList = userOrderDTO.getShopUserProductRelationDTOS();
