@@ -171,6 +171,7 @@ public class ProductTypeController {
             //缓存选中的二级产品品牌，如果levelTwo，默认取oneMap中的第一条作为查询结果
             logger.info("开始缓存二级产品品牌,levelOneId={}", levelOneId);
             HashMap<Object, Object> twoMap = new HashMap<>(16);
+            twoMap.put("","全部");
             for (ShopProductInfoDTO dto : detailProductList) {
                 twoMap.put(dto.getProductTypeTwoId(), dto);
             }

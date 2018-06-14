@@ -26,10 +26,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * FileName: AppointmentServiceImpl
@@ -141,6 +139,10 @@ public class StoreAndStockController {
 	@ResponseBody
 	ResponseDTO<List<ShopStockRecordDTO>> getShopStockRecordList(
 			@RequestBody ShopStockRecordRequestDTO shopStockRecordRequestDTO) {
+
+		String endTime = shopStockRecordRequestDTO.getEndTime();
+		StringBuilder sbEndTime = new StringBuilder();
+		sbEndTime.append(endTime).append(" ").append("23:59:59");
 		PageParamVoDTO<ShopStockRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
@@ -153,7 +155,7 @@ public class StoreAndStockController {
 		pageParamVoDTO.setPaging(true);
 		pageParamVoDTO.setPageSize(shopStockRecordRequestDTO.getPageSize());
 		pageParamVoDTO.setStartTime(shopStockRecordRequestDTO.getStartTime());
-		pageParamVoDTO.setStartTime(shopStockRecordRequestDTO.getEndTime());
+		pageParamVoDTO.setEndTime(sbEndTime.toString());
 		List<ShopStockRecordDTO> list = shopStockService.getShopStockRecordList(pageParamVoDTO);
 		ResponseDTO<List<ShopStockRecordDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);

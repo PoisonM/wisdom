@@ -13,6 +13,7 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 
 	/** 产品图片url */
 	// 入库时间
+	private Date createDate;
 	private Date operDate;
 	private String stockType;
 	private List<String> imageUrl;
@@ -46,6 +47,15 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	//二级类别名称
 	private String productTypeTwoName;
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
+
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 
 	public String getName() {
 		return name;

@@ -13,4 +13,9 @@ angular.module('controllers',[]).controller('chooseWarehouseCtrl',
                 $rootScope.shopInfo.shopStoreId = shopStoreId;
                 $state.go("funArea");
             }
+
+            $scope.close = function(){
+                $state.go("workHome");
+            }
+
         }])

@@ -99,10 +99,10 @@ angular.module('controllers',[]).controller('outboundRecordsCtrl',
 
             $scope.getInfo  = function(){
                 $scope.shopStockRecordRequestDTO = {
-                    endTime:$scope.param.startValue,
-                    startTime:$scope.param.endValue,
+                    endTime:$scope.param.endTime,
+                    startTime:$scope.param.startValue,
                     stockStyle:"6",
-                    shopStoreId:$rootScope.shopInfo.shopStoreId,
+                    shopStoreId:$stateParams.shopStoreId,
                     pageSize:1000
                 }
                 ShopStockRecordList.save($scope.shopStockRecordRequestDTO,function(data){

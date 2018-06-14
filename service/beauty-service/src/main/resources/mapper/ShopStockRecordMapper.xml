@@ -86,7 +86,8 @@
     <if test="distinct" >
       distinct
     </if>
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />,
+    create_date createDate
     from shop_stock_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
