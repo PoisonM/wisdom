@@ -1,6 +1,6 @@
 PADWeb.controller('confirmationsCtrl', function($scope, $stateParams, $state, ngDialog, Archives, ImageBase64UploadToOSS, UpdateConsumeRecord) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
-    $scope.$parent.param.headerCash.leftContent = "档案(9010)"
+    // $scope.$parent.param.headerCash.leftContent = "档案(9010)"
     $scope.$parent.param.headerCash.leftAddContent = "添加档案"
     $scope.$parent.param.headerCash.backContent = "充值记录"
     $scope.$parent.param.headerCash.leftTip = "保存"
