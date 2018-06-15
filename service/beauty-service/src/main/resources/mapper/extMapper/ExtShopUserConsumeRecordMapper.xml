@@ -122,9 +122,6 @@
         <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
-        <if test="distinct ==true">
-            group by sys_clerk_id
-        </if>
         <if test="limitStart >= 0">
             limit ${limitStart},${pageSize}
         </if>

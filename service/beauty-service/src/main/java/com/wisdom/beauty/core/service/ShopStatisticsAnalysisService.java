@@ -59,10 +59,10 @@ public interface ShopStatisticsAnalysisService {
     *@Author:zhanghuan
     *@Param:
     *@Return:
-    *@Description: f复写getUserConsumeNumber方法
+    *@Description: 复查询人头数和人次数
     *@Date:2018/5/8 9:39
     */
-    Integer getUserConsumeNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    Map<String,Integer> getShopsConsumeNumberAndTime(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * @Author:zhanghuan
