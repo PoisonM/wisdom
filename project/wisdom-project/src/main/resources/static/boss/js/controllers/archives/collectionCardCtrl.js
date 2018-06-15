@@ -1,10 +1,11 @@
 angular.module('controllers',[]).controller('collectionCardCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserProjectGroupList',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserProjectGroupList) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserProjectGroupList','Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserProjectGroupList,Global) {
             $rootScope.title = "套卡";
             $scope.param={
                 flag:false,
-                isUseUp:"6"
+                isUseUp:"6",
+                picFlag:false
             };
             /*点击筛选*/
             $scope.sel = function(){
@@ -23,11 +24,31 @@ angular.module('controllers',[]).controller('collectionCardCtrl',
                 $scope.param.isUseUp = '6'
             };
             /*调取套卡列表*/
-            GetUserProjectGroupList.get({sysUserId:$stateParams.sysUserId},function (data) {
-                $scope.collectionCar=data.responseData;
-                /*为啦便于筛选*/
-                $scope.arr=data.responseData;
-            });
+            $scope.getInfo=function () {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                GetUserProjectGroupList.get({sysUserId:$stateParams.sysUserId},function (data) {
+                    $ionicLoading.hide()
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $scope.collectionCar=data.responseData;
+                        /*为啦便于筛选*/
+                        $scope.arr=data.responseData;
+                        $scope.param.picFlag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.picFlag=true;
+                        }
+                    }else{
+                        $scope.param.picFlag=true;
+                    }
+                });
+            }
+            $scope.getInfo()
+
             /*点击确定*/
             $scope.selTrue=function () {
                 $scope.param.flag = false;

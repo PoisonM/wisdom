@@ -2,13 +2,14 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('cancelReservationCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopAppointmentInfoByStatus',"BossUtil",'Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetShopAppointmentInfoByStatus,BossUtil,Global,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopAppointmentInfoByStatus',"BossUtil",'Global','$filter','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetShopAppointmentInfoByStatus,BossUtil,Global,$filter,$ionicLoading) {
 
             $rootScope.title = "取消预约";
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
+                flag:false
             }
             $scope.param.date=$stateParams.date;
 
@@ -66,16 +67,35 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
                 $state.go("cancelDetails",{shopAppointServiceId:id})
             }
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetShopAppointmentInfoByStatus.get({
                     searchDate:$scope.param.date,
                     sysClerkId:$stateParams.sysClerkId,/*$stateParams.sysClerkId*/
                     sysShopId:$stateParams.sysShopId,
                     status:"4"
                 },function(data){
-                    $scope.cancelReservation = data.responseData
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $ionicLoading.hide();
+                        $scope.cancelReservation = data.responseData
+                        $scope.param.flag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.flag=true;
+                        }
+                    }else {
+                        $ionicLoading.hide();
+                        $scope.param.flag=true;
+                    }
                 })
             }
 
-            $scope.getInfo()
+            $scope.$on('$ionicView.enter', function() {
+                $scope.getInfo()
+            })
 
         }]);

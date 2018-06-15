@@ -1,7 +1,7 @@
 <ion-view>
     <ion-content class="partialFiles">
         <div>
-            <ion-list>
+            <ion-list ng-show="!param.picFlag">
                 <ion-item style="height:70px;" class="row" ng-repeat="item in recordCashier" ng-click="goDrawCardRecordsDetail(item.flowNo)">
                     <div class="col col-90">
                         <p class="fs15 col666 ml10 " style="margin-top:2px;">{{item.createDate|date:'yyyy-MM-dd'}}</p>
@@ -12,13 +12,14 @@
                         </div>
                     </div>
                     <p class="col col-10 fs16 col333" style="line-height: 70px">
-                        <img ng-src="item.signUrl" style="width:30px;height:30px;display: block;margin-right:10px;margin-top:10px;" ng-if="item.signUrl!=null||item.signUrl!=''">
+                        <img ng-src="item.signUrl" style="width:30px;height:30px;display: block;margin-right:10px;margin-top:10px;" ng-if="item.signUrl!=null&&ion-contentitem.signUrl!=''">
                     </p>
-
-
-
                 </ion-item>
             </ion-list>
+            <!--空 图片-->
+            <div style="width:100%;height:100%" ng-show="param.picFlag">
+                <img src="images/viod.png" style="width:100%;position: absolute;top:50%;margin-top:-200px;">
+            </div>
         </div>
     </ion-content>
 </ion-view>
