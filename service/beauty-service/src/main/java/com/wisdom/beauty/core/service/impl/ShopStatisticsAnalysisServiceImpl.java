@@ -3,10 +3,10 @@ package com.wisdom.beauty.core.service.impl;
 import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria;
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
@@ -586,8 +586,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	@Override
 	public Map<String, String> getShopConsumeAndRecharge(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		// 根据条件获取消费记录集合
-		List<UserConsumeRecordResponseDTO> userConsumeRecordResponse = shopUerConsumeRecordService
-				.getShopCustomerConsumeRecordList(pageParamVoDTO);
+		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordList = shopUerConsumeRecordService
+				.getShopCustomerConsumeRecord(pageParamVoDTO);
 		// 业绩
 		BigDecimal recharge = null;
 		BigDecimal consume = null;
@@ -595,59 +595,58 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		BigDecimal oneConsume = null;
 		BigDecimal cardConsume = null;
 		Map<String, String> map = null;
-		if (CollectionUtils.isNotEmpty(userConsumeRecordResponse)) {
-			for (UserConsumeRecordResponseDTO userConsumeRecordResponseDTO : userConsumeRecordResponse) {
+		if (CollectionUtils.isNotEmpty(shopUserConsumeRecordList)) {
+			for (ShopUserConsumeRecordDTO dto : shopUserConsumeRecordList) {
 				// 业绩 ---充值金额
-				if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(dto.getConsumeType())
+						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(dto.getGoodsType())) {
 					if (recharge != null) {
-						recharge = recharge.add(userConsumeRecordResponseDTO.getSumAmount());
+						recharge = recharge.add(dto.getPrice());
 					} else {
-						recharge = userConsumeRecordResponseDTO.getSumAmount();
+						recharge = dto.getPrice();
 					}
 				}
 				// 业绩 ---消费金额
-				if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-						&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(dto.getConsumeType())
+						&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(dto.getGoodsType())) {
 					if (consume != null) {
-						consume = consume.add(userConsumeRecordResponseDTO.getSumAmount());
+						consume = consume.add(dto.getPrice());
 					} else {
-						consume = userConsumeRecordResponseDTO.getSumAmount();
+						consume = dto.getPrice();
 					}
 				}
 				// 耗卡 --- 划卡金额(疗程卡和套卡)
-				if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())) {
-					if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())
-							|| GoodsTypeEnum.COLLECTION_CARD.getCode()
-									.equals(userConsumeRecordResponseDTO.getGoodsType())) {
+				if (ConsumeTypeEnum.CONSUME.getCode().equals(dto.getConsumeType())) {
+					if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(dto.getGoodsType())
+							|| GoodsTypeEnum.COLLECTION_CARD.getCode().equals(dto.getGoodsType())) {
 						if (scratchCard != null) {
-							scratchCard = scratchCard.add(userConsumeRecordResponseDTO.getSumAmount());
+							scratchCard = scratchCard.add(dto.getPrice());
 						} else {
-							scratchCard = userConsumeRecordResponseDTO.getSumAmount();
+							scratchCard = dto.getPrice();
 						}
 					}
 				}
 				// 耗卡 --- 单次消费
-				if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-						&& GoodsTypeEnum.TIME_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(dto.getConsumeType())
+						&& GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getGoodsType())) {
 					if (oneConsume != null) {
-						oneConsume = oneConsume.add(userConsumeRecordResponseDTO.getSumAmount());
+						oneConsume = oneConsume.add(dto.getPrice());
 					} else {
-						oneConsume = userConsumeRecordResponseDTO.getSumAmount();
+						oneConsume = dto.getPrice();
 					}
 				}
 				// 卡耗 --- 单次消费
-				if (ConsumeTypeEnum.CONSUME.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())
-						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
+				if (ConsumeTypeEnum.CONSUME.getCode().equals(dto.getConsumeType())
+						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(dto.getGoodsType())) {
 					if (cardConsume != null) {
-						cardConsume = cardConsume.add(userConsumeRecordResponseDTO.getSumAmount());
+						cardConsume = cardConsume.add(dto.getPrice());
 					} else {
-						cardConsume = userConsumeRecordResponseDTO.getSumAmount();
+						cardConsume = dto.getPrice();
 					}
 				}
+
 			}
 		}
-
 		map = new HashedMap();
 		map.put("recharge", recharge == null ? "0" : recharge.toString());
 		map.put("consume", consume == null ? "0" : consume.toString());
