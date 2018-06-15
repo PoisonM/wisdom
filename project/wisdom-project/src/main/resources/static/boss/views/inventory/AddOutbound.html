@@ -32,8 +32,8 @@
                 </ion-item>
             </div>
             <div class="sb bgfff" style="height:65px;">
-                <label class="fs16 col333 ml15 mt10">简介</label>
-                <textarea class="fs14 col999 mt10 mr15 pd15"
+                <label class="fs16 col333 ml15 mt10">备注</label>
+                <textarea maxlength="50" class="fs14 col999 mt10 mr15 pd15"
                           style="border: 1px solid #CCCCCC;border-radius: 4px;height:50px;width:80%"
                           placeholder="请输入产品的备注信息，最长不超过50个字"
                           ng-model="param.detail">
@@ -76,6 +76,6 @@
         </div>
     </ion-content>
     <div class="h45 bgff66 colfff fs15 tabs" ng-click="successfulInventoryGo()">
-        确认出库(1/30)
+        确认出库({{sum}}/30)
     </div>
 </ion-view>

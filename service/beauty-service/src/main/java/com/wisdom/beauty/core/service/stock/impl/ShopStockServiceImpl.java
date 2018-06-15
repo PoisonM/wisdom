@@ -639,10 +639,14 @@ public class ShopStockServiceImpl implements ShopStockService {
 		for (ShopStockNumberDTO shopStockNumber : allStoreNumbers) {
 			if (allStoreNumberMap.containsKey(shopStockNumber.getShopProcId())) {
 				Integer allStoreNumber = allStoreNumberMap.get(shopStockNumber.getShopProcId());
-				allStoreNumberMap.put(shopStockNumber.getShopProcId(),
-						allStoreNumber + shopStockNumber.getStockNumber());
+				if(shopStockNumber.getStockNumber()!=null){
+					allStoreNumberMap.put(shopStockNumber.getShopProcId(), allStoreNumber + shopStockNumber.getStockNumber());
+				}
+
 			} else {
-				allStoreNumberMap.put(shopStockNumber.getShopProcId(), shopStockNumber.getStockNumber());
+				if(shopStockNumber.getStockNumber()!=null) {
+					allStoreNumberMap.put(shopStockNumber.getShopProcId(), shopStockNumber.getStockNumber());
+				}
 			}
 		}
 		// 遍历shopProductInfoDTOs
@@ -694,19 +698,21 @@ public class ShopStockServiceImpl implements ShopStockService {
 		for (ShopStockNumberDTO shopStockNumber : shopStockNumbers) {
 			shopStockResponse = new ShopStockResponseDTO();
 			shopStockResponse.setStoreNumberSelf(shopStockNumber.getStockNumber());
-			BigDecimal useCost = shopStockNumber.getStockPrice()
-					.multiply(new BigDecimal(shopStockNumber.getStockNumber()));
-			shopStockResponse.setUseCost(useCost);
 			shopStockResponse.setShopStoreName(shopStockNumber.getShopStoreName());
-			if (allStoreNumber == null) {
-				allStoreNumber = shopStockNumber.getStockNumber();
-			} else {
-				allStoreNumber = allStoreNumber + shopStockNumber.getStockNumber();
-			}
-			if (allUseCost == null) {
-				allUseCost = useCost;
-			} else {
-				allUseCost = allUseCost.add(useCost);
+			if(shopStockNumber.getStockNumber()!=null){
+				BigDecimal useCost = shopStockNumber.getStockPrice()
+						.multiply(new BigDecimal(shopStockNumber.getStockNumber()));
+				shopStockResponse.setUseCost(useCost);
+				if (allStoreNumber == null) {
+					allStoreNumber = shopStockNumber.getStockNumber();
+				} else {
+					allStoreNumber = allStoreNumber + shopStockNumber.getStockNumber();
+				}
+				if (allUseCost == null) {
+					allUseCost = useCost;
+				} else {
+					allUseCost = allUseCost.add(useCost);
+				}
 			}
 			shopStockResponse.setShopStoreName(shopStockNumber.getShopStoreName());
 			shopStockResponses.add(shopStockResponse);

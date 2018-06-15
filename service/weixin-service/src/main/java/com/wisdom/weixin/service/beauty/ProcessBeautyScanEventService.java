@@ -1,19 +1,15 @@
 package com.wisdom.weixin.service.beauty;
 
 
-import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.ConfigConstant;
-import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
-import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.weixin.client.BeautyServiceClient;
 import com.wisdom.weixin.client.UserBeautyServiceClient;
-import com.wisdom.weixin.client.UserServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -105,17 +101,7 @@ public class ProcessBeautyScanEventService {
                 userServiceClient.updateBeautyUserInfo(userInfoDTO);
 
                 //根据shopId和openId查询用户是否绑定了此美容院
-                ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
-                if(CommonCodeEnum.NO_BINDING.getCode().equals(responseDTO.getResponseData()))
-                {
-                    System.out.println("redis中设置的key为 "+shopId+"_"+userId);
-                    JedisUtils.set(shopId+"_"+userId,CommonCodeEnum.NOTBIND.getCode(),ConfigConstant.logintokenPeriod);
-                }
-                else if(CommonCodeEnum.BINDING.getCode().equals(responseDTO.getResponseData()))
-                {
-                    System.out.println("redis中设置已经绑定过的的key为 "+shopId+"_"+userId);
-                    JedisUtils.set(shopId+"_"+userId,CommonCodeEnum.ALREADY_BIND.getCode(),ConfigConstant.logintokenPeriod);
-                }
+                beautyServiceClient.getUserBindingInfo(openId,shopId,userId);
             }
 
             List<Article> articleList = new ArrayList<>();

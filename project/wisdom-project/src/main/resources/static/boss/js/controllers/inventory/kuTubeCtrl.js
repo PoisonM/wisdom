@@ -5,27 +5,25 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
             $scope.param={
                 index:0,
                 flag:false,
-                sysShopId:'',
+                sysShopId:$stateParams.id,
                 ids:[],
                 names:[],
-                searchFile:''
+                searchFile:'',
+                addFamily:[]
             };
             if($stateParams.storeManagerId!=''){
                 $scope.param.ids = $stateParams.storeManagerId.split(",")
             }
             $scope.getInfo=function(){
-                GetClerkInfoList.query({
+                GetClerkInfoList.get({
                     sysBossId:"",
                     sysShopId:$scope.param.sysShopId,
                     pageSize:"1000"
                 },function(data){
-                    $scope.addFamily = data
-
+                    $scope.param.addFamily = data.responseData;
                 })
             }
-            $scope.getInfo()
-
-
+            $scope.getInfo();
             $scope.addEmployeesGo = function(){
                 $state.go('addEmployees')
             }
@@ -49,9 +47,9 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
 
             $scope.selFilamy = function (domIndex,name) {
 
-
                 if ($scope.param.ids.indexOf(domIndex) != -1) {
                     var key = 0;
+
                     angular.forEach( $scope.param.ids, function (val, index) {
                         if (val == domIndex) {
                             $scope.param.ids.splice(key, 1);
@@ -76,7 +74,7 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
                 })
             }
             $scope.save = function () {
-                  $state.go('libraryTubeSetting',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),id:$stateParams.id})
+                  $state.go('libraryTubeSetting',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),shopStoreId:$stateParams.id})
             }
 
         }])
