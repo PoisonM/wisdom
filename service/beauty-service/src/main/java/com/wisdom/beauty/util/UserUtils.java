@@ -28,6 +28,12 @@ import java.util.Map;
  */
 public class UserUtils {
 
+    public static String getUserName(String user){
+        if(user != null){
+        }
+        return null;
+    }
+
     /**
      * 获取用户信息
      *
