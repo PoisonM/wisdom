@@ -170,7 +170,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
                     logger.info("此用户没有绑定过店铺，创建绑定关系");
                     shopUserRelationDTO.setStatus(CommonCodeEnum.BINDING.getCode());
                     shopUserRelationService.saveUserShopRelation(shopUserRelationDTO);
-                    JedisUtils.set(shopId+"_"+userId,"binding", ConfigConstant.logintokenPeriod);
+                    JedisUtils.set(shopId+"_"+userId,CommonCodeEnum.ALREADY_BIND.getCode(), ConfigConstant.logintokenPeriod);
                 }
             }
         }
