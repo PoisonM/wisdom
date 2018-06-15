@@ -2,7 +2,7 @@ package com.wisdom.beauty.controller.shop;
 
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.dto.SysShopDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopService;
@@ -95,9 +95,9 @@ public class ShopController {
                     responseDTO.setResult(StatusConstant.SUCCESS);
                     JedisUtils.set(string, "alreadyBind", ConfigConstant.logintokenPeriod);
                     return responseDTO;
-                } else if (CommonCodeEnum.ALREADYBIND.getCode().equals(flag)) {
+                } else if (CommonCodeEnum.ALREADY_BIND.getCode().equals(flag)) {
                     logger.info("用户已经绑定");
-                    responseDTO.setResult(CommonCodeEnum.ALREADYBIND.getCode());
+                    responseDTO.setResult(CommonCodeEnum.ALREADY_BIND.getCode());
                     return responseDTO;
                 }
             }
