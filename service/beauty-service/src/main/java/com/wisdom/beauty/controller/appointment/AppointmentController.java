@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.appointment;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
@@ -265,13 +266,17 @@ public class AppointmentController {
 		ResponseDTO<ExtShopAppointServiceDTO> responseDTO = new ResponseDTO<>();
 		ShopAppointServiceDTO shopAppointInfoFromRedis = redisUtils.getShopAppointInfoFromRedis(shopAppointServiceId);
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		if (null != shopAppointInfoFromRedis) {
+		if (Objects.nonNull(shopAppointInfoFromRedis)) {
 			BeanUtils.copyProperties(shopAppointInfoFromRedis, extShopAppointServiceDTO);
 			SysClerkDTO sysClerkDTO = redisUtils.getSysClerkDTO(extShopAppointServiceDTO.getSysClerkId());
 			extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
 			extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
 			extShopAppointServiceDTO.setAppointEndTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getAppointEndTime(), "datetime"));
 			extShopAppointServiceDTO.setClerkImage(sysClerkDTO.getPhoto());
+			String[] split = extShopAppointServiceDTO.getShopProjectId().split(";");
+			List<String> list = Arrays.asList(split);
+			List<ShopProjectInfoDTO> projectList = shopProjectService.getProjectDetails(list);
+			extShopAppointServiceDTO.setShopProjectInfoDTOS(projectList);
 		}
 
 		responseDTO.setResult(StatusConstant.SUCCESS);

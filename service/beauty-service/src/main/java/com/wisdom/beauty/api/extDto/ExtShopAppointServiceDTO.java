@@ -1,8 +1,10 @@
 package com.wisdom.beauty.api.extDto;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 
 import java.util.Date;
+import java.util.List;
 
 public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
 
@@ -23,6 +25,16 @@ public class ExtShopAppointServiceDTO extends ShopAppointServiceDTO {
     private String clerkImage;
     //最近一次预约时间
     private String lastAppointTime;
+
+    private List<ShopProjectInfoDTO> shopProjectInfoDTOS;
+
+    public List<ShopProjectInfoDTO> getShopProjectInfoDTOS() {
+        return shopProjectInfoDTOS;
+    }
+
+    public void setShopProjectInfoDTOS(List<ShopProjectInfoDTO> shopProjectInfoDTOS) {
+        this.shopProjectInfoDTOS = shopProjectInfoDTOS;
+    }
 
     public String getLastAppointTime() {
         return lastAppointTime;

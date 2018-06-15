@@ -1,15 +1,15 @@
-.accountDetailsBox{
+.drawCardRecordsDetail{
     overflow-y: scroll;
     height: 100%;
 }
-.accountDetailsBox_box{
+.drawCardRecordsDetail_box{
     width: 100%;
     background-color: #ffffff;
 }
-.accountDetailsBox_box .basic{
+.drawCardRecordsDetail_box .basic{
     width: 100%;
 }
-.accountDetailsBox_box .basic p{
+.drawCardRecordsDetail_box .basic p{
     height: 30px;
     line-height: 30px;
     padding-left: 15px;
@@ -20,7 +20,7 @@
     background-color: #F5F5F5;
 }
 
-.accountDetailsBox_box .basic ul li{
+.drawCardRecordsDetail_box .basic ul li{
     width: 100%;
     padding-left: 15px;
     height: 55px;
@@ -33,7 +33,7 @@
     border-bottom: 1px solid #E5E5E5;
 }
 
-.accountDetailsBox_box .basic ul li span{
+.drawCardRecordsDetail_box .basic ul li span{
     font-size: 14px;
     color: #888888;
     float: right;

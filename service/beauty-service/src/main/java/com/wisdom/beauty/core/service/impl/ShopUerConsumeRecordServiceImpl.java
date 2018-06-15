@@ -101,7 +101,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(userConsumeRequest.getConsumeType())) {
 			c.andConsumeTypeEqualTo(userConsumeRequest.getConsumeType());
 		}
-		if(StringUtils.isNotBlank(userConsumeRequest.getFlowId())){
+		if (StringUtils.isNotBlank(userConsumeRequest.getFlowId())) {
 			c.andFlowIdEqualTo(userConsumeRequest.getFlowId());
 		}
 		// 根据goodsTypeRequire设置查询条件，如果费类型不是划卡则需要通过goodType来区分,如果goodsTypeRequire为false则需要根据goodType来区分
@@ -179,7 +179,12 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
 					userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getFlowName());
 				} else {
-					userConsumeRecordResponseDTO.setTitle(shopUserConsumeRecord.getConsumeType());
+					// 充值卡类型，则返回前端是充值，否则返回前端是消费
+					if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())) {
+						userConsumeRecordResponseDTO.setTitle(ConsumeTypeEnum.RECHARGE.getCode());
+					} else {
+						userConsumeRecordResponseDTO.setTitle(ConsumeTypeEnum.CONSUME.getCode());
+					}
 				}
 				map.put(shopUserConsumeRecord.getFlowNo(), userConsumeRecordResponseDTO);
 			} else {
@@ -251,10 +256,11 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 		}
 		if (consumeTypes.contains(ConsumeTypeEnum.CONSUME.getCode())) {
-			if(goodsTypes.contains(GoodsTypeEnum.PRODUCT.getCode())){
+			if (goodsTypes.contains(GoodsTypeEnum.PRODUCT.getCode())) {
 				userConsumeRecordResponseDTO.setType(GoodsTypeEnum.PRODUCT.getCode());
-			}else {
-			userConsumeRecordResponseDTO.setType(GoodsTypeEnum.PUNCH_CARD.getCode());}
+			} else {
+				userConsumeRecordResponseDTO.setType(GoodsTypeEnum.PUNCH_CARD.getCode());
+			}
 		}
 		// 存放所有的消费项目的
 		List<UserConsumeRecordResponseDTO> userConsumeRecordResponses = new ArrayList<>();
@@ -370,19 +376,19 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		}
 		ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
 		shopUserConsumeRecordDTO.setId(id);
-		//根据条件获取消费记录，条件是id
+		// 根据条件获取消费记录，条件是id
 		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOs = this
 				.getShopCustomerConsumeRecord(shopUserConsumeRecordDTO);
 		if (CollectionUtils.isEmpty(shopUserConsumeRecordDTOs)) {
 			logger.info("返回的shopUserConsumeRecordDTOs为空");
 			return null;
 		}
-		//获取到消费记录对象
+		// 获取到消费记录对象
 		ShopUserConsumeRecordDTO shopUserConsumeRecord = shopUserConsumeRecordDTOs.get(0);
 
 		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 		BeanUtils.copyProperties(shopUserConsumeRecord, userConsumeRecordResponseDTO);
-        //如果要是充值并且是充值卡类型的    type=充值  否则type=消费
+		// 如果要是充值并且是充值卡类型的 type=充值 否则type=消费
 		if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRecordResponseDTO.getConsumeType())) {
 			if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(userConsumeRecordResponseDTO.getGoodsType())) {
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.RECHARGE.getCode());
@@ -412,9 +418,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				shopProjectInfoDTO = new ShopProjectInfoDTO();
 				shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 				shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
-				if(dto.getProjectInitAmount()!=null && dto.getProjectInitTimes()!=null){
-					shopProjectInfoDTO
-							.setDiscountPrice(dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+				if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
+					shopProjectInfoDTO.setDiscountPrice(
+							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
 				}
 
 				shopProjectInfos.add(shopProjectInfoDTO);
@@ -488,8 +494,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(shopUserConsumeRecordDTO.getSysShopId());
 			shopUserConsumeRecordDTO.setSysShopName(beauty.getName());
 		}
-		if(StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserName())){
-			UserInfoDTO userInfoFromUserId = userServiceClient.getUserInfoFromUserId(shopUserConsumeRecordDTO.getSysUserId());
+		if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserName())) {
+			UserInfoDTO userInfoFromUserId = userServiceClient
+					.getUserInfoFromUserId(shopUserConsumeRecordDTO.getSysUserId());
 			shopUserConsumeRecordDTO.setSysUserName(userInfoFromUserId.getNickname());
 		}
 		shopUserConsumeRecordDTO.setCreateDate(new Date());
@@ -811,12 +818,16 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 	@Override
 	public UserConsumeRecordResponseDTO getProductConsumeDetailByFlowId(UserConsumeRequestDTO userConsumeRequestDTO) {
-		if(userConsumeRequestDTO==null){
+		if (userConsumeRequestDTO == null) {
 			logger.info("getProductConsumeDetailByFlowId传入的参数userConsumeRequestDTO为空");
 			return null;
 		}
-		logger.info("getProductConsumeDetailByFlowId方法传入的参数,flowId={},ConsumeType={},goodsType={}", userConsumeRequestDTO.getFlowId(),userConsumeRequestDTO.getConsumeType(),userConsumeRequestDTO.getGoodsType());
-		if (StringUtils.isBlank(userConsumeRequestDTO.getFlowId())||StringUtils.isBlank(userConsumeRequestDTO.getConsumeType())||StringUtils.isBlank(userConsumeRequestDTO.getGoodsType())) {
+		logger.info("getProductConsumeDetailByFlowId方法传入的参数,flowId={},ConsumeType={},goodsType={}",
+				userConsumeRequestDTO.getFlowId(), userConsumeRequestDTO.getConsumeType(),
+				userConsumeRequestDTO.getGoodsType());
+		if (StringUtils.isBlank(userConsumeRequestDTO.getFlowId())
+				|| StringUtils.isBlank(userConsumeRequestDTO.getConsumeType())
+				|| StringUtils.isBlank(userConsumeRequestDTO.getGoodsType())) {
 			logger.info("getProductConsumeDetailByFlowId方法传入的参数为空");
 			return null;
 		}
@@ -845,7 +856,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			} else {
 				userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
 			}
-		}else {
+		} else {
 			userConsumeRecordResponseDTO.setType(ConsumeTypeEnum.CONSUME.getCode());
 		}
 

@@ -32,10 +32,10 @@ function basicInfo($scope, $state,$stateParams,Archives, ArchivesDetail) {
     $scope.goSelectRechargeType = function() {
         $state.go('pad-web.left_nav.selectRechargeType',{userId:$state.params.sysUserId});
     };
-    $scope.goBindMember = function() {
+    $scope.goBindMember = function(shopId,userId) {
         $state.go('pad-web.bindMember', {
-            shopId: $scope.param.shopId,
-            userId: $scope.param.userId
+            shopId: shopId,
+            userId: userId
         });
     };
     $scope.goAddRecordDetail = function() {

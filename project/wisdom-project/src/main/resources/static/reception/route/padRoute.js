@@ -340,7 +340,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.accountDetails', {
-            url: '/accountDetails/:flowNo',
+            url: '/accountDetails/:flowNo/:userId',
             templateUrl: root + '/cashier/accountDetails.html',
             controller: 'accountDetailsCtrl',
             resolve: {
@@ -570,6 +570,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "划卡记录",
                         files: [root + "cashier/drawCardRecordsCtrl.js?version=" + version,
                             root + "cashier/drawCardRecords.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.left_nav.drawCardRecordsDetail', {
+            url: '/drawCardRecordsDetail/:userId/:flowNo',
+            templateUrl: root + '/cashier/drawCardRecordsDetail.html',
+            controller: 'drawCardRecordsDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "划卡记录详情",
+                        files: [root + "cashier/drawCardRecordsDetail.js?version=" + version,
+                            root + "cashier/drawCardRecordsDetail.css?version=" + version,
                         ]
                     })
                 }]

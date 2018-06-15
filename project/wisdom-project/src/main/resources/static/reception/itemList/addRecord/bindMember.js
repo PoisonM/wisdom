@@ -25,7 +25,7 @@ PADWeb.controller('bindMemberCtrl', function ($scope,$stateParams, $state, getBe
                 $state.go("pad-web.left_nav.personalFile")
             }
             if(data.result == "0x00002"){
-                alert("FAILURE")
+                console.log("FAILURE")
             }
             if(data.result == "alreadyBind"){
                 alert("已绑定")

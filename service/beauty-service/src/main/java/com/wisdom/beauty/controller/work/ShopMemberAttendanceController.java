@@ -310,6 +310,7 @@ public class ShopMemberAttendanceController {
 
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		if (sysBossDTO == null) {
+			logger.info("redis获取sysBossDTO信息为空");
 			return null;
 		}
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
@@ -320,27 +321,25 @@ public class ShopMemberAttendanceController {
 		String endTime = DateUtils.getEndTime();
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
-		// 设置是否去重的条件
-		PageParamVoDTO<UserConsumeRequestDTO> pageParamDistic = new PageParamVoDTO();
-		pageParamDistic.setStartTime(startTime);
-		pageParamDistic.setEndTime(endTime);
-		pageParamDistic.setRequestData(userConsumeRequestDTO);
 
-		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(pageParamDistic);
 		Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(pageParamVoDTO);
-		Integer consumeTime = shopStatisticsAnalysisService.getUserConsumeNumber(pageParamVoDTO);
+		Map<String,Integer> consumeNumberAndTimeMap = shopStatisticsAnalysisService.getShopsConsumeNumberAndTime(pageParamVoDTO);
 		// 服务次数 划卡消费+单次的次数
 		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getExpenditureList(pageParamVoDTO);
 		BigDecimal income = shopStatisticsAnalysisService.getPerformance(pageParamVoDTO);
 		BigDecimal expenditure = shopStatisticsAnalysisService.getExpenditure(pageParamVoDTO);
 		Map<String, String> map = new HashMap<>(16);
+		//业绩
 		map.put("income", income == null ? "0" : income.toString());
+		//耗卡
 		map.put("expenditure", expenditure == null ? "0" : expenditure.toString());
 		// 消费次数(人次数)
-		map.put("consumeTime", consumeTime.toString());
+		map.put("consumeTime", consumeNumberAndTimeMap.get("consumeTime")==null?"0":consumeNumberAndTimeMap.get("consumeTime").toString());
+		//服务次数
 		map.put("serviceNumber", CollectionUtils.isEmpty(list) ? "0" : String.valueOf(list.size()));
 		// 消费人数(人头数)
-		map.put("consumeNumber", consumeNumber.toString());
+		map.put("consumeNumber", consumeNumberAndTimeMap.get("consumeNumber")==null?"0":consumeNumberAndTimeMap.get("consumeNumber").toString());
+		//新客
 		map.put("shopNewUserNumber", shopNewUserNumber.toString());
 		ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
 		response.setResponseData(map);
