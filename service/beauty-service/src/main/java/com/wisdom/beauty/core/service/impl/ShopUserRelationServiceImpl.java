@@ -134,8 +134,8 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
             c.andSysUserIdEqualTo(shopUserRelationDTO.getSysUserId());
         }
 
-        if (StringUtils.isNotBlank(shopUserRelationDTO.getShopId())) {
-            c.andShopIdEqualTo(shopUserRelationDTO.getShopId());
+        if (StringUtils.isNotBlank(shopUserRelationDTO.getSysShopId())) {
+            c.andSysShopIdEqualTo(shopUserRelationDTO.getSysShopId());
         }
 
         List<ShopUserRelationDTO> shopUserRelations = shopUserRelationMapper.selectByCriteria(criteria);
