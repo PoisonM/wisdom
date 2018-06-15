@@ -883,6 +883,31 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		return userConsumeRecordResponseDTO;
 	}
 
+	@Override
+	public List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(
+			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+		UserConsumeRequestDTO userConsumeRequestDTO = pageParamVoDTO.getRequestData();
+		logger.info("根据条件查询消费记录方法传入的参数,userConsumeRequestDTO={}}", userConsumeRequestDTO);
+
+		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
+
+		if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
+				&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+			Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+			Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+			c.andCreateDateBetween(startTime, endTime);
+		}
+		if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysShopId())) {
+			c.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
+		}
+
+		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper
+				.selectByCriteria(criteria);
+
+		return shopUserConsumeRecordDTOS;
+	}
+
 	private Map<String, Object> getPayMap(String flowNo) {
 		logger.info("getPayMap方法传入的参数flowNo={}", flowNo);
 		// 计算支付明细,根据消费记录id查询支付明细

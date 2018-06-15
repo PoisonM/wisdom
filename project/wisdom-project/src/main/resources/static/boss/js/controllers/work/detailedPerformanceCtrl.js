@@ -2,37 +2,62 @@
  * Created by Administrator on 2018/5/2.
  */
 angular.module('controllers',[]).controller('detailedPerformanceCtrl',
-    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",'GetClerkPerformanceListClerk','$ionicScrollDelegate',
-        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk,$ionicScrollDelegate) {
+    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",'GetClerkPerformanceListClerk','$ionicScrollDelegate','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk,$ionicScrollDelegate,$ionicLoading) {
 
             $rootScope.title = "业绩明细";
             $scope.flag = false;
+            $scope.param={
+                flag:false
+            }
             $scope.userConsumeRequest = {
                 pageSize:1000,
                 searchFile:$stateParams.searchFile
             };
-            if ($stateParams.sysClerkId != "") {
-                $scope.userConsumeRequest.sysClerkId = $stateParams.sysClerkId
-                GetClerkPerformanceListClerk.get($scope.userConsumeRequest,function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null)
-                    {
-                        $scope.list = data.responseData;
-                        $scope.detailedPerformance = data.responseData;
-                    }
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                if ($stateParams.sysClerkId != "") {
+                    $scope.userConsumeRequest.sysClerkId = $stateParams.sysClerkId
+                    GetClerkPerformanceListClerk.get($scope.userConsumeRequest,function(data){
+                        if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                            $ionicLoading.hide();
+                            $scope.list = data.responseData;
+                            $scope.detailedPerformance = data.responseData;
+                            if(data.responseData.length<=0){
+                                $scope.param.flag=true;
+                            }
+                        }else {
+                            $ionicLoading.hide();
+                            $scope.param.flag=true;
+                        }
 
-                })
-            }
-            if ($stateParams.sysShopId != "") {
-                $scope.userConsumeRequest.sysShopId = $stateParams.sysShopId;
-                GetBossPerformanceList.get($scope.userConsumeRequest,function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null)
-                    {
-                        $scope.list = data.responseData;
-                        $scope.detailedPerformance = data.responseData;
-                    }
+                    })
+                }
+                if ($stateParams.sysShopId != "") {
+                    $scope.userConsumeRequest.sysShopId = $stateParams.sysShopId;
+                    GetBossPerformanceList.get($scope.userConsumeRequest,function(data){
+                        if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                            $ionicLoading.hide();
+                            $scope.list = data.responseData;
+                            $scope.detailedPerformance = data.responseData;
+                            if(data.responseData.length<=0){
+                                $scope.param.flag=true;
+                            }
+                        }else {
+                            $ionicLoading.hide();
+                            $scope.param.flag=true;
+                        }
 
-                })
-            }
+                    })
+                }
+            })
+
 
             $scope.expenditureDetailsGo = function(flowNo){
                 $state.go("details",{flowNo:flowNo})
@@ -48,7 +73,7 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
             /*type 1 消费*/
             /*type 2 充值*/
             $scope.getInfo = function(type){
-                $scope.detailedPerformance=[]
+                $scope.detailedPerformance=[];
                 if(type!='-1'){
                     for( var i=0;i<$scope.list.length;i++){
                         if($scope.list[i].type==type){

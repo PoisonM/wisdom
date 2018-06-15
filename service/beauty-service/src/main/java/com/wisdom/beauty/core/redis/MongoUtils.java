@@ -1,7 +1,7 @@
 package com.wisdom.beauty.core.redis;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.extDto.ImageUrl;
 import com.wisdom.common.util.HttpUtils;

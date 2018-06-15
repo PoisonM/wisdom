@@ -3,7 +3,7 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopUserRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtSysShopMapper;
@@ -154,16 +154,16 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         if (CommonUtils.objectIsEmpty(shopListByCondition)) {
             logger.error("查询用户绑定关系为空");
             responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setResponseData(CommonCodeEnum.Y.getCode());
+            responseDTO.setResponseData(CommonCodeEnum.NO_BINDING.getCode());
             return responseDTO;
         }
         shopUserRelationDTO = shopListByCondition.get(0);
         //status为0  为绑定关系
-        if (CommonCodeEnum.Y.getCode().equals(shopUserRelationDTO.getStatus())) {
-            responseDTO.setResponseData(CommonCodeEnum.Y.getCode());
+        if (CommonCodeEnum.BINDING.getCode().equals(shopUserRelationDTO.getStatus())) {
+            responseDTO.setResponseData(CommonCodeEnum.BINDING.getCode());
         } else {
 
-            responseDTO.setResponseData(CommonCodeEnum.N.getCode());
+            responseDTO.setResponseData(CommonCodeEnum.NO_BINDING.getCode());
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;

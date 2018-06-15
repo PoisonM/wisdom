@@ -23,8 +23,8 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                 date: currentdate,
                 week:'',
                 scheduleDate:'',
-                appointList : [],
-            }
+                appointList : []
+            };
 
             GetClerkScheduleOneDayInfo.get({searchDate:$scope.param.date},function (data) {
                 $scope.param.week = data.responseData.week;
@@ -33,7 +33,7 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                     $scope.param.appointList = data.responseData;
                     console.log($scope.param.appointList);
                 })
-            })
+            });
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -89,7 +89,7 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                     datePickerCallback(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
-                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
+                closeOnSelect: true //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
             
             $scope.confirmedGo = function(shopAppointServiceId){

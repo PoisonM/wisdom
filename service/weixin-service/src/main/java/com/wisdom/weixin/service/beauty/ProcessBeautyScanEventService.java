@@ -1,6 +1,7 @@
 package com.wisdom.weixin.service.beauty;
 
 
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
@@ -11,6 +12,7 @@ import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.weixin.client.BeautyServiceClient;
+import com.wisdom.weixin.client.UserBeautyServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -40,7 +42,7 @@ public class ProcessBeautyScanEventService {
     private BeautyServiceClient beautyServiceClient;
 
     @Autowired
-    private UserServiceClient userServiceClient;
+    private UserBeautyServiceClient userServiceClient;
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
@@ -78,14 +80,11 @@ public class ProcessBeautyScanEventService {
                 userId = codeArray[2];
             }
 
-            UserInfoDTO userInfoDTO = new UserInfoDTO();
-            userInfoDTO.setId(userId);
-            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+            UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(userId);
 
-            if(userInfoDTOList.size()>0)
+            if(null != userInfoDTO && StringUtils.isNotBlank(userInfoDTO.getId()))
             {
                 //用户之前关注过
-                userInfoDTO = userInfoDTOList.get(0);
                 if(StringUtils.isBlank(userInfoDTO.getWeixinAttentionStatus())){
                     userInfoDTO.setWeixinAttentionStatus("1");
                 }else{
@@ -103,19 +102,19 @@ public class ProcessBeautyScanEventService {
                 userInfoDTO.setNickname(nickname);
                 userInfoDTO.setUserOpenid(openId);
                 userInfoDTO.setLoginIp("");
-                userServiceClient.updateUserInfo(userInfoDTO);
+                userServiceClient.updateBeautyUserInfo(userInfoDTO);
 
                 //根据shopId和openId查询用户是否绑定了此美容院
                 ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
-                if("N".equals(responseDTO.getResponseData()))
+                if(CommonCodeEnum.NO_BINDING.getCode().equals(responseDTO.getResponseData()))
                 {
                     System.out.println("redis中设置的key为 "+shopId+"_"+userId);
-                    JedisUtils.set(shopId+"_"+userId,"notBind",ConfigConstant.logintokenPeriod);
+                    JedisUtils.set(shopId+"_"+userId,CommonCodeEnum.NOTBIND.getCode(),ConfigConstant.logintokenPeriod);
                 }
-                else if("Y".equals(responseDTO.getResponseData()))
+                else if(CommonCodeEnum.BINDING.getCode().equals(responseDTO.getResponseData()))
                 {
                     System.out.println("redis中设置已经绑定过的的key为 "+shopId+"_"+userId);
-                    JedisUtils.set(shopId+"_"+userId,"alreadyBind",ConfigConstant.logintokenPeriod);
+                    JedisUtils.set(shopId+"_"+userId,CommonCodeEnum.ALREADY_BIND.getCode(),ConfigConstant.logintokenPeriod);
                 }
             }
 

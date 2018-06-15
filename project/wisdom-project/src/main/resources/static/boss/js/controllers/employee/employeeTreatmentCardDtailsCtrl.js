@@ -1,40 +1,56 @@
-/**
- * Created by Administrator on 2018/6/1.
- */
 angular.module('controllers',[]).controller('employeeTreatmentCardDtailsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Consumes',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Consumes) {
-            $rootScope.title = "疗程卡详情";
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TreatmentAndGroupCardRecordList','FlowId','Id','Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TreatmentAndGroupCardRecordList,FlowId,Id,Global) {
+            $rootScope.title = "详情";
             $scope.param={
                 flag:true,
                 sysUserId	:$stateParams.sysUserId,
-                orderType:'1'
-            };
+                type:$stateParams.goodsType
 
+            };
             $scope.chooseTab = function (type) {
                 if(type =="0"){
                     $scope.param.flag = true;
-                    $scope.param.orderType = '1';
+                    $scope.getInfo()
                 }else{
                     $scope.param.flag = false;
-                    $scope.param.orderType = '0';
+                    $scope.getInfos()
                 }
             };
 
-            var userConsumeRequest = {
-                consumeType:"1",
-                goodType:"5",
-                pageSize:"10",
-                sysUserId	: $scope.param.sysUserId
+            $scope.getInfo = function () {
+                $scope.userConsumeRequestDTO = {
+                    flowId:$stateParams.flowId,
+                    flowIds:$stateParams.flowIds.split(','),
+                    goodsType:$stateParams.goodsType
+                };
+                TreatmentAndGroupCardRecordList.save($scope.userConsumeRequestDTO,function (data) {
+                    $scope.treatmentCardDtails=data.responseData;
+                });
+            };
+            $scope.getInfo();
+
+            $scope.getInfos = function () {
+                if($stateParams.goodsType == '1'){
+                    FlowId.get({
+                        flowId:$stateParams.flowId
+                    },function(data){
+                        if(data.result==Global.SUCCESS&&data.responseData!=null)
+                        { $scope.details = data.responseData;
+                        }
+                    })
+                }else if($stateParams.goodsType == '3'){
+                    Id.get({
+                        id:$stateParams.id
+                    },function(data){
+                        if(data.result==Global.SUCCESS&&data.responseData!=null)
+                        { $scope.details = data.responseData;
+                        }
+                    })
+                }
             };
 
-            Consumes.save(userConsumeRequest,function (data) {
-                $scope.treatmentCardDtails=data.responseData;
-                console.log( $scope.treatmentCardDtails);
-            });
-
-            /*点击顾客签字*/
-            $scope.drawCardRecordsDetailGO=function () {
-                $state.go("employeeDrawCardRecordsDetail")
+            $scope.drawCardRecordsDetailGO=function (flowNo) {
+                $state.go("employeeDrawCardRecordsDetail",{flowNo:flowNo})
             }
         }]);

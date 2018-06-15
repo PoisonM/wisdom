@@ -30,7 +30,7 @@
             </a>
         </div>
         <!--唯美度美容养生会所-->
-        <div class="list" ng-repeat="item in customerStore.responseDTOList" ui-sref="beautyBranch({sysShopId:item.sysShopId,date:param.date})">
+        <div class="list" ng-repeat="item in customerStore.responseDTOList" ui-sref="beautyBranch({sysShopId:item.sysShopId,date:param.date})" ng-show="customerStore.responseDTOList.length>0">
             <p class="item"><span>唯美度美容养生会所</span><i style="float:right;font-size: 0.3rem" class="ion ion-ios-arrow-right"></i></p>
             <div class="row bgfff col33 tc p0" >
                 <div class="col col-33 bre5e5" >

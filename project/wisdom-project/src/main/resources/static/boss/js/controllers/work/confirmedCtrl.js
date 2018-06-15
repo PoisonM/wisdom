@@ -2,10 +2,24 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('confirmedCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetAppointmentInfoById','UpdateAppointmentInfoById','Global','$ionicPopup',
-        function ($scope,$rootScope,$stateParams,$state,GetAppointmentInfoById,UpdateAppointmentInfoById,Global,$ionicPopup) {
+    ['$scope','$rootScope','$stateParams','$state','GetAppointmentInfoById','UpdateAppointmentInfoById','Global','$ionicPopup','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetAppointmentInfoById,UpdateAppointmentInfoById,Global,$ionicPopup,$ionicLoading) {
           /*  $rootScope.title = "已确认预约";*/
             $scope.date=$stateParams.date;
+            $scope.param={
+                flag:false
+            }
+            GetAppointmentInfoById.get({
+                shopAppointServiceId:$stateParams.shopAppointServiceId
+            },function(data){
+                if(data.result==Global.SUCCESS&&data.responseData!=null){
+                    $scope.confirmed = data.responseData;
+                    $rootScope.title = $scope.confirmed.sysClerkName;
+                    $scope.param.flag = false;
+                }else{
+                    $scope.param.flag = true;
+                }
+            })
             /*日期插件*/
 
             $scope.cancel = function(){
@@ -32,16 +46,7 @@ angular.module('controllers',[]).controller('confirmedCtrl',
                 });
             };
 
-            GetAppointmentInfoById.get({
-                shopAppointServiceId:$stateParams.shopAppointServiceId
-            },function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $scope.confirmed = data.responseData;
-                    $rootScope.title = $scope.confirmed.sysClerkName
-                }
 
-
-            })
             $scope.pho=function(num){
                 window.location.href = "tel:" + num;
             }

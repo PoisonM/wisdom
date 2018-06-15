@@ -1,4 +1,4 @@
-package com.wisdom.beauty.api.enums;
+package com.wisdom.common.constant;
 
 public enum CommonCodeEnum {
 
@@ -7,11 +7,13 @@ public enum CommonCodeEnum {
     Y("Y", "正常"),
     N("N", "非正常"),
     NOTBIND("notBind", "正常"),
-    ALREADYBIND("alreadyBind", "非正常"),
+    ALREADY_BIND("alreadyBind", "非正常"),
     ADD("0", "添加"),
     DELETE("1", "删除"),
     DISABLE("1", "不启用"),
     ENABLED("0", "启用"),
+    BINDING("0", "綁定"),
+    NO_BINDING("1", "未綁定"),
     TRUE("true", "true");
 
     CommonCodeEnum(String code, String desc) {
