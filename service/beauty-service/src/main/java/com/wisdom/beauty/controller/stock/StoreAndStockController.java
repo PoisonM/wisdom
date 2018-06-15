@@ -157,6 +157,9 @@ public class StoreAndStockController {
 		pageParamVoDTO.setStartTime(shopStockRecordRequestDTO.getStartTime());
 		pageParamVoDTO.setEndTime(sbEndTime.toString());
 		List<ShopStockRecordDTO> list = shopStockService.getShopStockRecordList(pageParamVoDTO);
+		for(ShopStockRecordDTO lt :list){
+			lt.setName(shopStockRecordRequestDTO.getName());
+		}
 		ResponseDTO<List<ShopStockRecordDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(list);

@@ -17,7 +17,8 @@
                       <span class="colff66">*</span>
                   </p>
                   <p>
-                      <span class="fs14 col333">{{peopleKuTube.storeManagerName}}</span>
+                      <span class="fs14 col333" ng-if="show">{{peopleKuTube.storeManagerName}}</span>
+                      <span class="fs14 col333" ng-if="!show">{{storeManagerName}}</span>
                      <img src="images/more.png" class="more mr10">
                   </p>
 
