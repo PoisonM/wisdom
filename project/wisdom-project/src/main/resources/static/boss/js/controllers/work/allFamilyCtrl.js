@@ -8,7 +8,8 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
             $rootScope.title = "全部家人";
             $scope.param = {
                 startDate : $stateParams.date,
-                date:$stateParams.date
+                date:$stateParams.date,
+                flag:false
             };
             $scope.param.date=$scope.param.date.replace(/00/g,'')
             $scope.param.date=$scope.param.date.replace(/:/g,'')
@@ -72,11 +73,16 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
                     startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",
                     pageSize:100
                 },function(data){
-                    $ionicLoading.hide()
-                    if(data.result==Global.SUCCESS&&data.responseData!=null)
-                    {
-
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $ionicLoading.hide();
                         $scope.allFamily = data.responseData
+                        $scope.param.flag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.flag=true;
+                        }
+                    }else if(data.result==Global.SUCCESS&&data.responseData==null){
+                        $ionicLoading.hide();
+                        $scope.param.flag=true;
                     }
                 })
             };
