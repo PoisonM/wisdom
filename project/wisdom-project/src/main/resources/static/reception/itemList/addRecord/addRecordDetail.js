@@ -26,6 +26,12 @@ PADWeb.controller('addRecordDetailCtrl', function($scope,$state,$stateParams,Arc
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
+    $scope.$parent.param.selectSty = $stateParams.userId
+
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-1)
+    }
+
     //档案详情
     ArchivesDetail.get({id:$stateParams.id},function (data) {
         $scope.responseData = data.responseData

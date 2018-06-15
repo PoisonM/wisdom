@@ -11,6 +11,7 @@
         </div>
         <div class="basicInfo-content-second clearfix">
             <span>会员：{{responseData.isMember}}</span>
+            <span ng-if="responseData.isMember == '未绑定'" ng-click="goBindMember(responseData.sysShopId,responseData.sysUserId)" class="bind">绑定</span>
         </div>
         <div class="basicInfo-content-third clearfix">
             <span>总金额：<b>{{responseData.totalBalance}}</b></span>
