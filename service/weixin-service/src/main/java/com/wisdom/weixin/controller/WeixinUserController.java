@@ -215,7 +215,8 @@ public class WeixinUserController {
 
         if(userInfoDTOS.size()>0)
         {
-            WeixinShareDTO weixinShareDTO = weixinCustomerCoreService.getWeixinShareInfo(userInfoDTOS.get(0));
+            userInfoDTO = userInfoDTOS.get(0);
+            WeixinShareDTO weixinShareDTO = weixinCustomerCoreService.getWeixinShareInfo(userInfoDTO);
             if(weixinShareDTO==null)
             {
                 responseDTO.setResult(StatusConstant.FAILURE);

@@ -49,7 +49,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
             }
 
             GetQRCodeURL.get({userPhone:$stateParams.userPhone},function (data) {
-                BusinessUtil.checkResponseData(data,'sharePage');
+
                 $scope.param.weixinShareInfo = data.responseData;
 
                 //获取$scope.param.canvas
@@ -121,11 +121,10 @@ angular.module('controllers',[]).controller('sharePageCtrl',
             });
 
             wx.onMenuShareTimeline({
-                title: '测试', // 分享标题
+                title: '美享微商城测试', // 分享标题
+                imgUrl: 'https://mx-beauty.oss-cn-beijing.aliyuncs.com/%E5%A4%B4%E5%83%8F.png', // 分享图标
                 link: $location.absUrl(), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: '', // 分享图标
                 success: function () {
-
                 }
             })
         }])
