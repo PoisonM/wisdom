@@ -88,6 +88,19 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                        /*员工端的业绩明细*/
+                    .state('employeeDetailedPerformance', {
+                        url: '/employeeDetailedPerformance/:searchFile',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeDetailedPerformanceCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeDetailedPerformanceCtrl',
+                                    ['js/controllers/employee/employeeDetailedPerformanceCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeDetailedPerformance.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                 /*全部家人*/
 
                     .state('allFamily', {
@@ -2318,7 +2331,7 @@ define(['appBoss'], function(app){
                     })
 
                     .state('employeeTreatmentCardDtails', {
-                        url: '/employeeTreatmentCardDtails/:sysUserId',
+                        url: '/employeeTreatmentCardDtails/:flowId/:goodsType/:flowIds/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'employeeTreatmentCardDtailsCtrl',
                         resolve: {
