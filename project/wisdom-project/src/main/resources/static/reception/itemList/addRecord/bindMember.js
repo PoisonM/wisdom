@@ -21,17 +21,15 @@ PADWeb.controller('bindMemberCtrl', function ($scope,$rootScope,$stateParams, $s
             sysUserId: $stateParams.userId,
         }, function (data) {
             if(data.result == "0x00001"){
-                alert("SUCCESS")
-                clearInterval($rootScope.timeInfo)
-                $state.go("pad-web.left_nav.personalFile")
-            }
-            if(data.result == "0x00002"){
-                console.log("FAILURE")
-            }
-            if(data.result == "alreadyBind"){
-                alert("已绑定")
-                $state.go("pad-web.left_nav.personalFile")
-                clearInterval($rootScope.timeInfo)
+                if(data.responseData == "alreadyBind"){
+                    alert("绑定成功")
+                    $state.go("pad-web.left_nav.personalFile")
+                    clearInterval($rootScope.timeInfo)
+                }else if(data.responseData == "notArchives"){
+                    alert("请添加档案");
+                }else if(data.responseData=="otherUser"){
+                    alert("请让本人扫码");
+                }
             }
         })
     }

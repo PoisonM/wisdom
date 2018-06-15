@@ -77,7 +77,7 @@ public class ShopController {
         String string = new StringBuffer(shopId).append("_").append(sysUserId).toString();
         Object object = JedisUtils.getStringObject(string);
         responseDTO.setResponseData(object);
-        responseDTO.setResult(StatusConstant.FAILURE);
+        responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
 
