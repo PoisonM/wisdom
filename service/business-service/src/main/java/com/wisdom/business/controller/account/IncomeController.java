@@ -214,6 +214,7 @@ public class IncomeController {
 
 		//如已有审核记录
 		if (incomeRecordManagementDTOS.size() > 0) {
+			logger.info("已有相关人员审核,不能重复修改");
 			//已有的审核记录状态与本次相同
 			responseDTO.setResult("已有相关人员审核,不能重复修改");
 			responseDTO.setErrorInfo(StatusConstant.SUCCESS);
@@ -244,6 +245,29 @@ public class IncomeController {
 		incomeRecordManagementDTO.setCreateDate(new Date());
 		incomeRecordManagementDTO.setStatus(status);
 		incomeRecordManagementService.insertIncomeRecordManagement(incomeRecordManagementDTO);
+		logger.info("第一次审核,创建审核记录,向incomeRecordManagement表中插入数据");
+
+		//发送模板消息
+		//查询此条佣金信息
+		IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+		incomeRecordDTO.setId(incomeRecordId);
+		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getUserIncomeRecordInfo(incomeRecordDTO);
+		if(incomeRecordDTOS.size() > 0){
+			//判断是否是月度,以及审核人是否是运营
+			if("month".equals(incomeRecordDTOS.get(0).getIncomeType()) && "operation-1".equals(userInfoDTO.getUserType())){
+				UserInfoDTO userInfoDTO1 = new UserInfoDTO();
+				userInfoDTO1.setId(incomeRecordDTOS.get(0).getSysUserId());
+				List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO1);
+				if(userInfoDTOS.size() > 0){
+					String token = WeixinUtil.getUserToken();
+					WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(incomeRecordDTOS.get(0).getSysUserId(),incomeRecordDTOS.get(0).getAmount()+"",DateUtils.DateToStr(new Date()),token,"",userInfoDTOS.get(0).getUserOpenid());
+					logger.info("运营审核通过了此条月度={},给用户={}发送月度可提现模板消息",incomeRecordId,incomeRecordDTOS.get(0).getSysUserId());
+				}else {
+					logger.info("审核成功,模板消息发送失败,因为没有查到此月度的用户=={}",incomeRecordDTOS.get(0).getSysUserId());
+				}
+			}
+		}
+
 		responseDTO.setResult("审核成功");
 		responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 		logger.info("佣金奖励审核耗时{}毫秒", (System.currentTimeMillis() - startTime));
