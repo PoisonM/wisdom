@@ -1,6 +1,7 @@
 package com.wisdom.weixin.service.beauty;
 
 
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
@@ -105,15 +106,15 @@ public class ProcessBeautyScanEventService {
 
                 //根据shopId和openId查询用户是否绑定了此美容院
                 ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
-                if("N".equals(responseDTO.getResponseData()))
+                if(CommonCodeEnum.NO_BINDING.getCode().equals(responseDTO.getResponseData()))
                 {
                     System.out.println("redis中设置的key为 "+shopId+"_"+userId);
-                    JedisUtils.set(shopId+"_"+userId,"notBind",ConfigConstant.logintokenPeriod);
+                    JedisUtils.set(shopId+"_"+userId,CommonCodeEnum.NOTBIND.getCode(),ConfigConstant.logintokenPeriod);
                 }
-                else if("Y".equals(responseDTO.getResponseData()))
+                else if(CommonCodeEnum.BINDING.getCode().equals(responseDTO.getResponseData()))
                 {
                     System.out.println("redis中设置已经绑定过的的key为 "+shopId+"_"+userId);
-                    JedisUtils.set(shopId+"_"+userId,"alreadyBind",ConfigConstant.logintokenPeriod);
+                    JedisUtils.set(shopId+"_"+userId,CommonCodeEnum.ALREADY_BIND.getCode(),ConfigConstant.logintokenPeriod);
                 }
             }
 
