@@ -1331,6 +1331,12 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             }
                         })
                     }
+                    else if(type== 0){
+                        $scope.param.addCustomersObject.userName = ""
+                        $scope.param.addCustomersObject.userPhone = ""
+                        $scope.param.addCustomersObject.sex = "女"
+                        $scope.param.imgSrc = "images/bt_taking%20pictures.png"
+                    }
                     $scope.closeThisDialog();
 
                 };
