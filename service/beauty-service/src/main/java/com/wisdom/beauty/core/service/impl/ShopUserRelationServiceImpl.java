@@ -164,7 +164,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
                 //查询此用户与本店的绑定关系
                 ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
                 shopUserRelationDTO.setSysUserId(userId);
-                shopUserRelationDTO.setShopId(shopId);
+                shopUserRelationDTO.setSysShopId(shopId);
                 List<ShopUserRelationDTO> shopListByCondition = getShopListByCondition(shopUserRelationDTO);
                 if(CommonUtils.objectIsEmpty(shopListByCondition)){
                     logger.info("此用户没有绑定过店铺，创建绑定关系");
