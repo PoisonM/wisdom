@@ -9,6 +9,7 @@ angular.module('controllers',[]).controller('canceledCtrl',
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
+                flag:false
             }
             $scope.param.date=$stateParams.date;
 
@@ -62,21 +63,6 @@ angular.module('controllers',[]).controller('canceledCtrl',
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
             $scope.getInfo = function(){
-                GetShopClerkAppointmentInfo.get({
-                    searchDate:$scope.param.date,
-                    sysClerkId:$stateParams.sysClerkId,/*$stateParams.sysClerkId*/
-                    sysShopId:$stateParams.sysShopId
-                },function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
-                        $scope.canceled = data.responseData
-                        $ionicLoading.hide();
-                        /*$rootScope.title = $scope.canceled[0].sysClerkInfo.name;*/
-                    }
-
-
-                })
-            }
-            $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
@@ -84,6 +70,25 @@ angular.module('controllers',[]).controller('canceledCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
+                GetShopClerkAppointmentInfo.get({
+                    searchDate:$scope.param.date,
+                    sysClerkId:$stateParams.sysClerkId,/*$stateParams.sysClerkId*/
+                    sysShopId:$stateParams.sysShopId
+                },function(data){
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $ionicLoading.hide();
+                        $scope.canceled = data.responseData
+                        $scope.param.flag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.flag=true;
+                        }
+                    }else {
+                        $ionicLoading.hide();
+                        $scope.param.flag=true;
+                    }
+                })
+            }
+            $scope.$on('$ionicView.enter', function() {
                 $scope.getInfo()
             })
 

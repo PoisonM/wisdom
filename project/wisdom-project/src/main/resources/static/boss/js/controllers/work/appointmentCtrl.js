@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('appointmentCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopAppointmentNumberInfo',"BossUtil",'Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetShopAppointmentNumberInfo,BossUtil,Global,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopAppointmentNumberInfo',"BossUtil",'Global','$filter','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetShopAppointmentNumberInfo,BossUtil,Global,$filter,$ionicLoading) {
 
             $rootScope.title = "预约";
 
@@ -11,6 +11,7 @@ angular.module('controllers',[]).controller('appointmentCtrl',
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
+                flag:false
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
@@ -66,15 +67,32 @@ angular.module('controllers',[]).controller('appointmentCtrl',
             };
 
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetShopAppointmentNumberInfo.get({
                     searchDate:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $ionicLoading.hide()
                         $scope.appointment = data.responseData;
+                        $scope.param.flag=false
+                        if(data.responseData.length<=0){
+                            $scope.param.flag=true;
+                        }
+                    }else {
+                        $scope.param.flag=true;
+                        $ionicLoading.hide()
                     }
                 })
             };
-            $scope.getInfo();
+            $scope.$on('$ionicView.enter', function() {
+                $scope.getInfo()
+            })
 
             $scope.healthClubGo = function(id,name){
                 $state.go("beautySalon",{sysShopId:id,date:$scope.param.date,shopName:name})

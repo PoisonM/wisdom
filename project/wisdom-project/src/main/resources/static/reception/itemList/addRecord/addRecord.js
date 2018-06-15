@@ -82,7 +82,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$rootScope,$state,SaveArchive
             return
         }
 
-        var reg = /^0?1[3|4|5|8][0-9]\d{8}$/;
+        var reg = /^0?1[3|4|5|7|8][0-9]\d{8}$/;
         if(!reg.test($scope.param.selectContentPhone)){
             alert("请输入正确手机号")
             return

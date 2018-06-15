@@ -74,11 +74,9 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
                 });
                 GetBossExpenditureAndIncome.get({
                     startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59"},function (data) {
-                    if(data.result==Global.SUCCESS&&data.responseData!=null)
-                    {
-                        $ionicLoading.hide()
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $ionicLoading.hide();
                         $scope.comprehensive = data.responseData;
-
                     }
                 });
             }
