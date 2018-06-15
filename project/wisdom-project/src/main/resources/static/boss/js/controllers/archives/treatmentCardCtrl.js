@@ -1,14 +1,15 @@
 angular.module('controllers',[]).controller('treatmentCardCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserCourseProjectList',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserCourseProjectList) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserCourseProjectList','Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserCourseProjectList,Global) {
             $rootScope.title = "疗程卡";
             $scope.param={
                 flag:false,
-                overdue:"6"
+                overdue:"6",
+                picFlag:false
             };
             /*点击筛选*/
             $scope.sel = function(){
-                $scope.param.flag = true
+                $scope.param.flag = true;
             };
             /*点击关闭*/
             $scope.disNone=function () {
@@ -16,18 +17,30 @@ angular.module('controllers',[]).controller('treatmentCardCtrl',
             };
             /*点击选择类型*/
             $scope.selType = function(type){
-                $scope.param.overdue = type
+                $scope.param.overdue = type;
             };
             /*点击重置*/
             $scope.reset = function() {
                 $scope.param.overdue = '6'
             };
             /*调取疗程卡页面数据*/
-            GetUserCourseProjectList.get({cardStyle:"1",sysUserId:$stateParams.sysUserId},function (data) {
-                $scope.treatmentCard=data.responseData;
-                $scope.arr = data.responseData;
 
-            });
+                GetUserCourseProjectList.get({cardStyle:"1",sysUserId:$stateParams.sysUserId},function (data) {
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $scope.treatmentCard=data.responseData;
+                        $scope.arr = data.responseData;
+                        $scope.param.picFlag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.picFlag=true;
+                        }
+                    }else{
+                        $scope.param.picFlag=true;
+                    }
+
+
+                });
+
+
             /*点击疗程卡列表跳转到划卡页面*/
             $scope.goTreatmentCard=function (id) {
                 $state.go("treatmentCardDtails",{flowId:id,goodsType:'1'})

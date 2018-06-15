@@ -40,7 +40,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
                 if(window.FileReader) {
                     var fr = new FileReader();
                     fr.onloadend = function(e) {
-                        $scope.thumb = e.target.result
+                        $scope.thumb = e.target.result;
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $scope.newUser.imageUrl=data.responseData

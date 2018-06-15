@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('employeeAnalysisCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','GetClerkAchievementList','GetBossShopList','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,GetClerkAchievementList,GetBossShopList,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','GetClerkAchievementList','GetBossShopList','$ionicLoading','Global',
+        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,GetClerkAchievementList,GetBossShopList,$ionicLoading,Global) {
 
             $rootScope.title = "员工分析";
 
@@ -14,7 +14,8 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 displayShopBox:false,
                 sysShopId:'',
                 sortBy:"",
-                sortRule:""
+                sortRule:"",
+                flag:false
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
@@ -85,18 +86,20 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                     sortBy:$scope.param.sortBy,
                     sortRule:$scope.param.sortRule
                 },function(data){
-                      $scope.employeeAnalysis = data.responseData;
-                     $ionicLoading.hide();
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $ionicLoading.hide();
+                        $scope.employeeAnalysis = data.responseData;
+                        $scope.param.flag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.flag=true;
+                        }
+                    }else {
+                        $ionicLoading.hide();
+                        $scope.param.flag=true;
+                    }
                 })
             }
             $scope.$on('$ionicView.enter', function() {
-                $ionicLoading.show({
-                    content: 'Loading',
-                    animation: 'fade-in',
-                    showBackdrop: true,
-                    maxWidth: 200,
-                    showDelay: 0
-                });
                 $scope.getInfo();
             })
             $scope.tabShop=function () {
@@ -115,6 +118,9 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 $scope.param.sortBy=sortBy;
                 $scope.param.sortRule=sortRule;
                 $scope.getInfo()
+            }
+            $scope.noneAll = function () {
+                $scope.param.displayShopBox=false;
             }
 
         }]);

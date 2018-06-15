@@ -25,21 +25,23 @@ public interface ShopUerConsumeRecordService {
      * @Date:2018/4/3 18:57
      */
     List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+
     /**
-    *@Author:huan
-    *@Param:
-    *@Return:
-    *@Description: 根据流水号查询用户的消费记录
-    *@Date:2018/4/9 19:06
-    */
+     * @Author:huan
+     * @Param:
+     * @Return:
+     * @Description: 根据流水号查询用户的消费记录
+     * @Date:2018/4/9 19:06
+     */
     UserConsumeRecordResponseDTO getShopCustomerConsumeRecord(String consumeFlowNo);
+
     /**
-    *@Author:zhanghuan
-    *@Param:  id  消费记录表中的id
-    *@Return:
-    *@Description:  (套卡的消费详情)
-    *@Date:2018/6/4 14:57
-    */
+     * @Author:zhanghuan
+     * @Param: id  消费记录表中的id
+     * @Return:
+     * @Description: (套卡的消费详情)
+     * @Date:2018/6/4 14:57
+     */
     UserConsumeRecordResponseDTO getUserGroupCardConsumeDetail(String id);
 
     /**
@@ -66,52 +68,67 @@ public interface ShopUerConsumeRecordService {
      * @return
      */
     int updateConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO);
+
     /**
-    *@Author:zhanghuan
-    *@Param:
-    *@Return:
-    *@Description: 根据消费类型和多个sysClerkId查询消费记录集合
-    *@Date:2018/4/26 9:51
-    */
-    List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(String consumeType,List<String> sysClerkIds);
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据消费类型和多个sysClerkId查询消费记录集合
+     * @Date:2018/4/26 9:51
+     */
+    List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(String consumeType, List<String> sysClerkIds);
+
     /**
-    *@Author:zhanghuan
-    *@Param:
-    *@Return:
-    *@Description: 根据疗程卡和套卡Id获取疗程的划卡记录
-    *@Date:2018/6/1 18:10
-    */
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据疗程卡和套卡Id获取疗程的划卡记录
+     * @Date:2018/6/1 18:10
+     */
     List<UserConsumeRecordResponseDTO> getTreatmentAndGroupCardRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+
     /**
-    *@Author:zhanghuan
-    *@Param:
-    *@Return:
-    *@Description:  获取用的划卡记录
-    *@Date:2018/6/2 14:08
-    */
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 获取用的划卡记录
+     * @Date:2018/6/2 14:08
+     */
     List<UserConsumeRecordResponseDTO> getUserStampCardRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+
     /**
-    *@Author:zhanghuan
-    *@Param:
-    *@Return:
-    *@Description: 根据多个flow_id查询
-    *@Date:2018/6/4 18:58
-    */
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据多个flow_id查询
+     * @Date:2018/6/4 18:58
+     */
     List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(List<String> flowIds);
+
     /**
-    *@Author:zhanghuan
-    *@Param:  flowId  项目和用户的关系表主键
-    *@Return:
-    *@Description: 获取疗程卡的消费详情
-    *@Date:2018/6/4 20:02
-    */
+     * @Author:zhanghuan
+     * @Param: flowId  项目和用户的关系表主键
+     * @Return:
+     * @Description: 获取疗程卡的消费详情
+     * @Date:2018/6/4 20:02
+     */
     UserConsumeRecordResponseDTO getTreatmentCardConsumeDetail(String flowId);
+
     /**
-    *@Author:zhanghuan
-    *@Param:
-    *@Return:
-    *@Description: 根据flowId获取产品的消费详情
-    *@Date:2018/6/12 16:26
-    */
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据flowId获取产品的消费详情
+     * @Date:2018/6/12 16:26
+     */
     UserConsumeRecordResponseDTO getProductConsumeDetailByFlowId(UserConsumeRequestDTO userConsumeRequestDTO);
+
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description: 根据条件查询，可以分页和根据时间查询，不根据flowId去重
+     * @Date:2018/6/15 16:28
+     */
+    List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 }

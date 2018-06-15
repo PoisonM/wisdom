@@ -1,4 +1,4 @@
-function basicInfo($scope, $state,$stateParams,Archives, ArchivesDetail) {
+function basicInfo($scope, $state,$stateParams,Archives, ArchivesDetail,$rootScope) {
     //初始化参数
     $scope.param = {
         userId: "", //用户id
@@ -8,12 +8,13 @@ function basicInfo($scope, $state,$stateParams,Archives, ArchivesDetail) {
 
     //确定用户选中样式
     $scope.$parent.param.selectSty = $state.params.sysUserId
+    clearInterval($rootScope.timeInfo)
 
 
     $scope.queryUserInfo = function(sysUserId, id) {
         //根据id查用户信息
         //member    会员状态    string  0:绑定 1：未绑定
-        Archives.get({ id: id }, function(data) {
+        ArchivesDetail.get({ id: id }, function(data) {
             if (data.result == "0x00001") {
                 $scope.responseData = data.responseData
             }

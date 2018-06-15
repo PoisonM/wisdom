@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;

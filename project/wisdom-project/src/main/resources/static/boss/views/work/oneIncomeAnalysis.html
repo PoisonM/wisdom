@@ -52,7 +52,7 @@
                         </p>
                         <div class="col col-80" style="text-align: left">
                             <p> 银行卡</p>
-                            <p  class="mt5">{{oneIncomeAnalysis[0] ==undefined?0:oneIncomeAnalysis[0]}}</p>
+                            <p  class="mt5">{{oneIncomeAnalysis[2] ==undefined?0:oneIncomeAnalysis[2]}}</p>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         </p>
                         <div class="col col-80" style="text-align: left">
                             <p> 微信</p>
-                            <p  class="mt5">{{oneIncomeAnalysis[1] ==undefined?0:oneIncomeAnalysis[1]}}</p>
+                            <p  class="mt5">{{oneIncomeAnalysis[0] ==undefined?0:oneIncomeAnalysis[0]}}</p>
                         </div>
                     </div>
                 </div>
@@ -74,14 +74,14 @@
                         </p>
                         <div class="col col-80" style="text-align: left">
                             <p> 支付宝</p>
-                            <p  class="mt5">{{oneIncomeAnalysis[2] ==undefined?0:oneIncomeAnalysis[2]}}</p>
+                            <p  class="mt5">{{oneIncomeAnalysis[1] ==undefined?0:oneIncomeAnalysis[1]}}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!--总支出-->
-        <div class="list" >
+        <div class="list" ng-show="false">
             <p class="item p8" ><span>总支出</span><span class="fr fs15 colff66">******<i  class="ml10 col99" class="ion ion-ios-arrow-right"></i></span></p>
             <div class="row row-wrap bgfff col33 tc p0" >
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">

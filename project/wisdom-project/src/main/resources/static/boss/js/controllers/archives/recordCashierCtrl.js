@@ -19,7 +19,8 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                timeIndex:0,
                startDate:"",
                endDate: "",
-               startEndIndex:''
+               startEndIndex:'',
+               picFlag:false
            };
             /*日期插件*/
 
@@ -135,11 +136,24 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                     shopUserId:$stateParams.sysUserId,
                     startTime:$scope.param.startDate,
                     endTime:$scope.param.endDate
-
                 }
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 Consumes.save($scope.userConsumeRequest,function(data){
+                    $ionicLoading.hide()
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.recordCashier =data.responseData
+                        $scope.param.picFlag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.picFlag=true;
+                        }
+                    }else{
+                        $scope.param.picFlag=true;
                     }
                 })
             }
