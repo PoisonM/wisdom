@@ -300,7 +300,7 @@ public class BusinessRunTimeService {
             float returnMonthlyMoney_A = 0;
             float returnMonthlyMoney_B = 0;
 
-            String startDate = "";
+           /* String startDate = "";
             String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"15";
             if(DateUtils.getMonth().equals("01"))
             {
@@ -318,6 +318,10 @@ public class BusinessRunTimeService {
                 int month = Integer.parseInt(DateUtils.getMonth()) - 1;
                 startDate = DateUtils.getYear() + "-" + month + "-15";
             }
+*/
+
+            String startDate ="2018-05-15 00:00:00";
+            String endDate ="2018-06-09 23:59:59";
 
             List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
 
@@ -905,8 +909,8 @@ public class BusinessRunTimeService {
         MonthlyIncomeSignalDTO monthlyIncomeSignalDTO = mongoTemplate.findOne(query, MonthlyIncomeSignalDTO.class, "monthlyIncomeSignal");
 
         //将范围处理成时间一天的范围
-        SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
-        SimpleDateFormat sfe = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sfe = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StringBuilder sbs  = new StringBuilder();
         sbs.append(year).append("-").append(month).append("-").append(day).append(" ").append("00:00:00");
         StringBuilder sbe  = new StringBuilder();
@@ -954,6 +958,7 @@ public class BusinessRunTimeService {
         float returnMonthlyMoney = 0;
         float returnMonthlyMoney_A = 0;
         float returnMonthlyMoney_B = 0;
+
 
         String startDate =  DateUtils.formatDate(startDateM,"yyyy-MM-dd HH-mm-ss");
         String endDate = DateUtils.formatDate(endDateM,"yyyy-MM-dd HH-mm-ss");
