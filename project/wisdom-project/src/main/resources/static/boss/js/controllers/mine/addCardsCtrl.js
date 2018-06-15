@@ -148,7 +148,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                 var d1 = new Date(Date.parse(effectiveDate));
                 var d2 =  new Date(Date.parse(expirationDate));
 
-                if(d1>d2){
+                if(d1>d2&&$rootScope.settingAddsome.editorCard.expirationDate!='0'){
                     alert("生效日期大于活动有效期");
                     return
                 }
