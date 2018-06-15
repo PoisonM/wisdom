@@ -67,7 +67,7 @@ public class WeixinTest {
 
     @Test
     public void getUserBindingInfo() {
-        beautyServiceClient.getUserBindingInfo("oP0k_0S-a-U1z64qcVVCIaLWM52s", "20180514102629597");
+//        beautyServiceClient.getUserBindingInfo("oP0k_0S-a-U1z64qcVVCIaLWM52s", "20180514102629597");
     }
 
     @Test
