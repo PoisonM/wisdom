@@ -1541,7 +1541,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('funArea', {
-                        url: '/funArea',
+                        url: '/funArea/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'funAreaCtrl',
                         resolve: {
@@ -2463,6 +2463,19 @@ define(['appBoss'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeBalanceRecordCtrl',
                                     ['js/controllers/employee/employeeBalanceRecordCtrl.js?ver='+ bossVersion],
                                     'views/employee/employeeBalanceRecord.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                    /*员工端关于我们*/
+                    .state('employeeAboutMine', {
+                        url: '/employeeAboutMine',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeAboutMineCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeAboutMineCtrl',
+                                    ['js/controllers/employee/employeeAboutMineCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeAboutMine.html?ver=' + bossVersion);
                             }
                         }
                     })

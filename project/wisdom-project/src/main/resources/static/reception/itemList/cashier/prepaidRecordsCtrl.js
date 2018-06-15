@@ -1,10 +1,9 @@
 PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, ngDialog, Consumes) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
-    $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)"
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案"
-    $scope.$parent.$parent.param.headerCash.backContent = "充值记录"
-    $scope.$parent.$parent.param.headerCash.title = "收银记录";
+    $scope.$parent.$parent.param.headerCash.backContent = "返回"
+    $scope.$parent.$parent.param.headerCash.title = "收银记录";//包括消费记录//充值记录
     $scope.$parent.$parent.param.headerCash.leftTip = "保存"
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true
@@ -25,8 +24,11 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, n
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
-    $scope.goAccountDetails = function() {
-        $state.go('pad-web.left_nav.accountDetails')
+    $scope.goAccountDetails = function(flowNo) {
+        $state.go('pad-web.left_nav.accountDetails',{
+            userId:$stateParams.userId,
+            flowNo:flowNo
+        })
     }
 
     Consumes.save({
@@ -37,8 +39,5 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, n
     },function (data) {
         $scope.itemList = data.responseData
     })
-/*flowNoId*/
-    $scope.goAccountDetails = function (flowNo) {
-        $state.go("pad-web.left_nav.accountDetails",{flowNo:flowNo})
-    }
+
 });

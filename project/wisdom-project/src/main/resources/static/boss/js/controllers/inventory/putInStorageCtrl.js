@@ -2,6 +2,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
     ['$scope', '$rootScope', '$stateParams', '$state', '$ionicLoading','GetShopProductLevelInfo',
         function ($scope, $rootScope, $stateParams, $state, $ionicLoading,GetShopProductLevelInfo) {
             $rootScope.title = "入库";
+            $scope.sum = 0;
             $scope.param = {
                 flag: false,
                 type: 0, /*客装产品  易耗品*/
@@ -101,42 +102,49 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             }
 
             $scope.selProduct = function (domIndex) {
-                $rootScope.shopInfo.entryShopProductList = [];
-                if($scope.param.type=='0')
-                {
-                    $scope.param.selectProductList = '客装产品';
-                }
-                else if($scope.param.type=='1')
-                {
-                    $scope.param.selectProductList = '院装产品';
-                }
-                else if($scope.param.type=='2')
-                {
-                    $scope.param.selectProductList = '易耗品';
-                }
-                if ($scope.param.ids.indexOf(domIndex) != -1) {
-                    var key = 0;
-                    angular.forEach($scope.param.ids, function (val, index) {
-                        if (val == domIndex) {
-                            $scope.param.ids.splice(key, 1);
-                        }
-                        key++;
+                if($scope.sum<30){
+                    $rootScope.shopInfo.entryShopProductList = [];
+                    if($scope.param.type=='0')
+                    {
+                        $scope.param.selectProductList = '客装产品';
+                    }
+                    else if($scope.param.type=='1')
+                    {
+                        $scope.param.selectProductList = '院装产品';
+                    }
+                    else if($scope.param.type=='2')
+                    {
+                        $scope.param.selectProductList = '易耗品';
+                    }
+                    if ($scope.param.ids.indexOf(domIndex) != -1) {
+                        var key = 0;
+                        angular.forEach($scope.param.ids, function (val, index) {
+                            if (val == domIndex) {
+                                $scope.param.ids.splice(key, 1);
+                            }
+                            key++;
+                        })
+                    } else {
+                        $scope.param.ids.push(domIndex);
+                    }
+                    var key1 = 0;
+                    angular.forEach($scope.param.ids,function (val,index) {
+                        angular.forEach($scope.param.detailProductList,function (val1,index1) {
+                            if(val==index1){
+                                $scope.param.selectProductList = $scope.param.selectProductList+','+val1.productTypeTwoName;
+                                $rootScope.shopInfo.entryShopProductList.push(val1);
+                                key1++;
+                            }
+
+                        })
                     })
-                } else {
-                    $scope.param.ids.push(domIndex);
+                    $scope.sum = key1;
+                }else{
+                    alert("一次性只能选择30种产品")
                 }
-                angular.forEach($scope.param.ids,function (val,index) {
-                    angular.forEach($scope.param.detailProductList,function (val1,index1) {
-                        if(val==index1){
-                            $scope.param.selectProductList = $scope.param.selectProductList+','+val1.productTypeTwoName;
-                            $rootScope.shopInfo.entryShopProductList.push(val1);
-                        }
-                    })
-                })
             };
 
             $scope.inventoryRecordsPicsGo = function(){
-                alert($rootScope.shopInfo.shopStoreId);
                 $state.go("inventoryRecordsPics",{shopStoreId:$rootScope.shopInfo.shopStoreId})
             };
 

@@ -95,7 +95,7 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
 
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
-                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
+                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面，原本是false。
             };
 
             $scope.getInfo  = function(){
@@ -104,11 +104,11 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                     startTime:$scope.param.startValue,
                     stockStyle:"5",
                     shopStoreId: $stateParams.shopStoreId,
-                    pageSize:1000
+                    pageSize:1000,
+                    name:$stateParams.name
                 }
                 ShopStockRecordList.save($scope.shopStockRecordRequestDTO,function(data){
                     $scope.param.inventoryRecordsPics = data.responseData;
-                    alert( $scope.param.inventoryRecordsPics[0].id);
                 })
             }
             $scope.getInfo()

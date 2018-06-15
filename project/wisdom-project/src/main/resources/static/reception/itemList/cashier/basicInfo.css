@@ -119,9 +119,12 @@
 }
 
 .basicInfo-box .basicInfo-content-second .bind {
-    border: 1px solid #FF6666;
-    padding: 0px 5px;
-    margin-left: 5px;
-    color: #ff6666 !important;
-    border-radius: 3px;
+    font-family: PingFangSC-Regular !important;
+    font-size: 15px !important;
+    color: #FF6666 !important;
+    letter-spacing: 0.37px !important;
+    border: 1px solid #ff6666;
+    margin-left: 10px;
+    border-radius: 4px;
+    padding: 2px 10px;
 }

@@ -10,7 +10,7 @@ angular.module('controllers',[]).controller('treatmentCardDtailsCtrl',
             };
             $scope.chooseTab = function (type) {
                 if(type =="0"){
-                    $scope.param.flag = true
+                    $scope.param.flag = true;
                     $scope.getInfo()
                 }else{
                     $scope.param.flag = false;

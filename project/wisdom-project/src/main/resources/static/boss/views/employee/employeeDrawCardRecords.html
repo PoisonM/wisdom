@@ -1,20 +1,19 @@
 <ion-view>
-    <ion-content class="partialFiles">
+    <ion-content class="partialFiles" >
         <div>
             <ion-list>
                 <ion-item style="height:70px;" class="sb" ng-repeat="item in recordCashier" ng-click="goDrawCardRecordsDetail(item.flowNo)">
-                    <div>
+                    <div class=" col col-90">
                         <p class="fs15 col666 ml10 mt10">{{item.createDate|date:'yyyy-MM-dd'}}</p>
                         <p class="fs15 col333 ml10">
-                            <span style="width:80px;display: inline-block">{{item.title}}</span>
-                            <span style="width:50px;display: inline-block">{{item.consumeNumber}}次 </span>
-                            <span>{{item.sysShopClerkName}}（{{item.sysShopName}}）</span>
+                            <p style="display: inline-block" class="col col-33">{{item.title}}</p>
+                            <p style="display: inline-block" class="col col-33">{{item.consumeNumber}}次 </p>
+                            <p style="display: inline-block" class="col col-40">{{item.sysShopClerkName}}（{{item.sysShopName}}）</p>
                         </p>
                     </div>
-                    <p class="mr10 fs16 col333" style="line-height: 70px">签字</p>
-
-
-
+                    <p class="col col-10 fs16 col333" style="line-height: 70px">
+                        <img ng-src="{{item.signUrl}}" style="width:30px;height:30px;display: block">
+                    </p>
                 </ion-item>
             </ion-list>
         </div>

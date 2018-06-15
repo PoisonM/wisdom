@@ -350,7 +350,17 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         shopAppointServiceDTO.setSysBossCode(sysClerkDTO.getSysBossCode());
 
         logger.info("保存用户的预约信息传入参数={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
-
+        //如果最后一位存在;则过滤掉
+        String shopProjectId = shopAppointServiceDTO.getShopProjectId();
+        String shopProjectName = shopAppointServiceDTO.getShopProjectName();
+        if((";").equals(shopProjectId.substring(shopProjectId.length()-1,shopProjectId.length()))){
+            shopProjectId = shopProjectId.substring(0,shopProjectId.length()-1);
+            shopAppointServiceDTO.setShopProjectId(shopProjectId);
+        }
+        if((";").equals(shopProjectName.substring(shopProjectName.length()-1,shopProjectName.length()))){
+            shopProjectName = shopProjectName.substring(0,shopProjectName.length()-1);
+            shopAppointServiceDTO.setShopProjectName(shopProjectName);
+        }
         int insert = shopAppointServiceMapper.insertSelective(shopAppointServiceDTO);
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         logger.debug("保存用户的预约信息执行结果， {}", insert > 0 ? "成功" : "失败");

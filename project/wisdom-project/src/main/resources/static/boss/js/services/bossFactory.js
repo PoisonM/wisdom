@@ -536,5 +536,10 @@ define(['appBoss'], function (app) {
             return $resource(consume + "getRechargeRecord")
         }])
 
+        //获取当前老板下面对应的店铺
+        .factory('FindStoreList',['$resource',function ($resource){
+            return $resource(stock + "findStoreList")
+        }])
+
 
 });

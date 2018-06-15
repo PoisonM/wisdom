@@ -10,7 +10,7 @@ angular.module('controllers',[]).controller('employeeSetCtrl',
 
             /*点击关于我们跳转到关于我们页面*/
             $scope.aboutMineGo=function () {
-                $state.go("aboutMine")
+                $state.go("employeeAboutMine")
             };
 
             /*点击退出登录*/
@@ -18,10 +18,10 @@ angular.module('controllers',[]).controller('employeeSetCtrl',
                 $scope.exitLogon=function () {
                     BossUserLoginOut.get({},function (data) {
                         if(data.result =="0x00001"){
-                            alert("退出成功")
-                            window.localStorage.removeItem("beautyUserLoginToken")
-                            window.localStorage.removeItem("beautyBossLoginToken")
-                            window.localStorage.removeItem("beautyClerkLoginToken")
+                            alert("退出成功");
+                            window.localStorage.removeItem("beautyUserLoginToken");
+                            window.localStorage.removeItem("beautyBossLoginToken");
+                            window.localStorage.removeItem("beautyClerkLoginToken");
                             $state.go("employeeIndex");
                         }
                     })

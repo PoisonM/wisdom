@@ -26,6 +26,7 @@ angular.module('controllers',[]).controller('employeeMyselfCtrl',
             /*查询我的信息*/
             GetCurrentLoginUserInfo.get(function (data) {
                 BossUtil.checkResponseData(data,'myself');
+                $scope.userInfo=data.responseData;
             })
            
         }]);
