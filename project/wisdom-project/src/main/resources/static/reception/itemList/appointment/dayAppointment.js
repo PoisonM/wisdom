@@ -643,7 +643,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     // $scope.param.newProductObject.shopProjectName = data.responseData.shopProjectName,
                     // $scope.param.ModifyAppointmentObject.appointPeriod = data.responseData.appointPeriod,
                     // $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
-
+                    $scope.param.ModifyAppointmentObject.beauticianId = data.responseData.sysClerkId
                     $scope.param.selectCustomersObject.sysUserId = data.responseData.sysUserId
                     $scope.param.selectCustomersObject.sysUserName = data.responseData.sysUserName
                     $scope.param.ModifyAppointmentObject.beauticianName = data.responseData.sysClerkName
@@ -651,6 +651,14 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     $scope.checkprojectName = data.responseData.shopProjectName,
                     $scope.checkprojectDuration = data.responseData.appointPeriod,
                     $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
+                    $scope.tempRedgArr = data.responseData.shopProjectId.split(";");
+                    $scope.param.dayTime=[];
+                    $scope.param.curDate=new Date();
+                    for(var i=1;i<=6;i++){
+                        nextDate = new Date($scope.param.curDate.getTime() +  24*60*60*1000*i);
+                        //后一天 
+                        $scope.param.dayTime.push(nextDate)
+                    }
 
                     GetClerkScheduleInfo.get({
                         appointmentId:"",
@@ -661,10 +669,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         if(data.result == "0x00001"){
                             //空闲时间
                             $scope.param.mrLeisureTime = data.responseData
-                            //计算出不可点击时间
 
-                            $scope.param.dayTime=[];
-                            $scope.param.curDate=new Date();
                             $scope.bgf5f5f5 = "bgf5f5f5";
                             $scope.param.codeNum = []//所有节点
                             $scope.param.schedulingArr = []//所有节点
@@ -712,16 +717,52 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
 
                 });
+                /*选择时间（天为单位）*/
+                $scope.selectDayTime = function(index){
+                    $scope.bgff6666 = 'bgff6666';
+                    $scope.index = index;
+                };
+                $scope.selectTime = function(index,NoOrYes){
+                    var timeIntervalArr = [];
+                    if(NoOrYes == 1){
+                        //0空闲时间 1非空闲时间
+                        return
+                    }
+                    if($scope.param.selectCustomersObject.sysUserName == ""){
+                        alert("请先选择顾客")
+                    }else if($scope.param.ModifyAppointmentObject.beauticianId == "" || $scope.param.ModifyAppointmentObject.beauticianId == undefined){
+                        alert("请先选择美容师")
+                    }else{
+                        $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(startIndex,endIndex+1);
+                        $scope.bgff9b9b = 'bgff9b9b';
+                        $scope.index1 = index;
+                        var time=$scope.checkprojectDuration/60/1/0.5;
+                        for(var i=index;i<time+index;i++){
+                            $scope.param.selectedTime[i] = "2";
+                            for(var j=0;j<$scope.param.code.length;j++){
+                                for(key in $scope.param.code[j] ){
+                                    if($scope.param.code[j][key] == $scope.param.ModifyAppointmentObject.hoursTimeShow[i] ){
+                                        timeIntervalArr.push($scope.param.code[j][key])
+                                    }
+                                }
+                            }
+                        }
+
+                        $scope.param.ModifyAppointmentObject.appointStartTime=timeIntervalArr[0];
+                        $scope.param.ModifyAppointmentObject.appointEndTime=timeIntervalArr[timeIntervalArr.length-1]
+                    }
+                };
                 $scope.close = function (status) {
                     if(status == 1){
                         $scope.importData = {
-                            shopProjectId:$scope.param.newProductObject.shopProjectId,
+                            id:$scope.appointmentId,
+                            shopProjectId:$scope.checkprojectId,
                             sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
-                            // appointStartTimeS:"2018-04-27 11:00:00",
+                            sysUserId:$scope.param.selectCustomersObject.sysUserId,//biaoji
+                            sysUserName:$scope.param.selectCustomersObject.sysUserName,
                             appointStartTimeS:new Date().format("yyyy-MM-dd")+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
-                            // appointStartTimeS:new Date().getFullYear()+"-"+parseInt(new Date().getMonth()+1)+"-"+parseInt(new Date().getDate())+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
-                            shopProjectName:$scope.param.newProductObject.shopProjectName,
-                            appointPeriod:$scope.param.ModifyAppointmentObject.appointPeriod,
+                            shopProjectName:$scope.checkprojectName,
+                            appointPeriod:$scope.checkprojectDuration,
                             detail:$scope.param.ModifyAppointmentObject.detail,
                             status:'0'
                         }
