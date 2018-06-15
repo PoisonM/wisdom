@@ -1,9 +1,6 @@
 <div class="dayAppointment H100" ng-show="scheduling">
     <div class="header">
         <p class="timeArea">
-            <!--<input
-                   id="timeChange" class="time" readonly ng-model="param.nowTime"
-                   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,onpicked:change});">-->
             <input type="text" id="test1" class="time" readonly ng-model="param.nowTime">
         </p>
         <div class="centerBtn">
@@ -104,10 +101,6 @@
                                     <em>客</em>
                                     <i>{{value.appointmentInfo.length}}</i>
                                 </span>
-                                <!--<span>-->
-                                    <!--<em>排</em>-->
-                                    <!--<i>0</i>-->
-                                <!--</span>-->
                             </div>
                         </div>
 
@@ -208,7 +201,7 @@
         <div ng-include="'itemList/appointment/detailsReservation.html'"></div>
     </div>
 </script>
-<!--修改预约-->
+<!--新建预约-->
 <script type="text/ng-template" id="modifyingAppointment">
     <div class=" br36 modifyingAppointment">
         <div class="space-between h104 bgeee btrr btlr">

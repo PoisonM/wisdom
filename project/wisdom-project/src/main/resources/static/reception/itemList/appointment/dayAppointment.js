@@ -5,7 +5,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     , GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject
     , GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, UpdateAppointmentInfoById
     , FindArchives, GetShopProjectList, ShopWeekAppointmentInfoByDate, GetShopClerkScheduleList
-    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo,GetShopUserArchivesInfoByUserId) {
+    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo,GetShopUserArchivesInfoByUserId,ImageBase64UploadToOSS) {
     $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
     //切换时间更新数据
@@ -1284,7 +1284,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     $scope.goArrangeWorkList = function () {
         $state.go("pad-web.arrangeWorkList")
     }
-
+    $scope.param.imgSrc = 'images/bt_taking%20pictures.png'
     var pattern = /^1[34578]\d{9}$/;
     /*添加顾客*/
     $scope.addCustomersCtrl = function(){
@@ -1312,7 +1312,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             constellation:"",//星座
                             detail:'',//备注
                             height:"",//身高
-                            imageUrl:$scope.param.addCustomersObject.picSrc,//头像地址
+                            imageUrl:$scope.param.imgSrc,//头像地址
                             phone:$scope.param.addCustomersObject.userPhone,//手机号
                             sex:$scope.param.addCustomersObject.sex,//性别
                             sysClerkId:'',
@@ -1334,6 +1334,30 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     $scope.closeThisDialog();
 
                 };
+
+                /*上传图片*/
+                /*上传图片*/
+                $scope.reader = new FileReader();   //创建一个FileReader接口
+                $scope.thumb = "";      //用于存放图片的base64
+                $scope.img_upload = function(files) {
+                    var file = files[0];
+                    if (window.FileReader) {
+                        var fr = new FileReader();
+                        fr.onloadend = function (e) {
+                            console.log(e)
+                            $scope.thumb = e.target.result
+                        };
+                        fr.readAsDataURL(file);
+                    } else {
+                        alert("浏览器不支持")
+                    }
+                    debugger
+                    console.log($scope.thumb)
+                    ImageBase64UploadToOSS.save($scope.thumb, function (data) {
+                        $scope.param.imgSrc = data.responseData//图片地址
+                    })
+                }
+
             }],
             className: 'newProject ngdialog-theme-custom'
         });
