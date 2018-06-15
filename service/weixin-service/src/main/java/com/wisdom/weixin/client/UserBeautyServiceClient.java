@@ -65,6 +65,9 @@ public interface UserBeautyServiceClient {
 	@RequestMapping(value = "/beauty/insertUserInfo", method = RequestMethod.POST)
 	void insertUserInfo(@RequestBody UserInfoDTO userInfoDTO);
 
+	@RequestMapping(value = "/updateBeautyUserInfo", method = RequestMethod.POST)
+	void updateBeautyUserInfo(@RequestBody UserInfoDTO userInfoDTO);
+
 	/**
 	 * @Author:zhanghuan
 	 * @Param:
