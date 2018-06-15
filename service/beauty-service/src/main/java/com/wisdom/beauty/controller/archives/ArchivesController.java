@@ -297,17 +297,4 @@ public class ArchivesController {
         }
         return responseDTO;
     }
-
-    /**
-     * 查询某个用户与店的绑定关系
-     * @param openId
-     * @param shopId
-     * @return
-     */
-    @RequestMapping(value = "/userBinding", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseDTO<String> userBinding(@RequestParam String openId, @RequestParam(required = false) String shopId) {
-        ResponseDTO<String> responseDTO = shopUserRelationService.userBinding(openId, shopId);
-        return responseDTO;
-    }
 }
