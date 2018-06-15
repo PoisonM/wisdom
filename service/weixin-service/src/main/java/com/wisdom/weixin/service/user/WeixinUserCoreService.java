@@ -135,26 +135,30 @@ public class WeixinUserCoreService {
         weixinShareDTO.setSysUserId(userInfoDTO.getId());
         weixinShareDTO.setUserPhone(userInfoDTO.getMobile());
         weixinShareDTO.setUserImage(userInfoDTO.getPhoto());
-        if(StringUtils.isNotBlank(userInfoDTO.getNickname())){
-            String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
-            while(true){
-                System.out.println("用户进行编码操作");
-                if(StringUtils.isNotBlank(nickNameW)){
-                    if(nickNameW.contains("%25")){
-                        nickNameW =  CommonUtils.nameDecoder(nickNameW);
+        try {
+            if(StringUtils.isNotBlank(userInfoDTO.getNickname())){
+                String nickNameW = userInfoDTO.getNickname().replaceAll("%", "%25");
+                while(true){
+                    System.out.println("用户进行编码操作");
+                    if(StringUtils.isNotBlank(nickNameW)){
+                        if(nickNameW.contains("%25")){
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                        }else{
+                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                            break;
+                        }
                     }else{
-                        nickNameW =  CommonUtils.nameDecoder(nickNameW);
                         break;
                     }
-                }else{
-                    break;
                 }
+                weixinShareDTO.setNickName(nickNameW);
+            }else{
+                weixinShareDTO.setNickName("亲爱的");
             }
-            weixinShareDTO.setNickName(nickNameW);
-        }else{
-            weixinShareDTO.setNickName("亲爱的");
+        } catch(Throwable e){
+            logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+            weixinShareDTO.setNickName("特殊符号用户");
         }
-
         //获取shareCode
         String shareCode = ConfigConstant.SHARE_CODE_VALUE + userInfoDTO.getMobile() + "_" + RandomNumberUtil.getFourRandom();
         weixinShareDTO.setShareCode(shareCode);

@@ -53,21 +53,26 @@ public class BeautyUserInfoServiceImpl implements BeautyUserInfoService {
         }
         for (UserInfoDTO user: userInfoDTOS) {
             if(StringUtils.isNotBlank(user.getNickname())){
-                String nickNameW = user.getNickname().replaceAll("%", "%25");
-                while(true){
-                    logger.info("用户进行编码操作");
-                    if(StringUtils.isNotBlank(nickNameW)){
-                        if(nickNameW.contains("%25")){
-                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                try {
+                    String nickNameW = user.getNickname().replaceAll("%", "%25");
+                    while(true){
+                        logger.info("用户进行编码操作");
+                        if(StringUtils.isNotBlank(nickNameW)){
+                            if(nickNameW.contains("%25")){
+                                nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                            }else{
+                                nickNameW =  CommonUtils.nameDecoder(nickNameW);
+                                break;
+                            }
                         }else{
-                            nickNameW =  CommonUtils.nameDecoder(nickNameW);
                             break;
                         }
-                    }else{
-                        break;
                     }
+                    user.setNickname(nickNameW);
+                } catch(Throwable e){
+                    logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                    userInfoDTO.setNickname("特殊符号用户");
                 }
-                user.setNickname(nickNameW);
             }
         }
         return  userInfoDTOS;

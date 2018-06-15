@@ -281,9 +281,9 @@ public class TransactionService {
                     while(true){
                         if(nickNameW!=null&&nickNameW!=""){
                             if(nickNameW.contains("%25")){
-                                nickNameW = CommonUtils.nameDecoder(nickNameW);
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                             }else{
-                                nickNameW = CommonUtils.nameDecoder(nickNameW);
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                                 break;
                             }
                         }else{

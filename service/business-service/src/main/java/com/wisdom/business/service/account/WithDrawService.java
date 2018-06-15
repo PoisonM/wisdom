@@ -188,10 +188,34 @@ public class WithDrawService {
         Page<WithDrawRecordDTO> resultPage = withDrawMapper.queryAllWithdraw(page);
         for(WithDrawRecordDTO withDrawRecordDTO : resultPage.getList()){
             try {
+                if(withDrawRecordDTO.getNickName() != null && withDrawRecordDTO.getNickName() != ""){
+                    String nickNameW = withDrawRecordDTO.getNickName().replaceAll("%", "%25");
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
+                        }else{
+                            break;
+                        }
+
+                    }
+                    withDrawRecordDTO.setNickName(nickNameW);
+                }else{
+                    withDrawRecordDTO.setNickName("未知用户");
+                }
+            } catch(Throwable e){
+                logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                withDrawRecordDTO.setNickName("特殊符号用户");
+            }
+           /* try {
                 withDrawRecordDTO.setNickName(URLDecoder.decode(withDrawRecordDTO.getNickName(),"utf-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
         pageResult.setTotalCount((int)resultPage.getCount());
         pageResult.setResponseData(resultPage.getList());
