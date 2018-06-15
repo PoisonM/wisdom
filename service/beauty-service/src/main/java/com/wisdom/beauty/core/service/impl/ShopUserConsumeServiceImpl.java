@@ -250,15 +250,15 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             recordDTO.setFlowId(specialCard.getId());
             recordDTO.setGoodsType(GoodsTypeEnum.RECHARGE_CARD.getCode());
             recordDTO.setSysUserId(shopUserOrderDTO.getUserId());
-            recordDTO.setSysClerkName(recordDTO.getSysClerkName());
-            recordDTO.setSysClerkId(recordDTO.getSysClerkId());
+            recordDTO.setSysClerkName(shopUserOrderDTO.getSysClerkName());
+            recordDTO.setSysClerkId(shopUserOrderDTO.getSysClerkId());
             recordDTO.setFlowNo(shopUserOrderDTO.getOrderId());
             recordDTO.setSysBossCode(UserUtils.getClerkInfo().getSysBossCode());
             recordDTO.setSysShopId(shopUserOrderDTO.getShopId());
             recordDTO.setPrice(new BigDecimal(balancePay));
             recordDTO.setConsumeNumber(1);
             recordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
-            shopUerConsumeRecordService.saveCustomerConsumeRecord(recordDTO);
+                shopUerConsumeRecordService.saveCustomerConsumeRecord(recordDTO);
             logger.info("扣减余额账户={}",info);
         }
         return false;
