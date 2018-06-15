@@ -134,8 +134,8 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
             c.andSysUserIdEqualTo(shopUserRelationDTO.getSysUserId());
         }
 
-        if (StringUtils.isNotBlank(shopUserRelationDTO.getShopId())) {
-            c.andShopIdEqualTo(shopUserRelationDTO.getShopId());
+        if (StringUtils.isNotBlank(shopUserRelationDTO.getSysShopId())) {
+            c.andSysShopIdEqualTo(shopUserRelationDTO.getSysShopId());
         }
 
         List<ShopUserRelationDTO> shopUserRelations = shopUserRelationMapper.selectByCriteria(criteria);
@@ -164,15 +164,16 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
                 //查询此用户与本店的绑定关系
                 ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
                 shopUserRelationDTO.setSysUserId(userId);
-                shopUserRelationDTO.setShopId(shopId);
+                shopUserRelationDTO.setSysShopId(shopId);
                 List<ShopUserRelationDTO> shopListByCondition = getShopListByCondition(shopUserRelationDTO);
                 if(CommonUtils.objectIsEmpty(shopListByCondition)){
                     logger.info("此用户没有绑定过店铺，创建绑定关系");
                     shopUserRelationDTO.setStatus(CommonCodeEnum.BINDING.getCode());
                     shopUserRelationService.saveUserShopRelation(shopUserRelationDTO);
-                    JedisUtils.set(shopId+"_"+userId,CommonCodeEnum.ALREADY_BIND.getCode(), ConfigConstant.logintokenPeriod);
                 }
+                JedisUtils.set(shopId+"_"+userId,"alreadyBind", ConfigConstant.logintokenPeriod);
             }
+
         }
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
