@@ -527,6 +527,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				recordDTO.setSysShopId(consumeRecordDTO.getSysShopId());
 				recordDTO.setCreateDate(new Date());
 				recordDTO.setConsumeRecordId(consumeRecordDTO.getId());
+				recordDTO.setConsumeType(consumeRecordDTO.getConsumeType());
+				recordDTO.setFlowId(consumeRecordDTO.getFlowId());
+				recordDTO.setConsumeRecordId(consumeRecordDTO.getId());
+				recordDTO.setSysClerkName(consumeRecordDTO.getSysClerkName());
 				recordDTOS.add(recordDTO);
 			}
 			shopClerkWorkService.saveClerkWorkRecord(recordDTOS);
