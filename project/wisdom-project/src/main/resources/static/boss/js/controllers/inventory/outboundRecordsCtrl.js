@@ -10,7 +10,8 @@ angular.module('controllers',[]).controller('outboundRecordsCtrl',
                 endTime: BossUtil.getNowFormatDate(),/*显示值*/
                 startValue:BossUtil.getNowFormatDate(),/*传值*/
                 endValue:BossUtil.getNowFormatDate(),/*传值*/
-                outRecordsPics : []
+                outRecordsPics : [],
+                name : $stateParams.name
             }
             $scope.param.startTime=$scope.param.startTime.replace(/00/g,'');
             $scope.param.startTime=$scope.param.startTime.replace(/:/g,'');
@@ -103,7 +104,8 @@ angular.module('controllers',[]).controller('outboundRecordsCtrl',
                     startTime:$scope.param.startValue,
                     stockStyle:"6",
                     shopStoreId:$stateParams.shopStoreId,
-                    pageSize:1000
+                    pageSize:1000,
+                    name:$stateParams.name
                 }
                 ShopStockRecordList.save($scope.shopStockRecordRequestDTO,function(data){
                     $scope.outboundRecords = data.responseData;

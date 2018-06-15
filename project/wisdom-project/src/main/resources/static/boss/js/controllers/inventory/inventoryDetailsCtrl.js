@@ -24,6 +24,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
             GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,productType:$scope.param.type},function(data){
                 $scope.param.detailProductList = data.responseData.detailProductList;
                 $scope.param.oneLevelList = data.responseData.oneLevelList;
+                $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
                 $scope.param.twoLevelList = data.responseData.twoLevelList;
                 $scope.param.allUseCost = data.responseData.allUseCost;
                 $scope.param.useCost = data.responseData.useCost;
@@ -36,7 +37,6 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                         $scope.param.type = type;
                         if($scope.param.multiSelectFlag){
                            GetShopProductLevelInfo.get({productType:type},function(data){
-
                                $scope.param.oneLevelList = data.responseData.oneLevelList;
                                $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
                                $scope.param.twoLevelList = data.responseData.twoLevelList;
