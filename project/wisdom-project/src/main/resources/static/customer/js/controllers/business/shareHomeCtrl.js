@@ -12,11 +12,10 @@ angular.module('controllers',[]).controller('shareHomeCtrl',
 
                     }else{
                         GetUserInfoByOpenId.get(function(data){
-
                             if(data.result==Global.SUCCESS)
                             {
                                 if(data.responseData.userType=="business-A-1"||data.responseData.userType=="business-B-1"){
-                                    $state.go("sharePage",{reload:true});
+                                    $state.go("sharePage",{reload:true,userPhone:data.responseData.mobile});
                                 }else
                                 {
                                     var alertPopup = $ionicPopup.alert({

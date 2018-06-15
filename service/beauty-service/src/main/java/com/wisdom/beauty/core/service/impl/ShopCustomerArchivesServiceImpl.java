@@ -343,4 +343,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
+
+    @Override
+    public List<ShopUserArchivesDTO> getArchivesList(List<String> userIds) {
+        return null;
+    }
 }

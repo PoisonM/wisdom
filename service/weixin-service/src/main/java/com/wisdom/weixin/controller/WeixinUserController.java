@@ -200,36 +200,43 @@ public class WeixinUserController {
      * 用户获取推广二维码
      */
     @RequestMapping(value = "getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
+//    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<WeixinShareDTO> getUserQRCode() throws FileNotFoundException {
+    ResponseDTO<WeixinShareDTO> getUserQRCode(@RequestParam String userPhone) throws FileNotFoundException {
         long startTime = System.currentTimeMillis();
         logger.info("用户获取推广二维码==={}开始" , startTime);
         ResponseDTO<WeixinShareDTO> responseDTO = new ResponseDTO();
 
-        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        WeixinShareDTO weixinShareDTO = weixinCustomerCoreService.getWeixinShareInfo(userInfoDTO);
-        if(weixinShareDTO==null)
+        UserInfoDTO userInfoDTO = new UserInfoDTO();//UserUtils.getUserInfoFromRedis();
+        userInfoDTO.setMobile(userPhone);
+
+        List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+
+        if(userInfoDTOS.size()>0)
         {
-            responseDTO.setResult(StatusConstant.FAILURE);
+            WeixinShareDTO weixinShareDTO = weixinCustomerCoreService.getWeixinShareInfo(userInfoDTOS.get(0));
+            if(weixinShareDTO==null)
+            {
+                responseDTO.setResult(StatusConstant.FAILURE);
+            }
+            else
+            {
+                AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(weixinShareDTO.getSysUserId());
+                String instanceMoney = businessServiceClient.selectIncomeInstanceByUserId(userInfoDTO.getId());
+                List<UserInfoDTO> userInfoDTOList = userServiceClient.queryNextUserByUserId(userInfoDTO.getId());
+                float balance = accountDTO.getBalance();
+                weixinShareDTO.setIstanceMoney(instanceMoney);
+                weixinShareDTO.setPeoperCount(userInfoDTOList.size());
+                weixinShareDTO.setBalance(String.valueOf(balance));
+                weixinShareDTO.setUserType(userInfoDTO.getUserType());
+                weixinShareDTO.setQrCodeURL(saveImageToLocal(weixinShareDTO.getQrCodeURL(),weixinShareDTO.getSysUserId(),"qrCode"));
+                weixinShareDTO.setUserImage(saveImageToLocal(weixinShareDTO.getUserImage(),weixinShareDTO.getSysUserId(),"userImage"));
+                responseDTO.setResult(StatusConstant.SUCCESS);
+                responseDTO.setResponseData(weixinShareDTO);
+            }
+            logger.info("用户获取推广二维码,结束,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         }
-        else
-        {
-            AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(weixinShareDTO.getSysUserId());
-            String instanceMoney = businessServiceClient.selectIncomeInstanceByUserId(userInfoDTO.getId());
-            List<UserInfoDTO> userInfoDTOList = userServiceClient.queryNextUserByUserId(userInfoDTO.getId());
-            float balance = accountDTO.getBalance();
-            weixinShareDTO.setIstanceMoney(instanceMoney);
-            weixinShareDTO.setPeoperCount(userInfoDTOList.size());
-            weixinShareDTO.setBalance(String.valueOf(balance));
-            weixinShareDTO.setUserType(userInfoDTO.getUserType());
-            weixinShareDTO.setQrCodeURL(saveImageToLocal(weixinShareDTO.getQrCodeURL(),weixinShareDTO.getSysUserId(),"qrCode"));
-            weixinShareDTO.setUserImage(saveImageToLocal(weixinShareDTO.getUserImage(),weixinShareDTO.getSysUserId(),"userImage"));
-            responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setResponseData(weixinShareDTO);
-        }
-        logger.info("用户获取推广二维码,结束,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
