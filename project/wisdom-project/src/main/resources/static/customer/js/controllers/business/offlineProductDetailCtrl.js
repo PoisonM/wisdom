@@ -182,11 +182,18 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
             };
 
             $scope.addProductNum = function(){
-                $scope.param.productNum= $scope.param.productNum+1;
-                if($scope.param.productNum>$scope.param.product.productAmount){
-                    $("#Car").css("background","grey");
-                    $("#goPay").css("background","grey");
+                if($scope.param.product.productId=="MXT99-14"&&$scope.param.productNum+1>1)
+                {
+                    alert("对不起，618活动商品只能抢购一套");
                 }
+                else {
+                    $scope.param.productNum= $scope.param.productNum+1;
+                    if($scope.param.productNum>$scope.param.product.productAmount){
+                        $("#Car").css("background","grey");
+                        $("#goPay").css("background","grey");
+                    }
+                }
+
             };
 
             $scope.minusProductNum = function(){

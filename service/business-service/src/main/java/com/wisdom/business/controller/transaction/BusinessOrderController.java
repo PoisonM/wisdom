@@ -172,7 +172,7 @@ public class BusinessOrderController {
                     {
                         responseDTO.setResult(StatusConstant.FAILURE);
                     }
-                    else if(businessOrderDTO.getStatus().equals("1"))
+                    else if(businessOrderDTO.getStatus().equals("1")||businessOrderDTO.getStatus().equals("2"))
                     {
                         responseDTO.setResult(StatusConstant.SUCCESS);
                     }

@@ -149,14 +149,20 @@ angular.module('controllers',[]).controller('buyCartCtrl',
                 if(addButton)
                 {
                     addButton = false;
-                    AddProduct2BuyCart.get({productId:item.productId,productSpec:item.productSpec,productNum:1},function(data){
-                        item.productNum = (parseInt(item.productNum)+1).toString();
-                        $scope.param.totalPayPrice = 0;
-                        reCalcTotalPayPrice();
-                        addButton = true;
-                    });
-                    if(parseInt(item.productNum)>=parseInt(item.productAmount)){
-                        $("#greyBox").css("background","grey")
+                    if(item.productId=="MXT99-14"&&item.productNum+1>1)
+                    {
+                        alert("对不起，618活动商品只能抢购一套");
+                    }
+                    else {
+                        AddProduct2BuyCart.get({productId:item.productId,productSpec:item.productSpec,productNum:1},function(data){
+                            item.productNum = (parseInt(item.productNum)+1).toString();
+                            $scope.param.totalPayPrice = 0;
+                            reCalcTotalPayPrice();
+                            addButton = true;
+                        });
+                        if(parseInt(item.productNum)>=parseInt(item.productAmount)){
+                            $("#greyBox").css("background","grey")
+                        }
                     }
                 }
             };

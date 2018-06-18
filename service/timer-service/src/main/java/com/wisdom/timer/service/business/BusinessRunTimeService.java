@@ -300,24 +300,27 @@ public class BusinessRunTimeService {
             float returnMonthlyMoney_A = 0;
             float returnMonthlyMoney_B = 0;
 
-            String startDate = "";
-            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"15";
-            if(DateUtils.getMonth().equals("01"))
-            {
-                int month = 11;
-                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-                startDate = year + "-" + month + "-15";
-            }
-            else if(DateUtils.getMonth().equals("02"))
-            {
-                int month = 12;
-                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-                startDate = year + "-" + month + "-15";
-            }
-            else{
-                int month = Integer.parseInt(DateUtils.getMonth()) - 1;
-                startDate = DateUtils.getYear() + "-" + month + "-15";
-            }
+//            String startDate = "";
+//            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"15";
+//            if(DateUtils.getMonth().equals("01"))
+//            {
+//                int month = 11;
+//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
+//                startDate = year + "-" + month + "-15";
+//            }
+//            else if(DateUtils.getMonth().equals("02"))
+//            {
+//                int month = 12;
+//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
+//                startDate = year + "-" + month + "-15";
+//            }
+//            else{
+//                int month = Integer.parseInt(DateUtils.getMonth()) - 1;
+//                startDate = DateUtils.getYear() + "-" + month + "-15";
+//            }
+
+            String startDate ="2018-05-15 00:00:00";
+            String endDate ="2018-06-09 23:59:59";
 
             List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
 
@@ -367,7 +370,7 @@ public class BusinessRunTimeService {
                 incomeRecordDTO.setNextUserMobile("");
                 incomeRecordDTO.setParentRelation("");
                 businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
-                WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
+                //WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
             }
         }
     }

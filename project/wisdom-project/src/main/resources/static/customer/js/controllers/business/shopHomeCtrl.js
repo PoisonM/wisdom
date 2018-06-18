@@ -16,7 +16,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                /* rookieProductId:"201712101718100007",*/
                 redPackerFlagOne:false,
                 redPackerFlagTwo:false,
-                redPackerBox:true,
+                redPackerBox:false,
                 bonusValue:"",
                 timeContent:"",
                 checkType:"0"
@@ -93,6 +93,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     $scope.fivePriductList = [];
                     $scope.allPriductList = $scope.param.productList;
                     $scope.repeatList=$scope.param.productList;/*一进入商城默认全部商城*/
+                    console.log($scope.param.productList);
                     for(var i = 0; i < $scope.param.productList.length; i++){
                         if($scope.param.productList[i].price == "99.00"){
                             $scope.onePriductList.push($scope.param.productList[i])
