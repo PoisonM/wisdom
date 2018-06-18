@@ -125,7 +125,7 @@ public class ProcessBeautySubscribeEventService {
                 userServiceClient.updateUserInfo(userInfoDTO);
 
                 //根据shopId和openId查询用户是否绑定了此美容院
-                ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
+                ResponseDTO<String> responseDTO = new ResponseDTO<String>();
                 if("N".equals(responseDTO.getResponseData()))
                 {
                     logger.info("根据shopId和openId查询,用户绑定了此美容院,redis中设置的key为 "+shopId+"_"+userId);
