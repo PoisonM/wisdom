@@ -17,15 +17,15 @@
     <ul class="selectRechargeCardUl mt10">
         <li>
             <div>单次折扣</div>
-            <span><input type="text" ng-value="responseData.timeDiscount*100"></span>
+            <span><input type="text" ng-value="responseData.timeDiscount!='1'?responseData.timeDiscount:0"></span>
         </li>
         <li>
             <div>疗程卡折扣</div>
-            <span><input type="text" ng-value="responseData.periodDiscount*100"></span>
+            <span><input type="text" ng-value="responseData.periodDiscount!='1'?responseData.periodDiscount:0"></span>
         </li>
         <li>
             <div>产品折扣</div>
-            <span><input type="text" ng-value="responseData.productDiscount*100"></span>
+            <span><input type="text" ng-value="responseData.productDiscount!='1'?responseData.productDiscount:0"></span>
         </li>
     </ul>
     <ul class="selectRechargeCardUl mt10">
@@ -72,7 +72,9 @@
     <ul class="selectRechargeCardUl mt10" ng-click="goHousekeeper()">
         <li>
             <div>关联员工</div>
-            <span>></span>
+            <span>
+                <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                ></span>
         </li>
     </ul>
     <img src="" alt="">

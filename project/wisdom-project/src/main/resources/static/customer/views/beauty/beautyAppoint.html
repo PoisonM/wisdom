@@ -55,8 +55,8 @@
             </div>
             <div class="row" style="background: white;color:black;margin-top:1px;text-align: center">
                 <div class="col" style="width:11%" ng-repeat="item in param.weekDays" ng-click="chooseAppointDate(item.dateValue)">
-                    <span class="noChooseDay" ng-if="item.dateValue!=param.chooseDate">{{item.dateIndex}}</span>
-                    <span class="chooseDay" ng-if="item.dateValue==param.chooseDate">{{item.dateIndex}}</span>
+                    <span class="noChooseDay" ng-if="item.dateValue!=param.chooseWeekDate">{{item.dateIndex}}</span>
+                    <span class="chooseDay" ng-if="item.dateValue==param.chooseWeekDate">{{item.dateIndex}}</span>
                 </div>
             </div>
             <div style="margin-top:0px;background:pink;color:transparent;font-size:1px;height:2px;">123</div>
@@ -80,8 +80,8 @@
                 <a class="item item-icon-left" ui-sref="beautySendMessage">
                     <i class="icon ion-chatbubble-working" style="color:#FF6666"></i>
                     <span style="color: #333333;font-size: 15px">捎话</span>
-                    <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail==''" style="font-size: 15px;color: #666666">给美容师捎句话&nbsp;></span>
-                    <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail!=''">{{shopAppointInfo.shopProjectDetail}}&nbsp;></span>
+                    <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail==''" style="font-size: 15px;color: #666666">请输入捎话&nbsp;></span>
+                    <span class="item-note" ng-if="shopAppointInfo.shopProjectDetail!=''">{{shopAppointInfo.shopProjectDetail|textLengthSet:true:10:'...'}}></span>
                 </a>
             </div>
             <center>

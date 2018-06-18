@@ -1,24 +1,27 @@
 <ion-view>
     <ion-content>
-        <div  >
+        <div ng-show="!param.picFlag">
             <ion-list >
-                <ion-item  class="h60 bgfff " style="display: flex;" ng-repeat="item in accountDetails">
+                <ion-item  class="h60 bgfff " style="display: flex;" ng-repeat="item in accountDetails" ng-click='detailsOfCashierGo(item.id,item.flowNo)'>
                     <div class="W33 ml20">
                         <p >{{item.createDate|date:'yyyy-MM-dd'}}</p>
                     </div>
-                    <p class="W33 ml20 " ng-if="item.consumeType == '1'">店内消费</p>
-                    <p class="W33 ml20 " ng-if="item.consumeType == '0'">店内充值</p>
+                   <!-- <p class="W33 ml20 " ng-if="item.consumeType == '1'">店内消费</p>-->
+                    <p class="W33 ml20 " ng-if="item.goodsType == '2'">店内充值</p>
                     <div class="W33 ml20 ">
                         <p class="floatR">
-                            <span class="colff66" ng-if="item.consumeType == '0'">+{{item.price}}</span>
-                            <span class="col4BC647" ng-if="item.consumeType == '1'">-{{item.price}}</span>
-                            <img src="images/more.png"  class="more mr10 ml5">
+                            <span class="colff66" ng-if="item.goodsType == '2'">+{{item.sumAmount}}</span>
+                           <!-- <span class="col4BC647" ng-if="item.consumeType == '1'">-{{item.sumAmount}}</span>-->
+                            <img src="images/more.png"  class="more mr10 ml5" >
                        </p>
                     </div>
                 </ion-item>
 
 
             </ion-list>
+        </div>
+        <div style="width:100%;height:100%" ng-show="param.picFlag">
+            <img src="images/viod.png" style="width:100%;position: absolute;top:50%;margin-top:-200px;">
         </div>
     </ion-content>
 </ion-view>

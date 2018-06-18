@@ -1,7 +1,6 @@
 package com.wisdom.beauty.core.service;
 
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
-import com.wisdom.beauty.api.dto.SysShopDTO;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 
@@ -49,7 +48,7 @@ public interface ShopUserRelationService {
      * @param shopId
      * @return
      */
-    ResponseDTO<String> userBinding(String openId, String shopId);
+    ResponseDTO<String> userBinding(String openId, String shopId,String userId);
 
     /**
      * 查询美容院信息
@@ -61,5 +60,5 @@ public interface ShopUserRelationService {
     /**
      * 更新店铺信息
      */
-    int updateShopInfo(SysShopDTO sysShopDTO);
+    int updateShopInfo(ExtSysShopDTO sysShopDTO);
 }

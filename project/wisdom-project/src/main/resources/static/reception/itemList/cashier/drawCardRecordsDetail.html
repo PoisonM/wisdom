@@ -1,0 +1,43 @@
+<div class="drawCardRecordsDetail">
+    <div class="drawCardRecordsDetail_box">
+        <div class="basic">
+            <p>基本信息</p>
+            <ul>
+                <li>
+                    <label for="">时间</label>
+                    <span>{{dataInfo.createDate}}</span>
+                </li>
+                <li>
+                    <label for="">顾客</label>
+                    <span>{{dataInfo.createDate | date: "yyyy-MM-dd HH:mm:ss"}}</span>
+                </li>
+                <li>
+                    <label for="">操作门店</label>
+                    <span>{{dataInfo.sysShopName}}</span>
+                </li>
+                <li>
+                    <label for="">前台</label>
+                    <span>{{dataInfo.sysClerkName}}</span>
+                </li>
+                <li>
+                    <label for="">类型</label>
+                    <!--0:微信 1：支付宝 2:银行支付金额-->
+                    <span ng-if="dataInfo.payMap.payType == '0'">微信</span>
+                    <span ng-if="dataInfo.payMap.payType == '1'">支付宝</span>
+                    <span ng-if="dataInfo.payMap.payType == '2'">银行支付金额</span>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="basic">
+            <p>划卡信息</p>
+            <ul ng-repeat="listItem in dataInfo.userConsumeRecordResponseList">
+                <li>
+                    <label for="">{{listItem.flowName}}</label>
+                    <span>划卡：{{listItem.consumeNumber}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

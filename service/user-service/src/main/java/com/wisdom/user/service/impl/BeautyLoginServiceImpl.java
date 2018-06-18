@@ -3,24 +3,16 @@ package com.wisdom.user.service.impl;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.system.BeautyLoginResultDTO;
 import com.wisdom.common.dto.system.LoginDTO;
-import com.wisdom.common.dto.system.ValidateCodeDTO;
-import com.wisdom.common.dto.user.SysBossCriteria;
-import com.wisdom.common.dto.user.SysBossDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.dto.user.*;
 import com.wisdom.common.util.*;
 import com.wisdom.user.mapper.BeautyUserInfoMapper;
 import com.wisdom.user.mapper.SysBossMapper;
-import com.wisdom.user.mapper.UserInfoMapper;
 import com.wisdom.user.mapper.extMapper.ExtSysClerkMapper;
 import com.wisdom.user.service.BeautyLoginService;
-import com.wisdom.user.service.BusinessLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,12 +43,18 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
     private Gson gson = new Gson();
 
     @Override
-    public String beautyUserLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception {
+    public BeautyLoginResultDTO beautyLogin(LoginDTO loginDTO, String loginIP, String openId) throws Exception {
+
+        BeautyLoginResultDTO beautyLoginResultDTO = new BeautyLoginResultDTO();
+        beautyLoginResultDTO.setBeautyClerkLoginToken(StatusConstant.TOKEN_ERROR);
+        beautyLoginResultDTO.setBeautyBossLoginToken(StatusConstant.TOKEN_ERROR);
+        beautyLoginResultDTO.setBeautyUserLoginToken(StatusConstant.TOKEN_ERROR);
 
         //判断validateCode是否还有效
         if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
-            return StatusConstant.VALIDATECODE_ERROR;
+            beautyLoginResultDTO.setResult(StatusConstant.VALIDATECODE_ERROR);
+            return beautyLoginResultDTO;
         }
 
         String logintoken = null;
@@ -66,9 +64,9 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
             redisLock.lock();
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();
-            userInfoDTO.setUserOpenid(openId);
-            List<UserInfoDTO> userInfoDTOList = beautyUserMapper.getBeautyUserByInfo(userInfoDTO);
+            userInfoDTO.setMobile(loginDTO.getUserPhone());
 
+            List<UserInfoDTO> userInfoDTOList = beautyUserMapper.getBeautyUserByInfo(userInfoDTO);
             if(userInfoDTOList.size()>0)
             {
                 userInfoDTO = userInfoDTOList.get(0);
@@ -80,7 +78,8 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
                     if(userInfoDTOList1!=null&&userInfoDTOList1.size()>0){
                         for(UserInfoDTO user : userInfoDTOList1){
                             if(!user.getUserType().equals("finance-1") && !"operation-1".equals(user.getUserType()) && !"manager-1".equals(user.getUserType())){
-                                return "phoneNotUse";
+                                beautyLoginResultDTO.setResult("phoneNotUse");
+                                return beautyLoginResultDTO;
                             }
                         }
                     }
@@ -88,19 +87,25 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
                     userInfoDTO.setMobile(loginDTO.getUserPhone());
                     userInfoDTO.setLoginDate(new Date());
                     userInfoDTO.setLoginIp(loginIP);
+                    if(StringUtils.isNotNull(openId))
+                    {
+                        userInfoDTO.setUserOpenid(openId);
+                    }
                     beautyUserMapper.updateBeautyUserInfo(userInfoDTO);
                 }
                 else if(userInfoDTO.getMobile().equals(loginDTO.getUserPhone()))
                 {
                     userInfoDTO.setLoginDate(new Date());
                     userInfoDTO.setLoginIp(loginIP);
-                    beautyUserMapper.updateBeautyUserInfo(userInfoDTO);
-                }else if(!userInfoDTO.getMobile().equals(loginDTO.getUserPhone())){
-                        return "phoneIsError";
+                    if(StringUtils.isNotNull(openId))
+                    {
+                        userInfoDTO.setUserOpenid(openId);
                     }
-                else
-                {
-                    return StatusConstant.WEIXIN_ATTENTION_ERROR;
+                    beautyUserMapper.updateBeautyUserInfo(userInfoDTO);
+                }
+                else if(!userInfoDTO.getMobile().equals(loginDTO.getUserPhone())){
+                    beautyLoginResultDTO.setResult("phoneIsError");
+                    return beautyLoginResultDTO;
                 }
 
                 userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(),"utf-8"));
@@ -108,8 +113,54 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
                 logintoken = UUID.randomUUID().toString();
                 String userInfoStr = gson.toJson(userInfoDTO);
                 JedisUtils.set(logintoken,userInfoStr, ConfigConstant.logintokenPeriod);
+                beautyLoginResultDTO.setBeautyUserLoginToken(logintoken);
             }
 
+            SysBossDTO sysBossDTO = new SysBossDTO();
+            sysBossDTO.setMobile(loginDTO.getUserPhone());
+            SysBossCriteria sysBossCriteria = new SysBossCriteria();
+            SysBossCriteria.Criteria b = sysBossCriteria.createCriteria();
+            b.andMobileEqualTo(loginDTO.getUserPhone());
+            List<SysBossDTO> bossDTOList = sysBossMapper.selectByCriteria(sysBossCriteria);
+            if(bossDTOList.size()>0)
+            {
+                sysBossDTO =  bossDTOList.get(0);
+                sysBossDTO.setMobile(loginDTO.getUserPhone());
+                sysBossDTO.setLoginDate(new Date());
+                if(StringUtils.isNotNull(openId))
+                {
+                    sysBossDTO.setUserOpenid(openId);
+                }
+                sysBossMapper.updateByPrimaryKey(sysBossDTO);
+
+                logintoken = UUID.randomUUID().toString();
+                String bossInfoStr = gson.toJson(sysBossDTO);
+                JedisUtils.set(logintoken,bossInfoStr, ConfigConstant.logintokenPeriod);
+                beautyLoginResultDTO.setBeautyBossLoginToken(logintoken);
+            }
+
+            SysClerkDTO sysClerkDTO = new SysClerkDTO();
+            sysClerkDTO.setMobile(loginDTO.getUserPhone());
+            SysClerkCriteria sysClerkCriteria = new SysClerkCriteria();
+            SysClerkCriteria.Criteria c = sysClerkCriteria.createCriteria();
+            c.andMobileEqualTo(loginDTO.getUserPhone());
+            List<SysClerkDTO> clerkDTOList = extSysClerkMapper.selectByCriteria(sysClerkCriteria);
+            if(clerkDTOList.size()>0)
+            {
+                sysClerkDTO = clerkDTOList.get(0);
+                sysClerkDTO.setMobile(loginDTO.getUserPhone());
+                sysClerkDTO.setLoginDate(new Date());
+                if(StringUtils.isNotNull(openId))
+                {
+                    sysClerkDTO.setUserOpenid(openId);
+                }
+                extSysClerkMapper.updateByPrimaryKey(sysClerkDTO);
+
+                logintoken = UUID.randomUUID().toString();
+                String clerkInfoStr = gson.toJson(sysClerkDTO);
+                JedisUtils.set(logintoken,clerkInfoStr, ConfigConstant.logintokenPeriod);
+                beautyLoginResultDTO.setBeautyClerkLoginToken(logintoken);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -117,185 +168,20 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
             redisLock.unlock();
         }
 
-        return logintoken;
+        beautyLoginResultDTO.setResult(StatusConstant.SUCCESS);
+        return beautyLoginResultDTO;
     }
 
     @Override
-    public String beautyUserLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    public String beautyLoginOut(BeautyLoginResultDTO beautyLoginResultDTO, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         String openId = WeixinUtil.getBeautyOpenId(session,request);
-        JedisUtils.del(logintoken);
+        JedisUtils.del(beautyLoginResultDTO.getBeautyBossLoginToken());
+        JedisUtils.del(beautyLoginResultDTO.getBeautyClerkLoginToken());
+        JedisUtils.del(beautyLoginResultDTO.getBeautyUserLoginToken());
         session.removeAttribute(ConfigConstant.USER_OPEN_ID);
         CookieUtils.setCookie(response, ConfigConstant.USER_OPEN_ID, openId==null?"":openId,0,ConfigConstant.DOMAIN_VALUE);
         return StatusConstant.LOGIN_OUT;
     }
 
-    @Override
-    public String bossMobileLogin(LoginDTO loginDTO, String loginIP, String openId)
-    {
-        //判断validateCode是否还有效
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
-        {
-            return StatusConstant.VALIDATECODE_ERROR;
-        }
 
-        //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
-        SysBossDTO sysBossDTO = new SysBossDTO();
-        sysBossDTO.setUserOpenid(loginDTO.getUserPhone());
-        SysBossCriteria sysBossCriteria = new SysBossCriteria();
-        SysBossCriteria.Criteria c = sysBossCriteria.createCriteria();
-        c.andUserOpenidEqualTo(loginDTO.getUserPhone());
-        List<SysBossDTO> sysBossDTOList = sysBossMapper.selectByCriteria(sysBossCriteria);
-
-        RedisLock redisLock = new RedisLock("bossInfo"+loginDTO.getUserPhone());
-        try {
-            redisLock.lock();
-
-            if(sysBossDTOList.size()>0)
-            {
-                sysBossDTO = sysBossDTOList.get(0);
-                sysBossDTO.setLoginDate(new Date());
-                sysBossDTO.setLoginIp(loginIP);
-                sysBossDTO.setUserOpenid(openId);
-                sysBossMapper.updateByCriteriaSelective(sysBossDTO, sysBossCriteria);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            redisLock.unlock();
-        }
-
-        sysBossDTO.setNickname(CommonUtils.nameDecoder(sysBossDTO.getNickname()));
-
-        //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
-        String logintoken = UUID.randomUUID().toString();
-        String bossInfoStr = gson.toJson(sysBossDTO);
-        JedisUtils.set(logintoken,bossInfoStr, ConfigConstant.logintokenPeriod);
-        return logintoken;
-    }
-
-    @Override
-    public String bossWebLogin(LoginDTO loginDTO, String loginIP)
-    {
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
-        {
-            return StatusConstant.VALIDATECODE_ERROR;
-        }
-
-        //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
-        SysBossDTO sysBossDTO = new SysBossDTO();
-        sysBossDTO.setMobile(loginDTO.getUserPhone());
-        SysBossCriteria sysBossCriteria = new SysBossCriteria();
-        SysBossCriteria.Criteria c = sysBossCriteria.createCriteria();
-        c.andUserOpenidEqualTo(loginDTO.getUserPhone());
-        List<SysBossDTO> sysBossDTOList = sysBossMapper.selectByCriteria(sysBossCriteria);
-        RedisLock redisLock = new RedisLock("bossInfo" + loginDTO.getUserPhone());
-        try {
-            redisLock.lock();
-            if(sysBossDTOList.size()>0)
-            {
-                sysBossDTO = sysBossDTOList.get(0);
-                //用户曾经绑定过手机号，更新用户登录信息
-                sysBossDTO.setMobile(loginDTO.getUserPhone());
-                sysBossDTO.setLoginDate(new Date());
-                sysBossDTO.setLoginIp(loginIP);
-                sysBossMapper.updateByCriteriaSelective(sysBossDTO, sysBossCriteria);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            redisLock.unlock();
-        }
-
-        sysBossDTO.setNickname(CommonUtils.nameDecoder(sysBossDTO.getNickname()));
-
-        //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
-        String logintoken = UUID.randomUUID().toString();
-        String bossInfoStr = gson.toJson(sysBossDTO);
-        JedisUtils.set(logintoken,bossInfoStr, ConfigConstant.logintokenPeriod);
-        return logintoken;
-    }
-
-    @Override
-    public String ClerkMobileLogin(LoginDTO loginDTO, String loginIP, String openId) {
-        //判断validateCode是否还有效
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
-        {
-            return StatusConstant.VALIDATECODE_ERROR;
-        }
-
-        //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
-        SysClerkDTO sysClerkDTO = new SysClerkDTO();
-        sysClerkDTO.setMobile(loginDTO.getUserPhone());
-        List<SysClerkDTO> sysClerkDTOList = extSysClerkMapper.getClerkInfo(sysClerkDTO);
-        RedisLock redisLock = new RedisLock("clerkInfo" + loginDTO.getUserPhone());
-        try {
-            redisLock.lock();
-
-            if(sysClerkDTOList.size()>0)
-            {
-                sysClerkDTO = sysClerkDTOList.get(0);
-
-                //用户曾经绑定过手机号，更新用户登录信息
-                sysClerkDTO.setMobile(loginDTO.getUserPhone());
-                sysClerkDTO.setLoginDate(new Date());
-                sysClerkDTO.setLoginIp(loginIP);
-                sysClerkDTO.setUserOpenid(openId);
-                extSysClerkMapper.updateClerkInfo(sysClerkDTO);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            redisLock.unlock();
-        }
-
-        sysClerkDTO.setNickname(CommonUtils.nameDecoder(sysClerkDTO.getNickname()));
-
-        //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
-        String logintoken = UUID.randomUUID().toString();
-        String clerkInfoStr = gson.toJson(sysClerkDTO);
-        JedisUtils.set(logintoken,clerkInfoStr, ConfigConstant.logintokenPeriod);
-        return logintoken;
-    }
-
-    @Override
-    public String ClerkWebLogin(LoginDTO loginDTO, String loginIP) {
-
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
-        {
-            return StatusConstant.VALIDATECODE_ERROR;
-        }
-
-        //validateCode有效后，判断sys_user表中，是否存在此用户，如果存在，则成功返回登录，如果不存在，则创建用户后，返回登录成功
-        SysClerkDTO sysClerkDTO = new SysClerkDTO();
-        sysClerkDTO.setMobile(loginDTO.getUserPhone());
-        List<SysClerkDTO> sysClerkDTOList = extSysClerkMapper.getClerkInfo(sysClerkDTO);
-        RedisLock redisLock = new RedisLock("clerkInfo" + loginDTO.getUserPhone());
-        try {
-            redisLock.lock();
-            if(sysClerkDTOList.size()>0)
-            {
-                //用户曾经绑定过手机号，更新用户登录信息
-                sysClerkDTO.setMobile(loginDTO.getUserPhone());
-                sysClerkDTO.setLoginDate(new Date());
-                sysClerkDTO.setLoginIp(loginIP);
-                extSysClerkMapper.updateClerkInfo(sysClerkDTO);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            redisLock.unlock();
-        }
-
-        sysClerkDTO.setNickname(CommonUtils.nameDecoder(sysClerkDTO.getNickname()));
-
-        //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
-        String logintoken = UUID.randomUUID().toString();
-        String clerkInfoStr = gson.toJson(sysClerkDTO);
-        JedisUtils.set(logintoken,clerkInfoStr, ConfigConstant.logintokenPeriod);
-        return logintoken;
-    }
 }

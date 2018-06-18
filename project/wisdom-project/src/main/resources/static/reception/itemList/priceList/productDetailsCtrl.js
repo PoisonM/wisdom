@@ -2,6 +2,7 @@ PADWeb.controller("productDetailsCtrl", function($scope, $state, $stateParams,$r
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "产品详情";
+    $scope.$parent.param.headerPrice.saveContent = "";
     $scope.flagFn = function (bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool
@@ -13,28 +14,22 @@ PADWeb.controller("productDetailsCtrl", function($scope, $state, $stateParams,$r
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
-    console.log("productDetailsCtrl")
     $rootScope.title="产品详情";
     /*开关设置如果没有侧边栏*/
     $scope.$parent.mainSwitch.footerBoxFlag=false;
-    /*轮播图*/
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 3,
-        loop: true,
-        autoplayDisableOnInteraction : false,
-        autoplay:1500,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-    });
+
     ProductInfo.get({productId:$stateParams.id},function (data) {
         if(data.result == "0x00001"){
-            $scope.productInformation = data.responseData
+            $scope.productInformation = data.responseData;
+            console.log($scope.productInformation);
         }
     })
+
     $scope.$parent.priceListBlackFn = function () {
-        $state.go("pad-web.left_nav.product")
+        $state.go("pad-web.left_nav.product");
     }
 
+    $scope.$parent.priceListSaveFn = function () {
+        $state.go("pad-web.left_nav.product");
+    }
 })

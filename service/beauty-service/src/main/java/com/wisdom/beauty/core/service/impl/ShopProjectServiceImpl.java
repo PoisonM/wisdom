@@ -1,7 +1,8 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.common.constant.CommonCodeEnum;
+import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
@@ -159,37 +160,68 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		return update;
 	}
 
+    /**
+     * 删除用户与项目的关系
+     *
+     * @param shopUserProjectRelationDTO
+     * @return
+     */
+    @Override
+    public int deleteUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO) {
+
+        if (shopUserProjectRelationDTO == null) {
+            logger.info("删除用户与项目的关系传入参数为空");
+            return 0;
+        }
+
+        if (StringUtils.isBlank(shopUserProjectRelationDTO.getShopAppointmentId())) {
+            logger.error("删除用户与项目的关系的主键为空", shopUserProjectRelationDTO.getShopAppointmentId());
+            return 0;
+        }
+        ShopUserProjectRelationCriteria criteria = new ShopUserProjectRelationCriteria();
+        ShopUserProjectRelationCriteria.Criteria c = criteria.createCriteria();
+        c.andShopAppointmentIdEqualTo(shopUserProjectRelationDTO.getShopAppointmentId());
+        int update = shopUserProjectRelationMapper.deleteByCriteria(criteria);
+        return update;
+    }
+
 	/**
 	 * 查询某个店的项目列表信息
 	 *
 	 * @return
 	 */
 	@Override
-	public List<ShopProjectInfoDTO> getShopCourseProjectList(ShopProjectInfoDTO shopProjectInfoDTO) {
+	public List<ShopProjectInfoDTO> getShopCourseProjectList(ExtShopProjectInfoDTO extShopProjectInfoDTO) {
 
-		logger.info("查询某个店的疗程卡列表信息传入参数={}", "shopProjectInfoDTO = [" + shopProjectInfoDTO + "]");
+		logger.info("查询某个店的疗程卡列表信息传入参数={}", "shopProjectInfoDTO = [" + extShopProjectInfoDTO + "]");
 
-		if (shopProjectInfoDTO == null) {
+		if (extShopProjectInfoDTO == null) {
 			return null;
 		}
 
 		ShopProjectInfoCriteria shopProjectInfoCriteria = new ShopProjectInfoCriteria();
 		ShopProjectInfoCriteria.Criteria criteria = shopProjectInfoCriteria.createCriteria();
 
-		if (StringUtils.isNotBlank(shopProjectInfoDTO.getSysShopId())) {
-			criteria.andSysShopIdEqualTo(shopProjectInfoDTO.getSysShopId());
+		if (StringUtils.isNotBlank(extShopProjectInfoDTO.getSysShopId())) {
+			criteria.andSysShopIdEqualTo(extShopProjectInfoDTO.getSysShopId());
+		}
+		if(StringUtils.isNotBlank(extShopProjectInfoDTO.getFuzzyQuery())&&
+				"0".equals(extShopProjectInfoDTO.getFuzzyQuery())){
+			if(StringUtils.isNotBlank(extShopProjectInfoDTO.getProjectName())){
+				criteria.andProjectNameLike("%"+extShopProjectInfoDTO.getProjectName()+"%");
+			}
+		}else {
+			if (StringUtils.isNotBlank(extShopProjectInfoDTO.getProjectName())) {
+				criteria.andProjectNameLike(extShopProjectInfoDTO.getProjectName());
+			}
 		}
 
-		if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
-			criteria.andProjectNameLike(shopProjectInfoDTO.getProjectName());
+		if (StringUtils.isNotBlank(extShopProjectInfoDTO.getUseStyle())) {
+			criteria.andUseStyleEqualTo(extShopProjectInfoDTO.getUseStyle());
 		}
 
-		if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
-			criteria.andUseStyleEqualTo(shopProjectInfoDTO.getUseStyle());
-		}
-
-		if (StringUtils.isNotBlank(shopProjectInfoDTO.getId())) {
-			criteria.andIdEqualTo(shopProjectInfoDTO.getId());
+		if (StringUtils.isNotBlank(extShopProjectInfoDTO.getId())) {
+			criteria.andIdEqualTo(extShopProjectInfoDTO.getId());
 		}
 
 		List<ShopProjectInfoDTO> dtos = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
@@ -208,8 +240,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO) {
 
 		if (shopUserProjectGroupRelRelationDTO == null) {
-			logger.error("查询某个用户的所有套卡项目列表传入参数,{}",
-					"shopUserProjectGroupRelRelationDTO = [" + shopUserProjectGroupRelRelationDTO + "]");
+			logger.error("查询某个用户的所有套卡项目列表传入参数");
 			return null;
 		}
 
@@ -243,7 +274,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
 		ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
 		criteria.andSysShopIdEqualTo(sysShopId);
-		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
+		//criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
 		criteria.andParentIdIsNull();
 
 		ShopProjectTypeCriteria.Criteria or = shopProjectTypeCriteria.createCriteria();
@@ -255,16 +286,20 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 	@Override
 	public List<ShopProjectTypeDTO> getTwoLevelProjectList(ShopProjectTypeDTO shopProjectTypeDTO) {
-		logger.info("getTwoLevelProjectList传入的参数,id={}", shopProjectTypeDTO.getId());
-
-		if (StringUtils.isBlank(shopProjectTypeDTO.getId())) {
-			logger.info("getTwoLevelProjectList传入的参数id为空");
+		if(shopProjectTypeDTO==null){
+			logger.info("shopProjectTypeDTO参数为空");
 			return null;
 		}
+		logger.info("getTwoLevelProjectList传入的参数,id={},sysShopId={}", shopProjectTypeDTO.getId(),shopProjectTypeDTO.getSysShopId());
+
 		ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
 		ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
-		criteria.andParentIdEqualTo(shopProjectTypeDTO.getId());
-		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
+		if(StringUtils.isNotBlank(shopProjectTypeDTO.getId())){
+			criteria.andParentIdEqualTo(shopProjectTypeDTO.getId());
+		}
+		if(StringUtils.isNotBlank(shopProjectTypeDTO.getSysShopId())){
+			criteria.andSysShopIdEqualTo(shopProjectTypeDTO.getSysShopId());
+		}
 		List<ShopProjectTypeDTO> list = shopProjectTypeMapper.selectByCriteria(shopProjectTypeCriteria);
 		return list;
 	}
@@ -305,11 +340,11 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
         List<ShopProjectInfoResponseDTO> responseDTOS = new ArrayList<>();
         //查询图片信息
-        if (CommonUtils.objectIsEmpty(list)) {
+        if (CommonUtils.objectIsNotEmpty(list)) {
             for (ShopProjectInfoDTO dto : list) {
                 ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = new ShopProjectInfoResponseDTO();
                 BeanUtils.copyProperties(dto, shopProjectInfoResponseDTO);
-                shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(dto.getId()));
+                shopProjectInfoResponseDTO.setImageList(mongoUtils.getImageUrl(dto.getId()));
                 responseDTOS.add(shopProjectInfoResponseDTO);
 			}
 		}
@@ -338,7 +373,13 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 		BeanUtils.copyProperties(shopProjectInfoDTO, shopProjectInfoResponseDTO);
 
-        shopProjectInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
+        shopProjectInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProjectInfoDTO.getId()));
+
+        if (CommonUtils.objectIsEmpty(shopProjectInfoResponseDTO.getImageList()) && org.apache.commons.lang3.StringUtils.isNotBlank(shopProjectInfoResponseDTO.getProjectUrl())) {
+            List<String> objects = new ArrayList<>();
+            objects.add(shopProjectInfoResponseDTO.getProjectUrl());
+            shopProjectInfoResponseDTO.setImageList(objects);
+        }
 		return shopProjectInfoResponseDTO;
 	}
 
@@ -369,8 +410,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		logger.info("根据条件查询套卡与项目的关系列表,传入参数={}",
 				"shopProjectInfoGroupRelationDTO = [" + shopProjectInfoGroupRelationDTO + "]");
 		if (shopProjectInfoGroupRelationDTO == null) {
-			logger.error("根据条件查询套卡与项目的关系列表传入参数为空，{}",
-					"shopProjectInfoGroupRelationDTO = [" + shopProjectInfoGroupRelationDTO + "]");
+			logger.error("根据条件查询套卡与项目的关系列表传入参数为空");
 			return null;
 		}
 
@@ -414,7 +454,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	@Override
 	public int saveProjectTypeInfo(ShopProjectTypeDTO shopProjectTypeDTO, SysBossDTO bossInfo) {
 		if (null == shopProjectTypeDTO) {
-			logger.error("添加项目类别传入参数异常={}", "shopProjectTypeDTO = [" + shopProjectTypeDTO + "]");
+			logger.error("添加项目类别传入参数异常，参数为空");
 			return 0;
 		}
 		shopProjectTypeDTO.setId(IdGen.uuid());
@@ -449,10 +489,15 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	 * @return
 	 */
 	@Override
-	public int updateProjectInfo(ShopProjectInfoDTO shopProjectInfoDTO) {
+	public int updateProjectInfo(ExtShopProjectInfoDTO shopProjectInfoDTO) {
 		if (CommonUtils.objectIsEmpty(shopProjectInfoDTO)) {
 			logger.error("更新项目信息传入参数有误={}", "shopProjectInfoDTO = [" + shopProjectInfoDTO + "]");
 			return 0;
+		}
+		//保存图片信息
+		if (CommonUtils.objectIsNotEmpty(shopProjectInfoDTO.getImageList())) {
+			mongoUtils.updateImageUrl(shopProjectInfoDTO.getImageList(), shopProjectInfoDTO.getId());
+			shopProjectInfoDTO.setProjectUrl(shopProjectInfoDTO.getImageList().get(0));
 		}
 		return shopProjectInfoMapper.updateByPrimaryKeySelective(shopProjectInfoDTO);
 	}
@@ -467,12 +512,17 @@ public class ShopProjectServiceImpl implements ShopProjectService {
     @Transactional(rollbackFor = Exception.class)
     public int saveProjectInfo(ExtShopProjectInfoDTO extShopProjectInfoDTO) {
         if (null == extShopProjectInfoDTO) {
-            logger.error("保存项目={}", "extShopProjectInfoDTO = [" + extShopProjectInfoDTO + "]");
+			logger.error("保存项目传入参数为空");
             return 0;
         }
         if (CommonUtils.objectIsNotEmpty(extShopProjectInfoDTO.getImageList())) {
             extShopProjectInfoDTO.setProjectUrl(extShopProjectInfoDTO.getImageList().get(0));
-        }
+        }else{
+			extShopProjectInfoDTO.setProjectUrl(ImageEnum.GOODS_CARD.getDesc());
+			ArrayList<String> objects = new ArrayList<>();
+			objects.add(ImageEnum.GOODS_CARD.getDesc());
+			extShopProjectInfoDTO.setImageList(objects);
+		}
         String uuid = IdGen.uuid();
         extShopProjectInfoDTO.setId(uuid);
         //保存图片信息

@@ -2,6 +2,7 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
+import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
 import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.common.util.SpringUtil;
@@ -48,6 +49,7 @@ public class CardTest {
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
         SpringUtil.setApplicationContext(context);
     }
+
 
     /**
      * 更新充值卡
@@ -100,7 +102,7 @@ public class CardTest {
         imageUrls.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
         imageUrls.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
         imageUrls.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
-        extShopRechargeCardDTO.setImageUrls(imageUrls);
+        extShopRechargeCardDTO.setImageList(imageUrls);
         extShopRechargeCardDTO.setTimeDiscount(0.75f);
         extShopRechargeCardDTO.setPeriodDiscount(0.95f);
         extShopRechargeCardDTO.setProductDiscount(0.85f);
@@ -108,29 +110,32 @@ public class CardTest {
         extShopRechargeCardDTO.setAmount(new BigDecimal(10000));
 
         extShopRechargeCardDTO.setId("4e3a924187b44bc5a156262f690902e2");
-        List<String> product = new ArrayList<>();
-        product.add("1");
-        product.add("2");
-        product.add("3");
-        extShopRechargeCardDTO.setProductIds(product);
-        List<String> projectIds = new ArrayList<>();
-        projectIds.add("1");
-        projectIds.add("2");
-        projectIds.add("3");
-        extShopRechargeCardDTO.setProjectIds(projectIds);
-
+        List<ShopProjectProductCardRelationDTO> relationDTOS = new ArrayList<>();
+        ShopProjectProductCardRelationDTO relationDTO = new ShopProjectProductCardRelationDTO();
+        relationDTO.setShopGoodsTypeId("1");
+        relationDTO.setGoodsType("1");
+        relationDTOS.add(relationDTO);
+        relationDTO.setShopGoodsTypeId("2");
+        relationDTO.setGoodsType("2");
+        relationDTOS.add(relationDTO);
+        extShopRechargeCardDTO.setTimesList(relationDTOS);
         String toJSONString = JSONObject.toJSONString(extShopRechargeCardDTO);
 
         System.out.println(toJSONString);
 
-//        MvcResult result = mvc.perform(post("/cardInfo/saveRechargeCardInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
-//                .andExpect(status().isOk())// 模拟向testRest发送get请求
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
-//                .andReturn();// 返回执行请求的结果
-        MvcResult result = mvc.perform(post("/cardInfo/updateRechargeCardInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+        MvcResult result = mvc.perform(post("/cardInfo/saveRechargeCardInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
+//        MvcResult result = mvc.perform(post("/cardInfo/updateRechargeCardInfo").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的
+
+//        MvcResult result = mvc.perform(post("/cardHelper/getGoodsUseScope").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
 
         System.out.println(result.getResponse().getContentAsString());
     }
@@ -147,7 +152,12 @@ public class CardTest {
     @Test
     public void getShopUserRecentlyOrderInfo() throws Exception {
 
-        MvcResult result = mvc.perform(get("/cardInfo/rechargeCardSignConfirm").param("transactionId", "20180510170143457").param("imageUrl", "1"))
+//        MvcResult result = mvc.perform(get("/cardInfo/rechargeCardSignConfirm").param("transactionId", "20180510170143457").param("imageUrl", "1"))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
+
+        MvcResult result = mvc.perform(get("/cardHelper/getGoodsUseScope").param("shopRechargeCardId", "2"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果

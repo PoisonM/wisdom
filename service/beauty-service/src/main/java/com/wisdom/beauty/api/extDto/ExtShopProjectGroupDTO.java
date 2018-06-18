@@ -1,28 +1,31 @@
 package com.wisdom.beauty.api.extDto;
 
 import com.wisdom.beauty.api.dto.ShopProjectGroupDTO;
+import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 
 import java.util.List;
 
 public class ExtShopProjectGroupDTO extends ShopProjectGroupDTO {
 
-    List<String> ShopProjectIds;
+    private List<ShopProjectInfoDTO> shopProjectInfoDTOS;
 
-    List<String> images;
+    private List<String> imageList;
 
-    public List<String> getImages() {
-        return images;
+
+
+    public List<String> getImageList() {
+        return imageList;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 
-    public List<String> getShopProjectIds() {
-        return ShopProjectIds;
+    public List<ShopProjectInfoDTO> getShopProjectInfoDTOS() {
+        return shopProjectInfoDTOS;
     }
 
-    public void setShopProjectIds(List<String> shopProjectIds) {
-        ShopProjectIds = shopProjectIds;
+    public void setShopProjectInfoDTOS(List<ShopProjectInfoDTO> shopProjectInfoDTOS) {
+        this.shopProjectInfoDTOS = shopProjectInfoDTOS;
     }
 }

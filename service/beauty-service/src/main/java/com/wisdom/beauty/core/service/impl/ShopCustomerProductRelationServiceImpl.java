@@ -28,142 +28,139 @@ import java.util.Map;
  * ClassName: ShopCustomerProductRelationServiceImpl
  *
  * @Author： huan
+ * 
  * @Description: 用户和产品相关的接口
  * @Date:Created in 2018/4/10 14:31
  * @since JDK 1.8
  */
 @Service("shopCustomerProductRelationService")
 public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProductRelationService {
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private ShopUserProductRelationMapper shopUserProductRelationMapper;
+	@Autowired
+	private ShopUserProductRelationMapper shopUserProductRelationMapper;
 
-    @Autowired
-    private UserServiceClient userServiceClient;
+	@Autowired
+	private UserServiceClient userServiceClient;
 
-    @Autowired
-    private ExtShopUserProductRelationMapper extShopUserProductRelationMapper;
+	@Autowired
+	private ExtShopUserProductRelationMapper extShopUserProductRelationMapper;
 
-    @Autowired
-    private ShopProductInfoService shopProductInfoService;
+	@Autowired
+	private ShopProductInfoService shopProductInfoService;
 
-    @Override
-    public ShopUserProductRelationDTO getShopProductInfo(String shopProductId) {
-        logger.info("getShopProductInfo方法传入的参数,shopProductId={}", shopProductId);
-        if (StringUtils.isBlank(shopProductId)) {
-            throw new ServiceException("getShopProductInfo方法传入的参数为空");
-        }
-        ShopUserProductRelationCriteria shopUserProductRelationCriteria = new ShopUserProductRelationCriteria();
-        ShopUserProductRelationCriteria.Criteria criteria = shopUserProductRelationCriteria.createCriteria();
+	@Override
+	public ShopUserProductRelationDTO getShopProductInfo(String shopProductId) {
+		logger.info("getShopProductInfo方法传入的参数,shopProductId={}", shopProductId);
+		if (StringUtils.isBlank(shopProductId)) {
+			throw new ServiceException("getShopProductInfo方法传入的参数为空");
+		}
+		ShopUserProductRelationCriteria shopUserProductRelationCriteria = new ShopUserProductRelationCriteria();
+		ShopUserProductRelationCriteria.Criteria criteria = shopUserProductRelationCriteria.createCriteria();
 
-        criteria.andIdEqualTo(shopProductId);
+		criteria.andIdEqualTo(shopProductId);
 
-        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = shopUserProductRelationMapper.selectByCriteria(shopUserProductRelationCriteria);
-        if (CollectionUtils.isEmpty(shopUserProductRelationDTOS)) {
-            logger.info("未获取到信息,getShopProductInfo查询的结果为空");
-            return null;
-        }
-        ShopUserProductRelationDTO shopUserProductRelationDTO = shopUserProductRelationDTOS.get(0);
-        return shopUserProductRelationDTO;
-    }
+		List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = shopUserProductRelationMapper
+				.selectByCriteria(shopUserProductRelationCriteria);
+		if (CollectionUtils.isEmpty(shopUserProductRelationDTOS)) {
+			logger.info("未获取到信息,getShopProductInfo查询的结果为空");
+			return null;
+		}
+		ShopUserProductRelationDTO shopUserProductRelationDTO = shopUserProductRelationDTOS.get(0);
+		return shopUserProductRelationDTO;
+	}
 
-    @Override
-    public Map<String, Object> getShopUserProductRelations(String sysClerkId, String sysShopId, String searchFile) {
-        logger.info("getShopProductInfo方法传入的参数,sysClerkId={},searchFile={}", sysClerkId, searchFile);
-        if (StringUtils.isBlank(sysClerkId)) {
-            throw new ServiceException("getShopUserProductRelations方法传入的参数sysClerkId为空");
-        }
-        Map<String,String> mapFile=new HashMap();
-        mapFile.put("sysClerkId",sysClerkId);
-        mapFile.put("sysShopId",sysShopId);
-        List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(mapFile);
-        if (CollectionUtils.isEmpty(list)) {
-            logger.info("getWaitReceiveNumber方法查询的结果为空");
-            return null;
-        }
-        //待领取数量
-        Integer totalWaitReceiveNumber = 0;
-        //待领取数量
-        Integer totalWaitReceivePeople = list.size();
-        List<String> idList = new ArrayList<>();
-        //用于存储用户和剩余领取的数量的对应关系
-        Map<String, Integer> map = new HashMap<>(16);
-        //遍历用户信息，并且将该用户对应的产品为领取数量放到一起
-        for (UserProductRelationResponseDTO userProductRelationResponse : list) {
-            totalWaitReceiveNumber = totalWaitReceiveNumber + userProductRelationResponse.getWaitReceiveNumber();
-            idList.add(userProductRelationResponse.getSysUserId());
-            map.put(userProductRelationResponse.getSysUserId(), userProductRelationResponse.getWaitReceiveNumber());
-        }
+	@Override
+	public List<UserProductRelationResponseDTO> getShopUserProductRelations(String sysShopId, String searchFile) {
+		logger.info("getShopProductInfo方法传入的参数,searchFile={}", searchFile);
+		Map<String, String> mapFile = new HashMap();
+		mapFile.put("sysShopId", sysShopId);
+		if (StringUtils.isNotBlank(searchFile)) {
+			mapFile.put("searchFile", "%" + searchFile + "%");
+		} else {
+			mapFile.put("searchFile", null);
+		}
+		List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(mapFile);
+		if (CollectionUtils.isEmpty(list)) {
+			logger.info("getWaitReceiveNumber方法查询的结果为空");
+			return null;
+		}
 
-        String[] strings = new String[idList.size()];
-        String[] strs = idList.toArray(strings);
-        //查询用户的信息
-        List<UserInfoDTO> userInfoList = userServiceClient.getUserInfoListFromUserId(strs, searchFile);
-        if (CollectionUtils.isEmpty(userInfoList)) {
+		return list;
+	}
 
-        }
-        List<UserProductRelationResponseDTO> userProductRelationResponses = new ArrayList<>();
-        UserProductRelationResponseDTO userProductRelationResponseDTO = null;
-        for (UserInfoDTO userInfoDTO : userInfoList) {
-            userProductRelationResponseDTO = new UserProductRelationResponseDTO();
-            userProductRelationResponseDTO.setWaitReceiveNumber(map.get(userInfoDTO.getId()));
-            userProductRelationResponseDTO.setMobile(userInfoDTO.getMobile());
-            userProductRelationResponseDTO.setNickname(userInfoDTO.getNickname());
-            userProductRelationResponses.add(userProductRelationResponseDTO);
-        }
-        Map<String, Object> mapResponse = new HashMap<>();
-        mapResponse.put("data", userProductRelationResponses);
-        mapResponse.put("totalWaitReceiveNumber", totalWaitReceiveNumber);
-        mapResponse.put("totalWaitReceivePeople", totalWaitReceivePeople);
+	@Override
+	public Map<String, Object> getWaitReceivePeopleAndNumber(String sysShopId) {
+		logger.info("getWaitReceivePeopleAndNumber方法传入的参数,sysShopId={}", sysShopId);
+		Map<String, String> mapFile = new HashMap();
+		mapFile.put("sysShopId", sysShopId);
+		mapFile.put("searchFile", null);
+		List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(mapFile);
+		if (CollectionUtils.isEmpty(list)) {
+			logger.info("getWaitReceivePeopleAndNumber方法查询的结果为空");
+			return null;
+		}
+		// 待领取数量
+		Integer totalWaitReceiveNumber = 0;
+		// 待领取数量
+		Integer totalWaitReceivePeople = list.size();
+		// 遍历用户信息，并且将该用户对应的产品为领取数量放到一起
+		for (UserProductRelationResponseDTO userProductRelationResponse : list) {
+			totalWaitReceiveNumber = totalWaitReceiveNumber + userProductRelationResponse.getWaitReceiveNumber();
+		}
 
-        return mapResponse;
-    }
+		Map<String, Object> mapResponse = new HashMap<>();
+		mapResponse.put("totalWaitReceiveNumber", totalWaitReceiveNumber);
+		mapResponse.put("totalWaitReceivePeople", totalWaitReceivePeople);
 
-    @Override
-    public List<UserProductRelationResponseDTO> getShopUserProductRelationList(String sysUserId, String sysShopId) {
-        logger.info("getShopUserProductRelationList方法传入的参数,sysUserId={},sysShopId={}", sysUserId, sysShopId);
-        if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
-            throw new ServiceException("getShopProductInfo方法传入的参数为空");
-        }
-        ShopUserProductRelationCriteria shopUserProductRelationCriteria = new ShopUserProductRelationCriteria();
-        ShopUserProductRelationCriteria.Criteria criteria = shopUserProductRelationCriteria.createCriteria();
+		return mapResponse;
+	}
 
-        criteria.andSysShopIdEqualTo(sysShopId);
-        criteria.andSysUserIdEqualTo(sysUserId);
+	@Override
+	public List<UserProductRelationResponseDTO> getShopUserProductRelationList(String sysUserId, String sysShopId) {
+		logger.info("getShopUserProductRelationList方法传入的参数,sysUserId={},sysShopId={}", sysUserId, sysShopId);
+		if (StringUtils.isBlank(sysUserId) || StringUtils.isBlank(sysShopId)) {
+			throw new ServiceException("getShopProductInfo方法传入的参数为空");
+		}
+		ShopUserProductRelationCriteria shopUserProductRelationCriteria = new ShopUserProductRelationCriteria();
+		ShopUserProductRelationCriteria.Criteria criteria = shopUserProductRelationCriteria.createCriteria();
 
-        List<ShopUserProductRelationDTO> shopUserProductRelations = shopUserProductRelationMapper.selectByCriteria(shopUserProductRelationCriteria);
-        if (CollectionUtils.isEmpty(shopUserProductRelations)) {
-            logger.info("shopUserProductRelations为空,shopUserProductRelationMapper未查询到结果");
-            return null;
-        }
-        List<String> list = new ArrayList<>();
-        //key是产品id，value是产品信息
-        Map<String, ShopProductInfoResponseDTO> map = new HashMap<>(16);
-        for (ShopUserProductRelationDTO shopUserProductRelation : shopUserProductRelations) {
-            list.add(shopUserProductRelation.getShopProductId());
-        }
+		criteria.andSysShopIdEqualTo(sysShopId);
+		criteria.andSysUserIdEqualTo(sysUserId);
 
-        List<ShopProductInfoResponseDTO> shopProductInfos = shopProductInfoService.getProductInfoList(list);
-        for (ShopProductInfoResponseDTO productInfo : shopProductInfos) {
-            map.put(productInfo.getId(), productInfo);
-        }
-        List<UserProductRelationResponseDTO> responseList = new ArrayList<>();
-        UserProductRelationResponseDTO userProductRelationResponseDTO = null;
-        for (ShopUserProductRelationDTO shopUserProductRelation : shopUserProductRelations) {
-            userProductRelationResponseDTO = new UserProductRelationResponseDTO();
-            ShopProductInfoResponseDTO shopProductInfo = map.get(shopUserProductRelation.getId());
-            if(shopProductInfo!=null) {
-                userProductRelationResponseDTO.setProductName(shopProductInfo.getProductName());
-                userProductRelationResponseDTO.setProductSpec(shopProductInfo.getProductSpec());
-                userProductRelationResponseDTO.setProductTypeOneName(shopProductInfo.getProductTypeOneName());
-                userProductRelationResponseDTO.setProductTypeTwoName(shopProductInfo.getProductTypeTwoName());
-                userProductRelationResponseDTO.setWaitReceiveNumber(shopUserProductRelation.getWaitReceiveNumber());
-                responseList.add(userProductRelationResponseDTO);
-            }
-        }
+		List<ShopUserProductRelationDTO> shopUserProductRelations = shopUserProductRelationMapper
+				.selectByCriteria(shopUserProductRelationCriteria);
+		if (CollectionUtils.isEmpty(shopUserProductRelations)) {
+			logger.info("shopUserProductRelations为空,shopUserProductRelationMapper未查询到结果");
+			return null;
+		}
+		List<String> list = new ArrayList<>();
+		// key是产品id，value是产品信息
+		Map<String, ShopProductInfoResponseDTO> map = new HashMap<>(16);
+		for (ShopUserProductRelationDTO shopUserProductRelation : shopUserProductRelations) {
+			list.add(shopUserProductRelation.getShopProductId());
+		}
 
-        return responseList;
-    }
+		List<ShopProductInfoResponseDTO> shopProductInfos = shopProductInfoService.getProductInfoList(list);
+		for (ShopProductInfoResponseDTO productInfo : shopProductInfos) {
+			map.put(productInfo.getId(), productInfo);
+		}
+		List<UserProductRelationResponseDTO> responseList = new ArrayList<>();
+		UserProductRelationResponseDTO userProductRelationResponseDTO = null;
+		for (ShopUserProductRelationDTO shopUserProductRelation : shopUserProductRelations) {
+			userProductRelationResponseDTO = new UserProductRelationResponseDTO();
+			ShopProductInfoResponseDTO shopProductInfo = map.get(shopUserProductRelation.getId());
+			if (shopProductInfo != null) {
+				userProductRelationResponseDTO.setProductName(shopProductInfo.getProductName());
+				userProductRelationResponseDTO.setProductSpec(shopProductInfo.getProductSpec());
+				userProductRelationResponseDTO.setProductTypeOneName(shopProductInfo.getProductTypeOneName());
+				userProductRelationResponseDTO.setProductTypeTwoName(shopProductInfo.getProductTypeTwoName());
+				userProductRelationResponseDTO.setWaitReceiveNumber(shopUserProductRelation.getWaitReceiveNumber());
+				responseList.add(userProductRelationResponseDTO);
+			}
+		}
+
+		return responseList;
+	}
 
 }

@@ -1,15 +1,15 @@
 package com.wisdom.beauty.controller.work;
 
-import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
-import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
+import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.requestDto.ShopClerkWorkRecordRequestDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopClerkWorkRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
-import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.beauty.core.redis.RedisUtils;
+import com.wisdom.beauty.core.service.ShopClerkWorkService;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
-import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
-import com.wisdom.beauty.core.service.ShopWorkService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -28,23 +28,24 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "work")
 public class ShopMemberAttendanceController {
 
 	@Resource
-	private ShopWorkService workService;
+	private RedisUtils redisUtils;
 
 	@Autowired
 	private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
 
 	@Autowired
-	private ShopUerConsumeRecordService shopUerConsumeRecordService;
-	@Autowired
-	private ShopAppointmentService appointmentService;
-
+	private ShopClerkWorkService shopClerkWorkService;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -67,13 +68,15 @@ public class ShopMemberAttendanceController {
 	 */
 	@RequestMapping(value = "/getExpenditureAndIncome", method = { RequestMethod.GET })
 	@ResponseBody
-	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getExpenditureAndIncome(@RequestParam(required = false) String sysShopId) {
+	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getExpenditureAndIncome(
+			@RequestParam(required = false) String sysShopId) {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
+		sysShopId = redisUtils.getShopId();
 		userConsumeRequest.setSysShopId(sysShopId);
 
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
-		userConsumeRequest.setSysBossId(sysBossDTO.getId());
+		userConsumeRequest.setSysBossCode(sysBossDTO.getId());
 		pageParamVoDTO.setRequestData(userConsumeRequest);
 		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService
 				.getExpenditureAndIncomeList(pageParamVoDTO);
@@ -87,24 +90,24 @@ public class ShopMemberAttendanceController {
 	 * @Author:zhanghuan
 	 * @Param: bossId，consumeType 消费类型
 	 * @Return:
-	 * @Description: 获取老板下所有美容院的列表
+	 * @Description: 获取老板下所有美容院的列表的业绩和耗卡以及所有美容院业绩和耗卡的总和
 	 * @Date:2018/4/24 11:08
 	 */
 	@RequestMapping(value = "/getBossExpenditureAndIncome", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getBossExpenditureAndIncome(@RequestParam String startTime, @RequestParam String endTime) {
+	ResponseDTO<Map<String, Object>> getBossExpenditureAndIncome(@RequestParam String startTime,
+			@RequestParam String endTime) {
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
-		userConsumeRequest.setSysBossId(sysBossDTO.getId());
+		userConsumeRequest.setSysBossCode(sysBossDTO.getSysBossCode());
 
 		pageParamVoDTO.setRequestData(userConsumeRequest);
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
-		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService
-				.getShopExpenditureAndIncomeList(pageParamVoDTO);
-		ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> response = new ResponseDTO<>();
-		response.setResponseData(list);
+		Map<String, Object> map = shopStatisticsAnalysisService.getShopExpenditureAndIncomeList(pageParamVoDTO);
+		ResponseDTO<Map<String, Object>> response = new ResponseDTO<>();
+		response.setResponseData(map);
 		response.setResult(StatusConstant.SUCCESS);
 		return response;
 	}
@@ -129,13 +132,13 @@ public class ShopMemberAttendanceController {
 
 		pageParamVoDTO.setRequestData(userConsumeRequest);
 		Map<String, String> map = shopStatisticsAnalysisService.getShopConsumeAndRecharge(pageParamVoDTO);
-		BigDecimal income=new BigDecimal(map.get("consume")).add(new BigDecimal(map.get("recharge")));
-		BigDecimal expenditure=new BigDecimal(map.get("oneConsume")).add(new BigDecimal(map.get("scratchCard")));
-		BigDecimal kahao=new BigDecimal(map.get("cardConsume"));
+		BigDecimal income = new BigDecimal(map.get("consume")).add(new BigDecimal(map.get("recharge")));
+		BigDecimal expenditure = new BigDecimal(map.get("oneConsume")).add(new BigDecimal(map.get("scratchCard")));
+		BigDecimal kahao = new BigDecimal(map.get("cardConsume"));
 
-		map.put("income",income.toString());
-		map.put("expenditure",expenditure.toString());
-		map.put("kahao",kahao.toString());
+		map.put("income", income.toString());
+		map.put("expenditure", expenditure.toString());
+		map.put("kahao", kahao.toString());
 		ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
 		response.setResponseData(map);
 		response.setResult(StatusConstant.SUCCESS);
@@ -151,7 +154,8 @@ public class ShopMemberAttendanceController {
 	 */
 	@RequestMapping(value = "/getClerkAchievement", method = { RequestMethod.GET })
 	@ResponseBody
-	ResponseDTO<Map<String, String>> getClerkAchievement(@RequestParam String sysClerkId) {
+	@LoginRequired
+	ResponseDTO<Map<String, String>> getClerkAchievement() {
 
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		if (sysClerkDTO == null) {
@@ -160,7 +164,7 @@ public class ShopMemberAttendanceController {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 		userConsumeRequestDTO.setSysShopId(sysClerkDTO.getSysShopId());
-		userConsumeRequestDTO.setSysClerkId(sysClerkId);
+		userConsumeRequestDTO.setSysClerkId(sysClerkDTO.getId());
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		String startTime = DateUtils.getStartTime();
 		String endTime = DateUtils.getEndTime();
@@ -168,12 +172,13 @@ public class ShopMemberAttendanceController {
 		pageParamVoDTO.setEndTime(endTime);
 		BigDecimal income = shopStatisticsAnalysisService.getPerformance(pageParamVoDTO);
 		BigDecimal expenditure = shopStatisticsAnalysisService.getExpenditure(pageParamVoDTO);
-		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(sysClerkId, startTime, endTime);
+		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(sysClerkDTO.getId(), startTime,
+				endTime);
 		Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(pageParamVoDTO);
 
 		Map<String, String> map = new HashMap<>(16);
 		map.put("income", income == null ? "0" : income.toString());
-		map.put("expenditure", expenditure == null ? "0" : income.toString());
+		map.put("expenditure", expenditure == null ? "0" : expenditure.toString());
 		map.put("consumeNumber", consumeNumber.toString());
 		map.put("shopNewUserNumber", shopNewUserNumber.toString());
 		ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
@@ -201,7 +206,7 @@ public class ShopMemberAttendanceController {
 		}
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
-		userConsumeRequestDTO.setSysBossId(sysBossDTO.getId());
+		userConsumeRequestDTO.setSysBossCode(sysBossDTO.getId());
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		pageParamVoDTO.setPaging(true);
 		pageParamVoDTO.setPageSize(pageSize);
@@ -219,34 +224,68 @@ public class ShopMemberAttendanceController {
 
 	/**
 	 * @Author:zhanghuan
-	 * @Param:
 	 * @Return:
-	 * @Description: 业绩明细
+	 * @Param: searchFile 1 查业绩明细 searchFile 2 耗卡明细 searchFile 3 卡耗明细
+	 * @Description: 获取boss的业绩,耗卡,卡耗明细 业绩明细: consumeType 0 goodsType 2 : consumeType
+	 *               0 goodsType 0 1 3 4 耗卡明细:consumeType 1 goodsType 1 consumeType
+	 *               1 goodsType 3 consumeType 0 goodsType 0 卡耗明细:consumeType 1
+	 *               goodsType2
 	 * @Date:2018/5/7 15:35
 	 */
-	@RequestMapping(value = "/getBossPerformance", method = RequestMethod.POST)
+	@RequestMapping(value = "/getBossPerformanceList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(
-			@RequestBody UserConsumeRequestDTO userConsumeRequest) {
-		long startTime = System.currentTimeMillis();
+	ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getBossPerformanceList(@RequestParam String searchFile,
+			@RequestParam String sysShopId, int pageSize) {
+		ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = new ShopClerkWorkRecordRequestDTO();
 
-		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
-
-		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-		userConsumeRequest.setSysShopId(userConsumeRequest.getSysShopId());
-		userConsumeRequest.setSysBossId(sysBossDTO.getId());
-		userConsumeRequest.setGoodsTypeRequire(true);
-		pageParamVoDTO.setRequestData(userConsumeRequest);
+		shopClerkWorkRecordRequestDTO.setSysShopId(sysShopId);
+		// 设置为true 这样需要通过consumeType和goodType做为条件来查询
+		shopClerkWorkRecordRequestDTO.setTypeRequire(true);
+		if ("1".equals(searchFile)) {
+			List<String> consumeType = new ArrayList<>();
+			consumeType.add(ConsumeTypeEnum.RECHARGE.getCode());
+			shopClerkWorkRecordRequestDTO.setConsumeTypeList(consumeType);
+			List<String> goodsType = new ArrayList<>();
+			goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.PRODUCT.getCode());
+			shopClerkWorkRecordRequestDTO.setGoodsTypeList(goodsType);
+		}
+		if ("2".equals(searchFile)) {
+			shopClerkWorkRecordRequestDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+			List<String> goodsType = new ArrayList<>();
+			goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+			goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+			shopClerkWorkRecordRequestDTO.setGoodsTypeList(goodsType);
+			List<String> consumeType = new ArrayList<>();
+			consumeType.add(ConsumeTypeEnum.RECHARGE.getCode());
+			consumeType.add(ConsumeTypeEnum.CONSUME.getCode());
+			shopClerkWorkRecordRequestDTO.setConsumeTypeList(consumeType);
+		}
+		if ("3".equals(searchFile)) {
+			shopClerkWorkRecordRequestDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+			List<String> goodsType = new ArrayList<>();
+			goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
+			shopClerkWorkRecordRequestDTO.setGoodsTypeList(goodsType);
+			List<String> consumeType = new ArrayList<>();
+			consumeType.add(ConsumeTypeEnum.CONSUME.getCode());
+			shopClerkWorkRecordRequestDTO.setConsumeTypeList(consumeType);
+		}
+		PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		pageParamVoDTO.setRequestData(shopClerkWorkRecordRequestDTO);
+		pageParamVoDTO.setPaging(true);
 		pageParamVoDTO.setPageNo(0);
-		pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
+		pageParamVoDTO.setPageSize(pageSize);
 
-		List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
+		List<ShopClerkWorkRecordResponseDTO> shopClerkWorkRecordResponseDTOs = shopClerkWorkService
 				.getShopCustomerConsumeRecordList(pageParamVoDTO);
 
-		ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
+		ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		responseDTO.setResponseData(userConsumeRecordResponseDTO);
-		logger.info("findMineConsume方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		responseDTO.setResponseData(shopClerkWorkRecordResponseDTOs);
 		return responseDTO;
 	}
 
@@ -257,47 +296,49 @@ public class ShopMemberAttendanceController {
 	 * @Description: 获取boss成绩
 	 * @Date:2018/4/27 18:26
 	 */
-	@RequestMapping(value = "/getBossAchievement", method = RequestMethod.GET )
+	@RequestMapping(value = "/getBossAchievement", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Map<String, String>> getBossAchievement() {
 
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		if (sysBossDTO == null) {
+			logger.info("redis获取sysBossDTO信息为空");
 			return null;
 		}
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
-		userConsumeRequestDTO.setSysBossId(sysBossDTO.getId());
+		userConsumeRequestDTO.setSysBossCode(sysBossDTO.getSysBossCode());
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		String startTime = DateUtils.getStartTime();
 		String endTime = DateUtils.getEndTime();
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
-		//设置是否去重的条件
-		PageParamVoDTO<UserConsumeRequestDTO> pageParamDistic = new PageParamVoDTO();
-		UserConsumeRequestDTO userConsumeRequestDistic = new UserConsumeRequestDTO();
-		userConsumeRequestDistic.setSysBossId(sysBossDTO.getId());
-		userConsumeRequestDistic.setDisticRequire(true);
-		pageParamDistic.setStartTime(startTime);
-		pageParamDistic.setEndTime(endTime);
-		pageParamDistic.setRequestData(userConsumeRequestDTO);
 
-		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(pageParamDistic);
 		Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(pageParamVoDTO);
-		Integer consumeTime = shopStatisticsAnalysisService.getUserConsumeNumber(pageParamVoDTO);
+		Map<String, Integer> consumeNumberAndTimeMap = shopStatisticsAnalysisService
+				.getShopsConsumeNumberAndTime(pageParamVoDTO);
 		// 服务次数 划卡消费+单次的次数
-        List<ExpenditureAndIncomeResponseDTO> list=shopStatisticsAnalysisService.getExpenditureList(pageParamVoDTO);
+		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getExpenditureList(pageParamVoDTO);
+		BigDecimal income = shopStatisticsAnalysisService.getPerformance(pageParamVoDTO);
+		BigDecimal expenditure = shopStatisticsAnalysisService.getExpenditure(pageParamVoDTO);
 		Map<String, String> map = new HashMap<>(16);
-		//消费次数(人次数)
-        map.put("consumeTime",consumeTime.toString());
+		// 业绩
+		map.put("income", income == null ? "0" : income.toString());
+		// 耗卡
+		map.put("expenditure", expenditure == null ? "0" : expenditure.toString());
+		// 消费次数(人次数)
+		map.put("consumeTime", consumeNumberAndTimeMap.get("consumeTime") == null ? "0"
+				: consumeNumberAndTimeMap.get("consumeTime").toString());
+		// 服务次数
 		map.put("serviceNumber", CollectionUtils.isEmpty(list) ? "0" : String.valueOf(list.size()));
-		//消费人数(人头数)
-		map.put("consumeNumber", consumeNumber.toString());
+		// 消费人数(人头数)
+		map.put("consumeNumber", consumeNumberAndTimeMap.get("consumeNumber") == null ? "0"
+				: consumeNumberAndTimeMap.get("consumeNumber").toString());
+		// 新客
 		map.put("shopNewUserNumber", shopNewUserNumber.toString());
 		ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
 		response.setResponseData(map);
 		response.setResult(StatusConstant.SUCCESS);
 		return response;
 	}
-
 }

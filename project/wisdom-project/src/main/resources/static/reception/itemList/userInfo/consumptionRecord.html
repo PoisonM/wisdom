@@ -11,7 +11,7 @@
             <li ng-repeat="item in dataList" ng-click="goRecordDetail()">
                 <div class="ifo">
                     <span ng-class="{chesty:$index == 2}" >{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</span>
-                    <span>{{item.shopUserName}}</span>
+                    <span>{{item.sysUserName}}</span>
                     <span>{{item.sumAmount}}</span>
                 </div>
                 <div class="go_set"></div>

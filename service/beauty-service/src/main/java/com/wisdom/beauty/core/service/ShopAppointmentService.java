@@ -3,9 +3,12 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileName: AppointmentService
@@ -55,6 +58,8 @@ public interface ShopAppointmentService {
     ShopAppointServiceDTO getShopAppointService(ShopAppointServiceDTO shopAppointServiceDTO);
 
 
+    void buildUserProjectRelation(@RequestBody ExtShopAppointServiceDTO shopAppointServiceDTO);
+
     /**
      *  查询某个美容院某个时间预约个数或某个店员的预约总数
      *  @param  sysShopId 店铺id
@@ -73,9 +78,26 @@ public interface ShopAppointmentService {
      *  @autur zhangchao
      * */
     PageParamDTO<List<ExtShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO);
+
+    /**
+     * 修改用户的预约信息
+     *
+     * @param shopAppointServiceDTO
+     * @return
+     */
+    ResponseDTO<Map> updateUserAppointInfo(@RequestBody ExtShopAppointServiceDTO shopAppointServiceDTO);
+
     /**
      * 保存用户的预约信息
+     * @param shopAppointServiceDTO
+     * @return
      */
-    int saveUserShopAppointInfo(ShopAppointServiceDTO shopAppointServiceDTO);
+    ResponseDTO saveUserShopAppointInfo(ExtShopAppointServiceDTO shopAppointServiceDTO);
 
+    /**
+     * 获取用户的最后一次预约时间
+     * @param appointServiceDTO
+     * @return
+     */
+    List<ExtShopAppointServiceDTO> selectShopUserLastAppointInfo(ShopAppointServiceDTO appointServiceDTO);
 }

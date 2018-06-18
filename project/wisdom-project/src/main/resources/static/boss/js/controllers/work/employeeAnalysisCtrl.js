@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('employeeAnalysisCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','GetClerkAchievementList','GetBossShopList',
-        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,GetClerkAchievementList,GetBossShopList) {
+    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','GetClerkAchievementList','GetBossShopList','$ionicLoading','Global',
+        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,GetClerkAchievementList,GetBossShopList,$ionicLoading,Global) {
 
             $rootScope.title = "员工分析";
 
@@ -14,7 +14,8 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 displayShopBox:false,
                 sysShopId:'',
                 sortBy:"",
-                sortRule:""
+                sortRule:"",
+                flag:false
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
@@ -32,7 +33,7 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
             var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
 
             // 日期选择后的回调函数
-            var datePickerCallbacke = function (val) {
+            var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
@@ -64,30 +65,47 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 from: new Date(2008, 8, 2), //可选
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
-                    datePickerCallbacke(val);
+                    datePickerCallback(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
 
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetClerkAchievementList.get({
                     sysShopId:$scope.param.sysShopId,
-                    startTime:$scope.param.date +' 00:00:00',
-                    endTime:$scope.param.date +' 23:59:59',
+                    startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+' 00:00:00',
+                    endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+' 23:59:59',
                     sortBy:$scope.param.sortBy,
                     sortRule:$scope.param.sortRule
                 },function(data){
-                      $scope.employeeAnalysis = data.responseData
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $ionicLoading.hide();
+                        $scope.employeeAnalysis = data.responseData;
+                        $scope.param.flag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.flag=true;
+                        }
+                    }else {
+                        $ionicLoading.hide();
+                        $scope.param.flag=true;
+                    }
                 })
             }
-            $scope.getInfo();
-
+            $scope.$on('$ionicView.enter', function() {
+                $scope.getInfo();
+            })
             $scope.tabShop=function () {
                 $scope.param.displayShopBox=true;
                 $scope.param.displayShop=true;
                 GetBossShopList.get(function (data) {
-                    console.log(data);
                     $scope.shopList=data.responseData;
                 });
             };
@@ -100,6 +118,9 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 $scope.param.sortBy=sortBy;
                 $scope.param.sortRule=sortRule;
                 $scope.getInfo()
+            }
+            $scope.noneAll = function () {
+                $scope.param.displayShopBox=false;
             }
 
         }]);

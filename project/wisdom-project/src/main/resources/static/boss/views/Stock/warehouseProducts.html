@@ -1,29 +1,56 @@
 <ion-view class="bg">
-    <ion-content>
-            <div class="h45 bgfff row fs14 col33">
-                <div class="col col-33 tc" style="border-right: solid 1px #f6f6f6">
-                    <p style="margin-top:-10px" class="colff66">客装产品 <img src="images/Stock/hitCard.png" class="trianglePic ml20"></p>
-                </div>
-                <div class="col col-33 tc" style="border-right: solid 1px #f6f6f6">
-                    <p style="margin-top:-10px">院装产品<img src="images/Stock/Below.png" class="trianglePic ml20"></p>
-                </div>
-                <div class="col col-33 tc">
-                    <p style="margin-top:-10px">易耗品<img src="images/Stock/Below.png" class="trianglePic ml20"></p>
-                </div>
+    <ion-content ng-click="all()">
+        <div class="h45 bgfff row fs14 bbl">
+            <div class="col col-33 center" style="border-right: solid 1px #f6f6f6">
+                <p style="margin-top:-10px" ng-class="{'colff66':param.productType == '0'}" >
+                    <span ng-click="changeBtn('0');$event.stopPropagation()">客装产品</span>
+                    <img src="{{param.productType=='0'?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ng-click="selNext('0');$event.stopPropagation()"></p>
             </div>
-        <ion-item  class=" bgfff row"style="width: 96%;margin: 20px auto 0;border-radius: 6px;" ng-click="modifyProductGo()">
-            <div class="col col-20">
-                <p style="height:70px;width:75px;background: gainsboro;margin-top: 5px"></p >
+            <div class="col col-33 center" style="border-right: solid 1px #f6f6f6">
+                <p style="margin-top:-10px" ng-class="{'colff66':param.productType == '1'}">
+                    <span ng-click="changeBtn('1');$event.stopPropagation()" >院装产品</span>
+                    <img src="{{param.productType=='1'?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ng-click="selNext('1');$event.stopPropagation()"></p>
             </div>
+            <div class="col col-33 center">
+                <p style="margin-top:-10px"  ng-class="{'colff66':param.productType == '2'}">
+                    <span ng-click="changeBtn('2');$event.stopPropagation()">易耗品</span>
+                    <img src="{{param.productType=='2'?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ng-click="selNext('2');$event.stopPropagation()"></p>
+            </div>
+        </div>
+        <div style="position: relative;height:100%;padding-top:10px;">
+          <!-- <p  ng-if="param.levelTwoName!=''" class="mt10 ml10">
+               {{param.levelOneName}}  .  {{param.levelTwoName}}
+           </p>-->
+            <ion-item  class=" bgfff row"style="width: 96%;margin: 0px auto 10px;border-radius: 6px;" ng-click="modifyProductGo(item.id)" ng-repeat="item in warehouseProducts.detailProductList">
+                <div class="col col-30" style="background: url('{{item.productUrl}}');background-position: center center;background-size: contain;background-repeat: no-repeat;">
 
-            <div class="col col-70 ml10" >
-                <p style="font-size: 15px"><span>雪痕</span></p >
-                <p class="fs12 col88">编号：</p >
-                <p class="fs12 col88"><span>单位：件</span><span class="ml5">规格：1000g</span></p>
+                </div>
+
+                <div class="col col-60 ml10" >
+                    <p style="font-size: 15px"><span>{{item.productName}}</span></p >
+                    <p class="fs12 col88">编号：{{item.productCode}}</p >
+                    <p class="fs12 col88"><span>单位：{{item.productUnit}}</span><span class="ml20">规格：{{item.productSpec}}</span></p>
+                </div>
+                <div class="col col-10">
+                    <img src="images/Stock/edit.png" style="float: right;width: 20px;height: 20px;margin-top:20px">
+                </div>
+            </ion-item>
+            <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100"  ng-show="param.flag"></div>
+            <div style="position: absolute;top:0;width:100%;z-index: 1000;padding:0"  class="row bgf6" ng-show="param.flag">
+                <ul class="col col-33 col333  fs14 bgfff" style="padding-right:0">
+                    <li class="  col333 center bbl " ng-repeat="item in warehouseProducts.oneLevelList" ng-click="selTwo(item.productTypeOneId,item.productTypeOneName);$event.stopPropagation()" style="min-height: 40px;padding: 5px 0" ng-class="{'bge6':param.levelOneId == item.productTypeOneId}">
+                        <div class="ml10 mr10">{{item.productName}}</div>
+                    </li>
+                </ul>
+                <ul style="width:77%;background: #F6F6F6;" class="fs14 col333">
+                    <li class="ml10 h40 sb" style="border-bottom: 1px solid #FFFFFF;" ng-click="checkThree(item.productTypeTwoId,item.productTypeTwoName);$event.stopPropagation()" ng-repeat="item in param.twoLevelList" ng-class="{'bge6':param.levelTwoId == item.productTypeTwoId}">
+                        <div>{{item.productTypeTwoName}}</div>
+
+                    </li>
+
+                </ul>
             </div>
-            <div class="col col-10">
-                <img src="images/Stock/edit.png" style="float: right;width: 20px;height: 20px;margin-top:20px">
-            </div>
-        </ion-item>
+        </div>
+
     </ion-content>
 </ion-view>

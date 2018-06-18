@@ -21,7 +21,7 @@
         <result column="shop_id" property="shopId" jdbcType="CHAR"/>
         <result column="qr_code_url" property="qrCodeUrl" jdbcType="VARCHAR"/>
         <result column="parents_id" property="parentsId" jdbcType="VARCHAR"/>
-        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="CHAR"/>
         <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
@@ -92,15 +92,15 @@
         id, name, shop_image_url, phone, province, city, address, business_license_url, id_card_front_url,
         id_card_back_url, open_account_license_url, on_service_status, detail, area, open_door_date,
         close_door_date, shop_id, qr_code_url, parents_id, type, create_by, create_date,
-        update_user, update_date,sys_boss_id
+        update_user, update_date,sys_boss_code
     </sql>
     <select id="selectBossShopInfo" resultMap="BaseResultMap"
             parameterType="com.wisdom.beauty.api.extDto.ExtSysShopDTO">
-        select * from shop_boss_relation sbr
+        select ss.* from shop_boss_relation sbr
         INNER JOIN sys_shop ss on ss.id = sbr.sys_shop_id
         where 1=1
-        <if test="sysBossId != null">
-            and sbr.sys_boss_id = #{sysBossId}
+        <if test="sysBossCode != null">
+            and sbr.sys_boss_code = #{sysBossCode}
         </if>
         <if test="type != null">
             and ss.type = #{type}

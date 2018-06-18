@@ -1,6 +1,6 @@
 package com.wisdom.beauty.api.requestDto;
 
-import com.wisdom.common.entity.BaseEntity;
+import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,11 +8,11 @@ import java.util.Date;
 /**
  * Created by zhanghuan on 2018/5/7.
  */
-public class ShopStockRequestDTO extends BaseEntity {
+public class ShopStockRequestDTO extends ShopProductInfoDTO {
 	private  String id;
 
 	/** bossID */
-	private String shopBossId;
+	private String sysBossCode;
 
 	/** 入库记录id */
 	private String shopStockRecordId;
@@ -49,13 +49,25 @@ public class ShopStockRequestDTO extends BaseEntity {
 
 	/** 0、采购入库 1、内部员工出库 2、顾客出库 3、赠送 4、报废 5、院用 6、退回供货商 7、下发到店 */
 	private String stockType;
+	private String receiver;
 
-	public String getShopBossId() {
-		return shopBossId;
+	private Integer stockOutNumber;
+
+
+	public Integer getStockOutNumber() {
+		return stockOutNumber;
 	}
 
-	public void setShopBossId(String shopBossId) {
-		this.shopBossId = shopBossId;
+	public void setStockOutNumber(Integer stockOutNumber) {
+		this.stockOutNumber = stockOutNumber;
+	}
+
+	public String getShopBossId() {
+		return sysBossCode;
+	}
+
+	public void setShopBossId(String sysBossCode) {
+		this.sysBossCode = sysBossCode;
 	}
 
 	public String getShopStockRecordId() {
@@ -160,5 +172,13 @@ public class ShopStockRequestDTO extends BaseEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
 	}
 }

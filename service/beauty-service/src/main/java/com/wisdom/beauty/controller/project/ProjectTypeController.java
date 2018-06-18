@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -30,6 +31,7 @@ import java.util.List;
  * Description: 项目类别
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "projectType")
 public class ProjectTypeController {
 
@@ -51,8 +53,6 @@ public class ProjectTypeController {
     public
     @ResponseBody
     ResponseDTO<Object> saveShopProjectType(@RequestBody ShopProjectTypeDTO shopProjectTypeDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("添加项目一级类别传入参数={}", "shopProjectTypeDTO = [" + shopProjectTypeDTO + "]");
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
@@ -61,8 +61,6 @@ public class ProjectTypeController {
         }
         int info = projectService.saveProjectTypeInfo(shopProjectTypeDTO, bossInfo);
         responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -75,9 +73,7 @@ public class ProjectTypeController {
     @ResponseBody
     ResponseDTO<Object> updateOneLevelProjectType(@RequestBody ShopProjectTypeDTO shopProjectTypeDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        logger.info("修改一级项目类别传入参数={}", "shopProjectTypeDTO = [" + shopProjectTypeDTO + "]");
         if (null == shopProjectTypeDTO || StringUtils.isBlank(shopProjectTypeDTO.getId())) {
             responseDTO.setResponseData("传入参数有问题");
             responseDTO.setResult(StatusConstant.FAILURE);
@@ -90,7 +86,6 @@ public class ProjectTypeController {
         int info = projectService.updateProjectTypeInfo(shopProjectTypeDTO);
         logger.info("修改一级项目类别={}", info > 0 ? "成功" : "失败");
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -103,9 +98,7 @@ public class ProjectTypeController {
     @ResponseBody
     ResponseDTO<Object> updateTwoLevelProjectType(@RequestBody RequestDTO<ShopProjectTypeDTO> requestDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        logger.info("修改二级项目类别传入参数={}", "requestDTO = [" + requestDTO + "]");
         if (null == requestDTO || CommonUtils.objectIsEmpty(requestDTO.getRequestList())) {
             responseDTO.setResponseData("修改二级项目类别传入参数有问题");
             responseDTO.setResult(StatusConstant.FAILURE);
@@ -124,7 +117,6 @@ public class ProjectTypeController {
             }
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询用户套卡下的子卡的详细信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

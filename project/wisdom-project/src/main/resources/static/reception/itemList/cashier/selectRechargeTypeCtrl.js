@@ -1,10 +1,10 @@
 PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParams, ngDialog, Archives, GetShopUserRecentlyOrderInfo, GetUserRechargeCardList, UpdateVirtualGoodsOrderInfo, SaveShopUserOrderInfo, GetRechargeCardList, UpdateShopUserOrderPayInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
-    $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
+    // $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
-    $scope.$parent.$parent.param.headerCash.backContent = "充值记录";
-    $scope.$parent.$parent.param.headerCash.leftTip = "保存";
+    $scope.$parent.$parent.param.headerCash.backContent = "返回";
+    $scope.$parent.$parent.param.headerCash.title = "选择充值卡"
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
@@ -41,12 +41,12 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
 
     //获得订单号
     SaveShopUserOrderInfo.save({
-        userId: '110'
+        userId: $stateParams.userId
     }, function(data) {
         $scope.orderId = data.responseData;
         if ($state.params.type == 1) {
             GetUserRechargeCardList.get({
-                sysUserId: 110
+                sysUserId: $stateParams.userId
             }, function(data) {
                 $scope.RechargeCardList = data.responseData.userRechargeCardList;
             })
@@ -55,7 +55,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
             GetShopUserRecentlyOrderInfo.get({
                 orderId: $scope.orderId,
-                sysUserId: '110'
+                sysUserId: $stateParams.userId
             }, function(data) {
                 $scope.userPayRechargeCardList = data.responseData.userPayRechargeCardList;
                 $scope.userPayRechargeCardListCheck = [];
@@ -64,7 +64,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
                 }
             })
             GetUserRechargeCardList.get({
-                sysUserId: 110
+                sysUserId: $stateParams.userId
             }, function(data) {
                 $scope.RechargeCardList = data.responseData.userRechargeCardList;
             })
@@ -88,6 +88,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
 
 
     $scope.goSelectRechargeCard = function(id, eid, name, price) {
+        //控制样式
         if ($state.params.type == 1) {
             $scope.updateVirtualGoodsOrderInfo(id, eid, name, function() { $state.go('pad-web.left_nav.makeSureOrder') });
 
@@ -101,7 +102,10 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             }
 
         } else {
-            $state.go('pad-web.left_nav.selectRechargeCard', { type: id });
+            $state.go('pad-web.left_nav.selectRechargeCard', {
+                type: id,
+                userId:$stateParams.userId
+            });
         }
     }
 
@@ -118,5 +122,10 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             console.log(data)
             callback && callback();
         })
+    }
+    
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        // $state.go("pad-web.left_nav.personalFile")
+        window.history.go(-1)
     }
 });

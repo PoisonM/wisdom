@@ -2,26 +2,26 @@ package com.wisdom.beauty.api.extDto;
 
 import com.wisdom.beauty.api.dto.SysShopDTO;
 
+import java.util.List;
+
 public class ExtSysShopDTO extends SysShopDTO {
-    private String sysBossId;
-    //0为特殊账户
-    private String type;
+    private String sysBossCode;
 
-    @Override
-    public String getType() {
-        return type;
+    private List imageList;
+
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    @Override
-    public void setType(String type) {
-        this.type = type;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public List getImageList() {
+        return imageList;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setImageList(List imageList) {
+        this.imageList = imageList;
     }
 }

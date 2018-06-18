@@ -34,8 +34,18 @@ public class ShopUserPayDTO {
 
     //剩余支付金额
     private String surplusPayPrice;
-
+    //备注
     private String detail;
+    //
+    private String oweAmount;
+
+    public String getOweAmount() {
+        return oweAmount;
+    }
+
+    public void setOweAmount(String oweAmount) {
+        this.oweAmount = oweAmount;
+    }
 
     public String getBalancePay() {
         return balancePay;

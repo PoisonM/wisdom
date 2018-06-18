@@ -2,10 +2,15 @@ package com.wisdom.beauty.controller.product;
 
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
+import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.extDto.RequestDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.core.service.stock.ShopStockService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -16,9 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * FileName: ProductTypeController
@@ -28,11 +31,17 @@ import java.util.List;
  * Description: 产品类别相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "productTypeInfo")
 public class ProductTypeController {
 
     @Resource
     private ShopProductInfoService shopProductInfoService;
+    @Resource
+    private ShopStockService ShopStockService;
+
+    @Resource
+    private RedisUtils redisUtils;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -47,8 +56,6 @@ public class ProductTypeController {
     @RequestMapping(value = "/saveProductTypeInfo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> saveProductTypeInfo(@RequestParam String productTypeName, @RequestParam String status) {
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("添加产品一级类别信息传入参数={}", "productTypeName = [" + productTypeName + "], status = [" + status + "]");
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if (judgeBossCurrentShop(responseDTO, bossInfo)) {
@@ -57,9 +64,9 @@ public class ProductTypeController {
         ShopProductTypeDTO shopProductTypeDTO = new ShopProductTypeDTO();
         shopProductTypeDTO.setStatus(status);
         shopProductTypeDTO.setProductTypeName(productTypeName);
+        shopProductTypeDTO.setSysShopId(bossInfo.getCurrentShopId());
         int updateInfo = shopProductInfoService.saveProductTypeInfo(shopProductTypeDTO);
         responseDTO.setResult(updateInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        logger.info("更新产品一级类别信息方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -73,9 +80,6 @@ public class ProductTypeController {
     @RequestMapping(value = "/updateOneLevelTypeInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<Object> updateOneLevelTypeInfo(@RequestBody ShopProductTypeDTO shopProductTypeDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
-
-        logger.info("更新产品一级类别信息传入参数={}", "shopProductTypeDTO = [" + shopProductTypeDTO + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if (null == shopProductTypeDTO || StringUtils.isBlank(shopProductTypeDTO.getId())) {
             logger.error("更新产品一级类别信息传入参数异常");
@@ -86,7 +90,6 @@ public class ProductTypeController {
 
         int updateInfo = shopProductInfoService.updateProductTypeInfo(shopProductTypeDTO);
         responseDTO.setResult(updateInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        logger.info("更新产品一级类别信息方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -99,9 +102,6 @@ public class ProductTypeController {
     @RequestMapping(value = "/updateTwoLevelTypeInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<Object> updateTwoLevelTypeInfo(@RequestBody RequestDTO<ShopProductTypeDTO> dtoRequestDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
-
-        logger.info("更新产品二级级类别信息传入参数={}", "dtoRequestDTO = [" + dtoRequestDTO + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if (null == dtoRequestDTO || CommonUtils.objectIsEmpty(dtoRequestDTO) || CommonUtils.objectIsEmpty(dtoRequestDTO.getRequestList())) {
             logger.error("更新产品二级类别信息传入参数异常");
@@ -113,7 +113,6 @@ public class ProductTypeController {
 
         int updateInfo = shopProductInfoService.updateProductTypeListInfo(shopProductTypeDTOS);
         responseDTO.setResult(updateInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        logger.info("更新产品二级类别信息方法耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -131,10 +130,7 @@ public class ProductTypeController {
     @ResponseBody
     ResponseDTO<Object> getShopProductLevelInfo(@RequestParam(required = false) String productType, @RequestParam(required = false) String levelOneId,
                                                 @RequestParam(required = false) String levelTwoId, @RequestParam(required = false) String pageNo,
-                                                @RequestParam(required = false) String pageSize) {
-
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("根据产品类型查询一级二级产品传入参数={}", "productType = [" + productType + "], levelOneId = [" + levelOneId + "], levelTwoId = [" + levelTwoId + "]");
+                                                @RequestParam(required = false) String pageSize, @RequestParam(required = false) String shopStoreId) {
 
         ResponseDTO responseDTO = new ResponseDTO();
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
@@ -142,8 +138,7 @@ public class ProductTypeController {
         if (judgeBossCurrentShop(responseDTO, bossInfo)) {
             return responseDTO;
         }
-        String currentShopId = bossInfo.getCurrentShopId();
-
+        String sysShopId = redisUtils.getShopId();
         if (StringUtils.isNotBlank(productType)) {
             shopProductInfoDTO.setProductType(productType);
         }
@@ -154,36 +149,58 @@ public class ProductTypeController {
             shopProductInfoDTO.setProductTypeTwoId(levelTwoId);
         }
 
-        shopProductInfoDTO.setSysShopId(currentShopId);
+        shopProductInfoDTO.setSysShopId(sysShopId);
         List<ShopProductInfoDTO> detailProductList = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
 
         HashMap<Object, Object> responseMap = new HashMap<>(8);
         if (CommonUtils.objectIsNotEmpty(detailProductList)) {
             //缓存一级产品名牌
-            LinkedHashMap<String, ShopProductInfoDTO> oneMap = new LinkedHashMap<>(16);
+            HashMap<String, ShopProductInfoDTO> oneMap = new LinkedHashMap<>(16);
             logger.info("开始缓存一级产品品牌");
             for (ShopProductInfoDTO dto : detailProductList) {
-                oneMap.put(dto.getProductTypeOneName(), dto);
+                oneMap.put(dto.getProductTypeOneId(), dto);
             }
-            responseMap.put("oneMap", oneMap);
+
+            List<Object> oneLevelList = new ArrayList<Object>();
+            for (Map.Entry entry : oneMap.entrySet()) {
+                oneLevelList.add(entry.getValue());
+            }
+            responseMap.put("oneLevelList", oneLevelList);
+
+
             //缓存选中的二级产品品牌，如果levelTwo，默认取oneMap中的第一条作为查询结果
             logger.info("开始缓存二级产品品牌,levelOneId={}", levelOneId);
             HashMap<Object, Object> twoMap = new HashMap<>(16);
-            if (StringUtils.isBlank(levelOneId)) {
-                levelOneId = oneMap.entrySet().iterator().next().getValue().getProductTypeOneId();
-            }
+            twoMap.put("","全部");
             for (ShopProductInfoDTO dto : detailProductList) {
-                if (dto.getProductTypeOneId().equals(levelOneId)) {
-                    twoMap.put(dto.getProductTypeTwoName(), dto);
-                }
+                twoMap.put(dto.getProductTypeTwoId(), dto);
             }
-            responseMap.put("twoMap", twoMap);
+            List<Object> twoLevelList = new ArrayList<>();
+            for (Map.Entry entry : twoMap.entrySet()) {
+                twoLevelList.add(entry.getValue());
+            }
+            responseMap.put("twoLevelList", twoLevelList);
         }
 
         responseMap.put("detailProductList", detailProductList);
+        //查询产品的库存信息
+        if (StringUtils.isNotBlank(shopStoreId)) {
+            ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
+            shopStockNumberDTO.setShopStoreId(shopStoreId);
+            shopStockNumberDTO.setProductTypeTwoId(levelTwoId);
+            PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO = new PageParamVoDTO();
+            pageParamVoDTO.setPaging(true);
+            pageParamVoDTO.setPageNo(0);
+            pageParamVoDTO.setRequestData(shopStockNumberDTO);
+            //查询产品库存详情
+            Map<String, Object> map = ShopStockService.getStockDetailList(pageParamVoDTO, detailProductList);
+            responseMap.put("allUseCost", map.get("allUseCost"));
+            responseMap.put("useCost", map.get("useCost"));
+            responseMap.put("detailProductList", map.get("extShopProductInfoDTOs"));
+        }
+
         responseDTO.setResponseData(responseMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("根据产品类型查询一级二级产品耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

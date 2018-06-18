@@ -27,11 +27,11 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
             var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
 
             // 日期选择后的回调函数
-            var datePickerCallbacke = function (val) {
+            var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
+                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
                     $scope.getInfo();
                 }
             };
@@ -56,22 +56,17 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
                 from: new Date(2008, 8, 2), //可选
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
-                    datePickerCallbacke(val);
+                    datePickerCallback(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
-
-
             $scope.getInfo=function(){
                 ShopDayAppointmentInfoByDate.get({
-                    startDate:$scope.param.date+" 00:00:00",
-                    endDate:$scope.param.date+" 23:59:59",
-                    sysShopId:$stateParams.sysShopId
+                    startDate:$scope.param.date.replace(/(^\s*)|(\s*$)/g, ""),sysShopId:$stateParams.sysShopId
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $scope.beautySalon = data.responseData;
-                        console.log($scope.beautySalon )
                         delete $scope.beautySalon.startTime;
                         delete $scope.beautySalon.endTime;
                     }

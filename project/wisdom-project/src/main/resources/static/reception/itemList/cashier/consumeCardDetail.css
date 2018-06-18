@@ -1,0 +1,40 @@
+.consumeCardDetail{
+    overflow-y: scroll;
+    height: 100%;
+}
+.consumeCardDetail_box{
+    width: 100%;
+    background-color: #ffffff;
+}
+.consumeCardDetail_box .basic{
+    width: 100%;
+}
+.consumeCardDetail_box .basic p{
+    height: 30px;
+    line-height: 30px;
+    padding-left: 15px;
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #888888;
+    letter-spacing: 0;
+    background-color: #F5F5F5;
+}
+
+.consumeCardDetail_box .basic ul li{
+    width: 100%;
+    padding-left: 15px;
+    height: 55px;
+    line-height: 55px;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #333333;
+    letter-spacing: 0;
+    padding-right: 15px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.consumeCardDetail_box .basic ul li span{
+    font-size: 14px;
+    color: #888888;
+    float: right;
+}

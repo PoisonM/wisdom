@@ -1,23 +1,27 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
+import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
-import com.wisdom.beauty.api.dto.SysShopDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtSysShopMapper;
 import com.wisdom.beauty.core.mapper.ShopUserRelationMapper;
 import com.wisdom.beauty.core.mapper.SysShopMapper;
+import com.wisdom.beauty.core.redis.MongoUtils;
+import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -47,10 +51,19 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
     private ExtSysShopMapper extSysShopMapper;
 
     @Autowired
+    private ShopCustomerArchivesService shopCustomerArchivesService;
+
+    @Autowired
     private SysShopMapper sysShopMapper;
 
     @Autowired
     private UserServiceClient userServiceClient;
+
+    @Autowired
+    private ShopUserRelationService shopUserRelationService;
+
+    @Autowired
+    private MongoUtils mongoUtils;
 
     @Override
     public String isMember(String userId) {
@@ -68,7 +81,8 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         ShopUserRelationDTO shopUserRelationDTO = null;
         if (CollectionUtils.isEmpty(list)) {
             logger.info("list集合为空");
-            return null;
+            //默认返回未绑定的状态
+            return "1";
         }
 
         shopUserRelationDTO = list.get(0);
@@ -84,7 +98,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
     @Override
     public int saveUserShopRelation(ShopUserRelationDTO shopUserRelationDTO) {
         if (null == shopUserRelationDTO) {
-            logger.error("用户绑定会员传入参数为空，{}", "shopUserRelationDTO = [" + shopUserRelationDTO + "]");
+            logger.error("用户绑定会员传入参数为空");
             return 0;
         }
         List<ShopUserRelationDTO> shopListByCondition = getShopListByCondition(shopUserRelationDTO);
@@ -111,17 +125,17 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
         ShopUserRelationCriteria criteria = new ShopUserRelationCriteria();
         ShopUserRelationCriteria.Criteria c = criteria.createCriteria();
 
-        if (StringUtils.isNotBlank(shopUserRelationDTO.getSysBossId())) {
-            logger.info("getShopListByCondition方法传入的参数bossId={}", shopUserRelationDTO.getSysBossId());
-            c.andSysBossIdEqualTo(shopUserRelationDTO.getSysBossId());
+        if (StringUtils.isNotBlank(shopUserRelationDTO.getSysBossCode())) {
+            logger.info("getShopListByCondition方法传入的参数bossId={}", shopUserRelationDTO.getSysBossCode());
+            c.andSysBossCodeEqualTo(shopUserRelationDTO.getSysBossCode());
         }
 
         if (StringUtils.isNotBlank(shopUserRelationDTO.getSysUserId())) {
             c.andSysUserIdEqualTo(shopUserRelationDTO.getSysUserId());
         }
 
-        if (StringUtils.isNotBlank(shopUserRelationDTO.getShopId())) {
-            c.andShopIdEqualTo(shopUserRelationDTO.getShopId());
+        if (StringUtils.isNotBlank(shopUserRelationDTO.getSysShopId())) {
+            c.andSysShopIdEqualTo(shopUserRelationDTO.getSysShopId());
         }
 
         List<ShopUserRelationDTO> shopUserRelations = shopUserRelationMapper.selectByCriteria(criteria);
@@ -129,39 +143,39 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
     }
 
     @Override
-    public ResponseDTO<String> userBinding(String openId, String shopId) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setUserOpenid(openId);
-        List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
-        if (CommonUtils.objectIsEmpty(userInfoDTOS)) {
-            logger.error("根据openId查询出来的用户记录为空");
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("根据openId查询出来的用户记录为空");
-            return responseDTO;
-        }
-        //根据openId查询用户记录
-        UserInfoDTO dto = userInfoDTOS.get(0);
+    public ResponseDTO<String> userBinding(String openId, String shopId ,String userId) {
+        //查询用户是否为建档用户
+        ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setSysUserId(userId);
+        shopUserArchivesDTO.setSysShopId(shopId);
+        List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
+        if(CommonUtils.objectIsEmpty(shopUserArchivesInfo)){
+            logger.info("openId={},非建档用户",openId);
+            JedisUtils.set(shopId+"_"+userId,"notArchives", ConfigConstant.logintokenPeriod);
+        }else{
+            //判断是否本人操作(userId和openId查出唯一条数据)
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setUserOpenid(openId);
+            List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+            if(userInfoDTOS.size()>1){
+                logger.info("非当前用户操作，或此用户有多个微信,多条数据证明已存用户又扫了一次绑定二维码，openId={}",openId);
+                JedisUtils.set(shopId+"_"+userId,"otherUser", ConfigConstant.logintokenPeriod);
+            }else{
+                //查询此用户与本店的绑定关系
+                ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
+                shopUserRelationDTO.setSysUserId(userId);
+                shopUserRelationDTO.setSysShopId(shopId);
+                List<ShopUserRelationDTO> shopListByCondition = getShopListByCondition(shopUserRelationDTO);
+                if(CommonUtils.objectIsEmpty(shopListByCondition)){
+                    logger.info("此用户没有绑定过店铺，创建绑定关系");
+                    shopUserRelationDTO.setStatus(CommonCodeEnum.BINDING.getCode());
+                    shopUserRelationService.saveUserShopRelation(shopUserRelationDTO);
+                }
+                JedisUtils.set(shopId+"_"+userId,"alreadyBind", ConfigConstant.logintokenPeriod);
+            }
 
-        ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
-        shopUserRelationDTO.setSysUserId(dto.getId());
-        shopUserRelationDTO.setShopId(shopId);
-        List<ShopUserRelationDTO> shopListByCondition = getShopListByCondition(shopUserRelationDTO);
-        //没有查出绑定关系，说明是未绑定状态
-        if (CommonUtils.objectIsEmpty(shopListByCondition)) {
-            logger.error("查询用户绑定关系为空");
-            responseDTO.setResult(StatusConstant.SUCCESS);
-            responseDTO.setResponseData(CommonCodeEnum.Y.getCode());
-            return responseDTO;
         }
-        shopUserRelationDTO = shopListByCondition.get(0);
-        //status为0  为绑定关系
-        if (CommonCodeEnum.Y.getCode().equals(shopUserRelationDTO.getStatus())) {
-            responseDTO.setResponseData(CommonCodeEnum.Y.getCode());
-        } else {
-
-            responseDTO.setResponseData(CommonCodeEnum.N.getCode());
-        }
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
@@ -176,21 +190,32 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
             return null;
         }
         List<ExtSysShopDTO> extSysShopDTOS = extSysShopMapper.selectBossShopInfo(extSysShopDTO);
+        if (CommonUtils.objectIsNotEmpty(extSysShopDTO)) {
+            for (ExtSysShopDTO dto : extSysShopDTOS) {
+                dto.setImageList(mongoUtils.getImageUrl(dto.getId()));
+            }
+        }
         return extSysShopDTOS;
     }
 
     /**
      * 更新店铺信息
-     * @param sysShopDTO
+     * @param extSysShopDTO
      * @return
      */
     @Override
-    public int updateShopInfo(SysShopDTO sysShopDTO) {
-        if(null == sysShopDTO || StringUtils.isBlank(sysShopDTO.getId())){
-            logger.error("更新店铺信息传入信息有误，请核查，{}","sysShopDTO = [" + sysShopDTO + "]");
+    public int updateShopInfo(ExtSysShopDTO extSysShopDTO) {
+        if (null == extSysShopDTO || StringUtils.isBlank(extSysShopDTO.getId())) {
+            logger.error("更新店铺信息传入信息有误，请核查，{}", "extSysShopDTO = [" + extSysShopDTO + "]");
             return 0;
         }
-        int update = sysShopMapper.updateByPrimaryKeySelective(sysShopDTO);
+        if (null != extSysShopDTO.getImageList()) {
+            String o =  extSysShopDTO.getShopImageUrl();
+            extSysShopDTO.setShopImageUrl(o);
+        }
+
+        int update = sysShopMapper.updateByPrimaryKeySelective(extSysShopDTO);
+        mongoUtils.updateImageUrl(extSysShopDTO.getImageList(), extSysShopDTO.getId());
         return update;
     }
 }

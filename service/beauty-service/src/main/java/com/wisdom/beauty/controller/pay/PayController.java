@@ -3,11 +3,13 @@ package com.wisdom.beauty.controller.pay;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserConsumeService;
-import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.util.RedisLock;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * FileName: OrderController
@@ -30,6 +33,7 @@ import javax.annotation.Resource;
  * Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "userPay")
 public class PayController {
 
@@ -37,6 +41,9 @@ public class PayController {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Resource
+    private ShopUerConsumeRecordService shopUerConsumeRecordService;
 
     @Resource
     private ShopUserConsumeService shopUserConsumeService;
@@ -48,25 +55,40 @@ public class PayController {
      * @return
      */
     @RequestMapping(value = "userPayOpe", method = {RequestMethod.POST})
-//	@LoginRequired
     public
     @ResponseBody
     ResponseDTO<ShopUserOrderDTO> userPayOpe(@RequestBody ShopUserPayDTO shopUserPayDTO) {
-
-        long currentTimeMillis = System.currentTimeMillis();
-
-        logger.info("用户支付接口传入参数={}", "shopUserPayDTO = [" + shopUserPayDTO.toString() + "]");
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
-
-        Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
-        ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-
-        int operation = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO, shopUserPayDTO, clerkInfo);
-
-        responseDTO.setResult(operation > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-
-        logger.info("用户支付接口耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        if(null == shopUserPayDTO || StringUtils.isBlank(shopUserPayDTO.getOrderId())){
+            responseDTO.setErrorInfo("数据异常！请联系客服，谢谢");
+            responseDTO.setResult(StatusConstant.FAILURE);
+        }
+        RedisLock redisLock = null;
+        try {
+            redisLock = new RedisLock("userPayOpe:"+shopUserPayDTO.getOrderId());
+            redisLock.lock();
+            Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
+            ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+            //用户为待支付的状态才能执行签字确认操作
+            if(OrderStatusEnum.WAIT_PAY.getCode().equals(shopUserOrderDTO.getStatus())){
+                Update update = new Update();
+                update.set("status", OrderStatusEnum.WAIT_SIGN.getCode());
+                update.set("statusDesc",OrderStatusEnum.WAIT_SIGN.getDesc());
+                update.set("signUrl", shopUserPayDTO.getSignUrl());
+                update.set("shopUserPayDTO",shopUserPayDTO);
+                update.set("updateDate",new Date());
+                mongoTemplate.upsert(query, update, "shopUserOrderDTO");
+            }else{
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("订单已失效，请勿重复操作");
+            }
+        } catch (Exception e) {
+            logger.error("订单支付失败，失败信息为={}"+e.getMessage(),e);
+            responseDTO.setErrorInfo("处理异常，请联系客服，谢谢");
+            responseDTO.setResult(StatusConstant.FAILURE);
+        }finally {
+            redisLock.unlock();
+        }
         return responseDTO;
     }
 
@@ -77,25 +99,37 @@ public class PayController {
      * @return
      */
     @RequestMapping(value = "paySignConfirm", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> paySignConfirm(@RequestBody ShopUserPayDTO shopUserPayDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("更新用户的订单信息传入参数={}", "shopUserPayDTO = [" + shopUserPayDTO.toString() + "]");
         ResponseDTO responseDTO = new ResponseDTO<String>();
+        Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
+        ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        if(null == shopUserOrderDTO){
+            responseDTO.setErrorInfo("未查询到此订单信息");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        RedisLock redisLock = null;
+        try {
+            redisLock = new RedisLock("paySign:"+shopUserPayDTO.getOrderId());
+            redisLock.lock();
+            //进入待签字确认状态之后才能签字确认
+            if(OrderStatusEnum.WAIT_SIGN.getCode().equals(shopUserOrderDTO.getStatus())){
+                //mongodb中更新订单的状态
+                responseDTO = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO);
+            }else{
+                responseDTO.setErrorInfo("订单已失效，请勿重复提交");
+                responseDTO.setResult(StatusConstant.FAILURE);
+            }
+        } catch (Exception e) {
+            logger.error("签字确认失败，失败信息为={}"+e.getMessage(),e);
+        }finally {
+            redisLock.unlock();
+        }
 
-        //mongodb中更新订单的状态
-        Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
-        Update update = new Update();
-        update.set("status", OrderStatusEnum.CONFIRM_PAY.getCode());
-        update.set("signUrl", shopUserPayDTO.getSignUrl());
-        mongoTemplate.upsert(query, update, "shopUserOrderDTO");
-        responseDTO.setResponseData(StatusConstant.SUCCESS);
-        responseDTO.setResult(StatusConstant.SUCCESS);
-
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -106,13 +140,11 @@ public class PayController {
      * @return
      */
     @RequestMapping(value = "updateShopUserOrderPayInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> updateShopUserOrderPayInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("pad端支付界面选择充值卡抵扣传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
         ResponseDTO responseDTO = new ResponseDTO<String>();
 
         //mongodb中更新订单的状态
@@ -123,7 +155,6 @@ public class PayController {
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);
 
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

@@ -3,7 +3,6 @@ package com.wisdom.beauty.core.service.impl;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingCriteria;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
-import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopScheduleSettingMapper;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
@@ -52,7 +51,7 @@ public class ShopWorkServiceImpl implements ShopWorkService {
         logger.info("getShopScheduleSettingInfo传入参数，{}", "shopScheduleSettingDTO = [" + shopScheduleSettingDTO + "]");
 
         if (null == shopScheduleSettingDTO) {
-            logger.error("getShopScheduleSettingInfo传入参数为空,{}", shopScheduleSettingDTO);
+            logger.error("getShopScheduleSettingInfo传入参数为空");
             return null;
         }
 

@@ -30,10 +30,7 @@ angular.module('controllers',[]).controller('basicSettingCtrl',
             $scope.addProductGo=function () {
                 $state.go("addProduct")
             };
-            /*修改产品*/
-            $scope.modifyProductGo=function () {
-                $state.go("modifyProduct")
-            };
+
             /*添加套卡*/
             $scope.addCardsGo=function () {
                 $state.go("addCards")

@@ -4,8 +4,9 @@ import com.wisdom.beauty.api.dto.ShopClerkScheduleCriteria;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingCriteria;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 import com.wisdom.beauty.core.mapper.ExtShopClerkScheduleMapper;
 import com.wisdom.beauty.core.mapper.ShopClerkScheduleMapper;
 import com.wisdom.beauty.core.mapper.ShopScheduleSettingMapper;
@@ -49,13 +50,13 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
 
     /**
      * 根据条件查询排班信息
-     * @param shopClerkScheduleDTO
+     * @param extShopClerkScheduleDTO
      * @return
      */
     @Override
-    public List<ShopClerkScheduleDTO> getShopClerkScheduleList(ShopClerkScheduleDTO shopClerkScheduleDTO) {
+    public List<ShopClerkScheduleDTO> getShopClerkScheduleList(ExtShopClerkScheduleDTO extShopClerkScheduleDTO) {
 
-        if(CommonUtils.objectIsEmpty(shopClerkScheduleDTO)){
+        if (CommonUtils.objectIsEmpty(extShopClerkScheduleDTO)) {
             logger.info("根据条件查询排班信息传入参数为空");
             return null;
         }
@@ -63,26 +64,24 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
         ShopClerkScheduleCriteria scheduleCriteria = new ShopClerkScheduleCriteria();
         ShopClerkScheduleCriteria.Criteria criteria = scheduleCriteria.createCriteria();
 
-        if(StringUtils.isNotBlank(shopClerkScheduleDTO.getSysShopId())){
-            criteria.andSysShopIdEqualTo(shopClerkScheduleDTO.getSysShopId());
+        if (StringUtils.isNotBlank(extShopClerkScheduleDTO.getSysShopId())) {
+            criteria.andSysShopIdEqualTo(extShopClerkScheduleDTO.getSysShopId());
         }
 
-        if (StringUtils.isNotBlank(shopClerkScheduleDTO.getSysClerkId())) {
-            criteria.andSysClerkIdEqualTo(shopClerkScheduleDTO.getSysClerkId());
+        if (StringUtils.isNotBlank(extShopClerkScheduleDTO.getSysClerkId())) {
+            criteria.andSysClerkIdEqualTo(extShopClerkScheduleDTO.getSysClerkId());
         }
         //注意，这里精确到月份，如有其他需要扩展接口
-        if (null != shopClerkScheduleDTO.getScheduleDate()) {
-            String startDate = DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate());
-            String endDate = DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate());
+        if (null != extShopClerkScheduleDTO.getScheduleDate()) {
+            String startDate = DateUtils.getFirstDate(extShopClerkScheduleDTO.getScheduleDate());
+            String endDate = DateUtils.getLastDate(extShopClerkScheduleDTO.getScheduleDate());
             criteria.andScheduleDateBetween(DateUtils.StrToDate(startDate, "datetime"), DateUtils.StrToDate(endDate, "datetime"));
         }
 
-        //默认查询shopClerkScheduleDTO.getScheduleDate()所在的整月份
-//        if(null != shopClerkScheduleDTO.getScheduleDate()){
-//            Date firstDate = DateUtils.StrToDate(DateUtils.getFirstDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
-//            Date lastDay = DateUtils.StrToDate(DateUtils.getLastDate(shopClerkScheduleDTO.getScheduleDate()),"datetime");
-//            criteria.andScheduleDateBetween(firstDate,lastDay);
-//        }
+        //根据查询日期查询
+        if (null != extShopClerkScheduleDTO.getSearchStartDate()) {
+            criteria.andScheduleDateEqualTo(extShopClerkScheduleDTO.getSearchStartDate());
+        }
 
         List<ShopClerkScheduleDTO> shopClerkScheduleDTOS = shopClerkScheduleMapper.selectByCriteria(scheduleCriteria);
         return shopClerkScheduleDTOS;
@@ -132,7 +131,7 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
             settingDTO.setCreateBy(UserUtils.getBossInfo().getId());
             settingDTO.setStatus(CommonCodeEnum.ENABLED.getCode());
             settingDTO.setCreateDate(new Date());
-            settingDTO.setSysBossId(UserUtils.getBossInfo().getId());
+            settingDTO.setSysBossCode(UserUtils.getBossInfo().getId());
             for (ScheduleTypeEnum scheduleTypeEnum : ScheduleTypeEnum.values()) {
                 settingDTO.setEndTime(scheduleTypeEnum.getDefaultEndTime());
                 settingDTO.setId(IdGen.uuid());

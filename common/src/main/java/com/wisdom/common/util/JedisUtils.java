@@ -115,6 +115,10 @@ public class JedisUtils {
 	 * @return
 	 */
 	public static String set(String key, String value, int cacheSeconds) {
+		if(StringUtils.isBlank(key)){
+			logger.debug("set {} = {}", key, value);
+			return null;
+		}
 		String result = null;
 		Jedis jedis = null;
 		try {
@@ -319,6 +323,10 @@ public class JedisUtils {
 	public static Set<String> getSet(String key) {
 		Set<String> value = null;
 		Jedis jedis = null;
+		if(StringUtils.isBlank(key)){
+		    logger.info("getSet传入参数为空");
+		    return null;
+		}
 		try {
 			jedis = getResource();
 			if (jedis.exists(key)) {
@@ -386,6 +394,33 @@ public class JedisUtils {
 		}
 		return result;
 	}
+	/**
+	 * 设置Set缓存
+	 * @param key 键
+	 * @param value 值
+	 * @param cacheSeconds 超时时间，0为不超时
+	 * @return
+	 */
+	public static long setSet(String key, String value, int cacheSeconds) {
+		long result = 0;
+		Jedis jedis = null;
+		try {
+			jedis = getResource();
+			if (jedis.exists(key)) {
+				jedis.del(key);
+			}
+			result = jedis.sadd(key, value);
+			if (cacheSeconds != 0) {
+				jedis.expire(key, cacheSeconds);
+			}
+			logger.debug("setSet {} = {}", key, value);
+		} catch (Exception e) {
+			logger.warn("setSet {} = {}", key, value, e);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
 
 	/**
 	 * 设置Set缓存
@@ -417,15 +452,17 @@ public class JedisUtils {
 	 * @return
 	 */
 	public static Set<String> zRangeByScore(String key, String min, String max) {
+		logger.info("开始时间");
 		Set<String> result = null;
 		Jedis jedis = null;
 		try {
 			jedis = getResource();
+			logger.info("获取资源");
 			result = jedis.zrangeByScore(key, min, max);
 
-			logger.debug("setSet {} = {} = {}", key, min,max);
+			logger.info("结束时间");
 		} catch (Exception e) {
-			logger.warn("setSet {} = {}  = {}", key, min,max);
+			logger.info("结束时间");
 		} finally {
 			returnResource(jedis);
 		}
@@ -752,6 +789,9 @@ public class JedisUtils {
 	public static long del(String key) {
 		long result = 0;
 		Jedis jedis = null;
+		if(StringUtils.isBlank(key)){
+			return 0;
+		}
 		try {
 			jedis = getResource();
 			if (jedis.exists(key)){
@@ -855,7 +895,7 @@ public class JedisUtils {
 	 */
 	public static void returnBrokenResource(Jedis jedis) {
 		if (jedis != null) {
-			jedisPool.returnBrokenResource(jedis);
+			closeRedisPool(jedis);
 		}
 	}
 	
@@ -865,14 +905,22 @@ public class JedisUtils {
 	 */
 	public static void returnResource(Jedis jedis) {
 		if (jedis != null) {
-			jedisPool.returnResource(jedis);
+			closeRedisPool(jedis);
 		}
 	}
 
 	/**
-	 * 获取byte[]类型Key
-	 * @return
+	 * 释放资源升级版
+	 * @param jedis
 	 */
+	public static void closeRedisPool(Jedis jedis) {
+			jedis.close();
+	}
+
+		/**
+         * 获取byte[]类型Key
+         * @return
+         */
 	public static byte[] getBytesKey(Object object){
 		if(object instanceof String){
     		return StringUtils.getBytes((String)object);

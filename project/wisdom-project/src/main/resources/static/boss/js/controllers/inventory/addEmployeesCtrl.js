@@ -10,10 +10,11 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
                 shopName:""
             };
             $scope.sysClerkDTO = {
-                sysShopId:"11",
+                sysShopId:"",
                 mobile:"",
                 name:"",
-                role:""
+                role:"",
+                sysShopName:''
             }
             $scope.shop = function(){
                 GetBossShopList.get({},function(data){
@@ -30,7 +31,7 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
             $scope.selShop = function(id,sysShopName){
                 $scope.param.flag = false;
                 $scope.sysClerkDTO.sysShopId = id;
-                $scope.param.shopName = sysShopName
+                $scope.sysClerkDTO.sysShopName = sysShopName
 
             }
             $scope.all = function(){
@@ -43,7 +44,7 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
 
                 }
                 if($scope.param.managerStatus == true){
-                    $scope.sysClerkDTO.role += "店长 "
+                    $scope.sysClerkDTO.role += "店员 "
 
                 }
                 if($scope.param.fontDeskStatus == true){
@@ -52,15 +53,25 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
                 }
                 $scope.sysClerkDTO.role = $scope.sysClerkDTO.role.slice(0, $scope.sysClerkDTO.role.length-1);
 
-                console.log( $scope.sysClerkDTO)
+                if($scope.sysClerkDTO.sysShopId ==''||$scope.sysClerkDTO.mobile==''||$scope.sysClerkDTO.name==""){
+                    alert('请检查信息')
+                    $scope.sysClerkDTO.role=''
+                    return
+                }else if($scope.sysClerkDTO.mobile!=''){
+                    if(!(/^1[34578]\d{9}$/.test($scope.sysClerkDTO.mobile))){
+                        alert('请重新填写手机号')
+                        $scope.sysClerkDTO.role=''
+                        return
+                    }
+                }
                 SaveClerkInfo.save($scope.sysClerkDTO,function (data) {
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                    if(data.result==Global.SUCCESS){
                         $state.go("addFamily")
                     }
                 })
             }
-            $scope.importAddressBookGo=function () {
+           /* $scope.importAddressBookGo=function () {
                 $state.go("importAddressBook")
-            }
+            }*/
 
         }])

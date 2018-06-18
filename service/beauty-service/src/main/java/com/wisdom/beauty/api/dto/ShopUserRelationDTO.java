@@ -1,9 +1,9 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserRelationDTO extends BaseEntity implements Serializable {
     //
@@ -21,8 +21,8 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
     //用户名称
     private String sysUserName;
 
-    //老板id
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
 
     //美容院的唯一标识
     private String shopId;
@@ -90,12 +90,12 @@ public class ShopUserRelationDTO extends BaseEntity implements Serializable {
         this.sysUserName = sysUserName;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getShopId() {

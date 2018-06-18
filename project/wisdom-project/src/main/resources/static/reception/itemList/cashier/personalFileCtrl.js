@@ -1,9 +1,7 @@
-PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngDialog, Archives
-    , GetShopUserArchivesInfoByUserId, GetUserCourseProjectList, GetUserProjectGroupList, GetUserRechargeCardList
-    , GetUserProductList, GetUserRechargeSumAmount,ArchivesDetail) {
+PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $state, ngDialog, Archives, GetShopUserArchivesInfoByUserId, GetUserCourseProjectList, GetUserProjectGroupList, GetUserRechargeCardList, GetUserProductList, GetUserRechargeSumAmount, ArchivesDetail) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
-    $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
+    // $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
     $scope.$parent.$parent.param.headerCash.title = "用户档案";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = false;
@@ -25,14 +23,13 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
-
+    console.log($stateParams.sysUserId);
 
     $scope.queruList = function(type) {
         if (type == 0) { //疗程卡
             GetUserCourseProjectList.get({
-                sysUserId: 1,
-                sysShopId: 1,
-                cardStyle: 0
+                sysUserId: $stateParams.sysUserId,
+                cardStyle: 1
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("疗程卡:" + data)
@@ -41,8 +38,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
             })
         } else if (type == 1) { //套卡
             GetUserProjectGroupList.get({
-                sysUserId: 1,
-                sysShopId: 1
+                sysUserId: $stateParams.sysUserId
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("套卡:" + data)
@@ -52,7 +48,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
         } else if (type == 2) { //充值卡
             //获取充值卡金额
             GetUserRechargeSumAmount.get({
-                sysUserId: "1"
+                sysUserId: $stateParams.sysUserId
             }, function(data) {
                 if (data.result = "0x00001") {
                     $scope.sunAmount = data.responseData
@@ -60,20 +56,18 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
             })
 
             GetUserRechargeCardList.get({
-                sysUserId: 1,
-                sysShopId: 1
+                sysUserId:$stateParams.sysUserId
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("充值卡:" + data)
-                    $scope.rechargeCardList = data.responseData
+                    $scope.rechargeCardList = data.responseData.userRechargeCardList;
                 }
             })
 
         } else if (type == 3) { //单次
             GetUserCourseProjectList.get({
-                sysUserId: 1,
-                sysShopId: 1,
-                cardStyle: 1
+                sysUserId: $stateParams.sysUserId,
+                cardStyle: 0
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("单次:" + data)
@@ -82,8 +76,7 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
             })
         } else if (type == 4) { //产品
             GetUserProductList.get({
-                sysUserId: 1,
-                sysShopId: 1
+                sysUserId: $stateParams.sysUserId
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("产品:" + data)
@@ -99,7 +92,59 @@ PADWeb.controller('personalFileCtrl', function($scope, $stateParams, $state, ngD
         $scope.select = e;
         $scope.queruList(e)
     }
-    $scope.tabclick(0)
+    $scope.tabclick(0);
+
+    $scope.goConsumptionList = function(type, id) {
+        $state.go('pad-web.left_nav.drawCardConsumption', { type: type, id: id });
+    };
+
+    $scope.goGetProduct = function(id) {
+        $state.go('pad-web.left_nav.getProduct', { id: id })
+    }
+
+    $scope.goCureCardRecords = function (id) {
+        $state.go('pad-web.left_nav.cureCardRecords',{id:id,userId:$stateParams.sysUserId})
+    }
+
+    //点击充值卡跳转
+    $scope.goRechargeCardRecords = function (id,index,sunAmount) {
+        if(index == 0){//特俗充值卡
+            $state.go('pad-web.left_nav.featureRechargeCardRecords',{
+                userId:$stateParams.sysUserId,
+                id:id,
+                sunAmount:sunAmount
+            })
+        }else{
+            // $state.go('pad-web.left_nav.rechargeCardRecords',{userId:$stateParams.sysUserId})
+            $state.go('pad-web.left_nav.rechargeCardDetail',{
+                userId:$stateParams.sysUserId,
+                id:id,
+            })
+        }
+    }
+
+    //套卡
+    $scope.goCompleteCardRecords = function (consumeRecordId,projectList) {
+        $scope.tempStr = ""
+        for(var i = 0; i < projectList.length; i++){
+            $scope.tempStr+=projectList[i].id+","
+        }
+        $state.go('pad-web.left_nav.completeCardRecords',{
+            ids:$scope.tempStr,
+            consumeRecordId:consumeRecordId,
+            userId:$stateParams.sysUserId
+        })
+    }
+    //产品
+    $scope.goGetProductRecord = function (id) {
+        $state.go("pad-web.left_nav.getProductRecord",{
+            userId:$stateParams.sysUserId,
+            id:id
+        })
+    }
+
+
+
     //这边引入include
-    basicInfo && basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId,ArchivesDetail);
+    basicInfo && basicInfo($scope, $state, $stateParams,Archives, ArchivesDetail,$rootScope);
 });

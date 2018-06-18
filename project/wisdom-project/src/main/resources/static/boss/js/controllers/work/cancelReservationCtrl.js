@@ -2,13 +2,14 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('cancelReservationCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopAppointmentInfoByStatus',"BossUtil",'Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetShopAppointmentInfoByStatus,BossUtil,Global,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopAppointmentInfoByStatus',"BossUtil",'Global','$filter','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetShopAppointmentInfoByStatus,BossUtil,Global,$filter,$ionicLoading) {
 
             $rootScope.title = "取消预约";
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
+                flag:false
             }
             $scope.param.date=$stateParams.date;
 
@@ -26,7 +27,7 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
             var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
 
             // 日期选择后的回调函数
-            var datePickerCallbacke = function (val) {
+            var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
                     console.log(val)
@@ -56,7 +57,7 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
                 from: new Date(2008, 8, 2), //可选
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
-                    datePickerCallbacke(val);
+                    datePickerCallback(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
@@ -66,16 +67,35 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
                 $state.go("cancelDetails",{shopAppointServiceId:id})
             }
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetShopAppointmentInfoByStatus.get({
                     searchDate:$scope.param.date,
                     sysClerkId:$stateParams.sysClerkId,/*$stateParams.sysClerkId*/
                     sysShopId:$stateParams.sysShopId,
                     status:"4"
                 },function(data){
-                    $scope.cancelReservation = data.responseData
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $ionicLoading.hide();
+                        $scope.cancelReservation = data.responseData
+                        $scope.param.flag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.flag=true;
+                        }
+                    }else {
+                        $ionicLoading.hide();
+                        $scope.param.flag=true;
+                    }
                 })
             }
 
-            $scope.getInfo()
+            $scope.$on('$ionicView.enter', function() {
+                $scope.getInfo()
+            })
 
         }]);

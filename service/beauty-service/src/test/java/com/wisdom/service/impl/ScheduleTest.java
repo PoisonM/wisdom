@@ -61,10 +61,15 @@ public class ScheduleTest {
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
 //                .andReturn();// 返回执行请求的结果
 
-        MvcResult result = mvc.perform(get("/clerkSchedule/getBossShopScheduleSetting"))
+        MvcResult result = mvc.perform(get("/clerkSchedule/getClerkScheduleOneDayInfo").param("searchDate", "2018-03-08"))
                 .andExpect(status().isOk())// 模拟向testRest发送get请求
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
                 .andReturn();// 返回执行请求的结果
+//
+//        MvcResult result = mvc.perform(get("/clerkSchedule/getBossShopScheduleSetting"))
+//                .andExpect(status().isOk())// 模拟向testRest发送get请求
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+//                .andReturn();// 返回执行请求的结果
 
         System.out.println(result.getResponse().getContentAsString());
     }

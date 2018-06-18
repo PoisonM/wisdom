@@ -259,7 +259,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @Exception 发生异常
 	 */
 	public static int dayForWeek(String pTime) throws Exception {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
 		c.setTime(format.parse(pTime));
 		int dayForWeek = 0;
@@ -476,8 +476,46 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-		System.out.println("开始时间：" + calendar.getTime());
         return DateToStr(calendar.getTime(), "datetimesec");
+	}
+
+	/**
+	 * 获取某一天开始时间
+	 */
+	public static String getDateStartTime(Date date, String format) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return DateToStr(calendar.getTime(), format);
+	}
+
+	/**
+	 * 获取某一天开始时间
+	 */
+	public static Date getStartTime(Date date) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
+	}
+
+	/**
+	 * 获取某一天开始时间
+	 */
+	public static Date getEndTime(Date date) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 999);
+		return calendar.getTime();
 	}
 
 	/**
@@ -490,8 +528,20 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
 		calendar.set(Calendar.MILLISECOND, 999);
-		System.out.println("结束时间：" + calendar.getTime());
         return DateToStr(calendar.getTime(), "datetimesec");
+	}
+
+	/**
+	 * 获取某一天结束时间
+	 */
+	public static String getDateEndTime(Date date, String format) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 999);
+		return DateToStr(calendar.getTime(), format);
 	}
 
 	/**
@@ -504,6 +554,19 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.add(Calendar.DATE, 1);
+		return cal.getTime();
+	}
+
+	/**
+	 * date增加指定天数
+	 *
+	 * @param date
+	 * @return
+	 */
+	public static Date dateIncDays(Date date, int number) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, number);
 		return cal.getTime();
 	}
 
@@ -602,4 +665,26 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		String last = format.format(ca.getTime())+" 23:59:59";
 		return last;
 	}
+
+    /***
+     * 日期月份减一个月
+     *
+     * @param datetime
+     *            日期(2014-11)
+     * @return 2014-10
+     */
+    public static String dateSubMonth(String datetime, int month) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(datetime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+        cl.add(Calendar.MONTH, month);
+        date = cl.getTime();
+        return sdf.format(date);
+    }
 }

@@ -1,13 +1,12 @@
 <!--商品-->
 <div class="setCardGoods">
     <ul>
-        <li ng-repeat="item in cardList" ng-click="goCardDetails(item.shopRechargeCardId)">
+        <li ng-repeat="item in cardList" ng-click="goCardDetails(item.id)">
             <div class="imgDiv">
                 <img ng-src="{{item.imageUrl}}" alt="">
             </div>
             <div class="textDiv">
                 <p class="textName bold">{{item.name}}</p>
-                <!--<p class="textMoney cff6666 mb"><span class="fs30">价格：</span><span class="fs34">298</span><span class="fs28">.00</span></p>-->
                 <p class="textMoney cff6666 mb">{{item.discountDesc}}</p>
             </div>
         </li>

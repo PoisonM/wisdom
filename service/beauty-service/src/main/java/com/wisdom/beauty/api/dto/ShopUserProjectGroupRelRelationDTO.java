@@ -1,13 +1,17 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.wisdom.common.entity.BaseEntity;
+
 public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Serializable {
     //
     private String id;
+
+    //消费记录id
+    private String consumeRecordId;
 
     //套卡表名称
     private String shopProjectGroupName;
@@ -26,6 +30,9 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     //项目表主键
     private String shopProjectInfoId;
+
+    //
+    private String shopProjectInfoName;
 
     //套卡关系表id
     private String shopProjectInfoGroupRelationId;
@@ -51,8 +58,8 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     //
     private String sysClerkName;
 
-    //
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
 
     //折扣
     private Float discount;
@@ -77,6 +84,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getConsumeRecordId() {
+        return consumeRecordId;
+    }
+
+    public void setConsumeRecordId(String consumeRecordId) {
+        this.consumeRecordId = consumeRecordId;
     }
 
     public String getShopProjectGroupName() {
@@ -125,6 +140,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setShopProjectInfoId(String shopProjectInfoId) {
         this.shopProjectInfoId = shopProjectInfoId;
+    }
+
+    public String getShopProjectInfoName() {
+        return shopProjectInfoName;
+    }
+
+    public void setShopProjectInfoName(String shopProjectInfoName) {
+        this.shopProjectInfoName = shopProjectInfoName;
     }
 
     public String getShopProjectInfoGroupRelationId() {
@@ -191,12 +214,12 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
         this.sysClerkName = sysClerkName;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public Float getDiscount() {

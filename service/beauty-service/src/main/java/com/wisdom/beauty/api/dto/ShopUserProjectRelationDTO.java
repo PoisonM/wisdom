@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserProjectRelationDTO extends BaseEntity implements Serializable {
     //
@@ -19,20 +19,20 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkId;
 
-    //
-    private String sysBossId;
+    //boss编码
+    private String sysBossCode;
 
     //
     private String sysClerkName;
 
-    //使用方式 0：疗程 1：单次
+    //使用方式 0：单次 1：疗程卡
     private String useStyle;
 
     //美容院id
     private String sysShopId;
 
     //折扣价格
-    private String discount;
+    private Float discount;
 
     //
     private String sysShopName;
@@ -119,12 +119,12 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
         this.sysClerkId = sysClerkId;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysClerkName() {
@@ -151,11 +151,11 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
         this.sysShopId = sysShopId;
     }
 
-    public String getDiscount() {
+    public Float getDiscount() {
         return discount;
     }
 
-    public void setDiscount(String discount) {
+    public void setDiscount(Float discount) {
         this.discount = discount;
     }
 

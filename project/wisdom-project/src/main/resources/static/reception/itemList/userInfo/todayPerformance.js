@@ -7,9 +7,12 @@ PADWeb.controller('todayPerformanceCtrl', function($scope,$state,$stateParams, n
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false
 
-
-
     /*-------------------------------------------方法----------------------------------------------*/
+    //判断店员是否登录
+    if(window.localStorage.getItem("beautyClerkLoginToken")==undefined || window.localStorage.getItem("beautyClerkLoginToken")==null){
+        $state.go("pad-web.login")
+    }
+
     $scope.goRecord = function (content) {
         $state.go("pad-web.userInfo."+content)
     }

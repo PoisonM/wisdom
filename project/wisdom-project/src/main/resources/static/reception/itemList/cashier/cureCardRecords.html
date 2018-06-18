@@ -1,0 +1,16 @@
+<div class="cashCardRecords">
+    <div class="cashCardRecords_box">
+        <ul>
+            <li ng-click="goCureCardDetail(item.flowNo)" ng-repeat="item in dataList">
+                <div class="basic_info">
+                    <p>{{item.flowName}}</p>
+                    <span>{{item.createDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                </div>
+                <div class="go_detail">
+                    划卡
+                    <span class="go_set"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -8,7 +8,7 @@
              <div class="" style="position:absolute; right:20px;z-index: 1000">
                  <img src="images/help.png" class="helpPic ml10" ng-click="help()">
              </div>
-             <ion-item  class=" bgfff row" style="height:98px;" ng-repeat="item in refillCard.userRechargeCardList"ng-click="prepaidPhoneRecordsGo(item.id)">
+             <ion-item  class=" bgfff row" style="height:98px;" ng-repeat="item in refillCard.userRechargeCardList"ng-click="prepaidPhoneRecordsGo(item.id,item.rechargeCardType)">
                  <div class="col col30 center" style="line-height: 82px;">
                      <img src="images/banbleCard.png" class="banbleCardPic">
                  </div>

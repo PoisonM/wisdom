@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public interface ShopCheckService {
     *@Date:2018/5/21 9:50
     */
 
-    List<ShopCheckRecordResponseDTO> getProductCheckRecordList(ShopCheckRecordDTO shopCheckRecordDTO);
+    List<ShopCheckRecordResponseDTO> getProductCheckRecordList(PageParamVoDTO<ShopCheckRecordDTO> pageParamVoDTO);
     /**
     *@Author:zhanghuan
     *@Param:
@@ -53,5 +54,5 @@ public interface ShopCheckService {
     *@Description: 跳转盘点页面使用接口
     *@Date:2018/5/22 14:37
     */
-    List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> products);
+    List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> productIds);
 }

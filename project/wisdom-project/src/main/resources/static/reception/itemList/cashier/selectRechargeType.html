@@ -1,24 +1,24 @@
 <div class="selectRechargeTypeBox clearfix">
-    <div class="selectRechargeTypeTitle clearfix" ng-click="goSelectRechargeCard(RechargeCardList[0].shopRechargeCardId,RechargeCardList[0].id,RechargeCardList[0].shopRechargeCardName)" ng-if="RechargeCardList!=undefined&&type!=2">
+    <div ng-if="RechargeCardList!=undefined&&type!=2" class="selectRechargeTypeTitle clearfix" ng-click="goSelectRechargeCard(RechargeCardList[0].shopRechargeCardId,RechargeCardList[0].id,RechargeCardList[0].shopRechargeCardName)" >
         <div class="checkBox" style="margin: 23px 8px;" ng-class="{bgF6:false}">
             <img src="images/checkImg.png" alt="">
         </div>
         <span>{{RechargeCardList[0].shopRechargeCardName}}</span>
         <p>折扣：单次{{RechargeCardList[0].timeDiscount*10}}折 疗程卡{{RechargeCardList[0].periodDiscount*10}}折 产品{{RechargeCardList[0].productDiscount*10}}折</p>
     </div>
-    <div class="selectRechargeTypeTitle clearfix" ng-click="goSelectRechargeCard(RechargeCardListAll[0].id)" ng-if="RechargeCardListAll!=undefined&&type!=2">
+    <div  ng-if="RechargeCardListAll!=undefined&&type!=2" class="selectRechargeTypeTitle clearfix" ng-click="goSelectRechargeCard(RechargeCardListAll[0].id)">
         <div class="checkBox" style="margin: 23px 8px;" ng-class="{bgF6:false}">
             <img src="images/checkImg.png" alt="">
         </div>
         <span>{{RechargeCardListAll[0].name}}</span>
-        <p>折扣：单次{{RechargeCardListAll[0].timeDiscount*10}}折 疗程卡{{RechargeCardListAll[0].periodDiscount*10}}折 产品{{RechargeCardListAll[0].productDiscount*10}}折</p>
+            <p>折扣：单次{{RechargeCardListAll[0].timeDiscount*10}}折 疗程卡{{RechargeCardListAll[0].periodDiscount*10}}折 产品{{RechargeCardListAll[0].productDiscount*10}}折</p>
     </div>
     <ul class="selectRechargeTypeUl" ng-if="RechargeCardList!=undefined">
         <li ng-repeat="item in RechargeCardList" ng-if="$index > 0" ng-click="goSelectRechargeCard(item.shopRechargeCardId,item.id,item.shopRechargeCardName,item.initAmount)">
-            <div class="checkBox" ng-class="{bgF6:(userPayRechargeCardListCheck.indexOf(item.id)!='-1')}">
+            <div class="checkBox">
                 <img src="images/checkImg.png" alt="">
             </div>
-            <img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1522311638&di=3712f277b199303e7c7eb1df22e73f55&src=http://img5.xiazaizhijia.com/walls/20160708/1440x900_2f172c09d079701.jpg" alt="">
+            <img ng-src="{{item.imageUrl}}" alt="">
             <span class="name">{{item.shopRechargeCardName}}</span>
             <br/>
             <span class="price">面额：￥{{item.initAmount}}.00</span>
@@ -28,10 +28,10 @@
     </ul>
     <ul class="selectRechargeTypeUl" ng-if="RechargeCardListAll!=undefined">
         <li ng-repeat="item in RechargeCardListAll" ng-if="$index > 0" ng-click="goSelectRechargeCard(item.id)">
-            <div class="checkBox" ng-class="{bgF6:(userPayRechargeCardListCheck.indexOf(item.id)!='-1')}">
+            <div class="checkBox">
                 <img src="images/checkImg.png" alt="">
             </div>
-            <img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1522311638&di=3712f277b199303e7c7eb1df22e73f55&src=http://img5.xiazaizhijia.com/walls/20160708/1440x900_2f172c09d079701.jpg" alt="">
+            <img src="{{item.imageUrl}}" alt="">
             <span class="name">{{item.name}}</span>
             <br/>
             <span class="price">面额：￥{{item.amount}}.00</span>

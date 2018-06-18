@@ -1,15 +1,30 @@
 angular.module('controllers',[]).controller('archivesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Detail',"Global",
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Detail,Global) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Detail',"Global",'BossUtil',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Detail,Global,BossUtil) {
             $rootScope.title = "档案";
 
-            Detail.get({
-               id:$stateParams.id
-            },function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $scope.archives = data.responseData
-                }
-            });
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                Detail.get({
+                    id:$stateParams.id
+                },function(data){
+                    BossUtil.checkResponseData(data,'archives&'+$stateParams.id);
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $ionicLoading.hide();
+                        $scope.archives = data.responseData
+                    }
+                });
+            })
+            $scope.tel=function (pho) {
+                window.location.href = "tel:" + pho;
+            }
+
             /*点击账户记录跳转到账户详情*/
              $scope.accountRecordsGo=function (sysUserId) {
                  $state.go("accountRecords",{sysUserId:sysUserId})

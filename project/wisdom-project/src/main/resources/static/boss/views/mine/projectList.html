@@ -1,17 +1,16 @@
 <ion-view class="bg">
     <ion-content>
-       <div class="list">
-           <li class="item p10">面部</li>
-            <ion-item  class="row" ng-repeat="item in [1,2]" ng-click="">
-                <div class="col col-20" style="line-height: 49px;">
-                    <p style="height:50px;width:75px;background: gainsboro;margin-top: 20px"></p >
+       <div class="list" ng-repeat="item in projectList">
+           <li class="item p10">{{item.projectName}}</li>
+            <ion-item  class="row"  ng-click="modifyProjectGo(item.id)">
+                <div class="col col-20 mr10" style="line-height: 49px;">
+                    <img style="height:50px;width:75px;margin-top: 20px" ng-src="{{item.projectUrl}}"/>
                 </div>
-
                 <div class="col col-30 ml10" >
-                    <p class="fs15" style="color: #333333!important;"><span>保湿</span><span style="width: 40px;height: 17px;display: inline-block;background: #FF6666;color: #ffffff;text-align: center;line-height: 17px;margin-left: 3px">月卡</span></p >
-                    <p class="col99 fs13">系列：保湿</p >
-                    <p class="fs15" style="color: #333333!important;">市场价格：¥680.00</p >
-                    <p class=" fs13" style="color: #333333!important;">优惠价格：¥580.00/30次</p >
+                    <p class="fs15" style="color: #333333!important;"><span>{{item.projectTypeOneName}}</span><span style="padding:0 5px;height: 17px;display: inline-block;background: #FF6666;color: #ffffff;text-align: center;line-height: 17px;margin-left: 3px">{{item.cardType}}</span></p >
+                    <p class="col99 fs13">系列：{{item.projectTypeTwoName}}</p >
+                    <p class="fs15" style="color: #333333!important;">单次价格：¥{{item.oncePrice}}</p >
+                    <p class=" fs13" style="color: #333333!important;">办卡价格：¥{{item.discountPrice}}/{{item.serviceTimes}}次</p >
                 </div>
                 <div class="col col-20">
                     <i class=" ion ion-ios-arrow-right fr" style="margin-top: 40px"></i>

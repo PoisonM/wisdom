@@ -1,9 +1,7 @@
-/**
- * Created by Administrator on 2018/5/2.
- */
+
 angular.module('controllers',[]).controller('customerStoreCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetCustomerArriveList','$filter','BossUtil',
-        function ($scope,$rootScope,$stateParams,$state,GetCustomerArriveList,$filter,BossUtil) {
+    ['$scope','$rootScope','$stateParams','$state','GetCustomerArriveList','$filter','BossUtil','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetCustomerArriveList,$filter,BossUtil,$ionicLoading) {
 
             $rootScope.title = "顾客到店";
 
@@ -14,7 +12,6 @@ angular.module('controllers',[]).controller('customerStoreCtrl',
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
-            console.log($scope.param.date);
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -29,7 +26,7 @@ angular.module('controllers',[]).controller('customerStoreCtrl',
             var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
 
             // 日期选择后的回调函数
-            var datePickerCallbacke = function (val) {
+            var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
@@ -59,21 +56,39 @@ angular.module('controllers',[]).controller('customerStoreCtrl',
                 from: new Date(2008, 8, 2), //可选
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
-                    datePickerCallbacke(val);
+                    datePickerCallback(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
 
             $scope.getInfo = function () {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetCustomerArriveList.get({
-                    startTime:'2018-05-01 2000:00:00',
-                    endTime:"2018-05-15 2000:00:00"
+                    startTime:$scope.param.date+' 00:00:00',
+                    endTime:$scope.param.date+ " 23:59:59"
                 },function(data){
                       $scope.customerStore = data.responseData
+                    $ionicLoading.hide();
                 })
-            }
-            $scope.getInfo()
+            };
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                $scope.getInfo()
+            })
+
 
 
         }]);

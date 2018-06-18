@@ -2,8 +2,8 @@ package com.wisdom.beauty.controller.mine;
 
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.dto.SysShopDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopBossDTO;
+import com.wisdom.beauty.api.extDto.ExtSysClerkDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
@@ -15,6 +15,7 @@ import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -24,6 +25,7 @@ import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -33,7 +35,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: MineController
@@ -44,6 +49,7 @@ import java.util.*;
  * @since JDK 1.8
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "mine")
 public class MineController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -66,57 +72,74 @@ public class MineController {
     @Resource
     private ShopUserRelationService shopUserRelationService;
 
-
     @Resource
     private UserServiceClient userServiceClient;
 
     @Value("${test.msg}")
     private String msg;
+
     /**
      * @Author:huan
      * @Param:
      * @Return:
-     * @Description: 今日收银记录
-     *              划卡记录对应后台的消费---状态是1,此时不需要goodType
-     *              充值记录，消费记录对应后台的充值---状态是0，并且充值记录的goodType--2
+     * @Description: 今日收银记录 划卡记录对应后台的消费---状态是1,此时不需要goodType
+     * 充值记录，消费记录对应后台的充值---状态是0，并且充值记录的goodType--2
      * @Date:2018/4/17 14:45
      */
     @RequestMapping(value = "/consumes", method = RequestMethod.POST)
     @ResponseBody
-    ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(@RequestBody UserConsumeRequestDTO userConsumeRequest) {
-        long startTime = System.currentTimeMillis();
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+    ResponseDTO<List<UserConsumeRecordResponseDTO>> findMineConsume(
+            @RequestBody UserConsumeRequestDTO userConsumeRequest) {
+
+        String sysShopId = redisUtils.getShopId();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-        userConsumeRequest.setSysShopId(sysClerkDTO.getSysShopId());
+        userConsumeRequest.setSysShopId(sysShopId);
         userConsumeRequest.setGoodsTypeRequire(true);
         pageParamVoDTO.setRequestData(userConsumeRequest);
+        pageParamVoDTO.setPaging(true);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
 
-        //获取当日时间
-        String currentTime= DateUtils.formatDateTime(new Date());
-        pageParamVoDTO.setStartTime(currentTime);
-        List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService.getShopCustomerConsumeRecordList(pageParamVoDTO);
+        // 设置当天的开始时间和结束时间
+        pageParamVoDTO.setStartTime(DateUtils.getStartTime());
+        pageParamVoDTO.setEndTime(DateUtils.getEndTime());
+        List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
+                .getShopCustomerConsumeRecordList(pageParamVoDTO);
 
         ResponseDTO<List<UserConsumeRecordResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(userConsumeRecordResponseDTO);
-        logger.info("findMineConsume方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
     @RequestMapping(value = "/getProductRecord", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String, Object>> getProductRecord(@RequestParam String sysClerkId,
-                                                      @RequestParam(required = false) String searchFile) {
+    ResponseDTO<List<UserProductRelationResponseDTO>> getProductRecord(@RequestParam(required = false) String searchFile) {
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        List<UserProductRelationResponseDTO> list = shopCustomerProductRelationService
+                .getShopUserProductRelations(sysClerkDTO.getSysShopId(), searchFile);
+        ResponseDTO<List<UserProductRelationResponseDTO>> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(list);
+        return responseDTO;
+    }
 
-        long startTime = System.currentTimeMillis();
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
-        Map<String, Object> map = shopCustomerProductRelationService.getShopUserProductRelations(sysClerkId, sysClerkDTO.getSysShopId(), searchFile);
+    /**
+     * @Author:zhanghuan
+     * @Param:
+     * @Return:
+     * @Description:
+     * @Date:2018/6/6 19:27
+     */
+    @RequestMapping(value = "/getWaitReceivePeopleAndNumber", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Map<String, Object>> getWaitReceivePeopleAndNumber() {
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        Map<String, Object> map = shopCustomerProductRelationService
+                .getWaitReceivePeopleAndNumber(sysClerkDTO.getSysShopId());
         ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(map);
-        logger.info("getProductRecord方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -131,13 +154,12 @@ public class MineController {
     @ResponseBody
     ResponseDTO<List<UserProductRelationResponseDTO>> getProductRecordDetail(@RequestParam String sysUserId) {
 
-        long startTime = System.currentTimeMillis();
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
-        List<UserProductRelationResponseDTO> list = shopCustomerProductRelationService.getShopUserProductRelationList(sysUserId, sysClerkDTO.getSysShopId());
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        List<UserProductRelationResponseDTO> list = shopCustomerProductRelationService
+                .getShopUserProductRelationList(sysUserId, sysClerkDTO.getSysShopId());
         ResponseDTO<List<UserProductRelationResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(list);
-        logger.info("getProductRecord方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 
@@ -151,12 +173,7 @@ public class MineController {
     @ResponseBody
     ResponseDTO<Object> getUserClientInfo() {
 
-        long startTime = System.currentTimeMillis();
         UserInfoDTO userInfo = UserUtils.getUserInfo();
-        //测试挡板
-        if (CommonCodeEnum.TRUE.getCode().equalsIgnoreCase(msg)) {
-            userInfo = UserUtils.getTestUserInfoDTO();
-        }
 
         HashMap<Object, Object> responseMap = new HashMap<>(2);
         ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(userInfo.getId());
@@ -164,7 +181,8 @@ public class MineController {
 
         ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
         shopUserRelationDTO.setSysUserId(userInfo.getId());
-        List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService.getShopListByCondition(shopUserRelationDTO);
+        List<ShopUserRelationDTO> shopListByCondition = shopUserRelationService
+                .getShopListByCondition(shopUserRelationDTO);
         if (CommonUtils.objectIsNotEmpty(shopListByCondition) && shopListByCondition.size() > 1) {
             Iterator it = shopListByCondition.iterator();
             while (it.hasNext()) {
@@ -176,7 +194,6 @@ public class MineController {
             responseMap.put("otherShop", shopListByCondition);
         }
 
-        logger.info("查询用户的店铺信息方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         ResponseDTO<Object> responseDTO = new ResponseDTO<Object>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(responseMap);
@@ -185,6 +202,7 @@ public class MineController {
 
     /**
      * 切换店铺
+     *
      * @param sysShopId
      * @return
      */
@@ -192,17 +210,9 @@ public class MineController {
     @ResponseBody
     ResponseDTO<Object> changeUserShop(@RequestParam String sysShopId) {
 
-        long startTime = System.currentTimeMillis();
-
-        logger.info("切换店铺传入参数={}", "sysShopId = [" + sysShopId + "]");
-
         UserInfoDTO userInfo = UserUtils.getUserInfo();
-        if (CommonUtils.objectIsEmpty(userInfo)) {
-            userInfo = UserUtils.getTestUserInfoDTO();
-        }
         redisUtils.updateUserLoginShop(userInfo.getId(), sysShopId);
 
-        logger.info("查询用户的店铺信息方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
@@ -217,10 +227,6 @@ public class MineController {
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         UserInfoDTO userInfo = UserUtils.getUserInfo();
-        if (null == userInfo && CommonCodeEnum.TRUE.getCode().equals(msg)) {
-            logger.error("获取我的二维码userInfo为空1");
-            userInfo = UserUtils.getTestUserInfoDTO();
-        }
         if (null != userInfo) {
             String temporaryQrCode = weixinServiceClient.getTemporaryQrCode(userInfo.getMobile());
             logger.info("调用微信服务获取到的二维码为,{}", temporaryQrCode);
@@ -250,24 +256,35 @@ public class MineController {
             logger.info("老板端获取我的个人信息");
             ExtShopBossDTO extShopBossDTO = new ExtShopBossDTO();
             BeanUtils.copyProperties(bossInfo, extShopBossDTO);
-            //查询当前店铺名称
+            // 查询当前店铺名称
             SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(bossInfo.getParentShopId());
-            //查询当前美容院名称
+            // 查询当前美容院名称
             SysShopDTO shop = shopService.getShopInfoByPrimaryKey(bossInfo.getCurrentShopId());
-            extShopBossDTO.setCurrentBeautyShopName(beauty.getName());
-            extShopBossDTO.setCurrentShopName(shop.getName());
+            extShopBossDTO.setCurrentBeautyShopName(null != beauty ? beauty.getName() : "");
+            extShopBossDTO.setCurrentShopName(null != shop ? shop.getName() : "");
             responseDTO.setResponseData(extShopBossDTO);
             return responseDTO;
         }
-        UserInfoDTO userInfo = UserUtils.getUserInfo();
-        if (null != userInfo) {
+        if (null != UserUtils.getUserInfo()) {
             logger.info("用户端获取我的个人信息");
-            responseDTO.setResponseData(userInfo);
+            ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
+            responseDTO.setResponseData(userLoginShop);
             return responseDTO;
         }
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         if (null != clerkInfo) {
-            responseDTO.setResponseData(clerkInfo);
+            ExtSysClerkDTO extSysClerkDTO = new ExtSysClerkDTO();
+            BeanUtils.copyProperties(clerkInfo,extSysClerkDTO);
+            //查询美容店
+            SysShopDTO beauty = shopService.getShopInfoByPrimaryKey(extSysClerkDTO.getSysShopId());
+            extSysClerkDTO.setSysShopName(beauty.getName());
+            //查询美容院
+            beauty = shopService.getShopInfoByPrimaryKey(beauty.getParentsId());
+            extSysClerkDTO.setCurrentBeautyShopName(null != beauty ? beauty.getName() : "");
+            if(StringUtils.isBlank(clerkInfo.getSex())){
+                extSysClerkDTO.setSex("女");
+            }
+            responseDTO.setResponseData(extSysClerkDTO);
             return responseDTO;
         }
         responseDTO.setResult(StatusConstant.FAILURE);
@@ -280,12 +297,10 @@ public class MineController {
     @RequestMapping(value = "/updateBossInfo", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO<Object> updateBossInfo(@RequestBody ExtShopBossDTO extShopBossDTO) {
-        logger.info("修改老板个人信息传入参数={}", "extShopBossDTO = [" + extShopBossDTO + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         userServiceClient.updateBossInfo(extShopBossDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
-
 
 }

@@ -1,174 +1,199 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.wisdom.common.entity.BaseEntity;
+
 public class ShopStockRecordDTO extends BaseEntity implements Serializable {
-	//
-	private String id;
+    //
+    private String id;
 
-	// 仓库id
-	private String shopStoreId;
+    //仓库id
+    private String shopStoreId;
 
-	// bossID
-	private String shopBossId;
+    //boss编码
+    private String sysBossCode;
 
-	// 仓库名称
-	private String name;
+    //仓库名称
+    private String name;
 
-	// 0、手动入库 1、扫码入库 2、手动出库 3、扫码出库
-	private String stockStyle;
+    //0、手动入库  1、扫码入库 2、手动出库 3、扫码出库
+    private String stockStyle;
 
-	// 0、采购入库 1、内部员工出库 2、顾客出库 3、赠送 4、报废 5、院用 6、退回供货商 7、下发到店
-	private String stockType;
+    //0、采购入库 1、内部员工出库 2、顾客出库 3、赠送 4、报废 5、院用  6、退回供货商  7、下发到店
+    private String stockType;
 
-	// 操作时间
-	private Date operDate;
+    //操作时间
+    private Date operDate;
 
-	// 单据号
-	private String flowNo;
+    //单据号
+    private String flowNo;
 
-	// 操作人(库管id)
-	private String managerId;
+    //领取人
+    private String receiver;
 
-	// 备注
-	private String detail;
+    //操作人(库管id)
+    private String managerId;
 
-	//
-	private Integer operNumber;
+    //备注
+    private String detail;
 
-	//
-	private String createBy;
+    //
+    private Integer operNumber;
 
-	//
-	private Date createDate;
+    //
+    private String createBy;
 
-	//
-	private String updateUser;
+    //
+    private Date createDate;
 
-	//
-	private Date updateDate;
+    private String createDateTime;
 
-	private static final long serialVersionUID = 1L;
+    //
+    private String updateUser;
 
-	public String getId() {
-		return id;
-	}
+    //
+    private Date updateDate;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private static final long serialVersionUID = 1L;
 
-	public String getShopStoreId() {
-		return shopStoreId;
-	}
 
-	public void setShopStoreId(String shopStoreId) {
-		this.shopStoreId = shopStoreId;
-	}
 
-	public String getShopBossId() {
-		return shopBossId;
-	}
+    public String getCreateDateTime() {
+        return createDateTime;
+    }
 
-	public void setShopBossId(String shopBossId) {
-		this.shopBossId = shopBossId;
-	}
+    public void setCreateDateTime(String createDateTime) {
+        this.createDateTime = createDateTime;
+    }
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getStockStyle() {
-		return stockStyle;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setStockStyle(String stockStyle) {
-		this.stockStyle = stockStyle;
-	}
+    public String getShopStoreId() {
+        return shopStoreId;
+    }
 
-	public String getStockType() {
-		return stockType;
-	}
+    public void setShopStoreId(String shopStoreId) {
+        this.shopStoreId = shopStoreId;
+    }
 
-	public void setStockType(String stockType) {
-		this.stockType = stockType;
-	}
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
 
-	public Date getOperDate() {
-		return operDate;
-	}
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
+    }
 
-	public void setOperDate(Date operDate) {
-		this.operDate = operDate;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getFlowNo() {
-		return flowNo;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setFlowNo(String flowNo) {
-		this.flowNo = flowNo;
-	}
+    public String getStockStyle() {
+        return stockStyle;
+    }
 
-	public String getManagerId() {
-		return managerId;
-	}
+    public void setStockStyle(String stockStyle) {
+        this.stockStyle = stockStyle;
+    }
 
-	public void setManagerId(String managerId) {
-		this.managerId = managerId;
-	}
+    public String getStockType() {
+        return stockType;
+    }
 
-	public String getDetail() {
-		return detail;
-	}
+    public void setStockType(String stockType) {
+        this.stockType = stockType;
+    }
 
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
+    public Date getOperDate() {
+        return operDate;
+    }
 
-	public Integer getOperNumber() {
-		return operNumber;
-	}
+    public void setOperDate(Date operDate) {
+        this.operDate = operDate;
+    }
 
-	public void setOperNumber(Integer operNumber) {
-		this.operNumber = operNumber;
-	}
+    public String getFlowNo() {
+        return flowNo;
+    }
 
-	public String getCreateBy() {
-		return createBy;
-	}
+    public void setFlowNo(String flowNo) {
+        this.flowNo = flowNo;
+    }
 
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
+    public String getReceiver() {
+        return receiver;
+    }
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    public String getManagerId() {
+        return managerId;
+    }
 
-	public String getUpdateUser() {
-		return updateUser;
-	}
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
+    }
 
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
+    public String getDetail() {
+        return detail;
+    }
 
-	public Date getUpdateDate() {
-		return updateDate;
-	}
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+    public Integer getOperNumber() {
+        return operNumber;
+    }
+
+    public void setOperNumber(Integer operNumber) {
+        this.operNumber = operNumber;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 }

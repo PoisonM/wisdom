@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wisdom.user.mapper.ExtSysClerkMapper">
+<mapper namespace="com.wisdom.user.mapper.extMapper.ExtSysClerkMapper">
     <resultMap id="BaseResultMap" type="com.wisdom.common.dto.user.SysClerkDTO">
         <id column="id" property="id" jdbcType="VARCHAR" />
-        <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
+        <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR"/>
         <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
         <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
         <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
@@ -80,7 +80,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List" >
-        id, sys_boss_id, sys_shop_id, sys_user_id, nickname, name, password, email, identify_number,
+        id, sys_boss_code, sys_shop_id, sys_user_id, nickname, name, password, email, identify_number,
         mobile, user_type, user_openid, weixin_attention_status, photo, login_ip, login_date,
         del_flag, address
     </sql>
@@ -119,14 +119,14 @@
         </if>
     </delete>
     <insert id="insert" parameterType="com.wisdom.common.dto.user.SysClerkDTO">
-        insert into sys_clerk (id, sys_boss_id, sys_shop_id,
+        insert into sys_clerk (id, sys_boss_code, sys_shop_id,
         sys_user_id, nickname, name,
         password, email, identify_number,
         mobile, user_type, user_openid,
         weixin_attention_status, photo, login_ip,
         login_date, del_flag, address
         )
-        values (#{id,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR},
+        values (#{id,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR},
         #{sysUserId,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
         #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{identifyNumber,jdbcType=VARCHAR},
         #{mobile,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, #{userOpenid,jdbcType=VARCHAR},
@@ -140,8 +140,8 @@
             <if test="id != null" >
                 id,
             </if>
-            <if test="sysBossId != null">
-                sys_boss_id,
+            <if test="sysBossCode != null">
+                sys_boss_code,
             </if>
             <if test="sysShopId != null">
                 sys_shop_id,
@@ -196,8 +196,8 @@
             <if test="id != null" >
                 #{id,jdbcType=VARCHAR},
             </if>
-            <if test="sysBossId != null">
-                #{sysBossId,jdbcType=VARCHAR},
+            <if test="sysBossCode != null">
+                #{sysBossCode,jdbcType=VARCHAR},
             </if>
             <if test="sysShopId != null">
                 #{sysShopId,jdbcType=VARCHAR},
@@ -262,8 +262,8 @@
             <if test="record.id != null" >
                 id = #{record.id,jdbcType=VARCHAR},
             </if>
-            <if test="record.sysBossId != null">
-                sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+            <if test="record.sysBossCode != null">
+                sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
             </if>
             <if test="record.sysShopId != null">
                 sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
@@ -321,7 +321,7 @@
     <update id="updateByCriteria" parameterType="map" >
         update sys_clerk
         set id = #{record.id,jdbcType=VARCHAR},
-        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
         nickname = #{record.nickname,jdbcType=VARCHAR},
@@ -345,8 +345,8 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.common.dto.user.SysClerkDTO">
         update sys_clerk
         <set >
-            <if test="sysBossId != null">
-                sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+            <if test="sysBossCode != null">
+                sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
             </if>
             <if test="sysShopId != null">
                 sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
@@ -401,7 +401,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.wisdom.common.dto.user.SysClerkDTO">
         update sys_clerk
-        set sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+        set sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
         sys_user_id = #{sysUserId,jdbcType=VARCHAR},
         nickname = #{nickname,jdbcType=VARCHAR},

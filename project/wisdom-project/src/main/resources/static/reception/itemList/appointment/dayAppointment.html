@@ -1,17 +1,17 @@
 <div class="dayAppointment H100" ng-show="scheduling">
     <div class="header">
         <p class="timeArea">
-            <!--<input class="time  " id="orderPayStartTime" ng-click="dataS('#orderPayStartTime')" value="{{date}}">-->
-            <input class="time" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
+            <input type="text" id="test1" class="time" readonly ng-model="param.nowTime">
         </p>
-        <p class="centerBtn">
-            <input type="button" class="appointmentDay {{param.btnActive[0]}} " value="日预约" ng-click="appointmentChange('day')">
-            <input type="button" class="appointmentWeek {{param.btnActive[1]}}" value="周预约" ng-click="appointmentChange('week')">
-        </p>
+        <div class="centerBtn">
+            <div class="appointmentDay {{param.btnActive[0]}} " ng-click="appointmentChange('day')">日预约</div>
+            <div class="appointmentWeek {{param.btnActive[1]}}" ng-click="appointmentChange('week')">周预约</div>
+        </div>
         <p class="scheduling" data-ceshi="">
             <span ng-click="goArrangeWorkList()">排班</span>
         </p>
     </div>
+
     <!--<div id="divBox1"  style=" overflow: auto;height: 100%;width: 100%;float: left;" class="content H100 mt128" ng-show="param.dayFlag" >
         &lt;!&ndash;<table>
             <thead>
@@ -86,15 +86,24 @@
 
 
     </div>-->
-    <div class="complex_table" id="divBox1" style=" overflow: auto;height: 100%;width: 100%;float: left;">
+    <div ng-if="param.dayWeekFlag" class="complex_table" id="divBox1" style=" overflow: auto;height: 100%;width: 100%;float: left;">
         <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
             <thead>
                 <tr>
                     <td>
-                        <div></div>
+                        <div style="height: 1.1rem;font-size: 0.25rem;color: #888888;width: 1.21875rem;"></div>
                     </td>
-                    <td ng-repeat="(key,value) in memeda">
-                        <div>{{key}}</div>
+                    <td data-cccc="{{value.appointmentInfo}}" ng-repeat="(key,value) in memeda">
+                        <div  class="mr_info">
+                            <p>{{key}}</p>
+                            <div class="info_num">
+                                <span>
+                                    <em>客</em>
+                                    <i>{{value.appointmentInfo.length}}</i>
+                                </span>
+                            </div>
+                        </div>
+
                     </td>
                 </tr>
             </thead>
@@ -104,15 +113,24 @@
                         <!-- data-val={{value}} -->
                         <div>{{key}}</div>
                     </td>
-                    <td ng-repeat="item in value" class="">
-                        <div class="td_box" style="position: relative">
+                    <td  ng-onHold = "onHold()" ng-repeat="item in value" class="bor_e5">
+                        <div class="td_box" style="position: relative;width: 100%">
                             <!--<span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0','bgFFE6E6':indexItem.status=='1','bgE1F8FF':indexItem.status=='2','bgF3F3F3':indexItem.status=='3','bgF3F3F3':indexItem.status=='4','bgE1F8FF':indexItem.status=='5','bgF3F3F3':indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">-->
-                            <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
+                            <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}"
+                                  ng-click="detailsWrap(indexItem,indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
                                 <!--{{index.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1}}-->
                                 <div class="havedata">
                                     <div>
+                                        <!--<p>{{indexItem.sysUserName}}</p>
                                         <span>{{indexItem.shopProjectName}}</span>
-                                        <span>{{indexItem.status}}</span>
+                                        <span>{{indexItem.status}}</span>-->
+                                        <p class="user_name">{{indexItem.sysUserName}}</p>
+                                        <!--index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2]-->
+                                        <div class="user_info">
+                                            <em>客</em>
+                                            <span class="time">{{indexItem.appointStartTime | date: "HH:mm"}}</span>
+                                            <span class="pr_name">{{indexItem.shopProjectName}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </span>
@@ -129,73 +147,49 @@
         </table>
     </div>
     <!--周预约-->
-    <div ng-include="'itemList/appointment/weeklyReservation.html'" ng-show="param.weekFlag " class="H100"></div>
-</div>
-<!--<div class="dayAppointment H100 " ng-show="scheduling">
-    <div class="header">
-        <p class="timeArea">
-            <input  class="time  " id="orderPayStartTimes"  ng-click="dataS('#orderPayStartTime')"  value="{{date}}">
-        </p>
-        <p class="centerBtn">
-            <input type="button" class="appointmentDay {{param.btnActive[0]}} " value="日预约" ng-click="appointmentChange('day')" >
-            <input type="button"  class="appointmentWeek {{param.btnActive[1]}}" value="周预约" ng-click="appointmentChange('week')">
-        </p>
-        <p class="scheduling">
-            <span ng-click="scheduling">排班</span>
-        </p>
-    </div>
-
-    <div  class="content H100 mt128 swiper-container" ng-show="param.dayFlag" >
-        <div class="init-loading list-group-item text-center" style="display: none">下拉可以刷新</div>
-
-        <div class="nameLis nowarp bgfff w" ng-show="flag.upDownScrollFlag" >
-            <ul class=" ml156 messLis ">
-                <li ng-repeat="item in param.appointmentObject.beautician" class="bgfff" >
-                    <p class="name">xia{{item}}</p>
-                    <p class="fs24 mt10 mb20">
-                        <img src="images/ic_point.png" class="mr12 ">
-                        {{param.appointmentObject.point[$index]}}
-                        <img src="images/ic_seg.png" class="seg ml20 mr20" >
-                        <img src="images/ic_row.png" class="mr12">
-                        <span>**</span>
-                    </p>
-                </li>
-            </ul>
-        </div>
-        <div class="messLis  pt117rem  swiper-wrapper w " >
-            <div class="swiper-slide d  mt128 ">
-                <div class="swiper-container2 " style="position: relative;top:0px">
-                    <ul class="time " style="position: absolute;z-index: 100;background: #ffffff" >
-                        <li  ng-repeat="item in param.days" style="text-align: center" >{{item}}</li>
-                    </ul>
-                    <div class="swiper-wrapper nowarp" style="margin-left:1.21875rem;">
-                        <div class="swiper-slide list-group" ng-repeat="(index1,item) in param.appointmentObject.list"style="width:500px">
-                            <div class="appointmentLis">
-                                <ul >
-                                    <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bge4faff':item1==0,'bgred':item1==5}" ng-click="detailsWrap(index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2])" ng-onhold="onHold(index1,index2,item1)">
-                                        <p ng-if="item1 == 5" class="colred fs34" style="line-height: 0.96875rem;text-align:center ">{{item.sysUserName[index2]}}</p>
-                                        <div ng-if="item1 != 5">
-                                            <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3,'colred':item1==0}" ng-if="item.textShowOrHide[$index]==1">{{item.sysUserName[index2]}}</p>
-                                            <p class="mt30" ng-if="item.textShowOrHide[$index]==1">
-                                                <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 6">
-                                                <span class="fs24">{{item.time[index2]}}</span>
-                                                <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+    <div  ng-if="!param.dayWeekFlag " class="H100">
+        <div class="week_box">
+            <div class="week_left">
+                <ul>
+                    <li></li>
+                    <li  ng-repeat="item in leftTimeList">
+                        <div>
+                            <p class="weekLeftNumber">
+                                <span ng-class="{'radus_sty':$index == 0}" class="radus_stypt">{{item.day}}</span>
+                                <span>{{item.Lunar}}</span>
+                                <span>{{item.week.replace("星期","周")}}</span>
+                            </p>
                         </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="week_right">
+                <div class="week_right_box" style="width: 6000px;height: 100%">
+                    <div class="mrItem_sty">
+                        <ul>
+                            <li ng-repeat="(key ,val) in param.week.weekData">{{key}}</li>
+                        </ul>
+                    </div>
+                    <div ng-repeat="(key ,val) in param.week.weekData" class="infoitem_sty">
+                        <ul>
+                            <li ng-repeat="item in val" data-ccccc="{{item}}">
+                                <div style="position:relative;height:100%">
+                                    <p class="ovInfo" ng-repeat="item1 in item.info" ng-class="{'pinkC':item1.status == 0 || item1.status == 1,'blueC':item1.status == 2 || item1.status == 5,'grayC':item1.status == 3 || item1.status == 4 || item1.status ==6}" >
+                                        <span class="info_sty ml5">{{item1.sysUserName}}</span>
+                                        <span class="info_sty">{{item1.shopProjectName}}</span>
+                                        <span class="info_sty">{{item1.appointStartTime |date: "HH:mm"}}</span>
+                                    </p>
+                                    <p ng-if ="item.info.length > 3" class="morapp ml5" style="position: absolute;bottom: 0px">还有1个预约...</p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
             </div>
-            <div class="loadtip" style="text-align: center">上拉加载更多</div>
-            <div class="swiper-scrollbar"></div>
         </div>
-
     </div>
-</div>-->
+</div>
+
 <div style="height:100%;width:100%;position: absolute;left:0;top:0;background: rgba(0, 0, 0, 0.4);z-index: 1000" ng-show="param.bgBlack"></div>
 <!--预约详情-->
 <script type="text/ng-template" id="detailsWrap">
@@ -207,7 +201,7 @@
         <div ng-include="'itemList/appointment/detailsReservation.html'"></div>
     </div>
 </script>
-<!--修改预约-->
+<!--新建预约-->
 <script type="text/ng-template" id="modifyingAppointment">
     <div class=" br36 modifyingAppointment">
         <div class="space-between h104 bgeee btrr btlr">
@@ -215,7 +209,7 @@
                 <span class="ml30 colff6666 fs38 bold" ng-click="close(0)">取消</span>
             </p>
             <p class="center fs38 color333 W33 bold">
-                修改预约
+                {{param.newChangeContent}}
             </p>
             <p class="scheduling W33">
                 <span class="floatR mr30 fs38 colff6666 bold" ng-click="close(1)">保存</span>
@@ -229,7 +223,10 @@
     <div class="br36 bgf5f5f5 b w758 addWraps">
         <div class="customerTop  btrr btlr">
             <ul class="space-between btrr btlr">
-                <li class="pl W33 "><img src="images/bt_back.png" class="backPic mr20" ng-click="close(0)"><span class="color6666">修改预约</span> </li>
+                <li class="pl W33 " ng-click="close(0)">
+                    <img src="images/bt_back.png" class="backPic mr20">
+                    <span class="color6666">{{param.newChangeContent}}</span>
+                </li><!--标注-->
                 <li class="fc W33 center">选择顾客</li>
                 <li class="people pr pt W33"><img src="images/bt_add to.png" alt="" class="floatR ml30" ng-click="addCustomersCtrl()"></li>
             </ul>
@@ -244,7 +241,7 @@
             <ul>
                 <li class="checks" ng-click="close(0)"><span class="ml30">取消</span></li>
                 <li class="addCustomer center">添加顾客</li>
-                <li class="checks" ng-click="close(1)"><span class="mr30 floatR">保存</span></li>
+                <li class="checks" ng-click="close(1)"><span ng-click="addSaveUserInfo()" class="mr30 floatR">保存</span></li>
             </ul>
         </div>
         <div ng-include="'itemList/appointment/addCustomers.html'" class="modifyingWrap bblr bbrr"></div>
@@ -267,7 +264,7 @@
         <div class="space-between h104  btlr btrr bgeee">
             <P class="W33">
                 <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
-                <span class="colff6666 fs34">修改预约</span>
+                <span class="colff6666 fs34">{{param.newChangeContent}}</span>
             </P>
             <P class="fs38 color333 center W33 bold">选择时长</P>
             <P class="W33"></P>
@@ -281,14 +278,14 @@
         <div class="space-between h104  btlr btrr bgeee">
             <P class="W33">
                 <img src="images/bt_back.png" class="ml30 mr10 backPic" ng-click="close(0)">
-                <span class="colff6666 fs34">修改预约</span>
+                <span class="colff6666 fs34">{{param.newChangeContent}}</span>
             </P>
             <P class="fs38 color333 center W33 bold">选择美容师</P>
             <P class="W33"></P>
         </div>
         <div class="bgfff modifyingWrap bblr bbrr">
             <ul>
-                <li class="h100 col333 fs32  bte5 space-between bgfff" ng-repeat="item in param.timeLength" ng-click="selectbeauticianIndex($index,item.name)">
+                <li class="h100 col333 fs32  bte5 space-between bgfff" ng-repeat="item in param.timeLength" ng-click="selectbeauticianIndex($index,item.name,item.id)">
                     <span class="ml30"> {{item.name}}</span>
                     <img src="images/redTrue.png" class="redTrue mr30" ng-show="param.beauticianIndex==$index">
                 </li>
@@ -306,7 +303,7 @@
                 预约详情
             </p>
             <p class="scheduling W33">
-                <span class="floatR mr30"><img src="images/bt_shut down.png." class="closePic mt20" ng-click="close()"></span>
+                <span class="floatR mr30"><img src="images/bt_shut down.png" class="closePic mt20" ng-click="close()"></span>
             </p>
         </div>
         <div ng-include="'itemList/appointment/individualTravelerAppointment.html'" class=" bblr bbrr"></div>

@@ -1,5 +1,6 @@
 package com.wisdom.beauty.core.service;
 
+import com.wisdom.beauty.api.dto.ShopCashFlowDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -20,7 +21,7 @@ public interface IncomeExpenditureAnalysisService {
      * @Description: 获取老板下的收支情况
      * @Date:2018/5/11 10:04
      */
-    Map<String, BigDecimal> getBossIncomeExpenditure(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    Map<String, BigDecimal> getBossIncomeExpenditure(PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO);
 
     /**
      * @Author:zhagnhuan
@@ -29,7 +30,7 @@ public interface IncomeExpenditureAnalysisService {
      * @Description: 获取所有美容院的总收益和现金收入
      * @Date:2018/5/11 16:06
      */
-    List<ExpenditureAndIncomeResponseDTO> getAllShopIncomeExpenditure(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    List<ExpenditureAndIncomeResponseDTO> getAllShopIncomeExpenditure(PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO);
 
     /**
      * @Author:zhanghuan
@@ -38,7 +39,7 @@ public interface IncomeExpenditureAnalysisService {
      * @Description:现金趋势图
      * @Date:2018/5/11 19:07
      */
-    List<ExpenditureAndIncomeResponseDTO> getCashEarningsTendency(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    List<ExpenditureAndIncomeResponseDTO> getCashEarningsTendency(PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO);
 
     /**
      * @Author:zhanghuan

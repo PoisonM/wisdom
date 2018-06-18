@@ -1,9 +1,11 @@
 package com.wisdom.beauty.controller.analyze;
 
+import com.wisdom.beauty.api.dto.ShopCashFlowDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.IncomeExpenditureAnalysisService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -11,7 +13,6 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.beauty.ShopAchievementDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +28,15 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "analyze")
 public class IncomeAndExpenseStatisticController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private IncomeExpenditureAnalysisService incomeExpenditureAnalysisService;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     //获取某个boss下的所有门店的收支分析
     @RequestMapping(value = "shopIncomeAndOutcomeAnalyzeByDate", method = {RequestMethod.POST, RequestMethod.GET})
@@ -54,27 +59,25 @@ public class IncomeAndExpenseStatisticController {
      */
     @RequestMapping(value = "/getInComeExpenditureDetail", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Map<String, BigDecimal>> getInComeExpenditureDetail(@RequestParam(required = false) String sysShopId,
+    ResponseDTO<Map<String, BigDecimal>> getInComeExpenditureDetail(
                                                           @RequestParam String startTime,
                                                           @RequestParam String endTime) {
 
-        long start = System.currentTimeMillis();
-
-        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-        UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
+        PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        ShopCashFlowDTO shopCashFlowDTO=new ShopCashFlowDTO();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
-        userConsumeRequestDTO.setSysBossId(bossInfo.getId());
+        shopCashFlowDTO.setSysBossCode(bossInfo.getId());
+        String sysShopId = redisUtils.getShopId();
         if(StringUtils.isNotBlank(sysShopId)){
-            userConsumeRequestDTO.setSysShopId(sysShopId);
+            shopCashFlowDTO.setSysShopId(sysShopId);
         }
         pageParamVoDTO.setStartTime(startTime);
         pageParamVoDTO.setEndTime(endTime);
-        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        pageParamVoDTO.setRequestData(shopCashFlowDTO);
         Map<String, BigDecimal> map=incomeExpenditureAnalysisService.getBossIncomeExpenditure(pageParamVoDTO);
         ResponseDTO<Map<String, BigDecimal>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(map);
-        logger.info("getInComeExpenditureDetail方法耗时{}毫秒", (System.currentTimeMillis() - start));
         return responseDTO;
     }
     /**
@@ -91,12 +94,12 @@ public class IncomeAndExpenseStatisticController {
 
         long start = System.currentTimeMillis();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
-        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-        UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
-        userConsumeRequestDTO.setSysBossId(bossInfo.getId());
+        PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        ShopCashFlowDTO shopCashFlowDTO=new ShopCashFlowDTO();
+        shopCashFlowDTO.setSysBossCode(bossInfo.getSysBossCode());
         pageParamVoDTO.setStartTime(startTime);
         pageParamVoDTO.setEndTime(endTime);
-        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        pageParamVoDTO.setRequestData(shopCashFlowDTO);
         List<ExpenditureAndIncomeResponseDTO> list=incomeExpenditureAnalysisService.getAllShopIncomeExpenditure(pageParamVoDTO);
         ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -117,13 +120,13 @@ public class IncomeAndExpenseStatisticController {
 
         long start = System.currentTimeMillis();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
-        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-        UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
+        PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        ShopCashFlowDTO shopCashFlowDTO=new ShopCashFlowDTO();
         if(StringUtils.isNotBlank(sysShopId)){
-          userConsumeRequestDTO.setSysShopId(sysShopId);
+            shopCashFlowDTO.setSysShopId(sysShopId);
         }
-        userConsumeRequestDTO.setSysBossId(bossInfo.getId());
-        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        shopCashFlowDTO.setSysBossCode(bossInfo.getSysBossCode());
+        pageParamVoDTO.setRequestData(shopCashFlowDTO);
         List<ExpenditureAndIncomeResponseDTO> list=incomeExpenditureAnalysisService.getCashEarningsTendency(pageParamVoDTO);
         ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -142,12 +145,12 @@ public class IncomeAndExpenseStatisticController {
     @ResponseBody
     ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getIncomeExpenditureAnalysisDetail(@RequestParam String sysShopId,int pageSize){
 
-        long start = System.currentTimeMillis();
+        sysShopId = redisUtils.getShopId();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
         userConsumeRequestDTO.setSysShopId(sysShopId);
-        userConsumeRequestDTO.setSysBossId(bossInfo.getId());
+        userConsumeRequestDTO.setSysBossCode(bossInfo.getId());
         pageParamVoDTO.setRequestData(userConsumeRequestDTO);
         pageParamVoDTO.setPaging(true);
         pageParamVoDTO.setPageNo(0);
@@ -156,7 +159,6 @@ public class IncomeAndExpenseStatisticController {
         ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(list);
-        logger.info("getIncomeExpenditureAnalysisDetail方法耗时{}毫秒", (System.currentTimeMillis() - start));
         return responseDTO;
     }
 }

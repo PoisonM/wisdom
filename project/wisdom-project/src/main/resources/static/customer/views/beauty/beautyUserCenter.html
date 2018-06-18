@@ -4,25 +4,25 @@
             <p class="item-note" style="color: #FF6666;font-size: 14px" ui-sref="beautyShopList">切换店铺</p>
             <center>
                 <img style="border-radius:70px;margin-top:20px;width: 81px;height: 81px;"
-                        ng-src="{{shopAppointInfo.shopUserInfo.photo}}">
-                <p style="color: #333333;font-size: 16px"> 唯美度</p>
+                        ng-src="{{shopAppointInfo.shopUserInfo.sysShopPhoto}}">
+                <p style="color:#333333;font-size: 16px;margin-top:10px">唯美度</p>
                 <p style="margin-top:15px;font-size: 12px;color: #333333">
-                    <i class="icon ion-iphone" style="width: 6px;;height: 10px"></i>&nbsp;{{shopAppointInfo.shopUserInfo.mobile}}
+                    <i class="icon ion-iphone" style="width: 6px;;height: 10px"></i>&nbsp;{{shopAppointInfo.shopUserInfo.phone}}
                     &nbsp;|&nbsp;
                     <i class="icon ion-home" style="width: 10px;height:10px"></i>&nbsp;{{param.currentShopInfo.sysShopName}}
                 </p>
             </center>
         </div>
-        <ion-item style="margin-top: 10px">
-            <div ng-click="bindBeautyShop()">
-                <img style="width: 15px; height:15px;position: absolute;margin-left:15px;"
-                     ng-src="https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E4%BA%8C%E7%BB%B4%E7%A0%81%403x.png">
-                <i class="ion ion-ios-arrow-forward item-note" style="margin-top:5px"></i>
-                <div style="margin-left:43px;margin-top: 5px">
-                    <h style="font-size: 15px;color: #333333">扫码绑定美容院</h>
-                </div>
-            </div>
-        </ion-item>
+        <!--<ion-item style="margin-top: 10px">-->
+            <!--<div ng-click="bindBeautyShop()">-->
+                <!--<img style="width: 15px; height:15px;position: absolute;margin-left:15px;"-->
+                     <!--ng-src="https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E4%BA%8C%E7%BB%B4%E7%A0%81%403x.png">-->
+                <!--<i class="ion ion-ios-arrow-forward item-note" style="margin-top:5px"></i>-->
+                <!--<div style="margin-left:43px;margin-top: 5px">-->
+                    <!--<h style="font-size: 15px;color: #333333">扫码绑定美容院</h>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</ion-item>-->
         <ion-item style="margin-top: 10px">
             <div ui-sref="projectCardList" style="font-size: 15px;color: #333333">
                 <img style="width: 16px;height:14px; position: absolute;margin-left: 15px"

@@ -17,12 +17,12 @@
 .dayAppointment .header input[type='button'] { width: 1.48438rem; height: 0.45313rem; line-height: 0.45313rem; box-sizing: border-box; border: solid 1px #ffffff; }
 .dayAppointment .header .common { background: #ff6666; color: #ffffff; }
 .dayAppointment .header .btnActive { color: #ff6666; background: #ffffff; }
-.dayAppointment .header .appointmentDay { border-bottom-left-radius: 0.0625rem; border-top-left-radius: 0.0625rem; }
-.dayAppointment .header .appointmentWeek { border-bottom-right-radius: 0.0625rem; border-top-right-radius: 0.0625rem; margin-left: -6px; }
+.dayAppointment .header .appointmentDay { width: 50%;float: left; height: 100%; line-height: 0.534374rem;border-bottom-left-radius: 0.0625rem; border-top-left-radius: 0.0625rem; }
+.dayAppointment .header .appointmentWeek { width: 50%;float: left; height: 100%; line-height: 0.534374rem; border-bottom-right-radius: 0.0625rem; border-top-right-radius: 0.0625rem; }
 .dayAppointment .header p, .dayAppointment .header .timeArea { width: 33.3%; }
 .dayAppointment .header .timeArea p { width: 100%; }
 .dayAppointment .header .timeArea .time { width: 3.125rem; margin-left: 0.3125rem; text-align: left; background: border-box; color: #ffffff; font-size: 0.20313rem; }
-.dayAppointment .header .centerBtn { text-align: center; }
+.dayAppointment .header .centerBtn { width: 3.125rem; text-align: center; height: 80%; margin-top: 5px; border-radius: 6px; border: 1px solid #fff; overflow: hidden}
 .dayAppointment .header .scheduling span { float: right; margin-right: 0.3125rem; font-size: 0.26563rem; color: #ffffff; }
 .dayAppointment .header .scheduling:after, .dayAppointment .header .timeArea:after { display: block; clear: both; content: ''; }
 .dayAppointment .nameLis ul:after { content: ''; display: block; clear: both; }
@@ -38,10 +38,10 @@
 .dayAppointment .nameLis  .ml156 {margin-left:1.21875rem;}
 /*.dayAppointment .messLis{ display: flex; }*/
 .dayAppointment .messLis .time { width: 1.21875rem; }
-.dayAppointment .messLis .time li { height: 0.96875rem; font-size: 0.25rem; color: #888888; width: 1.21875rem;}
+.dayAppointment .messLis .time li { height: 1.1rem; font-size: 0.25rem; color: #888888; width: 1.21875rem;}
 
 .dayAppointment .messLis .appointmentLis ul li:last-child> { border-right: none; }
-.dayAppointment .messLis .appointmentLis  li { width: 2.42188rem; height: 0.96875rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }
+.dayAppointment .messLis .appointmentLis  li { width: 2.42188rem; height: 1.1rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }
 /*横向滚动时的样式*/
 /*.Htab-head{list-style-type: none;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;padding:0;overflow:auto;}
 .Htab-head-item{-webkit-box-flex:1;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto; text-align: center;}
@@ -56,10 +56,10 @@
 .dayAppointment .closMessLis .nameLis ul li .name { font-size: 0.25rem; color: #333333; margin-top: 0.3125rem; }
 
 .dayAppointment .closMessLis .time { width: 1.21875rem;padding-top: 1.17188rem;position: relative;}
-.dayAppointment .closMessLis .time li { height: 0.96875rem; font-size: 0.25rem; color: #888888;width: 1.21875rem; }
+.dayAppointment .closMessLis .time li { height: 1.1rem; font-size: 0.25rem; color: #888888;width: 1.21875rem; }
 .dayAppointment .closMessLis .appointmentLis{padding-top:1.17rem;}
 .dayAppointment .closMessLis .appointmentLis ul >li:last-child> ul> li { border-right: none; }
-.dayAppointment .closMessLis .appointmentLis ul li ul li { width: 2.42188rem; height: 0.96875rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }*/
+.dayAppointment .closMessLis .appointmentLis ul li ul li { width: 2.42188rem; height: 1.1rem; border-top: solid 1px #e5e5e5; border-right: solid 1px #e5e5e5; box-sizing: border-box; }*/
 
 /*
 .day{overflow-y: scroll;}*/
@@ -102,19 +102,65 @@
 }
 .dayAppointment .complex_table table tr{
     width: 100%;
-    border-bottom: 1px solid;
 }
-.dayAppointment .complex_table table thead td div{
+.dayAppointment .complex_table table thead td .mr_info{
     width: 2.42188rem;
-    height: 0.96875rem;
+    height: 1.1rem;
+    overflow: hidden;
+    margin-right: 5px;
 }
+.dayAppointment .complex_table table thead td .mr_info p{
+    font-size: 16px;
+    color: #333333;
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 3px;
+}
+.dayAppointment .complex_table table .bor_e5{
+    border: 1px solid #e5e5e5;
+}
+.dayAppointment .complex_table table thead .info_num{
+
+}
+.dayAppointment .complex_table table thead .info_num span{
+    color: #ffffff;
+    display: inline-block;
+    margin-right: 4px;
+}
+.dayAppointment .complex_table table thead .info_num span:nth-child(1) i{
+    border-right: 1px solid #999;
+    padding-right: 5px;
+}
+
+.dayAppointment .complex_table table thead .info_num span i{
+    color: #333333;
+}
+.dayAppointment .complex_table table thead .info_num span:nth-child(1) em{
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #FFABAB;
+    line-height: 22px;
+    text-align: center
+}
+.dayAppointment .complex_table table thead .info_num span:nth-child(2) em{
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #D6B4FF;
+    line-height: 22px;
+    text-align: center
+}
+
 .dayAppointment .complex_table table td .td_box{
     width: 2.42188rem;
-    height: 0.96875rem;
+    height: 1.1rem;
 }
 
 .dayAppointment .tiem_node div{
-    height: 0.96875rem;
+    height: 1.1rem;
     font-size: 0.25rem;
     color: #888888;
     width: 1.21875rem
@@ -142,4 +188,149 @@
 .dayAppointment .bgE1F8FF{
     background-color: #E1F8FF;
     color: #1cb9ec;
+}
+
+.dayAppointment .week_box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.dayAppointment .week_box .week_left{
+    width: 1.23rem;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    z-index: 99;
+    background-color: #ffffff;
+}
+.dayAppointment .week_box .week_left ul{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.dayAppointment .week_box .week_left li{
+    width: 100%;
+    height: 1.33rem;
+    font-size: 0.17rem;
+    color: #888888;
+    overflow: hidden;
+}
+.dayAppointment .week_box .week_left li div{
+    margin-top: 0.2rem;
+}
+.dayAppointment .week_right{
+    width: 100%;
+    height: 100%;
+    padding-left: 1.23rem;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.dayAppointment .week_right_box .infoitem_sty{
+    width: 2.4rem;
+    height: 100%;
+    float: left;
+}
+
+.dayAppointment .week_right_box .mrItem_sty{
+    height: 1.33rem;
+}
+.dayAppointment .week_right_box .mrItem_sty ul li{
+    width: 2.4rem;
+    float: left;
+    font-size: 0.24rem;
+    color: #333333;
+    text-align: center;
+    line-height:1.33rem;
+}
+.dayAppointment .week_right_box .infoitem_sty ul li{
+    height: 1.33rem;
+    font-size: 0.24rem;
+    border-bottom: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
+}
+.dayAppointment .morapp{
+    position: absolute;
+    bottom: 0px;
+    color: #9999;
+    font-size: 12px;
+}
+.dayAppointment .week_right_box .infoitem_sty .info_sty{
+    font-size: 11px;
+    /*color: #666666;*/
+}
+.dayAppointment .week_right_box .infoitem_sty .info_sty .ovInfo{
+    overflow: hidden;
+}
+.dayAppointment .week_right_box .infoitem_sty .ml5{
+    margin-left: 0.078125rem
+}
+.dayAppointment .week_right_box .infoitem_sty .blueC{
+    color: #1cb9ec;
+}
+.dayAppointment .week_right_box .infoitem_sty .pinkC{
+    color: #fd3232;
+}
+.dayAppointment .week_right_box .infoitem_sty .grayC{
+    color: #666666;
+}
+
+.dayAppointment .havedata>div{
+    padding: 5px 0 0 10px;
+}
+.dayAppointment .havedata .user_name{
+    text-align: left;
+    font-size: 16px;
+}
+
+.dayAppointment .havedata .user_info{
+    font-size: 12px;
+    text-align: left;
+    height: 40px;
+    line-height:40px;
+    width: 100%;
+}
+.dayAppointment .havedata .user_info em{
+    width: 22px;
+    height: 22px;
+    color: #ffffff;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: #FFABAB;
+    margin-right: 3px;
+    vertical-align: middle;
+    line-height: 22px;
+    text-align: center;
+ }
+.dayAppointment .havedata .user_info .time{
+    margin-right: 3px;
+}
+.dayAppointment .havedata .user_info .pr_name{
+    width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display:inline-block;
+    line-height:13px;
+}
+.dayAppointment .week_box .week_left .radus_sty{
+    display: block;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: #ff6666;
+    color: #fff;
+    line-height: 24px;
+}
+.dayAppointment .week_box .week_left .radus_stypt{
+    display: block;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 24px;
 }

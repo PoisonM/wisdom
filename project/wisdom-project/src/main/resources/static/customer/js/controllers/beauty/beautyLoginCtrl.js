@@ -1,11 +1,10 @@
 angular.module('controllers',[]).controller('beautyLoginCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetUserValidateCode','$interval',
-        'Global','BeautyUserLogin','$ionicPopup',
+        'Global','BeautyUserLogin','$ionicPopup','BeautyUtil',
         function ($scope,$rootScope,$stateParams,$state, GetUserValidateCode,$interval,
-                  Global,BeautyUserLogin,$ionicPopup
-        ) {
+                  Global,BeautyUserLogin,$ionicPopup,BeautyUtil) {
 
-            $rootScope.title = "美享登录";
+            $rootScope.title = "唯美邦登录";
 
             $scope.param = {
                 userPhone:'',
@@ -57,8 +56,21 @@ angular.module('controllers',[]).controller('beautyLoginCtrl',
                         }
                         else
                         {
-                            window.localStorage.removeItem("beautylogintoken");
-                            window.localStorage.setItem("beautylogintoken",data.responseData);
+                            if(data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)
+                            {
+                                window.localStorage.removeItem("beautyUserLoginToken");
+                                window.localStorage.setItem("beautyUserLoginToken",data.responseData.beautyUserLoginToken);
+                            }
+                            if(data.responseData.beautyBossLoginToken!=Global.TOKEN_ERROR)
+                            {
+                                window.localStorage.removeItem("beautyBossLoginToken");
+                                window.localStorage.setItem("beautyBossLoginToken",data.responseData.beautyBossLoginToken);
+                            }
+                            if(data.responseData.beautyClerkLoginToken!=Global.TOKEN_ERROR)
+                            {
+                                window.localStorage.removeItem("beautyClerkLoginToken");
+                                window.localStorage.setItem("beautyClerkLoginToken",data.responseData.beautyClerkLoginToken);
+                            }
 
                             if($stateParams.redirectUrl=='')
                             {
@@ -66,14 +78,7 @@ angular.module('controllers',[]).controller('beautyLoginCtrl',
                             }
                             else
                             {
-                                if($stateParams.redirectUrl.indexOf("businessOrderPay")==0)
-                                {
-                                    $state.go("buyCart");
-                                }
-                                else
-                                {
-                                    window.location.href = "#/" + $stateParams.redirectUrl.replace("&","/");
-                                }
+                                window.location.href = "#/" + $stateParams.redirectUrl.replace("&","/");
                             }
                         }
                     })

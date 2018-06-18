@@ -1,38 +1,66 @@
 package com.wisdom.beauty.api.extDto;
 
+import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 
 import java.util.List;
 
 public class ExtShopRechargeCardDTO extends ShopRechargeCardDTO {
 
-    List<String> imageUrls;
-    //适用范围 项目
-    List<String> projectIds;
-    //适用范围 产品
-    List<String> productIds;
+    private List<String> imageList;
 
-    public List<String> getImageUrls() {
-        return imageUrls;
+    List<ShopProjectProductCardRelationDTO> timesList;
+    List<ShopProjectProductCardRelationDTO> periodList;
+    List<ShopProjectProductCardRelationDTO> groupCardList;
+    List<ShopProjectProductCardRelationDTO> rechargeCardList;
+    List<ShopProjectProductCardRelationDTO> productList;
+
+
+    public List<ShopProjectProductCardRelationDTO> getTimesList() {
+        return timesList;
     }
 
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
+    public void setTimesList(List<ShopProjectProductCardRelationDTO> timesList) {
+        this.timesList = timesList;
     }
 
-    public List<String> getProjectIds() {
-        return projectIds;
+    public List<ShopProjectProductCardRelationDTO> getPeriodList() {
+        return periodList;
     }
 
-    public void setProjectIds(List<String> projectIds) {
-        this.projectIds = projectIds;
+    public void setPeriodList(List<ShopProjectProductCardRelationDTO> periodList) {
+        this.periodList = periodList;
     }
 
-    public List<String> getProductIds() {
-        return productIds;
+    public List<ShopProjectProductCardRelationDTO> getGroupCardList() {
+        return groupCardList;
     }
 
-    public void setProductIds(List<String> productIds) {
-        this.productIds = productIds;
+    public void setGroupCardList(List<ShopProjectProductCardRelationDTO> groupCardList) {
+        this.groupCardList = groupCardList;
+    }
+
+    public List<ShopProjectProductCardRelationDTO> getRechargeCardList() {
+        return rechargeCardList;
+    }
+
+    public void setRechargeCardList(List<ShopProjectProductCardRelationDTO> rechargeCardList) {
+        this.rechargeCardList = rechargeCardList;
+    }
+
+    public List<ShopProjectProductCardRelationDTO> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<ShopProjectProductCardRelationDTO> productList) {
+        this.productList = productList;
+    }
+
+    public List<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 }

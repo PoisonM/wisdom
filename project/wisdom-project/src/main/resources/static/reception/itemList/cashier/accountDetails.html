@@ -1,70 +1,53 @@
-<div class="accountDetailsBox clearfix">
-    <div class="accountDetailsTitle">基本信息</div>
-    <ul class="accountDetailsUl">
-        <li>
-            <div>时间</div>
-            <span>{{dataInfo.createDate |date:"yyyy-MM-dd HH:MM:ss"}}</span>
-        </li>
-        <li>
-            <div>顾客</div>
-            <span>A</span>
-        </li>
-        <li>
-            <div>操作门店</div>
-            <span>美容院</span>
-        </li>
-        <li>
-            <div>前台</div>
-            <span>类型</span>
-        </li>
-    </ul>
-    <div class="accountDetailsTitle">余额充值</div>
-    <ul class="accountDetailsUl">
-        <li>
-            <div>卡名称</div>
-            <span>2018-03-24 13:47:20</span>
-        </li>
-        <li>
-            <div>充值金额</div>
-            <span>A</span>
-        </li>
-        <li>
-            <div>折扣</div>
-            <span>美容院</span>
-        </li>
-        <li>
-            <div>单次</div>
-            <span>类型</span>
-        </li>
-        <li>
-            <div>产品</div>
-            <span>类型</span>
-        </li>
-        <li>
-            <div>疗程卡</div>
-            <span>类型</span>
-        </li>
-    </ul>
-    <div class="accountDetailsTitle">赠送</div>
-    <ul class="accountDetailsUl">
-        <li>
-            <div>198迎春卡</div>
-            <span>1111</span>
-        </li>
-    </ul>
-    <div class="accountDetailsTitle">支付明细</div>
-    <ul class="accountDetailsUl">
-        <li>
-            <div>欠款</div>
-            <span>1111</span>
-        </li>
-        <li>
-            <div>微信</div>
-            <span>1111</span>
-        </li>
-    </ul>
-    <div class="accountDetailsTitle">顾客签字</div>
-    <img src="" alt="">
-    <div class="accountDetailsTitle">备注</div>
-    <div></div>
+
+
+<div class="accountDetailsBox">
+    <div class="accountDetailsBox_box">
+        <div class="basic">
+            <p>基本信息</p>
+            <ul>
+                <li>
+                    <label for="">时间</label>
+                    <span>{{dataInfo.createDate}}</span>
+                </li>
+                <li>
+                    <label for="">顾客</label>
+                    <span>{{dataInfo.createDate | date: "yyyy-MM-dd HH:mm:ss"}}</span>
+                </li>
+                <li>
+                    <label for="">操作门店</label>
+                    <span>{{dataInfo.sysShopName}}</span>
+                </li>
+                <li>
+                    <label for="">前台</label>
+                    <span>{{dataInfo.sysClerkName}}</span>
+                </li>
+                <li>
+                    <label for="">类型</label>
+                    <!--0:微信 1：支付宝 2:银行支付金额-->
+                    <span ng-if="dataInfo.payMap.payType == '0'">微信</span>
+                    <span ng-if="dataInfo.payMap.payType == '1'">支付宝</span>
+                    <span ng-if="dataInfo.payMap.payType == '2'">银行支付金额</span>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="basic">
+            <p>划卡信息</p>
+            <ul ng-repeat="listItem in dataInfo.userConsumeRecordResponseList">
+                <li>
+                    <label for="">{{listItem.flowName}}</label>
+                    <span>划卡：{{listItem.consumeNumber}}</span>
+                </li>
+                <!--<li>
+                    <label for="">员工业绩</label>
+                    <span>张琦</span>
+                </li>
+                <li>
+                    <label for="">夏凡</label>
+                    <span>手工费:9999</span>
+                </li>-->
+            </ul>
+        </div>
+    </div>
 </div>

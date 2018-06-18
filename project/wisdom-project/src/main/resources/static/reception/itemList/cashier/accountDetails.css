@@ -1,33 +1,40 @@
-.accountDetailsBox {
-    width: 100%;
+.accountDetailsBox{
+    overflow-y: scroll;
     height: 100%;
-    overflow: scroll;
 }
-
-.accountDetailsBox .accountDetailsTitle {
-    background: #F5F5F5;
+.accountDetailsBox_box{
+    width: 100%;
+    background-color: #ffffff;
+}
+.accountDetailsBox_box .basic{
+    width: 100%;
+}
+.accountDetailsBox_box .basic p{
+    height: 30px;
+    line-height: 30px;
+    padding-left: 15px;
+    font-family: PingFangSC-Regular;
     font-size: 13px;
     color: #888888;
     letter-spacing: 0;
-    padding: 6px 0 6px 17px;
+    background-color: #F5F5F5;
 }
 
-.accountDetailsBox .accountDetailsUl {
+.accountDetailsBox_box .basic ul li{
     width: 100%;
-    background: #fff;
-}
-
-.accountDetailsBox .accountDetailsUl li {
-    height: 45px;
+    padding-left: 15px;
+    height: 55px;
+    line-height: 55px;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #333333;
+    letter-spacing: 0;
+    padding-right: 15px;
     border-bottom: 1px solid #E5E5E5;
 }
 
-.accountDetailsBox .accountDetailsUl li div {
-    margin: 13px 0 13px 16px;
-    float: left;
-}
-
-.accountDetailsBox .accountDetailsUl li span {
-    margin: 13px 16px 13px 0;
+.accountDetailsBox_box .basic ul li span{
+    font-size: 14px;
+    color: #888888;
     float: right;
 }

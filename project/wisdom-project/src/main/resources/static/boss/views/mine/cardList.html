@@ -1,17 +1,27 @@
 <ion-view class="bg">
     <ion-content>
-        <div class="list" ng-repeat="item in [1,2,3,4,5]" ui-sref="editorCard">
+        <div class="list" ng-repeat="item in cardList" ui-sref="editorCard({id:item.id})">
             <ion-item  class="row" >
-                <div class="col col-20" style="line-height: 49px;">
-                    <p style="height:64px;width:82px;background: gainsboro"></p >
+                <div class="" style="line-height: 49px;width:82px;margin-right:5px;">
+                    <p style="height:64px;width:82px;margin-top:10px;">
+                        <img  ng-src="{{item.projectGroupUrl}}" style="height:64px;width:82px;">
+                    </p >
                 </div>
-                <div class="col col-80 ml20" >
-                    <p class="fs15" style="color: #333333!important;"><span>金卡</span></p >
-                    <p class="fs15" style="color: #333333!important;">市场价格：¥680.00</p >
-                    <p class=" fs13" style="color: #ff6666!important;">优惠价格：¥580.00/30次</p >
+                <div class="col col-45 " >
+                    <p class="fs15" style="color: #333333!important;"><span>{{item.projectGroupName}}</span></p >
+                    <p class="fs15" style="color: #333333!important;">市场价格：¥{{item.marketPrice}}</p >
+                    <p class=" fs13" style="color: #ff6666!important;">优惠价格：¥{{item.discountPrice}}</p >
+                </div>
+                <div class="col col-25 ">
+                        <img src="images/mine/overdue.png" style="width:50px;height:50px;" class=" mt10 " ng-if="item.overdue == true">
+                        <img src="images/more.png" class="more fr" style="margin-top:30px;">
+
+
+                    <p ng-if="item.status != '0'&& item.overdue == true" style="position: absolute;bottom: 0;right:30px;"> 已禁用</p>
                 </div>
             </ion-item>
-            <p class="item fs12" style="color: #999999">有效期：长期有效</p>
+            <p class="item fs12" style="color: #999999" ng-if="item.expirationDate != 0">有效期：{{item.effectiveDate}} 至 {{item.expirationDate}}</p>
+            <p class="item fs12" style="color: #999999" ng-if="item.expirationDate == 0">有效期：长期有效</p>
         </div>
     </ion-content>
 </ion-view>

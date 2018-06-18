@@ -43,12 +43,20 @@ public interface ShopProjectService {
     int updateUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
 
     /**
-     * 查询某个店的项目列表信息
+     * 删除用户与项目的关系
      *
-     * @param shopProjectInfoDTO
+     * @param shopUserProjectRelationDTO
      * @return
      */
-    List<ShopProjectInfoDTO> getShopCourseProjectList(ShopProjectInfoDTO shopProjectInfoDTO);
+    int deleteUserAndProjectRelation(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
+
+    /**
+     * 查询某个店的项目列表信息
+     *
+     * @param extShopProjectInfoDTO
+     * @return
+     */
+    List<ShopProjectInfoDTO> getShopCourseProjectList(ExtShopProjectInfoDTO extShopProjectInfoDTO);
 
     /**
      * 查询某个用户的所有套卡项目列表
@@ -134,7 +142,7 @@ public interface ShopProjectService {
      * @param shopProjectInfoDTO
      * @return
      */
-    int updateProjectInfo(ShopProjectInfoDTO shopProjectInfoDTO);
+    int updateProjectInfo(ExtShopProjectInfoDTO shopProjectInfoDTO);
 
     /**
      * 保存项目

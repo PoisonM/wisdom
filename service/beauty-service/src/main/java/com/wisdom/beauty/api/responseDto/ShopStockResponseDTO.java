@@ -13,6 +13,7 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 
 	/** 产品图片url */
 	// 入库时间
+	private Date createDate;
 	private Date operDate;
 	private String stockType;
 	private List<String> imageUrl;
@@ -23,8 +24,9 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private  String stockStatus;
 	private  String productCode;
 	private  String productSpec;
-	private  BigDecimal productUnit;
-
+	private String productUnit;
+    /**产品图片*/
+	private String productImage;
 	/**实际库存数量*/
 	private Integer actualStockNumber;
      /** 出库数量 */
@@ -39,7 +41,21 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private BigDecimal allUseCost;
 	//仓库名字
 	private String shopStoreName;
+	//产品一级类别id
+	private String productTypeOneName;
+
+	//二级类别名称
+	private String productTypeTwoName;
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
+
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 
 	public String getName() {
 		return name;
@@ -89,11 +105,11 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 		this.productSpec = productSpec;
 	}
 
-	public BigDecimal getProductUnit() {
+	public String getProductUnit() {
 		return productUnit;
 	}
 
-	public void setProductUnit(BigDecimal productUnit) {
+	public void setProductUnit(String productUnit) {
 		this.productUnit = productUnit;
 	}
 
@@ -183,5 +199,29 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 
 	public void setActualStockNumber(Integer actualStockNumber) {
 		this.actualStockNumber = actualStockNumber;
+	}
+
+	public String getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(String productImage) {
+		this.productImage = productImage;
+	}
+
+	public String getProductTypeTwoName() {
+		return productTypeTwoName;
+	}
+
+	public void setProductTypeTwoName(String productTypeTwoName) {
+		this.productTypeTwoName = productTypeTwoName;
+	}
+
+	public String getProductTypeOneName() {
+		return productTypeOneName;
+	}
+
+	public void setProductTypeOneName(String productTypeOneName) {
+		this.productTypeOneName = productTypeOneName;
 	}
 }

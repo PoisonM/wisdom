@@ -1,15 +1,22 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.dto.ShopCheckRecordCriteria;
+import com.wisdom.beauty.api.dto.ShopCheckRecordDTO;
+import com.wisdom.beauty.api.dto.ShopClosePositionRecordDTO;
+import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
 import com.wisdom.beauty.api.enums.ClosePositionTypeEnum;
 import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
-import com.wisdom.beauty.api.responseDto.*;
+import com.wisdom.beauty.api.responseDto.ShopCheckRecordResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopClosePositionResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopCheckRecordMapper;
 import com.wisdom.beauty.core.mapper.ShopClosePositionRecordMapper;
 import com.wisdom.beauty.core.mapper.ShopStockNumberMapper;
 import com.wisdom.beauty.core.service.ShopCheckService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.IdGen;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +52,8 @@ public class ShopCheckServiceImpl implements ShopCheckService {
     @Autowired
     private ShopClosePositionRecordMapper shopClosePositionRecordMapper;
     @Override
-    public List<ShopCheckRecordResponseDTO> getProductCheckRecordList(ShopCheckRecordDTO shopCheckRecordDTO) {
+    public List<ShopCheckRecordResponseDTO> getProductCheckRecordList(PageParamVoDTO<ShopCheckRecordDTO> pageParamVoDTO) {
+        ShopCheckRecordDTO shopCheckRecordDTO=pageParamVoDTO.getRequestData();
         if(shopCheckRecordDTO==null){
             logger.info("getProductCheckRecord方法传入的参数shopCheckRecordDTO为空");
             return null;
@@ -58,10 +66,14 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         if(StringUtils.isNotBlank(shopCheckRecordDTO.getShopStoreId())){
             criteria.andShopStoreIdEqualTo(shopCheckRecordDTO.getShopStoreId());
         }
-
+        if(pageParamVoDTO.getPaging()){
+            shopCheckRecordCriteria.setLimitStart(pageParamVoDTO.getPageNo());
+            shopCheckRecordCriteria.setPageSize(pageParamVoDTO.getPageSize());
+        }
         List<ShopCheckRecordDTO> list= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
 
         Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
+        // todo 待修复
         List<ShopCheckRecordResponseDTO> shopCheckRecordResponseDTOs=new ArrayList<>();
         ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
         for(ShopCheckRecordDTO shopCheckRecord:list){
@@ -74,7 +86,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
                     shopCheckRecordResponseDTO.setState(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode());
                 }
                 //计算异常数
-                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getCreateDate())){
+                if (ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())) {
                     shopCheckRecordResponseDTO.setExceptionNumber(shopCheckRecordResponseDTO.getExceptionNumber()+1);
                 }
                 map.put(shopCheckRecord.getFlowNo(),shopCheckRecordResponseDTO);
@@ -84,7 +96,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
                 shopCheckRecordResponseDTO.setState(shopCheckRecord.getState());
                 shopCheckRecordResponseDTO.setCreateDate(shopCheckRecord.getCreateDate());
                 shopCheckRecordResponseDTO.setShopProcId(shopCheckRecord.getShopProcId());
-                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getCreateDate())){
+                if(ClosePositionTypeEnum.CLOSE_POSITION_NO.getCode().equals(shopCheckRecord.getState())){
                     shopCheckRecordResponseDTO.setExceptionNumber(1);
                 }else {
                     shopCheckRecordResponseDTO.setExceptionNumber(0);
@@ -109,11 +121,9 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         ShopCheckRecordCriteria.Criteria c1 = shopCheckRecordCriteria.createCriteria();
         c1.andFlowNoEqualTo(flowNo);
         List<ShopCheckRecordDTO> shopCheckRecordDTOList= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
-        List<String> prodcuts=new ArrayList<>();
         Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
         ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
         for(ShopCheckRecordDTO shopCheckRecord:shopCheckRecordDTOList){
-            prodcuts.add(shopCheckRecord.getShopProcId());
             if(map.containsKey(shopCheckRecord.getProductTypeOneId())){
                 ShopCheckRecordResponseDTO devShopCheckRecordResponseDTO=map.get(shopCheckRecord.getProductTypeOneId());
                 List<ShopCheckRecordResponseDTO> devList=devShopCheckRecordResponseDTO.getShopCheckRecordResponseList();
@@ -215,14 +225,14 @@ public class ShopCheckServiceImpl implements ShopCheckService {
     }
 
     @Override
-    public List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> products) {
+    public List<ShopProductInfoCheckResponseDTO> getProductsCheckLit(String shopStoreId , List<String> productIds) {
         //获取库存量
-        List<ShopStockNumberDTO> shopStockNumberDTOList= shopStockService.getStockNumberList(shopStoreId,products);
+        List<ShopStockNumberDTO> shopStockNumberDTOList= shopStockService.getStockNumberList(shopStoreId,productIds);
         Map<String,Integer> map=new HashMap<>(16);
         for(ShopStockNumberDTO shopStockNumberDTO:shopStockNumberDTOList){
             map.put(shopStockNumberDTO.getShopProcId(),shopStockNumberDTO.getStockNumber());
         }
-        List<ShopProductInfoResponseDTO> list = shopProductInfoService.getProductInfoList(products);
+        List<ShopProductInfoResponseDTO> list = shopProductInfoService.getProductInfoList(productIds);
         if(CollectionUtils.isEmpty(list)){
             return  null;
         }
@@ -230,7 +240,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         ShopProductInfoCheckResponseDTO shopProductInfoCheckResponseDTO=new ShopProductInfoCheckResponseDTO();
         for(ShopProductInfoResponseDTO shopProductInfoResponseDTO:list){
             shopProductInfoCheckResponseDTO.setProductName(shopProductInfoResponseDTO.getProductName());
-            shopProductInfoCheckResponseDTO.setImageUrl(shopProductInfoResponseDTO.getImageUrl());
+            shopProductInfoCheckResponseDTO.setProductUrl(shopProductInfoResponseDTO.getProductUrl());
             shopProductInfoCheckResponseDTO.setProductCode(shopProductInfoResponseDTO.getProductCode());
             shopProductInfoCheckResponseDTO.setProductUnit(shopProductInfoResponseDTO.getProductUnit());
             shopProductInfoCheckResponseDTO.setProductSpec(shopProductInfoResponseDTO.getProductSpec());

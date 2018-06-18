@@ -1,58 +1,46 @@
 <ion-view class="bg">
-    <ion-content>
+    <ion-content class="mb45">
       <div class="list">
-          <li class="item tc"><span>美容分店</span><img src="images/mine/drop-down.png" style="width: 15px;height: 10px;display: inline-block;margin-left: 10px"></li>
+          <li class="item tc" ng-click="tabShop()"><span>美容分店</span><img src="images/mine/drop-down.png" style="width: 10px;height: 5px;display: inline-block;margin-left: 10px"></li>
           <li class="item item-toggle">
               开启排班功能
               <label class="toggle toggle-assertive">
-                  <input type="checkbox">
+                  <input type="checkbox" ng-model="param.settingStatus" ng-click="settingStatus()">
                   <div class="track">
                       <div class="handle"></div>
                   </div>
               </label>
           </li>
       </div>
-        <div class="list">
-            <li class="item item-toggle">
-                早班
-                <label class="toggle toggle-assertive">
-                    <input type="checkbox">
-                    <div class="track">
-                        <div class="handle"></div>
-                    </div>
-                </label>
-            </li>
-            <li class="item"><span>上班10:00</span><span class="fr mr10">下班时间18:00</span></li>
-            <li class="item item-toggle">
-                中班
-                <label class="toggle toggle-assertive">
-                    <input type="checkbox">
-                    <div class="track">
-                        <div class="handle"></div>
-                    </div>
-                </label>
-            </li>
-            <li class="item"><span>上班10:00</span><span class="fr mr10">下班时间18:00</span></li>
-            <li class="item item-toggle">
-                晚班
-                <label class="toggle toggle-assertive">
-                    <input type="checkbox">
-                    <div class="track">
-                        <div class="handle"></div>
-                    </div>
-                </label>
-            </li>
-            <li class="item"><span>上班09:30</span><span class="fr mr10">下班时间21:30</span></li>
-            <li class="item item-toggle">
-                全班
-                <label class="toggle toggle-assertive">
-                    <input type="checkbox">
-                    <div class="track">
-                        <div class="handle"></div>
-                    </div>
-                </label>
-            </li>
-            <li class="item"><span>上班09:30</span><span class="fr mr10">下班时间21:00</span></li>
+        <div>
+            <div class="list" ng-repeat="item in reminder">
+                    <li class="item item-toggle" ng-if=" item.typeName!=null">
+                        <span ng-if="item.typeName == '0'">早班</span>
+                        <span ng-if="item.typeName == '1'">中班</span>
+                        <span ng-if="item.typeName == '2'">晚班</span>
+                        <span ng-if="item.typeName == '3'">全班</span>
+                        <span ng-if="item.typeName == '4'">休</span>
+                        <label class="toggle toggle-assertive">
+                            <input type="checkbox" ng-model="param.statusArr[$index]" ng-click="changeStatus($index)">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </li>
+                    <li class="item" ng-if=" item.typeName!=null"><span>上班时间 <input type="text" ng-model="item.startTime" style="width:50px;display: inline-block"   onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9:0-9]+/,'');}).call(this)" onblur="this.v();"></span><span class="fr mr10">下班时间 <input type="text" ng-model="item.endTime" style="width:50px;display: inline-block" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9:0-9]+/,'');}).call(this)" onblur="this.v();"></span></li>
+
+
+            </div>
         </div>
+        <div style="width:100%;height:100%;background:rgba(0,0,0,0.2);position: absolute;top:0;z-index: 100" ng-if="param.displayShopBox" ng-click="dis()"></div>
+        <!--点击切换店铺显示的店铺列表-->
+
+
     </ion-content>
+    <div class=" " ng-if="param.displayShopBox" style="position: absolute;top:0;width:100%;z-index: 101">
+        <p class="item" ng-click="choseShop(item.id)"ng-repeat="item in shopList">{{item.sysShopName}}</p>
+    </div>
+    <div class="tabs colfff bgff66 center h45" ng-click="save()">
+        保存
+    </div>
 </ion-view>

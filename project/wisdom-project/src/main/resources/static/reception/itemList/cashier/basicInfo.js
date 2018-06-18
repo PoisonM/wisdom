@@ -1,4 +1,4 @@
-function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId, ArchivesDetail) {
+function basicInfo($scope, $state,$stateParams,Archives, ArchivesDetail,$rootScope) {
     //初始化参数
     $scope.param = {
         userId: "", //用户id
@@ -6,12 +6,15 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId, Ar
         shopId: ""
     }
 
+    //确定用户选中样式
+    $scope.$parent.param.selectSty = $state.params.sysUserId
+    clearInterval($rootScope.timeInfo)
 
 
     $scope.queryUserInfo = function(sysUserId, id) {
         //根据id查用户信息
         //member    会员状态    string  0:绑定 1：未绑定
-        Archives.get({ userId: sysUserId }, function(data) {
+        ArchivesDetail.get({ id: id }, function(data) {
             if (data.result == "0x00001") {
                 $scope.responseData = data.responseData
             }
@@ -22,26 +25,26 @@ function basicInfo($scope, $state, Archives, GetShopUserArchivesInfoByUserId, Ar
 
 
     $scope.goAccountRecords = function() {
-        $state.go('pad-web.left_nav.accountRecords');
+        $state.go('pad-web.left_nav.accountRecords',{userId:$state.params.sysUserId});
     };
     $scope.goStillOwed = function() {
         $state.go('pad-web.left_nav.stillOwed');
     };
     $scope.goSelectRechargeType = function() {
-        $state.go('pad-web.left_nav.selectRechargeType');
+        $state.go('pad-web.left_nav.selectRechargeType',{userId:$state.params.sysUserId});
     };
-    $scope.goConsumptionList = function() {
-        $state.go('pad-web.consumptionList');
-    };
-    $scope.goBindMember = function() {
+    $scope.goBindMember = function(shopId,userId) {
         $state.go('pad-web.bindMember', {
-            shopId: $scope.param.shopId,
-            userId: $scope.param.userId
+            shopId: shopId,
+            userId: userId
         });
     };
     $scope.goAddRecordDetail = function() {
         $state.go("pad-web.left_nav.addRecordDetail", {
             id: $state.params.id
         })
+    }
+    $scope.toConsumptionList = function() {
+        $state.go('pad-web.consumptionList',{userId:$state.params.sysUserId});
     }
 }

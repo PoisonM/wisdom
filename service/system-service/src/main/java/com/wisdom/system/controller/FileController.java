@@ -118,11 +118,11 @@ public class FileController {
                 logger.info("图片上传imageBase64UploadToOSS异常,异常信息为{}"+e.getMessage(),e);
                 e.printStackTrace();
             }
-            responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+            responseDTO.setResult(StatusConstant.SUCCESS);
         } catch (Exception e) {
             logger.info("图片上传imageBase64UploadToOSS异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
-            responseDTO.setErrorInfo(StatusConstant.FAILURE);
+            responseDTO.setResult(StatusConstant.FAILURE);
         } finally {
             if (null != inputStream) {
                 inputStream.close();

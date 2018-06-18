@@ -2,14 +2,29 @@
     <!--顾客 项目 时长-->
     <div class="customerBox">
         <ul>
-            <li><span class="boxLift">顾客</span><a class="boxRight">{{param.selectCustomersObject.sysUserName}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectCustomersCtrl()"></a></li>
-            <li><span class="boxLift">项目</span><a class="boxRight">选择了{{param.ModifyAppointmentObject.productNum}}个项目<img src="images/bt_more.png" class="morePic ml20" ng-click="selectNewProduct()"></a></li>
-            <li><span class="boxLift">时长</span><a class="boxRight">{{param.ModifyAppointmentObject.appointPeriod}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectTimeLength()"></a></li>
+            <li ng-click="selectCustomersCtrl()"><span class="boxLift">顾客</span><a class="boxRight">{{param.selectCustomersObject.sysUserName}}<img src="images/bt_more.png" class="morePic ml20" ></a></li>
+            <li ng-click="selectNewProduct()">
+                <span class="boxLift">项目</span>
+                <a data-aaa="{{checkprojectId.split(';').length}}" class="boxRight">
+                    <span ng-if="checkprojectId.split(';').length != undefined">选择了{{checkprojectId.split(";").length-1}}个项目</span>
+                    <span ng-if="checkprojectId.split(';').length == undefined">选择了0个项目</span>
+                    <img src="images/bt_more.png" class="morePic ml20" >
+                </a>
+            </li>
+            <!--<li ng-click="selectTimeLength()"><span class="boxLift">时长</span><a class="boxRight">{{param.ModifyAppointmentObject.appointPeriod}}<img src="images/bt_more.png" class="morePic ml20" ></a></li>-->
+            <li>
+                <span class="boxLift">时长</span>
+                <a class="boxRight">
+                    <span ng-if="checkprojectDuration != undefined">{{checkprojectDuration/60}}</span>
+                    <span ng-if="checkprojectDuration == undefined">0</span>
+                    <img src="images/bt_more.png" class="morePic ml20" >
+                </a>
+            </li>
         </ul>
     </div>
     <!--美容师 时间-->
     <div class="cosmetology">
-        <p><span class="boxLift">美容师</span><a class="boxRight">{{param.ModifyAppointmentObject.beauticianName}}<img src="images/bt_more.png" class="morePic ml20" ng-click="selectBeautician()"></a></span></p>
+        <p  ng-click="selectBeautician()"><span class="boxLift">美容师</span><a class="boxRight">{{param.ModifyAppointmentObject.beauticianName}}<img src="images/bt_more.png" class="morePic ml20"></a></span></p>
         <div class="cosmetologyMinute">
             <!--日期-->
             <ul class="dayList">
@@ -20,13 +35,12 @@
                     <span ng-if="$index!=1&&$index!=0">{{item|date:'MM/dd'}}</span>
                 </li>
             </ul>
-              <!--时间-->
+              <!--时间限制-->
             <ul class="minuteList">
                 <li ng-repeat = "item in param.ModifyAppointmentObject.hoursTimeShow" ng-class="{'bgff9b9b':param.selectedTime[$index]=='2','bgf5f5f5':param.selectedTime[$index]=='1'}" ng-click = "selectTime($index,param.selectedTime[$index])" >{{ $index ==param.time.length-1?"":item}}
                 </li>
                 <!--ng-class="{'bgf5f5f5':param.selectedTime[$index]=='1'}"-->
                 <!---->
-
             </ul>
         </div>
     </div>

@@ -8,6 +8,7 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         compileDateFlag:true
     }
     /*---------------*/
+
     
     $scope.compileDateFn = function () {
         if(new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月" == $scope.param.nowdate){
@@ -21,7 +22,6 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
     $scope.queryScheduleList = function (searchDate) {
         GetShopClerkScheduleList.get({
             searchDate:searchDate,
-            sysShopId:""
         },function (data) {
             if(data.result == "0x00001"){
                 $scope.tempWeek = data.responseData.dateDetail
@@ -67,8 +67,8 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         }
     },100)
 
-    $scope.tempTime = $scope.param.nowdate.replace("年","-").replace("月","-1")
     $scope.goCompileWorkList = function () {
+        $scope.tempTime = $scope.param.nowdate.replace("年","-").replace("月","-1")
         $state.go("pad-web.compileWorkList",{time:$scope.tempTime})
     }
 

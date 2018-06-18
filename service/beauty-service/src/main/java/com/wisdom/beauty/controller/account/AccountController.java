@@ -3,8 +3,11 @@ package com.wisdom.beauty.controller.account;
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.core.service.SysUserAccountService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import java.util.List;
  * Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "accountInfo")
 public class AccountController {
 
@@ -39,14 +43,13 @@ public class AccountController {
     @RequestMapping(value = "/findShopUserInfo/{userId}", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<CustomerAccountResponseDto> findShopUserInfo(@PathVariable String userId) {
-        long startTime = System.currentTimeMillis();
         ResponseDTO<CustomerAccountResponseDto> responseDTO = new ResponseDTO<>();
-        CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId);
+		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+		CustomerAccountResponseDto customerAccountResponseDto = sysUserAccountService.getSysAccountListByUserId(userId,clerkInfo.getSysShopId());
         if (customerAccountResponseDto != null) {
             responseDTO.setResponseData(customerAccountResponseDto);
         }
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("findArchive方法耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 

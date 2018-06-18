@@ -5,9 +5,7 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
-import com.wisdom.beauty.api.requestDto.ShopClosePositionRequestDTO;
-import com.wisdom.beauty.api.requestDto.ShopStockRecordRequestDTO;
-import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
+import com.wisdom.beauty.api.requestDto.*;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoCheckResponseDTO;
 import com.wisdom.beauty.core.mapper.ExtShopCheckRecordMapper;
 import com.wisdom.beauty.core.mapper.ExtShopStockNumberMapper;
@@ -31,6 +29,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
@@ -84,19 +83,32 @@ public class StockTest  {
         List<ShopStockRequestDTO> list = new ArrayList<>();
         ShopStockRequestDTO shopStockRequestDTO = new ShopStockRequestDTO();
 
-        shopStockRequestDTO.setShopStoreId("651742081");
-        shopStockRequestDTO.setStockStyle("1");
-        shopStockRequestDTO.setShopProcId("7878");
-        shopStockRequestDTO.setFlowNo("785489636598741258");
-        shopStockRequestDTO.setDetail("我写的备注啦啦啦啦");
-        shopStockRequestDTO.setStockNumber(99);
+        shopStockRequestDTO.setShopStoreId("18610414171");
+        shopStockRequestDTO.setStockStyle("0");//入库
+        shopStockRequestDTO.setShopProcId("100");
+        shopStockRequestDTO.setFlowNo("flowNo18610414171");
+        shopStockRequestDTO.setDetail("入库的备注");
+        shopStockRequestDTO.setStockNumber(10);
         shopStockRequestDTO.setProductDate(new Date());
         shopStockRequestDTO.setStockPrice(new BigDecimal("88.88"));
+
+        ShopStockRequestDTO shopStockRequestDTO2 = new ShopStockRequestDTO();
+
+        shopStockRequestDTO2.setShopStoreId("18610414171");
+        shopStockRequestDTO2.setStockStyle("0");//入库
+        shopStockRequestDTO2.setShopProcId("101");
+        shopStockRequestDTO2.setFlowNo("flowNo18610414171-copy");
+        shopStockRequestDTO2.setDetail("入库的备注-copy");
+        shopStockRequestDTO2.setStockNumber(33);
+        shopStockRequestDTO2.setProductDate(new Date());
+        shopStockRequestDTO2.setStockPrice(new BigDecimal("33.88"));
+        //shopStockRequestDTO.setReceiver("张欢");
         //如果是入库则不需要出这个
         //shopStockRequestDTO.setStockType("0");
-        shopStockRequestDTO.setStockStyle("0");
+       // shopStockRequestDTO.setStockStyle("0");
 
         list.add(shopStockRequestDTO);
+        list.add(shopStockRequestDTO2);
 
         JSONArray json = JSONArray.fromObject(list);
         String toJSONString = json.toString();//把json转换为String
@@ -109,10 +121,53 @@ public class StockTest  {
 
         System.out.println(result.getResponse().getContentAsString());
     }
+    @Test
+    public void  testChuku() throws Exception {
 
+
+        List<ShopStockRequestDTO> list = new ArrayList<>();
+        ShopStockRequestDTO shopStockRequestDTO = new ShopStockRequestDTO();
+
+        shopStockRequestDTO.setShopStoreId("18610414171");
+        shopStockRequestDTO.setShopProcId("100");
+        shopStockRequestDTO.setFlowNo("flowNo18610414171");
+        shopStockRequestDTO.setDetail("出库的备注");
+        shopStockRequestDTO.setStockNumber(11);
+        shopStockRequestDTO.setProductDate(new Date());
+        shopStockRequestDTO.setStockPrice(new BigDecimal("88.88"));
+        shopStockRequestDTO.setReceiver("张欢");
+        shopStockRequestDTO.setStockType("1");
+        shopStockRequestDTO.setStockStyle("2");
+        ShopStockRequestDTO shopStockRequestDTO2 = new ShopStockRequestDTO();
+
+        shopStockRequestDTO2.setShopStoreId("18610414171");
+        shopStockRequestDTO2.setShopProcId("101");
+        shopStockRequestDTO2.setFlowNo("flowNo18610414171-copy");
+        shopStockRequestDTO2.setDetail("出库的备注-copy");
+        shopStockRequestDTO2.setStockNumber(12);
+        shopStockRequestDTO2.setProductDate(new Date());
+        shopStockRequestDTO2.setStockPrice(new BigDecimal("33.88"));
+        shopStockRequestDTO2.setReceiver("张欢");
+        shopStockRequestDTO2.setStockType("1");
+        shopStockRequestDTO2.setStockStyle("2");
+
+        list.add(shopStockRequestDTO);
+        list.add(shopStockRequestDTO2);
+
+        JSONArray json = JSONArray.fromObject(list);
+        String toJSONString = json.toString();//把json转换为String
+
+        MvcResult result = mvc.perform(post("/stock/addStock").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())// 模拟向testRest发送get请求
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
     @Test
     public  void test(){
-        /*String json =  "[{\"id\":\"133223\",\"shopBossId\":\"20\"},{\"id\":\"3232\",\"shopBossId\":\"20\"}]";
+        /*String json =  "[{\"id\":\"133223\",\"sysBossCode\":\"20\"},{\"id\":\"3232\",\"sysBossCode\":\"20\"}]";
         shopStockService.insertShopStockDTO(json);*/
         List<ShopStockRequestDTO> list = new ArrayList<>();
         ShopStockRequestDTO shopStockDTO = new ShopStockRequestDTO();
@@ -135,23 +190,21 @@ public class StockTest  {
         shopStockService.insertShopStockDTO(toJSONString);
     }
     @Test
-    public void  testUpdate() throws Exception {
+    public void  testUpdateorsaveStockNumber() throws Exception {
         ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
-        shopStockNumberDTO.setId("cf2819774590432f85f3ad27ca758ac1");
         shopStockNumberDTO.setStockNumber(7587854);
-        shopStockNumberDTO.setShopProcId("123");
-        shopStockNumberDTO.setShopStoreId("65174281");
+        shopStockNumberDTO.setShopProcId("7878");
+        shopStockNumberDTO.setShopStoreId("651742081");
         ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
-        shopStockNumberDTO2.setId("ed04ff8418d4469fb5d3cef4f9c2c5d4");
         shopStockNumberDTO2.setStockNumber(787878);
-        shopStockNumberDTO2.setShopProcId("123");
-        shopStockNumberDTO2.setShopStoreId("65174281");
+        shopStockNumberDTO2.setShopProcId("6");
+        shopStockNumberDTO2.setShopStoreId("98548");
         List<ShopStockNumberDTO> list=new ArrayList<>();
         list.add(shopStockNumberDTO);
         list.add(shopStockNumberDTO2);
-       // extShopStockNumberMapper.updateBatchShopStockNumber(param);
+        extShopStockNumberMapper.updateBatchShopStockNumberCondition(list);
 
-        JSONArray json = JSONArray.fromObject(list);
+  /*      JSONArray json = JSONArray.fromObject(list);
         String shopStockNumberDTOs = json.toString();//把json转换为String
        // extShopStockNumberMapper.saveBatchShopStockNumber(list);
         MvcResult result = mvc.perform(post("/stock/products").contentType(MediaType.APPLICATION_JSON).content(shopStockNumberDTOs))
@@ -160,7 +213,7 @@ public class StockTest  {
                 .andReturn();// 返回执行请求的结果
 
 
-        System.out.println(result.getResponse().getContentAsString());
+        System.out.println(result.getResponse().getContentAsString());*/
     }
 
     @Test
@@ -196,17 +249,36 @@ public class StockTest  {
     }
 
     @Test
-    public  void  pandian(){
-        ShopStockNumberDTO shopStockNumberDTO=new ShopStockNumberDTO();
-        shopStockNumberDTO.setId("cf2819774590432f85f3ad27ca758ac1");
-        shopStockNumberDTO.setStockNumber(888);
-        ShopStockNumberDTO shopStockNumberDTO2=new ShopStockNumberDTO();
-        shopStockNumberDTO2.setId("ed04ff8418d4469fb5d3cef4f9c2c5d4");
-        shopStockNumberDTO2.setStockNumber(888);
-        List<ShopStockNumberDTO> list=new ArrayList<>();
+    public  void  pandian() throws Exception {
+        ShopCheckRecordDTO shopStockNumberDTO=new ShopCheckRecordDTO();
+        shopStockNumberDTO.setProductTypeOneId("23");
+        shopStockNumberDTO.setProductTypeOneName("品牌名字");
+        shopStockNumberDTO.setStockNumber(111111);
+        shopStockNumberDTO.setActualStockNumber(55555);
+        shopStockNumberDTO.setShopProcId("66");
+        shopStockNumberDTO.setShopProcName("产品名字");
+        shopStockNumberDTO.setShopStoreId("8989876665f5");
+        ShopCheckRecordDTO shopStockNumberDTO2=new ShopCheckRecordDTO();
+        shopStockNumberDTO2.setProductTypeOneId("2322");
+        shopStockNumberDTO2.setProductTypeOneName("品牌名字");
+        shopStockNumberDTO2.setStockNumber(111111222);
+        shopStockNumberDTO2.setActualStockNumber(55555222);
+        shopStockNumberDTO2.setShopProcId("77");
+        shopStockNumberDTO2.setShopProcName("产品名字222");
+        shopStockNumberDTO2.setShopStoreId("8989876665f5222");
+        List<ShopCheckRecordDTO> list=new ArrayList<>();
         list.add(shopStockNumberDTO);
         list.add(shopStockNumberDTO2);
-       // shopStockService.checkProduct(list);
+        JSONArray json = JSONArray.fromObject(list);
+        String toJSONString = json.toString();//把json转换为String
+        MvcResult result = mvc.perform(post("/stock/checkProduct").contentType(MediaType.APPLICATION_JSON).content(toJSONString))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
+
     }
     @Test
     public  void  pingcang(){
@@ -243,5 +315,49 @@ public class StockTest  {
         JSONArray json = JSONArray.fromObject(list);
         String toJSONString = json.toString();//把json转换为String
         System.out.print(list);
+    }
+    @Test
+    public  void  testSetStorekeeper() throws Exception {
+         String[] storeManagerIdsq={"1","2"};
+         String[] storeManagerNamesq={"TEST1","TEST2"};
+         String id="1";
+        SetStorekeeperRequestDTO setStorekeeperRequestDTO=new SetStorekeeperRequestDTO();
+        setStorekeeperRequestDTO.setShopStoreId(id);
+        setStorekeeperRequestDTO.setStoreManagerIds(storeManagerIdsq);
+        setStorekeeperRequestDTO.setStoreManagerNames(storeManagerNamesq);
+        String shopClosePositionReques= JSONObject.toJSONString(setStorekeeperRequestDTO);
+        /*对象转json字符串
+        ShopClosePositionRequestDTO shopClosePositionRequestDTO=new ShopClosePositionRequestDTO();
+        shopClosePositionRequestDTO.setShopCheckRecorId("1");
+        shopClosePositionRequestDTO.setStockNumber(33);
+        ShopClosePositionRequestDTO shopClosePositionRequestDTO2=new ShopClosePositionRequestDTO();
+        shopClosePositionRequestDTO2.setShopCheckRecorId("2");
+        shopClosePositionRequestDTO2.setStockNumber(33);
+        String shopClosePositionReques= JSONObject.toJSONString(shopClosePositionRequestDTO);
+        String shopClosePositionReques2= JSONObject.toJSONString(shopClosePositionRequestDTO2);*/
+        MvcResult result = mvc.perform(post("/stock/setStorekeeper").contentType(MediaType.APPLICATION_JSON).content(shopClosePositionReques))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+    //测试跳转产品页面
+    @Test
+    public  void  testtiaozhuan() throws Exception {
+        ShopStockRecordRequestDTO shopStockRecordRequestDTO=new ShopStockRecordRequestDTO();
+        shopStockRecordRequestDTO.setShopStoreId("11");
+        shopStockRecordRequestDTO.setStockStyle("5");
+        shopStockRecordRequestDTO.setPageSize(8);
+        String shopClosePositionReques= JSONObject.toJSONString(shopStockRecordRequestDTO);
+
+        MvcResult result = mvc.perform(post("/stock/shopStockRecordList").contentType(MediaType.APPLICATION_JSON).content(shopClosePositionReques))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
+                .andReturn();// 返回执行请求的结果
+
+
+        System.out.println(result.getResponse().getContentAsString());
     }
 }

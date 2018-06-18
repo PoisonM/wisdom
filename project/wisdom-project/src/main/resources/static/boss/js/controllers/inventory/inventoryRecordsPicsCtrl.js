@@ -9,7 +9,8 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                 startTime: BossUtil.getNowFormatDate(),/*显示值*/
                 endTime: BossUtil.getNowFormatDate(),/*显示值*/
                 startValue:BossUtil.getNowFormatDate(),/*传值*/
-                endtValue:BossUtil.getNowFormatDate(),/*传值*/
+                endValue:BossUtil.getNowFormatDate(),/*传值*/
+                inventoryRecordsPics : []
             }
             $scope.param.startTime=$scope.param.startTime.replace(/00/g,'');
             $scope.param.startTime=$scope.param.startTime.replace(/:/g,'');
@@ -29,7 +30,7 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
             var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
 
             // 日期选择后的回调函数
-            var datePickerCallbacke = function (val,type) {
+            var datePickerCallback = function (val,type) {
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
@@ -38,11 +39,12 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                         $scope.param.startValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
                     }else{
                         $scope.param.endTime = $filter('date')(val, 'yyyy-MM-dd');
-                        $scope.param.endtValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
+                        $scope.param.endValue = $filter('date')(val, 'yyyy-MM-dd') + " 23:59:59";
                     }
                     $scope.getInfo();
                 }
             };
+
             //主体对象
             $scope.datepickerObjectStart = {
                 titleLabel: '选择日期',  //可选
@@ -64,10 +66,10 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                 from: new Date(2008, 8, 2), //可选
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
-                    datePickerCallbacke(val,"start");
+                    datePickerCallback(val,"start");
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
-                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
+                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。原本是false。
             };
             $scope.datepickerObjectEnd = {
                 titleLabel: '选择日期',  //可选
@@ -89,29 +91,29 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
                 from: new Date(2008, 8, 2), //可选
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
-                    datePickerCallbacke(val,"end");
+                    datePickerCallback(val,"end");
 
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
-                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
+                closeOnSelect: true, //可选,设置选择日期后是否要关掉界面，原本是false。
             };
-
 
             $scope.getInfo  = function(){
                 $scope.shopStockRecordRequestDTO = {
-                    endTime:$scope.param.startValue,
-                    startTime:$scope.param.endValue,
+                    endTime:$scope.param.endTime,
+                    startTime:$scope.param.startValue,
                     stockStyle:"5",
-                    shopStoreId:"11",
-                    pageSize:100
+                    shopStoreId: $stateParams.shopStoreId,
+                    pageSize:1000,
+                    name:$stateParams.name
                 }
                 ShopStockRecordList.save($scope.shopStockRecordRequestDTO,function(data){
-                    $scope.inventoryRecordsPics = data.responseData
+                    $scope.param.inventoryRecordsPics = data.responseData;
                 })
             }
             $scope.getInfo()
 
-            $scope.entryDetailsGo=function(){
-                $state.go('entryDetails')
+            $scope.entryDetailsGo=function(entryId){
+                $state.go('entryDetails',{id:entryId})
             }
         }])

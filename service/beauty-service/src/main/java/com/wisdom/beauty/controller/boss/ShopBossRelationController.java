@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.boss;
 
 import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.core.service.ShopBossService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -22,6 +23,7 @@ import java.util.List;
  * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 预约相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "shopBossRelation")
 public class ShopBossRelationController {
 
@@ -37,20 +39,16 @@ public class ShopBossRelationController {
      * @return
      */
     @RequestMapping(value = "/getBossShopList", method = {RequestMethod.POST, RequestMethod.GET})
-    // @LoginRequired
+
     public @ResponseBody
     ResponseDTO<Object> getBossShopList() {
-
-        long currentTimeMillis = System.currentTimeMillis();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ShopBossRelationDTO bossRelationDTO = new ShopBossRelationDTO();
-        bossRelationDTO.setSysBossId(bossInfo.getId());
-        List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.ShopBossRelationList(bossRelationDTO);
+        bossRelationDTO.setSysBossCode(bossInfo.getId());
+        List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.shopBossRelationList(bossRelationDTO);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData(shopBossRelationDTOS);
-
-        logger.info("获取某个老板的店铺信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 

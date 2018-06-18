@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wisdom.beauty.core.mapper.ShopUserArchivesMapper">
-  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopUserArchivesDTO">
-    <id column="id" property="id" jdbcType="VARCHAR"/>
-    <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
-    <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR"/>
-    <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR"/>
-    <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR"/>
-    <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR"/>
-    <result column="image_rul" property="imageRul" jdbcType="VARCHAR"/>
-    <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR"/>
-    <result column="phone" property="phone" jdbcType="VARCHAR"/>
-    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR"/>
-    <result column="sex" property="sex" jdbcType="VARCHAR"/>
-    <result column="birthday" property="birthday" jdbcType="VARCHAR"/>
-    <result column="age" property="age" jdbcType="INTEGER"/>
-    <result column="constellation" property="constellation" jdbcType="VARCHAR"/>
-    <result column="blood_type" property="bloodType" jdbcType="VARCHAR"/>
-    <result column="height" property="height" jdbcType="REAL"/>
-    <result column="weight" property="weight" jdbcType="REAL"/>
-    <result column="sys_user_type" property="sysUserType" jdbcType="VARCHAR"/>
-    <result column="channel" property="channel" jdbcType="VARCHAR"/>
-    <result column="shopId" property="shopid" jdbcType="VARCHAR"/>
-    <result column="detail" property="detail" jdbcType="VARCHAR"/>
-    <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
-    <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopUserArchivesMapper" >
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopUserArchivesDTO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
+    <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR" />
+    <result column="sys_clerk_id" property="sysClerkId" jdbcType="VARCHAR" />
+    <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
+    <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR"/>
+    <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="constellation" property="constellation" jdbcType="VARCHAR" />
+    <result column="blood_type" property="bloodType" jdbcType="VARCHAR" />
+    <result column="height" property="height" jdbcType="REAL" />
+    <result column="weight" property="weight" jdbcType="REAL" />
+    <result column="sys_user_type" property="sysUserType" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="shopId" property="shopid" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" suffix=")" prefixOverrides="and">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -57,25 +57,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" suffix=")" prefixOverrides="and">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -86,325 +86,323 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List">
-    id, sys_shop_id, sys_shop_name, sys_clerk_id, sys_boss_id, sys_clerk_name, image_rul,
-    sys_user_name, phone, sys_user_id, sex, birthday, age, constellation, blood_type,
+  <sql id="Base_Column_List" >
+    id, sys_shop_id, sys_shop_name, sys_clerk_id, sys_boss_code, sys_clerk_name, image_url, 
+    sys_user_name, phone, sys_user_id, sex, birthday, age, constellation, blood_type, 
     height, weight, sys_user_type, channel, shopId, detail, create_by, create_date, update_user, 
     update_date
   </sql>
-  <select id="selectByCriteria" resultMap="BaseResultMap"
-          parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesCriteria">
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesCriteria" >
     select
-    <if test="distinct">
+    <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
     from shop_user_archives
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null">
+    <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
-    <if test="limitStart >= 0">
+    <if test="limitStart >= 0" >
       limit ${limitStart},${pageSize}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from shop_user_archives
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from shop_user_archives
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesCriteria">
+  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesCriteria" >
     delete from shop_user_archives
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO">
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO" >
     insert into shop_user_archives (id, sys_shop_id, sys_shop_name,
-    sys_clerk_id, sys_boss_id, sys_clerk_name,
-    image_rul, sys_user_name, phone,
-    sys_user_id, sex, birthday,
-    age, constellation, blood_type,
-    height, weight, sys_user_type,
-    channel, shopId, detail,
-    create_by, create_date, update_user,
-    update_date)
+    sys_clerk_id, sys_boss_code, sys_clerk_name,
+    image_url, sys_user_name, phone,
+      sys_user_id, sex, birthday, 
+      age, constellation, blood_type, 
+      height, weight, sys_user_type, 
+      channel, shopId, detail, 
+      create_by, create_date, update_user, 
+      update_date)
     values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR},
-    #{sysClerkId,jdbcType=VARCHAR}, #{sysBossId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR},
-    #{imageRul,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
-    #{sysUserId,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR},
-    #{age,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, #{bloodType,jdbcType=VARCHAR},
-    #{height,jdbcType=REAL}, #{weight,jdbcType=REAL}, #{sysUserType,jdbcType=VARCHAR},
-    #{channel,jdbcType=VARCHAR}, #{shopid,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR},
-    #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
-    #{updateDate,jdbcType=TIMESTAMP})
+    #{sysClerkId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR},
+    #{imageUrl,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+      #{sysUserId,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, 
+      #{age,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, #{bloodType,jdbcType=VARCHAR}, 
+      #{height,jdbcType=REAL}, #{weight,jdbcType=REAL}, #{sysUserType,jdbcType=VARCHAR}, 
+      #{channel,jdbcType=VARCHAR}, #{shopid,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO">
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO" >
     insert into shop_user_archives
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         id,
       </if>
-      <if test="sysShopId != null">
+      <if test="sysShopId != null" >
         sys_shop_id,
       </if>
-      <if test="sysShopName != null">
+      <if test="sysShopName != null" >
         sys_shop_name,
       </if>
-      <if test="sysClerkId != null">
+      <if test="sysClerkId != null" >
         sys_clerk_id,
       </if>
-      <if test="sysBossId != null">
-        sys_boss_id,
+      <if test="sysBossCode != null" >
+        sys_boss_code,
       </if>
-      <if test="sysClerkName != null">
+      <if test="sysClerkName != null" >
         sys_clerk_name,
       </if>
-      <if test="imageRul != null">
-        image_rul,
+      <if test="imageUrl != null">
+        image_url,
       </if>
-      <if test="sysUserName != null">
+      <if test="sysUserName != null" >
         sys_user_name,
       </if>
-      <if test="phone != null">
+      <if test="phone != null" >
         phone,
       </if>
-      <if test="sysUserId != null">
+      <if test="sysUserId != null" >
         sys_user_id,
       </if>
-      <if test="sex != null">
+      <if test="sex != null" >
         sex,
       </if>
-      <if test="birthday != null">
+      <if test="birthday != null" >
         birthday,
       </if>
-      <if test="age != null">
+      <if test="age != null" >
         age,
       </if>
-      <if test="constellation != null">
+      <if test="constellation != null" >
         constellation,
       </if>
-      <if test="bloodType != null">
+      <if test="bloodType != null" >
         blood_type,
       </if>
-      <if test="height != null">
+      <if test="height != null" >
         height,
       </if>
-      <if test="weight != null">
+      <if test="weight != null" >
         weight,
       </if>
-      <if test="sysUserType != null">
+      <if test="sysUserType != null" >
         sys_user_type,
       </if>
-      <if test="channel != null">
+      <if test="channel != null" >
         channel,
       </if>
-      <if test="shopid != null">
+      <if test="shopid != null" >
         shopId,
       </if>
-      <if test="detail != null">
+      <if test="detail != null" >
         detail,
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null" >
         create_by,
       </if>
-      <if test="createDate != null">
+      <if test="createDate != null" >
         create_date,
       </if>
-      <if test="updateUser != null">
+      <if test="updateUser != null" >
         update_user,
       </if>
-      <if test="updateDate != null">
+      <if test="updateDate != null" >
         update_date,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="sysShopId != null">
+      <if test="sysShopId != null" >
         #{sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="sysShopName != null">
+      <if test="sysShopName != null" >
         #{sysShopName,jdbcType=VARCHAR},
       </if>
-      <if test="sysClerkId != null">
+      <if test="sysClerkId != null" >
         #{sysClerkId,jdbcType=VARCHAR},
       </if>
-      <if test="sysBossId != null">
-        #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        #{sysBossCode,jdbcType=VARCHAR},
       </if>
-      <if test="sysClerkName != null">
+      <if test="sysClerkName != null" >
         #{sysClerkName,jdbcType=VARCHAR},
       </if>
-      <if test="imageRul != null">
-        #{imageRul,jdbcType=VARCHAR},
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
       </if>
-      <if test="sysUserName != null">
+      <if test="sysUserName != null" >
         #{sysUserName,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
+      <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="sysUserId != null">
+      <if test="sysUserId != null" >
         #{sysUserId,jdbcType=VARCHAR},
       </if>
-      <if test="sex != null">
+      <if test="sex != null" >
         #{sex,jdbcType=VARCHAR},
       </if>
-      <if test="birthday != null">
+      <if test="birthday != null" >
         #{birthday,jdbcType=VARCHAR},
       </if>
-      <if test="age != null">
+      <if test="age != null" >
         #{age,jdbcType=INTEGER},
       </if>
-      <if test="constellation != null">
+      <if test="constellation != null" >
         #{constellation,jdbcType=VARCHAR},
       </if>
-      <if test="bloodType != null">
+      <if test="bloodType != null" >
         #{bloodType,jdbcType=VARCHAR},
       </if>
-      <if test="height != null">
+      <if test="height != null" >
         #{height,jdbcType=REAL},
       </if>
-      <if test="weight != null">
+      <if test="weight != null" >
         #{weight,jdbcType=REAL},
       </if>
-      <if test="sysUserType != null">
+      <if test="sysUserType != null" >
         #{sysUserType,jdbcType=VARCHAR},
       </if>
-      <if test="channel != null">
+      <if test="channel != null" >
         #{channel,jdbcType=VARCHAR},
       </if>
-      <if test="shopid != null">
+      <if test="shopid != null" >
         #{shopid,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null">
+      <if test="detail != null" >
         #{detail,jdbcType=VARCHAR},
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null" >
         #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
+      <if test="createDate != null" >
         #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateUser != null">
+      <if test="updateUser != null" >
         #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
+      <if test="updateDate != null" >
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesCriteria"
-          resultType="java.lang.Integer">
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesCriteria" resultType="java.lang.Integer" >
     select count(1) from shop_user_archives
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByCriteriaSelective" parameterType="map">
+  <update id="updateByCriteriaSelective" parameterType="map" >
     update shop_user_archives
-    <set>
-      <if test="record.id != null">
+    <set >
+      <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysShopId != null">
+      <if test="record.sysShopId != null" >
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysShopName != null">
+      <if test="record.sysShopName != null" >
         sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysClerkId != null">
+      <if test="record.sysClerkId != null" >
         sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysBossId != null">
-        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      <if test="record.sysBossCode != null" >
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysClerkName != null">
+      <if test="record.sysClerkName != null" >
         sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       </if>
-      <if test="record.imageRul != null">
-        image_rul = #{record.imageRul,jdbcType=VARCHAR},
+      <if test="record.imageUrl != null">
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysUserName != null">
+      <if test="record.sysUserName != null" >
         sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       </if>
-      <if test="record.phone != null">
+      <if test="record.phone != null" >
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysUserId != null">
+      <if test="record.sysUserId != null" >
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       </if>
-      <if test="record.sex != null">
+      <if test="record.sex != null" >
         sex = #{record.sex,jdbcType=VARCHAR},
       </if>
-      <if test="record.birthday != null">
+      <if test="record.birthday != null" >
         birthday = #{record.birthday,jdbcType=VARCHAR},
       </if>
-      <if test="record.age != null">
+      <if test="record.age != null" >
         age = #{record.age,jdbcType=INTEGER},
       </if>
-      <if test="record.constellation != null">
+      <if test="record.constellation != null" >
         constellation = #{record.constellation,jdbcType=VARCHAR},
       </if>
-      <if test="record.bloodType != null">
+      <if test="record.bloodType != null" >
         blood_type = #{record.bloodType,jdbcType=VARCHAR},
       </if>
-      <if test="record.height != null">
+      <if test="record.height != null" >
         height = #{record.height,jdbcType=REAL},
       </if>
-      <if test="record.weight != null">
+      <if test="record.weight != null" >
         weight = #{record.weight,jdbcType=REAL},
       </if>
-      <if test="record.sysUserType != null">
+      <if test="record.sysUserType != null" >
         sys_user_type = #{record.sysUserType,jdbcType=VARCHAR},
       </if>
-      <if test="record.channel != null">
+      <if test="record.channel != null" >
         channel = #{record.channel,jdbcType=VARCHAR},
       </if>
-      <if test="record.shopid != null">
+      <if test="record.shopid != null" >
         shopId = #{record.shopid,jdbcType=VARCHAR},
       </if>
-      <if test="record.detail != null">
+      <if test="record.detail != null" >
         detail = #{record.detail,jdbcType=VARCHAR},
       </if>
-      <if test="record.createBy != null">
+      <if test="record.createBy != null" >
         create_by = #{record.createBy,jdbcType=VARCHAR},
       </if>
-      <if test="record.createDate != null">
+      <if test="record.createDate != null" >
         create_date = #{record.createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updateUser != null">
+      <if test="record.updateUser != null" >
         update_user = #{record.updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="record.updateDate != null">
+      <if test="record.updateDate != null" >
         update_date = #{record.updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByCriteria" parameterType="map">
+  <update id="updateByCriteria" parameterType="map" >
     update shop_user_archives
     set id = #{record.id,jdbcType=VARCHAR},
       sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
       sys_clerk_id = #{record.sysClerkId,jdbcType=VARCHAR},
-    sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
-      image_rul = #{record.imageRul,jdbcType=VARCHAR},
-    sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
+    image_url = #{record.imageUrl,jdbcType=VARCHAR},
+      sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
-    sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
+      sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       sex = #{record.sex,jdbcType=VARCHAR},
       birthday = #{record.birthday,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
@@ -412,107 +410,107 @@
       blood_type = #{record.bloodType,jdbcType=VARCHAR},
       height = #{record.height,jdbcType=REAL},
       weight = #{record.weight,jdbcType=REAL},
-    sys_user_type = #{record.sysUserType,jdbcType=VARCHAR},
+      sys_user_type = #{record.sysUserType,jdbcType=VARCHAR},
       channel = #{record.channel,jdbcType=VARCHAR},
-    shopId = #{record.shopid,jdbcType=VARCHAR},
+      shopId = #{record.shopid,jdbcType=VARCHAR},
       detail = #{record.detail,jdbcType=VARCHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       update_user = #{record.updateUser,jdbcType=VARCHAR},
       update_date = #{record.updateDate,jdbcType=TIMESTAMP}
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO" >
     update shop_user_archives
-    <set>
-      <if test="sysShopId != null">
+    <set >
+      <if test="sysShopId != null" >
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="sysShopName != null">
+      <if test="sysShopName != null" >
         sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
       </if>
-      <if test="sysClerkId != null">
+      <if test="sysClerkId != null" >
         sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
       </if>
-      <if test="sysBossId != null">
-        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      <if test="sysBossCode != null" >
+        sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       </if>
-      <if test="sysClerkName != null">
+      <if test="sysClerkName != null" >
         sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       </if>
-      <if test="imageRul != null">
-        image_rul = #{imageRul,jdbcType=VARCHAR},
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
       </if>
-      <if test="sysUserName != null">
+      <if test="sysUserName != null" >
         sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
+      <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="sysUserId != null">
+      <if test="sysUserId != null" >
         sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       </if>
-      <if test="sex != null">
+      <if test="sex != null" >
         sex = #{sex,jdbcType=VARCHAR},
       </if>
-      <if test="birthday != null">
+      <if test="birthday != null" >
         birthday = #{birthday,jdbcType=VARCHAR},
       </if>
-      <if test="age != null">
+      <if test="age != null" >
         age = #{age,jdbcType=INTEGER},
       </if>
-      <if test="constellation != null">
+      <if test="constellation != null" >
         constellation = #{constellation,jdbcType=VARCHAR},
       </if>
-      <if test="bloodType != null">
+      <if test="bloodType != null" >
         blood_type = #{bloodType,jdbcType=VARCHAR},
       </if>
-      <if test="height != null">
+      <if test="height != null" >
         height = #{height,jdbcType=REAL},
       </if>
-      <if test="weight != null">
+      <if test="weight != null" >
         weight = #{weight,jdbcType=REAL},
       </if>
-      <if test="sysUserType != null">
+      <if test="sysUserType != null" >
         sys_user_type = #{sysUserType,jdbcType=VARCHAR},
       </if>
-      <if test="channel != null">
+      <if test="channel != null" >
         channel = #{channel,jdbcType=VARCHAR},
       </if>
-      <if test="shopid != null">
+      <if test="shopid != null" >
         shopId = #{shopid,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null">
+      <if test="detail != null" >
         detail = #{detail,jdbcType=VARCHAR},
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null" >
         create_by = #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
+      <if test="createDate != null" >
         create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateUser != null">
+      <if test="updateUser != null" >
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
+      <if test="updateDate != null" >
         update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO">
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopUserArchivesDTO" >
     update shop_user_archives
     set sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
       sys_clerk_id = #{sysClerkId,jdbcType=VARCHAR},
-    sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
-      image_rul = #{imageRul,jdbcType=VARCHAR},
-    sys_user_name = #{sysUserName,jdbcType=VARCHAR},
+    image_url = #{imageUrl,jdbcType=VARCHAR},
+      sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-    sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},
       birthday = #{birthday,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
@@ -520,9 +518,9 @@
       blood_type = #{bloodType,jdbcType=VARCHAR},
       height = #{height,jdbcType=REAL},
       weight = #{weight,jdbcType=REAL},
-    sys_user_type = #{sysUserType,jdbcType=VARCHAR},
+      sys_user_type = #{sysUserType,jdbcType=VARCHAR},
       channel = #{channel,jdbcType=VARCHAR},
-    shopId = #{shopid,jdbcType=VARCHAR},
+      shopId = #{shopid,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

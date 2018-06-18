@@ -29,76 +29,58 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
         productName:"",//产品名称
         productTypeOneId:"",//一级产品id
         productTypeTwoId:"",//二级产品id
+        chooseProductItem:''
     };
 
 
+    $scope.loading = true;
     //一级商品列表接口
     OneLevelProduct.get(function (data) {
        $scope.selectSingleData=data.responseData;
         $scope.selectSingleData[0].status=3;
-        console.log(data);
-        $scope.selection(0,data.responseData[0].id)
-        // $scope.selection(0,"2")
+        $scope.selection(0,data.responseData[0].id);
+        $scope.loading = false;
     });
-    $scope.checkImg = function (index,status,id) {
-        $scope.param.productTypeOneId=id;
-        //点击一级列表图标调取二级列表接口
-        TwoLevelProduct.get({id:id},function (data) {
-            $scope.product2List=data.responseData;
-            console.log(data)
-        });
-        if($scope.param.childrenFlag == index){
-            for(var i = 0; i < $scope.selectSingleData.length; i++ ){
-                $scope.selectSingleData[i].status = 1
-            }
-            if(status == 1){
-                $scope.selectSingleData[index].status = 4;
-                $scope.param.productAppear = true;
-            }
-            if(status == 4){
-                $scope.selectSingleData[index].status = 3;
-                $scope.param.productAppear = false;
-            }
-            if(status == 3){
-                $scope.selectSingleData[index].status = 4;
-                $scope.param.productAppear = true;
-            }
-        }
-    };
+
     //点击二级列表调取三级商品接口
     $scope.goThreeList=function (id) {
+        $scope.param.chooseProductItem = id;
+        $scope.loading = true;
+        $scope.product3List = [];
         ThreeLevelProduct.get({
             pageSize:$scope.param.pageSize,
             productTypeOneId:$scope.param.productTypeOneId,
             productTypeTwoId:id,
             productName:$scope.param.productName
         },function (data) {
-         $scope.product3List=data.responseData[0];
-         $scope.param.productAppear=false;
+            $scope.product3List = data.responseData;
+            console.log($scope.product3List);
+            $scope.loading = false;
+            $scope.param.productAppear = false;
+            $scope.param.chooseProjectItem = ''
         })
     };
+
     $scope.goProductDetails=function (id) {
         $state.go("pad-web.productDetails",{id:id})
     };
 
     $scope.selection  = function (index,id) {
-        TwoLevelProduct.get({id:id},function (data) {
-            $scope.product2List=data.responseData;
-            console.log(data);
-            ThreeLevelProduct.get({
-                pageSize:$scope.param.pageSize,
-                productTypeOneId:"2",productTypeTwoId:"3",
-                productName:$scope.param.productName
-            },function (data) {
-                $scope.product3List=data.responseData;
-                $scope.param.productAppear=false;
-            })
-        });
-        $scope.param.childrenFlag = index;
-        for(var i = 0; i < $scope.selectSingleData.length; i++ ){
-            $scope.selectSingleData[i].status = 1
-        }
+        $scope.loading = true;
         $scope.param.selection = index;
-        $scope.selectSingleData[index].status = 3
+        $scope.product2List = [];
+        $scope.product3List = [];
+        TwoLevelProduct.get({id:id},function (data) {
+            $scope.product2List = data.responseData;
+            if($scope.product2List.length>0)
+            {
+                $scope.param.productAppear = true;
+                $scope.loading = false;
+            }
+            else
+            {
+                $scope.loading = false;
+            }
+        });
     }
 });

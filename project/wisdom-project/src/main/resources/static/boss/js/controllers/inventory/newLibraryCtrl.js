@@ -2,22 +2,31 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','BossUtil','$filter','Global',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter,Global) {
             $rootScope.title = "新增入库";
+            $scope.sum = $stateParams.sum;
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: [],
-                index:""
-            }
-            $scope.param.dateValue = new Date($scope.param.dateValue).getTime();
-            console.log(new Date($scope.param.dateValue));
-            for(var i=0;i<$scope.param.date.length;i++){
-                $scope.param.date[i]=$scope.param.date.replace(/00/g,'');
-                $scope.param.date[i]=$scope.param.date.replace(/:/g,'');
-            }
+                index:"",
+                shopStock:[]
+            };
 
+            angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
 
-/*日期插件*/
-
-
+                var value = {
+                    detail:"",
+                    productDate:val.effectDate,
+                    stockPrice:val.marketPrice,/*进货单价*/
+                    shopProcId:val.id,/*产品id*/
+                    shopStoreId:$stateParams.shopStoreId,/*仓库id*/
+                    stockNumber: "",
+                    productUrl : val.productUrl,
+                    productName: val.productName,
+                    productUnit: val.productUnit,
+                    productSpec: val.productSpec,
+                    stockStyle:$stateParams.stockStyle /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
+                }
+                $scope.param.shopStock.push(value);
+            })
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -32,17 +41,27 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
 
             // 日期选择后的回调函数
-            $scope.selDate = function(index){
-                $scope.param.index = index;
+            var dateShopProductId = '';
+            $scope.selDate = function(productDate,shopProcId){
+                dateShopProductId = shopProcId;
             }
-            var datePickerCallbacke = function (val) {
+
+            console.log($rootScope.shopInfo.entryShopProductList);
+            var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
-                    $scope.shopStock[$scope.param.index].productDate = new Date(val).getTime();
-
-                    $scope.param.date[$scope.param.index] = $filter('date')(val, 'yyyy-MM-dd')
+                    console.log( $filter('date')(val, 'yyyy-MM-dd'));
+                    console.log(dateShopProductId);
+                    angular.forEach($scope.param.shopStock,function (val1,index) {
+                        if(val1.shopProcId == dateShopProductId)
+                        {
+                            val1.productDate =  angular.copy($filter('date')(val, 'yyyy-MM-dd'));
+                        }
+                    });
+                    console.log($scope.param.shopStock);
                 }
             };
+
             //主体对象
             $scope.datepickerObjectEnd = {
                 titleLabel: '选择日期',  //可选
@@ -65,32 +84,45 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
                     console.log(val)
-                    datePickerCallbacke(val);
+                    datePickerCallback(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
-            $scope.shopStock =[{
-                detail:"啊啊",/*备注*/
-                flowNo:"785489636598741258",/*订单号*/
-                productDate:"",/*产品生产日期	*/
-                setStockPrice:"12",/*进货单价*/
-                shopProcId:"7878",/*产品id*/
-                shopStoreId:"651742081",/*仓库id*/
-                stockNumber:"12",/*库存数量	*/
-                stockStyle:$stateParams.stockStyle,/*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
 
-            }];
+            $scope.deleteEntryProduct = function(shopProcId){
+                var shopStock = [];
+                angular.forEach($scope.param.shopStock,function (val,index) {
+                    if(val.shopProcId!=shopProcId){
+                        shopStock.push(val);
+                    }
+                });
+                $scope.param.shopStock = shopStock;
+                $rootScope.shopInfo.entryShopProductList = shopStock;
+                $scope.sum = $scope.sum-1;
+            }
 
             $scope.successfulInventoryGo=function(){
-
-                AddStock.save($scope.shopStock,function(data){
-                    if(data.result==Global.SUCCESS){
-                         $state.go("successfulInventory")
+                if($scope.sum>0){
+                    var list = $scope.param.shopStock;
+                    for(var i=0;i<list.length;i++){
+                        if(list[i].stockNumber == ''||list[i].productDate == ''||list[i].stockPrice == ''){
+                            alert("请检查信息")
+                            return
+                        }
                     }
-                })
+                    AddStock.save($scope.param.shopStock,function(data){
+                        if(data.result==Global.SUCCESS){
+                            $state.go("successfulInventory",{id:data.responseData,type:'inbound'})
+                        }
+                    })
+                }else{
+                     alert("入库商品列表不能为空！");
+                     $state.go('putInStorage',{name:$stateParams.name});
+                }
 
             }
+
             $scope.productPutInStorageMoreGo = function (stockStyle) {
                 $state.go("productPutInStorageMore",{stockStyle:stockStyle})
             }

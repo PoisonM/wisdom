@@ -2,6 +2,8 @@ package com.wisdom.beauty.api.extDto;
 
 import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 
+import java.util.List;
+
 public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     //充值金额
@@ -14,16 +16,19 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     private String surplusPayPrice;
 
     //支付方式
-    private String PayType;
+    private String payType;
 
     //店员名称
-    private String sysCLerkName;
+    private String sysClerkName;
 
     //用户id
     private String sysUserId;
 
     //交易id
     private String transactionId;
+
+    //关联员工
+    private String sysClerkId;
 
     private String signUrl;
 
@@ -32,15 +37,34 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     //订单状态 1、未支付 2、待支付  2、已支付  3、已失效
     private String orderStatus;
 
+    private String orderStatusDesc;
+
     /**
      * BANK_PAY("0", "银行卡支付"),
      * WECHAT_PAY("1", "微信支付"),
      * ALI_PAY("2", "支付宝支付");
      */
-    //支付方式
-    private String payType;
+
 
     private String userName;
+    //图片
+    private List<String> imageList;
+
+    public String getOrderStatusDesc() {
+        return orderStatusDesc;
+    }
+
+    public void setOrderStatusDesc(String orderStatusDesc) {
+        this.orderStatusDesc = orderStatusDesc;
+    }
+
+    public String getSysClerkId() {
+        return sysClerkId;
+    }
+
+    public void setSysClerkId(String sysClerkId) {
+        this.sysClerkId = sysClerkId;
+    }
 
     public String getSignUrl() {
         return signUrl;
@@ -78,6 +102,22 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
         return orderStatus;
     }
 
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
@@ -88,14 +128,6 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public String getSysCLerkName() {
-        return sysCLerkName;
-    }
-
-    public void setSysCLerkName(String sysCLerkName) {
-        this.sysCLerkName = sysCLerkName;
     }
 
     public String getCashPay() {
@@ -114,19 +146,19 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
         this.surplusPayPrice = surplusPayPrice;
     }
 
-    public String getPayType() {
-        return PayType;
-    }
-
-    public void setPayType(String payType) {
-        PayType = payType;
-    }
-
     public String getRechargeAmount() {
         return rechargeAmount;
     }
 
     public void setRechargeAmount(String rechargeAmount) {
         this.rechargeAmount = rechargeAmount;
+    }
+
+    public List<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 }

@@ -46,8 +46,23 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     //产品类型 0：客装 1：院装 2：易耗品
     private String productType;
 
+    //生产地址
+    private String manuAddress;
+
     //保质期（月）
     private Integer qualityPeriod;
+
+    //生产厂家
+    private String manuName;
+
+    //商标
+    private String tradeMark;
+
+    //
+    private String effectDate;
+
+    //
+    private String invalidDate;
 
     //产品有效期预警（天）
     private Integer productWarningDay;
@@ -61,14 +76,20 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     //优惠价格
     private BigDecimal discountPrice;
 
-    //
+    //产品编号
     private String productCode;
 
-    //
-    private BigDecimal productUnit;
+    //产品单位
+    private String productUnit;
 
-    //
+    //产品规格
     private String productSpec;
+
+    //规格单位
+    private String productSpecUnit;
+
+    //产品备注
+    private String note;
 
     //
     private String introduce;
@@ -197,12 +218,52 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.productType = productType;
     }
 
+    public String getManuAddress() {
+        return manuAddress;
+    }
+
+    public void setManuAddress(String manuAddress) {
+        this.manuAddress = manuAddress;
+    }
+
     public Integer getQualityPeriod() {
         return qualityPeriod;
     }
 
     public void setQualityPeriod(Integer qualityPeriod) {
         this.qualityPeriod = qualityPeriod;
+    }
+
+    public String getManuName() {
+        return manuName;
+    }
+
+    public void setManuName(String manuName) {
+        this.manuName = manuName;
+    }
+
+    public String getTradeMark() {
+        return tradeMark;
+    }
+
+    public void setTradeMark(String tradeMark) {
+        this.tradeMark = tradeMark;
+    }
+
+    public String getEffectDate() {
+        return effectDate;
+    }
+
+    public void setEffectDate(String effectDate) {
+        this.effectDate = effectDate;
+    }
+
+    public String getInvalidDate() {
+        return invalidDate;
+    }
+
+    public void setInvalidDate(String invalidDate) {
+        this.invalidDate = invalidDate;
     }
 
     public Integer getProductWarningDay() {
@@ -245,11 +306,11 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.productCode = productCode;
     }
 
-    public BigDecimal getProductUnit() {
+    public String getProductUnit() {
         return productUnit;
     }
 
-    public void setProductUnit(BigDecimal productUnit) {
+    public void setProductUnit(String productUnit) {
         this.productUnit = productUnit;
     }
 
@@ -259,6 +320,22 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
 
     public void setProductSpec(String productSpec) {
         this.productSpec = productSpec;
+    }
+
+    public String getProductSpecUnit() {
+        return productSpecUnit;
+    }
+
+    public void setProductSpecUnit(String productSpecUnit) {
+        this.productSpecUnit = productSpecUnit;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getIntroduce() {

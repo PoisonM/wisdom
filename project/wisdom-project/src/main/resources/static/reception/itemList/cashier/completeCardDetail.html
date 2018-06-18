@@ -1,0 +1,58 @@
+<div class="completeCardDetail">
+    <div class="completeCardDetail_box">
+        <div class="basic">
+            <p>基本信息</p>
+            <ul>
+                <li>
+                    <label for="">时间</label>
+                    <span>{{dataInfo.createDate | date: "yyyy-MM-dd HH:mm:ss"}}</span>
+                </li>
+                <li>
+                    <label for="">顾客</label>
+                    <span>{{dataInfo.sysUserName}}</span>
+                </li>
+                <li>
+                    <label for="">操作门店</label>
+                    <span>{{dataInfo.sysShopName}}</span>
+                </li>
+                <li>
+                    <label for="">前台</label>
+                    <span>{{dataInfo.sysClerkName}}</span>
+                </li>
+                <li>
+                    <label for="">类型</label>
+                    <span>套卡</span>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList" >
+            <div class="basic">
+                <p>划卡信息</p>
+                <ul>
+                    <li>
+                        <label for="">{{listItem.flowName}}</label>
+                        <span>{{listItem.price}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="basic">
+                <p>备注</p>
+                <ul>
+                    <li>
+                        <label for="">备注</label>
+                        <span>{{listItem.detail}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="basic">
+                <p>顾客签字</p>
+                <ul>
+                    <li>
+                        <img ng-src="listItem.signUrl" alt="">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

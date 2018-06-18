@@ -1,15 +1,15 @@
 
-// var ofixed_table_st = window.setTimeout;
-// window.setTimeout = function(fRef, mDelay) {
-//     if (typeof fRef == 'function') {
-//         var argu = Array.prototype.slice.call(arguments, 2);
-//         var f = (function() {
-//             fRef.apply(null, argu);
-//         });
-//         return ofixed_table_st(f, mDelay);
-//     }
-//     return ofixed_table_st(fRef, mDelay);
-// };
+var ofixed_table_st = window.setTimeout;
+window.setTimeout = function(fRef, mDelay) {
+    if (typeof fRef == 'function') {
+        var argu = Array.prototype.slice.call(arguments, 2);
+        var f = (function() {
+            fRef.apply(null, argu);
+        });
+        return ofixed_table_st(f, mDelay);
+    }
+    return ofixed_table_st(fRef, mDelay);
+};
 
 function oFixedTable(id, obj, _cfg){
     this.id = id;
@@ -19,8 +19,8 @@ function oFixedTable(id, obj, _cfg){
         fixHead: _cfg.fixHead || true,
         rows: _cfg.rows || 1,
         cols: _cfg.cols || 0,
-        background: _cfg.background || '#f1f1f1',
-        zindex: _cfg.zindex || 9999
+        background: _cfg.background || '#ffffff',
+        zindex: _cfg.zindex || 999
     };
 
     window.setTimeout(this._fixTable, 100, this);

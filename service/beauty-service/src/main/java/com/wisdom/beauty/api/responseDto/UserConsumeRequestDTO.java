@@ -3,6 +3,8 @@ package com.wisdom.beauty.api.responseDto;
 
 import com.wisdom.common.entity.BaseEntity;
 
+import java.util.List;
+
 /**
  * ClassName: UserConsumeRequestDTO
  *
@@ -32,7 +34,7 @@ public class UserConsumeRequestDTO extends BaseEntity  {
     /**
      * BossId
      */
-    private String sysBossId;
+    private String sysBossCode;
 
     /**
      * 美容院表主键
@@ -57,7 +59,9 @@ public class UserConsumeRequestDTO extends BaseEntity  {
      */
     private Boolean disticRequire=false;
     private int pageSize ; //每页的条目
-
+    //单次卡为当前用户与项目的关系 id ,疗程卡也为当前项目跟用户的关系id,用户与套卡跟项目的关系表的关系表,产品为当前产品跟用户的关系 id ,充值卡为用户与的当前充值卡关系的id
+    private String flowId;
+    private List<String> flowIds;
     public String getId() {
         return id;
     }
@@ -90,12 +94,12 @@ public class UserConsumeRequestDTO extends BaseEntity  {
         this.consumeType = consumeType;
     }
 
-    public String getSysBossId() {
-        return sysBossId;
+    public String getSysBossCode() {
+        return sysBossCode;
     }
 
-    public void setSysBossId(String sysBossId) {
-        this.sysBossId = sysBossId;
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
     }
 
     public String getSysShopId() {
@@ -144,5 +148,21 @@ public class UserConsumeRequestDTO extends BaseEntity  {
 
     public void setDisticRequire(Boolean disticRequire) {
         this.disticRequire = disticRequire;
+    }
+
+    public String getFlowId() {
+        return flowId;
+    }
+
+    public void setFlowId(String flowId) {
+        this.flowId = flowId;
+    }
+
+    public List<String> getFlowIds() {
+        return flowIds;
+    }
+
+    public void setFlowIds(List<String> flowIds) {
+        this.flowIds = flowIds;
     }
 }

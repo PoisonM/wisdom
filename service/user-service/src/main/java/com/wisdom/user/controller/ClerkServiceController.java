@@ -6,9 +6,11 @@ package com.wisdom.user.controller;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.user.service.ClerkInfoService;
+import com.wisdom.user.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +40,6 @@ public class ClerkServiceController {
 	@RequestMapping(value = "getClerkInfo", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
 	List<SysClerkDTO> getClerkInfo(@RequestParam(value = "shopId") String shopId) {
-
-		long startTime = System.currentTimeMillis();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 
 		logger.info("获取店员列表信息传入参数shopId = {}", shopId);
@@ -53,8 +53,6 @@ public class ClerkServiceController {
 		}
 		listResponseDTO.setResponseData(clerkInfo);
 		listResponseDTO.setResult(StatusConstant.SUCCESS);
-
-		logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return clerkInfo;
 	}
 
@@ -67,13 +65,15 @@ public class ClerkServiceController {
 	@RequestMapping(value = "saveClerkInfo", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
 	ResponseDTO<Object>  saveClerkInfo(@RequestBody SysClerkDTO sysClerkDTO) {
-
-		long startTime = System.currentTimeMillis();
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+		if(bossInfo!=null){
+			sysClerkDTO.setSysBossCode(bossInfo.getSysBossCode());
+			sysClerkDTO.setSysBossName(bossInfo.getName());
+		}
 		clerkInfoService.saveSysClerk(sysClerkDTO);
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
-		logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -86,8 +86,8 @@ public class ClerkServiceController {
 	 */
 	@RequestMapping(value = "getClerkInfoList", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
-	List<SysClerkDTO> getClerkInfoList(@RequestParam(required = false) String sysBossId,
-										   @RequestParam(required = false) String sysShopId,
+	ResponseDTO<List<SysClerkDTO>> getClerkInfoList(@RequestParam(required = false) String sysBossCode,
+									   @RequestParam(required = false) String sysShopId,
 			                           @RequestParam(required = false) String startTime,
 									   @RequestParam(required = false) String endTime,
 									   int pageSize) {
@@ -95,9 +95,10 @@ public class ClerkServiceController {
 		long time = System.currentTimeMillis();
 
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
 		SysClerkDTO sysClerkDTO = new SysClerkDTO();
-		sysClerkDTO.setSysBossId(sysBossId);
-		sysClerkDTO.setSysShopId(sysShopId);
+		sysClerkDTO.setSysBossCode(bossInfo.getSysBossCode());
+		sysClerkDTO.setSysShopId(bossInfo.getCurrentShopId());
 		PageParamVoDTO<SysClerkDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		pageParamVoDTO.setRequestData(sysClerkDTO);
 		pageParamVoDTO.setPageSize(pageSize);
@@ -110,7 +111,34 @@ public class ClerkServiceController {
 		listResponseDTO.setResult(StatusConstant.SUCCESS);
 
 		logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - time));
-		return clerkInfo;
+		return listResponseDTO;
+	}
+	/**
+	*@Author:zhanghuan
+	*@Param:
+	*@Return:
+	*@Description: 根据手机号或者姓名查询家人信息
+	*@Date:2018/6/5 10:35
+	*/
+	@RequestMapping(value = "getClerkBySearchFile", method =  RequestMethod.GET )
+	@ResponseBody
+	ResponseDTO<List<SysClerkDTO>> getClerkBySearchFile(@RequestParam String searchFile) {
+
+		long time = System.currentTimeMillis();
+
+		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+		SysBossDTO bossInfo = UserUtils.getBossInfo();
+		SysClerkDTO sysClerkDTO = new SysClerkDTO();
+		sysClerkDTO.setSysBossCode(bossInfo.getSysBossCode());
+		sysClerkDTO.setName(searchFile);
+		sysClerkDTO.setMobile(searchFile);
+		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkBySearchFile(sysClerkDTO);
+
+		listResponseDTO.setResponseData(clerkInfo);
+		listResponseDTO.setResult(StatusConstant.SUCCESS);
+
+		logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - time));
+		return listResponseDTO;
 	}
 
 	/**
@@ -123,8 +151,6 @@ public class ClerkServiceController {
 	@RequestMapping(value = "/clerkInfo/{clerkId}", method = RequestMethod.GET)
 	@ResponseBody
 	List<SysClerkDTO> getClerkInfoByClerkId(@PathVariable String clerkId) {
-
-		long startTime = System.currentTimeMillis();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 
 		logger.info("获取店员列表信息传入参数shopId = {}", clerkId);
@@ -134,21 +160,40 @@ public class ClerkServiceController {
 
 		listResponseDTO.setResponseData(clerkInfo);
 		listResponseDTO.setResult(StatusConstant.SUCCESS);
-
-		logger.info("获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return clerkInfo;
 	}
 
-	@RequestMapping(value = "/upateClerkInfo", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateClerkInfo", method = RequestMethod.POST)
 	@ResponseBody
     ResponseDTO<String>  updateClerkInfo(@RequestBody SysClerkDTO sysClerkDTO) {
-		long timeMillis = System.currentTimeMillis();
 		int info = clerkInfoService.updateSysClerk(sysClerkDTO);
 
 		ResponseDTO<String> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 
-		logger.info("获取某次预约详情传入参数耗时{}毫秒", (System.currentTimeMillis() - timeMillis));
         return  responseDTO;
+	}
+	/**
+	*@Author:zhanghuan
+	*@Param:
+	*@Return:
+	*@Description: 获取老板名下所有店员信息，不分页，不根据时间查询
+	*@Date:2018/5/23 15:11
+	*/
+	@RequestMapping(value = "/getBossClerkInfoList", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	List<SysClerkDTO> getClerkInfoList() {
+
+		long time = System.currentTimeMillis();
+		SysBossDTO sysBossDTO=UserUtils.getBossInfo();;
+		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+		SysClerkDTO sysClerkDTO = new SysClerkDTO();
+		sysClerkDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysClerkDTO);
+
+		listResponseDTO.setResponseData(clerkInfo);
+		listResponseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("getBossClerkInfoList获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - time));
+		return clerkInfo;
 	}
 }

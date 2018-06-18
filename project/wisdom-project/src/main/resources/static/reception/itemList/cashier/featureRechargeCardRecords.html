@@ -1,0 +1,18 @@
+<div class="featureRechargeCardRecords">
+    <div class="featureRechargeCardRecords_box">
+        <p>{{sunAmount}}</p>
+        <div class="content">
+            <ul>
+                <li ng-repeat="item in featureData" ng-click="goRechargeCardDetail(item.flowNo)">
+                    <div>
+                        <span>{{item.createDate}}</span>
+                        <span ng-if="item.goodsType == 2">店内充值</span>
+                        <span ng-if="item.goodsType != 2">充值</span>
+                        <span><e class="color_red">{{item.sumAmount}}</e></span>
+                    </div>
+                    <div class="go_set"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

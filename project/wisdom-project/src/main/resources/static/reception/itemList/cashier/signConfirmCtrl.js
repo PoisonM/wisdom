@@ -1,27 +1,22 @@
-PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm, ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo) {
+PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
+    , $state, ngDialog, Archives, SearchRechargeConfirm, RechargeCardSignConfirm
+    , ImageBase64UploadToOSS, GetShopUserRecentlyOrderInfo,ConsumeFlowNo,PaySignConfirm
+    ,GetOrderConsumeDetailInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
-    $scope.$parent.param.headerCash.leftContent = "档案(9010)";
-    $scope.$parent.param.headerCash.leftAddContent = "添加档案";
-    $scope.$parent.param.headerCash.backContent = "充值记录";
-    $scope.$parent.param.headerCash.leftTip = "保存";
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
-    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
-    /*$scope.flagFn = function(bool) {
-    //左
-    $scope.mainLeftSwitch.peopleListFlag = bool
-    $scope.mainLeftSwitch.priceListFlag = !bool
-    //头
-    $scope.$parent.$parent.mainSwitch.headerReservationAllFlag = !bool
-    $scope.$parent.$parent.mainSwitch.headerCashAllFlag = bool
-    $scope.$parent.$parent.mainSwitch.headerPriceListAllFlag = !bool
-    $scope.$parent.$parent.mainSwitch.headerLoginFlag = !bool
-    $scope.$parent.$parent.mainSwitch.headerCashFlag.leftFlag = bool
-    $scope.$parent.$parent.mainSwitch.headerCashFlag.middleFlag = bool
-    $scope.$parent.$parent.mainSwitch.headerCashFlag.rightFlag = bool
-    }*/
+    $scope.$parent.param.top_bottomSelect = "shouyin";
+    $scope.$parent.param.headerPrice.title = "签字确认";
+    $scope.$parent.param.headerPrice.saveContent = ""
+    $scope.flagFn = function (bool) {
+        //头
+        $scope.$parent.mainSwitch.headerReservationAllFlag = !bool;
+        $scope.$parent.mainSwitch.headerCashAllFlag = !bool;
+        $scope.$parent.mainSwitch.headerPriceListAllFlag = bool;
+        $scope.$parent.mainSwitch.headerLoginFlag = !bool;
+        $scope.$parent.mainSwitch.headerPriceListBlackFlag = !bool
+
+    };
     /*打开收银头部/档案头部/我的头部*/
-    /*$scope.flagFn(true)*/
+    $scope.flagFn(true);
 
     var $signature = $("#signConfirmRight").jSignature({
         'height': 500,
@@ -34,35 +29,84 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams, $state, ngDi
     var img = new Image()
     img.src = data
     $(img).appendTo($('#signimg'))
+
+
+
     //将数据显示在文本框
     if ($state.params.transactionId != '') {
-        SearchRechargeConfirm.get({
+        $scope.rechargeConsumeFlag = true
+        SearchRechargeConfirm.get({//充值签字确认
             transactionId: $state.params.transactionId,
         }, function(data) {
             $scope.responseData = data.responseData;
         })
     } else if ($state.params.orderId != '') {
-        GetShopUserRecentlyOrderInfo.get({
-            orderId: $state.params.orderId,
-            sysUserId: '110'
-        }, function(data) {
-            console.log(data)
+        $scope.rechargeConsumeFlag = false
+        /*ConsumeFlowNo.get({
+            consumeFlowNo:$stateParams.orderId
+        },function (data) {
+            $scope.consumeListInfo = data.responseData
+        })*/
+
+        GetOrderConsumeDetailInfo.get({
+            orderId:$stateParams.orderId
+        },function (data) {
+            $scope.userInfo = data.responseData.userInfo
+            $scope.shopUserPayDTO = data.responseData.shopUserPayDTO
+            if(data.responseData.groupList != undefined){
+                $scope.groupList = data.responseData.groupList//套卡
+            }else {
+                $scope.groupList = []
+            }
+            if(data.responseData.periodProjectList != undefined){
+                $scope.periodProjectList = data.responseData.periodProjectList//疗程
+            }else{
+                $scope.periodProjectList = []
+            }
+            if(data.responseData.productList != undefined){
+                $scope.productList = data.responseData.productList//产品
+            }else{
+                $scope.productList = []
+            }
+            if(data.responseData.timeProjectList != undefined){
+                $scope.timeProjectList = data.responseData.timeProjectList//单次
+            }else{
+                $scope.timeProjectList = []
+            }
+        })
+    }
+
+    $scope.clickOk = function() {
+        ImageBase64UploadToOSS.save({ imageStr: $("#signConfirmRight").jSignature("getData") }, function(data) {
+            if($state.params.transactionId != ''){
+                RechargeCardSignConfirm.get({
+                    transactionId: $state.params.transactionId,
+                    imageUrl: data.responseData,
+                }, function(data) {
+                    if(data.result == "0x00001"){
+                        $state.go("pad-web.left_nav.blankPage");
+                    }else{
+                        alert(data.errorInfo);
+                        $state.go("pad-web.left_nav.blankPage");
+                    }
+
+                })
+            }else if($state.params.orderId != ''){
+                PaySignConfirm.save({
+                    orderId:$stateParams.orderId,
+                    imageUrl: data.responseData,
+                },function (data) {
+                    if(data.result == "0x00001"){
+                        $state.go("pad-web.left_nav.blankPage");
+                    }
+                })
+            }
+
         })
     }
 
 
-
-    $scope.clickOk = function() {
-        ImageBase64UploadToOSS.save({ imageStr: $("#signConfirmRight").jSignature("getData") }, function(data) {
-            RechargeCardSignConfirm.get({
-                transactionId: $state.params.transactionId,
-                //图片base64流是data
-                imageUrl: 'http://dizmix.com/upload/534bef3095584e9893511c45753e5c21_WechatIMG96.jpeg',
-            }, function(data) {
-                $state.go("pad-web.left_nav.personalFile");
-            })
-        })
-
-
+    $scope.$parent.priceListBlackFn = function () {
+        window.history.go(-1)
     }
 });

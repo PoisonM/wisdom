@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('incomeAnalysisCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetInComeExpenditureDetail','$filter','BossUtil','Global',
-        function ($scope,$rootScope,$stateParams,$state,GetInComeExpenditureDetail,$filter,BossUtil,Global) {
+    ['$scope','$rootScope','$stateParams','$state','GetInComeExpenditureDetail','$filter','BossUtil','Global','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetInComeExpenditureDetail,$filter,BossUtil,Global,$ionicLoading) {
 
             $rootScope.title = "收支分析";
 
@@ -15,7 +15,6 @@ angular.module('controllers',[]).controller('incomeAnalysisCtrl',
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
-            console.log($scope.param.date);
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -30,7 +29,7 @@ angular.module('controllers',[]).controller('incomeAnalysisCtrl',
             var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
 
             // 日期选择后的回调函数
-            var datePickerCallbacke = function (val) {
+            var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
                     console.log(val)
@@ -60,7 +59,7 @@ angular.module('controllers',[]).controller('incomeAnalysisCtrl',
                 from: new Date(2008, 8, 2), //可选
                 to: new Date(2030, 8, 25),  //可选
                 callback: function (val) {  //Mandatory
-                    datePickerCallbacke(val);
+                    datePickerCallback(val);
                 },
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
@@ -68,12 +67,22 @@ angular.module('controllers',[]).controller('incomeAnalysisCtrl',
 
 
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetInComeExpenditureDetail.get({
                     startTime:$scope.param.date+' 00:00:00',
                     endTime:$scope.param.date+ " 23:59:59"
                 },function(data){
+                    $ionicLoading.hide()
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.incomeAnalysis = data.responseData
+                    }else{
+                        $scope.incomeAnalysis=[]
                     }
 
                 })

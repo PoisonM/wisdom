@@ -8,5 +8,4 @@ angular.module('controllers',[]).controller('accountRecordsCtrl',
             $scope.recordCashierGo=function () {
                 $state.go("recordCashier",{sysUserId:$stateParams.sysUserId})
             }
-
         }]);

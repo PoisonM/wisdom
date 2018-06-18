@@ -3,6 +3,7 @@ package com.wisdom.beauty.core.service;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;
@@ -59,10 +60,10 @@ public interface ShopStatisticsAnalysisService {
     *@Author:zhanghuan
     *@Param:
     *@Return:
-    *@Description: f复写getUserConsumeNumber方法
+    *@Description: 复查询人头数和人次数
     *@Date:2018/5/8 9:39
     */
-    Integer getUserConsumeNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    Map<String,Integer> getShopsConsumeNumberAndTime(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * @Author:zhanghuan
@@ -79,7 +80,7 @@ public interface ShopStatisticsAnalysisService {
      * @Description: 根据boss, startTime, endTime获取所有美容店业绩和耗卡
      * @Date:2018/4/23 11:17
      */
-    List<ExpenditureAndIncomeResponseDTO> getShopExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    Map<String,Object> getShopExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 
     /**
      * @Author:zhanghuan

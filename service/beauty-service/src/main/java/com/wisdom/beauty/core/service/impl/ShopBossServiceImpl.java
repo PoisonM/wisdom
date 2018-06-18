@@ -36,7 +36,7 @@ public class ShopBossServiceImpl implements ShopBossService {
      * @return
      */
     @Override
-    public List<ShopBossRelationDTO> ShopBossRelationList(ShopBossRelationDTO shopBossRelationDTO) {
+    public List<ShopBossRelationDTO> shopBossRelationList(ShopBossRelationDTO shopBossRelationDTO) {
 
         logger.info("根据条件查询boss相关信息传入参数={}", "shopBossRelationDTO = [" + shopBossRelationDTO + "]");
 
@@ -47,8 +47,8 @@ public class ShopBossServiceImpl implements ShopBossService {
 
         ShopBossRelationCriteria shopBossRelationCriteria = new ShopBossRelationCriteria();
         ShopBossRelationCriteria.Criteria criteria = shopBossRelationCriteria.createCriteria();
-        if (StringUtils.isNotBlank(shopBossRelationDTO.getSysBossId())) {
-            criteria.andSysBossIdEqualTo(shopBossRelationDTO.getSysBossId());
+        if (StringUtils.isNotBlank(shopBossRelationDTO.getSysBossCode())) {
+            criteria.andSysBossCodeEqualTo(shopBossRelationDTO.getSysBossCode());
         }
 
         List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossRelationMapper.selectByCriteria(shopBossRelationCriteria);

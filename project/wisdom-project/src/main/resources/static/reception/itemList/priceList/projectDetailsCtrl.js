@@ -5,6 +5,7 @@ PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,Pr
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "项目详情";
+    $scope.$parent.param.headerPrice.saveContent = "";
     $scope.flagFn = function (bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool;
@@ -12,8 +13,8 @@ PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,Pr
         $scope.$parent.mainSwitch.headerPriceListAllFlag = bool;
         $scope.$parent.mainSwitch.headerLoginFlag = !bool;
         $scope.$parent.mainSwitch.headerPriceListBlackFlag = !bool
-
     };
+
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
     $scope.$parent.mainSwitch.footerBoxFlag=false;
@@ -27,13 +28,16 @@ PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,Pr
             clickable: true,
         },
     });
+
     ProjectInfo.get({id:$stateParams.id},function (data) {
         if(data.result == '0x00001'){
-            $scope.projectInformation = data.responseData
+            $scope.projectInformation = data.responseData;
+            console.log($scope.projectInformation);
         }
     })
+
     $scope.$parent.priceListBlackFn = function () {
-        $state.go("pad-web.left_nav.project")
+        $state.go("pad-web.left_nav.project");
     }
 
 });

@@ -31,7 +31,7 @@
 .p8{padding: 8px}
 .Label{width: 44px;height: 16px;background: #F89E02;border-radius: 100px;line-height: 16px}
 .Label2{width: 44px;height: 16px;background: #9A9A9A;border-radius: 100px;line-height: 16px;margin-left: 13px}
-.Label3{width: 44px;height: 16px;background: #99CD00;border-radius: 100px;line-height: 16px;margin-left: 13px}
+.Label3{width: 44px;height: 16px;background: orange;border-radius: 100px;line-height: 16px;margin-left: 13px}
 .Label4{width: 44px;height: 16px;background: #9A9A9A;border-radius: 100px;line-height: 16px;}
 .yearCard{width: 40px;height: 17px;}
 .ml16{margin-left: 16px}
@@ -48,7 +48,7 @@
 .businessBox1{font-size: 0.3rem;width: 6.8rem;height: 1.05rem;color: #FFFFFF;margin: auto}
 .businessBox2{text-align: center;padding-top: 0.2rem;}
 
-.head{background: url("../../images/work/home2.png");background-size: 100% 100%;width: 80%;margin: auto;margin-top: 30px;border-radius: 6px; box-shadow :0px 12px 18px 0px rgba(255, 102, 102, 0.16);}
+.head{background: url("../../images/work/home2.png");background-size: 100% 100%;width: 85%;margin: auto;margin-top: 30px;border-radius: 6px; box-shadow :0px 12px 18px 0px rgba(255, 102, 102, 0.16);}
 .mu{margin: auto}
 .mt45{margin-top: 45px}
 .col33{color: #333333}
@@ -76,6 +76,7 @@
 .m5{margin: 5px}
 .tr{text-align: right}
 .mb44{margin-bottom: 44px}
+.bge5e5{background: #e5e5e5}
 .project1{display: inline-block;width: 70px;height: 24px;line-height: 24px;text-align: center;color: #ff6666;border: 1px solid #ff6666}
 .project2{display: inline-block;width: 70px;height: 24px;line-height: 24px;text-align: center;color: #ffffff;border: 1px solid #ff6666;
     background: #ff6666;}
@@ -88,13 +89,13 @@
 .achievementBox2{width:90%;height: 97px;background: rgb(255,102,102);margin: auto}
 .colff{color: #ffffff!important;}
 /*综合分析的业绩耗卡部分*/
-.comprehensiveBox{width: 100%;height: 127px;background:url("../../images/work/analysis.png");background-size: 100% 100%}
+.comprehensiveBox{width: 100%;height: 97px;background:url("../../images/work/analysis.png");background-size: 100% 100%}
 .comprehensiveBox1{font-size: 0.3rem;width: 6.8rem;height: 1.05rem;color: #FFFFFF;margin: auto}
 .comprehensiveBox2{text-align: center;padding-top: 0.2rem;}
 .bgfff{background: #FFFFFF}
 
 /*收支分析*/
-.incomeAnalysisBox{width: 100%;height: 97px;background:url("../../images/work/analysis.png");background-size: 100% 100%}
+.incomeAnalysisBox{width: 100%;height: 97px;background:url("../../images/work/analysis.png");background-size: 100% 100%;margin-bottom: 0px;}
 .incomeAnalysisBox1{font-size: 0.3rem;width: 6.8rem;height: 1.05rem;color: #FFFFFF;margin: auto}
 .incomeAnalysisBox2{text-align: center;padding-top: 0.2rem;}
 
@@ -114,13 +115,14 @@
     overflow: hidden;
     margin: 40px auto;
 }
-.redBox{background:url("../../images/work/analysis.png");background-size: 100% 100%;width: 350px;height: 97px;margin: auto;padding: 30px}
+.redBox{background:url("../../images/work/analysis.png");background-size: 100% 100%;width: 90%;height: 97px;margin: auto;padding: 30px}
 .tabBox{ width:204px;height: 30px;margin: auto;border: 1px solid #ff6666;box-sizing: content-box;border-radius:5px}
-.tabBox button{width:33.33%;height: 30px;text-align: center;margin:-1px;box-sizing: border-box;/*font-size: 14px*/;border-bottom-left-radius: 2px;border-top-left-radius: 2px}
-.active {
+.tabBox button{width:33.33%;height: 30px;text-align: center;box-sizing: border-box;/*font-size: 14px*/;border-bottom-left-radius: 2px;border-top-left-radius: 2px}
+.activeCardType {
     background-color: #ff6666;color: #ffffff;
     border-right: 1px solid #ff6666;
 }
+.active{background: rgba(255,255,255,1)}
 .scheduling table  tr td div{
     width: 55px;
     height: 50px;
@@ -135,7 +137,9 @@
 .scheduling table tbody tr td div{
     line-height: 50px;
 }
-
+.scheduling table tbody tr td .employeeBox{
+    line-height: 20px;
+}
 .scheduling .list td img{width: 20px;height: 20px;margin: auto}
 .scheduling  #ofix1_tb_header thead td:nth-child(1){
     padding-left: 55px;

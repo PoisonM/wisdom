@@ -1,9 +1,9 @@
 package com.wisdom.beauty.controller.analyze;
 
-import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
-import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopStatisticsAnalysisService;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.interceptor.LoginRequired;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -11,7 +11,6 @@ import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.beauty.ShopCustomerArriveAnalyzeDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
-import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,15 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "analyze")
 public class CustomerArriveStatisticController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
+    @Autowired
+    private RedisUtils redisUtils;
 
 	//获取门店某天的业绩
 	@RequestMapping(value = "customerArriveAnalyzeByDate", method = {RequestMethod.POST, RequestMethod.GET})
@@ -55,13 +57,11 @@ public class CustomerArriveStatisticController {
 	ResponseDTO<Map<String,Object>> getCustomerArriveList(@RequestParam String startTime,
 																			 @RequestParam String endTime) {
 
-
-		long start = System.currentTimeMillis();
 		SysBossDTO bossInfo = UserUtils.getBossInfo();
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 
-		userConsumeRequestDTO.setSysBossId(bossInfo.getId());
+        userConsumeRequestDTO.setSysBossCode(bossInfo.getSysBossCode());
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
@@ -69,7 +69,6 @@ public class CustomerArriveStatisticController {
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
-		logger.info("getCustomerArriveList方法耗时{}毫秒", (System.currentTimeMillis() - start));
 		return responseDTO;
 	}
 	/**
@@ -85,8 +84,7 @@ public class CustomerArriveStatisticController {
 			                                                  @RequestParam String startTime,
 														      @RequestParam String endTime,
 															  @RequestParam String condition) {
-
-		long start = System.currentTimeMillis();
+        sysShopId = redisUtils.getShopId();
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 		userConsumeRequestDTO.setSysShopId(sysShopId);
@@ -97,7 +95,6 @@ public class CustomerArriveStatisticController {
 		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(map);
-		logger.info("getShopCustomerArriveList{}毫秒", (System.currentTimeMillis() - start));
 		return responseDTO;
 	}
 }

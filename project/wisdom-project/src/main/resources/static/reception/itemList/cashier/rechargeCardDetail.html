@@ -1,0 +1,80 @@
+<div class="rechargeCardDetail">
+    <div class="rechargeCardDetail_box">
+        <div class="basic">
+            <p>基本信息</p>
+            <ul>
+                <li>
+                    <label for="">时间</label>
+                    <span>{{dataInfo.createDate}}</span>
+                </li>
+                <li>
+                    <label for="">顾客</label>
+                    <span>{{dataInfo.sysUserName}}</span>
+                </li>
+                <li>
+                    <label for="">操作门店</label>
+                    <span>{{dataInfo.sysShopName}}</span>
+                </li>
+                <li>
+                    <label for="">前台</label>
+                    <span>{{dataInfo.sysClerkName}}</span>
+                </li>
+                <li>
+                    <label for="">类型</label>
+                    <span>{{dataInfo.goodsType}}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList" class="basic">
+            <p>充值卡</p>
+            <ul>
+                <li>
+                    <label for="">卡名称</label>
+                    <span>{{listItem.flowName}}</span>
+                </li>
+                <li>
+                    <label for="">充值金额</label>
+                    <span>{{listItem.price}}</span>
+                </li>
+                <li>
+                    <label for="">折扣</label>
+                    <span>{{listItem.discount}}</span>
+                </li>
+                <!--<li>
+                    <label for="">员工业绩</label>
+                    <span>2018-05-13</span>
+                </li>-->
+            </ul>
+        </div>
+
+        <div class="basic">
+            <p></p>
+            <ul>
+                <li>
+                    <label for="">总金额</label>
+                    <span>{{dataInfo.sumAmount}}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="basic">
+            <p>支付明细</p>
+            <ul>
+                <li>
+                    <label for="">支付宝</label>
+                    <span>{{dataInfo.payType}}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="basic">
+            <p>顾客签字</p>
+            <ul>
+                <li>
+                    <img src="" alt="">
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

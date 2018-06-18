@@ -3,7 +3,6 @@ package com.wisdom.beauty.core.service;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
-import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 
@@ -30,7 +29,7 @@ public interface ShopUserConsumeService {
     /**
      * 用户充值操作
      */
-    int userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo);
+    ResponseDTO userRechargeOperation(ShopUserOrderDTO shopUserOrderDTO);
 
     /**
      * 用户划疗程卡
@@ -44,7 +43,7 @@ public interface ShopUserConsumeService {
      * @param clerkInfo
      * @return
      */
-    int consumesDaughterCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
+    String consumesDaughterCard(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
 
     /**
      * 用户领取产品
@@ -53,7 +52,7 @@ public interface ShopUserConsumeService {
      * @param clerkInfo
      * @return
      */
-    int consumesUserProduct(List<ShopUserConsumeDTO> shopUserConsumeDTOS, SysClerkDTO clerkInfo);
+    ResponseDTO consumesUserProduct(ShopUserConsumeDTO shopUserConsumeDTOS, SysClerkDTO clerkInfo);
 
     /**
      * 充值卡充值操作
@@ -62,5 +61,5 @@ public interface ShopUserConsumeService {
      * @param imageUrl
      * @return
      */
-    ResponseDTO rechargeRechargeCrad(String transactionId, String imageUrl);
+    ResponseDTO rechargeRechargeCard(String transactionId, String imageUrl);
 }

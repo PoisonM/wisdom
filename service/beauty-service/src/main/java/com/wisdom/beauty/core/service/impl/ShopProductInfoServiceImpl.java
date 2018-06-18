@@ -1,6 +1,8 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ImageEnum;
+import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProductInfoMapper;
@@ -11,6 +13,7 @@ import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -18,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -39,9 +41,6 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 	@Autowired
 	private ShopProductInfoMapper shopProductInfoMapper;
-
-	@Autowired
-	private MongoTemplate mongoTemplate;
 
     @Autowired
     private MongoUtils mongoUtils;
@@ -129,7 +128,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	@Override
 	public int updateShopUserProductRelation(ShopUserProductRelationDTO shopUserProductRelationDTO) {
 		logger.info("更新用户与产品的关系传入参数={}", "shopUserProductRelationDTO = [" + shopUserProductRelationDTO + "]");
-		int update = shopUserProductRelationMapper.updateByPrimaryKey(shopUserProductRelationDTO);
+		int update = shopUserProductRelationMapper.updateByPrimaryKeySelective(shopUserProductRelationDTO);
 		logger.debug("更新用户与产品的关系,执行结果 {}", update > 0 ? "成功" : "失败");
 		return update;
 	}
@@ -143,7 +142,6 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	 */
 	@Override
 	public List<ShopProductTypeDTO> getOneLevelProductList(ShopProductTypeDTO shopProductTypeDTO) {
-		logger.info("getOneLevelProjectList传入的参数,sysShopId={},productType={}", shopProductTypeDTO.getSysShopId(),shopProductTypeDTO.getProductType());
 		if (shopProductTypeDTO==null||StringUtils.isBlank(shopProductTypeDTO.getSysShopId())) {
 			logger.info("getOneLevelProjectList传入的参数sysShopId为空");
 			return null;
@@ -172,13 +170,17 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 		if (StringUtils.isBlank(shopProductTypeDTO.getId())) {
 			logger.info("getTwoLevelProductList传入的参数id为空");
-			return null;
 		}
 		ShopProductTypeCriteria shopProductTypeCriteria = new ShopProductTypeCriteria();
 		ShopProductTypeCriteria.Criteria criteria = shopProductTypeCriteria.createCriteria();
-		criteria.andParentIdEqualTo(shopProductTypeDTO.getId());
+		if(StringUtils.isNotBlank(shopProductTypeDTO.getId())){
+			criteria.andParentIdEqualTo(shopProductTypeDTO.getId());
+		}
 		if(StringUtils.isNotBlank(shopProductTypeDTO.getProductType())){
 			criteria.andProductTypeEqualTo(shopProductTypeDTO.getProductType());
+		}
+		if(StringUtils.isNotBlank(shopProductTypeDTO.getSysShopId())){
+			criteria.andSysShopIdEqualTo(shopProductTypeDTO.getSysShopId());
 		}
 		List<ShopProductTypeDTO> list = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
 		return list;
@@ -220,7 +222,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		for (ShopProductInfoDTO shopProductInfo : list) {
 			ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
 			BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
-            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
+            shopProductInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProductInfo.getId()));
 			respon.add(shopProductInfoResponseDTO);
 		}
 		return respon;
@@ -246,7 +248,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		ShopProductInfoDTO shopProductInfo = list.get(0);
 		ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
         BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
-        shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
+        shopProductInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProductInfo.getId()));
 		return shopProductInfoResponseDTO;
 
 	}
@@ -269,7 +271,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		for (ShopProductInfoDTO shopProductInfo : list) {
 			shopProductInfoResponseDTO= new ShopProductInfoResponseDTO();
 			BeanUtils.copyProperties(shopProductInfo,shopProductInfoResponseDTO);
-            shopProductInfoResponseDTO.setImageUrl(mongoUtils.getImageUrl(shopProductInfo.getId()));
+            shopProductInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProductInfo.getId()));
 			respon.add(shopProductInfoResponseDTO);
 		}
 		return respon;
@@ -379,17 +381,22 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 	/**
 	 * 更新产品信息
 	 *
-	 * @param shopProductInfoDTO
+	 * @param extShopProductInfoDTO
 	 * @return
 	 */
 	@Override
-	public int updateProductInfo(ShopProductInfoDTO shopProductInfoDTO) {
-		if (CommonUtils.objectIsEmpty(shopProductInfoDTO) || StringUtils.isBlank(shopProductInfoDTO.getId())) {
-			logger.error("{}", "shopProductInfoDTO = [" + shopProductInfoDTO + "]");
+	public int updateProductInfo(ExtShopProductInfoDTO extShopProductInfoDTO) {
+		if (CommonUtils.objectIsEmpty(extShopProductInfoDTO) || StringUtils.isBlank(extShopProductInfoDTO.getId())) {
+			logger.error("{}", "extShopProductInfoDTO = [" + extShopProductInfoDTO + "]");
 			return 0;
 		}
-		shopProductInfoDTO.setUpdateDate(new Date());
-		return shopProductInfoMapper.updateByPrimaryKeySelective(shopProductInfoDTO);
+		//保存图片信息
+		if (CommonUtils.objectIsNotEmpty(extShopProductInfoDTO.getImageList())) {
+			mongoUtils.updateImageUrl(extShopProductInfoDTO.getImageList(), extShopProductInfoDTO.getId());
+			extShopProductInfoDTO.setProductUrl(extShopProductInfoDTO.getImageList().get(0));
+		}
+		extShopProductInfoDTO.setUpdateDate(new Date());
+		return shopProductInfoMapper.updateByPrimaryKeySelective(extShopProductInfoDTO);
 	}
 
 	/**
@@ -407,8 +414,37 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		}
 		shopProductTypeDTOS.setCreateDate(new Date());
 		shopProductTypeDTOS.setId(IdGen.uuid());
-		shopProductTypeMapper.insertSelective(shopProductTypeDTOS);
-		return 0;
+		return shopProductTypeMapper.insertSelective(shopProductTypeDTOS);
+	}
+
+	/**
+	 * 添加产品信息
+	 *
+	 * @param shopProductInfoDTO
+	 * @return
+	 */
+	@Override
+
+	public int saveProductInfo(ExtShopProductInfoDTO shopProductInfoDTO) {
+		shopProductInfoDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
+		shopProductInfoDTO.setId(IdGen.uuid());
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getEffectDate()) && shopProductInfoDTO.getQualityPeriod() > 0) {
+			shopProductInfoDTO.setInvalidDate(DateUtils.dateSubMonth(shopProductInfoDTO.getEffectDate(), shopProductInfoDTO.getQualityPeriod()));
+		}
+
+		//图片保存 到mongodb
+		if (CommonUtils.objectIsNotEmpty(shopProductInfoDTO.getImageList())) {
+			shopProductInfoDTO.setProductUrl(shopProductInfoDTO.getImageList().get(0));
+		}else{
+			shopProductInfoDTO.setProductUrl(ImageEnum.GOODS_CARD.getDesc());
+			ArrayList<String> str = new ArrayList<>();
+			str.add(ImageEnum.GOODS_CARD.getDesc());
+			shopProductInfoDTO.setImageList(str);
+		}
+		int insertSelective = shopProductInfoMapper.insertSelective(shopProductInfoDTO);
+		mongoUtils.saveImageUrl(shopProductInfoDTO.getImageList(), shopProductInfoDTO.getId());
+		logger.info("添加产品信息保存={}", insertSelective > 0 ? "成功" : "失败");
+		return insertSelective;
 	}
 
 }

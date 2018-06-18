@@ -19,5 +19,5 @@ public interface ShopBossService {
      * @param shopBossRelationDTO
      * @return
      */
-    List<ShopBossRelationDTO> ShopBossRelationList(ShopBossRelationDTO shopBossRelationDTO);
+    List<ShopBossRelationDTO> shopBossRelationList(ShopBossRelationDTO shopBossRelationDTO);
 }

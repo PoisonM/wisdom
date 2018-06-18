@@ -4,15 +4,16 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
+import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -22,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Set;
 
 /**
  * FileName: redisUtils
@@ -77,13 +77,6 @@ public class RedisUtils {
 
         //保存预约信息
         JedisUtils.setObject(shopAppointServiceDTO.getId(),shopAppointServiceDTO,appointCacheSeconds);
-
-        //保存美容师与预约的关系 格式 zadd shopId_clerkId createDate appointmentId
-        String key = new StringBuffer(shopAppointServiceDTO.getSysShopId()).append("_").
-                append(shopAppointServiceDTO.getSysClerkId()).toString();
-        double score = Double.parseDouble(DateUtils.DateToStr(shopAppointServiceDTO.getCreateDate(),"datetimesec"));
-        String member = shopAppointServiceDTO.getId();
-        JedisUtils.zadd(key,score,member,appointCacheSeconds);
     }
 
     /**
@@ -95,9 +88,6 @@ public class RedisUtils {
 
         ShopAppointServiceDTO shopAppointServiceDTO = (ShopAppointServiceDTO) JedisUtils.getObject(appointmentId);
 
-        if (msg.equals("true")) {
-            shopAppointServiceDTO = null;
-        }
         //redis中没有查出数据，再次缓存到redis中
         if (null == shopAppointServiceDTO) {
             shopAppointServiceDTO = new ShopAppointServiceDTO();
@@ -112,30 +102,12 @@ public class RedisUtils {
     }
 
     /**
-     * 根据分数过滤与某个美容师相关的预约信息
-     * 如：ZRANGEBYSCORE shopId_clerkId (20180000000000 20190000000000
-     * @param shopIdClerkId
-     * @param min
-     * @param max
-     * @return
-     */
-    public Set<String> getAppointmentIdByShopClerk(String shopIdClerkId,String min, String max ){
-        logger.info("根据分数过滤与某个美容师相关的预约信息传入参数={}", "shopIdClerkId = [" + shopIdClerkId + "], min = [" + min + "], max = [" + max + "]");
-        Set<String> set = JedisUtils.zRangeByScore(shopIdClerkId, min, max);
-        return set;
-    }
-
-    /**
      * 更新预约详情
      * @param shopAppointServiceDTO
      */
     public void updateShopAppointInfoToRedis(ShopAppointServiceDTO shopAppointServiceDTO) {
         logger.info("更新预约详情传入参数={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
         saveShopAppointInfoToRedis(shopAppointServiceDTO);
-    }
-
-    public String getShopIdClerkIdKey(String shopId, String clerkId) {
-        return new StringBuffer(shopId).append("_").append(clerkId).toString();
     }
 
     /**
@@ -147,7 +119,8 @@ public class RedisUtils {
         if (null == shopProjectInfoDTO) {
             shopProjectInfoDTO = new ShopProjectInfoDTO();
             shopProjectInfoDTO.setId(projectInfoId);
-            List<ShopProjectInfoDTO> projectList = shopProjectService.getShopCourseProjectList(shopProjectInfoDTO);
+            ExtShopProjectInfoDTO extShopProjectInfoDTO=(ExtShopProjectInfoDTO)shopProjectInfoDTO;
+            List<ShopProjectInfoDTO> projectList = shopProjectService.getShopCourseProjectList(extShopProjectInfoDTO);
             if (CommonUtils.objectIsEmpty(projectList)) {
                 logger.error("根据项目主键查询项目信息为空");
                 throw new ServiceException("根据项目主键查询项目信息为空");
@@ -192,14 +165,8 @@ public class RedisUtils {
                 loginDTO.setSysShopName(relationDTO.getSysShopName());
                 loginDTO.setSysUserId(sysUserId);
                 loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
-                JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
-                return loginDTO;
-            } else if (CommonCodeEnum.TRUE.getCode().equals(msg)) {
-                ShopUserLoginDTO loginDTO = new ShopUserLoginDTO();
-                loginDTO.setSysShopId("1");
-                loginDTO.setSysShopName("汉方美业");
-                loginDTO.setSysUserId(sysUserId);
-                loginDTO.setSysShopPhoto("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E7%BE%8E%E5%AE%B9%E5%BA%97.png");
+                UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(sysUserId);
+                loginDTO.setPhone(userInfoDTO.getMobile());
                 JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
                 return loginDTO;
             }
@@ -228,6 +195,8 @@ public class RedisUtils {
                     loginDTO.setSysShopName(relationDTO.getSysShopName());
                     loginDTO.setSysUserId(sysUserId);
                     loginDTO.setSysShopPhoto(relationDTO.getShopPhoto());
+                    UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(sysUserId);
+                    loginDTO.setPhone(userInfoDTO.getMobile());
                     JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
                 }
             }
@@ -236,7 +205,7 @@ public class RedisUtils {
     }
 
     /**
-     * 根据clerkId获取店铺信息
+     * 根据clerkId获取店员信息
      */
     public SysClerkDTO getSysClerkDTO(String sysClerkId) {
 
@@ -255,5 +224,38 @@ public class RedisUtils {
         }
 
         return (SysClerkDTO) object;
+    }
+
+    public String getShopId() {
+        String sysShopId = null;
+        //pad端
+        if (null != UserUtils.getClerkInfo()) {
+            System.out.println("pad端登陆");
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+            sysShopId = clerkInfo.getSysShopId();
+        }
+        //用户端
+        if (null != UserUtils.getUserInfo()) {
+            System.out.println("用户端登陆");
+            sysShopId = getUserLoginShop(UserUtils.getUserInfo().getId()).getSysShopId();
+        }
+        if (null != UserUtils.getBossInfo()) {
+            sysShopId = UserUtils.getBossInfo().getCurrentShopId();
+        }
+        return sysShopId;
+    }
+
+    public String getBossCode() {
+        String sysBossCode = null;
+        //pad端
+        if (null != UserUtils.getClerkInfo()) {
+            System.out.println("pad端登陆");
+            SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+            sysBossCode = clerkInfo.getSysBossCode();
+        }
+        if (null != UserUtils.getBossInfo()) {
+            sysBossCode = UserUtils.getBossInfo().getSysBossCode();
+        }
+        return sysBossCode;
     }
 }

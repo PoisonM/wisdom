@@ -6,7 +6,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         top_bottomSelect:"yuyue",
         tabSty:'day',
         headerCash:{
-            leftContent:"档案(9010)",
+            leftContent:"档案()",
             leftAddContent:"添加档案",
             backContent:"账户明细",
             title:"详情",
@@ -17,6 +17,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
             title:"项目",
             blackBackContent:"",
             blackTitle:"产品",
+            saveContent:"确认"
         }
     }
     //公共部分开关管理
@@ -48,7 +49,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         headerPriceListAllFlag:false,
         headerPriceListBlackFlag:true,
         headerPriceListFlag:{
-
+            headerPriceSearchFlag:false,
         },
         //我的头部开关
 
@@ -57,7 +58,7 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
 
         //尾部总开关
         footerBoxFlag:true
-    }
+    };
     /*--------------------------------------方法-------------------------------------------------*/
     $scope.goAddrecord = function () {
         $state.go("pad-web.left_nav.addRecord")
@@ -81,7 +82,12 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         }
     }
 
-    $scope.backHeaderCashFn = function () {
-        window.history.back()
-    }
+    /*$scope.backHeaderCashFn = function () {
+        if($scope.param.headerCash.leftAddContent == "添加档案"){
+            // $state.go("pad-web.left_nav.addRecord")
+        }else {
+            window.history.back()
+        }
+
+    }*/
 })

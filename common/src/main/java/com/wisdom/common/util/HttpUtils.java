@@ -1,7 +1,5 @@
 package com.wisdom.common.util;
 
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -296,14 +294,17 @@ public class HttpUtils {
         try {
             SSLContext ctx = SSLContext.getInstance("TLS");
             X509TrustManager tm = new X509TrustManager() {
+                @Override
                 public X509Certificate[] getAcceptedIssuers() {
                     return null;
                 }
 
+                @Override
                 public void checkClientTrusted(X509Certificate[] xcs, String str) {
 
                 }
 
+                @Override
                 public void checkServerTrusted(X509Certificate[] xcs, String str) {
 
                 }

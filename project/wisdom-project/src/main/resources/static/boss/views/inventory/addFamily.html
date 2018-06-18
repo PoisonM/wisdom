@@ -1,35 +1,25 @@
 <ion-view>
-    <ion-content class="partialFiles bgf6">
+    <ion-content class="partialFiles bgf6 mb45">
         <div>
             <ion-list>
                 <ion-item class="item-input" style="background: border-box;height: 40px; ">
                 <span class="item-input-wrapper" style="margin-right:10px;height:30px;margin-left:10px;" >
                         <i class="icon ion-ios-search placeholder-icon" ng-click="search()"></i>
-                        <input id="search" type="search" placeholder="找人" ng-model="searchCont.key" >
+                        <input id="search" type="search" placeholder="根据手机号/姓名查询" ng-model="param.searchFile" ng-change="search()">
                         <i class="icon ion-close-circled placeholder-icon" style="vertical-align: middle;"
-                           on-tap="clearSearch()" ng-if="searchCont.key.length"></i>
+                           on-tap="clearSearch()" ng-if="param.searchFile.length" ng-click="clearSearch()"></i>
                  </span>
                 </ion-item>
                 <div>
-                    <p class="h45 sb bgfff bbl" >
+                    <p class="h45 sb bgfff bbl" ng-click="selShop()">
                         <span class="fs15 colff66">
                          <img src="images/inventory/fenShop.png" class="ml10 fenShopPic">
                          美容院分店
                      </span>
-                        <img src="images/more.png" class="more mr10" style="margin-top: 20px;" ng-click="selShop()">
+                        <img src="images/more.png" class="more mr10" style="margin-top: 20px;" >
                     </p>
-                    <div>
-
-                    </div>
-
                     <ul class="bgfff">
-                        <li class="h50  ml20 bbl" style="display: flex" ng-repeat="item in addFamily" ng-click="selEmployees($index)
-
-">
-                            <span class="mr10">
-                                 <i class="icon ion-ios-checkmark-outline" style="color:#FF6666;font-size:20px;" ng-if="param.index!=$index"></i>
-                                 <i class="icon icon ion-ios-checkmark" style="color:#FF6666;font-size:20px;" ng-if="param.index==$index"></i>
-                            </span>
+                        <li class="h50  ml20 bbl" style="display: flex" ng-repeat="item in addFamily" ng-click="mployeesDtails(item.id)" ui-sref="mployeesDtails({id:item.id})">
 
                             <p style="height:40px;line-height: 40px;width:40px;background: gainsboro;border-radius: 50%; "class="mt5" >
                                 <img ng-src="{{item.photo}}" style="height:40px;line-height: 40px;width:40px;border-radius: 50%; ">
@@ -41,13 +31,12 @@
 
                         </li>
                     </ul>
-
                 </div>
             </ion-list>
             <div style="position: absolute;height:100%;background:rgba(0,0,0,0.2);top:40px;width:100%;z-index: 1000" ng-show="param.flag" ng-click="all()">
                 <div class="list bgfff">
-                    <p class="h50 item " ng-repeat="item in [0,1,2]" ng-click="selShopTrue()">
-                        <span class="ml10">美业</span>
+                    <p class="h50 item " ng-repeat="item in shopList" ng-click="selShopTrue(item.sysShopId)">
+                        <span class="ml10">{{item.sysShopName}}</span>
                     </p>
                 </div>
             </div>

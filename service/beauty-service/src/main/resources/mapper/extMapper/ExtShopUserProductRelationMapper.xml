@@ -85,6 +85,13 @@
     </sql>
     <!--查询用户未领取数量-->
     <select id="getWaitReceiveNumber" resultType="com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO" parameterType="map">
-        SELECT SUM(s.`wait_receive_number`) waitReceiveNumber,sys_user_id sysUserId FROM shop_user_product_relation s WHERE  s.sys_clerk_id=#{sysClerkId}  GROUP BY sys_user_id;
+     SELECT SUM(s.`wait_receive_number`) waitReceiveNumber, s.sys_user_id sysUserId,t.sys_user_name nickname,t.phone mobile FROM
+        shop_user_product_relation s LEFT JOIN shop_user_archives t ON s.sys_user_id=t.sys_user_id WHERE
+          s.sys_shop_id=#{sysShopId}
+        <if test="searchFile != null" >
+            AND (t.sys_user_name LIKE #{searchFile} OR t.phone LIKE #{searchFile})
+        </if>
+         GROUP BY s.sys_user_id  HAVING  waitReceiveNumber>0;
     </select>
+
 </mapper>

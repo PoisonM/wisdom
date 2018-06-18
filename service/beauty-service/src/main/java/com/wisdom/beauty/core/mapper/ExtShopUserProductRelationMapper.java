@@ -15,20 +15,22 @@ import java.util.Map;
  * ClassName: ${CLASS_NAME}
  *
  * @Author： huan
+ * 
  * @Description:
  * @Date:Created in 2018/4/18 10:58
  * @since JDK 1.8
  */
 @MyBatisDao
 @Repository
-public interface ExtShopUserProductRelationMapper extends BaseDao<ShopUserProductRelationDTO, ShopUserProductRelationCriteria, String> {
-    /**
-     * @Author:huan
-     * @Param:
-     * @Return:
-     * @Description:  根据sysClerkId获取所有用的为领取产品的数量
-     * @Date:2018/4/18 11:33
-     */
-    List<UserProductRelationResponseDTO> getWaitReceiveNumber(Map<String,String> map);
+public interface ExtShopUserProductRelationMapper
+		extends BaseDao<ShopUserProductRelationDTO, ShopUserProductRelationCriteria, String> {
+	/**
+	 * @Author:huan
+	 * @Param:
+	 * @Return:
+	 * @Description: 根据sysClerkId获取所有用的为领取产品的数量
+	 * @Date:2018/4/18 11:33
+	 */
+	List<UserProductRelationResponseDTO> getWaitReceiveNumber(Map<String, String> map);
 
 }

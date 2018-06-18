@@ -9,13 +9,13 @@ import java.util.List;
  */
 public class ShopProjectInfoResponseDTO extends ShopProjectInfoDTO {
 
-	private List<String> imageUrl;
+	private List<String> imageList;
 
-	public List<String> getImageUrl() {
-		return imageUrl;
+	public List<String> getImageList() {
+		return imageList;
 	}
 
-	public void setImageUrl(List<String> imageUrl) {
-		this.imageUrl = imageUrl;
+	public void setImageList(List<String> imageList) {
+		this.imageList = imageList;
 	}
 }

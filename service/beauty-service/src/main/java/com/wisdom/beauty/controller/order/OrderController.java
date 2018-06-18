@@ -1,19 +1,19 @@
 package com.wisdom.beauty.controller.order;
 
 import com.aliyun.oss.ServiceException;
-import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
+import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
-import com.wisdom.beauty.core.service.ShopCardService;
-import com.wisdom.beauty.core.service.ShopOrderService;
-import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
+import com.wisdom.beauty.core.redis.RedisUtils;
+import com.wisdom.beauty.core.service.*;
+import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.StringUtils;
@@ -28,10 +28,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
+
+import static java.math.BigDecimal.ROUND_HALF_DOWN;
 
 
 /**
@@ -39,9 +39,10 @@ import java.util.List;
  *
  * @author: 赵得良
  * Date:     2018/4/3 0003 15:06
- * Description: 预约相关
+ * Description: 订单相关
  */
 @Controller
+@LoginAnnotations
 @RequestMapping(value = "orderInfo")
 public class OrderController {
 
@@ -49,12 +50,28 @@ public class OrderController {
 
     @Resource
     private MongoTemplate mongoTemplate;
+    @Resource
+    private RedisUtils redisUtils;
 
     @Resource
     private ShopCardService shopCardService;
 
     @Resource
     private ShopOrderService shopOrderService;
+
+    @Resource
+    private ShopProjectGroupService shopProjectGroupService;
+
+    @Resource
+    private ShopProjectService shopProjectService;
+
+    @Resource
+    private ShopCustomerArchivesService shopCustomerArchivesService;
+
+    @Resource
+    private ShopProductInfoService shopProductInfoService;
+
+    private final long orderOutTime = 10L;
 
     /**
      * 查询用户最近一次订单信息
@@ -63,22 +80,21 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "getShopUserRecentlyOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
     public
     @ResponseBody
-    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam String sysUserId, @RequestParam(required = false) String orderId) {
+    ResponseDTO<ShopUserOrderDTO> getShopUserRecentlyOrderInfo(@RequestParam(required = false) String sysUserId, @RequestParam(required = false) String orderId) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("查询用户最近一次订单信息传入参数={}", "shopUserArchivesId = [" + sysUserId + "]");
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
+        String sysShopId = redisUtils.getShopId();
         ResponseDTO<ShopUserOrderDTO> responseDTO = new ResponseDTO<>();
 
         ShopUserOrderDTO shopUserOrderDTO = null;
         if (StringUtils.isNotBlank(orderId)) {
+            logger.info("根据订单编号查询订单数据={}",orderId);
             Query query = new Query(Criteria.where("orderId").is(orderId));
             shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-        } else {
-            Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(sysUserId));
+        } else if(StringUtils.isNotBlank(sysShopId) && StringUtils.isNotBlank(sysUserId)){
+            logger.info("根据用户id和shopId查询用户最近一次订单记录={}");
+            Query query = new Query(Criteria.where("shopId").is(sysShopId)).addCriteria(Criteria.where("userId").is(sysUserId));
             query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
             shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
         }
@@ -97,7 +113,6 @@ public class OrderController {
 
         responseDTO.setResponseData(shopUserOrderDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -107,75 +122,75 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "saveShopUserOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> saveShopUserOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("保存用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
         if(null == shopUserOrderDTO || StringUtils.isBlank(shopUserOrderDTO.getUserId())){
             logger.error("保存用户的订单信息传入参数为空");
-            return null;
+            responseDTO.setErrorInfo("数据异常！请核对输入数据^_^");
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            return responseDTO;
         }
-        SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
-        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        String sysShopId = redisUtils.getShopId();
 
-        //先查询最后一次订单信息
-        Query query = new Query(Criteria.where("shopId").is(clerkInfo.getSysShopId())).addCriteria(Criteria.where("userId").is(shopUserOrderDTO.getUserId()));
+        //先查询最后一次未支付的订单信息
+        Query query = new Query(Criteria.where("shopId").is(sysShopId)).addCriteria(Criteria.where("userId").is(shopUserOrderDTO.getUserId()));
+        query.addCriteria(Criteria.where("status").is(OrderStatusEnum.NOT_PAY.getCode()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         ShopUserOrderDTO searchOrderInfo = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-        if (null != searchOrderInfo) {
+        //最近一笔未支付的定单不为空，并且在10分钟以内，则认为有效订单
+        if (null != searchOrderInfo && null!= searchOrderInfo.getUpdateDate() && DateUtils.pastMinutes(searchOrderInfo.getUpdateDate())<orderOutTime) {
             responseDTO.setResponseData(searchOrderInfo.getOrderId());
             responseDTO.setResult(StatusConstant.SUCCESS);
             return responseDTO;
         }
         //如果最后一次订单为空则需初始化插入
         searchOrderInfo = new ShopUserOrderDTO();
-        searchOrderInfo.setShopId(clerkInfo.getSysShopId());
+        searchOrderInfo.setShopId(sysShopId);
         searchOrderInfo.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
         searchOrderInfo.setStatus(OrderStatusEnum.NOT_PAY.getCode());
         searchOrderInfo.setCreateDate(new Date());
+        searchOrderInfo.setUpdateDate(new Date());
+        searchOrderInfo.setStatusDesc(OrderStatusEnum.NOT_PAY.getDesc());
         searchOrderInfo.setUserId(shopUserOrderDTO.getUserId());
         mongoTemplate.save(searchOrderInfo, "shopUserOrderDTO");
 
         responseDTO.setResponseData(searchOrderInfo.getOrderId());
         responseDTO.setResult(StatusConstant.SUCCESS);
-
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
     /**
-     * 更新用户的订单信息
+     * 用户下单接口，消费界面选完待消费物品点击确认按钮
      *
      * @param shopUserOrderDTO 订单对象
      * @return
      */
     @RequestMapping(value = "updateShopUserOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
     public
     @ResponseBody
     ResponseDTO<String> updateShopUserOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("更新用户的订单信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
         ResponseDTO responseDTO = new ResponseDTO<String>();
-
         //mongodb中更新订单的状态
         Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
-        update.set("status", shopUserOrderDTO.getStatus());
+        update.set("status", OrderStatusEnum.WAIT_PAY.getCode());
+        update.set("statusDesc", OrderStatusEnum.WAIT_PAY.getDesc());
         update.set("signUrl", shopUserOrderDTO.getSignUrl());
         update.set("orderPrice", shopUserOrderDTO.getOrderPrice());
+        update.set("updateDate",new Date());
+        update.set("sysClerkId",shopUserOrderDTO.getSysClerkId());
+        update.set("sysClerkName",shopUserOrderDTO.getSysClerkName());
         update.set("projectGroupRelRelationDTOS", shopUserOrderDTO.getProjectGroupRelRelationDTOS());
         update.set("shopUserProductRelationDTOS", shopUserOrderDTO.getShopUserProductRelationDTOS());
         update.set("shopUserProjectRelationDTOS", shopUserOrderDTO.getShopUserProjectRelationDTOS());
         mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);
-
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 
@@ -186,16 +201,117 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "updateVirtualGoodsOrderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
     public
     @ResponseBody
     ResponseDTO<String> updateVirtualGoodsOrderInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("更新订单虚拟商品的信息传入参数={}", "shopUserOrderDTO = [" + shopUserOrderDTO + "]");
         ResponseDTO responseDTO = shopOrderService.updateShopUserOrderInfo(shopUserOrderDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         responseDTO.setResponseData("更新成功");
-        logger.info("更新订单虚拟商品的信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
+        return responseDTO;
+    }
+
+    /**
+     * 获取订单消费明细
+     *
+     * @param orderId 订单id
+     * @return
+     */
+    @RequestMapping(value = "/getOrderConsumeDetailInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<Object> getOrderConsumeDetailInfo(@RequestParam String orderId) {
+        ResponseDTO<Object> responseDTO = new ResponseDTO();
+        Query query = new Query(Criteria.where("orderId").is(orderId));
+        String shopId = redisUtils.getShopId();
+        ShopUserOrderDTO userOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+        if(null != userOrderDTO){
+            HashMap<Object, Object> responseMap = new HashMap<>(4);
+            //解析项目
+            List<ShopUserProjectRelationDTO> projectInfo = userOrderDTO.getShopUserProjectRelationDTOS();
+            if(CommonUtils.objectIsNotEmpty(projectInfo)){
+                //存储单次列表
+                List<Object> timeProjectList = new ArrayList<>();
+                //存储疗程卡列表
+                List<Object> periodProjectList = new ArrayList<>();
+                for(ShopUserProjectRelationDTO dto:projectInfo){
+
+                    ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(dto.getSysShopProjectId());
+                    dto.setSysShopProjectName(projectDetail.getProjectName());
+                    //如果是疗程卡
+                    if(CardTypeEnum.TREATMENT_CARD.getCode().equals(dto.getUseStyle())){
+                        timeProjectList.add(dto);
+                    }
+                    //单次卡
+                    else{
+                        periodProjectList.add(dto);
+                    }
+                }
+                responseMap.put("timeProjectList",timeProjectList);
+                responseMap.put("periodProjectList",periodProjectList);
+            }
+            //解析套卡
+            List<ShopUserProjectGroupRelRelationDTO> projectGroupInfo = userOrderDTO.getProjectGroupRelRelationDTOS();
+            if (CommonUtils.objectIsNotEmpty(projectGroupInfo)) {
+                List<Object> groupList = new ArrayList<>();
+                //遍历每种套卡信息
+                for (ShopUserProjectGroupRelRelationDTO groupDto : projectGroupInfo) {
+                    Map<Object, Object> eachMap = new HashMap<>(16);
+                    eachMap.put("shopProjectGroupName",groupDto.getShopProjectGroupName());
+                    int serviceTime = 0;
+                    //默认一种套卡只购买一个
+                    if (null == groupDto.getProjectInitTimes()) {
+                        groupDto.setProjectInitTimes(1);
+                    }
+                    //查询套卡信息
+                    ShopProjectGroupDTO shopProjectGroupDTO = shopProjectGroupService.getShopProjectGroupDTO(groupDto.getShopProjectGroupId());
+                    //购买一个套卡的金额
+                    BigDecimal discount = groupDto.getShopGroupPuchasePrice().divide(shopProjectGroupDTO.getMarketPrice(), 2, ROUND_HALF_DOWN);
+                    groupDto.setDiscount(discount.floatValue());
+                    eachMap.put("discount",discount);
+                    //单个购买价格
+                    eachMap.put("shopGroupPuchasePrice",groupDto.getShopGroupPuchasePrice());
+                    eachMap.put("number",groupDto.getProjectInitTimes());
+                    //总金额
+                    eachMap.put("projectInitAmount",groupDto.getProjectInitAmount());
+                    //同一种套卡购买多个，groupDto.getProjectInitTimes()存储的是购买了几个同一种套卡
+                    for (int i = 0; i < groupDto.getProjectInitTimes(); i++) {
+                        serviceTime++;
+                        //根据套卡id查询项目列表
+                        ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
+                        shopProjectInfoGroupRelationDTO.setShopProjectGroupId(groupDto.getShopProjectGroupId());
+                        shopProjectInfoGroupRelationDTO.setSysShopId(shopId);
+                        List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
+                        eachMap.put("containProject",groupRelations);
+                    }
+                    eachMap.put("serviceTime",serviceTime);
+                    groupList.add(eachMap);
+                }
+                responseMap.put("groupList",groupList);
+            }
+            //解析产品
+            List<ShopUserProductRelationDTO> productList = userOrderDTO.getShopUserProductRelationDTOS();
+            if(CommonUtils.objectIsNotEmpty(productList)){
+                for(ShopUserProductRelationDTO dto : productList){
+                    ShopProductInfoResponseDTO productDetail = shopProductInfoService.getProductDetail(dto.getId());
+                    dto.setShopProductName(productDetail.getProductName());
+                }
+                responseMap.put("productList",productList);
+            }
+            //支付金额相关
+            responseDTO.setResponseData(responseMap);
+            ShopUserPayDTO shopUserPayDTO = userOrderDTO.getShopUserPayDTO();
+            responseMap.put("shopUserPayDTO",shopUserPayDTO);
+            //查询用户信息
+            ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+            shopUserArchivesDTO.setSysUserId(userOrderDTO.getUserId());
+            shopUserArchivesDTO.setSysShopId(shopId);
+            List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
+            if(CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)){
+                responseMap.put("userInfo",shopUserArchivesInfo.get(0));
+            }
+
+        }
+        responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
 
@@ -206,13 +322,11 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "getConsumeDisplayIds", method = {RequestMethod.POST, RequestMethod.GET})
-//	@LoginRequired
+
     public
     @ResponseBody
     ResponseDTO<String> getConsumeDisplayIds(@RequestParam String orderId) {
 
-        long currentTimeMillis = System.currentTimeMillis();
-        logger.info("更新用户的订单信息传入参数={}", "orderId = [" + orderId + "]");
         ResponseDTO responseDTO = new ResponseDTO<String>();
 
         Query query = new Query(Criteria.where("orderId").is(orderId));
@@ -276,7 +390,6 @@ public class OrderController {
         }
         responseDTO.setResponseData(returnMap);
         responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("保存用户的订单信息耗时{}毫秒", System.currentTimeMillis() - currentTimeMillis);
         return responseDTO;
     }
 }

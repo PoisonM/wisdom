@@ -1,3 +1,8 @@
+<style>
+    input[checked="checked"]{
+        background: #FF6666;
+    }
+</style>
 <ion-view>
     <ion-content class="partialFiles">
         <div>
@@ -8,24 +13,34 @@
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">头像</p>
                     <p class="mr10">
-                        <img ng-src="{{newUser.imageRul}}" style="width:40px;height:40px;border-radius: 5px;">
+                        <input type="file" style="width:40px;height:40px;position: absolute;top:10px;opacity: 0" onchange="angular.element(this).scope().img_upload(this.files)">
+                        <img ng-src="{{newUser.imageUrl}}" style="width:40px;height:40px;border-radius: 5px;">
                     </p>
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
-                    <p class="ml10">姓名<span class="colff66 fs15">*</span></p>
+                    <p class="ml10 ">姓名<span class="colff66 fs15">*</span></p>
                     <p class="mr10">
-                        {{newUser.sysUserName}}
+                        <input class="tr fs14" placeholder="请输入顾客的名字" ng-model="newUser.sysUserName" class="mr10"/>
                     </p>
+
+
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
-                    <p class="ml10">手机<span class="colff66 fs15">*</span></p>
-                    <p class="mr10">
-                        {{newUser.phone}}
+                    <p class="ml10 " >手机<span class="colff66 fs15">*</span></p>
+                    <p class="mr10" style="width:50%;">
+                        <input class="tr fs14" placeholder="请输入顾客的手机号" ng-model="newUser.phone" ng-blur="pho()" style="width:100%;" />
                     </p>
+
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">性别</p>
-                    <div class="mr10" style="display: flex;justify-content: space-between">
+                    <span class="fr mr10">
+
+                    <input type="radio"   ng-checked="newUser.sex == '女'"   name="names" ng-click="female()"  style="width: 15px;height: 15px;border: 1px solid #FF6666;border-radius: 50%"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">女</span>
+              <input type="radio" name="names" ng-click="male()"  style="width: 15px;height: 15px;border: 1px solid #FF6666; border-radius: 50%;margin-left: 0.1rem"  ng-checked="newUser.sex == '男'"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">男</span>
+
+              </span>
+                   <!-- <div class="mr10" style="display: flex;justify-content: space-between">
                         <label class="item item-radio" style="border:none;padding:0;">
                             <input type="radio" name="group" value="go" checked="checked">
                             <div class="radio-content">
@@ -48,18 +63,18 @@
                             </div>
                         </label>
 
-                    </div>
+                    </div>-->
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">生日</p>
                     <p class="mr10">
-                        <input type="text" placeholder="请输入您的生日" style="text-align: right" ng-model="param.userInformation.birthday">
+                        <input type="text" placeholder="请输入您的生日" style="text-align: right" ng-model="newUser.birthday" class="mt5">
                     </p>
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">星座</p>
                     <p class="mr10">
-                        <input type="text" placeholder="请输入星座" style="text-align: right" ng-model="param.userInformation.constellation">
+                        <input type="text" placeholder="请输入星座" style="text-align: right" ng-model="newUser.constellation" class="mt5" >
                     </p>
                 </ion-item>
                 <!--<ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
@@ -76,7 +91,7 @@
                 </ion-item>-->
 
             </ion-list>
-            <div style="margin-top:10px;">
+           <!-- <div style="margin-top:10px;">
                 <ion-list>
                     <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                         <p class="ml10">基本信息</p>
@@ -87,7 +102,7 @@
                     </ion-item>
 
                 </ion-list>
-            </div>
+            </div>-->
             <!--会员信息-->
            <!-- <div style="margin-top:10px;">
                 <ion-list>
@@ -107,14 +122,13 @@
                 </ion-list>
             </div>-->
 
-            <div style="margin-top:10px;height:50px;line-height: 50px;font-size: 16px;color: #59D84C;text-align: center" class="bgfff ">
+           <!-- <div style="margin-top:10px;height:50px;line-height: 50px;font-size: 16px;color: #59D84C;text-align: center" class="bgfff ">
                 <img src="images/greenJia.png" style="width:16px;height:16px;">
                 <span ng-click="addMessage()">添加更多信息</span>
-            </div>
+            </div>-->
             <div style="margin-top:10px;display: flex;justify-content: space-between" class="bgfff">
-                <label class="ml10">备注：</label>
-                <textarea style="width:85%;height:100px">
-                {{newUser.detail}}
+                <label class="ml10 mt10">备注：</label>
+                <textarea style="width:85%;height:100px" ng-model="newUser.detail">
             </textarea>
             </div>
             <div style="height:100px;display: flex;justify-content: space-around;padding-top:30px;" >
@@ -123,7 +137,7 @@
                     保存
                 </p>
             </div>
-
+<!--
             <div style="position: absolute;height:173%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100;display: none"></div>
             <div style="position: absolute;top:40px;left:50%;margin-left:-40%;background: #FFFFFF;border-radius: 8px;width:80%;z-index: 101 ;display: none">
                 <div style="height:40px;line-height: 40px;border-top-left-radius: 8px;border-top-right-radius: 8px;" class="sb bgfff">
@@ -158,7 +172,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div>-->
         </div>
     </ion-content>
 </ion-view>

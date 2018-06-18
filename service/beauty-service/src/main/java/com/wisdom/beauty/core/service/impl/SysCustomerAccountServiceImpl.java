@@ -2,20 +2,22 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.SysUserAccountCriteria;
 import com.wisdom.beauty.api.dto.SysUserAccountDTO;
 import com.wisdom.beauty.api.responseDto.CustomerAccountResponseDto;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.SysUserAccountMapper;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.core.service.SysUserAccountService;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,25 +49,29 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
     @Resource
     private UserServiceClient userServiceClient;
 
+    @Autowired
+    private ShopCustomerArchivesService shopCustomerArchivesService;
+
     @Override
-    public CustomerAccountResponseDto getSysAccountListByUserId(String userId) {
-        logger.info("getSysAccountListByUserId方法传入的参数userId={}", userId);
+    public CustomerAccountResponseDto getSysAccountListByUserId(String userId, String shopId) {
+        logger.info("getSysAccountListByUserId方法传入的参数userId={},shopId={}", userId, shopId);
         if (StringUtils.isBlank(userId)) {
             throw new ServiceException("userId为空");
         }
-        //查询用户信息，获取到账户的信息
-        CustomerAccountResponseDto customerAccountResponseDto = new CustomerAccountResponseDto();
-        UserInfoDTO userInfoDTO = null;
-        try {
-            userInfoDTO = userServiceClient.getUserInfoFromUserId(userId);
-        } catch (Exception e) {
-            logger.info("userServiceClient.getUserInfoFromUserId()方法调用失败，失败信息是:" + e.getMessage(), e);
+        ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setSysUserId(userId);
+        shopUserArchivesDTO.setSysShopId(shopId);
+        List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
+        if (CommonUtils.objectIsEmpty(shopUserArchivesInfo)) {
+            logger.info("查询出来的用户信息为空");
+            return null;
         }
 
-        if (userInfoDTO != null) {
-            customerAccountResponseDto.setPhoto(userInfoDTO.getPhoto());
-            customerAccountResponseDto.setUserName(userInfoDTO.getNickname());
-        }
+        //查询用户信息，获取到账户的信息
+        ShopUserArchivesDTO archivesDTO = shopUserArchivesInfo.get(0);
+        CustomerAccountResponseDto customerAccountResponseDto = new CustomerAccountResponseDto();
+        BeanUtils.copyProperties(archivesDTO, customerAccountResponseDto);
+
         SysUserAccountDTO sysUserAccountDTO=new SysUserAccountDTO();
         sysUserAccountDTO.setSysUserId(userId);
         SysUserAccountDTO sysUserAccount = getSysUserAccountDTO(sysUserAccountDTO);
@@ -109,7 +115,7 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
      */
     @Override
     public SysUserAccountDTO getSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO) {
-
+        logger.info("获取用户的账户信息传入参数={}","sysUserAccountDTO = [" + sysUserAccountDTO + "]");
         if (CommonUtils.objectIsEmpty(sysUserAccountDTO)) {
             logger.info("获取用户的账户信息传入参数={}", "sysUserAccountDTO = [" + sysUserAccountDTO + "]");
             return null;
@@ -149,6 +155,20 @@ public class SysCustomerAccountServiceImpl implements SysUserAccountService {
 
         logger.debug("更新用户的账户信息执行结果 {}", sysUserAccount > 0 ? "成功" : "失败");
 
+        return sysUserAccount;
+    }
+
+    /**
+     * 创建用户的账户信息
+     *
+     * @param sysUserAccountDTO
+     * @return
+     */
+    @Override
+    public int saveSysUserAccountDTO(SysUserAccountDTO sysUserAccountDTO) {
+        logger.info("创建用户的账户信息传入参数={}", "sysUserAccountDTO = [" + sysUserAccountDTO + "]");
+        int sysUserAccount = sysCustomerAccountMapper.insert(sysUserAccountDTO);
+        logger.debug("创建用户的账户信息执行结果 {}", sysUserAccount > 0 ? "成功" : "失败");
         return sysUserAccount;
     }
 }

@@ -1,9 +1,9 @@
 package com.wisdom.common.dto.user;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class SysBossDTO extends BaseEntity implements Serializable {
     //
@@ -19,6 +19,9 @@ public class SysBossDTO extends BaseEntity implements Serializable {
     private String currentShopId;
 
     //
+    private String sysBossCode;
+
+    //
     private String currentStoreId;
 
     //
@@ -26,6 +29,9 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     //昵称
     private String nickname;
+
+    //性别
+    private String sex;
 
     //密码
     private String password;
@@ -109,6 +115,14 @@ public class SysBossDTO extends BaseEntity implements Serializable {
         this.currentShopId = currentShopId;
     }
 
+    public String getSysBossCode() {
+        return sysBossCode;
+    }
+
+    public void setSysBossCode(String sysBossCode) {
+        this.sysBossCode = sysBossCode;
+    }
+
     public String getCurrentStoreId() {
         return currentStoreId;
     }
@@ -131,6 +145,14 @@ public class SysBossDTO extends BaseEntity implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getPassword() {

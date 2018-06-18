@@ -10,6 +10,15 @@ angular.module('controllers',[]).controller('beautyShopListCtrl',
                 otherShopInfo : []
             }
 
+            $rootScope.shopAppointInfo = {
+                clerkId : '',
+                shopProjectIds:[],
+                shopProjectDetail:'',
+                appointValue:'',
+                chooseWeekDate :"",
+                shopUserInfo:{}
+            }
+
             GetUserClientInfo.get(function (data) {
                 if(data.result==Global.SUCCESS)
                 {
@@ -20,7 +29,6 @@ angular.module('controllers',[]).controller('beautyShopListCtrl',
             
             $scope.chooseShop = function (shopId) {
                 ChangeUserShop.get({sysShopId:shopId},function (data) {
-                    console.log(data);
                     if(data.result=Global.SUCCESS)
                     {
                         $state.go("beautyUserCenter");
