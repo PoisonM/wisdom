@@ -145,7 +145,6 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             };
 
             $scope.inventoryRecordsPicsGo = function(){
-                alert($stateParams.name);
                 $state.go("inventoryRecordsPics",{shopStoreId:$rootScope.shopInfo.shopStoreId,name:$stateParams.name})
             };
 

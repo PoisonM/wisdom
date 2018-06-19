@@ -10,4 +10,12 @@ public interface BossInfoService {
      * @return
      */
     int updateBossInfo(SysBossDTO sysBossDTO);
+
+    /**
+     * 更新老板信息
+     *
+     * @param sysBossDTO
+     * @return
+     */
+    SysBossDTO getBossInfo(SysBossDTO sysBossDTO);
 }

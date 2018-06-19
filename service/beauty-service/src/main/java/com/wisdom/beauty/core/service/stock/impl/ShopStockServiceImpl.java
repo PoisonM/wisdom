@@ -14,6 +14,7 @@ import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -21,7 +22,6 @@ import com.wisdom.common.util.StringUtils;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.poi.hssf.record.RKRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import com.wisdom.beauty.client.UserServiceClient;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -70,6 +71,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	@Autowired
 	private ShopStoreMapper shopStoreMapper;
+
+	@Autowired
+	private  UserServiceClient userServiceClient;
 
 	/**
 	 * 查询仓库列表
@@ -244,14 +248,18 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 			shopStockResponses.add(shopStockResponseDTO);
 		}
-
+		SysBossDTO sysBoss = new SysBossDTO();
+		sysBoss.setId(shopStockRecord.getManagerId());
+		SysBossDTO sysBossDTO = userServiceClient.getBossInfo(sysBoss);
 		shopStockResponseDTO = new ShopStockResponseDTO();
 		shopStockResponseDTO.setFlowNo(shopStockRecord.getFlowNo());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
 		shopStockResponseDTO.setFlowNo(shopStockRecord.getFlowNo());
 		shopStockResponseDTO.setName(shopStockRecord.getName());
 		shopStockResponseDTO.setStockType(shopStockRecord.getStockType());
-		shopStockResponseDTO.setApplayUser(shopStockRecord.getManagerId());
+		if(sysBossDTO!=null) {
+			shopStockResponseDTO.setApplayUser(sysBossDTO.getName());
+		}
 		shopStockResponseDTO.setDetail(shopStockRecord.getDetail());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
