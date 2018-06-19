@@ -39,16 +39,21 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     // $scope.shopUserProjectRelationDTOSPeople= $rootScope.shopUserProjectRelationDTOSTemp
 
     $scope.goHousekeeper = function(type,index) {
-        $state.go('pad-web.left_nav.housekeeper',{type:type,index:index})
+        $state.go('pad-web.left_nav.housekeeper',{
+            type:type,
+            index:index,
+            orderId:$scope.orderId,
+            tempAll:$scope.tempAll
+        })
     }
     $scope.goOrderListm = function() {
         console.log($scope.car)
 
         $scope.importData = {
             orderId: $scope.orderId,
-            projectGroupRelRelationDTOS: $rootScope.projectGroupRelRelationDTOSTemp,//套卡
-            shopUserProductRelationDTOS: $rootScope.shopUserProductRelationDTOSTemp,//产品
-            shopUserProjectRelationDTOS: $rootScope.shopUserProjectRelationDTOSTemp,//项目
+            projectGroupRelRelationDTOS: $rootScope.projectGroupRelRelationDTOS,//套卡
+            shopUserProductRelationDTOS: $rootScope.shopUserProductRelationDTOS,//产品
+            shopUserProjectRelationDTOS: $rootScope.shopUserProjectRelationDTOS,//项目
             status: 1,
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: $scope.tempAll, //总金额
@@ -91,7 +96,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                     $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
                 }*/
                 $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
-
+                $rootScope.shopUserRechargeCardDTO = $scope.shopUserRechargeCardDTO
                 if($rootScope.projectGroupRelRelationDTOS != undefined || $rootScope.shopUserProductRelationDTOS != undefined || $rootScope.shopUserProjectRelationDTOS != undefined){
                     // return
                 }else {
@@ -99,6 +104,9 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                     $rootScope.shopUserProductRelationDTOS = $scope.shopUserProductRelationDTOS
                     $rootScope.shopUserProjectRelationDTOS = $scope.shopUserProjectRelationDTOS
                 }
+                // $rootScope.projectGroupRelRelationDTOS = $scope.projectGroupRelRelationDTOS
+                // $rootScope.shopUserProductRelationDTOS = $scope.shopUserProductRelationDTOS
+                // $rootScope.shopUserProjectRelationDTOS = $scope.shopUserProjectRelationDTOS
                 $scope.myChangeFn()
             }
         })
