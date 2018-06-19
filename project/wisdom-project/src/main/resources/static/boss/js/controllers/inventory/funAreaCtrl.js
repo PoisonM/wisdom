@@ -10,7 +10,6 @@ angular.module('controllers',[]).controller('funAreaCtrl',
                 $state.go('outbound',{name:$stateParams.name})
             }
             $scope.inventoryDetailsGo = function(){
-                alert($rootScope.shopInfo.shopStoreId);
                 $state.go('inventoryDetails',{shopStoreId:$rootScope.shopInfo.shopStoreId})
             }
             /*盘点*/

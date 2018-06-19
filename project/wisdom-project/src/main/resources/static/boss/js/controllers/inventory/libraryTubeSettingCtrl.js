@@ -13,6 +13,7 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
             console.log( $scope.param.id)
 
             FindStoreList.get({},function(data){
+
                 if(data.result =="0x00001"){
                     $scope.libraryTubeSetting =data.responseData
                 }
@@ -21,7 +22,7 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
 
             if($stateParams.ids!=""){
                  $scope.show = false;
-                 $scope.storeManagerName = $stateParams.names.split(',');
+                 $scope.storeManagerName = $stateParams.names.split(',')[0];
             }
 
 
@@ -39,7 +40,9 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
                         $scope.peopleKuTube = data.responseData
                 })
             }
+
             $scope.kuTube();
+
             $scope.save = function () {
 
                 var setStorekeeperRequestDTO = {
@@ -48,10 +51,11 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
                     storeManagerNames:$stateParams.names.split(',')
                 }
                 SetStorekeeper.save(setStorekeeperRequestDTO,function (data) {
-                    alert(data.result);
                     if(data.result=="0x00001"){
                         alert("更新成功");
                         $state.reload('app.toMenu');
+                    }else{
+                        alert("更新失败");
                     }
                 })
             }

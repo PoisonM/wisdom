@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
 
             $rootScope.title = "新增出库";
             $scope.sum = $stateParams.sum;
-            alert($scope.sum);
+
             $scope.param = {
                 shopStock : [],
                 outOperationName : '',

@@ -40,4 +40,17 @@ public class BossInfoServiceImpl implements BossInfoService{
         logger.info("更新老板信息更新结果={}", update > 0 ? "成功" : "失败");
         return update;
     }
+
+    /**
+     * 更新老板信息
+     *
+     * @param sysBossDTO
+     * @return
+     */
+    @Override
+    public SysBossDTO getBossInfo(SysBossDTO sysBossDTO){
+
+        SysBossDTO sysBoss = sysBossMapper.selectByPrimaryKey(sysBossDTO.getId());
+        return  sysBoss;
+    }
 }
