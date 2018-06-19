@@ -9,15 +9,15 @@ public class ShopChannelResponseDTO {
 	private String channelName;
 	private Integer channelPeopleNumber;
 
-    public BigDecimal getChannelPeopleProportionr() {
-        return channelPeopleProportionr;
-    }
+	public String getChannelPeopleProportionr() {
+		return channelPeopleProportionr;
+	}
 
-    public void setChannelPeopleProportionr(BigDecimal channelPeopleProportionr) {
-        this.channelPeopleProportionr = channelPeopleProportionr;
-    }
+	public void setChannelPeopleProportionr(String channelPeopleProportionr) {
+		this.channelPeopleProportionr = channelPeopleProportionr;
+	}
 
-    private BigDecimal channelPeopleProportionr;
+	private String channelPeopleProportionr;
 
 	public String getChannelName() {
 		return channelName;

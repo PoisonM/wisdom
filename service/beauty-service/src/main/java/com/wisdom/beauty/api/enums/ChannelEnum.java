@@ -17,7 +17,15 @@ public enum ChannelEnum {
         this.code = code;
         this.desc = desc;
     }
-
+    public static ChannelEnum judgeValue(String code) {
+        ChannelEnum[] resultCodes = ChannelEnum.values();
+        for (ChannelEnum resultCode : resultCodes) {
+            if (resultCode.getCode().equals(code)) {
+                return resultCode;
+            }
+        }
+        return null;
+    }
     private String code;
     private String desc;
 
