@@ -23,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -497,7 +498,12 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserName())) {
 			UserInfoDTO userInfoFromUserId = userServiceClient
 					.getUserInfoFromUserId(shopUserConsumeRecordDTO.getSysUserId());
-			shopUserConsumeRecordDTO.setSysUserName(userInfoFromUserId.getNickname());
+			try {
+				shopUserConsumeRecordDTO.setSysUserName(CommonUtils.convertUnicode(userInfoFromUserId.getNickname()));
+			} catch (UnsupportedEncodingException e) {
+				logger.error("用户昵称解码出错");
+				e.printStackTrace();
+			}
 		}
 		shopUserConsumeRecordDTO.setCreateDate(new Date());
 		shopUserConsumeRecordDTO.setOperDate(new Date());
