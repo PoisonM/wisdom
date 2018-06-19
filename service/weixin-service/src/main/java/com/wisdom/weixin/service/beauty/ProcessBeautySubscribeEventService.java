@@ -1,22 +1,14 @@
 package com.wisdom.weixin.service.beauty;
 
 import com.wisdom.common.constant.ConfigConstant;
-import com.wisdom.common.dto.account.AccountDTO;
-import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.dto.transaction.BonusFlagDTO;
 import com.wisdom.common.dto.wexin.WeixinAttentionDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
-import com.wisdom.common.entity.WeixinUserBean;
-import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
-import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.weixin.client.BeautyServiceClient;
-import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -30,7 +22,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -118,15 +109,7 @@ public class ProcessBeautySubscribeEventService {
                 userServiceClient.updateUserInfo(userInfoDTO);
 
                 //根据shopId和openId查询用户是否绑定了此美容院
-                ResponseDTO<String> responseDTO = beautyServiceClient.getUserBindingInfo(openId,shopId);
-                if("N".equals(responseDTO.getResponseData()))
-                {
-                    JedisUtils.set(shopId+"_"+userInfoDTO.getId(),"notBind",ConfigConstant.logintokenPeriod);
-                }
-                else if("Y".equals(responseDTO.getResponseData()))
-                {
-                    JedisUtils.set(shopId+"_"+userInfoDTO.getId(),"alreadyBind",ConfigConstant.logintokenPeriod);
-                }
+                beautyServiceClient.getUserBindingInfo(openId,shopId,userId);
             }
 
             //为用户的此次关注插入到mongodb记录中

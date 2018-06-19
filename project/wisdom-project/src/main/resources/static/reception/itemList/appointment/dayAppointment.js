@@ -5,7 +5,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     , GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject
     , GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, UpdateAppointmentInfoById
     , FindArchives, GetShopProjectList, ShopWeekAppointmentInfoByDate, GetShopClerkScheduleList
-    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo,GetShopUserArchivesInfoByUserId) {
+    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo,GetShopUserArchivesInfoByUserId,ImageBase64UploadToOSS) {
     $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
     //切换时间更新数据
@@ -643,7 +643,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     // $scope.param.newProductObject.shopProjectName = data.responseData.shopProjectName,
                     // $scope.param.ModifyAppointmentObject.appointPeriod = data.responseData.appointPeriod,
                     // $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
-
+                    $scope.param.ModifyAppointmentObject.beauticianId = data.responseData.sysClerkId
                     $scope.param.selectCustomersObject.sysUserId = data.responseData.sysUserId
                     $scope.param.selectCustomersObject.sysUserName = data.responseData.sysUserName
                     $scope.param.ModifyAppointmentObject.beauticianName = data.responseData.sysClerkName
@@ -651,6 +651,14 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     $scope.checkprojectName = data.responseData.shopProjectName,
                     $scope.checkprojectDuration = data.responseData.appointPeriod,
                     $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
+                    $scope.tempRedgArr = data.responseData.shopProjectId.split(";");
+                    $scope.param.dayTime=[];
+                    $scope.param.curDate=new Date();
+                    for(var i=1;i<=6;i++){
+                        nextDate = new Date($scope.param.curDate.getTime() +  24*60*60*1000*i);
+                        //后一天 
+                        $scope.param.dayTime.push(nextDate)
+                    }
 
                     GetClerkScheduleInfo.get({
                         appointmentId:"",
@@ -661,10 +669,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         if(data.result == "0x00001"){
                             //空闲时间
                             $scope.param.mrLeisureTime = data.responseData
-                            //计算出不可点击时间
 
-                            $scope.param.dayTime=[];
-                            $scope.param.curDate=new Date();
                             $scope.bgf5f5f5 = "bgf5f5f5";
                             $scope.param.codeNum = []//所有节点
                             $scope.param.schedulingArr = []//所有节点
@@ -712,16 +717,52 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
 
                 });
+                /*选择时间（天为单位）*/
+                $scope.selectDayTime = function(index){
+                    $scope.bgff6666 = 'bgff6666';
+                    $scope.index = index;
+                };
+                $scope.selectTime = function(index,NoOrYes){
+                    var timeIntervalArr = [];
+                    if(NoOrYes == 1){
+                        //0空闲时间 1非空闲时间
+                        return
+                    }
+                    if($scope.param.selectCustomersObject.sysUserName == ""){
+                        alert("请先选择顾客")
+                    }else if($scope.param.ModifyAppointmentObject.beauticianId == "" || $scope.param.ModifyAppointmentObject.beauticianId == undefined){
+                        alert("请先选择美容师")
+                    }else{
+                        $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(startIndex,endIndex+1);
+                        $scope.bgff9b9b = 'bgff9b9b';
+                        $scope.index1 = index;
+                        var time=$scope.checkprojectDuration/60/1/0.5;
+                        for(var i=index;i<time+index;i++){
+                            $scope.param.selectedTime[i] = "2";
+                            for(var j=0;j<$scope.param.code.length;j++){
+                                for(key in $scope.param.code[j] ){
+                                    if($scope.param.code[j][key] == $scope.param.ModifyAppointmentObject.hoursTimeShow[i] ){
+                                        timeIntervalArr.push($scope.param.code[j][key])
+                                    }
+                                }
+                            }
+                        }
+
+                        $scope.param.ModifyAppointmentObject.appointStartTime=timeIntervalArr[0];
+                        $scope.param.ModifyAppointmentObject.appointEndTime=timeIntervalArr[timeIntervalArr.length-1]
+                    }
+                };
                 $scope.close = function (status) {
                     if(status == 1){
                         $scope.importData = {
-                            shopProjectId:$scope.param.newProductObject.shopProjectId,
+                            id:$scope.appointmentId,
+                            shopProjectId:$scope.checkprojectId,
                             sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
-                            // appointStartTimeS:"2018-04-27 11:00:00",
+                            sysUserId:$scope.param.selectCustomersObject.sysUserId,//biaoji
+                            sysUserName:$scope.param.selectCustomersObject.sysUserName,
                             appointStartTimeS:new Date().format("yyyy-MM-dd")+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
-                            // appointStartTimeS:new Date().getFullYear()+"-"+parseInt(new Date().getMonth()+1)+"-"+parseInt(new Date().getDate())+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
-                            shopProjectName:$scope.param.newProductObject.shopProjectName,
-                            appointPeriod:$scope.param.ModifyAppointmentObject.appointPeriod,
+                            shopProjectName:$scope.checkprojectName,
+                            appointPeriod:$scope.checkprojectDuration,
                             detail:$scope.param.ModifyAppointmentObject.detail,
                             status:'0'
                         }
@@ -1243,7 +1284,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     $scope.goArrangeWorkList = function () {
         $state.go("pad-web.arrangeWorkList")
     }
-
+    $scope.param.imgSrc = 'images/bt_taking%20pictures.png'
     var pattern = /^1[34578]\d{9}$/;
     /*添加顾客*/
     $scope.addCustomersCtrl = function(){
@@ -1271,7 +1312,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             constellation:"",//星座
                             detail:'',//备注
                             height:"",//身高
-                            imageUrl:$scope.param.addCustomersObject.picSrc,//头像地址
+                            imageUrl:$scope.param.imgSrc,//头像地址
                             phone:$scope.param.addCustomersObject.userPhone,//手机号
                             sex:$scope.param.addCustomersObject.sex,//性别
                             sysClerkId:'',
@@ -1290,9 +1331,39 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             }
                         })
                     }
+                    else if(type== 0){
+                        $scope.param.addCustomersObject.userName = ""
+                        $scope.param.addCustomersObject.userPhone = ""
+                        $scope.param.addCustomersObject.sex = "女"
+                        $scope.param.imgSrc = "images/bt_taking%20pictures.png"
+                    }
                     $scope.closeThisDialog();
 
                 };
+
+                /*上传图片*/
+                /*上传图片*/
+                $scope.reader = new FileReader();   //创建一个FileReader接口
+                $scope.thumb = "";      //用于存放图片的base64
+                $scope.img_upload = function(files) {
+                    var file = files[0];
+                    if (window.FileReader) {
+                        var fr = new FileReader();
+                        fr.onloadend = function (e) {
+                            console.log(e)
+                            $scope.thumb = e.target.result
+                        };
+                        fr.readAsDataURL(file);
+                    } else {
+                        alert("浏览器不支持")
+                    }
+                    debugger
+                    console.log($scope.thumb)
+                    ImageBase64UploadToOSS.save($scope.thumb, function (data) {
+                        $scope.param.imgSrc = data.responseData//图片地址
+                    })
+                }
+
             }],
             className: 'newProject ngdialog-theme-custom'
         });

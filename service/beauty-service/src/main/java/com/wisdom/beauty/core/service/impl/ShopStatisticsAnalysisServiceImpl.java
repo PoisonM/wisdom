@@ -1,12 +1,11 @@
 package com.wisdom.beauty.core.service.impl;
 
-import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordCriteria;
-import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
+import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ChannelEnum;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopChannelResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
@@ -27,9 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.*;
 
 /**
@@ -786,20 +783,36 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		if (CollectionUtils.isEmpty(shopBossRelationList)) {
 			return null;
 		}
-		// 人头数
+		// 人头数,需要处理去重
 		ShopUserConsumeRecordCriteria numberCriteria = new ShopUserConsumeRecordCriteria();
-		numberCriteria.setDistinct(true);
+		ShopUserConsumeRecordCriteria.Criteria criteria = numberCriteria.createCriteria();
+		if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
+				&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+			Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+			Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+			criteria.andCreateDateBetween(startTime, endTime);
+		}
+		criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
+		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 		List<ExpenditureAndIncomeResponseDTO> consumeNumberList = extShopUserConsumeRecordMapper
 				.selectPriceListByCriteria(numberCriteria);
-		Map<String, Integer> map = null;
+		Map<String, ExpenditureAndIncomeResponseDTO> map = null;
 		if (CollectionUtils.isNotEmpty(consumeNumberList)) {
 			map = new HashedMap(16);
 			for (ExpenditureAndIncomeResponseDTO dto : consumeNumberList) {
 				if (map.get(dto.getSysShopId()) == null) {
-					map.put(dto.getSysShopId(), 1);
+					ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse = new ExpenditureAndIncomeResponseDTO();
+					expenditureAndIncomeResponse.setConsumeNumber(1);
+					expenditureAndIncomeResponse.setSysUserId(dto.getSysUserId());
+					map.put(dto.getSysShopId(), expenditureAndIncomeResponse);
 				} else {
-					Integer consumeTime = map.get(dto.getSysShopId());
-					map.put(dto.getSysShopId(), consumeTime + 1);
+					ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse = map.get(dto.getSysShopId());
+					if (!dto.getSysUserId().equals(expenditureAndIncomeResponse.getSysUserId())) {
+						expenditureAndIncomeResponse
+								.setConsumeNumber(expenditureAndIncomeResponse.getConsumeNumber() + 1);
+						map.put(dto.getSysShopId(), expenditureAndIncomeResponse);
+					}
+
 				}
 			}
 
@@ -807,6 +820,15 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 
 		// 人次数
 		ShopUserConsumeRecordCriteria timeCriteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria c = timeCriteria.createCriteria();
+		if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
+				&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+			Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+			Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+			c.andCreateDateBetween(startTime, endTime);
+		}
+		c.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
+		c.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 		List<ExpenditureAndIncomeResponseDTO> timeList = extShopUserConsumeRecordMapper
 				.selectPriceListByCriteria(timeCriteria);
 		Map<String, Integer> timeMap = null;
@@ -817,8 +839,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 					timeMap.put(expenditureAndIncomeResponseDTO.getSysShopId(), 1);
 				} else {
 					Integer consumeTime = 0;
-					if (map != null) {
-						consumeTime = map.get(expenditureAndIncomeResponseDTO.getSysShopId());
+					if (timeMap != null) {
+						consumeTime = timeMap.get(expenditureAndIncomeResponseDTO.getSysShopId());
 					}
 					timeMap.put(expenditureAndIncomeResponseDTO.getSysShopId(), consumeTime + 1);
 				}
@@ -851,18 +873,20 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
 			expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());// 美容院店名字
 			expenditureAndIncomeResponseDTO.setShopNewUserNumber(newCustomerMap.get(shopBossRelation.getSysShopId()));// 新客
-			if (map != null) {
-				expenditureAndIncomeResponseDTO.setConsumeNumber(map.get(shopBossRelation.getSysShopId()));// 人头数
+			if (map != null && map.get(shopBossRelation.getSysShopId()) != null) {
+				expenditureAndIncomeResponseDTO
+						.setConsumeNumber(map.get(shopBossRelation.getSysShopId()).getConsumeNumber());// 人头数
 			}
 			if (timeMap != null) {
 				expenditureAndIncomeResponseDTO.setConsumeTime(timeMap.get(shopBossRelation.getSysShopId()));// 次数
 			}
 			expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());
 			if (totalConsumeNumber == null) {
-				totalConsumeNumber = map.get(shopBossRelation.getSysShopId());
+				totalConsumeNumber = map.get(shopBossRelation.getSysShopId()).getConsumeNumber();
 			} else {
 				if (map.get(shopBossRelation.getSysShopId()) != null) {
-					totalConsumeNumber = totalConsumeNumber + map.get(shopBossRelation.getSysShopId());
+					totalConsumeNumber = totalConsumeNumber
+							+ map.get(shopBossRelation.getSysShopId()).getConsumeNumber();
 				}
 			}
 			if (totalShopNewUserNumber == null) {
@@ -901,6 +925,13 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		if ("1".equals(condition)) {
 			ShopUserConsumeRecordCriteria numberCriteria = new ShopUserConsumeRecordCriteria();
 			ShopUserConsumeRecordCriteria.Criteria numberC = numberCriteria.createCriteria();
+			if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
+					&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+				Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+				Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+				numberC.andCreateDateBetween(startTime, endTime);
+			}
+			numberC.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 			// 根据时间排序，降序
 			numberCriteria.setOrderByClause("create_date  desc");
 			list = extShopUserConsumeRecordMapper.selectPriceListByCriteria(numberCriteria);
@@ -919,6 +950,13 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			ShopUserConsumeRecordCriteria.Criteria timeC = timeCriteria.createCriteria();
 			// 根据时间排序，降序
 			timeCriteria.setOrderByClause("create_date  desc");
+			if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
+					&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+				Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+				Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+				timeC.andCreateDateBetween(startTime, endTime);
+			}
+			timeC.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 			list = extShopUserConsumeRecordMapper.selectPriceListByCriteria(timeCriteria);
 
 			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : list) {
@@ -942,7 +980,6 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		if ("3".equals(condition)) {
 			PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO = new PageParamVoDTO();
 			ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-			shopUserArchivesDTO.setSysBossCode(userConsumeRequestDTO.getSysBossCode());
 			shopUserArchivesDTO.setSysShopId(userConsumeRequestDTO.getSysShopId());
 			shopCustomerArchivesDTO.setRequestData(shopUserArchivesDTO);
 			shopCustomerArchivesDTO.setStartTime(pageParamVoDTO.getStartTime());
@@ -950,16 +987,37 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			// 查询出来新客列表
 			archivesList = shopCustomerArchivesService.getArchivesList(shopCustomerArchivesDTO);
 			// 遍历新客列表，将渠道作为key ,计算出每个渠道的人数
-			// TODO: 2018/5/18
-			/*
-			 * for (ShopUserArchivesDTO shopUserArchives : archivesList) { if
-			 * (newCustomerMap.get(shopUserArchives.getSysShopId()) == null) {
-			 * newCustomerMap.put(shopUserArchives.getSysShopId(), 1); } else { Integer
-			 * consumeTime = newCustomerMap.get(shopUserArchives.getSysShopId());
-			 * newCustomerMap.put(shopUserArchives.getSysShopId(), consumeTime + 1); } }
-			 */
+			List<ShopChannelResponseDTO> shopChannelResponseList = new ArrayList<>();
+			Map<String, ShopChannelResponseDTO> channelMap = new HashMap<>();
+			ShopChannelResponseDTO shopChannelResponseDTO = null;
+			for (ShopUserArchivesDTO dto : archivesList) {
+				if (channelMap.containsKey(dto.getChannel())) {
+					shopChannelResponseDTO = channelMap.get(dto.getChannel());
+					shopChannelResponseDTO.setChannelPeopleNumber(1 + shopChannelResponseDTO.getChannelPeopleNumber());
+					DecimalFormat fnum  =   new  DecimalFormat("##0");
+					String   dd=fnum.format(Float.valueOf(shopChannelResponseDTO.getChannelPeopleNumber())/Float.valueOf(archivesList.size())*100);
+					shopChannelResponseDTO
+							.setChannelPeopleProportionr(Integer.valueOf(dd));
+					channelMap.put(dto.getChannel(), shopChannelResponseDTO);
+
+				} else {
+					shopChannelResponseDTO = new ShopChannelResponseDTO();
+					shopChannelResponseDTO.setChannelName(ChannelEnum.judgeValue(dto.getChannel()).getDesc());
+					shopChannelResponseDTO.setChannelPeopleNumber(1);
+					DecimalFormat fnum  =   new  DecimalFormat("##0");
+					String   dd=fnum.format(1f/Float.valueOf(archivesList.size())*100);
+					shopChannelResponseDTO
+							.setChannelPeopleProportionr(Integer.valueOf(dd));
+					channelMap.put(dto.getChannel(), shopChannelResponseDTO);
+				}
+			}
+			for (Map.Entry<String, ShopChannelResponseDTO> entry : channelMap.entrySet()) {
+				shopChannelResponseList.add(entry.getValue());
+
+			}
 			Map<String, Object> responseMap = new HashedMap();
 			responseMap.put("shopNewUserNumber", archivesList == null ? 0 : archivesList.size());// 新客
+			responseMap.put("shopChannelResponseList", shopChannelResponseList);
 			return responseMap;
 		}
 		// 查询档案列表

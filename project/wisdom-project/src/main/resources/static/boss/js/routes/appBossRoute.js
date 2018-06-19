@@ -88,6 +88,19 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                        /*员工端的业绩明细*/
+                    .state('employeeDetailedPerformance', {
+                        url: '/employeeDetailedPerformance/:searchFile',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'employeeDetailedPerformanceCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeDetailedPerformanceCtrl',
+                                    ['js/controllers/employee/employeeDetailedPerformanceCtrl.js?ver='+ bossVersion],
+                                    'views/employee/employeeDetailedPerformance.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                 /*全部家人*/
 
                     .state('allFamily', {
@@ -1452,7 +1465,7 @@ define(['appBoss'], function(app){
                     })
                     /*outbound 出库*/
                     .state('outbound', {
-                        url: '/outbound',
+                        url: '/outbound/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'outboundCtrl',
                         resolve: {
@@ -1477,7 +1490,7 @@ define(['appBoss'], function(app){
                     })
                     /* outboundRecords  出库记录*/
                     .state('outboundRecords', {
-                        url: '/outboundRecords/:shopStoreId',
+                        url: '/outboundRecords/:shopStoreId/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'outboundRecordsCtrl',
                         resolve: {
@@ -1490,7 +1503,7 @@ define(['appBoss'], function(app){
                     })
                     /* kuTube  库管人*/
                     .state('kuTube', {
-                        url: '/kuTube/:id,:storeManagerId',
+                        url: '/kuTube/:id/:storeManagerId/:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'kuTubeCtrl',
                         resolve: {
@@ -1590,7 +1603,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('libraryTubeSetting', {
-                        url: '/libraryTubeSetting/:ids/:names,:id',
+                        url: '/libraryTubeSetting/:ids/:names/:id/:sysShopId/:shopStoreId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'libraryTubeSettingCtrl',
                         resolve: {
@@ -1692,7 +1705,7 @@ define(['appBoss'], function(app){
                     })
                     /*putInStorage 入库*/
                     .state('putInStorage', {
-                        url: '/putInStorage',
+                        url: '/putInStorage/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'putInStorageCtrl',
                         resolve: {
@@ -1731,7 +1744,7 @@ define(['appBoss'], function(app){
                     })*/
                 /*inventoryRecords 入库记录*/
                     .state('inventoryRecordsPics', {
-                        url: '/inventoryRecordsPics/:shopStoreId',
+                        url: '/inventoryRecordsPics/:shopStoreId/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'inventoryRecordsPicsCtrl',
                         resolve: {
@@ -1874,7 +1887,7 @@ define(['appBoss'], function(app){
                     })
                 /*AddOutbound 新增出库*/
                     .state('AddOutbound', {
-                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType',
+                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType/:name/:sum',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'AddOutboundCtrl',
                         resolve: {
@@ -1887,7 +1900,7 @@ define(['appBoss'], function(app){
                     })
                 /* newLibrary  新增入库*/
                     .state('newLibrary', {
-                        url: '/newLibrary/:stockStyle/:shopStoreId',
+                        url: '/newLibrary/:stockStyle/:shopStoreId/:sum/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newLibraryCtrl',
                         resolve: {
@@ -1940,7 +1953,7 @@ define(['appBoss'], function(app){
                     })
                 /*selectTheOutboundType 选择出库类型*/
                     .state('selectTheOutboundType', {
-                        url: '/selectTheOutboundType/:shopStoreId/:stockStyle',
+                        url: '/selectTheOutboundType/:shopStoreId/:stockStyle/:name/:sum',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectTheOutboundTypeCtrl',
                         resolve: {
@@ -2318,7 +2331,7 @@ define(['appBoss'], function(app){
                     })
 
                     .state('employeeTreatmentCardDtails', {
-                        url: '/employeeTreatmentCardDtails/:sysUserId',
+                        url: '/employeeTreatmentCardDtails/:flowId/:goodsType/:flowIds/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'employeeTreatmentCardDtailsCtrl',
                         resolve: {

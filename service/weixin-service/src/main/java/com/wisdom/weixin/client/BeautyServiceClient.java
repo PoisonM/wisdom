@@ -17,5 +17,6 @@ public interface BeautyServiceClient {
      * @return
      */
     @RequestMapping(value = "/getUserBindingInfo", method = RequestMethod.GET)
-    ResponseDTO<String> getUserBindingInfo(@RequestParam(value = "openId") String openId, @RequestParam(value = "shopId") String shopId);
+    ResponseDTO<String> getUserBindingInfo(@RequestParam(value = "openId") String openId, @RequestParam(value = "shopId") String shopId,
+                                           @RequestParam(value = "userId") String userId);
 }

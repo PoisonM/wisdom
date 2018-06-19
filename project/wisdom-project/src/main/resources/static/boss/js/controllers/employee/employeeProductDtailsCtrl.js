@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/6/1.
  */
 angular.module('controllers',[]).controller('employeeProductDtailsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetProductDrawRecord','ProductAndRechargeCard',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetProductDrawRecord,ProductAndRechargeCard) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetProductDrawRecord','ProductAndRechargeCard','Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetProductDrawRecord,ProductAndRechargeCard,Global) {
             $rootScope.title = "产品详情";
             $scope.param={
                 flag:true,

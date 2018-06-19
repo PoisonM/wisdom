@@ -1,6 +1,6 @@
 var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize', "ngTouch"]);
-// var version = "1.0."+Math.random()+""
-var version = "1.0"
+var version = "1.0."+Math.random()+""
+// var version = "1.0"
 PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterProvider",
     function($provide, $compileProvider, $controllerProvider, $filterProvider) {
         PADWeb.controller = $controllerProvider.register;
@@ -416,7 +416,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.makeSureOrder', {
-            url: '/makeSureOrder/:userId',
+            url: '/makeSureOrder/:orderId/:userId',
             templateUrl: root + '/cashier/makeSureOrder.html',
             controller: 'makeSureOrderCtrl',
             resolve: {
@@ -482,7 +482,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.housekeeper', {
-            url: '/housekeeper',
+            url: '/housekeeper/:type/:index',
             templateUrl: root + '/cashier/housekeeper.html',
             controller: 'housekeeperCtrl',
             resolve: {

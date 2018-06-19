@@ -17,7 +17,8 @@
                       <span class="colff66">*</span>
                   </p>
                   <p>
-                      <span class="fs14 col333">{{peopleKuTube.storeManagerName}}</span>
+                      <span class="fs14 col333" ng-if="show">{{peopleKuTube.storeManagerName}}</span>
+                      <span class="fs14 col333" ng-if="!show">{{storeManagerName}}</span>
                      <img src="images/more.png" class="more mr10">
                   </p>
 
@@ -26,7 +27,7 @@
         </div>
 
     </ion-content>
-    <div class="h45 center fs16 colfff bgff66 tabs" ng-click="save()" >
+    <div class="h45 center fs16 colfff bgff66 tabs" ng-if="!show" ng-click="save()" >
         保存
     </div>
 </ion-view>

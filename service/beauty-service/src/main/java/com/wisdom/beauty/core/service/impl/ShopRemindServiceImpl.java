@@ -2,7 +2,7 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.ShopRemindSettingCriteria;
 import com.wisdom.beauty.api.dto.ShopRemindSettingDTO;
-import com.wisdom.beauty.api.enums.CommonCodeEnum;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.core.mapper.ShopRemindSettingMapper;
 import com.wisdom.beauty.core.service.ShopRemindService;
 import com.wisdom.common.util.CommonUtils;

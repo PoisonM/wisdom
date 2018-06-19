@@ -32,8 +32,14 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     $scope.$parent.$parent.leftTipFn = function() {
         $state.go('pad-web.consumptionList');
     }
-    $scope.goHousekeeper = function() {
-        $state.go('pad-web.left_nav.housekeeper')
+
+    //回显关联员工
+    // $scope.projectGroupRelRelationDTOSPeople= $rootScope.projectGroupRelRelationDTOSTemp
+    // $scope.shopUserProductRelationDTOSPeople= $rootScope.shopUserProductRelationDTOSTemp
+    // $scope.shopUserProjectRelationDTOSPeople= $rootScope.shopUserProjectRelationDTOSTemp
+
+    $scope.goHousekeeper = function(type,index) {
+        $state.go('pad-web.left_nav.housekeeper',{type:type,index:index})
     }
     $scope.goOrderListm = function() {
         console.log($scope.car)
@@ -70,20 +76,31 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     SaveShopUserOrderInfo.save({ userId: $stateParams.userId }, function(data) {
         $scope.orderId = data.responseData;
         GetShopUserRecentlyOrderInfo.get({ sysUserId: $stateParams.userId , orderId: data.responseData }, function(data) {
-            $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
-            /*for (var i = 0; i < $scope.projectGroupRelRelationDTOS.length; i++) {
-                $scope.projectGroupRelRelationDTOS[i].ng_markPrice = '';
-            }*/
-            $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
-            /*for (var i = 0; i < $scope.shopUserProductRelationDTOS.length; i++) {
-                $scope.shopUserProductRelationDTOS[i].ng_markPrice = '';
-            }*/
-            $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
-            /*for (var i = 0; i < $scope.shopUserProjectRelationDTOS.length; i++) {
-                $scope.shopUserProjectRelationDTOS[i].ng_markPrice = $scope.shopUserProjectRelationDTOS[i].sysShopProjectPurchasePrice * $scope.shopUserProjectRelationDTOS[i].discount;
-                $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
-            }*/
-            $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
+            if(null != data.responseData){
+                $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
+                /*for (var i = 0; i < $scope.projectGroupRelRelationDTOS.length; i++) {
+                    $scope.projectGroupRelRelationDTOS[i].ng_markPrice = '';
+                }*/
+                $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
+                /*for (var i = 0; i < $scope.shopUserProductRelationDTOS.length; i++) {
+                    $scope.shopUserProductRelationDTOS[i].ng_markPrice = '';
+                }*/
+                $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
+                /*for (var i = 0; i < $scope.shopUserProjectRelationDTOS.length; i++) {
+                    $scope.shopUserProjectRelationDTOS[i].ng_markPrice = $scope.shopUserProjectRelationDTOS[i].sysShopProjectPurchasePrice * $scope.shopUserProjectRelationDTOS[i].discount;
+                    $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
+                }*/
+                $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
+
+                if($rootScope.projectGroupRelRelationDTOS != undefined || $rootScope.shopUserProductRelationDTOS != undefined || $rootScope.shopUserProjectRelationDTOS != undefined){
+                    // return
+                }else {
+                    $rootScope.projectGroupRelRelationDTOS = $scope.projectGroupRelRelationDTOS
+                    $rootScope.shopUserProductRelationDTOS = $scope.shopUserProductRelationDTOS
+                    $rootScope.shopUserProjectRelationDTOS = $scope.shopUserProjectRelationDTOS
+                }
+                $scope.myChangeFn()
+            }
         })
     })
     $scope.deleteClick = function(e, id) {
@@ -141,24 +158,17 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                 //计算小计
                 for (var i = 0; i < $(".xiaoji").length; i++) {
                     $(".xiaoji").eq(i).find('input').val($(".xiaoji").eq(i).parent().prev().find('input').val() * $(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val())
-                    // $(".xiaoji").eq(i).parent().prev().find('input').val()//数量
-                    // $(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val()//折扣价
-
                 }
                 //计算总额
                 for (var i = 0; i < $(".xiaoji").length; i++) {
                     if ($(".xiaoji").eq(i).find('input').val() == "") {
-
                     } else {
                         $scope.tempAll += parseInt($(".xiaoji").eq(i).find('input').val().replace(",", ""))
                     }
-
                     $(".allPrice").html("总金额:" + $scope.tempAll)
 
                 }
             }
-
-
         }, 100)
     }
     $scope.myChangeFn()

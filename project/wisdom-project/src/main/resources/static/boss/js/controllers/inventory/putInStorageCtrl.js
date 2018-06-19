@@ -140,12 +140,12 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     })
                     $scope.sum = key1;
                 }else{
-                    alert("一次性只能选择30种产品")
+                    alert("一次性只能选择30种产品");
                 }
             };
 
             $scope.inventoryRecordsPicsGo = function(){
-                $state.go("inventoryRecordsPics",{shopStoreId:$rootScope.shopInfo.shopStoreId})
+                $state.go("inventoryRecordsPics",{shopStoreId:$rootScope.shopInfo.shopStoreId,name:$stateParams.name})
             };
 
             $scope.newLibraryGo = function(){
@@ -154,7 +154,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     alert("请先选择产品");
                     return;
                 }
-                $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId})
+                $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,sum:$scope.sum,name:$stateParams.name})
             }
 
             $scope.search = function(){

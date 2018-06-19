@@ -13,6 +13,7 @@ import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
@@ -249,8 +250,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             recordDTO.setFlowId(specialCard.getId());
             recordDTO.setGoodsType(GoodsTypeEnum.RECHARGE_CARD.getCode());
             recordDTO.setSysUserId(shopUserOrderDTO.getUserId());
-            recordDTO.setSysClerkName(recordDTO.getSysClerkName());
-            recordDTO.setSysClerkId(recordDTO.getSysClerkId());
+            recordDTO.setSysClerkName(shopUserOrderDTO.getSysClerkName());
+            recordDTO.setSysClerkId(shopUserOrderDTO.getSysClerkId());
             recordDTO.setFlowNo(shopUserOrderDTO.getOrderId());
             recordDTO.setSysBossCode(UserUtils.getClerkInfo().getSysBossCode());
             recordDTO.setSysShopId(shopUserOrderDTO.getShopId());

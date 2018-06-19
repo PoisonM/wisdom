@@ -63,9 +63,9 @@
                         <ion-item class="item-input" style="background: border-box;height: 40px; ">
                         <span class="item-input-wrapper" style="margin-right:10px;height:30px;margin-left:10px;" >
                                 <i class="icon ion-ios-search placeholder-icon" ng-click="search()"></i>
-                                <input id="search" type="search" placeholder="搜索产品名称/产品编号" ng-model="searchCont.key" >
+                                <input id="search" type="search" placeholder="搜索产品名称/产品编号" ng-model="param.searchContent" >
                                 <i class="icon ion-close-circled placeholder-icon" style="vertical-align: middle;"
-                                   on-tap="clearSearch()" ng-if="searchCont.key.length"></i>
+                                   on-tap="clearSearch()" ng-if="param.searchContent.length"></i>
                         </span>
                         </ion-item>
                     </ion-list>
@@ -104,7 +104,7 @@
         </div>
     </ion-content>
     <div class="h45 center fs16 colfff bgff66 tabs" >
-        <p ng-click="AddOutboundGo()">下一步(0/30)</p>
+        <p ng-click="AddOutboundGo()">下一步({{sum}}/30)</p>
         <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100" ng-show="param.flag"></div>
     </div>
 </ion-view>

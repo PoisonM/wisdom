@@ -70,7 +70,9 @@ angular.module('controllers',["ionic-datepicker"]).controller('employeeComprehen
                     $scope.comList=data.responseData;
                 });
             };
-            $scope.getInfo()
-
+            $scope.getInfo();
+           $scope.detailedPerformanceGo=function (type) {
+               $state.go("employeeDetailedPerformance",{searchFile:type})
+           }
             
         }]);
