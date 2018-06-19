@@ -32,17 +32,23 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     $scope.$parent.$parent.leftTipFn = function() {
         $state.go('pad-web.consumptionList');
     }
-    $scope.goHousekeeper = function() {
-        $state.go('pad-web.left_nav.housekeeper')
+
+    //回显关联员工
+    // $scope.projectGroupRelRelationDTOSPeople= $rootScope.projectGroupRelRelationDTOSTemp
+    // $scope.shopUserProductRelationDTOSPeople= $rootScope.shopUserProductRelationDTOSTemp
+    // $scope.shopUserProjectRelationDTOSPeople= $rootScope.shopUserProjectRelationDTOSTemp
+
+    $scope.goHousekeeper = function(type,index) {
+        $state.go('pad-web.left_nav.housekeeper',{type:type,index:index})
     }
     $scope.goOrderListm = function() {
         console.log($scope.car)
 
         $scope.importData = {
             orderId: $scope.orderId,
-            projectGroupRelRelationDTOS: $scope.projectGroupRelRelationDTOS,
-            shopUserProductRelationDTOS: $scope.shopUserProductRelationDTOS,
-            shopUserProjectRelationDTOS: $scope.shopUserProjectRelationDTOS,
+            projectGroupRelRelationDTOS: $rootScope.projectGroupRelRelationDTOSTemp,//套卡
+            shopUserProductRelationDTOS: $rootScope.shopUserProductRelationDTOSTemp,//产品
+            shopUserProjectRelationDTOS: $rootScope.shopUserProjectRelationDTOSTemp,//项目
             status: 1,
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: $scope.tempAll, //总金额
@@ -84,6 +90,15 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                 $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
             }*/
             $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
+
+            if($rootScope.projectGroupRelRelationDTOS != undefined){
+                return
+            }else {
+                $rootScope.projectGroupRelRelationDTOS = $scope.projectGroupRelRelationDTOS
+                $rootScope.shopUserProductRelationDTOS = $scope.shopUserProductRelationDTOS
+                $rootScope.shopUserProjectRelationDTOS = $scope.shopUserProjectRelationDTOS
+            }
+
         })
     })
     $scope.deleteClick = function(e, id) {
@@ -141,24 +156,17 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                 //计算小计
                 for (var i = 0; i < $(".xiaoji").length; i++) {
                     $(".xiaoji").eq(i).find('input').val($(".xiaoji").eq(i).parent().prev().find('input').val() * $(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val())
-                    // $(".xiaoji").eq(i).parent().prev().find('input').val()//数量
-                    // $(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val()//折扣价
-
                 }
                 //计算总额
                 for (var i = 0; i < $(".xiaoji").length; i++) {
                     if ($(".xiaoji").eq(i).find('input').val() == "") {
-
                     } else {
                         $scope.tempAll += parseInt($(".xiaoji").eq(i).find('input').val().replace(",", ""))
                     }
-
                     $(".allPrice").html("总金额:" + $scope.tempAll)
 
                 }
             }
-
-
         }, 100)
     }
     $scope.myChangeFn()
