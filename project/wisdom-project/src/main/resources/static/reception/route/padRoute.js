@@ -482,7 +482,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.housekeeper', {
-            url: '/housekeeper',
+            url: '/housekeeper/:type/:index',
             templateUrl: root + '/cashier/housekeeper.html',
             controller: 'housekeeperCtrl',
             resolve: {
