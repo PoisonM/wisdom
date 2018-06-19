@@ -79,14 +79,16 @@
     </sql>
   <!--批量插入-->
     <insert id="insertBatchClerkRecord" >
-        insert into shop_clerk_work_record (id, sys_shop_id, sys_clerk_id,
+        insert into shop_clerk_work_record (id, flow_id, consume_record_id,
+        sys_shop_id, sys_clerk_id, sys_clerk_name,
         flow_no, price, goods_type,
         consume_type, pay_type, create_by,
         update_user, create_date, update_date
         )
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.id,jdbcType=VARCHAR}, #{item.sysShopId,jdbcType=VARCHAR}, #{item.sysClerkId,jdbcType=VARCHAR},
+            (#{item.id,jdbcType=VARCHAR}, #{item.flowId,jdbcType=VARCHAR}, #{item.consumeRecordId,jdbcType=VARCHAR},
+            #{item.sysShopId,jdbcType=VARCHAR}, #{item.sysClerkId,jdbcType=VARCHAR}, #{item.sysClerkName,jdbcType=VARCHAR},
             #{item.flowNo,jdbcType=VARCHAR}, #{item.price,jdbcType=DECIMAL}, #{item.goodsType,jdbcType=CHAR},
             #{item.consumeType,jdbcType=CHAR}, #{item.payType,jdbcType=CHAR}, #{item.createBy,jdbcType=VARCHAR},
             #{item.updateUser,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP}, #{item.updateDate,jdbcType=TIMESTAMP}

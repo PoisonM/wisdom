@@ -207,7 +207,7 @@ public class ProjectController {
 
 	public @ResponseBody ResponseDTO<List<ShopUserProjectRelationResponseDTO>> getUserCourseProjectList(
 			@RequestParam(required = false) String sysUserId, @RequestParam(required = false) String cardStyle,
-			@RequestParam(required = false) String id) {
+			@RequestParam(required = false) String id,@RequestParam(required = false) String surplusTimes) {
 
 		String sysBossCode = redisUtils.getBossCode();
         String sysShopId = redisUtils.getShopId();
@@ -222,6 +222,10 @@ public class ProjectController {
 		relationDTO.setUseStyle(cardStyle);
 		relationDTO.setSysBossCode(sysBossCode);
 		relationDTO.setId(id);
+		if(StringUtils.isNotBlank(surplusTimes)){
+			relationDTO.setSysShopProjectSurplusTimes(Integer.parseInt(surplusTimes));
+		}
+
 		List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
 		if (CommonUtils.objectIsEmpty(userProjectList)) {
 			logger.debug("查询某个用户的卡片列表信息为空, {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId

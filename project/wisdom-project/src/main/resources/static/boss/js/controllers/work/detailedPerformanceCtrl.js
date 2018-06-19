@@ -7,9 +7,7 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
 
             $rootScope.title = "业绩明细";
             $scope.flag = false;
-            $scope.param={
-                flag:false
-            }
+
             $scope.userConsumeRequest = {
                 pageSize:1000,
                 searchFile:$stateParams.searchFile
@@ -22,6 +20,9 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
+                $scope.param={
+                    flag:false
+                }
                 if ($stateParams.sysClerkId != "") {
                     $scope.userConsumeRequest.sysClerkId = $stateParams.sysClerkId
                     GetClerkPerformanceListClerk.get($scope.userConsumeRequest,function(data){
@@ -79,6 +80,10 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
                         if($scope.list[i].type==type){
                             $scope.detailedPerformance.push($scope.list[i])
                         }
+                    }
+                    if( $scope.detailedPerformance.length<=0){
+                        $scope.param.flag=true;
+                        console.log(2);
                     }
                 }else{
                     $scope.detailedPerformance=$scope.list
