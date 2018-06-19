@@ -46,7 +46,7 @@ captures/
 # Intellij
 *.iml
 */*.iml
- 
+*/pom.properties
 # Keystore files
 #*.jks
 #gradle wrapper
