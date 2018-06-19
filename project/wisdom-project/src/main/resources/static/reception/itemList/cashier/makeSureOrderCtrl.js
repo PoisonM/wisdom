@@ -76,30 +76,30 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     SaveShopUserOrderInfo.save({ userId: $stateParams.userId }, function(data) {
         $scope.orderId = data.responseData;
         GetShopUserRecentlyOrderInfo.get({ sysUserId: $stateParams.userId , orderId: data.responseData }, function(data) {
-            $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
-            /*for (var i = 0; i < $scope.projectGroupRelRelationDTOS.length; i++) {
-                $scope.projectGroupRelRelationDTOS[i].ng_markPrice = '';
-            }*/
-            $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
-            /*for (var i = 0; i < $scope.shopUserProductRelationDTOS.length; i++) {
-                $scope.shopUserProductRelationDTOS[i].ng_markPrice = '';
-            }*/
-            $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
-            /*for (var i = 0; i < $scope.shopUserProjectRelationDTOS.length; i++) {
-                $scope.shopUserProjectRelationDTOS[i].ng_markPrice = $scope.shopUserProjectRelationDTOS[i].sysShopProjectPurchasePrice * $scope.shopUserProjectRelationDTOS[i].discount;
-                $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
-            }*/
-            $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
+            if(null != data.responseData){
+                $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
+                /*for (var i = 0; i < $scope.projectGroupRelRelationDTOS.length; i++) {
+                    $scope.projectGroupRelRelationDTOS[i].ng_markPrice = '';
+                }*/
+                $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
+                /*for (var i = 0; i < $scope.shopUserProductRelationDTOS.length; i++) {
+                    $scope.shopUserProductRelationDTOS[i].ng_markPrice = '';
+                }*/
+                $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
+                /*for (var i = 0; i < $scope.shopUserProjectRelationDTOS.length; i++) {
+                    $scope.shopUserProjectRelationDTOS[i].ng_markPrice = $scope.shopUserProjectRelationDTOS[i].sysShopProjectPurchasePrice * $scope.shopUserProjectRelationDTOS[i].discount;
+                    $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
+                }*/
+                $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
 
-            if($rootScope.projectGroupRelRelationDTOS != undefined){
-                // return
-            }else {
-                $rootScope.projectGroupRelRelationDTOS = $scope.projectGroupRelRelationDTOS
-                $rootScope.shopUserProductRelationDTOS = $scope.shopUserProductRelationDTOS
-                $rootScope.shopUserProjectRelationDTOS = $scope.shopUserProjectRelationDTOS
+                if($rootScope.projectGroupRelRelationDTOS != undefined){
+                    return
+                }else {
+                    $rootScope.projectGroupRelRelationDTOS = $scope.projectGroupRelRelationDTOS
+                    $rootScope.shopUserProductRelationDTOS = $scope.shopUserProductRelationDTOS
+                    $rootScope.shopUserProjectRelationDTOS = $scope.shopUserProjectRelationDTOS
+                }
             }
-            $scope.myChangeFn()
-
         })
     })
     $scope.deleteClick = function(e, id) {
