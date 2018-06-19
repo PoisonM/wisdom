@@ -38,10 +38,10 @@
                                 <input readonly>
                             </span>
                         </li>
-                        <li ng-click="goHousekeeper()">
+                        <li ng-click="goHousekeeper('group',$index)">
                             <div>关联员工</div>
                             <span>
-                                <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                                <e ng-repeat="staffItem in projectGroupRelRelationDTOSTemp[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 >
                             </span>
                         </li>
@@ -50,6 +50,7 @@
             </li>
         </ul>
     </div>
+
     <div class="stillOwedTitle" ng-if="shopUserProductRelationDTOS.length>0">产品</div>
     <div ng-repeat="item in shopUserProductRelationDTOS">
         <ul class="stillOwedContent">
@@ -80,10 +81,10 @@
                                 <input readonly >
                             </span>
                         </li>
-                        <li ng-click="goHousekeeper()">
+                        <li ng-click="goHousekeeper('product',$index)">
                             <div>关联员工</div>
                             <span>
-                                <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                                <e ng-repeat="staffItem in shopUserProductRelationDTOSTemp[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 ></span>
                         </li>
                     </ul>
@@ -91,6 +92,7 @@
             </li>
         </ul>
     </div>
+
     <div class="stillOwedTitle" ng-if="shopUserProjectRelationDTOS.length>0">项目</div>
     <div ng-repeat="item in shopUserProjectRelationDTOS">
         <ul class="stillOwedContent">
@@ -121,10 +123,10 @@
                                 <input readonly  >
                             </span>
                         </li>
-                        <li ng-click="goHousekeeper()">
+                        <li ng-click="goHousekeeper('project',$index)">
                             <div>关联员工</div>
                             <span>
-                                <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
+                                <e ng-repeat="staffItem in shopUserProjectRelationDTOSTemp[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 ></span>
                         </li>
                     </ul>
@@ -132,6 +134,7 @@
             </li>
         </ul>
     </div>
+
     <div class="stillOwedTitle">备注</div>
     <textarea name="" rows="10"></textarea>
     <span class="allPrice">111</span>

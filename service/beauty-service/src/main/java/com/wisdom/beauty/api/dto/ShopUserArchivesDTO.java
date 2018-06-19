@@ -60,7 +60,7 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
     //business-B-1、business-A-1、business-C-1、manager-1、business-AA
     private String sysUserType;
 
-    //
+    //0 美团  1大众点评  2 百度糯米 3 朋友推荐 4 高德地图  5 自己过来
     private String channel;
 
     //

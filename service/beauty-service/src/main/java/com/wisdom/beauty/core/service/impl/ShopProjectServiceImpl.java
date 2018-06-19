@@ -1,13 +1,13 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -333,6 +333,9 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		}
 		if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
 			criteria.andProjectNameLike("%" + shopProjectInfoDTO.getProjectName() + "%");
+		}
+		if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
+			criteria.andUseStyleEqualTo(shopProjectInfoDTO.getUseStyle());
 		}
 		//项目为启用状态
 		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());

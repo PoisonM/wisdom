@@ -113,6 +113,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             projectName: "",
             projectTypeOneId: one,
             ProjectTypeTwoId: two,
+            useStyle: $scope.select,
         }, function(data) {
             $scope.threeCategories = data.responseData;
         });

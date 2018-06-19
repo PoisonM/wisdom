@@ -141,7 +141,7 @@ public class OrderController {
         query.addCriteria(Criteria.where("status").is(OrderStatusEnum.NOT_PAY.getCode()));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         ShopUserOrderDTO searchOrderInfo = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
-        //最近一笔未支付的定单不为空，并且在10分钟以内，则认为有效订单
+        //最近一笔未支付的订单不为空，并且在10分钟以内，则认为有效订单
         if (null != searchOrderInfo && null!= searchOrderInfo.getUpdateDate() && DateUtils.pastMinutes(searchOrderInfo.getUpdateDate())<orderOutTime) {
             responseDTO.setResponseData(searchOrderInfo.getOrderId());
             responseDTO.setResult(StatusConstant.SUCCESS);
