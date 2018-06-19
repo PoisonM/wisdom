@@ -32,6 +32,7 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                         }
                         $scope.tempUser = data.responseData.responseList;
                         $scope.tempWeek.push()
+
                     }
                 })
             };
