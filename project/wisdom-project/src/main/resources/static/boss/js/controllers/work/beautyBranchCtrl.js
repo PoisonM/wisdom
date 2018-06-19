@@ -11,13 +11,8 @@ angular.module('controllers',[]).controller('beautyBranchCtrl',
                 date:$stateParams.date
             };
             $scope.setCurrent=function (param) {
-
                     $scope.param.current=param;
                     $scope.getInfo()
-
-
-
-
             };
             $scope.getInfo= function () {
                     $ionicLoading.show({
@@ -34,61 +29,59 @@ angular.module('controllers',[]).controller('beautyBranchCtrl',
                         sysShopId: $stateParams.sysShopId
                     }, function (data) {
                         $scope.beautyBranch = data.responseData
+                        $scope.HPic()
                         $ionicLoading.hide();
                     })
 
             };
             $scope.getInfo();
 
-
-
-
             $scope.HPic =function(){
-                if($scope.param.current !=2)return
-                $scope.cardSeries = [
-                    {
-                        name: '耗卡',
-                        data: [20,30.40,22,33,42,25]
-                    },
-                    {
-                        name: '业绩',
-                        data: [1,2,3,4],
-                        color:'orange'
-                    }
-                ];
-
-                $scope.cardOptions = {
-                    title:'',
-                    chart: {
-                        type: 'line'
-                    },
-                    xAxis: {
-                        categories: [],
-                        crosshair: true
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: ''
-                        }
-                    },
-
-                    legend: {
-                        layout: '',
-                        align: 'right',
-                        verticalAlign: 'top',
-                        borderWidth: 0
-                    },
-                    credits: {		            //去除右下角highcharts标志
-                        enabled: false
-                    },
+                if($scope.param.current !=3)return
+                var chart = {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
                 };
-
-                for(var i=0;i< $scope.sevenDayCharts.length;i++){
-                    $scope.cardSeries[0].data[i] =  $scope.sevenDayCharts[i].expenditure;
-                    $scope.cardSeries[1].data[i] =  $scope.sevenDayCharts[i].income;
-                    $scope.cardOptions.xAxis.categories[i] =  $scope.sevenDayCharts[i].formateDate
+                var  credits={		            //去除右下角highcharts标志
+                    enabled: false
                 }
+                var title = {
+                    text: '新客渠道占比图'
+                };
+                var tooltip = {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                };
+                var plotOptions = {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true,
+                    }
+                };
+                var series= [{
+                    type:'pie',
+                    size: '80%',
+                    innerSize: '40%',
+                    name: '渠道占比率',
+                    data: [],
+                }]
+                var datas = $scope.beautyBranch.shopChannelResponseList;
+                for(var i=0;i<datas.length;i++){
+                    var dataOne = [datas[i].channelName,datas[i].channelPeopleProportionr]
+                    series[0].data.push(dataOne)
+                }
+                var json = {};
+                json.chart = chart;
+                json.title = title;
+                json.tooltip = tooltip;
+                json.series = series;
+                json.credits = credits;
+                json.plotOptions = plotOptions;
+                $('#container').highcharts(json);
             }
 
             /*日期插件*/

@@ -1,29 +1,37 @@
 angular.module('controllers',[]).controller('trendChartCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetCashEarningsTendency','Global',
-        function ($scope,$rootScope,$stateParams,$state,GetCashEarningsTendency,Global) {
-            if($stateParams.id !='a'){
-                GetCashEarningsTendency.get({
-                    sysShopId:$stateParams.id
-                },function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $scope.trendChart = data.responseData;
-                        $scope.HPic()
+    ['$scope','$rootScope','$stateParams','$state','GetCashEarningsTendency','Global','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetCashEarningsTendency,Global,$ionicLoading) {
 
-                    }
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                if($stateParams.id !='a'){
+                    GetCashEarningsTendency.get({
+                        sysShopId:$stateParams.id
+                    },function(data){
+                        if(data.result==Global.SUCCESS&&data.responseData!=null){
+                            $scope.trendChart = data.responseData;
+                            $ionicLoading.hide()
+                            $scope.HPic()
+                        }
+                    })
+                }else{
+                    GetCashEarningsTendency.get({
+                    },function(data){
+                        if(data.result==Global.SUCCESS&&data.responseData!=null){
+                            $scope.trendChart = data.responseData;
+                            $ionicLoading.hide()
+                            $scope.HPic()
+                        }
+                    })
+                }
 
-                })
-
-            }else{
-                GetCashEarningsTendency.get({
-                },function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $scope.trendChart = data.responseData;
-                        $scope.HPic()
-
-                    }
-
-                })
-            }
+            })
 
 
 
@@ -60,7 +68,6 @@ angular.module('controllers',[]).controller('trendChartCtrl',
                         enabled: false
                     },
                 };
-
                 for(var i=0;i< $scope.trendChart.length;i++){
                     $scope.series[0].data[i] =  $scope.trendChart[i].cashEarnings;
                     $scope.options.xAxis.categories[i] =  $scope.trendChart[i].formateDate
