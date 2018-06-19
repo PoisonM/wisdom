@@ -8,16 +8,15 @@ import java.math.BigDecimal;
 public class ShopChannelResponseDTO {
 	private String channelName;
 	private Integer channelPeopleNumber;
+	private Integer channelPeopleProportionr;
 
-    public BigDecimal getChannelPeopleProportionr() {
-        return channelPeopleProportionr;
-    }
+	public Integer getChannelPeopleProportionr() {
+		return channelPeopleProportionr;
+	}
 
-    public void setChannelPeopleProportionr(BigDecimal channelPeopleProportionr) {
-        this.channelPeopleProportionr = channelPeopleProportionr;
-    }
-
-    private BigDecimal channelPeopleProportionr;
+	public void setChannelPeopleProportionr(Integer channelPeopleProportionr) {
+		this.channelPeopleProportionr = channelPeopleProportionr;
+	}
 
 	public String getChannelName() {
 		return channelName;

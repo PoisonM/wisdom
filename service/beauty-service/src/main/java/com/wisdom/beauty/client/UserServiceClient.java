@@ -32,6 +32,15 @@ public interface UserServiceClient {
 	ResponseDTO<Object> updateBossInfo(@RequestBody SysBossDTO sysBossDTO);
 
 	/**
+	 * 获取老板信息
+	 *
+	 * @param sysBossDTO
+	 * @return
+	 */
+	@RequestMapping(value = "/getBossInfo", method = RequestMethod.GET)
+	SysBossDTO getBossInfo(@RequestBody SysBossDTO sysBossDTO);
+
+	/**
 	 * 获取店员、美容师相关信息
 	 *
 	 * @param shopId
@@ -89,4 +98,8 @@ public interface UserServiceClient {
 	@RequestMapping(value = "/beauty/getUserInfoListFromUserId", method = RequestMethod.GET)
 	List<UserInfoDTO> getUserInfoListFromUserId(@RequestParam(value = "userIds") String[] userIds,
 			                                    @RequestParam(required = false, value = "searchFile") String searchFile);
+
+
+
+
 }

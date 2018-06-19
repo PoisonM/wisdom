@@ -1,6 +1,7 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ChannelEnum;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
@@ -25,9 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.*;
 
 /**
@@ -988,29 +987,34 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			// 查询出来新客列表
 			archivesList = shopCustomerArchivesService.getArchivesList(shopCustomerArchivesDTO);
 			// 遍历新客列表，将渠道作为key ,计算出每个渠道的人数
-			// TODO: 2018/5/18
-			List<ShopChannelResponseDTO>  shopChannelResponseList=new ArrayList<>();
-			Map<String,ShopChannelResponseDTO> channelMap=new HashMap<>();
-			ShopChannelResponseDTO shopChannelResponseDTO=null;
-            for(ShopUserArchivesDTO dto:archivesList){
-				if(channelMap.containsKey(dto.getChannel())){
-					shopChannelResponseDTO=channelMap.get(dto.getChannel());
-					shopChannelResponseDTO.setChannelPeopleNumber(1+shopChannelResponseDTO.getChannelPeopleNumber());
-					shopChannelResponseDTO.setChannelPeopleProportionr(new BigDecimal(shopChannelResponseDTO.getChannelPeopleNumber()).divide(new BigDecimal(archivesList.size())));
-					channelMap.put(dto.getChannel(),shopChannelResponseDTO);
+			List<ShopChannelResponseDTO> shopChannelResponseList = new ArrayList<>();
+			Map<String, ShopChannelResponseDTO> channelMap = new HashMap<>();
+			ShopChannelResponseDTO shopChannelResponseDTO = null;
+			for (ShopUserArchivesDTO dto : archivesList) {
+				if (channelMap.containsKey(dto.getChannel())) {
+					shopChannelResponseDTO = channelMap.get(dto.getChannel());
+					shopChannelResponseDTO.setChannelPeopleNumber(1 + shopChannelResponseDTO.getChannelPeopleNumber());
+					DecimalFormat fnum  =   new  DecimalFormat("##0");
+					String   dd=fnum.format(Float.valueOf(shopChannelResponseDTO.getChannelPeopleNumber())/Float.valueOf(archivesList.size())*100);
+					shopChannelResponseDTO
+							.setChannelPeopleProportionr(Integer.valueOf(dd));
+					channelMap.put(dto.getChannel(), shopChannelResponseDTO);
 
-				}else {
-					shopChannelResponseDTO=new ShopChannelResponseDTO();
-					shopChannelResponseDTO.setChannelName(dto.getChannel());
+				} else {
+					shopChannelResponseDTO = new ShopChannelResponseDTO();
+					shopChannelResponseDTO.setChannelName(ChannelEnum.judgeValue(dto.getChannel()).getDesc());
 					shopChannelResponseDTO.setChannelPeopleNumber(1);
-					shopChannelResponseDTO.setChannelPeopleProportionr(new BigDecimal("1").divide(new BigDecimal(archivesList.size())));
-					channelMap.put(dto.getChannel(),shopChannelResponseDTO);
+					DecimalFormat fnum  =   new  DecimalFormat("##0");
+					String   dd=fnum.format(1f/Float.valueOf(archivesList.size())*100);
+					shopChannelResponseDTO
+							.setChannelPeopleProportionr(Integer.valueOf(dd));
+					channelMap.put(dto.getChannel(), shopChannelResponseDTO);
 				}
 			}
 			for (Map.Entry<String, ShopChannelResponseDTO> entry : channelMap.entrySet()) {
 				shopChannelResponseList.add(entry.getValue());
 
-			       }
+			}
 			Map<String, Object> responseMap = new HashedMap();
 			responseMap.put("shopNewUserNumber", archivesList == null ? 0 : archivesList.size());// 新客
 			responseMap.put("shopChannelResponseList", shopChannelResponseList);
@@ -1062,6 +1066,5 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 
 		return responseMap;
 	}
-
 
 }

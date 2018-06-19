@@ -4,6 +4,7 @@
 package com.wisdom.system.controller;
 
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.constant.SuggestionTypeEnum;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.system.SuggestionDto;
 import com.wisdom.common.dto.user.UserInfoDTO;
@@ -41,7 +42,22 @@ public class FeedBackController {
         ResponseDTO<SuggestionDto> result = new ResponseDTO<>();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         String userId=userInfoDTO.getId();
-        result.setResponseData(feedbackService.addSuggestion(userId,suggestion));
+        result.setResponseData(feedbackService.addSuggestion(userId,suggestion, SuggestionTypeEnum.CUSTOMER.getValue()));
+        result.setResult(StatusConstant.SUCCESS);
+        return result;
+    }
+
+    /**
+     * 提交建议(融合pad端)
+     */
+    @RequestMapping(value = "feedback", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO feedback(@RequestParam(name="suggestion", required = false) String suggestion,
+                         @RequestParam(name="userId") String userId,
+                         @RequestParam(name="type") String type) {
+        ResponseDTO<SuggestionDto> result = new ResponseDTO<>();
+        result.setResponseData(feedbackService.addSuggestion(userId,suggestion,type));
         result.setResult(StatusConstant.SUCCESS);
         return result;
     }
