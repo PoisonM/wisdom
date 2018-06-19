@@ -92,7 +92,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                 }*/
                 $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
 
-                if($rootScope.projectGroupRelRelationDTOS != undefined){
+                if($rootScope.projectGroupRelRelationDTOS != undefined || $rootScope.shopUserProductRelationDTOS != undefined || $rootScope.shopUserProjectRelationDTOS != undefined){
                     // return
                 }else {
                     $rootScope.projectGroupRelRelationDTOS = $scope.projectGroupRelRelationDTOS
