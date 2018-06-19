@@ -46,9 +46,9 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
 
         $scope.importData = {
             orderId: $scope.orderId,
-            projectGroupRelRelationDTOS: $rootScope.projectGroupRelRelationDTOSTemp,//套卡
-            shopUserProductRelationDTOS: $rootScope.shopUserProductRelationDTOSTemp,//产品
-            shopUserProjectRelationDTOS: $rootScope.shopUserProjectRelationDTOSTemp,//项目
+            projectGroupRelRelationDTOS: $scope.projectGroupRelRelationDTOS,
+            shopUserProductRelationDTOS: $scope.shopUserProductRelationDTOS,
+            shopUserProjectRelationDTOS: $scope.shopUserProjectRelationDTOS,
             status: 1,
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: $scope.tempAll, //总金额
