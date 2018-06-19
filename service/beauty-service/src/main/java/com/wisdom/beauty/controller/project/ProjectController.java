@@ -133,12 +133,6 @@ public class ProjectController {
 			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 
-		// 缓存一级
-		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId);
-		if (CommonUtils.objectIsEmpty(shopProjectTypeDTOList)) {
-			responseDTO.setResult(StatusConstant.SUCCESS);
-			return responseDTO;
-		}
 		//获取二级和三级
 		ShopProjectTypeDTO shopProjectType=new ShopProjectTypeDTO();
 		shopProjectType.setSysShopId(sysShopId);
@@ -163,6 +157,13 @@ public class ProjectController {
 		}
 		ArrayList<Object> levelList = new ArrayList<>();
 		ArrayList<Object> oneAndTwoLevelList = new ArrayList<>();
+
+		// 缓存一级
+		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId);
+		if (CommonUtils.objectIsEmpty(shopProjectTypeDTOList)) {
+			responseDTO.setResult(StatusConstant.SUCCESS);
+			return responseDTO;
+		}
 		// 遍历缓存的一级
 		for (ShopProjectTypeDTO shopProjectTypeDTO : shopProjectTypeDTOList) {
 			HashMap<Object, Object> helperMap = new HashMap<>(16);
@@ -185,7 +186,7 @@ public class ProjectController {
 			oneAndTwoHelperMap.put("levelOneDetail", shopProjectTypeDTO);
 			oneAndTwoLevelList.add(oneAndTwoHelperMap);
 		}
-		// detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表
+		// detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表；oneAndTwoLevelList是最全的，detailLevel、detailProject是三级you才有
 		returnMap.put("detailLevel", levelList);
 		returnMap.put("detailProject", projectList);
 		returnMap.put("oneAndTwoLevelList", oneAndTwoLevelList);
@@ -406,7 +407,7 @@ public class ProjectController {
 	@ResponseBody
 	ResponseDTO<List<ShopProjectInfoResponseDTO>> findThreeLevelProject(@RequestParam String projectTypeOneId,
 			@RequestParam String ProjectTypeTwoId, @RequestParam(required = false) String projectName,
-			@RequestParam int pageSize) {
+			@RequestParam int pageSize, @RequestParam(required = false) String useStyle) {
 
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -416,6 +417,7 @@ public class ProjectController {
 		shopProjectInfoDTO.setProjectTypeOneId(projectTypeOneId);
 		shopProjectInfoDTO.setProjectTypeTwoId(ProjectTypeTwoId);
 		shopProjectInfoDTO.setProjectName(projectName);
+		shopProjectInfoDTO.setUseStyle(useStyle);
 
 		pageParamVoDTO.setRequestData(shopProjectInfoDTO);
 		pageParamVoDTO.setPageNo(0);
