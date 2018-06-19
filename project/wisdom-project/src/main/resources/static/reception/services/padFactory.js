@@ -411,4 +411,8 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetOrderConsumeDetailInfo', ['$resource', function($resource) {
         return $resource(beautyIP + 'orderInfo/getOrderConsumeDetailInfo')
     }])
+    //意见
+    .factory('SuggestionDetail',['$resource',function ($resource){
+        return $resource(beautyIP + 'mine/feedback')
+    }])
 ;

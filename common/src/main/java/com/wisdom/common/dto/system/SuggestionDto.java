@@ -2,6 +2,8 @@ package com.wisdom.common.dto.system;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.util.Date;
+
 /**
  * Created by Administrator on 2017/12/18.
  */
@@ -13,6 +15,10 @@ public class SuggestionDto {
     private String userId;
     @JSONField(name = "suggestion")
     private String suggestion;
+    @JSONField(name = "type")
+    private String type;
+    @JSONField(format="yyyy-MM-ddTHH:mm:ss")
+    public Date creatTime;
 
     public String getId() {
         return id;
@@ -36,5 +42,21 @@ public class SuggestionDto {
 
     public void setSuggestion(String suggestion) {
         this.suggestion = suggestion;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
     }
 }
