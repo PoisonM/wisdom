@@ -18,10 +18,10 @@ angular.module('controllers',[]).controller('workHomeCtrl',
                     showDelay: 0
                 });
                 GetBossAchievement.get({},function(data){
+                    $ionicLoading.hide();
                     BossUtil.checkResponseData(data,'workHome');
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {
-                        $ionicLoading.hide();
                         $scope.workHome = data.responseData;
                     }
                 })

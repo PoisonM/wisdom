@@ -1,15 +1,13 @@
 package com.wisdom.beauty.controller.shop;
 
-import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.dto.SysShopDTO;
-import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.extDto.ExtSysShopDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
-import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
@@ -76,33 +74,10 @@ public class ShopController {
     ResponseDTO<Object> getUserScanInfo(@RequestParam String sysUserId, @RequestParam String shopId) {
         logger.info("查询某个用户是否扫码绑定传入参数={}", "sysUserId = [" + sysUserId + "]");
         ResponseDTO<Object> responseDTO = new ResponseDTO();
-        shopId = redisUtils.getShopId();
-        if (StringUtils.isNotBlank(shopId) && StringUtils.isNotBlank(sysUserId)) {
-            String string = new StringBuffer(shopId).append("_").append(sysUserId).toString();
-            Object object = JedisUtils.getStringObject(string);
-            logger.info("redis中查询出来的数据为，{}",object);
-            if (null != object) {
-                String flag = (String) object;
-                if (CommonCodeEnum.NOTBIND.getCode().equals(flag)) {
-                    //更新用户与店的绑定关系
-                    ShopUserRelationDTO userRelationDTO = new ShopUserRelationDTO();
-                    userRelationDTO.setSysUserId(sysUserId);
-                    userRelationDTO.setShopId(shopId);
-                    userRelationDTO.setStatus(CommonCodeEnum.Y.getCode());
-                    logger.info("保存用户的绑定关系");
-                    int saveFlag = shopUserRelationService.saveUserShopRelation(userRelationDTO);
-                    logger.info("更新用户与店的绑定关系更新结果为={}", saveFlag > 0 ? "成功" : "失败");
-                    responseDTO.setResult(StatusConstant.SUCCESS);
-                    JedisUtils.set(string, "alreadyBind", ConfigConstant.logintokenPeriod);
-                    return responseDTO;
-                } else if (CommonCodeEnum.ALREADY_BIND.getCode().equals(flag)) {
-                    logger.info("用户已经绑定");
-                    responseDTO.setResult(CommonCodeEnum.ALREADY_BIND.getCode());
-                    return responseDTO;
-                }
-            }
-        }
-        responseDTO.setResult(StatusConstant.FAILURE);
+        String string = new StringBuffer(shopId).append("_").append(sysUserId).toString();
+        Object object = JedisUtils.getStringObject(string);
+        responseDTO.setResponseData(object);
+        responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
 

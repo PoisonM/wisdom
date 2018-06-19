@@ -1,4 +1,4 @@
-PADWeb.controller('housekeeperCtrl', function($scope, $rootScope,$stateParams, ngDialog, GetShopClerkList) {
+PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$stateParams, ngDialog, GetShopClerkList) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
@@ -23,6 +23,14 @@ PADWeb.controller('housekeeperCtrl', function($scope, $rootScope,$stateParams, n
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-1)
+    }
+
+    //处理
+    $rootScope.projectGroupRelRelationDTOSTemp = $rootScope.projectGroupRelRelationDTOS
+    $rootScope.shopUserProductRelationDTOSTemp = $rootScope.shopUserProductRelationDTOS
+    $rootScope.shopUserProjectRelationDTOSTemp = $rootScope.shopUserProjectRelationDTOS
 
 
     $rootScope.staffListIds = []
@@ -35,6 +43,18 @@ PADWeb.controller('housekeeperCtrl', function($scope, $rootScope,$stateParams, n
         }else {
             $rootScope.staffListIds.push(id)
             $rootScope.staffListNames.push(name)
+        }
+        if($stateParams.type == "group"){
+            $rootScope.projectGroupRelRelationDTOSTemp[$stateParams.index].sysClerkId = $rootScope.staffListIds.join(";")
+            $rootScope.projectGroupRelRelationDTOSTemp[$stateParams.index].sysClerkName = $rootScope.staffListNames.join(";")
+        }
+        if($stateParams.type == "product"){
+            $rootScope.shopUserProductRelationDTOSTemp[$stateParams.index].sysClerkId = $rootScope.staffListIds.join(";")
+            $rootScope.shopUserProductRelationDTOSTemp[$stateParams.index].sysClerkName = $rootScope.staffListNames.join(";")
+        }
+        if($stateParams.type == "project"){
+            $rootScope.shopUserProjectRelationDTOSTemp[$stateParams.index].sysClerkId = $rootScope.staffListIds.join(";")
+            $rootScope.shopUserProjectRelationDTOSTemp[$stateParams.index].sysClerkName = $rootScope.staffListNames.join(";")
         }
     }
 

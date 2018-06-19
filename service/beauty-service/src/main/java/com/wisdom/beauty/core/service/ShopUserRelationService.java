@@ -48,7 +48,7 @@ public interface ShopUserRelationService {
      * @param shopId
      * @return
      */
-    ResponseDTO<String> userBinding(String openId, String shopId);
+    ResponseDTO<String> userBinding(String openId, String shopId,String userId);
 
     /**
      * 查询美容院信息
