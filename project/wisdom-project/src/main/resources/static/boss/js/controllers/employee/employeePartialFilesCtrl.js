@@ -15,14 +15,24 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
                 fileBOx:false,
                 distributionStart:false /*选择档案的多选框*/
             };
-
-            FindArchives.get({pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
-                if(data.result == Global.SUCCESS){
-                    $scope.fileList = [];
-                    $scope.info = data.responseData.info;
-                    console.log($scope.info);
-                }
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                FindArchives.get({pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
+                    if(data.result == Global.SUCCESS){
+                        $scope.fileList = [];
+                        $ionicLoading.hide();
+                        $scope.info = data.responseData.info;
+                        console.log($scope.info);
+                    }
+                });
             });
+
 
             /*点击跳转到预警档案*/
             $scope.switching=function () {

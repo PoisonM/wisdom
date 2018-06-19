@@ -4,6 +4,7 @@
 angular.module('controllers',[]).controller('employeeAppointListCtrl',
     ['$scope','$rootScope','$stateParams','$state','BossUtil','$filter','GetClerkScheduleOneDayInfo','GetShopAppointmentInfoByStatus',
         function ($scope,$rootScope,$stateParams,$state,BossUtil,$filter,GetClerkScheduleOneDayInfo,GetShopAppointmentInfoByStatus) {
+          $rootScope.title="我的预约";
 
             /*日期插件*/
             var date = new Date();
