@@ -137,7 +137,6 @@ public class PayCoreService {
                     }else{
                         payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
                     }
-
                 }
 
                 logger.info("根据消费金额处理用户的等级提升=="+userInfoDTO.getMobile());

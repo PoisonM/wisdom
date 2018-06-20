@@ -25,7 +25,9 @@ import java.util.UUID;
 @Controller
 @RequestMapping(value = "transaction")
 public class UserAddressController {
+
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private UserOrderAddressService userOrderAddressService;
 

@@ -62,11 +62,13 @@ public class TransactionController {
 
     @Autowired
     private AccountService accountService;
+
     @Autowired
     private ProductService productService;
 
     @Autowired
     private UserServiceClient userServiceClient;
+
     Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
     @LoginRequired
