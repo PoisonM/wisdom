@@ -321,7 +321,7 @@ public class OrderController {
             List<ShopUserProductRelationDTO> productList = userOrderDTO.getShopUserProductRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(productList)){
                 for(ShopUserProductRelationDTO dto : productList){
-                    ShopProductInfoResponseDTO productDetail = shopProductInfoService.getProductDetail(dto.getId());
+                    ShopProductInfoResponseDTO productDetail = shopProductInfoService.getProductDetail(dto.getShopProductId());
                     dto.setShopProductName(productDetail.getProductName());
                 }
                 responseMap.put("productList",productList);
