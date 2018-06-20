@@ -1,22 +1,27 @@
 package com.wisdom.user.service.impl;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkCriteria;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.IdGen;
-import com.wisdom.common.util.StringUtils;
+import com.wisdom.common.util.*;
 import com.wisdom.user.mapper.SysClerkMapper;
 import com.wisdom.user.service.ClerkInfoService;
 import com.wisdom.user.service.UserInfoService;
+import com.wisdom.user.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +35,10 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 
 	@Autowired
 	private UserInfoService userInfoService;
+
+
+	private Gson gson = new Gson();
+
 
 	/**
 	 * 获取店员列表
@@ -97,7 +106,14 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 
 	@Override
 	public int updateSysClerk(SysClerkDTO sysClerkDTO) {
-		return sysClerkMapper.updateByPrimaryKeySelective(sysClerkDTO);
+		int count = sysClerkMapper.updateByPrimaryKeySelective(sysClerkDTO);
+		if(count>0){
+			String token = UserUtils.getClerkToken();
+			SysClerkDTO sys = sysClerkMapper.selectByPrimaryKey(sysClerkDTO.getId());
+			String sysClerk = gson.toJson(sys);
+			JedisUtils.set(token,sysClerk, ConfigConstant.logintokenPeriod);
+		}
+		return count;
 	}
 
 	@Override
