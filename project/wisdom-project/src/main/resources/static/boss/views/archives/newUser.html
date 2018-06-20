@@ -32,6 +32,15 @@
                     </p>
 
                 </ion-item>
+                <ion-item class="h45 sb" ng-click="shop(); $event.stopPropagation()">
+                    <p>
+                        <span class="fs15 col333 ml10">选择门店</span><span class="fs15 colff66">*</span>
+                    </p>
+                    <p >
+                        <span class="fa15 col333">{{newUser.sysShopName}}</span>
+                        <img src="images/more.png" class="more mr10">
+                    </p>
+                </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">性别</p>
                     <span class="fr mr10">
@@ -173,6 +182,12 @@
                 </div>
 
             </div>-->
+        </div>
+        <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100" ng-show="param.flag" ng-click="disNone()"></div>
+        <div style="position: absolute;top: 0;z-index: 101;width:100%;" ng-show="param.flag">
+            <p class="h50 col333 bbl  bgfff" ng-repeat="item in fenShop" ng-click="selShop(item.id,item.sysShopName); $event.stopPropagation()">
+                <span class="ml10">{{item.sysShopName}}</span>
+            </p>
         </div>
     </ion-content>
 </ion-view>

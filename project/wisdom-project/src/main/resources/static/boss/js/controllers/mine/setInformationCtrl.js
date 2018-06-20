@@ -36,12 +36,12 @@ angular.module('controllers',[]).controller('setInformationCtrl',
                 })
 
             };
-            $scope.swichShop = function (sysShopId) {
+            $scope.swichShop = function (sysShopId,sysShopName) {
                 BossSwitchShops.get({
                     sysShopId:sysShopId
                 },function (data) {
                     if(data.result==Global.SUCCESS) {
-                        $state.go("basicSetting")
+                        $state.go("basicSetting",{sysShopName:sysShopName})
                         $scope.param.flag = false;
                     }
                 })

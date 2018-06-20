@@ -61,6 +61,9 @@ angular.module('controllers',[]).controller('collectionCardCtrl',
                             $scope.collectionCar.push($scope.arr[i]);
                         }
                     }
+                    if($scope.collectionCar.length<=0){
+                        $scope.param.picFlag=true;
+                    }
                 }
             };
             
