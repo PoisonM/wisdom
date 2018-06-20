@@ -45,10 +45,9 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 	public List<ShopClerkWorkRecordResponseDTO> getShopCustomerConsumeRecordList(
 			PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParamVoDTO) {
 		ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = pageParamVoDTO.getRequestData();
-		logger.info(
-				"getShopCustomerConsumeRecordList方法传入的参数,sysClerkId={},consumeType={},startTime={}，endTime={}", shopClerkWorkRecordRequestDTO.getSysClerkId(),
-				shopClerkWorkRecordRequestDTO.getConsumeType(), pageParamVoDTO.getStartTime(),
-				pageParamVoDTO.getEndTime());
+		logger.info("getShopCustomerConsumeRecordList方法传入的参数,sysClerkId={},consumeType={},startTime={}，endTime={}",
+				shopClerkWorkRecordRequestDTO.getSysClerkId(), shopClerkWorkRecordRequestDTO.getConsumeType(),
+				pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime());
 		ShopClerkWorkRecordCriteria criteria = new ShopClerkWorkRecordCriteria();
 		ShopClerkWorkRecordCriteria.Criteria c = criteria.createCriteria();
 		// 排序
@@ -169,7 +168,7 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())) {
 				if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())
 						|| GoodsTypeEnum.COLLECTION_CARD.getCode()
-								.equals(shopClerkWorkRecordResponseDTO.getGoodsType())){
+								.equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
 					if (scratchCard != null) {
 						scratchCard = scratchCard.add(shopClerkWorkRecordResponseDTO.getSumAmount());
 					} else {
@@ -215,27 +214,63 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 
 	@Override
 	public List<ShopClerkWorkRecordDTO> getShopClerkList(List<String> flowIds) {
-		logger.info("getShopClerkList方法传入的参数flowIds={}",flowIds);
-		if(CollectionUtils.isEmpty(flowIds)){
+		logger.info("getShopClerkList方法传入的参数flowIds={}", flowIds);
+		if (CollectionUtils.isEmpty(flowIds)) {
 			logger.info("getShopClerkList方法传入的参数flowIds为空");
-			return  null;
+			return null;
 		}
 		ShopClerkWorkRecordCriteria criteria = new ShopClerkWorkRecordCriteria();
 		ShopClerkWorkRecordCriteria.Criteria c = criteria.createCriteria();
 		c.andFlowIdIn(flowIds);
-		return  shopClerkWorkRecordMapper.selectByCriteria(criteria);
+		return shopClerkWorkRecordMapper.selectByCriteria(criteria);
 	}
 
 	@Override
 	public List<ShopClerkWorkRecordDTO> getShopClerkByConsumeRecordId(List<String> consumeRecordIds) {
-		logger.info("getShopClerkByConsumeRecordId方法传入的参数consumeRecordId={}",consumeRecordIds);
-		if(CollectionUtils.isEmpty(consumeRecordIds)){
+		logger.info("getShopClerkByConsumeRecordId方法传入的参数consumeRecordId={}", consumeRecordIds);
+		if (CollectionUtils.isEmpty(consumeRecordIds)) {
 			logger.info("getShopClerkByConsumeRecordId方法传入的参数consumeRecordIds为空");
-			return  null;
+			return null;
 		}
 		ShopClerkWorkRecordCriteria criteria = new ShopClerkWorkRecordCriteria();
 		ShopClerkWorkRecordCriteria.Criteria c = criteria.createCriteria();
 		c.andConsumeRecordIdIn(consumeRecordIds);
-		return  shopClerkWorkRecordMapper.selectByCriteria(criteria);
+		return shopClerkWorkRecordMapper.selectByCriteria(criteria);
+	}
+
+	@Override
+	public List<ShopClerkWorkRecordDTO> getClerkWorkRecordList(
+			PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParamVoDTO) {
+		ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = pageParamVoDTO.getRequestData();
+		logger.info("getClerkWorkRecordList方法传入的参数,sysClerkId={},consumeType={},startTime={}，endTime={}",
+				shopClerkWorkRecordRequestDTO.getSysClerkId(), shopClerkWorkRecordRequestDTO.getConsumeType(),
+				pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime());
+		ShopClerkWorkRecordCriteria criteria = new ShopClerkWorkRecordCriteria();
+		ShopClerkWorkRecordCriteria.Criteria c = criteria.createCriteria();
+		// 排序
+		criteria.setOrderByClause("create_date");
+		// 分页
+		if (pageParamVoDTO.getPaging()) {
+			criteria.setLimitStart(pageParamVoDTO.getPageNo());
+			criteria.setPageSize(pageParamVoDTO.getPageSize());
+		}
+		if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
+				&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
+			Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
+			Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
+			c.andCreateDateBetween(startTime, endTime);
+		}
+		// 设置查询条件
+		if (StringUtils.isNotBlank(shopClerkWorkRecordRequestDTO.getSysShopId())) {
+			c.andSysShopIdEqualTo(shopClerkWorkRecordRequestDTO.getSysShopId());
+		}
+		if (StringUtils.isNotBlank(shopClerkWorkRecordRequestDTO.getSysClerkId())) {
+			c.andSysClerkIdEqualTo(shopClerkWorkRecordRequestDTO.getSysClerkId());
+		}
+		if (shopClerkWorkRecordRequestDTO.getTypeRequire()) {
+			c.andConsumeTypeIn(shopClerkWorkRecordRequestDTO.getConsumeTypeList());
+			c.andGoodsTypeIn(shopClerkWorkRecordRequestDTO.getGoodsTypeList());
+		}
+		return shopClerkWorkRecordMapper.selectByCriteria(criteria);
 	}
 }
