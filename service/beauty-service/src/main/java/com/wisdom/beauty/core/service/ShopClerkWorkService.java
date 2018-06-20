@@ -59,4 +59,12 @@ public interface ShopClerkWorkService {
      * @Date:2018/6/2 9:才
      */
     List<ShopClerkWorkRecordDTO> getShopClerkByConsumeRecordId(List<String> consumeRecordIds);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 根据条件查询员工的记录集合
+    *@Date:2018/6/20 10:26
+    */
+    List<ShopClerkWorkRecordDTO> getClerkWorkRecordList(PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParamVoDTO);
 }

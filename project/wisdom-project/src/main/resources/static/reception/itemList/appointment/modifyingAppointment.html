@@ -5,9 +5,9 @@
             <li ng-click="selectCustomersCtrl()"><span class="boxLift">顾客</span><a class="boxRight">{{param.selectCustomersObject.sysUserName}}<img src="images/bt_more.png" class="morePic ml20" ></a></li>
             <li ng-click="selectNewProduct()">
                 <span class="boxLift">项目</span>
-                <a data-aaa="{{checkprojectId.split(';').length}}" class="boxRight">
-                    <span ng-if="checkprojectId.split(';').length != undefined">选择了{{checkprojectId.split(";").length-1}}个项目</span>
-                    <span ng-if="checkprojectId.split(';').length == undefined">选择了0个项目</span>
+                <a data-aaa="{{param.checkprojectId}}" class="boxRight">
+                    <span ng-if="param.checkprojectId.split(';').length != undefined">选择了{{param.checkprojectId.split(";").length-1}}个项目</span>
+                    <span ng-if="param.checkprojectId.split(';').length == undefined">选择了0个项目</span>
                     <img src="images/bt_more.png" class="morePic ml20" >
                 </a>
             </li>

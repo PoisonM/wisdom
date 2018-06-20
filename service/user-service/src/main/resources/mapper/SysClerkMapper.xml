@@ -27,6 +27,11 @@
     <result column="score" property="score" jdbcType="REAL" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="working_life" property="workinglife" jdbcType="INTEGER" />
+    <result column="speciality" property="speciality" jdbcType="VARCHAR" />
+    <result column="dream" property="dream" jdbcType="VARCHAR" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -89,7 +94,8 @@
   <sql id="Base_Column_List" >
     id, sys_boss_code, sys_boss_name, sys_shop_id, sys_shop_name, sys_user_id, nickname, 
     name, password, email, identify_number, mobile, user_type, user_openid, weixin_attention_status, 
-    photo, login_ip, login_date, del_flag, address, role, sex, score, create_date, update_date
+    photo, login_ip, login_date, del_flag, address, role, sex, score, create_date, update_date,working_life
+    ,speciality,dream,wechat,qq
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.common.dto.user.SysClerkCriteria" >
     select
@@ -495,6 +501,22 @@
       </if>
       <if test="updateDate != null" >
         update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+
+      <if test="workinglife != null" >
+        working_life = #{workinglife,jdbcType=INTEGER},
+      </if>
+      <if test="speciality != null" >
+        speciality = #{speciality,jdbcType=VARCHAR},
+      </if>
+      <if test="dream != null" >
+        dream = #{dream,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
