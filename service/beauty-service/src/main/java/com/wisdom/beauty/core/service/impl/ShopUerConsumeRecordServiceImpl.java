@@ -524,7 +524,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			List<ShopClerkWorkRecordDTO> recordDTOS = new ArrayList<>();
 			for (String clerk : clerks) {
 				ShopClerkWorkRecordDTO recordDTO = new ShopClerkWorkRecordDTO();
-				recordDTO.setPrice(consumeRecordDTO.getPrice());
+				//平均分配业绩金额
+				if(consumeRecordDTO.getPrice()!=null){
+					recordDTO.setPrice(consumeRecordDTO.getPrice().divide(new BigDecimal(clerks.length)));
+				}
 				recordDTO.setId(IdGen.uuid());
 				recordDTO.setPayType(consumeRecordDTO.getPayType());
 				recordDTO.setFlowNo(consumeRecordDTO.getFlowNo());
@@ -536,7 +539,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				recordDTO.setConsumeType(consumeRecordDTO.getConsumeType());
 				recordDTO.setFlowId(consumeRecordDTO.getFlowId());
 				recordDTO.setConsumeRecordId(consumeRecordDTO.getId());
-				recordDTO.setSysClerkName(consumeRecordDTO.getSysClerkName());
+				//recordDTO.setSysClerkName(consumeRecordDTO.getSysClerkName());
 				recordDTOS.add(recordDTO);
 			}
 			shopClerkWorkService.saveClerkWorkRecord(recordDTOS);
