@@ -52,7 +52,7 @@ public class LoginRequiredInterceptor {
         if(method.isAnnotationPresent(LoginRequired.class)){
             Map<String, String> tokenValue = getHeadersInfo(request);
             String userType = tokenValue.get("usertype");
-            String token = "";
+            String token = tokenValue.get("logintoken");
             if(userType==null||userType.equals(""))
             {
                 token = tokenValue.get("logintoken");
