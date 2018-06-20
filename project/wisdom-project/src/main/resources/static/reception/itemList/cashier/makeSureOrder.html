@@ -41,7 +41,7 @@
                         <li ng-click="goHousekeeper('group',$index)">
                             <div>关联员工</div>
                             <span>
-                                <e ng-repeat="staffItem in projectGroupRelRelationDTOSTemp[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
+                                <e ng-repeat="staffItem in projectGroupRelRelationDTOS[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 >
                             </span>
                         </li>
@@ -84,7 +84,7 @@
                         <li ng-click="goHousekeeper('product',$index)">
                             <div>关联员工</div>
                             <span>
-                                <e ng-repeat="staffItem in shopUserProductRelationDTOSTemp[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
+                                <e ng-repeat="staffItem in shopUserProductRelationDTOS[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 ></span>
                         </li>
                     </ul>
@@ -126,7 +126,7 @@
                         <li ng-click="goHousekeeper('project',$index)">
                             <div>关联员工</div>
                             <span>
-                                <e ng-repeat="staffItem in shopUserProjectRelationDTOSTemp[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
+                                <e ng-repeat="staffItem in shopUserProjectRelationDTOS[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 ></span>
                         </li>
                     </ul>

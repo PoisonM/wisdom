@@ -5,11 +5,11 @@
             <ul>
                 <li>
                     <label for="">时间</label>
-                    <span>{{dataInfo.createDate}}</span>
+                    <span>{{dataInfo.createDate | date: "yyyy-MM-dd HH:mm:ss"}}</span>
                 </li>
                 <li>
                     <label for="">顾客</label>
-                    <span>{{dataInfo.createDate | date: "yyyy-MM-dd HH:mm:ss"}}</span>
+                    <span>{{dataInfo.sysUserName}}</span>
                 </li>
                 <li>
                     <label for="">操作门店</label>
