@@ -23,4 +23,19 @@ public class BusinessMessageQueueConfiguration {
 		return new Queue("notifySpecialShopBossCustomerTransaction");
 	}
 
+	@Bean
+	public Queue handleInstanceReturnMoney(){
+		return new Queue("handleInstanceReturnMoney");
+	}
+
+	@Bean
+	public Queue recordMonthTransaction(){
+		return new Queue("recordMonthTransaction");
+	}
+
+	@Bean
+	public Queue handleUserLevelPromotion(){
+		return new Queue("handleUserLevelPromotion");
+	}
+
 }
