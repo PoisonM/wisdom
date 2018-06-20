@@ -327,12 +327,12 @@ public class ShopMemberAttendanceController {
 		// 耗卡
 		map.put("expenditure", expenditure == null ? "0" : expenditure.toString());
 		// 消费次数(人次数)
-		map.put("consumeTime", consumeNumberAndTimeMap.get("consumeTime") == null ? "0"
+		map.put("consumeTime", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("consumeTime") == null ? "0"
 				: consumeNumberAndTimeMap.get("consumeTime").toString());
 		// 服务次数
 		map.put("serviceNumber", CollectionUtils.isEmpty(list) ? "0" : String.valueOf(list.size()));
 		// 消费人数(人头数)
-		map.put("consumeNumber", consumeNumberAndTimeMap.get("consumeNumber") == null ? "0"
+		map.put("consumeNumber", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("consumeNumber") == null ? "0"
 				: consumeNumberAndTimeMap.get("consumeNumber").toString());
 		// 新客
 		map.put("shopNewUserNumber", shopNewUserNumber.toString());
