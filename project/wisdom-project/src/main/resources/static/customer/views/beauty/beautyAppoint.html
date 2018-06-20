@@ -2,12 +2,12 @@
     <style>
         span.noChooseDay {
             color: #333333;
-            line-height: 29px;
+            line-height: 30px;
             font-size: 14px;
             background: white;
             display: inline-block;
             height: 30px;
-            width: 40px;
+            width: 44px;
         }
         span.chooseDay {
             color: white;
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="row" style="background: white;color:black;margin-top:1px;text-align: center">
-                <div class="col" style="width:11%" ng-repeat="item in param.weekDays" ng-click="chooseAppointDate(item.dateValue)">
+                <div class="col" style="width:11%;" ng-repeat="item in param.weekDays" ng-click="chooseAppointDate(item.dateValue)">
                     <span class="noChooseDay" ng-if="item.dateValue!=param.chooseWeekDate">{{item.dateIndex}}</span>
                     <span class="chooseDay" ng-if="item.dateValue==param.chooseWeekDate">{{item.dateIndex}}</span>
                 </div>

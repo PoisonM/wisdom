@@ -2,6 +2,8 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ChannelCodeEnum;
+import com.wisdom.beauty.api.enums.ChannelEnum;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
@@ -368,11 +370,12 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 			sysClerkId = clerkInfo.getId();
 			SysShopDTO shop = shopService.getShopInfoByPrimaryKey(sysShopId);
 			sysShopName = shop.getName();
-			channel = StringUtils.isBlank(channel) ? "clerk" : channel;
+			channel = StringUtils.isBlank(channel) ? ChannelEnum.UNDEFINED.getCode() : channel;
 		}
 		if (null != bossInfo) {
-			sysShopName = "boss";
-			channel = StringUtils.isBlank(channel) ? "boss" : channel;
+			sysShopName = shopUserArchivesDTO.getSysShopName();
+			sysShopId=shopUserArchivesDTO.getSysShopId();
+			channel = StringUtils.isBlank(channel) ? ChannelEnum.UNDEFINED.getCode() : channel;
 		}
 
 		shopUserArchivesDTO.setChannel(channel);

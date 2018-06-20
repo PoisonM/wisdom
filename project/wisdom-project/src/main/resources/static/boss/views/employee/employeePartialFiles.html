@@ -12,12 +12,6 @@
                 </ion-item>
             </ion-list>
             <div style="position: relative;height:100%;">
-                <!--<ion-list>-->
-                    <!--<ion-item  style="background: #ffffff;" class="h45" ng-click="newUser()">-->
-                        <!--<img src="images/jia.png" class="img ml10 mr10" >-->
-                        <!--新建-->
-                    <!--</ion-item>-->
-                <!--</ion-list>-->
                 <div class="h54 bgfff mt5 fs16" ng-click="switching()">
                     <img src="images/warning.png" class="warningPic ml10 mr10">
                     预警档案
@@ -47,10 +41,6 @@
                         </div>
                     </div>
                 </ion-list>
-                <div style="position: absolute;background:#000;opacity: 0.2;width:100%;height:100%;z-index: 3000;top:0;" ng-show="param.blackBox"
-                     ng-click="checkBgBox()">
-                </div>
-                <div style="z-index: 3001;position: absolute;width:100%;top:0 ;background: #ffffff;color: #333333;font-size: 8px" ng-show="param.fileBOx">
                     <ion-list>
                         <ion-item  class="  h50 bgfff center"  ng-click="checkFileBox(item.id);$event.stopPropagation()" ng-repeat="item in switchingList">
                             {{item.sysShopName}}

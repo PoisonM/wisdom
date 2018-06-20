@@ -131,8 +131,14 @@ public class ArchivesController {
             HashMap<Object, Object> hashMap = new HashMap<>(16);
             ArrayList<Object> arrayList = new ArrayList<>();
             for (ExtShopUserArchivesDTO dto : extShopUserArchivesDTOS) {
-                if (a == PinYinSort.ToPinYinString(dto.getSysUserName()).toLowerCase().charAt(0)) {
-                    arrayList.add(dto);
+                if(dto.getSysUserName().matches("\\b[A-Za-z][^ ]{0,}")){
+                    if (a ==dto.getSysUserName().toLowerCase().charAt(0) ) {
+                        arrayList.add(dto);
+                    }
+                }else {
+                    if (a == PinYinSort.ToPinYinString(dto.getSysUserName()).toLowerCase().charAt(0)) {
+                        arrayList.add(dto);
+                    }
                 }
             }
             if (arrayList.size() > 0) {
