@@ -988,7 +988,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 
 				} else {
 					shopChannelResponseDTO = new ShopChannelResponseDTO();
-					shopChannelResponseDTO.setChannelName(ChannelEnum.judgeValue(dto.getChannel()).getDesc());
+					if(ChannelEnum.judgeValue(dto.getChannel())!=null){
+						shopChannelResponseDTO.setChannelName(ChannelEnum.judgeValue(dto.getChannel()).getDesc());
+					}
 					shopChannelResponseDTO.setChannelPeopleNumber(1);
 					DecimalFormat fnum = new DecimalFormat("##0");
 					String dd = fnum.format(1f / Float.valueOf(archivesList.size()) * 100);
