@@ -260,7 +260,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
 
         .state('pad-web.left_nav.addRecord', {
-            url: '/addRecord',
+            url: '/addRecord/:id',
             templateUrl: root + '/addRecord/addRecord.html',
             controller: 'addRecordCtrl',
             resolve: {
